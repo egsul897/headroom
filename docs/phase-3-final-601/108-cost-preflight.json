@@ -1,0 +1,107 @@
+{
+ "artifact": "PHASE 3 FINAL / 6.01 POST-REMEDIATION PAID REVALIDATION §11-§12 - resumed-run cost preflight and the mission's incremental cap",
+ "at": "2026-09-19T00:13:19.045Z",
+ "paidCalls": 0,
+ "methodology": {
+  "source": "docs/phase-3-final-601/01-cost-preflight.json (frozen): worst observed rates x 1.25",
+  "resumedWorkOnly": true,
+  "historicalCostIncluded": false,
+  "phantomPassACallsIncluded": false,
+  "passA": "$0 - resumed"
+ },
+ "plan": {
+  "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+  "shards": 6,
+  "plannerEstimatedInputTokens": 186109,
+  "maxShardInputTokens": 40212
+ },
+ "rateSource": {
+  "method": "PINNED_FROZEN_RATES",
+  "pinnedArtifacts": [
+   "docs/phase-3-final-601/01-cost-preflight.json",
+   "docs/phase-3-final-601/49-final-clean-cost-preflight.json",
+   "docs/phase-3-final-601/75-final-paid-cost-preflight.json"
+  ],
+  "allPinnedArtifactsAgree": true,
+  "recomputationAttempted": true,
+  "recomputationSucceeded": false,
+  "recomputationMatchesPinned": null,
+  "recomputeError": "Cannot read properties of undefined (reading 'record')",
+  "whyPinned": "observedRates() joins the frozen F-7B canary shard ledgers on shardId; planner v2 changed shard identities, so the historical join no longer resolves. The rate VALUES are unchanged - they are read from the artifacts the previous missions committed."
+ },
+ "estimate": {
+  "rates": {
+   "passABatchMean": 0.431337,
+   "passABatchWorst": 0.627356,
+   "passABatchCalls": 38,
+   "passAGapMean": 0.3529920000000001,
+   "passAGapWorst": 0.47530800000000006,
+   "passAGapCalls": 5,
+   "passBMean": 0.000017264537354079804,
+   "passBWorst": 0.00003215094994361066,
+   "passBShards": 36,
+   "verifierSemanticReview": 0.32929600000000003,
+   "verifierCalls": 1
+  },
+  "safetyFactor": 1.25,
+  "plannerEstimatedInputTokens": 186109,
+  "passA": {
+   "usd": 0,
+   "calls": 0,
+   "reason": "resumed from the persisted ensemble - no Pass-A caller is constructed"
+  },
+  "passB": {
+   "worstUsd": 5.983581,
+   "meanUsd": 3.213086,
+   "conservativeUsd": 7.479476
+  },
+  "verifier": {
+   "worstUsd": 0.386296,
+   "conservativeUsd": 0.48287,
+   "calls": {
+    "semanticReview": 1,
+    "conditionSuspicion": 5
+   }
+  },
+  "conservativeTotalUsd": 7.962346,
+  "worstTotalUsd": 6.369877,
+  "meanTotalUsd": 3.599382,
+  "capUsd": 7.97,
+  "capCeilingUsd": 6,
+  "capWithinRecommendedCeiling": false,
+  "previousPassBPlusVerifierActualUsd": 2.799234
+ },
+ "guard": {
+  "liveInitialConservativeRemainingUsd": 7.962346,
+  "frozenEstimatorUsd": 7.962346,
+  "agrees": true,
+  "firstCallAdmissible": {
+   "admitted": true,
+   "conservativeRemaining": 7.962346428819295,
+   "capRemaining": 7.97,
+   "balanceRemaining": 10.48047
+  }
+ },
+ "cap": {
+  "chosenCapUsd": 7.97,
+  "derivation": "conservative resumed estimate rounded up to the cent",
+  "recommendedCeilingUsd": 6,
+  "withinRecommendedCeiling": false,
+  "previousMissionCapUsd": 15.84,
+  "previousMissionCapReused": false,
+  "previousPassBPlusVerifierActualUsd": 2.799234
+ },
+ "gateway": {
+  "balanceUsd": 10.48047,
+  "totalUsed": "224.51953",
+  "readLive": true,
+  "balanceAfterPreviousPaidRun": 10.48047,
+  "noPaidCallsSinceRemediation": true
+ },
+ "gate": {
+  "conservativeFitsCap": true,
+  "balanceCoversEstimate": true,
+  "passed": true
+ },
+ "decision": "CLEAR_TO_EXECUTE"
+}

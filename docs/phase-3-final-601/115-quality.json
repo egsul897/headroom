@@ -1,0 +1,184 @@
+{
+ "artifact": "PHASE 3 FINAL / 6.01 POST-REMEDIATION PAID REVALIDATION §24 - quality decision",
+ "at": "2026-09-19T01:06:04.752Z",
+ "question": "not whether every inventory item became executable (that is Phase 4), but whether material legal semantics are recovered, unresolved matters are explicit and bounded, provenance is intact, trust counters are zero, and the old systemic context-loss failure is gone",
+ "materialSemanticsRecovered": {
+  "critical": {
+   "total": 4,
+   "correct": 1,
+   "explicitSafeLimitation": 3,
+   "incorrect": 0,
+   "silentMisses": 0
+  },
+  "material": {
+   "total": 4,
+   "correct": 0,
+   "explicitSafeLimitation": 4,
+   "incorrect": 0,
+   "silentMisses": 0
+  },
+  "criticalAccountedOf4": 4,
+  "materialAccountedOf4": 4
+ },
+ "unresolvedAreExplicitAndBounded": {
+  "shardsWithMissingContext": 1,
+  "objectsWithMissingContextSufficiency": 1,
+  "unresolvedOwnedItems": 98,
+  "compileStatus": "PARTIAL",
+  "semanticallyComplete": false,
+  "inventoryLimitationsPreserved": {
+   "inventoryStatusCarried": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 17,
+   "uninventoriedValues": 2,
+   "supportReviewRequired": true
+  }
+ },
+ "provenanceIntact": {
+  "accountedCharFraction": 0.9815,
+  "rejectedUnverifiableAtFreeze": 0,
+  "attributionProofCounts": {
+   "PLANNER_DEFINITION_UNIT": 0,
+   "OWNED_INVENTORY_LINEAGE": 4,
+   "UNIQUE_PRIMARY_SOURCE_DECLARATION": 0,
+   "NONE": 0
+  }
+ },
+ "trustCountersZero": false,
+ "allCountersMeasured": true,
+ "oldSystemicContextLossFailureGone": {
+  "shardMissingContext": 1,
+  "recurrenceOfClosed29": 4,
+  "unresolvedOwnedItems": 98,
+  "previousRun": {
+   "shardMissingContext": 2,
+   "unresolvedOwnedItems": 317,
+   "ownedValuesLost": 5
+  },
+  "gone": false
+ },
+ "extraOutput": {
+  "materialRepresentedItemsOutsideEveryReferenceSpan": 180,
+  "ofThoseOutsideSection601": 0,
+  "classification": {
+   "VALID_ADDITIONAL_SOURCE_BACKED": 180,
+   "INFORMATIONAL": 0,
+   "DUPLICATE": 0,
+   "UNSUPPORTED": 0,
+   "HALLUCINATED_OR_UNVERIFIABLE": 0
+  },
+  "rejectedUnverifiableItemsAtFreeze": 0,
+  "authoritativeHallucinations": 0,
+  "basis": "every inventory item is excerpt-anchored to verbatim source at recorded offsets; Pass A discards any proposal whose excerpt is not a real substring of the resolved source context and counts the discards. Extra material output therefore rests on real source the 8-item reference slice never enumerated.",
+  "sample": [
+   {
+    "itemId": "inv-item:1317b29a2957072ca6653789",
+    "span": [
+     612195,
+     612310
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(X): Indebtedness incurred pursuant to the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22)."
+   },
+   {
+    "itemId": "inv-item:2a70194d073f5a0ca3d3072d",
+    "span": [
+     612377,
+     612496
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(Y): Indebtedness incurred pursuant to the ABL Loan Documents up to an aggregate principal amount outstanding at any one time n"
+   },
+   {
+    "itemId": "inv-item:de8407fd1b19c24bdde0720b",
+    "span": [
+     612497,
+     612519
+    ],
+    "citation": "§6.01",
+    "proposition": "Fixed alternative cap for the ABL basket: $800.0 million."
+   },
+   {
+    "itemId": "inv-item:04e0d68a10028d89e8335fe6",
+    "span": [
+     612520,
+     612542
+    ],
+    "citation": "§6.01",
+    "proposition": "Alternative cap for the ABL basket: the Borrowing Base."
+   },
+   {
+    "itemId": "inv-item:1f66b3668e0c2296f2403ab2",
+    "span": [
+     612543,
+     612621
+    ],
+    "citation": "§6.01",
+    "proposition": "The Borrowing Base is as defined in the ABL Credit Agreement, measured as of the date of the relevant incurrence."
+   },
+   {
+    "itemId": "inv-item:bc404f777d4c90cae11f3206",
+    "span": [
+     612622,
+     612754
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(Z): Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such"
+   },
+   {
+    "itemId": "inv-item:4efaadf6a9c376b7b618a2f0",
+    "span": [
+     614637,
+     614714
+    ],
+    "citation": "§6.01",
+    "proposition": "This special numerator treatment applies solely for the purpose of determining the ratio under clause (ii); component (ii) then continues as"
+   },
+   {
+    "itemId": "inv-item:53a78db5900f5aa231e76e78",
+    "span": [
+     614715,
+     614835
+    ],
+    "citation": "§6.01",
+    "proposition": "Component (iii) of the exception (4) cap: an amount equal to the aggregate amount of all Capitalized Lease Obligations outstanding as of the"
+   },
+   {
+    "itemId": "inv-item:3c1f3219a046a3b1c45895aa",
+    "span": [
+     614868,
+     614949
+    ],
+    "citation": "§6.01",
+    "proposition": "Capitalized Lease Obligations arising out of any Sale and Lease-Back Transactions are excepted from the general limitation on incurrence of "
+   },
+   {
+    "itemId": "inv-item:d2ba1a123dd6ad46fe7a576a",
+    "span": [
+     614958,
+     615051
+    ],
+    "citation": "§6.01",
+    "proposition": "Indebtedness for vehicle and equipment financings incurred in the ordinary course of business is excepted from the general limitation on inc"
+   },
+   {
+    "itemId": "inv-item:40b3cae7a8c133179d68a88d",
+    "span": [
+     615054,
+     615181
+    ],
+    "citation": "§6.01",
+    "proposition": "Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit is excepted from the "
+   },
+   {
+    "itemId": "inv-item:8d7774b6026966560c4c3b33",
+    "span": [
+     615182,
+     615425
+    ],
+    "citation": "§6.01",
+    "proposition": "Permitted Indebtedness under this exception includes bankers' acceptances, bank guarantees, warehouse receipts or similar instruments issued"
+   }
+  ]
+ },
+ "conclusion": "NOT_CREDIBLE"
+}

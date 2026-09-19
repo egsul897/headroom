@@ -1,0 +1,176 @@
+{
+ "artifact": "PHASE 3 FINAL / 6.01 POST-REMEDIATION PAID REVALIDATION §27 - final verdict",
+ "at": "2026-09-19T01:06:04.774Z",
+ "startingSha": "f944790423c9a6f7046f46654ad1348611083204",
+ "endingSha": "3aee5658f60394c45c82d7f31e8df82ad88b35be",
+ "missionId": "phase-3-final-601-revalidation",
+ "evidenceDir": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation",
+ "launches": 2,
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "exact persisted inventory loaded",
+   "status": "PASS",
+   "evidence": "326 items, hash 88e7419f61f96b82..., verified from the persisted object"
+  },
+  {
+   "id": 2,
+   "condition": "current source-bound resume gate passes",
+   "status": "PASS",
+   "evidence": "RECORDED_SOURCE_CONTEXT_HASH; frozenContentHash untouched=true"
+  },
+  {
+   "id": 3,
+   "condition": "no Pass-A semantic version change",
+   "status": "PASS",
+   "evidence": "NO_PASS_A_SEMANTIC_CHANGE; byte-identical Pass-A input proven against the pre-remediation tree (6 batches)"
+  },
+  {
+   "id": 4,
+   "condition": "remediation gate remains green",
+   "status": "PASS",
+   "evidence": "142 tests, 0 failed; still unresolved 0"
+  },
+  {
+   "id": 5,
+   "condition": "current plan is the corrected bounded topology",
+   "status": "PASS",
+   "evidence": "6 shards, 0 oversized, max primary 11801, 0 mid-sentence"
+  },
+  {
+   "id": 6,
+   "condition": "old failed shards not reused",
+   "status": "PASS",
+   "evidence": "old store yields 0 accepted; plan identity differs (true)"
+  },
+  {
+   "id": 7,
+   "condition": "zero new Pass-A provider calls",
+   "status": "PASS",
+   "evidence": "RESUMED_FROM_ENSEMBLE_PERSISTENCE; 0 new Pass-A calls"
+  },
+  {
+   "id": 8,
+   "condition": "current production Pass B executes",
+   "status": "PASS",
+   "evidence": "status PARTIAL, 6 shards executed"
+  },
+  {
+   "id": 9,
+   "condition": "the old 29 missing dependencies do not recur",
+   "status": "FAIL",
+   "evidence": "RECURRED (4): term:Fixed Incremental Amount, term:Voluntary Prepayment Incremental Amount, term:Ratio Incremental Amount, term:Extension Amount"
+  },
+  {
+   "id": 10,
+   "condition": "SHARD_MISSING_CONTEXT from those old dependencies = 0",
+   "status": "FAIL",
+   "evidence": "1 shard(s) MISSING_CONTEXT (shard:86cc5e439f113d6053a9); 4 of their requested dependencies trace to the closed set"
+  },
+  {
+   "id": 11,
+   "condition": "global Pass C executes",
+   "status": "PASS",
+   "evidence": "semanticallyComplete=false, inventoried 326"
+  },
+  {
+   "id": 12,
+   "condition": "verifier executes",
+   "status": "PASS",
+   "evidence": "MATERIAL_DISCREPANCY"
+  },
+  {
+   "id": 13,
+   "condition": "all 14 hard trust counters MEASURED and zero",
+   "status": "FAIL",
+   "evidence": "owned values lost=2, distinct owned lineage lost=98"
+  },
+  {
+   "id": 14,
+   "condition": "owned values lost = 0",
+   "status": "FAIL",
+   "evidence": "2"
+  },
+  {
+   "id": 15,
+   "condition": "distinct owned lineage lost = 0",
+   "status": "FAIL",
+   "evidence": "98"
+  },
+  {
+   "id": 16,
+   "condition": "contextual ownership-credit violations = 0",
+   "status": "PASS",
+   "evidence": "0 credited of 3 detected"
+  },
+  {
+   "id": 17,
+   "condition": "no silent CRITICAL miss",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 18,
+   "condition": "no incorrect authoritative CRITICAL claim",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 19,
+   "condition": "no silent quantitative corruption",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 20,
+   "condition": "semantic quality credible",
+   "status": "FAIL",
+   "evidence": "CRITICAL 1 represented + 3 explicit limitation of 4; MATERIAL 0 + 4 of 4"
+  },
+  {
+   "id": 21,
+   "condition": "spend <= mission cap",
+   "status": "PASS",
+   "evidence": "$4.419228 of $7.97"
+  },
+  {
+   "id": 22,
+   "condition": "no code fix-and-continue",
+   "status": "PASS",
+   "evidence": "no production code and no run-path harness code changed after paid execution began: lib/contract-model/**, phase-3-601-revalidation-{lib,preflight,run}.ts, the guard, the durable-replay stack and the HD-4 resume module were all committed and pushed BEFORE the first paid call, and none was touched afterwards. The post-hoc scorer and finalizer (phase-3-601-revalidation-{score,finalize}.ts), which only read outputs already frozen on disk and cannot influence the run, were authored while the run was executing - disclosed rather than claimed as untouched."
+  },
+  {
+   "id": 23,
+   "condition": "no new regressions",
+   "status": "PASS",
+   "evidence": "106 files / 161 tests failing; 0 new vs the previous run"
+  },
+  {
+   "id": 24,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "compiled successfully"
+  }
+ ],
+ "summary": {
+  "PASS": 18,
+  "FAIL": 6,
+  "total": 24
+ },
+ "verdict": "PHASE3_601_REMEDIATION_FAILED",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "cost": {
+  "thisMissionUsd": 4.419228,
+  "capUsd": 7.97,
+  "conservativeResumedEstimateUsd": 7.962346,
+  "recommendedCeilingUsd": 6,
+  "capWithinRecommendedCeiling": false,
+  "historicalSection601Usd": 22.078734,
+  "cumulativeSection601Usd": 26.497962,
+  "gatewayBefore": 10.48047,
+  "gatewayAfter": 6.061242,
+  "newPassACalls": 0
+ },
+ "nextMission": "ZERO-COST PHASE 3 CLOSURE SYNTHESIS. §28: Phase 3 stays OPEN even on a pass; no further paid run unless that synthesis identifies a specific unresolved blocker."
+}

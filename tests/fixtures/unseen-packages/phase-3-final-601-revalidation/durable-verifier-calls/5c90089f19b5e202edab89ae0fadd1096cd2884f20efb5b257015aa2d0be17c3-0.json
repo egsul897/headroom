@@ -1,0 +1,102 @@
+{
+ "identity": {
+  "recordVersion": "hd4-durable-call-record.v1",
+  "replayAlgorithmVersion": "hd4-durable-replay.v1",
+  "missionId": "phase-3-final-601-revalidation",
+  "passId": "verifier",
+  "sourceDocumentId": "doc-a",
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "algorithmVersion": "phase-3c-semantic-verifier.v1",
+  "promptVersion": "phase-3c-semantic-verifier-prompt.v1",
+  "stage": "semantic_verification",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "schemaId": "semantic-verification/wire-schema#SubmitVerificationFindingsSchema",
+  "schemaFingerprint": "6074963b933fa202d4cdf28e415a6c1c76af3c0c236115ed322e7a4eebee7fb9",
+  "systemPromptSha256": "82ae5365baf374a6bd02350e2aa6e09fac0e1088bcc75c0a9f3b2ee9c4f4bd32",
+  "userContentSha256": "7e59ac3faba9af4ad53b6850ab28471e35726bdd672f66348ea1178e778ab00f"
+ },
+ "requestHash": "5c90089f19b5e202edab89ae0fadd1096cd2884f20efb5b257015aa2d0be17c3",
+ "occurrence": 0,
+ "callOrdinal": 0,
+ "batchRef": null,
+ "payload": {
+  "findings": [
+   {
+    "findingType": "UNSUPPORTED_SUFFICIENCY_CLAIM / MISSING_EXCEPTION_LINKS",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:170e314ceb35e54072b7ddba; ir-rule:49f22aee601dde5b8b8162d5; ir-rule:31ef4cb0be0026182f97f8ea",
+    "irPath": "rules[].exceptions",
+    "sourceEvidence": "(b) The provisions of Section 6.01(a) hereof shall not apply to: (1) Indebtedness incurred pursuant to (X) the Loan Documents ... (2) [Reserved]; (3) Existing Indebtedness ... (4) ... (5) ... (6) ... (7) ... (8) ... (9) ... (10) ... (11) ... (12) ... (13) ... (14) ... (15) ... (16) ... (17) ... (18) ... (19) ... (20) ... (21) ... (22) ... (23) ... (25) ... (26) ... (27) ... (28) ... (30) ... (31) ... (32); and (33) Incremental Equivalent Debt.",
+    "sourceCitation": "§6.01(b)",
+    "proposedIrEvidence": "exceptions array on the three top-level prohibition rules (INCUR_DEBT, Disqualified Stock, Preferred Stock) lists only 7 items: three Permitted Ratio Debt branches (§6.01(a)(1)-(3)) plus §6.01(b)(1)(X), (Y), (Z), and §6.01(b)(3). All other 27 enumerated Section 6.01(b) baskets - (4) through (33) - which the source text expressly states 'shall not apply to' the §6.01(a) prohibition, and which are each separately modeled elsewhere in this IR as standalone PERMISSION rules (e.g., ir-rule:53287a6e35e93cff341f198a, ir-rule:80234579d419bc2975a84c45, ir-rule:40a36af71a396edc636637b5, ir-rule:4e35da6548219132151835ea, ir-rule:8f3b7f1b6dec1c302dd1194e, ir-rule:42cec8badec918bc9b78764d, ir-rule:2142a4b823fd9e52a8a8f3da, ir-rule:ea76a8014f2eec64983a7cd6, ir-rule:c2602aec0550b4687c5e80ca, etc.) - are never linked back to the master prohibition rules via the exceptions array, despite the prohibition rules' sufficiency being marked COMPLETE.",
+    "reasoning": "The source text is unambiguous that Section 6.01(b)'s 33 enumerated clauses (minus reserved ones) are all independently-operative carve-outs from the Section 6.01(a) prohibition ('The provisions of Section 6.01(a) hereof shall not apply to:'). The IR does model most of these baskets individually elsewhere with correct amounts/ratios, but it fails to structurally connect ~27 of them back to the prohibition rules they exist to qualify. A downstream system relying on the prohibition rule's own exceptions array (rather than manually cross-referencing every other rule in the document by sourceSectionRef) would conclude that Chewy/the Borrowers can only incur debt under six narrow carve-outs, radically understating actual capacity (e.g., missing the $720mm/100% EBITDA general debt basket, the acquisition debt basket, the Available Amount basket, Incremental Equivalent Debt, etc.). Because the prohibition rules claim COMPLETE sufficiency despite this severe under-inclusion, this is exactly the 'confident but wrong' pattern the review is meant to catch."
+   },
+   {
+    "findingType": "INCORRECT_PROVENANCE_JUSTIFICATION",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:4e35da6548219132151835ea; ir-rule:7adc1ed7ad97b916a91ee39a",
+    "irPath": "rules[].capacityExpression.gatedBy.operands[].operands[]",
+    "sourceEvidence": "(1) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured ... on a pari passu basis with the Secured Obligations, on a Pro Forma Basis the First Lien Leverage Ratio ... does not exceed the greater of (x) 2.00:1.00 ...; (2) ... either (i) the Senior Secured Leverage Ratio ... does not exceed the greater of (x) 3.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (x) 1.75:1.00 ...; (3) ... either (i) the Total Leverage Ratio ... does not exceed the greater of (x) 4.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (x) 1.75:1.00 ...",
+    "sourceCitation": "§6.01(a)(1)-(3)",
+    "proposedIrEvidence": "UNSUPPORTED nodes state: 'Section 6.01(a)'s Interest Coverage Ratio-based debt basket ... text was truncated in the retrievable evidence; its specific ratio threshold could not be obtained even after requesting Section 6.01(a) via tool' and '... only the First Lien Leverage Ratio secured basket text was retrievable, truncated before any general/unsecured ratio baskets.' Yet the same IR elsewhere fully and correctly models all three §6.01(a) ratio branches with the exact thresholds (2.00:1.00, 3.00:1.00/1.75:1.00, 4.00:1.00/1.75:1.00) in ir-rule:720e520b4c36952259c6f43e, ir-rule:e5faea7bee4754c75a32ff56, and ir-rule:3e94c3437f355d3cff76c7b5.",
+    "reasoning": "The justification given for marking the §6.01(b)(14)(a)/(b)/(c) '$1.00 of additional Indebtedness under the Section 6.01(a) test' alternative as UNSUPPORTED is factually incorrect: the full text of Section 6.01(a), including every ratio threshold needed, is present in the source and was in fact used by the same compiling process to build separate PERMISSION rules elsewhere in this very IR. This is not an honest disclosure of a genuine evidentiary gap (which would not be flagged per instructions) - it is a disclosure whose stated reason misrepresents the actual state of available evidence, which could mislead a remediation step into believing further document retrieval is required when the necessary ratio thresholds were already computed and available within the same submission."
+   },
+   {
+    "findingType": "MISSING_DEPENDENCY_LINKS",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:40a36af71a396edc636637b5",
+    "irPath": "rules[].dependsOn",
+    "sourceEvidence": "the incurrence or issuance by any Restricted Party, of Indebtedness ... which serves to Refinance any Indebtedness ... incurred or issued as permitted under Section 6.01(a) hereof and Sections 6.01(b)(1)(Y), (3), (4), (5)(b) and (12) hereof, this Section 6.01(b)(13) and Sections 6.01(b)(14), (18), (19), (27) and (31) hereof or any Indebtedness ... issued to so Refinance such Indebtedness",
+    "sourceCitation": "§6.01(b)(13)",
+    "proposedIrEvidence": "dependsOn on ir-rule:40a36af71a396edc636637b5 (the §6.01(b)(13) Refinancing Indebtedness rule) lists only one REQUIRES relationship, to ir-rule:4e35da6548219132151835ea (§6.01(b)(14)), described as 'eligible original debt basket ... included in this submission.' No dependency links are recorded to the §6.01(a) ratio-debt rules, §6.01(b)(1)(Y) ABL debt, §6.01(b)(3) existing debt, §6.01(b)(4) capex debt, §6.01(b)(5)(b) letter-of-credit account-party debt, §6.01(b)(12) contribution/general debt, §6.01(b)(18) non-Guarantor debt, §6.01(b)(19) acquisition debt, or §6.01(b)(27) JV debt - all of which the source text expressly lists as eligible 'original' debt that may be refinanced under this clause.",
+    "reasoning": "Section 6.01(b)(13) is a refinancing basket whose availability is expressly gated on the original debt having been incurred under a specific, enumerated list of other baskets. The IR captures only one of roughly ten such qualifying source baskets in its structured dependsOn relationships, even though nearly all of those other baskets are independently modeled elsewhere in this same IR. A downstream system relying on the dependsOn graph to validate whether a given refinancing qualifies under §6.01(b)(13) would incorrectly treat most legitimate refinancings (e.g., of ABL debt, capex debt, or acquisition debt) as unsupported or out of scope."
+   },
+   {
+    "findingType": "MISSING_ENTITY_SCOPE",
+    "severity": "UNCERTAIN",
+    "ruleOrDefinitionId": null,
+    "irPath": "rules[].entityScope / rules[].entityScopeExcluded",
+    "sourceEvidence": "the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable ... and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock",
+    "sourceCitation": "§6.01(a)",
+    "proposedIrEvidence": "entityScope and entityScopeExcluded arrays are empty ([]) on every one of the ~50+ rules in the proposed IR, including the top-level prohibition rules and every basket/exception rule, despite the source text repeatedly and materially distinguishing Borrowers, Restricted Subsidiaries, Guarantors, Restricted Subsidiaries-that-are-not-Guarantors, Unrestricted Subsidiaries, and Loan Parties as the relevant entity scope for different rules (e.g., §6.01(a)'s Preferred Stock restriction applies only to non-Guarantor Restricted Subsidiaries; §6.01(b)(18) applies only to Restricted Parties that are not Guarantors; §6.01(b)(18)(ii) requires non-recourse to Loan Parties).",
+    "reasoning": "Entity scope (who is bound by a prohibition, or who may rely on an exception) is a structurally significant, independently-operative element of this covenant that the source text encodes carefully and differently across sub-clauses. While some of this scoping is described in free-text conditions/descriptions within individual rules, the dedicated entityScope/entityScopeExcluded fields - which a downstream compliance engine would likely rely on programmatically - are uniformly empty across the entire IR, which could cause a scope-aware compliance check to silently apply rules to the wrong entities (e.g., failing to recognize that a Restricted Subsidiary that is a Guarantor is exempt from the Preferred Stock restriction, or that non-Guarantor status gates §6.01(b)(18) capacity)."
+   }
+  ],
+  "overallNotes": [
+   "The proposed IR is extremely granular and, for the baskets it does model individually (dollar caps, EBITDA percentages, ratio thresholds across §6.01(a) and most of §6.01(b)(1)-(33)), the amounts, percentages, and ratio thresholds checked against the source text (e.g., $800.0mm ABL cap, $360.0mm/50% EBITDA capex basket, $720.0mm/100% EBITDA general/acquisition/non-Guarantor baskets, 2.00:1.00/3.00:1.00/4.00:1.00/1.75:1.00 ratio tests) were verified to match the source and were not separately flagged.",
+   "Several sub-expressions are honestly marked UNSUPPORTED/PARTIAL/AMBIGUOUS with requiredReview flags (e.g., the malformed MULTIPLY/ADD/OR type-check failures in §6.01(b)(4)(a)(ii), the Permitted Ratio Debt definition, and the qualitative 'no or nominal cash payments' and 'non-recourse to Loan Parties' tests) - these are honest disclosures of genuine modeling gaps and are not separately reported as findings, consistent with the instruction that honest PARTIAL/UNSUPPORTED disclosures are not themselves defects.",
+   "The deterministic signal about a missing RECLASSIFIABLE_TO/REDESIGNATES_TO dependency (§6.01(b)(1) rules-of-construction reclassification right) was investigated; the substance of that reclassification right is captured in prose within ir-rule:984885dbaf7f0a96d54b056b's exceptions, so this was judged non-material and is not reported as a separate finding."
+  ]
+ },
+ "payloadSha256": "759dec5b2ad993a1e79cceff882d0116e697964f6d475e090f1a2886ead8a422",
+ "telemetry": {
+  "inputTokens": 110659,
+  "outputTokens": 13570,
+  "cacheRead": null,
+  "cacheWrite": null,
+  "originalCostUsd": 0.357018,
+  "latencyMs": 139691
+ },
+ "stageTelemetry": {
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-c0.1",
+  "schemaVersion": "phase-c0.1",
+  "stage": "semantic_verification",
+  "timestamp": "2026-09-19T00:58:53.614Z",
+  "inputTokens": 110659,
+  "outputTokens": 13570,
+  "cachedInputTokens": null,
+  "cacheCreationInputTokens": null,
+  "attemptCount": 1,
+  "retryCount": 0,
+  "rateLimitFailures": 0,
+  "latencyMs": 139691,
+  "calculatedCostUsd": 0.357018
+ },
+ "rawProviderOutput": null,
+ "completedAt": "2026-09-19T01:01:13.305Z",
+ "recordSha256": "eb9c7e6571945de965b547bfbc893cdfe8813e399b7aef142e4fcf3d70bf33b4"
+}

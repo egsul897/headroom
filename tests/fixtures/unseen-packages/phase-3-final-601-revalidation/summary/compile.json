@@ -1,0 +1,743 @@
+{
+ "artifact": "6.01 post-remediation revalidation §14/§15 - production compileCovenantToIR",
+ "at": "2026-09-19T00:58:53.589Z",
+ "entryPoint": "compileCovenantToIR",
+ "frozenInventorySource": "RESUMED_PERSISTED_ENSEMBLE",
+ "priorShardResultsSupplied": 0,
+ "status": "PARTIAL",
+ "failureReasons": [
+  "OPERATIVE_STATE_UNRESOLVED",
+  "MISSING_CONTEXT",
+  "SHARD_INCOMPLETE",
+  "SHARD_CONFLICT",
+  "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+  "SEMANTIC_INVENTORY_COVERAGE_GAP",
+  "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+ ],
+ "compileError": null,
+ "costUsd": 4.06221,
+ "execution": {
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "policyVersion": "semantic-execution-mode.v1",
+  "plannerAlgorithmVersion": "semantic-compilation-shards.v2",
+  "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+  "plannedShards": 6,
+  "oversizedShards": 0,
+  "frozenInventoryResume": {
+   "method": "RECORDED_SOURCE_CONTEXT_HASH",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "documentId": "doc-a",
+   "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+   "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "reAnchoredChecks": null,
+   "verifiedAt": "2026-09-19T00:17:12.395Z"
+  },
+  "sharded": {
+   "budget": {
+    "targetPrimaryChars": 12000,
+    "maxPrimaryChars": 24000,
+    "maxContextChars": 10000,
+    "maxContextEntryChars": 1800,
+    "maxUnitsPerShard": 16
+   },
+   "executed": 6,
+   "reused": 0,
+   "retries": 0,
+   "providerCalls": 6,
+   "statusCounts": {
+    "SHARD_COMPLETE": 5,
+    "SHARD_MISSING_CONTEXT": 1
+   },
+   "collisions": 5,
+   "collisionsByKind": {
+    "CONTEXTUAL_UNOWNED_DEFINITION": 3,
+    "RULE_POSSIBLE_DUPLICATE": 2
+   },
+   "definitionConflicts": 0,
+   "conflictVariants": 0,
+   "contextualEmissions": 3,
+   "contextualEmissionsCredited": 0,
+   "unresolvedOwnedItems": 98,
+   "stitchedStatus": "PARTIAL",
+   "stitchedFailureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED",
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "SHARD_CONFLICT",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+   ],
+   "definitionConflictEvidence": [],
+   "unresolvedOwnedItemList": [
+    {
+     "inventoryItemId": "inv-item:5985fbc163bc921fa4711e57",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:597667c532328e67b64edf1e",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:805052a570cf10b0912412d8",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:e5d3460295d5383c2300f586",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:659e9216825c7831d706458e",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:4a638ab9cdad3d676457a030",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:fed9e0690db9217a5bf9ce45",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:d0f3cc1c3379d2005ffa73ba",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:5a2395c1ce03f9fdcc626c5d",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:bf427f065936f838c8efb68a",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:d31f00c365b249274a3d8d2d",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:e11f6afea8b4746d1e47de46",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:73c267362035042b134286f3",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:7156fe23d8deaead8784726b",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:7aa5c89f237e2d027a64083c",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:94710633b7e3c96e1c69f3fc",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:4c1d218ebdc56d31c9be3aeb",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:679f8f38f028b097a97b423a",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:5e990ea51d639e0099a112d2",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:4b67e79f9aefe8108d1cf48b",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:49feaf4b3f7b5641e75e7482",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:14bf30c684d85e867453b9a2",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:532b30742e4d15408717c794",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:d8b3ca5024fda6a89a5df026",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:35fc17346c5dbb597ffae6fb",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:03177bf7aadcbfbd58eb007e",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:818d99e0aa82b1e5d76f0c18",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:62be348eda8f6057d636f5ad",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:5368bcdeff62758878b2116d",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:7f0a5c97a75aa592d91d739c",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:17899370ac50de16795f53ad",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:c5635cbf1a48f1825d0d547a",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:7ae6dadb2ae9b65e35914437",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:e65ab06ead9285cda71423d5",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:3894f106903c1a257c788a6f",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:af6e80a21436936e2c88fa52",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:90959a8643c73b0ba803a5f9",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:91a85151df5270a318efbb66",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:510cd4dda4287969090827a8",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:ccea1a5cdc779a5774c91188",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:2653e0bb8ca0ca5943a82ea5",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:a726f1df5e32d0eabd9170c1",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:a27d6733af92612bdf9bcee3",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:c14aa35f6d87ae929a3534c2",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:69e3fde4c0647df023747773",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:c478c68a86624119630cabe3",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:f2d126c947adc8e728eba58f",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:b9fcc281a56b3493a89e3589",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:419d7531db39e0d4d2b7de81",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:f5d7299a2ad070c723b9f58f",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:0ff627e29e4a61d571afc63c",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:12b45c166cbd0d16af084d7b",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:d0af3d694e9768f159e2f636",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:9bbd17ceea139986b0011a7c",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:8fbec5b2484250201d894592",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:790eef8eccd2eb38f8e421d4",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:94b316f6f39dfb19d8b84218",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:da191a7652540ce703d42a1c",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:11424b6a6fc4c19ed6f130a1",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:b7e15a341ae4d9a43f20e6be",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:d99557baec41071747279045",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:1e29d14fe95193e568242488",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:d43ef58e95994084de4e70bc",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:77a23db6854579fe1447fe29",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:d1af9ef1cc4e8f2d59ddf533",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:fde5520c10fba19050ed80d6",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:5530c73c8e7ccadbc9c9fd03",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:02187f64ee1d27b4dd05f98b",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:25658a75327220c1a7dc0469",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:a9d3cd606f0441ad5acdd02c",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:b1915b8224a4458ec5078996",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:ab6e4b139f41fe52bca75ad0",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:7e6ed6197e96925e41a347f2",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:f40f365adf9e580536439393",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:7e52ce5055f1cc99a1d9ae13",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:19f6df02bf0b1889ba2b6f81",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:0f87027820caa6bc7b953175",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:37c17f69be379ea02edc3f11",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:55751698a0d2f4ad4cbf5a54",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:1c6f2caa91e349638671536a",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:411b46d1ea2f4ac0b5968400",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:ed2c892732eca6bcba3e44a2",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:1b0f7ef386c40fd837006ab1",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:04ccfe7cb854f398492b8d98",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:1dee7122d205d68d75ac0bde",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:6d771383104089991c37ee2a",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:b5a557a3128b5625ae16539f",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:a46f824b5e06aaf4dab5f647",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:8bdf6f27df2f7f897ba785e6",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:aa975c6a2d2cb1df730c3e3f",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:213c081de668ebbc0d611532",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:0225af364894d156b3e8bb14",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:6b07b80fe81ab62c06636822",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:db393fa6fece87653c1b5a8b",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:a1217166fcdd281f29444a1c",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:34da551faaf6742c01c21cbe",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    },
+    {
+     "inventoryItemId": "inv-item:c5a91a77df1c7cd2bf2b39ac",
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardStatus": "SHARD_MISSING_CONTEXT"
+    }
+   ],
+   "attributionProofCounts": {
+    "PLANNER_DEFINITION_UNIT": 0,
+    "OWNED_INVENTORY_LINEAGE": 4,
+    "UNIQUE_PRIMARY_SOURCE_DECLARATION": 0,
+    "NONE": 0
+   },
+   "shards": [
+    {
+     "shardId": "shard:f266a61ab75f65592b9d",
+     "shardHash": "b25611ece65e46a58ae2b24fb02347f329fbefc6e788d09274f0f47f8aa4ea85",
+     "ordinal": 0,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+     ],
+     "ownedMaterialItems": 52,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 108396,
+      "outputTokens": 56346,
+      "costUsd": 0.7802520000000001
+     }
+    },
+    {
+     "shardId": "shard:fe26b4996ab543b0a066",
+     "shardHash": "69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02",
+     "ordinal": 1,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [],
+     "ownedMaterialItems": 69,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 109083,
+      "outputTokens": 37091,
+      "costUsd": 0.589076
+     }
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "shardHash": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed",
+     "ordinal": 2,
+     "status": "SHARD_MISSING_CONTEXT",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "MISSING_CONTEXT"
+     ],
+     "ownedMaterialItems": 98,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 188874,
+      "outputTokens": 57146,
+      "costUsd": 0.949208
+     }
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "shardHash": "9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51",
+     "ordinal": 3,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [],
+     "ownedMaterialItems": 44,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 91560,
+      "outputTokens": 44880,
+      "costUsd": 0.63192
+     }
+    },
+    {
+     "shardId": "shard:e10ed610ecff8b399619",
+     "shardHash": "3c35a8e94b73b98a306bf16b6a43c9651c8c642f9d89ddf45497fca8aad03cf2",
+     "ordinal": 4,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [],
+     "ownedMaterialItems": 42,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 174814,
+      "outputTokens": 46208,
+      "costUsd": 0.8117080000000001
+     }
+    },
+    {
+     "shardId": "shard:7c4d3d2ae3e0a522b99e",
+     "shardHash": "1062323032becaf237dfc81159e419b24e31a6f5bc28b1d06b529670df163910",
+     "ordinal": 5,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [],
+     "ownedMaterialItems": 14,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 74523,
+      "outputTokens": 15100,
+      "costUsd": 0.30004600000000003
+     }
+    }
+   ],
+   "telemetryNote": "6 bounded conversations (6 executed, 0 reused by shardHash, 0 provider-failure retries); rawModelOutput and toolCallLog are null/empty at the top level because no single transcript exists - per-shard telemetry is listed under execution.sharded.shards"
+  }
+ },
+ "planComparison": {
+  "harnessPlanHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+  "productionPlanHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+  "identical": true
+ },
+ "persistedShards": [
+  {
+   "shardId": "shard:f266a61ab75f65592b9d",
+   "shardHash": "b25611ece65e46a58ae2b24fb02347f329fbefc6e788d09274f0f47f8aa4ea85",
+   "status": "SHARD_COMPLETE",
+   "at": "2026-09-19T00:26:02.542Z"
+  },
+  {
+   "shardId": "shard:fe26b4996ab543b0a066",
+   "shardHash": "69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02",
+   "status": "SHARD_COMPLETE",
+   "at": "2026-09-19T00:32:26.300Z"
+  },
+  {
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "shardHash": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed",
+   "status": "SHARD_MISSING_CONTEXT",
+   "at": "2026-09-19T00:41:37.953Z"
+  },
+  {
+   "shardId": "shard:2eb6ff75386e45a57593",
+   "shardHash": "9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51",
+   "status": "SHARD_COMPLETE",
+   "at": "2026-09-19T00:48:57.335Z"
+  },
+  {
+   "shardId": "shard:e10ed610ecff8b399619",
+   "shardHash": "3c35a8e94b73b98a306bf16b6a43c9651c8c642f9d89ddf45497fca8aad03cf2",
+   "status": "SHARD_COMPLETE",
+   "at": "2026-09-19T00:56:34.182Z"
+  },
+  {
+   "shardId": "shard:7c4d3d2ae3e0a522b99e",
+   "shardHash": "1062323032becaf237dfc81159e419b24e31a6f5bc28b1d06b529670df163910",
+   "status": "SHARD_COMPLETE",
+   "at": "2026-09-19T00:58:53.545Z"
+  }
+ ],
+ "output": {
+  "rules": 63,
+  "definitions": 4,
+  "sharedCapacities": 0
+ },
+ "passC": {
+  "semanticallyComplete": false,
+  "counts": {
+   "inventoried": 326,
+   "material": 319,
+   "represented": 278,
+   "intentionallyNonComputational": 6,
+   "unsupported": 25,
+   "ambiguous": 15,
+   "missingFromComposition": 2,
+   "materialMissingFromComposition": 2,
+   "criticalMissingFromComposition": 1,
+   "materialQuantitativeValues": 50,
+   "materialQuantitativeValuesMissing": 2,
+   "uninventoriedValues": 2,
+   "unaccountedSource": 17,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  }
+ }
+}

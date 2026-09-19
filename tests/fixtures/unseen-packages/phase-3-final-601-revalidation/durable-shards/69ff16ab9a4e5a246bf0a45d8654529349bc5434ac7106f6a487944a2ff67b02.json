@@ -1,0 +1,1039 @@
+{
+ "version": "hd4-durable-shard-record.v1",
+ "missionId": "phase-3-final-601-revalidation",
+ "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+ "shardId": "shard:fe26b4996ab543b0a066",
+ "shardHash": "69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02",
+ "result": {
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:3ba68953de46482879c625e8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(4)(a)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:c5e4d9222a627a309fbfff45",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:b85f0e1b3624aad233666376",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 360000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(4)(a)(i)(x)",
+           "excerpt": "$360.0 million"
+          },
+          "exprId": "ir-expr:8adea4b428ad2bf5dd9ac66b",
+          "inventoryItemIds": [
+           "inv-item:d0633f26f6f96164af087544"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:ba19c30a0587ccedf82f38c2",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 0.5,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(4)(a)(i)(y)",
+             "excerpt": "50% of Consolidated EBITDA"
+            },
+            "exprId": "ir-expr:d0b00d4543c7992f8f120a9f",
+            "inventoryItemIds": [
+             "inv-item:d51d5d6fc3429998344ac7a4"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(4)(a)(i)(y)",
+           "excerpt": "50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis"
+          },
+          "inventoryItemIds": [
+           "inv-item:d51d5d6fc3429998344ac7a4"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(4)(a)(i)",
+         "excerpt": "the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis"
+        },
+        "inventoryItemIds": [
+         "inv-item:eeb98170e0aba24ab1e099e6"
+        ]
+       },
+       {
+        "kind": "SUBTRACT",
+        "type": "MONEY",
+        "exprId": "ir-expr:b5e285f22a9a33eb57c79451",
+        "left": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "(no evidence captured)",
+         "semanticDescription": "unrecognized or malformed expression (kind=\"MULTIPLY\")",
+         "reason": "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(b)(4)(a)(ii)",
+          "excerpt": null
+         },
+         "attemptedStructure": {
+          "kind": "MULTIPLY",
+          "type": "NUMBER",
+          "exprId": "ir-expr:91bd198a5bc58680d8fe9c2a",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "type": "RATIO",
+            "value": 2.5,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(4)(a)(ii)",
+             "excerpt": "no greater than 2.50:1.00"
+            },
+            "exprId": "ir-expr:00a9197b8641777d9bf43e95",
+            "inventoryItemIds": [
+             "inv-item:35e2dca58384f2f9d4375add"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:1a256951c159b34dd68a6b0e"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(4)(a)(ii)",
+           "excerpt": null
+          }
+         },
+         "exprId": "ir-expr:90b5ccc9aa93ff182b351846"
+        },
+        "right": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated First Lien Debt",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:95765e562d9834ed362d2921"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(4)(a)(ii)",
+         "excerpt": "an amount equal to the maximum principal amount of such Indebtedness that could be incurred such that after giving effect to the incurrence of such Indebtedness, the First Lien Leverage Ratio of the Initial Borrower for the Test Period would be no greater than 2.50:1.00"
+        },
+        "inventoryItemIds": [
+         "inv-item:87bc061442d8fcfd2f13aaa6",
+         "inv-item:35e2dca58384f2f9d4375add"
+        ]
+       },
+       {
+        "kind": "AS_OF",
+        "type": "MONEY",
+        "exprId": "ir-expr:37dde01f8d12ee556338a523",
+        "value": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Capitalized Lease Obligations outstanding",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:c255b435a92ed6daeb095443"
+        },
+        "asOfDate": "2026-06-23",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(4)(a)(iii)",
+         "excerpt": "an amount equal to the aggregate amount of all Capitalized Lease Obligations outstanding as of the Effective Date"
+        },
+        "inventoryItemIds": [
+         "inv-item:53a78db5900f5aa231e76e78"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(4)(a)",
+       "excerpt": "does not at the time of such incurrence exceed (i) ... plus (ii) ... plus (iii) ..."
+      },
+      "inventoryItemIds": [
+       "inv-item:328909d3e7e4cba317d9ef4c",
+       "inv-item:760bb758be14f66e744f566c",
+       "inv-item:5686fdb6b309f85b367dd886"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r1].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Indebtedness/Disqualified Stock/Preferred Stock must be incurred to finance the purchase, lease, expansion, construction, development, relocation, renewal, maintenance, upgrade, installation, replacement, repair or improvement of property, equipment or other assets, including via purchase of assets or Capital Stock of the asset-owning Person.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(4)(a)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:b8cdbab10e5c1e063ef8cffc",
+        "inv-item:b9100fca67047bd04e478113"
+       ]
+      },
+      {
+       "conditionId": "rule[r1].condition[1]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Solely for purposes of determining the First Lien Leverage Ratio under clause (ii), Capitalized Lease Obligations incurred in reliance on clause (ii) are counted as Consolidated First Lien Debt in the ratio's numerator, solely for that purpose.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(4)(a)(ii)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:8e570959a9257ef3630230d2",
+        "inv-item:59315d4d02e6e65cea866b70",
+        "inv-item:4efaadf6a9c376b7b618a2f0"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "Section 6.01(b)(13)",
+       "description": "Refinancing Indebtedness incurred under Section 6.01(b)(13) to Refinance Indebtedness, Disqualified Stock or Preferred Stock incurred under this Section 6.01(b)(4) counts against this same aggregate cap.",
+       "reason": "dependsOn[0].targetRef \"Section 6.01(b)(13)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:5686fdb6b309f85b367dd886"
+       ]
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(28)",
+       "description": "Unsecured Capitalized Leases are permitted in an unlimited amount under Section 6.01(b)(28) and are not counted against this cap.",
+       "reason": "dependsOn[1].targetRef \"Section 6.01(b)(28)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:0739bdbe93621958f51f9537",
+        "inv-item:67e035c8cfd44416d619fbdf",
+        "inv-item:3e6b1a653c23ce488fb6843a"
+       ]
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Full three-part formula (fixed/EBITDA greater-of, ratio-headroom, and Effective-Date CLO amount) represented; cross-section sharing and carve-out preserved as dependsOn.",
+      "deterministic post-processing: at least one subexpression is UNSUPPORTED or fails to type-check, so COMPLETE was downgraded to PARTIAL (task §27)",
+      "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "dependsOn[0].targetRef \"Section 6.01(b)(13)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[1].relationshipType \"CARVE_OUT_REFERENCE\" not recognized - defaulted to REQUIRES",
+      "dependsOn[1].targetRef \"Section 6.01(b)(28)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(4)(a)",
+      "excerpt": "Indebtedness ... to finance the purchase, lease, expansion... does not at the time of such incurrence exceed (i)...plus (ii)...plus (iii)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:d7c98f9e0feadf05d4c207ab"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:a24908e1ed9b1d2e9123037d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(4)(b)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(4)(b)",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(4)(b)",
+      "excerpt": "Indebtedness in the form of Capitalized Lease Obligations arising out of any Sale and Lease-Back Transactions"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:a9ed69912ac9906205af2eeb",
+      "inv-item:3c1f3219a046a3b1c45895aa"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:e1920ef86cbbf5d29335c33c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(4)(c)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(4)(c)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r3].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Must be incurred in the ordinary course of business.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(4)(c)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:d2ba1a123dd6ad46fe7a576a"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(4)(c)",
+      "excerpt": "Indebtedness for vehicle and equipment financings incurred in the ordinary course of business"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:d2ba1a123dd6ad46fe7a576a"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:5c06b09da8b2d0214937a11a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(5)(a)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(5)(a)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r4].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Upon the drawing of such letters of credit or the incurrence of such Indebtedness, such obligations must be reimbursed within thirty (30) days following such drawing or incurrence.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(5)(a)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:c8e472f5ebfc9b1111bce623"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(5)(a)",
+      "excerpt": "Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit, bankers' acceptances, bank guarantees, warehouse receipts or similar instruments..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:40b3cae7a8c133179d68a88d",
+      "inv-item:8d7774b6026966560c4c3b33",
+      "inv-item:b109057438b019a200a48de8",
+      "inv-item:ead5252fd1da5600e0086ea4"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:ab1b05d8a79c2eb15a2ada7e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(5)(b)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(5)(b)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r5].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Must be issued in the ordinary course of business or consistent with past practice.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(5)(b)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:b2a62f4f7dd8b77860fac749"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(5)(b)",
+      "excerpt": "Indebtedness of any Restricted Party as an account party in respect of letters of credit, bank guarantees or similar instruments or other guarantee obligations in favor of suppliers, customers..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:e03c860302c7094458d34f78",
+      "inv-item:623f94cc327d98e25d923812"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:5680593229b0bc4fb0ce3583",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(6)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(6)",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [
+      {
+       "exceptionId": "rule[r6].exception[0]",
+       "appliesToRuleId": "ir-rule:5680593229b0bc4fb0ce3583",
+       "description": "Excludes guarantees of Indebtedness incurred by a Person acquiring all or any portion of such business, assets or a Subsidiary for the purpose of financing such acquisition.",
+       "permissionRuleId": null,
+       "conditions": [],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(6)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:b0fd9c020de91b1b0a85873a"
+       ]
+      }
+     ],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(6)",
+      "excerpt": "Indebtedness, Disqualified Stock and Preferred Stock arising from agreements of any Restricted Party providing for indemnification, adjustment of purchase price, earnout or similar obligations..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:7a632be4521640b7ceda566f",
+      "inv-item:36721ee251853eb61780f7ed",
+      "inv-item:2feb9c20c9bd5c0f035eb1a7"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:c61984a31ac7cb34dc884863",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(7)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(7)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r7].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If such Indebtedness/Disqualified Stock/Preferred Stock is owing to a Restricted Subsidiary that is not a Guarantor (excluding ordinary-course accounts-payable not related to borrowed money), it must be expressly subordinated in right of payment to the Loans, to the extent permitted by law and not resulting in material adverse tax consequences.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(7)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:be408fb0db6ad9a17fe8418d",
+        "inv-item:7fd7f4bfa837b1aaaa0e926d",
+        "inv-item:84a087f5adcb7071052b8734",
+        "inv-item:95b3a33cf4db578e8a4b47fb",
+        "inv-item:00c517c9b1353e73c40c8516"
+       ]
+      },
+      {
+       "conditionId": "rule[r7].condition[1]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Any subsequent issuance/transfer of Capital Stock (other than incurrence of a Permitted Lien) or other event causing the obligee Restricted Subsidiary to cease being a Restricted Subsidiary, or any other subsequent transfer of such Indebtedness/Disqualified Stock/Preferred Stock (except to the Borrowers/another Restricted Party or a pledge constituting a Permitted Lien, but not foreclosure thereon), is deemed a new incurrence not permitted by this Section 6.01(b)(7).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(7)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:350161f0a6e072072fc1cab6",
+        "inv-item:9be15917686c2620a2ca4fbf",
+        "inv-item:b2996acabde573ec3845d7f3",
+        "inv-item:b95659002d0d2e813b16b89e",
+        "inv-item:81270c62f9f92f246db15ba0"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(7)",
+      "excerpt": "Indebtedness, Disqualified Stock and Preferred Stock of a Restricted Party owing to another Restricted Party..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:755b0ac9601ff3ad724ef1e7"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:c7e46f88c38c1302b74e93a3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(8)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(8)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r8].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If a Guarantor incurs such Indebtedness owing to a Restricted Subsidiary that is not a Guarantor (excluding ordinary-course accounts-payable not related to borrowed money), such Indebtedness must be expressly subordinated in right of payment (to the extent permitted by law and not resulting in material adverse tax consequences) to the Guarantee of the Loans of such Guarantor.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(8)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:8b300572e1a04d6e1fe3dc27",
+        "inv-item:c11c3b93a8e204af82222569",
+        "inv-item:e1c66022024b0f846a967f87",
+        "inv-item:794ce491aab43f80f3e5fdb4",
+        "inv-item:a21d9e54c3b974dfe956d1a7",
+        "inv-item:eadcb8d001952abd4ec7efb7",
+        "inv-item:fd6d564e07601095e41512bf"
+       ]
+      },
+      {
+       "conditionId": "rule[r8].condition[1]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Any subsequent issuance/transfer of Capital Stock (other than incurrence of a Permitted Lien) or other event causing the obligor Restricted Subsidiary to cease being a Restricted Subsidiary, or any other subsequent transfer of such Indebtedness (except to a Restricted Party or a pledge constituting a Permitted Lien, but not foreclosure thereon), is deemed a new incurrence not permitted by this Section 6.01(b)(8).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(8)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:015fe85af5e3bbaf03f3fa29",
+        "inv-item:51e934f9e89906466cd207fd",
+        "inv-item:cb432861c2c5137519b7dc00"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(8)",
+      "excerpt": "Indebtedness of a Restricted Subsidiary owing to the Borrowers or another Restricted Party..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:1949885f0165c509356a32e1"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:977c5ef9228ff5cc49b06b1e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(9)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(9)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r9].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Any subsequent issuance/transfer of Capital Stock or other event causing the holding Restricted Subsidiary to cease being a Restricted Subsidiary, or any other subsequent transfer of such shares (other than incurrence of a Permitted Lien, except to a Restricted Party or a pledge constituting a Permitted Lien but not foreclosure thereon), is deemed a new issuance not permitted by this Section 6.01(b)(9).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(9)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:8792663b7cf5b00d35eb864c",
+        "inv-item:040c95872e41722240b17ba5",
+        "inv-item:454cb1cfec429f6c43232a70"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(9)",
+      "excerpt": "shares of Preferred Stock or Disqualified Stock of a Restricted Subsidiary issued to the Borrowers or another Restricted Party..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:3b866dd750b7a109c077f6a4"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:4678c0eb2ad621d1952241e3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(10)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(10)",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [
+      {
+       "exceptionId": "rule[r10].exception[0]",
+       "appliesToRuleId": "ir-rule:4678c0eb2ad621d1952241e3",
+       "description": "Excludes Hedging Obligations entered into for speculative purposes.",
+       "permissionRuleId": null,
+       "conditions": [],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(10)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:a22b5c23bd38038206e217f9"
+       ]
+      }
+     ],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(10)",
+      "excerpt": "Hedging Obligations (excluding Hedging Obligations entered into for speculative purposes)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:62fbc66217622dbc78844583"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:56f864f7bd096a91ab5517b4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(11)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(11)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r11].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Must be incurred in each case in the ordinary course of business or consistent with past practice.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(11)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:c990f41875a3aa0fee48c1c0"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(11)",
+      "excerpt": "obligations in respect of self-insurance and obligations in respect of stays, customs, performance, indemnity, bid, appeal, judgment, surety and other similar bonds or instruments..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:761d87e89a00f368da442990",
+      "inv-item:0a7c9caac55a71b367bc13df",
+      "inv-item:9ff8885221c61791cefb69f0"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:14bf7a47d248ca2829af4005",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(20)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(20)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r12].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Both branches (financing of insurance premiums; take-or-pay obligations in supply arrangements) must be incurred in the ordinary course of business or consistent with past practice.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(20)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:cae3cbff47d336153a77c674"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(20)",
+      "excerpt": "Indebtedness of any Restricted Party consisting of (i) the financing of insurance premiums or (ii) take-or-pay obligations contained in supply arrangements..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:87318e7766378ea7f4552611",
+      "inv-item:773d7a5855677c615256aafb",
+      "inv-item:0a611140a6e388b0b94dae7c",
+      "inv-item:ea0e94cfaba31eb828530296"
+     ]
+    }
+   ],
+   "definitions": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[rule[r1].ADD[1].SUBTRACT.left] MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+   "[rule[r1].ADD[1]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[rule[r1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[rule[r1]] dependsOn[0].targetRef \"Section 6.01(b)(13)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r1]] dependsOn[1].relationshipType \"CARVE_OUT_REFERENCE\" not recognized - defaulted to REQUIRES",
+   "[rule[r1]] dependsOn[1].targetRef \"Section 6.01(b)(28)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "This shard compiles Section 6.01(b) exceptions (4) through (11) and (20) only; clauses (12) through (19) (and various lettered sub-clauses thereof) fall in a source region explicitly owned by other shards and were not compiled here, per the gap notice in the operative text.",
+   "Section 6.01(b)(4)(a)'s aggregate cap is a self-contained three-part formula (greater-of fixed/EBITDA-percentage amount, plus First Lien Leverage Ratio headroom, plus Effective-Date outstanding Capitalized Lease Obligations); it is also stated to aggregate with Refinancing Indebtedness incurred under Section 6.01(b)(13) to refinance (4)-basket debt - that cross-section sharing is preserved via a dependsOn (SHARES_CAPACITY_WITH) rather than restated as an independent cap, consistent with getReferencedProvision confirmation that Section 6.01(b)(13) is indeed the operative 'Refinancing Indebtedness' basket referencing back to Section 6.01(b)(4).",
+   "Unsecured Capitalized Leases are expressly carved out of the (4)(a) cap and instead permitted in unlimited amount under Section 6.01(b)(28) (text of that section obtained and quoted); represented as a dependsOn, not as part of the ADD formula.",
+   "Clauses (5) through (11) and (20) each state no dollar ceiling, so they are represented with UNLIMITED_CAPACITY (gatedBy null) plus their respective qualitative conditions/exceptions (e.g., 30-day LC reimbursement cure, ordinary-course/consistent-with-past-practice requirements, subordination-on-trigger provisions, speculative-hedging exclusion) rather than a fabricated dollar amount.",
+   "Several sibling inventory items in clauses (7)-(9) describe 'deemed incurrence/issuance' anti-abuse triggers (loss of exemption upon certain transfers or status changes); these are represented as non-gating-formula conditions on the relevant permission rules since the IR has no dedicated 'deeming' primitive, but their substance (trigger + carve-outs + consequence of non-permission) is preserved in the condition description and citations.",
+   "Terms such as 'Disqualified Stock', 'Consolidated EBITDA', 'Consolidated First Lien Debt', 'Purchase Money Obligations', and 'Sale and Lease-Back Transactions' are referenced only by name (METRIC_REFERENCE/DEFINED_TERM_REFERENCE or plain text) without expanding their own definitions, consistent with several of these being flagged out-of-scope/budget-exhausted in the supplied context and not being required to state this provision's own economics.",
+   "Low-severity UNRESOLVED_DEFINED_TERM and AMBIGUOUS_RELATIVE_REFERENCE flags noted in the task context did not surface any specific ambiguity within the clauses actually compiled here beyond what is already reflected in the dependsOn entries."
+  ],
+  "telemetry": {
+   "inputTokens": 109083,
+   "outputTokens": 37091,
+   "costUsd": 0.589076
+  },
+  "shardId": "shard:fe26b4996ab543b0a066",
+  "shardHash": "69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02",
+  "reusedFromHash": false,
+  "attempts": 1
+ },
+ "resultSha256": "71e2e9f8ae0eaa362bc0323037c743221fd6c33af1d9411483a4ab0423424fc8",
+ "completedAt": "2026-09-19T00:32:26.300Z",
+ "recordSha256": "227840b44872b5959eecef2a588a3701753c82c31292371b475df93e5d839902"
+}

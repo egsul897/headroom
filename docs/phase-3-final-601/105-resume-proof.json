@@ -1,0 +1,422 @@
+{
+ "artifact": "PHASE 3 FINAL / 6.01 POST-REMEDIATION PAID REVALIDATION §4-§6 - frozen inventory candidate, certified source-bound resume gate, Pass-A semantic version audit",
+ "at": "2026-09-19T00:13:18.444Z",
+ "paidCalls": 0,
+ "candidate": {
+  "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/frozen-inventory.json",
+  "fileSha256": "9ab4ca8422b77c3f39bad4f0715ab21af3d80fb4225c32c8f29095e94b69bdc7",
+  "bytes": 609397,
+  "passesPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/pass-a-passes.json",
+  "passesSha256": "a16d7d7e7d50cfc814ae95f9c3eca4baa8aa6e74ad6dbe79140a5ecf88dc9bd5",
+  "producedBy": {
+   "mission": "phase-3-final-601-final-paid",
+   "sha": "51fda653190d6859096be145245406b1c9329c58"
+  },
+  "verifiedFromPersistedObject": true,
+  "reconstructedFromSummaries": false,
+  "facts": {
+   "frozenContentHash": {
+    "expected": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+    "actual": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+    "match": true
+   },
+   "inventoryStatus": {
+    "expected": "INVENTORY_COVERAGE_GAP",
+    "actual": "INVENTORY_COVERAGE_GAP",
+    "match": true
+   },
+   "canonicalItems": {
+    "expected": 326,
+    "actual": 326,
+    "match": true
+   },
+   "pass1Items": {
+    "expected": 289,
+    "actual": 289,
+    "match": true
+   },
+   "pass2Items": {
+    "expected": 289,
+    "actual": 289,
+    "match": true
+   },
+   "corroborated": {
+    "expected": 252,
+    "actual": 252,
+    "match": true
+   },
+   "singleRun": {
+    "expected": 74,
+    "actual": 74,
+    "match": true
+   },
+   "conflicted": {
+    "expected": 0,
+    "actual": 0,
+    "match": true
+   },
+   "unaccountedSource": {
+    "expected": 17,
+    "actual": 17,
+    "match": true
+   },
+   "uninventoriedValues": {
+    "expected": 2,
+    "actual": 2,
+    "match": true
+   },
+   "candidateRef": {
+    "expected": "phase-3-final-601:chwy:6.01",
+    "actual": "phase-3-final-601:chwy:6.01",
+    "match": true
+   },
+   "documentId": {
+    "expected": "doc-a",
+    "actual": "doc-a",
+    "match": true
+   },
+   "ensembleCanonicalCount": {
+    "expected": 326,
+    "actual": 326,
+    "match": true
+   }
+  },
+  "allFactsMatch": true,
+  "recorded": {
+   "algorithmVersion": "semantic-accountability.v5+semantic-ensemble.v1",
+   "promptVersion": "semantic-inventory-prompt.v5",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "frozenAt": "2026-09-16T13:51:41.203Z",
+   "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+   "sourceIdentity": {
+    "method": "RECORDED_AT_FREEZE",
+    "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+    "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e"
+   }
+  }
+ },
+ "currentSourceContext": {
+  "state": "COMPLETE_LOCAL_SOURCE",
+  "regions": 1,
+  "totalChars": 33623,
+  "unresolvedReferences": 7,
+  "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e"
+ },
+ "resumeGate": {
+  "validator": "lib/contract-model/compiler/semantic/frozen-inventory-resume.ts validateFrozenInventoryResume (the production validator compile.ts itself applies; unweakened)",
+  "candidateIdentity": {
+   "expected": "phase-3-final-601:chwy:6.01",
+   "recorded": "phase-3-final-601:chwy:6.01",
+   "match": true
+  },
+  "documentIdentity": {
+   "expected": "doc-a",
+   "recorded": "doc-a",
+   "match": true
+  },
+  "sourceContextHash": {
+   "recorded": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "current": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "match": true
+  },
+  "partitionProof": {
+   "recorded": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "current": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "match": true,
+   "note": "not a gate condition for a current-generation inventory; recorded as the slot-partition proof"
+  },
+  "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+  "decision": {
+   "ok": true,
+   "method": "RECORDED_SOURCE_CONTEXT_HASH",
+   "record": {
+    "method": "RECORDED_SOURCE_CONTEXT_HASH",
+    "candidateRef": "phase-3-final-601:chwy:6.01",
+    "documentId": "doc-a",
+    "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+    "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+    "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+    "reAnchoredChecks": null,
+    "verifiedAt": "2026-09-19T00:13:17.974Z"
+   },
+   "reAnchoringUsed": false,
+   "inventoryReturnedIsTheSameObject": true,
+   "frozenContentHashUntouched": true
+  },
+  "newIdentityStamped": false
+ },
+ "passASemanticAudit": {
+  "comparedRange": "51fda653190d6859096be145245406b1c9329c58..HEAD",
+  "files": [
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/dual-pass.ts",
+    "changed": false,
+    "sha256AtPaidRun": "530e0809b2e3c00da8150cf84d1b9449a2bfaa8d8bbd90c4db433d8dbb4e3c3e",
+    "sha256Now": "587f7730971321eb2380e516c8ca250dd41f3f273e27d5ca80555a70bfbbd4ce"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/ensemble.ts",
+    "changed": false,
+    "sha256AtPaidRun": "d545c6c4c04f9fa8734822b77266aeed75e55af4ad9ad387a51ffaade9a9fc52",
+    "sha256Now": "fa7eb938494e34714f51f691efc0b08005da5a38abf5e158be222e737a283fb4"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+    "changed": false,
+    "sha256AtPaidRun": "a79cab8a1aaaf2353400cba94c6d57968d26089e58fee9e7492c1fa9919469a8",
+    "sha256Now": "79811746c90103643bfe5865fa7eda66bf25ea1ebb953c65ed28da48f2459e10"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/prompt.ts",
+    "changed": false,
+    "sha256AtPaidRun": "98736d0ff4a5df0643a4ec0932017d5bd0e8dcd1acb9cf8f753f370af70e250b",
+    "sha256Now": "92a8834ac5458aac6984cf77a717671a48e638e05193822ba26d11bd3f0aa3ec"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/quantitative.ts",
+    "changed": false,
+    "sha256AtPaidRun": "7b4fe5424fed1c9c753c33bab1d556dcaa4e5e5a39de3367c37eb3be3468cfe3",
+    "sha256Now": "b648f5688c5eb0f221405e35bff88731946fb00660599d90025cf1bba31900e9"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/reconciliation.ts",
+    "changed": false,
+    "sha256AtPaidRun": "6718fad7070cc3f899f5d35df522282d838f931676e1f5fa45f2ac0ea940a145",
+    "sha256Now": "c65bb855500d4361a6071294f043d8a2281d81aceba1e5c07e6ecc344773be7a"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/rollup.ts",
+    "changed": false,
+    "sha256AtPaidRun": "fb13405e42f955f95ab51a01d54a95bc34d9d40277fec1997164981534253860",
+    "sha256Now": "1c56754e8189afcc436af7bcbff738b44bc44912655dce01453964720153db73"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/semantic-functions.ts",
+    "changed": false,
+    "sha256AtPaidRun": "8c0e5dc6e6269d5f4e656e56b37b84033fff3716dbe29e4cdc433b39d1eb39f5",
+    "sha256Now": "ebd54796670bb0ae6e6499464cfd1c347a0bc5073c504ec0ca7d0bf398ea92a3"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/slots.ts",
+    "changed": false,
+    "sha256AtPaidRun": "41935a4d122b1370e3a75b4b861c2c115132ae9577964d8110793480de4dde98",
+    "sha256Now": "3b6d8a5e78cff528ccfb8b71f0ab21c023ec1bd46d3b9265a0a9cd8ad04ca67c"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/source-context.ts",
+    "changed": false,
+    "sha256AtPaidRun": "9769a9590a00b36a3565a02aa09bc4dfdef1ad9b10d6c3db41158d3ce28c8d4d",
+    "sha256Now": "3e7ff751f769b644ea8eaa350ac53b039ee15fd4c0d151ddcee62f64300d20af"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "changed": false,
+    "sha256AtPaidRun": "0db01f23997eb436ee18b3231a4975b0dd96618238339f46382c357a8dc47f67",
+    "sha256Now": "7c0c3e0e7272d50596ade36716f5fcac4856ecf04d6158495baf71a96ad7f5f2"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/source-identity.ts",
+    "changed": false,
+    "sha256AtPaidRun": "5d8df1313651dbf61af839f9b3f6e3474b6de983baede95431e26420b5d47528",
+    "sha256Now": "1f2f51ce1c50f6b8ed9ec6a07330526e3877af61d67d41d2bc1d54d985ff96a7"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/types.ts",
+    "changed": true,
+    "sha256AtPaidRun": "89c855a0bc41d5226f9484355551c1d233494508d50304360c2febd489a2f62b",
+    "sha256Now": "6d0b5e281ce0e42a6575a7e3434a0c79aabf010db08a5322535bc4df3009a1d9"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/wire-schema.ts",
+    "changed": false,
+    "sha256AtPaidRun": "205beaadfdfc2b1379df2a34315fe597bc829d85796a057008f856110f00fe69",
+    "sha256Now": "fbacd5309f20e622a1011e45284aa3ac76758b97e4313bbb50a6cdc6f4bfbdbc"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+    "changed": true,
+    "sha256AtPaidRun": "1768428205111a5567b012519938bfaa7d0e3c21878eeb0818787d1ea13719f9",
+    "sha256Now": "7571b816c4f7e88e7859d0b8a89379cfd621380d27739c83dda14ee6444afef5"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/index.ts",
+    "changed": false,
+    "sha256AtPaidRun": "21c4b1bebed795e60c53fe32a763ca0b236072dce4357c5395bbfd856450071e",
+    "sha256Now": "d58f63893a401fae19e0c84760918177f1b5732d04976d95b737ccd4dd4f4ce3"
+   },
+   {
+    "file": "lib/contract-model/compiler/llm-caller.ts",
+    "changed": false,
+    "sha256AtPaidRun": "35219c15de81acbea83ccfbc1e63cefd7347329fefe88c4caec8673657729109",
+    "sha256Now": "338a4adf40cb4a80b7772c9a8a724ab06c75ca4ce1753f21a39754536e3a4d16"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic/frozen-inventory-resume.ts",
+    "changed": false,
+    "sha256AtPaidRun": "22f5b36132710a6a50ab472c800daaa1cf08177641974c65165223696a50fcf9",
+    "sha256Now": "66dcdef093ac5313d650f8084868151fde5097ac3c0e7a708d1736cf7a1c8d13"
+   }
+  ],
+  "changedFiles": [
+   "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+   "lib/contract-model/compiler/semantic-accountability/types.ts"
+  ],
+  "nonResolverChanges": [],
+  "resolver": {
+   "changed": true,
+   "textuallyAdditiveOnly": false,
+   "removedLines": 5,
+   "textualRemovalsNotRestatedVerbatim": [
+    "  return { status: \"AMBIGUOUS\", node: null, normalizedRef: lookedUp, requestedRef, candidateNodeIds, excludedDegenerateNodeIds: degenerate.map((n) => n.nodeId), note: `${substantive.length} substantive occurrences share \"${lookedUp}\" - genuinely ambiguous, not resolved (never guessed)` };"
+   ],
+   "passACallSites": [
+    "lib/contract-model/compiler/semantic-accountability/source-context.ts:210:        const r = resolveReferenceTarget(index, documentId, ref.normalizedTarget);",
+    "lib/contract-model/compiler/semantic-accountability/source-context.ts:219:    const r = resolveReferenceTarget(index, documentId, m[1]!);"
+   ],
+   "passACallSitesPassingFromNodeId": [],
+   "note": "the remediation added an optional { fromNodeId } parameter and a fourth rule (RESOLVED_WITHIN_ENUMERATION_RUN) that fires only when a referrer node is supplied. One AMBIGUOUS return is not restated verbatim: its note string gained a `${fromNodeId ? \"...\" : \"\"}` clause that renders as the empty string without a referrer. Pass A's source-context and source-coverage call sites supply no referrer, so the rendered text is unchanged for Pass A - which the behavioural equivalence proof below establishes directly rather than by reading the diff.",
+   "textualCheckIsDisclosureOnly": true
+  },
+  "behaviouralEquivalence": {
+   "proven": true,
+   "worktree": "/tmp/claude-0/-home-user-headroom/fe43ab40-ccca-5e2c-9b2f-8f264a45dc31/scratchpad/pre-remediation",
+   "reason": "the current tree derives byte-identical Pass-A input from its own modules: same source context (including the unresolvedReferences that reach the prompt), same slot partition, same batching, same system prompt and same per-batch user content as the tree the inventory was produced on",
+   "compared": [
+    {
+     "name": "sourceContext (whole object: state, reasons, regions with text, unresolvedReferences)",
+     "oldSha256": "a11e9f571dc4482b442c4b285f9fba8b728d84c94bca1d9f5feae6597e365f4a",
+     "newSha256": "a11e9f571dc4482b442c4b285f9fba8b728d84c94bca1d9f5feae6597e365f4a",
+     "identical": true,
+     "oldSize": 36308,
+     "newSize": 36308,
+     "firstDifference": null
+    },
+    {
+     "name": "sourceContext.regions",
+     "oldSha256": "e72144f8e867ea9fba0a316c0ec66cc77ab4a646019df89f094f6e086aaf3d75",
+     "newSha256": "e72144f8e867ea9fba0a316c0ec66cc77ab4a646019df89f094f6e086aaf3d75",
+     "identical": true,
+     "oldSize": 34134,
+     "newSize": 34134,
+     "firstDifference": null
+    },
+    {
+     "name": "sourceContext.unresolvedReferences (reaches the Pass-A prompt; NOT covered by the source-context hash)",
+     "oldSha256": "5d8670d6fa3a0d503f33b332cfe61eccf1a44104e47b08d1568a4ccd027ace2a",
+     "newSha256": "5d8670d6fa3a0d503f33b332cfe61eccf1a44104e47b08d1568a4ccd027ace2a",
+     "identical": true,
+     "oldSize": 2054,
+     "newSize": 2054,
+     "firstDifference": null
+    },
+    {
+     "name": "sourceContext.state+reasons",
+     "oldSha256": "18be933846d13643329dc1af3442debc9b0dbb68f62d823d26895f754f07c1ae",
+     "newSha256": "18be933846d13643329dc1af3442debc9b0dbb68f62d823d26895f754f07c1ae",
+     "identical": true,
+     "oldSize": 46,
+     "newSize": 46,
+     "firstDifference": null
+    },
+    {
+     "name": "slot partition (slots, offsets, methods)",
+     "oldSha256": "5bad0c0e7a69f9b41c67b92109349cec677af24aaafd481bc3feb8b07a6cc42c",
+     "newSha256": "5bad0c0e7a69f9b41c67b92109349cec677af24aaafd481bc3feb8b07a6cc42c",
+     "identical": true,
+     "oldSize": 194028,
+     "newSize": 194028,
+     "firstDifference": null
+    },
+    {
+     "name": "slot batches",
+     "oldSha256": "da53e0084932e5973ed6eb8f37b0099a6c607b5775fe41e73dee5fd8aa0f273f",
+     "newSha256": "da53e0084932e5973ed6eb8f37b0099a6c607b5775fe41e73dee5fd8aa0f273f",
+     "identical": true,
+     "oldSize": 198358,
+     "newSize": 198358,
+     "firstDifference": null
+    },
+    {
+     "name": "Pass-A system prompt (verbatim)",
+     "oldSha256": "e393cf49ce2ebf2a159e4f5fbf5d230c0172b97240c2119bbffeb3adccbfd0af",
+     "newSha256": "e393cf49ce2ebf2a159e4f5fbf5d230c0172b97240c2119bbffeb3adccbfd0af",
+     "identical": true,
+     "oldSize": 10539,
+     "newSize": 10539,
+     "firstDifference": null
+    },
+    {
+     "name": "Pass-A user content, all batches concatenated (verbatim)",
+     "oldSha256": "d3ca75f13f51d47f710738461e1074262030148a01ded0f7c2a4e2c5f3f85838",
+     "newSha256": "d3ca75f13f51d47f710738461e1074262030148a01ded0f7c2a4e2c5f3f85838",
+     "identical": true,
+     "oldSize": 72705,
+     "newSize": 72705,
+     "firstDifference": null
+    }
+   ],
+   "batches": {
+    "count": {
+     "old": 6,
+     "new": 6
+    },
+    "identicalUserContents": 6,
+    "differingBatchIndexes": []
+   },
+   "promptVersions": {
+    "old": "semantic-inventory-prompt.v5",
+    "new": "semantic-inventory-prompt.v5",
+    "match": true
+   },
+   "accountabilityVersions": {
+    "old": "semantic-accountability.v5",
+    "new": "semantic-accountability.v5",
+    "match": true
+   },
+   "hashes": {
+    "sourceContext": {
+     "old": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+     "new": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+     "match": true
+    },
+    "partition": {
+     "old": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+     "new": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+     "match": true
+    }
+   }
+  },
+  "types": {
+   "changed": true,
+   "unionMemberOnly": {
+    "changedLines": 2,
+    "allOnReferenceResolutionStatusUnion": true,
+    "lines": [
+     "-export type ReferenceResolutionStatus = \"UNIQUE\" | \"UNIQUE_AFTER_DEGENERATE_EXCLUSION\" | \"RESOLVED_VIA_ENCLOSING_NODE\" | \"AMBIGUOUS\" | \"NOT_FOUND\" | \"OUT_OF_SCOPE\";",
+     "+export type ReferenceResolutionStatus = \"UNIQUE\" | \"UNIQUE_AFTER_DEGENERATE_EXCLUSION\" | \"RESOLVED_VIA_ENCLOSING_NODE\" | \"RESOLVED_WITHIN_ENUMERATION_RUN\" | \"AMBIGUOUS\" | \"NOT_FOUND\" | \"OUT_OF_SCOPE\";"
+    ]
+   }
+  },
+  "versions": {
+   "recordedAlgorithm": "semantic-accountability.v5+semantic-ensemble.v1",
+   "currentAlgorithm": "semantic-accountability.v5+semantic-ensemble.v1",
+   "recordedPrompt": "semantic-inventory-prompt.v5",
+   "currentPrompt": "semantic-inventory-prompt.v5",
+   "match": true
+  },
+  "sourceIdentity": {
+   "recordedSourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "currentSourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "recordedPartitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "currentPartitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "unchanged": true,
+   "note": "the stored inventory's source-context hash AND slot-partition hash equal the ones the current structural index + resolver produce: the exact Pass-A input (regions, text, batching) is reproduced by the current tree"
+  },
+  "semanticChangeFound": false,
+  "decidedBy": "byte-identical Pass-A input derived independently by each tree (worktree at 51fda65 vs HEAD), plus unchanged prompt/algorithm versions and unchanged source+partition identity; the textual diff is recorded as disclosure and is not the criterion",
+  "verdict": "NO_PASS_A_SEMANTIC_CHANGE"
+ },
+ "decision": "RESUME_ACCEPTED"
+}

@@ -1,0 +1,195 @@
+{
+ "artifact": "6.01 post-remediation revalidation §10 - Pass A (RESUMED; zero new provider calls)",
+ "at": "2026-09-19T00:17:12.392Z",
+ "source": "RESUMED_FROM_ENSEMBLE_PERSISTENCE",
+ "usable": true,
+ "newProviderCalls": 0,
+ "resumedFrom": {
+  "mission": "phase-3-final-601-final-paid",
+  "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/frozen-inventory.json",
+  "copiedInto": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/frozen-inventory.json",
+  "fileSha256": "9ab4ca8422b77c3f39bad4f0715ab21af3d80fb4225c32c8f29095e94b69bdc7"
+ },
+ "authoritative": {
+  "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+  "canonicalItems": 326,
+  "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+  "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+  "unaccountedSource": 17,
+  "uninventoriedValues": 2,
+  "ensemble": {
+   "algorithmVersion": "semantic-ensemble.v1",
+   "policy": "SUPPORT_AWARE_CANONICAL_UNION",
+   "passIds": [
+    "pass-1",
+    "pass-2"
+   ],
+   "passHashes": {
+    "pass-1": "57edaf1c2d889cedac9298116a84c33acd82b1ab3b037cbf33ec0a341d812e73",
+    "pass-2": "ee34b44fad8ca038146adcd6a65c07ccb3f48d5d0adbe50d96d55be5f821070f"
+   },
+   "counts": {
+    "canonicalItems": 326,
+    "corroborated": 252,
+    "singleRun": 74,
+    "singleRunByPass": {
+     "pass-1": 37,
+     "pass-2": 37
+    },
+    "conflicted": 0,
+    "materialSingleRun": 72,
+    "informationalSingleRun": 2,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewRequired": true,
+   "supportReviewFraction": 0.2209,
+   "conflicts": [],
+   "compatibility": {
+    "mode": "STRICT",
+    "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+    "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+    "documentIds": [
+     "doc-a"
+    ],
+    "passes": {
+     "pass-1": {
+      "algorithmVersion": "semantic-accountability.v5",
+      "promptVersion": "semantic-inventory-prompt.v5",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+      "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+      "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+      "documentId": "doc-a"
+     },
+     "pass-2": {
+      "algorithmVersion": "semantic-accountability.v5",
+      "promptVersion": "semantic-inventory-prompt.v5",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+      "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+      "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+      "documentId": "doc-a"
+     }
+    },
+    "checks": [
+     {
+      "check": "candidate-ref",
+      "pass": true,
+      "detail": "pass-1: candidateRef phase-3-final-601:chwy:6.01 matches"
+     },
+     {
+      "check": "source-identity-recorded",
+      "pass": true,
+      "detail": "pass-1: source identity RECORDED_AT_FREEZE"
+     },
+     {
+      "check": "source-context-hash",
+      "pass": true,
+      "detail": "pass-1: source-context hash 08752002dcea9074 vs ensemble 08752002dcea9074"
+     },
+     {
+      "check": "partition",
+      "pass": true,
+      "detail": "pass-1: slot partition 271ed1589981c852 vs ensemble 271ed1589981c852"
+     },
+     {
+      "check": "document",
+      "pass": true,
+      "detail": "pass-1: document doc-a vs ensemble doc-a"
+     },
+     {
+      "check": "algorithm-generation",
+      "pass": true,
+      "detail": "pass-1: algorithm semantic-accountability.v5 supported"
+     },
+     {
+      "check": "prompt-generation",
+      "pass": true,
+      "detail": "pass-1: prompt semantic-inventory-prompt.v5 supported"
+     },
+     {
+      "check": "pass-status",
+      "pass": true,
+      "detail": "pass-1: INVENTORY_COVERAGE_GAP"
+     },
+     {
+      "check": "candidate-ref",
+      "pass": true,
+      "detail": "pass-2: candidateRef phase-3-final-601:chwy:6.01 matches"
+     },
+     {
+      "check": "source-identity-recorded",
+      "pass": true,
+      "detail": "pass-2: source identity RECORDED_AT_FREEZE"
+     },
+     {
+      "check": "source-context-hash",
+      "pass": true,
+      "detail": "pass-2: source-context hash 08752002dcea9074 vs ensemble 08752002dcea9074"
+     },
+     {
+      "check": "partition",
+      "pass": true,
+      "detail": "pass-2: slot partition 271ed1589981c852 vs ensemble 271ed1589981c852"
+     },
+     {
+      "check": "document",
+      "pass": true,
+      "detail": "pass-2: document doc-a vs ensemble doc-a"
+     },
+     {
+      "check": "algorithm-generation",
+      "pass": true,
+      "detail": "pass-2: algorithm semantic-accountability.v5 supported"
+     },
+     {
+      "check": "prompt-generation",
+      "pass": true,
+      "detail": "pass-2: prompt semantic-inventory-prompt.v5 supported"
+     },
+     {
+      "check": "pass-status",
+      "pass": true,
+      "detail": "pass-2: INVENTORY_COVERAGE_GAP"
+     },
+     {
+      "check": "algorithm-generation",
+      "pass": true,
+      "detail": "pass-2 vs pass-1: algorithm semantic-accountability.v5 vs semantic-accountability.v5"
+     },
+     {
+      "check": "prompt-generation",
+      "pass": true,
+      "detail": "pass-2 vs pass-1: prompt semantic-inventory-prompt.v5 vs semantic-inventory-prompt.v5"
+     },
+     {
+      "check": "provider-model",
+      "pass": true,
+      "detail": "pass-2 vs pass-1: VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5 vs VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5"
+     }
+    ],
+    "declaredExceptions": []
+   }
+  }
+ },
+ "passes": [
+  {
+   "passId": "pass-1",
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "items": 289
+  },
+  {
+   "passId": "pass-2",
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "items": 289
+  }
+ ],
+ "paths": {
+  "inventory": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/frozen-inventory.json",
+  "passes": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/pass-a-passes.json",
+  "calls": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-calls"
+ }
+}

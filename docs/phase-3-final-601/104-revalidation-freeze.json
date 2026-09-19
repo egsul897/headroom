@@ -1,0 +1,167 @@
+{
+ "artifact": "PHASE 3 FINAL / 6.01 POST-REMEDIATION PAID REVALIDATION §1-§3 - frozen head, identities, versions, harness",
+ "at": "2026-09-19T00:13:17.975Z",
+ "missionId": "phase-3-final-601-revalidation",
+ "evidenceDir": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation",
+ "startingSha": "f944790423c9a6f7046f46654ad1348611083204",
+ "idChecks": {
+  "startingSha": {
+   "expected": "f944790423c9a6f7046f46654ad1348611083204",
+   "actual": "48eb3972cfa56b5918752d04ff08e67c87bd6e01",
+   "exactMatch": false,
+   "isDescendantOfPin": true,
+   "filesChangedSincePin": [
+    "scripts/phase-3-601-revalidation-lib.ts",
+    "scripts/phase-3-601-revalidation-passa-equivalence.ts",
+    "scripts/phase-3-601-revalidation-preflight.ts"
+   ],
+   "filesOutsideThisMissionsHarnessAndEvidence": [],
+   "match": true
+  },
+  "workingTreeClean": {
+   "dirty": [],
+   "match": true
+  },
+  "remoteAtSameHead": {
+   "remote": "48eb3972cfa56b5918752d04ff08e67c87bd6e01",
+   "localHead": "48eb3972cfa56b5918752d04ff08e67c87bd6e01",
+   "startingShaPin": "f944790423c9a6f7046f46654ad1348611083204",
+   "nothingUnpushed": true,
+   "match": true
+  },
+  "remediationGate": {
+   "verdict": "PHASE3_601_REMEDIATION_READY_FOR_PAID_REVALIDATION",
+   "pass": 20,
+   "fail": 0,
+   "paidCalls": 0,
+   "match": true
+  },
+  "productionTreeAsCommitted": {
+   "path": "lib/contract-model/compiler",
+   "treeObjectAtStartingSha": "b34923295a77512778433cf143eb627d06529dd0",
+   "treeObjectAtHead": "b34923295a77512778433cf143eb627d06529dd0",
+   "filesDifferingFromStartingSha": [],
+   "match": true
+  },
+  "sourceSha256": {
+   "expected": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "actual": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "match": true
+  },
+  "referenceSha256": {
+   "expected": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "actual": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "match": true
+  },
+  "referenceSlice": {
+   "expected": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "actual": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "match": true
+  },
+  "sectionTextSha256": {
+   "expected": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "actual": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "match": true
+  },
+  "sectionSpan": {
+   "expected": [
+    608901,
+    642524
+   ],
+   "actual": [
+    608901,
+    642524
+   ],
+   "match": true
+  },
+  "sectionChars": {
+   "expected": 33623,
+   "actual": 33623,
+   "match": true
+  }
+ },
+ "allChecksMatch": true,
+ "frozenLayers": {
+  "productionTree": {
+   "path": "lib/contract-model/compiler",
+   "treeObjectAtStartingSha": "b34923295a77512778433cf143eb627d06529dd0",
+   "treeObjectAtHead": "b34923295a77512778433cf143eb627d06529dd0",
+   "filesDifferingFromStartingSha": [],
+   "match": true
+  },
+  "structuralIndex": "lib/contract-model/compiler/structural-index.ts + structural-definitions.ts (HEAD)",
+  "referenceResolver": "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts (HEAD)",
+  "shardPlanner": "semantic-compilation-shards.v2",
+  "tools": "lib/contract-model/compiler/semantic/tools.ts (HEAD)",
+  "compiler": {
+   "algorithm": "semantic-accountability-compiler.v4",
+   "prompt": "semantic-accountability-compiler-prompt.v4",
+   "toolPolicy": "phase-3b1-tool-policy.v2"
+  },
+  "hd4DurableReplay": {
+   "recordVersion": "hd4-durable-shard-record.v1",
+   "callRecordVersion": "hd4-durable-call-record.v1"
+  },
+  "hd5Scorer": "scripts/phase-3-601-score-numeric.ts",
+  "hd6TrustReader": "scripts/phase-3-601-trust-read.ts",
+  "humanReferenceSet": {
+   "path": "docs/phase-3-validation/04-human-reference-set.json",
+   "sha256": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "section601Items": 8,
+   "exposedToModel": false,
+   "auditOnly": true
+  }
+ },
+ "versions": {
+  "compilerAlgorithm": "semantic-accountability-compiler.v4",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+  "toolPolicy": "phase-3b1-tool-policy.v2",
+  "accountabilityAlgorithm": "semantic-accountability.v5",
+  "inventoryPrompt": "semantic-inventory-prompt.v5",
+  "sourceIdentityMigration": "source-identity-migration.v1",
+  "executionPolicy": "semantic-execution-mode.v1",
+  "shardPlanner": "semantic-compilation-shards.v2",
+  "irSchema": "headroom-covenant-ir.v1",
+  "verifier": {
+   "algorithm": "phase-3c-semantic-verifier.v1",
+   "prompt": "phase-3c-semantic-verifier-prompt.v1"
+  }
+ },
+ "harnessModules": {
+  "scripts/phase-3-601-guard.ts": "2ceff7b7fcbe1be43c5f4db69731b8fc932fe6c315bf17427a9205b3957de70c",
+  "scripts/phase-3-601-durable-replay.ts": "0ece810e9464235d84d98ef8baf9b1c7de8225ea9b39049144c7be86891972f0",
+  "scripts/phase-3-601-hd4-resume.ts": "02df7a9eb8937ceac2e3a0c9f225228d6ee921646f372e764a4a5d271af86b07",
+  "scripts/phase-3-601-trust-read.ts": "38d6172fc01815aee8030ed58b82a460513742128df5396d9863543526ca0c68",
+  "scripts/phase-3-601-score-numeric.ts": "c4e68bab268d89bd52650eb04d7a4f9e67de491290b6b1f20297236da477e3c2",
+  "scripts/phase-3-601-preflight.ts": "5b19a074311ce6190b60fdcb307f024c08b7b2c9cbd4e6ea386e7c558355b342",
+  "scripts/phase-3-601-revalidation-lib.ts": "c96c1adf1c4a0deec60bf012e578657a79150440335b80832657a7947e6c897b",
+  "scripts/phase-3-601-revalidation-preflight.ts": "5487409b94e1f1e3c19c412aaab953c2a7b9e640d81a5d09bfbe98d6d36bee93",
+  "scripts/phase-3-601-revalidation-run.ts": null,
+  "scripts/phase-3-601-revalidation-score.ts": null,
+  "scripts/phase-3-601-revalidation-finalize.ts": null,
+  "lib/contract-model/compiler/semantic/frozen-inventory-resume.ts": "66dcdef093ac5313d650f8084868151fde5097ac3c0e7a708d1736cf7a1c8d13"
+ },
+ "noPaidCallsSinceRemediation": {
+  "remediationGatePaidCalls": 0,
+  "gatewayBalanceAfterPreviousPaidRun": 10.48047,
+  "note": "the live balance read in 108 must equal this value"
+ },
+ "rules": [
+  "no production/harness code change after the first paid call",
+  "no automatic fresh Pass A",
+  "no fix-and-continue",
+  "Phase 3 is not closed by this mission",
+  "Phase 4 is not started"
+ ],
+ "priorSpend": {
+  "historicalSection601Usd": 22.078734
+ }
+}

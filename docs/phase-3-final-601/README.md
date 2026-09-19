@@ -535,3 +535,33 @@ Full suite 106 files / 161 tests failing - the identical set as the previous run
 clean except the baseline semantic-accountability/DB failures; tsc 6 pre-existing; lint clean; build passes.
 Gate: 20/20 - **PHASE3_601_REMEDIATION_READY_FOR_PAID_REVALIDATION**. Phase 3 not closed; Phase 4 not started; no paid
 revalidation authorized by this mission.
+
+## Post-remediation paid revalidation (104-117)
+
+Resume-first: the exact persisted Pass-A ensemble of the failed paid run was verified from the object itself
+(326 canonical items, frozenContentHash `88e7419f…`), accepted by the certified source-bound resume gate through
+`RECORDED_SOURCE_CONTEXT_HASH`, and reused with **zero new Pass-A provider calls**. §6 is answered behaviourally, not
+textually: a detached worktree at the pre-remediation SHA and the current tree each derive their own source context,
+slot partition, batching, system prompt and all six per-batch user contents, and every one is byte-identical, so the
+remediation changed no Pass-A semantics (105).
+
+The corrected topology planned exactly as the zero-cost mission predicted - 6 shards, 0 oversized, max primary 11,801
+chars, max 16 units, 0 mid-sentence, 0 unowned, 0 multiply owned - under a new plan identity, and the old run's durable
+store yields 0 accepted records (107). Cost was priced for resumed work only; the cap was the conservative estimate
+rounded up ($7.97), above the mission's recommended $6.00 ceiling, and actual spend was $4.419228 (108, 109).
+
+**The run did not pass.** 5 of 6 shards completed - including both shards that failed before - but one new shard
+(`shard:86cc5e439f113d6053a9`, 98 owned material items) returned SHARD_MISSING_CONTEXT, and four of the dependencies
+its MISSING_CONTEXT rule recorded (`Fixed Incremental Amount`, `Voluntary Prepayment Incremental Amount`,
+`Ratio Incremental Amount`, `Extension Amount`) are among the 29 that artifact 96 certified closed by bounded tool
+route. The routes exist and still resolve deterministically; the model did not use them within the shard's tool budget.
+Existence of a retrieval route is therefore not the same property as retrieval under budget - the gap this run exposes.
+
+Trust counters are all MEASURED, none guessed: 12 of 14 are zero, but owned values lost = 2 and distinct owned lineage
+lost = 98 (the unresolved shard's items), against 5 and 317 before. Contextual emissions: 3 detected, 0 credited.
+Source-unverifiable authoritative IR 0, silent incompatible merges 0, dangling refs 0, authoritative hallucinations 0.
+Corrected (HD-5) score: CRITICAL 1 represented + 3 explicit limitation, 0 incorrect, 0 silent; MATERIAL 0 + 4, 0, 0.
+B6 remains REFERENCE_SET_ERROR with its span preserved. The one operative-state flag is traced to the model emitting
+IR definitions for `incur`/`incurrence`, which are not defined terms - not the previous run's harness wiring (112).
+
+Verdict **PHASE3_601_REMEDIATION_FAILED** (18/24). Phase 3 not closed; Phase 4 not started.

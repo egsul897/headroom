@@ -1,0 +1,781 @@
+{
+ "version": "hd4-durable-shard-record.v1",
+ "missionId": "phase-3-final-601-revalidation",
+ "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+ "shardId": "shard:2eb6ff75386e45a57593",
+ "shardHash": "9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51",
+ "result": {
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:eb31fe0af9b5e040f4ce16a3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(13)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:33a5d9b4891eea355c7f2f31",
+      "operands": [
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Principal amount (or unutilized commitment) of the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced",
+        "exprId": "ir-expr:d7fc5cabe256e17131bdc816",
+        "inventoryItemIds": [
+         "inv-item:52cb99788593930951c703bc",
+         "inv-item:42dfd6123ebcc9094b8a8ca1"
+        ]
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Accrued but unpaid interest, dividends, premiums (including tender premiums), defeasance costs, underwriting discounts, fees, costs and expenses (including upfront fees or OID in lieu thereof) incurred in connection with the Refinancing",
+        "exprId": "ir-expr:374be6176bf2b66c695f9451",
+        "inventoryItemIds": [
+         "inv-item:d951e2ad8703ef0a1e06852d",
+         "inv-item:8d10be25830d1f5ab0f3ee70"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(13)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r-601b13].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "The Refinancing permission is subject to the following provisos (a)-(c).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)",
+        "excerpt": "provided , however , that such Refinancing Indebtedness:"
+       },
+       "inventoryItemIds": [
+        "inv-item:4ca43ad2a68a91809ea43063"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b13].condition[1]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "The Indebtedness, Disqualified Stock or Preferred Stock being Refinanced must have been incurred or issued as permitted under Section 6.01(a), Sections 6.01(b)(1)(Y), (3), (4), (5)(b), (12), this Section 6.01(b)(13), or Sections 6.01(b)(14), (18), (19), (27) or (31), or must itself be Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party issued to so Refinance such Indebtedness.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)",
+        "excerpt": "incurred or issued as permitted under Section 6.01(a) hereof and Sections 6.01(b)(1)(Y), (3), (4), (5)(b) and (12) hereof, this Section 6.01(b)(13) and Sections 6.01(b)(14), (18), (19), (27) and (31) hereof"
+       },
+       "inventoryItemIds": [
+        "inv-item:7212829be604e98955d1a3cd",
+        "inv-item:7a5172f545b8f084d9e9e7b0",
+        "inv-item:8c52ef52bd68f50b397a6df5",
+        "inv-item:a943f0e66a70c29bee6767a0"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b13].condition[2]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "The Refinancing giving rise to the Refinancing Indebtedness must occur on or prior to the respective maturity of the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)",
+        "excerpt": "on or prior to its respective maturity"
+       },
+       "inventoryItemIds": [
+        "inv-item:fce543d6b7ac8b0dc5aaaf78"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b13].condition[3]",
+       "conditionType": "UNSUPPORTED",
+       "expression": {
+        "kind": "OR",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:3fc45554b9003f466ee156ac",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:c3a2722527a5196f518049c6",
+          "left": {
+           "kind": "METRIC_REFERENCE",
+           "type": "NUMBER",
+           "metricName": "Weighted Average Life to Maturity of the Refinancing Indebtedness",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:3ee9ac2b51c137730a3f97a4"
+          },
+          "operator": "GTE",
+          "right": {
+           "kind": "METRIC_REFERENCE",
+           "type": "NUMBER",
+           "metricName": "Remaining Weighted Average Life to Maturity of the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:92b28e61612c86e22f42c418"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(13)(a)",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:c76087d2943991a64afc8aa3",
+           "inv-item:dc3f60846b54bc83857ed49b",
+           "inv-item:2f7d367c68b9d243f45d5942"
+          ]
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§6.01(b)(13)(a): 'or requires no or nominal payments in cash (other than interest payments) prior to the date that is ninety-one (91) days after the maturity date of the Loans'",
+          "semanticDescription": "Alternative test: the Refinancing Indebtedness requires no or only nominal payments in cash (other than interest payments) prior to the date that is 91 days after the maturity date of the Loans",
+          "reason": "qualitative 'no or nominal' cash-payment standard is not reducible to a clean deterministic numeric comparison in this IR",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(13)(a)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:bf805b8650efef5a72ab3b6c",
+          "inventoryItemIds": [
+           "inv-item:0940f16a117bc8209c66afbb",
+           "inv-item:1bb7cfb02694abc42a022b20"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(13)(a)",
+         "excerpt": null
+        }
+       },
+       "referencesDefinitionId": null,
+       "description": "Except in the case of a Maturity Exception Facility, and except with respect to any Refinancing of Secured Indebtedness, the Refinancing Indebtedness must have a Weighted Average Life to Maturity not less than the remaining Weighted Average Life to Maturity of the Indebtedness/Disqualified Stock/Preferred Stock being Refinanced, or alternatively require no or only nominal cash payments (other than interest) prior to the date 91 days after the Loans' maturity date.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)(a)",
+        "excerpt": null
+       }
+      },
+      {
+       "conditionId": "rule[r-601b13].condition[4]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": "Maturity Exception Facility",
+       "description": "The Weighted Average Life to Maturity test does not apply in the case of a Maturity Exception Facility.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)(a)",
+        "excerpt": "except in the case of a Maturity Exception Facility"
+       },
+       "inventoryItemIds": [
+        "inv-item:2794cccc15e25fe9bb642f78"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b13].condition[5]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": "Secured Indebtedness",
+       "description": "Section 6.01(b)(13)(a)'s Weighted Average Life to Maturity requirement does not apply to any Refinancing of any Secured Indebtedness.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)",
+        "excerpt": "Section 6.01(b)(13)(a) hereof shall not apply to any Refinancing of any Secured Indebtedness"
+       },
+       "inventoryItemIds": [
+        "inv-item:a53da352bdb6a36c3181089c"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b13].condition[6]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "To the extent the Refinancing Indebtedness Refinances (i) Indebtedness subordinated in right of payment to the Loans or any Guarantee thereof, the Refinancing Indebtedness must be subordinated in right of payment to the Loans or the Guarantee at least to the same extent as the Indebtedness being Refinanced, or (ii) Disqualified Stock or Preferred Stock, the Refinancing Indebtedness must itself be Disqualified Stock or Preferred Stock, respectively.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)(b)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:ae423a79d9be97f4db385c09",
+        "inv-item:7c469b480bbea90460275591",
+        "inv-item:92ce110a65e199006bb2dc2f",
+        "inv-item:8fa7496d86c553c73287dab6",
+        "inv-item:03e040bc9048f1530d6af502"
+       ]
+      }
+     ],
+     "exceptions": [
+      {
+       "exceptionId": "rule[r-601b13].exception[0]",
+       "appliesToRuleId": "ir-rule:eb31fe0af9b5e040f4ce16a3",
+       "description": "Refinancing Indebtedness shall not include Indebtedness, Disqualified Stock or Preferred Stock of a Subsidiary of the Borrowers that is not a Guarantor, where such debt Refinances Indebtedness, Disqualified Stock or Preferred Stock of the Borrowers or a Guarantor.",
+       "permissionRuleId": null,
+       "conditions": [],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)(c)(i)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:c1d6ed361e617b4921ae7570",
+        "inv-item:31e4b42e6587ceff92e310d3",
+        "inv-item:f26bc1ffb0641b43a90ea4b3"
+       ]
+      },
+      {
+       "exceptionId": "rule[r-601b13].exception[1]",
+       "appliesToRuleId": "ir-rule:eb31fe0af9b5e040f4ce16a3",
+       "description": "Refinancing Indebtedness shall not include Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party that refinances Indebtedness, Disqualified Stock or Preferred Stock of an Unrestricted Subsidiary.",
+       "permissionRuleId": null,
+       "conditions": [],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(13)(c)(iii)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:8fd78c1275f34f8844462de1",
+        "inv-item:301e47e66076e57f0b8a8806",
+        "inv-item:ad5256daf7626e4c5f5aa707"
+       ]
+      }
+     ],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRuleId": "ir-rule:8b2b89e1ffebe81946811653",
+       "description": "eligible original debt basket - acquisition/Investment debt basket, included in this submission"
+      }
+     ],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(a)",
+       "description": "original debt being Refinanced may have been permitted under the general ratio-based debt basket of Section 6.01(a)",
+       "reason": "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(1)(Y)",
+       "description": "eligible original debt basket (ABL Loan Documents basket)",
+       "reason": "dependsOn[1].targetRef \"Section 6.01(b)(1)(Y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(3)",
+       "description": "eligible original debt basket (Existing Indebtedness)",
+       "reason": "dependsOn[2].targetRef \"Section 6.01(b)(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(4)",
+       "description": "eligible original debt basket - section text not included in supplied evidence",
+       "reason": "dependsOn[3].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(5)(b)",
+       "description": "eligible original debt basket - section text not included in supplied evidence",
+       "reason": "dependsOn[4].targetRef \"Section 6.01(b)(5)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(12)",
+       "description": "eligible original debt basket - section text not included in supplied evidence",
+       "reason": "dependsOn[5].targetRef \"Section 6.01(b)(12)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(18)",
+       "description": "eligible original debt basket - section text not included in supplied evidence",
+       "reason": "dependsOn[7].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(19)",
+       "description": "eligible original debt basket - section text not included in supplied evidence",
+       "reason": "dependsOn[8].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(27)",
+       "description": "eligible original debt basket - section text not included in supplied evidence",
+       "reason": "dependsOn[9].targetRef \"Section 6.01(b)(27)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(31)",
+       "description": "eligible original debt basket - section text not included in supplied evidence",
+       "reason": "dependsOn[10].targetRef \"Section 6.01(b)(31)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The alternative WAL test branch ('no or nominal cash payments' standard) is qualitative and represented as UNSUPPORTED",
+      "'Guarantee' referenced in the subordination condition has no definition in the supplied document",
+      "Several sibling eligibility baskets (Section 6.01(b)(4), (5)(b), (12), (18), (19), (27), (31)) are cross-referenced but their own text was not retrievable within budget; preserved as dependsOn only, and not required to compute this rule's own capacity formula",
+      "condition[0].conditionType \"PROVISO_LEAD_IN\" not recognized - normalized to UNSUPPORTED",
+      "condition[1].conditionType \"ELIGIBLE_ORIGINAL_DEBT\" not recognized - normalized to UNSUPPORTED",
+      "condition[2].conditionType \"TIME_CONSTRAINT\" not recognized - normalized to UNSUPPORTED",
+      "condition[3].conditionType \"WEIGHTED_AVERAGE_LIFE_TEST\" not recognized - normalized to UNSUPPORTED",
+      "qualitative 'no or nominal' cash-payment standard is not reducible to a clean deterministic numeric comparison in this IR",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "condition[4].conditionType \"EXCLUSION_CARVEOUT\" not recognized - normalized to UNSUPPORTED",
+      "condition[5].conditionType \"EXCLUSION_CARVEOUT\" not recognized - normalized to UNSUPPORTED",
+      "condition[6].conditionType \"SUBORDINATION_TYPE_MATCH\" not recognized - normalized to UNSUPPORTED",
+      "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[1].targetRef \"Section 6.01(b)(1)(Y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[2].targetRef \"Section 6.01(b)(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[3].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[4].targetRef \"Section 6.01(b)(5)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[5].targetRef \"Section 6.01(b)(12)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[6].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+      "dependsOn[7].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[8].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[9].targetRef \"Section 6.01(b)(27)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[10].targetRef \"Section 6.01(b)(31)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(13)",
+      "excerpt": "the incurrence or issuance by any Restricted Party, of Indebtedness, Disqualified Stock or Preferred Stock which serves to Refinance any Indebtedness..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:8b2b89e1ffebe81946811653",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(14)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "AND",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:2f07efbf967b7f2b2bda2fda",
+       "operands": [
+        {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:c4fd3694bd93c7a21f203997",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§6.01(b)(14)(a)(i): 'any Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Interest Coverage Ratio test set forth in Section 6.01(a) hereof'",
+           "semanticDescription": "Alternative (a)(i): any Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Interest Coverage Ratio test set forth in Section 6.01(a)",
+           "reason": "Section 6.01(a)'s Interest Coverage Ratio-based debt basket ('Permitted Ratio Debt') text was truncated in the retrievable evidence; its specific ratio threshold could not be obtained even after requesting Section 6.01(a) via tool",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(a)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:746a7cdb9b4de4b0d72ca853",
+           "inventoryItemIds": [
+            "inv-item:7d36061766efccd283ccb6cb",
+            "inv-item:36e3f70f763a9a8241032958"
+           ]
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:81c00f1b6c12e64fa7b91d47",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Interest Coverage Ratio (pro forma for the Test Period, after giving effect to the Investment, acquisition, merger, amalgamation or consolidation)",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:cd44e0ff2d878b0734313909"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Interest Coverage Ratio (immediately prior to the Investment, acquisition, merger, amalgamation or consolidation)",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:15e52dd7ae131d5941df5527"
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(a)(ii)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:b21d0e504a001260d9153d68",
+            "inv-item:fca701a37b4cfac8375e8cbd"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(b)(14)(a)",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:99bee3b02340a1f3059c8992",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§6.01(b)(14)(b)(i): 'a Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Total Leverage Ratio test set forth in Section 6.01(a) hereof'",
+           "semanticDescription": "Alternative (b)(i): a Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Total Leverage Ratio test set forth in Section 6.01(a)",
+           "reason": "Section 6.01(a)'s Total Leverage Ratio-based debt basket threshold was not available in the retrievable evidence (only the First Lien Leverage Ratio secured basket text was retrievable, truncated before any general/unsecured ratio baskets)",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(b)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:e38e7298531b6a6cacdfb7dc",
+           "inventoryItemIds": [
+            "inv-item:e0fc38079036e8835b2b02d6",
+            "inv-item:2f83723131eade7aa7bd4257"
+           ]
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:25a578e88bfd1a4ba4ab8061",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Total Leverage Ratio (pro forma for the Test Period, after giving effect to the Investment, acquisition, merger, amalgamation or consolidation)",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:dcd64bac4115eac641837870"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Total Leverage Ratio (immediately prior to the Investment, acquisition, merger, amalgamation or consolidation)",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:f41f625dc473e8e836ad8533"
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(b)(ii)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:417d16c94c24cf6a3690f9d6"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(b)(14)(b)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(14)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r-601b14].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "This basket covers Indebtedness, Disqualified Stock or Preferred Stock of (x) a Restricted Party incurred or issued to finance an acquisition or Investment, or (y) Persons that are acquired by any Restricted Party or merged into, amalgamated with or consolidated with a Restricted Party in accordance with the terms of the Agreement (including designating an Unrestricted Subsidiary as a Restricted Subsidiary).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:8cb1b19c9314d7698525a9d7",
+        "inv-item:0ff09e163857682f3d53b4d8",
+        "inv-item:6e4f0a6b9b35bacff18b03b6",
+        "inv-item:a889590458d5dcd2d4b1b09b",
+        "inv-item:33551ba7940f9a29b5c616c4"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b14].condition[1]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "The permission under clause (14) is subject to the pro forma ratio tests set forth in provisos (a) and (b).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:8d8fe5e7934c15cc4066aed7"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b14].condition[2]",
+       "conditionType": "RATIO_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "After giving pro forma effect, the Interest Coverage Ratio test (branch (a)) must be satisfied by one of two alternatives.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)(a)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:fc55109516507dd7c1f08478"
+       ]
+      },
+      {
+       "conditionId": "rule[r-601b14].condition[3]",
+       "conditionType": "RATIO_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "After giving pro forma effect, the Total Leverage Ratio test (branch (b)) must be satisfied by one of two alternatives.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)(b)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:367c5f99b5992183667aec5d"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(a)",
+       "description": "pro forma Interest Coverage Ratio and Total Leverage Ratio '$1.00 of additional Indebtedness' tests reference the ratio-based debt baskets of Section 6.01(a); full threshold text was truncated even after retrieval",
+       "reason": "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Two of the four alternative pro forma test branches (the '$1.00 of additional Indebtedness under Section 6.01(a)' alternatives) are UNSUPPORTED because Section 6.01(a)'s Interest Coverage Ratio and Total Leverage Ratio basket thresholds were truncated in all retrievable evidence",
+      "The direct ratio-comparison alternatives (pro forma ratio vs. immediately-prior ratio) are fully represented",
+      "No dollar cap exists in the source text; capacity is correctly modeled as UNLIMITED_CAPACITY gated by the ratio tests",
+      "Section 6.01(a)'s Interest Coverage Ratio-based debt basket ('Permitted Ratio Debt') text was truncated in the retrievable evidence; its specific ratio threshold could not be obtained even after requesting Section 6.01(a) via tool",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "Section 6.01(a)'s Total Leverage Ratio-based debt basket threshold was not available in the retrievable evidence (only the First Lien Leverage Ratio secured basket text was retrievable, truncated before any general/unsecured ratio baskets)",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "condition[0].conditionType \"TRANSACTION_TYPE_SCOPE\" not recognized - normalized to UNSUPPORTED",
+      "condition[1].conditionType \"PROVISO_LEAD_IN\" not recognized - normalized to UNSUPPORTED",
+      "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(14)",
+      "excerpt": "Indebtedness, Disqualified Stock or Preferred Stock of (x) a Restricted Party incurred or issued to finance an acquisition or Investment or (y) Persons that are acquired..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:2bd9a6bcda1e5e36e0bbb281",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refinancing Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:f99fc80dbe77391993dbb9fc",
+      "operands": [
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Principal amount (or unutilized commitment) of the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced",
+        "exprId": "ir-expr:d7fc5cabe256e17131bdc816"
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Accrued but unpaid interest, dividends, premiums (including tender premiums), defeasance costs, underwriting discounts, fees, costs and expenses (including upfront fees or OID in lieu thereof) incurred in connection with the Refinancing",
+        "exprId": "ir-expr:374be6176bf2b66c695f9451",
+        "inventoryItemIds": [
+         "inv-item:d951e2ad8703ef0a1e06852d",
+         "inv-item:8d10be25830d1f5ab0f3ee70"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(13)",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Disqualified Stock",
+      "Preferred Stock"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The full inline definition (refinanced amount plus permitted fee/premium/OID components, with the 'on or prior to maturity' timing qualifier) is captured"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(13)",
+      "excerpt": "... (the “ Refinancing Indebtedness ”) on or prior to its respective maturity;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:fce543d6b7ac8b0dc5aaaf78"
+     ]
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:1f5ef582d08247f091a6415f",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Sub-clause (ii) of the exclusions in §6.01(b)(13)(c) is expressly '[reserved]' and contains no substantive content."
+    },
+    {
+     "inventoryItemId": "inv-item:0c50bc888e69734d4b7f2af3",
+     "disposition": "AMBIGUOUS",
+     "note": "This item's excerpt is textually identical to the Total Leverage Ratio comparator already represented via inv-item:417d16c94c24cf6a3690f9d6 (§6.01(b)(14)(b)(ii)), but its own metadata tags the dependency term as 'First Lien Leverage Ratio' rather than 'Total Leverage Ratio'. Given this internal term-label inconsistency, it is not separately consumed on the Total Leverage Ratio comparison node to avoid mis-attributing a First Lien Leverage Ratio value/meaning to that node."
+    }
+   ]
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[rule[r-601b13]] condition[0].conditionType \"PROVISO_LEAD_IN\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b13]] condition[1].conditionType \"ELIGIBLE_ORIGINAL_DEBT\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b13]] condition[2].conditionType \"TIME_CONSTRAINT\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b13]] condition[3].conditionType \"WEIGHTED_AVERAGE_LIFE_TEST\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b13].condition[3].expression.OR[1]] qualitative 'no or nominal' cash-payment standard is not reducible to a clean deterministic numeric comparison in this IR",
+   "[rule[r-601b13].condition[3].expression] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[rule[r-601b13]] condition[4].conditionType \"EXCLUSION_CARVEOUT\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b13]] condition[5].conditionType \"EXCLUSION_CARVEOUT\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b13]] condition[6].conditionType \"SUBORDINATION_TYPE_MATCH\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b13]] dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[1].targetRef \"Section 6.01(b)(1)(Y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[2].targetRef \"Section 6.01(b)(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[3].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[4].targetRef \"Section 6.01(b)(5)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[5].targetRef \"Section 6.01(b)(12)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[6].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+   "[rule[r-601b13]] dependsOn[7].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[8].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[9].targetRef \"Section 6.01(b)(27)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b13]] dependsOn[10].targetRef \"Section 6.01(b)(31)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r-601b14].UNLIMITED_CAPACITY.gatedBy.AND[0].OR[0]] Section 6.01(a)'s Interest Coverage Ratio-based debt basket ('Permitted Ratio Debt') text was truncated in the retrievable evidence; its specific ratio threshold could not be obtained even after requesting Section 6.01(a) via tool",
+   "[rule[r-601b14].UNLIMITED_CAPACITY.gatedBy.AND[0]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[rule[r-601b14].UNLIMITED_CAPACITY.gatedBy.AND[1].OR[0]] Section 6.01(a)'s Total Leverage Ratio-based debt basket threshold was not available in the retrievable evidence (only the First Lien Leverage Ratio secured basket text was retrievable, truncated before any general/unsecured ratio baskets)",
+   "[rule[r-601b14].UNLIMITED_CAPACITY.gatedBy.AND[1]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[rule[r-601b14].UNLIMITED_CAPACITY.gatedBy] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[rule[r-601b14]] condition[0].conditionType \"TRANSACTION_TYPE_SCOPE\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b14]] condition[1].conditionType \"PROVISO_LEAD_IN\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r-601b14]] dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "Compiled two independently operative permissions from §6.01(b): clause (13) (Refinancing Indebtedness basket) and clause (14) (acquisition/Investment-financing debt basket, including debt of acquired/merged entities), gated respectively by structural WAL/subordination/exclusion tests and by pro forma Interest Coverage Ratio / Total Leverage Ratio tests.",
+   "Clause (13)'s capacity is inherently transaction-variable (tied to the amount of debt actually being refinanced plus permitted fees/premiums/OID), not a fixed dollar figure or metric-based formula, and is represented via TRANSACTION_INPUT_REFERENCE nodes rather than a fabricated static amount.",
+   "Clause (14) has no stated dollar cap and is correctly modeled as UNLIMITED_CAPACITY gated by the pro forma ratio tests; the '$1.00 of additional Indebtedness under Section 6.01(a)' alternative tests could not be fully resolved because Section 6.01(a)'s own Interest Coverage Ratio and Total Leverage Ratio basket thresholds were truncated in all available/retrieved evidence (only the First Lien Leverage Ratio secured-debt basket at 2.00:1.00 was visible).",
+   "The term 'Guarantee' used in the §6.01(b)(13)(b) subordination condition has no definition anywhere in the supplied document (confirmed unresolved).",
+   "Seven sibling eligibility baskets cross-referenced by clause (13) (Sections 6.01(b)(4), (5)(b), (12), (18), (19), (27), (31)) were not retrievable within the evidence budget; they are preserved as explicit dependsOn cross-unit dependencies rather than guessed or dropped, and do not affect clause (13)'s own capacity formula."
+  ],
+  "telemetry": {
+   "inputTokens": 91560,
+   "outputTokens": 44880,
+   "costUsd": 0.63192
+  },
+  "shardId": "shard:2eb6ff75386e45a57593",
+  "shardHash": "9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51",
+  "reusedFromHash": false,
+  "attempts": 1
+ },
+ "resultSha256": "8d119996e6bae9c00a267931f83512c552fab674cf6c9447745068facf33d7ee",
+ "completedAt": "2026-09-19T00:48:57.335Z",
+ "recordSha256": "f5bdfe6a523241fb353f522f3e669825c8e8ea972e66676ffc64f1982be8ed04"
+}
