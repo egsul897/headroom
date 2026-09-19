@@ -71,7 +71,9 @@ const FAIL = conditions.length - PASS;
 const verdict = FAIL === 0 ? "PHASE3_601_DEPENDENCY_DELIVERY_READY_FOR_REVALIDATION" : "PHASE3_601_DEPENDENCY_DELIVERY_NOT_READY";
 writeJson(`${OUT}/132-dependency-delivery-gate.json`, {
   artifact: "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §29 - the gate", at: new Date().toISOString(), paidCalls: 0,
-  startingSha: a("118-dependency-delivery-baseline").startingSha, headSha: sh("git rev-parse HEAD"),
+  startingSha: a("118-dependency-delivery-baseline").startingSha,
+  shaGateWasComputedAgainst: sh("git rev-parse HEAD"),
+  shaNote: "the commit whose working tree the conditions were evaluated against. The commit that CARRIES this artifact is necessarily its child, since writing the gate changes the tree.",
   conditions, summary: { total: conditions.length, PASS, FAIL },
   verdict,
   whatThisVerdictMeans: "the delivery architecture is ready to be revalidated by a future, separately authorized paid mission. It is NOT an authorization to spend money, NOT a claim that the 6.01 compilation now succeeds, and NOT a Phase 3 closure.",

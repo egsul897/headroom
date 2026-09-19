@@ -368,7 +368,7 @@ const regressed = baseSuite && currSuite ? Object.keys(currSuite.byFile).filter(
 const newlyPassing = baseSuite && currSuite ? Object.keys(currSuite.byFile).filter((k) => baseSuite.byFile[k] && baseSuite.byFile[k] !== "passed" && currSuite.byFile[k] === "passed") : null;
 writeJson(`${OUT}/131-regression.json`, {
   artifact: "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §28 - regression against the mission's own starting SHA", at: at(), paidCalls: 0,
-  startingSha: base118.startingSha, headSha: sh("git rev-parse HEAD"),
+  startingSha: base118.startingSha, shaMeasuredAgainst: sh("git rev-parse HEAD"),
   method: "the same vitest suite run twice: once in a clean worktree at the starting SHA, once at HEAD. File-level pass/fail sets are compared, so an environment-dependent failure that fails in BOTH runs is not counted as a regression.",
   baseline: baseSuite ?? "NOT_SUPPLIED", current: currSuite ?? "NOT_SUPPLIED",
   fileLevelRegressions: regressed ?? "NOT_COMPUTED", newlyPassingFiles: newlyPassing ?? "NOT_COMPUTED",

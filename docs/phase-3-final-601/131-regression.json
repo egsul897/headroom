@@ -1,9 +1,9 @@
 {
  "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §28 - regression against the mission's own starting SHA",
- "at": "2026-09-19T03:00:35.514Z",
+ "at": "2026-09-19T03:02:34.739Z",
  "paidCalls": 0,
  "startingSha": "1b36eb64f527740c8cf19f650152c7459b61441d",
- "headSha": "1b36eb64f527740c8cf19f650152c7459b61441d",
+ "shaMeasuredAgainst": "1003ea818a1ca7e1b9e6dfd4380cbc3891084ba3",
  "method": "the same vitest suite run twice: once in a clean worktree at the starting SHA, once at HEAD. File-level pass/fail sets are compared, so an environment-dependent failure that fails in BOTH runs is not counted as a regression.",
  "baseline": {
   "path": "/tmp/claude-0/-home-user-headroom/fe43ab40-ccca-5e2c-9b2f-8f264a45dc31/scratchpad/dd-base.json",
