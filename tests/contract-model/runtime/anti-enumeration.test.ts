@@ -4,6 +4,7 @@
  */
 import { beforeEach, describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
+import { execSync } from "node:child_process";
 import { evaluateExpression } from "@/lib/contract-model/runtime/evaluate-expression";
 import { metricInput } from "@/lib/contract-model/runtime/input-resolver";
 import type { IRExpression } from "@/lib/contract-model/ir/types";
@@ -38,6 +39,20 @@ describe("anti-enumeration matrix (§25)", () => {
     for (const forbidden of ["EBITDA", "Total Assets", "Restricted Payment", "GREATER_OF", "RATIO_DEBT", "FREE_AND_CLEAR", "GENERAL_DEBT", "AVAILABLE_AMOUNT", "PERMITTED_LIEN", "Chewy", "chwy", "6.01", "Incremental Amount", "Liens", "Investments"]) {
       expect(src.includes(forbidden), forbidden).toBe(false);
     }
+  });
+});
+
+describe("layer boundary (Phase 3 -> Phase 4 is one-directional)", () => {
+  const runtimeFiles = ["version", "decimal", "types", "values", "units", "input-resolver", "evaluate-expression", "dependency-graph", "rule-evaluator", "index"];
+  it("the runtime imports only the trusted IR contract, never the semantic compiler", () => {
+    const imports = runtimeFiles.flatMap((f) => [...readFileSync(`lib/contract-model/runtime/${f}.ts`, "utf8").matchAll(/from "([^"]+)"/g)].map((mm) => mm[1]!)).filter((i) => i.startsWith("."));
+    const outside = [...new Set(imports.filter((i) => !i.startsWith("./")))];
+    expect(outside).toEqual(["../ir/types"]);
+    expect(imports.some((i) => i.includes("compiler"))).toBe(false);
+  });
+  it("no Phase-3 compiler or IR module imports the Phase-4 runtime", () => {
+    const offenders = execSync("grep -rln 'runtime/' lib/contract-model/compiler lib/contract-model/ir --include=*.ts || true", { encoding: "utf8" }).split("\n").filter(Boolean);
+    expect(offenders).toEqual([]);
   });
 });
 
