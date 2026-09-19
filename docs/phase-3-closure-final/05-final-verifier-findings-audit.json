@@ -1,0 +1,477 @@
+{
+ "artifact": "PHASE 3 CLOSURE §10-§14 - the 6 current verifier findings examined against frozen source and frozen IR",
+ "at": "2026-09-19T15:22:59.694Z",
+ "source": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/verify-result.json (frozen)",
+ "findings": [
+  {
+   "ordinal": 0,
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severity": "MATERIAL",
+   "classification": "A_PHASE3_CLOSURE_BLOCKER",
+   "postGuard": {
+    "verdict": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION",
+    "rows": [
+     {
+      "ruleId": "ir-rule:170e314ceb35e54072b7ddba",
+      "before": {
+       "entityScope": [
+        "BORROWER"
+       ],
+       "sufficiency": "PARTIAL",
+       "scopeLimitationStated": false
+      },
+      "after": {
+       "entityScope": [],
+       "sufficiency": "PARTIAL",
+       "status": "UNDERINCLUSIVE_VS_SOURCE",
+       "safeToRely": false,
+       "reasonCodes": [
+        "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+       ]
+      },
+      "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED"
+     },
+     {
+      "ruleId": "ir-rule:49f22aee601dde5b8b8162d5",
+      "before": {
+       "entityScope": [
+        "BORROWER"
+       ],
+       "sufficiency": "PARTIAL",
+       "scopeLimitationStated": false
+      },
+      "after": {
+       "entityScope": [],
+       "sufficiency": "PARTIAL",
+       "status": "UNDERINCLUSIVE_VS_SOURCE",
+       "safeToRely": false,
+       "reasonCodes": [
+        "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+       ]
+      },
+      "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED"
+     },
+     {
+      "ruleId": "ir-rule:31ef4cb0be0026182f97f8ea",
+      "before": {
+       "entityScope": [],
+       "sufficiency": "PARTIAL",
+       "scopeLimitationStated": true
+      },
+      "after": {
+       "entityScope": [],
+       "sufficiency": "PARTIAL",
+       "status": "UNSPECIFIED",
+       "safeToRely": true,
+       "reasonCodes": [
+        "ENTITY_SCOPE_UNSPECIFIED"
+       ]
+      },
+      "endState": "NO_SCOPE_CLAIM"
+     },
+     {
+      "ruleId": "ir-rule:01c9a005fd9c7649ddc26012",
+      "before": {
+       "entityScope": [
+        "BORROWER"
+       ],
+       "sufficiency": "COMPLETE",
+       "scopeLimitationStated": false
+      },
+      "after": {
+       "entityScope": [],
+       "sufficiency": "PARTIAL",
+       "status": "UNDERINCLUSIVE_VS_SOURCE",
+       "safeToRely": false,
+       "reasonCodes": [
+        "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+       ]
+      },
+      "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED"
+     },
+     {
+      "ruleId": "ir-rule:6d2acc86b7f3dede7305f5df",
+      "before": {
+       "entityScope": [
+        "BORROWER"
+       ],
+       "sufficiency": "PARTIAL",
+       "scopeLimitationStated": false
+      },
+      "after": {
+       "entityScope": [],
+       "sufficiency": "PARTIAL",
+       "status": "UNDERINCLUSIVE_VS_SOURCE",
+       "safeToRely": false,
+       "reasonCodes": [
+        "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+       ]
+      },
+      "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED"
+     },
+     {
+      "ruleId": "ir-rule:b21ac832418c33bcf91d0625",
+      "before": {
+       "entityScope": [
+        "BORROWER"
+       ],
+       "sufficiency": "COMPLETE",
+       "scopeLimitationStated": false
+      },
+      "after": {
+       "entityScope": [],
+       "sufficiency": "PARTIAL",
+       "status": "UNDERINCLUSIVE_VS_SOURCE",
+       "safeToRely": false,
+       "reasonCodes": [
+        "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+       ]
+      },
+      "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED"
+     },
+     {
+      "ruleId": "ir-rule:8df2fec30e5afda652c94c04",
+      "before": {
+       "entityScope": [
+        "BORROWER"
+       ],
+       "sufficiency": "PARTIAL",
+       "scopeLimitationStated": false
+      },
+      "after": {
+       "entityScope": [
+        "BORROWER"
+       ],
+       "sufficiency": "PARTIAL",
+       "status": "UNWITNESSED",
+       "safeToRely": false,
+       "reasonCodes": [
+        "ENTITY_SCOPE_UNWITNESSED"
+       ]
+      },
+      "endState": "UNWITNESSED_PARTIAL_SAFE_TO_RELY_FALSE"
+     }
+    ],
+    "closureTest": {
+     "consumerWouldBelieveBorrowerOnlyForF0Rules": false,
+     "authoritativeRuleMarkedCompleteWithUnderinclusiveScope": [],
+     "explicitScopeLimitationOnEveryDowngradedRule": true,
+     "unsafeAuthoritativeScopeRemainingAnywhere": [],
+     "completeRulesWithUnconfirmedNonEmptyScope": [
+      {
+       "ruleId": "ir-rule:2ab977e5bbe427a2d4948ae5",
+       "status": "UNWITNESSED",
+       "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+      },
+      {
+       "ruleId": "ir-rule:7c1ddfa0712717e751cf7844",
+       "status": "UNWITNESSED",
+       "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+      },
+      {
+       "ruleId": "ir-rule:b0412876bf8a621ccc3467ee",
+       "status": "UNWITNESSED",
+       "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+      },
+      {
+       "ruleId": "ir-rule:d32b69e1b489936f434911db",
+       "status": "UNWITNESSED",
+       "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+      }
+     ]
+    }
+   },
+   "disposition": "the top-level 6.01(a) prohibition rules carry entityScope [\"BORROWER\"] while their own provenance excerpt binds 'the Borrowers ... and ... any of their Restricted Subsidiaries'; the Permitted Ratio Debt permissions carry [\"BORROWER\"] while the source lets 'any of their Restricted Subsidiaries' incur. entityScope is an authoritative field (the real EntityClassTag enum, IR types.ts). A consumer reading it would conclude the prohibition binds only the Borrower (permissive-direction error) and that a Restricted Subsidiary cannot rely on the ratio permission (restrictive-direction error). The prohibition rules are PARTIAL and two ratio rules are COMPLETE, but no sufficiency reason, condition or limitation mentions scope, so the partiality does not prevent reliance on the wrong scope. Not explicitly limited anywhere (§11: not inferable from the top-level REVIEW_REQUIRED). The frozen run had entityScope empty everywhere (unspecified); the v5 prompt + fallback made the field populated and this run populated it under-inclusively.",
+   "facts": {
+    "prohibitionRules": [
+     {
+      "ruleId": "ir-rule:170e314ceb35e54072b7ddba",
+      "entityScope": [
+       "BORROWER"
+      ],
+      "sufficiency": "PARTIAL",
+      "sufficiencyReasonsMentionScope": false,
+      "provenanceExcerptBindsRestrictedSubsidiaries": true,
+      "conditionsMentionSubsidiaries": false
+     },
+     {
+      "ruleId": "ir-rule:49f22aee601dde5b8b8162d5",
+      "entityScope": [
+       "BORROWER"
+      ],
+      "sufficiency": "PARTIAL",
+      "sufficiencyReasonsMentionScope": false,
+      "provenanceExcerptBindsRestrictedSubsidiaries": false,
+      "conditionsMentionSubsidiaries": false
+     },
+     {
+      "ruleId": "ir-rule:31ef4cb0be0026182f97f8ea",
+      "entityScope": [],
+      "sufficiency": "PARTIAL",
+      "sufficiencyReasonsMentionScope": true,
+      "provenanceExcerptBindsRestrictedSubsidiaries": false,
+      "conditionsMentionSubsidiaries": false
+     }
+    ],
+    "permittedRatioDebtRules": [
+     {
+      "ruleId": "ir-rule:01c9a005fd9c7649ddc26012",
+      "entityScope": [
+       "BORROWER"
+      ],
+      "sufficiency": "COMPLETE",
+      "sufficiencyReasonsMentionScope": false
+     },
+     {
+      "ruleId": "ir-rule:6d2acc86b7f3dede7305f5df",
+      "entityScope": [
+       "BORROWER"
+      ],
+      "sufficiency": "PARTIAL",
+      "sufficiencyReasonsMentionScope": false
+     },
+     {
+      "ruleId": "ir-rule:b21ac832418c33bcf91d0625",
+      "entityScope": [
+       "BORROWER"
+      ],
+      "sufficiency": "COMPLETE",
+      "sufficiencyReasonsMentionScope": false
+     }
+    ],
+    "scopeCensus": {
+     "[\"BORROWER\"]": 17,
+     "[]": 46
+    },
+    "rawWirePersisted": false,
+    "normalizerBehaviour": "normalize.ts matchEnum(): an entity tag the model emits that is not an EntityClassTag is dropped with no warning and no sufficiency change (lines 549-550); whether the model emitted only BORROWER or emitted an unrecognized restricted-subsidiary tag that was dropped cannot be told from the frozen evidence (raw wire output is not persisted)",
+    "noDeterministicScopeCrossCheck": "the provenance excerpt of the prohibition rules literally reads 'the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to ...' and no deterministic layer compares emitted entityScope against that text"
+   },
+   "rootCauseClass": "SEMANTIC_MODEL_DEFECT (model fill) compounded by a DETERMINISTIC PRODUCTION GAP: unrecognized entity tags are dropped silently and emitted scope is never cross-checked against the rule's own source text",
+   "blocking": true
+  },
+  {
+   "ordinal": 1,
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "classification": "F_REVIEW_REQUIRED_BUT_BOUNDED",
+   "disposition": "frozen source (region offset 16856): 'provided that: (a) ...; (b) ...; (c) (X) ... or (Y) ...; or (d) such Indebtedness constitutes Acquired Indebtedness ...; (e) solely to the extent not permitted to be incurred in reliance on clauses (a) through (d) above ...'. The list is joined by semicolons with a single 'or' before (d) and (e) is a residual over '(a) through (d)': the ordinary drafting reading is DISJUNCTIVE - any one of (a), (b), (c) or (d) qualifies the acquisition debt. The verifier's cumulative reading ((a) AND (b) AND ((c) OR (d))) is not supported by the punctuation and would make Acquired Indebtedness (d) subject to three ratio tests, which the residual (e) drafting contradicts. Under the disjunctive reading the IR's (c)/(d)/(e) structure is faithful, but the IR fuses (a) and (b) into ONE rule gated by AND(OR(a-tests), OR(b-tests)) - an OVER-RESTRICTIVE grouping (it denies debt that satisfies only (a) or only (b)). That is a representation inaccuracy in the conservative direction: it cannot lead a consumer to believe something is permitted that the source prohibits. The (14) family is also flagged by Pass C (its (x)/(y) subject items are MISSING) so the unit is REVIEW_REQUIRED. Recorded as a bounded, conservative grouping error; the interpretive disagreement is disclosed.",
+   "facts": {
+    "rules": [
+     {
+      "ruleId": "ir-rule:e0669a810b36ddf5bff018b3",
+      "section": "6.01(b)(14)",
+      "sufficiency": "COMPLETE",
+      "gate": "AND(OR,OR)",
+      "dependsOn": [],
+      "unresolved": [
+       "REQUIRES->Section 6.01(a)"
+      ]
+     },
+     {
+      "ruleId": "ir-rule:c0feca0b818c734f33a23962",
+      "section": "6.01(b)(14)(c)",
+      "sufficiency": "COMPLETE",
+      "gate": "OR(OR,OR)",
+      "dependsOn": [
+       "ALTERNATIVE_TO->0de04497",
+       "ALTERNATIVE_TO->12020258"
+      ],
+      "unresolved": [
+       "REQUIRES->Section 6.01(a)",
+       "ALTERNATIVE_TO->Section 6.01(b)(14)(a)",
+       "ALTERNATIVE_TO->Section 6.01(b)(14)(b)"
+      ]
+     },
+     {
+      "ruleId": "ir-rule:0de044975c1ddc20616dbf84",
+      "section": "6.01(b)(14)(d)",
+      "sufficiency": "COMPLETE",
+      "gate": "none",
+      "dependsOn": [
+       "ALTERNATIVE_TO->c0feca0b",
+       "ALTERNATIVE_TO->12020258"
+      ],
+      "unresolved": []
+     },
+     {
+      "ruleId": "ir-rule:12020258cf54c8d04bde5454",
+      "section": "6.01(b)(14)(e)",
+      "sufficiency": "COMPLETE",
+      "gate": "none",
+      "dependsOn": [
+       "LIMITED_BY->c0feca0b",
+       "LIMITED_BY->0de04497"
+      ],
+      "unresolved": [
+       "LIMITED_BY->Section 6.01(b)(14)(a)",
+       "LIMITED_BY->Section 6.01(b)(14)(b)",
+       "REQUIRES->Fixed Incremental Amount"
+      ]
+     }
+    ],
+    "sourceExcerpt": "(14) Indebtedness, Disqualified Stock or Preferred Stock of (x) a Restricted Party incurred or issued to finance an acquisition or Investment or (y) Persons that are acquired by any Restricted Party or merged into, amalgamated with or consolidated with a Restricted Party in accordance with the terms of this Agreement (including designating an Unrestricted Subsidiary as a Restricted Subsidiary; provided that: (a) after giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation (i) any Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Interest Coverage Ratio test set forth in Section 6.01(a) hereof or (ii) the Interest Coverage Ratio of the Initial Borrower for the Test Period is equal to or greater than immediately prior to such Investment, acquisition, merger, amalgamation or consolidation; (b) after giving"
+   },
+   "rootCauseClass": "SEMANTIC_MODEL (grouping) + interpretive ambiguity",
+   "blocking": false
+  },
+  {
+   "ordinal": 2,
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "classification": "C_PHASE4_EXECUTABILITY_CONCERN",
+   "disposition": "the 2.50:1.00 First Lien Leverage Ratio dependency of basket (4)(a)(ii) IS preserved: the rule is PARTIAL with reasons naming the algebraic derivation and the MULTIPLY type-check failure, the ratio value 2.5 and the metric sit in the UNSUPPORTED node's attemptedStructure, and the source phrase is in provenance. What is missing is a typed RATIO/formula node the arithmetic runtime could execute ('maximum principal amount such that FLLR <= 2.50:1.00' is a solve-for-x, not a literal). Semantic representation: present and explicit (PARTIAL). Execution: not yet expressible - Phase 4. The verifier's worry that a consumer might treat the UNSUPPORTED operand as zero is a consumer-contract concern for Phase 4 (an UNSUPPORTED operand must be treated as non-computable, never zero).",
+   "facts": {
+    "ruleId": "ir-rule:d3ca9f2def3509883e8a359b",
+    "sufficiency": "PARTIAL",
+    "reasonsNamingTheRatioDerivation": [
+     "Component (ii)'s ratio-based capacity is algebraically derived from the First Lien Leverage Ratio definition (Consolidated First Lien Debt / Consolidated EBITDA <= 2.50x) because the source describes ",
+     "The proviso specially treating certain Capitalized Lease Obligations as Consolidated First Lien Debt solely for this test is captured as a textual condition but not incorporated into the SUBTRACT/MULT",
+     "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "ratio25PresentInIr": true,
+    "whereItAppears": "inside the UNSUPPORTED node's attemptedStructure (RATIO 2.5 against Consolidated EBITDA) of the SUM's second operand; the source phrase is quoted in the rule's provenance",
+    "typedRatioNode": false
+   },
+   "rootCauseClass": "IR_SHAPE / PHASE4",
+   "blocking": false
+  },
+  {
+   "ordinal": 3,
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "NON_MATERIAL",
+   "classification": "D_NON_MATERIAL_IR_SHAPE",
+   "disposition": "the legal right to allocate, classify and reclassify is represented in substance on ir-rule:c6204d2a (conditions carry the right, the one-category rule and the (X)/(Y) Effective-Date deeming provisos; sufficiency AMBIGUOUS because the (X)/(Y) section references are structurally ambiguous). No normalized RECLASSIFIABLE_TO edge exists. Phase 4 can normalize the edge from this rule without reinterpreting the source.",
+   "facts": {
+    "ruleId": "ir-rule:c6204d2aa73929fbafd3ae0f",
+    "sufficiency": "AMBIGUOUS",
+    "conditions": [
+     "applies where an item of Indebtedness, Disqualified Stock or Preferred Stock (or portion) meets the criteria of more than one permitted category described in Se",
+     "the Initial Borrower, in its sole discretion, may allocate, classify and reclassify all or a portion of such item in any manner that complies with Section 6.01",
+     "only required to include the amount and type of such item in one (1) of the above clauses or subsections",
+     "proviso branch (X): all Indebtedness outstanding under this Agreement on the Effective Date after giving effect to the Transactions is treated as incurred under",
+     "proviso branch (Y): all Indebtedness represented by the ABL Credit Agreement on the Effective Date (including any guarantee thereof), after giving effect to the"
+    ],
+    "reclassifiableToEdge": false,
+    "rightRepresentedInSubstance": true
+   },
+   "rootCauseClass": "IR_SHAPE",
+   "blocking": false
+  },
+  {
+   "ordinal": 4,
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "classification": "C_PHASE4_EXECUTABILITY_CONCERN (verifier deterministic check is over-strict about WHERE the value may live)",
+   "disposition": "deterministic MISSING_RULE: 'RATIO 2.5 does not appear as a RATIO value anywhere in the IR'. It appears inside the UNSUPPORTED operand's attemptedStructure and in provenance; the check only scans typed RATIO nodes. Same boundary as finding 2: threshold present and explicit, typed execution absent (Phase 4). Recurred with an identical finding id in both paid runs, so it is stable, not variance.",
+   "facts": {
+    "ruleId": "ir-rule:d3ca9f2def3509883e8a359b",
+    "sufficiency": "PARTIAL",
+    "reasonsNamingTheRatioDerivation": [
+     "Component (ii)'s ratio-based capacity is algebraically derived from the First Lien Leverage Ratio definition (Consolidated First Lien Debt / Consolidated EBITDA <= 2.50x) because the source describes ",
+     "The proviso specially treating certain Capitalized Lease Obligations as Consolidated First Lien Debt solely for this test is captured as a textual condition but not incorporated into the SUBTRACT/MULT",
+     "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "ratio25PresentInIr": true,
+    "whereItAppears": "inside the UNSUPPORTED node's attemptedStructure (RATIO 2.5 against Consolidated EBITDA) of the SUM's second operand; the source phrase is quoted in the rule's provenance",
+    "typedRatioNode": false
+   },
+   "rootCauseClass": "IR_SHAPE / PHASE4 + verifier over-strictness",
+   "blocking": false
+  },
+  {
+   "ordinal": 5,
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severity": "NON_MATERIAL",
+   "classification": "D_NON_MATERIAL_IR_SHAPE",
+   "disposition": "deterministic MISSING_RECLASSIFICATION: no RECLASSIFIABLE_TO edge. Same substance as finding 3; already downgraded NON_MATERIAL by the Layer-2 reviewer. Recurred with an identical id in both runs.",
+   "facts": {
+    "ruleId": "ir-rule:c6204d2aa73929fbafd3ae0f",
+    "sufficiency": "AMBIGUOUS",
+    "conditions": [
+     "applies where an item of Indebtedness, Disqualified Stock or Preferred Stock (or portion) meets the criteria of more than one permitted category described in Se",
+     "the Initial Borrower, in its sole discretion, may allocate, classify and reclassify all or a portion of such item in any manner that complies with Section 6.01",
+     "only required to include the amount and type of such item in one (1) of the above clauses or subsections",
+     "proviso branch (X): all Indebtedness outstanding under this Agreement on the Effective Date after giving effect to the Transactions is treated as incurred under",
+     "proviso branch (Y): all Indebtedness represented by the ABL Credit Agreement on the Effective Date (including any guarantee thereof), after giving effect to the"
+    ],
+    "reclassifiableToEdge": false,
+    "rightRepresentedInSubstance": true
+   },
+   "rootCauseClass": "IR_SHAPE",
+   "blocking": false
+  }
+ ],
+ "closureBlockingFindings": [
+  "F0 WRONG_ENTITY_SCOPE"
+ ],
+ "entityScopeClosureTest": {
+  "consumerWouldBelieveBorrowerOnly": true,
+  "authoritativeRuleMarkedComplete": [
+   "ir-rule:01c9a005fd9c7649ddc26012",
+   "ir-rule:b21ac832418c33bcf91d0625"
+  ],
+  "prohibitionRulesPartialForUnrelatedReasons": [
+   "ir-rule:170e314ceb35e54072b7ddba",
+   "ir-rule:49f22aee601dde5b8b8162d5",
+   "ir-rule:31ef4cb0be0026182f97f8ea"
+  ],
+  "explicitScopeLimitationAnywhere": false,
+  "verdict": "POTENTIAL_PHASE3_BLOCKER -> BLOCKER (no explicit partial/review state prevents unsafe reliance on the scope field)",
+  "note": "facts of the FROZEN IR before the guard",
+  "postGuard": {
+   "closureTest": {
+    "consumerWouldBelieveBorrowerOnlyForF0Rules": false,
+    "authoritativeRuleMarkedCompleteWithUnderinclusiveScope": [],
+    "explicitScopeLimitationOnEveryDowngradedRule": true,
+    "unsafeAuthoritativeScopeRemainingAnywhere": [],
+    "completeRulesWithUnconfirmedNonEmptyScope": [
+     {
+      "ruleId": "ir-rule:2ab977e5bbe427a2d4948ae5",
+      "status": "UNWITNESSED",
+      "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+     },
+     {
+      "ruleId": "ir-rule:7c1ddfa0712717e751cf7844",
+      "status": "UNWITNESSED",
+      "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+     },
+     {
+      "ruleId": "ir-rule:b0412876bf8a621ccc3467ee",
+      "status": "UNWITNESSED",
+      "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+     },
+     {
+      "ruleId": "ir-rule:d32b69e1b489936f434911db",
+      "status": "UNWITNESSED",
+      "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+     }
+    ]
+   },
+   "verdict": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION"
+  },
+  "resolved": false
+ },
+ "cumulativeProvisoTest": {
+  "verifierReading": "cumulative (a) AND (b) AND ((c) OR (d))",
+  "auditorReading": "disjunctive (a) OR (b) OR (c) OR (d), with (e) residual",
+  "irStructure": "(a)AND(b) as one rule; (c), (d) independent alternatives; (e) residual LIMITED_BY (c)/(d)",
+  "irAffirmativelyGrantsWhatSourceDoesNot": false,
+  "irOverRestricts": "yes - the fused (a)AND(b) rule",
+  "verdict": "NOT a closure blocker; bounded conservative grouping error, disclosed"
+ },
+ "ratioBoundary": {
+  "semanticRepresentation": "PRESENT (PARTIAL rule, provenance, attemptedStructure with 2.5 and the metric)",
+  "execution": "ABSENT (no typed solve-for-x node) - Phase 4",
+  "verdict": "PHASE_4_CONCERN"
+ },
+ "reclassificationBoundary": {
+  "legalRightRepresented": true,
+  "normalizedEdge": false,
+  "verdict": "IR_SHAPE_LIMITATION - Phase 4 may normalize"
+ }
+}

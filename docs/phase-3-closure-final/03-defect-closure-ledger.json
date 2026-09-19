@@ -1,0 +1,142 @@
+{
+ "artifact": "PHASE 3 CLOSURE §19 - every defect class with root cause, fix SHA, post-fix evidence, current risk",
+ "at": "2026-09-19T15:22:59.695Z",
+ "rows": [
+  {
+   "defect": "F-1 compiler caller tool-protocol defect",
+   "rootCause": "caller dropped tool_result pairing and provisional submissions",
+   "fixSha": "a942558715b206757d1e518638969e1b760efbc9",
+   "postFixEvidence": "docs/phase-3-remediation-f1/05-test-and-regression-results.json; every paid run since (F-7B..158) ran the protocol without a caller failure (0 provider/schema failures in 150-158)",
+   "currentRisk": "none observed",
+   "closed": true
+  },
+  {
+   "defect": "F-2 structural sub-clause mis-nesting",
+   "rootCause": "structural level inferred from label shape alone",
+   "fixSha": "1a4070b020249157ab705dbb4244bb755072bd5f",
+   "postFixEvidence": "docs/phase-3-remediation-f2/06-deterministic-relink-summary.json; 6.01's 31 (b)(n) clauses partitioned and owned exactly once in every plan since (127, 144, 151)",
+   "currentRisk": "one ambiguous reference (6.01(b)(1)(Z)) preserved as AMBIGUOUS, never guessed",
+   "closed": true
+  },
+  {
+   "defect": "F-3 verifier scale-unaware quantitative normalization",
+   "rootCause": "verifier compared unscaled numbers",
+   "fixSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+   "postFixEvidence": "docs/phase-3-remediation-f3/04-final-summary.json (F3_CLOSED); 155: 0 reference contradictions over 50 quantitative values",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "F-4 verifier unauthenticated retrieved evidence",
+   "rootCause": "verifier trusted IR-cited retrievals",
+   "fixSha": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+   "postFixEvidence": "docs/phase-3-remediation-f4/04-final-summary.json (F4_CLOSED); 153 source-unverifiable authoritative IR = 0",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "F-5 Pass-A discovery instability on dense definitions (original 6.08 problems)",
+   "rootCause": "single-pass inventory over ad-hoc slots; dense multi-clause definitions not decomposed",
+   "fixSha": "02af0865b094757814c354fb7c184bac3add4b1f (F-5.3B E2 certification; series F-5 .. F-5.3B)",
+   "postFixEvidence": "docs/phase-3-remediation-f5-3b-resume/09-final-summary.json (F5_CLOSED, E1 vs E2 pre-registered); the frozen 326-item 6.01 ensemble (252 corroborated, 0 conflicted) resumed and compiled in 150-158",
+   "currentRisk": "INVENTORY_COVERAGE_GAP carried honestly: 17 unaccounted stretches (max 142 chars), 2 uninventoried $1.00 tokens, 72 single-run material items",
+   "closed": true
+  },
+  {
+   "defect": "F-6 IR type-check degradation (partial composites dropped)",
+   "rootCause": "normalizer discarded composites with an unsupported operand",
+   "fixSha": "01a69147629e720fba51ef8c743e62fc52c7e257",
+   "postFixEvidence": "docs/phase-3-remediation-f6/08-tests-and-results.json (F6_CLOSED); 150-158 IR keeps SUM/SUBTRACT structure with 6 explicit UNSUPPORTED operands (finding 2)",
+   "currentRisk": "typed execution of solve-for-x operands is Phase 4",
+   "closed": true
+  },
+  {
+   "defect": "F-7 large-unit compiler window / cost concentration (317-lineage-loss Stage-1 run)",
+   "rootCause": "one conversation per discovered section; planner v1 lost lineage across shards",
+   "fixSha": "8b6bd445 (F-7A) .. c9b28224 (F-7B.3E), 2cfb6b3f (F-7C)",
+   "postFixEvidence": "F-7B.3E 36/36 shards, 25/25 trust; F-7C 28/28; 153: distinct owned lineage lost 0, unresolved owned items 0",
+   "currentRisk": "none on the 6.01 unit; Section 1.01 canary-era semantic percentages are not current metrics",
+   "closed": true
+  },
+  {
+   "defect": "HD-1 in-run cost guard stricter than the frozen estimator",
+   "rootCause": "guard added a per-shard term the methodology does not price",
+   "fixSha": "f108ba24886e689830a3e3ddff421013e8f20d36 (disclosed) / 8731f01 (single guard implementation)",
+   "postFixEvidence": "docs/phase-3-final-601/21, 24; every later run's guard reproduces the frozen estimate to the cent (108, 148, 150: $12.153745)",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "HD-2 Pass-A gate stricter than its specification",
+   "rootCause": "gate demanded INVENTORY_OK; INVENTORY_COVERAGE_GAP is a successful Pass A",
+   "fixSha": "f3b885b12f5bc91fcf886b7b3f77e84ed26661c3 (predicate exported and certified 6/6)",
+   "postFixEvidence": "docs/phase-3-final-601/46; the frozen inventory carries INVENTORY_COVERAGE_GAP and resumed through the gate in 104-117 and 150-158",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "HD-3 expensive evidence persisted after an abortable gate (banked inventory lost)",
+   "rootCause": "frozen-inventory.json written only inside the post-compile block",
+   "fixSha": "f3b885b12f5bc91fcf886b7b3f77e84ed26661c3",
+   "postFixEvidence": "docs/phase-3-final-601/46; HD-4 durable persistence supersedes it (73); the 326-item inventory persisted at 51fda65 and resumed twice",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "HD-4 paid Pass-A calls not durable until the pass returned (worker restart destroyed 11 calls)",
+   "rootCause": "no per-call durable record",
+   "fixSha": "e6baf51b6a1211323a2926daaba21ed4a3facd1c",
+   "postFixEvidence": "docs/phase-3-final-601/73-hd4-gate.json; tests phase-3-601-hd4-durable-replay / hd4-sigkill; 150: 7 durable shard records, 1 launch, 0 replays needed",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "HD-5 scorer percent/scale normalization",
+   "rootCause": "numbersIn parsed 50% as 50 vs Pass A's 0.5; span cut before 'million'",
+   "fixSha": "f944790423c9a6f7046f46654ad1348611083204 (99/101 corrected scorer)",
+   "postFixEvidence": "114 and 155 scored with the corrected module: 0 incorrect, B6 REFERENCE_SET_ERROR recorded with original span",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "HD-6 finalizer read-shape (contextualEmissions list vs count)",
+   "rootCause": "finalizer expected a list; production exposes a count",
+   "fixSha": "f944790423c9a6f7046f46654ad1348611083204 (100: canonical reader, NOT_MEASURABLE never 0)",
+   "postFixEvidence": "112 and 153 through scripts/phase-3-601-trust-read.ts: 14/14 MEASURED",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "98-item shard lineage loss / MISSING_CONTEXT (51fda65 NOT_SAFE run)",
+   "rootCause": "required dependencies dropped at the 10,000-char interpretive budget; three-hop closure never walked",
+   "fixSha": "f944790 (95) then 1003ea8/1fd2388 (required-dependency prematerialization, planner v3)",
+   "postFixEvidence": "96 zero-cost closure 29/29; 122 red->green; 151: PLANNER_DELIVERY_GAP 0, that shard SHARD_COMPLETE with 0 tool calls",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "Required-dependency certificate semantic gap (text-less required dependency counted delivered)",
+   "rootCause": "isDelivered() true for UNDELIVERABLE_DISCLOSED; two statuses only",
+   "fixSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "postFixEvidence": "133/141 + dd-certificate-honesty tests; 151 certificates 5 complete + 2 explicit internal limitation",
+   "currentRisk": "none",
+   "closed": true
+  },
+  {
+   "defect": "Cross-shard carve-out linkage / unique section-reference resolution / entityScope never requested (frozen verifier findings 0, 2, 3, 9)",
+   "rootCause": "stitcher did not link 6.01(b) baskets as exceptions of 6.01(a); prompt never asked for entityScope",
+   "fixSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "postFixEvidence": "154: findings 0 and 2 RESOLVED (135 stitched exceptions, unresolved 57 -> 36); entityScope now populated on 17/63 rules BUT under-inclusively (F0 MATERIAL) - see 05",
+   "currentRisk": "OPEN: entityScope under-inclusion is the closure blocker",
+   "closed": false
+  }
+ ],
+ "counts": {
+  "total": 16,
+  "closed": 15,
+  "open": [
+   "Cross-shard carve-out linkage / unique section-reference resolution / entityScope never requested (frozen verifier findings 0, 2, 3, 9)"
+  ]
+ },
+ "rule": "a defect is CLOSED only with direct post-fix evidence; 'probably fixed' is not accepted"
+}

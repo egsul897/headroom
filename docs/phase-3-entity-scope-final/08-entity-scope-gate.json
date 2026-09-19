@@ -1,0 +1,121 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL - the gate the closure synthesis reads for invariant 31 and closure conditions 13/14",
+ "at": "2026-09-19T15:22:56.891Z",
+ "startingSha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+ "headAtRun": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+ "guardVersion": "entity-scope-consistency-guard.v1",
+ "productionFiles": [
+  {
+   "path": "lib/contract-model/compiler/semantic/entity-scope-guard.ts",
+   "sha256": "2dfe691885d8918c5ad019edfa44358ba96b79c2bbb5717cc1ef23798dbe2c66"
+  },
+  {
+   "path": "lib/contract-model/compiler/semantic/normalize.ts",
+   "sha256": "f253e9364fc32819fd5b559992606cca0fe445b074d0f2a4a58735ba0225fff2"
+  },
+  {
+   "path": "lib/contract-model/ir/types.ts",
+   "sha256": "9442aef8927dab62c836885ef8f161e78d6d365ece23a8315f94eb8ed7a0a5a2"
+  }
+ ],
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "G1 unknown entity tag never silently dropped (warning + audit + non-authoritative + PARTIAL)",
+   "status": "PASS",
+   "evidence": "{\"entityScope\":[],\"sufficiency\":\"PARTIAL\",\"status\":\"UNRECOGNIZED_TAG\",\"safeToRely\":false,\"warnings\":1}"
+  },
+  {
+   "id": 2,
+   "condition": "G2 every frozen rule whose bound source binds Restricted Subsidiaries with a BORROWER-only scope is explicitly limited",
+   "status": "PASS",
+   "evidence": "5 downgraded: ir-rule:170e314ceb35e54072b7ddba, ir-rule:49f22aee601dde5b8b8162d5, ir-rule:01c9a005fd9c7649ddc26012, ir-rule:6d2acc86b7f3dede7305f5df, ir-rule:b21ac832418c33bcf91d0625"
+  },
+  {
+   "id": 3,
+   "condition": "G3 the previously COMPLETE BORROWER-only permissions are no longer COMPLETE",
+   "status": "PASS",
+   "evidence": "COMPLETE -> PARTIAL: ir-rule:01c9a005fd9c7649ddc26012, ir-rule:b21ac832418c33bcf91d0625"
+  },
+  {
+   "id": 4,
+   "condition": "G4 no confidently-wrong authoritative entity scope remains in the transformed frozen IR",
+   "status": "PASS",
+   "evidence": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION"
+  },
+  {
+   "id": 5,
+   "condition": "G5 the guard never widens a scope by guess",
+   "status": "PASS",
+   "evidence": "widened: 0"
+  },
+  {
+   "id": 6,
+   "condition": "G6 production code carries no agreement / section / rule-id dependency",
+   "status": "PASS",
+   "evidence": "0 hits"
+  },
+  {
+   "id": 7,
+   "condition": "G7 synthetic generality cases A-F behave as specified",
+   "status": "PASS",
+   "evidence": "06 synthetic"
+  },
+  {
+   "id": 8,
+   "condition": "G8 raw-wire observability added (entityScopeAudit.rawEmitted on every normalized rule)",
+   "status": "PASS",
+   "evidence": "types.ts + normalize.ts"
+  },
+  {
+   "id": 9,
+   "condition": "G9 no other semantic change: lib/ diff limited to the guard module, normalize.ts wiring and the IR audit type",
+   "status": "PASS",
+   "evidence": "lib files changed: lib/contract-model/compiler/semantic/normalize.ts, lib/contract-model/ir/types.ts, lib/contract-model/compiler/semantic/entity-scope-guard.ts"
+  },
+  {
+   "id": 10,
+   "condition": "G10 replay deterministic and idempotent",
+   "status": "PASS",
+   "evidence": "04 idempotent"
+  },
+  {
+   "id": 11,
+   "condition": "G11 regression: 0 new failing identities beyond the known timing flake; tsc 0 new; lint ok; build ok",
+   "status": "FAIL",
+   "evidence": "targeted new n/a, full new n/a (known flake only: true), tsc new n/a, lint false, build false"
+  },
+  {
+   "id": 12,
+   "condition": "G12 zero paid / model / provider calls",
+   "status": "PASS",
+   "evidence": "0 calls, $0"
+  }
+ ],
+ "summary": {
+  "PASS": 11,
+  "FAIL": 1,
+  "total": 12
+ },
+ "frozenReplay": {
+  "rulesTotal": 63,
+  "affected": 17,
+  "statusCounts": {
+   "UNDERINCLUSIVE_VS_SOURCE": 5,
+   "UNSPECIFIED": 46,
+   "UNWITNESSED": 9,
+   "SOURCE_MATCH_CONFIRMED": 3
+  },
+  "downgraded": 5,
+  "completeToPartial": 2,
+  "existingPartialPlusScopeReason": 3,
+  "unchangedBecauseScopeMatched": 3,
+  "unwitnessedUnchanged": 9,
+  "widened": 0
+ },
+ "blockerReplayVerdict": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION",
+ "verdict": "ENTITY_SCOPE_GATE_FAILED",
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "phase4Started": false
+}

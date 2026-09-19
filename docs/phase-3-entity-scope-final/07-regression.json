@@ -1,0 +1,31 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL §16, §20 - regression at the new production head",
+ "at": "2026-09-19T15:22:56.862Z",
+ "headAtRun": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+ "guardTests": {
+  "file": "tests/contract-model/entity-scope-guard.test.ts",
+  "total": 0,
+  "passed": 0,
+  "failed": 0,
+  "covers": [
+   "1 unknown tag never silently dropped",
+   "2 under-inclusive scope downgraded",
+   "3 correct scope unchanged",
+   "4 ambiguous/silent source no invented correction",
+   "5 COMPLETE -> PARTIAL when guard fires",
+   "6 existing PARTIAL gets scope reason",
+   "7 frozen blocker replay",
+   "8 normalization audit preserves original tag"
+  ]
+ },
+ "retiredContract": {
+  "test": "tests/contract-model/semantic-compiler/normalize.test.ts :: 15",
+  "before": "asserted that an unrecognized tag is dropped silently",
+  "after": "asserts the loud contract (warning + audit + non-authoritative scope + PARTIAL)"
+ },
+ "targeted": "NOT_SUPPLIED",
+ "fullSuite": "NOT_SUPPLIED",
+ "tsc": "NOT_SUPPLIED",
+ "lint": "NOT_SUPPLIED",
+ "build": "NOT_SUPPLIED"
+}

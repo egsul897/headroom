@@ -1,0 +1,1558 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL §12 - deterministic replay of the guard over the frozen final 6.01 IR (no model call)",
+ "at": "2026-09-19T15:22:56.781Z",
+ "source": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+ "compileResultSha256": "03d15c99b8a45651291e9429f85da255e9dab1228942fc722682b53e149648b7",
+ "guardVersion": "entity-scope-consistency-guard.v1",
+ "rulesTotal": 63,
+ "affectedRules": 17,
+ "statusCounts": {
+  "UNDERINCLUSIVE_VS_SOURCE": 5,
+  "UNSPECIFIED": 46,
+  "UNWITNESSED": 9,
+  "SOURCE_MATCH_CONFIRMED": 3
+ },
+ "entityScopeCensusAfter": {
+  "[]": 51,
+  "[\"BORROWER\"]": 12
+ },
+ "downgraded": [
+  "ir-rule:170e314ceb35e54072b7ddba",
+  "ir-rule:49f22aee601dde5b8b8162d5",
+  "ir-rule:01c9a005fd9c7649ddc26012",
+  "ir-rule:6d2acc86b7f3dede7305f5df",
+  "ir-rule:b21ac832418c33bcf91d0625"
+ ],
+ "completeToPartial": [
+  "ir-rule:01c9a005fd9c7649ddc26012",
+  "ir-rule:b21ac832418c33bcf91d0625"
+ ],
+ "existingPartialPlusScopeReason": [
+  "ir-rule:170e314ceb35e54072b7ddba",
+  "ir-rule:49f22aee601dde5b8b8162d5",
+  "ir-rule:6d2acc86b7f3dede7305f5df"
+ ],
+ "unchangedBecauseScopeMatched": [
+  "ir-rule:903a0815525e6050c01198ed",
+  "ir-rule:da33ed723ffd8449cae9bfa5",
+  "ir-rule:18cfb4cb5d5edcb6a1453082"
+ ],
+ "unwitnessedUnchanged": [
+  {
+   "ruleId": "ir-rule:2ab977e5bbe427a2d4948ae5",
+   "sufficiency": "COMPLETE"
+  },
+  {
+   "ruleId": "ir-rule:7c1ddfa0712717e751cf7844",
+   "sufficiency": "COMPLETE"
+  },
+  {
+   "ruleId": "ir-rule:b0412876bf8a621ccc3467ee",
+   "sufficiency": "COMPLETE"
+  },
+  {
+   "ruleId": "ir-rule:8df2fec30e5afda652c94c04",
+   "sufficiency": "PARTIAL"
+  },
+  {
+   "ruleId": "ir-rule:c6204d2aa73929fbafd3ae0f",
+   "sufficiency": "AMBIGUOUS"
+  },
+  {
+   "ruleId": "ir-rule:5a49b29438237324c1508ec5",
+   "sufficiency": "PARTIAL"
+  },
+  {
+   "ruleId": "ir-rule:5f7a78bea86d5944e9b627a7",
+   "sufficiency": "PARTIAL"
+  },
+  {
+   "ruleId": "ir-rule:05b63fb8901ad25f04a4b82b",
+   "sufficiency": "PARTIAL"
+  },
+  {
+   "ruleId": "ir-rule:d32b69e1b489936f434911db",
+   "sufficiency": "COMPLETE"
+  }
+ ],
+ "widenedByGuess": [],
+ "idempotent": true,
+ "rows": [
+  {
+   "ruleId": "ir-rule:170e314ceb35e54072b7ddba",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "PROHIBITION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNDERINCLUSIVE_VS_SOURCE",
+   "safeToRely": false,
+   "decidedBy": "BOTH",
+   "addedReasons": [
+    "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE: entityScope [\"BORROWER\"] touches no class for source binding \"Restricted Subsidiaries\", \"Restricted Subsidiary\" (witness: the rule's own excerpt and the lead-in of the cited unit 6.01(a)); scope reset to unspecified, not widened by guess"
+   ],
+   "sourceWitness": [
+    {
+     "tier": "OWN_EXCERPT",
+     "phrase": "Restricted Subsidiaries"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    }
+   ],
+   "ownExcerpt": "the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable, contin",
+   "citedUnitLeadIn": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, co",
+   "changed": true
+  },
+  {
+   "ruleId": "ir-rule:49f22aee601dde5b8b8162d5",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "PROHIBITION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNDERINCLUSIVE_VS_SOURCE",
+   "safeToRely": false,
+   "decidedBy": "BOTH",
+   "addedReasons": [
+    "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE: entityScope [\"BORROWER\"] touches no class for source binding \"Restricted Subsidiary\", \"Restricted Subsidiaries\" (witness: the rule's own excerpt and the lead-in of the cited unit 6.01(a)); scope reset to unspecified, not widened by guess"
+   ],
+   "sourceWitness": [
+    {
+     "tier": "OWN_EXCERPT",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    }
+   ],
+   "ownExcerpt": "the Borrowers shall not issue any shares of Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock",
+   "citedUnitLeadIn": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, co",
+   "changed": true
+  },
+  {
+   "ruleId": "ir-rule:31ef4cb0be0026182f97f8ea",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "PROHIBITION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock",
+   "citedUnitLeadIn": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, co",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:01c9a005fd9c7649ddc26012",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNDERINCLUSIVE_VS_SOURCE",
+   "safeToRely": false,
+   "decidedBy": "CITED_UNIT_LEAD_IN",
+   "addedReasons": [
+    "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE: entityScope [\"BORROWER\"] touches no class for source binding \"Restricted Subsidiaries\", \"Restricted Subsidiary\" (witness: the lead-in of the cited unit 6.01(a)); scope reset to unspecified, not widened by guess"
+   ],
+   "sourceWitness": [
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    }
+   ],
+   "ownExcerpt": "(1) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a pari passu basis",
+   "citedUnitLeadIn": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, co",
+   "changed": true
+  },
+  {
+   "ruleId": "ir-rule:6d2acc86b7f3dede7305f5df",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNDERINCLUSIVE_VS_SOURCE",
+   "safeToRely": false,
+   "decidedBy": "CITED_UNIT_LEAD_IN",
+   "addedReasons": [
+    "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE: entityScope [\"BORROWER\"] touches no class for source binding \"Restricted Subsidiaries\", \"Restricted Subsidiary\" (witness: the lead-in of the cited unit 6.01(a)); scope reset to unspecified, not widened by guess"
+   ],
+   "sourceWitness": [
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    }
+   ],
+   "ownExcerpt": "(2) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a Junior Lien Prio",
+   "citedUnitLeadIn": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, co",
+   "changed": true
+  },
+  {
+   "ruleId": "ir-rule:b21ac832418c33bcf91d0625",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNDERINCLUSIVE_VS_SOURCE",
+   "safeToRely": false,
+   "decidedBy": "CITED_UNIT_LEAD_IN",
+   "addedReasons": [
+    "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE: entityScope [\"BORROWER\"] touches no class for source binding \"Restricted Subsidiaries\", \"Restricted Subsidiary\" (witness: the lead-in of the cited unit 6.01(a)); scope reset to unspecified, not widened by guess"
+   ],
+   "sourceWitness": [
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiary"
+    },
+    {
+     "tier": "CITED_UNIT_LEAD_IN",
+     "phrase": "Restricted Subsidiaries"
+    }
+   ],
+   "ownExcerpt": "(3) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is not secured by the Collateral, on a Pro Forma Basis, at the Initial Borrower",
+   "citedUnitLeadIn": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, co",
+   "changed": true
+  },
+  {
+   "ruleId": "ir-rule:2ab977e5bbe427a2d4948ae5",
+   "sourceSectionRef": "6.01(b)(1)(X)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(1) Indebtedness incurred pursuant to (X) the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22) and any Credit Agreement Refinancing Indebtednes",
+   "citedUnitLeadIn": "(X) the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22) and\nany Credit Agreement Refinancing Indebtedness in respect thereof,",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:7c1ddfa0712717e751cf7844",
+   "sourceSectionRef": "6.01(b)(1)(Y)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(Y) the ABL Loan Documents up to an aggregate principal amount outstanding at any one time not to exceed the greater of (a) $800.0 million and (b) the Borrowing",
+   "citedUnitLeadIn": "(Y) the ABL Loan Documents up to an aggregate principal amount outstanding at any one time not to exceed the greater of",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:b0412876bf8a621ccc3467ee",
+   "sourceSectionRef": "6.01(b)(1)(Z)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(Z) Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such time;",
+   "citedUnitLeadIn": "(Z) Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such time;",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:d045e32e52e411a6e3cfff1a",
+   "sourceSectionRef": "6.01(b)(3)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "AMBIGUOUS"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "AMBIGUOUS"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(3) Existing Indebtedness (other than Indebtedness described in Section 6.01(b)(1);",
+   "citedUnitLeadIn": "(3) Existing Indebtedness (other than Indebtedness described in Section 6.01(b)(1);",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:d3ca9f2def3509883e8a359b",
+   "sourceSectionRef": "6.01(b)(4)(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness ... incurred by any Restricted Party, to finance the purchase, lease, expansion ... which, when aggregated ... does not at the time of such incurre",
+   "citedUnitLeadIn": "(a) except in the case of a Maturity Exception Facility, has a Weighted Average Life to Maturity at the time such Refinancing\nIndebtedness is incurred which is ",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:b687c5cd251597cc8784a972",
+   "sourceSectionRef": "6.01(b)(4)(b)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness in the form of Capitalized Lease Obligations arising out of any Sale and Lease-Back Transactions",
+   "citedUnitLeadIn": "(b) to the extent such Refinancing Indebtedness Refinances",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:dd9963dd5e1e2a95e6492d6e",
+   "sourceSectionRef": "6.01(b)(4)(c)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness for vehicle and equipment financings incurred in the ordinary course of business",
+   "citedUnitLeadIn": "(c) shall not include:",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:4b390b44db8c7aabc03467f2",
+   "sourceSectionRef": "6.01(b)(5)(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit ... provided that upon the drawing ... su",
+   "citedUnitLeadIn": "(a) except in the case of a Maturity Exception Facility, has a Weighted Average Life to Maturity at the time such Refinancing\nIndebtedness is incurred which is ",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:0b0cee2b0526cf39d851f8cd",
+   "sourceSectionRef": "6.01(b)(5)(b)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness of any Restricted Party as an account party in respect of letters of credit, bank guarantees or similar instruments or other guarantee obligations ",
+   "citedUnitLeadIn": "(b) to the extent such Refinancing Indebtedness Refinances",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:896224f7892dc9f92ae4d640",
+   "sourceSectionRef": "6.01(b)(6)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness, Disqualified Stock and Preferred Stock arising from agreements of any Restricted Party providing for indemnification, adjustment of purchase price",
+   "citedUnitLeadIn": "(6) Indebtedness, Disqualified Stock and Preferred Stock arising from\nagreements of any Restricted Party providing for indemnification, adjustment of purchase p",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:44af81f1d9f2e18d9d310ef9",
+   "sourceSectionRef": "6.01(b)(7)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness, Disqualified Stock and Preferred Stock of a Restricted Party owing to another Restricted Party",
+   "citedUnitLeadIn": "(7) Indebtedness, Disqualified Stock and Preferred Stock of a Restricted Party owing to another Restricted Party;\nprovided that if any such Indebtedness, Disqua",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:e9b5463c2979195939adf591",
+   "sourceSectionRef": "6.01(b)(8)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness of a Restricted Subsidiary owing to the Borrowers or another Restricted Party",
+   "citedUnitLeadIn": "(8) Indebtedness of a Restricted Subsidiary owing to the Borrowers or another Restricted Party; provided that if a\nGuarantor incurs such Indebtedness owing to a",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:5c006dedd58e1c18379e669d",
+   "sourceSectionRef": "6.01(b)(9)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "shares of Preferred Stock or Disqualified Stock of a Restricted Subsidiary issued to the Borrowers or another Restricted Party",
+   "citedUnitLeadIn": "(9) shares of Preferred Stock or Disqualified Stock of a Restricted Subsidiary issued to the Borrowers or another Restricted\nParty; provided that any subsequent",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:eb9546687b92731a18c975d6",
+   "sourceSectionRef": "6.01(b)(10)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Hedging Obligations (excluding Hedging Obligations entered into for speculative purposes)",
+   "citedUnitLeadIn": "(10) Hedging Obligations (excluding Hedging Obligations entered into for speculative purposes);",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:4bc2f4ee91d985885230ebfe",
+   "sourceSectionRef": "6.01(b)(11)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "obligations in respect of self-insurance and obligations in respect of stays, customs, performance, indemnity, bid, appeal, judgment, surety and other similar b",
+   "citedUnitLeadIn": "(11) obligations in respect of self-insurance and obligations in respect of stays, customs, performance, indemnity, bid,\nappeal, judgment, surety and other simi",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:53287a6e35e93cff341f198a",
+   "sourceSectionRef": "6.01(b)(12)(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(a) except in the case of a Maturity Exception Facility, has a Weighted Average Life to Maturity at the time such Refinancing\nIndebtedness is incurred which is ",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:80234579d419bc2975a84c45",
+   "sourceSectionRef": "6.01(b)(12)(b)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(b) to the extent such Refinancing Indebtedness Refinances",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:40a36af71a396edc636637b5",
+   "sourceSectionRef": "6.01(b)(13)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(13) the incurrence or issuance by any Restricted Party, of Indebtedness, Disqualified Stock or Preferred Stock which serves to Refinance any Indebtedness ... (",
+   "citedUnitLeadIn": "(13) the incurrence or issuance by any Restricted Party, of Indebtedness, Disqualified Stock or Preferred Stock which serves to\nRefinance any Indebtedness (or u",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:e0669a810b36ddf5bff018b3",
+   "sourceSectionRef": "6.01(b)(14)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(14) Indebtedness, Disqualified Stock or Preferred Stock of (x) a Restricted Party incurred or issued to finance an acquisition or Investment or (y) Persons tha",
+   "citedUnitLeadIn": "(14)\nIndebtedness, Disqualified Stock or Preferred Stock of",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:c0feca0b818c734f33a23962",
+   "sourceSectionRef": "6.01(b)(14)(c)",
+   "ruleType": "RATIO_TEST",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(X) after giving pro forma effect ... (Y) after giving pro forma effect ... First Lien Leverage Ratio / Senior Secured Leverage Ratio tests",
+   "citedUnitLeadIn": "(c)",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:0de044975c1ddc20616dbf84",
+   "sourceSectionRef": "6.01(b)(14)(d)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "such Indebtedness constitutes Acquired Indebtedness (other than Indebtedness incurred in contemplation of the transaction ...); provided that ... the only oblig",
+   "citedUnitLeadIn": "(d) such Indebtedness constitutes Acquired Indebtedness (other than Indebtedness incurred in contemplation of the transaction\nor series of related transactions ",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:12020258cf54c8d04bde5454",
+   "sourceSectionRef": "6.01(b)(14)(e)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness in an amount not exceeding the sum of (1) the greater of $720.0 million and 100% of Consolidated EBITDA ..., plus (2) an additional amount equal to",
+   "citedUnitLeadIn": "(e) solely to the extent not permitted to be incurred in reliance on clauses",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:dd401bb27b6b8bdff7a98bfd",
+   "sourceSectionRef": "6.01(b)(15)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness arising from the honoring by a bank or other financial institution of a check, draft or similar instrument drawn against insufficient funds in the ",
+   "citedUnitLeadIn": "(15) Indebtedness arising from the\nhonoring by a bank or other financial institution of a check, draft or similar instrument drawn against insufficient funds in",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:56f55ef2a9904b6e965179e4",
+   "sourceSectionRef": "6.01(b)(16)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness of any Restricted Party supported by a letter of credit, bank guarantee or other instrument issued pursuant to any credit facility, in a principal ",
+   "citedUnitLeadIn": "(16) Indebtedness of any Restricted Party supported by a letter of credit,\nbank guarantee or other instrument issued pursuant to any credit facility, in a princ",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:1e84d6f6c82c5a7bcc127d96",
+   "sourceSectionRef": "6.01(b)(17)(i)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "any guarantee by any Restricted Party of Indebtedness or other obligations of any Restricted Party",
+   "citedUnitLeadIn": "(i) any guarantee by any Restricted Party of Indebtedness or other obligations of any Restricted Party; or",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:903a0815525e6050c01198ed",
+   "sourceSectionRef": "6.01(b)(17)(ii)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "SOURCE_MATCH_CONFIRMED",
+   "safeToRely": true,
+   "decidedBy": "BOTH",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "any guarantee or co-borrower obligations of a Restricted Party of Indebtedness or other obligations of the Borrowers so long as the incurrence of such Indebtedn",
+   "citedUnitLeadIn": "(ii) any\nguarantee or co-borrower obligations of a Restricted Party of Indebtedness or other obligations of the Borrowers so long as the incurrence of such Inde",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:8f3b7f1b6dec1c302dd1194e",
+   "sourceSectionRef": "6.01(b)(18)(i)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(i) Indebtedness, Disqualified Stock or Preferred Stock of Restricted\nParties that are not Guarantors at any one time outstanding not to exceed, in the aggregat",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:220b9dd4e6b869b29d809805",
+   "sourceSectionRef": "6.01(b)(18)(ii)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties;",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:42cec8badec918bc9b78764d",
+   "sourceSectionRef": "6.01(b)(19)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in\nconnection with an acquisition or I",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:07e8b8a14c4e8350332251db",
+   "sourceSectionRef": "6.01(b)(20)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness of any Restricted Party consisting of (i) the financing of insurance premiums or (ii) take-or-pay obligations contained in supply arrangements ... ",
+   "citedUnitLeadIn": "(20) Indebtedness of\nany Restricted Party consisting of",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:9ccaed3bdb4550f77c63cbcf",
+   "sourceSectionRef": "6.01(b)(21)(a)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(21) (a) Cash Management Obligations",
+   "citedUnitLeadIn": "(a) Cash Management Obligations,",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:47ca8dab3915179768b3f0bc",
+   "sourceSectionRef": "6.01(b)(21)(b)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness of any Restricted Party in respect of netting services, automatic clearing house arrangements, employees' credit or purchase cards, overdraft prote",
+   "citedUnitLeadIn": "(b) Indebtedness of any Restricted Party in respect of netting services, automatic clearing house arrangements, employees’ credit or purchase cards, overdraft p",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:191fa3ed84c3a9eb1daf12e9",
+   "sourceSectionRef": "6.01(b)(21)(c)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Indebtedness of any Restricted Party in respect of any working capital lines and asset-based lines",
+   "citedUnitLeadIn": "(c) Indebtedness of any Restricted Party in respect of any working capital lines and asset-based lines;",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:129b98404765374fe4612c3f",
+   "sourceSectionRef": "6.01(b)(22)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(22) Indebtedness consisting of Indebtedness issued by any Restricted Party to future, current or former officers, directors, managers, and employees thereof (o",
+   "citedUnitLeadIn": "(22) Indebtedness consisting of Indebtedness issued by any Restricted Party to future, current or former officers, directors,\nmanagers, and employees thereof (o",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:a6d4e26992f2f221314dbb07",
+   "sourceSectionRef": "6.01(b)(23)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(23) customer deposits and advance payments received in the ordinary course of business from customers for goods purchased in the ordinary course of business;",
+   "citedUnitLeadIn": "(23) customer deposits and advance payments\nreceived in the ordinary course of business from customers for goods purchased in the ordinary course of business;",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:d6efe71fb797fb443b09dc05",
+   "sourceSectionRef": "6.01(b)(25)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(25) unfunded pension fund and other employee benefits plan obligations and liabilities incurred in the ordinary course of business or consistent with past prac",
+   "citedUnitLeadIn": "(25) unfunded pension fund and other employee benefits plan obligations and liabilities incurred in the\nordinary course of business or consistent with past prac",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:b59bd52141890fcad46c1206",
+   "sourceSectionRef": "6.01(b)(26)(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(26) (a) Indebtedness incurred by any Restricted Party in connection with bankers' acceptances, discounted bills of exchange or the discounting or factoring of ",
+   "citedUnitLeadIn": "(a) Indebtedness incurred by any Restricted Party in connection with\nbankers’ acceptances, discounted bills of exchange or the discounting or factoring of recei",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:62ae49fbec9113797c84adba",
+   "sourceSectionRef": "6.01(b)(26)(b)(i)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(b) (i) Indebtedness under any Receivables Non-Recourse Facility",
+   "citedUnitLeadIn": "(i) Indebtedness under any Receivables Non-Recourse Facility and",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:c805e62ceeafc48d32cd4026",
+   "sourceSectionRef": "6.01(b)(26)(b)(ii)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(ii) Indebtedness under any Receivables Recourse Facility that does not exceed the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most",
+   "citedUnitLeadIn": "(ii) Indebtedness under any Receivables Recourse Facility that does not exceed the greater of",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:9e88c326f5775e5d2535f3a3",
+   "sourceSectionRef": "6.01(b)(27)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(27) Indebtedness incurred by any Restricted\nParty on behalf of, or Guarantees of Indebtedness of, any Joint Ventures; provided that the aggregate principal amo",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:385f1cb7022e2d18a3555896",
+   "sourceSectionRef": "6.01(b)(28)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(28) Unsecured Capitalized Leases;",
+   "citedUnitLeadIn": "(28) Unsecured Capitalized Leases;",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:45d62fc13efec5c9f4434c1c",
+   "sourceSectionRef": "6.01(b)(30)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "(30) Indebtedness of any Restricted Party arising pursuant to any Permitted Tax Restructuring or related transactions;",
+   "citedUnitLeadIn": "(30) Indebtedness of any Restricted Party arising pursuant to any Permitted Tax Restructuring or related transactions;",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:2142a4b823fd9e52a8a8f3da",
+   "sourceSectionRef": "6.01(b)(31)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(31) Indebtedness of any Restricted Party in an aggregate outstanding principal amount which, when taken together with the\nprincipal amount of all other Indebte",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:ea76a8014f2eec64983a7cd6",
+   "sourceSectionRef": "6.01(b)(32)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(32) Indebtedness of any Restricted Party in an aggregate amount not to exceed the Available Amount that is Not Otherwise\nApplied; and",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:c2602aec0550b4687c5e80ca",
+   "sourceSectionRef": "6.01(b)(33)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(33) Incremental Equivalent Debt.\n\nThe Borrowers may incur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock, and any of the",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:8df2fec30e5afda652c94c04",
+   "sourceSectionRef": "6.01(b)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "(b) The provisions of Section 6.01(a) hereof shall not apply to:",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:c6204d2aa73929fbafd3ae0f",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "AMBIGUOUS"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "AMBIGUOUS"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:2a90aa29e2525532050984fb",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "the principal amount of Indebtedness or the liquidation preference of Disqualified Stock or Preferred Stock outstanding under any subsection of this Section 6.0",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:c53f29812219f1710019f8dc",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Accrual of interest or dividends, the accretion of accreted value, the accretion or amortization of original issue discount and the payment of interest or divid",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:5a49b29438237324c1508ec5",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:5f7a78bea86d5944e9b627a7",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:da33ed723ffd8449cae9bfa5",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "SOURCE_MATCH_CONFIRMED",
+   "safeToRely": true,
+   "decidedBy": "OWN_EXCERPT",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "For purposes of determining compliance with any U.S. dollar-denominated restriction ... the U.S. dollar-equivalent principal amount ... shall be calculated by t",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:05b63fb8901ad25f04a4b82b",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:18cfb4cb5d5edcb6a1453082",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "SOURCE_MATCH_CONFIRMED",
+   "safeToRely": true,
+   "decidedBy": "OWN_EXCERPT",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "Notwithstanding any other provision of this Section 6.01, the maximum amount of Indebtedness that the Borrowers may incur pursuant to this Section 6.01 shall no",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:d32b69e1b489936f434911db",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNWITNESSED",
+   "safeToRely": false,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:9624bfedaaaafe484e01dfb9",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "This Agreement will not treat (1) unsecured Indebtedness as subordinated or junior to Secured Indebtedness merely because it is unsecured...",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  },
+  {
+   "ruleId": "ir-rule:c35f5867c8b0d4728eacce5c",
+   "sourceSectionRef": "6.01",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "COMPLETE"
+   },
+   "status": "UNSPECIFIED",
+   "safeToRely": true,
+   "decidedBy": "NONE",
+   "addedReasons": [],
+   "sourceWitness": [],
+   "ownExcerpt": "... (2) Senior Indebtedness as subordinated or junior to any other Senior Indebtedness merely because it has a junior priority with respect to the same collater",
+   "citedUnitLeadIn": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+   "changed": false
+  }
+ ]
+}

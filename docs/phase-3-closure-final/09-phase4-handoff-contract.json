@@ -1,0 +1,28 @@
+{
+ "artifact": "PHASE 3 CLOSURE §26 - Phase 4 handoff contract (DRAFT - takes effect only on PHASE_3_CLOSED)",
+ "at": "2026-09-19T15:22:59.753Z",
+ "inEffect": false,
+ "phase4MayAssume": [
+  "trusted compositional IR (rules, definitions, shared capacities) with typed expressions and explicit UNSUPPORTED operands",
+  "explicit semantic status per object (sufficiency COMPLETE/PARTIAL/AMBIGUOUS/UNSUPPORTED/MISSING_CONTEXT/CONFLICTED with reasons)",
+  "dependency graph (dependsOn, exceptions, unresolvedDependencies with targetRef)",
+  "source provenance on every object (documentId, citation, excerpt, offsets)",
+  "quantitative literals with units and raw source text",
+  "ambiguity/review states (Pass C dispositions, verifier findings, unit status)",
+  "operative package state (deterministic; unresolved evidence flagged, never guessed)"
+ ],
+ "phase4MustNot": [
+  "reinterpret the source contract",
+  "treat an UNSUPPORTED operand as zero or as any value",
+  "widen or narrow entityScope, exceptions or conditions beyond what the IR states",
+  "resolve an AMBIGUOUS or MISSING_CONTEXT object by assumption"
+ ],
+ "phase4Should": [
+  "deterministically evaluate the trusted representation",
+  "normalize IR-shape items flagged here (RECLASSIFIABLE_TO edge; solve-for-x ratio operands) as explicit, source-cited transformations"
+ ],
+ "blockedBy": "the entity-scope blocker in 11",
+ "phase3ProductionSha": null,
+ "phase3ProductionTreeHashes": null,
+ "decidedBy": "docs/phase-3-closure-final/11-phase3-closure-verdict.json"
+}

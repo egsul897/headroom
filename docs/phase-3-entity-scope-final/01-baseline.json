@@ -1,0 +1,199 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL §1-§2 - frozen closure evidence and the blocking rules, before any change",
+ "at": "2026-09-19T15:22:56.754Z",
+ "startingSha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+ "headAtRun": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+ "preservedUnchanged": [
+  {
+   "path": "docs/phase-3-closure/01-evidence-registry.json",
+   "sha256": "6a820b220973f25844387830cc0f57a5d1d03af6e20d9805fad491eca8047efb",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/02-invariant-matrix.json",
+   "sha256": "e413eaf95aadb80eabac3ccd741cbb1f5fefa5d372a9b150f21142fa87ae5149",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/03-defect-closure-ledger.json",
+   "sha256": "1f0672c3c69600e3a55633df78f20e3fabe4ffb6d544199f7c0e69ff2e11fca2",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/04-final-601-critical-missing-audit.json",
+   "sha256": "980d885fd1526d6770f665d2a2a995f87b9ced1c04d45db3fdc012925d0c18ce",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/05-final-verifier-findings-audit.json",
+   "sha256": "407a858f9f0d7bac6d026e6608bc0593027562d84102d95938402c077f9b69f9",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/06-generalization-and-anti-overfit.json",
+   "sha256": "92fde0778ee10e0c2f394d95a635f4d110c98380989a4b9d187970b9b2d2d1fe",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/07-residual-risk-classification.json",
+   "sha256": "fe39850f69a4e38c061e08346629da94e7ffdba56200d2eb9e729c2ef6f48f75",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/08-product-claim-boundary.json",
+   "sha256": "455a562938a1f6b5cf7597120e4c3997f10611cd996b54b2dd853bb5affccc7f",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/09-phase4-handoff-contract.json",
+   "sha256": "27d82e244f5d7465337ab535b9c16fa2196f1ad9c7c6fc192f83e3b4a0005438",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/10-regression.json",
+   "sha256": "8c4e27ab065f45986671aa062b946b0b9c2f234345b4b67c303f39925fe01939",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-closure/11-phase3-closure-verdict.json",
+   "sha256": "da21e87e9dfefae065b687eaa07fd38ca01281005c7e6b54fe14f902e3547f91",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+   "sha256": "03d15c99b8a45651291e9429f85da255e9dab1228942fc722682b53e149648b7",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/verify-result.json",
+   "sha256": "8645e340ece14374d275800882cf596c338a75c920bf59c013c6ccd3b73c324b",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/frozen-inventory.json",
+   "sha256": "9ab4ca8422b77c3f39bad4f0715ab21af3d80fb4225c32c8f29095e94b69bdc7",
+   "unchangedSinceStart": true
+  },
+  {
+   "path": "docs/phase-3-final-601/154-verifier.json",
+   "sha256": "118bd9e6dc6c34cf9f52bc694377a51a49b4e0e6208d27fb9d6219f0b2ea32bb",
+   "unchangedSinceStart": true
+  }
+ ],
+ "allPreserved": true,
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "humanReferenceDataUsed": false,
+ "blockingFinding": {
+  "findingId": "96dd0fc7c578276da8caf72205b40ad0e3506bbc99abd9e20f5fd865710ffd42",
+  "findingType": "WRONG_ENTITY_SCOPE",
+  "severity": "MATERIAL",
+  "irPath": "rules[*].entityScope",
+  "rules": [
+   "ir-rule:170e314ceb35e54072b7ddba",
+   "ir-rule:49f22aee601dde5b8b8162d5",
+   "ir-rule:31ef4cb0be0026182f97f8ea",
+   "ir-rule:01c9a005fd9c7649ddc26012",
+   "ir-rule:6d2acc86b7f3dede7305f5df",
+   "ir-rule:b21ac832418c33bcf91d0625",
+   "ir-rule:8df2fec30e5afda652c94c04"
+  ],
+  "sourceEvidence": "\"the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable... with respect to any Indebtedness... and the Borrowers shall not issue any shares of Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock; provided, however, that the Borrowers may incur Indebtedness ... and any of their Restricted Subsidiaries may incur Indebtedness ... and issue shares of Disqualified Stock and Preferred Stock\""
+ },
+ "blockingRulesBefore": [
+  {
+   "ruleId": "ir-rule:170e314ceb35e54072b7ddba",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "PROHIBITION",
+   "entityScope": [
+    "BORROWER"
+   ],
+   "entityScopeExcluded": [],
+   "sufficiency": "PARTIAL",
+   "sufficiencyReasonsMentionScope": false,
+   "excerpt": "the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable, contingently or otherwise ... with respect to any Indebtedness (including Acquired Indebtedness)",
+   "hasEntityScopeAudit": false
+  },
+  {
+   "ruleId": "ir-rule:49f22aee601dde5b8b8162d5",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "PROHIBITION",
+   "entityScope": [
+    "BORROWER"
+   ],
+   "entityScopeExcluded": [],
+   "sufficiency": "PARTIAL",
+   "sufficiencyReasonsMentionScope": false,
+   "excerpt": "the Borrowers shall not issue any shares of Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock",
+   "hasEntityScopeAudit": false
+  },
+  {
+   "ruleId": "ir-rule:31ef4cb0be0026182f97f8ea",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "PROHIBITION",
+   "entityScope": [],
+   "entityScopeExcluded": [],
+   "sufficiency": "PARTIAL",
+   "sufficiencyReasonsMentionScope": true,
+   "excerpt": "or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock",
+   "hasEntityScopeAudit": false
+  },
+  {
+   "ruleId": "ir-rule:01c9a005fd9c7649ddc26012",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "entityScope": [
+    "BORROWER"
+   ],
+   "entityScopeExcluded": [],
+   "sufficiency": "COMPLETE",
+   "sufficiencyReasonsMentionScope": false,
+   "excerpt": "(1) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, on a Pro Forma Basis the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (x) 2.00:1.00 and (y) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+   "hasEntityScopeAudit": false
+  },
+  {
+   "ruleId": "ir-rule:6d2acc86b7f3dede7305f5df",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "entityScope": [
+    "BORROWER"
+   ],
+   "entityScopeExcluded": [],
+   "sufficiency": "PARTIAL",
+   "sufficiencyReasonsMentionScope": false,
+   "excerpt": "(2) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a Junior Lien Priority basis, on a Pro Forma Basis, at the Initial Borrower's sole discretion, either (i) the Senior Secured Leverage Ratio ... does not exceed the greater of (x) 3.00:1.00 and (y) ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (x) 1.75:1.00 and (y) ...",
+   "hasEntityScopeAudit": false
+  },
+  {
+   "ruleId": "ir-rule:b21ac832418c33bcf91d0625",
+   "sourceSectionRef": "6.01(a)",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "entityScope": [
+    "BORROWER"
+   ],
+   "entityScopeExcluded": [],
+   "sufficiency": "COMPLETE",
+   "sufficiencyReasonsMentionScope": false,
+   "excerpt": "(3) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is not secured by the Collateral, on a Pro Forma Basis, at the Initial Borrower's sole discretion, either (i) the Total Leverage Ratio ... does not exceed the greater of (x) 4.00:1.00 and (y) ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (x) 1.75:1.00 and (y) ...",
+   "hasEntityScopeAudit": false
+  },
+  {
+   "ruleId": "ir-rule:8df2fec30e5afda652c94c04",
+   "sourceSectionRef": "6.01(b)",
+   "ruleType": "QUALITATIVE_OBLIGATION",
+   "entityScope": [
+    "BORROWER"
+   ],
+   "entityScopeExcluded": [],
+   "sufficiency": "PARTIAL",
+   "sufficiencyReasonsMentionScope": false,
+   "excerpt": null,
+   "hasEntityScopeAudit": false
+  }
+ ],
+ "entityScopeCensusBefore": {
+  "[\"BORROWER\"]": 17,
+  "[]": 46
+ },
+ "frozenWitnessesOnly": "the rule ids above are frozen witnesses for the replay; production code carries none of them"
+}

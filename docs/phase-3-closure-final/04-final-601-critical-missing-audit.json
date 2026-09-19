@@ -1,0 +1,211 @@
+{
+ "artifact": "PHASE 3 CLOSURE §9 - the 9 CRITICAL items Pass C reports MISSING_FROM_COMPOSITION, examined one by one",
+ "at": "2026-09-19T15:22:59.692Z",
+ "source": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json (frozen) + docs/phase-3-final-601/152-pass-c.json",
+ "rows": [
+  {
+   "inventoryItemId": "inv-item:d7c98f9e0feadf05d4c207ab",
+   "sourceCitation": "§6.01",
+   "span": [
+    3957,
+    4084
+   ],
+   "proposition": "Exception (4)(a): Indebtedness (including Capitalized Lease Obligations and Purchase Money Obligations), Disqualified Stock and Preferred Stock incurred by any Restricted Party.",
+   "materiality": "CRITICAL",
+   "semanticRole": "EXCEPTION",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "C_ACCOUNTABILITY_MAPPING_ARTIFACT",
+   "role": "EXCEPTION lead-in of basket (4)(a)",
+   "substanceElsewhere": "ir-rule:d3ca9f2d (6.01(b)(4)(a), PARTIAL) carries the subject ('Indebtedness ... incurred by any Restricted Party, to finance the purchase, lease, expansion ...') in its provenance excerpt and first condition; the lead-in item has no lineage only because the rule's inventoryItemIds are empty and Pass C found no deterministic correspondence for the lead-in wording",
+   "explicitlyLimited": "yes - Pass C MISSING (CRITICAL), unit semanticallyComplete=false",
+   "misled": "no - the (4)(a) permission is present with its cap formula and conditions",
+   "work": "PHASE3_ACCOUNTABILITY (lineage credit), no semantic work",
+   "reasoning": "decomposition-accounting mismatch: the model composed the basket as one rule and did not cite the lead-in item id"
+  },
+  {
+   "inventoryItemId": "inv-item:52cb99788593930951c703bc",
+   "sourceCitation": "§6.01",
+   "span": [
+    14191,
+    14318
+   ],
+   "proposition": "Clause (13) permits the incurrence or issuance by any Restricted Party of Indebtedness, Disqualified Stock or Preferred Stock which serves to Refinance certain other Indebtedness, Disqualified Stock or Preferred Stock.",
+   "materiality": "CRITICAL",
+   "semanticRole": "EXCEPTION",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "C_ACCOUNTABILITY_MAPPING_ARTIFACT",
+   "role": "EXCEPTION lead-in of basket (13) (Refinancing Indebtedness)",
+   "substanceElsewhere": "ir-rule:40a36af7 (6.01(b)(13), PARTIAL) represents the refinancing permission with its capacity (principal + costs), its three provisos as conditions, 4 exceptions and 7 resolved dependencies",
+   "explicitlyLimited": "yes - Pass C MISSING (CRITICAL) plus the rule's own PARTIAL reasons",
+   "misled": "no",
+   "work": "PHASE3_ACCOUNTABILITY (lineage credit)",
+   "reasoning": "same accounting mismatch: no inventoryItemIds on the rule"
+  },
+  {
+   "inventoryItemId": "inv-item:4ca43ad2a68a91809ea43063",
+   "sourceCitation": "§6.01",
+   "span": [
+    15316,
+    15372
+   ],
+   "proposition": "The Refinancing permission under (13) is subject to the provisos that follow.",
+   "materiality": "CRITICAL",
+   "semanticRole": "CONDITION",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "D_DUPLICATE_ALREADY_REPRESENTED",
+   "role": "CONDITION ('subject to the provisos that follow') of (13)",
+   "substanceElsewhere": "the provisos are conditions[0..2] of ir-rule:40a36af7",
+   "explicitlyLimited": "yes - Pass C MISSING",
+   "misled": "no",
+   "work": "none (connective item)",
+   "reasoning": "a connective inventory item whose semantic effect is already carried by the proviso conditions"
+  },
+  {
+   "inventoryItemId": "inv-item:8cb1b19c9314d7698525a9d7",
+   "sourceCitation": "§6.01",
+   "span": [
+    16861,
+    17090
+   ],
+   "proposition": "Branch (x) of clause (14): Indebtedness, Disqualified Stock or Preferred Stock of a Restricted Party incurred or issued to finance an acquisition or Investment.",
+   "materiality": "CRITICAL",
+   "semanticRole": "ALTERNATIVE",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "A_TRUE_PHASE3_SEMANTIC_OMISSION",
+   "role": "ALTERNATIVE - branch (x) of (14): debt of a Restricted Party incurred to finance an acquisition or Investment",
+   "substanceElsewhere": "present ONLY in the provenance excerpt of ir-rule:e0669a81 ('(14) Indebtedness ... of (x) a Restricted Party incurred or issued to finance an acquisition or Investment or (y) Persons that are acquired ...'); NOT a structured condition on any of the four (14) rules, whose structured semantics are ratio gates over an UNLIMITED capacity",
+   "explicitlyLimited": "bounded: Pass C lists it MISSING (CRITICAL), the unit is REVIEW_REQUIRED and semanticallyComplete=false; the rule itself is marked COMPLETE",
+   "misled": "possible in the permissive direction if a consumer reads only structured fields: the acquisition nexus that qualifies the debt is absent from conditions",
+   "work": "PHASE3_SEMANTIC (a structured subject/nexus condition on the (14) rules)",
+   "reasoning": "the basket's qualifying subject matter is a legal limitation, not arithmetic"
+  },
+  {
+   "inventoryItemId": "inv-item:0ff09e163857682f3d53b4d8",
+   "sourceCitation": "§6.01",
+   "span": [
+    16916,
+    16997
+   ],
+   "proposition": "Branch (x): Indebtedness, Disqualified Stock or Preferred Stock of a Restricted Party incurred or issued to finance an acquisition or Investment.",
+   "materiality": "CRITICAL",
+   "semanticRole": "ALTERNATIVE",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "A_TRUE_PHASE3_SEMANTIC_OMISSION",
+   "role": "ALTERNATIVE - branch (x) restated",
+   "substanceElsewhere": "as above (same span)",
+   "explicitlyLimited": "bounded (Pass C)",
+   "misled": "as above",
+   "work": "PHASE3_SEMANTIC",
+   "reasoning": "duplicate span of the (x) branch; classified with it"
+  },
+  {
+   "inventoryItemId": "inv-item:6e4f0a6b9b35bacff18b03b6",
+   "sourceCitation": "§6.01",
+   "span": [
+    16998,
+    17090
+   ],
+   "proposition": "Branch (y) of clause (14): Indebtedness, Disqualified Stock or Preferred Stock of Persons that are acquired by any Restricted Party or merged into, amalgamated with or consolidated with a Restricted Party (continued in next slot).",
+   "materiality": "CRITICAL",
+   "semanticRole": "ALTERNATIVE",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "A_TRUE_PHASE3_SEMANTIC_OMISSION",
+   "role": "ALTERNATIVE - branch (y) of (14): debt of Persons acquired by / merged into a Restricted Party",
+   "substanceElsewhere": "provenance excerpt only; clause (d) (ir-rule:0de04497, Acquired Indebtedness) covers part of the (y) case but the (y) subject is not a structured condition of the (14) family",
+   "explicitlyLimited": "bounded (Pass C)",
+   "misled": "as above",
+   "work": "PHASE3_SEMANTIC",
+   "reasoning": "as (x)"
+  },
+  {
+   "inventoryItemId": "inv-item:a889590458d5dcd2d4b1b09b",
+   "sourceCitation": "§6.01",
+   "span": [
+    17001,
+    17090
+   ],
+   "proposition": "Branch (y) (lead-in): Indebtedness, Disqualified Stock or Preferred Stock of Persons that are acquired by any Restricted Party or merged into, amalgamated with, or (continues).",
+   "materiality": "CRITICAL",
+   "semanticRole": "ALTERNATIVE",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "A_TRUE_PHASE3_SEMANTIC_OMISSION",
+   "role": "ALTERNATIVE - branch (y) lead-in restated",
+   "substanceElsewhere": "as above",
+   "explicitlyLimited": "bounded (Pass C)",
+   "misled": "as above",
+   "work": "PHASE3_SEMANTIC",
+   "reasoning": "duplicate span of the (y) branch"
+  },
+  {
+   "inventoryItemId": "inv-item:33551ba7940f9a29b5c616c4",
+   "sourceCitation": "§6.01",
+   "span": [
+    17091,
+    17252
+   ],
+   "proposition": "Branch (y) also covers consolidation with a Restricted Party in accordance with the Agreement, including designation of an Unrestricted Subsidiary as a Restricted Subsidiary.",
+   "materiality": "CRITICAL",
+   "semanticRole": "PERMISSION",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "A_TRUE_PHASE3_SEMANTIC_OMISSION",
+   "role": "PERMISSION - (y) also covers consolidation with a Restricted Party, including designating an Unrestricted Subsidiary as Restricted",
+   "substanceElsewhere": "provenance excerpt only",
+   "explicitlyLimited": "bounded (Pass C)",
+   "misled": "as above",
+   "work": "PHASE3_SEMANTIC",
+   "reasoning": "part of the (y) subject"
+  },
+  {
+   "inventoryItemId": "inv-item:8d8fe5e7934c15cc4066aed7",
+   "sourceCitation": "§6.01",
+   "span": [
+    17253,
+    17267
+   ],
+   "proposition": "The permission under clause (14) is subject to the provisos that follow.",
+   "materiality": "CRITICAL",
+   "semanticRole": "CONDITION",
+   "whyPassCMissing": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR (Pass C reason)",
+   "cls": "D_DUPLICATE_ALREADY_REPRESENTED",
+   "role": "CONDITION ('subject to the provisos that follow') of (14)",
+   "substanceElsewhere": "the provisos (a)-(e) are the gates/rules ir-rule:e0669a81, c0feca0b, 0de04497, 12020258",
+   "explicitlyLimited": "yes - Pass C MISSING",
+   "misled": "no",
+   "work": "none (connective item)",
+   "reasoning": "connective item"
+  }
+ ],
+ "counts": {
+  "C_ACCOUNTABILITY_MAPPING_ARTIFACT": 2,
+  "D_DUPLICATE_ALREADY_REPRESENTED": 2,
+  "A_TRUE_PHASE3_SEMANTIC_OMISSION": 5
+ },
+ "trueOmissions": [
+  "inv-item:8cb1b19c9314d7698525a9d7",
+  "inv-item:0ff09e163857682f3d53b4d8",
+  "inv-item:6e4f0a6b9b35bacff18b03b6",
+  "inv-item:a889590458d5dcd2d4b1b09b",
+  "inv-item:33551ba7940f9a29b5c616c4"
+ ],
+ "trueOmissionsAreBounded": true,
+ "boundedBy": "Pass C enumerates every one as MISSING (CRITICAL) with the item proposition; the unit is REVIEW_REQUIRED and semanticallyComplete=false; the (x)/(y) subject text is carried verbatim in the (14) rule's provenance excerpt. None is silent or unbounded.",
+ "unboundedTrueOmissions": 0,
+ "clusters": {
+  "(4)(a) lead-in": [
+   "inv-item:d7c98f9e0feadf05d4c207ab"
+  ],
+  "(13) lead-in + proviso connective": [
+   "inv-item:52cb99788593930951c703bc",
+   "inv-item:4ca43ad2a68a91809ea43063"
+  ],
+  "(14) (x)/(y) qualifying subject + proviso connective": [
+   "inv-item:8cb1b19c9314d7698525a9d7",
+   "inv-item:0ff09e163857682f3d53b4d8",
+   "inv-item:6e4f0a6b9b35bacff18b03b6",
+   "inv-item:a889590458d5dcd2d4b1b09b",
+   "inv-item:33551ba7940f9a29b5c616c4",
+   "inv-item:8d8fe5e7934c15cc4066aed7"
+  ]
+ },
+ "structuralObservation": "63 rules, 42 carry inventoryItemIds, 0 carry a description; the (4)(a), (13) and all four (14) rules carry no inventoryItemIds, so lineage for their lead-in items depends entirely on Pass C's deterministic correspondence"
+}

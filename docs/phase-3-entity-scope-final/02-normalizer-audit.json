@@ -1,0 +1,55 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL §3-§4, §14 - the two deterministic gaps, the silent drop before, and the loud contract after",
+ "at": "2026-09-19T15:22:56.767Z",
+ "rootCauseA_silentDrop": {
+  "beforeSha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+  "beforeCode": [
+   {
+    "line": 291,
+    "code": "const include = (wire.entityScopeInclude ?? []).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t);"
+   },
+   {
+    "line": 292,
+    "code": "const exclude = (wire.entityScopeExclude ?? []).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t);"
+   },
+   {
+    "line": 549,
+    "code": "const entityScope = ((wireRule.entityScope ?? []).length > 0 ? wireRule.entityScope! : scopeNodes.include).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];"
+   },
+   {
+    "line": 550,
+    "code": "const entityScopeExcluded = ((wireRule.entityScopeExcluded ?? []).length > 0 ? wireRule.entityScopeExcluded! : scopeNodes.exclude).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];"
+   },
+   {
+    "line": 31,
+    "code": "function matchEnum<T extends string>(raw: string | null | undefined, validValues: readonly T[]): T | null {"
+   }
+  ],
+  "behaviour": "matchEnum() returned null for any tag outside EntityClassTag and .filter(Boolean) removed it: no warning, no sufficiency change, no record of the raw value - for the rule fields (entityScope/entityScopeExcluded) and for ENTITY_SCOPE_REFERENCE nodes alike",
+  "afterCode": "lib/contract-model/compiler/semantic/entity-scope-guard.ts classifyEntityTag()/normalizeEntityTags(); normalize.ts calls them for rule fields and ENTITY_SCOPE_REFERENCE nodes",
+  "afterBehaviour": "every emitted tag receives exactly one outcome (RECOGNIZED_ENTITY_TAG | UNRECOGNIZED_ENTITY_TAG) recorded with raw value, normalized value, field and viaAlias in rule.entityScopeAudit.tagNormalization; an unrecognized tag adds a normalization warning (code ENTITY_SCOPE_UNRECOGNIZED_TAG, rule scope path), resets the affected scope field to unspecified, and forces COMPLETE -> PARTIAL with the reason code; the unknown tag's meaning is never guessed",
+  "persistenceNote": "lib/contract-model/compiler/persistence.ts toEntityClassTags() still filters to the DB enum when writing ContractRule rows; it now only ever sees guard-normalized tags, so nothing can be dropped there that the audit has not already recorded. The audit object itself is carried on the IRRule and in every persisted compile result JSON; no DB column was added (schema change out of this mission's scope)"
+ },
+ "rootCauseB_noSourceConsistencyGuard": {
+  "behaviour": "after normalization nothing compared entityScope against the rule's own provenance excerpt or the lead-in of the unit it cites; 'the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to ...' with entityScope [\"BORROWER\"] survived as authoritative, and two ratio permissions stayed COMPLETE",
+  "after": "applyEntityScopeGuard() runs on every rule right after normalized composition (normalize.ts) and is replayable over already-composed IR (replayEntityScopeGuard)"
+ },
+ "rawWireEvidenceGap": {
+  "rawModelOutputInFrozenResult": "null",
+  "durableShardResultKeys": [
+   "status",
+   "composition",
+   "failureReasons",
+   "unresolvedIssues",
+   "telemetry",
+   "toolUsage",
+   "missingContextAudit",
+   "shardId",
+   "shardHash",
+   "reusedFromHash",
+   "attempts"
+  ],
+  "conclusion": "neither the compile result nor the durable shard records hold the pre-normalization entityScope values, so whether the model emitted only BORROWER or emitted a subsidiary tag the normalizer rejected is UNKNOWABLE for the frozen run; no claim is made either way. The fix covers both causes.",
+  "prospectiveObservability": "rule.entityScopeAudit.rawEmitted now persists the raw wire entityScope / entityScopeExcluded arrays and which wire field supplied them (RULE_FIELD | ENTITY_SCOPE_NODES | EMPTY); on a replay over normalized IR it says NOT_PERSISTED. A future run can therefore distinguish 'model emitted only BORROWER' from 'model emitted an unknown tag that normalization rejected' without a paid re-run of the frozen run."
+ }
+}
