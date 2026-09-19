@@ -1,0 +1,293 @@
+{
+ "artifact": "PHASE 3 CLOSURE §23-§25 - the closure decision",
+ "at": "2026-09-19T14:56:03.930Z",
+ "freeze": {
+  "startingSha": "7c18b3eac834c85539e05b613b0a80b04da02c19",
+  "head": "7c18b3eac834c85539e05b613b0a80b04da02c19",
+  "headIsStarting": true,
+  "workingTreeClean": true,
+  "dirtyOutsideThisMission": [],
+  "remote": {
+   "url": "https://github.com/egsul897/headroom",
+   "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+   "sha": "7c18b3eac834c85539e05b613b0a80b04da02c19",
+   "source": "origin/ tracking ref (ls-remote returned nothing through the session proxy)"
+  },
+  "remoteAtHead": true,
+  "productionTreeHashes": {
+   "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+   "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+   "lib/contract-model/compiler/semantic/": "84a709051ed7d959407b286d34e75ebae442891d"
+  },
+  "productionChangedByThisMission": [],
+  "paidCalls": 0,
+  "spendUsd": 0,
+  "phase4Started": false
+ },
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "closureStandard": [
+  {
+   "n": 1,
+   "condition": "current production path is structurally general",
+   "status": "PASS",
+   "evidence": "invariants 1-8, 18, 29; whole-agreement planning; 4 known packages + DSGR"
+  },
+  {
+   "n": 2,
+   "condition": "no Chewy-specific semantic production logic",
+   "status": "PASS",
+   "evidence": "0 non-comment code lines match fixture identifiers"
+  },
+  {
+   "n": 3,
+   "condition": "source-accountability trust boundary closed",
+   "status": "PASS",
+   "evidence": "docs/source-coverage-repair/37 SOURCE_COVERAGE_TRUST_BOUNDARY_CLOSED; 153 source-unverifiable IR 0"
+  },
+  {
+   "n": 4,
+   "condition": "required-dependency model general and source-backed",
+   "status": "PASS",
+   "evidence": "141 rules, 136 qualification, 138 stable 0.25-0.75, dd suites, 145 cross-corpus"
+  },
+  {
+   "n": 5,
+   "condition": "dependency delivery safe",
+   "status": "PASS",
+   "evidence": "PLANNER_DELIVERY_GAP 0; contract held true"
+  },
+  {
+   "n": 6,
+   "condition": "sharding/stitching preserves ownership and lineage",
+   "status": "PASS",
+   "evidence": "lineage lost 0, unresolved owned 0, 135 cross-shard exceptions"
+  },
+  {
+   "n": 7,
+   "condition": "quantitative values preserved without silent corruption",
+   "status": "PASS",
+   "evidence": "50 values, 0 missing, 0 silent corruption"
+  },
+  {
+   "n": 8,
+   "condition": "operative-state handling safe",
+   "status": "PASS",
+   "evidence": "deterministic package state; the one flagged shard is explicit (OPERATIVE_STATE_UNRESOLVED on 7922314d), 0 unresolved evidence items at unit level"
+  },
+  {
+   "n": 9,
+   "condition": "global Pass C prevents false completeness",
+   "status": "PASS",
+   "evidence": "false completeness 0; semanticallyComplete=false with 9 items enumerated"
+  },
+  {
+   "n": 10,
+   "condition": "independent verifier works on the real path",
+   "status": "PASS",
+   "evidence": "ran on untouched output: 6 findings, historical 8 resolved / 2 recurred / 1 new-related"
+  },
+  {
+   "n": 11,
+   "condition": "all current hard trust counters measured zero",
+   "status": "PASS",
+   "evidence": "14/14 MEASURED = 0 (153)"
+  },
+  {
+   "n": 12,
+   "condition": "no true unbounded CRITICAL semantic omission remains",
+   "status": "PASS",
+   "evidence": "5 true omissions ((14) (x)/(y) subject), all bounded by Pass C and carried in provenance; 0 unbounded"
+  },
+  {
+   "n": 13,
+   "condition": "no verifier MATERIAL finding represents a confidently-wrong authoritative legal conclusion left unresolved",
+   "status": "FAIL",
+   "evidence": "F0 WRONG_ENTITY_SCOPE: entityScope [\"BORROWER\"] on the 6.01(a) prohibition and Permitted Ratio Debt rules against source binding Restricted Subsidiaries; no scope limitation stated anywhere"
+  },
+  {
+   "n": 14,
+   "condition": "remaining limitations are explicit/bounded",
+   "status": "FAIL",
+   "evidence": "all except the entity-scope field, which is stated as an authoritative value with no limitation"
+  },
+  {
+   "n": 15,
+   "condition": "generalization evidence sufficient for architecture closure",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 16,
+   "condition": "every relevant historical defect has post-fix evidence",
+   "status": "PASS",
+   "evidence": "15/16 closed; the open row is the entity-scope item of the last remediation"
+  },
+  {
+   "n": 17,
+   "condition": "no new regression",
+   "status": "PASS",
+   "evidence": "full new 1 (timing flake explained true); targeted new 0"
+  },
+  {
+   "n": 18,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "compiled successfully"
+  },
+  {
+   "n": 19,
+   "condition": "zero paid calls in closure synthesis",
+   "status": "PASS",
+   "evidence": "0 calls, $0"
+  },
+  {
+   "n": 20,
+   "condition": "Phase 4 not already started",
+   "status": "PASS",
+   "evidence": "no evaluation/solver code touched; handoff contract is a draft"
+  }
+ ],
+ "summary": {
+  "PASS": 18,
+  "FAIL": 2,
+  "total": 20
+ },
+ "finalRunTrustFacts": {
+  "shardsComplete": "7/7",
+  "plannerDeliveryGap": 0,
+  "unresolvedOwnedItems": 0,
+  "counters": [
+   {
+    "counter": "owned values lost",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "distinct owned lineage lost",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "contextual ownership-credit violations",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "source-unverifiable authoritative IR",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "silent incompatible merges",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "new dangling refs",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "hidden provider/schema failures",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "hidden material omissions",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "authoritative hallucinations",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "silent CRITICAL misses",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "incorrect authoritative CRITICAL claims",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "silent quantitative corruption",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "false completeness",
+    "value": 0,
+    "state": "MEASURED"
+   },
+   {
+    "counter": "dangerous silent omissions",
+    "value": 0,
+    "state": "MEASURED"
+   }
+  ],
+  "allMeasuredZero": true
+ },
+ "finalRunQualityFacts": {
+  "passC": {
+   "inventoried": 326,
+   "material": 319,
+   "represented": 294,
+   "intentionallyNonComputational": 6,
+   "unsupported": 8,
+   "ambiguous": 9,
+   "missingFromComposition": 9,
+   "materialMissingFromComposition": 9,
+   "criticalMissing": 9,
+   "quantitativeTotal": 50,
+   "quantitativeMissing": 0,
+   "danglingLineage": 0
+  },
+  "compileStatus": "status REVIEW_REQUIRED; statuses {\"SHARD_COMPLETE\":7}; unresolved owned items 0",
+  "reference": {
+   "CRITICAL": {
+    "total": 4,
+    "correct": 2,
+    "explicitSafeLimitation": 2,
+    "incorrect": 0,
+    "silentMisses": 0
+   },
+   "MATERIAL": {
+    "total": 4,
+    "correct": 4,
+    "explicitSafeLimitation": 0,
+    "incorrect": 0,
+    "silentMisses": 0
+   },
+   "B6": "REFERENCE_SET_ERROR"
+  },
+  "verifier": {
+   "total": 6,
+   "MATERIAL": 4,
+   "UNCERTAIN": 0,
+   "NON_MATERIAL": 2,
+   "deterministic": 2,
+   "semantic": 4,
+   "byType": {
+    "WRONG_ENTITY_SCOPE": 1,
+    "OTHER_MATERIAL_SEMANTIC_DISCREPANCY": 3,
+    "MISSING_RULE": 1,
+    "MISSING_RECLASSIFICATION": 1
+   }
+  },
+  "gate158": "PHASE3_601_FINAL_REVALIDATION_PASSED"
+ },
+ "verdict": "PHASE3_CLOSURE_EVIDENCE_INSUFFICIENT",
+ "insufficientEvidence": {
+  "blockingInvariant": "31 entity-scope semantics (05 entityScopeClosureTest; closure standard 13 and 14)",
+  "artifactProvingTheGap": "docs/phase-3-final-601/154-verifier.json finding 0 (WRONG_ENTITY_SCOPE, MATERIAL) + tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json rules ir-rule:170e314c.., 49f22aee.., 01c9a005.., 6d2acc86.., b21ac832.. (entityScope [\"BORROWER\"]) against their own provenance excerpts",
+  "natureOfTheGap": "SEMANTIC MODEL DEFECT (the model filled entityScope under-inclusively) that the DETERMINISTIC layer failed to guard: normalize.ts drops unrecognized entity tags silently with no warning and no sufficiency change, and no deterministic check compares an emitted scope against the binding language in the rule's own excerpt ('shall not permit any of their Restricted Subsidiaries', 'any of their Restricted Subsidiaries may incur'). Whether the tag was never emitted or was emitted and dropped is unknowable from the frozen evidence because the raw wire output is not persisted - itself an evidence gap.",
+  "singleCheapestAction": "a deterministic ENTITY-SCOPE CONSISTENCY GUARD, general and zero-cost: (1) an unrecognized entity tag on the wire becomes a normalization warning and a PARTIAL sufficiency reason instead of a silent drop; (2) after composition, when a rule's own provenance excerpt/owned source contains restricted-subsidiary binding language and the emitted entityScope omits every restricted-subsidiary tag, the scope is reset to [] (unspecified) and the rule is marked PARTIAL with reason ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE - never widened by guess. Then replay the guard over the FROZEN 6.01 IR at zero cost to show the 7 affected rules become explicit, add the regression tests, and re-run this closure synthesis. No paid run and no whole-agreement run is required for the closure decision; a later paid observation of a corrected positive scope is optional.",
+  "notAuthorizedHere": true
+ },
+ "phase3Closed": false,
+ "phase4Started": false
+}

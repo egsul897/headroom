@@ -1,0 +1,356 @@
+{
+ "artifact": "PHASE 3 CLOSURE §3 - immutable evidence registry",
+ "at": "2026-09-19T14:56:03.808Z",
+ "startingSha": "7c18b3eac834c85539e05b613b0a80b04da02c19",
+ "rule": "tranches prove different things and are never aggregated; historical failures are root-cause evidence, not current results",
+ "tranches": [
+  {
+   "id": "SOURCE_ACCOUNTABILITY_CLOSURE",
+   "commits": [
+    {
+     "sha": "d5144d1cb2f4612132847cdb28a9547506bab469",
+     "date": "2026-09-03",
+     "subject": "Phase 3 source-coverage final certification: trust boundary CLOSED"
+    }
+   ],
+   "artifacts": [
+    "docs/source-coverage-repair/29-closure-audit.json (NOT_CLOSED at first audit)",
+    "docs/source-coverage-repair/33-final-closure-audit.json",
+    "docs/source-coverage-repair/35-final-final-closure-certification.json",
+    "docs/source-coverage-repair/37-final-certification.json (finalVerdict SOURCE_COVERAGE_TRUST_BOUNDARY_CLOSED; 34 rows: 28 CLOSED, 6 REVIEW_ONLY, 0 BLOCKER; 0 dangerous silent completions)"
+   ],
+   "productionVersionTested": "structural index / coverage audit as of 2026-09-03 (pre-F1)",
+   "scope": "deterministic source-coverage scanner + red-team reproduction harnesses over the frozen discovered failure universe",
+   "whatItProves": [
+    "a discovered silent-completion route in source coverage is closed or review-only; no production-reachable latent blocker",
+    "child-descent ownership and numbered-caption positive evidence are deterministic"
+   ],
+   "whatItDoesNotProve": [
+    "semantic quality of any compiled unit",
+    "current Pass-A behaviour (Pass A v4/v5 came later)"
+   ],
+   "evidenceStatus": "DIRECTLY_APPLICABLE"
+  },
+  {
+   "id": "F1_TO_F6_POST_FIX",
+   "commits": [
+    {
+     "sha": "a942558715b206757d1e518638969e1b760efbc9",
+     "date": "2026-09-03",
+     "subject": "F-1: semantic compiler caller obeys the tool_use/tool_result protocol and retains provisional submissions"
+    },
+    {
+     "sha": "1a4070b020249157ab705dbb4244bb755072bd5f",
+     "date": "2026-09-03",
+     "subject": "F-2: clause hierarchy infers structural level from context, not from label shape alone"
+    },
+    {
+     "sha": "01a69147629e720fba51ef8c743e62fc52c7e257",
+     "date": "2026-09-03",
+     "subject": "F-6: partial composites survive normalization; references take the type their slot fixes"
+    },
+    {
+     "sha": "02af0865b094757814c354fb7c184bac3add4b1f",
+     "date": "2026-09-10",
+     "subject": "F-5.3B resume: fresh run D2 completed, E2 = Ensemble(run C, D2) certified against E1 with the pre-registered scorer"
+    },
+    {
+     "sha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+     "date": "2026-09-10",
+     "subject": "F-3: verifier scale-aware quantitative normalization (generic; 0 model calls)"
+    },
+    {
+     "sha": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+     "date": "2026-09-10",
+     "subject": "F-4: verifier authenticated retrieved-source evidence (Chewy remediation 6)"
+    }
+   ],
+   "artifacts": [
+    "docs/phase-3-remediation-f1/ (compiler caller tool_use/tool_result protocol)",
+    "docs/phase-3-remediation-f2/06-deterministic-relink-summary.json (clause hierarchy by context)",
+    "docs/phase-3-remediation-f6/08-tests-and-results.json (F6_CLOSED: partial composites survive normalization)",
+    "docs/phase-3-remediation-f5-3b-resume/09-final-summary.json (F5_CLOSED: E2 ensemble certified against E1)",
+    "docs/phase-3-remediation-f3/04-final-summary.json (F3_CLOSED: scale-aware verifier normalization)",
+    "docs/phase-3-remediation-f4/04-final-summary.json (F4_CLOSED: authenticated retrieved-source evidence)"
+   ],
+   "productionVersionTested": "compiler v3-era caller, structural index, Pass A v4/v5, verifier v2 (2026-09-03..10)",
+   "scope": "each a root-caused defect with a generic fix and its own post-fix test/paid evidence",
+   "whatItProves": [
+    "the caller obeys the tool protocol and keeps provisional submissions",
+    "sub-clause nesting is inferred from context",
+    "partial composites are preserved with UNSUPPORTED operands rather than dropped",
+    "the dual-pass Pass-A ensemble is stable run-to-run (E1 vs E2 pre-registered scorer)",
+    "the verifier normalizes scale and authenticates retrieved evidence"
+   ],
+   "whatItDoesNotProve": [
+    "current 6.01 semantic quality",
+    "sharded execution (F-7 came later)"
+   ],
+   "evidenceStatus": "DIRECTLY_APPLICABLE"
+  },
+  {
+   "id": "F7_ARCHITECTURE_AND_CANARY",
+   "commits": [
+    {
+     "sha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+     "date": "2026-09-10",
+     "subject": "F-7A: large-unit compiler window diagnosis + bounded shard architecture (zero-cost; Chewy remediation 7)"
+    },
+    {
+     "sha": "c58acd9c9985569f24e19355e924e0338e56bcb5",
+     "date": "2026-09-14",
+     "subject": "F-7B: real Chewy 1.01 sharded canary, Stage 1 (5 shards, $2.63) - verdict F7_NEEDS_ARCHITECTURAL_ITERATION"
+    },
+    {
+     "sha": "d9949102b6da7806428cdc79a60da42c4fe76016",
+     "date": "2026-09-14",
+     "subject": "F-7B.1: paid rerun of the exact 5 Stage-1 shards ($2.72) - 26/28 owned material accounted; verdict F7_NOT_SAFE on gate 6"
+    },
+    {
+     "sha": "1660817cef85ebe70888185b0248e56d1297616d",
+     "date": "2026-09-14",
+     "subject": "F-7B.2: source-anchored definition attribution (zero-cost stitcher safety remediation)"
+    },
+    {
+     "sha": "aef7a00b5f48697239863df1712f6290e1df6bc6",
+     "date": "2026-09-14",
+     "subject": "F-7B.3B: preserve definition-conflict variants (zero-cost stitcher remediation)"
+    },
+    {
+     "sha": "9c97a544634b98eecbd0c5da627ff0f1d59ce24e",
+     "date": "2026-09-14",
+     "subject": "F-7B.3C: Wave B complete (10/10) - PASSED, 25 of 36 shards real"
+    },
+    {
+     "sha": "76e76a1781f381f360950255960dc182f9d01f69",
+     "date": "2026-09-14",
+     "subject": "F-7B.3D: unify the F-7 trust scorer with the current sharded architecture"
+    },
+    {
+     "sha": "c9b28224e118f6a5e54f99da88715da110ad7dee",
+     "date": "2026-09-14",
+     "subject": "F-7B.3E: final Wave C complete - 36/36 real shards, F7_CANARY_PASSED (25/25)"
+    }
+   ],
+   "artifacts": [
+    "docs/phase-3-remediation-f7a/04-gate-evaluation-and-final-summary.json (F7A_READY_FOR_PAID_CANARY)",
+    "docs/phase-3-remediation-f7b/12-final-gate.json (Stage 1: F7_NEEDS_ARCHITECTURAL_ITERATION - the 317-lineage-loss run)",
+    "docs/phase-3-remediation-f7b1/ (rerun of the 5 Stage-1 shards, F7_NOT_SAFE)",
+    "docs/phase-3-remediation-f7b2/09-final-gate.json (source-anchored definition attribution)",
+    "docs/phase-3-remediation-f7b3b/09-closure-gate.json (definition-conflict variants preserved)",
+    "docs/phase-3-remediation-f7b3c/14-wave-b-closure-gate.json",
+    "docs/phase-3-remediation-f7b3d/18-regression.json (trust scorer unified)",
+    "docs/phase-3-remediation-f7b3e/README.md + 06-per-shard-ledger.json (F7_CANARY_PASSED 25/25, 36/36 real shards, $13.90)"
+   ],
+   "productionVersionTested": "bounded shard architecture v1 on Section 1.01 (353,523 chars / 379 definitions); planner v1",
+   "scope": "many-shard mechanics on the largest unit: attribution, conflict preservation, lineage/value retention, bounded contexts, sharded transport",
+   "whatItProves": [
+    "36 real shards execute with every trust count zero",
+    "definition attribution is source-anchored and conflicts are preserved as variants",
+    "resume by shard hash never re-executes a terminal shard"
+   ],
+   "whatItDoesNotProve": [
+    "current final-production semantic recovery (its semantic percentages are canary-era, planner v1, and are NOT current metrics)",
+    "the 6.01 unit"
+   ],
+   "evidenceStatus": "DIRECTLY_APPLICABLE (mechanics) / HISTORICAL_ROOT_CAUSE_ONLY (Stage-1 failure)"
+  },
+  {
+   "id": "F7C_PRODUCTION_ACTIVATION",
+   "commits": [
+    {
+     "sha": "2cfb6b3f8e8a99b6ff9010307726ffa8f7b6a2ac",
+     "date": "2026-09-14",
+     "subject": "F-7C: regression artifact, gate 28/28 - F7_PRODUCTION_PATH_READY_FOR_FINAL_VALIDATION"
+    }
+   ],
+   "artifacts": [
+    "docs/phase-3-remediation-f7c/05-f7c-gate.json (28/28 F7_PRODUCTION_PATH_READY_FOR_FINAL_VALIDATION)",
+    "docs/phase-3-remediation-f7c/02-certified-vs-activated-differential.json",
+    "tests/contract-model/f7c-production-activation.test.ts"
+   ],
+   "productionVersionTested": "compile.ts with sharded execution wired into the public path",
+   "scope": "the public compileCovenantToIR activates sharding exactly as the certified canary did",
+   "whatItProves": [
+    "certified-vs-activated differential is empty",
+    "execution mode selection is deterministic"
+   ],
+   "whatItDoesNotProve": [
+    "semantic quality"
+   ],
+   "evidenceStatus": "DIRECTLY_APPLICABLE"
+  },
+  {
+   "id": "F7C1_FROZEN_INVENTORY_TRUST_BOUNDARY",
+   "commits": [
+    {
+     "sha": "a474ab3ba42c2518b1dabe552b73dd37712c43e6",
+     "date": "2026-09-14",
+     "subject": "F-7C.1: regression artifact, README, gate 21/21 - READY_FOR_FINAL_VALIDATION"
+    }
+   ],
+   "artifacts": [
+    "docs/phase-3-remediation-f7c1/03-f7c1-gate.json (21/21)",
+    "tests/contract-model/f7c1-frozen-inventory-resume.test.ts",
+    "lib/contract-model/compiler/semantic/frozen-inventory-resume.ts"
+   ],
+   "productionVersionTested": "frozen-inventory resume validator",
+   "scope": "a frozen Pass-A inventory can only be resumed against the identical source context",
+   "whatItProves": [
+    "source-context-hash / re-anchoring identity is enforced before any resumed compile"
+   ],
+   "whatItDoesNotProve": [
+    "that any particular inventory is semantically complete"
+   ],
+   "evidenceStatus": "DIRECTLY_APPLICABLE"
+  },
+  {
+   "id": "WHOLE_AGREEMENT_COST_PREFLIGHT",
+   "commits": [
+    {
+     "sha": "a013ffdc4195257505a2e6546e984e7153cbf5bb",
+     "date": "2026-09-15",
+     "subject": "Phase 3 final: Chewy production validation cost-bound before start (0 paid calls)"
+    }
+   ],
+   "artifacts": [
+    "docs/phase-3-final-chewy/14-phase-3-closure-gate.json (PHASE3_FINAL_COST_BOUND_BEFORE_START, 0 paid calls)",
+    "docs/phase-3-final-chewy/README.md"
+   ],
+   "productionVersionTested": "whole-agreement planner over the full package",
+   "scope": "structural reach, deterministic package parsing, semantic-unit planning, reference-set framing, cost scaling",
+   "whatItProves": [
+    "the whole agreement can be parsed, routed and planned deterministically",
+    "cost scales as the frozen methodology predicts"
+   ],
+   "whatItDoesNotProve": [
+    "ANY semantic validation of the whole agreement - the run never executed; the inability to afford it is not a Phase-3 failure"
+   ],
+   "evidenceStatus": "DIRECTLY_APPLICABLE (structural/cost) / NOT_SEMANTIC_EVIDENCE"
+  },
+  {
+   "id": "SECTION_601_VALIDATION_HISTORY",
+   "commits": [
+    {
+     "sha": "d51e7f275f6a7ffbaa2f61c19dd823b9da143b23",
+     "date": "2026-09-15",
+     "subject": "Phase 3 final-bridge: Chewy 6.01 validation cost-bound before start (0 paid calls)"
+    },
+    {
+     "sha": "f108ba24886e689830a3e3ddff421013e8f20d36",
+     "date": "2026-09-15",
+     "subject": "Phase 3 final-bridge 6.01: paid run voided by harness guard defect HD-1"
+    },
+    {
+     "sha": "8731f01026030e7b2a8111363dd27173ae2b4457",
+     "date": "2026-09-15",
+     "subject": "Phase 3 final-bridge 6.01 clean rerun: Pass A succeeded, HD-2 stopped Pass B"
+    },
+    {
+     "sha": "f3b885b12f5bc91fcf886b7b3f77e84ed26661c3",
+     "date": "2026-09-15",
+     "subject": "Phase 3 final-bridge 6.01 completion: banked inventory not resumable (0 paid calls)"
+    },
+    {
+     "sha": "5bd15c263b1e8fdadd16b908d5037f298af0d1e2",
+     "date": "2026-09-15",
+     "subject": "Phase 3 final-bridge 6.01 final clean run: ENVIRONMENT_BLOCKED (worker restart killed Pass A), post-mortem ledger 50-62"
+    },
+    {
+     "sha": "e6baf51b6a1211323a2926daaba21ed4a3facd1c",
+     "date": "2026-09-16",
+     "subject": "Phase 3 final-bridge 6.01 HD-4: durable Pass-A call replay certified at zero cost (63-73)"
+    },
+    {
+     "sha": "51fda653190d6859096be145245406b1c9329c58",
+     "date": "2026-09-16",
+     "subject": "Phase 3 final-bridge 6.01 final paid run: NOT_SAFE (18/21) - scored, trust gate, verdict, HD-5/HD-6 disclosure (76-88)"
+    },
+    {
+     "sha": "f944790423c9a6f7046f46654ad1348611083204",
+     "date": "2026-09-17",
+     "subject": "Phase 3 6.01 remediation: artifacts 89-103, corrected diagnostic score, regression (106/161, 0 new), gate 20/20"
+    },
+    {
+     "sha": "1b36eb64f527740c8cf19f650152c7459b61441d",
+     "date": "2026-09-19",
+     "subject": "Phase 3 6.01 post-remediation paid revalidation: REMEDIATION_FAILED (18/24), artifacts 104-117"
+    },
+    {
+     "sha": "1fd23881fb9366b3730a06419a7b5dc33647384c",
+     "date": "2026-09-19",
+     "subject": "Phase 3 6.01 dependency-delivery: record the gate against the commit it certifies"
+    },
+    {
+     "sha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+     "date": "2026-09-19",
+     "subject": "Phase 3 6.01 precision audit: required-dependency model v2 with honest certificates"
+    },
+    {
+     "sha": "6cc1c5de51a56d93bf9094714c3f1337169be71f",
+     "date": "2026-09-19",
+     "subject": "Phase 3 6.01 final paid-revalidation precheck: committed-tree recertification + exact cost preflight"
+    },
+    {
+     "sha": "7c18b3eac834c85539e05b613b0a80b04da02c19",
+     "date": "2026-09-19",
+     "subject": "Phase 3 6.01 final post-precision paid revalidation: artifacts 150-158 + README - PHASE3_601_FINAL_REVALIDATION_PASSED (21/21)"
+    }
+   ],
+   "artifacts": [
+    "docs/phase-3-final-601/README.md (every tranche)",
+    "11 cost-bound before start (0 calls)",
+    "21 HD-1 voided run",
+    "34 HD-2 stopped after a successful Pass A",
+    "46 HD-3 banked inventory never persisted",
+    "62 worker restart killed Pass A (HD-4 candidate)",
+    "73-hd4-gate.json (durable replay certified, 0 cost)",
+    "87-final-paid-verdict.json (NOT_SAFE 18/21: the 98-item shard lost lineage) + 88 (HD-5/HD-6)",
+    "103-remediation-gate.json (20/20) + 99-101 (HD-5 scorer / HD-6 reader)",
+    "117-revalidation-verdict.json (REMEDIATION_FAILED 18/24: required context dropped at the interpretive budget)",
+    "132-dependency-delivery-gate.json (29/29)",
+    "146-precision-audit-gate.json (20/20, certified against 80671aa)",
+    "149-final-preflight-gate.json (17/18: cost-bound only)",
+    "158-final-revalidation-verdict.json (PHASE3_601_FINAL_REVALIDATION_PASSED 21/21)"
+   ],
+   "productionVersionTested": "compiler prompt v3 -> v5, planner v1 -> v4, required-dependency model none -> v2, verifier v2 (unchanged)",
+   "scope": "one real unit (Section 6.01, 33,623 chars, 326-item frozen inventory) taken from failure to a passing trust gate through root-caused remediation",
+   "whatItProves": [
+    "the current production path compiles the unit with every trust counter zero, all shards complete, required context delivered",
+    "each historical failure has a root cause and a post-fix observation on the same unit"
+   ],
+   "whatItDoesNotProve": [
+    "semantic quality beyond the 8-item reference slice and the verifier's findings",
+    "generalization (that is proven by the synthetic/cross-corpus evidence, not by this unit)"
+   ],
+   "evidenceStatus": "CURRENT (150-158) / HISTORICAL_ROOT_CAUSE_ONLY (11-117)"
+  },
+  {
+   "id": "EARLIER_CLOSURE_ATTEMPTS_AND_UNSEEN_PACKAGES",
+   "commits": [],
+   "artifacts": [
+    "docs/final-phase3-closure/20-final-verdict.json (SEMANTIC_HOLDOUT_GENERALIZATION_FAILED - dense Article I definitions not decomposed; led to F-5/F-7)",
+    "docs/final-semantic-decomposition/22-final-verdict.json (SEMANTIC_DECOMPOSITION_NEEDS_ITERATION)",
+    "docs/final-lightweight-unseen.md (LIGHTWEIGHT_UNSEEN_TRUST_BOUNDARY_FAILED - led to the source-coverage campaign)",
+    "docs/phase-3f2-unseen-validation.md (PHASE_3F_2_ENVIRONMENT_BLOCKED after substantial real progress)",
+    "docs/phase-3f-unseen-package-validation.md, docs/phase-3f1-*.md (unseen-package structural/foundation certification series)"
+   ],
+   "productionVersionTested": "pre-remediation production versions",
+   "scope": "historical: the failures that motivated the remediation series; unseen-package structural evidence",
+   "whatItProves": [
+    "the failure modes were real, surfaced and root-caused rather than hidden"
+   ],
+   "whatItDoesNotProve": [
+    "current semantic quality"
+   ],
+   "evidenceStatus": "HISTORICAL_ROOT_CAUSE_ONLY (semantic) / DIRECTLY_APPLICABLE (structural unseen-package evidence)"
+  }
+ ],
+ "incomparableMetricsNotCombined": [
+  "F-7B canary semantic percentages (planner v1, Section 1.01)",
+  "the 51fda65 NOT_SAFE run counters (pre-remediation)",
+  "the 1b36eb6 REMEDIATION_FAILED counters (planner v2)",
+  "source-coverage scanner rows",
+  "the 150-158 final run"
+ ]
+}
