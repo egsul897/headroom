@@ -1,0 +1,78 @@
+{
+ "artifact": "PHASE 4D §18-§21, §33, §35 - one canonical order, an immutable post-state, and failure atomicity",
+ "at": "2026-09-20T04:09:33.399Z",
+ "canonicalOrder": [
+  "validate the transaction",
+  "validate the selected path",
+  "generate the dependency manifest",
+  "load the immutable pre-state",
+  "load the immutable base snapshot",
+  "construct the explicit financial overlay",
+  "create the simulation input view",
+  "evaluate the relevant capacities against that view",
+  "evaluate conditions and entity scope",
+  "calculate capacity consumption",
+  "evaluate shared constraints",
+  "apply explicitly elected reclassification",
+  "derive proposed ledger effects",
+  "derive the immutable post-state",
+  "finalize statuses, limitations and provenance"
+ ],
+ "singleOrderRule": "no individual effect handler chooses its own pre/post timing. Availability is measured once, against the pre-transaction state seen through the pro-forma view; a caller who wants one effect to see another's consequence states two transactions, and the chaining case below shows it.",
+ "stateTransitionInvariant": "PostState = apply(PreState, ExplicitTransactionEffects, ExplicitPath, ExplicitInputs) and nothing else",
+ "postStateIdentityBinds": [
+  "capacityGraphHash",
+  "capacityGraphVersion",
+  "capacityStateHash",
+  "effectSequence",
+  "inputContractVersion",
+  "ledgerPostHash",
+  "ledgerPreHash",
+  "preStateHash",
+  "runtimeVersion",
+  "simulationInputViewHash",
+  "snapshotSetHash",
+  "transactionHash",
+  "transactionSimulationVersion"
+ ],
+ "deterministicRecomputation": {
+  "availableAfterOverlay": "300",
+  "stateEvaluations": 2
+ },
+ "fixedPointRefused": {
+  "limitations": [
+   "FIXED_POINT_REQUIRED"
+  ],
+  "simulationStatus": "UNSUPPORTED",
+  "diagnostics": [
+   {
+    "code": "FIXED_POINT_REQUIRED",
+    "message": "a capacity draw in this cycle depends on a value the same cycle changes, so the amount is the solution of an equation rather than the result of one evaluation; Phase 4D does not iterate or solve",
+    "refs": [
+     "e0",
+     "e1"
+    ]
+   }
+  ],
+  "stateEvaluations": 0,
+  "neverIterates": true
+ },
+ "chaining": {
+  "first": [
+   {
+    "ruleId": "prov-a",
+    "usage": "30",
+    "remaining": "70",
+    "status": "AVAILABLE"
+   }
+  ],
+  "secondSeesFirst": "70",
+  "secondPreStateIsFirstPostState": true
+ },
+ "failureAtomicity": {
+  "postStatePublished": false,
+  "postStateIdentity": null,
+  "committable": false
+ },
+ "immutability": "currentState, capacityGraph, the base snapshot, the ledger and every caller-supplied object are read and never mutated; the identity suite asserts byte-equality before and after on both a satisfied and a refused path"
+}

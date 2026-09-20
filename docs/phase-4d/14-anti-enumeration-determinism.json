@@ -1,0 +1,221 @@
+{
+ "artifact": "PHASE 4D §32, §37, §42, §43, §44 - one generic engine, deterministic replay, no solver and no ingestion",
+ "at": "2026-09-20T04:09:33.661Z",
+ "scannedFiles": [
+  "lib/contract-model/runtime/transaction/effects.ts",
+  "lib/contract-model/runtime/transaction/identity.ts",
+  "lib/contract-model/runtime/transaction/index.ts",
+  "lib/contract-model/runtime/transaction/overlay.ts",
+  "lib/contract-model/runtime/transaction/simulate.ts",
+  "lib/contract-model/runtime/transaction/types.ts",
+  "lib/contract-model/runtime/transaction/version.ts"
+ ],
+ "forbiddenCovenantForms": [
+  "EBITDA",
+  "Total Assets",
+  "Interest Expense",
+  "Fixed Charge",
+  "Leverage Ratio",
+  "Net Income",
+  "Restricted Payment",
+  "Permitted Lien",
+  "Available Amount",
+  "Builder Basket",
+  "Grower Basket",
+  "Dividend",
+  "Acquisition",
+  "Incremental",
+  "Ratio Debt",
+  "Permitted Investment",
+  "Chewy",
+  "chwy",
+  "FWRG",
+  "CONMED",
+  "DSGR"
+ ],
+ "forbiddenFormHits": [],
+ "labelBranchPatterns": [
+  ".category ===",
+  ".label ===",
+  "switch (tx.category)"
+ ],
+ "labelBranchHits": [],
+ "solverEntryPointsForbidden": [
+  "maximumTransactionAmount(",
+  "bestBasket",
+  "bestPath",
+  "optimalAllocation",
+  "findPermissionPath",
+  "solveFor",
+  "chooseBasket",
+  "rankPaths",
+  "scorePath",
+  "candidateSearch",
+  "allocationSolver",
+  "capacityOptimizer",
+  "binarySearch",
+  "optimal",
+  "maximize",
+  "minimize",
+  "cheapest"
+ ],
+ "solverHits": [],
+ "ingestionForbidden": [
+  "fetch(",
+  "axios",
+  "node-fetch",
+  "xlsx",
+  "pdf",
+  "csv-parse",
+  "papaparse",
+  "openai",
+  "anthropic",
+  "PrismaClient",
+  "node:fs",
+  "writeFile",
+  "readFile"
+ ],
+ "ingestionHits": [],
+ "numericSafety": {
+  "infinity": false,
+  "maxValue": false,
+  "nan": false,
+  "floatConversion": false,
+  "rawAmountArithmetic": false
+ },
+ "layerBoundary": {
+  "transactionOutsideImports": [
+   "../../ir/types",
+   "../capacity/graph",
+   "../capacity/reclassification",
+   "../capacity/state",
+   "../capacity/types",
+   "../capacity/version",
+   "../decimal",
+   "../evaluate-expression",
+   "../input/identity",
+   "../input/manifest",
+   "../input/types",
+   "../input/version",
+   "../types",
+   "../units",
+   "../values",
+   "../version"
+  ],
+  "earlierPhaseModulesImportingTransaction": []
+ },
+ "canonicalizationRules": {
+  "orderSensitive": [
+   "transaction.effects - the stated sequence of effects"
+  ],
+  "orderInsensitive": [
+   "transaction.entities",
+   "selectedPath.capacityNodeIds",
+   "selectedPath.ruleIds",
+   "selectedPath.sharedCapacityIds",
+   "selectedPath.reclassificationElectionIds",
+   "effect.dependsOnEffectIds",
+   "election.movesUsageIds",
+   "snapshot identity - the snapshot id set"
+  ],
+  "excluded": [
+   "transaction.label - a display name",
+   "effect.note - reader-facing text",
+   "diagnostics - observability, not specification",
+   "trace - observability, and its formatting",
+   "complexity counters - measurement, not meaning",
+   "wall-clock timestamps",
+   "random or environment-specific identifiers"
+  ],
+  "numericRule": "every quantity hashes from its exact decimal value plus its unit (currency for MONEY); no formatted string and no float ever enters identity",
+  "objectKeyRule": "the canonical JSON writer sorts object keys, so property insertion order cannot affect any hash"
+ },
+ "replayHashes": [
+  {
+   "tx": "a99752b349b02710a87ba7d75111e28cfba07de4b902ef748dd71977270318ef",
+   "sim": "d27be467ce37f9becb1368e07f8e5e93accbdda18d358eccc1bf5c640c4cdf4b",
+   "post": "f10d75b2ca6feabf5c3f97f4248ba7dcf30169853d3401560e965826d57cde06"
+  },
+  {
+   "tx": "a99752b349b02710a87ba7d75111e28cfba07de4b902ef748dd71977270318ef",
+   "sim": "d27be467ce37f9becb1368e07f8e5e93accbdda18d358eccc1bf5c640c4cdf4b",
+   "post": "f10d75b2ca6feabf5c3f97f4248ba7dcf30169853d3401560e965826d57cde06"
+  },
+  {
+   "tx": "a99752b349b02710a87ba7d75111e28cfba07de4b902ef748dd71977270318ef",
+   "sim": "d27be467ce37f9becb1368e07f8e5e93accbdda18d358eccc1bf5c640c4cdf4b",
+   "post": "f10d75b2ca6feabf5c3f97f4248ba7dcf30169853d3401560e965826d57cde06"
+  },
+  {
+   "tx": "a99752b349b02710a87ba7d75111e28cfba07de4b902ef748dd71977270318ef",
+   "sim": "d27be467ce37f9becb1368e07f8e5e93accbdda18d358eccc1bf5c640c4cdf4b",
+   "post": "f10d75b2ca6feabf5c3f97f4248ba7dcf30169853d3401560e965826d57cde06"
+  },
+  {
+   "tx": "a99752b349b02710a87ba7d75111e28cfba07de4b902ef748dd71977270318ef",
+   "sim": "d27be467ce37f9becb1368e07f8e5e93accbdda18d358eccc1bf5c640c4cdf4b",
+   "post": "f10d75b2ca6feabf5c3f97f4248ba7dcf30169853d3401560e965826d57cde06"
+  }
+ ],
+ "replayIdentical": true,
+ "complexity": [
+  {
+   "size": 5,
+   "capacitiesEvaluated": 5,
+   "conditionsEvaluated": 0,
+   "ledgerEntriesExamined": 15,
+   "effectsApplied": 5,
+   "graphEdgesTraversed": 0,
+   "maxDependencyDepth": 1,
+   "simulationSteps": 15,
+   "reclassificationEdgesExamined": 0,
+   "sharedResourcesEvaluated": 0,
+   "stateEvaluations": 2,
+   "indexLookups": 19
+  },
+  {
+   "size": 10,
+   "capacitiesEvaluated": 10,
+   "conditionsEvaluated": 0,
+   "ledgerEntriesExamined": 30,
+   "effectsApplied": 10,
+   "graphEdgesTraversed": 0,
+   "maxDependencyDepth": 1,
+   "simulationSteps": 15,
+   "reclassificationEdgesExamined": 0,
+   "sharedResourcesEvaluated": 0,
+   "stateEvaluations": 2,
+   "indexLookups": 34
+  },
+  {
+   "size": 20,
+   "capacitiesEvaluated": 20,
+   "conditionsEvaluated": 0,
+   "ledgerEntriesExamined": 60,
+   "effectsApplied": 20,
+   "graphEdgesTraversed": 0,
+   "maxDependencyDepth": 1,
+   "simulationSteps": 15,
+   "reclassificationEdgesExamined": 0,
+   "sharedResourcesEvaluated": 0,
+   "stateEvaluations": 2,
+   "indexLookups": 64
+  },
+  {
+   "size": 40,
+   "capacitiesEvaluated": 40,
+   "conditionsEvaluated": 0,
+   "ledgerEntriesExamined": 120,
+   "effectsApplied": 40,
+   "graphEdgesTraversed": 0,
+   "maxDependencyDepth": 1,
+   "simulationSteps": 15,
+   "reclassificationEdgesExamined": 0,
+   "sharedResourcesEvaluated": 0,
+   "stateEvaluations": 2,
+   "indexLookups": 124
+  }
+ ],
+ "complexityLinear": true,
+ "complexityNote": "one pro-forma capacity evaluation and one post-state evaluation per simulation, whatever the graph size; the ledger is examined once per indexed pass (n pre-transaction, 2n proposed), and the pipeline is a fixed 15 steps"
+}

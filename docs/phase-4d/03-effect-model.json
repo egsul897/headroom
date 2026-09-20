@@ -1,0 +1,40 @@
+{
+ "artifact": "PHASE 4D §8 - a compositional typed effect vocabulary, never one engine per transaction form",
+ "at": "2026-09-20T04:09:33.352Z",
+ "supportedEffectKinds": [
+  "ACTIVATE_EVENT",
+  "APPLY_RECLASSIFICATION",
+  "CHANGE_METRIC",
+  "CONSUME_CAPACITY",
+  "DEACTIVATE_EVENT",
+  "RESTORE_CAPACITY",
+  "SUPERSEDE_LEDGER_USAGE"
+ ],
+ "reservedEffectKinds": {
+  "CREATE_LEDGER_USAGE": "usage rows are produced only as the consequence of CONSUME_CAPACITY, SUPERSEDE_LEDGER_USAGE or APPLY_RECLASSIFICATION, so that every proposed row has passed an availability or conservation check; a bare ledger insert would bypass both",
+  "CHANGE_BALANCE": "Phase 4B models a financial fact as an identified input, not as a balance-sheet account; a balance movement must be stated as CHANGE_METRIC against the input the contract actually references, so the runtime never infers which account a transaction touches",
+  "CHANGE_ENTITY_STATE": "Phase 3 carries entity scope as a static tag set on the rule; no runtime entity-state store exists to transition, and inventing one would let Phase 4D widen scope"
+ },
+ "forbiddenFormulaEngines": [
+  "DEBT_INCURRANCE_EFFECT",
+  "DIVIDEND_EFFECT",
+  "ACQUISITION_EFFECT"
+ ],
+ "productionCodeLinesPerTransactionForm": 0,
+ "unsupportedIsExplicit": {
+  "example": [
+   {
+    "effectId": "e1",
+    "kind": "CHANGE_BALANCE",
+    "supported": false,
+    "applied": false,
+    "reason": "Phase 4B models a financial fact as an identified input, not as a balance-sheet account; a balance movement must be stated as CHANGE_METRIC against the input the contract actually references, so the runtime never infers which account a transaction touches"
+   }
+  ],
+  "limitations": [
+   "UNSUPPORTED_TRANSACTION_EFFECT"
+  ],
+  "simulationStatus": "UNSUPPORTED"
+ },
+ "effectReadWriteModel": "each effect declares what it writes (a metric, an event, a capacity, a usage identity) and what it reads (for a capacity draw, the financial inputs its own capacity expression depends on, taken from the Phase-4B manifest). Circularity is detected from that structure, never from a name."
+}

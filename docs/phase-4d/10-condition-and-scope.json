@@ -1,0 +1,162 @@
+{
+ "artifact": "PHASE 4D §22, §23, §24 - conditions stay individually typed and legal state dominates",
+ "at": "2026-09-20T04:09:33.404Z",
+ "conditionResults": [
+  "SATISFIED",
+  "NOT_SATISFIED",
+  "NEEDS_INPUT",
+  "UNSUPPORTED",
+  "AMBIGUOUS",
+  "REVIEW_REQUIRED"
+ ],
+ "neverCollapsed": "a mixed set of condition results is never reduced to a single permitted flag; a failed required condition means the selected path is not SATISFIED even where the simulation itself ran",
+ "unreducibleCondition": {
+  "conditions": [
+   {
+    "conditionId": "c1",
+    "result": "UNSUPPORTED",
+    "reason": "the condition is real but carries no boolean expression, so it cannot be evaluated"
+   }
+  ],
+  "selectedPathResult": "INDETERMINATE",
+  "capacityDrawOutcome": "SATISFIED"
+ },
+ "legalStateDominance": {
+  "reviewRequiredRule": {
+   "simulationStatus": "REVIEW_REQUIRED",
+   "selectedPathResult": "REVIEW_REQUIRED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "NOT_DETERMINED",
+     "shortfall": null,
+     "outcome": "REVIEW_REQUIRED",
+     "provisional": {
+      "available": "100",
+      "outcome": "SATISFIED"
+     }
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-6::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-a",
+     "usage": "20",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    }
+   ],
+   "limitations": [
+    "CAPACITY_NOT_DETERMINED",
+    "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "committable": false
+  },
+  "ambiguousRule": {
+   "simulationStatus": "REVIEW_REQUIRED",
+   "selectedPathResult": "INDETERMINATE",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "NOT_DETERMINED",
+     "shortfall": null,
+     "outcome": "INDETERMINATE",
+     "provisional": {
+      "available": "100",
+      "outcome": "SATISFIED"
+     }
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-7::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": false,
+   "postUsage": null,
+   "limitations": [
+    "CAPACITY_NOT_DETERMINED",
+    "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "committable": false
+  },
+  "rule": "an unsafe Phase-3 state is never upgraded into an authoritative SATISFIED; the arithmetic is reported under `provisional` with the exact Phase-3 reason"
+ },
+ "entityScopeOutcomes": [
+  "CONFIRMED_APPLICABLE",
+  "CONFIRMED_EXCLUDED",
+  "NOT_IN_DECLARED_SCOPE",
+  "SCOPE_UNSPECIFIED",
+  "SCOPE_NOT_SAFE_TO_RELY_ON",
+  "NO_TRANSACTION_ENTITIES_SUPPLIED"
+ ],
+ "entityExcluded": {
+  "outcome": {
+   "ruleId": "prov-a",
+   "transactionEntities": [
+    "UNRESTRICTED_SUB"
+   ],
+   "ruleEntityScope": [
+    "BORROWER"
+   ],
+   "ruleEntityScopeExcluded": [
+    "UNRESTRICTED_SUB"
+   ],
+   "auditStatus": null,
+   "safeToRely": null,
+   "outcome": "CONFIRMED_EXCLUDED",
+   "reason": "rule prov-a expressly excludes UNRESTRICTED_SUB, which the transaction names; the selected path does not apply to this transaction"
+  },
+  "selectedPathResult": "NOT_APPLICABLE"
+ },
+ "entityOutsideDeclaredScope": {
+  "outcome": {
+   "ruleId": "prov-a",
+   "transactionEntities": [
+    "FOREIGN_RS"
+   ],
+   "ruleEntityScope": [
+    "BORROWER"
+   ],
+   "ruleEntityScopeExcluded": [
+    "UNRESTRICTED_SUB"
+   ],
+   "auditStatus": null,
+   "safeToRely": null,
+   "outcome": "NOT_IN_DECLARED_SCOPE",
+   "reason": "rule prov-a declares a scope that does not include FOREIGN_RS; the scope is reported as it stands and is never widened"
+  },
+  "selectedPathResult": "NOT_SATISFIED"
+ },
+ "entityScopeUnsafe": {
+  "outcome": {
+   "ruleId": "prov-a",
+   "transactionEntities": [
+    "BORROWER"
+   ],
+   "ruleEntityScope": [],
+   "ruleEntityScopeExcluded": [],
+   "auditStatus": "UNDERINCLUSIVE_VS_SOURCE",
+   "safeToRely": false,
+   "outcome": "SCOPE_NOT_SAFE_TO_RELY_ON",
+   "reason": "the Phase-3 entity-scope guard marked rule prov-a not safe to rely on (UNDERINCLUSIVE_VS_SOURCE); the transaction's entities are not confirmed against it and the scope is never widened to make the path work"
+  },
+  "selectedPathResult": "REVIEW_REQUIRED"
+ },
+ "neverWidened": "an unknown entity is never assumed to be a borrower, a guarantor or a restricted subsidiary"
+}

@@ -1,0 +1,202 @@
+{
+ "artifact": "PHASE 4D §27, §28, §36 - the provenance chain, the ordered trace and the dependency manifest",
+ "at": "2026-09-20T04:09:33.404Z",
+ "provenanceChain": [
+  {
+   "from": "transaction:tx-ov",
+   "to": "selectedPath",
+   "via": "caller-supplied explicit selection"
+  },
+  {
+   "from": "selectedPath",
+   "to": "phase3:rules:prov-g",
+   "via": "capacity node source identity"
+  },
+  {
+   "from": "phase3:rules",
+   "to": "phase4a:evaluation",
+   "via": "capacity and condition expressions"
+  },
+  {
+   "from": "phase4a:evaluation",
+   "to": "phase4b:snapshots:gate-pack",
+   "via": "strict financial input resolution"
+  },
+  {
+   "from": "phase4b:snapshots",
+   "to": "phase4d:overlay:71f7e1e2d1d8",
+   "via": "explicit pro-forma adjustments"
+  },
+  {
+   "from": "phase4d:overlay",
+   "to": "phase4c:preState:5a419d0e480c",
+   "via": "capacity state and consumption ledger"
+  },
+  {
+   "from": "phase4c:preState",
+   "to": "phase4d:proposedEffects:1",
+   "via": "explicit transaction effects"
+  },
+  {
+   "from": "phase4d:proposedEffects",
+   "to": "phase4c:postState:177e55d2a7fc",
+   "via": "re-evaluation over the proposed ledger"
+  }
+ ],
+ "provenanceBinds": {
+  "preStateHash": "5a419d0e480c536b309129e7718746c0f15f8ecf06056afabe7d1f0912e24378",
+  "postStateHash": "177e55d2a7fc57c3d387be9926c00c232494595b44ddd40269e18442636c9aee",
+  "snapshotSetHash": "cfc7162a666f73c16fc3da6b26ef97a15db8ab7e705a8bc2c994386fda72abd7",
+  "inputViewHash": "71f7e1e2d1d896d419f94dd1d3aee0d2d400d622ee609e0e5b6b96115a019d0f",
+  "ledgerPreHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "ledgerPostHash": "63a558e13854522c20e1d1ac3886b6e6e6977ac05b4fc3c695f292adf19573ef"
+ },
+ "inheritedLimitationsExample": [
+  "CAPACITY_NOT_DETERMINED",
+  "SHARED_CAPACITY_NOT_QUANTIFIED"
+ ],
+ "inheritedLimitationsRule": "a limitation on an upstream source stays attached downstream; a limited capacity cannot produce an unlimited claim",
+ "traceSteps": [
+  {
+   "step": 1,
+   "name": "TRANSACTION_VALIDATED",
+   "status": "OK",
+   "reason": "2 effect(s) stated, 2 supported"
+  },
+  {
+   "step": 2,
+   "name": "SELECTED_PATH_VALIDATED",
+   "status": "OK",
+   "reason": "1 capacity node(s), 1 rule(s), 0 election(s) selected by the caller"
+  },
+  {
+   "step": 3,
+   "name": "DEPENDENCY_MANIFEST_GENERATED",
+   "status": "OK",
+   "reason": "1 financial input(s), 1 capacity node(s), 0 ledger identity(ies) required before anything is evaluated"
+  },
+  {
+   "step": 4,
+   "name": "PRE_STATE_LOADED",
+   "status": "OK",
+   "reason": "pre-transaction state 5a419d0e480c over 0 ledger record(s); it is read, never mutated"
+  },
+  {
+   "step": 5,
+   "name": "BASE_SNAPSHOT_LOADED",
+   "status": "OK",
+   "reason": "1 approved snapshot(s) bound; the snapshot is immutable and is never written to"
+  },
+  {
+   "step": 6,
+   "name": "FINANCIAL_OVERLAY_APPLIED",
+   "status": "OK",
+   "reason": "1 of 1 stated adjustment(s) applied; every other input reads through to the approved snapshot unchanged"
+  },
+  {
+   "step": 7,
+   "name": "SIMULATION_INPUT_VIEW_CREATED",
+   "status": "OK",
+   "reason": "pro-forma view 71f7e1e2d1d8 over the immutable base snapshot"
+  },
+  {
+   "step": 8,
+   "name": "CAPACITIES_EVALUATED",
+   "status": "OK",
+   "reason": "1 capacity(ies) evaluated once against the pro-forma input view"
+  },
+  {
+   "step": 9,
+   "name": "CONDITIONS_EVALUATED",
+   "status": "OK",
+   "reason": "0 condition(s) evaluated individually; a mixed set is never collapsed into one permitted flag"
+  },
+  {
+   "step": 10,
+   "name": "CAPACITY_CONSUMPTION_CALCULATED",
+   "status": "OK",
+   "reason": "1 explicit draw(s) measured against effective remaining capacity; an over-draw is reported, never clamped and never resized"
+  },
+  {
+   "step": 11,
+   "name": "SHARED_CONSTRAINTS_EVALUATED",
+   "status": "OK",
+   "reason": "0 shared constraint(s) in the graph; a member draw is bounded by every pool it belongs to and no pool limit is copied onto a member"
+  },
+  {
+   "step": 12,
+   "name": "RECLASSIFICATION_APPLIED",
+   "status": "SKIPPED",
+   "reason": "no election was supplied; Phase 4D never elects a reclassification on the caller's behalf"
+  },
+  {
+   "step": 13,
+   "name": "PROPOSED_LEDGER_EFFECTS_CREATED",
+   "status": "OK",
+   "reason": "1 proposed row(s), 0 existing row(s) restated as superseded; the actual ledger is never written"
+  },
+  {
+   "step": 14,
+   "name": "POST_STATE_DERIVED",
+   "status": "OK",
+   "reason": "post-transaction state derived from the pre-transaction ledger plus 1 proposed row(s); the input state object is unchanged"
+  },
+  {
+   "step": 15,
+   "name": "STATUS_FINALIZED",
+   "status": "OK",
+   "reason": "simulation SIMULATED, selected path SATISFIED; the two dimensions are reported separately and are never collapsed into one permitted flag"
+  }
+ ],
+ "traceIsNotIdentity": "the trace and the diagnostics are observability; neither reaches any hash, and the canonicalization contract says so explicitly",
+ "dependencyManifest": {
+  "transactionSimulationVersion": "transaction-simulation.v1",
+  "financialInputs": [
+   {
+    "inputKind": "METRIC",
+    "key": "figure-base",
+    "displayNameFromContract": "figure-base",
+    "identityStrength": "CONTRACT_NAME_ONLY",
+    "companyId": "gate4d-org",
+    "instrumentKey": "gate4d-facility",
+    "scopeHint": "COMPANY_OR_INSTRUMENT",
+    "period": {
+     "kind": "NOT_PERIOD_SPECIFIC"
+    },
+    "asOf": {
+     "kind": "EXACT_DATE",
+     "isoDate": "2026-06-30"
+    },
+    "expectedType": "MONEY",
+    "status": "REQUIRED",
+    "conditionalOn": null,
+    "safeBoundAvailableWithoutThis": false,
+    "via": {
+     "kind": "EXPRESSION"
+    },
+    "exprIds": [
+     "g18"
+    ]
+   }
+  ],
+  "requiredCapacityNodeIds": [
+   "capacity:rule:prov-g"
+  ],
+  "requiredRuleIds": [
+   "prov-g"
+  ],
+  "requiredSharedCapacityIds": [],
+  "requiredLedgerUsageIds": [],
+  "requiredReclassificationElectionIds": [],
+  "requiredReclassificationEdges": [],
+  "adjustedInputKeys": [
+   "figure-base"
+  ],
+  "adjustedEventDescriptions": [],
+  "entityScopeDependencies": [
+   "prov-g"
+  ],
+  "manifestHash": "4efb918e05fd5807cdbe67be2f4d815f21e792577f0953dac5acffdb4e640e65"
+ },
+ "manifestAvailableBeforeEvaluation": true
+}

@@ -1,0 +1,47 @@
+{
+ "artifact": "PHASE 4D §42 - what the later solver receives, and how this phase stays neutral",
+ "at": "2026-09-20T04:09:33.665Z",
+ "phase4eReceives": [
+  "the immutable CapacityState and its hash",
+  "the CapacityGraph and its dependency manifest",
+  "a pure simulateTransaction that evaluates one explicitly specified transaction against one explicitly selected path",
+  "deterministic transaction, simulation and post-state identities",
+  "a declarative SimulationCommitPlan"
+ ],
+ "phase4eWillDo": [
+  "enumerate candidate legal paths",
+  "compare and order alternatives",
+  "allocate an amount across capacities",
+  "solve for a maximum transaction size",
+  "return a preferred structure"
+ ],
+ "phase4dRemainsNeutral": [
+  "the caller supplies the path; no alternative is considered",
+  "an unstated allocation is AMBIGUOUS, never inferred",
+  "an over-draw is refused, never resized",
+  "a circular specification returns FIXED_POINT_REQUIRED rather than iterating",
+  "two simulations are returned independently and are never compared",
+  "no API names a preferred, maximum or optimal anything"
+ ],
+ "forbiddenInPhase4D": [
+  "maximumTransactionAmount(",
+  "bestBasket",
+  "bestPath",
+  "optimalAllocation",
+  "findPermissionPath",
+  "solveFor",
+  "chooseBasket",
+  "rankPaths",
+  "scorePath",
+  "candidateSearch",
+  "allocationSolver",
+  "capacityOptimizer",
+  "binarySearch",
+  "optimal",
+  "maximize",
+  "minimize",
+  "cheapest"
+ ],
+ "observedSolverHits": [],
+ "notStarted": true
+}
