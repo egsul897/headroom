@@ -1,0 +1,50 @@
+{
+ "artifact": "PHASE 4C remediation R21 - the Phase-4D handoff",
+ "at": "2026-09-20T00:43:32.290Z",
+ "phase4dStartingSha": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec",
+ "phase4dStartingShaNote": "the commit carrying the remediated production code, tests and artifacts 00-14; this file is sealed by the immediately following commit, whose only change is this file. Phase 4D verifies the tree identities below, which are identical in both commits.",
+ "supersededPhase4dStartingSha": "779d4103300758390a8795194b5082d87a1625d6",
+ "phase3TreeHash": {
+  "compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+  "semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+ },
+ "phase4aRuntimeIdentity": {
+  "identity": "370e6d3ca8376075f8a8297d6fa558fed042dac76080c0053c42c923a9b08255",
+  "files": 10
+ },
+ "phase4bInputTreeIdentity": {
+  "identity": "ff0331b049eb802123b3ae49dde5786a5eaf5193fcc7a1e06f3562f887189466",
+  "files": 8
+ },
+ "phase4cCapacityTreeIdentity": {
+  "identity": "b63605841aa074194fed589d74fb4161392dbedcb9634ee826053050b4e48502",
+  "files": 7
+ },
+ "capacityGraphVersion": "capacity-graph.v1",
+ "phase4cGateVerdict": "PHASE4C_CAPACITY_STATE_READY",
+ "recertification": {
+  "conditions": {
+   "PASS": 32,
+   "FAIL": 0,
+   "total": 32
+  },
+  "artifact": "docs/phase-4c/remediation/14-recertification.json"
+ },
+ "knownInheritedInstabilities": [
+  {
+   "identities": [
+    "tests/contract-model/part-b-recert-finding4-independent.test.ts",
+    "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts"
+   ],
+   "function": "segmentCoordinateClauses",
+   "classification": "INHERITED FLAKY / UNSTABLE TEST",
+   "waived": false,
+   "evidence": "docs/phase-4c/remediation/13-full-regression.json"
+  }
+ ],
+ "realCorpusSharedCapacityCount": 0,
+ "realCorpusExecutableReclassificationEdgeCount": 0,
+ "phase4dStarted": false,
+ "phase4eStarted": false,
+ "phase5Started": false
+}
