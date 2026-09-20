@@ -1,0 +1,109 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL §11 - generality / anti-overfit",
+ "at": "2026-09-19T15:27:06.963Z",
+ "productionFilesScanned": [
+  "lib/contract-model/compiler/semantic/entity-scope-guard.ts",
+  "lib/contract-model/compiler/semantic/normalize.ts",
+  "lib/contract-model/ir/types.ts"
+ ],
+ "scanScope": "lines added by this mission (new module in full + diff + lines), non-comment",
+ "linesScanned": 411,
+ "forbiddenPattern": "Chewy|chwy|6\\.01|Permitted Ratio|ir-rule:[0-9a-f]{6}|170e314c|49f22aee|31ef4cb0|01c9a005|6d2acc86|b21ac832|8df2fec3|Section 6\\b|§6\\.",
+ "hits": [],
+ "hitCount": 0,
+ "synthetic": {
+  "A_company_scope_COMPANY": {
+   "source": "The Company shall not incur any Indebtedness.",
+   "scope": [
+    "COMPANY"
+   ],
+   "expected": "safe (alias of BORROWER, confirmed)",
+   "result": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE",
+    "status": "SOURCE_MATCH_CONFIRMED",
+    "safeToRely": true,
+    "warnings": 0
+   }
+  },
+  "B_borrower_and_each_RS_scope_BORROWER": {
+   "source": "The Borrower and each Restricted Subsidiary may incur Indebtedness ...",
+   "scope": [
+    "BORROWER"
+   ],
+   "expected": "downgrade",
+   "result": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "warnings": 0
+   }
+  },
+  "C_no_subsidiary_scope_SUBSIDIARY": {
+   "source": "No Subsidiary may incur any Indebtedness.",
+   "scope": [
+    "SUBSIDIARY"
+   ],
+   "expected": "safe if recognized (alias of ANY_SUBSIDIARY)",
+   "result": {
+    "entityScope": [
+     "ANY_SUBSIDIARY"
+    ],
+    "sufficiency": "COMPLETE",
+    "status": "SOURCE_MATCH_CONFIRMED",
+    "safeToRely": true,
+    "warnings": 0
+   }
+  },
+  "D_issuer_guarantor_scope_ISSUER": {
+   "source": "The Issuer shall not permit any Guarantor to ...",
+   "scope": [
+    "ISSUER"
+   ],
+   "expected": "downgrade",
+   "result": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "warnings": 0
+   }
+  },
+  "E_unknown_tag": {
+   "source": "No Restricted Subsidiary may incur Indebtedness.",
+   "scope": [
+    "RESTRICTED_SUBS"
+   ],
+   "expected": "warning + unspecified/partial, never silent drop",
+   "result": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNRECOGNIZED_TAG",
+    "safeToRely": false,
+    "warnings": 1
+   }
+  },
+  "F_no_entity_phrase": {
+   "source": "Indebtedness in respect of Capital Lease Obligations not to exceed $5,000,000.",
+   "scope": [
+    "BORROWER"
+   ],
+   "expected": "no invented correction (UNWITNESSED, unchanged)",
+   "result": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE",
+    "status": "UNWITNESSED",
+    "safeToRely": false,
+    "warnings": 0
+   }
+  }
+ },
+ "syntheticAllAsExpected": true,
+ "vocabularyIsGeneric": "signals are generic defined-term classes (Borrower, the Company/Issuer, Restricted/Unrestricted/qualified/unqualified Subsidiary, Guarantor, Loan/Credit Party, Obligor); aliases map only to exact enum classes",
+ "leadInExtractorIsStructural": "(a) The Parent shall not permit any Subsidiary to do X; provided that"
+}

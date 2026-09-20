@@ -1,0 +1,23 @@
+{
+ "artifact": "PHASE 4C §43 - what Phase 4D receives",
+ "at": "2026-09-20T00:42:59.564Z",
+ "phase4dReceives": [
+  "the immutable current CapacityState, with its stateHash",
+  "the CapacityGraph, with its graphHash and dependency manifest",
+  "an explicit transaction delta",
+  "explicit proposed capacity allocations or elections",
+  "reclassification elections",
+  "the Phase-4B financial snapshot identity the state was bound to"
+ ],
+ "phase4dWillDo": [
+  "apply hypothetical transactions and state transitions",
+  "produce a projected state without mutating the current one"
+ ],
+ "phase4cGuarantees": [
+  "the current state is immutable and hashable",
+  "the same IR, snapshots, ledger, policy and as-of always give the same state",
+  "every number traces to a source citation, a snapshot version and a ledger entry",
+  "nothing has been chosen on the caller's behalf"
+ ],
+ "notStarted": true
+}

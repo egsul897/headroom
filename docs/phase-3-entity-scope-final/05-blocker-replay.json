@@ -1,0 +1,189 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL §13 - the blocking finding re-run over the transformed frozen IR",
+ "at": "2026-09-19T15:27:06.918Z",
+ "finding": {
+  "findingId": "96dd0fc7c578276da8caf72205b40ad0e3506bbc99abd9e20f5fd865710ffd42",
+  "findingType": "WRONG_ENTITY_SCOPE",
+  "severity": "MATERIAL"
+ },
+ "verifierSeverityUnchanged": true,
+ "verifierWarningMayRemain": "the verifier is untouched (§15); its WRONG_ENTITY_SCOPE finding may still be raised on a future run - it is no longer a dangerous authoritative error because the field it names is unspecified + PARTIAL with a reason, or unwitnessed with safeToRely=false",
+ "rows": [
+  {
+   "ruleId": "ir-rule:170e314ceb35e54072b7ddba",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL",
+    "scopeLimitationStated": false
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+    ]
+   },
+   "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED",
+   "unsafeAuthoritativeScopeRemains": false
+  },
+  {
+   "ruleId": "ir-rule:49f22aee601dde5b8b8162d5",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL",
+    "scopeLimitationStated": false
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+    ]
+   },
+   "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED",
+   "unsafeAuthoritativeScopeRemains": false
+  },
+  {
+   "ruleId": "ir-rule:31ef4cb0be0026182f97f8ea",
+   "before": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "scopeLimitationStated": true
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNSPECIFIED",
+    "safeToRely": true,
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNSPECIFIED"
+    ]
+   },
+   "endState": "NO_SCOPE_CLAIM",
+   "unsafeAuthoritativeScopeRemains": false
+  },
+  {
+   "ruleId": "ir-rule:01c9a005fd9c7649ddc26012",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE",
+    "scopeLimitationStated": false
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+    ]
+   },
+   "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED",
+   "unsafeAuthoritativeScopeRemains": false
+  },
+  {
+   "ruleId": "ir-rule:6d2acc86b7f3dede7305f5df",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL",
+    "scopeLimitationStated": false
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+    ]
+   },
+   "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED",
+   "unsafeAuthoritativeScopeRemains": false
+  },
+  {
+   "ruleId": "ir-rule:b21ac832418c33bcf91d0625",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "COMPLETE",
+    "scopeLimitationStated": false
+   },
+   "after": {
+    "entityScope": [],
+    "sufficiency": "PARTIAL",
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+    ]
+   },
+   "endState": "EXPLICITLY_LIMITED_SCOPE_UNSPECIFIED",
+   "unsafeAuthoritativeScopeRemains": false
+  },
+  {
+   "ruleId": "ir-rule:8df2fec30e5afda652c94c04",
+   "before": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL",
+    "scopeLimitationStated": false
+   },
+   "after": {
+    "entityScope": [
+     "BORROWER"
+    ],
+    "sufficiency": "PARTIAL",
+    "status": "UNWITNESSED",
+    "safeToRely": false,
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNWITNESSED"
+    ]
+   },
+   "endState": "UNWITNESSED_PARTIAL_SAFE_TO_RELY_FALSE",
+   "unsafeAuthoritativeScopeRemains": false
+  }
+ ],
+ "closureTest": {
+  "consumerWouldBelieveBorrowerOnlyForF0Rules": false,
+  "authoritativeRuleMarkedCompleteWithUnderinclusiveScope": [],
+  "explicitScopeLimitationOnEveryDowngradedRule": true,
+  "unsafeAuthoritativeScopeRemainingAnywhere": [],
+  "completeRulesWithUnconfirmedNonEmptyScope": [
+   {
+    "ruleId": "ir-rule:2ab977e5bbe427a2d4948ae5",
+    "status": "UNWITNESSED",
+    "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+   },
+   {
+    "ruleId": "ir-rule:7c1ddfa0712717e751cf7844",
+    "status": "UNWITNESSED",
+    "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+   },
+   {
+    "ruleId": "ir-rule:b0412876bf8a621ccc3467ee",
+    "status": "UNWITNESSED",
+    "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+   },
+   {
+    "ruleId": "ir-rule:d32b69e1b489936f434911db",
+    "status": "UNWITNESSED",
+    "note": "scope unwitnessed by any bound text (no contradiction provable); safeToRely=false is recorded, so this is not a confident authoritative conclusion a consumer can mistake for verified"
+   }
+  ]
+ },
+ "verdict": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION"
+}

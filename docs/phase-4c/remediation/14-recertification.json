@@ -1,0 +1,215 @@
+{
+ "artifact": "PHASE 4C remediation R19 - the 32-condition recertification gate",
+ "at": "2026-09-20T00:42:58.358Z",
+ "remediationStartingSha": "779d4103300758390a8795194b5082d87a1625d6",
+ "phase4cStartingSha": "b38fdcb5bc006b915ffe9b548fbb5ff18aade2fa",
+ "headAtRun": "779d4103300758390a8795194b5082d87a1625d6",
+ "criterionChangeDisclosure": "the original Phase-4C gate condition 32 was reworded after its first run (audit U16); this recertification uses the mission's own 32 conditions verbatim and none was changed after seeing a result",
+ "conditions": [
+  {
+   "n": 1,
+   "condition": "Phase 3 remains frozen",
+   "status": "PASS",
+   "evidence": "compiler b4e6a9da496a23b9f98607355520a456e6c48e1f; semantic f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+  },
+  {
+   "n": 2,
+   "condition": "Phase 4A semantics remain unchanged",
+   "status": "PASS",
+   "evidence": "runtime file identity before 370e6d3ca837 after 370e6d3ca837"
+  },
+  {
+   "n": 3,
+   "condition": "Phase 4B semantics remain unchanged",
+   "status": "PASS",
+   "evidence": "input tree identity before ff0331b049eb after ff0331b049eb"
+  },
+  {
+   "n": 4,
+   "condition": "batch reclassification conservation holds",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 5,
+   "condition": "aggregate elections cannot create capacity",
+   "status": "PASS",
+   "evidence": "03 C/F/I"
+  },
+  {
+   "n": 6,
+   "condition": "duplicate election identity cannot execute twice",
+   "status": "PASS",
+   "evidence": "03 H"
+  },
+  {
+   "n": 7,
+   "condition": "duplicate ledger identity cannot double-count usage",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 8,
+   "condition": "duplicate capacity / shared-resource identity cannot resolve by array order",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 9,
+   "condition": "unsafe Phase-3 states always dominate numeric availability",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 10,
+   "condition": "unquantified shared-capacity relationships do not produce authoritative effective availability",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 11,
+   "condition": "missing / ambiguous allocation data fails explicitly",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 12,
+   "condition": "snapshot ambiguity semantics are correct and order-independent",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 13,
+   "condition": "symmetric non-dependency relationships do not produce false evaluation cycles",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 14,
+   "condition": "true dependency cycles still fail closed",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 15,
+   "condition": "capacity evaluation no longer exhibits accidental near-quadratic structural behaviour",
+   "status": "PASS",
+   "evidence": "counters exact-linear true; supplemental wall-clock eval slope 0.88 (audited 1.81)"
+  },
+  {
+   "n": 16,
+   "condition": "deterministic complexity counters support the claimed complexity",
+   "status": "PASS",
+   "evidence": "10"
+  },
+  {
+   "n": 17,
+   "condition": "original Phase-4C valid tests pass",
+   "status": "PASS",
+   "evidence": "capacity-state 19/0; shared-and-ledger 21/0; builder-and-reclassification 30/0; determinism-and-generality 14/0; phase3-fixture-proof 12/0"
+  },
+  {
+   "n": 18,
+   "condition": "adversarial forensic regression suite passes",
+   "status": "PASS",
+   "evidence": "22 tests, 0 failed"
+  },
+  {
+   "n": 19,
+   "condition": "reclassification synthetic matrix passes",
+   "status": "PASS",
+   "evidence": "matrices 59/0"
+  },
+  {
+   "n": 20,
+   "condition": "shared-capacity synthetic matrix passes",
+   "status": "PASS",
+   "evidence": "07 / 05 / shared-and-ledger"
+  },
+  {
+   "n": 21,
+   "condition": "real fixture limitations remain honestly disclosed",
+   "status": "PASS",
+   "evidence": "12: 0 quantified pools, 0 executable reclassification edges, stated"
+  },
+  {
+   "n": 22,
+   "condition": "provenance remains complete",
+   "status": "PASS",
+   "evidence": "explanation carries citation, snapshot, ledger entry, inputs"
+  },
+  {
+   "n": 23,
+   "condition": "immutability / hash determinism remains intact",
+   "status": "PASS",
+   "evidence": "repeat hashes identical; permutation hashes identical"
+  },
+  {
+   "n": 24,
+   "condition": "no solver / simulation logic has entered Phase 4C",
+   "status": "PASS",
+   "evidence": "hits none"
+  },
+  {
+   "n": 25,
+   "condition": "Phase 4D remains unstarted",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 26,
+   "condition": "Phase 4E remains unstarted",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 27,
+   "condition": "Phase 5 remains unstarted",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 28,
+   "condition": "tsc passes with no new errors",
+   "status": "PASS",
+   "evidence": "tsc new 0"
+  },
+  {
+   "n": 29,
+   "condition": "lint passes",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 30,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 31,
+   "condition": "full regression has no attributable new failures",
+   "status": "PASS",
+   "evidence": "new identities 1: tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 "
+  },
+  {
+   "n": 32,
+   "condition": "inherited segmentCoordinateClauses instability documented honestly and not waived",
+   "status": "PASS",
+   "evidence": "isolation 8 pass / 2 fail of 10; direct slope 1.03; classification INHERITED FLAKY / UNSTABLE, not waived"
+  }
+ ],
+ "summary": {
+  "PASS": 32,
+  "FAIL": 0,
+  "total": 32
+ },
+ "smallestRemainingBlockerSet": [],
+ "verdict": "PHASE4C_CAPACITY_STATE_READY",
+ "phase4cComplete": true,
+ "paidCalls": 0,
+ "modelCalls": 0,
+ "phase4dStarted": false,
+ "phase4eStarted": false,
+ "phase5Started": false
+}

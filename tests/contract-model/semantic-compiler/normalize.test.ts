@@ -174,10 +174,23 @@ describe("Phase 3B synthetic tests - normalization", () => {
     expect(JSON.stringify(orInner.capacityExpression)).not.toBe(JSON.stringify(andOuter.capacityExpression));
   });
 
-  it("15: entity scope include/exclude normalize against the real EntityClassTag vocabulary, dropping unrecognized tags honestly", () => {
-    const { rules } = normalizeSubmission(submission([{ entityScope: ["BORROWER", "not-a-real-tag"], entityScopeExcluded: ["FOREIGN_RS"] }]), testCompilerInput());
-    expect(rules[0]?.entityScope).toEqual(["BORROWER"]);
+  it("15: entity scope include/exclude normalize against the real EntityClassTag vocabulary; an unrecognized tag is never dropped silently (ENTITY-SCOPE GUARD - the former silent-drop contract is retired)", () => {
+    const { rules, warnings } = normalizeSubmission(submission([{ entityScope: ["BORROWER", "not-a-real-tag"], entityScopeExcluded: ["FOREIGN_RS"] }]), testCompilerInput());
+    // the unrecognized include tag makes the include scope non-authoritative (unspecified), limits the rule, and is preserved verbatim in the audit
+    expect(rules[0]?.entityScope).toEqual([]);
     expect(rules[0]?.entityScopeExcluded).toEqual(["FOREIGN_RS"]);
+    expect(rules[0]?.sufficiency).not.toBe("COMPLETE");
+    expect(rules[0]?.sufficiencyReasons.some((r) => r.startsWith("ENTITY_SCOPE_UNRECOGNIZED_TAG:"))).toBe(true);
+    expect(warnings.some((w) => /ENTITY_SCOPE_UNRECOGNIZED_TAG/.test(w.message) && /"not-a-real-tag"/.test(w.message))).toBe(true);
+    expect(rules[0]?.entityScopeAudit?.tagNormalization).toEqual([
+      { field: "entityScope", raw: "BORROWER", outcome: "RECOGNIZED_ENTITY_TAG", normalized: "BORROWER", viaAlias: false },
+      { field: "entityScope", raw: "not-a-real-tag", outcome: "UNRECOGNIZED_ENTITY_TAG", normalized: null, viaAlias: false },
+      { field: "entityScopeExcluded", raw: "FOREIGN_RS", outcome: "RECOGNIZED_ENTITY_TAG", normalized: "FOREIGN_RS", viaAlias: false },
+    ]);
+    // recognized tags with no unrecognized companion keep working exactly as before
+    const clean = normalizeSubmission(submission([{ entityScope: ["BORROWER"], entityScopeExcluded: ["FOREIGN_RS"] }]), testCompilerInput()).rules[0]!;
+    expect(clean.entityScope).toEqual(["BORROWER"]);
+    expect(clean.entityScopeExcluded).toEqual(["FOREIGN_RS"]);
   });
 
   it("16: rule dependency (dependsOn) resolves a localRef to a real, non-dangling ruleId", () => {

@@ -1,0 +1,27 @@
+{
+ "artifact": "PHASE 4B §25-§28 - a defined term resolves to its definition or to an approved calculated fact, never to both by accident",
+ "at": "2026-09-19T19:53:28.862Z",
+ "outcomes": [
+  "RESOLVED_DEFINITION",
+  "RESOLVED_VALUE",
+  "MISSING",
+  "AMBIGUOUS",
+  "CONFLICT",
+  "INCOMPATIBLE",
+  "NOT_APPROVED"
+ ],
+ "precedence": [
+  "a stable definitionId identifies exactly one definition, and never falls back to a name",
+  "a name lookup is scoped to the company and instrument",
+  "an evaluable definition beats a supplied value unless the value explicitly names the definition it overrides"
+ ],
+ "observed": {
+  "definitionWins": "RESOLVED_DEFINITION",
+  "stableIdPointingElsewhereIsAConflict": "CONFLICT",
+  "twoDefinitionsSameIdentityIsAmbiguous": "AMBIGUOUS",
+  "suppliedValueWithNoDefinition": "RESOLVED_VALUE",
+  "suppliedValueCompetingWithEvaluableDefinitionIsAConflict": "CONFLICT",
+  "explicitOverrideIsHonoured": "RESOLVED_VALUE"
+ },
+ "overrideField": "FinancialInput.overridesDefinitionId - without it, a supplied value that competes with an evaluable definition is a conflict, not a choice"
+}

@@ -1,0 +1,276 @@
+{
+ "artifact": "PHASE 4C §46 - gate",
+ "at": "2026-09-19T21:52:38.232Z",
+ "startingSha": "b38fdcb5bc006b915ffe9b548fbb5ff18aade2fa",
+ "headAtRun": "a3325535b4e30d85448e840c7ca27b8286d623f6",
+ "capacityGraphVersion": "capacity-graph.v1",
+ "runtimeVersion": "contract-runtime.v1",
+ "inputContractVersion": "financial-input-contract.v1",
+ "phase3Trees": {
+  "frozen": {
+   "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+  },
+  "atHead": {
+   "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+  },
+  "semanticFrozen": true
+ },
+ "productionFilesChanged": [
+  "lib/contract-model/runtime/capacity/graph.ts",
+  "lib/contract-model/runtime/capacity/index.ts",
+  "lib/contract-model/runtime/capacity/ledger.ts",
+  "lib/contract-model/runtime/capacity/reclassification.ts",
+  "lib/contract-model/runtime/capacity/state.ts",
+  "lib/contract-model/runtime/capacity/types.ts",
+  "lib/contract-model/runtime/capacity/version.ts"
+ ],
+ "onlyCapacityFilesChanged": true,
+ "testCounts": {
+  "phase4cCapacityTests": 95,
+  "phase4cFailed": 0
+ },
+ "conditions": [
+  {
+   "n": 1,
+   "condition": "Phase 3 remains frozen",
+   "status": "PASS",
+   "evidence": "semantic f79bc12dd479e9b803bf9e37092d76b6aedb8c12; compiler b4e6a9da496a23b9f98607355520a456e6c48e1f; dirty 0"
+  },
+  {
+   "n": 2,
+   "condition": "Phase 4A expression semantics unchanged",
+   "status": "PASS",
+   "evidence": "runtime files changed outside the capacity module: none"
+  },
+  {
+   "n": 3,
+   "condition": "Phase 4B input identity and resolution remain intact",
+   "status": "PASS",
+   "evidence": "phase-4b verdict PHASE4B_INPUT_CONTRACT_READY"
+  },
+  {
+   "n": 4,
+   "condition": "the capacity graph is generic",
+   "status": "PASS",
+   "evidence": "forbidden hits 0"
+  },
+  {
+   "n": 5,
+   "condition": "ordinary gross, usage and remaining work",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 6,
+   "condition": "builders and growers use compositional expressions with no formula enumeration",
+   "status": "PASS",
+   "evidence": "matrix 7/7"
+  },
+  {
+   "n": 7,
+   "condition": "shared caps are explicit constraint nodes whose limit is not copied onto members",
+   "status": "PASS",
+   "evidence": "07 A"
+  },
+  {
+   "n": 8,
+   "condition": "multi-pool membership works without collapsing either constraint",
+   "status": "PASS",
+   "evidence": "07 D"
+  },
+  {
+   "n": 9,
+   "condition": "ambiguous usage allocation fails closed",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 10,
+   "condition": "no solver or election logic exists",
+   "status": "PASS",
+   "evidence": "hits none"
+  },
+  {
+   "n": 11,
+   "condition": "no transaction simulation exists",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 12,
+   "condition": "current ledger usage is deterministic",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 13,
+   "condition": "over-consumption is explicit and never clamped",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 14,
+   "condition": "unlimited is explicit, not numeric infinity",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 15,
+   "condition": "a missing input never becomes zero",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 16,
+   "condition": "bounds remain bounds, never values",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 17,
+   "condition": "review-required legal state dominates numeric executability",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 18,
+   "condition": "entity scope is preserved and never widened",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 19,
+   "condition": "currency mismatches fail closed with no conversion",
+   "status": "PASS",
+   "evidence": "06/07 G"
+  },
+  {
+   "n": 20,
+   "condition": "reclassification executes only from an explicit encoded relationship",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 21,
+   "condition": "unsupported reclassification is explicit with its missing fields named",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 22,
+   "condition": "graph cycles fail closed with a reported path",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 23,
+   "condition": "current state is immutable, versioned and hashable",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 24,
+   "condition": "provenance reaches the source, the financial snapshot and the ledger",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 25,
+   "condition": "the dependency manifest is available before evaluation",
+   "status": "PASS",
+   "evidence": "01"
+  },
+  {
+   "n": 26,
+   "condition": "independent capacities are never automatically summed",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 27,
+   "condition": "anti-enumeration scans pass",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 28,
+   "condition": "deterministic permutation tests pass",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 29,
+   "condition": "the real Phase-3 fixture proof passes",
+   "status": "PASS",
+   "evidence": "12"
+  },
+  {
+   "n": 30,
+   "condition": "no Phase 5 ingestion implemented",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 31,
+   "condition": "paid and model calls = 0",
+   "status": "PASS",
+   "evidence": "no provider code in the capacity module; nothing invoked"
+  },
+  {
+   "n": 32,
+   "condition": "no new attributable regressions",
+   "status": "PASS",
+   "evidence": "full-suite new 2, targeted new 1, all wall-clock scaling assertions over frozen-tree code; isolation 4 pass / 2 fail; direct log-log slope 0.982"
+  },
+  {
+   "n": 33,
+   "condition": "tsc has no new errors",
+   "status": "PASS",
+   "evidence": "tsc new 0"
+  },
+  {
+   "n": 34,
+   "condition": "lint clean",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 35,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 36,
+   "condition": "Phase 4D not started",
+   "status": "PASS",
+   "evidence": "no Phase-4D module exists"
+  },
+  {
+   "n": 37,
+   "condition": "Phase 4E solver not started",
+   "status": "PASS",
+   "evidence": "no solver module exists"
+  }
+ ],
+ "summary": {
+  "PASS": 37,
+  "FAIL": 0,
+  "total": 37
+ },
+ "verdict": "PHASE4C_CAPACITY_STATE_READY",
+ "phase4cComplete": true,
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "modelCalls": 0,
+ "phase3Closed": true,
+ "phase4aComplete": true,
+ "phase4bComplete": true,
+ "phase4dStarted": false,
+ "phase4eStarted": false,
+ "ingestionImplemented": false,
+ "solverImplemented": false,
+ "transactionSimulationImplemented": false
+}

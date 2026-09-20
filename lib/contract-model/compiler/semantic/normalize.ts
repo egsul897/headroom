@@ -23,10 +23,11 @@ import { analyzeType, inferType } from "../../ir/type-check";
 import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRDefinition, type IRException, type IRExpression, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
 import type { SubmitCompilationInput, WireCondition, WireDefinition, WireException, WireExpression, WireRule, WireSharedCapacity } from "./wire-schema";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
+import { applyEntityScopeGuard, classifyEntityTag, entityScopeWitnessFor, normalizeEntityTags } from "./entity-scope-guard";
+import type { IREntityTagNormalization } from "../../ir/types";
 
 const IR_VALUE_TYPES: readonly IRValueType[] = ["MONEY", "NUMBER", "PERCENT", "RATIO", "BOOLEAN", "DATE", "DURATION", "PERIOD", "ENTITY_SET", "CAPACITY"];
 const SUFFICIENCY_VALUES: readonly RepresentationSufficiency[] = ["COMPLETE", "PARTIAL", "AMBIGUOUS", "UNSUPPORTED", "MISSING_CONTEXT", "CONFLICTED"];
-const ENTITY_CLASS_TAGS: readonly string[] = Object.values(EntityClassTag);
 
 function matchEnum<T extends string>(raw: string | null | undefined, validValues: readonly T[]): T | null {
   if (!raw) return null;
@@ -51,6 +52,8 @@ interface NormCtx {
   /** Resolves a wire localRef OR an already-real external ruleId string to a real, computed ruleId - null when neither resolves (an honest "dangling," never guessed). */
   resolveRuleRef: (ref: string) => string | null;
   resolveSharedCapRef: (ref: string) => string | null;
+  /** ENTITY-SCOPE GUARD §4: every entity tag emitted anywhere under this rule (rule fields or ENTITY_SCOPE_REFERENCE nodes) with its RECOGNIZED/UNRECOGNIZED outcome - shared by reference across child contexts, fresh per rule. */
+  entityTagAudit: IREntityTagNormalization[];
 }
 
 function provenanceFor(ctx: NormCtx, citation: string | null | undefined, excerpt: string | null | undefined): SourceProvenance | undefined {
@@ -288,9 +291,20 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
       return withExpressionId({ kind: "TRANSACTION_INPUT_REFERENCE", type: valueType, inputName: wire.inputName });
     }
     case "ENTITY_SCOPE_REFERENCE": {
-      const include = (wire.entityScopeInclude ?? []).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t);
-      const exclude = (wire.entityScopeExclude ?? []).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t);
-      return withExpressionId({ kind: "ENTITY_SCOPE_REFERENCE", type: "ENTITY_SET", scope: { include: include as EntityClassTag[], exclude: exclude as EntityClassTag[] } });
+      // ENTITY-SCOPE GUARD §4: every tag gets exactly one outcome; an unrecognized tag is warned about and audited, never silently dropped.
+      const classify = (raw: string[] | undefined, field: "ENTITY_SCOPE_REFERENCE.include" | "ENTITY_SCOPE_REFERENCE.exclude"): EntityClassTag[] => {
+        const out: EntityClassTag[] = [];
+        for (const t of raw ?? []) {
+          const c = classifyEntityTag(t, field);
+          ctx.entityTagAudit.push(c);
+          if (c.outcome === "UNRECOGNIZED_ENTITY_TAG") warn(ctx, `ENTITY_SCOPE_UNRECOGNIZED_TAG: ${field} tag "${t}" is not an EntityClassTag value - preserved in the rule's entityScopeAudit, not guessed`);
+          else if (c.normalized && !out.includes(c.normalized)) out.push(c.normalized);
+        }
+        return out;
+      };
+      const include = classify(wire.entityScopeInclude, "ENTITY_SCOPE_REFERENCE.include");
+      const exclude = classify(wire.entityScopeExclude, "ENTITY_SCOPE_REFERENCE.exclude");
+      return withExpressionId({ kind: "ENTITY_SCOPE_REFERENCE", type: "ENTITY_SET", scope: { include, exclude } });
     }
 
     case "ADD":
@@ -530,7 +544,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
   const resolveRuleRef = (ref: string): string | null => ruleIdByLocalRef.get(ref) ?? (ref.startsWith("ir-rule:") ? ref : null);
   const resolveSharedCapRef = (ref: string): string | null => sharedCapIdByLocalRef.get(ref) ?? (ref.startsWith("ir-sharedcap:") ? ref : null);
 
-  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef });
+  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, entityTagAudit: [] });
 
   const rules: IRRule[] = submission.rules.map((wireRule) => {
     const ctx = baseCtx(`rule[${wireRule.localRef}]`);
@@ -546,8 +560,12 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     // §17: the rule-level fields when the model supplied them; otherwise the entity-scope tags the rule's own
     // ENTITY_SCOPE_REFERENCE nodes already carry (deterministic, never invented).
     const scopeNodes = collectEntityScopeNodes([capacityExpression, ...conditions.map((c) => c.expression)]);
-    const entityScope = ((wireRule.entityScope ?? []).length > 0 ? wireRule.entityScope! : scopeNodes.include).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];
-    const entityScopeExcluded = ((wireRule.entityScopeExcluded ?? []).length > 0 ? wireRule.entityScopeExcluded! : scopeNodes.exclude).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];
+    // ENTITY-SCOPE GUARD §4 (replaces the former silent `matchEnum(...).filter(Boolean)` drop): every emitted tag is
+    // classified RECOGNIZED/UNRECOGNIZED and audited; the guard below makes an unrecognized scope non-authoritative.
+    const tagNorm = normalizeEntityTags({ entityScope: wireRule.entityScope, entityScopeExcluded: wireRule.entityScopeExcluded, nodeInclude: scopeNodes.include, nodeExclude: scopeNodes.exclude, nodeAudit: ctx.entityTagAudit });
+    for (const u of tagNorm.tagNormalization) if (u.outcome === "UNRECOGNIZED_ENTITY_TAG" && (u.field === "entityScope" || u.field === "entityScopeExcluded")) warn(ctx, `ENTITY_SCOPE_UNRECOGNIZED_TAG: ${u.field} tag "${u.raw}" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed`);
+    const entityScope = tagNorm.entityScope;
+    const entityScopeExcluded = tagNorm.entityScopeExcluded;
     const exceptions = wireRule.exceptions.map((e, i) => normalizeException(e, ctx, i, ruleId));
     const normalizedDependencies = wireRule.dependsOn.map((d, i) => normalizeDependency(d, ctx, i));
     const dependsOn = normalizedDependencies.flatMap((d) => ("resolved" in d ? [d.resolved] : []));
@@ -582,7 +600,10 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       compilerVersion: input.compilerAlgorithmVersion,
       sourceContentVersion: null,
     };
-    return withLineage(rule, wireRule.inventoryItemIds);
+    // ENTITY-SCOPE GUARD §5-§9: deterministic consistency check of the normalized scope against the rule's own bound
+    // source (its excerpt, else the lead-in of the unit it cites). Removes false precision; never widens.
+    const guarded = applyEntityScopeGuard(rule, entityScopeWitnessFor(rule, input.sourceContext?.regions ?? null), tagNorm);
+    return withLineage(guarded, wireRule.inventoryItemIds);
   });
 
   const definitions: IRDefinition[] = submission.definitions.map((wireDef) => {

@@ -1,0 +1,102 @@
+{
+ "artifact": "PHASE 4B §14-§18 - immutable snapshots, explicit supersession, and what makes a snapshot set unsafe to resolve against",
+ "at": "2026-09-19T19:53:28.853Z",
+ "snapshotFields": [
+  "snapshotId",
+  "version",
+  "companyId",
+  "asOf",
+  "reportingPeriod",
+  "status",
+  "supersedesSnapshotId",
+  "provenance",
+  "review",
+  "inputs"
+ ],
+ "statuses": [
+  "DRAFT",
+  "REVIEW_REQUIRED",
+  "APPROVED",
+  "SUPERSEDED"
+ ],
+ "supersessionRule": "a snapshot is superseded only when another snapshot explicitly names it in supersedesSnapshotId. There is no latest-looking, highest-version or newest-timestamp guess.",
+ "safeGraph": {
+  "issues": [],
+  "safe": true,
+  "successors": {
+   "a": [
+    "b"
+   ]
+  }
+ },
+ "unsafeCases": {
+  "selfSupersession": [
+   "SELF_SUPERSESSION",
+   "SUPERSESSION_CYCLE"
+  ],
+  "cycle": [
+   "SUPERSESSION_CYCLE"
+  ],
+  "competingSuccessors": [
+   "COMPETING_SUCCESSORS"
+  ],
+  "duplicateId": [
+   "DUPLICATE_SNAPSHOT_ID"
+  ],
+  "supersedesUnknown": [
+   "SUPERSEDES_UNKNOWN_SNAPSHOT"
+  ],
+  "supersededWithoutSuccessor": [
+   "SUPERSEDED_STATUS_WITHOUT_SUCCESSOR"
+  ],
+  "crossCompanySuccessor": [
+   "SUCCESSOR_OF_ANOTHER_COMPANY"
+  ],
+  "moneyWithoutCurrency": [
+   "MONEY_INPUT_WITHOUT_CURRENCY"
+  ],
+  "duplicateIdentityWithinSnapshot": [
+   "DUPLICATE_IDENTITY_WITHIN_SNAPSHOT"
+  ]
+ },
+ "everyUnsafeCaseDetected": true,
+ "resolutionBehaviour": {
+  "supersededSnapshotIsSkipped": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY_AFTER_SUPERSESSION",
+   "selectionMethod": "EXACT_IDENTITY_AFTER_SUPERSESSION",
+   "snapshotId": "new",
+   "candidates": 2,
+   "rejections": [
+    "SUPERSEDED_BY_ANOTHER_SNAPSHOT_IN_SCOPE"
+   ]
+  },
+  "unapprovedSnapshotIsNotSilentlyUsed": {
+   "state": "NOT_APPROVED",
+   "reason": "the fact exists but only in snapshots with status DRAFT; this evaluation accepts APPROVED",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "SNAPSHOT_STATUS_NOT_ACCEPTABLE"
+   ]
+  },
+  "unapprovedSnapshotUsableOnlyByExplicitPolicy": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY",
+   "selectionMethod": "EXACT_IDENTITY",
+   "snapshotId": "d",
+   "candidates": 1,
+   "rejections": []
+  },
+  "unsafeSetBlocksResolutionEntirely": {
+   "state": "AMBIGUOUS",
+   "reason": "the snapshot set is not safe to resolve against: SELF_SUPERSESSION (snapshot a supersedes itself); SUPERSESSION_CYCLE (supersession cycle: a -> a)",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 0,
+   "rejections": []
+  }
+ },
+ "snapshotSetHashExample": "8ae26fb2eb418808063bbf78f7de5f9bb032231592f556b3df81627b2c94e887"
+}

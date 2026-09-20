@@ -1,0 +1,192 @@
+{
+ "artifact": "PHASE 4C §40, §41, §42 - one generic engine, byte-identical under permutation; complexity proved by operation counts (wall-clock supplemental, see remediation/10)",
+ "at": "2026-09-20T00:42:59.497Z",
+ "scannedFiles": [
+  "lib/contract-model/runtime/capacity/graph.ts",
+  "lib/contract-model/runtime/capacity/index.ts",
+  "lib/contract-model/runtime/capacity/ledger.ts",
+  "lib/contract-model/runtime/capacity/reclassification.ts",
+  "lib/contract-model/runtime/capacity/state.ts",
+  "lib/contract-model/runtime/capacity/types.ts",
+  "lib/contract-model/runtime/capacity/version.ts"
+ ],
+ "forbiddenConcepts": [
+  "EBITDA",
+  "Total Assets",
+  "Interest Expense",
+  "Fixed Charge",
+  "Leverage Ratio",
+  "Net Income",
+  "Restricted Payment",
+  "Permitted Lien",
+  "Available Amount",
+  "Builder Basket",
+  "Grower Basket",
+  "GREATER_OF",
+  "RATIO_DEBT",
+  "FREE_AND_CLEAR",
+  "GENERAL_DEBT",
+  "RETAINED_EARNINGS_BUILDER",
+  "EBITDA_GROWER",
+  "Chewy",
+  "chwy",
+  "6.01",
+  "6.10",
+  "FWRG",
+  "CONMED",
+  "DSGR"
+ ],
+ "forbiddenHits": [],
+ "solverEntryPointsForbidden": [
+  "maximumTransactionAmount(",
+  "bestBasket",
+  "optimalAllocation",
+  "findPermissionPath",
+  "solveFor",
+  "chooseBasket",
+  "simulateTransaction"
+ ],
+ "solverHits": [],
+ "numericInfinityHits": [],
+ "ingestionHits": [],
+ "layerBoundary": {
+  "capacityOutsideImports": [
+   "../../ir/types",
+   "../decimal",
+   "../evaluate-expression",
+   "../input/identity",
+   "../input/manifest",
+   "../input/types",
+   "../input/version",
+   "../types",
+   "../units",
+   "../values",
+   "../version"
+  ],
+  "phase3ModulesImportingCapacity": []
+ },
+ "ownsNoArithmetic": {
+  "importsUnitAlgebra": true,
+  "importsEvaluator": true,
+  "rawArithmeticOnAmounts": []
+ },
+ "permutation": {
+  "hashes": [
+   {
+    "graphHash": "dffa79b5d5c5d8767ed56cb0cc21a03a942ffc63bf3dc81352623c11e42c95d4",
+    "stateHash": "1be700e0a1698f47cd6bc209b06436d4cf73131a48c97554f7d83c5898b19272"
+   },
+   {
+    "graphHash": "dffa79b5d5c5d8767ed56cb0cc21a03a942ffc63bf3dc81352623c11e42c95d4",
+    "stateHash": "1be700e0a1698f47cd6bc209b06436d4cf73131a48c97554f7d83c5898b19272"
+   },
+   {
+    "graphHash": "dffa79b5d5c5d8767ed56cb0cc21a03a942ffc63bf3dc81352623c11e42c95d4",
+    "stateHash": "1be700e0a1698f47cd6bc209b06436d4cf73131a48c97554f7d83c5898b19272"
+   },
+   {
+    "graphHash": "dffa79b5d5c5d8767ed56cb0cc21a03a942ffc63bf3dc81352623c11e42c95d4",
+    "stateHash": "1be700e0a1698f47cd6bc209b06436d4cf73131a48c97554f7d83c5898b19272"
+   },
+   {
+    "graphHash": "dffa79b5d5c5d8767ed56cb0cc21a03a942ffc63bf3dc81352623c11e42c95d4",
+    "stateHash": "1be700e0a1698f47cd6bc209b06436d4cf73131a48c97554f7d83c5898b19272"
+   },
+   {
+    "graphHash": "dffa79b5d5c5d8767ed56cb0cc21a03a942ffc63bf3dc81352623c11e42c95d4",
+    "stateHash": "1be700e0a1698f47cd6bc209b06436d4cf73131a48c97554f7d83c5898b19272"
+   }
+  ],
+  "allGraphHashesIdentical": true,
+  "allStateHashesIdentical": true
+ },
+ "complexity": [
+  {
+   "size": 10,
+   "nodes": 11,
+   "edges": 20,
+   "nodesVisited": 11,
+   "edgesVisited": 10,
+   "expressionsEvaluated": 11,
+   "ledgerEntriesApplied": 10,
+   "ledgerEntriesConsidered": 10,
+   "ledgerEntriesExamined": 10,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 10,
+   "dependencyLookups": 11,
+   "indexLookups": 41,
+   "maxDepth": 0,
+   "cacheHits": 10
+  },
+  {
+   "size": 20,
+   "nodes": 21,
+   "edges": 40,
+   "nodesVisited": 21,
+   "edgesVisited": 20,
+   "expressionsEvaluated": 21,
+   "ledgerEntriesApplied": 20,
+   "ledgerEntriesConsidered": 20,
+   "ledgerEntriesExamined": 20,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 20,
+   "dependencyLookups": 21,
+   "indexLookups": 81,
+   "maxDepth": 0,
+   "cacheHits": 20
+  },
+  {
+   "size": 40,
+   "nodes": 41,
+   "edges": 80,
+   "nodesVisited": 41,
+   "edgesVisited": 40,
+   "expressionsEvaluated": 41,
+   "ledgerEntriesApplied": 40,
+   "ledgerEntriesConsidered": 40,
+   "ledgerEntriesExamined": 40,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 40,
+   "dependencyLookups": 41,
+   "indexLookups": 161,
+   "maxDepth": 0,
+   "cacheHits": 40
+  },
+  {
+   "size": 80,
+   "nodes": 81,
+   "edges": 160,
+   "nodesVisited": 81,
+   "edgesVisited": 80,
+   "expressionsEvaluated": 81,
+   "ledgerEntriesApplied": 80,
+   "ledgerEntriesConsidered": 80,
+   "ledgerEntriesExamined": 80,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 80,
+   "dependencyLookups": 81,
+   "indexLookups": 321,
+   "maxDepth": 0,
+   "cacheHits": 80
+  },
+  {
+   "size": 160,
+   "nodes": 161,
+   "edges": 320,
+   "nodesVisited": 161,
+   "edgesVisited": 160,
+   "expressionsEvaluated": 161,
+   "ledgerEntriesApplied": 160,
+   "ledgerEntriesConsidered": 160,
+   "ledgerEntriesExamined": 160,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 160,
+   "dependencyLookups": 161,
+   "indexLookups": 641,
+   "maxDepth": 0,
+   "cacheHits": 160
+  }
+ ],
+ "complexityCountersLinearInN": true,
+ "complexityNote": "one expression evaluation per capacity-bearing node plus one per pool; the ledger is indexed once by path and every record is examined exactly once (ledgerEntriesExamined === n); member edges are consulted once per member (edgesVisited === n); pool re-reads of member usage are memo hits. The pre-remediation package asserted linearity from counters that did not measure the nested scans the audit found (log-log wall-clock slope 1.81); the counters now measure those paths and the supplemental wall-clock re-measurement is in docs/phase-4c/remediation/10-complexity-remediation.json"
+}

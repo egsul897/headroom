@@ -1,0 +1,169 @@
+{
+ "artifact": "PHASE 4A §14-§15 - dependency graph, topological order, memoization, cycle detection",
+ "at": "2026-09-19T18:16:41.048Z",
+ "module": "lib/contract-model/runtime/dependency-graph.ts (+ evaluation-time cycle detection in evaluate-expression.ts)",
+ "nodeKinds": [
+  "EXPRESSION",
+  "METRIC",
+  "TERM",
+  "DEFINITION",
+  "RULE",
+  "LEDGER_USAGE",
+  "TRANSACTION_INPUT",
+  "EVENT"
+ ],
+ "acyclicExample": {
+  "nodes": [
+   "EXPRESSION:MAX",
+   "EXPRESSION:MONEY",
+   "EXPRESSION:MULTIPLY",
+   "EXPRESSION:PERCENT",
+   "EXPRESSION:METRIC_REFERENCE",
+   "METRIC:m1"
+  ],
+  "edges": 5,
+  "topologicalOrder": [
+   "ir-expr:art-90",
+   "ir-expr:art-91",
+   "metric:m1",
+   "ir-expr:art-92",
+   "ir-expr:art-93",
+   "ir-expr:art-94"
+  ],
+  "dependencyTrace": [
+   {
+    "kind": "METRIC",
+    "key": "m1"
+   }
+  ],
+  "cycles": []
+ },
+ "memoization": "per evaluation, keyed by exprId + asOf + period; stats.cacheHits counts reuse",
+ "directCycle": {
+  "graph": [
+   {
+    "nodes": [
+     "definition:ir-definition:self",
+     "ir-expr:art-97",
+     "ir-expr:art-96",
+     "definition:ir-definition:self"
+    ],
+    "edgePath": [
+     {
+      "from": "definition:ir-definition:self",
+      "to": "ir-expr:art-97"
+     },
+     {
+      "from": "ir-expr:art-97",
+      "to": "ir-expr:art-96"
+     },
+     {
+      "from": "ir-expr:art-96",
+      "to": "definition:ir-definition:self"
+     }
+    ],
+    "provenance": [
+     {
+      "documentId": "doc",
+      "sourceNodeKey": null,
+      "sourceCitation": "def Self",
+      "excerpt": null
+     },
+     null,
+     null,
+     {
+      "documentId": "doc",
+      "sourceNodeKey": null,
+      "sourceCitation": "def Self",
+      "excerpt": null
+     }
+    ]
+   }
+  ],
+  "topologicalOrder": [],
+  "evaluation": {
+   "status": "ERROR",
+   "diagnostic": {
+    "code": "CYCLE",
+    "status": "ERROR",
+    "message": "dependency cycle: definition:ir-definition:self -> definition:ir-definition:self",
+    "exprId": "ir-expr:art-96",
+    "provenance": null
+   }
+  }
+ },
+ "indirectCycle": {
+  "graph": [
+   {
+    "nodes": [
+     "definition:ir-definition:a",
+     "ir-expr:art-100",
+     "rule:ir-rule:b",
+     "ir-expr:art-103",
+     "ir-expr:art-102",
+     "definition:ir-definition:a"
+    ],
+    "edgePath": [
+     {
+      "from": "definition:ir-definition:a",
+      "to": "ir-expr:art-100"
+     },
+     {
+      "from": "ir-expr:art-100",
+      "to": "rule:ir-rule:b"
+     },
+     {
+      "from": "rule:ir-rule:b",
+      "to": "ir-expr:art-103"
+     },
+     {
+      "from": "ir-expr:art-103",
+      "to": "ir-expr:art-102"
+     },
+     {
+      "from": "ir-expr:art-102",
+      "to": "definition:ir-definition:a"
+     }
+    ],
+    "provenance": [
+     {
+      "documentId": "doc",
+      "sourceNodeKey": null,
+      "sourceCitation": "def Term A",
+      "excerpt": null
+     },
+     null,
+     {
+      "documentId": "doc",
+      "sourceNodeKey": null,
+      "sourceCitation": "rule ir-rule:b",
+      "excerpt": null
+     },
+     null,
+     null,
+     {
+      "documentId": "doc",
+      "sourceNodeKey": null,
+      "sourceCitation": "def Term A",
+      "excerpt": null
+     }
+    ]
+   }
+  ],
+  "evaluation": {
+   "status": "ERROR",
+   "diagnostic": {
+    "code": "CYCLE",
+    "status": "ERROR",
+    "message": "dependency cycle: rule:ir-rule:b -> definition:ir-definition:a -> rule:ir-rule:b",
+    "exprId": "ir-expr:art-100",
+    "provenance": null
+   }
+  }
+ },
+ "neverDone": [
+  "infinite recursion",
+  "substituting zero",
+  "breaking a cycle arbitrarily"
+ ]
+}

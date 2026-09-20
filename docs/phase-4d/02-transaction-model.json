@@ -1,0 +1,134 @@
+{
+ "artifact": "PHASE 4D §3, §4, §6 - what a hypothetical transaction is, and what it is not",
+ "at": "2026-09-20T04:09:33.349Z",
+ "transactionSimulationVersion": "transaction-simulation.v1",
+ "runtimeVersion": "contract-runtime.v1",
+ "inputContractVersion": "financial-input-contract.v1",
+ "capacityGraphVersion": "capacity-graph.v1",
+ "publicEntryPoint": "simulateTransaction({ transaction, currentState, capacityGraph, selectedPath, inputs, context })",
+ "transactionFields": [
+  "transactionId",
+  "companyId",
+  "instrumentKey",
+  "effectiveAsOf",
+  "category (metadata)",
+  "label (display only)",
+  "entities",
+  "intendedAmount",
+  "unallocatedAmount",
+  "effects",
+  "provenance"
+ ],
+ "labelsAreMetadataOnly": "no behavioural branch reads category or label; the same effects described two different ways produce the same consequences, and the anti-enumeration suite asserts it",
+ "simulationStatuses": [
+  "SIMULATED",
+  "NEEDS_INPUT",
+  "UNSUPPORTED",
+  "AMBIGUOUS",
+  "REVIEW_REQUIRED",
+  "ERROR"
+ ],
+ "selectedPathResults": [
+  "SATISFIED",
+  "NOT_SATISFIED",
+  "INSUFFICIENT_CAPACITY",
+  "REVIEW_REQUIRED",
+  "INDETERMINATE",
+  "NOT_APPLICABLE"
+ ],
+ "twoDimensionsAreIndependent": "a simulation that runs and concludes the path does not work is SIMULATED / INSUFFICIENT_CAPACITY, not a failure; neither dimension is a boolean and neither is derived from the other",
+ "workedExample": {
+  "transaction": {
+   "transactionId": "tx-1",
+   "companyId": "gate4d-org",
+   "instrumentKey": "gate4d-facility",
+   "effectiveAsOf": "2026-06-30",
+   "category": null,
+   "label": null,
+   "effects": [
+    {
+     "effectId": "e1",
+     "kind": "CONSUME_CAPACITY",
+     "capacityNodeId": "capacity:rule:prov-a",
+     "amount": {
+      "type": "MONEY",
+      "amount": "20",
+      "currency": "USD"
+     }
+    }
+   ],
+   "provenance": {
+    "source": "gate hypothetical",
+    "sourceVersion": "v1",
+    "approvalRef": null
+   }
+  },
+  "selectedPath": {
+   "capacityNodeIds": [
+    "capacity:rule:prov-a"
+   ],
+   "ruleIds": [
+    "prov-a"
+   ],
+   "sharedCapacityIds": [],
+   "reclassificationElectionIds": []
+  },
+  "result": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "70",
+     "shortfall": null,
+     "outcome": "SATISFIED",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-1::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-a",
+     "usage": "50",
+     "remaining": "50",
+     "status": "AVAILABLE"
+    }
+   ],
+   "limitations": [],
+   "committable": true
+  }
+ },
+ "transactionIdentityFields": [
+  "category",
+  "companyId",
+  "effectiveAsOf",
+  "effects",
+  "entities",
+  "instrumentKey",
+  "intendedAmount",
+  "provenance",
+  "selectedPath",
+  "snapshotIdentity",
+  "transactionId",
+  "transactionSimulationVersion",
+  "unallocatedAmount"
+ ],
+ "notComputed": {
+  "pathSelection": "NOT_COMPUTED_IN_PHASE_4D",
+  "maximumTransactionAmount": "NOT_COMPUTED_IN_PHASE_4D",
+  "allocationAcrossCapacities": "NOT_COMPUTED_IN_PHASE_4D",
+  "alternativePathComparison": "NOT_COMPUTED_IN_PHASE_4D",
+  "accountingTreatment": "NOT_COMPUTED_IN_PHASE_4D",
+  "currencyConversion": "NOT_COMPUTED_IN_PHASE_4D"
+ }
+}

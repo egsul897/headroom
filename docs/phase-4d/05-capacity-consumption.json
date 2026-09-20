@@ -1,0 +1,388 @@
+{
+ "artifact": "PHASE 4D §10, §12, §26 - an explicit draw against an explicitly selected capacity",
+ "at": "2026-09-20T04:09:33.381Z",
+ "measuredAgainst": "the recertified Phase-4C effective remaining capacity, evaluated once against the pro-forma input view",
+ "neverClamped": "an over-draw reports attemptedAmount, availableAmount and shortfallAmount, and the transaction is never resized to fit",
+ "sharedCapacityRule": "a member draw is bounded by every quantified pool it belongs to; no pool limit is copied onto a member, and an unquantified shared relationship leaves effective availability undetermined",
+ "currencyRule": "a draw in a currency the capacity is not denominated in fails closed with CURRENCY_MISMATCH_NO_CONVERSION_MODELED; no rate is fetched, inferred or applied",
+ "cases": {
+  "below": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "70",
+     "shortfall": null,
+     "outcome": "SATISFIED",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-1::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-a",
+     "usage": "50",
+     "remaining": "50",
+     "status": "AVAILABLE"
+    }
+   ],
+   "limitations": [],
+   "committable": true
+  },
+  "exact": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "70",
+     "available": "70",
+     "shortfall": null,
+     "outcome": "SATISFIED",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-2::e1",
+     "amount": "70",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-a",
+     "usage": "100",
+     "remaining": "0",
+     "status": "AVAILABLE"
+    }
+   ],
+   "limitations": [],
+   "committable": true
+  },
+  "above": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "INSUFFICIENT_CAPACITY",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "90",
+     "available": "70",
+     "shortfall": "20",
+     "outcome": "INSUFFICIENT_CAPACITY",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-3::e1",
+     "amount": "90",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": false,
+   "postUsage": null,
+   "limitations": [
+    "INSUFFICIENT_CAPACITY"
+   ],
+   "committable": false
+  },
+  "unlimited": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-u",
+     "attempted": "999999",
+     "available": "UNLIMITED",
+     "shortfall": null,
+     "outcome": "SATISFIED",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-4::e1",
+     "amount": "999999",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-u",
+     "usage": "999999",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    }
+   ],
+   "limitations": [],
+   "committable": true
+  },
+  "missingFact": {
+   "simulationStatus": "NEEDS_INPUT",
+   "selectedPathResult": "INDETERMINATE",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-g",
+     "attempted": "10",
+     "available": "NOT_DETERMINED",
+     "shortfall": null,
+     "outcome": "INDETERMINATE",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-5::e1",
+     "amount": "10",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": false,
+   "postUsage": null,
+   "limitations": [
+    "CAPACITY_NOT_DETERMINED",
+    "MISSING_FINANCIAL_INPUT"
+   ],
+   "committable": false
+  },
+  "reviewRequiredRule": {
+   "simulationStatus": "REVIEW_REQUIRED",
+   "selectedPathResult": "REVIEW_REQUIRED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "NOT_DETERMINED",
+     "shortfall": null,
+     "outcome": "REVIEW_REQUIRED",
+     "provisional": {
+      "available": "100",
+      "outcome": "SATISFIED"
+     }
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-6::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-a",
+     "usage": "20",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    }
+   ],
+   "limitations": [
+    "CAPACITY_NOT_DETERMINED",
+    "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "committable": false
+  },
+  "ambiguousRule": {
+   "simulationStatus": "REVIEW_REQUIRED",
+   "selectedPathResult": "INDETERMINATE",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "NOT_DETERMINED",
+     "shortfall": null,
+     "outcome": "INDETERMINATE",
+     "provisional": {
+      "available": "100",
+      "outcome": "SATISFIED"
+     }
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-7::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": false,
+   "postUsage": null,
+   "limitations": [
+    "CAPACITY_NOT_DETERMINED",
+    "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "committable": false
+  },
+  "sharedPoolConstrains": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "INSUFFICIENT_CAPACITY",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "90",
+     "available": "50",
+     "shortfall": "40",
+     "outcome": "INSUFFICIENT_CAPACITY",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-8::e1",
+     "amount": "90",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": false,
+   "postUsage": null,
+   "limitations": [
+    "INSUFFICIENT_CAPACITY"
+   ],
+   "committable": false
+  },
+  "sharedPoolWithin": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "30",
+     "available": "50",
+     "shortfall": null,
+     "outcome": "SATISFIED",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-9::e1",
+     "amount": "30",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-a",
+     "usage": "30",
+     "remaining": "70",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "prov-b",
+     "usage": "NOT_DETERMINED",
+     "remaining": "100",
+     "status": "AVAILABLE"
+    }
+   ],
+   "limitations": [],
+   "committable": true
+  },
+  "unquantifiedShared": {
+   "simulationStatus": "REVIEW_REQUIRED",
+   "selectedPathResult": "REVIEW_REQUIRED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "NOT_DETERMINED",
+     "shortfall": null,
+     "outcome": "REVIEW_REQUIRED",
+     "provisional": {
+      "available": "100",
+      "outcome": "SATISFIED"
+     }
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-10::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "prov-a",
+     "usage": "20",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "prov-b",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    }
+   ],
+   "limitations": [
+    "CAPACITY_NOT_DETERMINED",
+    "SHARED_CAPACITY_NOT_QUANTIFIED"
+   ],
+   "committable": false
+  },
+  "currencyMismatch": {
+   "simulationStatus": "ERROR",
+   "selectedPathResult": "NOT_SATISFIED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:prov-a",
+     "attempted": "20",
+     "available": "70",
+     "shortfall": null,
+     "outcome": "NOT_SATISFIED",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "tx-11::e1",
+     "amount": "20",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": false,
+   "postUsage": null,
+   "limitations": [
+    "CURRENCY_MISMATCH_NO_CONVERSION_MODELED"
+   ],
+   "committable": false
+  }
+ }
+}

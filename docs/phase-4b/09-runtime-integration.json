@@ -1,0 +1,62 @@
+{
+ "artifact": "PHASE 4B §33-§35 - how strict resolution reaches the Phase-4A evaluator without changing expression semantics",
+ "at": "2026-09-19T19:53:28.868Z",
+ "mechanism": "InputResolver gained an optional `strict: StrictInputResolver`. Every reference node prefers it; when it is absent the legacy fixture path runs unchanged.",
+ "newDiagnosticCodes": [
+  "AMBIGUOUS_INPUT",
+  "INPUT_NOT_APPROVED",
+  "INPUT_TYPE_CONFLICT",
+  "TERM_RESOLUTION_CONFLICT",
+  "SNAPSHOT_SET_UNSAFE"
+ ],
+ "stateMapping": {
+  "RESOLVED": {
+   "status": "EXECUTABLE",
+   "diagnostics": []
+  },
+  "MISSING": {
+   "status": "NEEDS_INPUT",
+   "missingInputKeys": [
+    "metric-e"
+   ],
+   "diagnostics": [
+    "MISSING_INPUT"
+   ]
+  },
+  "NOT_APPROVED": {
+   "status": "NEEDS_INPUT",
+   "missingInputKeys": [
+    "metric-e"
+   ],
+   "diagnostics": [
+    "INPUT_NOT_APPROVED"
+   ]
+  },
+  "AMBIGUOUS": {
+   "status": "AMBIGUOUS",
+   "diagnostics": [
+    "AMBIGUOUS_INPUT"
+   ]
+  },
+  "INCOMPATIBLE": {
+   "status": "ERROR",
+   "diagnostics": [
+    "INPUT_TYPE_CONFLICT"
+   ]
+  },
+  "UNSAFE_SNAPSHOT_SET": {
+   "status": "AMBIGUOUS",
+   "diagnostics": [
+    "SNAPSHOT_SET_UNSAFE"
+   ]
+  }
+ },
+ "mappingRules": {
+  "RESOLVED": "the value is used, with its provenance",
+  "MISSING": "NEEDS_INPUT, listed as a missing input",
+  "NOT_APPROVED": "NEEDS_INPUT with its own code, still listed as missing so it is never silently skipped",
+  "AMBIGUOUS": "AMBIGUOUS, never a pick",
+  "INCOMPATIBLE": "ERROR, because a type conflict is a defect in the supplied data, not a gap"
+ },
+ "backwardsCompatibility": "the Phase-4A runtime suites pass unchanged at this head"
+}

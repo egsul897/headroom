@@ -1,0 +1,152 @@
+{
+ "artifact": "PHASE 4C §13, §14, §16, §17, §27 - nodes, typed edges, multi-membership and cycle safety",
+ "at": "2026-09-20T00:42:59.356Z",
+ "edgeKindsProduced": [
+  "DEPENDS_ON",
+  "BUILT_FROM",
+  "MEMBER_OF_SHARED_CAP",
+  "CONSTRAINED_BY",
+  "LEGAL_RELATIONSHIP",
+  "RECLASSIFIABLE_TO"
+ ],
+ "edgeKindsReservedNeverProduced": [
+  "CONSUMES"
+ ],
+ "evaluationDependencyEdgeKinds": [
+  "DEPENDS_ON",
+  "BUILT_FROM",
+  "MEMBER_OF_SHARED_CAP"
+ ],
+ "edgesComeFromPhase3Relationships": "SHARES_CAPACITY_WITH, RECLASSIFIABLE_TO, REQUIRES and the rest are read from IRRuleDependency; a relationship is never inferred from a name or a section number. Every non-reclassification relationship becomes a LEGAL_RELATIONSHIP edge; DEPENDS_ON comes only from a RULE_REFERENCE inside a capacity expression",
+ "sharedCapIsAConstraintNode": "the pool's limit is never copied onto a member; each member keeps its own rule capacity and additionally participates in the constraint",
+ "multipleSharedMembership": {
+  "memberConstraintIds": [
+   "pool-s1",
+   "pool-s2"
+  ],
+  "pool1Remaining": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "300",
+    "currency": "USD",
+    "lineage": {
+     "exprId": "g25",
+     "inputKeys": [],
+     "rawSource": 300
+    }
+   }
+  },
+  "pool2Remaining": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "100",
+    "currency": "USD",
+    "lineage": {
+     "exprId": null,
+     "inputKeys": []
+    }
+   }
+  },
+  "memberOwnRemaining": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "500",
+    "currency": "USD",
+    "lineage": {
+     "exprId": "g23",
+     "inputKeys": [],
+     "rawSource": 500
+    }
+   }
+  },
+  "memberEffectiveRemaining": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "100",
+    "currency": "USD",
+    "lineage": {
+     "exprId": null,
+     "inputKeys": []
+    }
+   }
+  }
+ },
+ "nestedSharedCapacity": {
+  "representableInPhase3Ir": false,
+  "reason": "IRSharedCapacity.memberRuleIds is a list of RULE ids, so a pool cannot name another pool as a member",
+  "observed": {
+   "limitations": [
+    "SHARED_CAPACITY_NOT_QUANTIFIED"
+   ],
+   "sharedNodes": 2,
+   "memberEdges": 1
+  }
+ },
+ "cycleDetection": {
+  "runsOver": [
+   "DEPENDS_ON",
+   "BUILT_FROM",
+   "MEMBER_OF_SHARED_CAP"
+  ],
+  "cycles": [
+   {
+    "nodePath": [
+     "capacity:rule:rule-a",
+     "capacity:rule:rule-b",
+     "capacity:rule:rule-a"
+    ],
+    "edgePath": [
+     {
+      "from": "capacity:rule:rule-a",
+      "to": "capacity:rule:rule-b",
+      "kind": "DEPENDS_ON"
+     },
+     {
+      "from": "capacity:rule:rule-b",
+      "to": "capacity:rule:rule-a",
+      "kind": "DEPENDS_ON"
+     }
+    ],
+    "provenance": [
+     "capacity expression uses another rule's own capacity as an operand"
+    ]
+   }
+  ],
+  "limitations": [
+   "CAPACITY_GRAPH_CYCLE"
+  ],
+  "memberStatuses": [
+   "NEEDS_INPUT",
+   "NEEDS_INPUT"
+  ],
+  "neverRecursed": true,
+  "neverArbitrarilyBroken": true
+ },
+ "symmetricLegalRelationshipIsNotACycle": {
+  "edges": [
+   [
+    "LEGAL_RELATIONSHIP",
+    "REQUIRES"
+   ],
+   [
+    "LEGAL_RELATIONSHIP",
+    "REQUIRES"
+   ]
+  ],
+  "cycles": 0,
+  "statuses": [
+   [
+    "AVAILABLE",
+    "10"
+   ],
+   [
+    "AVAILABLE",
+    "10"
+   ]
+  ]
+ }
+}

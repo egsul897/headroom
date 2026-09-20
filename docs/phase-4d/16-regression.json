@@ -1,0 +1,243 @@
+{
+ "artifact": "PHASE 4D §46, §47 - regression at the Phase-4D head, and the prior-phase change forensics",
+ "at": "2026-09-20T04:09:33.676Z",
+ "headAtRun": "c7fa62b20286870f5b22d7d796d7b9492e1533a4",
+ "suites": {
+  "Phase-4D transaction simulation": {
+   "tests": 79,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "Phase-4C capacity": {
+   "tests": 177,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "Phase-4B input contract": {
+   "tests": 98,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "Phase-4A runtime": {
+   "tests": 436,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "entity-scope guard": {
+   "tests": 24,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic compiler": {
+   "tests": 164,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic verification": {
+   "tests": 150,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic accountability": {
+   "tests": 366,
+   "failed": 18,
+   "newFailingVsBase": 0
+  },
+  "Phase-3 closure-critical": {
+   "tests": 69,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "IR core": {
+   "tests": 54,
+   "failed": 0,
+   "newFailingVsBase": 0
+  }
+ },
+ "targeted": {
+  "tests": 1268,
+  "passed": 1250,
+  "failed": 18,
+  "newFailingIdentitiesVsBase": []
+ },
+ "fullSuite": {
+  "base": {
+   "sha256": "8ee263cd293f08b11e02f1c150d3914aac3058e00fcc9a5ab2f34cbbf43f049c",
+   "tests": 4338,
+   "passed": 3652,
+   "failed": 162
+  },
+  "now": {
+   "sha256": "96a1064204f475163c2e07420e8214e57576ee88f95638a096e66826e45dc893",
+   "tests": 4417,
+   "passed": 3731,
+   "failed": 162
+  },
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+  ]
+ },
+ "failureClassification": {
+  "preExistingFailure": "failing on the Phase-4D baseline as well; carried forward unchanged",
+  "inheritedInstability": "the segmentCoordinateClauses wall-clock identities over the frozen Phase-3 tree",
+  "newlyExposedOldDefect": "none observed",
+  "phase4dRegression": [],
+  "environmentalNoise": "none claimed"
+ },
+ "inheritedInstability": {
+  "classification": "INHERITED FLAKY / UNSTABLE TEST - not waived, not called passing",
+  "identities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+  ],
+  "measuredFunction": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts), frozen Phase-3 tree",
+  "phase3TreeUnchanged": true,
+  "isolationRuns": [
+   {
+    "file": "iso1.json",
+    "tests": 22,
+    "failed": 1,
+    "failing": [
+     "OPEN-3 independent probe 4: re-measured scaling behavior (fresh constr"
+    ]
+   },
+   {
+    "file": "iso10.json",
+    "tests": 22,
+    "failed": 1,
+    "failing": [
+     "FINDING-4 independent recertification - GAP-3 (O(text.length) terminat"
+    ]
+   },
+   {
+    "file": "iso2.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso3.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso4.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso5.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso6.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso7.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso8.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso9.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   }
+  ],
+  "isolationPasses": 8,
+  "isolationFails": 2,
+  "directMeasurement": {
+   "measured": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts)",
+   "trials": 9,
+   "points": [
+    {
+     "n": 4000,
+     "ms": 6.5858,
+     "ratioVsPreviousDoubling": null,
+     "subQuadratic": true
+    },
+    {
+     "n": 8000,
+     "ms": 11.7536,
+     "ratioVsPreviousDoubling": 1.785,
+     "subQuadratic": true
+    },
+    {
+     "n": 16000,
+     "ms": 23.6721,
+     "ratioVsPreviousDoubling": 2.014,
+     "subQuadratic": true
+    },
+    {
+     "n": 32000,
+     "ms": 48.5621,
+     "ratioVsPreviousDoubling": 2.051,
+     "subQuadratic": true
+    },
+    {
+     "n": 64000,
+     "ms": 104.1436,
+     "ratioVsPreviousDoubling": 2.145,
+     "subQuadratic": true
+    },
+    {
+     "n": 128000,
+     "ms": 218.0582,
+     "ratioVsPreviousDoubling": 2.094,
+     "subQuadratic": true
+    }
+   ],
+   "logLogSlope": 1.021,
+   "linearPredictsSlope": 1,
+   "quadraticPredictsSlope": 2,
+   "allStepsSubQuadratic": true,
+   "slopeBelow1point5": true
+  },
+  "attribution": "not attributable to Phase 4C or Phase 4D: both identities predate Phase 4A, the timed function is in the unchanged Phase-3 tree, and they fail intermittently in isolation on that tree",
+  "waived": false
+ },
+ "priorPhaseChangeForensics": {
+  "baseline": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec",
+  "treeIdentitiesAtBaseline": {
+   "phase3Compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "phase3Semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+   "ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+   "phase4aRuntimeRoot": "9745bdd172b9d4d48a50ca539d8e1d6e18403332",
+   "phase4bInput": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+   "phase4cCapacity": "c5f2d820d3c764d03846450c529a3f5399c423b8"
+  },
+  "filesChangedOutsideTheTransactionModule": [],
+  "substantiveSemanticChangesToPriorPhases": 0,
+  "phase3Frozen": true,
+  "phase4aUnchanged": true,
+  "phase4bUnchanged": true,
+  "phase4cUnchanged": true,
+  "additiveInterfacesAddedToEarlierPhases": []
+ },
+ "noRegressionAttributableToPhase4D": true,
+ "phase4cArtifactNote": "docs/phase-4c/16-phase4c-gate.json and docs/phase-4c/remediation/14-recertification.json are point-in-time records taken before Phase 4D existed. Their conditions 36 and 25 assert that Phase 4D had not started, so re-running those scripts now would fail by design. They are not regenerated, and the Phase-4C verdict they record stands.",
+ "tsc": {
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/"
+ },
+ "lint": {
+  "ok": true
+ },
+ "build": {
+  "ok": true
+ }
+}

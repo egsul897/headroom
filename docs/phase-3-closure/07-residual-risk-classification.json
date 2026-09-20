@@ -1,0 +1,88 @@
+{
+ "artifact": "PHASE 3 CLOSURE §22 - residual limitations classified",
+ "at": "2026-09-19T14:56:03.849Z",
+ "rows": [
+  {
+   "item": "entityScope under-inclusive on 6.01(a) prohibition and Permitted Ratio Debt rules (verifier F0 MATERIAL)",
+   "classification": "BLOCKING_PHASE3",
+   "note": "see 05; the single cheapest action is in 11"
+  },
+  {
+   "item": "9 CRITICAL Pass-C missing items",
+   "classification": "NONBLOCKING_PHASE3",
+   "note": "5 bounded true omissions ((14) (x)/(y) qualifying subject present only in provenance), 2 accounting artifacts, 2 connective duplicates; all enumerated by Pass C"
+  },
+  {
+   "item": "verifier F1 (14) grouping",
+   "classification": "NONBLOCKING_PHASE3",
+   "note": "conservative fused (a)AND(b); interpretive disagreement disclosed"
+  },
+  {
+   "item": "verifier F2/F4 2.50:1.00 solve-for-x operand",
+   "classification": "DEFER_TO_PHASE4",
+   "note": "threshold explicit; typed execution absent; Phase 4 must treat UNSUPPORTED operands as non-computable, never zero"
+  },
+  {
+   "item": "verifier F3/F5 reclassification edge",
+   "classification": "DEFER_TO_PHASE4",
+   "note": "right represented in substance; normalize RECLASSIFIABLE_TO from ir-rule:c6204d2a"
+  },
+  {
+   "item": "explicit internal dependency limitation (Junior Lien Priority undefined term)",
+   "classification": "NONBLOCKING_PHASE3",
+   "note": "certified CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION; the term is genuinely undefined in the document"
+  },
+  {
+   "item": "external dependency limitation (Borrowing Base as defined in the ABL Credit Agreement)",
+   "classification": "DEFER_TO_PHASE5+",
+   "note": "proven external from package identity; requires the ABL document in the package"
+  },
+  {
+   "item": "ambiguous source reference 6.01(b)(1)(Z) (3 candidates)",
+   "classification": "NONBLOCKING_PHASE3",
+   "note": "candidates preserved, never guessed"
+  },
+  {
+   "item": "compile status REVIEW_REQUIRED",
+   "classification": "NONBLOCKING_PHASE3",
+   "note": "explicit, source-backed, bounded: coverage gap carried, 3 possible-duplicate collisions surfaced, 1 operative-state flag on one shard (definitions 'incur'/'incurrence' emitted as IR definitions), 9 missing items enumerated"
+  },
+  {
+   "item": "INVENTORY_COVERAGE_GAP",
+   "classification": "NONBLOCKING_PHASE3",
+   "note": "17 unaccounted stretches, longest 142 chars (the two '$1.00 of additional Indebtedness' ratio-test phrases), 2 uninventoried $1.00 tokens, 72 single-run material items; surfaced, non-systemic, bounded by the source-coverage certification; never reinterpreted as INVENTORY_OK"
+  },
+  {
+   "item": "legacy frozen inventory with no documentId (exact-text coincidence risk)",
+   "classification": "TEST_INFRASTRUCTURE",
+   "note": "resume is bound to sourceContextHash + partitionHash; a documentId-less legacy inventory can only resume against byte-identical text"
+  },
+  {
+   "item": "6 pre-existing TypeScript errors in tests/foundation-audit",
+   "classification": "TEST_INFRASTRUCTURE",
+   "note": "unchanged across every mission; not in production or Phase-3 suites"
+  },
+  {
+   "item": "18 pre-existing Pass-A synthetic-corpus test failures (semantic-accountability pass-a-*/pass-bc tests)",
+   "classification": "TEST_INFRASTRUCTURE",
+   "note": "identical at 51fda65, 1b36eb6, 1fd2388, 80671aa, 7c18b3e; expectations drift after the v5 Pass-A changes; production Pass A is certified by F-5.3B and the frozen ensemble, not by these"
+  },
+  {
+   "item": "wall-clock timing flake part-b-recert-finding4-independent GAP-3",
+   "classification": "TEST_INFRASTRUCTURE",
+   "note": "fails under full-suite load, passes in isolation (2/3 in this mission); characterised earlier as a timing flake"
+  },
+  {
+   "item": "no description text on any of the 63 rules; 21 rules carry no inventoryItemIds",
+   "classification": "NONBLOCKING_PHASE3",
+   "note": "lineage relies on Pass C deterministic correspondence; contributes to the 4 accounting artifacts"
+  }
+ ],
+ "counts": {
+  "BLOCKING_PHASE3": 1,
+  "NONBLOCKING_PHASE3": 7,
+  "DEFER_TO_PHASE4": 2,
+  "DEFER_TO_PHASE5+": 1,
+  "TEST_INFRASTRUCTURE": 4
+ }
+}

@@ -1,0 +1,420 @@
+{
+ "artifact": "PHASE 4C §35 - the capacity state over Phase-3 IR already in this repo; no new model call",
+ "at": "2026-09-20T00:42:59.558Z",
+ "sources": {
+  "frozenCompileResult": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+  "frozenSha256": "03d15c99b8a45651291e9429f85da255e9dab1228942fc722682b53e149648b7",
+  "handAuthoredFixtures": "tests/fixtures/ir-examples/real-covenant-shapes.ts"
+ },
+ "ordinaryFlatBasket": {
+  "status": "AVAILABLE",
+  "gross": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "500000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": "ir-expr:069f145013b271249cd71aae",
+     "inputKeys": [],
+     "rawSource": 500000
+    }
+   }
+  },
+  "usage": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "100000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": null,
+     "inputKeys": [
+      "u1"
+     ]
+    }
+   }
+  },
+  "remaining": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "400000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": null,
+     "inputKeys": []
+    }
+   }
+  },
+  "appliedUsageIds": [
+   "u1"
+  ]
+ },
+ "percentageGrowerAndMaxFixed": {
+  "dependencyCount": 1,
+  "withoutFacts": {
+   "status": "NEEDS_INPUT",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact this capacity depends on is missing"
+   },
+   "bounds": {
+    "knownLowerBound": {
+     "type": "MONEY",
+     "amount": "2500000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:c68bce36f367711c46250f8c",
+      "inputKeys": [],
+      "rawSource": 2500000
+     }
+    }
+   }
+  },
+  "withFacts": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "2500000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:61767dc8b7d649a69d7d1917",
+      "inputKeys": [
+       "Consolidated Adjusted EBITDA"
+      ]
+     }
+    }
+   }
+  }
+ },
+ "unlimitedGatedCapacity": {
+  "status": "AVAILABLE",
+  "gross": {
+   "kind": "UNLIMITED",
+   "gate": "SATISFIED"
+  }
+ },
+ "sharedCapacity": {
+  "sharedNodes": 1,
+  "memberEdges": 2,
+  "pool": {
+   "sharedCapacityId": "ir-sharedcap:a4ae11756bc87380600ad320",
+   "capacityNodeId": "capacity:shared:ir-sharedcap:a4ae11756bc87380600ad320",
+   "status": "AVAILABLE",
+   "grossCapacity": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "21000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:72fec4108c9cf1e8f455d2ef",
+      "inputKeys": [
+       "Consolidated Adjusted EBITDA"
+      ]
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this shared capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "21000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:72fec4108c9cf1e8f455d2ef",
+      "inputKeys": [
+       "Consolidated Adjusted EBITDA"
+      ]
+     }
+    }
+   },
+   "memberRuleIds": [
+    "ir-rule:30f2397d293b073684ca0268",
+    "ir-rule:c3c9871ba21604186b55cfe5"
+   ],
+   "memberUsage": [
+    {
+     "ruleId": "ir-rule:30f2397d293b073684ca0268",
+     "usage": {
+      "kind": "NOT_DETERMINED",
+      "reason": "no usage recorded against this member"
+     },
+     "usageIds": []
+    },
+    {
+     "ruleId": "ir-rule:c3c9871ba21604186b55cfe5",
+     "usage": {
+      "kind": "NOT_DETERMINED",
+      "reason": "no usage recorded against this member"
+     },
+     "usageIds": []
+    }
+   ],
+   "directUsageIds": [],
+   "limitations": [],
+   "evaluation": {
+    "runtimeVersion": "contract-runtime.v1",
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "21000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:72fec4108c9cf1e8f455d2ef",
+      "inputKeys": [
+       "Consolidated Adjusted EBITDA"
+      ]
+     }
+    },
+    "missingInputs": [],
+    "missingInputKeys": [],
+    "diagnostics": [],
+    "bounds": null,
+    "trace": {
+     "exprId": "ir-expr:72fec4108c9cf1e8f455d2ef",
+     "kind": "MAX",
+     "status": "EXECUTABLE",
+     "value": {
+      "type": "MONEY",
+      "amount": "21000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "ir-expr:72fec4108c9cf1e8f455d2ef",
+       "inputKeys": [
+        "Consolidated Adjusted EBITDA"
+       ]
+      }
+     },
+     "provenance": {
+      "documentId": "ir-fixture-doc",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.04(a)(x)/(b)(iv) shared aggregate cap",
+      "excerpt": null
+     },
+     "children": [
+      {
+       "exprId": "ir-expr:8ad862e675a27b4ad446faa2",
+       "kind": "MONEY",
+       "status": "EXECUTABLE",
+       "value": {
+        "type": "MONEY",
+        "amount": "21000000",
+        "currency": "USD",
+        "lineage": {
+         "exprId": "ir-expr:8ad862e675a27b4ad446faa2",
+         "inputKeys": [],
+         "rawSource": 21000000
+        }
+       },
+       "provenance": {
+        "documentId": "ir-fixture-doc",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.04(a)(x)/(b)(iv) shared aggregate cap",
+        "excerpt": null
+       },
+       "children": []
+      },
+      {
+       "exprId": "ir-expr:f2e047dc609d7a3359698e8f",
+       "kind": "MULTIPLY",
+       "status": "EXECUTABLE",
+       "value": {
+        "type": "MONEY",
+        "amount": "700000",
+        "currency": "USD",
+        "lineage": {
+         "exprId": "ir-expr:f2e047dc609d7a3359698e8f",
+         "inputKeys": [
+          "Consolidated Adjusted EBITDA"
+         ]
+        }
+       },
+       "provenance": null,
+       "children": [
+        {
+         "exprId": "ir-expr:dba3526bdb824af89e095cee",
+         "kind": "PERCENT",
+         "status": "EXECUTABLE",
+         "value": {
+          "type": "PERCENT",
+          "fraction": "0.35",
+          "lineage": {
+           "exprId": "ir-expr:dba3526bdb824af89e095cee",
+           "inputKeys": [],
+           "rawSource": 0.35
+          }
+         },
+         "provenance": {
+          "documentId": "ir-fixture-doc",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.04(a)(x)/(b)(iv) shared aggregate cap",
+          "excerpt": null
+         },
+         "children": []
+        },
+        {
+         "exprId": "ir-expr:832592adad1bb05638d4b236",
+         "kind": "METRIC_REFERENCE",
+         "status": "EXECUTABLE",
+         "value": {
+          "type": "MONEY",
+          "amount": "2000000",
+          "currency": "USD",
+          "lineage": {
+           "exprId": "ir-expr:832592adad1bb05638d4b236",
+           "inputKeys": [
+            "Consolidated Adjusted EBITDA"
+           ]
+          }
+         },
+         "provenance": null,
+         "children": [],
+         "input": {
+          "kind": "METRIC",
+          "key": "Consolidated Adjusted EBITDA",
+          "period": null,
+          "asOf": "2026-06-30",
+          "provenance": {
+           "source": "synthetic snapshot built from the graph's own manifest",
+           "sourceVersion": "proof-1",
+           "snapshotId": "proof-snap",
+           "snapshotVersion": "1",
+           "snapshotStatus": "APPROVED",
+           "reviewedBy": "proof",
+           "reviewedAt": "2026-07-01T00:00:00Z",
+           "approvalRef": "proof-ap",
+           "selectionMethod": "EXACT_IDENTITY",
+           "inputContractVersion": "financial-input-contract.v1",
+           "reliedOnNonApprovedSnapshot": false,
+           "identityStrength": "CONTRACT_NAME_ONLY",
+           "currency": "USD"
+          },
+          "value": {
+           "type": "MONEY",
+           "amount": "2000000",
+           "currency": "USD",
+           "lineage": {
+            "exprId": "ir-expr:832592adad1bb05638d4b236",
+            "inputKeys": [
+             "Consolidated Adjusted EBITDA"
+            ]
+           }
+          }
+         }
+        }
+       ]
+      }
+     ],
+     "selected": {
+      "index": 0,
+      "exprId": "ir-expr:8ad862e675a27b4ad446faa2",
+      "reason": "MAX selected operand 0"
+     }
+    },
+    "provenance": {
+     "runtimeVersion": "contract-runtime.v1",
+     "inputContractVersion": "financial-input-contract.v1",
+     "ruleId": null,
+     "definitionId": null,
+     "rootExprId": "ir-expr:72fec4108c9cf1e8f455d2ef",
+     "sourceCitations": [
+      "§6.04(a)(x)/(b)(iv) shared aggregate cap"
+     ],
+     "inputsUsed": [
+      {
+       "kind": "METRIC",
+       "key": "Consolidated Adjusted EBITDA",
+       "period": null,
+       "asOf": "2026-06-30",
+       "provenance": {
+        "source": "synthetic snapshot built from the graph's own manifest",
+        "sourceVersion": "proof-1",
+        "snapshotId": "proof-snap",
+        "snapshotVersion": "1",
+        "snapshotStatus": "APPROVED",
+        "reviewedBy": "proof",
+        "reviewedAt": "2026-07-01T00:00:00Z",
+        "approvalRef": "proof-ap",
+        "selectionMethod": "EXACT_IDENTITY",
+        "inputContractVersion": "financial-input-contract.v1",
+        "reliedOnNonApprovedSnapshot": false,
+        "identityStrength": "CONTRACT_NAME_ONLY",
+        "currency": "USD"
+       },
+       "value": {
+        "type": "MONEY",
+        "amount": "2000000",
+        "currency": "USD",
+        "lineage": {
+         "exprId": "ir-expr:832592adad1bb05638d4b236",
+         "inputKeys": [
+          "Consolidated Adjusted EBITDA"
+         ]
+        }
+       }
+      }
+     ],
+     "expandedObjects": []
+    },
+    "stats": {
+     "nodesEvaluated": 5,
+     "cacheHits": 0,
+     "dependencyCount": 1,
+     "maxDepth": 2,
+     "missingInputCount": 0,
+     "unsupportedCount": 0,
+     "evaluationStatus": "EXECUTABLE"
+    }
+   }
+  },
+  "memberConstraintIds": [
+   [
+    "ir-sharedcap:a4ae11756bc87380600ad320"
+   ],
+   [
+    "ir-sharedcap:a4ae11756bc87380600ad320"
+   ]
+  ]
+ },
+ "handAuthoredFixtureRules": {
+  "count": 16,
+  "statusCounts": {
+   "AVAILABLE": 13,
+   "REVIEW_REQUIRED": 3
+  },
+  "everyNonAvailableHasALimitation": true
+ },
+ "frozenCompileResult": {
+  "rulesWithCapacity": 52,
+  "nodes": 67,
+  "edges": 39,
+  "statusCounts": {
+   "AVAILABLE": 37,
+   "REVIEW_REQUIRED": 8,
+   "UNSUPPORTED": 5,
+   "NEEDS_INPUT": 1,
+   "AMBIGUOUS": 1
+  },
+  "limitationCodes": [
+   "SHARED_CAPACITY_NOT_QUANTIFIED"
+  ],
+  "evaluationCycles": 0,
+  "sharesCapacityWithEdgesCarriedAsLegalRelationships": true,
+  "preRemediationNote": "the pre-remediation package reported CAPACITY_GRAPH_CYCLE on this corpus; those were symmetric SHARES_CAPACITY_WITH relationships fed to cycle detection, not evaluation cycles (audit F8)",
+  "everyUndeterminedGrossIsNonAvailable": true,
+  "unquantifiedShareMembersNonAuthoritative": true,
+  "deterministicUnderRulePermutation": true,
+  "reclassificationEdges": 0,
+  "sharedCapacityResources": 0,
+  "sharedRelationshipEdges": 7
+ },
+ "honestGap": "the frozen paid evidence carries no reclassification edge and no shared-capacity resource. The reclassification and quantified-pool cases are therefore proved on synthetic and hand-authored IR, and that absence is reported rather than worked around."
+}

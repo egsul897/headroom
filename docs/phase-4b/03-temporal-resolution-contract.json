@@ -1,0 +1,109 @@
+{
+ "artifact": "PHASE 4B §10-§13 - period and as-of are part of identity, never a fallback",
+ "at": "2026-09-19T19:53:28.851Z",
+ "periodSelectors": [
+  "NOT_PERIOD_SPECIFIC",
+  "EXACT_PERIOD_ID",
+  "VERBATIM_CONTRACT_PERIOD_KEY",
+  "TRAILING_PERIOD"
+ ],
+ "asOfSelectors": [
+  "NOT_AS_OF_SPECIFIC",
+  "EXACT_DATE",
+  "VERBATIM_CONTRACT_AS_OF_KEY"
+ ],
+ "fromContract": {
+  "nullPeriod": {
+   "kind": "NOT_PERIOD_SPECIFIC"
+  },
+  "contractPeriodText": {
+   "kind": "VERBATIM_CONTRACT_PERIOD_KEY",
+   "key": "the four consecutive fiscal quarters most recently ended"
+  },
+  "isoAsOf": {
+   "kind": "EXACT_DATE",
+   "isoDate": "2026-06-30"
+  },
+  "namedAsOf": {
+   "kind": "VERBATIM_CONTRACT_AS_OF_KEY",
+   "key": "the last day of the most recently ended Test Period"
+  }
+ },
+ "verbatimRule": "a period or as-of the contract states in words is carried verbatim; the runtime never converts it into a date or a quarter, because that conversion is a Phase-5 decision with its own evidence",
+ "defaultAsOfMode": "EXACT",
+ "observed": {
+  "exactPeriodMatches": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY",
+   "selectionMethod": "EXACT_IDENTITY",
+   "snapshotId": "s1",
+   "candidates": 1,
+   "rejections": []
+  },
+  "differentPeriodIsMissing": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "PERIOD_MISMATCH"
+   ]
+  },
+  "noPeriodDoesNotMatchAPeriodicFact": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "PERIOD_MISMATCH"
+   ]
+  },
+  "aPeriodicQueryDoesNotMatchANonPeriodicFact": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "PERIOD_MISMATCH"
+   ]
+  },
+  "exactAsOfMatches": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY",
+   "selectionMethod": "EXACT_IDENTITY",
+   "snapshotId": "s1",
+   "candidates": 1,
+   "rejections": []
+  },
+  "differentAsOfIsMissing": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "AS_OF_MISMATCH"
+   ]
+  },
+  "latestOnOrBeforeOnlyWhenAsked": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by LATEST_ON_OR_BEFORE_AS_OF",
+   "selectionMethod": "LATEST_ON_OR_BEFORE_AS_OF",
+   "snapshotId": "s1",
+   "candidates": 1,
+   "rejections": []
+  }
+ },
+ "noSilentFallback": true,
+ "namedContractTerm": {
+  "term": "the evaluation as-of is part of every reference identity",
+  "what": "evaluateExpression carries context.asOf down the tree, and a metric, term, ledger or event reference resolved under it queries at that as-of. A fact stored as NOT_AS_OF_SPECIFIC therefore does NOT satisfy a reference evaluated as of a date, and vice versa.",
+  "why": "the alternative is for the runtime to decide, on its own, that a fact with no date is good enough for a dated question. That is the implicit as-of assumption this phase exists to remove.",
+  "consequence": "Phase 5 must tag each fact with the as-of it is true at. The dependency manifest already states the exact as-of each reference will ask for, so a supplier never has to guess.",
+  "failureDirection": "closed - a mismatch is MISSING (NEEDS_INPUT), never a substituted number",
+  "acknowledgedCost": "a single approved snapshot is not reusable across evaluation dates unless its facts carry the matching as-of or the caller names the LATEST_ON_OR_BEFORE mode"
+ }
+}

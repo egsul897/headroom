@@ -1,0 +1,323 @@
+{
+ "artifact": "PHASE 3 CLOSURE §6 - the Phase-3 invariant matrix",
+ "at": "2026-09-19T15:27:08.859Z",
+ "rows": [
+  {
+   "n": 1,
+   "invariant": "structural node identity",
+   "currentEvidence": "Phase 3F.1.2 structural identity remediation; invariant tests I1-I16; known-package regression FWRG/LSB/CONMED/DSGR",
+   "shaOrArtifact": "docs/phase-3f1-2-structural-identity-remediation.md",
+   "scope": "all packages",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 2,
+   "invariant": "structural navigation",
+   "currentEvidence": "structural index + router; 6.01 region resolved to the identical 33,623-char span and section hash in every 601 mission; whole-agreement planning (phase-3-final-chewy)",
+   "shaOrArtifact": "docs/phase-2a-structural-index.md; docs/phase-3-final-601/148 §4; docs/phase-3-final-chewy/README.md",
+   "scope": "Chewy package + 4 known packages",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 3,
+   "invariant": "definition detection",
+   "currentEvidence": "structural-definitions detector; 134 classifies its 6 known false-negative grammars, compensated deterministically in the required layer",
+   "shaOrArtifact": "docs/phase-3-final-601/134-undeliverable-classification.json",
+   "scope": "6.01 unit",
+   "postFix": true,
+   "limitation": "4 declaration grammars + inline parentheticals not modelled by the detector itself (compensated, disclosed)",
+   "status": "PASS"
+  },
+  {
+   "n": 4,
+   "invariant": "forwarding definitions",
+   "currentEvidence": "FORWARDING_DEFINITION_TARGET evidence class (7 on the frozen unit); synthetic case F",
+   "shaOrArtifact": "docs/phase-3-final-601/135 byEvidence; dd-anti-overfit F",
+   "scope": "6.01 + synthetic",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 5,
+   "invariant": "cross-reference resolution",
+   "currentEvidence": "reference-resolver 4 rules; 96 zero-cost closure 29/29; stitcher unique section-reference resolution (21 resolved, 36 left unresolved with reason)",
+   "shaOrArtifact": "docs/phase-3-final-601/96, 151, 154 fixEffects",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "ambiguous references stay AMBIGUOUS with candidates (1 on the unit)",
+   "status": "PASS"
+  },
+  {
+   "n": 6,
+   "invariant": "package graph",
+   "currentEvidence": "Phase 2C/2F.3 package graph, CONMED regression, post-3F2 restatement tests",
+   "shaOrArtifact": "docs/phase-2c-debt-package-graph.md; tests package-graph-*.test.ts, phase-2f3-package-graph-robustness.test.ts",
+   "scope": "CONMED + synthetic 28-scenario matrix",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 7,
+   "invariant": "amendment/version precedence",
+   "currentEvidence": "Phase 2G deterministic amendment operations + effective dates + CONMED benchmark; operative-state honesty tests",
+   "shaOrArtifact": "docs/phase-2g-amendment-precedence.md; tests phase-2g-amendment-precedence, phase-3f1-operative-state-honesty",
+   "scope": "CONMED + 25 synthetic scenarios",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 8,
+   "invariant": "source-context retrieval",
+   "currentEvidence": "resolveSourceContext + sourceContextHash; resume by RECORDED_SOURCE_CONTEXT_HASH; Pass-A input byte-equivalence proof",
+   "shaOrArtifact": "docs/phase-3-final-601/148 §4-§5, 150",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 9,
+   "invariant": "Pass-A semantic inventory",
+   "currentEvidence": "dual-pass ensemble v5: 326 items, 252 corroborated, 0 conflicted, 98.15% chars accounted",
+   "shaOrArtifact": "docs/phase-3-final-601/152 + frozen-inventory.json (88e7419f)",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "INVENTORY_COVERAGE_GAP carried (17 unaccounted stretches, 2 uninventoried $1.00 tokens, 72 single-run material)",
+   "status": "PASS"
+  },
+  {
+   "n": 10,
+   "invariant": "dual-pass inventory stability",
+   "currentEvidence": "F-5.3B E1 vs E2 pre-registered certification",
+   "shaOrArtifact": "docs/phase-3-remediation-f5-3b-resume/07, 09",
+   "scope": "6.08 unit (frozen)",
+   "postFix": true,
+   "limitation": "measured on 6.08, not repeated on 6.01 (the 6.01 ensemble was built once and frozen)",
+   "status": "PASS"
+  },
+  {
+   "n": 11,
+   "invariant": "source accountability",
+   "currentEvidence": "source-coverage campaign final certification; 153 source-unverifiable authoritative IR 0; attribution proofs",
+   "shaOrArtifact": "docs/source-coverage-repair/37; docs/phase-3-final-601/153",
+   "scope": "scanner universe + 6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 12,
+   "invariant": "compositional IR",
+   "currentEvidence": "Phase 3A IR + F-6; 63 rules with typed capacity expressions, UNSUPPORTED operands explicit (6)",
+   "shaOrArtifact": "docs/phase-3-final-601/151, 05-final-verifier-findings-audit",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "solve-for-x operands untyped (Phase 4)",
+   "status": "PASS"
+  },
+  {
+   "n": 13,
+   "invariant": "anti-enumeration / generalization",
+   "currentEvidence": "dd-anti-overfit A-L all true; cross-corpus no explosion; code grep clean",
+   "shaOrArtifact": "docs/phase-3-closure/06",
+   "scope": "synthetic + 45 scenarios + 2 f7a corpora",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 14,
+   "invariant": "required-dependency derivation",
+   "currentEvidence": "required-dependency model v2: 8 evidence classes, qualification of every Pass-A edge, arithmetic-operand rule; threshold stable 0.25-0.75",
+   "shaOrArtifact": "docs/phase-3-final-601/121, 136, 138, 141",
+   "scope": "6.01 + synthetic",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 15,
+   "invariant": "dependency delivery",
+   "currentEvidence": "151: PLANNER_DELIVERY_GAP 0, contract held on 7/7 shards, witnesses in turn-1 tier",
+   "shaOrArtifact": "docs/phase-3-final-601/151",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "40 unresolved-dependency edges recorded against delivered context (no MISSING_CONTEXT report)",
+   "status": "PASS"
+  },
+  {
+   "n": 16,
+   "invariant": "dependency certificate honesty",
+   "currentEvidence": "133 semantic gap fixed; 4 statuses; dd-certificate-honesty tests; 5 complete + 2 explicit internal limitation",
+   "shaOrArtifact": "docs/phase-3-final-601/133, 141, 151",
+   "scope": "6.01 + synthetic",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 17,
+   "invariant": "bounded context behaviour",
+   "currentEvidence": "139 ceiling audit; 148 §7 water-fill sweep (no planning failure to -32,000 chars); thin shard 63,998/64,000 completed with 0 tool calls",
+   "shaOrArtifact": "docs/phase-3-final-601/139, 148, 151",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "the ceiling causes 3 extra disclosed excerpts on the thin shard",
+   "status": "PASS"
+  },
+  {
+   "n": 18,
+   "invariant": "automatic sharding",
+   "currentEvidence": "F-7A/F-7C; plan b2b9540a (7 shards, 1 must-link split) built identically by harness and production",
+   "shaOrArtifact": "docs/phase-3-final-601/144, 151 planIdentity",
+   "scope": "6.01 + 1.01 canary",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 19,
+   "invariant": "ownership partitioning",
+   "currentEvidence": "127 ownership proof (every material item owned exactly once); 153 unresolved owned items 0, attribution OWNED_INVENTORY_LINEAGE 4 / NONE 0",
+   "shaOrArtifact": "docs/phase-3-final-601/127, 153",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 20,
+   "invariant": "contextual read-only semantics",
+   "currentEvidence": "153 contextual emissions detected 0 / credited 0; F-7B.2 source-anchored attribution",
+   "shaOrArtifact": "docs/phase-3-final-601/153; docs/phase-3-remediation-f7b2",
+   "scope": "6.01 + 1.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 21,
+   "invariant": "stitching",
+   "currentEvidence": "F-7B.3B/3D; cross-shard carve-out linkage 135 exceptions; 21 dependencies resolved",
+   "shaOrArtifact": "docs/phase-3-final-601/154 fixEffects",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 22,
+   "invariant": "conflict preservation",
+   "currentEvidence": "F-7B.3B variants preserved; 153: 3 RULE_POSSIBLE_DUPLICATE collisions surfaced, 0 silent merges",
+   "shaOrArtifact": "docs/phase-3-final-601/153",
+   "scope": "6.01 + 1.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 23,
+   "invariant": "quantitative source preservation",
+   "currentEvidence": "155: 50 material quantitative values, 0 missing, 0 contradictions, 0 silent corruption; F-3",
+   "shaOrArtifact": "docs/phase-3-final-601/155",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 24,
+   "invariant": "global Pass C",
+   "currentEvidence": "152 over 326 items: 294 represented, 9 missing (all enumerated), semanticallyComplete=false",
+   "shaOrArtifact": "docs/phase-3-final-601/152",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "9 CRITICAL items missing from composition - 5 bounded true omissions ((14) subject), 4 accounting/connective (04)",
+   "status": "PASS"
+  },
+  {
+   "n": 25,
+   "invariant": "false-completeness prevention",
+   "currentEvidence": "153 false completeness 0 (Pass C refuses completeness while items are missing)",
+   "shaOrArtifact": "docs/phase-3-final-601/153",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 26,
+   "invariant": "independent verifier",
+   "currentEvidence": "3C independence tests; 154: verifier ran on untouched output, 6 findings, 8/11 historical resolved, 2 recurred, 1 new-related",
+   "shaOrArtifact": "docs/phase-3-final-601/154",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "deterministic checks only scan typed nodes (finding 4 over-strict)",
+   "status": "PASS"
+  },
+  {
+   "n": 27,
+   "invariant": "frozen-inventory resume identity",
+   "currentEvidence": "F-7C.1; 148/150 RECORDED_SOURCE_CONTEXT_HASH with expected hashes",
+   "shaOrArtifact": "docs/phase-3-remediation-f7c1/03; docs/phase-3-final-601/150",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 28,
+   "invariant": "durable execution / replay",
+   "currentEvidence": "HD-4 73; 150: 7 durable shard records, 14 live calls, 0 replays, guard = gateway to the cent",
+   "shaOrArtifact": "docs/phase-3-final-601/73, 150",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 29,
+   "invariant": "public production-path activation",
+   "currentEvidence": "F-7C; 151 entryPoint compileCovenantToIR, production plan hash identical, executor wrapped only by certified durability",
+   "shaOrArtifact": "docs/phase-3-remediation-f7c/05; docs/phase-3-final-601/151",
+   "scope": "6.01",
+   "postFix": true,
+   "limitation": "none",
+   "status": "PASS"
+  },
+  {
+   "n": 30,
+   "invariant": "unseen-package / synthetic generalization",
+   "currentEvidence": "3F/3F1/3F2 unseen packages (structural); dd synthetic agreements; 45-scenario corpus; anti-overfit A-L",
+   "shaOrArtifact": "docs/phase-3-closure/06",
+   "scope": "cross-package",
+   "postFix": true,
+   "limitation": "no second real-package SEMANTIC run at the current production version (structural evidence only beyond 6.01/1.01)",
+   "status": "PASS"
+  },
+  {
+   "n": 31,
+   "invariant": "entity-scope semantics (who a rule binds / who may rely)",
+   "currentEvidence": "deterministic entity-scope consistency guard in production (normalize.ts + entity-scope-guard.ts): unrecognized tags fail loudly, under-inclusive scope is reset to unspecified + PARTIAL with reason; frozen replay docs/phase-3-entity-scope-final/08 ENTITY_SCOPE_GATE_PASSED (12/12); production file hashes match the current tree; 05 F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION; replay {\"UNDERINCLUSIVE_VS_SOURCE\":5,\"UNSPECIFIED\":46,\"UNWITNESSED\":9,\"SOURCE_MATCH_CONFIRMED\":3}",
+   "shaOrArtifact": "docs/phase-3-entity-scope-final/04, 05, 08",
+   "scope": "6.01 + synthetic A-F",
+   "postFix": true,
+   "limitation": "the guard proves consistency, not precision: an UNWITNESSED scope is kept with safeToRely=false; the raw wire of the frozen run is not recoverable",
+   "status": "PASS"
+  }
+ ],
+ "counts": {
+  "total": 31,
+  "PASS": 31,
+  "FAIL": 0,
+  "INSUFFICIENT": 0
+ },
+ "rule": "no invariant passes because tests exist; each names its evidence"
+}

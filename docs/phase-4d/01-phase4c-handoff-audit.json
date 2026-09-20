@@ -1,0 +1,70 @@
+{
+ "artifact": "PHASE 4D §0 - reconciliation of the recorded PHASE4D_STARTING_SHA against the clean branch HEAD, performed before any Phase-4D production file was created",
+ "at": "2026-09-20T03:35:35.411Z",
+ "recordedPhase4dStartingSha": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec",
+ "headAtPhase4dStart": "c7fa62b20286870f5b22d7d796d7b9492e1533a4",
+ "commitsBetween": [
+  {
+   "sha": "c7fa62b20286870f5b22d7d796d7b9492e1533a4",
+   "subject": "Phase 4C remediation: seal the Phase-4D handoff (PHASE4D_STARTING_SHA 87d7baf)"
+  }
+ ],
+ "filesChangedBetween": [
+  {
+   "status": "A",
+   "path": "docs/phase-4c/remediation/15-phase4d-handoff.json"
+  }
+ ],
+ "productionFilesChangedBetween": [],
+ "changesAreEvidenceOrHandoffOnly": true,
+ "runtimeTreeIdentities": {
+  "atRecordedSha": {
+   "phase3Compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "phase3Semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+   "ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+   "runtime": "9745bdd172b9d4d48a50ca539d8e1d6e18403332",
+   "phase4bInput": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+   "phase4cCapacity": "c5f2d820d3c764d03846450c529a3f5399c423b8"
+  },
+  "atHead": {
+   "phase3Compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "phase3Semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+   "ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+   "runtime": "9745bdd172b9d4d48a50ca539d8e1d6e18403332",
+   "phase4bInput": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+   "phase4cCapacity": "c5f2d820d3c764d03846450c529a3f5399c423b8"
+  },
+  "identical": true
+ },
+ "perPhaseVerification": {
+  "phase3Unchanged": true,
+  "phase4aUnchanged": true,
+  "phase4bUnchanged": true,
+  "phase4cUnchanged": true
+ },
+ "phase4dProductionPresentAtHead": [],
+ "phase4dNotStartedAtHead": true,
+ "handoffSeal": {
+  "path": "docs/phase-4c/remediation/15-phase4d-handoff.json",
+  "phase4dStartingSha": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec",
+  "phase4cGateVerdict": "PHASE4C_CAPACITY_STATE_READY",
+  "recertification": {
+   "conditions": {
+    "PASS": 32,
+    "FAIL": 0,
+    "total": 32
+   },
+   "artifact": "docs/phase-4c/remediation/14-recertification.json"
+  },
+  "realCorpusSharedCapacityCount": 0,
+  "realCorpusExecutableReclassificationEdgeCount": 0
+ },
+ "sealStillIdentifiesRecordedShaAsRuntimeBaseline": true,
+ "conclusion": {
+  "effectiveRuntimeBaselineIdentity": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec",
+  "executionHead": "c7fa62b20286870f5b22d7d796d7b9492e1533a4",
+  "reason": "the single commit between the recorded SHA and HEAD adds one evidence file (docs/phase-4c/remediation/15-phase4d-handoff.json) and nothing else; all six runtime tree object ids are byte-identical, so HEAD carries the same runtime semantics as the recorded baseline. The baseline identity is preserved as 87d7baf and Phase 4D proceeds from the clean branch HEAD; HEAD does not supersede the baseline, it only seals it.",
+  "baselineSilentlyRedefined": false
+ },
+ "verdict": "HANDOFF_RECONCILED"
+}

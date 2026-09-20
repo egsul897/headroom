@@ -1,0 +1,132 @@
+{
+ "artifact": "ENTITY-SCOPE FINAL §5-§10 - the deterministic consistency guard",
+ "at": "2026-09-19T15:27:06.892Z",
+ "guardVersion": "entity-scope-consistency-guard.v1",
+ "location": {
+  "module": "lib/contract-model/compiler/semantic/entity-scope-guard.ts",
+  "wiring": "lib/contract-model/compiler/semantic/normalize.ts (rule assembly: normalizeEntityTags -> applyEntityScopeGuard(rule, entityScopeWitnessFor(rule, input.sourceContext.regions)); ENTITY_SCOPE_REFERENCE nodes: classifyEntityTag)",
+  "auditType": "lib/contract-model/ir/types.ts IREntityScopeAudit (optional, additive field IRRule.entityScopeAudit)"
+ },
+ "inputsExaminedOnly": [
+  "the rule's own provenance excerpt",
+  "the lead-in of the structural unit the rule cites (deterministically located in the bound source region: from the unit's enumerator to its first child enumerator)",
+  "the normalized entityScope / entityScopeExcluded"
+ ],
+ "noLlm": true,
+ "noNewLegalInterpretation": true,
+ "atoms": [
+  "BORROWER",
+  "PARENT",
+  "GUARANTOR_RS",
+  "NON_GUARANTOR_RS",
+  "UNRESTRICTED_SUB"
+ ],
+ "tagDenotation": {
+  "BORROWER": {
+   "full": [
+    "BORROWER"
+   ],
+   "partial": []
+  },
+  "GUARANTOR_RS": {
+   "full": [
+    "GUARANTOR_RS"
+   ],
+   "partial": []
+  },
+  "NON_GUARANTOR_RS": {
+   "full": [
+    "NON_GUARANTOR_RS"
+   ],
+   "partial": []
+  },
+  "FOREIGN_RS": {
+   "full": [],
+   "partial": [
+    "GUARANTOR_RS",
+    "NON_GUARANTOR_RS"
+   ]
+  },
+  "UNRESTRICTED_SUB": {
+   "full": [
+    "UNRESTRICTED_SUB"
+   ],
+   "partial": []
+  },
+  "SECURITIZATION_SUB": {
+   "full": [],
+   "partial": [
+    "GUARANTOR_RS",
+    "NON_GUARANTOR_RS",
+    "UNRESTRICTED_SUB"
+   ]
+  },
+  "IMMATERIAL_SUB": {
+   "full": [],
+   "partial": [
+    "GUARANTOR_RS",
+    "NON_GUARANTOR_RS",
+    "UNRESTRICTED_SUB"
+   ]
+  },
+  "PARENT": {
+   "full": [
+    "PARENT"
+   ],
+   "partial": []
+  },
+  "LOAN_PARTY": {
+   "full": [
+    "BORROWER",
+    "GUARANTOR_RS"
+   ],
+   "partial": [
+    "PARENT"
+   ]
+  },
+  "MATERIAL_SUBSIDIARY": {
+   "full": [],
+   "partial": [
+    "GUARANTOR_RS",
+    "NON_GUARANTOR_RS",
+    "UNRESTRICTED_SUB"
+   ]
+  },
+  "ANY_SUBSIDIARY": {
+   "full": [
+    "GUARANTOR_RS",
+    "NON_GUARANTOR_RS",
+    "UNRESTRICTED_SUB"
+   ],
+   "partial": []
+  }
+ },
+ "sourceBindingVocabulary": {
+  "basis": "generic credit-agreement / indenture entity-class vocabulary already scanned by semantic-verification/source-inventory.ts ENTITY_SCOPE_TERM, extended with the qualified-subsidiary and primary-obligor forms; case-sensitive defined-term capitalization; each phrase requires the scope to touch at least one atom it denotes (family-level consistency, not precision)",
+  "code": "const SIGNALS: readonly SignalSpec[] = [\n  { label: \"Restricted Subsidiary\", re: /\\bRestricted Subsidiar(?:y|ies)\\b/g, requiresAnyOf: RS },\n  { label: \"Unrestricted Subsidiary\", re: /\\bUnrestricted Subsidiar(?:y|ies)\\b/g, requiresAnyOf: [\"UNRESTRICTED_SUB\"] },\n  { label: \"qualified Subsidiary\", re: /\\b(?:Material|Immaterial|Foreign|Domestic|Excluded|Securitization|Receivables|Insurance|Captive|Wholly[- ]Owned|Significant)\\s+Subsidiar(?:y|ies)\\b/g, requiresAnyOf: ANY_SUB },\n  { label: \"Subsidiary\", re: /(?<!(?:Restricted|Unrestricted|Material|Immaterial|Foreign|Domestic|Excluded|Securitization|Receivables|Insurance|Captive|Owned|Significant)\\s)\\bSubsidiar(?:y|ies)\\b/g, requiresAnyOf: ANY_SUB },\n  { label: \"Borrower\", re: /\\bBorrowers?\\b/g, requiresAnyOf: [\"BORROWER\"] },\n  { label: \"the Company / the Issuer\", re: /\\b(?:the|The)\\s+(?:Company|Issuer|Co-Issuers?)\\b/g, requiresAnyOf: [\"BORROWER\"] },\n  { label: \"Guarantor\", re: /\\bGuarantors?\\b/g, requiresAnyOf: [\"GUARANTOR_RS\", \"PARENT\"] },\n  { label: \"Loan Party / Credit Party / Obligor\", re: /\\b(?:Loan Part(?:y|ies)|Credit Part(?:y|ies)|Obligors?)\\b/g, requiresAnyOf: [\"BORROWER\", \"GUARANTOR_RS\", \"PARENT\"] },\n];"
+ },
+ "exclusionContext": "a phrase preceded within 60 chars by 'other than' / 'excluding' / 'except' / 'that is not a' / 'not a' / 'neither' is a carve-out, not a binding, and is never required",
+ "decision": {
+  "UNRECOGNIZED_TAG": "any unrecognized wire tag -> affected field reset to [], COMPLETE -> PARTIAL, reason ENTITY_SCOPE_UNRECOGNIZED_TAG, raw tag preserved",
+  "UNSPECIFIED": "empty scope claims nothing -> untouched",
+  "UNDERINCLUSIVE_VS_SOURCE": "a binding phrase in the own excerpt or the cited-unit lead-in denotes an atom no scope tag touches -> scope reset to [], COMPLETE -> PARTIAL, reason ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE naming the phrase and the witness tier; NEVER widened",
+  "AMBIGUOUS_VS_SOURCE": "every binding phrase is covered but some only through a qualified subset class (e.g. FOREIGN_RS for 'Restricted Subsidiary') -> not provably inconsistent: scope and sufficiency kept, reason recorded, safeToRely=false",
+  "SOURCE_MATCH_CONFIRMED": "every binding phrase is covered by a full class -> untouched, safeToRely=true",
+  "UNWITNESSED": "no binding phrase in any bound text -> untouched (no invented correction), safeToRely=false"
+ },
+ "bothTiersEvaluatedTogether": "the cited unit's lead-in governs every fragment under it, so an incidental mention in the excerpt (a discretion clause) cannot mask the unit's joint binding language",
+ "reasonCodes": [
+  "ENTITY_SCOPE_UNRECOGNIZED_TAG",
+  "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE",
+  "ENTITY_SCOPE_AMBIGUOUS_VS_SOURCE",
+  "ENTITY_SCOPE_UNSPECIFIED",
+  "ENTITY_SCOPE_UNWITNESSED",
+  "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+ ],
+ "safetyDirection": "remove false precision, never invent it; a downgrade is always machine-readable (reason code string in sufficiencyReasons + structured entityScopeAudit)",
+ "knownLimitations": [
+  "SOURCE_MATCH_CONFIRMED means no bound class is unrepresented, not that the scope is exactly right (an incidental capitalized mention can satisfy a family)",
+  "defined terms outside the fixed vocabulary (e.g. an agreement-specific 'Restricted Party') are not signals - under-detection only, never a false downgrade",
+  "'Parent'/'Holdings' as source phrases are not signals because their IR class is not textually unambiguous"
+ ]
+}

@@ -1,0 +1,370 @@
+{
+ "artifact": "PHASE 4B §36, §38 - one generic path, repeatable, proved against Phase-3 IR already in the repo",
+ "at": "2026-09-19T19:53:28.922Z",
+ "scannedFiles": [
+  "lib/contract-model/runtime/input/identity.ts",
+  "lib/contract-model/runtime/input/index.ts",
+  "lib/contract-model/runtime/input/manifest.ts",
+  "lib/contract-model/runtime/input/resolve.ts",
+  "lib/contract-model/runtime/input/snapshot-resolver.ts",
+  "lib/contract-model/runtime/input/snapshot.ts",
+  "lib/contract-model/runtime/input/types.ts",
+  "lib/contract-model/runtime/input/version.ts"
+ ],
+ "forbiddenConcepts": [
+  "EBITDA",
+  "Total Assets",
+  "Interest Expense",
+  "Fixed Charge",
+  "Leverage Ratio",
+  "Net Income",
+  "Restricted Payment",
+  "Indebtedness",
+  "Permitted Lien",
+  "Available Amount",
+  "GREATER_OF",
+  "RATIO_DEBT",
+  "FREE_AND_CLEAR",
+  "GENERAL_DEBT",
+  "Chewy",
+  "chwy",
+  "6.01",
+  "6.10",
+  "FWRG",
+  "CONMED",
+  "DSGR"
+ ],
+ "forbiddenHits": [],
+ "companyOrInstrumentIdentifiersHardCoded": [],
+ "ingestionOrNetworkHits": [],
+ "layerBoundary": {
+  "inputContractOutsideImports": [
+   "../../ir/types",
+   "../types",
+   "../version"
+  ],
+  "phase3ModulesImportingTheInputContract": []
+ },
+ "determinism": {
+  "resolutionRuns": [
+   "6f147b11ede3de04b9c3206da2f592387964d841369920b90d2ab8d2a0e40060",
+   "6f147b11ede3de04b9c3206da2f592387964d841369920b90d2ab8d2a0e40060",
+   "6f147b11ede3de04b9c3206da2f592387964d841369920b90d2ab8d2a0e40060",
+   "6f147b11ede3de04b9c3206da2f592387964d841369920b90d2ab8d2a0e40060",
+   "6f147b11ede3de04b9c3206da2f592387964d841369920b90d2ab8d2a0e40060",
+   "6f147b11ede3de04b9c3206da2f592387964d841369920b90d2ab8d2a0e40060",
+   "6f147b11ede3de04b9c3206da2f592387964d841369920b90d2ab8d2a0e40060"
+  ],
+  "resolutionIdentical": true,
+  "manifestRuns": [
+   "e707945a40df13bf307abdfdf854f025008063b31e6aa1468c4a95a7e872f3a0",
+   "e707945a40df13bf307abdfdf854f025008063b31e6aa1468c4a95a7e872f3a0",
+   "e707945a40df13bf307abdfdf854f025008063b31e6aa1468c4a95a7e872f3a0",
+   "e707945a40df13bf307abdfdf854f025008063b31e6aa1468c4a95a7e872f3a0",
+   "e707945a40df13bf307abdfdf854f025008063b31e6aa1468c4a95a7e872f3a0"
+  ],
+  "manifestIdentical": true,
+  "noTimestampInPayload": true
+ },
+ "phase3FixtureProof": [
+  {
+   "label": "percentage-of-metric basket",
+   "dependencies": [
+    {
+     "key": "Consolidated Adjusted EBITDA",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": true,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "withNothingSupplied": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated Adjusted EBITDA"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   },
+   "withManifestSupplied": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "2500000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:61767dc8b7d649a69d7d1917",
+      "inputKeys": [
+       "Consolidated Adjusted EBITDA"
+      ]
+     }
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "withTheSameFactsUnderAnotherCompany": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated Adjusted EBITDA"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   }
+  },
+  {
+   "label": "the same shape over a different metric",
+   "dependencies": [
+    {
+     "key": "Consolidated Total Assets",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": true,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "withNothingSupplied": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated Total Assets"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   },
+   "withManifestSupplied": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "70000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:673fb668368a18357c51f6ce",
+      "inputKeys": [
+       "Consolidated Total Assets"
+      ]
+     }
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "withTheSameFactsUnderAnotherCompany": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated Total Assets"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   }
+  },
+  {
+   "label": "maintenance ratio test",
+   "dependencies": [
+    {
+     "key": "Total Rent Adjusted Net Leverage Ratio",
+     "inputKind": "METRIC",
+     "expectedType": "RATIO",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": false,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "withNothingSupplied": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Total Rent Adjusted Net Leverage Ratio"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   },
+   "withManifestSupplied": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "CAPACITY",
+     "capacity": {
+      "kind": "UNLIMITED",
+      "gate": "SATISFIED"
+     },
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "Total Rent Adjusted Net Leverage Ratio"
+      ]
+     }
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "withTheSameFactsUnderAnotherCompany": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Total Rent Adjusted Net Leverage Ratio"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   }
+  },
+  {
+   "label": "stepped schedule",
+   "dependencies": [
+    {
+     "key": "Total Rent Adjusted Net Leverage Ratio",
+     "inputKind": "METRIC",
+     "expectedType": "RATIO",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": false,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "withNothingSupplied": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Total Rent Adjusted Net Leverage Ratio"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   },
+   "withManifestSupplied": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "CAPACITY",
+     "capacity": {
+      "kind": "UNLIMITED",
+      "gate": "SATISFIED"
+     },
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "Total Rent Adjusted Net Leverage Ratio"
+      ]
+     }
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "withTheSameFactsUnderAnotherCompany": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Total Rent Adjusted Net Leverage Ratio"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   }
+  },
+  {
+   "label": "frozen paid compile result: percentage-of-metric basket (selected by shape)",
+   "dependencies": [
+    {
+     "key": "Consolidated EBITDA",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": true,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "withNothingSupplied": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated EBITDA"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   },
+   "withManifestSupplied": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "720000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:5faf05100655584b167d8837",
+      "inputKeys": [
+       "Consolidated EBITDA"
+      ]
+     }
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "withTheSameFactsUnderAnotherCompany": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated EBITDA"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   }
+  }
+ ],
+ "definitionProof": {
+  "label": "definition-expanded expression with a Phase-3 UNSUPPORTED component",
+  "dependencies": [
+   {
+    "key": "CNI Growth Amount",
+    "inputKind": "METRIC",
+    "expectedType": "MONEY",
+    "status": "CONDITIONAL",
+    "conditionalOn": "IF ir-expr:b14711294eecca5364ed9150 then-branch",
+    "safeBoundAvailableWithoutThis": false,
+    "via": {
+     "kind": "EXPRESSION"
+    }
+   },
+   {
+    "key": "Total Rent Adjusted Net Leverage Ratio",
+    "inputKind": "METRIC",
+    "expectedType": "RATIO",
+    "status": "REQUIRED",
+    "conditionalOn": null,
+    "safeBoundAvailableWithoutThis": false,
+    "via": {
+     "kind": "EXPRESSION"
+    }
+   }
+  ],
+  "unsupportedNodes": 1,
+  "statusWithEveryDependencySupplied": "UNSUPPORTED"
+ },
+ "frozenManifestCoverage": {
+  "rulesWithCapacity": 52,
+  "rulesWithDependencies": 26,
+  "literalOnlyRules": 26,
+  "ambiguousExpansions": 0
+ }
+}

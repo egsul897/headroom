@@ -1,0 +1,364 @@
+{
+ "artifact": "PHASE 4C §6, §7, §24, §25, §26 - gross capacity through the Phase-4A evaluator, unlimited, bounds, review and scope",
+ "at": "2026-09-19T21:52:37.902Z",
+ "evaluationPath": "IRRule.capacityExpression -> evaluateExpression (Phase 4A) -> StrictInputResolver (Phase 4B) -> CapacityAmount",
+ "noSecondArithmeticImplementation": "the capacity layer imports units.ts and evaluate-expression.ts; it computes nothing itself",
+ "unlimitedRepresentation": {
+  "kinds": [
+   "UNLIMITED (gate NONE or SATISFIED)",
+   "GATE_NOT_SATISFIED"
+  ],
+  "neverInfinity": true,
+  "neverMaxValue": true,
+  "distinctFromMissing": true,
+  "distinctFromZero": true
+ },
+ "boundsAreMetadataNotValues": "a MAX with a missing operand carries knownLowerBound while the status stays NEEDS_INPUT and gross stays NOT_DETERMINED",
+ "legalStateDominatesArithmetic": "a PARTIAL or AMBIGUOUS Phase-3 rule publishes NOT_DETERMINED and keeps the computed arithmetic under `provisional`",
+ "cases": {
+  "flat": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g28",
+      "inputKeys": [],
+      "rawSource": 100000000
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g28",
+      "inputKeys": [],
+      "rawSource": 100000000
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g28",
+      "inputKeys": [],
+      "rawSource": 100000000
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "percentageOfMetric": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g31",
+      "inputKeys": [
+       "metric-alpha"
+      ]
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g31",
+      "inputKeys": [
+       "metric-alpha"
+      ]
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g31",
+      "inputKeys": [
+       "metric-alpha"
+      ]
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "missingMetric": {
+   "status": "NEEDS_INPUT",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact this capacity depends on is missing"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact this capacity depends on is missing"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact this capacity depends on is missing"
+   },
+   "limitations": [
+    "MISSING_FINANCIAL_INPUT"
+   ],
+   "appliedUsageIds": []
+  },
+  "maxWithMissingGrower": {
+   "status": "NEEDS_INPUT",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact this capacity depends on is missing"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact this capacity depends on is missing"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact this capacity depends on is missing"
+   },
+   "limitations": [
+    "MISSING_FINANCIAL_INPUT"
+   ],
+   "appliedUsageIds": [],
+   "bounds": {
+    "knownLowerBound": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g35",
+      "inputKeys": [],
+      "rawSource": 100000000
+     }
+    }
+   }
+  },
+  "unlimitedUngated": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "UNLIMITED",
+    "gate": "NONE"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "UNLIMITED",
+    "gate": "NONE"
+   },
+   "effectiveRemaining": {
+    "kind": "UNLIMITED",
+    "gate": "NONE"
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "unlimitedGateSatisfied": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "UNLIMITED",
+    "gate": "SATISFIED"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "UNLIMITED",
+    "gate": "SATISFIED"
+   },
+   "effectiveRemaining": {
+    "kind": "UNLIMITED",
+    "gate": "SATISFIED"
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "unlimitedGateFailed": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "GATE_NOT_SATISFIED"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "GATE_NOT_SATISFIED"
+   },
+   "effectiveRemaining": {
+    "kind": "GATE_NOT_SATISFIED"
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "reviewRequiredPartialRule": {
+   "status": "REVIEW_REQUIRED",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "limitations": [
+    "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "appliedUsageIds": [],
+   "provisional": {
+    "grossCapacity": {
+     "kind": "AMOUNT",
+     "value": {
+      "type": "MONEY",
+      "amount": "80000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "g46",
+       "inputKeys": [],
+       "rawSource": 80000000
+      }
+     }
+    },
+    "remaining": {
+     "kind": "AMOUNT",
+     "value": {
+      "type": "MONEY",
+      "amount": "80000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "g46",
+       "inputKeys": [],
+       "rawSource": 80000000
+      }
+     }
+    }
+   }
+  },
+  "ambiguousPhase3Rule": {
+   "status": "AMBIGUOUS",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "limitations": [
+    "PHASE3_RULE_AMBIGUOUS"
+   ],
+   "appliedUsageIds": []
+  },
+  "unsupportedOperand": {
+   "status": "UNSUPPORTED",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "capacity not evaluable: UNSUPPORTED"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "capacity not evaluable: UNSUPPORTED"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "capacity not evaluable: UNSUPPORTED"
+   },
+   "limitations": [
+    "UNSUPPORTED_EXPRESSION"
+   ],
+   "appliedUsageIds": []
+  },
+  "entityScopeNotSafe": {
+   "status": "REVIEW_REQUIRED",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "limitations": [
+    "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "appliedUsageIds": [],
+   "entityScope": {
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "auditStatus": "UNDERINCLUSIVE_VS_SOURCE",
+    "safeToRely": false,
+    "applicability": "SCOPE_NOT_SAFE_TO_RELY_ON"
+   }
+  }
+ }
+}

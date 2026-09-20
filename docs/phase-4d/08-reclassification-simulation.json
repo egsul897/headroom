@@ -1,0 +1,65 @@
+{
+ "artifact": "PHASE 4D §14, §15 - only a caller-supplied election, only against an encoded Phase-3 edge",
+ "at": "2026-09-20T04:09:33.396Z",
+ "delegatesTo": "the recertified Phase-4C reclassification, so batch conservation aggregated by source is enforced unchanged",
+ "neverDone": [
+  "infer a missing field",
+  "invent an authorizing edge",
+  "look for an alternative target",
+  "elect automatically"
+ ],
+ "executed": {
+  "outcomes": [
+   {
+    "electionId": "el-1",
+    "state": "EXECUTED",
+    "conservation": {
+     "sourceDelta": "-25",
+     "destinationDelta": "25",
+     "net": "0",
+     "holds": true
+    },
+    "authorizingEdge": {
+     "from": "capacity:rule:prov-src",
+     "to": "capacity:rule:prov-dst",
+     "sourceRelationship": "RECLASSIFIABLE_TO",
+     "description": "amounts may be reclassified"
+    }
+   }
+  ],
+  "post": [
+   {
+    "ruleId": "prov-dst",
+    "usage": "25",
+    "remaining": "75",
+    "status": "AVAILABLE"
+   },
+   {
+    "ruleId": "prov-src",
+    "usage": "15",
+    "remaining": "85",
+    "status": "AVAILABLE"
+   }
+  ],
+  "totalEconomicsPreserved": true
+ },
+ "batchExceedsSource": {
+  "batchConservation": [
+   {
+    "sourceRuleId": "prov-src",
+    "sourceUsage": "40",
+    "requested": "50",
+    "holds": false
+   }
+  ],
+  "allExecuted": false,
+  "postStatePublished": false
+ },
+ "noEncodedAuthority": {
+  "blockedBy": [
+   "NO_EXPLICIT_RECLASSIFICATION_EDGE"
+  ],
+  "authorizingEdge": null
+ },
+ "historyPreserved": "a reclassification adds rows; it never deletes or rewrites the source usage"
+}

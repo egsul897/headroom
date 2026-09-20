@@ -1,0 +1,134 @@
+{
+ "artifact": "PHASE 4C remediation R13 - the algorithmic sources, the fix, the counters, and a supplemental wall-clock re-measurement",
+ "at": "2026-09-20T00:42:58.248Z",
+ "auditedMeasurement": {
+  "construction": "chain of SHARES_CAPACITY_WITH, one pool over every rule, one usage per rule",
+  "evalLogLogSlope": 1.81,
+  "evalMsAt1600": "about 8000"
+ },
+ "algorithmicSourcesFound": [
+  "state.ts: selectUsage walked index.ordered (the whole ledger) once per capacity and once more per pool member -> O(capacities x ledger)",
+  "state.ts: graph.nodes.filter(...) per rule for component roles, graph.edges.filter(...) per rule for member edges -> O(rules x nodes), O(rules x edges)",
+  "state.ts: memberEdges.length added to edgesVisited per rule, so the counter grew quadratically without measuring anything",
+  "graph.ts: nodes.some(...) existence checks per member and per dependency; unionManifests merged.find per dependency; dependsOn lists via edges.filter per node",
+  "reclassification.ts: reclassEdges.find per election and explanations.find per election"
+ ],
+ "fix": [
+  "ledger indexed once by path; selection memoized per (path, currency) so pools re-read members through the memo",
+  "membership, component, pool and rule lookups via Maps built once",
+  "nodeIds Set for existence; manifest union keyed by dependency identity; grouped single passes for dependency lists and edge de-duplication",
+  "reclassification edge and explanation lookups via Maps"
+ ],
+ "counters": [
+  {
+   "size": 100,
+   "nodesVisited": 101,
+   "edgesVisited": 100,
+   "expressionsEvaluated": 101,
+   "ledgerEntriesApplied": 100,
+   "ledgerEntriesConsidered": 100,
+   "ledgerEntriesExamined": 100,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 100,
+   "dependencyLookups": 101,
+   "indexLookups": 401,
+   "maxDepth": 0,
+   "cacheHits": 100
+  },
+  {
+   "size": 200,
+   "nodesVisited": 201,
+   "edgesVisited": 200,
+   "expressionsEvaluated": 201,
+   "ledgerEntriesApplied": 200,
+   "ledgerEntriesConsidered": 200,
+   "ledgerEntriesExamined": 200,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 200,
+   "dependencyLookups": 201,
+   "indexLookups": 801,
+   "maxDepth": 0,
+   "cacheHits": 200
+  },
+  {
+   "size": 400,
+   "nodesVisited": 401,
+   "edgesVisited": 400,
+   "expressionsEvaluated": 401,
+   "ledgerEntriesApplied": 400,
+   "ledgerEntriesConsidered": 400,
+   "ledgerEntriesExamined": 400,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 400,
+   "dependencyLookups": 401,
+   "indexLookups": 1601,
+   "maxDepth": 0,
+   "cacheHits": 400
+  },
+  {
+   "size": 800,
+   "nodesVisited": 801,
+   "edgesVisited": 800,
+   "expressionsEvaluated": 801,
+   "ledgerEntriesApplied": 800,
+   "ledgerEntriesConsidered": 800,
+   "ledgerEntriesExamined": 800,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 800,
+   "dependencyLookups": 801,
+   "indexLookups": 3201,
+   "maxDepth": 0,
+   "cacheHits": 800
+  },
+  {
+   "size": 1600,
+   "nodesVisited": 1601,
+   "edgesVisited": 1600,
+   "expressionsEvaluated": 1601,
+   "ledgerEntriesApplied": 1600,
+   "ledgerEntriesConsidered": 1600,
+   "ledgerEntriesExamined": 1600,
+   "sharedConstraintsEvaluated": 1,
+   "sharedResourceLookups": 1600,
+   "dependencyLookups": 1601,
+   "indexLookups": 6401,
+   "maxDepth": 0,
+   "cacheHits": 1600
+  }
+ ],
+ "countersLinearInN": true,
+ "wallClockSupplemental": {
+  "rows": [
+   {
+    "size": 100,
+    "buildMs": 5.2,
+    "evalMs": 14.4
+   },
+   {
+    "size": 200,
+    "buildMs": 14.1,
+    "evalMs": 24.1
+   },
+   {
+    "size": 400,
+    "buildMs": 22,
+    "evalMs": 42.5
+   },
+   {
+    "size": 800,
+    "buildMs": 42,
+    "evalMs": 80.6
+   },
+   {
+    "size": 1600,
+    "buildMs": 88.4,
+    "evalMs": 163.4
+   }
+  ],
+  "logLogSlope": {
+   "build": 0.97,
+   "eval": 0.88
+  },
+  "note": "supplemental; the proof is the counters. Measured in-process while writing this artifact, so subject to machine load."
+ }
+}

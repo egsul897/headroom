@@ -1,0 +1,167 @@
+{
+ "artifact": "PHASE 4C remediation R14/R19 - full regression at the remediated tree",
+ "at": "2026-09-20T00:42:58.333Z",
+ "headAtRun": "779d4103300758390a8795194b5082d87a1625d6",
+ "workingTreeDirty": true,
+ "targeted": {
+  "tests": 1189,
+  "passed": 1171,
+  "failed": 18,
+  "newFailingVsBase": []
+ },
+ "fullSuite": {
+  "base": {
+   "sha256": "321cf94da1652ae322b41f04d9a8385184e2f6ce2a0120ef5a4b06a32bd9e72e",
+   "tests": 3957,
+   "passed": 3272,
+   "failed": 161
+  },
+  "now": {
+   "sha256": "8ee263cd293f08b11e02f1c150d3914aac3058e00fcc9a5ab2f34cbbf43f049c",
+   "tests": 4338,
+   "passed": 3652,
+   "failed": 162
+  },
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+  ]
+ },
+ "inheritedInstability": {
+  "classification": "INHERITED FLAKY / UNSTABLE TEST - not waived, not called passing",
+  "identities": [
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+  ],
+  "allAreTimingIdentities": true,
+  "measuredFunction": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts), frozen Phase-3 tree",
+  "phase3TreeUnchanged": true,
+  "isolationRuns": [
+   {
+    "file": "iso1.json",
+    "tests": 22,
+    "failed": 1,
+    "failing": [
+     "OPEN-3 independent probe 4: re-measured scaling behavior (fresh constr"
+    ]
+   },
+   {
+    "file": "iso10.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso2.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso3.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso4.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso5.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso6.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso7.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   },
+   {
+    "file": "iso8.json",
+    "tests": 22,
+    "failed": 1,
+    "failing": [
+     "FINDING-4 independent recertification - GAP-3 (O(text.length) terminat"
+    ]
+   },
+   {
+    "file": "iso9.json",
+    "tests": 22,
+    "failed": 0,
+    "failing": []
+   }
+  ],
+  "isolationPasses": 8,
+  "isolationFails": 2,
+  "directMeasurement": {
+   "measured": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts)",
+   "trials": 9,
+   "points": [
+    {
+     "n": 4000,
+     "ms": 6.5215,
+     "ratioVsPreviousDoubling": null,
+     "subQuadratic": true
+    },
+    {
+     "n": 8000,
+     "ms": 11.7428,
+     "ratioVsPreviousDoubling": 1.801,
+     "subQuadratic": true
+    },
+    {
+     "n": 16000,
+     "ms": 24.6806,
+     "ratioVsPreviousDoubling": 2.102,
+     "subQuadratic": true
+    },
+    {
+     "n": 32000,
+     "ms": 51.6384,
+     "ratioVsPreviousDoubling": 2.092,
+     "subQuadratic": true
+    },
+    {
+     "n": 64000,
+     "ms": 107.2418,
+     "ratioVsPreviousDoubling": 2.077,
+     "subQuadratic": true
+    },
+    {
+     "n": 128000,
+     "ms": 220.518,
+     "ratioVsPreviousDoubling": 2.056,
+     "subQuadratic": true
+    }
+   ],
+   "logLogSlope": 1.03,
+   "linearPredictsSlope": 1,
+   "quadraticPredictsSlope": 2,
+   "allStepsSubQuadratic": true,
+   "slopeBelow1point5": true
+  },
+  "rootCause": "per-step threshold lenRatio^2 x 0.6 (about 2.4) against a linear prediction of 2.0; ordinary noise under runner load exceeds it; not a Phase-4C regression (both identities predate Phase 4A and failed in the 4A and 4B regression artifacts)",
+  "waived": false
+ },
+ "noRegressionAttributableToPhase4C": true,
+ "tsc": {
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/"
+ },
+ "lint": {
+  "ok": true
+ },
+ "build": {
+  "ok": true
+ }
+}

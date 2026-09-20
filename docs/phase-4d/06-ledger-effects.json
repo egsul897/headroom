@@ -1,0 +1,159 @@
+{
+ "artifact": "PHASE 4D §13, §34 - proposed ledger effects only; the actual ledger is never written",
+ "at": "2026-09-20T04:09:33.384Z",
+ "proposedEntryKinds": [
+  "PROPOSED_USAGE",
+  "SUPERSEDED_USAGE",
+  "RECLASSIFIED_USAGE"
+ ],
+ "proposedRecordCarries": [
+  "transactionId",
+  "simulationId",
+  "capacityPath",
+  "amount + currency",
+  "effectiveAsOf",
+  "provenance from the transaction",
+  "preStateLedgerHash",
+  "supersedesUsageId where applicable"
+ ],
+ "proposedIdentityRule": "a proposed usage identity is `${transactionId}::${effectId}`; effect ids are unique within a transaction, and a proposed identity the ledger already carries is refused rather than merged",
+ "supersessionRule": "history is never deleted. The original record is retained verbatim, restated in the proposed view with status SUPERSEDED and an explicit successor, and the successor carries the release or restatement",
+ "release": {
+  "superseded": [
+   {
+    "effectId": "e1",
+    "originalUsageId": "u1",
+    "original": {
+     "usageId": "u1",
+     "companyId": "gate4d-org",
+     "instrumentKey": "gate4d-facility",
+     "effectiveAsOf": "2026-01-31",
+     "amount": {
+      "amount": "40",
+      "currency": "USD"
+     },
+     "capacityPath": {
+      "kind": "RULE",
+      "ruleId": "prov-a"
+     },
+     "transactionRef": "hist-u1",
+     "status": "RECORDED",
+     "supersededByUsageId": null,
+     "provenance": {
+      "source": "gate ledger",
+      "sourceVersion": "v1",
+      "approvalRef": "a1",
+      "approvalState": "APPROVED"
+     }
+    },
+    "proposed": {
+     "usageId": "u1",
+     "companyId": "gate4d-org",
+     "instrumentKey": "gate4d-facility",
+     "effectiveAsOf": "2026-01-31",
+     "amount": {
+      "amount": "40",
+      "currency": "USD"
+     },
+     "capacityPath": {
+      "kind": "RULE",
+      "ruleId": "prov-a"
+     },
+     "transactionRef": "hist-u1",
+     "status": "SUPERSEDED",
+     "supersededByUsageId": "tx-rel::e1",
+     "provenance": {
+      "source": "gate ledger",
+      "sourceVersion": "v1",
+      "approvalRef": "a1",
+      "approvalState": "APPROVED"
+     }
+    },
+    "supersededByUsageId": "tx-rel::e1",
+    "reason": "the underlying commitment was cancelled"
+   }
+  ],
+  "proposed": [
+   {
+    "usageId": "tx-rel::e1",
+    "companyId": "gate4d-org",
+    "instrumentKey": "gate4d-facility",
+    "effectiveAsOf": "2026-06-30",
+    "amount": {
+     "amount": "40",
+     "currency": "USD"
+    },
+    "capacityPath": {
+     "kind": "RULE",
+     "ruleId": "prov-a"
+    },
+    "transactionRef": "tx-rel",
+    "status": "REVERSED",
+    "supersededByUsageId": null,
+    "provenance": {
+     "source": "gate hypothetical",
+     "sourceVersion": "v1",
+     "approvalRef": null,
+     "approvalState": "PROPOSED_RELEASE_BY_SIMULATION"
+    }
+   }
+  ],
+  "post": [
+   {
+    "ruleId": "prov-a",
+    "usage": "NOT_DETERMINED",
+    "remaining": "100",
+    "status": "AVAILABLE"
+   }
+  ]
+ },
+ "restatement": {
+  "proposed": [
+   {
+    "usageId": "tx-res::e1",
+    "companyId": "gate4d-org",
+    "instrumentKey": "gate4d-facility",
+    "effectiveAsOf": "2026-06-30",
+    "amount": {
+     "amount": "10",
+     "currency": "USD"
+    },
+    "capacityPath": {
+     "kind": "RULE",
+     "ruleId": "prov-a"
+    },
+    "transactionRef": "tx-res",
+    "status": "RECORDED",
+    "supersededByUsageId": null,
+    "provenance": {
+     "source": "gate hypothetical",
+     "sourceVersion": "v1",
+     "approvalRef": null,
+     "approvalState": "PROPOSED_RESTATEMENT_BY_SIMULATION"
+    }
+   }
+  ],
+  "post": [
+   {
+    "ruleId": "prov-a",
+    "usage": "10",
+    "remaining": "90",
+    "status": "AVAILABLE"
+   }
+  ]
+ },
+ "duplicateProposedIdentity": {
+  "limitations": [
+   "DUPLICATE_PROPOSED_LEDGER_IDENTITY"
+  ],
+  "simulationStatus": "ERROR",
+  "postStatePublished": false
+ },
+ "usageIdentityNotFound": {
+  "limitations": [
+   "LEDGER_USAGE_NOT_FOUND"
+  ],
+  "simulationStatus": "ERROR"
+ },
+ "phase4cDuplicateSafeguardsStillEnforced": true
+}

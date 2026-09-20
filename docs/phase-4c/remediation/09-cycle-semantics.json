@@ -1,0 +1,135 @@
+{
+ "artifact": "PHASE 4C remediation R12 - real cycles versus symmetric relationships",
+ "at": "2026-09-20T00:42:57.728Z",
+ "cycleDetectionRunsOver": [
+  "DEPENDS_ON",
+  "BUILT_FROM",
+  "MEMBER_OF_SHARED_CAP"
+ ],
+ "synthetic": {
+  "A. true directed cycle": {
+   "cycles": [
+    {
+     "nodePath": [
+      "capacity:rule:a",
+      "capacity:rule:b",
+      "capacity:rule:a"
+     ],
+     "kinds": [
+      "DEPENDS_ON",
+      "DEPENDS_ON"
+     ]
+    }
+   ],
+   "statuses": [
+    "ERROR",
+    "ERROR"
+   ],
+   "limitations": [
+    "CAPACITY_GRAPH_CYCLE"
+   ]
+  },
+  "B. symmetric shared-cap relationship": {
+   "cycles": 0,
+   "edgeKinds": [
+    "LEGAL_RELATIONSHIP",
+    "LEGAL_RELATIONSHIP"
+   ],
+   "statuses": [
+    "REVIEW_REQUIRED",
+    "REVIEW_REQUIRED"
+   ]
+  },
+  "C. symmetric legal relationships": {
+   "REQUIRES": {
+    "cycles": 0,
+    "edgeKinds": [
+     "LEGAL_RELATIONSHIP"
+    ],
+    "statuses": [
+     [
+      "AVAILABLE",
+      "10"
+     ],
+     [
+      "AVAILABLE",
+      "20"
+     ]
+    ]
+   },
+   "LIMITED_BY": {
+    "cycles": 0,
+    "edgeKinds": [
+     "LEGAL_RELATIONSHIP"
+    ],
+    "statuses": [
+     [
+      "AVAILABLE",
+      "10"
+     ],
+     [
+      "AVAILABLE",
+      "20"
+     ]
+    ]
+   },
+   "ALTERNATIVE_TO": {
+    "cycles": 0,
+    "edgeKinds": [
+     "LEGAL_RELATIONSHIP"
+    ],
+    "statuses": [
+     [
+      "AVAILABLE",
+      "10"
+     ],
+     [
+      "AVAILABLE",
+      "20"
+     ]
+    ]
+   }
+  },
+  "D. DAG with bidirectional metadata": {
+   "cycles": 0,
+   "dependsOn": [
+    [
+     "capacity:rule:a",
+     "capacity:rule:b"
+    ]
+   ],
+   "a": {
+    "status": "AVAILABLE",
+    "gross": "50",
+    "usage": "NOT_DETERMINED",
+    "remaining": "50",
+    "effectiveRemaining": "50",
+    "provisional": null,
+    "limitations": [],
+    "appliedUsageIds": []
+   }
+  },
+  "E. three-node real cycle": {
+   "cycles": [
+    [
+     "capacity:rule:a",
+     "capacity:rule:b",
+     "capacity:rule:c",
+     "capacity:rule:a"
+    ]
+   ],
+   "statuses": [
+    "ERROR",
+    "ERROR",
+    "ERROR"
+   ]
+  }
+ },
+ "frozenCorpus": {
+  "evaluationCycles": 0,
+  "sharesCapacityWithEdges": 7,
+  "allCarriedAsLegalRelationship": true,
+  "preRemediation": "5 cycles reported, all symmetric SHARES_CAPACITY_WITH pairs (audit P20)"
+ },
+ "holds": true
+}

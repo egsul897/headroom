@@ -1,0 +1,61 @@
+{
+ "artifact": "PHASE 4A §7-§8 - reference resolution and the financial input interface (interface only)",
+ "at": "2026-09-19T18:16:41.047Z",
+ "inputResolverInterface": "export interface InputResolver {\n  resolveMetric(query: MetricQuery): MetricInput | null;\n  resolveTerm(termName: string, resolvedDefinitionId: string | null, companyId: string, instrumentKey: string): TermResolution;\n  resolveRule(ruleId: string): IRRule | null;\n  resolveLedgerUsage(key: { sharedCapId: string | null; ruleId: string | null }",
+ "metricInput": "export interface MetricInput {\n  metricKey: string;\n  /** The period the value is stated for (verbatim period description from the IR, e.g. \"the most recently ended Test Period\", or an explicit label). Null when the value is not period-specific. */\n  period: string | null;\n  asOf: string | null;\n  value: RuntimeValue;\n  provenance: InputProvenance;\n}",
+ "references": [
+  {
+   "referenceType": "METRIC_REFERENCE",
+   "expectedValueType": "declared MONEY|RATIO|NUMBER",
+   "resolution": "resolveMetric({metricName, companyId, instrumentKey, asOf, period, expectedType})",
+   "missingBehavior": "NEEDS_INPUT kind METRIC"
+  },
+  {
+   "referenceType": "DEFINED_TERM_REFERENCE",
+   "expectedValueType": "declared IRValueType",
+   "resolution": "resolveTerm(termName, resolvedDefinitionId, ...) -> DEFINITION (expanded) | VALUE | null",
+   "missingBehavior": "NEEDS_INPUT kind TERM; blocked definition -> AMBIGUOUS"
+  },
+  {
+   "referenceType": "RULE_REFERENCE",
+   "expectedValueType": "CAPACITY",
+   "resolution": "resolveRule(ruleId) -> capacity expression expanded",
+   "missingBehavior": "NEEDS_INPUT kind RULE"
+  },
+  {
+   "referenceType": "LEDGER_USAGE_REFERENCE",
+   "expectedValueType": "MONEY",
+   "resolution": "resolveLedgerUsage({sharedCapId, ruleId})",
+   "missingBehavior": "NEEDS_INPUT kind LEDGER_USAGE (no ledger in 4A)"
+  },
+  {
+   "referenceType": "TRANSACTION_INPUT_REFERENCE",
+   "expectedValueType": "declared IRValueType",
+   "resolution": "resolveTransactionInput(inputName, expectedType)",
+   "missingBehavior": "NEEDS_INPUT kind TRANSACTION_INPUT"
+  },
+  {
+   "referenceType": "ENTITY_SCOPE_REFERENCE",
+   "expectedValueType": "ENTITY_SET",
+   "resolution": "symbolic, no resolver call",
+   "missingBehavior": "n/a"
+  },
+  {
+   "referenceType": "EVENT_ACTIVE",
+   "expectedValueType": "BOOLEAN",
+   "resolution": "resolveEventActive(eventDescription, asOf)",
+   "missingBehavior": "NEEDS_INPUT kind EVENT (or trigger / UNSUPPORTED, see 04)"
+  }
+ ],
+ "fixtureImplementation": "lib/contract-model/runtime/input-resolver.ts fixtureInputResolver (in-memory lookup by key/period/asOf) - the reference implementation tests inject",
+ "phase5Boundary": {
+  "notImplemented": [
+   "spreadsheet parsing",
+   "ERP sync",
+   "bank feeds",
+   "financial normalization pipeline",
+   "statement ingestion"
+  ],
+  "contract": "Phase 5 supplies MetricInput values behind the same InputResolver interface; period and asOf keys are matched verbatim against the IR's own period/as-of text or ISO dates"
+ }
+}

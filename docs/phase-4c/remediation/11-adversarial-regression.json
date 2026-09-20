@@ -1,0 +1,186 @@
+{
+ "artifact": "PHASE 4C remediation R15/R16 - the forensic suite, the matrices, and the original suite",
+ "at": "2026-09-20T00:42:58.326Z",
+ "forensicSuite": {
+  "file": "tests/contract-model/runtime/capacity/forensic-regression.test.ts",
+  "probes": [
+   "P3",
+   "P7",
+   "P8",
+   "P12",
+   "P13",
+   "P15",
+   "P16",
+   "P18",
+   "P19",
+   "P19b",
+   "P20",
+   "P21",
+   "P22"
+  ],
+  "tests": [
+   [
+    "P3 - duplicate shared-capacity identity (audit F3, remediation R7) neither claimant becomes the pool; the member is not authoritative; no amount from either claimant appears",
+    "passed"
+   ],
+   [
+    "P3 - duplicate shared-capacity identity (audit F3, remediation R7) array order cannot decide: the reversed duplicate set gives byte-identical graph and state hashes",
+    "passed"
+   ],
+   [
+    "P3 - duplicate shared-capacity identity (audit F3, remediation R7) a state handed duplicate resources for a pool the graph does know refuses the pool rather than picking the last",
+    "passed"
+   ],
+   [
+    "P7 - batch reclassification conservation (audit F1, remediation R4) two elections of 25 + 25 against 40 of source usage are both refused; nothing is applied; no capacity is created",
+    "passed"
+   ],
+   [
+    "P7 - batch reclassification conservation (audit F1, remediation R4) the same batch in the other order is byte-identical",
+    "passed"
+   ],
+   [
+    "P8 - duplicate reclassification election identity (audit U10, remediation R5) two elections bearing one id are both refused, nothing executes, and the source is untouched",
+    "passed"
+   ],
+   [
+    "P12 / P13 - snapshot ambiguity semantics (audit F7, remediation R11) P12: two different facts from two approved snapshots is a multi-snapshot binding, not an ambiguous one",
+    "passed"
+   ],
+   [
+    "P12 / P13 - snapshot ambiguity semantics (audit F7, remediation R11) P13: the same fact in two approved snapshots is an actual conflict: ambiguous, named, and the capacity fails closed",
+    "passed"
+   ],
+   [
+    "P12 / P13 - snapshot ambiguity semantics (audit F7, remediation R11) snapshot order does not change either answer",
+    "passed"
+   ],
+   [
+    "P15 - usage whose attribution is missing entirely (audit F6, remediation R10) an UNRESOLVED record with no candidates blocks every capacity in scope rather than vanishing",
+    "passed"
+   ],
+   [
+    "P16 - Phase-3 UNSUPPORTED sufficiency with an evaluable expression (audit F5, remediation R8) never publishes AVAILABLE; the arithmetic is provisional and the legal reason is carried",
+    "passed"
+   ],
+   [
+    "P18 - a negative usage supplied directly (audit U8) is neither counted nor discarded: the capacity fails closed and remaining never exceeds gross",
+    "passed"
+   ],
+   [
+    "P18 - a negative usage supplied directly (audit U8) the source half of a conserved reclassification pair remains representable, and only with its destination half present",
+    "passed"
+   ],
+   [
+    "P19 / P19b - duplicate ledger usage identity (audit F2, F10; remediation R6) P19 differing claimants: neither row is counted, the capacity fails closed with DUPLICATE_LEDGER_USAGE_IDENTITY, and no arithmetic leaks",
+    "passed"
+   ],
+   [
+    "P19 / P19b - duplicate ledger usage identity (audit F2, F10; remediation R6) P19b identical claimants: neither row is counted, the capacity fails closed with DUPLICATE_LEDGER_USAGE_IDENTITY, and no arithmetic leaks",
+    "passed"
+   ],
+   [
+    "P19 / P19b - duplicate ledger usage identity (audit F2, F10; remediation R6) the invariant is a refusal, never a deduplication: identical claimants are not collapsed to one",
+    "passed"
+   ],
+   [
+    "P19 / P19b - duplicate ledger usage identity (audit F2, F10; remediation R6) two legitimately independent records with distinct ids both count, so the refusal is about identity, not amount",
+    "passed"
+   ],
+   [
+    "P19 / P19b - duplicate ledger usage identity (audit F2, F10; remediation R6) record order does not change the refusal",
+    "passed"
+   ],
+   [
+    "P20 - symmetric relationships on the frozen real corpus are not cycles (audit F8, remediation R12) reports zero evaluation cycles, carries every SHARES_CAPACITY_WITH edge as a legal relationship, and keeps the unquantified-pool gap explicit",
+    "passed"
+   ],
+   [
+    "P21 - state-evaluation complexity (audit F4, remediation R13) operation counters are exactly linear in n: the proof is the counts, not the clock",
+    "passed"
+   ],
+   [
+    "P21 - state-evaluation complexity (audit F4, remediation R13) supplemental: wall-clock log-log slope over materially increasing n is far below the audited 1.81",
+    "passed"
+   ],
+   [
+    "P22 - generality under unseen identifiers, a non-USD currency and renamed everything topology, statuses and amounts are identical to a plain USD twin, and only the hashes differ",
+    "passed"
+   ]
+  ],
+  "failed": 0
+ },
+ "matrices": {
+  "file": "tests/contract-model/runtime/capacity/remediation-matrices.test.ts",
+  "covers": [
+   "R4 A-J",
+   "R5",
+   "R7",
+   "R8",
+   "R9",
+   "R10",
+   "R11",
+   "R12 A-E",
+   "R13"
+  ],
+  "tests": 59,
+  "failed": 0
+ },
+ "originalSuite": {
+  "capacity-state": {
+   "tests": 19,
+   "failed": 0
+  },
+  "shared-and-ledger": {
+   "tests": 21,
+   "failed": 0
+  },
+  "builder-and-reclassification": {
+   "tests": 30,
+   "failed": 0
+  },
+  "determinism-and-generality": {
+   "tests": 14,
+   "failed": 0
+  },
+  "phase3-fixture-proof": {
+   "tests": 12,
+   "failed": 0
+  }
+ },
+ "originalTestsChanged": [
+  {
+   "file": "tests/contract-model/runtime/capacity/shared-and-ledger.test.ts",
+   "test": "F. a cycle among capacities is detected",
+   "priorExpectation": "two symmetric REQUIRES relationships form a cycle",
+   "whyWrong": "REQUIRES is a legal relationship the evaluator never follows; a symmetric pair is not a recursion",
+   "requirement": "R12 / audit F8",
+   "replacement": "a RULE_REFERENCE cycle is detected and fails closed; F2 asserts the symmetric legal pair is not a cycle"
+  },
+  {
+   "file": "tests/contract-model/runtime/capacity/shared-and-ledger.test.ts",
+   "test": "a duplicate usage id makes the ledger unsafe rather than choosing a row",
+   "priorExpectation": "LEDGER_SET_UNSAFE raised (both rows still counted)",
+   "whyWrong": "one immutable identity may contribute at most once; the flag alone left a double count and AVAILABLE",
+   "requirement": "R6 / audit F2, F10",
+   "replacement": "quarantine, DUPLICATE_LEDGER_USAGE_IDENTITY, status AMBIGUOUS, applied [], usage and remaining NOT_DETERMINED, forbidden amounts asserted"
+  },
+  {
+   "file": "tests/contract-model/runtime/capacity/shared-and-ledger.test.ts",
+   "test": "a usage for another company / instrument / capacity is rejected",
+   "priorExpectation": "the rejection read from the per-capacity usageSelection",
+   "whyWrong": "that list existed only because every capacity rescanned the whole ledger (the quadratic source)",
+   "requirement": "R13 / audit F8",
+   "replacement": "scope rejections reported once in state.ledgerScope; a capacity's selection lists only records that could apply; never counted, reason stated, examined-once asserted"
+  },
+  {
+   "file": "tests/contract-model/runtime/capacity/determinism-and-generality.test.ts",
+   "test": "ledger selection is indexed per capacity rather than rescanning for every pair",
+   "priorExpectation": "ledgerEntriesApplied === 2n",
+   "whyWrong": "encoded the double read the audit measured",
+   "requirement": "R13 / audit F4",
+   "replacement": "examined === n, applied === n, edgesVisited === n, cacheHits >= n"
+  }
+ ],
+ "targetedRunSupplied": true
+}

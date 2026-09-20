@@ -1,0 +1,609 @@
+{
+ "artifact": "PHASE 4C §10, §11, §12, §21, §38 - the usage model, its identity, and what fails closed",
+ "at": "2026-09-19T21:52:37.920Z",
+ "recordFields": [
+  "usageId",
+  "companyId",
+  "instrumentKey",
+  "effectiveAsOf",
+  "amount.amount",
+  "amount.currency",
+  "capacityPath",
+  "transactionRef",
+  "status",
+  "supersededByUsageId",
+  "provenance.source",
+  "provenance.sourceVersion",
+  "provenance.approvalRef",
+  "provenance.approvalState"
+ ],
+ "notIngested": "Phase 4C receives usage as already-structured truth; no ERP, bank, spreadsheet or certificate is parsed here",
+ "selectionSemantics": [
+  "company and instrument must match",
+  "effective on or before the stated as-of",
+  "status within the caller's policy",
+  "not explicitly superseded by another usage",
+  "capacity path identified and equal to this capacity",
+  "currency equal to the capacity's"
+ ],
+ "rejectionReasons": [
+  "COMPANY_MISMATCH",
+  "INSTRUMENT_MISMATCH",
+  "EFFECTIVE_AFTER_AS_OF",
+  "STATUS_NOT_ACCEPTABLE",
+  "SUPERSEDED_BY_ANOTHER_USAGE",
+  "PATH_NOT_THIS_CAPACITY",
+  "PATH_UNRESOLVED",
+  "CURRENCY_MISMATCH"
+ ],
+ "defaultPolicy": {
+  "acceptableUsageStatuses": [
+   "RECORDED"
+  ]
+ },
+ "noImpliedAllocation": "a usage whose path is unresolved but which names this capacity among its candidates blocks the answer with AMBIGUOUS_CONSUMPTION_ALLOCATION; the runtime never chooses a path",
+ "zeroVersusUndetermined": "no applicable record is a determined zero consumption; usage that could not be counted leaves remaining NOT_DETERMINED",
+ "matrix": {
+  "noUsage": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g93",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g93",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g93",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "oneUsage": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g94",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "30",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "u1"
+      ]
+     }
+    }
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "70",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "70",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  },
+  "multipleUsage": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g95",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "55",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "u1",
+       "u2"
+      ]
+     }
+    }
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "45",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "45",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": [
+    "u1",
+    "u2"
+   ]
+  },
+  "futureDatedExcluded": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g96",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g96",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g96",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "reversedExcluded": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g97",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g97",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g97",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "supersededYieldsToSuccessor": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g98",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "45",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "u2"
+      ]
+     }
+    }
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "55",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "55",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": [
+    "u2"
+   ]
+  },
+  "ambiguousAllocation": {
+   "status": "AMBIGUOUS",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "usage could have consumed this capacity but the record does not establish that it did; the runtime does not choose a path"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "limitations": [
+    "AMBIGUOUS_CONSUMPTION_ALLOCATION"
+   ],
+   "appliedUsageIds": []
+  },
+  "duplicateIdentity": {
+   "ledgerIssues": [
+    "DUPLICATE_USAGE_ID"
+   ],
+   "stateLimitations": [
+    "LEDGER_SET_UNSAFE"
+   ]
+  },
+  "overConsumption": {
+   "status": "REVIEW_REQUIRED",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+   },
+   "usage": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "70",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "u1"
+      ]
+     }
+    }
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "limitations": [
+    "OVER_CONSUMPTION"
+   ],
+   "appliedUsageIds": [
+    "u1"
+   ],
+   "overConsumption": {
+    "gross": {
+     "kind": "AMOUNT",
+     "value": {
+      "type": "MONEY",
+      "amount": "50",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "g102",
+       "inputKeys": [],
+       "rawSource": 50
+      }
+     }
+    },
+    "usage": {
+     "kind": "AMOUNT",
+     "value": {
+      "type": "MONEY",
+      "amount": "70",
+      "currency": "USD",
+      "lineage": {
+       "exprId": null,
+       "inputKeys": [
+        "u1"
+       ]
+      }
+     }
+    },
+    "deficit": {
+     "type": "MONEY",
+     "amount": "-20",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    },
+    "usageIds": [
+     "u1"
+    ]
+   }
+  },
+  "wrongCompany": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g103",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g103",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g103",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "wrongInstrument": {
+   "status": "AVAILABLE",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g104",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "no usage recorded against this capacity"
+   },
+   "remaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g104",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "effectiveRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g104",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "limitations": [],
+   "appliedUsageIds": []
+  },
+  "wrongCurrency": {
+   "status": "ERROR",
+   "gross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g105",
+      "inputKeys": [],
+      "rawSource": 100
+     }
+    }
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "usage recorded in a currency this capacity is not denominated in; no conversion is modelled"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "usage recorded in a currency this capacity is not denominated in; no conversion is modelled"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "usage recorded in a currency this capacity is not denominated in; no conversion is modelled"
+   },
+   "limitations": [
+    "CURRENCY_MISMATCH_NO_CONVERSION_MODELED"
+   ],
+   "appliedUsageIds": []
+  },
+  "selfSupersession": [
+   "SELF_SUPERSESSION"
+  ],
+  "supersessionCycle": [
+   "SUPERSESSION_CYCLE"
+  ]
+ }
+}

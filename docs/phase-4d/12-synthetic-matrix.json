@@ -1,0 +1,194 @@
+{
+ "artifact": "PHASE 4D §38 - the required A-AG matrix, all through one generic engine",
+ "at": "2026-09-20T04:09:33.481Z",
+ "matrixFile": "tests/contract-model/runtime/transaction/synthetic-matrix.test.ts",
+ "cases": [
+  {
+   "case": "A-E: ordinary consumption, exhaustion, over-consumption, unlimited and a missing fact A. an explicit draw below the remaining capacity is satisfied and produces one proposed row",
+   "status": "passed"
+  },
+  {
+   "case": "A-E: ordinary consumption, exhaustion, over-consumption, unlimited and a missing fact B. a draw exactly equal to the remaining capacity is satisfied and leaves nothing",
+   "status": "passed"
+  },
+  {
+   "case": "A-E: ordinary consumption, exhaustion, over-consumption, unlimited and a missing fact C. an over-draw is refused with the shortfall stated, never clamped and never resized",
+   "status": "passed"
+  },
+  {
+   "case": "A-E: ordinary consumption, exhaustion, over-consumption, unlimited and a missing fact D. an unlimited capacity satisfies any stated amount and stays unlimited afterwards",
+   "status": "passed"
+  },
+  {
+   "case": "A-E: ordinary consumption, exhaustion, over-consumption, unlimited and a missing fact E. a missing financial fact leaves the draw indeterminate, never zero and never permitted",
+   "status": "passed"
+  },
+  {
+   "case": "F-G: explicit allocation across several caller-selected capacities F. a stated 60/40 split across two selected capacities is simulated exactly as stated",
+   "status": "passed"
+  },
+  {
+   "case": "F-G: explicit allocation across several caller-selected capacities F2. a stated split that does not add up to the stated total is refused, never rebalanced",
+   "status": "passed"
+  },
+  {
+   "case": "F-G: explicit allocation across several caller-selected capacities G. two selected capacities with no stated split are ambiguous; no allocation is inferred",
+   "status": "passed"
+  },
+  {
+   "case": "H-I: shared capacity H. a quantified pool bounds the member, and the draw is measured against what the pool leaves",
+   "status": "passed"
+  },
+  {
+   "case": "H-I: shared capacity H2. a draw within the pool moves both the member's and the pool's usage, and no pool limit is copied onto a member",
+   "status": "passed"
+  },
+  {
+   "case": "H-I: shared capacity I. a shared relationship with no quantified resource is never turned into a pool by simulating against it",
+   "status": "passed"
+  },
+  {
+   "case": "J-L: explicitly elected reclassification J. an election authorised by an encoded Phase-3 edge executes and conserves total usage",
+   "status": "passed"
+  },
+  {
+   "case": "J-L: explicitly elected reclassification K. an election missing its amount names the missing field and is not executed",
+   "status": "passed"
+  },
+  {
+   "case": "J-L: explicitly elected reclassification L. an election with no encoded authority is refused and the edge is never invented",
+   "status": "passed"
+  },
+  {
+   "case": "M-N: deterministic recomputation versus a fixed point M. an explicit adjustment changes the input once, and the capacity is evaluated once against it",
+   "status": "passed"
+  },
+  {
+   "case": "M-N: deterministic recomputation versus a fixed point M2. the approved snapshot is never mutated by an adjustment",
+   "status": "passed"
+  },
+  {
+   "case": "M-N: deterministic recomputation versus a fixed point M3. an adjustment to an input the approved snapshot does not supply is refused, never invented",
+   "status": "passed"
+  },
+  {
+   "case": "M-N: deterministic recomputation versus a fixed point N. an effect whose magnitude depends on what it changes is a fixed point, and is refused",
+   "status": "passed"
+  },
+  {
+   "case": "O-R: legal state and entity scope dominate O. a Phase-3 rule that is only partially represented keeps the arithmetic provisional",
+   "status": "passed"
+  },
+  {
+   "case": "O-R: legal state and entity scope dominate P. an ambiguous Phase-3 rule leaves the selected path indeterminate and publishes no state",
+   "status": "passed"
+  },
+  {
+   "case": "O-R: legal state and entity scope dominate Q. a transaction by an entity the rule expressly excludes does not apply to the selected path",
+   "status": "passed"
+  },
+  {
+   "case": "O-R: legal state and entity scope dominate Q2. an entity outside a declared scope is reported as outside it; the scope is never widened",
+   "status": "passed"
+  },
+  {
+   "case": "O-R: legal state and entity scope dominate R. a scope the Phase-3 guard marked unsafe forces review whatever the arithmetic says",
+   "status": "passed"
+  },
+  {
+   "case": "S: multi-currency S. a draw in a currency the capacity is not denominated in fails closed with no conversion",
+   "status": "passed"
+  },
+  {
+   "case": "T-U: sequences and reversal T. two sequential transactions each see the previous one's proposed state",
+   "status": "passed"
+  },
+  {
+   "case": "T-U: sequences and reversal T2. transactions do not commute: order changes both the outcome and the state identity",
+   "status": "passed"
+  },
+  {
+   "case": "T-U: sequences and reversal U. a reversal supersedes history explicitly and never deletes it",
+   "status": "passed"
+  },
+  {
+   "case": "T-U: sequences and reversal U2. a restatement replaces the amount and keeps both identities traceable",
+   "status": "passed"
+  },
+  {
+   "case": "T-U: sequences and reversal U3. an effect naming a usage identity that does not exist is refused, never created",
+   "status": "passed"
+  },
+  {
+   "case": "V-Y, AC: identity and canonicalization V. renaming every rule, metric and label leaves the topology and the numbers identical",
+   "status": "passed"
+  },
+  {
+   "case": "V-Y, AC: identity and canonicalization W. object-key insertion order does not change any identity",
+   "status": "passed"
+  },
+  {
+   "case": "V-Y, AC: identity and canonicalization X. permuting an order-insensitive selected-path id set does not change identity",
+   "status": "passed"
+  },
+  {
+   "case": "V-Y, AC: identity and canonicalization Y. the stated effect sequence is order-sensitive, so reordering changes the state identity",
+   "status": "passed"
+  },
+  {
+   "case": "V-Y, AC: identity and canonicalization AC. reader-facing text is outside identity: a different label and note hash identically",
+   "status": "passed"
+  },
+  {
+   "case": "V-Y, AC: identity and canonicalization Y2. a changed amount, path, election or snapshot each changes identity",
+   "status": "passed"
+  },
+  {
+   "case": "Z-AB, AD-AG: closure invariants Z. a simulation that runs and concludes insufficient capacity is a successful simulation",
+   "status": "passed"
+  },
+  {
+   "case": "Z-AB, AD-AG: closure invariants AA. a failed simulation leaves the pre-state, the ledger and the caller's inputs unchanged",
+   "status": "passed"
+  },
+  {
+   "case": "Z-AB, AD-AG: closure invariants AB. with no stated adjustment the pro-forma view is the base snapshot, unchanged",
+   "status": "passed"
+  },
+  {
+   "case": "Z-AB, AD-AG: closure invariants AD. a proposed ledger identity the ledger already carries is refused, never double-counted",
+   "status": "passed"
+  },
+  {
+   "case": "Z-AB, AD-AG: closure invariants AE. a batch of elections cannot jointly move more usage than the source carries",
+   "status": "passed"
+  },
+  {
+   "case": "Z-AB, AD-AG: closure invariants AF. an unsafe legal state stays unsafe in the post-state; simulation never upgrades it",
+   "status": "passed"
+  },
+  {
+   "case": "Z-AB, AD-AG: closure invariants AG. an unquantified shared relationship stays unquantified in the post-state",
+   "status": "passed"
+  }
+ ],
+ "counts": {
+  "tests": 42,
+  "failed": 0
+ },
+ "productionBranchesPerCase": 0,
+ "supportingSuites": {
+  "identityAndDeterminism": {
+   "tests": 14,
+   "failed": 0
+  },
+  "antiEnumeration": {
+   "tests": 14,
+   "failed": 0
+  },
+  "realFixture": {
+   "tests": 9,
+   "failed": 0
+  }
+ }
+}

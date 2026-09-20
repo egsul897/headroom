@@ -1,0 +1,297 @@
+{
+ "artifact": "PHASE 4C §28, §29, §30 - immutable versioned state, the provenance chain, and the structured explanation",
+ "at": "2026-09-20T00:42:59.420Z",
+ "immutability": "applying a ledger record or a reclassification produces a NEW state; the prior state object is never mutated",
+ "hashInputs": [
+  "capacity graph hash",
+  "capacities",
+  "shared constraints",
+  "ledger issues",
+  "snapshot binding",
+  "limitations",
+  "cycles",
+  "as-of",
+  "versions"
+ ],
+ "hashExcludes": [
+  "complexity counters",
+  "explanations"
+ ],
+ "repeatedStateHashes": [
+  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
+  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
+  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
+  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
+  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c"
+ ],
+ "repeatedIdentical": true,
+ "provenanceChain": [
+  "remaining capacity",
+  "usage",
+  "ledger entries with their own provenance and approval state",
+  "gross capacity",
+  "Phase-4A expression trace",
+  "Phase-4B financial inputs",
+  "snapshot id, version, status, reviewer and approval reference",
+  "Phase-3 rule and expression",
+  "source citation"
+ ],
+ "workedExplanation": {
+  "capacityNodeId": "capacity:rule:rule-a",
+  "ruleId": "rule-a",
+  "grossCapacity": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "100000000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": "g175",
+     "inputKeys": [
+      "metric-alpha"
+     ]
+    }
+   }
+  },
+  "lessUsage": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "30000000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": null,
+     "inputKeys": [
+      "u1"
+     ]
+    }
+   }
+  },
+  "sharedConstraints": [],
+  "effectiveRemaining": {
+   "kind": "AMOUNT",
+   "value": {
+    "type": "MONEY",
+    "amount": "70000000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": null,
+     "inputKeys": []
+    }
+   }
+  },
+  "limitations": [],
+  "inputsUsed": [
+   {
+    "kind": "METRIC",
+    "key": "metric-alpha",
+    "period": null,
+    "asOf": "2026-06-30",
+    "provenance": {
+     "source": "gate snapshot",
+     "sourceVersion": "src-1",
+     "snapshotId": "gate-snap",
+     "snapshotVersion": "1",
+     "snapshotStatus": "APPROVED",
+     "reviewedBy": "r",
+     "reviewedAt": "2026-07-01T00:00:00Z",
+     "approvalRef": "ap-1",
+     "selectionMethod": "EXACT_IDENTITY",
+     "inputContractVersion": "financial-input-contract.v1",
+     "reliedOnNonApprovedSnapshot": false,
+     "identityStrength": "CONTRACT_NAME_ONLY",
+     "currency": "USD"
+    },
+    "value": {
+     "type": "MONEY",
+     "amount": "800000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g173",
+      "inputKeys": [
+       "metric-alpha"
+      ]
+     }
+    }
+   }
+  ],
+  "sourceRules": [
+   {
+    "ruleId": "rule-a",
+    "sourceSectionRef": "section-rule-a",
+    "sourceCitation": "citation-rule-a"
+   }
+  ],
+  "ledgerEntries": [
+   {
+    "usageId": "u1",
+    "companyId": "gate-company",
+    "instrumentKey": "gate-instrument",
+    "effectiveAsOf": "2026-01-31",
+    "amount": {
+     "amount": "30000000",
+     "currency": "USD"
+    },
+    "capacityPath": {
+     "kind": "RULE",
+     "ruleId": "rule-a"
+    },
+    "transactionRef": "txn-u1",
+    "status": "RECORDED",
+    "supersededByUsageId": null,
+    "provenance": {
+     "source": "gate ledger",
+     "sourceVersion": "v1",
+     "approvalRef": "a1",
+     "approvalState": "APPROVED"
+    }
+   }
+  ],
+  "calculationTrace": {
+   "exprId": "g175",
+   "kind": "MAX",
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "100000000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": "g175",
+     "inputKeys": [
+      "metric-alpha"
+     ]
+    }
+   },
+   "provenance": null,
+   "children": [
+    {
+     "exprId": "g171",
+     "kind": "MONEY",
+     "status": "EXECUTABLE",
+     "value": {
+      "type": "MONEY",
+      "amount": "100000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "g171",
+       "inputKeys": [],
+       "rawSource": 100000000
+      }
+     },
+     "provenance": null,
+     "children": []
+    },
+    {
+     "exprId": "g174",
+     "kind": "MULTIPLY",
+     "status": "EXECUTABLE",
+     "value": {
+      "type": "MONEY",
+      "amount": "100000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "g174",
+       "inputKeys": [
+        "metric-alpha"
+       ]
+      }
+     },
+     "provenance": null,
+     "children": [
+      {
+       "exprId": "g172",
+       "kind": "PERCENT",
+       "status": "EXECUTABLE",
+       "value": {
+        "type": "PERCENT",
+        "fraction": "0.125",
+        "lineage": {
+         "exprId": "g172",
+         "inputKeys": [],
+         "rawSource": 0.125
+        }
+       },
+       "provenance": null,
+       "children": []
+      },
+      {
+       "exprId": "g173",
+       "kind": "METRIC_REFERENCE",
+       "status": "EXECUTABLE",
+       "value": {
+        "type": "MONEY",
+        "amount": "800000000",
+        "currency": "USD",
+        "lineage": {
+         "exprId": "g173",
+         "inputKeys": [
+          "metric-alpha"
+         ]
+        }
+       },
+       "provenance": null,
+       "children": [],
+       "input": {
+        "kind": "METRIC",
+        "key": "metric-alpha",
+        "period": null,
+        "asOf": "2026-06-30",
+        "provenance": {
+         "source": "gate snapshot",
+         "sourceVersion": "src-1",
+         "snapshotId": "gate-snap",
+         "snapshotVersion": "1",
+         "snapshotStatus": "APPROVED",
+         "reviewedBy": "r",
+         "reviewedAt": "2026-07-01T00:00:00Z",
+         "approvalRef": "ap-1",
+         "selectionMethod": "EXACT_IDENTITY",
+         "inputContractVersion": "financial-input-contract.v1",
+         "reliedOnNonApprovedSnapshot": false,
+         "identityStrength": "CONTRACT_NAME_ONLY",
+         "currency": "USD"
+        },
+        "value": {
+         "type": "MONEY",
+         "amount": "800000000",
+         "currency": "USD",
+         "lineage": {
+          "exprId": "g173",
+          "inputKeys": [
+           "metric-alpha"
+          ]
+         }
+        }
+       }
+      }
+     ]
+    }
+   ],
+   "selected": {
+    "index": 0,
+    "exprId": "g171",
+    "reason": "MAX selected operand 0"
+   }
+  }
+ },
+ "snapshotBinding": {
+  "snapshotIds": [
+   "gate-snap"
+  ],
+  "snapshotVersions": [
+   "1"
+  ],
+  "snapshotSetHash": "57a82aa676df569469f9d630b705decfcfc045b4a8b43747bf3cf7fad9a38f6e",
+  "inputContractVersion": "financial-input-contract.v1",
+  "ambiguous": false,
+  "multiSnapshot": false,
+  "conflictingInputKeys": []
+ },
+ "notComputed": {
+  "permissionSelection": "NOT_COMPUTED_IN_PHASE_4C",
+  "maximumTransactionAmount": "NOT_COMPUTED_IN_PHASE_4C",
+  "allocationAcrossCapacities": "NOT_COMPUTED_IN_PHASE_4C",
+  "transactionSimulation": "NOT_COMPUTED_IN_PHASE_4C",
+  "totalCombinedHeadroom": "NOT_COMPUTED_IN_PHASE_4C"
+ }
+}

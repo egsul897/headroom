@@ -146,6 +146,59 @@ export type RepresentationSufficiency = "COMPLETE" | "PARTIAL" | "AMBIGUOUS" | "
 export type IREntityScope = { include: EntityClassTag[]; exclude: EntityClassTag[] };
 
 // ---------------------------------------------------------------------------
+// ENTITY-SCOPE CONSISTENCY GUARD (lib/contract-model/compiler/semantic/
+// entity-scope-guard.ts). Safety direction: remove false precision, never
+// invent it. An under-inclusive or unrecognized scope is reset to
+// unspecified and the rule is limited with a reason code; a scope is never
+// widened by guess.
+// ---------------------------------------------------------------------------
+export type EntityScopeReasonCode =
+  | "ENTITY_SCOPE_UNRECOGNIZED_TAG"
+  | "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+  | "ENTITY_SCOPE_AMBIGUOUS_VS_SOURCE"
+  | "ENTITY_SCOPE_UNSPECIFIED"
+  | "ENTITY_SCOPE_UNWITNESSED"
+  | "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED";
+
+export type EntityScopeAuditStatus = "SOURCE_MATCH_CONFIRMED" | "UNDERINCLUSIVE_VS_SOURCE" | "AMBIGUOUS_VS_SOURCE" | "UNRECOGNIZED_TAG" | "UNSPECIFIED" | "UNWITNESSED";
+
+/** The atomic entity classes the guard reasons over - a small, fixed lattice every EntityClassTag and every source binding phrase maps onto. */
+export type EntityAtom = "BORROWER" | "PARENT" | "GUARANTOR_RS" | "NON_GUARANTOR_RS" | "UNRESTRICTED_SUB";
+
+export interface IREntityTagNormalization {
+  field: "entityScope" | "entityScopeExcluded" | "ENTITY_SCOPE_REFERENCE.include" | "ENTITY_SCOPE_REFERENCE.exclude";
+  raw: string;
+  outcome: "RECOGNIZED_ENTITY_TAG" | "UNRECOGNIZED_ENTITY_TAG";
+  normalized: EntityClassTag | null;
+  viaAlias: boolean;
+}
+
+export interface IREntityScopeSignal {
+  /** Which bound text the signal was found in. */
+  tier: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN";
+  phrase: string;
+  index: number;
+  excludedContext: boolean;
+  requiresAnyOf: EntityAtom[];
+  satisfied: boolean;
+  satisfiedBy: EntityClassTag[];
+  partialOnly: boolean;
+}
+
+export interface IREntityScopeAudit {
+  guardVersion: string;
+  status: EntityScopeAuditStatus;
+  safeToRely: boolean;
+  reasonCodes: EntityScopeReasonCode[];
+  /** Pre-normalization wire values (prospective observability - the raw model output is otherwise not persisted). `source` says which wire field supplied them; NOT_PERSISTED on a replay over already-normalized IR. */
+  rawEmitted: { entityScope: string[] | null; entityScopeExcluded: string[] | null; source: "RULE_FIELD" | "ENTITY_SCOPE_NODES" | "EMPTY" | "NOT_PERSISTED" };
+  tagNormalization: IREntityTagNormalization[];
+  before: { entityScope: EntityClassTag[]; entityScopeExcluded: EntityClassTag[]; sufficiency: RepresentationSufficiency };
+  /** Both bound texts are evaluated together: the rule's own excerpt AND the lead-in of the structural unit it cites (which governs every fragment under it). `decidedBy` names the tier(s) whose signals decided the status. */
+  witness: { ownExcerpt: string | null; citedUnitLeadIn: string | null; decidedBy: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "BOTH" | "NONE"; signals: IREntityScopeSignal[] };
+}
+
+// ---------------------------------------------------------------------------
 // Expression primitives (task §6). Every node carries a stable exprId
 // (identity.ts derives it deterministically from content + provenance
 // anchor - never array position or a fresh random id, task §27) and an
@@ -597,6 +650,16 @@ export interface IRRule {
 
   entityScope: EntityClassTag[];
   entityScopeExcluded: EntityClassTag[];
+  /**
+   * ENTITY-SCOPE CONSISTENCY GUARD (additive, optional) - the deterministic
+   * audit of the two fields above: every wire tag's RECOGNIZED/UNRECOGNIZED
+   * outcome with its raw value, the pre-guard values, the source witness the
+   * scope was checked against, and the machine-readable reason codes for any
+   * downgrade. Absent on rules produced before the guard existed. A consumer
+   * must treat `entityScope` as safe to rely on ONLY when
+   * `entityScopeAudit.safeToRely` is true.
+   */
+  entityScopeAudit?: IREntityScopeAudit;
   /** Narrower than `action` when the source specifically scopes to a sub-activity `action` alone doesn't capture (task §13) - most rules leave this null and rely on `action` alone. */
   transactionScope: ContractAction[] | null;
 

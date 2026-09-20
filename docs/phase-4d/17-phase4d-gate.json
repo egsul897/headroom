@@ -1,0 +1,394 @@
+{
+ "artifact": "PHASE 4D §49 - gate",
+ "at": "2026-09-20T04:09:33.699Z",
+ "recordedPhase4dStartingSha": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec",
+ "effectiveRuntimeBaseline": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec",
+ "headAtRun": "c7fa62b20286870f5b22d7d796d7b9492e1533a4",
+ "transactionSimulationVersion": "transaction-simulation.v1",
+ "capacityGraphVersion": "capacity-graph.v1",
+ "runtimeVersion": "contract-runtime.v1",
+ "inputContractVersion": "financial-input-contract.v1",
+ "productionFilesChanged": [
+  "lib/contract-model/runtime/transaction/effects.ts",
+  "lib/contract-model/runtime/transaction/identity.ts",
+  "lib/contract-model/runtime/transaction/index.ts",
+  "lib/contract-model/runtime/transaction/overlay.ts",
+  "lib/contract-model/runtime/transaction/simulate.ts",
+  "lib/contract-model/runtime/transaction/types.ts",
+  "lib/contract-model/runtime/transaction/version.ts"
+ ],
+ "onlyTransactionModuleChanged": true,
+ "phase4dTestCounts": {
+  "tests": 79,
+  "failed": 0
+ },
+ "conditions": [
+  {
+   "n": 1,
+   "condition": "handoff SHA reconciliation completed",
+   "status": "PASS",
+   "evidence": "87d7baff80ba9cb51ac090c04d2fecbfa27c35ec vs c7fa62b20286870f5b22d7d796d7b9492e1533a4: 1 commit(s), 0 production file(s)"
+  },
+  {
+   "n": 2,
+   "condition": "Phase-4C recertification handoff verified",
+   "status": "PASS",
+   "evidence": "32/32"
+  },
+  {
+   "n": 3,
+   "condition": "Phase 3 remains frozen",
+   "status": "PASS",
+   "evidence": "compiler b4e6a9da496a23b9f98607355520a456e6c48e1f"
+  },
+  {
+   "n": 4,
+   "condition": "Phase 4A semantics unchanged",
+   "status": "PASS",
+   "evidence": "files changed: none"
+  },
+  {
+   "n": 5,
+   "condition": "Phase 4B semantics unchanged",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 6,
+   "condition": "Phase 4C semantics unchanged after the recertified handoff",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 7,
+   "condition": "simulation is pure and immutable",
+   "status": "PASS",
+   "evidence": "no persistence surface; the identity suite asserts byte-equality of every caller-supplied object"
+  },
+  {
+   "n": 8,
+   "condition": "transaction identity is deterministic",
+   "status": "PASS",
+   "evidence": "5 replays, 1 distinct hash"
+  },
+  {
+   "n": 9,
+   "condition": "canonical identity rules are explicit",
+   "status": "PASS",
+   "evidence": "14"
+  },
+  {
+   "n": 10,
+   "condition": "the effect model is compositional",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 11,
+   "condition": "transaction labels do not control behaviour",
+   "status": "PASS",
+   "evidence": "14"
+  },
+  {
+   "n": 12,
+   "condition": "the selected path is caller-supplied",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 13,
+   "condition": "no automatic path selection",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 14,
+   "condition": "no allocation optimization",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 15,
+   "condition": "ordinary capacity consumption works",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 16,
+   "condition": "exact capacity exhaustion works",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 17,
+   "condition": "over-consumption is explicit",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 18,
+   "condition": "quantified shared constraints are honored",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 19,
+   "condition": "an unquantified shared resource fails explicitly",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 20,
+   "condition": "proposed ledger effects are explicit",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 21,
+   "condition": "the actual ledger is untouched",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 22,
+   "condition": "a duplicate proposed identity cannot double-count",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 23,
+   "condition": "explicit reclassification requires encoded authority",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 24,
+   "condition": "aggregate reclassification conservation is preserved",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 25,
+   "condition": "financial overlays are caller-supplied only",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 26,
+   "condition": "the base snapshot is immutable",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 27,
+   "condition": "the canonical state-transition order is enforced",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 28,
+   "condition": "deterministic post-overlay metric recomputation works",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 29,
+   "condition": "a circular self-effect returns FIXED_POINT_REQUIRED",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 30,
+   "condition": "pre/post state identity works",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 31,
+   "condition": "conditions remain individually typed",
+   "status": "PASS",
+   "evidence": "10"
+  },
+  {
+   "n": 32,
+   "condition": "simulation status and selected-path result remain distinct",
+   "status": "PASS",
+   "evidence": "02"
+  },
+  {
+   "n": 33,
+   "condition": "unsafe legal state dominates",
+   "status": "PASS",
+   "evidence": "10"
+  },
+  {
+   "n": 34,
+   "condition": "entity scope is preserved",
+   "status": "PASS",
+   "evidence": "10"
+  },
+  {
+   "n": 35,
+   "condition": "currency mismatch fails closed",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 36,
+   "condition": "the provenance chain is complete",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 37,
+   "condition": "the simulation trace is complete",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 38,
+   "condition": "no persistence side effects",
+   "status": "PASS",
+   "evidence": "14"
+  },
+  {
+   "n": 39,
+   "condition": "transaction chaining is deterministic",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 40,
+   "condition": "transaction order sensitivity is correctly represented",
+   "status": "PASS",
+   "evidence": "09/14"
+  },
+  {
+   "n": 41,
+   "condition": "reversal / supersession preserves history",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 42,
+   "condition": "failure atomicity holds",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 43,
+   "condition": "the dependency manifest is available before substantive evaluation",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 44,
+   "condition": "the anti-enumeration scan is clean",
+   "status": "PASS",
+   "evidence": "14"
+  },
+  {
+   "n": 45,
+   "condition": "the synthetic A-AG matrix passes",
+   "status": "PASS",
+   "evidence": "42 cases"
+  },
+  {
+   "n": 46,
+   "condition": "the real-fixture shared-cap gap is disclosed honestly",
+   "status": "PASS",
+   "evidence": "13"
+  },
+  {
+   "n": 47,
+   "condition": "the real-fixture reclassification gap is disclosed honestly",
+   "status": "PASS",
+   "evidence": "13"
+  },
+  {
+   "n": 48,
+   "condition": "no solver or optimization logic",
+   "status": "PASS",
+   "evidence": "15"
+  },
+  {
+   "n": 49,
+   "condition": "no financial ingestion",
+   "status": "PASS",
+   "evidence": "14"
+  },
+  {
+   "n": 50,
+   "condition": "repeated replay hashes match",
+   "status": "PASS",
+   "evidence": "14"
+  },
+  {
+   "n": 51,
+   "condition": "canonicalization permutation tests pass",
+   "status": "PASS",
+   "evidence": "12"
+  },
+  {
+   "n": 52,
+   "condition": "the Phase-4C forensic regressions remain green",
+   "status": "PASS",
+   "evidence": "177 tests"
+  },
+  {
+   "n": 53,
+   "condition": "no attributable prior-phase regression",
+   "status": "PASS",
+   "evidence": "new identities 1"
+  },
+  {
+   "n": 54,
+   "condition": "tsc has no new errors",
+   "status": "PASS",
+   "evidence": "tsc new 0"
+  },
+  {
+   "n": 55,
+   "condition": "lint passes",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 56,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 57,
+   "condition": "Phase 4E remains unstarted",
+   "status": "PASS",
+   "evidence": ""
+  },
+  {
+   "n": 58,
+   "condition": "Phase 5 remains unstarted",
+   "status": "PASS",
+   "evidence": ""
+  }
+ ],
+ "summary": {
+  "PASS": 58,
+  "FAIL": 0,
+  "total": 58
+ },
+ "verdict": "PHASE4D_TRANSACTION_SIMULATION_READY",
+ "phase4dComplete": true,
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "modelCalls": 0,
+ "phase3Closed": true,
+ "phase4aComplete": true,
+ "phase4bComplete": true,
+ "phase4cComplete": true,
+ "phase4eStarted": false,
+ "phase5Started": false,
+ "ingestionImplemented": false,
+ "solverImplemented": false,
+ "persistenceImplemented": false
+}

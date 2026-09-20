@@ -1,0 +1,392 @@
+{
+ "artifact": "PHASE 4D §39, §40, §41 - simulation over the frozen real Phase-3 compile result, with its gaps intact",
+ "at": "2026-09-20T04:09:33.593Z",
+ "source": {
+  "path": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+  "sha256": "03d15c99b8a45651291e9429f85da255e9dab1228942fc722682b53e149648b7"
+ },
+ "rulesWithCapacity": 52,
+ "realDrawWithinCapacity": {
+  "ruleId": "ir-rule:2142a4b823fd9e52a8a8f3da",
+  "result": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "capacityEffects": [
+    {
+     "node": "capacity:rule:ir-rule:2142a4b823fd9e52a8a8f3da",
+     "attempted": "1",
+     "available": "31000000",
+     "shortfall": null,
+     "outcome": "SATISFIED",
+     "provisional": null
+    }
+   ],
+   "proposedLedger": [
+    {
+     "usageId": "pf-tx::e1",
+     "amount": "1",
+     "kind": "PROPOSED_USAGE",
+     "origin": "CONSUME_CAPACITY",
+     "supersedes": null
+    }
+   ],
+   "postStatePublished": true,
+   "postUsage": [
+    {
+     "ruleId": "ir-rule:01c9a005fd9c7649ddc26012",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:05b63fb8901ad25f04a4b82b",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:07e8b8a14c4e8350332251db",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:0b0cee2b0526cf39d851f8cd",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:0de044975c1ddc20616dbf84",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:12020258cf54c8d04bde5454",
+     "usage": "NOT_DETERMINED",
+     "remaining": "754000000",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:129b98404765374fe4612c3f",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "UNSUPPORTED"
+    },
+    {
+     "ruleId": "ir-rule:191fa3ed84c3a9eb1daf12e9",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:1e84d6f6c82c5a7bcc127d96",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:2142a4b823fd9e52a8a8f3da",
+     "usage": "1",
+     "remaining": "30999999",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:220b9dd4e6b869b29d809805",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "UNSUPPORTED"
+    },
+    {
+     "ruleId": "ir-rule:2ab977e5bbe427a2d4948ae5",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:385f1cb7022e2d18a3555896",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:40a36af71a396edc636637b5",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:42cec8badec918bc9b78764d",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:44af81f1d9f2e18d9d310ef9",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:45d62fc13efec5c9f4434c1c",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:47ca8dab3915179768b3f0bc",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:4b390b44db8c7aabc03467f2",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:4bc2f4ee91d985885230ebfe",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:53287a6e35e93cff341f198a",
+     "usage": "NOT_DETERMINED",
+     "remaining": "34000000",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:56f55ef2a9904b6e965179e4",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "NEEDS_INPUT"
+    },
+    {
+     "ruleId": "ir-rule:5a49b29438237324c1508ec5",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "UNSUPPORTED"
+    },
+    {
+     "ruleId": "ir-rule:5c006dedd58e1c18379e669d",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:5f7a78bea86d5944e9b627a7",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:62ae49fbec9113797c84adba",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:6d2acc86b7f3dede7305f5df",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:7c1ddfa0712717e751cf7844",
+     "usage": "NOT_DETERMINED",
+     "remaining": "800000000",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:80234579d419bc2975a84c45",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:896224f7892dc9f92ae4d640",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:8df2fec30e5afda652c94c04",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "UNSUPPORTED"
+    },
+    {
+     "ruleId": "ir-rule:8f3b7f1b6dec1c302dd1194e",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:903a0815525e6050c01198ed",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:9ccaed3bdb4550f77c63cbcf",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:9e88c326f5775e5d2535f3a3",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "REVIEW_REQUIRED"
+    },
+    {
+     "ruleId": "ir-rule:a6d4e26992f2f221314dbb07",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:b0412876bf8a621ccc3467ee",
+     "usage": "NOT_DETERMINED",
+     "remaining": "35000000",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:b21ac832418c33bcf91d0625",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:b59bd52141890fcad46c1206",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:b687c5cd251597cc8784a972",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:c0feca0b818c734f33a23962",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:c2602aec0550b4687c5e80ca",
+     "usage": "NOT_DETERMINED",
+     "remaining": "36000000",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:c805e62ceeafc48d32cd4026",
+     "usage": "NOT_DETERMINED",
+     "remaining": "360000000",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:d045e32e52e411a6e3cfff1a",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "AMBIGUOUS"
+    },
+    {
+     "ruleId": "ir-rule:d3ca9f2def3509883e8a359b",
+     "usage": "NOT_DETERMINED",
+     "remaining": "NOT_DETERMINED",
+     "status": "UNSUPPORTED"
+    },
+    {
+     "ruleId": "ir-rule:d6efe71fb797fb443b09dc05",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:dd401bb27b6b8bdff7a98bfd",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:dd9963dd5e1e2a95e6492d6e",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:e0669a810b36ddf5bff018b3",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:e9b5463c2979195939adf591",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:ea76a8014f2eec64983a7cd6",
+     "usage": "NOT_DETERMINED",
+     "remaining": "30000000",
+     "status": "AVAILABLE"
+    },
+    {
+     "ruleId": "ir-rule:eb9546687b92731a18c975d6",
+     "usage": "NOT_DETERMINED",
+     "remaining": "UNLIMITED",
+     "status": "AVAILABLE"
+    }
+   ],
+   "limitations": [],
+   "committable": true
+  }
+ },
+ "realRuleWithUnreducibleCondition": {
+  "ruleId": "ir-rule:12020258cf54c8d04bde5454",
+  "capacityDrawOutcome": "SATISFIED",
+  "conditions": [
+   {
+    "result": "UNSUPPORTED",
+    "reason": "the condition is real but carries no boolean expression, so it cannot be evaluated"
+   }
+  ],
+  "selectedPathResult": "INDETERMINATE",
+  "postStatePublished": false
+ },
+ "realCorpusSharedCapacityCount": 0,
+ "realCorpusExecutableReclassificationEdgeCount": 0,
+ "realCorpusSharesCapacityWithEdges": 7,
+ "unquantifiedShareUnderSimulation": {
+  "selectedPathResult": "INDETERMINATE",
+  "availableAmountKind": "NOT_DETERMINED",
+  "limitations": [
+   "MISSING_FINANCIAL_INPUT",
+   "PHASE3_RULE_NOT_SAFE_TO_RELY_ON",
+   "SHARED_CAPACITY_NOT_QUANTIFIED",
+   "CAPACITY_NOT_DETERMINED"
+  ],
+  "committable": false
+ },
+ "evidenceBoundary": {
+  "provenOnRealCorpus": [
+   "capacity consumption",
+   "over-consumption refusal",
+   "legal-state dominance",
+   "an unquantified shared relationship staying non-authoritative",
+   "an unreducible real condition leaving the path indeterminate"
+  ],
+  "syntheticOnly": [
+   "quantified shared-pool execution",
+   "reclassification execution"
+  ],
+  "statement": "the frozen corpus carries 0 quantified shared-capacity resources and 0 reclassification edges, so those two runtime behaviours are proved on synthetic and hand-authored IR only. No fixture is described as real-package extraction proof."
+ }
+}

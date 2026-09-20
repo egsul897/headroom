@@ -1,0 +1,260 @@
+{
+ "artifact": "PHASE 4C remediation R8 - the exhaustive dominance table, executed",
+ "at": "2026-09-20T00:42:57.675Z",
+ "table": {
+  "COMPLETE": {
+   "status": null,
+   "limitation": null
+  },
+  "PARTIAL": {
+   "status": "REVIEW_REQUIRED",
+   "limitation": "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
+  },
+  "AMBIGUOUS": {
+   "status": "AMBIGUOUS",
+   "limitation": "PHASE3_RULE_AMBIGUOUS"
+  },
+  "MISSING_CONTEXT": {
+   "status": "AMBIGUOUS",
+   "limitation": "PHASE3_RULE_AMBIGUOUS"
+  },
+  "CONFLICTED": {
+   "status": "AMBIGUOUS",
+   "limitation": "PHASE3_RULE_AMBIGUOUS"
+  },
+  "UNSUPPORTED": {
+   "status": "UNSUPPORTED",
+   "limitation": "PHASE3_RULE_UNSUPPORTED"
+  }
+ },
+ "limitationStatusFloors": {
+  "PHASE3_RULE_NOT_SAFE_TO_RELY_ON": "REVIEW_REQUIRED",
+  "PHASE3_RULE_AMBIGUOUS": "AMBIGUOUS",
+  "PHASE3_RULE_UNSUPPORTED": "UNSUPPORTED",
+  "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON": "REVIEW_REQUIRED",
+  "ENTITY_SCOPE_UNSPECIFIED": "AVAILABLE",
+  "MISSING_FINANCIAL_INPUT": "NEEDS_INPUT",
+  "AMBIGUOUS_FINANCIAL_INPUT": "AMBIGUOUS",
+  "UNSUPPORTED_EXPRESSION": "UNSUPPORTED",
+  "AMBIGUOUS_CONSUMPTION_ALLOCATION": "AMBIGUOUS",
+  "ALLOCATION_INFORMATION_MISSING": "AMBIGUOUS",
+  "DUPLICATE_LEDGER_USAGE_IDENTITY": "AMBIGUOUS",
+  "USAGE_NOT_ATTRIBUTABLE_IN_GRAPH": "AMBIGUOUS",
+  "OVER_CONSUMPTION": "REVIEW_REQUIRED",
+  "CURRENCY_MISMATCH_NO_CONVERSION_MODELED": "ERROR",
+  "SHARED_CAPACITY_NOT_QUANTIFIED": "REVIEW_REQUIRED",
+  "SHARED_CAPACITY_CYCLE": "REVIEW_REQUIRED",
+  "CAPACITY_GRAPH_CYCLE": "REVIEW_REQUIRED",
+  "LEDGER_SET_UNSAFE": "REVIEW_REQUIRED",
+  "DUPLICATE_USAGE_ID": "AMBIGUOUS",
+  "DUPLICATE_SHARED_CAPACITY_IDENTITY": "UNSUPPORTED",
+  "DUPLICATE_RULE_IDENTITY": "UNSUPPORTED",
+  "RECLASSIFICATION_NOT_EXECUTABLE": "REVIEW_REQUIRED",
+  "SNAPSHOT_BINDING_AMBIGUOUS": "AMBIGUOUS",
+  "USAGE_AMOUNT_NOT_REPRESENTABLE": "REVIEW_REQUIRED"
+ },
+ "everySufficiencyValue": {
+  "COMPLETE": {
+   "status": "AVAILABLE",
+   "gross": "100",
+   "usage": "30",
+   "remaining": "70",
+   "effectiveRemaining": "70",
+   "provisional": null,
+   "limitations": [],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  },
+  "PARTIAL": {
+   "status": "REVIEW_REQUIRED",
+   "gross": "NOT_DETERMINED",
+   "usage": "30",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "70",
+    "effectiveRemaining": "70"
+   },
+   "limitations": [
+    "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  },
+  "AMBIGUOUS": {
+   "status": "AMBIGUOUS",
+   "gross": "NOT_DETERMINED",
+   "usage": "30",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "70",
+    "effectiveRemaining": "70"
+   },
+   "limitations": [
+    "PHASE3_RULE_AMBIGUOUS"
+   ],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  },
+  "UNSUPPORTED": {
+   "status": "UNSUPPORTED",
+   "gross": "NOT_DETERMINED",
+   "usage": "30",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "70",
+    "effectiveRemaining": "70"
+   },
+   "limitations": [
+    "PHASE3_RULE_UNSUPPORTED"
+   ],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  },
+  "MISSING_CONTEXT": {
+   "status": "AMBIGUOUS",
+   "gross": "NOT_DETERMINED",
+   "usage": "30",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "70",
+    "effectiveRemaining": "70"
+   },
+   "limitations": [
+    "PHASE3_RULE_AMBIGUOUS"
+   ],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  },
+  "CONFLICTED": {
+   "status": "AMBIGUOUS",
+   "gross": "NOT_DETERMINED",
+   "usage": "30",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "70",
+    "effectiveRemaining": "70"
+   },
+   "limitations": [
+    "PHASE3_RULE_AMBIGUOUS"
+   ],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  }
+ },
+ "unsafeEntityScopes": {
+  "UNDERINCLUSIVE_VS_SOURCE": {
+   "status": "REVIEW_REQUIRED",
+   "gross": "NOT_DETERMINED",
+   "usage": "NOT_DETERMINED",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "100",
+    "effectiveRemaining": "100"
+   },
+   "limitations": [
+    "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "appliedUsageIds": []
+  },
+  "AMBIGUOUS_VS_SOURCE": {
+   "status": "REVIEW_REQUIRED",
+   "gross": "NOT_DETERMINED",
+   "usage": "NOT_DETERMINED",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "100",
+    "effectiveRemaining": "100"
+   },
+   "limitations": [
+    "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "appliedUsageIds": []
+  },
+  "UNRECOGNIZED_TAG": {
+   "status": "REVIEW_REQUIRED",
+   "gross": "NOT_DETERMINED",
+   "usage": "NOT_DETERMINED",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "100",
+    "effectiveRemaining": "100"
+   },
+   "limitations": [
+    "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "appliedUsageIds": []
+  },
+  "UNWITNESSED": {
+   "status": "REVIEW_REQUIRED",
+   "gross": "NOT_DETERMINED",
+   "usage": "NOT_DETERMINED",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "100",
+    "effectiveRemaining": "100"
+   },
+   "limitations": [
+    "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON"
+   ],
+   "appliedUsageIds": []
+  },
+  "UNSPECIFIED": {
+   "status": "REVIEW_REQUIRED",
+   "gross": "NOT_DETERMINED",
+   "usage": "NOT_DETERMINED",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "100",
+    "effectiveRemaining": "100"
+   },
+   "limitations": [
+    "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON",
+    "ENTITY_SCOPE_UNSPECIFIED"
+   ],
+   "appliedUsageIds": []
+  }
+ },
+ "valueOutsideEnumeration": {
+  "status": "UNSUPPORTED",
+  "gross": "NOT_DETERMINED",
+  "usage": "NOT_DETERMINED",
+  "remaining": "NOT_DETERMINED",
+  "effectiveRemaining": "NOT_DETERMINED",
+  "provisional": {
+   "gross": "100",
+   "remaining": "100",
+   "effectiveRemaining": "100"
+  },
+  "limitations": [
+   "PHASE3_RULE_UNSUPPORTED"
+  ],
+  "appliedUsageIds": []
+ },
+ "holds": true
+}

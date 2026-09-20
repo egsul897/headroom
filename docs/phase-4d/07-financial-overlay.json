@@ -1,0 +1,82 @@
+{
+ "artifact": "PHASE 4D §16, §17 - an explicit pro-forma overlay over an immutable approved snapshot",
+ "at": "2026-09-20T04:09:33.390Z",
+ "rule": "only inputs the caller explicitly adjusted differ; every other input reads through to the approved snapshot unchanged",
+ "neverInferred": "a transaction described as affecting some balance changes no input unless the caller states which input and by how much. Phase 4D infers no accounting treatment.",
+ "neverInvented": "an adjustment applies only where the approved snapshot actually resolves the fact; adjusting an input the snapshot does not supply is refused with OVERLAY_BASE_INPUT_MISSING",
+ "appliedDelta": {
+  "adjustments": [
+   {
+    "effectId": "e0",
+    "transactionId": "tx-ov",
+    "metricKey": "figure-base",
+    "period": null,
+    "asOf": "2026-06-30",
+    "adjustmentKind": "DELTA",
+    "adjustment": {
+     "type": "MONEY",
+     "amount": "500",
+     "currency": "USD"
+    },
+    "state": "APPLIED",
+    "baseValue": {
+     "type": "MONEY",
+     "amount": "1000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    },
+    "result": {
+     "type": "MONEY",
+     "amount": "1500",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    },
+    "reason": "the transaction adjusts the supplied fact by an explicit delta, summed through the Phase-4A unit algebra",
+    "baseProvenance": {
+     "snapshotId": "gate-pack",
+     "snapshotVersion": "1",
+     "source": "gate pack"
+    }
+   }
+  ],
+  "availableAfterOverlay": "300",
+  "baseCapacityBeforeOverlay": "200",
+  "oneDeterministicPass": 2
+ },
+ "noAdjustmentUsesBaseSnapshot": {
+  "adjustments": [],
+  "postStateEqualsPreState": true
+ },
+ "adjustmentWithoutABaseFact": {
+  "entries": [
+   {
+    "effectId": "e0",
+    "transactionId": "tx-ovm",
+    "metricKey": "figure-not-supplied",
+    "period": null,
+    "asOf": "2026-06-30",
+    "adjustmentKind": "SET",
+    "adjustment": {
+     "type": "MONEY",
+     "amount": "500",
+     "currency": "USD"
+    },
+    "state": "BASE_MISSING",
+    "baseValue": null,
+    "result": null,
+    "reason": "the approved snapshot supplies no value for \"figure-not-supplied\". An adjustment states how a supplied fact would differ; it never supplies one.",
+    "baseProvenance": null
+   }
+  ],
+  "limitations": [
+   "OVERLAY_BASE_INPUT_MISSING"
+  ]
+ },
+ "snapshotImmutable": true
+}

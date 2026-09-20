@@ -1,0 +1,178 @@
+{
+ "artifact": "PHASE 4B §41 - regression at the Phase-4B head",
+ "at": "2026-09-19T19:53:29.034Z",
+ "headAtRun": "0feb1b5d85ec2613f7df6cfa0ac447ac7fba25a2",
+ "suites": {
+  "Phase-4B input contract": {
+   "tests": 98,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "Phase-4A runtime": {
+   "tests": 180,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "entity-scope guard": {
+   "tests": 24,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic compiler": {
+   "tests": 164,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic verification": {
+   "tests": 150,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic accountability": {
+   "tests": 366,
+   "failed": 18,
+   "newFailingVsBase": 0
+  },
+  "Phase-3 closure-critical (601 revalidation)": {
+   "tests": 69,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "IR core": {
+   "tests": 54,
+   "failed": 0,
+   "newFailingVsBase": 0
+  }
+ },
+ "targeted": {
+  "tests": 2679,
+  "passed": 2472,
+  "failed": 35,
+  "newFailingIdentitiesVsBase": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+  ]
+ },
+ "fullSuite": {
+  "base": {
+   "sha256": "321cf94da1652ae322b41f04d9a8385184e2f6ce2a0120ef5a4b06a32bd9e72e",
+   "tests": 3957,
+   "passed": 3272,
+   "failed": 161
+  },
+  "now": {
+   "sha256": "4ae9d6175915d87bb625c45a02afb38597489293b1483cbc37aec5dfa1355791",
+   "tests": 4161,
+   "passed": 3476,
+   "failed": 161
+  },
+  "newFailingIdentities": []
+ },
+ "timingCharacterisation": {
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+  ],
+  "fullSuiteNewFailingIdentities": [],
+  "fullSuiteClean": true,
+  "allAreWallClockScalingAssertions": true,
+  "measuredFunction": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts)",
+  "measuredFunctionLastChangedAt": "223aa64 Fix OPEN-3: genuinely N-ary claim decomposition (Oxford commas, restated-modal chains, linear time)",
+  "measuredFunctionInsideFrozenPhase3Tree": true,
+  "isolationRuns": [
+   {
+    "file": "iso1.json",
+    "tests": 22,
+    "failed": 0
+   },
+   {
+    "file": "iso2.json",
+    "tests": 22,
+    "failed": 0
+   },
+   {
+    "file": "iso3.json",
+    "tests": 22,
+    "failed": 1
+   },
+   {
+    "file": "iso4.json",
+    "tests": 22,
+    "failed": 0
+   },
+   {
+    "file": "iso5.json",
+    "tests": 22,
+    "failed": 0
+   },
+   {
+    "file": "iso6.json",
+    "tests": 22,
+    "failed": 0
+   }
+  ],
+  "isolationPasses": 5,
+  "isolationFails": 1,
+  "flakeIsIndependentOfPhase4B": true,
+  "directMeasurement": {
+   "trials": 9,
+   "points": [
+    {
+     "n": 4000,
+     "ms": 6.4409,
+     "ratioVsPreviousDoubling": null,
+     "subQuadratic": true
+    },
+    {
+     "n": 8000,
+     "ms": 12.1113,
+     "ratioVsPreviousDoubling": 1.88,
+     "subQuadratic": true
+    },
+    {
+     "n": 16000,
+     "ms": 25.3278,
+     "ratioVsPreviousDoubling": 2.091,
+     "subQuadratic": true
+    },
+    {
+     "n": 32000,
+     "ms": 51.6911,
+     "ratioVsPreviousDoubling": 2.041,
+     "subQuadratic": true
+    },
+    {
+     "n": 64000,
+     "ms": 105.4864,
+     "ratioVsPreviousDoubling": 2.041,
+     "subQuadratic": true
+    },
+    {
+     "n": 128000,
+     "ms": 214.4361,
+     "ratioVsPreviousDoubling": 2.033,
+     "subQuadratic": true
+    }
+   ],
+   "logLogSlope": 1.02,
+   "linearPredictsSlope": 1,
+   "quadraticPredictsSlope": 2,
+   "allStepsSubQuadratic": true,
+   "slopeBelow1point5": true
+  },
+  "directMeasurementLinear": true,
+  "rootCause": "the assertion compares wall-clock medians across size buckets. The measured function is linear (log-log slope reported above), so a failing ratio is scheduler and GC noise, not algorithmic growth. This was already root-caused during Phase 3 closure, before Phase 4A or 4B existed.",
+  "attribution": "NOT_ATTRIBUTABLE_TO_PHASE_4B: the full suite has zero new failing identities; the one targeted identity is a wall-clock assertion over frozen-tree code that also fails intermittently in isolation, and direct measurement of that code is linear",
+  "honestCaveat": "this run did NOT reproduce a clean 6-of-6 isolation result: 1 of 6 isolation runs failed the same assertion on an unchanged tree. That is recorded as it happened, and it is what shows the flake is independent of Phase 4B rather than caused by it."
+ },
+ "noRegressionAttributableToPhase4B": true,
+ "tsc": {
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/"
+ },
+ "lint": {
+  "ok": true
+ },
+ "build": {
+  "ok": true
+ }
+}

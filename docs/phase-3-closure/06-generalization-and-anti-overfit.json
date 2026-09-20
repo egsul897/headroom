@@ -1,0 +1,90 @@
+{
+ "artifact": "PHASE 3 CLOSURE §20 - generalization / anti-Chewy gate",
+ "at": "2026-09-19T14:56:03.848Z",
+ "productionCodeGrep": {
+  "identifiers": [
+   "Chewy",
+   "chwy",
+   "6.01",
+   "Incremental Amount",
+   "Fixed Incremental Amount",
+   "2.18(b)"
+  ],
+  "nonCommentCodeLinesMatchingFixtureIdentifiers": [],
+  "filesMentioningThemInCommentsOnly": [
+   "lib/contract-model/ir/type-check.ts",
+   "lib/contract-model/compiler/semantic-verification/amount-parser.ts",
+   "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+   "lib/contract-model/compiler/semantic-verification/retrieved-evidence.ts",
+   "lib/contract-model/compiler/semantic-verification/types.ts",
+   "lib/contract-model/compiler/semantic-accountability/semantic-functions.ts",
+   "lib/contract-model/compiler/semantic-accountability/slots.ts",
+   "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+   "lib/contract-model/compiler/semantic-accountability/types.ts",
+   "lib/contract-model/compiler/semantic/shard-types.ts",
+   "lib/contract-model/compiler/semantic/tool-protocol.ts",
+   "lib/contract-model/compiler/semantic/tools.ts",
+   "lib/contract-model/compiler/semantic/normalize.ts",
+   "lib/contract-model/compiler/semantic/caller.ts",
+   "lib/contract-model/compiler/semantic/types.ts",
+   "lib/contract-model/compiler/structural-definitions.ts",
+   "lib/contract-model/compiler/clause-hierarchy.ts"
+  ],
+  "sixOhOneInCodeStrings": [
+   "lib/contract-model/analyzer/synthetic-analyzer.ts:45:  \"6.01\": \"INDEBTEDNESS\",",
+   "lib/contract-model/compiler/stage-relationships.ts:33:  \"CRITICAL: fromRuleRef and toRuleRef must be EXACTLY the bare source section citation as given below (e.g. '6.01(a)' or 'Section 6.01(a)', copie"
+  ],
+  "sixOhOneNote": "the three code-string hits are a synthetic analyzer's section->family example map (lib/contract-model/analyzer/synthetic-analyzer.ts, test-only analyzer) and two prompt EXAMPLE strings ('e.g. 6.01(a)') that illustrate citation format; none branches on the identifier",
+  "branchesOnFixtureIdentifiers": true
+ },
+ "evidence": {
+  "antiEnumeration": {
+   "file": "tests/contract-model/dd-anti-overfit.test.ts",
+   "cases": [
+    "A_realDefinedDependencyDelivered",
+    "B_undefinedCapitalisedPhraseIsLimitationNotDelivery",
+    "C_pluralCitedAgainstSingularDefinition",
+    "D_singularCitedAgainstPluralDefinition",
+    "E_falseEdgeExcludedNotRequired",
+    "F_forwardingTargetDelivered",
+    "G_crossReferenceInsideRequiredDefinition",
+    "H_deepCompositionalChain",
+    "I_incidentalTermNotPulledIn",
+    "J_ambiguousSectionIsExplicit",
+    "L_arithmeticOperandsRequiredWhateverTheCoverage",
+    "K_externalProvenFromSource",
+    "Z_noPlanningFailure"
+   ],
+   "allTrue": true
+  },
+  "synthetic": "tests/contract-model/dd-synthetic-agreement.ts - renamed terms, renumbered sections, forwarding definitions, alternative values, false edges, duplicate sections, external pointers, arithmetic compositions",
+  "thresholdSensitivity": {
+   "stableRange": [
+    0.25,
+    0.4,
+    0.5,
+    0.6,
+    0.75
+   ]
+  },
+  "crossCorpus": {
+   "corpora": [
+    "f7a definitions corpus (60 chained definitions)",
+    "f7a chapeau corpus (26 clauses)",
+    "synthetic agreement (base)",
+    "synthetic agreement (false edges + duplicate section)",
+    "synthetic agreement (external pointer)",
+    "semantic-accountability synthetic corpus (45 scenarios planned, 0 could not be built deterministically)"
+   ],
+   "anyExplosion": false
+  },
+  "unseenPackages": [
+   "docs/phase-3f-unseen-package-validation.md (DSGR blind package)",
+   "docs/phase-3f1-*.md (foundation certification over FWRG/LSB/CONMED/DSGR)",
+   "docs/phase-3f2-unseen-validation.md",
+   "tests/contract-model/analyzer-unseen-package.test.ts, phase-2f3-package-graph-robustness.test.ts"
+  ],
+  "f7Canary": "Section 1.01 (a definitions section, not 6.01) - 36 shards, 25/25 trust"
+ },
+ "verdict": "ARCHITECTURE_NOT_CHEWY_SPECIFIC"
+}

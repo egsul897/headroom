@@ -1,0 +1,79 @@
+{
+ "artifact": "PHASE 4C §8, §9, §37 - a builder or grower is an expression subtree, never a formula type",
+ "at": "2026-09-20T00:42:59.377Z",
+ "forbiddenFormulaEnums": [
+  "EBITDA_GROWER",
+  "RETAINED_EARNINGS_BUILDER",
+  "GREATER_OF_FIXED_OR_PERCENT"
+ ],
+ "componentRoles": [
+  "BASE_COMPONENT",
+  "BUILDER_COMPONENT",
+  "GROWER_COMPONENT",
+  "OTHER_COMPONENT"
+ ],
+ "classificationIsByShape": "a literal operand is base; a percentage multiplied by a fact grows with it; any other operand needing a fact builds from it. No metric name is read.",
+ "observedRoles": [
+  {
+   "capacityNodeId": "capacity:rule:rule-x#component:g95",
+   "role": "GROWER_COMPONENT"
+  },
+  {
+   "capacityNodeId": "capacity:rule:rule-x#component:g96",
+   "role": "BUILDER_COMPONENT"
+  }
+ ],
+ "matrix": [
+  {
+   "case": "A. a flat amount plus half of one metric",
+   "status": "AVAILABLE",
+   "amount": "120000000",
+   "expected": "120000000",
+   "pass": true
+  },
+  {
+   "case": "B. a different flat amount plus a quarter of a different metric",
+   "status": "AVAILABLE",
+   "amount": "85000000",
+   "expected": "85000000",
+   "pass": true
+  },
+  {
+   "case": "C. the greater of a flat amount and a tenth of a metric",
+   "status": "AVAILABLE",
+   "amount": "80000000",
+   "expected": "80000000",
+   "pass": true
+  },
+  {
+   "case": "D. an opening amount plus an accumulating metric",
+   "status": "AVAILABLE",
+   "amount": "17500000",
+   "expected": "17500000",
+   "pass": true
+  },
+  {
+   "case": "E. the same shape as A with every name and number changed",
+   "status": "AVAILABLE",
+   "amount": "95000000",
+   "expected": "95000000",
+   "pass": true
+  },
+  {
+   "case": "F. the lesser of a flat amount and a grower",
+   "status": "AVAILABLE",
+   "amount": "20000000",
+   "expected": "20000000",
+   "pass": true
+  },
+  {
+   "case": "G. two metrics in one capacity",
+   "status": "AVAILABLE",
+   "amount": "20000000",
+   "expected": "20000000",
+   "pass": true
+  }
+ ],
+ "matrixAllPass": true,
+ "productionCodeLinesPerFormula": 0
+}

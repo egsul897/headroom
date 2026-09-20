@@ -1,0 +1,93 @@
+{
+ "artifact": "PHASE 4D §9, §11 - the caller selects the path; Phase 4D validates exactly that path",
+ "at": "2026-09-20T04:09:33.358Z",
+ "selectedPathFields": [
+  "capacityNodeIds",
+  "ruleIds",
+  "sharedCapacityIds",
+  "reclassificationElectionIds"
+ ],
+ "neverDone": [
+  "search for an alternative path",
+  "select a preferable capacity",
+  "combine capacities automatically",
+  "infer an allocation",
+  "order or score paths",
+  "elect a reclassification on the caller's behalf"
+ ],
+ "explicitSplitAccepted": {
+  "simulationStatus": "SIMULATED",
+  "selectedPathResult": "SATISFIED",
+  "capacityEffects": [
+   {
+    "node": "capacity:rule:prov-a",
+    "attempted": "60",
+    "available": "100",
+    "shortfall": null,
+    "outcome": "SATISFIED",
+    "provisional": null
+   },
+   {
+    "node": "capacity:rule:prov-b",
+    "attempted": "40",
+    "available": "100",
+    "shortfall": null,
+    "outcome": "SATISFIED",
+    "provisional": null
+   }
+  ],
+  "proposedLedger": [
+   {
+    "usageId": "tx-split::e1",
+    "amount": "60",
+    "kind": "PROPOSED_USAGE",
+    "origin": "CONSUME_CAPACITY",
+    "supersedes": null
+   },
+   {
+    "usageId": "tx-split::e2",
+    "amount": "40",
+    "kind": "PROPOSED_USAGE",
+    "origin": "CONSUME_CAPACITY",
+    "supersedes": null
+   }
+  ],
+  "postStatePublished": true,
+  "postUsage": [
+   {
+    "ruleId": "prov-a",
+    "usage": "60",
+    "remaining": "40",
+    "status": "AVAILABLE"
+   },
+   {
+    "ruleId": "prov-b",
+    "usage": "40",
+    "remaining": "60",
+    "status": "AVAILABLE"
+   }
+  ],
+  "limitations": [],
+  "committable": true
+ },
+ "statedSplitMustAddUp": {
+  "limitations": [
+   "INVALID_EXPLICIT_ALLOCATION"
+  ],
+  "simulationStatus": "ERROR",
+  "postStatePublished": false
+ },
+ "unstatedSplitIsAmbiguous": {
+  "limitations": [
+   "AMBIGUOUS_CAPACITY_ALLOCATION"
+  ],
+  "simulationStatus": "AMBIGUOUS",
+  "postStatePublished": false
+ },
+ "pathNotInGraph": {
+  "limitations": [
+   "SELECTED_PATH_NOT_FOUND"
+  ],
+  "simulationStatus": "ERROR"
+ }
+}

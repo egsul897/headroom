@@ -1,0 +1,289 @@
+{
+ "artifact": "PHASE 4B §37 - the adversarial matrix, executed through the production code",
+ "at": "2026-09-19T19:53:28.872Z",
+ "cases": {
+  "A. same key, different company": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-other-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "COMPANY_MISMATCH"
+   ]
+  },
+  "B. instrument-level fact does not serve another instrument": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-other-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "INSTRUMENT_SCOPE_MISMATCH"
+   ]
+  },
+  "C. company-level fact serves any instrument when it says so": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY_VIA_COMPANY_LEVEL_APPLICABILITY",
+   "selectionMethod": "EXACT_IDENTITY_VIA_COMPANY_LEVEL_APPLICABILITY",
+   "snapshotId": "s1",
+   "candidates": 1,
+   "rejections": []
+  },
+  "D. period-specific query, non-periodic fact": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "PERIOD_MISMATCH"
+   ]
+  },
+  "E. different period text": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "PERIOD_MISMATCH"
+   ]
+  },
+  "F. as-of exact vs latest-on-or-before": {
+   "exact": {
+    "state": "MISSING",
+    "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+    "selectionMethod": null,
+    "snapshotId": null,
+    "candidates": 1,
+    "rejections": [
+     "AS_OF_MISMATCH"
+    ]
+   },
+   "named": {
+    "state": "RESOLVED",
+    "reason": "exactly one candidate matches; selected by LATEST_ON_OR_BEFORE_AS_OF",
+    "selectionMethod": "LATEST_ON_OR_BEFORE_AS_OF",
+    "snapshotId": "s1",
+    "candidates": 1,
+    "rejections": []
+   }
+  },
+  "G. duplicate fact in two live snapshots": {
+   "state": "AMBIGUOUS",
+   "reason": "2 candidates match this identity exactly (s1@1, s2@1); no supersession relation distinguishes them",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 2,
+   "rejections": []
+  },
+  "H. superseded snapshot skipped": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY_AFTER_SUPERSESSION",
+   "selectionMethod": "EXACT_IDENTITY_AFTER_SUPERSESSION",
+   "snapshotId": "new",
+   "candidates": 2,
+   "rejections": [
+    "SUPERSEDED_BY_ANOTHER_SNAPSHOT_IN_SCOPE"
+   ]
+  },
+  "I. draft snapshot not silently used": {
+   "state": "NOT_APPROVED",
+   "reason": "the fact exists but only in snapshots with status DRAFT; this evaluation accepts APPROVED",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "SNAPSHOT_STATUS_NOT_ACCEPTABLE"
+   ]
+  },
+  "J. unsafe supersession graphs": {
+   "selfSupersession": [
+    "SELF_SUPERSESSION",
+    "SUPERSESSION_CYCLE"
+   ],
+   "cycle": [
+    "SUPERSESSION_CYCLE"
+   ],
+   "competingSuccessors": [
+    "COMPETING_SUCCESSORS"
+   ],
+   "duplicateId": [
+    "DUPLICATE_SNAPSHOT_ID"
+   ],
+   "supersedesUnknown": [
+    "SUPERSEDES_UNKNOWN_SNAPSHOT"
+   ],
+   "supersededWithoutSuccessor": [
+    "SUPERSEDED_STATUS_WITHOUT_SUCCESSOR"
+   ],
+   "crossCompanySuccessor": [
+    "SUCCESSOR_OF_ANOTHER_COMPANY"
+   ],
+   "moneyWithoutCurrency": [
+    "MONEY_INPUT_WITHOUT_CURRENCY"
+   ],
+   "duplicateIdentityWithinSnapshot": [
+    "DUPLICATE_IDENTITY_WITHIN_SNAPSHOT"
+   ]
+  },
+  "K. direct term value vs evaluable definition": "CONFLICT",
+  "L. definition id pointing at another company": "CONFLICT",
+  "M. currency is part of identity": {
+   "referenceNamesItsCurrency": {
+    "state": "MISSING",
+    "reason": "no input matches METRIC \"m\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+    "selectionMethod": null,
+    "snapshotId": null,
+    "candidates": 1,
+    "rejections": [
+     "CURRENCY_NOT_REQUESTED"
+    ]
+   },
+   "referenceNamesNoCurrencyAndTwoExist": {
+    "state": "AMBIGUOUS",
+    "reason": "2 candidates match this identity exactly (s1@1, s1@1); no supersession relation distinguishes them",
+    "selectionMethod": null,
+    "snapshotId": null,
+    "candidates": 2,
+    "rejections": []
+   },
+   "referenceNamesNoCurrencyAndOneExists": {
+    "state": "RESOLVED",
+    "reason": "exactly one candidate matches; selected by EXACT_IDENTITY",
+    "selectionMethod": "EXACT_IDENTITY",
+    "snapshotId": "s1",
+    "candidates": 1,
+    "rejections": []
+   }
+  },
+  "N. declared type conflict": {
+   "state": "INCOMPATIBLE",
+   "reason": "the input identity exists but every candidate has value type RATIO where the IR declares MONEY",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "VALUE_TYPE_MISMATCH"
+   ]
+  },
+  "O. null source version is still an identity": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY",
+   "selectionMethod": "EXACT_IDENTITY",
+   "snapshotId": "s1",
+   "candidates": 1,
+   "rejections": []
+  },
+  "P. rejections are reported, not swallowed": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-other-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "COMPANY_MISMATCH"
+   ]
+  },
+  "Q. conditional IF dependencies": [
+   {
+    "key": "metric-cond",
+    "inputKind": "METRIC",
+    "expectedType": "RATIO",
+    "status": "REQUIRED",
+    "conditionalOn": null,
+    "safeBoundAvailableWithoutThis": false,
+    "via": {
+     "kind": "EXPRESSION"
+    }
+   },
+   {
+    "key": "metric-else",
+    "inputKind": "METRIC",
+    "expectedType": "MONEY",
+    "status": "CONDITIONAL",
+    "conditionalOn": "IF e20 else-branch",
+    "safeBoundAvailableWithoutThis": false,
+    "via": {
+     "kind": "EXPRESSION"
+    }
+   },
+   {
+    "key": "metric-then",
+    "inputKind": "METRIC",
+    "expectedType": "MONEY",
+    "status": "CONDITIONAL",
+    "conditionalOn": "IF e20 then-branch",
+    "safeBoundAvailableWithoutThis": false,
+    "via": {
+     "kind": "EXPRESSION"
+    }
+   }
+  ],
+  "R. definition-expanded dependencies": [
+   {
+    "key": "metric-inner",
+    "inputKind": "METRIC",
+    "expectedType": "MONEY",
+    "status": "REQUIRED",
+    "conditionalOn": null,
+    "safeBoundAvailableWithoutThis": false,
+    "via": {
+     "kind": "DEFINITION",
+     "definitionId": "ir-definition:t"
+    }
+   }
+  ],
+  "S. MAX bound with an unresolved metric": {
+   "manifest": [
+    {
+     "key": "metric-bound",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": true,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "evaluation": {
+    "status": "NEEDS_INPUT",
+    "bounds": {
+     "knownLowerBound": {
+      "type": "MONEY",
+      "amount": "75000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "e31",
+       "inputKeys": [],
+       "rawSource": 75000000
+      }
+     }
+    },
+    "missingInputKeys": [
+     "metric-bound"
+    ]
+   }
+  },
+  "T. same input set in a different array order": {
+   "permutationHashes": [
+    "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+    "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+    "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+    "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+    "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe"
+   ],
+   "allIdentical": true
+  }
+ },
+ "testFiles": [
+  "tests/contract-model/runtime/input/anti-enumeration.test.ts",
+  "tests/contract-model/runtime/input/helpers.ts",
+  "tests/contract-model/runtime/input/phase3-fixture-proof.test.ts",
+  "tests/contract-model/runtime/input/resolution.test.ts",
+  "tests/contract-model/runtime/input/term-and-manifest.test.ts"
+ ]
+}
