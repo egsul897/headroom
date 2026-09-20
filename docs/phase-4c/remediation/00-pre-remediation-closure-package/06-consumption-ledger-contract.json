@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4C §10, §11, §12, §21, §38 - the usage model, its identity, and what fails closed",
- "at": "2026-09-20T00:42:59.383Z",
+ "at": "2026-09-19T21:52:37.920Z",
  "recordFields": [
   "usageId",
   "companyId",
@@ -19,13 +19,11 @@
  ],
  "notIngested": "Phase 4C receives usage as already-structured truth; no ERP, bank, spreadsheet or certificate is parsed here",
  "selectionSemantics": [
-  "company and instrument scoped once, at index time, and reported once in ledgerScope",
-  "one immutable usage identity contributes at most once; every claimant of a duplicated id is quarantined and the capacities it could touch fail closed",
-  "a negative amount is representable only as the source half of a conserved reclassification pair whose destination half is present",
+  "company and instrument must match",
   "effective on or before the stated as-of",
   "status within the caller's policy",
   "not explicitly superseded by another usage",
-  "capacity path identified and equal to this capacity (the ledger is indexed by path; a capacity examines only its own bucket)",
+  "capacity path identified and equal to this capacity",
   "currency equal to the capacity's"
  ],
  "rejectionReasons": [
@@ -34,12 +32,10 @@
   "EFFECTIVE_AFTER_AS_OF",
   "STATUS_NOT_ACCEPTABLE",
   "SUPERSEDED_BY_ANOTHER_USAGE",
+  "PATH_NOT_THIS_CAPACITY",
   "PATH_UNRESOLVED",
-  "CURRENCY_MISMATCH",
-  "DUPLICATE_IDENTITY",
-  "AMOUNT_NOT_REPRESENTABLE"
+  "CURRENCY_MISMATCH"
  ],
- "identityInvariant": "duplicate identity is a refusal, never a deduplication, even when the claimants are byte-identical (remediation R6, audit F2/F10); the arithmetic is asserted in the matrix, not only the code",
  "defaultPolicy": {
   "acceptableUsageStatuses": [
    "RECORDED"
@@ -57,7 +53,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g98",
+      "exprId": "g93",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -74,7 +70,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g98",
+      "exprId": "g93",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -87,7 +83,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g98",
+      "exprId": "g93",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -105,7 +101,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g99",
+      "exprId": "g94",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -163,7 +159,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g100",
+      "exprId": "g95",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -223,7 +219,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g101",
+      "exprId": "g96",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -240,7 +236,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g101",
+      "exprId": "g96",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -253,7 +249,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g101",
+      "exprId": "g96",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -271,7 +267,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g102",
+      "exprId": "g97",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -288,7 +284,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g102",
+      "exprId": "g97",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -301,7 +297,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g102",
+      "exprId": "g97",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -319,7 +315,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g103",
+      "exprId": "g98",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -380,11 +376,11 @@
    },
    "remaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "effectiveRemaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "limitations": [
     "AMBIGUOUS_CONSUMPTION_ALLOCATION"
@@ -392,171 +388,11 @@
    "appliedUsageIds": []
   },
   "duplicateIdentity": {
-   "status": "AMBIGUOUS",
-   "gross": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "usage identity claimed by more than one record could apply to this capacity; one identity may contribute at most once and the runtime will not choose between the claimants"
-   },
-   "remaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "effectiveRemaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "limitations": [
-    "DUPLICATE_LEDGER_USAGE_IDENTITY"
-   ],
-   "appliedUsageIds": [],
-   "quarantinedUsageIds": [
-    "u1"
-   ],
    "ledgerIssues": [
     "DUPLICATE_USAGE_ID"
    ],
    "stateLimitations": [
-    "DUPLICATE_LEDGER_USAGE_IDENTITY"
-   ],
-   "arithmeticNeverLeaks": true
-  },
-  "duplicateIdentityIdenticalClaimants": {
-   "status": "AMBIGUOUS",
-   "gross": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "usage identity claimed by more than one record could apply to this capacity; one identity may contribute at most once and the runtime will not choose between the claimants"
-   },
-   "remaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "effectiveRemaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "limitations": [
-    "DUPLICATE_LEDGER_USAGE_IDENTITY"
-   ],
-   "appliedUsageIds": [],
-   "refusedNotCollapsed": true
-  },
-  "negativeUsageSupplied": {
-   "status": "REVIEW_REQUIRED",
-   "gross": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "usage recorded against this capacity carries a negative or unparsable amount that is not a conserved reclassification half; it is neither counted nor discarded"
-   },
-   "remaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "effectiveRemaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "limitations": [
-    "USAGE_AMOUNT_NOT_REPRESENTABLE"
-   ],
-   "appliedUsageIds": [],
-   "ledgerIssues": [
-    "USAGE_AMOUNT_NOT_REPRESENTABLE"
-   ],
-   "remainingNever130": true
-  },
-  "unresolvedWithNoCandidates": {
-   "status": "AMBIGUOUS",
-   "gross": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "usage exists whose capacity attribution is missing entirely; until it is stated, no capacity in scope can state its remaining figure"
-   },
-   "remaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "effectiveRemaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "limitations": [
-    "ALLOCATION_INFORMATION_MISSING"
-   ],
-   "appliedUsageIds": [],
-   "ledgerIssues": [
-    "ALLOCATION_INFORMATION_MISSING"
-   ],
-   "stateLimitations": [
-    "ALLOCATION_INFORMATION_MISSING"
-   ]
-  },
-  "unresolvedNamingOnlyRulesOutsideGraph": {
-   "status": "AVAILABLE",
-   "gross": {
-    "kind": "AMOUNT",
-    "value": {
-     "type": "MONEY",
-     "amount": "100",
-     "currency": "USD",
-     "lineage": {
-      "exprId": "g110",
-      "inputKeys": [],
-      "rawSource": 100
-     }
-    }
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "no usage recorded against this capacity"
-   },
-   "remaining": {
-    "kind": "AMOUNT",
-    "value": {
-     "type": "MONEY",
-     "amount": "100",
-     "currency": "USD",
-     "lineage": {
-      "exprId": "g110",
-      "inputKeys": [],
-      "rawSource": 100
-     }
-    }
-   },
-   "effectiveRemaining": {
-    "kind": "AMOUNT",
-    "value": {
-     "type": "MONEY",
-     "amount": "100",
-     "currency": "USD",
-     "lineage": {
-      "exprId": "g110",
-      "inputKeys": [],
-      "rawSource": 100
-     }
-    }
-   },
-   "limitations": [],
-   "appliedUsageIds": [],
-   "ledgerIssues": [
-    "UNRESOLVED_CANDIDATES_NOT_IN_GRAPH",
-    "UNRESOLVED_CAPACITY_PATH"
-   ],
-   "stateLimitations": [
-    "USAGE_NOT_ATTRIBUTABLE_IN_GRAPH"
+    "LEDGER_SET_UNSAFE"
    ]
   },
   "overConsumption": {
@@ -581,11 +417,11 @@
    },
    "remaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "effectiveRemaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "limitations": [
     "OVER_CONSUMPTION"
@@ -601,7 +437,7 @@
       "amount": "50",
       "currency": "USD",
       "lineage": {
-       "exprId": "g111",
+       "exprId": "g102",
        "inputKeys": [],
        "rawSource": 50
       }
@@ -644,7 +480,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g112",
+      "exprId": "g103",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -661,7 +497,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g112",
+      "exprId": "g103",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -674,23 +510,14 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g112",
+      "exprId": "g103",
       "inputKeys": [],
       "rawSource": 100
      }
     }
    },
    "limitations": [],
-   "appliedUsageIds": [],
-   "ledgerScope": {
-    "outOfScope": [
-     {
-      "usageId": "u1",
-      "rejectedBecause": "COMPANY_MISMATCH"
-     }
-    ],
-    "quarantinedUsageIds": []
-   }
+   "appliedUsageIds": []
   },
   "wrongInstrument": {
    "status": "AVAILABLE",
@@ -701,7 +528,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g113",
+      "exprId": "g104",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -718,7 +545,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g113",
+      "exprId": "g104",
       "inputKeys": [],
       "rawSource": 100
      }
@@ -731,23 +558,14 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g113",
+      "exprId": "g104",
       "inputKeys": [],
       "rawSource": 100
      }
     }
    },
    "limitations": [],
-   "appliedUsageIds": [],
-   "ledgerScope": {
-    "outOfScope": [
-     {
-      "usageId": "u1",
-      "rejectedBecause": "INSTRUMENT_MISMATCH"
-     }
-    ],
-    "quarantinedUsageIds": []
-   }
+   "appliedUsageIds": []
   },
   "wrongCurrency": {
    "status": "ERROR",
@@ -758,7 +576,7 @@
      "amount": "100",
      "currency": "USD",
      "lineage": {
-      "exprId": "g114",
+      "exprId": "g105",
       "inputKeys": [],
       "rawSource": 100
      }

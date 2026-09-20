@@ -180,11 +180,23 @@ describe("complexity diagnostics (§42)", () => {
     expect([a.nodesVisited, b.nodesVisited, c.nodesVisited]).toEqual([a.n + 1, b.n + 1, c.n + 1]);
   });
 
-  it("ledger selection is indexed per capacity rather than rescanning for every pair", () => {
+  // REMEDIATED (R13, audit F8). The original assertion was `ledgerEntriesApplied === 2n`: each
+  // row applied once for its capacity and once again when the pool re-read the member. That
+  // encoded the double scan the audit measured (each of those reads also walked the whole
+  // ledger). Selection is now indexed by path and memoized per (path, currency): every row is
+  // examined once and applied once, and the pool's re-read is a cache hit. The counters below
+  // are exact, not thresholds.
+  it("ledger selection is indexed per capacity and memoized, so every row is examined and applied exactly once", () => {
     const a = sized(10), c = sized(40);
-    // Each capacity applies its own one row, plus the pool re-reads each member's row once.
-    expect(a.ledgerEntriesApplied).toBe(20);
-    expect(c.ledgerEntriesApplied).toBe(80);
-    expect(c.ledgerEntriesApplied / a.ledgerEntriesApplied).toBe(4);
+    expect(a.ledgerEntriesApplied).toBe(10);
+    expect(c.ledgerEntriesApplied).toBe(40);
+    expect(a.ledgerEntriesExamined).toBe(10);
+    expect(c.ledgerEntriesExamined).toBe(40);
+    // The pool re-reads each member's usage through the memo, never through the ledger.
+    expect(a.cacheHits).toBeGreaterThanOrEqual(10);
+    expect(c.cacheHits).toBeGreaterThanOrEqual(40);
+    // Member edges are consulted once per member, not once per member per capacity.
+    expect(a.edgesVisited).toBe(10);
+    expect(c.edgesVisited).toBe(40);
   });
 });

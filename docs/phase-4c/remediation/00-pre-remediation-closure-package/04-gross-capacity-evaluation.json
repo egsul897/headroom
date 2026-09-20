@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4C §6, §7, §24, §25, §26 - gross capacity through the Phase-4A evaluator, unlimited, bounds, review and scope",
- "at": "2026-09-20T00:42:59.366Z",
+ "at": "2026-09-19T21:52:37.902Z",
  "evaluationPath": "IRRule.capacityExpression -> evaluateExpression (Phase 4A) -> StrictInputResolver (Phase 4B) -> CapacityAmount",
  "noSecondArithmeticImplementation": "the capacity layer imports units.ts and evaluate-expression.ts; it computes nothing itself",
  "unlimitedRepresentation": {
@@ -14,33 +14,7 @@
   "distinctFromZero": true
  },
  "boundsAreMetadataNotValues": "a MAX with a missing operand carries knownLowerBound while the status stays NEEDS_INPUT and gross stays NOT_DETERMINED",
- "legalStateDominatesArithmetic": "every Phase-3 sufficiency value maps through one exhaustive table: PARTIAL -> REVIEW_REQUIRED, AMBIGUOUS / MISSING_CONTEXT / CONFLICTED -> AMBIGUOUS, UNSUPPORTED -> UNSUPPORTED; an entity scope not safe to rely on -> REVIEW_REQUIRED. Under any of them the published amounts are NOT_DETERMINED and the computed arithmetic is kept separately under `provisional`. Arithmetic never upgrades a legal state (remediation R8, audit F5).",
- "dominanceTable": {
-  "COMPLETE": {
-   "status": null,
-   "limitation": null
-  },
-  "PARTIAL": {
-   "status": "REVIEW_REQUIRED",
-   "limitation": "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
-  },
-  "AMBIGUOUS": {
-   "status": "AMBIGUOUS",
-   "limitation": "PHASE3_RULE_AMBIGUOUS"
-  },
-  "MISSING_CONTEXT": {
-   "status": "AMBIGUOUS",
-   "limitation": "PHASE3_RULE_AMBIGUOUS"
-  },
-  "CONFLICTED": {
-   "status": "AMBIGUOUS",
-   "limitation": "PHASE3_RULE_AMBIGUOUS"
-  },
-  "UNSUPPORTED": {
-   "status": "UNSUPPORTED",
-   "limitation": "PHASE3_RULE_UNSUPPORTED"
-  }
- },
+ "legalStateDominatesArithmetic": "a PARTIAL or AMBIGUOUS Phase-3 rule publishes NOT_DETERMINED and keeps the computed arithmetic under `provisional`",
  "cases": {
   "flat": {
    "status": "AVAILABLE",
@@ -51,7 +25,7 @@
      "amount": "100000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g30",
+      "exprId": "g28",
       "inputKeys": [],
       "rawSource": 100000000
      }
@@ -68,7 +42,7 @@
      "amount": "100000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g30",
+      "exprId": "g28",
       "inputKeys": [],
       "rawSource": 100000000
      }
@@ -81,7 +55,7 @@
      "amount": "100000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g30",
+      "exprId": "g28",
       "inputKeys": [],
       "rawSource": 100000000
      }
@@ -99,7 +73,7 @@
      "amount": "100000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g33",
+      "exprId": "g31",
       "inputKeys": [
        "metric-alpha"
       ]
@@ -117,7 +91,7 @@
      "amount": "100000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g33",
+      "exprId": "g31",
       "inputKeys": [
        "metric-alpha"
       ]
@@ -131,7 +105,7 @@
      "amount": "100000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g33",
+      "exprId": "g31",
       "inputKeys": [
        "metric-alpha"
       ]
@@ -192,7 +166,7 @@
      "amount": "100000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g37",
+      "exprId": "g35",
       "inputKeys": [],
       "rawSource": 100000000
      }
@@ -271,11 +245,11 @@
    },
    "remaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "effectiveRemaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "limitations": [
     "PHASE3_RULE_NOT_SAFE_TO_RELY_ON"
@@ -289,7 +263,7 @@
       "amount": "80000000",
       "currency": "USD",
       "lineage": {
-       "exprId": "g48",
+       "exprId": "g46",
        "inputKeys": [],
        "rawSource": 80000000
       }
@@ -302,20 +276,7 @@
       "amount": "80000000",
       "currency": "USD",
       "lineage": {
-       "exprId": "g48",
-       "inputKeys": [],
-       "rawSource": 80000000
-      }
-     }
-    },
-    "effectiveRemaining": {
-     "kind": "AMOUNT",
-     "value": {
-      "type": "MONEY",
-      "amount": "80000000",
-      "currency": "USD",
-      "lineage": {
-       "exprId": "g48",
+       "exprId": "g46",
        "inputKeys": [],
        "rawSource": 80000000
       }
@@ -335,126 +296,16 @@
    },
    "remaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "effectiveRemaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "limitations": [
     "PHASE3_RULE_AMBIGUOUS"
    ],
    "appliedUsageIds": []
-  },
-  "missingContextPhase3Rule": {
-   "status": "AMBIGUOUS",
-   "gross": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "no usage recorded against this capacity"
-   },
-   "remaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "effectiveRemaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "limitations": [
-    "PHASE3_RULE_AMBIGUOUS"
-   ],
-   "appliedUsageIds": []
-  },
-  "conflictedPhase3Rule": {
-   "status": "AMBIGUOUS",
-   "gross": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "no usage recorded against this capacity"
-   },
-   "remaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "effectiveRemaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "limitations": [
-    "PHASE3_RULE_AMBIGUOUS"
-   ],
-   "appliedUsageIds": []
-  },
-  "unsupportedSufficiencyWithEvaluableExpression": {
-   "status": "UNSUPPORTED",
-   "gross": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "usage": {
-    "kind": "NOT_DETERMINED",
-    "reason": "no usage recorded against this capacity"
-   },
-   "remaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "effectiveRemaining": {
-    "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
-   },
-   "limitations": [
-    "PHASE3_RULE_UNSUPPORTED"
-   ],
-   "appliedUsageIds": [],
-   "provisional": {
-    "grossCapacity": {
-     "kind": "AMOUNT",
-     "value": {
-      "type": "MONEY",
-      "amount": "10000000",
-      "currency": "USD",
-      "lineage": {
-       "exprId": "g52",
-       "inputKeys": [],
-       "rawSource": 10000000
-      }
-     }
-    },
-    "remaining": {
-     "kind": "AMOUNT",
-     "value": {
-      "type": "MONEY",
-      "amount": "10000000",
-      "currency": "USD",
-      "lineage": {
-       "exprId": "g52",
-       "inputKeys": [],
-       "rawSource": 10000000
-      }
-     }
-    },
-    "effectiveRemaining": {
-     "kind": "AMOUNT",
-     "value": {
-      "type": "MONEY",
-      "amount": "10000000",
-      "currency": "USD",
-      "lineage": {
-       "exprId": "g52",
-       "inputKeys": [],
-       "rawSource": 10000000
-      }
-     }
-    }
-   }
   },
   "unsupportedOperand": {
    "status": "UNSUPPORTED",
@@ -491,11 +342,11 @@
    },
    "remaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "effectiveRemaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "limitations": [
     "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON"

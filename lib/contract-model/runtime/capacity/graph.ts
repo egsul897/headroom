@@ -16,6 +16,7 @@ import type {
   BuildCapacityGraphArgs, CapacityEdge, CapacityEdgeKind, CapacityEntityScope, CapacityGraph,
   CapacityGraphCycle, CapacityLimitation, CapacityNode, ComponentRole,
 } from "./types";
+import { EVALUATION_DEPENDENCY_EDGE_KINDS } from "./types";
 
 /** UNLIMITED_CAPACITY is the one IR node that carries no exprId, so it is read defensively. */
 const exprIdOf = (e: IRCapacityExpression | IRExpression): string | null => ("exprId" in e && typeof e.exprId === "string" ? e.exprId : null);
@@ -131,10 +132,13 @@ function findCycles(nodeIds: string[], edges: CapacityEdge[]): CapacityGraphCycl
 /** Merge several Phase-4B manifests into the union a graph needs, keyed by full dependency identity. */
 function unionManifests(manifests: FinancialDependencyManifest[], companyId: string, instrumentKey: string): FinancialDependencyManifest {
   const merged: DependencyRecord[] = [];
+  // Keyed by full dependency identity: one map lookup per record, never a scan of what was merged so far.
+  const byIdentity = new Map<string, DependencyRecord>();
   for (const m of manifests) {
     for (const d of m.dependencies) {
-      const same = merged.find((x) => x.inputKind === d.inputKind && x.key === d.key && x.companyId === d.companyId && x.instrumentKey === d.instrumentKey && JSON.stringify(x.period) === JSON.stringify(d.period) && JSON.stringify(x.asOf) === JSON.stringify(d.asOf) && x.expectedType === d.expectedType);
-      if (!same) { merged.push({ ...d, exprIds: [...d.exprIds] }); continue; }
+      const identity = [d.inputKind, d.key, d.companyId, d.instrumentKey, JSON.stringify(d.period), JSON.stringify(d.asOf), String(d.expectedType)].join("::");
+      const same = byIdentity.get(identity);
+      if (!same) { const copy = { ...d, exprIds: [...d.exprIds] }; merged.push(copy); byIdentity.set(identity, copy); continue; }
       for (const e of d.exprIds) if (!same.exprIds.includes(e)) same.exprIds.push(e);
       if (d.status === "REQUIRED") { same.status = "REQUIRED"; same.conditionalOn = null; }
       if (!d.safeBoundAvailableWithoutThis) same.safeBoundAvailableWithoutThis = false;
@@ -167,14 +171,31 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
   const definitions = args.definitions ?? [];
   const asOf = args.asOf ?? null;
   // Only this company's and instrument's objects. Identity is never assumed from the argument alone.
-  const rules = [...args.rules].filter((r) => r.companyId === companyId && r.instrumentKey === instrumentKey).sort((a, b) => (a.ruleId < b.ruleId ? -1 : 1));
-  const sharedCapacities = [...(args.sharedCapacities ?? [])].filter((s) => s.companyId === companyId && s.instrumentKey === instrumentKey).sort((a, b) => (a.sharedCapId < b.sharedCapId ? -1 : 1));
+  const allRules = [...args.rules].filter((r) => r.companyId === companyId && r.instrumentKey === instrumentKey).sort((a, b) => (a.ruleId < b.ruleId ? -1 : 1));
+  const allShared = [...(args.sharedCapacities ?? [])].filter((s) => s.companyId === companyId && s.instrumentKey === instrumentKey).sort((a, b) => (a.sharedCapId < b.sharedCapId ? -1 : 1));
 
   const nodes: CapacityNode[] = [];
   const edges: CapacityEdge[] = [];
   const limitations: CapacityLimitation[] = [];
   const manifests: FinancialDependencyManifest[] = [];
+
+  // Identity is unique or fails closed (remediation R7). An id claimed by more than one object is
+  // refused as a set: no node is built for it, nothing is chosen between the claimants, and the
+  // refusal is reported once with every claimant. Sorting above means order cannot decide anything.
+  const countBy = <T,>(xs: T[], key: (x: T) => string) => { const m = new Map<string, number>(); for (const x of xs) m.set(key(x), (m.get(key(x)) ?? 0) + 1); return m; };
+  const ruleCounts = countBy(allRules, (r) => r.ruleId);
+  const sharedCounts = countBy(allShared, (c) => c.sharedCapId);
+  const duplicateRuleIds = [...ruleCounts].filter(([, c]) => c > 1).map(([k]) => k).sort();
+  const duplicateSharedIds = [...sharedCounts].filter(([, c]) => c > 1).map(([k]) => k).sort();
+  for (const id of duplicateRuleIds) limitations.push({ code: "DUPLICATE_RULE_IDENTITY", message: `rule id ${id} is claimed by ${ruleCounts.get(id)} rules; no capacity node is built for it and nothing is chosen between the claimants`, refs: [ruleNodeId(id)] });
+  for (const id of duplicateSharedIds) limitations.push({ code: "DUPLICATE_SHARED_CAPACITY_IDENTITY", message: `shared capacity id ${id} is claimed by ${sharedCounts.get(id)} resources; no pool node is built for it and nothing is chosen between the claimants`, refs: [sharedNodeId(id)] });
+  const rules = allRules.filter((r) => ruleCounts.get(r.ruleId) === 1);
+  const sharedCapacities = allShared.filter((c) => sharedCounts.get(c.sharedCapId) === 1);
+  /** Members named by a refused duplicate pool: their constraint is unknowable, so they are treated as unquantified. */
+  const membersOfRefusedPools = new Set(allShared.filter((c) => sharedCounts.get(c.sharedCapId)! > 1).flatMap((c) => c.memberRuleIds));
   const ruleById = new Map(rules.map((r) => [r.ruleId, r]));
+  /** Node ids, for O(1) existence checks instead of scanning the node list. */
+  const nodeIds = new Set<string>();
   const addEdge = (from: string, to: string, kind: CapacityEdgeKind, sourceRelationship: string | null, description: string | null) => { edges.push({ from, to, kind, sourceRelationship, description }); };
 
   // --- rule capacity nodes -------------------------------------------------
@@ -190,7 +211,9 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
       entityScope: entityScopeOf(rule),
       phase3: { sufficiency: rule.sufficiency, sufficiencyReasons: rule.sufficiencyReasons },
       dependsOnNodeIds: [],
+      unquantifiedSharedWith: [],
     });
+    nodeIds.add(id);
     manifests.push(buildRuleDependencyManifest(rule, { companyId, instrumentKey, asOf, definitions }));
 
     // component nodes, labelled by shape
@@ -204,8 +227,9 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
         capacityNodeId: cid, kind: role === "GROWER_COMPONENT" ? "GROWER_COMPONENT" : "BUILDER_COMPONENT",
         companyId, instrumentKey, ruleId: rule.ruleId, sharedCapacityId: null,
         sourceIdentity: { kind: "RULE", id: rule.ruleId, sourceSectionRef: rule.sourceSectionRef, sourceCitation: rule.provenance?.sourceCitation ?? null },
-        expressionId: exprId, componentRole: role, entityScope: null, phase3: null, dependsOnNodeIds: [],
+        expressionId: exprId, componentRole: role, entityScope: null, phase3: null, dependsOnNodeIds: [], unquantifiedSharedWith: [],
       });
+      nodeIds.add(cid);
       addEdge(id, cid, "BUILT_FROM", null, `capacity composed from a ${role.toLowerCase().replace(/_/g, " ")}`);
     }
   }
@@ -218,12 +242,13 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
       ruleId: null, sharedCapacityId: cap.sharedCapId,
       sourceIdentity: { kind: "SHARED_CAPACITY", id: cap.sharedCapId, sourceSectionRef: null, sourceCitation: cap.provenance?.sourceCitation ?? null },
       expressionId: exprIdOf(cap.capExpression),
-      componentRole: null, entityScope: null, phase3: null, dependsOnNodeIds: [],
+      componentRole: null, entityScope: null, phase3: null, dependsOnNodeIds: [], unquantifiedSharedWith: [],
     });
+    nodeIds.add(id);
     manifests.push(buildFinancialDependencyManifest({ expression: cap.capExpression, definitions, companyId, instrumentKey, asOf }));
     for (const memberRuleId of [...cap.memberRuleIds].sort()) {
       const memberNode = ruleNodeId(memberRuleId);
-      if (!nodes.some((n) => n.capacityNodeId === memberNode)) {
+      if (!nodeIds.has(memberNode)) {
         limitations.push({ code: "SHARED_CAPACITY_NOT_QUANTIFIED", message: `shared capacity ${cap.sharedCapId} names member rule ${memberRuleId}, which has no capacity node in this graph`, refs: [id, memberRuleId] });
         continue;
       }
@@ -233,13 +258,19 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
   }
 
   // --- Phase-3 rule relationships -----------------------------------------
-  const quantifiedMembers = new Set(edges.filter((e) => e.kind === "MEMBER_OF_SHARED_CAP").map((e) => e.from));
+  const nodeById = new Map(nodes.map((n) => [n.capacityNodeId, n]));
+  /** Which quantified pools each member belongs to, so a share relationship can be checked against them. */
+  const poolsOfMember = new Map<string, Set<string>>();
+  for (const e of edges) if (e.kind === "MEMBER_OF_SHARED_CAP") { const set = poolsOfMember.get(e.from) ?? new Set<string>(); set.add(e.to); poolsOfMember.set(e.from, set); }
+  const sharesQuantifiedPool = (a: string, b: string) => { const pa = poolsOfMember.get(a); const pb = poolsOfMember.get(b); if (!pa || !pb) return false; for (const p of pa) if (pb.has(p)) return true; return false; };
+
   for (const rule of rules) {
     const from = ruleNodeId(rule.ruleId);
-    if (!nodes.some((n) => n.capacityNodeId === from)) continue;
+    const node = nodeById.get(from);
+    if (!node) continue;
     for (const dep of [...rule.dependsOn].sort((a, b) => (`${a.relationshipType}|${a.targetRuleId}` < `${b.relationshipType}|${b.targetRuleId}` ? -1 : 1))) {
       const targetNode = ruleNodeId(dep.targetRuleId);
-      const targetExists = ruleById.has(dep.targetRuleId) && nodes.some((n) => n.capacityNodeId === targetNode);
+      const targetExists = ruleById.has(dep.targetRuleId) && nodeIds.has(targetNode);
       if (dep.relationshipType === "RECLASSIFIABLE_TO") {
         if (!targetExists) { limitations.push({ code: "RECLASSIFICATION_NOT_EXECUTABLE", message: `rule ${rule.ruleId} states a reclassification right into ${dep.targetRuleId}, which has no capacity node in this graph`, refs: [from, dep.targetRuleId] }); continue; }
         addEdge(from, targetNode, "RECLASSIFIABLE_TO", dep.relationshipType, dep.description);
@@ -247,25 +278,36 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
       }
       if (dep.relationshipType === "SHARES_CAPACITY_WITH") {
         // An edge states that two capacities share something. It does not say how much. Without an
-        // IRSharedCapacity resource carrying a cap expression there is no pool to compute against,
-        // and Phase 4C will not invent one.
-        if (!quantifiedMembers.has(from)) {
-          limitations.push({ code: "SHARED_CAPACITY_NOT_QUANTIFIED", message: `rule ${rule.ruleId} shares capacity with ${dep.targetRuleId}, but no shared-capacity resource quantifies the pool; the shared limit is not computed`, refs: [from, targetNode] });
+        // IRSharedCapacity resource quantifying a pool BOTH belong to, there is nothing to compute
+        // against, Phase 4C will not invent one, and the member's effective availability cannot be
+        // authoritative while an unknown constraint could bind (remediation R9).
+        if (!(targetExists && sharesQuantifiedPool(from, targetNode))) {
+          node.unquantifiedSharedWith.push(dep.targetRuleId);
+          // Sharing is symmetric in meaning: the named counterparty is bound by the same unknown pool
+          // even when Phase 3 recorded the relationship on one side only.
+          const counterparty = targetExists ? nodeById.get(targetNode) : undefined;
+          if (counterparty) counterparty.unquantifiedSharedWith.push(rule.ruleId);
+          limitations.push({ code: "SHARED_CAPACITY_NOT_QUANTIFIED", message: `rule ${rule.ruleId} shares capacity with ${dep.targetRuleId}, but no shared-capacity resource quantifies the pool; the shared limit is not computed and this capacity's effective availability is not authoritative`, refs: [from, targetNode] });
         }
-        if (targetExists) addEdge(from, targetNode, "DEPENDS_ON", dep.relationshipType, dep.description);
+        if (targetExists) addEdge(from, targetNode, "LEGAL_RELATIONSHIP", dep.relationshipType, dep.description);
         continue;
       }
-      if (targetExists) addEdge(from, targetNode, "DEPENDS_ON", dep.relationshipType, dep.description);
+      // Every other Phase-3 relationship is legal structure, carried for provenance. The evaluator
+      // never follows it, so it is never an evaluation dependency and never a cycle (remediation R12).
+      if (targetExists) addEdge(from, targetNode, "LEGAL_RELATIONSHIP", dep.relationshipType, dep.description);
     }
     for (const un of rule.unresolvedDependencies ?? []) {
       if (un.relationshipType !== "SHARES_CAPACITY_WITH" && un.relationshipType !== "RECLASSIFIABLE_TO") continue;
+      if (un.relationshipType === "SHARES_CAPACITY_WITH") node.unquantifiedSharedWith.push(`unresolved:${un.targetRef}`);
       limitations.push({
         code: un.relationshipType === "SHARES_CAPACITY_WITH" ? "SHARED_CAPACITY_NOT_QUANTIFIED" : "RECLASSIFICATION_NOT_EXECUTABLE",
         message: `rule ${rule.ruleId} states a ${un.relationshipType} relationship to "${un.targetRef}" that Phase 3 could not resolve within this unit (${un.reason}); the relationship is reported, never guessed into an edge`,
         refs: [from],
       });
     }
+    if (membersOfRefusedPools.has(rule.ruleId)) node.unquantifiedSharedWith.push("refused-duplicate-pool");
   }
+  for (const n of nodes) n.unquantifiedSharedWith = [...new Set(n.unquantifiedSharedWith)].sort();
 
   // --- expression-level rule references become dependency edges ------------
   for (const rule of rules) {
@@ -281,17 +323,32 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
     walk(rule.capacityExpression);
     for (const r of refs.sort()) {
       const target = ruleNodeId(r);
-      if (nodes.some((n) => n.capacityNodeId === target)) addEdge(from, target, "DEPENDS_ON", "RULE_REFERENCE", "capacity expression uses another rule's own capacity as an operand");
+      if (nodeIds.has(target)) addEdge(from, target, "DEPENDS_ON", "RULE_REFERENCE", "capacity expression uses another rule's own capacity as an operand");
     }
   }
 
-  for (const n of nodes) n.dependsOnNodeIds = edges.filter((e) => e.from === n.capacityNodeId && (e.kind === "DEPENDS_ON" || e.kind === "BUILT_FROM")).map((e) => e.to).sort();
+  // Dependency lists from one grouped pass over the edges, not a scan per node.
+  const depsByFrom = new Map<string, string[]>();
+  for (const e of edges) if (e.kind === "DEPENDS_ON" || e.kind === "BUILT_FROM") { const l = depsByFrom.get(e.from) ?? []; l.push(e.to); depsByFrom.set(e.from, l); }
+  for (const n of nodes) n.dependsOnNodeIds = [...(depsByFrom.get(n.capacityNodeId) ?? [])].sort();
 
-  edges.sort((a, b) => (`${a.from}|${a.to}|${a.kind}` < `${b.from}|${b.to}|${b.kind}` ? -1 : 1));
+  // One edge per (from, to, kind, relationship). Phase 3 may state the same relationship twice with
+  // different wording; the wordings are kept, sorted, and no input order decides which survives (R7).
+  const edgeByIdentity = new Map<string, CapacityEdge>();
+  for (const e of edges) {
+    const key = `${e.from}|${e.to}|${e.kind}|${e.sourceRelationship ?? ""}`;
+    const same = edgeByIdentity.get(key);
+    if (!same) { edgeByIdentity.set(key, { ...e }); continue; }
+    const descriptions = [...new Set([...(same.description ? same.description.split(" | ") : []), ...(e.description ? [e.description] : [])])].sort();
+    same.description = descriptions.length > 0 ? descriptions.join(" | ") : null;
+  }
+  edges.splice(0, edges.length, ...edgeByIdentity.values());
+  edges.sort((a, b) => (`${a.from}|${a.to}|${a.kind}|${a.sourceRelationship ?? ""}` < `${b.from}|${b.to}|${b.kind}|${b.sourceRelationship ?? ""}` ? -1 : 1));
   nodes.sort((a, b) => (a.capacityNodeId < b.capacityNodeId ? -1 : 1));
 
-  // Cycles are detected over the edges that actually create evaluation dependence.
-  const cyclic = edges.filter((e) => e.kind === "DEPENDS_ON" || e.kind === "MEMBER_OF_SHARED_CAP" || e.kind === "BUILT_FROM" || e.kind === "RECLASSIFIABLE_TO");
+  // Cycle protection runs over evaluation dependencies only. A legal relationship, however
+  // symmetric, is not a recursion; a reclassification right is validated per election, not here.
+  const cyclic = edges.filter((e) => EVALUATION_DEPENDENCY_EDGE_KINDS.includes(e.kind));
   const cycles = findCycles(nodes.map((n) => n.capacityNodeId), cyclic);
   for (const c of cycles) {
     const shared = c.nodePath.some((n) => n.startsWith("capacity:shared:"));

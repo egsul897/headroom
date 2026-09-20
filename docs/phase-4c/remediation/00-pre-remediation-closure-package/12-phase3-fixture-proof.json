@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4C §35 - the capacity state over Phase-3 IR already in this repo; no new model call",
- "at": "2026-09-20T00:42:59.558Z",
+ "at": "2026-09-19T21:52:38.098Z",
  "sources": {
   "frozenCompileResult": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
   "frozenSha256": "03d15c99b8a45651291e9429f85da255e9dab1228942fc722682b53e149648b7",
@@ -388,7 +388,8 @@
   "count": 16,
   "statusCounts": {
    "AVAILABLE": 13,
-   "REVIEW_REQUIRED": 3
+   "NEEDS_INPUT": 2,
+   "REVIEW_REQUIRED": 1
   },
   "everyNonAvailableHasALimitation": true
  },
@@ -397,20 +398,17 @@
   "nodes": 67,
   "edges": 39,
   "statusCounts": {
-   "AVAILABLE": 37,
-   "REVIEW_REQUIRED": 8,
+   "AVAILABLE": 41,
+   "REVIEW_REQUIRED": 4,
    "UNSUPPORTED": 5,
    "NEEDS_INPUT": 1,
    "AMBIGUOUS": 1
   },
   "limitationCodes": [
+   "CAPACITY_GRAPH_CYCLE",
    "SHARED_CAPACITY_NOT_QUANTIFIED"
   ],
-  "evaluationCycles": 0,
-  "sharesCapacityWithEdgesCarriedAsLegalRelationships": true,
-  "preRemediationNote": "the pre-remediation package reported CAPACITY_GRAPH_CYCLE on this corpus; those were symmetric SHARES_CAPACITY_WITH relationships fed to cycle detection, not evaluation cycles (audit F8)",
-  "everyUndeterminedGrossIsNonAvailable": true,
-  "unquantifiedShareMembersNonAuthoritative": true,
+  "noneSilentlyZero": true,
   "deterministicUnderRulePermutation": true,
   "reclassificationEdges": 0,
   "sharedCapacityResources": 0,

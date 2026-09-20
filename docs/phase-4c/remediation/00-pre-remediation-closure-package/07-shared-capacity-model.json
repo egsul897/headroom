@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4C §13, §14, §15, §23, §36 - the shared cap as an explicit constraint node",
- "at": "2026-09-20T00:42:59.389Z",
+ "at": "2026-09-19T21:52:37.925Z",
  "representation": "an IRSharedCapacity becomes one SHARED_CAPACITY node with its own cap expression; each member gets MEMBER_OF_SHARED_CAP and CONSTRAINED_BY edges and keeps its own rule capacity",
  "limitNeverCopiedOntoMembers": true,
  "sharedRemaining": "shared gross minus the sum of eligible member consumption plus usage recorded directly against the pool",
@@ -15,7 +15,7 @@
      "amount": "150",
      "currency": "USD",
      "lineage": {
-      "exprId": "g117",
+      "exprId": "g108",
       "inputKeys": [],
       "rawSource": 150
      }
@@ -56,7 +56,7 @@
       "amount": "100",
       "currency": "USD",
       "lineage": {
-       "exprId": "g115",
+       "exprId": "g106",
        "inputKeys": [],
        "rawSource": 100
       }
@@ -69,7 +69,7 @@
       "amount": "100",
       "currency": "USD",
       "lineage": {
-       "exprId": "g116",
+       "exprId": "g107",
        "inputKeys": [],
        "rawSource": 100
       }
@@ -165,7 +165,7 @@
      "amount": "200",
      "currency": "USD",
      "lineage": {
-      "exprId": "g121",
+      "exprId": "g112",
       "inputKeys": [],
       "rawSource": 200
      }
@@ -226,11 +226,11 @@
    },
    "remaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "effectiveRemaining": {
     "kind": "NOT_DETERMINED",
-    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    "reason": "the legal state of this rule is not safe to rely on"
    },
    "limitations": [
     "AMBIGUOUS_CONSUMPTION_ALLOCATION"
@@ -262,134 +262,7 @@
    "limitations": [
     "SHARED_CAPACITY_NOT_QUANTIFIED"
    ],
-   "sharedNodes": 0,
-   "memberA": {
-    "status": "REVIEW_REQUIRED",
-    "gross": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "usage": {
-     "kind": "AMOUNT",
-     "value": {
-      "type": "MONEY",
-      "amount": "30",
-      "currency": "USD",
-      "lineage": {
-       "exprId": null,
-       "inputKeys": [
-        "u1"
-       ]
-      }
-     }
-    },
-    "remaining": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "effectiveRemaining": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "limitations": [
-     "SHARED_CAPACITY_NOT_QUANTIFIED"
-    ],
-    "appliedUsageIds": [
-     "u1"
-    ],
-    "provisional": {
-     "grossCapacity": {
-      "kind": "AMOUNT",
-      "value": {
-       "type": "MONEY",
-       "amount": "100",
-       "currency": "USD",
-       "lineage": {
-        "exprId": "g132",
-        "inputKeys": [],
-        "rawSource": 100
-       }
-      }
-     },
-     "remaining": {
-      "kind": "AMOUNT",
-      "value": {
-       "type": "MONEY",
-       "amount": "70",
-       "currency": "USD",
-       "lineage": {
-        "exprId": null,
-        "inputKeys": []
-       }
-      }
-     },
-     "effectiveRemaining": {
-      "kind": "AMOUNT",
-      "value": {
-       "type": "MONEY",
-       "amount": "70",
-       "currency": "USD",
-       "lineage": {
-        "exprId": null,
-        "inputKeys": []
-       }
-      }
-     }
-    }
-   },
-   "memberB": {
-    "status": "REVIEW_REQUIRED",
-    "gross": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "usage": {
-     "kind": "NOT_DETERMINED",
-     "reason": "no usage recorded against this capacity"
-    },
-    "remaining": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "effectiveRemaining": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "limitations": [
-     "SHARED_CAPACITY_NOT_QUANTIFIED"
-    ],
-    "appliedUsageIds": []
-   },
-   "neitherMemberAuthoritative": true
-  },
-  "K. duplicate pool identity": {
-   "graphLimitations": [
-    "DUPLICATE_SHARED_CAPACITY_IDENTITY"
-   ],
-   "sharedNodes": 0,
-   "memberA": {
-    "status": "REVIEW_REQUIRED",
-    "gross": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "usage": {
-     "kind": "NOT_DETERMINED",
-     "reason": "no usage recorded against this capacity"
-    },
-    "remaining": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "effectiveRemaining": {
-     "kind": "NOT_DETERMINED",
-     "reason": "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
-    },
-    "limitations": [
-     "SHARED_CAPACITY_NOT_QUANTIFIED"
-    ],
-    "appliedUsageIds": []
-   }
+   "sharedNodes": 0
   },
   "J. usage recorded directly against the pool": {
    "poolUsage": {

@@ -1,0 +1,569 @@
+{
+ "artifact": "PHASE 4C remediation R4/R5 - batch conservation and election identity, executed through production code",
+ "at": "2026-09-20T00:42:57.664Z",
+ "invariant": "sum of executable elections per source <= source usage in the before-state; atomic; no capacity created; total usage preserved",
+ "chaining": "none inside a batch; a chained move is two batches",
+ "matrix": {
+  "A. one election below source usage": {
+   "allExecuted": true,
+   "afterIsNull": false,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "EXECUTED",
+     "codes": []
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "25",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": "25",
+     "src": "15"
+    },
+    "remaining": {
+     "dst": "75",
+     "src": "85"
+    }
+   },
+   "transitionHash": "6a052cbacaeddf324957dac1c43dc5634923a2c2ef65808f8e14d1d8c06adf0b"
+  },
+  "B. one election equal to source usage": {
+   "allExecuted": true,
+   "afterIsNull": false,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "EXECUTED",
+     "codes": []
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "40",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": "40",
+     "src": "0"
+    },
+    "remaining": {
+     "dst": "60",
+     "src": "100"
+    }
+   },
+   "transitionHash": "eb6da85e944fe2a58e19874f00b790107e45ca92799132ab851bfb8e64eb4896"
+  },
+  "C. one election above source usage": {
+   "allExecuted": false,
+   "afterIsNull": true,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "SOURCE_USAGE_INSUFFICIENT",
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "50",
+     "holds": false
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": null,
+   "transitionHash": "4628298da68bec77b40c5748cd6cdc47c6fa051737b0f3ba388240b819e52012"
+  },
+  "D. two elections summing below": {
+   "allExecuted": true,
+   "afterIsNull": false,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "e2",
+     "state": "EXECUTED",
+     "codes": []
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "30",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": "30",
+     "src": "10"
+    },
+    "remaining": {
+     "dst": "70",
+     "src": "90"
+    }
+   },
+   "transitionHash": "39d29f8dd890e84f454950047bfddb25bf9a10cf2c72dbc72eb083d92c561a54"
+  },
+  "E. two elections summing to exactly": {
+   "allExecuted": true,
+   "afterIsNull": false,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "e2",
+     "state": "EXECUTED",
+     "codes": []
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "40",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": "40",
+     "src": "0"
+    },
+    "remaining": {
+     "dst": "60",
+     "src": "100"
+    }
+   },
+   "transitionHash": "a60fe2fbdcab3e35f135656625bbbf147f0991c3e41014b36801bba58ef5ebe3"
+  },
+  "F. two elections individually valid, jointly over (audit P7)": {
+   "allExecuted": false,
+   "afterIsNull": true,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    },
+    {
+     "id": "e2",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "50",
+     "holds": false
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": null,
+   "transitionHash": "ccf9ef0c2fa3f2f5b75a5ab7608c298bc62d9b86af75a3e8a3bf52e31a840a79"
+  },
+  "G. four elections within": {
+   "allExecuted": true,
+   "afterIsNull": false,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "e2",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "e3",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "e4",
+     "state": "EXECUTED",
+     "codes": []
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "40",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": "40",
+     "src": "0"
+    },
+    "remaining": {
+     "dst": "60",
+     "src": "100"
+    }
+   },
+   "transitionHash": "afc9accb544b0e47d04040dde4fa42aa89160c34b40cdfb52afac7c520c6bc28"
+  },
+  "G. three elections over": {
+   "allExecuted": false,
+   "afterIsNull": true,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    },
+    {
+     "id": "e2",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    },
+    {
+     "id": "e3",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "45",
+     "holds": false
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": null,
+   "transitionHash": "a8d930b04bed85db21f5b3d9336ab0f2efd1033267ab687b183f726715db038b"
+  },
+  "H. duplicate election identity (audit P8)": {
+   "allExecuted": false,
+   "afterIsNull": true,
+   "outcomes": [
+    {
+     "id": "dup",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "DUPLICATE_ELECTION_IDENTITY"
+     ]
+    },
+    {
+     "id": "dup",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "DUPLICATE_ELECTION_IDENTITY"
+     ]
+    },
+    {
+     "id": "other",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "BLOCKED_BY_BATCH_ATOMICITY"
+     ]
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "15",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "dst": null,
+     "src": "40"
+    }
+   },
+   "after": null,
+   "transitionHash": "cdec838cea380446357879b41429f65443c2c959ccdb101d52873685e59e1bb4"
+  },
+  "I. one source to two targets within": {
+   "allExecuted": true,
+   "afterIsNull": false,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "e2",
+     "state": "EXECUTED",
+     "codes": []
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "40",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "d1": null,
+     "d2": null,
+     "src": "40"
+    }
+   },
+   "after": {
+    "totalUsage": 40,
+    "byRule": {
+     "d1": "20",
+     "d2": "20",
+     "src": "0"
+    },
+    "remaining": {
+     "d1": "80",
+     "d2": "80",
+     "src": "100"
+    }
+   },
+   "transitionHash": "421cb93ea8e06dff96b28b96c768b7b8296cb212088427b82f4ca92834c52987"
+  },
+  "I. one source to two targets over": {
+   "allExecuted": false,
+   "afterIsNull": true,
+   "outcomes": [
+    {
+     "id": "e1",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    },
+    {
+     "id": "e2",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "src",
+     "sourceUsage": "40",
+     "requested": "45",
+     "holds": false
+    }
+   ],
+   "before": {
+    "totalUsage": 40,
+    "byRule": {
+     "d1": null,
+     "d2": null,
+     "src": "40"
+    }
+   },
+   "after": null,
+   "transitionHash": "44b3f3baa396824d39a9168132e8d50bdbbd1bf4cdafb94d0178573659e40dc2"
+  },
+  "J. two sources, each within": {
+   "allExecuted": true,
+   "afterIsNull": false,
+   "outcomes": [
+    {
+     "id": "a1",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "b1",
+     "state": "EXECUTED",
+     "codes": []
+    },
+    {
+     "id": "b2",
+     "state": "EXECUTED",
+     "codes": []
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "sA",
+     "sourceUsage": "40",
+     "requested": "40",
+     "holds": true
+    },
+    {
+     "sourceRuleId": "sB",
+     "sourceUsage": "30",
+     "requested": "30",
+     "holds": true
+    }
+   ],
+   "before": {
+    "totalUsage": 70,
+    "byRule": {
+     "dst": null,
+     "sA": "40",
+     "sB": "30"
+    }
+   },
+   "after": {
+    "totalUsage": 70,
+    "byRule": {
+     "dst": "70",
+     "sA": "0",
+     "sB": "0"
+    },
+    "remaining": {
+     "dst": "30",
+     "sA": "100",
+     "sB": "100"
+    }
+   },
+   "transitionHash": "b651614a5fe2c93155c7fd72e3314e7938292f83c5763b2bee5825e59115cce4"
+  },
+  "J. two sources, one over blocks the batch": {
+   "allExecuted": false,
+   "afterIsNull": true,
+   "outcomes": [
+    {
+     "id": "a1",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "BLOCKED_BY_BATCH_ATOMICITY"
+     ]
+    },
+    {
+     "id": "b1",
+     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
+     "codes": [
+      "SOURCE_USAGE_INSUFFICIENT",
+      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
+     ]
+    }
+   ],
+   "batchConservation": [
+    {
+     "sourceRuleId": "sA",
+     "sourceUsage": "40",
+     "requested": "10",
+     "holds": true
+    },
+    {
+     "sourceRuleId": "sB",
+     "sourceUsage": "30",
+     "requested": "35",
+     "holds": false
+    }
+   ],
+   "before": {
+    "totalUsage": 70,
+    "byRule": {
+     "dst": null,
+     "sA": "40",
+     "sB": "30"
+    }
+   },
+   "after": null,
+   "transitionHash": "eb6afcea632ff5f527b6cb355d9df7d165a65ab7563bc06e9b8052ca5efce1c4"
+  }
+ },
+ "orderInvariance": {
+  "hashSameUnderPermutation": true
+ },
+ "allHold": true
+}

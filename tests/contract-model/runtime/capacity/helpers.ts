@@ -27,6 +27,8 @@ export const MAX = (...operands: IRExpression[]): IRExpression => ({ kind: "MAX"
 export const MIN = (...operands: IRExpression[]): IRExpression => ({ kind: "MIN", type: "MONEY", operands, exprId: id() });
 export const CMP = (left: IRExpression, right: IRExpression): IRExpression => ({ kind: "COMPARE", type: "BOOLEAN", left, operator: "LTE", right, exprId: id() });
 export const UNSUPPORTED = (reason: string): IRExpression => ({ kind: "UNSUPPORTED", type: null, sourceEvidence: "test evidence", semanticDescription: reason, reason, requiredReview: true, exprId: id() });
+/** A rule's own capacity used as an operand: the one Phase-3 construct that is an evaluation dependency between capacities. */
+export const RULE_REF = (ruleId: string, companyId = CO, instrumentKey = INST): IRExpression => ({ kind: "RULE_REFERENCE", type: "CAPACITY", ruleId, companyId, instrumentKey, exprId: id() });
 export const UNLIMITED = (gatedBy: IRExpression | null = null): IRCapacityExpression => ({ kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy });
 
 export function rule(ruleId: string, capacityExpression: IRCapacityExpression | null, over: Partial<IRRule> = {}): IRRule {

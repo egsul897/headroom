@@ -1,0 +1,245 @@
+{
+ "artifact": "PHASE 4C remediation R10/R11 - allocation completeness and snapshot ambiguity",
+ "at": "2026-09-20T00:42:57.694Z",
+ "allocation": {
+  "rule": "'no usage applies' is a determined zero; 'attribution unknown' fails the capacities it could touch closed; candidates outside the graph are reported, never dropped",
+  "cases": {
+   "1. none legally applicable": {
+    "status": "AVAILABLE",
+    "gross": "100",
+    "usage": "NOT_DETERMINED",
+    "remaining": "100",
+    "effectiveRemaining": "100",
+    "provisional": null,
+    "limitations": [],
+    "appliedUsageIds": []
+   },
+   "2. information missing": {
+    "status": "AMBIGUOUS",
+    "gross": "NOT_DETERMINED",
+    "usage": "NOT_DETERMINED",
+    "remaining": "NOT_DETERMINED",
+    "effectiveRemaining": "NOT_DETERMINED",
+    "provisional": {
+     "gross": "100",
+     "remaining": null,
+     "effectiveRemaining": null
+    },
+    "limitations": [
+     "ALLOCATION_INFORMATION_MISSING"
+    ],
+    "appliedUsageIds": []
+   },
+   "3. one candidate": {
+    "status": "AMBIGUOUS",
+    "gross": "NOT_DETERMINED",
+    "usage": "NOT_DETERMINED",
+    "remaining": "NOT_DETERMINED",
+    "effectiveRemaining": "NOT_DETERMINED",
+    "provisional": {
+     "gross": "100",
+     "remaining": null,
+     "effectiveRemaining": null
+    },
+    "limitations": [
+     "AMBIGUOUS_CONSUMPTION_ALLOCATION"
+    ],
+    "appliedUsageIds": []
+   },
+   "4. multiple candidates": {
+    "status": "AMBIGUOUS",
+    "gross": "NOT_DETERMINED",
+    "usage": "NOT_DETERMINED",
+    "remaining": "NOT_DETERMINED",
+    "effectiveRemaining": "NOT_DETERMINED",
+    "provisional": {
+     "gross": "100",
+     "remaining": null,
+     "effectiveRemaining": null
+    },
+    "limitations": [
+     "AMBIGUOUS_CONSUMPTION_ALLOCATION"
+    ],
+    "appliedUsageIds": []
+   },
+   "5. explicit selection": {
+    "status": "AVAILABLE",
+    "gross": "100",
+    "usage": "40",
+    "remaining": "60",
+    "effectiveRemaining": "60",
+    "provisional": null,
+    "limitations": [],
+    "appliedUsageIds": [
+     "u1"
+    ]
+   },
+   "6. candidates outside the graph": {
+    "a": {
+     "status": "AVAILABLE",
+     "gross": "100",
+     "usage": "NOT_DETERMINED",
+     "remaining": "100",
+     "effectiveRemaining": "100",
+     "provisional": null,
+     "limitations": [],
+     "appliedUsageIds": []
+    },
+    "stateLimitations": [
+     "USAGE_NOT_ATTRIBUTABLE_IN_GRAPH"
+    ],
+    "ledgerIssues": [
+     "UNRESOLVED_CANDIDATES_NOT_IN_GRAPH",
+     "UNRESOLVED_CAPACITY_PATH"
+    ]
+   }
+  },
+  "holds": true
+ },
+ "snapshot": {
+  "rule": "ambiguous only on an actual Phase-4B conflict (AMBIGUOUS_INPUT / SNAPSHOT_SET_UNSAFE); multiSnapshot is a separate fact; conflictingInputKeys names the facts; order-independent",
+  "cases": {
+   "identical fact identity in two snapshots": {
+    "binding": {
+     "snapshotIds": [],
+     "snapshotVersions": [],
+     "snapshotSetHash": null,
+     "inputContractVersion": "financial-input-contract.v1",
+     "ambiguous": true,
+     "multiSnapshot": false,
+     "conflictingInputKeys": [
+      "m1"
+     ]
+    },
+    "statuses": [
+     "AMBIGUOUS"
+    ],
+    "stateLimitations": [
+     "SNAPSHOT_BINDING_AMBIGUOUS"
+    ],
+    "hash": "707c771ac665b56981ca8e7decea6257d685d5119dd7ad7f0e27c4ab891cf18f"
+   },
+   "compatible: different facts from different snapshots (audit P12)": {
+    "binding": {
+     "snapshotIds": [
+      "s1",
+      "s2"
+     ],
+     "snapshotVersions": [
+      "1"
+     ],
+     "snapshotSetHash": "06394624f2cd704e4dd0d91ccd71790d2cf253c14308d9555bd2baeacda0df99",
+     "inputContractVersion": "financial-input-contract.v1",
+     "ambiguous": false,
+     "multiSnapshot": true,
+     "conflictingInputKeys": []
+    },
+    "statuses": [
+     "AVAILABLE",
+     "AVAILABLE"
+    ],
+    "stateLimitations": [],
+    "hash": "636bfec72164a547c43c55d77f13f524906355137e535e06809ac2205da82acb"
+   },
+   "missing binding": {
+    "binding": {
+     "snapshotIds": [],
+     "snapshotVersions": [],
+     "snapshotSetHash": null,
+     "inputContractVersion": null,
+     "ambiguous": false,
+     "multiSnapshot": false,
+     "conflictingInputKeys": []
+    },
+    "statuses": [
+     "NEEDS_INPUT"
+    ],
+    "stateLimitations": [],
+    "hash": "61840a1e0ed7b0b32db0558b0d731c69c12b2d036e0a1dc461f4b2457bd5a9f3"
+   },
+   "conflicting identities: same fact, different versions": {
+    "binding": {
+     "snapshotIds": [],
+     "snapshotVersions": [],
+     "snapshotSetHash": null,
+     "inputContractVersion": "financial-input-contract.v1",
+     "ambiguous": true,
+     "multiSnapshot": false,
+     "conflictingInputKeys": [
+      "m1"
+     ]
+    },
+    "statuses": [
+     "AMBIGUOUS"
+    ],
+    "stateLimitations": [
+     "SNAPSHOT_BINDING_AMBIGUOUS"
+    ],
+    "hash": "51dab7a5d0fa2ab56a8c25a2339c107ff055144f3830cf7ae834cd3676917daf"
+   },
+   "conflicting values (audit P13)": {
+    "binding": {
+     "snapshotIds": [],
+     "snapshotVersions": [],
+     "snapshotSetHash": null,
+     "inputContractVersion": "financial-input-contract.v1",
+     "ambiguous": true,
+     "multiSnapshot": false,
+     "conflictingInputKeys": [
+      "m1"
+     ]
+    },
+    "statuses": [
+     "AMBIGUOUS"
+    ],
+    "stateLimitations": [
+     "SNAPSHOT_BINDING_AMBIGUOUS"
+    ],
+    "hash": "25895a9d0c1797222733fa2e9ef4380a7e94aeb355722a0d46d3315502f39a75"
+   },
+   "permutation of the conflicting case": {
+    "binding": {
+     "snapshotIds": [],
+     "snapshotVersions": [],
+     "snapshotSetHash": null,
+     "inputContractVersion": "financial-input-contract.v1",
+     "ambiguous": true,
+     "multiSnapshot": false,
+     "conflictingInputKeys": [
+      "m1"
+     ]
+    },
+    "statuses": [
+     "AMBIGUOUS"
+    ],
+    "stateLimitations": [
+     "SNAPSHOT_BINDING_AMBIGUOUS"
+    ],
+    "hash": "25895a9d0c1797222733fa2e9ef4380a7e94aeb355722a0d46d3315502f39a75"
+   },
+   "permutation of the compatible case": {
+    "binding": {
+     "snapshotIds": [
+      "s1",
+      "s2"
+     ],
+     "snapshotVersions": [
+      "1"
+     ],
+     "snapshotSetHash": "06394624f2cd704e4dd0d91ccd71790d2cf253c14308d9555bd2baeacda0df99",
+     "inputContractVersion": "financial-input-contract.v1",
+     "ambiguous": false,
+     "multiSnapshot": true,
+     "conflictingInputKeys": []
+    },
+    "statuses": [
+     "AVAILABLE",
+     "AVAILABLE"
+    ],
+    "stateLimitations": [],
+    "hash": "636bfec72164a547c43c55d77f13f524906355137e535e06809ac2205da82acb"
+   }
+  },
+  "holds": true
+ }
+}

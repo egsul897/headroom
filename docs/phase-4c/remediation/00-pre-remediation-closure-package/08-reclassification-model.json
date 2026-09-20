@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4C §18, §19, §20, §39 - explicit reclassification only, and the exact gap in the Phase-3 IR",
- "at": "2026-09-20T00:42:59.414Z",
+ "at": "2026-09-19T21:52:37.946Z",
  "whatPhase3Represents": {
   "shape": "IRRuleDependency { relationshipType: RECLASSIFIABLE_TO, targetRuleId, description }",
   "carriesAmount": false,
@@ -24,16 +24,9 @@
   "one usage row removing the amount from the source",
   "one usage row adding it to the destination",
   "shared-cap consequences follow from the new usage",
-  "a conservation check that the pair nets to zero",
-  "conservation aggregated by source over the whole batch against the before-state",
-  "the batch applies whole or not at all"
+  "a conservation check that the pair nets to zero"
  ],
- "batchSemantics": "every election draws on the usage the source carried in `before`; there is no intra-batch chaining, so order cannot matter; the sum a batch asks to move out of one source may never exceed what the source carries; one blocked election blocks the batch and `after` is null (remediation R4/R5, audit F1)",
  "blockCodes": [
-  "DUPLICATE_ELECTION_IDENTITY",
-  "ELECTION_ALREADY_APPLIED",
-  "BLOCKED_BY_BATCH_ATOMICITY",
-  "AGGREGATE_SOURCE_USAGE_EXCEEDED",
   "NO_EXPLICIT_RECLASSIFICATION_EDGE",
   "SOURCE_CAPACITY_NOT_IN_GRAPH",
   "DESTINATION_CAPACITY_NOT_IN_GRAPH",
@@ -45,13 +38,6 @@
   "RECLASSIFICATION_CYCLE",
   "CONSERVATION_VIOLATED"
  ],
- "blockCodesNotReachableThroughBuildCapacityGraph": {
-  "CROSS_INSTRUMENT_NOT_REPRESENTED": "defensive: a graph built by buildCapacityGraph carries one company and one instrument, so its nodes can never differ; the check remains for a graph assembled otherwise",
-  "CONSERVATION_VIOLATED": "defensive: the generated pair nets to zero by construction and is checked rather than assumed"
- },
- "electionFieldsCarriedNotValidated": {
-  "movesUsageIds": "provenance only; the election is validated against the source's total applied usage, not against named rows"
- },
  "frozenEvidenceGap": {
   "reclassifiableToEdgesInFrozenCompileResult": 0,
   "sharesCapacityWithEdgesInFrozenCompileResult": 7,
@@ -168,8 +154,8 @@
      }
     }
    },
-   "beforeHash": "a87ab6c94303d0e5dbf9e3bca69120eb0e860fc6d5cefd48fd0aacf7e9a54973",
-   "afterHash": "e1863d562ddc20485396274a17e54b6a64ac87d9456144a4b69e4b42187b9a46"
+   "beforeHash": "24b09f6777cd427f4bcde40c4d6b86c4e5c51b28de4fe0c00782347322ed2a61",
+   "afterHash": "8f16db0e5358c4af3fa18f415fb42aa3816480efdbb36b50bd6737c2c91cd2aa"
   },
   "partialMove": {
    "srcUsage": {
@@ -277,11 +263,6 @@
      "code": "SOURCE_USAGE_INSUFFICIENT",
      "message": "the election moves more than the usage recorded against the source capacity",
      "missingSemanticFields": []
-    },
-    {
-     "code": "AGGREGATE_SOURCE_USAGE_EXCEEDED",
-     "message": "taken together, the 1 elections drawing on rule-src move 25 but the source carries 10 in the before-state; every election draws on the before-state and none may spend what another moves in",
-     "missingSemanticFields": []
     }
    ],
    "authorizingEdge": {
@@ -299,7 +280,7 @@
    "blockedBy": [
     {
      "code": "MISSING_SEMANTIC_FIELDS",
-     "message": "the election does not state every field an executable transition needs (an amount must be strictly positive); Phase 4C does not supply them",
+     "message": "the election does not state every field an executable transition needs; Phase 4C does not supply them",
      "missingSemanticFields": [
       "amount.currency",
       "effectiveAsOf"
@@ -387,118 +368,6 @@
    "authorizingEdge": null,
    "generatedUsage": [],
    "conservation": null
-  },
-  "batchJointOverdraw": {
-   "outcomes": [
-    {
-     "electionId": "e1",
-     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
-     "codes": [
-      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
-     ]
-    },
-    {
-     "electionId": "e2",
-     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
-     "codes": [
-      "AGGREGATE_SOURCE_USAGE_EXCEEDED"
-     ]
-    }
-   ],
-   "batchConservation": [
-    {
-     "sourceRuleId": "rule-src",
-     "sourceUsage": "40",
-     "requested": "50",
-     "holds": false
-    }
-   ],
-   "afterIsNull": true,
-   "beforeSrcRemaining": {
-    "kind": "AMOUNT",
-    "value": {
-     "type": "MONEY",
-     "amount": "60",
-     "currency": "USD",
-     "lineage": {
-      "exprId": null,
-      "inputKeys": []
-     }
-    }
-   }
-  },
-  "batchWithinSource": {
-   "allExecuted": true,
-   "batchConservation": [
-    {
-     "sourceRuleId": "rule-src",
-     "sourceUsage": "40",
-     "requested": "40",
-     "holds": true
-    }
-   ],
-   "srcUsage": {
-    "kind": "AMOUNT",
-    "value": {
-     "type": "MONEY",
-     "amount": "0",
-     "currency": "USD",
-     "lineage": {
-      "exprId": null,
-      "inputKeys": [
-       "e1:source",
-       "e2:source",
-       "u1"
-      ]
-     }
-    }
-   },
-   "dstUsage": {
-    "kind": "AMOUNT",
-    "value": {
-     "type": "MONEY",
-     "amount": "40",
-     "currency": "USD",
-     "lineage": {
-      "exprId": null,
-      "inputKeys": [
-       "e1:destination",
-       "e2:destination"
-      ]
-     }
-    }
-   }
-  },
-  "duplicateElectionIds": {
-   "outcomes": [
-    {
-     "electionId": "elect-1",
-     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
-     "codes": [
-      "DUPLICATE_ELECTION_IDENTITY"
-     ]
-    },
-    {
-     "electionId": "elect-1",
-     "state": "RECLASSIFICATION_NOT_EXECUTABLE",
-     "codes": [
-      "DUPLICATE_ELECTION_IDENTITY"
-     ]
-    }
-   ],
-   "allExecuted": false,
-   "afterIsNull": true
-  },
-  "alreadyApplied": {
-   "outcome": {
-    "state": "RECLASSIFICATION_NOT_EXECUTABLE",
-    "codes": [
-     "ELECTION_ALREADY_APPLIED",
-     "SOURCE_USAGE_INSUFFICIENT",
-     "AGGREGATE_SOURCE_USAGE_EXCEEDED"
-    ]
-   },
-   "afterIsNull": true
   },
   "targetOutsideGraph": [
    "RECLASSIFICATION_NOT_EXECUTABLE"

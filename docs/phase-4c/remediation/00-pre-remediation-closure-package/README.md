@@ -1,15 +1,6 @@
 # Phase 4C: deterministic capacity graph
 
 Starting SHA `b38fdcb5bc006b915ffe9b548fbb5ff18aade2fa`. Zero paid, model or provider calls.
-
-**Status history.** The first closure at `779d4103300758390a8795194b5082d87a1625d6` (37/37) was
-falsified by an independent forensic audit (verdict `PHASE_4C_NOT_COMPLETE`: batch reclassification
-could create capacity, duplicate ledger ids were double-counted, duplicate pool ids resolved by
-array order, evaluation scaled near-quadratically while artifact 11 claimed linear, and a Phase-3
-`UNSUPPORTED` rule published AVAILABLE headroom). The remediation, its regression suites and the
-32-condition recertification are under [`remediation/`](remediation/README.md). The package in this
-directory was regenerated from the remediated code; the pre-remediation package is preserved
-verbatim under `remediation/00-pre-remediation-closure-package/`.
 Phase-3 semantic tree `f79bc12dd479e9b803bf9e37092d76b6aedb8c12` and compiler tree
 `b4e6a9da496a23b9f98607355520a456e6c48e1f` are frozen and unchanged. Runtime version
 `contract-runtime.v1`, input contract `financial-input-contract.v1`, capacity graph `capacity-graph.v1`.
@@ -61,48 +52,14 @@ remaining undetermined. Those are different facts and the code distinguishes the
 A bound stays a bound. A MAX with a missing operand carries `knownLowerBound` while the status stays
 NEEDS_INPUT and gross stays undetermined.
 
-Legal sufficiency dominates numeric executability, through one exhaustive table over every
-Phase-3 sufficiency value: PARTIAL is REVIEW_REQUIRED; AMBIGUOUS, MISSING_CONTEXT and CONFLICTED
-are AMBIGUOUS; UNSUPPORTED is UNSUPPORTED; an entity scope the guard marked not safe to rely on is
-REVIEW_REQUIRED. Under any of them the published amounts are NOT_DETERMINED and the computed
-arithmetic is kept separately under `provisional`. Arithmetic never upgrades a legal state.
-
-Identity is unique or fails closed. A usage id, election id, rule id or pool id claimed by more than
-one record is refused as a set: nothing is chosen between the claimants, nothing is collapsed, and
-every capacity the claimants could touch fails closed with an explicit code. Array order decides
-nothing.
+Legal sufficiency dominates numeric executability. A PARTIAL or AMBIGUOUS Phase-3 rule publishes
+NOT_DETERMINED and keeps the computed arithmetic separately under `provisional`.
 
 ## No implied allocation
 
 A usage record whose capacity path is unresolved, but which names this capacity among its
-candidates, blocks the answer with `AMBIGUOUS_CONSUMPTION_ALLOCATION`. A record with no candidates
-at all blocks every capacity in scope with `ALLOCATION_INFORMATION_MISSING`: the usage exists, so
-attribution is missing rather than absent. Candidates entirely outside the graph are reported as
-`USAGE_NOT_ATTRIBUTABLE_IN_GRAPH`, never dropped. The runtime does not pick. Choosing a path is
-Phase 4E's job.
-
-## Reclassification batches
-
-Every election in a batch draws on the usage its source carried in the before-state; conservation
-is checked per election and aggregated by source over the whole batch; a batch applies whole or not
-at all. Two elections that are each valid alone but together exceed the source are both refused and
-`after` is null. Duplicate election ids, and an election whose rows the ledger already carries, fail
-closed.
-
-## Complexity
-
-The ledger is indexed once by capacity path and selection is memoized per (path, currency);
-membership, component and dependency lookups are indexed. The proof is the operation counters
-(`ledgerEntriesExamined`, `edgesVisited`, `sharedResourceLookups`, `dependencyLookups`,
-`indexLookups`, ...), which are exactly linear in n on the audit's own construction; wall-clock is
-supplemental and is re-measured in `remediation/10-complexity-remediation.json`.
-
-## Cycles
-
-Cycle protection runs over evaluation dependencies only (`DEPENDS_ON` from a RULE_REFERENCE inside
-a capacity expression, `BUILT_FROM`, `MEMBER_OF_SHARED_CAP`). Every other Phase-3 relationship is a
-`LEGAL_RELATIONSHIP` edge: carried, never recursed. A symmetric pair of legal relationships is not a
-cycle; a real RULE_REFERENCE cycle still fails closed with its path.
+candidates, blocks the answer with `AMBIGUOUS_CONSUMPTION_ALLOCATION`. The runtime does not pick.
+Choosing a path is Phase 4E's job.
 
 ## Builders and growers are shapes, not formulas
 
@@ -118,10 +75,8 @@ reclassification edges. Both are recorded rather than worked around.
 
 - A `SHARES_CAPACITY_WITH` edge states that two capacities share something. It does not say how
   much. Without an `IRSharedCapacity` resource carrying a cap expression there is no pool to
-  compute, so the graph reports `SHARED_CAPACITY_NOT_QUANTIFIED` and invents nothing. Both members
-  of such a relationship are REVIEW_REQUIRED with `effectiveRemaining` NOT_DETERMINED and their
-  local arithmetic under `provisional`: an unknown constraint could bind, so nothing is
-  authoritative. The frozen result has seven such edges and no resource behind them.
+  compute, so the graph reports `SHARED_CAPACITY_NOT_QUANTIFIED` and invents nothing. The frozen
+  result has seven such edges and no resource behind them.
 - Phase 3 records a reclassification right as a dependency carrying a target rule id and a
   description, with no amount, no effective date and no direction constraint. A transition therefore
   cannot be derived from the IR. Phase 4C executes an election the caller supplies, and only where
@@ -156,12 +111,10 @@ protection in place regardless.
 
 ## Regression note
 
-The full suite is not clean against base: the wall-clock scaling identities over
-`segmentCoordinateClauses` (frozen Phase-3 compiler tree, unchanged by this phase) fail
-intermittently. They are classified INHERITED FLAKY / UNSTABLE, not waived and not called passing.
-`15-regression.json` records the exact identities, the isolation runs on the unchanged tree and the
-direct log-log measurement of that function for the run that produced this package; the audit's
-own measurement was 4 of 10 isolation failures and a slope of 0.985. Both identities predate Phase
-4A and failed in the 4A and 4B regression artifacts. Gate condition 32 was reworded after the first
-Phase-4C run (from "full suite clean" to "no new attributable regressions"); that change is
-disclosed in `15-regression.json` and `16-phase4c-gate.json`.
+The full suite is not clean against base: two wall-clock scaling identities fail. They are not
+waived. Both are wall-clock assertions over `segmentCoordinateClauses`, which lives in the frozen
+Phase-3 compiler tree, and Phase 4C changed no file they exercise. On this run they also failed 2 of
+6 isolation runs on that unchanged tree, which is what shows the flake exists independently of this
+phase, and a direct measurement of the same function gives a log-log slope of 0.982 against 1 for
+linear and 2 for quadratic. Phase 4C added 95 tests to the shared parallel runner, which is what
+moved the ratios.

@@ -1,10 +1,8 @@
 {
- "artifact": "PHASE 4C §46 - gate (regenerated after remediation; the 32-condition recertification is docs/phase-4c/remediation/14-recertification.json)",
- "at": "2026-09-20T00:42:59.665Z",
+ "artifact": "PHASE 4C §46 - gate",
+ "at": "2026-09-19T21:52:38.232Z",
  "startingSha": "b38fdcb5bc006b915ffe9b548fbb5ff18aade2fa",
- "remediationStartingSha": "779d4103300758390a8795194b5082d87a1625d6",
- "headAtRun": "779d4103300758390a8795194b5082d87a1625d6",
- "criterionChangeDisclosure": "condition 32 was reworded from 'full suite clean against base' to 'no new attributable regressions' after the first run of the original Phase-4C closure; recorded per audit U16",
+ "headAtRun": "a3325535b4e30d85448e840c7ca27b8286d623f6",
  "capacityGraphVersion": "capacity-graph.v1",
  "runtimeVersion": "contract-runtime.v1",
  "inputContractVersion": "financial-input-contract.v1",
@@ -30,7 +28,7 @@
  ],
  "onlyCapacityFilesChanged": true,
  "testCounts": {
-  "phase4cCapacityTests": 177,
+  "phase4cCapacityTests": 95,
   "phase4cFailed": 0
  },
  "conditions": [
@@ -224,7 +222,7 @@
    "n": 32,
    "condition": "no new attributable regressions",
    "status": "PASS",
-   "evidence": "full-suite new 1, targeted new 0, all wall-clock scaling assertions over frozen-tree code; isolation 8 pass / 2 fail; direct log-log slope 1.03"
+   "evidence": "full-suite new 2, targeted new 1, all wall-clock scaling assertions over frozen-tree code; isolation 4 pass / 2 fail; direct log-log slope 0.982"
   },
   {
    "n": 33,

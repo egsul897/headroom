@@ -1,0 +1,37 @@
+{
+ "artifact": "PHASE 4C remediation R7 - duplicate rule and pool identity never resolve by array order",
+ "at": "2026-09-20T00:42:57.668Z",
+ "duplicatePool": {
+  "graphLimitations": [
+   "DUPLICATE_SHARED_CAPACITY_IDENTITY"
+  ],
+  "sharedNodes": 0,
+  "member": {
+   "status": "REVIEW_REQUIRED",
+   "gross": "NOT_DETERMINED",
+   "usage": "NOT_DETERMINED",
+   "remaining": "NOT_DETERMINED",
+   "effectiveRemaining": "NOT_DETERMINED",
+   "provisional": {
+    "gross": "100",
+    "remaining": "100",
+    "effectiveRemaining": "100"
+   },
+   "limitations": [
+    "SHARED_CAPACITY_NOT_QUANTIFIED"
+   ],
+   "appliedUsageIds": []
+  },
+  "orderInvariant": true
+ },
+ "duplicateRule": {
+  "nodes": [
+   "o"
+  ],
+  "limitations": [
+   "DUPLICATE_RULE_IDENTITY"
+  ],
+  "orderInvariant": true
+ },
+ "safe": true
+}

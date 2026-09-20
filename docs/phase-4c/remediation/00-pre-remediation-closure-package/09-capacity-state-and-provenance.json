@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4C §28, §29, §30 - immutable versioned state, the provenance chain, and the structured explanation",
- "at": "2026-09-20T00:42:59.420Z",
+ "at": "2026-09-19T21:52:37.949Z",
  "immutability": "applying a ledger record or a reclassification produces a NEW state; the prior state object is never mutated",
  "hashInputs": [
   "capacity graph hash",
@@ -18,11 +18,11 @@
   "explanations"
  ],
  "repeatedStateHashes": [
-  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
-  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
-  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
-  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c",
-  "f6cb052b60024b57cd379e360d19c624f9e088c6eb8ce028c47748a18b54764c"
+  "0e653db5c1ea4eb07dec4650120637cc2f83cdc2dd88b611755c6802a8071eee",
+  "0e653db5c1ea4eb07dec4650120637cc2f83cdc2dd88b611755c6802a8071eee",
+  "0e653db5c1ea4eb07dec4650120637cc2f83cdc2dd88b611755c6802a8071eee",
+  "0e653db5c1ea4eb07dec4650120637cc2f83cdc2dd88b611755c6802a8071eee",
+  "0e653db5c1ea4eb07dec4650120637cc2f83cdc2dd88b611755c6802a8071eee"
  ],
  "repeatedIdentical": true,
  "provenanceChain": [
@@ -46,7 +46,7 @@
     "amount": "100000000",
     "currency": "USD",
     "lineage": {
-     "exprId": "g175",
+     "exprId": "g155",
      "inputKeys": [
       "metric-alpha"
      ]
@@ -107,7 +107,7 @@
      "amount": "800000000",
      "currency": "USD",
      "lineage": {
-      "exprId": "g173",
+      "exprId": "g153",
       "inputKeys": [
        "metric-alpha"
       ]
@@ -148,7 +148,7 @@
    }
   ],
   "calculationTrace": {
-   "exprId": "g175",
+   "exprId": "g155",
    "kind": "MAX",
    "status": "EXECUTABLE",
    "value": {
@@ -156,7 +156,7 @@
     "amount": "100000000",
     "currency": "USD",
     "lineage": {
-     "exprId": "g175",
+     "exprId": "g155",
      "inputKeys": [
       "metric-alpha"
      ]
@@ -165,7 +165,7 @@
    "provenance": null,
    "children": [
     {
-     "exprId": "g171",
+     "exprId": "g151",
      "kind": "MONEY",
      "status": "EXECUTABLE",
      "value": {
@@ -173,7 +173,7 @@
       "amount": "100000000",
       "currency": "USD",
       "lineage": {
-       "exprId": "g171",
+       "exprId": "g151",
        "inputKeys": [],
        "rawSource": 100000000
       }
@@ -182,7 +182,7 @@
      "children": []
     },
     {
-     "exprId": "g174",
+     "exprId": "g154",
      "kind": "MULTIPLY",
      "status": "EXECUTABLE",
      "value": {
@@ -190,7 +190,7 @@
       "amount": "100000000",
       "currency": "USD",
       "lineage": {
-       "exprId": "g174",
+       "exprId": "g154",
        "inputKeys": [
         "metric-alpha"
        ]
@@ -199,14 +199,14 @@
      "provenance": null,
      "children": [
       {
-       "exprId": "g172",
+       "exprId": "g152",
        "kind": "PERCENT",
        "status": "EXECUTABLE",
        "value": {
         "type": "PERCENT",
         "fraction": "0.125",
         "lineage": {
-         "exprId": "g172",
+         "exprId": "g152",
          "inputKeys": [],
          "rawSource": 0.125
         }
@@ -215,7 +215,7 @@
        "children": []
       },
       {
-       "exprId": "g173",
+       "exprId": "g153",
        "kind": "METRIC_REFERENCE",
        "status": "EXECUTABLE",
        "value": {
@@ -223,7 +223,7 @@
         "amount": "800000000",
         "currency": "USD",
         "lineage": {
-         "exprId": "g173",
+         "exprId": "g153",
          "inputKeys": [
           "metric-alpha"
          ]
@@ -256,7 +256,7 @@
          "amount": "800000000",
          "currency": "USD",
          "lineage": {
-          "exprId": "g173",
+          "exprId": "g153",
           "inputKeys": [
            "metric-alpha"
           ]
@@ -269,7 +269,7 @@
    ],
    "selected": {
     "index": 0,
-    "exprId": "g171",
+    "exprId": "g151",
     "reason": "MAX selected operand 0"
    }
   }
@@ -283,9 +283,7 @@
   ],
   "snapshotSetHash": "57a82aa676df569469f9d630b705decfcfc045b4a8b43747bf3cf7fad9a38f6e",
   "inputContractVersion": "financial-input-contract.v1",
-  "ambiguous": false,
-  "multiSnapshot": false,
-  "conflictingInputKeys": []
+  "ambiguous": false
  },
  "notComputed": {
   "permissionSelection": "NOT_COMPUTED_IN_PHASE_4C",

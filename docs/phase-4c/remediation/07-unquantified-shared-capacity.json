@@ -1,0 +1,70 @@
+{
+ "artifact": "PHASE 4C remediation R9 - an unquantified share is never authoritative availability",
+ "at": "2026-09-20T00:42:57.677Z",
+ "relationshipExists": [
+  "LEGAL_RELATIONSHIP"
+ ],
+ "noPoolInvented": true,
+ "graphLimitations": [
+  "SHARED_CAPACITY_NOT_QUANTIFIED"
+ ],
+ "memberA": {
+  "status": "REVIEW_REQUIRED",
+  "gross": "NOT_DETERMINED",
+  "usage": "30",
+  "remaining": "NOT_DETERMINED",
+  "effectiveRemaining": "NOT_DETERMINED",
+  "provisional": {
+   "gross": "100",
+   "remaining": "70",
+   "effectiveRemaining": "70"
+  },
+  "limitations": [
+   "SHARED_CAPACITY_NOT_QUANTIFIED"
+  ],
+  "appliedUsageIds": [
+   "u1"
+  ]
+ },
+ "memberB": {
+  "status": "REVIEW_REQUIRED",
+  "gross": "NOT_DETERMINED",
+  "usage": "NOT_DETERMINED",
+  "remaining": "NOT_DETERMINED",
+  "effectiveRemaining": "NOT_DETERMINED",
+  "provisional": {
+   "gross": "200",
+   "remaining": "200",
+   "effectiveRemaining": "200"
+  },
+  "limitations": [
+   "SHARED_CAPACITY_NOT_QUANTIFIED"
+  ],
+  "appliedUsageIds": []
+ },
+ "withQuantifiedPool": {
+  "a": {
+   "status": "AVAILABLE",
+   "gross": "100",
+   "usage": "30",
+   "remaining": "70",
+   "effectiveRemaining": "70",
+   "provisional": null,
+   "limitations": [],
+   "appliedUsageIds": [
+    "u1"
+   ]
+  },
+  "b": {
+   "status": "AVAILABLE",
+   "gross": "200",
+   "usage": "NOT_DETERMINED",
+   "remaining": "200",
+   "effectiveRemaining": "120",
+   "provisional": null,
+   "limitations": [],
+   "appliedUsageIds": []
+  }
+ },
+ "holds": true
+}

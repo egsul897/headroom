@@ -1,23 +1,15 @@
 {
  "artifact": "PHASE 4C §13, §14, §16, §17, §27 - nodes, typed edges, multi-membership and cycle safety",
- "at": "2026-09-20T00:42:59.356Z",
- "edgeKindsProduced": [
+ "at": "2026-09-19T21:52:37.893Z",
+ "edgeKinds": [
   "DEPENDS_ON",
-  "BUILT_FROM",
+  "CONSUMES",
   "MEMBER_OF_SHARED_CAP",
   "CONSTRAINED_BY",
-  "LEGAL_RELATIONSHIP",
+  "BUILT_FROM",
   "RECLASSIFIABLE_TO"
  ],
- "edgeKindsReservedNeverProduced": [
-  "CONSUMES"
- ],
- "evaluationDependencyEdgeKinds": [
-  "DEPENDS_ON",
-  "BUILT_FROM",
-  "MEMBER_OF_SHARED_CAP"
- ],
- "edgesComeFromPhase3Relationships": "SHARES_CAPACITY_WITH, RECLASSIFIABLE_TO, REQUIRES and the rest are read from IRRuleDependency; a relationship is never inferred from a name or a section number. Every non-reclassification relationship becomes a LEGAL_RELATIONSHIP edge; DEPENDS_ON comes only from a RULE_REFERENCE inside a capacity expression",
+ "edgesComeFromPhase3Relationships": "SHARES_CAPACITY_WITH, RECLASSIFIABLE_TO, REQUIRES and the rest are read from IRRuleDependency; a relationship is never inferred from a name or a section number",
  "sharedCapIsAConstraintNode": "the pool's limit is never copied onto a member; each member keeps its own rule capacity and additionally participates in the constraint",
  "multipleSharedMembership": {
   "memberConstraintIds": [
@@ -31,7 +23,7 @@
     "amount": "300",
     "currency": "USD",
     "lineage": {
-     "exprId": "g25",
+     "exprId": "g23",
      "inputKeys": [],
      "rawSource": 300
     }
@@ -56,7 +48,7 @@
     "amount": "500",
     "currency": "USD",
     "lineage": {
-     "exprId": "g23",
+     "exprId": "g21",
      "inputKeys": [],
      "rawSource": 500
     }
@@ -87,11 +79,6 @@
   }
  },
  "cycleDetection": {
-  "runsOver": [
-   "DEPENDS_ON",
-   "BUILT_FROM",
-   "MEMBER_OF_SHARED_CAP"
-  ],
   "cycles": [
    {
     "nodePath": [
@@ -112,41 +99,14 @@
      }
     ],
     "provenance": [
-     "capacity expression uses another rule's own capacity as an operand"
+     "a requires b"
     ]
    }
   ],
   "limitations": [
    "CAPACITY_GRAPH_CYCLE"
   ],
-  "memberStatuses": [
-   "NEEDS_INPUT",
-   "NEEDS_INPUT"
-  ],
   "neverRecursed": true,
   "neverArbitrarilyBroken": true
- },
- "symmetricLegalRelationshipIsNotACycle": {
-  "edges": [
-   [
-    "LEGAL_RELATIONSHIP",
-    "REQUIRES"
-   ],
-   [
-    "LEGAL_RELATIONSHIP",
-    "REQUIRES"
-   ]
-  ],
-  "cycles": 0,
-  "statuses": [
-   [
-    "AVAILABLE",
-    "10"
-   ],
-   [
-    "AVAILABLE",
-    "10"
-   ]
-  ]
  }
 }

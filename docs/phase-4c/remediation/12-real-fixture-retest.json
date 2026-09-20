@@ -1,0 +1,31 @@
+{
+ "artifact": "PHASE 4C remediation R18 - the frozen real corpus after remediation; gaps kept explicit",
+ "at": "2026-09-20T00:42:58.326Z",
+ "source": {
+  "path": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+  "sha256": "03d15c99b8a45651291e9429f85da255e9dab1228942fc722682b53e149648b7"
+ },
+ "rulesWithCapacity": 52,
+ "nodes": 67,
+ "edges": 39,
+ "statusCounts": {
+  "NEEDS_INPUT": 13,
+  "REVIEW_REQUIRED": 8,
+  "AVAILABLE": 25,
+  "UNSUPPORTED": 5,
+  "AMBIGUOUS": 1
+ },
+ "evaluationCycles": 0,
+ "limitationCodes": [
+  "SHARED_CAPACITY_NOT_QUANTIFIED"
+ ],
+ "realCorpusSharedCapacityCount": 0,
+ "realCorpusExecutableReclassificationEdgeCount": 0,
+ "sharesCapacityWithEdges": 7,
+ "unquantifiedShareMembers": {
+  "count": 6,
+  "allNonAuthoritative": true
+ },
+ "everyUndeterminedGrossIsNonAvailable": true,
+ "honestGap": "the frozen corpus contains 0 quantified shared-capacity resources and 0 executable reclassification edges; shared-capacity and reclassification runtime execution are proved on synthetic IR only, and no fixture here is described as frozen real evidence"
+}

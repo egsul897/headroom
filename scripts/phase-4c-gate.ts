@@ -1,6 +1,9 @@
 /**
  * PHASE 4C - deterministic capacity graph: evidence artifacts + gate.
  * No model call, no ingestion, no network. Writes docs/phase-4c/01..16.
+ *
+ * Regenerated after the forensic remediation (docs/phase-4c/remediation/). The pre-remediation
+ * package is preserved verbatim under docs/phase-4c/remediation/00-pre-remediation-closure-package/.
  * Run: [VITEST_TARGETED_JSON=.. VITEST_FULL_JSON=.. VITEST_FULL_BASE_JSON=.. TSC_LOG=.. LINT_LOG=.. BUILD_LOG=.. ISOLATION_JSONS=.. SCALING_JSON=..] npx tsx scripts/phase-4c-gate.ts
  */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -16,6 +19,8 @@ import { snapshotInputResolver } from "../lib/contract-model/runtime/input/snaps
 import type { DependencyRecord, FinancialInput, FinancialSnapshot } from "../lib/contract-model/runtime/input/types";
 import { CAPACITY_GRAPH_VERSION } from "../lib/contract-model/runtime/capacity/version";
 import { applyCapacityStateTransition, buildCapacityGraph, buildLedgerIndex, evaluateCapacityState } from "../lib/contract-model/runtime/capacity";
+import { SUFFICIENCY_DOMINANCE } from "../lib/contract-model/runtime/capacity/state";
+import { EVALUATION_DEPENDENCY_EDGE_KINDS } from "../lib/contract-model/runtime/capacity/types";
 import type {
   CapacityAmount, CapacityPathRef, CapacityState, LedgerUsageRecord, ReclassificationElection,
 } from "../lib/contract-model/runtime/capacity/types";
@@ -29,6 +34,8 @@ type Any = any;
 const OUT = "docs/phase-4c";
 const at = () => new Date().toISOString();
 const STARTING_SHA = "b38fdcb5bc006b915ffe9b548fbb5ff18aade2fa";
+/** The head the independent audit falsified; remediation started there (docs/phase-4c/remediation/). */
+const REMEDIATION_STARTING_SHA = "779d4103300758390a8795194b5082d87a1625d6";
 const PHASE3_TREES = { "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f", "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12" };
 const FROZEN = "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json";
 const CAP_DIR = "lib/contract-model/runtime/capacity";
@@ -64,6 +71,7 @@ const MINE = (...o: IRExpression[]): IRExpression => ({ kind: "MIN", type: "MONE
 const CMP = (l: IRExpression, r: IRExpression): IRExpression => ({ kind: "COMPARE", type: "BOOLEAN", left: l, operator: "LTE", right: r, exprId: id() });
 const UNL = (gatedBy: IRExpression | null): IRCapacityExpression => ({ kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy });
 const UNSUP = (reason: string): IRExpression => ({ kind: "UNSUPPORTED", type: null, sourceEvidence: "gate", semanticDescription: reason, reason, requiredReview: true, exprId: id() });
+const RULE_REF = (ruleId: string): IRExpression => ({ kind: "RULE_REFERENCE", type: "CAPACITY", ruleId, companyId: CO, instrumentKey: INST, exprId: id() });
 
 const rule = (ruleId: string, capacityExpression: IRCapacityExpression | null, over: Partial<IRRule> = {}): IRRule => ({
   ruleId, irSchemaVersion: "t", companyId: CO, instrumentKey: INST, sourceDocumentId: "doc", sourceSectionRef: `section-${ruleId}`,
@@ -131,9 +139,10 @@ writeJson(`${OUT}/01-phase4b-handoff-audit.json`, {
 const nodeDemo = run([rule("rule-a", ADD(MONEY(10), MUL(PCT(0.5), METRIC("metric-alpha")), METRIC("metric-gamma")))]).graph;
 writeJson(`${OUT}/02-capacity-node-model.json`, {
   artifact: "PHASE 4C §4, §5 - the typed capacity node and the statuses it can carry", at: at(),
-  nodeKinds: ["RULE_CAPACITY", "SHARED_CAPACITY", "LEDGER_USAGE", "BUILDER_COMPONENT", "GROWER_COMPONENT"],
+  nodeKindsProduced: ["RULE_CAPACITY", "SHARED_CAPACITY", "BUILDER_COMPONENT", "GROWER_COMPONENT"],
+  nodeKindsReservedNeverProduced: ["LEDGER_USAGE"],
   nodeKindsAreStructuralNotCovenantForms: "a node is a thing that bears or consumes capacity, or a labelled component of an expression; nothing is named after a basket type",
-  nodeFields: ["capacityNodeId", "kind", "companyId", "instrumentKey", "ruleId", "sharedCapacityId", "sourceIdentity", "expressionId", "componentRole", "entityScope", "phase3", "dependsOnNodeIds"],
+  nodeFields: ["capacityNodeId", "kind", "companyId", "instrumentKey", "ruleId", "sharedCapacityId", "sourceIdentity", "expressionId", "componentRole", "entityScope", "phase3", "dependsOnNodeIds", "unquantifiedSharedWith"],
   statuses: ["AVAILABLE", "NEEDS_INPUT", "UNSUPPORTED", "AMBIGUOUS", "REVIEW_REQUIRED", "ERROR"],
   statusesNeverCollapse: { missingFact: "NEEDS_INPUT", unsupportedSemantics: "UNSUPPORTED", ambiguousLegalState: "AMBIGUOUS", reviewRequiredLegalState: "REVIEW_REQUIRED", runtimeError: "ERROR" },
   capacityAmountKinds: ["AMOUNT", "UNLIMITED", "GATE_NOT_SATISFIED", "NOT_DETERMINED"],
@@ -141,7 +150,11 @@ writeJson(`${OUT}/02-capacity-node-model.json`, {
 });
 
 // ---------------- 03 capacity graph model (§13, §14, §17, §27)
-const cycleDemo = run([
+// A true evaluation cycle: each capacity's expression uses the other's capacity (RULE_REFERENCE).
+const cycleDemo = run([rule("rule-a", RULE_REF("rule-b")), rule("rule-b", RULE_REF("rule-a"))]);
+// A symmetric legal relationship is structure, not recursion (remediation R12, audit F8). The
+// pre-remediation package used exactly this pair as its "cycle" demonstration.
+const symmetricLegalDemo = run([
   rule("rule-a", MONEY(10), { dependsOn: [{ relationshipType: "REQUIRES", targetRuleId: "rule-b", description: "a requires b" }] }),
   rule("rule-b", MONEY(10), { dependsOn: [{ relationshipType: "REQUIRES", targetRuleId: "rule-a", description: "b requires a" }] }),
 ]);
@@ -156,12 +169,15 @@ const nestedProbe = (() => {
 })();
 writeJson(`${OUT}/03-capacity-graph-model.json`, {
   artifact: "PHASE 4C §13, §14, §16, §17, §27 - nodes, typed edges, multi-membership and cycle safety", at: at(),
-  edgeKinds: ["DEPENDS_ON", "CONSUMES", "MEMBER_OF_SHARED_CAP", "CONSTRAINED_BY", "BUILT_FROM", "RECLASSIFIABLE_TO"],
-  edgesComeFromPhase3Relationships: "SHARES_CAPACITY_WITH, RECLASSIFIABLE_TO, REQUIRES and the rest are read from IRRuleDependency; a relationship is never inferred from a name or a section number",
+  edgeKindsProduced: ["DEPENDS_ON", "BUILT_FROM", "MEMBER_OF_SHARED_CAP", "CONSTRAINED_BY", "LEGAL_RELATIONSHIP", "RECLASSIFIABLE_TO"],
+  edgeKindsReservedNeverProduced: ["CONSUMES"],
+  evaluationDependencyEdgeKinds: [...EVALUATION_DEPENDENCY_EDGE_KINDS],
+  edgesComeFromPhase3Relationships: "SHARES_CAPACITY_WITH, RECLASSIFIABLE_TO, REQUIRES and the rest are read from IRRuleDependency; a relationship is never inferred from a name or a section number. Every non-reclassification relationship becomes a LEGAL_RELATIONSHIP edge; DEPENDS_ON comes only from a RULE_REFERENCE inside a capacity expression",
   sharedCapIsAConstraintNode: "the pool's limit is never copied onto a member; each member keeps its own rule capacity and additionally participates in the constraint",
   multipleSharedMembership: { memberConstraintIds: capOf(multiShared.state, "rule-a").sharedConstraintIds, pool1Remaining: poolOf(multiShared.state, "pool-s1").remaining, pool2Remaining: poolOf(multiShared.state, "pool-s2").remaining, memberOwnRemaining: capOf(multiShared.state, "rule-a").remaining, memberEffectiveRemaining: capOf(multiShared.state, "rule-a").effectiveRemaining },
   nestedSharedCapacity: { representableInPhase3Ir: false, reason: "IRSharedCapacity.memberRuleIds is a list of RULE ids, so a pool cannot name another pool as a member", observed: nestedProbe },
-  cycleDetection: { cycles: cycleDemo.graph.cycles, limitations: cycleDemo.state.limitations.map((l) => l.code), neverRecursed: true, neverArbitrarilyBroken: true },
+  cycleDetection: { runsOver: [...EVALUATION_DEPENDENCY_EDGE_KINDS], cycles: cycleDemo.graph.cycles, limitations: cycleDemo.state.limitations.map((l) => l.code), memberStatuses: cycleDemo.state.capacities.map((c) => c.status), neverRecursed: true, neverArbitrarilyBroken: true },
+  symmetricLegalRelationshipIsNotACycle: { edges: symmetricLegalDemo.graph.edges.map((e) => [e.kind, e.sourceRelationship]), cycles: symmetricLegalDemo.graph.cycles.length, statuses: symmetricLegalDemo.state.capacities.map((c) => [c.status, amt(c.remaining)]) },
 });
 
 // ---------------- 04 gross capacity (§6, §7, §24, §25, §26)
@@ -175,6 +191,9 @@ const grossCases = {
   unlimitedGateFailed: brief(run([rule("rule-a", UNL(CMP(METRIC("metric-r", "RATIO"), RATIOL(2))))], { facts: [fact("metric-r", "4", "RATIO")] }).state, "rule-a"),
   reviewRequiredPartialRule: (() => { const s = run([rule("rule-a", MONEY(80_000_000), { sufficiency: "PARTIAL", sufficiencyReasons: ["one clause is not represented"] })]).state; return { ...brief(s, "rule-a"), provisional: capOf(s, "rule-a").provisional }; })(),
   ambiguousPhase3Rule: brief(run([rule("rule-a", MONEY(10_000_000), { sufficiency: "AMBIGUOUS", sufficiencyReasons: ["two readings survive"] })]).state, "rule-a"),
+  missingContextPhase3Rule: brief(run([rule("rule-a", MONEY(10_000_000), { sufficiency: "MISSING_CONTEXT", sufficiencyReasons: ["context outside the unit"] })]).state, "rule-a"),
+  conflictedPhase3Rule: brief(run([rule("rule-a", MONEY(10_000_000), { sufficiency: "CONFLICTED", sufficiencyReasons: ["two provisions disagree"] })]).state, "rule-a"),
+  unsupportedSufficiencyWithEvaluableExpression: (() => { const s = run([rule("rule-a", MONEY(10_000_000), { sufficiency: "UNSUPPORTED", sufficiencyReasons: ["marked unsupported by phase 3"] })]).state; return { ...brief(s, "rule-a"), provisional: capOf(s, "rule-a").provisional }; })(),
   unsupportedOperand: brief(run([rule("rule-a", MAXE(MONEY(1), UNSUP("a mechanic Phase 3 did not formalize")))]).state, "rule-a"),
   entityScopeNotSafe: (() => { const s = run([rule("rule-a", MONEY(1_000_000), { entityScopeAudit: { status: "UNDERINCLUSIVE_VS_SOURCE", safeToRely: false, tagOutcomes: [], preGuardEntityScope: [], preGuardEntityScopeExcluded: [], sourceWitness: null, reasonCodes: ["narrower than source"] } as Any })]).state; return { ...brief(s, "rule-a"), entityScope: capOf(s, "rule-a").entityScope }; })(),
 };
@@ -184,7 +203,8 @@ writeJson(`${OUT}/04-gross-capacity-evaluation.json`, {
   noSecondArithmeticImplementation: "the capacity layer imports units.ts and evaluate-expression.ts; it computes nothing itself",
   unlimitedRepresentation: { kinds: ["UNLIMITED (gate NONE or SATISFIED)", "GATE_NOT_SATISFIED"], neverInfinity: true, neverMaxValue: true, distinctFromMissing: true, distinctFromZero: true },
   boundsAreMetadataNotValues: "a MAX with a missing operand carries knownLowerBound while the status stays NEEDS_INPUT and gross stays NOT_DETERMINED",
-  legalStateDominatesArithmetic: "a PARTIAL or AMBIGUOUS Phase-3 rule publishes NOT_DETERMINED and keeps the computed arithmetic under `provisional`",
+  legalStateDominatesArithmetic: "every Phase-3 sufficiency value maps through one exhaustive table: PARTIAL -> REVIEW_REQUIRED, AMBIGUOUS / MISSING_CONTEXT / CONFLICTED -> AMBIGUOUS, UNSUPPORTED -> UNSUPPORTED; an entity scope not safe to rely on -> REVIEW_REQUIRED. Under any of them the published amounts are NOT_DETERMINED and the computed arithmetic is kept separately under `provisional`. Arithmetic never upgrades a legal state (remediation R8, audit F5).",
+  dominanceTable: SUFFICIENCY_DOMINANCE,
   cases: grossCases,
 });
 
@@ -223,10 +243,14 @@ const LEDGER_MATRIX = {
   reversedExcluded: brief(run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"), { status: "REVERSED" })] }).state, "rule-a"),
   supersededYieldsToSuccessor: brief(run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"), { status: "SUPERSEDED", supersededByUsageId: "u2" }), usage("u2", "45", onRule("rule-a"))] }).state, "rule-a"),
   ambiguousAllocation: brief(run([rule("rule-a", MONEY(100)), rule("rule-b", MONEY(100))], { ledger: [usage("u1", "40", unresolvedPath(["rule-a", "rule-b"]))] }).state, "rule-a"),
-  duplicateIdentity: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a")), usage("u1", "80", onRule("rule-a"))] }).state; return { ledgerIssues: s.ledgerIssues.map((i) => i.code), stateLimitations: s.limitations.map((l) => l.code) }; })(),
+  duplicateIdentity: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a")), usage("u1", "80", onRule("rule-a"))] }).state; return { ...brief(s, "rule-a"), quarantinedUsageIds: s.ledgerScope.quarantinedUsageIds, ledgerIssues: s.ledgerIssues.map((i) => i.code), stateLimitations: s.limitations.map((l) => l.code), arithmeticNeverLeaks: amt(capOf(s, "rule-a").usage) === null && amt(capOf(s, "rule-a").remaining) === null }; })(),
+  duplicateIdentityIdenticalClaimants: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a")), usage("u1", "30", onRule("rule-a"))] }).state; return { ...brief(s, "rule-a"), refusedNotCollapsed: capOf(s, "rule-a").appliedUsageIds.length === 0 }; })(),
+  negativeUsageSupplied: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "-30", onRule("rule-a"))] }).state; return { ...brief(s, "rule-a"), ledgerIssues: s.ledgerIssues.map((i) => i.code), remainingNever130: amt(capOf(s, "rule-a").remaining) !== "130" }; })(),
+  unresolvedWithNoCandidates: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "40", { kind: "UNRESOLVED", candidateRuleIds: [], reason: "no attribution recorded" })] }).state; return { ...brief(s, "rule-a"), ledgerIssues: s.ledgerIssues.map((i) => i.code), stateLimitations: s.limitations.map((l) => l.code) }; })(),
+  unresolvedNamingOnlyRulesOutsideGraph: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "40", unresolvedPath(["rule-elsewhere-1", "rule-elsewhere-2"]))] }).state; return { ...brief(s, "rule-a"), ledgerIssues: s.ledgerIssues.map((i) => i.code), stateLimitations: s.limitations.map((l) => l.code) }; })(),
   overConsumption: (() => { const s = run([rule("rule-a", MONEY(50))], { ledger: [usage("u1", "70", onRule("rule-a"))] }).state; return { ...brief(s, "rule-a"), overConsumption: capOf(s, "rule-a").overConsumption }; })(),
-  wrongCompany: brief(run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"), { companyId: CO2 })] }).state, "rule-a"),
-  wrongInstrument: brief(run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"), { instrumentKey: INST2 })] }).state, "rule-a"),
+  wrongCompany: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"), { companyId: CO2 })] }).state; return { ...brief(s, "rule-a"), ledgerScope: s.ledgerScope }; })(),
+  wrongInstrument: (() => { const s = run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"), { instrumentKey: INST2 })] }).state; return { ...brief(s, "rule-a"), ledgerScope: s.ledgerScope }; })(),
   wrongCurrency: brief(run([rule("rule-a", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"), { amount: { amount: "30", currency: "EUR" } })] }).state, "rule-a"),
   selfSupersession: buildLedgerIndex([usage("u1", "1", onRule("rule-a"), { supersededByUsageId: "u1" })]).issues.map((i) => i.code),
   supersessionCycle: buildLedgerIndex([usage("u1", "1", onRule("rule-a"), { supersededByUsageId: "u2" }), usage("u2", "1", onRule("rule-a"), { supersededByUsageId: "u1" })]).issues.map((i) => i.code),
@@ -235,8 +259,9 @@ writeJson(`${OUT}/06-consumption-ledger-contract.json`, {
   artifact: "PHASE 4C §10, §11, §12, §21, §38 - the usage model, its identity, and what fails closed", at: at(),
   recordFields: ["usageId", "companyId", "instrumentKey", "effectiveAsOf", "amount.amount", "amount.currency", "capacityPath", "transactionRef", "status", "supersededByUsageId", "provenance.source", "provenance.sourceVersion", "provenance.approvalRef", "provenance.approvalState"],
   notIngested: "Phase 4C receives usage as already-structured truth; no ERP, bank, spreadsheet or certificate is parsed here",
-  selectionSemantics: ["company and instrument must match", "effective on or before the stated as-of", "status within the caller's policy", "not explicitly superseded by another usage", "capacity path identified and equal to this capacity", "currency equal to the capacity's"],
-  rejectionReasons: ["COMPANY_MISMATCH", "INSTRUMENT_MISMATCH", "EFFECTIVE_AFTER_AS_OF", "STATUS_NOT_ACCEPTABLE", "SUPERSEDED_BY_ANOTHER_USAGE", "PATH_NOT_THIS_CAPACITY", "PATH_UNRESOLVED", "CURRENCY_MISMATCH"],
+  selectionSemantics: ["company and instrument scoped once, at index time, and reported once in ledgerScope", "one immutable usage identity contributes at most once; every claimant of a duplicated id is quarantined and the capacities it could touch fail closed", "a negative amount is representable only as the source half of a conserved reclassification pair whose destination half is present", "effective on or before the stated as-of", "status within the caller's policy", "not explicitly superseded by another usage", "capacity path identified and equal to this capacity (the ledger is indexed by path; a capacity examines only its own bucket)", "currency equal to the capacity's"],
+  rejectionReasons: ["COMPANY_MISMATCH", "INSTRUMENT_MISMATCH", "EFFECTIVE_AFTER_AS_OF", "STATUS_NOT_ACCEPTABLE", "SUPERSEDED_BY_ANOTHER_USAGE", "PATH_UNRESOLVED", "CURRENCY_MISMATCH", "DUPLICATE_IDENTITY", "AMOUNT_NOT_REPRESENTABLE"],
+  identityInvariant: "duplicate identity is a refusal, never a deduplication, even when the claimants are byte-identical (remediation R6, audit F2/F10); the arithmetic is asserted in the matrix, not only the code",
   defaultPolicy: { acceptableUsageStatuses: ["RECORDED"] },
   noImpliedAllocation: "a usage whose path is unresolved but which names this capacity among its candidates blocks the answer with AMBIGUOUS_CONSUMPTION_ALLOCATION; the runtime never chooses a path",
   zeroVersusUndetermined: "no applicable record is a determined zero consumption; usage that could not be counted leaves remaining NOT_DETERMINED",
@@ -253,7 +278,8 @@ const SHARED_MATRIX = {
   "F. shared-cap cycle": nestedProbe,
   "G. different currencies in one pool": (() => { const s = run([rule("rule-a", MONEY(100)), rule("rule-b", MONEY(100))], { caps: [sharedCap("pool-s", MONEY(150), ["rule-a", "rule-b"])], ledger: [usage("u1", "40", onRule("rule-a"), { amount: { amount: "40", currency: "EUR" } })] }).state; return { memberStatus: capOf(s, "rule-a").status, limitations: capOf(s, "rule-a").limitations.map((l) => l.code) }; })(),
   "H. missing metric feeding the pool": (() => { const s = run([rule("rule-a", MONEY(100)), rule("rule-b", MONEY(100))], { caps: [sharedCap("pool-s", MUL(PCT(0.1), METRIC("metric-absent")), ["rule-a", "rule-b"])] }).state; return { poolStatus: poolOf(s, "pool-s").status, poolGross: poolOf(s, "pool-s").grossCapacity, memberStatus: capOf(s, "rule-a").status }; })(),
-  "I. a shared relationship with no quantified pool": (() => { const g = run([rule("rule-a", MONEY(100), { dependsOn: [{ relationshipType: "SHARES_CAPACITY_WITH", targetRuleId: "rule-b", description: "shares with b" }] }), rule("rule-b", MONEY(100))]).graph; return { limitations: g.limitations.map((l) => l.code), sharedNodes: g.nodes.filter((x) => x.kind === "SHARED_CAPACITY").length }; })(),
+  "I. a shared relationship with no quantified pool": (() => { const { graph: g, state: s } = run([rule("rule-a", MONEY(100), { dependsOn: [{ relationshipType: "SHARES_CAPACITY_WITH", targetRuleId: "rule-b", description: "shares with b" }] }), rule("rule-b", MONEY(100))], { ledger: [usage("u1", "30", onRule("rule-a"))] }); return { limitations: g.limitations.map((l) => l.code), sharedNodes: g.nodes.filter((x) => x.kind === "SHARED_CAPACITY").length, memberA: { ...brief(s, "rule-a"), provisional: capOf(s, "rule-a").provisional }, memberB: brief(s, "rule-b"), neitherMemberAuthoritative: s.capacities.every((c) => c.status !== "AVAILABLE" && c.effectiveRemaining.kind === "NOT_DETERMINED") }; })(),
+  "K. duplicate pool identity": (() => { const { graph: g, state: s } = run([rule("rule-a", MONEY(100))], { caps: [sharedCap("pool-dup", MONEY(150), ["rule-a"]), sharedCap("pool-dup", MONEY(50), ["rule-a"])] }); return { graphLimitations: g.limitations.map((l) => l.code), sharedNodes: g.nodes.filter((x) => x.kind === "SHARED_CAPACITY").length, memberA: brief(s, "rule-a") }; })(),
   "J. usage recorded directly against the pool": (() => { const s = run([rule("rule-a", MONEY(100)), rule("rule-b", MONEY(100))], { caps: [sharedCap("pool-s", MONEY(150), ["rule-a", "rule-b"])], ledger: [usage("u1", "40", onRule("rule-a")), usage("u3", "10", onShared("pool-s"))] }).state; const p = poolOf(s, "pool-s"); return { poolUsage: p.usage, directUsageIds: p.directUsageIds }; })(),
 };
 writeJson(`${OUT}/07-shared-capacity-model.json`, {
@@ -293,6 +319,10 @@ const RECLASS_MATRIX = {
   crossCurrency: applyElections(reclassRules(), [usage("u1", "40", onRule("rule-src"))], [election({ amount: { amount: "25", currency: "EUR" } })]).outcomes[0],
   effectiveAfterAsOf: applyElections(reclassRules(), [usage("u1", "40", onRule("rule-src"))], [election({ effectiveAsOf: "2026-12-31" })]).outcomes[0],
   wrongInstrument: applyElections([rule("rule-src", MONEY(100), { dependsOn: [{ relationshipType: "RECLASSIFIABLE_TO", targetRuleId: "rule-dst", description: "src to dst" }] }), rule("rule-dst", MONEY(100), { instrumentKey: INST2 })], [usage("u1", "40", onRule("rule-src"))], [election()]).outcomes[0],
+  batchJointOverdraw: (() => { const r = applyElections(reclassRules(), [usage("u1", "40", onRule("rule-src"))], [election({ electionId: "e1" }), election({ electionId: "e2" })]); return { outcomes: r.outcomes.map((o) => ({ electionId: o.electionId, state: o.state, codes: o.blockedBy.map((b) => b.code) })), batchConservation: r.batchConservation, afterIsNull: r.after === null, beforeSrcRemaining: capOf(r.before, "rule-src").remaining }; })(),
+  batchWithinSource: (() => { const r = applyElections(reclassRules(), [usage("u1", "40", onRule("rule-src"))], [election({ electionId: "e1", amount: { amount: "15", currency: "USD" } }), election({ electionId: "e2" })]); return { allExecuted: r.allExecuted, batchConservation: r.batchConservation, srcUsage: capOf(r.after!, "rule-src").usage, dstUsage: capOf(r.after!, "rule-dst").usage }; })(),
+  duplicateElectionIds: (() => { const r = applyElections(reclassRules(), [usage("u1", "40", onRule("rule-src"))], [election({ amount: { amount: "10", currency: "USD" } }), election({ amount: { amount: "10", currency: "USD" } })]); return { outcomes: r.outcomes.map((o) => ({ electionId: o.electionId, state: o.state, codes: o.blockedBy.map((b) => b.code) })), allExecuted: r.allExecuted, afterIsNull: r.after === null }; })(),
+  alreadyApplied: (() => { const ledger = [usage("u1", "40", onRule("rule-src")), ...executed.outcomes[0]!.generatedUsage]; const r = applyElections(reclassRules(), ledger, [election()]); return { outcome: { state: r.outcomes[0]!.state, codes: r.outcomes[0]!.blockedBy.map((b) => b.code) }, afterIsNull: r.after === null }; })(),
   targetOutsideGraph: buildCapacityGraph({ rules: [rule("rule-src", MONEY(100), { dependsOn: [{ relationshipType: "RECLASSIFIABLE_TO", targetRuleId: "rule-elsewhere", description: "into a basket compiled separately" }] })], companyId: CO, instrumentKey: INST, asOf: AS_OF }).limitations.map((l) => l.code),
 };
 const frozen = readJson<{ rules: IRRule[]; definitions: IRDefinition[]; sharedCapacities?: IRSharedCapacity[] }>(FROZEN);
@@ -304,8 +334,11 @@ writeJson(`${OUT}/08-reclassification-model.json`, {
   consequence: "a reclassification state transition cannot be DERIVED from the IR. Phase 4C executes an election the caller supplies, and only where the authorizing edge exists.",
   electionFields: ["electionId", "sourceRuleId", "destinationRuleId", "amount.amount", "amount.currency", "effectiveAsOf", "provenance.source"],
   neverDecidesToReclassify: true, neverOptimizes: true, neverAutoElects: true,
-  stateEffects: ["one usage row removing the amount from the source", "one usage row adding it to the destination", "shared-cap consequences follow from the new usage", "a conservation check that the pair nets to zero"],
-  blockCodes: ["NO_EXPLICIT_RECLASSIFICATION_EDGE", "SOURCE_CAPACITY_NOT_IN_GRAPH", "DESTINATION_CAPACITY_NOT_IN_GRAPH", "CROSS_INSTRUMENT_NOT_REPRESENTED", "CURRENCY_MISMATCH_NO_CONVERSION_MODELED", "EFFECTIVE_AFTER_AS_OF", "SOURCE_USAGE_INSUFFICIENT", "MISSING_SEMANTIC_FIELDS", "RECLASSIFICATION_CYCLE", "CONSERVATION_VIOLATED"],
+  stateEffects: ["one usage row removing the amount from the source", "one usage row adding it to the destination", "shared-cap consequences follow from the new usage", "a conservation check that the pair nets to zero", "conservation aggregated by source over the whole batch against the before-state", "the batch applies whole or not at all"],
+  batchSemantics: "every election draws on the usage the source carried in `before`; there is no intra-batch chaining, so order cannot matter; the sum a batch asks to move out of one source may never exceed what the source carries; one blocked election blocks the batch and `after` is null (remediation R4/R5, audit F1)",
+  blockCodes: ["DUPLICATE_ELECTION_IDENTITY", "ELECTION_ALREADY_APPLIED", "BLOCKED_BY_BATCH_ATOMICITY", "AGGREGATE_SOURCE_USAGE_EXCEEDED", "NO_EXPLICIT_RECLASSIFICATION_EDGE", "SOURCE_CAPACITY_NOT_IN_GRAPH", "DESTINATION_CAPACITY_NOT_IN_GRAPH", "CROSS_INSTRUMENT_NOT_REPRESENTED", "CURRENCY_MISMATCH_NO_CONVERSION_MODELED", "EFFECTIVE_AFTER_AS_OF", "SOURCE_USAGE_INSUFFICIENT", "MISSING_SEMANTIC_FIELDS", "RECLASSIFICATION_CYCLE", "CONSERVATION_VIOLATED"],
+  blockCodesNotReachableThroughBuildCapacityGraph: { CROSS_INSTRUMENT_NOT_REPRESENTED: "defensive: a graph built by buildCapacityGraph carries one company and one instrument, so its nodes can never differ; the check remains for a graph assembled otherwise", CONSERVATION_VIOLATED: "defensive: the generated pair nets to zero by construction and is checked rather than assumed" },
+  electionFieldsCarriedNotValidated: { movesUsageIds: "provenance only; the election is validated against the source's total applied usage, not against named rows" },
   frozenEvidenceGap: { reclassifiableToEdgesInFrozenCompileResult: frozenReclassEdges, sharesCapacityWithEdgesInFrozenCompileResult: frozenSharedEdges, sharedCapacityResourcesInFrozenCompileResult: (frozen.sharedCapacities ?? []).length, statement: "the frozen paid evidence contains no reclassification edge at all, so the reclassification matrix is proved on synthetic IR and the real-fixture reclassification case is honestly absent, not simulated" },
   matrix: RECLASS_MATRIX,
 });
@@ -374,9 +407,10 @@ const sized = (size: number) => {
   const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
   return { size, nodes: graph.nodes.length, edges: graph.edges.length, ...state.complexity };
 };
-const complexity = [10, 20, 40, 80].map(sized);
+const complexity = [10, 20, 40, 80, 160].map(sized);
+const countersLinear = complexity.every((m) => m.expressionsEvaluated === m.size + 1 && m.nodesVisited === m.size + 1 && m.ledgerEntriesExamined === m.size && m.ledgerEntriesApplied === m.size && m.edgesVisited === m.size && m.sharedResourceLookups === m.size && m.indexLookups <= 6 * m.size + 6);
 writeJson(`${OUT}/11-anti-enumeration-determinism.json`, {
-  artifact: "PHASE 4C §40, §41, §42 - one generic engine, byte-identical under permutation, linear in the graph", at: at(),
+  artifact: "PHASE 4C §40, §41, §42 - one generic engine, byte-identical under permutation; complexity proved by operation counts (wall-clock supplemental, see remediation/10)", at: at(),
   scannedFiles: capFiles.map((f) => `${CAP_DIR}/${f}`),
   forbiddenConcepts: FORBIDDEN, forbiddenHits,
   solverEntryPointsForbidden: SOLVER_NAMES, solverHits,
@@ -385,8 +419,8 @@ writeJson(`${OUT}/11-anti-enumeration-determinism.json`, {
   ownsNoArithmetic: { importsUnitAlgebra: capSrc.includes('from "../units"'), importsEvaluator: capSrc.includes('from "../evaluate-expression"'), rawArithmeticOnAmounts: capFiles.filter((f) => /\.amount\s*[-+*/]\s/.test(nonComment(readFileSync(`${CAP_DIR}/${f}`, "utf8")))) },
   permutation: { hashes: permutationHashes, allGraphHashesIdentical: new Set(permutationHashes.map((p) => p.graphHash)).size === 1, allStateHashesIdentical: new Set(permutationHashes.map((p) => p.stateHash)).size === 1 },
   complexity,
-  complexityIsLinear: complexity.every((m) => m.expressionsEvaluated === m.size + 1 && m.nodesVisited === m.size + 1 && m.ledgerEntriesApplied === m.size * 2),
-  complexityNote: "one expression evaluation per capacity-bearing node plus one per pool, and one indexed ledger pass per capacity; no pairwise scan",
+  complexityCountersLinearInN: countersLinear,
+  complexityNote: "one expression evaluation per capacity-bearing node plus one per pool; the ledger is indexed once by path and every record is examined exactly once (ledgerEntriesExamined === n); member edges are consulted once per member (edgesVisited === n); pool re-reads of member usage are memo hits. The pre-remediation package asserted linearity from counters that did not measure the nested scans the audit found (log-log wall-clock slope 1.81); the counters now measure those paths and the supplemental wall-clock re-measurement is in docs/phase-4c/remediation/10-complexity-remediation.json",
 });
 
 // ---------------- 12 Phase-3 fixture proof (§35)
@@ -429,7 +463,11 @@ writeJson(`${OUT}/12-phase3-fixture-proof.json`, {
     nodes: frozenProof.graph.nodes.length, edges: frozenProof.graph.edges.length,
     statusCounts: statusCounts(frozenProof.state),
     limitationCodes: [...new Set(frozenProof.graph.limitations.map((l) => l.code))].sort(),
-    noneSilentlyZero: frozenProof.state.capacities.every((c) => (c.grossCapacity.kind === "NOT_DETERMINED" ? c.status !== "AVAILABLE" : true)),
+    evaluationCycles: frozenProof.graph.cycles.length,
+    sharesCapacityWithEdgesCarriedAsLegalRelationships: frozenProof.graph.edges.filter((e) => e.sourceRelationship === "SHARES_CAPACITY_WITH").every((e) => e.kind === "LEGAL_RELATIONSHIP"),
+    preRemediationNote: "the pre-remediation package reported CAPACITY_GRAPH_CYCLE on this corpus; those were symmetric SHARES_CAPACITY_WITH relationships fed to cycle detection, not evaluation cycles (audit F8)",
+    everyUndeterminedGrossIsNonAvailable: frozenProof.state.capacities.every((c) => (c.grossCapacity.kind === "NOT_DETERMINED" ? c.status !== "AVAILABLE" : true)),
+    unquantifiedShareMembersNonAuthoritative: frozenProof.state.capacities.filter((c) => c.limitations.some((l) => l.code === "SHARED_CAPACITY_NOT_QUANTIFIED")).every((c) => c.status !== "AVAILABLE" && c.effectiveRemaining.kind === "NOT_DETERMINED"),
     deterministicUnderRulePermutation: frozenProof.graph.graphHash === frozenRev.graph.graphHash && frozenProof.state.stateHash === frozenRev.state.stateHash,
     reclassificationEdges: frozenReclassEdges,
     sharedCapacityResources: (frozen.sharedCapacities ?? []).length,
@@ -502,7 +540,8 @@ writeJson(`${OUT}/15-regression.json`, {
     attribution: noRegression ? "NOT_ATTRIBUTABLE_TO_PHASE_4C" : "UNEXPLAINED",
   },
   noRegressionAttributableToPhase4C: noRegression,
-  honestCaveat: "the full suite is NOT clean against base: two wall-clock scaling identities fail. They are not waived. They are characterised: both are wall-clock assertions over code in the frozen Phase-3 tree, both also fail intermittently in isolation on that unchanged tree, and a direct measurement of the same function is linear. Phase 4C added tests to the shared parallel runner; it changed no file those assertions exercise.",
+  honestCaveat: fullSuiteClean ? "the full suite is clean against base on this run" : `the full suite is NOT clean against base: ${allNew.length} identity(ies) fail that did not fail on base. They are not waived. Where they are the wall-clock scaling identities over segmentCoordinateClauses (frozen Phase-3 tree), they are characterised as INHERITED FLAKY / UNSTABLE: isolation ${isolationPasses} pass / ${isolationFails} fail on the unchanged tree, direct log-log slope ${scaling?.logLogSlope ?? "n/a"} against 1 for linear and 2 for quadratic (remediation R14).`,
+  criterionHistory: "condition 32 originally required a clean full suite against base. It was reworded to 'no new attributable regressions' after the first Phase-4C run showed the two timing identities, before the closure package was written; the change was not recorded in that package (audit U16). It is recorded here and in docs/phase-4c/remediation/14-recertification.json.",
   tsc: tscErr ? { errors: tscErr.length, newErrors: tscNew!.length, preexisting: "tests/foundation-audit/" } : "NOT_SUPPLIED",
   lint: lint ? { ok: lintOk } : "NOT_SUPPLIED", build: build ? { ok: buildOk } : "NOT_SUPPLIED",
 });
@@ -528,12 +567,12 @@ const G: [number, string, boolean, string][] = [
   [14, "unlimited is explicit, not numeric infinity", infinityHits.length === 0 && (grossCases.unlimitedUngated.gross as Any).kind === "UNLIMITED" && (grossCases.unlimitedGateFailed.gross as Any).kind === "GATE_NOT_SATISFIED", "04"],
   [15, "a missing input never becomes zero", grossCases.missingMetric.gross.kind === "NOT_DETERMINED" && grossCases.missingMetric.status === "NEEDS_INPUT", "04"],
   [16, "bounds remain bounds, never values", grossCases.maxWithMissingGrower.status === "NEEDS_INPUT" && grossCases.maxWithMissingGrower.gross.kind === "NOT_DETERMINED" && Boolean((grossCases.maxWithMissingGrower as Any).bounds?.knownLowerBound), "04"],
-  [17, "review-required legal state dominates numeric executability", grossCases.reviewRequiredPartialRule.status === "REVIEW_REQUIRED" && grossCases.reviewRequiredPartialRule.gross.kind === "NOT_DETERMINED" && Boolean((grossCases.reviewRequiredPartialRule as Any).provisional), "04"],
+  [17, "review-required legal state dominates numeric executability", grossCases.reviewRequiredPartialRule.status === "REVIEW_REQUIRED" && grossCases.reviewRequiredPartialRule.gross.kind === "NOT_DETERMINED" && Boolean((grossCases.reviewRequiredPartialRule as Any).provisional) && grossCases.unsupportedSufficiencyWithEvaluableExpression.status === "UNSUPPORTED" && grossCases.unsupportedSufficiencyWithEvaluableExpression.gross.kind === "NOT_DETERMINED" && grossCases.missingContextPhase3Rule.status === "AMBIGUOUS" && grossCases.conflictedPhase3Rule.status === "AMBIGUOUS", "04"],
   [18, "entity scope is preserved and never widened", (grossCases.entityScopeNotSafe as Any).entityScope.applicability === "SCOPE_NOT_SAFE_TO_RELY_ON" && grossCases.entityScopeNotSafe.limitations.includes("ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON"), "04"],
   [19, "currency mismatches fail closed with no conversion", (LEDGER_MATRIX.wrongCurrency as Any).limitations.includes("CURRENCY_MISMATCH_NO_CONVERSION_MODELED") && (SHARED_MATRIX["G. different currencies in one pool"] as Any).memberStatus === "ERROR", "06/07 G"],
   [20, "reclassification executes only from an explicit encoded relationship", (RECLASS_MATRIX.explicitMove.outcome as Any).state === "EXECUTED" && (RECLASS_MATRIX.explicitMove.outcome as Any).authorizingEdge.sourceRelationship === "RECLASSIFIABLE_TO" && (RECLASS_MATRIX.noExplicitEdge as Any).blockedBy.some((b: Any) => b.code === "NO_EXPLICIT_RECLASSIFICATION_EDGE"), "08"],
   [21, "unsupported reclassification is explicit with its missing fields named", (RECLASS_MATRIX.missingSemanticFields as Any).state === "RECLASSIFICATION_NOT_EXECUTABLE" && (RECLASS_MATRIX.missingSemanticFields as Any).blockedBy.some((b: Any) => b.missingSemanticFields.length > 0), "08"],
-  [22, "graph cycles fail closed with a reported path", cycleDemo.graph.cycles.length > 0 && cycleDemo.state.limitations.some((l) => l.code === "CAPACITY_GRAPH_CYCLE"), "03"],
+  [22, "graph cycles fail closed with a reported path", cycleDemo.graph.cycles.length > 0 && cycleDemo.state.limitations.some((l) => l.code === "CAPACITY_GRAPH_CYCLE") && cycleDemo.state.capacities.every((c) => c.status !== "AVAILABLE") && symmetricLegalDemo.graph.cycles.length === 0, "03"],
   [23, "current state is immutable, versioned and hashable", new Set(repeat).size === 1 && executed.before.stateHash !== executed.after!.stateHash && amt(capOf(executed.before, "rule-src").usage) === "40", "09"],
   [24, "provenance reaches the source, the financial snapshot and the ledger", Boolean(provDemo.state.explanations[0]?.sourceRules[0]?.sourceCitation) && provDemo.state.snapshotBinding.snapshotIds.length === 1 && provDemo.state.explanations[0]!.ledgerEntries.length === 1 && provDemo.state.explanations[0]!.inputsUsed.length > 0, "09"],
   [25, "the dependency manifest is available before evaluation", manifestDemo.dependencyManifest.dependencies.length === 2 && manifestDemo.dependencyManifest.counts.required === 2, "01"],
@@ -559,7 +598,8 @@ const verdict = failing.length === 0 ? "PHASE4C_CAPACITY_STATE_READY"
           : failing.some((g) => [32, 33, 34, 35].includes(g[0])) ? "PHASE4C_REGRESSION_BLOCKED"
             : "PHASE4C_CAPACITY_GRAPH_INCOMPLETE";
 writeJson(`${OUT}/16-phase4c-gate.json`, {
-  artifact: "PHASE 4C §46 - gate", at: at(), startingSha: STARTING_SHA, headAtRun: head,
+  artifact: "PHASE 4C §46 - gate (regenerated after remediation; the 32-condition recertification is docs/phase-4c/remediation/14-recertification.json)", at: at(), startingSha: STARTING_SHA, remediationStartingSha: REMEDIATION_STARTING_SHA, headAtRun: head,
+  criterionChangeDisclosure: "condition 32 was reworded from 'full suite clean against base' to 'no new attributable regressions' after the first run of the original Phase-4C closure; recorded per audit U16",
   capacityGraphVersion: CAPACITY_GRAPH_VERSION, runtimeVersion: CONTRACT_RUNTIME_VERSION, inputContractVersion: FINANCIAL_INPUT_CONTRACT_VERSION,
   phase3Trees: { frozen: PHASE3_TREES, atHead: { "lib/contract-model/compiler/": compilerTreeAtHead, "lib/contract-model/compiler/semantic/": semanticTreeAtHead }, semanticFrozen },
   productionFilesChanged: prodChanged, onlyCapacityFilesChanged: onlyCapacity,

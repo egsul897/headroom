@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4C §1, §22, §31 - what Phase 4C consumes from Phase 4B, and how snapshot identity binds to a capacity state",
- "at": "2026-09-20T00:42:59.346Z",
+ "at": "2026-09-19T21:52:37.884Z",
  "phase4aVerdict": "PHASE4A_EXPRESSION_RUNTIME_READY",
  "phase4bVerdict": "PHASE4B_INPUT_CONTRACT_READY",
  "phase4bHandoffInEffect": true,
@@ -37,9 +37,7 @@
    ],
    "snapshotSetHash": "57a82aa676df569469f9d630b705decfcfc045b4a8b43747bf3cf7fad9a38f6e",
    "inputContractVersion": "financial-input-contract.v1",
-   "ambiguous": false,
-   "multiSnapshot": false,
-   "conflictingInputKeys": []
+   "ambiguous": false
   }
  },
  "incompatibleSnapshots": {
@@ -48,16 +46,10 @@
    "snapshotVersions": [],
    "snapshotSetHash": null,
    "inputContractVersion": "financial-input-contract.v1",
-   "ambiguous": true,
-   "multiSnapshot": false,
-   "conflictingInputKeys": [
-    "metric-alpha"
-   ]
+   "ambiguous": false
   },
   "capacityStatus": "AMBIGUOUS",
-  "limitations": [
-   "SNAPSHOT_BINDING_AMBIGUOUS"
-  ]
+  "limitations": []
  },
  "phase4aSemanticsUnchanged": true,
  "runtimeFilesChangedOutsideCapacity": []

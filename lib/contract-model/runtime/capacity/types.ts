@@ -25,6 +25,7 @@ import type { FinancialDependencyManifest } from "../input/types";
 export type CapacityNodeKind =
   | "RULE_CAPACITY"
   | "SHARED_CAPACITY"
+  /** Reserved. No graph builder produces a LEDGER_USAGE node in this version; usage is state, not a node. */
   | "LEDGER_USAGE"
   | "BUILDER_COMPONENT"
   | "GROWER_COMPONENT";
@@ -36,13 +37,34 @@ export type CapacityNodeKind =
  */
 export type ComponentRole = "BASE_COMPONENT" | "BUILDER_COMPONENT" | "GROWER_COMPONENT" | "OTHER_COMPONENT";
 
+/**
+ * Edge kinds are split by what they mean for COMPUTATION (remediation R12).
+ *
+ * Evaluation dependencies - the only edges cycle protection operates on:
+ *   DEPENDS_ON           one capacity's expression uses another rule's own capacity (RULE_REFERENCE)
+ *   BUILT_FROM           a capacity is composed from a labelled component subtree
+ *   MEMBER_OF_SHARED_CAP a member's effective availability is bounded by a pool
+ *
+ * Legal relationships - read from Phase-3 IRRuleDependency, carried for provenance and for
+ * limitations, never treated as recursion:
+ *   LEGAL_RELATIONSHIP   REQUIRES, LIMITED_BY, ALTERNATIVE_TO, SHARES_CAPACITY_WITH, and the rest,
+ *                        with the Phase-3 relationship type in `sourceRelationship`
+ *   CONSTRAINED_BY       a member is constrained by a quantified pool (paired with membership)
+ *   RECLASSIFIABLE_TO    an explicit reclassification right; elections are validated against it
+ *
+ * CONSUMES and LEDGER_USAGE are reserved names: no graph builder produces them in this version.
+ */
 export type CapacityEdgeKind =
   | "DEPENDS_ON"
-  | "CONSUMES"
-  | "MEMBER_OF_SHARED_CAP"
-  | "CONSTRAINED_BY"
   | "BUILT_FROM"
-  | "RECLASSIFIABLE_TO";
+  | "MEMBER_OF_SHARED_CAP"
+  | "LEGAL_RELATIONSHIP"
+  | "CONSTRAINED_BY"
+  | "RECLASSIFIABLE_TO"
+  | "CONSUMES";
+
+/** The edge kinds cycle protection runs over. Everything else is a relationship, not a recursion. */
+export const EVALUATION_DEPENDENCY_EDGE_KINDS: readonly CapacityEdgeKind[] = ["DEPENDS_ON", "BUILT_FROM", "MEMBER_OF_SHARED_CAP"];
 
 export interface CapacityEdge {
   from: string;
@@ -82,6 +104,12 @@ export interface CapacityNode {
   entityScope: CapacityEntityScope | null;
   phase3: { sufficiency: RepresentationSufficiency; sufficiencyReasons: string[] } | null;
   dependsOnNodeIds: string[];
+  /**
+   * Rule ids or references this capacity shares capacity with under a SHARES_CAPACITY_WITH
+   * relationship that NO quantified shared resource backs. A non-empty list means an unknown
+   * constraint could bind, so effective availability cannot be authoritative (remediation R9).
+   */
+  unquantifiedSharedWith: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -136,7 +164,16 @@ export type CapacityLimitationCode =
   | "LEDGER_SET_UNSAFE"
   | "DUPLICATE_USAGE_ID"
   | "RECLASSIFICATION_NOT_EXECUTABLE"
-  | "SNAPSHOT_BINDING_AMBIGUOUS";
+  | "SNAPSHOT_BINDING_AMBIGUOUS"
+  | "AMBIGUOUS_FINANCIAL_INPUT"
+  | "DUPLICATE_LEDGER_USAGE_IDENTITY"
+  | "DUPLICATE_SHARED_CAPACITY_IDENTITY"
+  | "DUPLICATE_RULE_IDENTITY"
+  | "ALLOCATION_INFORMATION_MISSING"
+  | "USAGE_NOT_ATTRIBUTABLE_IN_GRAPH"
+  | "PHASE3_RULE_UNSUPPORTED"
+  /** A usage record whose amount is negative or unparsable and is not one half of a conserved reclassification pair. */
+  | "USAGE_AMOUNT_NOT_REPRESENTABLE";
 
 export interface CapacityLimitation {
   code: CapacityLimitationCode;
@@ -184,13 +221,26 @@ export interface LedgerPolicy {
 export const DEFAULT_LEDGER_POLICY: LedgerPolicy = { acceptableUsageStatuses: ["RECORDED"] };
 
 export type LedgerIssueCode =
+  /** More than one record claims one immutable usage identity. Every record bearing it is quarantined (remediation R6). */
   | "DUPLICATE_USAGE_ID"
+  /** An UNRESOLVED path with no candidates: usage exists but attribution information is missing (remediation R10). */
+  | "ALLOCATION_INFORMATION_MISSING"
+  /** An UNRESOLVED path whose candidates are all outside this graph: not attributable here. */
+  | "UNRESOLVED_CANDIDATES_NOT_IN_GRAPH"
+  | "OUT_OF_SCOPE_COMPANY"
+  | "OUT_OF_SCOPE_INSTRUMENT"
   | "SUPERSEDES_UNKNOWN_USAGE"
   | "SUPERSEDED_STATUS_WITHOUT_SUCCESSOR"
   | "SELF_SUPERSESSION"
   | "SUPERSESSION_CYCLE"
   | "UNRESOLVED_CAPACITY_PATH"
-  | "USAGE_WITHOUT_CURRENCY";
+  | "USAGE_WITHOUT_CURRENCY"
+  /**
+   * A negative or unparsable amount. Consumption is reduced by REVERSED status or explicit
+   * supersession, never by a negative row; the only negative row the contract represents is the
+   * source half of a reclassification pair whose destination half is present (R4, audit U8).
+   */
+  | "USAGE_AMOUNT_NOT_REPRESENTABLE";
 
 export interface LedgerIssue {
   code: LedgerIssueCode;
@@ -198,15 +248,23 @@ export interface LedgerIssue {
   usageIds: string[];
 }
 
+/**
+ * Why a record was not counted. COMPANY_MISMATCH and INSTRUMENT_MISMATCH are reported once, in
+ * `CapacityState.ledgerScope`; the rest appear in a capacity's own `usageSelection`, which lists
+ * only the records that could apply to that capacity (the ledger is indexed by path, R13).
+ */
 export type UsageRejectionReason =
   | "COMPANY_MISMATCH"
   | "INSTRUMENT_MISMATCH"
   | "EFFECTIVE_AFTER_AS_OF"
   | "STATUS_NOT_ACCEPTABLE"
   | "SUPERSEDED_BY_ANOTHER_USAGE"
-  | "PATH_NOT_THIS_CAPACITY"
   | "PATH_UNRESOLVED"
-  | "CURRENCY_MISMATCH";
+  | "CURRENCY_MISMATCH"
+  /** The record's amount is negative or unparsable and it is not a conserved reclassification half. */
+  | "AMOUNT_NOT_REPRESENTABLE"
+  /** The record's usage id is claimed by more than one record; none of them is counted. */
+  | "DUPLICATE_IDENTITY";
 
 export interface UsageSelection {
   usageId: string;
@@ -268,7 +326,7 @@ export interface CapacityStateEntry {
    * The arithmetic the runtime computed even when the legal state is not safe to rely on. Kept
    * separate so a REVIEW_REQUIRED rule can never be read as authoritative headroom.
    */
-  provisional: { grossCapacity: CapacityAmount; remaining: CapacityAmount } | null;
+  provisional: { grossCapacity: CapacityAmount; remaining: CapacityAmount; effectiveRemaining: CapacityAmount } | null;
   limitations: CapacityLimitation[];
   usageSelection: UsageSelection[];
   appliedUsageIds: string[];
@@ -283,24 +341,46 @@ export interface CapacityGraphCycle {
   provenance: string[];
 }
 
+/** Deterministic operation counts. These are the complexity proof; wall-clock is supplemental. */
 export interface CapacityComplexity {
   nodesVisited: number;
+  /** Edges actually traversed while evaluating (member edges consulted per capacity). */
   edgesVisited: number;
   expressionsEvaluated: number;
   ledgerEntriesApplied: number;
+  /** Ledger records in scope after the one-time index pass. */
   ledgerEntriesConsidered: number;
+  /** Ledger records actually examined by selection across every capacity and pool. Linear in the ledger when indexed. */
+  ledgerEntriesExamined: number;
   sharedConstraintsEvaluated: number;
+  /** Pool lookups made from member capacities. */
+  sharedResourceLookups: number;
+  /** Rule and pool lookups by id. */
+  dependencyLookups: number;
+  /** Map or set lookups, as opposed to array scans. */
+  indexLookups: number;
   maxDepth: number;
   cacheHits: number;
 }
 
+/**
+ * Which approved snapshots supplied financial inputs, and whether any input was ambiguous.
+ *
+ * `ambiguous` is TRUE only when a financial fact this state needed was matched by more than one
+ * live snapshot, or the snapshot set was unsafe - the Phase-4B AMBIGUOUS_INPUT / SNAPSHOT_SET_UNSAFE
+ * outcomes. Several snapshots each supplying DIFFERENT facts is not a conflict; that is reported
+ * as `multiSnapshot` (remediation R11).
+ */
 export interface SnapshotBinding {
   snapshotIds: string[];
   snapshotVersions: string[];
   snapshotSetHash: string | null;
   inputContractVersion: string | null;
-  /** True when two incompatible snapshot states both supplied inputs to this state. */
   ambiguous: boolean;
+  /** True when more than one snapshot supplied inputs, whether or not any fact was ambiguous. */
+  multiSnapshot: boolean;
+  /** The reference keys whose resolution was ambiguous, in canonical order. */
+  conflictingInputKeys: string[];
 }
 
 export interface CapacityGraph {
@@ -346,6 +426,8 @@ export interface CapacityState {
   sharedConstraints: SharedConstraintState[];
   explanations: CapacityExplanation[];
   ledgerIssues: LedgerIssue[];
+  /** Records excluded before selection, once, with the reason. Never repeated per capacity. */
+  ledgerScope: { outOfScope: UsageSelection[]; quarantinedUsageIds: string[] };
   snapshotBinding: SnapshotBinding;
   limitations: CapacityLimitation[];
   cycles: CapacityGraphCycle[];
@@ -378,7 +460,10 @@ export interface ReclassificationElection {
   destinationRuleId: string;
   amount: { amount: string; currency: string };
   effectiveAsOf: string;
-  /** The usage records being moved, when the election names them. */
+  /**
+   * The usage records the election says it moves. Carried as provenance only: this version validates
+   * the election against the source's total applied usage, not against named rows (audit U11).
+   */
   movesUsageIds?: string[];
   provenance: { source: string; sourceVersion: string | null; approvalRef: string | null };
 }
@@ -386,6 +471,14 @@ export interface ReclassificationElection {
 export type ReclassificationOutcomeState = "EXECUTED" | "RECLASSIFICATION_NOT_EXECUTABLE";
 
 export type ReclassificationBlockCode =
+  /** Another election in the same batch carries the same electionId. Fail closed, never apply twice (R5). */
+  | "DUPLICATE_ELECTION_IDENTITY"
+  /** The before-ledger already contains usage generated by this electionId. */
+  | "ELECTION_ALREADY_APPLIED"
+  /** This election is executable alone, but the batch it belongs to is not; batches apply atomically (R4). */
+  | "BLOCKED_BY_BATCH_ATOMICITY"
+  /** Aggregated over every election drawing on the same source, the batch moves more than the source carries (R4). */
+  | "AGGREGATE_SOURCE_USAGE_EXCEEDED"
   | "NO_EXPLICIT_RECLASSIFICATION_EDGE"
   | "SOURCE_CAPACITY_NOT_IN_GRAPH"
   | "DESTINATION_CAPACITY_NOT_IN_GRAPH"
@@ -409,6 +502,11 @@ export interface ReclassificationOutcome {
 
 export interface CapacityStateTransitionResult {
   capacityGraphVersion: string;
+  /**
+   * Batch conservation, aggregated by source capacity over the whole batch: what the source carried
+   * in `before`, what the batch as a whole asked to move, and whether that holds (remediation R4).
+   */
+  batchConservation: { sourceRuleId: string; sourceUsage: string | null; requested: string; holds: boolean }[];
   /** The state before, untouched. Applying a transition never mutates its input. */
   before: CapacityState;
   /** A new state computed from the original ledger plus the generated usage. */

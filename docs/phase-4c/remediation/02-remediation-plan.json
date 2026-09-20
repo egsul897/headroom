@@ -1,0 +1,103 @@
+{
+ "artifact": "PHASE 4C remediation R2/R3/R16 - scope, freeze, and the plan actually executed",
+ "at": "2026-09-20T00:42:57.632Z",
+ "scope": {
+  "productionFilesChanged": [
+   "lib/contract-model/runtime/capacity/graph.ts",
+   "lib/contract-model/runtime/capacity/ledger.ts",
+   "lib/contract-model/runtime/capacity/reclassification.ts",
+   "lib/contract-model/runtime/capacity/state.ts",
+   "lib/contract-model/runtime/capacity/types.ts"
+  ],
+  "onlyCapacityModule": true,
+  "noPhase4d": true,
+  "noPhase4e": true,
+  "noIngestion": true,
+  "paidCalls": 0
+ },
+ "freeze": {
+  "phase3": {
+   "frozen": true,
+   "compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+  },
+  "phase4a": {
+   "unchanged": true,
+   "before": {
+    "identity": "370e6d3ca8376075f8a8297d6fa558fed042dac76080c0053c42c923a9b08255",
+    "files": 10
+   },
+   "after": {
+    "identity": "370e6d3ca8376075f8a8297d6fa558fed042dac76080c0053c42c923a9b08255",
+    "files": 10
+   }
+  },
+  "phase4b": {
+   "unchanged": true,
+   "before": {
+    "identity": "ff0331b049eb802123b3ae49dde5786a5eaf5193fcc7a1e06f3562f887189466",
+    "files": 8
+   },
+   "after": {
+    "identity": "ff0331b049eb802123b3ae49dde5786a5eaf5193fcc7a1e06f3562f887189466",
+    "files": 8
+   }
+  },
+  "phase4c": {
+   "before": {
+    "identity": "1597c78ef8eede0b19ba91b31ede683adbe0642c3b3f6d9778874885453818f3",
+    "files": 7
+   },
+   "after": {
+    "identity": "b63605841aa074194fed589d74fb4161392dbedcb9634ee826053050b4e48502",
+    "files": 7
+   }
+  }
+ },
+ "designDecisions": [
+  "batch: every election draws on the before-state; no intra-batch chaining; atomic apply; aggregate conservation by source",
+  "identity: any duplicated unique id (usage, election, rule, pool) is refused as a set, never deduplicated, even when claimants are byte-identical",
+  "edges: LEGAL_RELATIONSHIP carries every non-reclassification Phase-3 relationship; DEPENDS_ON only from RULE_REFERENCE; cycle detection over evaluation edges only",
+  "ledger: indexed once by path; scope and quarantine at index time; selection memoized per (path, currency); scope rejections reported once in ledgerScope",
+  "legal state: exhaustive dominance table; unsafe scope and unquantified sharing are REVIEW_REQUIRED floors; arithmetic kept under provisional",
+  "negative usage: representable only as the source half of a conserved reclassification pair"
+ ],
+ "originalTestsChanged": [
+  {
+   "file": "tests/contract-model/runtime/capacity/shared-and-ledger.test.ts",
+   "test": "F. a cycle among capacities is detected",
+   "priorExpectation": "two symmetric REQUIRES relationships form a cycle",
+   "whyWrong": "REQUIRES is a legal relationship the evaluator never follows; a symmetric pair is not a recursion",
+   "requirement": "R12 / audit F8",
+   "replacement": "a RULE_REFERENCE cycle is detected and fails closed; F2 asserts the symmetric legal pair is not a cycle"
+  },
+  {
+   "file": "tests/contract-model/runtime/capacity/shared-and-ledger.test.ts",
+   "test": "a duplicate usage id makes the ledger unsafe rather than choosing a row",
+   "priorExpectation": "LEDGER_SET_UNSAFE raised (both rows still counted)",
+   "whyWrong": "one immutable identity may contribute at most once; the flag alone left a double count and AVAILABLE",
+   "requirement": "R6 / audit F2, F10",
+   "replacement": "quarantine, DUPLICATE_LEDGER_USAGE_IDENTITY, status AMBIGUOUS, applied [], usage and remaining NOT_DETERMINED, forbidden amounts asserted"
+  },
+  {
+   "file": "tests/contract-model/runtime/capacity/shared-and-ledger.test.ts",
+   "test": "a usage for another company / instrument / capacity is rejected",
+   "priorExpectation": "the rejection read from the per-capacity usageSelection",
+   "whyWrong": "that list existed only because every capacity rescanned the whole ledger (the quadratic source)",
+   "requirement": "R13 / audit F8",
+   "replacement": "scope rejections reported once in state.ledgerScope; a capacity's selection lists only records that could apply; never counted, reason stated, examined-once asserted"
+  },
+  {
+   "file": "tests/contract-model/runtime/capacity/determinism-and-generality.test.ts",
+   "test": "ledger selection is indexed per capacity rather than rescanning for every pair",
+   "priorExpectation": "ledgerEntriesApplied === 2n",
+   "whyWrong": "encoded the double read the audit measured",
+   "requirement": "R13 / audit F4",
+   "replacement": "examined === n, applied === n, edgesVisited === n, cacheHits >= n"
+  }
+ ],
+ "newTestFiles": [
+  "tests/contract-model/runtime/capacity/forensic-regression.test.ts",
+  "tests/contract-model/runtime/capacity/remediation-matrices.test.ts"
+ ]
+}

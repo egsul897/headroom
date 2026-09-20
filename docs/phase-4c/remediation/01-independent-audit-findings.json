@@ -1,0 +1,170 @@
+{
+ "artifact": "PHASE 4C remediation R1 - the independent audit findings, binding",
+ "at": "2026-09-20T00:42:57.631Z",
+ "auditVerdict": "PHASE_4C_NOT_COMPLETE",
+ "auditedHead": "779d4103300758390a8795194b5082d87a1625d6",
+ "preRemediationPackage": "docs/phase-4c/remediation/00-pre-remediation-closure-package/",
+ "findings": [
+  {
+   "id": "F1",
+   "title": "Batch reclassification can violate conservation and create capacity",
+   "auditObservation": "two elections of 25 + 25 against 40 of source usage both executed; source usage -10, remaining 110 on gross 100",
+   "invariant": "RECLASSIFICATION CANNOT CREATE ECONOMIC OR LEGAL CAPACITY: the sum a batch moves out of one source never exceeds what the source carries; a batch applies whole or not at all",
+   "remediation": "reclassification.ts: aggregate requested amounts by source over the whole batch against the before-state; AGGREGATE_SOURCE_USAGE_EXCEEDED on every drawer; BLOCKED_BY_BATCH_ATOMICITY on otherwise-valid elections; after is null when anything is blocked; batchConservation reported",
+   "probes": [
+    "forensic P7",
+    "matrices R4 A-J"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F2",
+   "title": "Duplicate ledger usage identity counted multiple times",
+   "auditObservation": "u1=30 and u1=80 both counted; capacity AVAILABLE with remaining 140 on gross 200 (P19); identical claimants likewise (P19b)",
+   "invariant": "USAGE CANNOT BE COUNTED TWICE THROUGH IDENTITY COLLISION: one immutable usage identity contributes at most once; duplicates are refused, never chosen between or collapsed",
+   "remediation": "ledger.ts: every record bearing a duplicated id is quarantined at index time; selectUsage fails any capacity the claimants could touch closed with DUPLICATE_LEDGER_USAGE_IDENTITY; state reports quarantinedUsageIds",
+   "probes": [
+    "forensic P19/P19b",
+    "matrices R6 via shared-and-ledger (rewritten test)"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F3",
+   "title": "Duplicate shared-capacity identity resolves by array order",
+   "auditObservation": "two IRSharedCapacity with one id: last supplied became the pool, no limitation (P3)",
+   "invariant": "IDENTITY IS UNIQUE OR FAILS CLOSED: no first-wins or last-wins for any unique graph resource",
+   "remediation": "graph.ts: duplicate sharedCapId and ruleId detected before any node is built; the id is refused as a set with DUPLICATE_SHARED_CAPACITY_IDENTITY / DUPLICATE_RULE_IDENTITY; members of a refused pool are non-authoritative; state.ts refuses duplicates among the resources it is handed too; duplicate Phase-3 edges collapse to one canonical edge",
+   "probes": [
+    "forensic P3",
+    "matrices R7"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F4",
+   "title": "Capacity-state evaluation near-quadratic",
+   "auditObservation": "wall-clock log-log slope 1.81 on a chain-of-shares construction; about 8 s at 1,600 rules; artifact 11 claimed linear from counters that did not measure the nested scans",
+   "invariant": "CAPACITY EVALUATION MUST NOT HIDE AN ACCIDENTAL PAIRWISE ALGORITHM",
+   "remediation": "ledger indexed once by path with per-(path,currency) memoized selection; membership, component and dependency lookups indexed; graph existence checks by Set; manifest union keyed by identity; edge/dependency grouping in one pass; counters extended (ledgerEntriesExamined, sharedResourceLookups, dependencyLookups, indexLookups, edgesVisited as consulted)",
+   "probes": [
+    "forensic P21 (counters exact, wall-clock supplemental)",
+    "matrices R13"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F5",
+   "title": "Phase-3 UNSUPPORTED legal state publishes authoritative AVAILABLE",
+   "auditObservation": "sufficiency UNSUPPORTED with an evaluable expression reported AVAILABLE with a gross amount (P16)",
+   "invariant": "LEGAL UNSAFETY CANNOT BE UPGRADED BY ARITHMETIC",
+   "remediation": "state.ts: SUFFICIENCY_DOMINANCE is a Record over every RepresentationSufficiency value (compile-time exhaustive) with a fail-closed default for values outside the union; unsafe entity scope is REVIEW_REQUIRED; published amounts withheld and arithmetic kept under provisional",
+   "probes": [
+    "forensic P16",
+    "matrices R8 table over all six values + scopes"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F6",
+   "title": "Empty allocation candidate information silently dropped",
+   "auditObservation": "UNRESOLVED path with no candidates left every capacity AVAILABLE at full amount (P15)",
+   "invariant": "'no usage applies' is never confused with 'usage exists but attribution cannot be determined'",
+   "remediation": "ledger.ts: unresolved-without-candidates blocks every capacity in scope with ALLOCATION_INFORMATION_MISSING; candidates entirely outside the graph are reported as USAGE_NOT_ATTRIBUTABLE_IN_GRAPH, never dropped",
+   "probes": [
+    "forensic P15",
+    "matrices R10 six cases"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F7",
+   "title": "Snapshot ambiguity signalling inconsistent",
+   "auditObservation": "ambiguous=true for two snapshots supplying different facts (benign) and false for the same fact in two snapshots (conflict); the flag was `snapshotIds.size > 1`",
+   "invariant": "ambiguity is an actual Phase-4B conflict (AMBIGUOUS_INPUT / SNAPSHOT_SET_UNSAFE), never set size",
+   "remediation": "state.ts: ambiguous derives from evaluation diagnostics; multiSnapshot and conflictingInputKeys added; AMBIGUOUS_FINANCIAL_INPUT limitation on the capacity",
+   "probes": [
+    "forensic P12/P13",
+    "matrices R11 six cases"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F8",
+   "title": "Symmetric legal relationships classified as dependency cycles",
+   "auditObservation": "every Phase-3 relationship became DEPENDS_ON and fed cycle detection; 5 of 5 real-corpus cycles were symmetric SHARES_CAPACITY_WITH pairs",
+   "invariant": "SYMMETRIC LEGAL RELATIONSHIPS ARE NOT AUTOMATICALLY COMPUTATIONAL CYCLES; true evaluation cycles still fail closed",
+   "remediation": "graph.ts: LEGAL_RELATIONSHIP edge kind for every non-reclassification relationship; DEPENDS_ON only from RULE_REFERENCE inside a capacity expression; cycle detection runs over EVALUATION_DEPENDENCY_EDGE_KINDS only",
+   "probes": [
+    "forensic P20 (frozen corpus: 0 cycles)",
+    "matrices R12 A-E"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F9",
+   "title": "Unquantified SHARES_CAPACITY_WITH leaves the member authoritative",
+   "auditObservation": "SHARED_CAPACITY_NOT_QUANTIFIED at graph level while the member entry read AVAILABLE at full amount (P1, P2)",
+   "invariant": "UNKNOWN SHARED CAPACITY CANNOT BECOME AUTHORITATIVE AVAILABILITY",
+   "remediation": "graph.ts records unquantifiedSharedWith on both ends of the relationship; state.ts makes such entries REVIEW_REQUIRED with effectiveRemaining NOT_DETERMINED and the local arithmetic under provisional; no pool is invented",
+   "probes": [
+    "forensic P20 members",
+    "matrices R9"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "F10",
+   "title": "Duplicate-id tests asserted codes only",
+   "auditObservation": "the original duplicate-usage test checked LEDGER_SET_UNSAFE and never the applied amounts, which is why F2 escaped it",
+   "invariant": "a test of an identity invariant asserts the code AND the arithmetic",
+   "remediation": "the original test replaced with one asserting status, code, applied ids, usage, remaining and the forbidden amounts; forensic P19/P19b likewise",
+   "probes": [
+    "shared-and-ledger (rewritten)",
+    "forensic P19/P19b"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "U8",
+   "title": "Supplied negative usage creates capacity (audit register)",
+   "auditObservation": "usage -30 accepted; remaining 130 on gross 100 (P18)",
+   "invariant": "consumption is reduced only by status or supersession; a negative row is representable only as the source half of a conserved reclassification pair with its destination half present",
+   "remediation": "ledger.ts: USAGE_AMOUNT_NOT_REPRESENTABLE issue + block; the capacity fails closed",
+   "probes": [
+    "forensic P18"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "U10",
+   "title": "Duplicate election ids execute (audit register)",
+   "auditObservation": "both elections with one id executed, allExecuted true (P8)",
+   "invariant": "an election identity applies at most once; fail closed, never deduplicate",
+   "remediation": "reclassification.ts: DUPLICATE_ELECTION_IDENTITY on every bearer; ELECTION_ALREADY_APPLIED when the ledger already carries the election's rows",
+   "probes": [
+    "forensic P8",
+    "matrices R4 H, R5"
+   ],
+   "status": "REMEDIATED"
+  },
+  {
+   "id": "U11",
+   "title": "Unproduced kinds and unreachable code documented as supported (audit register)",
+   "auditObservation": "LEDGER_USAGE, CONSUMES listed as kinds; CROSS_INSTRUMENT_NOT_REPRESENTED unreachable; movesUsageIds unused; PATH_NOT_THIS_CAPACITY",
+   "invariant": "the evidence package names what is produced and what is reserved",
+   "remediation": "artifacts 02/03/08 split produced vs reserved; PATH_NOT_THIS_CAPACITY removed (no longer produced since indexing); movesUsageIds documented as provenance-only",
+   "probes": [],
+   "status": "DOCUMENTED"
+  },
+  {
+   "id": "U16",
+   "title": "Gate condition 32 loosened post hoc (audit register)",
+   "auditObservation": "condition 32 changed from 'full suite clean' to 'no attributable regressions' after the first run, without disclosure",
+   "invariant": "criteria changes are disclosed",
+   "remediation": "disclosed in docs/phase-4c/15-regression.json, 16-phase4c-gate.json and here (14)",
+   "probes": [],
+   "status": "DISCLOSED"
+  }
+ ]
+}

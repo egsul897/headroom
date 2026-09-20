@@ -1,59 +1,13 @@
 {
- "artifact": "PHASE 4C §45 - regression at the Phase-4C head",
- "at": "2026-09-20T00:42:59.641Z",
+ "artifact": "PHASE 4C remediation R14/R19 - full regression at the remediated tree",
+ "at": "2026-09-20T00:42:58.333Z",
  "headAtRun": "779d4103300758390a8795194b5082d87a1625d6",
- "suites": {
-  "Phase-4C capacity": {
-   "tests": 177,
-   "failed": 0,
-   "newFailingVsBase": 0
-  },
-  "Phase-4B input contract": {
-   "tests": 98,
-   "failed": 0,
-   "newFailingVsBase": 0
-  },
-  "Phase-4A runtime": {
-   "tests": 357,
-   "failed": 0,
-   "newFailingVsBase": 0
-  },
-  "entity-scope guard": {
-   "tests": 24,
-   "failed": 0,
-   "newFailingVsBase": 0
-  },
-  "semantic compiler": {
-   "tests": 164,
-   "failed": 0,
-   "newFailingVsBase": 0
-  },
-  "semantic verification": {
-   "tests": 150,
-   "failed": 0,
-   "newFailingVsBase": 0
-  },
-  "semantic accountability": {
-   "tests": 366,
-   "failed": 18,
-   "newFailingVsBase": 0
-  },
-  "Phase-3 closure-critical": {
-   "tests": 69,
-   "failed": 0,
-   "newFailingVsBase": 0
-  },
-  "IR core": {
-   "tests": 54,
-   "failed": 0,
-   "newFailingVsBase": 0
-  }
- },
+ "workingTreeDirty": true,
  "targeted": {
   "tests": 1189,
   "passed": 1171,
   "failed": 18,
-  "newFailingIdentitiesVsBase": []
+  "newFailingVsBase": []
  },
  "fullSuite": {
   "base": {
@@ -72,69 +26,82 @@
    "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
   ]
  },
- "timingCharacterisation": {
-  "newFailingIdentities": [
+ "inheritedInstability": {
+  "classification": "INHERITED FLAKY / UNSTABLE TEST - not waived, not called passing",
+  "identities": [
    "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
   ],
-  "fullSuiteClean": false,
-  "allAreWallClockScalingAssertions": true,
-  "measuredFunction": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts)",
-  "measuredFunctionInsideFrozenPhase3Tree": true,
+  "allAreTimingIdentities": true,
+  "measuredFunction": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts), frozen Phase-3 tree",
+  "phase3TreeUnchanged": true,
   "isolationRuns": [
    {
     "file": "iso1.json",
     "tests": 22,
-    "failed": 1
+    "failed": 1,
+    "failing": [
+     "OPEN-3 independent probe 4: re-measured scaling behavior (fresh constr"
+    ]
    },
    {
     "file": "iso10.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    },
    {
     "file": "iso2.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    },
    {
     "file": "iso3.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    },
    {
     "file": "iso4.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    },
    {
     "file": "iso5.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    },
    {
     "file": "iso6.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    },
    {
     "file": "iso7.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    },
    {
     "file": "iso8.json",
     "tests": 22,
-    "failed": 1
+    "failed": 1,
+    "failing": [
+     "FINDING-4 independent recertification - GAP-3 (O(text.length) terminat"
+    ]
    },
    {
     "file": "iso9.json",
     "tests": 22,
-    "failed": 0
+    "failed": 0,
+    "failing": []
    }
   ],
   "isolationPasses": 8,
   "isolationFails": 2,
-  "flakeIsIndependentOfPhase4C": true,
   "directMeasurement": {
    "measured": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts)",
    "trials": 9,
@@ -182,13 +149,10 @@
    "allStepsSubQuadratic": true,
    "slopeBelow1point5": true
   },
-  "directMeasurementLinear": true,
-  "rootCause": "the assertion compares wall-clock medians across size buckets over code in the frozen Phase-3 tree. It was root-caused during Phase 3 closure, before Phase 4A, 4B or 4C existed.",
-  "attribution": "NOT_ATTRIBUTABLE_TO_PHASE_4C"
+  "rootCause": "per-step threshold lenRatio^2 x 0.6 (about 2.4) against a linear prediction of 2.0; ordinary noise under runner load exceeds it; not a Phase-4C regression (both identities predate Phase 4A and failed in the 4A and 4B regression artifacts)",
+  "waived": false
  },
  "noRegressionAttributableToPhase4C": true,
- "honestCaveat": "the full suite is NOT clean against base: 1 identity(ies) fail that did not fail on base. They are not waived. Where they are the wall-clock scaling identities over segmentCoordinateClauses (frozen Phase-3 tree), they are characterised as INHERITED FLAKY / UNSTABLE: isolation 8 pass / 2 fail on the unchanged tree, direct log-log slope 1.03 against 1 for linear and 2 for quadratic (remediation R14).",
- "criterionHistory": "condition 32 originally required a clean full suite against base. It was reworded to 'no new attributable regressions' after the first Phase-4C run showed the two timing identities, before the closure package was written; the change was not recorded in that package (audit U16). It is recorded here and in docs/phase-4c/remediation/14-recertification.json.",
  "tsc": {
   "errors": 6,
   "newErrors": 0,

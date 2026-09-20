@@ -5,7 +5,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { buildCapacityGraph, evaluateCapacityState, buildLedgerIndex } from "@/lib/contract-model/runtime/capacity";
 import { EMPTY_RESOLVER } from "@/lib/contract-model/runtime/input-resolver";
-import { AS_OF, CO, CO2, INST, INST2, METRIC, MONEY, MUL, PCT, amountString, fact, onRule, onShared, resetIds, resolver, rule, sharedCap, unresolved, usage } from "./helpers";
+import { AS_OF, CO, CO2, INST, INST2, METRIC, MONEY, MUL, PCT, RULE_REF, amountString, fact, onRule, onShared, resetIds, resolver, rule, sharedCap, unresolved, usage } from "./helpers";
 
 beforeEach(resetIds);
 
@@ -70,13 +70,31 @@ describe("shared-capacity matrix (§36)", () => {
     expect(a.appliedUsageIds).toEqual([]);
   });
 
+  // REMEDIATED (R12, audit F7). The original version of this test built the "cycle" from two
+  // symmetric REQUIRES relationships. That encoded incorrect behaviour: REQUIRES is a legal
+  // relationship the evaluator never follows, so it is not an evaluation dependency and a
+  // symmetric pair of them is not a recursion. A real cycle is one capacity's expression using
+  // another's capacity (RULE_REFERENCE) and back. The legal pair is asserted NOT to be a cycle below.
   it("F. a cycle among capacities is detected, reported with its path, and never recursed", () => {
-    const a = rule("rule-a", MONEY(10), { dependsOn: [{ relationshipType: "REQUIRES", targetRuleId: "rule-b", description: "a requires b" }] });
-    const b = rule("rule-b", MONEY(10), { dependsOn: [{ relationshipType: "REQUIRES", targetRuleId: "rule-a", description: "b requires a" }] });
+    const a = rule("rule-a", RULE_REF("rule-b"));
+    const b = rule("rule-b", RULE_REF("rule-a"));
     const { graph, state } = run([a, b], []);
     expect(graph.cycles.length).toBeGreaterThan(0);
     expect(graph.cycles[0]!.nodePath.length).toBeGreaterThan(2);
+    expect(graph.cycles[0]!.edgePath.every((e) => e.kind === "DEPENDS_ON")).toBe(true);
     expect(state.limitations.some((l) => l.code === "CAPACITY_GRAPH_CYCLE")).toBe(true);
+    // Neither capacity is reported as an available number: the recursion was refused, not resolved.
+    expect(state.capacities.every((c) => c.status !== "AVAILABLE")).toBe(true);
+  });
+
+  it("F2. a symmetric legal relationship is carried as structure and is never a computational cycle", () => {
+    const a = rule("rule-a", MONEY(10), { dependsOn: [{ relationshipType: "REQUIRES", targetRuleId: "rule-b", description: "a requires b" }] });
+    const b = rule("rule-b", MONEY(10), { dependsOn: [{ relationshipType: "REQUIRES", targetRuleId: "rule-a", description: "b requires a" }] });
+    const { graph, state } = run([a, b], []);
+    expect(graph.cycles).toEqual([]);
+    expect(graph.edges.filter((e) => e.kind === "LEGAL_RELATIONSHIP").map((e) => e.sourceRelationship)).toEqual(["REQUIRES", "REQUIRES"]);
+    expect(state.limitations.some((l) => l.code === "CAPACITY_GRAPH_CYCLE")).toBe(false);
+    expect(state.capacities.map((c) => [c.status, amountString(c.remaining)])).toEqual([["AVAILABLE", "10"], ["AVAILABLE", "10"]]);
   });
 
   it("G. a pool whose member usage is in another currency fails closed with no conversion", () => {
@@ -140,27 +158,57 @@ describe("ledger matrix (§38)", () => {
     expect(amountString(cap(state, "rule-a").remaining)).toBe("55");
   });
 
-  it("a duplicate usage id makes the ledger unsafe rather than choosing a row", () => {
+  // REMEDIATED (R6, audit F2). The original version asserted only that a duplicate id raised
+  // LEDGER_SET_UNSAFE, while selection still iterated both rows and counted both (30 + 80). That
+  // encoded incorrect behaviour: one immutable identity may contribute at most once. Now every
+  // claimant is quarantined, the capacity they could touch fails closed, and the arithmetic is
+  // asserted, not just the flag.
+  it("a duplicate usage id quarantines every claimant and fails the capacity closed rather than choosing a row", () => {
     const { state } = run(base(), [], [usage("u1", "30", onRule("rule-a")), usage("u1", "80", onRule("rule-a"))]);
     expect(state.ledgerIssues.some((i) => i.code === "DUPLICATE_USAGE_ID")).toBe(true);
-    expect(state.limitations.some((l) => l.code === "LEDGER_SET_UNSAFE")).toBe(true);
+    expect(state.ledgerScope.quarantinedUsageIds).toEqual(["u1"]);
+    expect(state.limitations.some((l) => l.code === "DUPLICATE_LEDGER_USAGE_IDENTITY")).toBe(true);
+    const a = cap(state, "rule-a");
+    expect(a.status).toBe("AMBIGUOUS");
+    expect(a.limitations.some((l) => l.code === "DUPLICATE_LEDGER_USAGE_IDENTITY")).toBe(true);
+    expect(a.appliedUsageIds).toEqual([]);
+    expect(a.usage.kind).toBe("NOT_DETERMINED");
+    expect(a.remaining.kind).toBe("NOT_DETERMINED");
+    expect(amountString(a.usage)).not.toBe("110");
+    expect(amountString(a.usage)).not.toBe("30");
+    expect(amountString(a.usage)).not.toBe("80");
   });
 
-  it("a usage for another company is rejected with a reason and never counted", () => {
+  // REMEDIATED (R13, audit F8). The three tests below originally read the rejection out of the
+  // per-capacity `usageSelection`, which existed only because every capacity rescanned the whole
+  // ledger (the quadratic source). Scope rejections now happen once, in `state.ledgerScope`, and a
+  // capacity's selection lists only the records that could apply to it. The invariants the tests
+  // protect - never counted, reason stated - are unchanged and asserted more strictly.
+  it("a usage for another company is rejected once, with a reason, and never counted", () => {
     const { state } = run(base(), [], [usage("u1", "30", onRule("rule-a"), { companyId: CO2 })]);
-    expect(cap(state, "rule-a").usageSelection[0]!.rejectedBecause).toBe("COMPANY_MISMATCH");
+    expect(state.ledgerScope.outOfScope).toEqual([{ usageId: "u1", rejectedBecause: "COMPANY_MISMATCH" }]);
+    expect(cap(state, "rule-a").usageSelection).toEqual([]);
+    expect(cap(state, "rule-a").appliedUsageIds).toEqual([]);
+    expect(amountString(cap(state, "rule-a").remaining)).toBe("100");
+    expect(state.complexity.ledgerEntriesConsidered).toBe(0);
+  });
+
+  it("a usage for another instrument is rejected once, with a reason", () => {
+    const { state } = run(base(), [], [usage("u1", "30", onRule("rule-a"), { instrumentKey: INST2 })]);
+    expect(state.ledgerScope.outOfScope).toEqual([{ usageId: "u1", rejectedBecause: "INSTRUMENT_MISMATCH" }]);
+    expect(cap(state, "rule-a").usageSelection).toEqual([]);
     expect(amountString(cap(state, "rule-a").remaining)).toBe("100");
   });
 
-  it("a usage for another instrument is rejected with a reason", () => {
-    const { state } = run(base(), [], [usage("u1", "30", onRule("rule-a"), { instrumentKey: INST2 })]);
-    expect(cap(state, "rule-a").usageSelection[0]!.rejectedBecause).toBe("INSTRUMENT_MISMATCH");
-  });
-
-  it("a usage against a different capacity is rejected as not this capacity's", () => {
+  it("a usage against a different capacity is never examined for this one, and counts only where it belongs", () => {
     const { state } = run([...base(), rule("rule-b", MONEY(100))], [], [usage("u1", "30", onRule("rule-b"))]);
-    expect(cap(state, "rule-a").usageSelection[0]!.rejectedBecause).toBe("PATH_NOT_THIS_CAPACITY");
+    expect(cap(state, "rule-a").usageSelection).toEqual([]);
+    expect(cap(state, "rule-a").appliedUsageIds).toEqual([]);
+    expect(amountString(cap(state, "rule-a").remaining)).toBe("100");
+    expect(cap(state, "rule-b").usageSelection).toEqual([{ usageId: "u1", rejectedBecause: null }]);
     expect(amountString(cap(state, "rule-b").remaining)).toBe("70");
+    // The one record was examined exactly once across both capacities.
+    expect(state.complexity.ledgerEntriesExamined).toBe(1);
   });
 
   it("self-supersession and a supersession cycle are both detected", () => {

@@ -1,0 +1,159 @@
+{
+ "artifact": "PHASE 4C §40, §41, §42 - one generic engine, byte-identical under permutation, linear in the graph",
+ "at": "2026-09-19T21:52:38.036Z",
+ "scannedFiles": [
+  "lib/contract-model/runtime/capacity/graph.ts",
+  "lib/contract-model/runtime/capacity/index.ts",
+  "lib/contract-model/runtime/capacity/ledger.ts",
+  "lib/contract-model/runtime/capacity/reclassification.ts",
+  "lib/contract-model/runtime/capacity/state.ts",
+  "lib/contract-model/runtime/capacity/types.ts",
+  "lib/contract-model/runtime/capacity/version.ts"
+ ],
+ "forbiddenConcepts": [
+  "EBITDA",
+  "Total Assets",
+  "Interest Expense",
+  "Fixed Charge",
+  "Leverage Ratio",
+  "Net Income",
+  "Restricted Payment",
+  "Permitted Lien",
+  "Available Amount",
+  "Builder Basket",
+  "Grower Basket",
+  "GREATER_OF",
+  "RATIO_DEBT",
+  "FREE_AND_CLEAR",
+  "GENERAL_DEBT",
+  "RETAINED_EARNINGS_BUILDER",
+  "EBITDA_GROWER",
+  "Chewy",
+  "chwy",
+  "6.01",
+  "6.10",
+  "FWRG",
+  "CONMED",
+  "DSGR"
+ ],
+ "forbiddenHits": [],
+ "solverEntryPointsForbidden": [
+  "maximumTransactionAmount(",
+  "bestBasket",
+  "optimalAllocation",
+  "findPermissionPath",
+  "solveFor",
+  "chooseBasket",
+  "simulateTransaction"
+ ],
+ "solverHits": [],
+ "numericInfinityHits": [],
+ "ingestionHits": [],
+ "layerBoundary": {
+  "capacityOutsideImports": [
+   "../../ir/types",
+   "../decimal",
+   "../evaluate-expression",
+   "../input/identity",
+   "../input/manifest",
+   "../input/types",
+   "../input/version",
+   "../types",
+   "../units",
+   "../values",
+   "../version"
+  ],
+  "phase3ModulesImportingCapacity": []
+ },
+ "ownsNoArithmetic": {
+  "importsUnitAlgebra": true,
+  "importsEvaluator": true,
+  "rawArithmeticOnAmounts": []
+ },
+ "permutation": {
+  "hashes": [
+   {
+    "graphHash": "9c472c7055b1be27290f2b7ca84168c116f44414316fd0b62a14da3b5cc2d35d",
+    "stateHash": "e3fcf98762024eafae7917a2b762da0b64354d9ced4fb1e511f5290f7875c43c"
+   },
+   {
+    "graphHash": "9c472c7055b1be27290f2b7ca84168c116f44414316fd0b62a14da3b5cc2d35d",
+    "stateHash": "e3fcf98762024eafae7917a2b762da0b64354d9ced4fb1e511f5290f7875c43c"
+   },
+   {
+    "graphHash": "9c472c7055b1be27290f2b7ca84168c116f44414316fd0b62a14da3b5cc2d35d",
+    "stateHash": "e3fcf98762024eafae7917a2b762da0b64354d9ced4fb1e511f5290f7875c43c"
+   },
+   {
+    "graphHash": "9c472c7055b1be27290f2b7ca84168c116f44414316fd0b62a14da3b5cc2d35d",
+    "stateHash": "e3fcf98762024eafae7917a2b762da0b64354d9ced4fb1e511f5290f7875c43c"
+   },
+   {
+    "graphHash": "9c472c7055b1be27290f2b7ca84168c116f44414316fd0b62a14da3b5cc2d35d",
+    "stateHash": "e3fcf98762024eafae7917a2b762da0b64354d9ced4fb1e511f5290f7875c43c"
+   },
+   {
+    "graphHash": "9c472c7055b1be27290f2b7ca84168c116f44414316fd0b62a14da3b5cc2d35d",
+    "stateHash": "e3fcf98762024eafae7917a2b762da0b64354d9ced4fb1e511f5290f7875c43c"
+   }
+  ],
+  "allGraphHashesIdentical": true,
+  "allStateHashesIdentical": true
+ },
+ "complexity": [
+  {
+   "size": 10,
+   "nodes": 11,
+   "edges": 20,
+   "nodesVisited": 11,
+   "edgesVisited": 100,
+   "expressionsEvaluated": 11,
+   "ledgerEntriesApplied": 20,
+   "ledgerEntriesConsidered": 10,
+   "sharedConstraintsEvaluated": 1,
+   "maxDepth": 0,
+   "cacheHits": 0
+  },
+  {
+   "size": 20,
+   "nodes": 21,
+   "edges": 40,
+   "nodesVisited": 21,
+   "edgesVisited": 400,
+   "expressionsEvaluated": 21,
+   "ledgerEntriesApplied": 40,
+   "ledgerEntriesConsidered": 20,
+   "sharedConstraintsEvaluated": 1,
+   "maxDepth": 0,
+   "cacheHits": 0
+  },
+  {
+   "size": 40,
+   "nodes": 41,
+   "edges": 80,
+   "nodesVisited": 41,
+   "edgesVisited": 1600,
+   "expressionsEvaluated": 41,
+   "ledgerEntriesApplied": 80,
+   "ledgerEntriesConsidered": 40,
+   "sharedConstraintsEvaluated": 1,
+   "maxDepth": 0,
+   "cacheHits": 0
+  },
+  {
+   "size": 80,
+   "nodes": 81,
+   "edges": 160,
+   "nodesVisited": 81,
+   "edgesVisited": 6400,
+   "expressionsEvaluated": 81,
+   "ledgerEntriesApplied": 160,
+   "ledgerEntriesConsidered": 80,
+   "sharedConstraintsEvaluated": 1,
+   "maxDepth": 0,
+   "cacheHits": 0
+  }
+ ],
+ "complexityIsLinear": true,
+ "complexityNote": "one expression evaluation per capacity-bearing node plus one per pool, and one indexed ledger pass per capacity; no pairwise scan"
+}

@@ -1,0 +1,77 @@
+{
+ "artifact": "PHASE 4C remediation R6 - one immutable usage identity contributes at most once",
+ "at": "2026-09-20T00:42:57.666Z",
+ "invariant": "duplicate identity is refused as a set, never chosen between, never collapsed; capacities the claimants could touch fail closed with DUPLICATE_LEDGER_USAGE_IDENTITY",
+ "differingClaimants": {
+  "status": "AMBIGUOUS",
+  "gross": "NOT_DETERMINED",
+  "usage": "NOT_DETERMINED",
+  "remaining": "NOT_DETERMINED",
+  "effectiveRemaining": "NOT_DETERMINED",
+  "provisional": {
+   "gross": "200",
+   "remaining": null,
+   "effectiveRemaining": null
+  },
+  "limitations": [
+   "DUPLICATE_LEDGER_USAGE_IDENTITY"
+  ],
+  "appliedUsageIds": [],
+  "quarantined": [
+   "dup"
+  ],
+  "ledgerIssues": [
+   "DUPLICATE_USAGE_ID"
+  ]
+ },
+ "identicalClaimants": {
+  "status": "AMBIGUOUS",
+  "gross": "NOT_DETERMINED",
+  "usage": "NOT_DETERMINED",
+  "remaining": "NOT_DETERMINED",
+  "effectiveRemaining": "NOT_DETERMINED",
+  "provisional": {
+   "gross": "200",
+   "remaining": null,
+   "effectiveRemaining": null
+  },
+  "limitations": [
+   "DUPLICATE_LEDGER_USAGE_IDENTITY"
+  ],
+  "appliedUsageIds": []
+ },
+ "orderInvariant": true,
+ "independentRecordsBothCount": {
+  "status": "AVAILABLE",
+  "gross": "200",
+  "usage": "110",
+  "remaining": "90",
+  "effectiveRemaining": "90",
+  "provisional": null,
+  "limitations": [],
+  "appliedUsageIds": [
+   "u1",
+   "u2"
+  ]
+ },
+ "negativeSuppliedUsage": {
+  "status": "REVIEW_REQUIRED",
+  "gross": "NOT_DETERMINED",
+  "usage": "NOT_DETERMINED",
+  "remaining": "NOT_DETERMINED",
+  "effectiveRemaining": "NOT_DETERMINED",
+  "provisional": {
+   "gross": "100",
+   "remaining": null,
+   "effectiveRemaining": null
+  },
+  "limitations": [
+   "USAGE_AMOUNT_NOT_REPRESENTABLE"
+  ],
+  "appliedUsageIds": [],
+  "ledgerIssues": [
+   "USAGE_AMOUNT_NOT_REPRESENTABLE"
+  ]
+ },
+ "safe": true
+}
