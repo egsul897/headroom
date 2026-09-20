@@ -195,7 +195,10 @@ describe("M-N: deterministic recomputation versus a fixed point", () => {
     const adj = r.financialEffects[0]!;
     expect([adj.state, adj.baseValue?.type === "MONEY" ? adj.baseValue.amount : null, adj.result?.type === "MONEY" ? adj.result.amount : null]).toEqual(["APPLIED", "1000", "1500"]);
     // One deterministic pass: the pro-forma capacity state is evaluated once, and the post-state once.
-    expect(r.complexity.stateEvaluations).toBe(2);
+    // Phase-4D remediation: the adjustment is applied, then the capacity is evaluated once against
+    // the adjusted view, then the post-state is evaluated. The old expectation of 2 belonged to the
+    // model in which every effect shared one pre-transaction evaluation.
+    expect(r.complexity.stateEvaluations).toBe(3);
     expect(codes(r.limitations)).toEqual([]);
   });
 

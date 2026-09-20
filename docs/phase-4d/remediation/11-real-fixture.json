@@ -1,0 +1,26 @@
+{
+  "artifact": "PHASE 4D REMEDIATION §17 - the frozen real-package fixture re-run against the remediated engine",
+  "source": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+  "suite": "tests/contract-model/runtime/transaction/real-fixture.test.ts",
+  "tests": 9,
+  "failed": 0,
+  "results": [
+    "the frozen corpus supplies capacities this engine can simulate against",
+    "a draw within a real capacity is satisfied and reduces that real capacity",
+    "a draw beyond a real capacity is refused with the shortfall stated",
+    "a real condition Phase 3 recorded but could not reduce leaves the path indeterminate",
+    "a real rule Phase 3 could not fully represent never becomes an authoritative permission",
+    "the real corpus carries zero quantified shared-capacity resources, so no pool is simulated against it",
+    "a real shared relationship with no quantified resource stays non-authoritative through simulation",
+    "the real corpus carries zero executable reclassification edges, so an election against it is refused",
+    "the evidence boundary is explicit: real-corpus proof covers ordinary capacity only"
+  ],
+  "corpusFactsCarriedForward": {
+    "rulesWithCapacityExpression": 52,
+    "quantifiedSharedCapacityResources": 0,
+    "executableReclassificationEdges": 0,
+    "sharesCapacityWithEdges": 7,
+    "statement": "unchanged by the remediation. Quantified shared-pool execution and reclassification execution remain proved on synthetic and hand-authored IR only. No fixture in this phase is described as real-package extraction proof."
+  },
+  "regressionStatement": "every real-fixture assertion that passed at the failed baseline still passes. The remediation changed how effects compose, not how a single real draw is measured, and the real corpus contains no multi-effect composition of its own."
+}

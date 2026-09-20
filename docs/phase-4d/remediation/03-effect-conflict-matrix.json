@@ -1,0 +1,290 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §8 - the effect resource / read-write / conflict model and the invariant covering each class",
+ "at": "2026-09-20T23:21:23.954Z",
+ "effects": [
+  {
+   "kind": "CONSUME_CAPACITY",
+   "writes": [
+    "capacity:<node>",
+    "ledger identity <tx>::<effect>"
+   ],
+   "reads": [
+    "the capacity expression's financial inputs",
+    "the capacity state left by prior effects"
+   ]
+  },
+  {
+   "kind": "RESTORE_CAPACITY",
+   "writes": [
+    "usage:<usageId>",
+    "ledger identity <tx>::<effect>"
+   ],
+   "reads": [
+    "the named historical usage"
+   ]
+  },
+  {
+   "kind": "SUPERSEDE_LEDGER_USAGE",
+   "writes": [
+    "usage:<usageId>",
+    "ledger identity <tx>::<effect>"
+   ],
+   "reads": [
+    "the named historical usage"
+   ]
+  },
+  {
+   "kind": "APPLY_RECLASSIFICATION",
+   "writes": [
+    "capacity:rule:<source>",
+    "capacity:rule:<destination>"
+   ],
+   "reads": [
+    "the source capacity's inputs",
+    "an encoded Phase-3 RECLASSIFIABLE_TO edge"
+   ]
+  },
+  {
+   "kind": "CHANGE_METRIC",
+   "writes": [
+    "metric:<key>@<period>/<asOf>"
+   ],
+   "reads": [
+    "the approved snapshot's value for that input"
+   ]
+  },
+  {
+   "kind": "ACTIVATE_EVENT",
+   "writes": [
+    "event:<description>@<asOf>"
+   ],
+   "reads": []
+  },
+  {
+   "kind": "DEACTIVATE_EVENT",
+   "writes": [
+    "event:<description>@<asOf>"
+   ],
+   "reads": []
+  }
+ ],
+ "conflictClasses": [
+  {
+   "id": "C1",
+   "class": "two effects write the same capacity",
+   "invariant": "each draw is measured against the state its predecessors produced",
+   "detectedBy": "sequential execution",
+   "evidence": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "INSUFFICIENT_CAPACITY",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [
+     "SATISFIED",
+     "INSUFFICIENT_CAPACITY"
+    ],
+    "perEffectAvailable": [
+     "100",
+     "40"
+    ],
+    "postStateUnsafe": [],
+    "limitations": [
+     "INSUFFICIENT_CAPACITY"
+    ]
+   },
+   "test": "1A, 1C, 1D, 4C"
+  },
+  {
+   "id": "C2",
+   "class": "two effects consume a common shared resource",
+   "invariant": "the pool bounds the sum of member draws",
+   "detectedBy": "sequential execution through Phase-4C shared constraints",
+   "evidence": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "INSUFFICIENT_CAPACITY",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [
+     "SATISFIED",
+     "INSUFFICIENT_CAPACITY"
+    ],
+    "perEffectAvailable": [
+     "100",
+     "40"
+    ],
+    "postStateUnsafe": [],
+    "limitations": [
+     "INSUFFICIENT_CAPACITY"
+    ]
+   },
+   "test": "2A-2F"
+  },
+  {
+   "id": "C3",
+   "class": "an effect reads what an earlier effect writes",
+   "invariant": "the later effect observes the earlier one",
+   "detectedBy": "cursor refresh on a dirty write",
+   "evidence": {
+    "adjustThenDraw": {
+     "simulationStatus": "SIMULATED",
+     "selectedPathResult": "SATISFIED",
+     "committable": true,
+     "postStatePublished": true,
+     "perEffectOutcomes": [
+      "SATISFIED"
+     ],
+     "perEffectAvailable": [
+      "400"
+     ],
+     "postStateUnsafe": [],
+     "limitations": []
+    },
+    "drawThenAdjust": {
+     "simulationStatus": "SIMULATED",
+     "selectedPathResult": "INSUFFICIENT_CAPACITY",
+     "committable": false,
+     "postStatePublished": false,
+     "perEffectOutcomes": [
+      "INSUFFICIENT_CAPACITY"
+     ],
+     "perEffectAvailable": [
+      "200"
+     ],
+     "postStateUnsafe": [],
+     "limitations": [
+      "INSUFFICIENT_CAPACITY"
+     ]
+    }
+   },
+   "test": "4A, 4B, 4E"
+  },
+  {
+   "id": "C4",
+   "class": "two effects supersede the same ledger identity",
+   "invariant": "one historical record may have at most one successor per transaction",
+   "detectedBy": "detectCompositionConflicts",
+   "evidence": {
+    "simulationStatus": "AMBIGUOUS",
+    "selectedPathResult": "INDETERMINATE",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": [
+     "CONFLICTING_LEDGER_SUCCESSOR"
+    ]
+   },
+   "test": "5A-5C"
+  },
+  {
+   "id": "C5",
+   "class": "conflicting event assignment",
+   "invariant": "incompatible assignments to one target are refused, never ordered",
+   "detectedBy": "detectCompositionConflicts",
+   "evidence": {
+    "simulationStatus": "AMBIGUOUS",
+    "selectedPathResult": "INDETERMINATE",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": [
+     "CONFLICTING_EVENT_STATE"
+    ]
+   },
+   "test": "6A, 6B"
+  },
+  {
+   "id": "C6",
+   "class": "agreeing assignment to one target",
+   "invariant": "agreement is not a conflict",
+   "detectedBy": "assignment comparison",
+   "evidence": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "SATISFIED",
+    "committable": true,
+    "postStatePublished": true,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": []
+   },
+   "test": "6C, 6D, 6E"
+  },
+  {
+   "id": "C7",
+   "class": "duplicate identity",
+   "invariant": "effect ids and proposed usage ids are unique",
+   "detectedBy": "classifyEffects + proposed-identity count",
+   "evidence": {
+    "simulationStatus": "ERROR",
+    "selectedPathResult": "INDETERMINATE",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": [
+     "DUPLICATE_EFFECT_IDENTITY"
+    ]
+   },
+   "test": "7G"
+  },
+  {
+   "id": "C8",
+   "class": "missing or cyclic dependency",
+   "invariant": "a dangling edge is malformed; a cycle has no evaluation order",
+   "detectedBy": "detectCompositionConflicts + detectEffectCycles",
+   "evidence": {
+    "dangling": {
+     "simulationStatus": "ERROR",
+     "selectedPathResult": "INDETERMINATE",
+     "committable": false,
+     "postStatePublished": false,
+     "perEffectOutcomes": [],
+     "perEffectAvailable": [],
+     "postStateUnsafe": [],
+     "limitations": [
+      "INVALID_EFFECT_DEPENDENCY"
+     ]
+    },
+    "cycle": {
+     "simulationStatus": "ERROR",
+     "selectedPathResult": "INDETERMINATE",
+     "committable": false,
+     "postStatePublished": false,
+     "perEffectOutcomes": [],
+     "perEffectAvailable": [],
+     "postStateUnsafe": [],
+     "limitations": [
+      "EFFECT_DEPENDENCY_CONTRADICTS_ORDER",
+      "TRANSACTION_EFFECT_DEPENDENCY_CYCLE"
+     ]
+    }
+   },
+   "test": "7A-7F"
+  },
+  {
+   "id": "C9",
+   "class": "reclassification composed with other effects",
+   "invariant": "elections execute as one conserving Phase-4C batch; an interleaving that contradicts atomicity is refused",
+   "detectedBy": "single batch at the first election + interleaving guard",
+   "evidence": {
+    "batchOverSource": {
+     "allExecuted": false,
+     "batchConservation": [
+      {
+       "sourceRuleId": "p-src",
+       "sourceUsage": "40",
+       "requested": "50",
+       "holds": false
+      }
+     ]
+    }
+   },
+   "test": "AE, 4F, 5D"
+  }
+ ]
+}

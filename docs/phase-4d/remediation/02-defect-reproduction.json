@@ -1,0 +1,188 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §1, §2, §5, §6, §7 - each reported defect reproduced against the failed baseline, then re-run against the remediation",
+ "at": "2026-09-20T23:21:23.953Z",
+ "failedBaseline": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "defects": [
+  {
+   "id": "D1",
+   "title": "aggregate consumption against one capacity",
+   "reported": true,
+   "reproduced": true,
+   "preFix": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "SATISFIED",
+    "committable": true,
+    "perEffectAvailable": [
+     "100",
+     "100"
+    ],
+    "postStateUsage": "120",
+    "postStateStatus": "REVIEW_REQUIRED"
+   },
+   "postFix": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "INSUFFICIENT_CAPACITY",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [
+     "SATISFIED",
+     "INSUFFICIENT_CAPACITY"
+    ],
+    "perEffectAvailable": [
+     "100",
+     "40"
+    ],
+    "postStateUnsafe": [],
+    "limitations": [
+     "INSUFFICIENT_CAPACITY"
+    ]
+   },
+   "rootCause": "every CONSUME_CAPACITY was measured against the same pre-transaction Phase-4C state; the effects never saw one another"
+  },
+  {
+   "id": "D2",
+   "title": "aggregate consumption across a quantified shared pool",
+   "reported": true,
+   "reproduced": true,
+   "preFix": {
+    "committable": true,
+    "postStateOverConsumed": [
+     "res-1 remaining -20"
+    ]
+   },
+   "postFix": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "INSUFFICIENT_CAPACITY",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [
+     "SATISFIED",
+     "INSUFFICIENT_CAPACITY"
+    ],
+    "perEffectAvailable": [
+     "100",
+     "40"
+    ],
+    "postStateUnsafe": [],
+    "limitations": [
+     "INSUFFICIENT_CAPACITY"
+    ]
+   },
+   "rootCause": "same independent-measurement defect, observed through the shared constraint"
+  },
+  {
+   "id": "D3",
+   "title": "competing ledger successors for one historical usage",
+   "reported": true,
+   "reproduced": true,
+   "preFix": {
+    "committable": true,
+    "supersededRows": 2,
+    "bothSuccessorsPublished": true,
+    "arbitraryWinner": "Array.prototype.find picked the first match when rebuilding the ledger"
+   },
+   "postFix": {
+    "simulationStatus": "AMBIGUOUS",
+    "selectedPathResult": "INDETERMINATE",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": [
+     "CONFLICTING_LEDGER_SUCCESSOR"
+    ]
+   },
+   "rootCause": "no check that two effects claimed the same predecessor; the post-state rebuild resolved it by array order"
+  },
+  {
+   "id": "D4",
+   "title": "conflicting event assignments resolved by effect-id order",
+   "reported": true,
+   "reproduced": true,
+   "preFix": {
+    "committable": true,
+    "limitations": [],
+    "mechanism": "overlay.ts sorted event effects by effectId and wrote them into a Map, so the last write won"
+   },
+   "postFix": {
+    "simulationStatus": "AMBIGUOUS",
+    "selectedPathResult": "INDETERMINATE",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": [
+     "CONFLICTING_EVENT_STATE"
+    ]
+   },
+   "rootCause": "map overwrite keyed by event description and as-of, with no agreement check"
+  },
+  {
+   "id": "D5",
+   "title": "dependency on a non-existent effect silently ignored",
+   "reported": true,
+   "reproduced": true,
+   "preFix": {
+    "committable": true,
+    "limitations": [],
+    "mechanism": "detectEffectCycles skipped the edge behind `if (byId.has(d))`"
+   },
+   "postFix": {
+    "simulationStatus": "ERROR",
+    "selectedPathResult": "INDETERMINATE",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": [
+     "INVALID_EFFECT_DEPENDENCY"
+    ]
+   },
+   "rootCause": "a dangling dependency was treated as a no-op rather than a malformed transaction"
+  },
+  {
+   "id": "D6",
+   "title": "duplicate effect identity",
+   "reported": true,
+   "reproduced": false,
+   "note": "already refused at the failed baseline by classifyEffects; re-asserted here so it stays refused",
+   "postFix": {
+    "simulationStatus": "ERROR",
+    "selectedPathResult": "INDETERMINATE",
+    "committable": false,
+    "postStatePublished": false,
+    "perEffectOutcomes": [],
+    "perEffectAvailable": [],
+    "postStateUnsafe": [],
+    "limitations": [
+     "DUPLICATE_EFFECT_IDENTITY"
+    ]
+   }
+  }
+ ],
+ "additionalFindings": [
+  {
+   "id": "A1",
+   "title": "post-state was never validated against the transaction-level verdict",
+   "detail": "the failed baseline computed a post-state and published it without reading what Phase 4C said about it. In the single-capacity case Phase 4C degraded the entry to REVIEW_REQUIRED with an OVER_CONSUMPTION limitation and WITHHELD the remaining figure; the simulation still reported SATISFIED and committable. A sign test on `remaining` alone would have missed this, because the withheld figure is not negative - it is absent."
+  },
+  {
+   "id": "A2",
+   "title": "a metric adjustment was visible to every effect regardless of position",
+   "detail": "the overlay was built once from all CHANGE_METRIC effects before any effect ran, so stating an adjustment after a draw had the same effect as stating it before. Ordering is now semantic and both orders are distinguished."
+  },
+  {
+   "id": "A3",
+   "title": "batch reclassification conservation was briefly broken during remediation and restored",
+   "detail": "an intermediate sequential design applied each election through its own Phase-4C transition, which let two elections that individually fit jointly exceed the source. Caught by the pre-existing matrix case AE. Elections now execute as ONE Phase-4C batch at the position of the first election, preserving the recertified conservation rule."
+  },
+  {
+   "id": "A4",
+   "title": "the aggregate post-state backstop did not fire in any swept composition",
+   "detail": "INSUFFICIENT_AGGREGATE_CAPACITY is implemented and wired, but across 104 swept compositions the sequential model caught every over-draw at the draw itself, reporting INSUFFICIENT_CAPACITY. The backstop is defence in depth, not the mechanism, and is reported as such rather than claimed as coverage."
+  }
+ ]
+}

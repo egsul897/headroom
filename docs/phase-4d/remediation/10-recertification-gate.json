@@ -1,0 +1,281 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §12, §21 - the strengthened recertification gate",
+ "at": "2026-09-20T23:21:23.955Z",
+ "supersedes": "docs/phase-4d/17-phase4d-gate.json (58/58, issued at the failed baseline)",
+ "methodology": "every safety condition executes the engine and asserts on the returned result. Structural scans are retained only for boundary questions - forbidden imports, forbidden directories, absent solver entry points - and are never used as evidence of runtime semantics.",
+ "failedBaseline": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "headAtRun": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "transactionSimulationVersion": "transaction-simulation.v1",
+ "capacityGraphVersion": "capacity-graph.v1",
+ "runtimeVersion": "contract-runtime.v1",
+ "inputContractVersion": "financial-input-contract.v1",
+ "conditions": [
+  {
+   "n": 1,
+   "condition": "aggregate same-node consumption fails closed",
+   "status": "PASS",
+   "evidence": "path INSUFFICIENT_CAPACITY, committable false"
+  },
+  {
+   "n": 2,
+   "condition": "exact aggregate exhaustion succeeds with zero remaining",
+   "status": "PASS",
+   "evidence": "remaining 0"
+  },
+  {
+   "n": 3,
+   "condition": "aggregate shared-pool consumption fails closed",
+   "status": "PASS",
+   "evidence": "path INSUFFICIENT_CAPACITY, committable false"
+  },
+  {
+   "n": 4,
+   "condition": "exact shared-pool exhaustion succeeds",
+   "status": "PASS",
+   "evidence": "shared remaining 0"
+  },
+  {
+   "n": 5,
+   "condition": "existing usage is counted with the new aggregate effects",
+   "status": "PASS",
+   "evidence": "30 historical + 40 + 40 against 100: path INSUFFICIENT_CAPACITY"
+  },
+  {
+   "n": 6,
+   "condition": "intra-transaction order is semantic",
+   "status": "PASS",
+   "evidence": "restore-then-consume SATISFIED; consume-then-restore INSUFFICIENT_CAPACITY"
+  },
+  {
+   "n": 7,
+   "condition": "restore then consume sees the released capacity",
+   "status": "PASS",
+   "evidence": "SATISFIED"
+  },
+  {
+   "n": 8,
+   "condition": "supersede then consume sees the released amount",
+   "status": "PASS",
+   "evidence": "forward SATISFIED; reverse INSUFFICIENT_CAPACITY"
+  },
+  {
+   "n": 9,
+   "condition": "conflicting ledger successors are refused, not raced",
+   "status": "PASS",
+   "evidence": "CONFLICTING_LEDGER_SUCCESSOR"
+  },
+  {
+   "n": 10,
+   "condition": "conflicting event state is refused, not ordered",
+   "status": "PASS",
+   "evidence": "CONFLICTING_EVENT_STATE"
+  },
+  {
+   "n": 11,
+   "condition": "agreeing event assignments are not a false conflict",
+   "status": "PASS",
+   "evidence": "none"
+  },
+  {
+   "n": 12,
+   "condition": "a dangling effect dependency is refused, never ignored",
+   "status": "PASS",
+   "evidence": "INVALID_EFFECT_DEPENDENCY"
+  },
+  {
+   "n": 13,
+   "condition": "duplicate effect ids are refused deterministically",
+   "status": "PASS",
+   "evidence": "DUPLICATE_EFFECT_IDENTITY"
+  },
+  {
+   "n": 14,
+   "condition": "a dependency cycle is refused",
+   "status": "PASS",
+   "evidence": "EFFECT_DEPENDENCY_CONTRADICTS_ORDER,TRANSACTION_EFFECT_DEPENDENCY_CYCLE"
+  },
+  {
+   "n": 15,
+   "condition": "a fixed point is refused rather than solved",
+   "status": "PASS",
+   "evidence": "AMBIGUOUS_FINANCIAL_INPUT"
+  },
+  {
+   "n": 16,
+   "condition": "reclassification conservation holds under composition",
+   "status": "PASS",
+   "evidence": "[{\"sourceRuleId\":\"p-src\",\"sourceUsage\":\"40\",\"requested\":\"50\",\"holds\":false}]"
+  },
+  {
+   "n": 17,
+   "condition": "a metric adjustment is visible only to the effects stated after it",
+   "status": "PASS",
+   "evidence": "adjust-then-draw SATISFIED; draw-then-adjust INSUFFICIENT_CAPACITY"
+  },
+  {
+   "n": 18,
+   "condition": "the final post-state is validated, not merely reported",
+   "status": "PASS",
+   "evidence": "aggregate over-draw publishes postState null"
+  },
+  {
+   "n": 19,
+   "condition": "committable implies the final state is safe, across the sweep",
+   "status": "PASS",
+   "evidence": "104 compositions, 0 violations"
+  },
+  {
+   "n": 20,
+   "condition": "failure atomicity: a fatal conflict publishes no successor state",
+   "status": "PASS",
+   "evidence": "postState and postStateIdentity both null"
+  },
+  {
+   "n": 21,
+   "condition": "no mutation of caller-owned state or ledger",
+   "status": "PASS",
+   "evidence": "byte-identical before and after a refused transaction"
+  },
+  {
+   "n": 22,
+   "condition": "deterministic replay",
+   "status": "PASS",
+   "evidence": "5 replays, 1 distinct"
+  },
+  {
+   "n": 23,
+   "condition": "identity: same semantics, same identity",
+   "status": "PASS",
+   "evidence": "a display label change leaves the hash untouched"
+  },
+  {
+   "n": 24,
+   "condition": "identity: different semantics, different identity",
+   "status": "PASS",
+   "evidence": "effect order and amount each change the hash"
+  },
+  {
+   "n": 25,
+   "condition": "state evaluations are linear in effect count",
+   "status": "PASS",
+   "evidence": "1->2 2->3 4->5 8->9 16->17 32->33"
+  },
+  {
+   "n": 26,
+   "condition": "the pipeline remains a fixed number of steps",
+   "status": "PASS",
+   "evidence": "15 at every size"
+  },
+  {
+   "n": 27,
+   "condition": "no solver or optimisation entry point in the transaction module",
+   "status": "PASS",
+   "evidence": "none"
+  },
+  {
+   "n": 28,
+   "condition": "no financial ingestion in the transaction module",
+   "status": "PASS",
+   "evidence": "none"
+  },
+  {
+   "n": 29,
+   "condition": "no persistence surface in the transaction module",
+   "status": "PASS",
+   "evidence": "none"
+  },
+  {
+   "n": 30,
+   "condition": "no automatic path selection, allocation or maximum is computed",
+   "status": "PASS",
+   "evidence": "pathSelection,maximumTransactionAmount,allocationAcrossCapacities,alternativePathComparison,accountingTreatment,currencyConversion"
+  },
+  {
+   "n": 31,
+   "condition": "the layer boundary is one-directional",
+   "status": "PASS",
+   "evidence": "no earlier phase imports the transaction module"
+  },
+  {
+   "n": 32,
+   "condition": "only the transaction module changed in production",
+   "status": "PASS",
+   "evidence": "none"
+  },
+  {
+   "n": 33,
+   "condition": "Phase 3 trees remain frozen",
+   "status": "PASS",
+   "evidence": "b4e6a9da496a / f79bc12dd479"
+  },
+  {
+   "n": 34,
+   "condition": "Phase 4B semantics unchanged since the failed baseline",
+   "status": "PASS",
+   "evidence": "07d9de17ac64"
+  },
+  {
+   "n": 35,
+   "condition": "Phase 4C semantics unchanged since the failed baseline",
+   "status": "PASS",
+   "evidence": "c5f2d820d3c7"
+  },
+  {
+   "n": 36,
+   "condition": "IR semantics unchanged since the failed baseline",
+   "status": "PASS",
+   "evidence": "5c3ff86f1961"
+  },
+  {
+   "n": 37,
+   "condition": "Phase 4E remains unstarted",
+   "status": "PASS",
+   "evidence": "no Phase-4E directory"
+  },
+  {
+   "n": 38,
+   "condition": "Phase 5 remains unstarted",
+   "status": "PASS",
+   "evidence": "no ingestion directory"
+  },
+  {
+   "n": 39,
+   "condition": "the adversarial composition suite passes",
+   "status": "PASS",
+   "evidence": "125 Phase-4D tests, 0 not passing"
+  },
+  {
+   "n": 40,
+   "condition": "no new failing identity in the full suite",
+   "status": "PASS",
+   "evidence": "now 161 failed of 4463; base 162 of 4417; new 0"
+  },
+  {
+   "n": 41,
+   "condition": "tsc has no new error",
+   "status": "PASS",
+   "evidence": "0 new"
+  },
+  {
+   "n": 42,
+   "condition": "lint passes",
+   "status": "PASS",
+   "evidence": "✔ No ESLint warnings or errors"
+  },
+  {
+   "n": 43,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "compiled"
+  }
+ ],
+ "summary": {
+  "PASS": 43,
+  "FAIL": 0,
+  "total": 43
+ },
+ "verdict": "PHASE4D_TRANSACTION_SIMULATION_READY",
+ "paidCalls": 0,
+ "modelCalls": 0,
+ "spendUsd": 0
+}

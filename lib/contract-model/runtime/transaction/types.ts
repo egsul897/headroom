@@ -244,7 +244,22 @@ export type SimulationLimitationCode =
   | "CAPACITY_GATE_NOT_SATISFIED"
   | "OVERLAY_BASE_INPUT_MISSING"
   | "CONDITION_NOT_SATISFIED"
-  | "TRANSACTION_SCOPE_MISMATCH";
+  | "TRANSACTION_SCOPE_MISMATCH"
+  // --- composition safety (Phase-4D remediation) ---------------------------
+  /** The COMBINED draws of this transaction exceed a capacity or a quantified shared resource. */
+  | "INSUFFICIENT_AGGREGATE_CAPACITY"
+  /** Two or more effects claim the same historical usage identity as their predecessor. */
+  | "CONFLICTING_LEDGER_SUCCESSOR"
+  /** Two or more effects assign incompatible states to the same event target. */
+  | "CONFLICTING_EVENT_STATE"
+  /** Two or more effects assign incompatible adjustments to the same financial input target. */
+  | "CONFLICTING_METRIC_ADJUSTMENT"
+  /** An effect declares a dependency on an effect id this transaction does not carry. */
+  | "INVALID_EFFECT_DEPENDENCY"
+  /** A declared dependency contradicts the stated effect order under sequential semantics. */
+  | "EFFECT_DEPENDENCY_CONTRADICTS_ORDER"
+  /** The recomputed post-state contradicts the transaction-level verdict and is not published. */
+  | "POST_STATE_INCONSISTENT";
 
 export interface SimulationLimitation {
   code: SimulationLimitationCode;

@@ -1,0 +1,110 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §3, §4 - the corrected effect-ordering contract",
+ "at": "2026-09-20T23:21:23.954Z",
+ "contract": "SEQUENTIAL. transaction.effects is an ordered list. Each effect applies to the state produced by the effects stated before it. Ordering is therefore semantic, and it is part of transaction identity.",
+ "consequences": [
+  "a second draw on a resource sees what the first left",
+  "a draw stated after a release sees the released headroom; stated before it, it does not",
+  "a draw stated after a metric adjustment sees the adjusted capacity; stated before it, it does not",
+  "reordering effects that change the transition changes the transaction hash and the post-state hash"
+ ],
+ "exceptionAndWhy": {
+  "rule": "APPLY_RECLASSIFICATION elections execute as ONE Phase-4C batch at the position of the first election",
+  "reason": "Phase 4C enforces conservation across a batch aggregated by source; applying elections singly would let two elections that individually fit jointly exceed the source usage. Atomicity is preserved and the batch still observes effects stated before it.",
+  "guard": "where a non-election effect is stated between two elections AND touches capacity those elections move, the stated order and the atomic batch disagree, and the transaction is refused rather than resolved"
+ },
+ "dependsOnEffectIdsMeaning": "dependsOnEffectIds declares that an effect's MAGNITUDE OR STATE depends on another effect. It does not re-order execution - the stated order does that. A dependency that points forward therefore contradicts the stated order and is refused (EFFECT_DEPENDENCY_CONTRADICTS_ORDER); a dependency naming an effect the transaction does not carry is refused (INVALID_EFFECT_DEPENDENCY); a cycle is refused (TRANSACTION_EFFECT_DEPENDENCY_CYCLE or FIXED_POINT_REQUIRED).",
+ "evidence": {
+  "restoreThenConsume": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "committable": true,
+   "postStatePublished": true,
+   "perEffectOutcomes": [
+    "SATISFIED"
+   ],
+   "perEffectAvailable": [
+    "100"
+   ],
+   "postStateUnsafe": [],
+   "limitations": []
+  },
+  "consumeThenRestore": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "INSUFFICIENT_CAPACITY",
+   "committable": false,
+   "postStatePublished": false,
+   "perEffectOutcomes": [
+    "INSUFFICIENT_CAPACITY"
+   ],
+   "perEffectAvailable": [
+    "60"
+   ],
+   "postStateUnsafe": [],
+   "limitations": [
+    "INSUFFICIENT_CAPACITY"
+   ]
+  },
+  "supersedeThenConsume": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "committable": true,
+   "postStatePublished": true,
+   "perEffectOutcomes": [
+    "SATISFIED"
+   ],
+   "perEffectAvailable": [
+    "80"
+   ],
+   "postStateUnsafe": [],
+   "limitations": []
+  },
+  "consumeThenSupersede": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "INSUFFICIENT_CAPACITY",
+   "committable": false,
+   "postStatePublished": false,
+   "perEffectOutcomes": [
+    "INSUFFICIENT_CAPACITY"
+   ],
+   "perEffectAvailable": [
+    "40"
+   ],
+   "postStateUnsafe": [],
+   "limitations": [
+    "INSUFFICIENT_CAPACITY"
+   ]
+  },
+  "adjustThenConsume": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "SATISFIED",
+   "committable": true,
+   "postStatePublished": true,
+   "perEffectOutcomes": [
+    "SATISFIED"
+   ],
+   "perEffectAvailable": [
+    "400"
+   ],
+   "postStateUnsafe": [],
+   "limitations": []
+  },
+  "consumeThenAdjust": {
+   "simulationStatus": "SIMULATED",
+   "selectedPathResult": "INSUFFICIENT_CAPACITY",
+   "committable": false,
+   "postStatePublished": false,
+   "perEffectOutcomes": [
+    "INSUFFICIENT_CAPACITY"
+   ],
+   "perEffectAvailable": [
+    "200"
+   ],
+   "postStateUnsafe": [],
+   "limitations": [
+    "INSUFFICIENT_CAPACITY"
+   ]
+  },
+  "orderChangesIdentity": true
+ }
+}

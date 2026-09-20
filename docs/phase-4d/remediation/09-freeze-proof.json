@@ -1,0 +1,50 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §19 - freeze and boundary proof",
+ "at": "2026-09-20T23:21:23.955Z",
+ "failedBaseline": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "headAtRun": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "treesAtFailedBaseline": {
+  "phase3Compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+  "phase3Semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+  "ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+  "phase4bInput": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+  "phase4cCapacity": "c5f2d820d3c764d03846450c529a3f5399c423b8"
+ },
+ "treesNow": {
+  "phase3Compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+  "phase3Semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+  "ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+  "phase4bInput": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+  "phase4cCapacity": "c5f2d820d3c764d03846450c529a3f5399c423b8"
+ },
+ "productionFilesChanged": [
+  "lib/contract-model/runtime/transaction/effects.ts",
+  "lib/contract-model/runtime/transaction/simulate.ts",
+  "lib/contract-model/runtime/transaction/types.ts"
+ ],
+ "priorPhaseProductionFilesChanged": [],
+ "transactionModuleImportsOutsideItself": [
+  "../../ir/types",
+  "../capacity/graph",
+  "../capacity/reclassification",
+  "../capacity/state",
+  "../capacity/types",
+  "../capacity/version",
+  "../decimal",
+  "../evaluate-expression",
+  "../input/identity",
+  "../input/manifest",
+  "../input/types",
+  "../input/version",
+  "../types",
+  "../units",
+  "../values",
+  "../version"
+ ],
+ "earlierPhasesImportingTransaction": [],
+ "phase4eStarted": false,
+ "phase5Started": false,
+ "solverPresent": false,
+ "ingestionPresent": false,
+ "persistencePresent": false
+}

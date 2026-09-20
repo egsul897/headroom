@@ -1,0 +1,83 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §16 - the measured cost of the corrected composition model",
+ "at": "2026-09-20T23:21:23.954Z",
+ "scaling": [
+  {
+   "effects": 1,
+   "stateEvaluations": 2,
+   "ledgerEntriesExamined": 1,
+   "simulationSteps": 15,
+   "satisfied": true
+  },
+  {
+   "effects": 2,
+   "stateEvaluations": 3,
+   "ledgerEntriesExamined": 3,
+   "simulationSteps": 15,
+   "satisfied": true
+  },
+  {
+   "effects": 4,
+   "stateEvaluations": 5,
+   "ledgerEntriesExamined": 10,
+   "simulationSteps": 15,
+   "satisfied": true
+  },
+  {
+   "effects": 8,
+   "stateEvaluations": 9,
+   "ledgerEntriesExamined": 36,
+   "simulationSteps": 15,
+   "satisfied": true
+  },
+  {
+   "effects": 16,
+   "stateEvaluations": 17,
+   "ledgerEntriesExamined": 136,
+   "simulationSteps": 15,
+   "satisfied": true
+  },
+  {
+   "effects": 32,
+   "stateEvaluations": 33,
+   "ledgerEntriesExamined": 528,
+   "simulationSteps": 15,
+   "satisfied": true
+  }
+ ],
+ "stateEvaluationsRule": "one opening evaluation plus one per ledger-affecting effect: n + 1, linear in the number of effects",
+ "singleDrawUnchanged": "a transaction with one draw and no adjustment still costs 2 state evaluations, exactly as before the remediation, so the common case pays nothing",
+ "pipelineStepsConstant": true,
+ "knownQuadratic": {
+  "counter": "ledgerEntriesExamined",
+  "observed": [
+   {
+    "effects": 1,
+    "ledgerEntriesExamined": 1
+   },
+   {
+    "effects": 2,
+    "ledgerEntriesExamined": 3
+   },
+   {
+    "effects": 4,
+    "ledgerEntriesExamined": 10
+   },
+   {
+    "effects": 8,
+    "ledgerEntriesExamined": 36
+   },
+   {
+    "effects": 16,
+    "ledgerEntriesExamined": 136
+   },
+   {
+    "effects": 32,
+    "ledgerEntriesExamined": 528
+   }
+  ],
+  "statement": "each recomputation scans the ledger, which grows by one row per draw, so ledger scanning is quadratic in the number of ledger-affecting effects. This is disclosed rather than asserted away.",
+  "optimisationNotTaken": "an incremental usage accumulator would make this linear, but it would re-derive Phase-4C arithmetic inside Phase 4D and the two layers could then drift. Correctness first; the optimisation belongs behind a proof of equivalence."
+ },
+ "noWallClockAssertion": "no correctness or performance claim in this phase rests on elapsed time; every figure above is a structural counter"
+}

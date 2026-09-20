@@ -34,7 +34,7 @@ import type {
 } from "../capacity/types";
 import { TRANSACTION_SIMULATION_VERSION } from "./version";
 import { buildOverlay, quantityToRuntimeValue, valueUnit } from "./overlay";
-import { classifyEffects, detectEffectCycles } from "./effects";
+import { classifyEffects, detectCompositionConflicts, detectEffectCycles, writesOf } from "./effects";
 import { ledgerHash, simulationIdOf, transactionHash } from "./identity";
 import type {
   ApplyReclassificationEffect, CapacityEffectResult, ChangeMetricEffect, ConditionResult,
@@ -57,6 +57,10 @@ const worstPath = (xs: SelectedPathResult[]): SelectedPathResult =>
 const amountValue = (a: CapacityAmount): RuntimeValue | null =>
   a.kind === "AMOUNT" && a.value.type === "MONEY" ? { type: "MONEY", amount: rationalFromString(a.value.amount), currency: a.value.currency, lineage: L } : null;
 
+/** Exact-rational sign test on a Phase-4C capacity amount. No float is ever introduced. */
+const isNegativeAmount = (a: CapacityAmount): boolean =>
+  a.kind === "AMOUNT" && a.value.type === "MONEY" && a.value.amount.trim().startsWith("-");
+
 const amountCurrency = (a: CapacityAmount): string | null => (a.kind === "AMOUNT" && a.value.type === "MONEY" ? a.value.currency : null);
 
 const sortLimitations = (ls: SimulationLimitation[]) => ls.sort((a, b) => (`${a.code}|${a.message}` < `${b.code}|${b.message}` ? -1 : 1));
@@ -74,6 +78,14 @@ const SIMULATION_FLOOR: Record<string, SimulationStatus> = {
   PHASE3_RULE_NOT_SAFE_TO_RELY_ON: "REVIEW_REQUIRED", ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON: "REVIEW_REQUIRED",
   SHARED_CAPACITY_NOT_QUANTIFIED: "REVIEW_REQUIRED", ENTITY_SCOPE_UNSPECIFIED: "REVIEW_REQUIRED",
   INVALID_RECLASSIFICATION_SOURCE: "ERROR", INVALID_RECLASSIFICATION_TARGET: "ERROR",
+  // --- composition safety (Phase-4D remediation) ---------------------------
+  // An aggregate over-draw is a conclusion the engine reached, not a failure to evaluate, so it
+  // does not by itself raise the simulation dimension above SIMULATED.
+  INSUFFICIENT_AGGREGATE_CAPACITY: "SIMULATED",
+  CONFLICTING_LEDGER_SUCCESSOR: "AMBIGUOUS", CONFLICTING_EVENT_STATE: "AMBIGUOUS",
+  CONFLICTING_METRIC_ADJUSTMENT: "AMBIGUOUS",
+  INVALID_EFFECT_DEPENDENCY: "ERROR", EFFECT_DEPENDENCY_CONTRADICTS_ORDER: "ERROR",
+  POST_STATE_INCONSISTENT: "ERROR",
 };
 
 /**
@@ -85,6 +97,10 @@ const PRE_EVALUATION_BLOCKERS = new Set<string>([
   "EFFECT_TARGET_NOT_IN_SELECTED_PATH", "INVALID_EXPLICIT_ALLOCATION", "AMBIGUOUS_CAPACITY_ALLOCATION",
   "FIXED_POINT_REQUIRED", "TRANSACTION_EFFECT_DEPENDENCY_CYCLE", "TRANSACTION_SCOPE_MISMATCH",
   "DUPLICATE_EFFECT_IDENTITY", "DUPLICATE_PROPOSED_LEDGER_IDENTITY", "LEDGER_USAGE_NOT_FOUND",
+  // A conflicting or malformed composition is a specification that cannot be evaluated at all -
+  // not a path that was evaluated and found wanting.
+  "CONFLICTING_LEDGER_SUCCESSOR", "CONFLICTING_EVENT_STATE", "CONFLICTING_METRIC_ADJUSTMENT",
+  "INVALID_EFFECT_DEPENDENCY", "EFFECT_DEPENDENCY_CONTRADICTS_ORDER", "POST_STATE_INCONSISTENT",
 ]);
 
 export function simulateTransaction(args: SimulateTransactionArgs): TransactionSimulationResult {
@@ -110,6 +126,9 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   // ---- 1. validate the transaction -----------------------------------------
   const { classified, limitations: effectLimitations } = classifyEffects(tx.effects);
   limitations.push(...effectLimitations);
+  // Structural composition conflicts, before anything is evaluated: competing ledger successors,
+  // incompatible event or metric assignments, and malformed dependency edges. Each fails closed.
+  limitations.push(...detectCompositionConflicts(tx.effects));
   if (tx.companyId !== graph.companyId || tx.instrumentKey !== graph.instrumentKey) {
     limit("TRANSACTION_SCOPE_MISMATCH", `the transaction states company ${tx.companyId} / instrument ${tx.instrumentKey}; the capacity graph is company ${graph.companyId} / instrument ${graph.instrumentKey}`, [tx.transactionId]);
   }
@@ -265,114 +284,186 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   } else {
     step("CONDITIONS_EVALUATED", "SKIPPED", "no capacity state was evaluated", [], [], []);
   }
-
-  // ---- 10 / 11. capacity consumption and shared constraints ----------------
+  // ---- 10-13. SEQUENTIAL EXECUTION OF THE STATED EFFECTS -------------------
+  //
+  // The Phase-4D semantic contract, stated once and enforced here:
+  //
+  //   Effects apply IN THE STATED ORDER, each against the state its predecessors produced.
+  //
+  // Availability is therefore never measured twice against the same pre-transaction snapshot. A
+  // second draw on a resource sees what the first draw left, a draw after a release sees the
+  // released headroom, and a draw after a metric adjustment sees the adjusted capacity.
+  //
+  // Phase 4C remains the sole arithmetic authority: every measurement below reads a capacity entry
+  // that `evaluateCapacityState` produced. Nothing here re-derives a remaining-capacity formula,
+  // so the two layers cannot drift.
   const capacityEffects: CapacityEffectResult[] = [];
-  if (postOverlayState) {
-    const entryByNode = new Map(postOverlayState.capacities.map((c) => [c.capacityNodeId, c]));
-    complexity.indexLookups++;
-    for (const e of consumeEffects) {
-      complexity.indexLookups++;
-      complexity.effectsApplied++;
-      const node = nodeById.get(e.capacityNodeId);
-      const entry = entryByNode.get(e.capacityNodeId);
-      capacityEffects.push(consumptionResult(e, node?.ruleId ?? null, node?.sharedCapacityId ?? null, entry ?? null));
-    }
-    for (const r of capacityEffects) for (const l of r.limitations) if (!limitations.some((x) => x.code === l.code && x.message === l.message)) limitations.push(l);
-    complexity.sharedResourcesEvaluated += capacityEffects.reduce((n, r) => n + r.sharedConstraintIds.length, 0);
-    step("CAPACITY_CONSUMPTION_CALCULATED", capacityEffects.every((r) => r.outcome === "SATISFIED") ? "OK" : "BLOCKED", `${capacityEffects.length} explicit draw(s) measured against effective remaining capacity; an over-draw is reported, never clamped and never resized`, capacityEffects.map((r) => r.capacityNodeId), capacityEffects.map((r) => `${r.capacityNodeId}:${r.outcome}`), ["Phase-4C effective remaining"]);
-    step("SHARED_CONSTRAINTS_EVALUATED", "OK", `${postOverlayState.sharedConstraints.length} shared constraint(s) in the graph; a member draw is bounded by every pool it belongs to and no pool limit is copied onto a member`, capacityEffects.flatMap((r) => r.sharedConstraintIds), postOverlayState.sharedConstraints.map((s) => `${s.sharedCapacityId}:${s.status}`), ["Phase-4C shared constraint state"]);
-  } else {
-    step("CAPACITY_CONSUMPTION_CALCULATED", "SKIPPED", "no capacity state was evaluated", [], [], []);
-    step("SHARED_CONSTRAINTS_EVALUATED", "SKIPPED", "no capacity state was evaluated", [], [], []);
-  }
-
-  // ---- 12. explicitly elected reclassification ------------------------------
-  let reclassOutcomes: ReclassificationOutcome[] = [];
-  let batchConservation: TransactionSimulationResult["reclassificationEffects"]["batchConservation"] = [];
-  let reclassGenerated: LedgerUsageRecord[] = [];
-  let reclassAllExecuted = reclassEffects.length === 0;
-  complexity.reclassificationEdgesExamined += graph.edges.filter((x) => x.kind === "RECLASSIFIABLE_TO").length;
-  if (postOverlayState && reclassEffects.length > 0) {
-    const transition = applyCapacityStateTransition({
-      graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions,
-      inputs: overlay.resolver, ledger: baseLedger, ledgerPolicy: policy, asOf,
-      before: currentState, elections: reclassEffects.map((e) => e.election),
-    });
-    complexity.stateEvaluations++;
-    complexity.effectsApplied += reclassEffects.length;
-    reclassOutcomes = transition.outcomes;
-    batchConservation = transition.batchConservation;
-    reclassAllExecuted = transition.allExecuted;
-    reclassGenerated = transition.outcomes.flatMap((o) => o.generatedUsage);
-    for (const o of transition.outcomes) {
-      for (const b of o.blockedBy) {
-        const code = b.code === "SOURCE_CAPACITY_NOT_IN_GRAPH" ? "INVALID_RECLASSIFICATION_SOURCE"
-          : b.code === "DESTINATION_CAPACITY_NOT_IN_GRAPH" ? "INVALID_RECLASSIFICATION_TARGET"
-            : b.code === "CURRENCY_MISMATCH_NO_CONVERSION_MODELED" ? "CURRENCY_MISMATCH_NO_CONVERSION_MODELED" : "RECLASSIFICATION_NOT_EXECUTABLE";
-        limit(code, `election ${o.electionId}: ${b.message}`, [o.electionId, ...b.missingSemanticFields]);
-      }
-    }
-    step("RECLASSIFICATION_APPLIED", transition.allExecuted ? "OK" : "BLOCKED", `${reclassEffects.length} explicit election(s); each is validated against an encoded Phase-3 edge and the batch conserves total usage per source or applies not at all`, reclassEffects.map((e) => e.election.electionId), transition.outcomes.map((o) => `${o.electionId}:${o.state}`), ["Phase-4C reclassification, recertified batch conservation"]);
-  } else {
-    step("RECLASSIFICATION_APPLIED", reclassEffects.length === 0 ? "SKIPPED" : "BLOCKED", reclassEffects.length === 0 ? "no election was supplied; Phase 4D never elects a reclassification on the caller's behalf" : "no capacity state was evaluated", [], [], []);
-  }
-
-  // ---- 13. proposed ledger effects ------------------------------------------
   const proposed: ProposedLedgerEffect[] = [];
   const superseded: SupersededLedgerEffect[] = [];
   const baseById = new Map(baseLedger.map((u) => [u.usageId, u]));
   complexity.indexLookups++;
   const proposedId = (effectId: string) => `${tx.transactionId}::${effectId}`;
 
+  let reclassOutcomes: ReclassificationOutcome[] = [];
+  let batchConservation: TransactionSimulationResult["reclassificationEffects"]["batchConservation"] = [];
+  let reclassAllExecuted = reclassEffects.length === 0;
+  complexity.reclassificationEdgesExamined += graph.edges.filter((x) => x.kind === "RECLASSIFIABLE_TO").length;
+
+  // The working ledger. Superseded originals are restated in place; successors are appended.
+  let workingLedger: LedgerUsageRecord[] = [...baseLedger];
+  // The overlay grows as CHANGE_METRIC / event effects are reached, so an adjustment is visible
+  // only to the effects stated after it.
+  const appliedMetrics: ChangeMetricEffect[] = [];
+  const appliedEvents: EventStateEffect[] = [];
+  let cursorState: CapacityState | null = postOverlayState;
+  let cursorDirty = false;
+  let reclassBatchApplied = false;
+
+  // A batch that must execute atomically cannot also be interleaved. Where another effect sits
+  // between two elections AND touches a capacity those elections move, the stated sequence and the
+  // atomic batch disagree, and Phase 4D says so rather than silently picking one reading.
+  {
+    const positions = tx.effects.map((e, i) => ({ e, i })).filter(({ e }) => e.kind === "APPLY_RECLASSIFICATION" && supportedIds.has(e.effectId));
+    if (positions.length > 1) {
+      const first = positions[0]!.i, last = positions[positions.length - 1]!.i;
+      const moved = new Set(reclassEffects.flatMap((x) => [ruleNodeId(x.election.sourceRuleId), ruleNodeId(x.election.destinationRuleId)]));
+      const between = tx.effects.slice(first + 1, last).filter((e) => e.kind !== "APPLY_RECLASSIFICATION" && supportedIds.has(e.effectId));
+      const clashing = between.filter((e) => writesOf(e).some((w) => moved.has(w.replace(/^capacity:/, "capacity:"))) || (e.kind === "CONSUME_CAPACITY" && moved.has(e.capacityNodeId)));
+      if (clashing.length > 0) {
+        limit("RECLASSIFICATION_NOT_EXECUTABLE", `effects ${clashing.map((e) => e.effectId).sort().join(", ")} are stated between elections that execute as one conserving batch and touch capacity the batch moves; the stated order and the atomic batch cannot both be honoured, so the combination is refused rather than guessed`, clashing.map((e) => e.effectId).sort());
+      }
+    }
+  }
+
+  /** Recompute the Phase-4C state for the cursor, but only when a prior effect changed it. */
+  const refreshCursor = (): CapacityState | null => {
+    if (!cursorDirty && cursorState) return cursorState;
+    const stepOverlay = buildOverlay({ base: inputs, transactionId: tx.transactionId, companyId: graph.companyId, instrumentKey: graph.instrumentKey, metricEffects: appliedMetrics, eventEffects: appliedEvents });
+    cursorState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: stepOverlay.resolver, ledger: workingLedger, ledgerPolicy: policy, asOf });
+    complexity.stateEvaluations++;
+    complexity.ledgerEntriesExamined += cursorState.complexity.ledgerEntriesExamined;
+    cursorDirty = false;
+    return cursorState;
+  };
+
   if (postOverlayState) {
-    for (const e of consumeEffects) {
-      const node = nodeById.get(e.capacityNodeId);
-      const result = capacityEffects.find((r) => r.effectId === e.effectId);
-      if (!node || !result || e.amount.type !== "MONEY") continue;
-      const path = node.ruleId ? { kind: "RULE" as const, ruleId: node.ruleId } : node.sharedCapacityId ? { kind: "SHARED_CAPACITY" as const, sharedCapacityId: node.sharedCapacityId } : null;
-      if (!path) continue;
-      proposed.push({
-        kind: "PROPOSED_USAGE", effectId: e.effectId, transactionId: tx.transactionId, simulationId,
-        record: {
-          usageId: proposedId(e.effectId), companyId: graph.companyId, instrumentKey: graph.instrumentKey,
-          effectiveAsOf: tx.effectiveAsOf, amount: { amount: e.amount.amount, currency: e.amount.currency },
-          capacityPath: path, transactionRef: tx.transactionId, status: "RECORDED", supersededByUsageId: null,
-          provenance: { source: tx.provenance.source, sourceVersion: tx.provenance.sourceVersion, approvalRef: tx.provenance.approvalRef, approvalState: "PROPOSED_BY_SIMULATION" },
-        },
-        supersedesUsageId: null, preStateLedgerHash: ledgerPreHash, origin: "CONSUME_CAPACITY",
-      });
+    // At the cursor's start no adjustment has been reached yet, so the opening state is the base
+    // ledger under an empty overlay. Where the transaction states no adjustment at all this is
+    // exactly `postOverlayState` and no extra evaluation is performed.
+    if (metricEffects.length > 0 || eventEffects.length > 0) cursorDirty = true;
+
+    for (const e of tx.effects) {
+      if (!supportedIds.has(e.effectId)) continue;
+      switch (e.kind) {
+        case "CHANGE_METRIC": {
+          appliedMetrics.push(e as ChangeMetricEffect);
+          complexity.effectsApplied++;
+          cursorDirty = true;
+          break;
+        }
+        case "ACTIVATE_EVENT": case "DEACTIVATE_EVENT": {
+          appliedEvents.push(e as EventStateEffect);
+          complexity.effectsApplied++;
+          cursorDirty = true;
+          break;
+        }
+        case "CONSUME_CAPACITY": {
+          const eff = e as ConsumeCapacityEffect;
+          const state = refreshCursor();
+          complexity.indexLookups++;
+          complexity.effectsApplied++;
+          const node = nodeById.get(eff.capacityNodeId);
+          const entry = state?.capacities.find((c) => c.capacityNodeId === eff.capacityNodeId) ?? null;
+          const result = consumptionResult(eff, node?.ruleId ?? null, node?.sharedCapacityId ?? null, entry);
+          capacityEffects.push(result);
+          complexity.sharedResourcesEvaluated += result.sharedConstraintIds.length;
+          // The proposed row is appended whatever the outcome, so the post-state that gets
+          // validated below is the state this transaction would actually produce.
+          if (node && eff.amount.type === "MONEY") {
+            const path = node.ruleId ? { kind: "RULE" as const, ruleId: node.ruleId } : node.sharedCapacityId ? { kind: "SHARED_CAPACITY" as const, sharedCapacityId: node.sharedCapacityId } : null;
+            if (path) {
+              const record: LedgerUsageRecord = {
+                usageId: proposedId(eff.effectId), companyId: graph.companyId, instrumentKey: graph.instrumentKey,
+                effectiveAsOf: tx.effectiveAsOf, amount: { amount: eff.amount.amount, currency: eff.amount.currency },
+                capacityPath: path, transactionRef: tx.transactionId, status: "RECORDED", supersededByUsageId: null,
+                provenance: { source: tx.provenance.source, sourceVersion: tx.provenance.sourceVersion, approvalRef: tx.provenance.approvalRef, approvalState: "PROPOSED_BY_SIMULATION" },
+              };
+              proposed.push({ kind: "PROPOSED_USAGE", effectId: eff.effectId, transactionId: tx.transactionId, simulationId, record, supersedesUsageId: null, preStateLedgerHash: ledgerPreHash, origin: "CONSUME_CAPACITY" });
+              workingLedger = [...workingLedger, record];
+              cursorDirty = true;
+            }
+          }
+          break;
+        }
+        case "RESTORE_CAPACITY": case "SUPERSEDE_LEDGER_USAGE": {
+          const eff = e as RestoreCapacityEffect | SupersedeLedgerUsageEffect;
+          complexity.indexLookups++;
+          complexity.effectsApplied++;
+          const original = baseById.get(eff.usageId);
+          if (!original) { limit("LEDGER_USAGE_NOT_FOUND", `effect ${eff.effectId} names usage ${eff.usageId}, which is not in the supplied ledger; an identity that does not exist is never created to satisfy an effect`, [eff.effectId, eff.usageId]); break; }
+          const isRestore = eff.kind === "RESTORE_CAPACITY";
+          const replacement = isRestore ? null : (eff as SupersedeLedgerUsageEffect).replacementAmount;
+          if (replacement && replacement.type !== "MONEY") { limit("INCOMPATIBLE_UNIT", `effect ${eff.effectId} restates usage ${eff.usageId} with a ${replacement.type} amount; a ledger usage is money`, [eff.effectId]); break; }
+          if (replacement && replacement.currency !== original.amount.currency) { limit("CURRENCY_MISMATCH_NO_CONVERSION_MODELED", `effect ${eff.effectId} restates usage ${eff.usageId} in ${replacement.currency} but the record is in ${original.amount.currency}; no conversion is modelled`, [eff.effectId, eff.usageId]); break; }
+          const successorId = proposedId(eff.effectId);
+          const successor: LedgerUsageRecord = {
+            usageId: successorId, companyId: original.companyId, instrumentKey: original.instrumentKey,
+            effectiveAsOf: tx.effectiveAsOf,
+            amount: replacement ? { amount: replacement.amount, currency: replacement.currency } : { amount: original.amount.amount, currency: original.amount.currency },
+            capacityPath: original.capacityPath, transactionRef: tx.transactionId,
+            // A release is recorded as a reversal row: it exists, so the original is explicitly
+            // superseded, and it is not itself counted under the recorded-usage policy.
+            status: replacement ? "RECORDED" : "REVERSED", supersededByUsageId: null,
+            provenance: { source: tx.provenance.source, sourceVersion: tx.provenance.sourceVersion, approvalRef: tx.provenance.approvalRef, approvalState: isRestore ? "PROPOSED_RELEASE_BY_SIMULATION" : "PROPOSED_RESTATEMENT_BY_SIMULATION" },
+          };
+          const restated: LedgerUsageRecord = { ...original, status: "SUPERSEDED", supersededByUsageId: successorId };
+          superseded.push({ effectId: eff.effectId, originalUsageId: original.usageId, original, proposed: restated, supersededByUsageId: successorId, reason: eff.reason });
+          proposed.push({ kind: "SUPERSEDED_USAGE", effectId: eff.effectId, transactionId: tx.transactionId, simulationId, record: successor, supersedesUsageId: original.usageId, preStateLedgerHash: ledgerPreHash, origin: isRestore ? "RESTORE_CAPACITY" : "SUPERSEDE_LEDGER_USAGE" });
+          workingLedger = [...workingLedger.map((u) => (u.usageId === original.usageId ? restated : u)), successor];
+          cursorDirty = true;
+          break;
+        }
+        case "APPLY_RECLASSIFICATION": {
+          // Elections are executed as ONE Phase-4C batch, so the recertified conservation rule -
+          // a batch may not jointly move more usage than a source carries - still binds. The batch
+          // runs at the position of the FIRST election in the stated sequence, so it observes the
+          // effects stated before it and is observed by the effects stated after it.
+          if (reclassBatchApplied) break;
+          reclassBatchApplied = true;
+          const state = refreshCursor();
+          if (!state) break;
+          const transition = applyCapacityStateTransition({
+            graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions,
+            inputs: buildOverlay({ base: inputs, transactionId: tx.transactionId, companyId: graph.companyId, instrumentKey: graph.instrumentKey, metricEffects: appliedMetrics, eventEffects: appliedEvents }).resolver,
+            ledger: workingLedger, ledgerPolicy: policy, asOf, before: state,
+            elections: reclassEffects.map((x) => x.election),
+          });
+          complexity.stateEvaluations++;
+          complexity.effectsApplied += reclassEffects.length;
+          reclassOutcomes = transition.outcomes;
+          batchConservation = transition.batchConservation;
+          reclassAllExecuted = transition.allExecuted;
+          for (const o of transition.outcomes) {
+            for (const b of o.blockedBy) {
+              const code = b.code === "SOURCE_CAPACITY_NOT_IN_GRAPH" ? "INVALID_RECLASSIFICATION_SOURCE"
+                : b.code === "DESTINATION_CAPACITY_NOT_IN_GRAPH" ? "INVALID_RECLASSIFICATION_TARGET"
+                  : b.code === "CURRENCY_MISMATCH_NO_CONVERSION_MODELED" ? "CURRENCY_MISMATCH_NO_CONVERSION_MODELED" : "RECLASSIFICATION_NOT_EXECUTABLE";
+              limit(code, `election ${o.electionId}: ${b.message}`, [o.electionId, ...b.missingSemanticFields]);
+            }
+          }
+          for (const g of transition.outcomes.flatMap((o) => o.generatedUsage)) {
+            proposed.push({ kind: "RECLASSIFIED_USAGE", effectId: null, transactionId: tx.transactionId, simulationId, record: g, supersedesUsageId: null, preStateLedgerHash: ledgerPreHash, origin: "RECLASSIFICATION_ELECTION" });
+            workingLedger = [...workingLedger, g];
+          }
+          cursorDirty = true;
+          break;
+        }
+        default: break;
+      }
     }
-    for (const e of [...restoreEffects, ...supersedeEffects]) {
-      complexity.indexLookups++;
-      complexity.effectsApplied++;
-      const original = baseById.get(e.usageId);
-      if (!original) { limit("LEDGER_USAGE_NOT_FOUND", `effect ${e.effectId} names usage ${e.usageId}, which is not in the supplied ledger; an identity that does not exist is never created to satisfy an effect`, [e.effectId, e.usageId]); continue; }
-      const isRestore = e.kind === "RESTORE_CAPACITY";
-      const replacement = isRestore ? null : (e as SupersedeLedgerUsageEffect).replacementAmount;
-      if (replacement && replacement.type !== "MONEY") { limit("INCOMPATIBLE_UNIT", `effect ${e.effectId} restates usage ${e.usageId} with a ${replacement.type} amount; a ledger usage is money`, [e.effectId]); continue; }
-      if (replacement && replacement.currency !== original.amount.currency) { limit("CURRENCY_MISMATCH_NO_CONVERSION_MODELED", `effect ${e.effectId} restates usage ${e.usageId} in ${replacement.currency} but the record is in ${original.amount.currency}; no conversion is modelled`, [e.effectId, e.usageId]); continue; }
-      const successorId = proposedId(e.effectId);
-      const successor: LedgerUsageRecord = {
-        usageId: successorId, companyId: original.companyId, instrumentKey: original.instrumentKey,
-        effectiveAsOf: tx.effectiveAsOf,
-        amount: replacement ? { amount: replacement.amount, currency: replacement.currency } : { amount: original.amount.amount, currency: original.amount.currency },
-        capacityPath: original.capacityPath, transactionRef: tx.transactionId,
-        // A release is recorded as a reversal row: it exists, so the original is explicitly
-        // superseded, and it is not itself counted under the recorded-usage policy.
-        status: replacement ? "RECORDED" : "REVERSED", supersededByUsageId: null,
-        provenance: { source: tx.provenance.source, sourceVersion: tx.provenance.sourceVersion, approvalRef: tx.provenance.approvalRef, approvalState: isRestore ? "PROPOSED_RELEASE_BY_SIMULATION" : "PROPOSED_RESTATEMENT_BY_SIMULATION" },
-      };
-      superseded.push({
-        effectId: e.effectId, originalUsageId: original.usageId, original,
-        proposed: { ...original, status: "SUPERSEDED", supersededByUsageId: successorId },
-        supersededByUsageId: successorId, reason: e.reason,
-      });
-      proposed.push({ kind: "SUPERSEDED_USAGE", effectId: e.effectId, transactionId: tx.transactionId, simulationId, record: successor, supersedesUsageId: original.usageId, preStateLedgerHash: ledgerPreHash, origin: isRestore ? "RESTORE_CAPACITY" : "SUPERSEDE_LEDGER_USAGE" });
-    }
-    for (const g of reclassGenerated) {
-      proposed.push({ kind: "RECLASSIFIED_USAGE", effectId: null, transactionId: tx.transactionId, simulationId, record: g, supersedesUsageId: null, preStateLedgerHash: ledgerPreHash, origin: "RECLASSIFICATION_ELECTION" });
-    }
+
+    for (const r of capacityEffects) for (const l of r.limitations) if (!limitations.some((x) => x.code === l.code && x.message === l.message)) limitations.push(l);
+
     // One immutable usage identity, once. A proposed row may never reuse an existing identity.
     const proposedIds = new Map<string, number>();
     for (const p of proposed) proposedIds.set(p.record.usageId, (proposedIds.get(p.record.usageId) ?? 0) + 1);
@@ -380,9 +471,16 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
       if (n > 1) limit("DUPLICATE_PROPOSED_LEDGER_IDENTITY", `${n} proposed ledger rows claim usage identity ${id}; one identity may contribute at most once and nothing is chosen between them`, [id]);
       if (baseById.has(id)) limit("DUPLICATE_PROPOSED_LEDGER_IDENTITY", `a proposed ledger row claims usage identity ${id}, which the existing ledger already carries; the proposal would double-count and is refused`, [id]);
     }
-    step("PROPOSED_LEDGER_EFFECTS_CREATED", limitations.some((l) => l.code === "DUPLICATE_PROPOSED_LEDGER_IDENTITY" || l.code === "LEDGER_USAGE_NOT_FOUND") ? "BLOCKED" : "OK",
+
+    step("CAPACITY_CONSUMPTION_CALCULATED", capacityEffects.every((r) => r.outcome === "SATISFIED") ? "OK" : "BLOCKED", `${capacityEffects.length} explicit draw(s), each measured against the state its predecessors produced; an over-draw is reported, never clamped and never resized`, capacityEffects.map((r) => r.capacityNodeId), capacityEffects.map((r) => `${r.capacityNodeId}:${r.outcome}`), ["Phase-4C effective remaining, recomputed per stated effect"]);
+    step("SHARED_CONSTRAINTS_EVALUATED", "OK", `${(cursorState ?? postOverlayState).sharedConstraints.length} shared constraint(s); a member draw is bounded by every pool it belongs to and no pool limit is copied onto a member`, capacityEffects.flatMap((r) => r.sharedConstraintIds), (cursorState ?? postOverlayState).sharedConstraints.map((s) => `${s.sharedCapacityId}:${s.status}`), ["Phase-4C shared constraint state"]);
+    step("RECLASSIFICATION_APPLIED", reclassEffects.length === 0 ? "SKIPPED" : reclassAllExecuted ? "OK" : "BLOCKED", reclassEffects.length === 0 ? "no election was supplied; Phase 4D never elects a reclassification on the caller's behalf" : `${reclassEffects.length} explicit election(s), each validated against an encoded Phase-3 edge with conservation enforced by Phase 4C`, reclassEffects.map((e) => e.election.electionId), reclassOutcomes.map((o) => `${o.electionId}:${o.state}`), ["Phase-4C reclassification, recertified batch conservation"]);
+    step("PROPOSED_LEDGER_EFFECTS_CREATED", limitations.some((l) => l.code === "DUPLICATE_PROPOSED_LEDGER_IDENTITY" || l.code === "LEDGER_USAGE_NOT_FOUND" || l.code === "CONFLICTING_LEDGER_SUCCESSOR") ? "BLOCKED" : "OK",
       `${proposed.length} proposed row(s), ${superseded.length} existing row(s) restated as superseded; the actual ledger is never written`, [ledgerPreHash], proposed.map((p) => p.record.usageId), ["proposal only - Phase 4D persists nothing"]);
   } else {
+    step("CAPACITY_CONSUMPTION_CALCULATED", "SKIPPED", "no capacity state was evaluated", [], [], []);
+    step("SHARED_CONSTRAINTS_EVALUATED", "SKIPPED", "no capacity state was evaluated", [], [], []);
+    step("RECLASSIFICATION_APPLIED", "SKIPPED", "no capacity state was evaluated", [], [], []);
     step("PROPOSED_LEDGER_EFFECTS_CREATED", "SKIPPED", "no capacity state was evaluated", [], [], []);
   }
 
@@ -400,24 +498,59 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   const selectedPathResult: SelectedPathResult = structurallyBlocked ? "INDETERMINATE" : worstPath(pathContributions);
   const simulationStatus = worstStatus(limitations.map((l) => SIMULATION_FLOOR[l.code] ?? "SIMULATED"));
 
-  // ---- 14. immutable post-state --------------------------------------------
+  // ---- 14. immutable post-state, then AUTHORITATIVE VALIDATION OF IT --------
+  //
+  // The post-state is not a report of a conclusion already reached. It is evidence that gets
+  // checked. Phase 4C is asked what the combined transition actually produced, and if that answer
+  // contradicts the transaction-level verdict the verdict loses, not the state.
   const applicable = !structurallyBlocked && (selectedPathResult === "SATISFIED" || selectedPathResult === "REVIEW_REQUIRED");
   let postState: CapacityState | null = null;
   let ledgerPostHash: string | null = null;
+  let postStateConflicts: string[] = [];
   if (applicable) {
-    const supersededIds = new Set(superseded.map((s) => s.originalUsageId));
-    const proposedLedger: LedgerUsageRecord[] = [
-      ...baseLedger.map((u) => (supersededIds.has(u.usageId) ? superseded.find((s) => s.originalUsageId === u.usageId)!.proposed : u)),
-      ...proposed.map((p) => p.record),
-    ];
+    const proposedLedger = workingLedger;
     postState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: proposedLedger, ledgerPolicy: policy, asOf });
     complexity.stateEvaluations++;
     complexity.ledgerEntriesExamined += postState.complexity.ledgerEntriesExamined;
     ledgerPostHash = ledgerHash(proposedLedger);
-    step("POST_STATE_DERIVED", "OK", `post-transaction state derived from the pre-transaction ledger plus ${proposed.length} proposed row(s); the input state object is unchanged`, [ledgerPreHash], [postState.stateHash], [`pre-state ${currentState.stateHash.slice(0, 12)}`]);
+
+    // Phase 4C reports an over-draw two ways: an OVER_CONSUMPTION limitation, and - where the
+    // entry stays authoritative - a negative remaining. Both are read, because an over-draw that
+    // makes an entry non-authoritative withholds the remaining figure entirely.
+    const touchedNodes = new Set<string>([...selectedNodeIds, ...capacityEffects.map((c) => c.capacityNodeId)]);
+    const touchedShared = new Set<string>([...selectedPath.sharedCapacityIds, ...capacityEffects.flatMap((c) => c.sharedConstraintIds)]);
+    for (const c of postState.capacities) {
+      if (!touchedNodes.has(c.capacityNodeId)) continue;
+      if (c.limitations.some((l) => l.code === "OVER_CONSUMPTION")) postStateConflicts.push(`capacity ${c.capacityNodeId}`);
+      else if (isNegativeAmount(c.remaining)) postStateConflicts.push(`capacity ${c.capacityNodeId}`);
+    }
+    for (const sc of postState.sharedConstraints) {
+      if (!touchedShared.has(sc.sharedCapacityId) && !sc.memberRuleIds.some((rid) => touchedNodes.has(ruleNodeId(rid)))) continue;
+      if (sc.limitations.some((l) => l.code === "OVER_CONSUMPTION")) postStateConflicts.push(`shared resource ${sc.sharedCapacityId}`);
+      else if (isNegativeAmount(sc.remaining)) postStateConflicts.push(`shared resource ${sc.sharedCapacityId}`);
+    }
+    postStateConflicts = [...new Set(postStateConflicts)].sort();
+
+    if (postStateConflicts.length > 0) {
+      limit("INSUFFICIENT_AGGREGATE_CAPACITY", `the combined effects of this transaction over-consume ${postStateConflicts.join(", ")}; each draw may fit the state it was measured against, but the transition they produce together does not, so the transaction is refused rather than published`, postStateConflicts);
+      // A contradictory transition is never published as a hypothetical successor state. The
+      // arithmetic that produced it stays visible in capacityEffects and in the proposed rows.
+      postState = null;
+      ledgerPostHash = null;
+      step("POST_STATE_DERIVED", "BLOCKED", `the recomputed post-state contradicts the per-effect conclusions (${postStateConflicts.join(", ")}); no successor state is published`, [ledgerPreHash], [], [`pre-state ${currentState.stateHash.slice(0, 12)}`]);
+    } else {
+      step("POST_STATE_DERIVED", "OK", `post-transaction state derived from the pre-transaction ledger plus ${proposed.length} proposed row(s) and validated against Phase 4C; the input state object is unchanged`, [ledgerPreHash], [postState.stateHash], [`pre-state ${currentState.stateHash.slice(0, 12)}`]);
+    }
   } else {
     step("POST_STATE_DERIVED", "BLOCKED", structurallyBlocked ? "the specification was refused, so no post-state is published" : `the selected path is ${selectedPathResult}, so the transaction cannot be applied and no post-state is published; a partially applied state is never presented as valid`, [], [], []);
   }
+
+  // The path and simulation dimensions are recomputed once the post-state has spoken, so a
+  // verdict can never outlive the evidence that contradicted it.
+  const finalPathResult: SelectedPathResult = postStateConflicts.length > 0
+    ? worstPath([selectedPathResult, "INSUFFICIENT_CAPACITY"])
+    : selectedPathResult;
+  const finalSimulationStatus = worstStatus(limitations.map((l) => SIMULATION_FLOOR[l.code] ?? "SIMULATED"));
 
   const postStateBinding: Record<string, string | null> = {
     preStateHash: currentState.stateHash, transactionHash: txHash,
@@ -438,7 +571,9 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   ])].sort();
 
   const commitPlan: TransactionSimulationResult["commitPlan"] = {
-    committable: postState !== null && selectedPathResult === "SATISFIED" && simulationStatus === "SIMULATED",
+    // Committable means: the simulation ran, the selected path is satisfied, a post-state was
+    // published, and that post-state survived validation. All four, never fewer.
+    committable: postState !== null && postStateConflicts.length === 0 && finalPathResult === "SATISFIED" && finalSimulationStatus === "SIMULATED",
     blockedBy: [...new Set(limitations.map((l) => l.code))].sort(),
     wouldAppendLedgerRecords: proposed.map((p) => p.record),
     wouldSupersedeUsageIds: superseded.map((s) => s.originalUsageId).sort(),
@@ -448,21 +583,21 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
     note: "declarative only. Phase 4D computes a hypothetical result; it writes no ledger, no snapshot, no state and no event, and it never schedules or executes this plan.",
   };
 
-  step("STATUS_FINALIZED", "OK", `simulation ${simulationStatus}, selected path ${selectedPathResult}; the two dimensions are reported separately and are never collapsed into one permitted flag`, [], [simulationStatus, selectedPathResult], []);
+  step("STATUS_FINALIZED", "OK", `simulation ${finalSimulationStatus}, selected path ${finalPathResult}; the two dimensions are reported separately and are never collapsed into one permitted flag`, [], [finalSimulationStatus, finalPathResult], []);
 
   return {
     transactionSimulationVersion: TRANSACTION_SIMULATION_VERSION,
     runtimeVersion: CONTRACT_RUNTIME_VERSION,
     inputContractVersion: FINANCIAL_INPUT_CONTRACT_VERSION,
     capacityGraphVersion: CAPACITY_GRAPH_VERSION,
-    simulationStatus, selectedPathResult,
+    simulationStatus: finalSimulationStatus, selectedPathResult: finalPathResult,
     transactionIdentity: { transactionId: tx.transactionId, transactionHash: txHash, fields: { canonicalForm: "see canonicalTransaction in transaction/identity.ts" } },
     simulationIdentity: { simulationId, simulationHash: simulationId },
     selectedPath, dependencyManifest,
     preStateIdentity: { stateHash: currentState.stateHash, graphHash: graph.graphHash, ledgerHash: ledgerPreHash, asOf },
     preTransactionState: currentState,
     simulationInputView,
-    effects: classified.map((c) => ({ effectId: c.effectId, kind: c.kind, supported: c.supported, applied: c.supported && !structurallyBlocked, reason: c.reason })),
+    effects: classified.map((c) => ({ effectId: c.effectId, kind: c.kind, supported: c.supported, applied: c.supported && !structurallyBlocked && postStateConflicts.length === 0, reason: c.reason })),
     capacityEffects,
     ledgerEffects: { proposed, superseded },
     financialEffects: overlay.entries,
