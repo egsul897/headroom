@@ -1,0 +1,242 @@
+{
+  "artifact": "§10 — additive correction ledger. Nothing here has been applied to the frozen benchmark.",
+  "at": "2026-09-21T03:45:06.109Z",
+  "defectCount": 4,
+  "frozenBenchmarkModified": false,
+  "corrections": [
+    {
+      "caseId": "CASE-e3520246bd",
+      "groundTruthUnitId": "fwrg-6.04-a-xi",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.04(a)(xi)",
+      "originalGroundTruthClaim": "Unlimited (uncapped-dollar) Restricted Payments so long as the Total Rent Adjusted Net Leverage Ratio, calculated Pro Forma, would not exceed a fixed ratio - a ratio-gated unlimited basket with no default condition attached. 3.50:1.00 Total Rent Adjusted Net Leverage Ratio, Pro Forma Basis The single most dangerous plausible extraction error in this whole package: an extractor that reports a dollar threshold (or omits the ratio gate) for this clause instead of 'uncapped subject to a leverage-ratio test' would be confidently wrong and, unless conditions[] is checked, unflagged. This is a designed adversarial probe for Task 12, not a schema issue.",
+      "correctedGroundTruthClaim": "Unlimited (uncapped-dollar) Restricted Payments, permitted SO LONG AS NO EVENT OF DEFAULT EXISTS and so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00 as of the last day of the most recently ended Test Period. 3.50:1.00 Total Rent Adjusted Net Leverage Ratio, Pro Forma Basis; NO_DEFAULT condition.",
+      "originalAtomicPropositions": [
+        {
+          "id": "P1",
+          "proposition": "uncapped-dollar Restricted Payments",
+          "status": "SOURCE_CONFIRMED"
+        },
+        {
+          "id": "P2",
+          "proposition": "gated on Total Rent Adjusted Net Leverage Ratio, Pro Forma Basis, not exceeding 3.50:1.00",
+          "status": "SOURCE_CONFIRMED"
+        },
+        {
+          "id": "P3",
+          "proposition": "THE BASKET HAS NO DEFAULT CONDITION ATTACHED",
+          "status": "SOURCE_CONTRADICTED"
+        }
+      ],
+      "correctedAtomicPropositions": "see correctedGroundTruthClaim; every proposition that was SOURCE_CONFIRMED is retained unchanged, and each SOURCE_CONTRADICTED proposition is replaced by the source's own formulation",
+      "exactSourceEvidence": [
+        {
+          "proposition": "THE BASKET HAS NO DEFAULT CONDITION ATTACHED",
+          "status": "SOURCE_CONTRADICTED",
+          "quotation": "\"(xi) so long as no Event of Default exists, the Borrower may make Restricted Payments so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00 as of the last day of the most recently ended Test Period;\"",
+          "location": "fwrg Article 6, Section 6.04(a), clause (xi)"
+        }
+      ],
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSection": "6.04(a)(xi)",
+      "defectType": "INVENTED_NEGATIVE_CONDITION (the claim affirmatively asserts the ABSENCE of a condition the source imposes)",
+      "materiality": "MATERIAL",
+      "whyScoringCouldChange": "A Headroom representation that CORRECTLY emits a NO_DEFAULT condition on this basket would be scored as adding a condition the benchmark says does not exist — a correct representation marked wrong. Conversely a representation that omits the gate would be marked right. Both directions are wrong, and the second is the dangerous one: it would certify as accurate a model that lets the borrower pay dividends during an Event of Default.",
+      "affectedEvaluationDimension": [
+        "creditEligibility",
+        "representationCompleteness",
+        "surfacingStatus (a claim scored against a wrong benchmark can be mis-credited, which changes whether surfacing is even evaluated)"
+      ],
+      "priorOutcomesCouldChange": true,
+      "provenance": {
+        "benchmarkProvenanceKind": "AI_ADJUDICATED_FROM_SOURCE_ONLY",
+        "externallyHumanReviewed": false,
+        "sourceArtifactPath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/human-ground-truth.ts"
+      },
+      "reviewerNotes": "POSITIVE CONTROL REPRODUCED INDEPENDENTLY. The adjacent clause (x) carries the identical prefix and the benchmark DID capture it there ('conditioned on no continuing Event of Default'), which shows this is an authoring slip on (xi), not an interpretive choice.",
+      "appliedToFrozenBenchmark": false,
+      "note": "PROPOSED ONLY. The frozen benchmark was not modified. This record is additive."
+    },
+    {
+      "caseId": "CASE-9001417020",
+      "groundTruthUnitId": "fwrg-6.04-b",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.04(b)(iv)",
+      "originalGroundTruthClaim": "Restricted Debt Payments (early/voluntary paydown of subordinated/junior/unsecured debt above a size threshold) permitted up to the greater of a fixed dollar amount and a % of EBITDA, with an explicit cross-basket offset against the 6.04(a)(x) Restricted Payments basket. $21,000,000; 35% of Consolidated Adjusted EBITDA The cross-basket offset ('any amount utilized ... shall result in a reduction in the amount available under Section 6.04(a)(x)') is exactly what ContractRuleRelationshipType.SHARES_CAPACITY_WITH exists for - representable, but only if the extractor actually emits that relationship edge rather than treating the two baskets as independent.",
+      "correctedGroundTruthClaim": "Restricted Debt Payments permitted SO LONG AS NO EVENT OF DEFAULT EXISTS, in an aggregate amount not to exceed (A) the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period, plus (B) at the Borrower's election, the amount of Restricted Payments then permitted under Section 6.04(a)(x), with any amount so used reducing the amount available under Section 6.04(a)(x). $21,000,000; 35% of Consolidated Adjusted EBITDA; NO_DEFAULT condition; SHARES_CAPACITY_WITH 6.04(a)(x).",
+      "originalAtomicPropositions": [
+        {
+          "id": "P1",
+          "proposition": "Restricted Debt Payments capped at the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA",
+          "status": "SOURCE_CONFIRMED"
+        },
+        {
+          "id": "P2",
+          "proposition": "explicit cross-basket offset against the 6.04(a)(x) basket",
+          "status": "SOURCE_CONFIRMED"
+        },
+        {
+          "id": "P3",
+          "proposition": "MISSING CONDITION: no Event of Default may exist",
+          "status": "SOURCE_CONTRADICTED"
+        }
+      ],
+      "correctedAtomicPropositions": "see correctedGroundTruthClaim; every proposition that was SOURCE_CONFIRMED is retained unchanged, and each SOURCE_CONTRADICTED proposition is replaced by the source's own formulation",
+      "exactSourceEvidence": [
+        {
+          "proposition": "MISSING CONDITION: no Event of Default may exist",
+          "status": "SOURCE_CONTRADICTED",
+          "quotation": "\"(iv) so long as no Event of Default exists, Restricted Debt Payments in an aggregate amount not to exceed (A) ...\"",
+          "location": "fwrg Article 6, Section 6.04(b), clause (iv)"
+        }
+      ],
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSection": "6.04(b)(iv)",
+      "defectType": "MISSING_CONDITION (no-Event-of-Default gate omitted)",
+      "materiality": "MATERIAL",
+      "whyScoringCouldChange": "Same mechanism: a correct NO_DEFAULT condition on 6.04(b)(iv) would read as an invented condition; an omission would read as correct.",
+      "affectedEvaluationDimension": [
+        "creditEligibility",
+        "representationCompleteness",
+        "surfacingStatus (a claim scored against a wrong benchmark can be mis-credited, which changes whether surfacing is even evaluated)"
+      ],
+      "priorOutcomesCouldChange": true,
+      "provenance": {
+        "benchmarkProvenanceKind": "AI_ADJUDICATED_FROM_SOURCE_ONLY",
+        "externallyHumanReviewed": false,
+        "sourceArtifactPath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/human-ground-truth.ts"
+      },
+      "reviewerNotes": "Second instance of the same omission class as CASE-e3520246bd, in the same section of the same agreement.",
+      "appliedToFrozenBenchmark": false,
+      "note": "PROPOSED ONLY. The frozen benchmark was not modified. This record is additive."
+    },
+    {
+      "caseId": "CASE-a898053843",
+      "groundTruthUnitId": "lsb-6.04-a-abl-collateral-disposal",
+      "documentId": "lsb",
+      "claimSectionRef": "6.04(a)",
+      "originalGroundTruthClaim": "Disposal of ABL Priority Collateral permitted only if (i) a new Borrowing Base Certificate is delivered demonstrating continued compliance, (ii) sold at Fair Market Value, and (iii) aggregate annual dispositions under this clause do not exceed the greater of $10,000,000 and 1.0% of total consolidated assets. $10,000,000; 1.0% of total consolidated assets Same TOTAL_ASSETS-percentage gap as lsb-6.01-i. Additionally, this basket's own eligibility is scoped by SECURITY_SCOPE (only ABL Priority Collateral) - a real, correctly-representable use of the ContractConditionType SECURITY_SCOPE, but the security-scope VALUE itself (ABL Priority Collateral) is defined only by reference to a document (the Intercreditor Agreement) not in this filing - see lsb-def-abl-notes-priority-collateral below.",
+      "correctedGroundTruthClaim": "General permission for a Loan Party or its Subsidiary to sell or otherwise dispose of any of its other assets, provided that (i) TO THE EXTENT the disposition involves ABL Priority Collateral, a new Borrowing Base Certificate is delivered concurrently or earlier demonstrating compliance with Section 2.01(a), (ii) the assets are sold for Fair Market Value, and (iii) the aggregate Fair Market Value of all assets sold in any fiscal year under Section 6.04(a) does not exceed the greater of $10,000,000 and 1.0% of the total consolidated assets of the Loan Parties and their Subsidiaries per the GAAP balance sheet. $10,000,000; 1.0% of total consolidated assets. SECURITY_SCOPE (ABL Priority Collateral) conditions the Borrowing Base Certificate requirement only; it does NOT scope the basket's eligibility.",
+      "originalAtomicPropositions": [
+        {
+          "id": "P1",
+          "proposition": "THE PERMISSION IS SCOPED TO ABL PRIORITY COLLATERAL",
+          "status": "SOURCE_CONTRADICTED"
+        },
+        {
+          "id": "P2",
+          "proposition": "Borrowing Base Certificate demonstrating continued compliance",
+          "status": "SOURCE_PARTIALLY_CONFIRMED"
+        },
+        {
+          "id": "P3",
+          "proposition": "sold at Fair Market Value",
+          "status": "SOURCE_CONFIRMED"
+        },
+        {
+          "id": "P4",
+          "proposition": "annual cap at the greater of $10,000,000 and 1.0% of total consolidated assets",
+          "status": "SOURCE_CONFIRMED"
+        }
+      ],
+      "correctedAtomicPropositions": "see correctedGroundTruthClaim; every proposition that was SOURCE_CONFIRMED is retained unchanged, and each SOURCE_CONTRADICTED proposition is replaced by the source's own formulation",
+      "exactSourceEvidence": [
+        {
+          "proposition": "THE PERMISSION IS SCOPED TO ABL PRIORITY COLLATERAL",
+          "status": "SOURCE_CONTRADICTED",
+          "quotation": "\"(a) a Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that (i) TO THE EXTENT SUCH DISPOSITION INVOLVES ABL PRIORITY COLLATERAL, the Borrowers shall have ... delivered a new Borrowing Base Certificate ...\"",
+          "location": "lsb §6.04(a)"
+        },
+        {
+          "proposition": "Borrowing Base Certificate demonstrating continued compliance",
+          "status": "SOURCE_PARTIALLY_CONFIRMED",
+          "quotation": "\"delivered a new Borrowing Base Certificate (giving effect to such disposition ...) demonstrating compliance with Section 2.01(a)\"",
+          "location": "lsb §6.04(a)(i)"
+        }
+      ],
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSection": "6.04(a)",
+      "defectType": "MIS-SCOPED_RULE (a general disposal basket recast as collateral-type-specific; a conditional sub-requirement converted into basket eligibility)",
+      "materiality": "MATERIAL",
+      "whyScoringCouldChange": "A representation that models 6.04(a) as a general disposal basket — which is what the source says — would be scored as wrong on transaction/collateral scope. A representation that wrongly restricts the basket to ABL Priority Collateral would be scored as right, and would understate the borrower's actual disposal capacity for every non-ABL asset.",
+      "affectedEvaluationDimension": [
+        "creditEligibility",
+        "representationCompleteness",
+        "surfacingStatus (a claim scored against a wrong benchmark can be mis-credited, which changes whether surfacing is even evaluated)"
+      ],
+      "priorOutcomesCouldChange": true,
+      "provenance": {
+        "benchmarkProvenanceKind": "AI_ADJUDICATED_FROM_SOURCE_ONLY",
+        "externallyHumanReviewed": false,
+        "sourceArtifactPath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/human-ground-truth.ts"
+      },
+      "reviewerNotes": "§8 scrutiny case. Every individual condition the benchmark lists exists, but the benchmark mis-scopes the rule: a general disposal basket with a conditional ABL-collateral requirement is recast as an ABL-Priority-Collateral-only basket. The benchmark's own commentary compounds this ('this basket's own eligibility is scoped by SECURITY_SCOPE (only ABL Priority Collateral)').",
+      "appliedToFrozenBenchmark": false,
+      "note": "PROPOSED ONLY. The frozen benchmark was not modified. This record is additive."
+    },
+    {
+      "caseId": "CASE-1284ab8e71",
+      "groundTruthUnitId": "lsb-6.08-subordinated-debt-payments",
+      "documentId": "lsb",
+      "claimSectionRef": "6.08",
+      "originalGroundTruthClaim": "Prohibition on payments of Indebtedness generally (other than the Secured Notes/Secured Obligations), with carve-outs for scheduled payments of permitted debt, refinancing payments, payments of Subordinated Indebtedness only as its own subordination terms allow, Payment-Conditions-gated payments, and a $500,000/year fixed basket; separately, no amendment of Subordinated Indebtedness terms materially adverse to the Lenders. $500,000 PRIORITY_RULE is the correct ContractRuleType (this gates payment priority among debt tiers, mirroring FWRG's own fwrg-def-restricted-debt finding), but this section actually bundles at least 3 independently-gated payment baskets (scheduled-payment carve-out, Payment-Conditions-gated, $500k fixed) into one Section 6.08(a) - the same decomposition-discipline risk FWRG's Available Amount provision raised: a single flattened rule here would either over- or under-permit depending which sub-clause's condition got dropped.",
+      "correctedGroundTruthClaim": "Prohibition on payments in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), with SIX enumerated carve-outs: (i) payments in respect of the Secured Obligations; (ii) scheduled principal/interest and other required amounts on Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness; (iii) payments resulting from a refinancing permitted by Section 6.01(d); (iv) payments of Subordinated Indebtedness to the extent its own subordination terms permit; (v) payments to the extent the Payment Conditions are satisfied; and (vi) a RESIDUAL basket of payments not exceeding $500,000 in the aggregate in any fiscal year, AVAILABLE ONLY FOR PAYMENTS THAT NO OTHER CLAUSE OF SECTION 6.08(a) WOULD PERMIT AT THE TIME. Separately, Section 6.08(b) prohibits amendments to Subordinated Indebtedness terms materially adverse to the Administrative Agent or the Lenders (as determined by the Administrative Agent in its Permitted Discretion). $500,000.",
+      "originalAtomicPropositions": [
+        {
+          "id": "P1",
+          "proposition": "general prohibition on payments of Indebtedness other than the Secured Notes",
+          "status": "SOURCE_CONFIRMED"
+        },
+        {
+          "id": "P2",
+          "proposition": "carve-outs: scheduled payments, refinancing payments, Subordinated Indebtedness per its own terms, Payment-Conditions-gated, $500,000/year",
+          "status": "SOURCE_PARTIALLY_CONFIRMED"
+        },
+        {
+          "id": "P3",
+          "proposition": "the $500,000 annual basket is a free-standing fixed basket",
+          "status": "SOURCE_CONTRADICTED"
+        },
+        {
+          "id": "P4",
+          "proposition": "separately, no amendment of Subordinated Indebtedness terms materially adverse to the Lenders",
+          "status": "SOURCE_CONFIRMED"
+        }
+      ],
+      "correctedAtomicPropositions": "see correctedGroundTruthClaim; every proposition that was SOURCE_CONFIRMED is retained unchanged, and each SOURCE_CONTRADICTED proposition is replaced by the source's own formulation",
+      "exactSourceEvidence": [
+        {
+          "proposition": "carve-outs: scheduled payments, refinancing payments, Subordinated Indebtedness per its own terms, Payment-Conditions-gated, $500,000/year",
+          "status": "SOURCE_PARTIALLY_CONFIRMED",
+          "quotation": "clauses (ii),(iii),(iv),(v),(vi)",
+          "location": "lsb §6.08(a)"
+        },
+        {
+          "proposition": "the $500,000 annual basket is a free-standing fixed basket",
+          "status": "SOURCE_CONTRADICTED",
+          "quotation": "\"(vi) payments of Indebtedness not to exceed $500,000 in the aggregate in any fiscal year of the Loan Parties (IT BEING UNDERSTOOD AND AGREED THAT ANY PAYMENT OF INDEBTEDNESS MADE PURSUANT THIS CLAUSE (VI) SHALL ONLY BE PERMITTED IF SUCH PAYMENT WOULD NOT, AT THE TIME THEREOF, BE PERMITTED (OR BE ABLE TO BE MADE) UNDER ANY OTHER CLAUSE OF THIS SECTION 6.08(A))\"",
+          "location": "lsb §6.08(a)(vi)"
+        }
+      ],
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSection": "6.08",
+      "defectType": "MISSING_CONDITION + INCOMPLETE_ENUMERATION (anti-stacking proviso on the $500,000 residual basket omitted; carve-out (i) omitted)",
+      "materiality": "MATERIAL",
+      "whyScoringCouldChange": "The $500,000 basket's residual character is the whole of its economic meaning. A representation that correctly models it as available only where no other clause permits the payment would be scored against a benchmark that describes it as a free-standing parallel basket.",
+      "affectedEvaluationDimension": [
+        "creditEligibility",
+        "representationCompleteness",
+        "surfacingStatus (a claim scored against a wrong benchmark can be mis-credited, which changes whether surfacing is even evaluated)"
+      ],
+      "priorOutcomesCouldChange": true,
+      "provenance": {
+        "benchmarkProvenanceKind": "AI_ADJUDICATED_FROM_SOURCE_ONLY",
+        "externallyHumanReviewed": false,
+        "sourceArtifactPath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/human-ground-truth.ts"
+      },
+      "reviewerNotes": "§8 scrutiny case. Independently gated payment permissions in Section 6.08: SIX enumerated carve-outs in 6.08(a), of which three carry gating beyond mere characterisation (scheduled-payment, Payment-Conditions, $500k residual), plus the separate 6.08(b) amendment prohibition. The benchmark's 'at least 3' commentary is a true floor but the CLAIM itself omits carve-out (i) and, materially, the anti-stacking proviso on (vi).",
+      "appliedToFrozenBenchmark": false,
+      "note": "PROPOSED ONLY. The frozen benchmark was not modified. This record is additive."
+    }
+  ]
+}
