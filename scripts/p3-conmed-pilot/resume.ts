@@ -295,4 +295,7 @@ async function main() {
   console.log(`\nDONE. ${final.length} candidates, ${final.filter((r) => r.status !== "FAILED").length} usable, ${final.reduce((s, r) => s + r.rules, 0)} rules, $${spent.toFixed(4)} incremental, ${notRun.length} not run, ${timeouts.length} timeouts.`);
 }
 
-void main();
+// Guarded: importing this module (a test does, for classifyPrior/classifyFailure/
+// timeoutForensics) must never attempt a live run. An unguarded top-level call made the
+// test suite dial the gateway.
+if (process.argv[1]?.endsWith("resume.ts")) void main();

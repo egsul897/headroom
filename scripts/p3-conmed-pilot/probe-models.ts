@@ -17,6 +17,7 @@ import { AI_GATEWAY_BASE_URL } from "../../lib/contract-model/analyzer/anthropic
 
 export interface GatewayModel {
   id: string;
+  owned_by?: string;
   context_window: number;
   max_tokens: number;
   type: string;
