@@ -1,0 +1,36 @@
+{
+  "artifact": "§12 — defects attributable to CURRENT production, distinguished from defects that were only ever evidence artifacts.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "established": [
+    {
+      "id": "P3-CURRENT-1",
+      "title": "Composed-citation verification demotion",
+      "status": "ESTABLISHED_AT_ZERO_COST",
+      "surface": "lib/contract-model/analyzer/verify.ts — findCitationIndex()",
+      "evidence": "scripts/p3-regen/lsb-verification-replay.ts, replayed against the unchanged production function and the real LSB source text",
+      "finding": "YES — still reproduces in current production",
+      "detail": "findCitationIndex() is whitespace-tolerant but still literal: it looks for the citation string itself. An agreement that prints 'SECTION 6.03' as a header and then '(a)' as an indented clause never contains the literal 'Section 6.03(a)', so a correct subsection citation fails the lookup and the rule is demoted to JUDGMENT_REQUIRED.",
+      "affectedCitationsInFrozenLsbEvidence": [
+        "Section 6.01(i)",
+        "Section 6.01(m)",
+        "Section 6.03(a)",
+        "Section 6.04(b)"
+      ],
+      "severity": "A correct compiled rule that cites a real subsection is demoted to JUDGMENT_REQUIRED purely because the agreement prints the subsection letter on its own line. That converts a correct answer into a hedged one — the safe direction, but a real loss of capability.",
+      "notFixedHere": "§6 forbids fixing verification in this mission."
+    }
+  ],
+  "retracted": [
+    {
+      "id": "P3-DEFECT-1",
+      "title": "Discovery → compilation promotion seam",
+      "status": "RETRACTED_BY_THE_PRIOR_MISSION",
+      "why": "Production compiles every eligible candidate with no cap, budget or truncation. The 20 cases shared a benchmark-evidence artifact (COMPILE_CAP = 30 in scripts/phase-3f-first-blind-run.ts), not a production code path. See docs/phase-3-remediation/p3-defect-1/12-verdict.json."
+    }
+  ],
+  "undetermined": {
+    "status": "NOT_GENERATED",
+    "reason": "awaiting paid-call authorization",
+    "detail": "Whether current production surfaces the 22 dangerous silent omissions the V3.1.1 corpus records cannot be decided without regenerating the systemOutput. Every remaining defect hypothesis stays open until then; recording them as production defects now would be asserting a result no evidence supports."
+  }
+}

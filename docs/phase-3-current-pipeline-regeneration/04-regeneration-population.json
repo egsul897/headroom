@@ -1,0 +1,153 @@
+{
+  "artifact": "§3 — the benchmark-blind regeneration population.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "selectionRule": {
+    "statement": "For each package, take every candidate the frozen discovery stage already produced whose normalized source ref falls in an Article that the agreement's own covenant architecture places its negative covenants (and, for DSGR, its guaranty and the defined terms those covenants depend on) in, and which is eligible under the unchanged production predicate isEligibleForSemanticCompilation.",
+    "articleFamilies": {
+      "dsgr": {
+        "articles": [
+          "1",
+          "6",
+          "10"
+        ],
+        "rationale": "DSGR's negative covenants are Article VI and its guaranty is Article X; Article I carries the defined terms those covenants depend on. The benchmark happens to draw from all three, but the slice is the agreement's own structure."
+      },
+      "conmed": {
+        "articles": [
+          "7"
+        ],
+        "rationale": "CONMED's Eighth A&R places its negative covenants in Article VII."
+      },
+      "lsb": {
+        "articles": [
+          "6"
+        ],
+        "rationale": "LSB's ABL agreement places its negative covenants in Article VI."
+      },
+      "fwrg": {
+        "articles": [
+          "6"
+        ],
+        "rationale": "FWRG's 2021 agreement places its negative covenants in Article VI."
+      }
+    },
+    "isBenchmarkBlind": true,
+    "proof": "population() in scripts/p3-regen/cost-plan.ts reads only the frozen discovery artifacts and an Article number per package. It never opens the benchmark corpus, never reads a caseId, never reads a claim address and never reads an expected answer. tests/phase-3-regeneration/regeneration-population.test.ts enforces this mechanically.",
+    "whatItDeliberatelyDoesNotDo": "It does not select the candidates that correspond to benchmark failures, and it does not exclude candidates whose compilation might produce an unfavourable answer. §15 forbids regenerating selectively based on whether an answer is favourable."
+  },
+  "population": {
+    "dsgr": {
+      "count": 777,
+      "byDocument": {
+        "doc-a": 232,
+        "doc-b": 279,
+        "doc-d": 266
+      },
+      "bySection": {
+        "1": 1,
+        "6": 1,
+        "10": 9,
+        "6.02": 92,
+        "6.01": 70,
+        "10.03": 66,
+        "6.05": 47,
+        "1.11": 46,
+        "6.04": 43,
+        "6.12": 40,
+        "6.08": 36,
+        "6.03": 32,
+        "10.01": 32,
+        "10.08": 22,
+        "10.11": 22,
+        "1.06": 21,
+        "1.04": 17,
+        "1.01": 16,
+        "6.09": 16,
+        "6.10": 16,
+        "6.11": 16,
+        "6.06": 14,
+        "1.10": 13,
+        "10.09": 13,
+        "10.13": 12,
+        "1.05": 10,
+        "6.07": 9,
+        "10.02": 9,
+        "10.04": 8,
+        "1.07": 7,
+        "1.03": 6,
+        "10.10": 6,
+        "10.12": 6,
+        "1.02": 3
+      }
+    },
+    "conmed": {
+      "count": 163,
+      "byDocument": {
+        "conmed-doc-a-eighth-ar-credit-agreement": 163
+      },
+      "bySection": {
+        "7.2": 31,
+        "7.3": 28,
+        "7.5": 20,
+        "7.8": 17,
+        "7.4": 13,
+        "7.6": 13,
+        "7.9": 13,
+        "7.1": 6,
+        "7.10": 5,
+        "7.13": 4,
+        "7.14": 4,
+        "7.17": 3,
+        "7.11": 2,
+        "7.15": 2,
+        "7.16": 2
+      }
+    },
+    "lsb": {
+      "count": 82,
+      "byDocument": {
+        "lsb": 82
+      },
+      "bySection": {
+        "6.01": 19,
+        "6.04": 14,
+        "6.13": 14,
+        "6.08": 9,
+        "6.03": 7,
+        "6.11": 6,
+        "6.14": 5,
+        "6.02": 4,
+        "6.07": 2,
+        "6.15": 2
+      }
+    },
+    "fwrg": {
+      "count": 252,
+      "byDocument": {
+        "fwrg": 252
+      },
+      "bySection": {
+        "6.02": 49,
+        "6.04": 47,
+        "6.07": 47,
+        "6.06": 46,
+        "6.01": 38,
+        "6.09": 10,
+        "6.10": 8,
+        "6.05": 5,
+        "6.08": 2
+      }
+    },
+    "total": 1274
+  },
+  "capPolicy": {
+    "compileCapApplied": null,
+    "historicalCompileCap": 30,
+    "note": "§1 forbids silently reusing the $30/30-candidate cap and forbids silently imposing a new cap that could bias coverage. The population above is the whole defined slice; no .slice(0, N) is applied to it anywhere in this mission's code."
+  },
+  "doNotPassIntoCompilation": {
+    "caseIds": "never passed",
+    "expectedBenchmarkAnswers": "never passed",
+    "note": "§4 forbids passing caseIds or expected benchmark answers into production compilation. The regeneration harness, when authorized, takes only (documentId, candidate) pairs drawn from this population."
+  }
+}
