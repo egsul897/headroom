@@ -1,0 +1,21 @@
+{
+  "artifact": "§10 — cheap-model reliability.",
+  "evidenceLabel": "LOW_COST_DIAGNOSTIC_PIPELINE",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "tier1Attempted": 137,
+  "tier1Successful": 12,
+  "tier1Failed": 125,
+  "providerFailures": 118,
+  "servedSubset": 19,
+  "tier1SuccessRate": 0.6316,
+  "malformedOutputRate": 0,
+  "wallClockTimeoutRate": 0.3684,
+  "rawFailureRateIncludingProvider": 0.9124,
+  "escalationRate": 0.9124,
+  "denominatorNote": "Success, malformed-output and timeout rates use the SERVED subset as denominator; a candidate the provider refused with HTTP 402 never reached the model and cannot be evidence about it. rawFailureRateIncludingProvider keeps the whole-population figure visible so the two are never conflated.",
+  "verifierReviewRequiredRate": 0.0876,
+  "averageCostPerCandidateUsd": 0.00032,
+  "totalToolCalls": 16,
+  "candidatesUsingTools": 7,
+  "note": "REVIEW_REQUIRED is the compiler's honest 'a human should look at this' status, not a failure. It is reported separately from execution failure precisely so a cautious model is not scored as a broken one."
+}

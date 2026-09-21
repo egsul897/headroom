@@ -12,8 +12,9 @@
  *    is not a representation of 7.2(c).
  *  - A relevant candidate yields a SUBSTANTIVE_REPRESENTATION only when its compilation
  *    did not FAIL and it produced at least one rule whose own self-reported sufficiency
- *    is SUFFICIENT. A rule the model itself marked UNSUPPORTED or MISSING_CONTEXT is an
- *    honest abstention — which is the safe outcome, and deliberately not credit.
+ *    is COMPLETE (the IR enum's full-representation value). PARTIAL surfaces the provision
+ *    but does not credit it; UNSUPPORTED, MISSING_CONTEXT, AMBIGUOUS and CONFLICTED are
+ *    honest abstentions — the safe outcome, and deliberately not credit.
  *  - CREDIT requires at least one substantive representation at the claim's address.
  *  - Where there is no credit, surfacing asks whether the system said ANYTHING specific
  *    about the claim's address: a compiled rule of any sufficiency, or an honest
@@ -46,7 +47,22 @@ export function isAtOrBelow(candidateRef: string, claimRef: string): boolean {
   return next === "(" || next === ".";
 }
 
+/**
+ * The IR's own sufficiency values (lib/contract-model/ir/types.ts):
+ *   COMPLETE | PARTIAL | AMBIGUOUS | UNSUPPORTED | MISSING_CONTEXT | CONFLICTED
+ * Only COMPLETE is a full representation. Everything else is partial or an abstention.
+ */
+export const CREDIT_SUFFICIENCY = "COMPLETE";
+export const PARTIAL_SUFFICIENCY = "PARTIAL";
+
 export interface CaseOutcome {
+  /**
+   * False when NO candidate at this claim's address was ever served by the provider.
+   * Such a case has no pilot result at all — scoring it NOT_SPECIFICALLY_SURFACED would
+   * present "we never asked" as "the system stayed silent", which is the single most
+   * misleading thing this re-score could do.
+   */
+  measured: boolean;
   caseId: string;
   claimSectionRef: string;
   materiality: string;
@@ -56,7 +72,9 @@ export interface CaseOutcome {
   relevantCandidateIds: string[];
   compiledAtAddress: number;
   failedAtAddress: number;
+  providerRefusedCandidates: number;
   substantiveRepresentations: number;
+  partialRepresentations: number;
   honestAbstentions: number;
   pilotCredit: "CREDIT" | "NO_CREDIT";
   pilotSurfacing: "SPECIFICALLY_SURFACED" | "NOT_SPECIFICALLY_SURFACED";
@@ -79,15 +97,19 @@ export function rescore(records: CandidateRecord[]): { cases: CaseOutcome[]; del
       const relevant = records.filter((r) => isAtOrBelow(String(r.sourceSectionRef), claimRef));
       const failed = relevant.filter((r) => r.status === "FAILED");
       const ok = relevant.filter((r) => r.status !== "FAILED");
-      const substantive = ok.filter((r) => (r.sufficiencySummary.SUFFICIENT ?? 0) > 0);
-      const abstentions = ok.filter((r) => (r.sufficiencySummary.SUFFICIENT ?? 0) === 0 && r.rules > 0);
+      const substantive = ok.filter((r) => (r.sufficiencySummary[CREDIT_SUFFICIENCY] ?? 0) > 0);
+      const partials = ok.filter((r) => (r.sufficiencySummary[CREDIT_SUFFICIENCY] ?? 0) === 0 && (r.sufficiencySummary[PARTIAL_SUFFICIENCY] ?? 0) > 0);
+      const abstentions = ok.filter((r) => (r.sufficiencySummary[CREDIT_SUFFICIENCY] ?? 0) === 0 && (r.sufficiencySummary[PARTIAL_SUFFICIENCY] ?? 0) === 0 && r.rules > 0);
       const saidSomething = ok.filter((r) => r.rules > 0 || r.definitions > 0);
       const prior = rowById.get(c.caseId);
+      const providerRefused = relevant.filter((r) => r.failureReasons.includes("PROVIDER_FAILURE"));
+      const measured = relevant.length > 0 && providerRefused.length < relevant.length;
 
       const credit = substantive.length > 0 ? "CREDIT" : "NO_CREDIT";
       const surfacing = saidSomething.length > 0 ? "SPECIFICALLY_SURFACED" : "NOT_SPECIFICALLY_SURFACED";
 
       return {
+        measured,
         caseId: c.caseId,
         claimSectionRef: claimRef,
         materiality: prior?.materiality ?? "(unknown)",
@@ -98,10 +120,12 @@ export function rescore(records: CandidateRecord[]): { cases: CaseOutcome[]; del
         compiledAtAddress: ok.length,
         failedAtAddress: failed.length,
         substantiveRepresentations: substantive.length,
+        partialRepresentations: partials.length,
         honestAbstentions: abstentions.length,
         pilotCredit: credit,
         pilotSurfacing: surfacing,
-        pilotDangerousSilentOmission: credit === "NO_CREDIT" && surfacing === "NOT_SPECIFICALLY_SURFACED",
+        pilotDangerousSilentOmission: measured && credit === "NO_CREDIT" && surfacing === "NOT_SPECIFICALLY_SURFACED",
+        providerRefusedCandidates: providerRefused.length,
         substantiveRepresentationNowExists: substantive.length > 0,
         requiredEscalation: relevant.some((r) => r.escalated),
         modelQualityUncertaintyRemains: failed.length > 0 || substantive.length === 0,
@@ -115,18 +139,26 @@ export function rescore(records: CandidateRecord[]): { cases: CaseOutcome[]; del
     })
     .sort((a: CaseOutcome, b: CaseOutcome) => a.caseId.localeCompare(b.caseId));
 
+  const measured = outcomes.filter((o: CaseOutcome) => o.measured);
+
   return {
     cases: outcomes,
     deltas: {
-      creditBefore: outcomes.filter((o) => o.priorCredit === "CREDIT").length,
-      creditAfter: outcomes.filter((o) => o.pilotCredit === "CREDIT").length,
-      dangerousBefore: outcomes.filter((o) => o.priorDangerousSilentOmission).length,
-      dangerousAfter: outcomes.filter((o) => o.pilotDangerousSilentOmission).length,
-      surfacedBefore: outcomes.filter((o) => o.priorSurfacing === "SPECIFICALLY_SURFACED").length,
-      surfacedAfter: outcomes.filter((o) => o.pilotSurfacing === "SPECIFICALLY_SURFACED").length,
-      newSubstantiveRepresentations: outcomes.reduce((n, o) => n + o.substantiveRepresentations, 0),
+      // Every delta is computed over MEASURED cases only. Mixing in cases the provider
+      // never served would let an unmeasured case masquerade as an improvement or a
+      // regression depending only on which direction flattered the result.
+      casesMeasured: measured.length,
+      casesNotMeasured: outcomes.length - measured.length,
+      creditBefore: measured.filter((o) => o.priorCredit === "CREDIT").length,
+      creditAfter: measured.filter((o) => o.pilotCredit === "CREDIT").length,
+      dangerousBefore: measured.filter((o) => o.priorDangerousSilentOmission).length,
+      dangerousAfter: measured.filter((o) => o.pilotDangerousSilentOmission).length,
+      surfacedBefore: measured.filter((o) => o.priorSurfacing === "SPECIFICALLY_SURFACED").length,
+      surfacedAfter: measured.filter((o) => o.pilotSurfacing === "SPECIFICALLY_SURFACED").length,
+      newSubstantiveRepresentations: measured.reduce((n, o) => n + o.substantiveRepresentations, 0),
+      newPartialRepresentations: measured.reduce((n, o) => n + o.partialRepresentations, 0),
     },
     mappingRule:
-      "A candidate is relevant to a case when its normalized ref is the claim address or a descendant of it. Credit requires a non-FAILED compilation with at least one rule the model itself marked SUFFICIENT. Surfacing requires any rule or definition at the address. Honest abstentions surface but never credit.",
+      "A candidate is relevant to a case when its normalized ref is the claim address or a descendant of it. Credit requires a non-FAILED compilation with at least one rule the model itself marked COMPLETE. PARTIAL surfaces but does not credit. Surfacing requires any rule or definition at the address. Honest abstentions surface but never credit.",
   };
 }

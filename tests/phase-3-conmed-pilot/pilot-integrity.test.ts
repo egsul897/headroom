@@ -157,6 +157,24 @@ describe("§9 — the re-score mapping", () => {
     expect(isAtOrBelow("7.1.2", "7.1")).toBe(true);
   });
 
+  it("only COMPLETE credits — the enum has no value called SUFFICIENT", () => {
+    // A real bug this test now guards: the first version of the mapping tested for a
+    // sufficiency value that does not exist in RepresentationSufficiency, which would
+    // have scored every case NO_CREDIT no matter what the compiler produced.
+    const complete = [{ discoveryId: "d1", documentId: CONMED_DOCUMENT_ID, sourceSectionRef: "7.1", role: "BASKET", sourceTextHash: "h", sourceTextChars: 1, model: "m", tier: 1 as const, escalated: false, escalationReason: null, status: "REVIEW_REQUIRED", failureReasons: [], rules: 1, definitions: 0, sufficiencySummary: { COMPLETE: 1 }, toolCalls: 0, inputTokens: 1, outputTokens: 1, attemptCount: 1, actualCostUsd: 0, outputHash: "h", wallClockMs: 1 }];
+    const c = rescore(complete).cases.find((x) => x.claimSectionRef === "7.1")!;
+    expect(c.pilotCredit).toBe("CREDIT");
+    expect(c.substantiveRepresentationNowExists).toBe(true);
+  });
+
+  it("PARTIAL surfaces the provision but does not credit it", () => {
+    const partial = [{ discoveryId: "d1", documentId: CONMED_DOCUMENT_ID, sourceSectionRef: "7.1", role: "BASKET", sourceTextHash: "h", sourceTextChars: 1, model: "m", tier: 1 as const, escalated: false, escalationReason: null, status: "REVIEW_REQUIRED", failureReasons: [], rules: 1, definitions: 0, sufficiencySummary: { PARTIAL: 1 }, toolCalls: 0, inputTokens: 1, outputTokens: 1, attemptCount: 1, actualCostUsd: 0, outputHash: "h", wallClockMs: 1 }];
+    const c = rescore(partial).cases.find((x) => x.claimSectionRef === "7.1")!;
+    expect(c.pilotCredit).toBe("NO_CREDIT");
+    expect(c.pilotSurfacing).toBe("SPECIFICALLY_SURFACED");
+    expect(c.partialRepresentations).toBe(1);
+  });
+
   it("an honest abstention surfaces but never credits", () => {
     const abstention = [{ discoveryId: "d1", documentId: CONMED_DOCUMENT_ID, sourceSectionRef: "7.1", role: "BASKET", sourceTextHash: "h", sourceTextChars: 1, model: "m", tier: 1 as const, escalated: false, escalationReason: null, status: "REVIEW_REQUIRED", failureReasons: [], rules: 1, definitions: 0, sufficiencySummary: { UNSUPPORTED: 1 }, toolCalls: 0, inputTokens: 1, outputTokens: 1, attemptCount: 1, actualCostUsd: 0, outputHash: "h", wallClockMs: 1 }];
     const r = rescore(abstention);
@@ -234,7 +252,31 @@ describe.skipIf(!artifactsExist)("§3/§14 — the artifact set", () => {
     const v = art("12-verdict.json");
     expect(v.productionFreeze.productionDiffIsEmpty).toBe(true);
     expect(v.productionFreeze.allChangesAreAdditive).toBe(true);
-    expect(["CONMED_PILOT_STRONG_SIGNAL", "CONMED_PILOT_MIXED_SIGNAL", "CONMED_PILOT_MODEL_LIMITED", "CONMED_PILOT_NO_ARCHITECTURAL_IMPROVEMENT"]).toContain(v.verdict);
+    // The fifth state is deliberate: §11's four labels all presuppose the run happened,
+    // so none of them can describe a provider cutoff without misattributing the cause.
+    expect(["CONMED_PILOT_STRONG_SIGNAL", "CONMED_PILOT_MIXED_SIGNAL", "CONMED_PILOT_MODEL_LIMITED", "CONMED_PILOT_NO_ARCHITECTURAL_IMPROVEMENT", "CONMED_PILOT_BLOCKED_PROVIDER_CREDIT"]).toContain(v.verdict);
+    if (v.verdict === "CONMED_PILOT_BLOCKED_PROVIDER_CREDIT") expect(v.notOneOfTheFourBecause).toBeTruthy();
+  });
+
+  it("a provider refusal is never counted as a model failure", () => {
+    const rel = art("10-reliability.json");
+    // The rates that describe the MODEL must exclude candidates the provider refused.
+    expect(rel.servedSubset).toBe(rel.tier1Attempted - rel.providerFailures);
+    expect(rel.tier1SuccessRate).toBeCloseTo(rel.tier1Successful / rel.servedSubset, 3);
+    expect(rel.rawFailureRateIncludingProvider).toBeGreaterThan(rel.tier1Successful / rel.servedSubset === 1 ? 0 : 0);
+    expect(rel.denominatorNote).toMatch(/never reached the model/);
+  });
+
+  it("an unmeasured case is never reported as a silent omission", () => {
+    const rescored = art("09-nine-case-rescore.json");
+    for (const c of rescored.cases) {
+      if (!c.measured) {
+        expect(c.pilotDangerousSilentOmission, `${c.caseId} was never served but is scored as a silent omission`).toBe(false);
+      }
+    }
+    // Deltas must be computed over measured cases only.
+    expect(rescored.deltas.casesMeasured + rescored.deltas.casesNotMeasured).toBe(9);
+    expect(rescored.deltas.creditAfter).toBeLessThanOrEqual(rescored.deltas.casesMeasured);
   });
 
   it("no credential appears in the artifact set", () => {

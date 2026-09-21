@@ -1,0 +1,115 @@
+{
+  "artifact": "§1 — model enumeration, capability filtering and selection.",
+  "evidenceLabel": "LOW_COST_DIAGNOSTIC_PIPELINE",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "gatewayModelsListed": 376,
+  "capabilityFloor": {
+    "languageModel": true,
+    "toolUse": true,
+    "minOutputCeilingTokens": 64000,
+    "minContextWindowTokens": 200000,
+    "rationale": "Every item is a requirement of the UNCHANGED compiler configuration, not a quality preference. The compiler is a tool-use loop; its default output request is 128,000 tokens and a model whose own ceiling is lower has the call rejected before it sees the prompt; ~8 turns of system prompt, few-shots, retrieved evidence and tool results need a large window."
+  },
+  "capableByCatalogue": 161,
+  "transportProbe": {
+    "method": "one real Anthropic-SDK tool-use call per model through the gateway, mirroring the compiler terminal-action shape",
+    "finding": "Non-Anthropic models DO serve the gateway Anthropic-compatible /v1/messages endpoint, so the candidate set is not limited to the Anthropic family.",
+    "cheapest16Probed": true,
+    "usable": 11,
+    "failed": [
+      "openai/gpt-5-nano (no tool_use block)",
+      "zai/glm-4.7-flashx (gateway 500)"
+    ]
+  },
+  "compilerProbe": {
+    "method": "the REAL production compileCovenantToIR over real CONMED Article VII candidates. The toy transport probe proves reachability, not competence; this proves the model can complete the compiler prompt and evidence-retrieval workflow.",
+    "results": [
+      {
+        "model": "alibaba/qwen3.7-flash",
+        "blendedPerMtok": 0.045,
+        "candidates": 2,
+        "completed": 0,
+        "verdict": "REJECTED — MODEL_SCHEMA_FAILURE"
+      },
+      {
+        "model": "inception/mercury-2.5",
+        "blendedPerMtok": 0.057,
+        "candidates": 2,
+        "completed": 0,
+        "verdict": "REJECTED — MODEL_SCHEMA_FAILURE"
+      },
+      {
+        "model": "zai/glm-4.7-flash",
+        "blendedPerMtok": 0.12,
+        "candidates": 2,
+        "completed": 0,
+        "verdict": "REJECTED — MODEL_SCHEMA_FAILURE"
+      },
+      {
+        "model": "alibaba/qwen3.8-flash",
+        "blendedPerMtok": 0.199,
+        "candidates": 2,
+        "completed": 0,
+        "verdict": "REJECTED — produced nothing within the wall-clock ceiling"
+      },
+      {
+        "model": "minimax/minimax-m2.5",
+        "blendedPerMtok": 0.438,
+        "candidates": 2,
+        "completed": 0,
+        "verdict": "REJECTED — MODEL_SCHEMA_FAILURE"
+      },
+      {
+        "model": "deepseek/deepseek-v4-flash-0731",
+        "blendedPerMtok": 0.088,
+        "candidates": 4,
+        "completed": 4,
+        "rules": 9,
+        "toolCalls": 10,
+        "costUsd": 0.0151,
+        "verdict": "SELECTED as Tier 1 — cheapest model that completes the protocol AND exercises the evidence-retrieval tools"
+      },
+      {
+        "model": "anthropic/claude-haiku-4.5",
+        "blendedPerMtok": 1.612,
+        "candidates": 4,
+        "completed": 2,
+        "rules": 5,
+        "toolCalls": 26,
+        "costUsd": 0.4779,
+        "verdict": "REJECTED as Tier 1 — 18x the price of DeepSeek and less reliable on this workflow"
+      }
+    ]
+  },
+  "tier1": {
+    "id": "deepseek/deepseek-v4-flash-0731",
+    "blendedPerMtok": 0.088,
+    "inputPerMtok": 0.076,
+    "outputPerMtok": 0.15,
+    "contextWindow": 1000000,
+    "maxOutputTokens": 384000
+  },
+  "tier2": {
+    "id": "anthropic/claude-sonnet-5",
+    "blendedPerMtok": 3.224,
+    "inputPerMtok": 2,
+    "outputPerMtok": 10,
+    "contextWindow": 1000000,
+    "maxOutputTokens": 128000
+  },
+  "tier2Rationale": "Sonnet 5 rather than the nominally next-cheapest model. Haiku 4.5 is cheaper but completed only 2 of 4 probe candidates — escalating a failure to a model that fails the same way is escalation in name only. Sonnet 5 is the only model with a demonstrated track record on this exact workflow (the entire frozen Phase-3F run), and escalation volume was expected to be small because Tier 1 went 4/4 on probe.",
+  "methodologicalSubstitutions": [
+    {
+      "what": "compiler model",
+      "how": "production's own SEMANTIC_COMPILER_MODEL env knob",
+      "productionCodeChanged": false
+    },
+    {
+      "what": "output token ceiling",
+      "how": "production's own SEMANTIC_COMPILER_MAX_TOKENS env knob, clamped to the selected model's stated ceiling",
+      "productionCodeChanged": false,
+      "why": "A model whose ceiling is below the 128,000 default has every call rejected by the API. The frozen run's mean output was 14,403 tokens, far under either figure."
+    }
+  ],
+  "pricesAreProviderPublished": "All prices read from the gateway's own /v1/models catalogue at run time, not from a hardcoded table."
+}

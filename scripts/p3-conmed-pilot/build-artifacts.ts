@@ -63,6 +63,10 @@ export function reliability(t1: CandidateRecord[], final: CandidateRecord[]) {
   const t1Ok = t1.filter((r) => r.status !== "FAILED");
   const malformed = t1.filter((r) => r.failureReasons.includes("MODEL_SCHEMA_FAILURE"));
   const timeouts = t1.filter((r) => r.failureReasons.includes("WALL_CLOCK_TIMEOUT"));
+  // A 402 is not a model outcome. Rates that fold it in describe the billing account,
+  // not the model, so every model-quality rate below is computed over the SERVED subset.
+  const providerFailed = t1.filter((r) => r.failureReasons.includes("PROVIDER_FAILURE"));
+  const served = t1.filter((r) => !r.failureReasons.includes("PROVIDER_FAILURE"));
   const escalated = final.filter((r) => r.escalated);
   const reviewRequired = final.filter((r) => r.status === "REVIEW_REQUIRED");
   const cost = final.reduce((s, r) => s + r.actualCostUsd, 0);
@@ -71,10 +75,17 @@ export function reliability(t1: CandidateRecord[], final: CandidateRecord[]) {
     tier1Attempted: t1.length,
     tier1Successful: t1Ok.length,
     tier1Failed: t1.length - t1Ok.length,
-    tier1SuccessRate: Number((t1Ok.length / Math.max(1, t1.length)).toFixed(4)),
+    providerFailures: providerFailed.length,
+    servedSubset: served.length,
+    // Over the SERVED subset — the only denominator that describes the model.
+    tier1SuccessRate: Number((t1Ok.length / Math.max(1, served.length)).toFixed(4)),
+    malformedOutputRate: Number((malformed.length / Math.max(1, served.length)).toFixed(4)),
+    wallClockTimeoutRate: Number((timeouts.length / Math.max(1, served.length)).toFixed(4)),
+    // Over the whole attempted population — describes the RUN, not the model.
+    rawFailureRateIncludingProvider: Number(((t1.length - t1Ok.length) / Math.max(1, t1.length)).toFixed(4)),
     escalationRate: Number((escalated.length / Math.max(1, t1.length)).toFixed(4)),
-    malformedOutputRate: Number((malformed.length / Math.max(1, t1.length)).toFixed(4)),
-    wallClockTimeoutRate: Number((timeouts.length / Math.max(1, t1.length)).toFixed(4)),
+    denominatorNote:
+      "Success, malformed-output and timeout rates use the SERVED subset as denominator; a candidate the provider refused with HTTP 402 never reached the model and cannot be evidence about it. rawFailureRateIncludingProvider keeps the whole-population figure visible so the two are never conflated.",
     verifierReviewRequiredRate: Number((reviewRequired.length / Math.max(1, final.length)).toFixed(4)),
     averageCostPerCandidateUsd: Number((cost / Math.max(1, final.length)).toFixed(5)),
     totalToolCalls: final.reduce((s, r) => s + r.toolCalls, 0),
@@ -84,9 +95,31 @@ export function reliability(t1: CandidateRecord[], final: CandidateRecord[]) {
   };
 }
 
-/** §11 — the GO/NO-GO classification, derived from measured rates and coverage. */
-export function classify(rel: ReturnType<typeof reliability>, raw: Record<string, number>, populationTruncated: boolean) {
+/**
+ * §11 — the GO/NO-GO classification.
+ *
+ * A fifth state exists because §11's four labels all presuppose the run happened. When
+ * the provider stops serving mid-run, every one of them misattributes the cause:
+ * MODEL_LIMITED in particular would blame the substituted model for an account balance.
+ * §11's own instruction is not to confuse causes, so the honest move is to name the real
+ * one rather than force-fit a label.
+ */
+export function classify(rel: ReturnType<typeof reliability>, raw: Record<string, number>, populationTruncated: boolean, providerCutoff: { affected: number; total: number } | null) {
   const deltas = { newSubstantiveRepresentations: raw.newSubstantiveRepresentations ?? 0, surfacedBefore: raw.surfacedBefore ?? 0, surfacedAfter: raw.surfacedAfter ?? 0 };
+  if (providerCutoff && providerCutoff.affected > 0) {
+    const served = providerCutoff.total - providerCutoff.affected;
+    return {
+      verdict: "CONMED_PILOT_BLOCKED_PROVIDER_CREDIT",
+      why:
+        `The gateway stopped serving mid-run with HTTP 402 insufficient_funds, affecting ${providerCutoff.affected} of ${providerCutoff.total} candidates. ` +
+        `Only ${served} were actually served. The pilot therefore cannot answer the diagnostic question over the full population, and the ` +
+        `per-candidate failure counts are NOT a measurement of the substituted model — they are the point at which the account ran dry.`,
+      notOneOfTheFourBecause:
+        "CONMED_PILOT_MODEL_LIMITED would attribute an account-balance failure to the model; NO_ARCHITECTURAL_IMPROVEMENT requires the full population to have run; STRONG and MIXED both require a real coverage measurement. None applies.",
+      whatTheServedSubsetShows:
+        `Of the ${served} candidates served before the cutoff, ${rel.tier1Successful} completed and ${rel.tier1Failed - providerCutoff.affected} failed for non-provider reasons. That subset is real evidence, reported separately below, but it is too small to carry a GO/NO-GO decision.`,
+    };
+  }
   const executionAdequate = rel.tier1SuccessRate >= 0.8 && rel.malformedOutputRate <= 0.1;
   const materialImprovement = deltas.newSubstantiveRepresentations > 0 && deltas.surfacedAfter > deltas.surfacedBefore;
 
@@ -122,13 +155,14 @@ export function buildAll() {
   const t1 = readRun("03-tier1") as CandidateRecord[];
   const t2 = readRun("04-tier2") as CandidateRecord[];
   const final = readRun("05-final-records") as CandidateRecord[];
-  const frozen = readRun("06-frozen-responses");
+  const frozen = readRun("06-frozen-responses") as { discoveryId: string; model: string; tier: number; result: { status: string; failureReasons?: string[]; rules?: unknown[]; definitions?: unknown[] } }[];
   const notRun = readRun("07-not-run");
 
   const scored = rescore(final);
   const rel = reliability(t1, final);
   const truncated = notRun.length > 0;
-  const verdict = classify(rel, scored.deltas, truncated);
+  const providerFailed = t1.filter((r) => r.failureReasons.includes("PROVIDER_FAILURE")).length;
+  const verdict = classify(rel, scored.deltas, truncated, providerFailed > 0 ? { affected: providerFailed, total: t1.length } : null);
 
   const inTok = final.reduce((s, r) => s + (r.inputTokens ?? 0), 0);
   const outTok = final.reduce((s, r) => s + (r.outputTokens ?? 0), 0);
@@ -172,7 +206,18 @@ export function buildAll() {
       records: t2,
     }),
     write("07-final-records.json", { artifact: "§8 — final per-candidate outcome (Tier 2 where it ran, else Tier 1).", evidenceLabel: EVIDENCE_LABEL, generatedAt: GENERATED_AT, records: final }),
-    write("08-frozen-responses.json", { artifact: "§8 — every model response, frozen before scoring.", evidenceLabel: EVIDENCE_LABEL, generatedAt: GENERATED_AT, count: frozen.length, responses: frozen }),
+    write("08-frozen-responses.json", {
+      artifact: "§8 — every model response, frozen before scoring.",
+      evidenceLabel: EVIDENCE_LABEL,
+      generatedAt: GENERATED_AT,
+      count: frozen.length,
+      fidelityPolicy:
+        "A candidate the provider refused with HTTP 402 produced NO model response — what the harness holds for it is its own error envelope, not model output. Freezing those in full would inflate the record with ~140KB of repeated scaffolding per candidate while preserving nothing. So: full fidelity, byte for byte, for every attempt that actually reached the model; a compact record (status, reasons, hash) for the refused ones. Every real response is preserved.",
+      responsesWithModelOutput: frozen.filter((f) => (f.result.rules ?? []).length > 0 || (f.result.definitions ?? []).length > 0 || f.result.status !== "FAILED"),
+      refusedOrEmpty: frozen
+        .filter((f) => (f.result.rules ?? []).length === 0 && (f.result.definitions ?? []).length === 0 && f.result.status === "FAILED")
+        .map((f) => ({ discoveryId: f.discoveryId, model: f.model, tier: f.tier, status: f.result.status, failureReasons: f.result.failureReasons, resultHash: sha256(JSON.stringify(f.result)) })),
+    }),
     write("09-nine-case-rescore.json", {
       artifact: "§9 — pilot re-score of the nine CONMED cases. NOT canonical (§3).",
       evidenceLabel: EVIDENCE_LABEL,
@@ -261,7 +306,9 @@ export function buildAll() {
       "",
       "## Cheap-model reliability",
       "",
-      `- Tier-1 success rate: ${pct(rel.tier1SuccessRate)}`,
+      `- Tier-1 success rate over the served subset: ${pct(rel.tier1SuccessRate)} (${rel.tier1Successful}/${rel.servedSubset})`,
+      `- Provider refusals (HTTP 402, never reached the model): ${rel.providerFailures}`,
+      `- Raw failure rate including provider refusals: ${pct(rel.rawFailureRateIncludingProvider)} — describes the run, not the model`,
       `- Escalation rate: ${pct(rel.escalationRate)}`,
       `- Malformed-output rate: ${pct(rel.malformedOutputRate)}`,
       `- Wall-clock timeout rate: ${pct(rel.wallClockTimeoutRate)}`,
