@@ -1,0 +1,31 @@
+{
+  "artifact": "§26 — determinism",
+  "at": "2026-09-21T00:31:57.637Z",
+  "observations": [
+    {
+      "subject": "V3 atomic derivation over all 1,115 units",
+      "replays": 2,
+      "spanDays": 23,
+      "result": "byte-identical modulo the generatedAt timestamp"
+    },
+    {
+      "subject": "Phase 3 to 4A to 4B to 4C to 4D end-to-end trace",
+      "replays": 2,
+      "result": "byte-identical modulo the `at` timestamp",
+      "detail": "every hash equal: graphHash 56fbe72c, stateHash 3d3968a9, transactionHash 97cb604e, simulationId d0e0856d, postStateHash 53f08742"
+    },
+    {
+      "subject": "Phase 4D simulation identity (prior audit)",
+      "replays": 5,
+      "distinctHashes": 1,
+      "hash": "e89f18c5b8d0ecc2388f3a59154200f028b1c2587276cd832add248d1401e60f"
+    },
+    {
+      "subject": "full vitest suite at this HEAD",
+      "replays": 2,
+      "result": "identical failing-identity set",
+      "detail": "244 failing identities, set sha256 217ef7df2a32494723941f8e5dbd7795a761720dea1311d87b4757272a97070a, 0 new and 0 recovered between runs"
+    }
+  ],
+  "verdict": "DETERMINISTIC on every layer measured."
+}

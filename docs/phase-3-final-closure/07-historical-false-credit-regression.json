@@ -1,0 +1,26 @@
+{
+  "artifact": "§10 — the 14 historical false-credit cases and the 1,115-unit cross-dataset regression, RE-RUN at this HEAD rather than cited from the frozen report",
+  "at": "2026-09-21T00:31:57.637Z",
+  "headAtRun": "2948677fa237066b3bba9525cb3d43941c8e8d09",
+  "method": "lib/contract-model/evaluation-v2/runner/run-atomic-cross-dataset.ts was executed unmodified. Its output path is hardcoded to the frozen artifact, so the frozen bytes were copied out first, the runner was run, the new output was compared to the frozen output, and the frozen file was then restored with `git checkout --`. The frozen artifact's sha256 is identical before and after: 9d562deef08012c19f7fe0cd610e417f4b05e7d2cb31fa336543471e048b1d60.",
+  "result": {
+    "identicalToFrozenModuloTimestamp": true,
+    "frozenGeneratedAt": "2026-08-29T22:11:26.567Z",
+    "rerunGeneratedAt": "2026-09-21T00:26:01.241Z",
+    "unitsTotal": 1115,
+    "perDataset": {
+      "fwrg-2021-credit-agreement": 18,
+      "lsb-2023-abl-credit-agreement": 14,
+      "conmed-2025-credit-facility": 67,
+      "dsgr-2022-2025-credit-facility": 1016
+    }
+  },
+  "fourteenControls": {
+    "allPresent": true,
+    "count": 14,
+    "evaluatorCreditEligibility": "NO_CREDIT on all 14",
+    "regressionDetected": false
+  },
+  "goalpostCompliance": "§25: the denominator is 1,115 and the control count is 14, exactly as pre-registered. Neither was changed, narrowed, or re-labelled.",
+  "conclusion": "Zero regression. The historical false-credit prohibition holds at this HEAD, reproduced rather than asserted."
+}

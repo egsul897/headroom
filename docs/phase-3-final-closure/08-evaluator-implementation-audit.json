@@ -1,0 +1,64 @@
+{
+  "artifact": "§11 — evaluator implementation audit of lib/contract-model/evaluation-v2/atomic-contract.ts (236 lines, read in full)",
+  "at": "2026-09-21T00:31:57.637Z",
+  "scope": "the V3 derivation layer only. matching.ts and semantic-correspondence.ts are frozen upstream and were read for the surfacing question but not audited as V3 code.",
+  "checklist": [
+    {
+      "item": "creditEligibility is exactly matchStatus in {EXACT_SINGLE, EXACT_COMPOSITE}",
+      "verdict": "CONFORMS",
+      "evidence": "CREDIT_STATUSES; deriveAtomicContract. No other branch can produce CREDIT."
+    },
+    {
+      "item": "no dataset-, package-, documentId- or section-specific branching",
+      "verdict": "CONFORMS",
+      "evidence": "the module contains no dataset key, package name, documentId or sectionRef literal. Its only inputs are UnitEvaluationResult and a candidate map."
+    },
+    {
+      "item": "representationCompleteness FULL only for the two credit statuses, PARTIAL only for PARTIAL, else NONE",
+      "verdict": "CONFORMS",
+      "evidence": "deriveRepresentationCompleteness; REPRESENTATION_FULL_STATUSES is an alias of CREDIT_STATUSES, so FULL and CREDIT cannot diverge."
+    },
+    {
+      "item": "verificationStatus never invents a verification event",
+      "verdict": "CONFORMS",
+      "evidence": "deriveVerificationStatus returns NOT_EVALUATED when no matched candidate carries a verifierFinding, rather than NOT_VERIFIED or VERIFIED."
+    },
+    {
+      "item": "evidenceQuality is a pure re-expression of the frozen groundTruthQuality audit",
+      "verdict": "CONFORMS",
+      "evidence": "deriveEvidenceQuality is a total switch over unit.groundTruthQuality with no other input."
+    },
+    {
+      "item": "dangerousSilentOmission uses the same CRITICAL/MATERIAL gate as the frozen dangerousUnaccountedV2",
+      "verdict": "CONFORMS",
+      "evidence": "MATERIAL_TIERS = {CRITICAL, MATERIAL}; aggregate.ts unchanged."
+    },
+    {
+      "item": "surfacingStatus is claim-specific — a candidate that does not correspond to this claim cannot surface it",
+      "verdict": "CONFORMS",
+      "evidence": "deriveSurfacingStatus reuses unit.explicitlySurfacedAsUnsafe, which matching.ts computes only over `corresponding` = [...full, ...partial] (matching.ts lines 95-103). A non-corresponding candidate is structurally excluded, and the frozen I_CLAIM_IDENTITY dimension forces a sibling-anchored candidate to INDETERMINATE so it never reaches `corresponding`."
+    },
+    {
+      "item": "surfacingStatus requires the flag to cover the whole claim when the claim is composite",
+      "verdict": "NO SUCH REQUIREMENT IS WRITTEN",
+      "evidence": "neither 02-atomic-contract-spec.json nor 05-operational-rubric.json states a coverage threshold for a composite claim. The implemented rule is: ANY corresponding claim-specific flag sets SPECIFICALLY_SURFACED for the whole claim. This is a defensible reading, not a contract violation. It is AMB-1 in 02-v3-contract-reconstruction.json and is the root of all 14 non-unanimous surfacing disagreements."
+    },
+    {
+      "item": "derivedDiagnosticLabel is diagnostic-only and never feeds a safety dimension",
+      "verdict": "CONFORMS",
+      "evidence": "its result is written to the output object and read by nothing else; anyPairHasRole, the one non-claim-identity-filtered scan in the module, is called only from deriveDiagnosticLabel and is documented as such."
+    },
+    {
+      "item": "the module introduces no new matching logic",
+      "verdict": "CONFORMS",
+      "evidence": "every field is a total function of already-computed UnitEvaluationResult fields plus a candidate lookup. No text comparison, no scoring, no thresholds."
+    },
+    {
+      "item": "outputs are deterministic for fixed input",
+      "verdict": "CONFORMS",
+      "evidence": "no Date, no Math.random, no order-dependent iteration affecting a result. Empirically the 1,115-unit run reproduces byte-identically 23 days apart (artifact 07)."
+    }
+  ],
+  "evaluatorDefectsFound": 0,
+  "statement": "No implementation defect was found. The one non-conformance is a non-conformance to a rule that does not exist: the contract is silent where the evaluator had to choose. That is a contract defect, not an evaluator defect."
+}

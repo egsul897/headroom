@@ -1,0 +1,19 @@
+{
+  "artifact": "§13 — source-document adjudication: do the 7 SHARES_CAPACITY_WITH relationships correspond to a quantified shared pool Phase 3 failed to normalise?",
+  "at": "2026-09-21T00:31:57.637Z",
+  "question": "Case A (a real quantified shared pool exists in the source and Phase 3 dropped it) versus Case B (the source creates a relationship but no separately quantified pool).",
+  "frozenFixtureFacts": {
+    "rulesTotal": 63,
+    "rulesWithCapacityExpression": 52,
+    "rulesWithExcerpts": 48,
+    "quantifiedSharedCapacityResources": 0,
+    "sharesCapacityWithRelationships": 7
+  },
+  "method": "read the preserved source excerpts for every rule carrying a SHARES_CAPACITY_WITH edge, and the excerpt of every rule named as that edge's target, from the frozen compile result. No new document was inspected and no new package was added.",
+  "finding": "all 7 edges are refinancing / replacement attribution: the incurrence is charged against the ORIGINAL basket's own ceiling rather than against a third, separately-sized pool. There is no second number in the source text to normalise.",
+  "determination": "RELATIONSHIP_ONLY_NO_QUANTIFIED_POOL",
+  "caseSelected": "B",
+  "phase3Verdict": "CORRECT — Phase 3 was right to emit a relationship and no quantified shared resource.",
+  "complianceNote": "§13: no shared pool was invented to make Phase 4C/4D evidence stronger. quantifiedSharedCapacityResources remains 0.",
+  "downstreamConsequence": "Phase 4C continues to treat an unquantified shared relationship as non-authoritative through simulation, which is the safe disposition and is proven on the real fixture."
+}

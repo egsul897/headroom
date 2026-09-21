@@ -1,0 +1,26 @@
+{
+  "artifact": "§10 — the 14 historical false-credit controls, re-derived at this HEAD",
+  "at": "2026-09-21T00:31:57.637Z",
+  "source": "docs/evaluation-contract-v3/18-known-false-credit-controls.json (frozen, untouched) re-derived from 09-adjudicator-a.json, 10-adjudicator-b.json, 11-adjudicator-c.json and the live evaluator run in artifact 07.",
+  "controlCount": 14,
+  "allThreeAdjudicatorsNoCredit": true,
+  "evaluatorNoCredit": true,
+  "regressionDetected": false,
+  "caseIds": [
+    "doc-a::VI::6.01-chapeau",
+    "doc-a::VI::6.04-chapeau",
+    "doc-a::VI::6.04-unrestricted-sub-valuation",
+    "doc-a::VI::6.05-chapeau",
+    "doc-a::VI::6.05-ip-flush-prohibition",
+    "doc-a::VI::6.08b-chapeau",
+    "doc-a::VI::6.10-chapeau",
+    "doc-b::VI::6-01-lead-in",
+    "doc-b::VI::6-04-lead-in",
+    "doc-b::VI::6-05-lead-in",
+    "doc-d::VI::6-01-chapeau",
+    "doc-d::VI::6-04-chapeau",
+    "doc-d::VI::6-05-chapeau",
+    "doc-d::VI::6-08-b-chapeau"
+  ],
+  "disclosedCaveatCarriedForward": "2 of these 14 (doc-a::VI::6.05-ip-flush-prohibition, doc-a::VI::6.08b-chapeau) show the evaluator's surfacingStatus disagreeing with consensus in the evaluator-more-permissive direction. Both are instances of AMB-1. §10 requires creditEligibility=NO_CREDIT for these controls, which holds; it does not certify their surfacing disposition, and this artifact does not claim it does."
+}

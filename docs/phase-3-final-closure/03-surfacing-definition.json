@@ -1,0 +1,26 @@
+{
+  "artifact": "\u00a75 surfacing forensics",
+  "at": "2026-09-21T00:00:00Z",
+  "writtenDefinition": "SPECIFICALLY_SURFACED iff explicitlySurfacedAsUnsafe is true, evaluated only on NO_CREDIT units",
+  "tenQuestions": {
+    "1_whatProposition": "a ground-truth legal proposition, often composite (e.g. a financial-covenant claim spanning sub-clauses (a)-(d))",
+    "2_whatCounts": "a CLAIM-SPECIFIC declaration of uncertainty attached to a candidate that corresponds to this claim",
+    "3_requiredIRObject": "not specified as a particular object; the operative signal is the explicitlySurfacedAsUnsafe flag derived from correspondence plus review status",
+    "4_rawTextEnough": "NO - preserving source text alone does not surface",
+    "5_machineActionable": "not required; a NEEDS_REVIEW flag or verification finding suffices",
+    "6_partialCountsAsSurfaced": "UNSPECIFIED for composite claims - this is AMB-1",
+    "7_ambiguousCountsAsSurfaced": "not addressed directly; AMBIGUOUS affects completeness, not surfacing",
+    "8_unsupportedCountsAsSurfaced": "not addressed directly",
+    "9_limitationCountsAsSurfacing": "yes where claim-specific",
+    "10_evaluatorImplementsDefinition": "YES - the evaluator reuses the frozen explicitlySurfacedAsUnsafe field verbatim, exactly as the written derivation states. No evaluator violation of the written contract was demonstrated."
+  },
+  "workedDisagreement": {
+    "caseId": "a-7.1",
+    "factsAgreedByAllThree": "composite claim over 7.1(a)-(d); only sub-clause 7.1(d) carries a claim-specific NEEDS_REVIEW flag and an anchored verification finding; (a),(b),(c) carry no claim-specific flag",
+    "A": "NOT_SPECIFICALLY_SURFACED - a partial flag on one of four sub-parts does not prevent dangerous silence over the claim's dominant material content (invokes INVARIANT_5)",
+    "B": "SPECIFICALLY_SURFACED - the 7.1(d) candidate and anchored audit findings are claim-specific (invokes INVARIANT_3)",
+    "C": "SPECIFICALLY_SURFACED - the exact/child 7.1(d) candidate is itself NEEDS_REVIEW and a verification finding anchors to it",
+    "diagnosis": "the reviewers do not disagree about the evidence. They apply two different, each individually defensible, rules. The contract adjudicates between them nowhere. This is contract ambiguity, not reviewer carelessness and not a machine defect."
+  },
+  "definitionNotChanged": "No definition was altered in this mission. Changing it to raise agreement is forbidden by \u00a75 and \u00a725."
+}

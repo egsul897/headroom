@@ -1,0 +1,74 @@
+{
+  "artifact": "§37/§38 — full quality gates, compared by FAILING IDENTITY rather than by count",
+  "at": "2026-09-21T00:33:20.723Z",
+  "headAtRun": "2948677fa237066b3bba9525cb3d43941c8e8d09",
+  "logFreshness": {
+    "rule": "§38: every log must be newer than every source file",
+    "newestSourceFileEpoch": 1789948684,
+    "newestSourceFile": "scripts/phase-4d-post-audit.ts",
+    "oldestLogEpoch": 1789950046,
+    "marginSeconds": 1362,
+    "holds": true,
+    "why": "the prior mission's N3 defect was a gate certifying a STALE tsc log. This check is the guard against repeating it."
+  },
+  "vitest": {
+    "tests": 4524,
+    "passed": 3839,
+    "failed": 161,
+    "pending": 524,
+    "suites": 1516,
+    "failedSuites": 217,
+    "failingIdentities": 244,
+    "failingIdentitySetSha256": "217ef7df2a32494723941f8e5dbd7795a761720dea1311d87b4757272a97070a"
+  },
+  "identityComparison": {
+    "against": "the independent full run performed by the prior post-remediation audit at this same HEAD",
+    "newFailingIdentities": 0,
+    "recoveredIdentities": 0,
+    "conclusion": "the failing set is identical, element for element. Since this mission changed zero source files, this is also the baseline: there is nothing to regress against."
+  },
+  "failureClassification": {
+    "total": 244,
+    "DB_UNAVAILABLE_explicit": 174,
+    "DB_BACKED_SUITE_SETUP_empty_reporter_message": 50,
+    "STALE_HISTORICAL_FREEZE_ASSERTION": 2,
+    "SEMANTIC_ACCOUNTABILITY_ADJUDICATED": 18,
+    "notes": {
+      "DB": "DATABASE_URL is unset in this container; 224 of 244 are Prisma connection or DB-backed suite-setup failures. Spot-checked: tests/connectors/registry.test.ts, tests/company-state/canonical-state.test.ts and tests/versioning.test.ts all import Prisma.",
+      "STALE_FREEZE": "tests/contract-model/architecture-proposal-node-identity.test.ts and tests/contract-model/phase-3f1-1-forensic-machinery.test.ts assert that no new directory exists under tests/fixtures/unseen-packages/. A later authorised mission legitimately added chwy-2026-credit-agreement. The assertions are stale relative to that decision; they are NOT a Phase-3 output defect.",
+      "SEMANTIC_ACCOUNTABILITY": "see 21-phase4e-readiness.json and the dedicated block below."
+    }
+  },
+  "semanticAccountabilityRedSet": {
+    "identities": 18,
+    "composition": "scenarios I1, I3, I4, I23, I25, I26, I27 x (Pass A + Pass B/C) = 14, plus 4 I1-derived Pass-A stability assertions",
+    "alreadyAdjudicated": "docs/source-coverage-repair/37-final-certification.json records this EXACT failing set ('identical to artifacts 34/35/36') and classifies every one of the 7 residual segments: TRUE_SAFETY_IMPROVEMENT x3 (I1 'plus,'/'the sum of', I4 'plus', I26 furnish-notice chapeau), PLAUSIBLE_REVIEW x3 (I3, I23, I25), OBVIOUS_FALSE_GAP x1 (I27 'Notwithstanding').",
+    "criticalProperty": "silentlyCompletes=false on ALL of them. Every one is the system refusing to certify completeness, not the system silently certifying an incomplete unit. The direction of the error is fail-safe.",
+    "honestStatement": "Phase 3's test suite is NOT green. These 18 are red because the production code was deliberately tightened and the test expectations encode the looser pre-tightening behaviour. Exactly one (I27) is an acknowledged FALSE gap that remains unremediated. None of the 18 is a false credit and none is a silent completion.",
+    "actionTakenThisMission": "NONE. §3 makes Phase-3 production read-only absent a proved defect and §45 forbids a change on an unproved one. This is recorded as a closure observation, not repaired."
+  },
+  "tsc": {
+    "exit": 1,
+    "errors": 6,
+    "allIn": "tests/foundation-audit/",
+    "identities": [
+      "cascade-and-concurrency.test.ts(140,7) TS2783",
+      "cascade-and-concurrency.test.ts(143,7) TS2783",
+      "discovery-fault-injection.test.ts(58,45) TS2339",
+      "real-db-duplicate-physical-occurrence.test.ts(26,5) TS2783",
+      "real-db-duplicate-physical-occurrence.test.ts(27,5) TS2783",
+      "real-db-duplicate-physical-occurrence.test.ts(30,5) TS2783"
+    ],
+    "preExisting": true,
+    "corroboration": "independently recorded as pre-existing in docs/phase-4d/remediation/08-regression.json and in docs/source-coverage-repair/37-final-certification.json ('6 pre-existing errors in tests/foundation-audit/*; 0 in semantic-accountability').",
+    "newErrorsThisMission": 0
+  },
+  "lint": {
+    "exit": 0,
+    "result": "No ESLint warnings or errors"
+  },
+  "build": {
+    "exit": 0,
+    "result": "next build succeeded, all routes emitted"
+  }
+}

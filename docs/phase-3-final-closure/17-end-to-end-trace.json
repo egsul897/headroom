@@ -1,0 +1,42 @@
+{
+  "artifact": "§31 — the end-to-end real-data trace, RE-RUN at this HEAD",
+  "at": "2026-09-21T00:31:57.637Z",
+  "method": "the audit's trace script was copied to the scratchpad with its output path redirected, so the frozen artifact docs/phase-4d/post-remediation-audit/02-end-to-end-trace.json was not overwritten.",
+  "identicalToFrozenModuloTimestamp": true,
+  "chain": {
+    "step1_source": {
+      "documentId": "doc-a",
+      "sectionRef": "6.01(b)(31)"
+    },
+    "step3_phase3IR": {
+      "ruleId": "ir-rule:2142a4b823fd9e52a8a8f3da",
+      "covenantFamily": "INDEBTEDNESS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "sufficiency": "COMPLETE"
+    },
+    "step4_phase4a": {
+      "evaluationStatus": "EXECUTABLE",
+      "grossCapacity": "31000000"
+    },
+    "step5_phase4b": {
+      "dependenciesDeclared": 42,
+      "inputViewHash": "a26808e4be0a698b64f54a110af72f87c33b50738d6e616e81863f45cd94a988"
+    },
+    "step6_phase4c": {
+      "status": "AVAILABLE",
+      "effectiveRemainingBefore": "31000000"
+    },
+    "step7_phase4d": {
+      "attempted": "1000",
+      "outcome": "SATISFIED",
+      "remainingAfter": "30999000",
+      "committable": true,
+      "limitations": []
+    }
+  },
+  "arithmetic": "31000000 - 1000 = 30999000. Confirmed.",
+  "provenanceChainLength": 8,
+  "traceSteps": 15,
+  "firstPointOfFailure": null,
+  "legacyEngineUsed": false
+}

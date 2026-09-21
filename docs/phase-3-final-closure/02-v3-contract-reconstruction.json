@@ -1,0 +1,37 @@
+{
+  "artifact": "\u00a74 normative reconstruction from the WRITTEN contract",
+  "at": "2026-09-21T00:00:00Z",
+  "source": {
+    "spec": "docs/evaluation-contract-v3/02-atomic-contract-spec.json",
+    "sha256": "8f175dde7ada73fd7c2b5386d8679e7fd67e5f42c8a698b47bcc0d73f2a5a022",
+    "implementation": "lib/contract-model/evaluation-v2/atomic-contract.ts",
+    "version": "evaluation-contract-v3.v1"
+  },
+  "definitions": {
+    "evaluationUnit": "one ground-truth proposition (caseId) drawn from the frozen adjudication sample; n=47",
+    "credit": "creditEligibility=CREDIT iff matchStatus in {EXACT_SINGLE, EXACT_COMPOSITE}; else NO_CREDIT. A direct relabelling of the frozen matcher's outcome, introducing no new judgment.",
+    "noCredit": "every other matchStatus, including PARTIAL, UNREPRESENTED, HONESTLY_UNRESOLVED, HONESTLY_UNSUPPORTED, CONTRADICTORY, AMBIGUOUS",
+    "falseCredit": "CREDIT awarded where the candidate does not represent the ground-truth proposition; prohibited by the frozen matcher's claim-identity requirement",
+    "surfacing": "surfacingStatus=NOT_APPLICABLE when creditEligibility=CREDIT. Otherwise SPECIFICALLY_SURFACED iff the unit's explicitlySurfacedAsUnsafe field is true; else NOT_SPECIFICALLY_SURFACED.",
+    "partial": "representationCompleteness=PARTIAL iff matchStatus=PARTIAL. PARTIAL never yields CREDIT.",
+    "ambiguous": "matchStatus=AMBIGUOUS maps to representationCompleteness=NONE and creditEligibility=NO_CREDIT",
+    "unsupported": "HONESTLY_UNSUPPORTED maps to representationCompleteness=NONE and creditEligibility=NO_CREDIT",
+    "consensus": "majority 2-of-3 per case per dimension; a 3-way split is UNRESOLVED_CONSENSUS and excluded from that dimension's denominator (0 occurrences observed)",
+    "denominators": "creditEligibility scored over all 47 cases; surfacingStatus scored ONLY over cases where a 2-of-3 majority assigned NO_CREDIT (n=36)"
+  },
+  "identifiedAmbiguities": [
+    {
+      "id": "AMB-1",
+      "severity": "DOMINANT",
+      "field": "surfacingStatus",
+      "statement": "The contract does not specify the COVERAGE THRESHOLD for a composite claim. Where a ground-truth proposition spans several sub-provisions and a claim-specific flag attaches to only one of them, the contract does not say whether the composite claim is SPECIFICALLY_SURFACED.",
+      "whyItMatters": "this is the single distinction the three adjudicators resolved differently, and it drives the dominant NOT_SPECIFICALLY_SURFACED vs SPECIFICALLY_SURFACED confusion"
+    },
+    {
+      "id": "AMB-2",
+      "severity": "CONTRIBUTING",
+      "field": "surfacingStatus",
+      "statement": "explicitlySurfacedAsUnsafe is computed only from pairs whose correspondence resolved to CORRESPONDS_FULLY or CORRESPONDS_PARTIALLY. The contract discloses this but does not state whether a human adjudicator should apply the same restriction, so a reviewer may count a DISCOVERY_CANDIDATE or audit finding the machine structurally cannot."
+    }
+  ]
+}

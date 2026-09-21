@@ -1,0 +1,34 @@
+{
+  "artifact": "\u00a79 threshold forensics. Threshold 0.90, pre-registered, NOT weakened.",
+  "at": "2026-09-21T00:00:00Z",
+  "creditEligibilityEvaluatorVsConsensus": {
+    "numerator": 42,
+    "denominator": 47,
+    "rate": 0.8936170212765957,
+    "required": 0.9,
+    "matchesNeeded": 43,
+    "flipsRequiredToPass": 1,
+    "disagreeingUnits": [
+      "doc-a::I::applicable-ebitda",
+      "doc-a::X::10.01a-us-guaranty",
+      "fwrg-6.01-j",
+      "fwrg-6.04-a-iii",
+      "lsb-6.01-general-ratio-gated"
+    ],
+    "warning": "ONE flip would cross the line. \u00a79 forbids rounding 89.4% into a pass, and no single mismatch was demonstrated to be an evaluator violation of the written contract, so no flip is justified."
+  },
+  "surfacingEvaluatorVsConsensus": {
+    "numerator": 24,
+    "denominator": 36,
+    "rate": 0.6666666666666666,
+    "required": 0.9,
+    "flipsRequiredToPass": 9
+  },
+  "surfacingInterReviewer": {
+    "meanPairwise": 0.740741,
+    "required": 0.9,
+    "n": 36,
+    "note": "this metric contains no evaluator term. It cannot be moved by any change to the evaluator or to production. Only a fresh adjudication by genuinely independent reviewers under a disambiguated rubric can move it."
+  },
+  "changesMade": "NONE. No denominator, threshold, scope or label was altered."
+}
