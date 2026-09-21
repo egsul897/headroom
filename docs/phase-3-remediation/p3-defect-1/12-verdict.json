@@ -1,0 +1,76 @@
+{
+  "artifact": "§17/§20 — verdict.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "verdict": "P3_DEFECT1_ROOT_CAUSE_MISCLASSIFIED",
+  "truePromotionGapCount": 0,
+  "targetCaseCount": 20,
+  "productionFilesChanged": 0,
+  "caseSpecificHardcoding": false,
+  "falseCreditControls": "14/14 NO_CREDIT",
+  "falsePromotionsFound": 0,
+  "successGate": [
+    {
+      "n": 1,
+      "requirement": "At least one genuine P3-DEFECT-1 case fixed through a generic mechanism",
+      "status": "NOT_APPLICABLE",
+      "note": "There is no genuine P3-DEFECT-1 case. §20 item 47 provides P3_DEFECT1_ROOT_CAUSE_MISCLASSIFIED for exactly this outcome."
+    },
+    {
+      "n": 2,
+      "requirement": "No case-specific production hardcoding",
+      "status": "PASS",
+      "note": "Zero production files changed."
+    },
+    {
+      "n": 3,
+      "requirement": "14/14 historical false-credit controls remain NO_CREDIT",
+      "status": "PASS",
+      "note": "14/14, measured against the V3.1.1 canonical result."
+    },
+    {
+      "n": 4,
+      "requirement": "No new false promotion in the non-target audit",
+      "status": "PASS",
+      "note": "Zero candidates changed accountingRole."
+    },
+    {
+      "n": 5,
+      "requirement": "Every promoted representation has source provenance",
+      "status": "VACUOUS",
+      "note": "Nothing was promoted."
+    },
+    {
+      "n": 6,
+      "requirement": "Every promoted representation passes semantic sufficiency",
+      "status": "VACUOUS",
+      "note": "Nothing was promoted."
+    },
+    {
+      "n": 7,
+      "requirement": "No P3-DEFECT-2/3/4 code intentionally modified",
+      "status": "PASS",
+      "note": "No production code modified at all. The LSB citation-matching defect was found, classified and left for P3-DEFECT-4."
+    },
+    {
+      "n": 8,
+      "requirement": "Phase 4A-4D remain green",
+      "status": "PASS"
+    },
+    {
+      "n": 9,
+      "requirement": "No new full-suite failing identity",
+      "status": "PASS"
+    },
+    {
+      "n": 10,
+      "requirement": "Outputs are deterministic",
+      "status": "PASS"
+    }
+  ],
+  "whatThisMeansForTheBacklog": "P3-DEFECT-1 should be struck from the Phase-3 defect backlog as a production defect. Its 20 cases do not evidence a Headroom failure; they evidence that the benchmark's system-output layer was generated on a $30 budget that never reached Article VI, on a pipeline that had no compiler, and on an analyzer that predates it. Two of the four V3.1.1 defect groups (P3-DEFECT-1 and, for five cases, P3-DEFECT-2) rest on the same artifact.",
+  "whatIsStillRealFromThisInvestigation": [
+    "P3-DEFECT-4 (cross-reference absorbed as structural containment) is confirmed and now has a second, sharper instance: a verbatim-citation check that rejects composed citations the source never writes, demoting correctly compiled rules to HONEST_UNRESOLVED.",
+    "P3-DEFECT-3 (composite rule flattened) is untouched by this finding and remains real.",
+    "The FWRG §6.02(a) case is the one candidate that might be a genuine promotion gap, and it can only be settled by running it through the current compiler."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "artifact": "§0 — starting state.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "startingSha": "2e2e820e5c8c0a5b351ba1d2dbcabbb51d02ae72",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "workingTree": "clean",
+  "matchesExpectedHandoff": true,
+  "handoffNote": "HEAD is the V3.1.1 reconciliation commit. No unrelated commits were absorbed.",
+  "v311BenchmarkContentHash": "fdba3cb2c1c226d4444f4af89a786efeb662677a8df17666ce8e2ffbcf0c1d59",
+  "p3Defect1ManifestHash": "7f77a389809c41dfa8d180017d74fb08f9fd2a1ae99985b5aec428bce7a4c231",
+  "falseCreditControlArtifactHash": "6ee35b711a6ddbeaeb1f128f34612d2df1acd70bcdb0b7b1cb523f32de25c3ba",
+  "v311Counts": {
+    "credit": {
+      "NO_CREDIT": 35,
+      "CREDIT": 12
+    },
+    "completeness": {
+      "FULL": 21,
+      "PARTIAL": 8,
+      "NONE": 18
+    },
+    "compositeSurfacing": {
+      "NOT_SPECIFICALLY_SURFACED": 13,
+      "NOT_APPLICABLE": 12,
+      "PARTIALLY_SURFACED": 9,
+      "FULLY_SURFACED": 13
+    },
+    "binarySurfacing": {
+      "NOT_SPECIFICALLY_SURFACED": 22,
+      "NOT_APPLICABLE": 12,
+      "SPECIFICALLY_SURFACED": 13
+    },
+    "surfacingDenominator": 35,
+    "dangerousSilentOmissions": 22,
+    "fullySurfacedNoCredit": 13,
+    "partiallySurfacedNoCredit": 9,
+    "notSpecificallySurfacedNoCredit": 13,
+    "readjudicated": 22,
+    "carriedForward": 25,
+    "creditDecisionsChanged": 1,
+    "surfacingDecisionsChanged": 9
+  },
+  "phase4TestState": {
+    "4A tests/contract-model/runtime (core)": "5 files / 82 tests green at handoff",
+    "4B tests/contract-model/runtime/input": "4 files / 98 tests green at handoff",
+    "4C tests/contract-model/runtime/capacity": "7 files / 177 tests green at handoff",
+    "4D tests/contract-model/runtime/transaction": "6 files / 186 tests green at handoff"
+  },
+  "frozenHashes": {
+    "docs/phase-3-final-closure-resolution/review-packets/R1.json": "0b0e69bcf7f18e5256a6de2086f3b5b0ffe0a152be8882cd1f3557e2ab24ef74",
+    "docs/phase-3-v3.1-final-reconciliation/05-v3.1.1-corrected-47-case-corpus.json": "8995827aa78fca7938cbfb7924705c6e27277ac4dc73893ee250f49d6e8ebf1c",
+    "docs/phase-3-v3.1-final-reconciliation/08-final-47-case-results.json": "d2e221ccfa61970c1ec6ec36f91fa786e49f324cf769e889b8d1505a41ed86f3",
+    "docs/phase-3-v3.1-final-reconciliation/09-phase3-defect-backlog.json": "13aa9ac1b99582360d31fbc193e824c3f8698a137ecbc7ac9b94b3f7968fae3e",
+    "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json": "72ae77094c3224a90c74409bfc2f498dca9f7daefab8b5684b863f66748e160c",
+    "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json": "d4fb0f7790e50ea0f8ec58cb5a565ac2b4efa4ecef2586e224e4b4b2275523d5",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json": "5f0eb08834f2056f94aafee073bd08f3dcbc81a3f638ace5beb444386c1ea444",
+    "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json": "631819877ea0266b5d62950787b833e3eec8528f65f5bda0d042b4b0d2035d18",
+    "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json": "0a52b2df2a65867d737231b441a9550b26ef0d2b37aae5e58e3282af90b5348d",
+    "docs/evaluation-contract-v3/18-known-false-credit-controls.json": "6ee35b711a6ddbeaeb1f128f34612d2df1acd70bcdb0b7b1cb523f32de25c3ba"
+  }
+}

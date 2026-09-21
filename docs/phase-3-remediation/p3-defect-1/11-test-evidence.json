@@ -1,0 +1,92 @@
+{
+  "artifact": "§16 — test evidence.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "newTests": {
+    "file": "tests/phase-3-remediation/p3-defect-1-promotion.test.ts",
+    "assertions": 14,
+    "redBaseline": false,
+    "redBaselineReason": "no production defect exists at the promotion seam; a manufactured failing test would record a false claim"
+  },
+  "adversarialPromotionControls": {
+    "requestedByMission": [
+      "A topical-only",
+      "B same section wrong sub-clause",
+      "C threshold-only fragment",
+      "D chapeau-only fragment",
+      "E child-only fragment",
+      "F wrong entity scope",
+      "G wrong transaction type",
+      "H unresolved cross-reference",
+      "I ambiguous structural mapping",
+      "J source context incomplete"
+    ],
+    "written": 0,
+    "whyNot": "These controls test that a PROMOTION RULE does not fire on weak evidence. No promotion rule was added, and the existing intake predicate reads only DiscoveryRole - so a control asserting that a topical-only or threshold-only candidate 'remains non-promoted' at intake would be asserting something the predicate does not decide, and would pass for the wrong reason. The real A-J boundary is enforced after compilation by normalize.ts sufficiency, the IR type-checker and Phase-3C verification, which have their own existing suites. Building decorative controls here would be the kind of evidence this backlog exists to remove."
+  },
+  "suitesRun": {
+    "tests/phase-3-remediation (new)": {
+      "files": 1,
+      "tests": 14,
+      "failed": 0
+    },
+    "tests/benchmark-v311 (V3.1.1 reconciliation)": {
+      "files": 1,
+      "tests": 17,
+      "failed": 0
+    },
+    "tests/benchmark-integrity": {
+      "files": 1,
+      "tests": 11,
+      "failed": 0
+    },
+    "tests/evaluation-v2": {
+      "files": 9,
+      "tests": 164,
+      "failed": 0
+    },
+    "tests/contract-model/semantic-accountability": {
+      "files": 12,
+      "tests": 380,
+      "failed": 0
+    },
+    "tests/contract-model/semantic-compiler (the seam's own suite)": {
+      "files": 14,
+      "tests": 164,
+      "failed": 0
+    },
+    "Phase 4A tests/contract-model/runtime (core)": {
+      "files": 5,
+      "tests": 82,
+      "failed": 0
+    },
+    "Phase 4B tests/contract-model/runtime/input": {
+      "files": 4,
+      "tests": 98,
+      "failed": 0
+    },
+    "Phase 4C tests/contract-model/runtime/capacity": {
+      "files": 7,
+      "tests": 177,
+      "failed": 0
+    },
+    "Phase 4D tests/contract-model/runtime/transaction": {
+      "files": 6,
+      "tests": 186,
+      "failed": 0
+    }
+  },
+  "fullSuite": {
+    "before": "3 failed / 347 passed (350 files) at HEAD 2e2e820",
+    "after": "3 failed / 348 passed (351 files)",
+    "newFailingIdentities": [],
+    "failingIdentitiesBeforeAndAfter": [
+      "tests/certification/open2-final-direct-patch-independent-confirmation.test.ts > Item 15 — real end-to-end persistence",
+      "tests/contract-model/architecture-proposal-node-identity.test.ts > no new directory under tests/fixtures/unseen-packages/",
+      "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts > no new package directory under tests/fixtures/unseen-packages/"
+    ],
+    "note": "Identities, not counts. The same three pre-existing failures; the two contamination guards fail on a tracked fixture directory (chwy-2026-credit-agreement, commit 8241605) whose prefix was never added to their allow-lists. The extra passing file is this mission's own new suite."
+  },
+  "tsc": "clean for every file this mission adds; the six pre-existing errors in tests/foundation-audit/ are untouched",
+  "lint": "next lint — no warnings or errors",
+  "build": "next build — succeeded"
+}
