@@ -1,0 +1,60 @@
+{
+  "artifact": "PART III - one real proposition traced through every phase of the target architecture",
+  "at": "2026-09-21T00:01:13.925Z",
+  "traceCompleted": true,
+  "step1_sourceDocument": {
+    "frozenCompileResult": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+    "documentId": "doc-a",
+    "sourceSectionRef": "6.01(b)(31)"
+  },
+  "step2_phase2StructuralEvidence": {
+    "sourceCitation": "6.01(b)(31)",
+    "sourceNodeKey": null,
+    "note": "the frozen compile result carries Phase-2 structural provenance forward; Phase 2 itself is not re-run in this trace"
+  },
+  "step3_phase3SemanticIR": {
+    "ruleId": "ir-rule:2142a4b823fd9e52a8a8f3da",
+    "covenantFamily": "INDEBTEDNESS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "INCUR_DEBT",
+    "sufficiency": "COMPLETE",
+    "conditionCount": 0,
+    "capacityExpressionKind": "DEFINED_TERM_REFERENCE"
+  },
+  "step4_phase4aExpressionEvaluation": {
+    "evaluationStatus": "EXECUTABLE",
+    "grossCapacity": "31000000"
+  },
+  "step5_phase4bInputDependency": {
+    "snapshotId": "trace-pack",
+    "snapshotSetHash": "3f5d109c37a34fe0f6800583975cc99fb3364a50693a2e254ca8c151edc2e1e1",
+    "dependenciesDeclared": 42,
+    "inputViewHash": "a26808e4be0a698b64f54a110af72f87c33b50738d6e616e81863f45cd94a988"
+  },
+  "step6_phase4cCapacityState": {
+    "capacityNodeId": "capacity:rule:ir-rule:2142a4b823fd9e52a8a8f3da",
+    "status": "AVAILABLE",
+    "graphHash": "56fbe72cb4c7049a8619de5f3dffe34b397920d77bbcf76088a1a7a3b947adf5",
+    "stateHash": "3d3968a933833c8b647b53c5fc6c620588389eecd18b5dcf6a2b910c0fde7ca3",
+    "effectiveRemainingBefore": "31000000"
+  },
+  "step7_phase4dTransaction": {
+    "transactionHash": "97cb604eb9f80186918db85c7aa579077c9a516cbc6f442551d12486c3d9e614",
+    "simulationId": "d0e0856d52a57d96dae6e9f23eb15789e31989e0b04ac7cac444faedba5b7237",
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "SATISFIED",
+    "committable": true,
+    "attempted": "1000",
+    "availableAtDraw": "31000000",
+    "outcome": "SATISFIED",
+    "proposedLedgerRow": "trace-tx::e1",
+    "postStateHash": "53f08742b2e63a1d14933b6eb86860f3b68442b879dae19f20f7e04d27d91d97",
+    "remainingAfter": "30999000",
+    "limitations": []
+  },
+  "provenanceChainLength": 8,
+  "traceSteps": 15,
+  "firstPointOfFailure": null,
+  "legacyEngineUsed": false
+}

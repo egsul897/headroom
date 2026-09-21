@@ -298,8 +298,16 @@ const TREES = [
   ["ir", "lib/contract-model/ir"], ["phase4bInput", "lib/contract-model/runtime/input"],
   ["phase4cCapacity", "lib/contract-model/runtime/capacity"],
 ] as const;
-const frozenBefore = Object.fromEntries(TREES.map(([k, d]) => [k, treeAt(FAILED_BASELINE, d)]));
-const frozenNow = Object.fromEntries(TREES.map(([k, d]) => [k, treeAt("HEAD", d)]));
+interface FrozenTrees { phase3Compiler: string; phase3Semantic: string; ir: string; phase4bInput: string; phase4cCapacity: string }
+const treeMap = (ref: string): FrozenTrees => ({
+  phase3Compiler: treeAt(ref, "lib/contract-model/compiler"),
+  phase3Semantic: treeAt(ref, "lib/contract-model/compiler/semantic"),
+  ir: treeAt(ref, "lib/contract-model/ir"),
+  phase4bInput: treeAt(ref, "lib/contract-model/runtime/input"),
+  phase4cCapacity: treeAt(ref, "lib/contract-model/runtime/capacity"),
+});
+const frozenBefore = treeMap(FAILED_BASELINE);
+const frozenNow = treeMap("HEAD");
 const changedProduction = sh(`git diff --name-only ${FAILED_BASELINE} -- lib/`).split("\n").filter(Boolean)
   .concat(sh("git diff --name-only -- lib/").split("\n").filter(Boolean), sh("git ls-files --others --exclude-standard lib/").split("\n").filter(Boolean));
 const priorPhaseTouched = [...new Set(changedProduction)].filter((f) => !f.startsWith(`${TX_DIR}/`)).sort();

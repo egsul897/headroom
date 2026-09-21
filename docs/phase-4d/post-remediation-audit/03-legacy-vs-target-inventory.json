@@ -1,0 +1,65 @@
+{
+  "artifact": "PART IV - legacy versus target architecture inventory. READ ONLY: nothing was migrated, deleted or cleaned up.",
+  "at": "2026-09-21T00:00:00Z",
+  "uiOnLegacyCovenantEngine": [
+    "app/[companyId]/capacity/page.tsx",
+    "app/[companyId]/dashboard/page.tsx",
+    "app/[companyId]/docs/page.tsx",
+    "app/[companyId]/ledger/page.tsx",
+    "app/[companyId]/simulate/SimulateClient.tsx",
+    "app/[companyId]/simulate/page.tsx",
+    "components/DashboardClient.tsx",
+    "components/ProvisionTrace.tsx"
+  ],
+  "uiOnLegacySolver": [
+    "app/[companyId]/onboarding/activate/page.tsx"
+  ],
+  "uiTouchingContractModel": [
+    "app/[companyId]/onboarding/documents/actions.ts",
+    "app/[companyId]/onboarding/documents/page.tsx",
+    "app/[companyId]/onboarding/review/page.tsx"
+  ],
+  "uiImportingPhase4Runtime": [],
+  "headlineFinding": "No UI surface imports lib/contract-model/runtime. The entire Phase-4A/4B/4C/4D engine is product-unintegrated: the functioning product shell runs on the legacy covenant engine and the legacy solver, while the generalized engine is exercised only by tests, scripts and evidence tooling.",
+  "duplicatedConcepts": [
+    {
+      "concept": "capacity / headroom computation",
+      "legacy": "lib/covenant-engine",
+      "target": "lib/contract-model/runtime/capacity"
+    },
+    {
+      "concept": "transaction simulation",
+      "legacy": "app/[companyId]/simulate (via covenant-engine)",
+      "target": "lib/contract-model/runtime/transaction"
+    },
+    {
+      "concept": "solving / optimisation",
+      "legacy": "lib/solver (8 files, used by onboarding activate)",
+      "target": "Phase 4E, deliberately unstarted"
+    },
+    {
+      "concept": "rule model",
+      "legacy": "covenant-engine rule shapes",
+      "target": "lib/contract-model/ir (7 files)"
+    }
+  ],
+  "modulesThatMustEventuallyBeReplaced": [
+    "lib/covenant-engine (8 UI dependents)",
+    "lib/solver (1 UI dependent)"
+  ],
+  "historicalEvidenceOnly": [
+    "docs/phase-3*",
+    "docs/evaluation-v2*",
+    "docs/evaluation-contract-v3*",
+    "tests/fixtures/unseen-packages/*"
+  ],
+  "futureIntegrationBoundary": {
+    "statement": "Product integration would replace the covenant-engine call sites in the 8 listed UI surfaces with lib/contract-model/runtime/capacity + /transaction, keeping lib/solver out of scope until Phase 4E exists.",
+    "orderSuggested": [
+      "read-only capacity and ledger views first (no state transition)",
+      "then the simulate surface, which is the first consumer needing Phase 4D",
+      "solver-backed onboarding activate last, because its replacement is Phase 4E and Phase 4E is unstarted"
+    ],
+    "notDoneHere": "this mission performed no migration, no deletion and no UI change"
+  }
+}

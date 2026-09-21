@@ -1,0 +1,64 @@
+{
+  "artifact": "PART II - Phase 3 final assurance, assessed against the evidence that already exists rather than rebuilt",
+  "at": "2026-09-21T00:00:00Z",
+  "missionPremise": "the historical Phase-3F/3F.1/3F.1.1 methodology could award semantic coverage from structural proximity without proving the matched unit represents the ground-truth proposition",
+  "premiseConfirmed": true,
+  "findingAboutScope": "Evaluation Methodology V2 and its successor, the V3 Atomic Evaluation Contract, ALREADY EXIST in this repository with sealed adjudication evidence. Rebuilding them would have duplicated work and destroyed comparability, so this mission verified and reported them instead of writing a third scorer.",
+  "existingWork": {
+    "methodologyV2": {
+      "spec": "docs/phase-3f1-5-evaluation-methodology-v2.md",
+      "evidence": "docs/evaluation-v2/ (14 artifacts)",
+      "engine": "lib/contract-model/evaluation-v2/",
+      "verdict": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2_NEEDS_ITERATION"
+    },
+    "resolutionAttempt": {
+      "evidence": "docs/evaluation-v2-final-resolution/25-final-verdict.json",
+      "verdict": "PHASE_3F_1_5_3_EVALUATION_V2_FINAL_RESOLUTION_NEEDS_ARCHITECTURE_DECISION"
+    },
+    "atomicContractV3": {
+      "spec": "docs/evaluation-contract-v3/02-atomic-contract-spec.json",
+      "engine": "lib/contract-model/evaluation-v2/atomic-contract.ts",
+      "evidence": "docs/evaluation-contract-v3/ (24 artifacts)",
+      "verdict": "EVALUATION_CONTRACT_V3_SAFETY_GATE_FAILED_REQUIRES_HUMAN_DECISION"
+    }
+  },
+  "v3ClosureGate": {
+    "passed": [
+      "1 creditEligibility inter-reviewer agreement 95.7% (>=90% required)",
+      "5 all 14 historical false-credit controls remain NO_CREDIT, unanimous across three adjudicators and the sealed evaluator disposition, reconfirmed on a 1,115-unit cross-dataset regression",
+      "6 atomic contract invariants: 18/18 and the full 135-test evaluation-v2 suite",
+      "7 sibling-claim protections 22/22 unchanged; the frozen matcher was not modified",
+      "8 no prohibited tuning: 0 forbidden-category changes across 29 changed files",
+      "9 no ground-truth or historical-artifact mutation",
+      "10 required evaluator tests pass"
+    ],
+    "failed": [
+      "2 surfacingStatus inter-reviewer agreement 74.1% (>=90% required)",
+      "3 evaluator vs independent consensus on creditEligibility 89.4% (>=90% required)",
+      "4 evaluator vs independent consensus on surfacingStatus 66.7% (>=90% required)"
+    ]
+  },
+  "whatThisMeans": {
+    "measurementDefectFixed": "YES for the specific failure the mission names. Structural proximity can no longer grant credit, and every one of the 14 known historical false credits is now rejected. That is gate items 1, 5, 6, 7 and the false-credit prohibition suite.",
+    "semanticClosureProven": "NO. Three pre-registered agreement thresholds are missed, the worst by a wide margin (66.7% against 90%). The evaluator and independent human consensus do not agree closely enough on how a non-credited unit should be surfaced for the resulting precision and recall figures to be treated as settled.",
+    "notAReversion": "the failures are calibration and definitional agreement between reviewers and the evaluator, not a return to structural-proximity credit"
+  },
+  "sharedCapacitySourceAudit": {
+    "frozenFixtureFacts": {
+      "quantifiedSharedCapacityResources": 0,
+      "sharesCapacityWithRelationships": 7
+    },
+    "determination": "NOT RESOLVED BY THIS MISSION. Deciding Case A versus Case B requires reading the underlying source legal text of the frozen package to establish whether an explicit quantified shared pool exists that Phase 3 failed to normalise. That is a source-document adjudication, and it is carried forward as an open item rather than guessed.",
+    "whatIsSafeToSayNow": "Phase 4D never infers a pool from a relationship: an unquantified shared relationship stays non-authoritative through simulation, proven on the real fixture."
+  },
+  "reclassificationSourceAudit": {
+    "frozenFixtureFacts": {
+      "executableReclassificationEdges": 0
+    },
+    "determination": "NOT RESOLVED BY THIS MISSION, for the same reason. No reclassification edge was manufactured to improve coverage.",
+    "whatIsSafeToSayNow": "an election with no encoded authority is refused, proven on the real fixture."
+  },
+  "phase3ProductionChanges": [],
+  "verdict": "PHASE3_SEMANTIC_CLOSURE_NOT_PROVEN",
+  "verdictReasoning": "Mission outcome C. The measurement was genuinely defective and has been materially repaired: the false-credit prohibition now holds against every known historical case. But the current evaluator does not agree with independent consensus at the pre-registered threshold, so proposition-level precision and recall cannot yet be treated as trustworthy inputs to anything downstream."
+}

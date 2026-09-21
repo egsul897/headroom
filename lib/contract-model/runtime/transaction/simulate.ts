@@ -86,6 +86,7 @@ const SIMULATION_FLOOR: Record<string, SimulationStatus> = {
   CONFLICTING_METRIC_ADJUSTMENT: "AMBIGUOUS",
   INVALID_EFFECT_DEPENDENCY: "ERROR", EFFECT_DEPENDENCY_CONTRADICTS_ORDER: "ERROR",
   POST_STATE_INCONSISTENT: "ERROR",
+  UNSUPPORTED_EFFECT_INTERLEAVING: "UNSUPPORTED", USAGE_CONSERVATION_VIOLATED: "ERROR",
 };
 
 /**
@@ -101,6 +102,7 @@ const PRE_EVALUATION_BLOCKERS = new Set<string>([
   // not a path that was evaluated and found wanting.
   "CONFLICTING_LEDGER_SUCCESSOR", "CONFLICTING_EVENT_STATE", "CONFLICTING_METRIC_ADJUSTMENT",
   "INVALID_EFFECT_DEPENDENCY", "EFFECT_DEPENDENCY_CONTRADICTS_ORDER", "POST_STATE_INCONSISTENT",
+  "UNSUPPORTED_EFFECT_INTERLEAVING",
 ]);
 
 export function simulateTransaction(args: SimulateTransactionArgs): TransactionSimulationResult {
@@ -330,7 +332,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
       const between = tx.effects.slice(first + 1, last).filter((e) => e.kind !== "APPLY_RECLASSIFICATION" && supportedIds.has(e.effectId));
       const clashing = between.filter((e) => writesOf(e).some((w) => moved.has(w.replace(/^capacity:/, "capacity:"))) || (e.kind === "CONSUME_CAPACITY" && moved.has(e.capacityNodeId)));
       if (clashing.length > 0) {
-        limit("RECLASSIFICATION_NOT_EXECUTABLE", `effects ${clashing.map((e) => e.effectId).sort().join(", ")} are stated between elections that execute as one conserving batch and touch capacity the batch moves; the stated order and the atomic batch cannot both be honoured, so the combination is refused rather than guessed`, clashing.map((e) => e.effectId).sort());
+        limit("UNSUPPORTED_EFFECT_INTERLEAVING", `effects ${clashing.map((e) => e.effectId).sort().join(", ")} are stated between elections that execute as one conserving batch and touch capacity the batch moves; the stated order and the atomic batch cannot both be honoured, so the combination is refused rather than guessed`, clashing.map((e) => e.effectId).sort());
       }
     }
   }
@@ -519,10 +521,23 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
     // makes an entry non-authoritative withholds the remaining figure entirely.
     const touchedNodes = new Set<string>([...selectedNodeIds, ...capacityEffects.map((c) => c.capacityNodeId)]);
     const touchedShared = new Set<string>([...selectedPath.sharedCapacityIds, ...capacityEffects.flatMap((c) => c.sharedConstraintIds)]);
+    // Usage below zero means the transaction removed more from a resource than it carried, which
+    // manufactures capacity out of nothing. It is checked alongside over-consumption because the
+    // two are the same invariant seen from opposite ends.
+    const conjured: string[] = [];
     for (const c of postState.capacities) {
       if (!touchedNodes.has(c.capacityNodeId)) continue;
       if (c.limitations.some((l) => l.code === "OVER_CONSUMPTION")) postStateConflicts.push(`capacity ${c.capacityNodeId}`);
       else if (isNegativeAmount(c.remaining)) postStateConflicts.push(`capacity ${c.capacityNodeId}`);
+      if (isNegativeAmount(c.usage)) conjured.push(`capacity ${c.capacityNodeId}`);
+    }
+    for (const sc of postState.sharedConstraints) {
+      if (isNegativeAmount(sc.usage) && (touchedShared.has(sc.sharedCapacityId) || sc.memberRuleIds.some((rid) => touchedNodes.has(ruleNodeId(rid))))) conjured.push(`shared resource ${sc.sharedCapacityId}`);
+    }
+    if (conjured.length > 0) {
+      const where = [...new Set(conjured)].sort();
+      limit("USAGE_CONSERVATION_VIOLATED", `the combined effects leave negative recorded usage on ${where.join(", ")}; more usage was removed than the resource carried, which would manufacture capacity, so the transaction is refused`, where);
+      postStateConflicts.push(...where);
     }
     for (const sc of postState.sharedConstraints) {
       if (!touchedShared.has(sc.sharedCapacityId) && !sc.memberRuleIds.some((rid) => touchedNodes.has(ruleNodeId(rid)))) continue;

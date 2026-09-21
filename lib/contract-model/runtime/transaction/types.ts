@@ -259,7 +259,11 @@ export type SimulationLimitationCode =
   /** A declared dependency contradicts the stated effect order under sequential semantics. */
   | "EFFECT_DEPENDENCY_CONTRADICTS_ORDER"
   /** The recomputed post-state contradicts the transaction-level verdict and is not published. */
-  | "POST_STATE_INCONSISTENT";
+  | "POST_STATE_INCONSISTENT"
+  /** The stated sequence cannot be honoured alongside an effect group that must apply atomically. */
+  | "UNSUPPORTED_EFFECT_INTERLEAVING"
+  /** The combined effects remove more usage from a resource than it carried: capacity from nothing. */
+  | "USAGE_CONSERVATION_VIOLATED";
 
 export interface SimulationLimitation {
   code: SimulationLimitationCode;
