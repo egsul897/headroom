@@ -1,0 +1,66 @@
+{
+  "artifact": "§5 — what V3.1 changes relative to V3, and what it deliberately leaves alone",
+  "at": "2026-09-21T01:12:14.299Z",
+  "oldVersion": {
+    "id": "evaluation-contract-v3.v1",
+    "file": "docs/evaluation-contract-v3/02-atomic-contract-spec.json",
+    "sha256": "8f175dde7ada73fd7c2b5386d8679e7fd67e5f42c8a698b47bcc0d73f2a5a022",
+    "modified": false,
+    "note": "preserved byte-for-byte. V3.1 is a NEW versioned file, not an in-place edit (§5)."
+  },
+  "newVersion": {
+    "id": "evaluation-contract-v3.1.v1",
+    "file": "docs/phase-3-final-closure-resolution/02-v31-atomic-surfacing-contract.json",
+    "sha256": "7161f141411a05fb740a6ca01e690e86f14d337d9182eaf7b1097b3f643f4988"
+  },
+  "changed": [
+    {
+      "area": "surfacingStatus",
+      "v3": "binary: SPECIFICALLY_SURFACED iff explicitlySurfacedAsUnsafe (any corresponding claim-specific flag, regardless of what it is anchored to)",
+      "v31": "composite state over {FULLY_SURFACED, FULLY_SURFACED_UNVERIFIED_SCOPE, PARTIALLY_SURFACED, SURFACING_SCOPE_UNDETERMINED, NOT_SPECIFICALLY_SURFACED, NOT_APPLICABLE}, derived from per-flag coverage"
+    },
+    {
+      "area": "per-flag coverage",
+      "v3": "not modelled at all",
+      "v31": "WHOLE / SUB_PART / WHOLE_UNPROVEN / UNDETERMINED, from two objective signals: sectionRef scope relation (decisive where it exists) and PairCorrespondence (used only where structure is silent)"
+    },
+    {
+      "area": "binary projection",
+      "v3": "n/a",
+      "v31": "FULLY_SURFACED and FULLY_SURFACED_UNVERIFIED_SCOPE → SPECIFICALLY_SURFACED; PARTIALLY_SURFACED and SURFACING_SCOPE_UNDETERMINED → NOT_SPECIFICALLY_SURFACED. The composite state is always preserved alongside."
+    },
+    {
+      "area": "dangerousSilentOmission",
+      "v3": "material && NO_CREDIT && NOT_SPECIFICALLY_SURFACED",
+      "v31": "same rule; its input changes because PARTIALLY_SURFACED now projects to NOT_SPECIFICALLY_SURFACED"
+    }
+  ],
+  "explicitlyUnchanged": [
+    {
+      "area": "creditEligibility",
+      "rule": "CREDIT iff matchStatus ∈ {EXACT_SINGLE, EXACT_COMPOSITE}",
+      "why": "§16 — the previous mission found it unambiguous. The 42/47 = 89.36% shortfall is NOT authorization to tune it."
+    },
+    {
+      "area": "representationCompleteness / verificationStatus / evidenceQuality",
+      "why": "no defect found; out of AMB-1's scope"
+    },
+    {
+      "area": "the frozen matcher (matching.ts, semantic-correspondence.ts, claim-identity.ts)",
+      "why": "V3.1 is still a derivation layer over frozen matcher output. No matching decision changes."
+    },
+    {
+      "area": "denominators and the 90% thresholds",
+      "why": "§14/§40 — not lowered, not rescoped"
+    },
+    {
+      "area": "historical adjudications 09/10/11",
+      "why": "§7 — immutable evidence"
+    }
+  ],
+  "neitherReviewerPositionAdopted": {
+    "INVARIANT_3": "rejected as governing rule",
+    "INVARIANT_5": "rejected as governing rule — 'dominant material content' is another subjective test (§3)",
+    "adopted": "objective structural anchoring, with semantic correspondence only as a fallback and only in the whole-claim direction"
+  }
+}

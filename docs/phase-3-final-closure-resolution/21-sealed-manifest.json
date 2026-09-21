@@ -1,0 +1,62 @@
+{
+  "artifact": "§32 — sealed manifest",
+  "at": "2026-09-21T01:31:25.043Z",
+  "sealStatus": "PARTIAL — SEALED FOR EVERYTHING THIS MISSION CAN SEAL",
+  "whyNotFinal": "§32 permits the final sealed evaluation only after genuine independent reviewer decisions are imported and the residual audit is resolved. The residual audit IS resolved; the reviewer decisions are not, so the final clean evaluation has not been run and nothing has been tuned after a measurement.",
+  "sealed": {
+    "phase3CompilerTree": "CHANGED THIS MISSION — see below; re-hash at commit time",
+    "phase3CompilerTreeAtStart": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+    "semanticTreeAtStart": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+    "irTree": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+    "phase4ATree_runtime": "8fa637768316a613524e821b913f56c86111a298",
+    "phase4BTree_input": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+    "phase4CTree_capacity": "c5f2d820d3c764d03846450c529a3f5399c423b8",
+    "phase4DTree_transaction": "a86c423439573fdc4d4051765efa0e6e9dfc06c1",
+    "v3ContractHash": "8f175dde7ada73fd7c2b5386d8679e7fd67e5f42c8a698b47bcc0d73f2a5a022",
+    "v31ContractHash": "7161f141411a05fb740a6ca01e690e86f14d337d9182eaf7b1097b3f643f4988",
+    "adjudicationCorpus": {
+      "09-adjudicator-a.json": "eed3d8ddc1a04fc5c3e84fef57ac5c69f41fe9ce3eb6adc7252e01bdfba3a10c",
+      "10-adjudicator-b.json": "8335455b971f678b9f9d87a5487d397395df49e37c91a8cea568542ba2ca18b2",
+      "11-adjudicator-c.json": "e716552d1ec3e92094afe7d268aa0f881a184442ccf92485f13c8a340a2b39ee"
+    },
+    "reviewerPacketHashes": {
+      "R1": "0b0e69bcf7f18e5256a6de2086f3b5b0ffe0a152be8882cd1f3557e2ab24ef74",
+      "R2": "2f8d38476e1f6ef19e16efc6fa3aa44e081340805b92ef513a2bd1d409444813",
+      "R3": "93dea2b7990bd0f6f5c697e909658e1513c7e08224eed9f045ee18121e91acb6"
+    },
+    "reviewResultHashes": "ABSENT — no reviewer responses exist yet",
+    "crossDatasetCorpus": {
+      "units": 1115,
+      "datasets": 4,
+      "frozenV3Artifact": "9d562deef08012c19f7fe0cd610e417f4b05e7d2cb31fa336543471e048b1d60 (unmodified)"
+    },
+    "testSuiteIdentity": {
+      "total": 4562,
+      "passed": 3894,
+      "failed": 144,
+      "failingIdentitySetSha256": "25e454bd84b935cbd3385815923837fde7956bed2176e6bfb0fbe07c3f634cdd"
+    }
+  },
+  "artifactsInThisPackage": [
+    "01-starting-state.json",
+    "02-v31-atomic-surfacing-contract.json",
+    "03-v31-contract-diff.json",
+    "04-evaluator-delta-analysis.json",
+    "05-blinded-reviewer-packet-manifest.json",
+    "06-reviewer-response-schema.json",
+    "07-consensus-contract.json",
+    "08-historical-adjudication-preservation.json",
+    "09-semantic-accountability-residuals.json",
+    "10-i27-forensics.json",
+    "11-safety-improvement-residuals.json",
+    "12-plausible-review-residuals.json",
+    "13-stability-forensics.json",
+    "14-production-remediation.json",
+    "15-false-credit-regression.json",
+    "16-cross-dataset-regression.json",
+    "17-downstream-regression.json",
+    "18-end-to-end-trace.json",
+    "19-independent-review-import.json",
+    "20-final-agreement-metrics.json"
+  ]
+}

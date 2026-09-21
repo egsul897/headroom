@@ -1,0 +1,42 @@
+{
+  "artifact": "§13 — consensus rule, FROZEN BEFORE ANY REVIEWER RESULT IS SEEN OR IMPORTED",
+  "at": "2026-09-21T01:18:34.795Z",
+  "frozenBeforeResults": true,
+  "statementOfOrder": "This file was written before any reviewer response existed. No result has been observed. The rule cannot be adjusted after the fact.",
+  "reviewers": 3,
+  "computedIndependentlyFor": [
+    "creditDecision",
+    "surfacingDecision"
+  ],
+  "majorityRule": "2-of-3 over the FULL state set. Surfacing states are NOT collapsed to the binary before the majority is taken.",
+  "surfacingStateSet": [
+    "FULLY_SURFACED",
+    "PARTIALLY_SURFACED",
+    "NOT_SPECIFICALLY_SURFACED",
+    "NOT_APPLICABLE"
+  ],
+  "threeWaySplit": "If all three reviewers choose three different surfacing states, the case is NO_CONSENSUS. It is never collapsed to whichever state is closest to something.",
+  "abstainHandling": {
+    "3 substantive votes": "majority of the three",
+    "2 substantive + 1 ABSTAIN": "the two substantive votes must agree; if they differ the case is NO_CONSENSUS",
+    "fewer than 2 substantive votes": "NO_CONSENSUS"
+  },
+  "noConsensusHandling": {
+    "inclusion": "NO_CONSENSUS cases REMAIN in the denominator and are reported as their own category. They are not dropped, and dropping them would be a goalpost move under §40.",
+    "agreementMetrics": "inter-reviewer agreement is computed pairwise over cases where both members of the pair voted substantively; the per-pair denominator is reported alongside every rate.",
+    "evaluatorVsConsensus": "a NO_CONSENSUS case counts as a non-match for the evaluator, because no consensus exists for it to match."
+  },
+  "binaryProjectionForLegacyComparison": "Where a legacy binary comparison is required, FULLY_SURFACED maps to SPECIFICALLY_SURFACED and PARTIALLY_SURFACED maps to NOT_SPECIFICALLY_SURFACED, per the V3.1 contract. The full-state consensus is always reported too.",
+  "thresholds": {
+    "interReviewerCredit": 0.9,
+    "interReviewerSurfacing": 0.9,
+    "evaluatorVsConsensusCredit": 0.9,
+    "evaluatorVsConsensusSurfacing": 0.9,
+    "unchanged": "these are the pre-registered V3 thresholds, carried forward unchanged (§14, §40). They are not lowered."
+  },
+  "denominators": {
+    "credit": 47,
+    "surfacing": "every case whose consensus credit decision is NO_CREDIT",
+    "note": "the surfacing denominator is computed from the REVIEWERS' consensus credit decision, not from the evaluator's, so the evaluator cannot influence its own denominator."
+  }
+}

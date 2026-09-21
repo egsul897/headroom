@@ -1,0 +1,62 @@
+{
+  "artifact": "§19 — I27 'Notwithstanding', reproduced and resolved",
+  "at": "2026-09-21T01:27:38.543Z",
+  "reproduction": {
+    "scenario": "I27 cure right",
+    "sourceText": "SECTION 8.03 Equity Cure. Notwithstanding any failure to comply with Section 7.10, the Borrower may receive cash equity contributions within ten (10) Business Days after the delivery of the relevant compliance certificate and apply the amount thereof to increase Consolidated Zeta Amount for the relevant period; provided that (a) ... (b) ... and (c) ...",
+    "structuralContext": "the operative unit is Section 8.03; Section 7.10 is pulled in as a dependency-expanded region",
+    "currentOutput": {
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "unaccountedSource": [
+        {
+          "excerpt": "Notwithstanding",
+          "at": "operative:26-41"
+        }
+      ],
+      "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    },
+    "gapReinventory": {
+      "attempted": true,
+      "itemsAdded": 0,
+      "segmentsBefore": 1,
+      "segmentsAfter": 1,
+      "note": "the targeted re-inventory could add nothing, because there is no separate proposition to inventory"
+    },
+    "provenance": "five inventory items accepted, including a DEPENDENCY item at operative:42-81 whose excerpt is 'any failure to comply with Section 7.10'",
+    "whyProductionRefused": "source-coverage.ts deliberately excluded 'notwithstanding' from CLAUSE_INTRODUCING_CONNECTIVES, with the reason written in the code: an override's complement is the provision being disapplied, which normally lives elsewhere in the agreement, so covering the following text does not account for the override."
+  },
+  "doesTheClauseChangeTheProposition": "YES in general — an override materially changes what the provision does. That is precisely why the operator must be accounted for rather than ignored. The question is whether it is ACCOUNTED FOR here, not whether it matters.",
+  "determination": {
+    "chosen": "B — production is conservatively but incorrectly refusing a clearly representable proposition",
+    "rejected": {
+      "A": "the test expectation is wrong — rejected. A real run's inventory would strand the operator identically; this is not a fixture artifact.",
+      "C": "the source is genuinely ambiguous — rejected. 'Notwithstanding any failure to comply with Section 7.10' has exactly one reading.",
+      "D": "another upstream defect — rejected. The inventory, the dependency expansion and the composition's OVERRIDES relationship are all correct."
+    },
+    "reasoning": "The override operator's own semantic content is WHICH provision it disapplies. Here that provision is named, in the immediately adjacent span, and that span is COVERED_BY_INVENTORY. Both operands of the override are present and accounted for, so the code comment's own premise — that the complement lives elsewhere — does not hold in this configuration."
+  },
+  "fix": {
+    "redTestFirst": true,
+    "redTestFile": "tests/contract-model/semantic-accountability/override-operator-ownership.test.ts",
+    "productionFile": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "newDisposition": "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP",
+    "rule": "a residual fragment consisting only of override-operator words, carrying no value, no digit, no quotation and no provision reference of its own, is discharged when the immediately following span (whitespace only in between) is COVERED_BY_INVENTORY, is substantive, AND NAMES A PROVISION.",
+    "notAKeywordSpecialCase": "The phenomenon modelled is 'an override whose disapplied provision is named and inventoried in its immediate complement'. The naming test is what does the work: drop it and nothing is discharged. The operator vocabulary is a closed class of two words, in exactly the same shape as the already-certified CLAUSE_INTRODUCING_CONNECTIVES list, because a deterministic text layer has no other way to recognise an operator.",
+    "safetyPropertyPreserved": "'Notwithstanding anything to the contrary' names no provision and stays UNACCOUNTED_SOURCE. Asserted directly in the test file, so the property cannot be lost silently later.",
+    "guardsRetained": [
+      "no located quantitative value",
+      "no digit",
+      "no quotation",
+      "no provision reference inside the fragment itself",
+      "complement must be substantive",
+      "complement must be contiguous",
+      "complement must be COVERED_BY_INVENTORY"
+    ]
+  },
+  "result": {
+    "i27PassA": "INVENTORY_OK",
+    "i27PassBC": "semanticallyComplete = true",
+    "remainingUnaccounted": 0,
+    "targetedTests": "9/9 pass"
+  }
+}

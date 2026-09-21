@@ -1,0 +1,34 @@
+{
+  "artifact": "§22 — the four I1-derived Pass-A stability failures",
+  "at": "2026-09-21T01:27:38.543Z",
+  "failures": [
+    {
+      "test": "a first pass that skips the definitional lead-in + condition triggers ONE targeted gap call ... status is INVENTORY_OK",
+      "cause": "STALE EXPECTATION",
+      "analysis": "the test injects a gap by withholding two items, then asserts the targeted re-inventory returns the unit to INVENTORY_OK. I1 also has two inherent operator residuals that no pass in this test ever supplies items for, so INVENTORY_OK was never reachable once those residuals were correctly surfaced.",
+      "correction": "assert that the residual set equals I1's declared residuals exactly, and that segmentsAfter equals their count. The property under test — one targeted call, additive only, disclosed — is asserted unchanged."
+    },
+    {
+      "test": "Pass C: INVENTORY_COVERAGE_GAP blocks semanticallyComplete ... and the residual segment is in the reasons/counts",
+      "cause": "STALE EXPECTATION in the contrast half only",
+      "analysis": "the assertion under test passed; the trailing contrast 'the fully inventoried scenario is complete' used I1 as its own control, which can no longer reach complete.",
+      "correction": "the contrast now asserts (a) supplying every item reduces the residual set to exactly I1's declared residuals, and (b) a scenario that declares no residual at all — I2 — does reach semanticallyComplete. The control is now a real control."
+    },
+    {
+      "test": "audit B2'': non-material echo items never close a gap",
+      "cause": "STALE EXPECTATION in the contrast half only",
+      "analysis": "the audit's own property — REVIEW_UNCERTAIN / INFORMATIONAL echoes never close a gap — passed. The trailing contrast asserted the MATERIAL echoes reach INVENTORY_OK, which I1 cannot.",
+      "correction": "the contrast now asserts the MATERIAL echoes reduce the surfaced text to exactly I1's declared residuals, and that strictly more source text is surfaced with the non-material echoes. Same property, measured correctly."
+    },
+    {
+      "test": "corpus-wide: no fully-inventoried scenario leaves unaccounted source or an unaccounted value",
+      "cause": "STALE EXPECTATION via its selector",
+      "analysis": "the test iterates the corpus and applies the strict assertion where expectSemanticallyComplete is true. Once the six residual scenarios declare expectSemanticallyComplete: false, the selector excludes them and the test passes unchanged.",
+      "correction": "none needed in the test; the corpus declaration is what changed."
+    }
+  ],
+  "nondeterminismFound": false,
+  "goldenHashesRefreshed": 0,
+  "goldenHashPolicy": "§22: no golden hash was refreshed. The one hash-sensitive test — 'the frozen content hash carries the residual gap' — asserts a RELATIONSHIP between two hashes rather than a literal, and it passed throughout without modification.",
+  "underlyingSemanticDefect": "none in this group; the single semantic defect in the whole residual set is I27, handled in 10-i27-forensics.json."
+}

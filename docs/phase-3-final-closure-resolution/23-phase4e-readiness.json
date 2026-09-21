@@ -1,0 +1,23 @@
+{
+  "artifact": "§36 — Phase-4E foundation readiness",
+  "at": "2026-09-21T01:31:25.043Z",
+  "evaluated": false,
+  "reason": "§36 permits this evaluation if and only if the verdict is PHASE3_SEMANTIC_CLOSURE_PROVEN. It is not.",
+  "phase3Verdict": "PHASE3_HUMAN_READJUDICATION_REQUIRED",
+  "phase4eVerdict": "NOT EVALUATED",
+  "phase4eStarted": false,
+  "whatIsNowTrueThatWasNotBefore": [
+    "AMB-1 is resolved in a written, versioned specification (V3.1) rather than left to reviewer discretion.",
+    "The evaluator implements that specification mechanically and generically, with the delta measured on all 1,115 units before a line was changed.",
+    "The 18 red semantic-accountability identities are resolved: one real production defect fixed generically, the rest proven stale and corrected to be stricter than before.",
+    "The one acknowledged OBVIOUS_FALSE_GAP is closed.",
+    "Blinded re-adjudication packets, a response schema, a frozen consensus rule and validating import tooling all exist and are ready for human reviewers."
+  ],
+  "whatRemains": [
+    "Three independent reviewers must adjudicate the 47 frozen cases under V3.1.",
+    "Their responses must import cleanly, after which the four agreement metrics can be measured against the unchanged 90% thresholds.",
+    "Only then can Phase-3 closure be decided, and only if it passes may Phase-4E foundation readiness be assessed."
+  ],
+  "doNotStartPhase4E": true,
+  "doNotStartPhase5": true
+}

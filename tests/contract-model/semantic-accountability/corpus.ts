@@ -59,6 +59,18 @@ export interface Scenario {
   expectedContextState: SourceContextState;
   expectSemanticallyComplete: boolean;
   /**
+   * Source fragments this scenario is EXPECTED to leave surfaced for review, verbatim and exhaustive.
+   *
+   * Absent or empty means the scenario must reach INVENTORY_OK with nothing unaccounted. Where it is
+   * populated, the scenario must reach INVENTORY_COVERAGE_GAP with exactly these fragments and no others:
+   * the list pins the residual set, so both a new gap and a silently-closed gap fail the suite.
+   *
+   * Every entry is a deliberate conservatism recorded in
+   * docs/phase-3-final-closure-resolution/09-semantic-accountability-residuals.json, where each fragment is
+   * adjudicated individually. A fragment must never be added here to make a red test pass.
+   */
+  expectedResidualSegments?: string[];
+  /**
    * Dependency-expanded regions whose OWN semantics belong to another compilation unit (mission §9 option A):
    * the referenced section is itself a unit and inventories its own components. Declaring the link here is what
    * discharges the region from THIS unit's source coverage; a region not declared here participates in full and
@@ -196,7 +208,8 @@ const I1: Scenario = {
       ],
     }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
-  expectSemanticallyComplete: true,
+  expectSemanticallyComplete: false,
+  expectedResidualSegments: ["plus,", "the sum of"],
 };
 
 // ---------------------------------------------------------------------------
@@ -240,7 +253,8 @@ const I3: Scenario = {
       rules: [rule("r1", "2.08", { covenantFamily: "DEFINITIONS_CALCULATION_RULES", ruleType: "CALCULATION_RULE", posture: "N_A", action: null, capacityExpression: IF(CMP("GT", TERM("Total Leverage Ratio", "RATIO"), R(3)), P(0.025), IF(CMP("GT", TERM("Total Leverage Ratio", "RATIO"), R(2)), P(0.02), P(0.015, [id("t3")]), [id("t2")]), [id("t1")]) })],
     }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
-  expectSemanticallyComplete: true,
+  expectSemanticallyComplete: false,
+  expectedResidualSegments: ["The Applicable Margin for any day shall be"],
 };
 
 // ---------------------------------------------------------------------------
@@ -262,7 +276,8 @@ const I4: Scenario = {
   ],
   compose: (id) => submission({ definitions: [def("d1", "Adjusted Zeta Amount", SUM([TERM("Consolidated Zeta Amount", "MONEY", [id("base")]), MIN([METRIC("pro forma cost savings", "MONEY", [id("add")]), MUL([P(0.2), TERM("Adjusted Zeta Amount")], [id("cap")])])]), ["Consolidated Zeta Amount"], [id("head")])] }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
-  expectSemanticallyComplete: true,
+  expectSemanticallyComplete: false,
+  expectedResidualSegments: ["plus"],
 };
 
 // ---------------------------------------------------------------------------
@@ -656,7 +671,8 @@ const I23: Scenario = {
   items: [item("trig", "TRIGGER", I23_TRIG, "CRITICAL", { values: [pct("35%", 0.35)] }), item("req", "REQUIREMENT", I23_REQ, "CRITICAL", { values: [ratio("5.00 to 1.00", 5)] })],
   compose: (id) => submission({ rules: [rule("ra", "7.10", { covenantFamily: "SPRINGING_COVENANTS", ruleType: "CONDITIONAL_ACTIVATION", posture: "OBLIGATION", action: null, capacityExpression: CMP("LTE", TERM("Total Leverage Ratio", "RATIO"), R(5), [id("req")]), conditions: [cond("AMOUNT_THRESHOLD", I23_TRIG, CMP("GT", METRIC("Revolving Exposure"), MUL([P(0.35), METRIC("Revolving Commitments")])), [id("trig")])] })] }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
-  expectSemanticallyComplete: true,
+  expectSemanticallyComplete: false,
+  expectedResidualSegments: ["Solely"],
 };
 
 const I24_A = "5.00 to 1.00 for any fiscal quarter ending on or before December 31, 2026";
@@ -704,7 +720,8 @@ const I25: Scenario = {
       ],
     }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
-  expectSemanticallyComplete: true,
+  expectSemanticallyComplete: false,
+  expectedResidualSegments: ["The Borrower will furnish to the Administrative Agent:"],
 };
 
 const I26_TIME = "within three (3) Business Days after any Responsible Officer obtains knowledge thereof";
@@ -718,7 +735,8 @@ const I26: Scenario = {
   items: [item("time", "TIME_PERIOD", I26_TIME, "CRITICAL", { values: [days("three (3) Business Days", 3)] }), item("t1", "TRIGGER", I26_T1, "MATERIAL"), item("t2", "TRIGGER", I26_T2, "CRITICAL", { values: [money("$1,250,000", 1_250_000)] })],
   compose: (id) => submission({ rules: [rule("ra", "6.02", { covenantFamily: "REPORTING_INFORMATION", ruleType: "NOTICE_OBLIGATION", posture: "OBLIGATION", action: null, capacityExpression: null, conditions: [cond("TIME_PERIOD", I26_TIME, null, [id("time")]), cond("OTHER_RULE_SATISFIED", I26_T1, null, [id("t1")]), cond("AMOUNT_THRESHOLD", I26_T2, CMP("GT", INPUT("ERISA Event liability"), M(1_250_000)), [id("t2")])] })] }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
-  expectSemanticallyComplete: true,
+  expectSemanticallyComplete: false,
+  expectedResidualSegments: ["The Borrower will furnish written notice to the Administrative Agent"],
 };
 
 const I27_CURE = "the Borrower may receive cash equity contributions within ten (10) Business Days after the delivery of the relevant compliance certificate and apply the amount thereof to increase Consolidated Zeta Amount for the relevant period";
@@ -983,4 +1001,14 @@ const I45: Scenario = {
 };
 
 export const CORPUS: Scenario[] = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15, I16, I17, I18, I19, I20, I21, I22, I23, I24, I25, I26, I27, I28, I29, I30, I31, I32, I33, I34, I35, I36, I37, I38, I39, I40, I41, I42, I43, I44, I45];
-export const COMPLETE_SCENARIOS = CORPUS.filter((s) => s.expectSemanticallyComplete);
+/**
+ * The pool the injected-omission gates (I41-I44) run over: scenarios whose COMPOSITION is complete, i.e.
+ * 0 material items missing and 0 dangling lineage references before any omission is injected.
+ *
+ * That is not the same as Pass C's semanticallyComplete, which is additionally gated on source coverage:
+ * a scenario that deliberately surfaces a residual fragment for review (expectedResidualSegments) still has
+ * a complete composition and is still a valid substrate for injecting an omission. Selecting on Pass C's
+ * verdict would silently shrink the gate's corpus whenever a residual is declared, so the predicate is
+ * written against what the gate actually needs.
+ */
+export const COMPLETE_SCENARIOS = CORPUS.filter((s) => s.expectSemanticallyComplete || (s.expectedResidualSegments?.length ?? 0) > 0);

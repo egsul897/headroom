@@ -1,0 +1,889 @@
+{
+  "artifact": "§6 — evaluator audited against V3.1 BEFORE any evaluator code was modified",
+  "at": "2026-09-21T01:12:14.299Z",
+  "method": "A read-only script re-ran the frozen evaluator over all four permanent regression datasets (1,115 units) and computed, for every unit, both the current V3 surfacingStatus and the V3.1 composite state and its binary projection. No production module was touched to produce this artifact.",
+  "corpus": {
+    "units": 1115,
+    "datasets": [
+      "fwrg-2021-credit-agreement",
+      "lsb-2023-abl-credit-agreement",
+      "conmed-2025-credit-facility",
+      "dsgr-2022-2025-credit-facility"
+    ]
+  },
+  "conformance": {
+    "conforms": [
+      "NOT_SPECIFICALLY_SURFACED when no corresponding claim-specific flag exists — 406 units, identical under V3 and V3.1",
+      "NOT_APPLICABLE when CREDIT — 16 units, unchanged",
+      "claim-specificity itself: a non-corresponding candidate can never surface a claim (frozen upstream, unchanged by V3.1)"
+    ],
+    "doesNotConform": [
+      "the evaluator treats ANY corresponding claim-specific flag as surfacing the WHOLE claim, with no coverage test. Under V3.1 this is wrong wherever every such flag is anchored at a strict enumerated descendant of the claim's own address."
+    ],
+    "implementationChangeRequired": true
+  },
+  "measuredDelta": {
+    "unitsChanged": 46,
+    "unitsUnchanged": 1069,
+    "allChangesInOneDirection": "SPECIFICALLY_SURFACED → NOT_SPECIFICALLY_SURFACED",
+    "byMateriality": {
+      "CRITICAL": 26,
+      "MATERIAL": 14,
+      "INFORMATIONAL": 6
+    },
+    "byDataset": {
+      "lsb-2023-abl-credit-agreement": 1,
+      "dsgr-2022-2025-credit-facility": 45,
+      "fwrg-2021-credit-agreement": 0,
+      "conmed-2025-credit-facility": 0
+    },
+    "v31CompositeStateDistribution": {
+      "NOT_APPLICABLE": 16,
+      "FULLY_SURFACED_UNVERIFIED_SCOPE": 249,
+      "NOT_SPECIFICALLY_SURFACED": 406,
+      "FULLY_SURFACED": 398,
+      "PARTIALLY_SURFACED": 46
+    },
+    "dangerousSilentOmission": {
+      "v3": 322,
+      "v31": 362,
+      "delta": 40
+    },
+    "everyChangedUnitHasTheSameShape": "the ground-truth claim is anchored at a chapeau-level address and every corresponding flag is anchored at a strict enumerated descendant of it. This is the AMB-1 phenomenon and nothing else."
+  },
+  "changedUnits": [
+    {
+      "gtUnitId": "lsb-6.03-fundamental-changes",
+      "datasetKey": "lsb-2023-abl-credit-agreement",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.03",
+      "flagSectionRefs": [
+        "Section 6.03(a)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::I::1.06-pro-forma-adjustments",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "1.06",
+      "flagSectionRefs": [
+        "1.06(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::I::1.10-exchange-rates",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "1.10",
+      "flagSectionRefs": [
+        "1.10(a)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::II::2.01-commitments",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.01",
+      "flagSectionRefs": [
+        "2.01(c)",
+        "2.01(a)",
+        "2.01(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::II::2.02-loans-and-borrowings",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "INFORMATIONAL",
+      "matchStatus": "PARTIAL",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.02",
+      "flagSectionRefs": [
+        "2.02(a)",
+        "9.04(d)(b)(a)(ii)(b)(b)",
+        "2.01(a)",
+        "2.05(a)",
+        "2.05(a)",
+        "2.05(a)",
+        "2.10(a)(ii)",
+        "2.07(b)",
+        "9.13",
+        "2.08(b)(i)",
+        "2.05(a)",
+        "2.07(b)",
+        "1.11(a)",
+        "1.11(a)",
+        "1.11(a)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": false
+    },
+    {
+      "gtUnitId": "doc-a::II::2.04-original-currency",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.04",
+      "flagSectionRefs": [
+        "2.04(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::II::2.06-letters-of-credit",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.06",
+      "flagSectionRefs": [
+        "2.06(i)",
+        "8.02(b)",
+        "8.01(c)(i)",
+        "2.11(a)(a)(II)(ii)",
+        "9.08",
+        "10.06",
+        "10.04",
+        "6.12(ii)",
+        "7.01(b)",
+        "6.12(ii)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::II::2.17-withholding-taxes",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "INFORMATIONAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.17",
+      "flagSectionRefs": [
+        "2.17(f)(i)",
+        "2.17(f)(i)",
+        "2.17(f)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": false
+    },
+    {
+      "gtUnitId": "doc-a::IV::4.01-chapeau",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "4.01",
+      "flagSectionRefs": [
+        "4.01(d)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::IV::4.01-outside-date",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "4.01",
+      "flagSectionRefs": [
+        "4.01(d)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::IV::4.01b-closing-date-acquisitions",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "4.01(b)",
+      "flagSectionRefs": [
+        "4.01(b)(ii)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::IV::4.01d-closing-certificate",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "4.01(d)",
+      "flagSectionRefs": [
+        "4.01(d)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::IX::9.20-bail-in",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "INFORMATIONAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "9.20",
+      "flagSectionRefs": [
+        "9.20(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": false
+    },
+    {
+      "gtUnitId": "doc-a::V::5.13-additional-collateral",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "5.13",
+      "flagSectionRefs": [
+        "5.13(a)(ii)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.02-chapeau",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.02",
+      "flagSectionRefs": [
+        "6.02(j)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.02j",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.02(j)",
+      "flagSectionRefs": [
+        "6.02(j)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.10-chapeau",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.10",
+      "flagSectionRefs": [
+        "6.08(a)",
+        "6.10(b)(i)",
+        "6.10(b)(i)(a)",
+        "6.06"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-a::VIII::8.02-reliance-indemnification",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "INFORMATIONAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "8.02",
+      "flagSectionRefs": [
+        "8.02(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": false
+    },
+    {
+      "gtUnitId": "doc-a::X::10.08-release-of-guarantors",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "10.08",
+      "flagSectionRefs": [
+        "10.08(a)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::I::def-affiliate-lender-cluster",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "1.01",
+      "flagSectionRefs": [
+        "1.01(b)(b)(b)(b)(b)(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::I::def-third-amendment-incremental-term-loan-commitment",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "1.01",
+      "flagSectionRefs": [
+        "1.01(b)(b)(b)(b)(b)(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::II::2-02-loans-and-borrowings",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.02",
+      "flagSectionRefs": [
+        "2.02(a)",
+        "7.03(b)(b)(a)",
+        "2.01(a)",
+        "2.01(c)",
+        "2.01(b)",
+        "2.03",
+        "2.08(b)(i)",
+        "2.08(b)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::II::2-05-swingline-loans",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.05",
+      "flagSectionRefs": [
+        "2.05(a)(i)(b)(a)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::II::2-17-withholding-taxes-gross-up",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.17",
+      "flagSectionRefs": [
+        "2.17(g)",
+        "2.17(f)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::V::5-01-financial-statements",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "5.01",
+      "flagSectionRefs": [
+        "5.01(h)",
+        "5.01(i)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::V::5-15-designation-of-unrestricted-subsidiaries",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "5.15",
+      "flagSectionRefs": [
+        "5.15(a)(ii)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-02-j",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.02(j)",
+      "flagSectionRefs": [
+        "6.02(j)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-02-lead-in",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.02",
+      "flagSectionRefs": [
+        "6.02(l)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-04-lead-in",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.04",
+      "flagSectionRefs": [
+        "6.04(2)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-04-unrestricted-sub-valuation",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.04",
+      "flagSectionRefs": [
+        "6.04(2)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-ip-to-unrestricted-sub-prohibition",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.05",
+      "flagSectionRefs": [
+        "6.05(A)(a)(B)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-lead-in",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.05",
+      "flagSectionRefs": [
+        "6.05(A)(a)(B)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::II::sec-2-02-loans-and-borrowings",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.02",
+      "flagSectionRefs": [
+        "2.02(a)",
+        "9(c)(b)(b)(b)(b)(b)",
+        "2.01(a)",
+        "2.01(a)",
+        "9.13",
+        "2.08(b)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::II::sec-2-17-taxes",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "INFORMATIONAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "2.17",
+      "flagSectionRefs": [
+        "2.17(f)(i)",
+        "2.17(f)(i)",
+        "2.17(f)(i)",
+        "2.15(a)(iii)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": false
+    },
+    {
+      "gtUnitId": "doc-d::V::cov-5-13-additional-collateral",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "5.13",
+      "flagSectionRefs": [
+        "5.13(a)(ii)",
+        "10.02(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::V::cov-5-15-unrestricted-subsidiary-designation",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "5.15",
+      "flagSectionRefs": [
+        "5.15(a)",
+        "5.15(a)(ii)",
+        "5.15(a)(ii)",
+        "5.15(B)",
+        "6.05(b)(a)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-g",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.01(g)",
+      "flagSectionRefs": [
+        "6.01(g)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-m",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.01(m)",
+      "flagSectionRefs": [
+        "6.01(m)(ii)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-02-chapeau",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.02",
+      "flagSectionRefs": [
+        "6.02(j)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-02-j",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.02(j)",
+      "flagSectionRefs": [
+        "6.02(j)(i)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-05-k",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.05(k)",
+      "flagSectionRefs": [
+        "6.05(k)(ii)",
+        "6.06"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-12-b-total-net-leverage",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "CRITICAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "6.12(b)",
+      "flagSectionRefs": [
+        "6.12(b)(ii)(b)(ii)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VIII::8-01",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "8.01",
+      "flagSectionRefs": [
+        "8.01(c)(i)",
+        "8.02(b)",
+        "9.02(d)(ii)(i)",
+        "9.08",
+        "9.21"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::VIII::8-02",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "INFORMATIONAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "8.02",
+      "flagSectionRefs": [
+        "8.02(b)",
+        "8.03(d)(i)",
+        "8.06(c)(ii)(1)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": false
+    },
+    {
+      "gtUnitId": "doc-d::X::10-02",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "HONESTLY_UNRESOLVED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "10.02",
+      "flagSectionRefs": [
+        "10.02(b)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    },
+    {
+      "gtUnitId": "doc-d::X::10-11",
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "materiality": "MATERIAL",
+      "matchStatus": "UNREPRESENTED",
+      "v3": "SPECIFICALLY_SURFACED",
+      "v31Composite": "PARTIALLY_SURFACED",
+      "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+      "gtSectionRef": "10.11",
+      "flagSectionRefs": [
+        "10.11(c)"
+      ],
+      "dangerousSilentOmissionV3": false,
+      "dangerousSilentOmissionV31": true
+    }
+  ],
+  "changedUnitsInsideFrozen47CaseSample": {
+    "count": 4,
+    "units": [
+      {
+        "gtUnitId": "lsb-6.03-fundamental-changes",
+        "datasetKey": "lsb-2023-abl-credit-agreement",
+        "materiality": "CRITICAL",
+        "matchStatus": "HONESTLY_UNRESOLVED",
+        "v3": "SPECIFICALLY_SURFACED",
+        "v31Composite": "PARTIALLY_SURFACED",
+        "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+        "gtSectionRef": "6.03",
+        "flagSectionRefs": [
+          "Section 6.03(a)"
+        ],
+        "dangerousSilentOmissionV3": false,
+        "dangerousSilentOmissionV31": true
+      },
+      {
+        "gtUnitId": "doc-a::VI::6.10-chapeau",
+        "datasetKey": "dsgr-2022-2025-credit-facility",
+        "materiality": "CRITICAL",
+        "matchStatus": "UNREPRESENTED",
+        "v3": "SPECIFICALLY_SURFACED",
+        "v31Composite": "PARTIALLY_SURFACED",
+        "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+        "gtSectionRef": "6.10",
+        "flagSectionRefs": [
+          "6.08(a)",
+          "6.10(b)(i)",
+          "6.10(b)(i)(a)",
+          "6.06"
+        ],
+        "dangerousSilentOmissionV3": false,
+        "dangerousSilentOmissionV31": true
+      },
+      {
+        "gtUnitId": "doc-b::VI::6-04-lead-in",
+        "datasetKey": "dsgr-2022-2025-credit-facility",
+        "materiality": "CRITICAL",
+        "matchStatus": "HONESTLY_UNRESOLVED",
+        "v3": "SPECIFICALLY_SURFACED",
+        "v31Composite": "PARTIALLY_SURFACED",
+        "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+        "gtSectionRef": "6.04",
+        "flagSectionRefs": [
+          "6.04(2)"
+        ],
+        "dangerousSilentOmissionV3": false,
+        "dangerousSilentOmissionV31": true
+      },
+      {
+        "gtUnitId": "doc-b::VI::6-05-lead-in",
+        "datasetKey": "dsgr-2022-2025-credit-facility",
+        "materiality": "CRITICAL",
+        "matchStatus": "HONESTLY_UNRESOLVED",
+        "v3": "SPECIFICALLY_SURFACED",
+        "v31Composite": "PARTIALLY_SURFACED",
+        "v31Binary": "NOT_SPECIFICALLY_SURFACED",
+        "gtSectionRef": "6.05",
+        "flagSectionRefs": [
+          "6.05(A)(a)(B)"
+        ],
+        "dangerousSilentOmissionV3": false,
+        "dangerousSilentOmissionV31": true
+      }
+    ],
+    "consequence": "the frozen 47-case sample's surfacing denominator is 36. Four of those 36 change evaluator disposition under V3.1. The re-adjudication must therefore be measured against V3.1 evaluator output, not V3 output."
+  },
+  "correctionToPriorMission": {
+    "priorClaim": "docs/phase-3-final-closure/11-root-cause-classification.json presented a-7.1 as the worked example of the evaluator implementing INVARIANT_3 ('SPECIFICALLY_SURFACED — implements INVARIANT_3').",
+    "measuredFact": "a-7.1's surfacedAsUnsafeBy is EMPTY. The evaluator's actual disposition on a-7.1 is NOT_SPECIFICALLY_SURFACED, matching the sealed label. The 7.1(d) flag never entered the corresponding set, so the evaluator agreed with Reviewer A's OUTCOME on that case, not with B and C.",
+    "whatStandsAndWhatDoesNot": "The general characterisation of the evaluator — that it treats any corresponding claim-specific flag as surfacing the whole claim — is CORRECT and is now measured on 46 units. The a-7.1 worked example was a poor illustration of it and is corrected here. The root-cause classification itself (14 surfacing disagreements are contract ambiguity, class B) is unaffected: the reviewers disagreed with each other about the rule, which is what made the contract ambiguous.",
+    "betterWorkedExample": "doc-b::VI::6-04-lead-in — ground truth at 6.04, exactly one corresponding flag anchored at 6.04(2). Under V3 the whole lead-in counts as surfaced; under V3.1 it is PARTIALLY_SURFACED, binary NOT_SPECIFICALLY_SURFACED, and the unwarned remainder of 6.04 is correctly counted as a dangerous silent omission."
+  },
+  "draftRuleRejectedOnMeasurement": {
+    "draft": "treat CORRESPONDS_PARTIALLY as evidence of sub-proposition anchoring",
+    "measured": {
+      "unitsChanged": 407,
+      "dangerousSilentOmission": "322 → 673"
+    },
+    "rejectedBecause": "349 of those 407 changes rested on an inference, not on evidence about coverage. §3 forbids substituting a new subjective test. The rule was corrected in the specification BEFORE the evaluator was touched, and the measurement that caused the correction is recorded here rather than discarded."
+  },
+  "noEvaluatorCodeWasModifiedToProduceThisArtifact": true
+}

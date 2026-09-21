@@ -1,0 +1,214 @@
+{
+  "artifact": "§33 — the 32 Phase-3 closure requirements, scored honestly",
+  "at": "2026-09-21T01:32:21.427Z",
+  "verdict": "PHASE3_HUMAN_READJUDICATION_REQUIRED",
+  "verdictBasis": "§33 returns PHASE3_SEMANTIC_CLOSURE_PROVEN only if ALL 32 hold. Items 4-8 cannot hold without genuinely independent reviewer decisions, which §9 forbids this agent from producing. §34 names this exact outcome as acceptable and expected.",
+  "requirements": [
+    {
+      "n": 1,
+      "requirement": "AMB-1 is resolved in the written specification",
+      "status": "PASS",
+      "evidence": "02-v31-atomic-surfacing-contract.json, sha256 7161f141411a05fb740a6ca01e690e86f14d337d9182eaf7b1097b3f643f4988"
+    },
+    {
+      "n": 2,
+      "requirement": "atomic surfacing is implemented consistently",
+      "status": "PASS",
+      "evidence": "lib/contract-model/evaluation-v2/surfacing-scope.ts; 29 targeted tests; 46 measured unit changes across 1,115 units, all one direction, all the AMB-1 shape"
+    },
+    {
+      "n": 3,
+      "requirement": "historical adjudications remain immutable",
+      "status": "PASS",
+      "evidence": "08-historical-adjudication-preservation.json; 0 historical decisions modified; three adjudicator files byte-identical"
+    },
+    {
+      "n": 4,
+      "requirement": "genuine independent re-adjudication exists",
+      "status": "FAIL",
+      "evidence": "19-independent-review-import.json — no reviewer responses present. NOT faked (§9)."
+    },
+    {
+      "n": 5,
+      "requirement": "inter-reviewer credit agreement meets threshold",
+      "status": "NOT MEASURABLE",
+      "evidence": "depends on 4"
+    },
+    {
+      "n": 6,
+      "requirement": "inter-reviewer surfacing agreement meets threshold",
+      "status": "NOT MEASURABLE",
+      "evidence": "depends on 4"
+    },
+    {
+      "n": 7,
+      "requirement": "evaluator-vs-consensus credit meets threshold",
+      "status": "NOT MEASURABLE",
+      "evidence": "depends on 4"
+    },
+    {
+      "n": 8,
+      "requirement": "evaluator-vs-consensus surfacing meets threshold",
+      "status": "NOT MEASURABLE",
+      "evidence": "depends on 4"
+    },
+    {
+      "n": 9,
+      "requirement": "all other V3/V3.1 closure thresholds pass",
+      "status": "PASS",
+      "evidence": "18/18 atomic invariants, 22/22 sibling-claim protections, 28/28 safe-surfacing calibration, 135+29 evaluation tests green"
+    },
+    {
+      "n": 10,
+      "requirement": "all 14 historical false credits remain NO_CREDIT",
+      "status": "PASS",
+      "evidence": "15-false-credit-regression.json — 14/14, three independent checks"
+    },
+    {
+      "n": 11,
+      "requirement": "1,115-unit regression passes",
+      "status": "PASS",
+      "evidence": "16-cross-dataset-regression.json — 4 datasets, 1115 units, credit distributions identical to the frozen V3 run"
+    },
+    {
+      "n": 12,
+      "requirement": "I27 is resolved",
+      "status": "PASS",
+      "evidence": "10-i27-forensics.json — reproduced, root-caused, red test first, generic fix, INVENTORY_OK"
+    },
+    {
+      "n": 13,
+      "requirement": "every semantic-accountability residual is individually adjudicated",
+      "status": "PASS",
+      "evidence": "09-semantic-accountability-residuals.json — 8 fragments across 18 identities, each with its own reasoning"
+    },
+    {
+      "n": 14,
+      "requirement": "no known OBVIOUS_FALSE_GAP remains unresolved",
+      "status": "PASS",
+      "evidence": "the only one, I27, is closed; the audit found no new one"
+    },
+    {
+      "n": 15,
+      "requirement": "stale active tests corrected only after semantic proof",
+      "status": "PASS",
+      "evidence": "11, 12 and 13 record the proof per fragment before any expectation was touched; corrections are stricter, not looser"
+    },
+    {
+      "n": 16,
+      "requirement": "any production defect reproduced before fixing",
+      "status": "PASS",
+      "evidence": "10-i27-forensics.json reproduction section, produced before the code change"
+    },
+    {
+      "n": 17,
+      "requirement": "production fixes are generic",
+      "status": "PASS",
+      "evidence": "14-production-remediation.json point 7; no case, document, section, covenant or package identifier in either changed module"
+    },
+    {
+      "n": 18,
+      "requirement": "anti-enumeration passes",
+      "status": "PASS",
+      "evidence": "mechanical source scan in tests/evaluation-v2/atomic-surfacing-v31.test.ts; invented identifiers throughout the coverage probes; tests/contract-model/runtime/*/anti-enumeration.test.ts green"
+    },
+    {
+      "n": 19,
+      "requirement": "determinism passes",
+      "status": "PASS",
+      "evidence": "cross-dataset reproduces; the end-to-end trace reproduces hash-for-hash; the V3.1 module has an explicit determinism test"
+    },
+    {
+      "n": 20,
+      "requirement": "real shared-cap evidence remains truthful",
+      "status": "PASS",
+      "evidence": "carried forward unchanged: 7 relationships, 0 quantified pools, RELATIONSHIP_ONLY_NO_QUANTIFIED_POOL. Not reopened, not manufactured (§25)"
+    },
+    {
+      "n": 21,
+      "requirement": "real reclassification evidence remains truthful",
+      "status": "PASS",
+      "evidence": "carried forward unchanged: NO_RECLASSIFICATION_MECHANISM for this fixture; synthetic 4C/4D capability is a separate claim (§26)"
+    },
+    {
+      "n": 22,
+      "requirement": "downstream 4A passes",
+      "status": "PASS",
+      "evidence": "49 + 54 tests, 0 failures"
+    },
+    {
+      "n": 23,
+      "requirement": "downstream 4B passes",
+      "status": "PASS",
+      "evidence": "98 tests, 0 failures"
+    },
+    {
+      "n": 24,
+      "requirement": "downstream 4C passes",
+      "status": "PASS",
+      "evidence": "177 tests, 0 failures"
+    },
+    {
+      "n": 25,
+      "requirement": "downstream 4D passes",
+      "status": "PASS",
+      "evidence": "186 tests, 0 failures"
+    },
+    {
+      "n": 26,
+      "requirement": "end-to-end target trace passes",
+      "status": "PASS",
+      "evidence": "18-end-to-end-trace.json — 31,000,000 → 1,000 → 30,999,000, identical to frozen"
+    },
+    {
+      "n": 27,
+      "requirement": "no new attributable regression",
+      "status": "PASS",
+      "evidence": "18 identities fixed, 1 new: a wall-clock O(n) scaling probe that failed under concurrent CPU load and passes 3/3 in isolation with slope 1.04. Disclosed rather than waived — see 19-quality-gate detail in this file."
+    },
+    {
+      "n": 28,
+      "requirement": "fresh tsc classification recorded",
+      "status": "PASS",
+      "evidence": "6 errors, all pre-existing in tests/foundation-audit/, 0 new; log freshly generated after the last source change"
+    },
+    {
+      "n": 29,
+      "requirement": "lint passes",
+      "status": "PASS",
+      "evidence": "No ESLint warnings or errors"
+    },
+    {
+      "n": 30,
+      "requirement": "build passes",
+      "status": "PASS",
+      "evidence": "next build exit 0"
+    },
+    {
+      "n": 31,
+      "requirement": "Phase 4E remains unstarted",
+      "status": "PASS",
+      "evidence": "no path enumeration, candidate search, maximum-transaction, allocation search, basket ranking, optimisation or solver code was written"
+    },
+    {
+      "n": 32,
+      "requirement": "Phase 5 remains unstarted",
+      "status": "PASS",
+      "evidence": "no financial ingestion, ERP, bank connection, spreadsheet parser or PDF financial extraction"
+    }
+  ],
+  "tally": {
+    "PASS": 27,
+    "FAIL": 1,
+    "NOT_MEASURABLE": 4
+  },
+  "theOneNewFailure": {
+    "identity": "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4 — measured multi-point scaling is consistent with O(n), not O(n^2)",
+    "classification": "WALL_CLOCK_UNDER_CONCURRENT_LOAD, not attributable to any change in this mission",
+    "evidence": "re-run three times in isolation: 3/3 pass, estimated log-log slopes 1.0417, 1.0364, 1.0618",
+    "cause": "the end-to-end trace was executed in parallel with the full suite on the same container, contending for CPU. That was my scheduling, not a code regression.",
+    "whyItCannotBeTheChange": "the override-operator rule is a single additional linear scan over spans already materialised; it cannot introduce super-linear behaviour, and the module it lives in is not on the measured path at all",
+    "waived": false,
+    "disclosed": true
+  }
+}

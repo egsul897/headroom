@@ -23,6 +23,8 @@
  * for the historical-label migration table (including disclosed
  * terminology collisions).
  */
+import { deriveSurfacingScope, toBinarySurfacing } from "./surfacing-scope";
+import type { CompositeSurfacing, FlagCoverageRecord } from "./surfacing-scope";
 import type { CandidateSemanticRepresentation, MatchStatus, PairAssessment, UnitEvaluationResult } from "./types";
 
 export type CreditEligibility = "CREDIT" | "NO_CREDIT";
@@ -54,7 +56,12 @@ export type DerivedDiagnosticLabel =
 export interface AtomicEvaluationContract {
   claimId: string;
   creditEligibility: CreditEligibility;
+  /** V3.1 binary projection of `compositeSurfacing`. Kept for contract compatibility. */
   surfacingStatus: SurfacingStatus;
+  /** V3.1 primary truth: what the claim-specific flags actually cover. Never collapsed away. */
+  compositeSurfacing: CompositeSurfacing;
+  /** Per-flag coverage evidence behind `compositeSurfacing`. Empty when no flag corresponds. */
+  surfacingCoverage: FlagCoverageRecord[];
   representationCompleteness: RepresentationCompleteness;
   verificationStatus: VerificationStatus;
   evidenceQuality: EvidenceQuality;
@@ -120,24 +127,6 @@ function deriveRepresentationCompleteness(matchStatus: MatchStatus): Representat
   return "NONE";
 }
 
-/**
- * Section 4B / Invariants 3-6: surfacingStatus reuses explicitlySurfacedAsUnsafe
- * verbatim. This is not a re-derivation shortcut — it is the correct answer,
- * because Workstream A's frozen I_CLAIM_IDENTITY dimension already forces a
- * sibling-anchored candidate's pair correspondence to INDETERMINATE, and
- * matching.ts's surfacedUnsafe() is scoped ONLY to pairs whose correspondence
- * resolved CORRESPONDS_FULLY/CORRESPONDS_PARTIALLY (see matching.ts's
- * `corresponding` array) — a sibling's flag can therefore never enter
- * `surfacedBy`/`explicitlySurfacedAsUnsafe` in the first place. The
- * claim-specific-correspondence requirement this section demands is already
- * structurally enforced upstream; duplicating it here would risk a second,
- * possibly inconsistent implementation of the same rule.
- */
-function deriveSurfacingStatus(creditEligibility: CreditEligibility, unit: UnitEvaluationResult): SurfacingStatus {
-  if (creditEligibility === "CREDIT") return "NOT_APPLICABLE";
-  return unit.explicitlySurfacedAsUnsafe ? "SPECIFICALLY_SURFACED" : "NOT_SPECIFICALLY_SURFACED";
-}
-
 /** Broad (non-claim-identity-filtered) role scan across ALL evaluated pairs — used ONLY for the diagnostic label, never for a safety-critical dimension. */
 function anyPairHasRole(unit: UnitEvaluationResult, candidatesById: Map<string, CandidateSemanticRepresentation>, roles: ReadonlySet<string>): boolean {
   return unit.pairAssessments.some((p: PairAssessment) => {
@@ -197,15 +186,18 @@ function deriveDiagnosticLabel(
  * automatically dangerous — only a NO_CREDIT result on a material claim that
  * was NOT specifically surfaced. Uses the same CRITICAL/MATERIAL materiality
  * gate as the frozen dangerousUnaccountedV2 computation (aggregate.ts),
- * unchanged this phase.
+ * unchanged. Under V3.1 its INPUT changes: a PARTIALLY_SURFACED composite
+ * projects to NOT_SPECIFICALLY_SURFACED, so a claim whose only warnings sit
+ * on other sub-parts is correctly counted as a dangerous omission of the
+ * propositions nobody warned about.
  */
 function deriveDangerousSilentOmission(materiality: string, creditEligibility: CreditEligibility, surfacingStatus: SurfacingStatus): boolean {
   return MATERIAL_TIERS.has(materiality) && creditEligibility === "NO_CREDIT" && surfacingStatus === "NOT_SPECIFICALLY_SURFACED";
 }
 
-function buildRationale(unit: UnitEvaluationResult, contract: Omit<AtomicEvaluationContract, "claimId" | "rationale" | "derivedDiagnosticLabel">): string {
+function buildRationale(unit: UnitEvaluationResult, contract: Omit<AtomicEvaluationContract, "claimId" | "rationale" | "derivedDiagnosticLabel" | "surfacingCoverage">): string {
   const parts: string[] = [`matchStatus=${unit.matchStatus}`, `creditEligibility=${contract.creditEligibility}`];
-  if (contract.creditEligibility === "NO_CREDIT") parts.push(`surfacingStatus=${contract.surfacingStatus}`);
+  if (contract.creditEligibility === "NO_CREDIT") parts.push(`surfacingStatus=${contract.surfacingStatus}`, `compositeSurfacing=${contract.compositeSurfacing}`);
   parts.push(`representationCompleteness=${contract.representationCompleteness}`, `verificationStatus=${contract.verificationStatus}`, `evidenceQuality=${contract.evidenceQuality}`);
   if (contract.dangerousSilentOmission) parts.push("DANGEROUS_SILENT_OMISSION on a material claim");
   const source = unit.reasonForCredit ?? unit.reasonForPartialCredit ?? unit.reasonForNoCredit ?? "";
@@ -213,23 +205,40 @@ function buildRationale(unit: UnitEvaluationResult, contract: Omit<AtomicEvaluat
 }
 
 /**
+ * Evaluation Contract V3.1 (AMB-1 resolved by specification).
+ *
+ * V3 answered "is there ANY corresponding claim-specific flag?". That let a
+ * warning about one enumerated sub-part suppress dangerousSilentOmission for
+ * unwarned material siblings inside the same benchmark unit. V3.1 answers
+ * "what do the corresponding flags actually COVER?" and projects that to the
+ * legacy binary, keeping the composite state as primary truth.
+ *
+ * Claim-specificity itself is still enforced upstream and is not duplicated
+ * here: matching.ts scopes `surfacedAsUnsafeBy` to pairs resolving
+ * CORRESPONDS_FULLY/CORRESPONDS_PARTIALLY, and the frozen I_CLAIM_IDENTITY
+ * dimension forces a top-level-sibling-anchored candidate to INDETERMINATE
+ * so it never reaches that list at all.
+ */
+/**
  * Derive the atomic evaluation contract for one ground-truth unit's already-
  * computed result. Pure function of frozen matcher output — introduces no
  * new matching decision.
  */
 export function deriveAtomicContract(unit: UnitEvaluationResult, candidatesById: Map<string, CandidateSemanticRepresentation>): AtomicEvaluationContract {
   const creditEligibility: CreditEligibility = CREDIT_STATUSES.has(unit.matchStatus) ? "CREDIT" : "NO_CREDIT";
-  const surfacingStatus = deriveSurfacingStatus(creditEligibility, unit);
+  const scope = deriveSurfacingScope(unit, candidatesById, creditEligibility === "CREDIT");
+  const surfacingStatus: SurfacingStatus = toBinarySurfacing(scope.compositeSurfacing);
   const representationCompleteness = deriveRepresentationCompleteness(unit.matchStatus);
   const verificationStatus = deriveVerificationStatus(unit, candidatesById);
   const evidenceQuality = deriveEvidenceQuality(unit);
   const dangerousSilentOmission = deriveDangerousSilentOmission(unit.materiality, creditEligibility, surfacingStatus);
   const derivedDiagnosticLabel = deriveDiagnosticLabel(unit, candidatesById, verificationStatus);
 
-  const partial = { creditEligibility, surfacingStatus, representationCompleteness, verificationStatus, evidenceQuality, dangerousSilentOmission };
+  const partial = { creditEligibility, surfacingStatus, compositeSurfacing: scope.compositeSurfacing, representationCompleteness, verificationStatus, evidenceQuality, dangerousSilentOmission };
   return {
     claimId: unit.gtUnitId,
     ...partial,
+    surfacingCoverage: scope.coverage,
     rationale: buildRationale(unit, partial),
     derivedDiagnosticLabel,
   };

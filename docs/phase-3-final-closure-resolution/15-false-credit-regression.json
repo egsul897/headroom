@@ -1,0 +1,72 @@
+{
+  "artifact": "§17 — the 14 historical false-credit controls, re-run AFTER the evaluator change",
+  "at": "2026-09-21T01:31:25.043Z",
+  "rule": "§17: all 14 must remain NO_CREDIT after any evaluator change, and no regression may be hidden by aggregate accuracy.",
+  "controlCount": 14,
+  "allNoCredit": true,
+  "regressionDetected": false,
+  "evidence": [
+    {
+      "source": "docs/phase-3-final-closure-resolution/16-cross-dataset-regression.json",
+      "check": "falseCreditControlsRegressionCheck over all 14 ids, run through the V3.1 evaluator across the full 1,115-unit corpus",
+      "result": "14/14 NO_CREDIT, regressionDetected false"
+    },
+    {
+      "source": "tests/evaluation-v2/atomic-contract.test.ts",
+      "check": "GATE (item 17): all 14 historical false-credit controls resolve creditEligibility=NO_CREDIT under the atomic contract",
+      "result": "pass"
+    },
+    {
+      "source": "tests/evaluation-v2/dsgr-false-credit-gate.test.ts",
+      "check": "4 tests",
+      "result": "pass"
+    },
+    {
+      "source": "tests/evaluation-v2/false-credit-prohibitions.test.ts",
+      "check": "10 tests",
+      "result": "pass"
+    }
+  ],
+  "creditDistributionsUnchanged": {
+    "claim": "V3.1 touches surfacing only. Credit distributions are IDENTICAL to the frozen V3 run on all four datasets.",
+    "fwrg": {
+      "v3": {
+        "CREDIT": 8,
+        "NO_CREDIT": 10
+      },
+      "v31": {
+        "CREDIT": 8,
+        "NO_CREDIT": 10
+      }
+    },
+    "lsb": {
+      "v3": {
+        "CREDIT": 2,
+        "NO_CREDIT": 12
+      },
+      "v31": {
+        "CREDIT": 2,
+        "NO_CREDIT": 12
+      }
+    },
+    "conmed": {
+      "v3": {
+        "NO_CREDIT": 67
+      },
+      "v31": {
+        "NO_CREDIT": 67
+      }
+    },
+    "dsgr": {
+      "v3": {
+        "CREDIT": 6,
+        "NO_CREDIT": 1010
+      },
+      "v31": {
+        "CREDIT": 6,
+        "NO_CREDIT": 1010
+      }
+    }
+  },
+  "section16Compliance": "creditEligibility was NOT modified. The 42/47 = 89.36% evaluator-vs-consensus shortfall was not treated as authorization to tune it, and will be re-measured against the new independent adjudication."
+}

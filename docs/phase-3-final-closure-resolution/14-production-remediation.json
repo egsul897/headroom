@@ -1,0 +1,40 @@
+{
+  "artifact": "§24 — the production change, against the ten-point boundary",
+  "at": "2026-09-21T01:27:38.543Z",
+  "productionChanges": [
+    {
+      "file": "lib/contract-model/evaluation-v2/surfacing-scope.ts",
+      "change": "NEW — V3.1 atomic surfacing scope",
+      "category": "EVALUATION LAYER"
+    },
+    {
+      "file": "lib/contract-model/evaluation-v2/atomic-contract.ts",
+      "change": "derives compositeSurfacing and projects it to the legacy binary",
+      "category": "EVALUATION LAYER"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+      "change": "NEW disposition COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP and the rule that assigns it",
+      "category": "PHASE-3 PRODUCTION"
+    }
+  ],
+  "tenPointBoundary": {
+    "1_sourceEvidence": "reproduced span dump: 'Notwithstanding' at operative:26-41 with a COVERED_BY_INVENTORY DEPENDENCY span at 42-81 naming Section 7.10 — 10-i27-forensics.json",
+    "2_expectedSemantics": "an override whose disapplied provision is named and inventoried is accounted for",
+    "3_currentOutput": "INVENTORY_COVERAGE_GAP with one residual segment",
+    "4_reproducedDefect": "YES, by running the real Pass A, before any code was changed",
+    "5_failingTest": "YES, written first: tests/contract-model/semantic-accountability/override-operator-ownership.test.ts (8 assertions failing before the fix)",
+    "6_genericRootCause": "the disposition layer had no concept of an override operator at all — only clause introducers — so every override operator was refused regardless of whether its target was accounted for",
+    "7_genericFix": "a structural rule over fragment shape, contiguity, complement coverage and provision naming. No case id, document id, section number, covenant name or package key appears in it.",
+    "8_antiEnumerationProof": "asserted mechanically in tests/evaluation-v2/atomic-surfacing-v31.test.ts for the V3.1 module and by construction for the coverage rule, whose probes use invented section numbers (44.44, 44.40, qq.zz) that appear in no fixture",
+    "9_unseenIdentifierTest": "'behaves identically on an unseen identifier shape' — present in both new test files",
+    "10_downstreamRegression": "see 17-downstream-regression.json and 18-end-to-end-trace.json"
+  },
+  "whatWasNotChanged": [
+    "the frozen matcher (matching.ts, semantic-correspondence.ts, claim-identity.ts)",
+    "creditEligibility — §16",
+    "Phase 4A, 4B, 4C, 4D",
+    "any ground truth or historical artifact",
+    "the CLAUSE_INTRODUCING_CONNECTIVES set — the override rule is additive and leaves the existing connective behaviour bit-for-bit unchanged"
+  ]
+}

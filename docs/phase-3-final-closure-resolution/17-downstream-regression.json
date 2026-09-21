@@ -1,0 +1,54 @@
+{
+  "artifact": "§27 — downstream 4A/4B/4C/4D after the Phase-3 production change",
+  "at": "2026-09-21T01:31:25.043Z",
+  "phase3ChangeMade": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts — new COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP disposition",
+  "downstreamModified": "NONE. Phase 4A, 4B, 4C and 4D are untouched; their tree hashes are unchanged from the starting SHA.",
+  "results": {
+    "phase4A_expressionRuntime": {
+      "files": 1,
+      "passed": 49,
+      "failed": 0
+    },
+    "phase4A_ir": {
+      "files": 7,
+      "passed": 54,
+      "failed": 0
+    },
+    "phase4B_input": {
+      "files": 4,
+      "passed": 98,
+      "failed": 0
+    },
+    "phase4C_capacity": {
+      "files": 7,
+      "passed": 177,
+      "failed": 0
+    },
+    "phase4D_transaction": {
+      "files": 6,
+      "passed": 186,
+      "failed": 0
+    }
+  },
+  "totalDownstream": {
+    "passed": 564,
+    "failed": 0
+  },
+  "compensatingSemanticChanges": "NONE. No downstream semantics were altered to accommodate the Phase-3 change (§27).",
+  "originalRedTeamHarnesses": {
+    "rule": "the eight preserved harnesses from the source-coverage campaign are the strongest available check that the coverage layer's safety behaviour is unchanged",
+    "harnesses": [
+      "e2e",
+      "e2e2",
+      "e2e3",
+      "e2e4",
+      "p1",
+      "p2",
+      "p3",
+      "p4"
+    ],
+    "allExitZero": true,
+    "logComparison": "all eight logs are BYTE-IDENTICAL to the preserved logs from the artifact-35/37 certification runs",
+    "meaning": "every dangerous scenario in the frozen discovered failure universe still surfaces exactly as it did. The override-operator rule changed nothing there."
+  }
+}

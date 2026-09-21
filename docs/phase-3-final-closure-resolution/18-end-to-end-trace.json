@@ -1,0 +1,45 @@
+{
+  "artifact": "§28 — end-to-end target-architecture trace, re-run after every change in this mission",
+  "at": "2026-09-21T01:31:25.043Z",
+  "identicalToFrozenModuloTimestamp": true,
+  "frozenComparand": "docs/phase-4d/post-remediation-audit/02-end-to-end-trace.json (not overwritten; the trace script was copied and its output path redirected)",
+  "chain": {
+    "step1_source": {
+      "documentId": "doc-a",
+      "sectionRef": "6.01(b)(31)"
+    },
+    "step3_phase3IR": {
+      "ruleId": "ir-rule:2142a4b823fd9e52a8a8f3da",
+      "covenantFamily": "INDEBTEDNESS",
+      "sufficiency": "COMPLETE"
+    },
+    "step4_phase4a": {
+      "evaluationStatus": "EXECUTABLE",
+      "grossCapacity": "31000000"
+    },
+    "step5_phase4b": {
+      "dependenciesDeclared": 42,
+      "inputViewHash": "a26808e4be0a698b64f54a110af72f87c33b50738d6e616e81863f45cd94a988"
+    },
+    "step6_phase4c": {
+      "status": "AVAILABLE",
+      "effectiveRemainingBefore": "31000000"
+    },
+    "step7_phase4d": {
+      "attempted": "1000",
+      "outcome": "SATISFIED",
+      "remainingAfter": "30999000",
+      "committable": true,
+      "limitations": []
+    }
+  },
+  "arithmetic": "31000000 - 1000 = 30999000. Confirmed.",
+  "legacyEngineUsed": false,
+  "whyUnchanged": "The traced rule's source text contains no override operator, so the new coverage disposition cannot reach it, and V3.1 changes only evaluation-layer surfacing, which is not on the runtime path. The trace was re-run rather than assumed.",
+  "i27Traceability": {
+    "attempted": true,
+    "result": "NOT REPRESENTABLE DOWNSTREAM",
+    "why": "I27 is a synthetic corpus scenario in the semantic-accountability test corpus, not a rule in the frozen real-package compile result. There is no Phase-4A expression, Phase-4C capacity node or Phase-4D transaction for it to flow into. Manufacturing one would be inventing real-package evidence, which §26 forbids.",
+    "whatWasDoneInstead": "the remediated behaviour is proven at its own layer by 9 targeted tests and by the full 380-test semantic-accountability suite, and the unchanged downstream is proven by the 564 passing 4A-4D tests and the byte-identical red-team logs."
+  }
+}

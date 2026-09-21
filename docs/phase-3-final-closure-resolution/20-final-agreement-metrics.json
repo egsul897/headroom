@@ -1,0 +1,25 @@
+{
+  "artifact": "§14 — final agreement metrics",
+  "at": "2026-09-21T01:31:25.043Z",
+  "computed": false,
+  "reason": "Genuinely independent reviewer decisions do not exist yet. §9 forbids this agent from generating them, simulating three reviewers, or inferring how humans would vote. §12 forbids computing metrics before the reviewer set validates, and 19-independent-review-import.json records that no reviewer file is present.",
+  "whatIsReadyToRun": {
+    "importer": "scripts/import-v31-review-responses.ts — validates first and exits non-zero without computing anything",
+    "consensusRule": "07-consensus-contract.json, frozen before any result was seen",
+    "thresholds": {
+      "interReviewerCredit": 0.9,
+      "interReviewerSurfacing": 0.9,
+      "evaluatorVsConsensusCredit": 0.9,
+      "evaluatorVsConsensusSurfacing": 0.9,
+      "unchanged": true
+    }
+  },
+  "v3MetricsCarriedForwardForReferenceOnly": {
+    "note": "these are the OLD numbers, measured under the OLD contract against the OLD adjudication. They are NOT the V3.1 result and must not be reported as one.",
+    "interReviewerCredit": 0.957447,
+    "interReviewerSurfacing": 0.740741,
+    "evaluatorVsConsensusCredit": 0.8936170212765957,
+    "evaluatorVsConsensusSurfacing": 0.6666666666666666
+  },
+  "whatWillChangeWhenMeasured": "Four of the 36 surfacing-scored cases change evaluator disposition under V3.1 (04-evaluator-delta-analysis.json). Whether that moves any agreement figure depends entirely on how the independent reviewers decide, which is unknown and must stay unknown until they do."
+}
