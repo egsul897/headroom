@@ -25,10 +25,14 @@ describe("semantic accountability - Pass A over the synthetic corpus (I1-I45)", 
   });
 
   for (const scenario of CORPUS) {
-    it(`${scenario.id} ${scenario.title}: source context = ${scenario.expectedContextState}; 100% CRITICAL recall; every declared value found; 0 silent absences`, async () => {
+    it(`${scenario.id} ${scenario.title}: source context = ${scenario.expectedContextState}; 100% CRITICAL recall; every declared value found; 0 silent absences; residuals exactly ${JSON.stringify(scenario.expectedResidualSegments ?? [])}`, async () => {
       const b = await get(scenario.id);
       expect(b.sourceContext.state).toBe(scenario.expectedContextState);
-      expect(b.inventory.inventoryStatus).toBe("INVENTORY_OK");
+      // A scenario either accounts for all of its source, or declares EXACTLY which fragments it
+      // deliberately leaves surfaced for review. Both a new residual and a silently-closed one fail here.
+      const expectedResiduals = scenario.expectedResidualSegments ?? [];
+      expect(b.inventory.unaccountedSource.map((u) => u.excerpt)).toEqual(expectedResiduals);
+      expect(b.inventory.inventoryStatus).toBe(expectedResiduals.length === 0 ? "INVENTORY_OK" : "INVENTORY_COVERAGE_GAP");
       expect(b.inventory.rejectedUnverifiableItems).toBe(0);
       const recall = accountRecall(b);
       expect(recall.missingRefs).toEqual([]);

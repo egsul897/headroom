@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.1.v1",
+  "artifactId": "ATOMIC_SURFACING_CONTRACT_V3_1",
+  "supersedes": "evaluation-contract-v3.v1 (docs/evaluation-contract-v3/02-atomic-contract-spec.json, sha256 8f175dde7ada73fd7c2b5386d8679e7fd67e5f42c8a698b47bcc0d73f2a5a022) — PROSPECTIVELY ONLY.",
+  "supersessionScope": "V3.1 governs all FUTURE adjudication and all future evaluator behaviour. It does NOT retroactively re-decide any historical adjudication. The V3 spec file is preserved unmodified.",
+  "generatedAt": "2026-09-21T01:10:51.432Z",
+  "amb1Resolution": {
+    "question": "Does a claim-specific unsafe/review flag attached to ONE sub-part of a composite claim cause the ENTIRE composite claim to count as specifically surfaced?",
+    "answer": "NO.",
+    "governingPrinciple": "A warning attached to proposition X is evidence that X was surfaced. It is not evidence that propositions Y and Z were surfaced merely because X, Y and Z were bundled into one composite benchmark unit.",
+    "rejectedAlternatives": {
+      "INVARIANT_3": "'any claim-specific flag surfaces the composite' — REJECTED. It lets a warning about a minor sub-part suppress dangerousSilentOmission for unwarned material siblings.",
+      "INVARIANT_5": "'dominant material content' — ALSO REJECTED as the governing rule. It replaces one ambiguity with another subjective test. No reviewer should have to decide which sibling proposition is 'dominant'. See §3."
+    },
+    "note": "Neither historical reviewer position is adopted. The new rule is atomic and objective."
+  },
+  "atomicProposition": {
+    "definition": "An atomic proposition is the smallest legally meaningful proposition for which the system could independently be correct, incorrect, complete, incomplete, safe, unsafe, supported, unsupported, ambiguous or review-required.",
+    "splittingRule": "Atomicity does NOT require grammatical sentence splitting. Split only where the legal proposition can differ INDEPENDENTLY — that is, where one part could be represented correctly while another is represented wrongly or not at all.",
+    "dimensionsAlongWhichPropositionsMayDiffer": [
+      "legal subject",
+      "operative requirement / prohibition / permission",
+      "object",
+      "threshold",
+      "condition",
+      "exception",
+      "temporal qualifier",
+      "entity scope",
+      "relationship",
+      "formula",
+      "cross-reference effect"
+    ],
+    "workedExample": "Section 7.1 contains four maintenance covenants (a)-(d). Each can independently be represented correctly or incorrectly, so each is a separate atomic proposition for surfacing. A NEEDS_REVIEW flag specifically attached to 7.1(d) surfaces 7.1(d). It does not surface 7.1(a)-(c).",
+    "counterExample": "A single covenant stating one threshold against one metric for one entity class is ONE atomic proposition. It is not split into subject/verb/object."
+  },
+  "compositeClaim": {
+    "definition": "A benchmark evaluation unit that contains more than one atomic proposition.",
+    "detection": "A unit is treated as composite for surfacing purposes when the evidence objectively shows a narrower anchoring inside it — see objectiveCoverageSignals. The contract does not ask any reviewer or the evaluator to guess compositeness from prose alone."
+  },
+  "objectiveCoverageSignals": {
+    "purpose": "§3 forbids replacing the old ambiguity with another subjective test. Coverage is therefore decided from two signals that are already computed generically by the frozen matcher, never from a judgement about which sibling matters more.",
+    "signal1_semantic": {
+      "name": "PAIR_CORRESPONDENCE",
+      "source": "the frozen semantic-correspondence layer's PairCorrespondence for the flag-to-claim pair",
+      "reading": "CORRESPONDS_FULLY = the flag addresses the claim as a whole. CORRESPONDS_PARTIALLY = the flag addresses part of the claim."
+    },
+    "signal2_structural": {
+      "name": "SECTION_REF_SCOPE_RELATION",
+      "source": "splitSectionRef() applied to the ground-truth unit's sectionRef and to the flagging candidate's sectionRef — a pure comparison of two reference SHAPES, carrying no package, document or term knowledge",
+      "relations": {
+        "COVERS_WHOLE_UNIT": "the flag's enumerated path is a prefix of (or equal to) the unit's enumerated path under the same base section — the flag is anchored at the unit's own address or an ancestor of it",
+        "COVERS_SUB_PART": "the unit's enumerated path is a STRICT prefix of the flag's — the flag is anchored at a proper descendant, i.e. at one enumerated sub-part inside the unit",
+        "NOT_STRUCTURALLY_DECISIVE": "different base section, divergent enumerated paths, absent sectionRef, or different document — structure proves nothing either way"
+      }
+    },
+    "precedence": "Structural evidence is decisive where it exists, because a sectionRef of the form 7.1(d) is an objective statement by the PRODUCING SYSTEM about what it was talking about. Semantic correspondence is used only where structure is silent, and only CORRESPONDS_FULLY is treated as positive evidence of whole-claim coverage. CORRESPONDS_PARTIALLY is explicitly NOT treated as evidence of sub-proposition anchoring — partial semantic correspondence means imperfect meaning match, which is a different axis from coverage."
+  },
+  "perFlagCoverage": {
+    "rule": "For each candidate in surfacedAsUnsafeBy: (1) if SECTION_REF_SCOPE_RELATION is COVERS_SUB_PART → SUB_PART; (2) else if it is COVERS_WHOLE_UNIT → WHOLE; (3) else if PAIR_CORRESPONDENCE is CORRESPONDS_FULLY → WHOLE; (4) else if CORRESPONDS_PARTIALLY → WHOLE_UNPROVEN; (5) else UNDETERMINED.",
+    "whyWHOLE_UNPROVEN": "The flag corresponds to the claim, so a claim-specific warning genuinely exists, but neither the structural address nor the correspondence proves it covers every atomic proposition in the unit. The state is recorded rather than guessed in either direction.",
+    "rejectedFirstFormulation": {
+      "draftRule": "treat CORRESPONDS_PARTIALLY as SUB_PART",
+      "whyRejected": "measured before adoption (see 04-evaluator-delta-analysis.json). It would have moved 407 of 1,115 units and raised dangerousSilentOmission from 322 to 673 — 349 of those changes resting on an inference that partial semantic correspondence implies narrower anchoring. Nothing in the evidence supports that per unit. §3 forbids replacing one ambiguity with another subjective test, and manufacturing 349 dangerous-omission claims from a correspondence score would be an artifact, not a measurement.",
+      "adoptedInstead": "structural evidence decides; CORRESPONDS_PARTIALLY yields WHOLE_UNPROVEN. This moves 46 units, every one of them a case where the ground-truth claim sits at a chapeau address and every corresponding flag sits at a strict enumerated descendant — exactly the AMB-1 phenomenon and nothing else."
+    },
+    "note": "surfacedAsUnsafeBy is, by frozen construction, drawn only from pairs resolving CORRESPONDS_FULLY or CORRESPONDS_PARTIALLY, so UNDETERMINED is unreachable on current data. It is defined anyway so the rule is total."
+  },
+  "compositeSurfacingStates": {
+    "FULLY_SURFACED": {
+      "definition": "Every material atomic proposition within the composite that requires unsafe/review surfacing is specifically surfaced.",
+      "operationalTest": "At least one corresponding claim-specific flag has coverage WHOLE. A flag anchored at the unit's own address or an ancestor of it, or semantically corresponding to the claim in full, necessarily covers every atomic proposition inside it."
+    },
+    "FULLY_SURFACED_UNVERIFIED_SCOPE": {
+      "definition": "A corresponding claim-specific flag exists and nothing in the evidence shows it is anchored more narrowly than the claim, but its whole-claim coverage is not positively proven either.",
+      "operationalTest": "No flag has coverage WHOLE or SUB_PART, and at least one has WHOLE_UNPROVEN.",
+      "disposition": "Projects to SPECIFICALLY_SURFACED. A claim-specific warning demonstrably exists and there is NO evidence of unwarned sibling propositions. Demoting on absence of evidence would assert compositeness that nothing establishes.",
+      "disclosedLimitation": "This is the one place where V3.1 accepts unproven coverage. It is recorded as its own state so it is auditable, and it must be revisited when a benchmark carries an explicit atomic-proposition decomposition, which would make coverage directly checkable."
+    },
+    "PARTIALLY_SURFACED": {
+      "definition": "At least one, but not all, material atomic propositions requiring surfacing are specifically surfaced.",
+      "operationalTest": "No flag has coverage WHOLE, and at least one flag has coverage SUB_PART — i.e. the producing system itself anchored every warning at a strict enumerated descendant of the claim's address."
+    },
+    "NOT_SPECIFICALLY_SURFACED": {
+      "definition": "None of the relevant material atomic propositions are specifically surfaced.",
+      "operationalTest": "There is no corresponding claim-specific flag at all."
+    },
+    "SURFACING_SCOPE_UNDETERMINED": {
+      "definition": "Flags exist but every one has coverage UNDETERMINED.",
+      "operationalTest": "Unreachable on current data; defined for totality.",
+      "disposition": "Projects to NOT_SPECIFICALLY_SURFACED."
+    },
+    "NOT_APPLICABLE": {
+      "definition": "The claim received CREDIT. Surfacing is not evaluated.",
+      "unchangedFromV3": true
+    }
+  },
+  "binaryCompatibilityMapping": {
+    "purpose": "Where the evaluation contract requires the legacy binary SPECIFICALLY_SURFACED / NOT_SPECIFICALLY_SURFACED.",
+    "FULLY_SURFACED": "SPECIFICALLY_SURFACED",
+    "FULLY_SURFACED_UNVERIFIED_SCOPE": "SPECIFICALLY_SURFACED, with the state preserved as its own diagnostic and its limitation disclosed",
+    "PARTIALLY_SURFACED": "NOT_SPECIFICALLY_SURFACED — for the purpose of claiming COMPLETE composite surfacing. The PARTIALLY_SURFACED state is preserved as a first-class diagnostic and is never erased.",
+    "SURFACING_SCOPE_UNDETERMINED": "NOT_SPECIFICALLY_SURFACED, with the state preserved",
+    "NOT_SPECIFICALLY_SURFACED": "NOT_SPECIFICALLY_SURFACED",
+    "NOT_APPLICABLE": "NOT_APPLICABLE",
+    "doNotEraseEvidence": "The binary is a projection. Consumers that need the truth read compositeSurfacing, not the projection."
+  },
+  "dangerousSilentOmission": {
+    "ruleV31": "material && NO_CREDIT && binarySurfacing === NOT_SPECIFICALLY_SURFACED",
+    "changeFromV3": "None to the rule itself. Its INPUT changes, because PARTIALLY_SURFACED now projects to NOT_SPECIFICALLY_SURFACED. Measured effect on the 1,115-unit corpus: 322 → 362 (+40). A partially-warned material claim is now counted as a dangerous omission of the unwarned propositions, which is the intended consequence of the AMB-1 resolution.",
+    "partialDiagnostic": "Where dangerousSilentOmission is true and compositeSurfacing is PARTIALLY_SURFACED, the record retains that fact, so a consumer can distinguish 'no warning at all' from 'a warning about a different sub-part'."
+  },
+  "unchangedFromV3": {
+    "creditEligibility": "CREDIT iff matchStatus ∈ {EXACT_SINGLE, EXACT_COMPOSITE}. Untouched (§16).",
+    "representationCompleteness": "FULL / PARTIAL / NONE, derived from matchStatus. Untouched.",
+    "verificationStatus": "Untouched.",
+    "evidenceQuality": "Untouched.",
+    "PARTIAL_matchStatus": "A PARTIAL match remains NO_CREDIT and remains surfacing-evaluated. Unchanged.",
+    "AMBIGUOUS_matchStatus": "Remains NO_CREDIT and surfacing-evaluated. Unchanged.",
+    "UNSUPPORTED": "HONESTLY_UNSUPPORTED and HONESTLY_UNRESOLVED remain NO_CREDIT, and the frozen matcher continues to set explicitlySurfacedAsUnsafe=true for them because the candidate's self-declaration is itself the warning. V3.1 applies the same coverage test to those flags as to any other.",
+    "siblingPropositions": "A candidate anchored at a TOP-LEVEL sibling sub-provision is already forced to INDETERMINATE by the frozen I_CLAIM_IDENTITY dimension and never reaches surfacedAsUnsafeBy. V3.1 does not relax that."
+  },
+  "denominatorRules": {
+    "credit": "every case in the frozen sample. n = 47.",
+    "surfacing": "every case whose creditEligibility is NO_CREDIT. NOT_APPLICABLE cases are excluded. On the frozen sample n = 36.",
+    "unchangedFromV3": true,
+    "prohibition": "No denominator may be changed to improve a measurement. The pre-registered 90% thresholds remain binding and are not lowered."
+  },
+  "consensusRules": {
+    "reviewers": 3,
+    "rule": "2-of-3 majority computed independently for credit and for surfacing.",
+    "surfacingStatesPreserved": "Majority is computed over the FULL state set {FULLY_SURFACED, PARTIALLY_SURFACED, NOT_SPECIFICALLY_SURFACED, NOT_APPLICABLE}. States are NOT collapsed to the binary before the majority is taken.",
+    "threeWaySplit": "If all three reviewers choose different surfacing states, the case is NO_CONSENSUS. It is not arbitrarily collapsed.",
+    "abstain": "3 substantive votes → majority. 2 substantive + 1 ABSTAIN → the 2 must agree, otherwise NO_CONSENSUS. Fewer than 2 substantive votes → NO_CONSENSUS.",
+    "frozenBeforeResults": "This rule is frozen in 07-consensus-contract.json BEFORE any reviewer result is seen or imported."
+  },
+  "evaluatorObligations": {
+    "mechanical": "The evaluator must implement this contract mechanically from the two objective signals. It must not be tuned to individual reviewer cases.",
+    "prohibited": [
+      "case IDs",
+      "document IDs",
+      "section-specific branches",
+      "covenant names",
+      "dataset or package keys"
+    ],
+    "genericityProof": "the implementation may reference only: PairCorrespondence, sectionRef shape comparison via splitSectionRef, and the existing surfacedAsUnsafeBy list."
+  },
+  "whatThisContractDoesNotDo": [
+    "It does not re-decide any historical adjudication (§7).",
+    "It does not introduce a 'dominant material content' test (§3).",
+    "It does not require the ground truth to carry an explicit atomic-proposition list; it derives coverage from signals that already exist. Where a future benchmark DOES carry an explicit atomic decomposition, that decomposition takes precedence over the derived signals."
+  ]
+}

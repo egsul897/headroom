@@ -1,0 +1,35 @@
+{
+  "artifact": "§1 — independently verified starting state",
+  "at": "2026-09-21T01:06:42.694Z",
+  "requiredStartingSha": "1189a1b",
+  "headAtStart": "1189a1be883933c4670ca856ed67ed11db04c2d5",
+  "matchesRequiredPrefix": true,
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "workingTree": "clean",
+  "remote": "1189a1be883933c4670ca856ed67ed11db04c2d5 (synchronized)",
+  "verifiedIndependently": "git rev-parse / git status run directly; the prior report was not relied on.",
+  "treeHashes": {
+    "lib/contract-model/compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+    "lib/contract-model/compiler/semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+    "lib/contract-model/ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+    "lib/contract-model/evaluation-v2": "8d764624f57da46e821c85964b222b31894fc5ab",
+    "lib/contract-model/runtime": "8fa637768316a613524e821b913f56c86111a298",
+    "lib/contract-model/runtime/input": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+    "lib/contract-model/runtime/capacity": "c5f2d820d3c764d03846450c529a3f5399c423b8",
+    "lib/contract-model/runtime/transaction": "a86c423439573fdc4d4051765efa0e6e9dfc06c1"
+  },
+  "fileHashes": {
+    "docs/evaluation-contract-v3/02-atomic-contract-spec.json": "8f175dde7ada73fd7c2b5386d8679e7fd67e5f42c8a698b47bcc0d73f2a5a022",
+    "docs/evaluation-contract-v3/05-operational-rubric.json": "72d109a873398df31c603d53ac7d51bc34ece5def50b91a131268fca6c0a4139",
+    "docs/evaluation-contract-v3/07-validation-sample.json": "68e93db9867267d5786d4932bbac536034b2ce0c8d32fd146b3695dd25f70238",
+    "docs/evaluation-contract-v3/08-validation-packets-BLINDED.json": "2ba83e8720d18630b8ed0f21c4b113766e116cfc25ff7a7a8ecaa62c36bf3f70",
+    "docs/evaluation-contract-v3/09-adjudicator-a.json": "eed3d8ddc1a04fc5c3e84fef57ac5c69f41fe9ce3eb6adc7252e01bdfba3a10c",
+    "docs/evaluation-contract-v3/10-adjudicator-b.json": "8335455b971f678b9f9d87a5487d397395df49e37c91a8cea568542ba2ca18b2",
+    "docs/evaluation-contract-v3/11-adjudicator-c.json": "e716552d1ec3e92094afe7d268aa0f881a184442ccf92485f13c8a340a2b39ee",
+    "lib/contract-model/evaluation-v2/atomic-contract.ts": "0b7bcaa42defa58375cae9331dcffbbbefe540e52cceb56a7e5b4cb8ad211867",
+    "lib/contract-model/evaluation-v2/matching.ts": "8a41c6d8a4aaf0a01694c0bc202d0c19e4212b6b44d27bf62a816a7dd09c7c34"
+  },
+  "v3ContractHash": "8f175dde7ada73fd7c2b5386d8679e7fd67e5f42c8a698b47bcc0d73f2a5a022 (02-atomic-contract-spec.json)",
+  "adjudicationCorpusHash": "sha256 over 09+10+11 concatenated in that order — recorded per-file above; the three files are immutable evidence (§7).",
+  "evidencePreservation": "docs/phase-3-final-closure/ and every prior evaluation/closure package are untouched. All new evidence goes to docs/phase-3-final-closure-resolution/."
+}

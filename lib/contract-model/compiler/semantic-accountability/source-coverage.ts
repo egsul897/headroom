@@ -49,6 +49,7 @@ export const COVERAGE_DISPOSITIONS = [
   "COVERED_BY_INVENTORY",
   "COVERED_BY_CHILD_DESCENT",
   "COVERED_BY_CONNECTIVE_OWNERSHIP",
+  "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP",
   "ACCOUNTED_BY_EXTERNAL_UNIT",
   "STRUCTURAL_NOISE",
   "HEADING_OR_LABEL",
@@ -65,6 +66,7 @@ const ACCOUNTED: ReadonlySet<CoverageDisposition> = new Set<CoverageDisposition>
   "COVERED_BY_INVENTORY",
   "COVERED_BY_CHILD_DESCENT",
   "COVERED_BY_CONNECTIVE_OWNERSHIP",
+  "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP",
   "ACCOUNTED_BY_EXTERNAL_UNIT",
   "STRUCTURAL_NOISE",
   "HEADING_OR_LABEL",
@@ -517,9 +519,13 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
  * a complement that deterministic structure proves is its own. Every condition in `connectiveOwnsComplement`
  * must still hold, and a fragment carrying any object of its own is rejected whatever words it uses.
  *
- * "notwithstanding" is deliberately absent. It is an OVERRIDE operator, not a clause introducer: its complement
- * is the provision being disapplied, which lives elsewhere in the agreement. Covering the text that follows it
- * therefore does not account for the override relationship, so a stranded "notwithstanding" stays a review gap.
+ * "notwithstanding" is deliberately absent from THIS set. It is an OVERRIDE operator, not a clause introducer:
+ * its complement is the provision being disapplied, which normally lives elsewhere in the agreement. Covering
+ * the text that follows it therefore does not, on its own, account for the override relationship.
+ *
+ * Override operators are handled separately, by applyOverrideOperatorOwnership() below, which discharges one
+ * only in the single case where the disapplied provision is NAMED in the immediately following, already
+ * inventoried span. Everywhere else a stranded override operator still stays a review gap.
  */
 const CLAUSE_INTRODUCING_CONNECTIVES = new Set(["provided", "except", "unless", "including", "subject", "if", "whereas", "pursuant", "however"]);
 
@@ -570,6 +576,56 @@ function applyConnectiveOwnership(regionSpans: SourceCoverageSpan[], text: strin
     if (contentWords(complement.excerpt).length === 0) continue;
     span.disposition = "COVERED_BY_CONNECTIVE_OWNERSHIP";
     span.reason = `a clause-introducing connective carrying no object of its own, immediately followed by the covered clause it introduces (${complement.regionId}:${complement.charStart}-${complement.charEnd})`;
+  }
+}
+
+/**
+ * Override operators ("notwithstanding", "regardless") are not clause introducers: an override names a
+ * provision it disapplies, and that provision usually sits elsewhere in the agreement. A bare operator
+ * therefore normally leaves the override relationship unaccounted for, and stays UNACCOUNTED_SOURCE.
+ *
+ * There is exactly one structural configuration where the relationship IS accounted for at inventory level:
+ * the operator's immediate complement is itself COVERED_BY_INVENTORY *and* that complement NAMES the
+ * provision being overridden. Then both operands are present and inventoried — the operator carries no
+ * further semantics of its own, and refusing the unit's completeness reports a gap that does not exist.
+ *
+ * The evidence required is the same shape the connective rule demands, plus the naming test:
+ *
+ *  - the fragment is nothing but override-operator words, with no value, no digit, no quotation, and no
+ *    provision reference of its own (a fragment that names the provision itself carries its own object);
+ *  - the very next span is COVERED_BY_INVENTORY, with nothing but whitespace in between;
+ *  - that complement is substantive in its own right;
+ *  - and the complement names a provision — the thing being overridden.
+ *
+ * Drop any one of those and the fragment stays a review gap. In particular "Notwithstanding anything to the
+ * contrary" names nothing, so it is never discharged here.
+ */
+const OVERRIDE_OPERATORS = new Set(["notwithstanding", "regardless"]);
+
+export function isBareOverrideOperator(fragment: string, values: QuantitativeValue[]): boolean {
+  if (values.length > 0) return false;
+  if (/\d/.test(fragment)) return false;
+  if (REFERENCE_NOUN_RE.test(fragment)) return false;
+  if (/["\u201c\u201d]/.test(fragment)) return false;
+  const words = contentWords(fragment);
+  return words.length > 0 && words.every((w) => OVERRIDE_OPERATORS.has(w));
+}
+
+function applyOverrideOperatorOwnership(regionSpans: SourceCoverageSpan[], text: string): void {
+  for (let i = 0; i < regionSpans.length; i++) {
+    const span = regionSpans[i]!;
+    if (span.disposition !== "UNACCOUNTED_SOURCE") continue;
+    if (!isBareOverrideOperator(span.excerpt, span.values)) continue;
+    let j = i + 1;
+    while (j < regionSpans.length && regionSpans[j]!.excerpt.trim().length === 0) j++;
+    const complement = regionSpans[j];
+    if (!complement || complement.disposition !== "COVERED_BY_INVENTORY") continue;
+    if (text.slice(span.charEnd, complement.charStart).trim().length > 0) continue;
+    if (contentWords(complement.excerpt).length === 0) continue;
+    // The override's other operand must be named, not merely implied.
+    if (!REFERENCE_NOUN_RE.test(complement.excerpt)) continue;
+    span.disposition = "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP";
+    span.reason = `an override operator carrying no object of its own, immediately followed by the covered clause naming the provision it disapplies (${complement.regionId}:${complement.charStart}-${complement.charEnd})`;
   }
 }
 
@@ -804,6 +860,7 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
     }
     const regionSpans = unitSpans.flat();
     applyConnectiveOwnership(regionSpans, text);
+    applyOverrideOperatorOwnership(regionSpans, text);
     spans.push(...regionSpans);
   }
 

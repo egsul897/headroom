@@ -1,0 +1,37 @@
+{
+  "artifact": "§25 — no moving the goalposts",
+  "at": "2026-09-21T00:31:57.637Z",
+  "checks": [
+    {
+      "rule": "the 0.90 threshold was not lowered",
+      "held": true,
+      "evidence": "06-threshold-forensics.json records required=0.9 on every metric."
+    },
+    {
+      "rule": "no denominator was changed",
+      "held": true,
+      "evidence": "credit n=47, surfacing n=36, cross-dataset n=1115, controls n=14 — all as pre-registered."
+    },
+    {
+      "rule": "no hard unit was removed from scope",
+      "held": true,
+      "evidence": "all 47 frozen case ids are scored; surfacing's n=36 is the pre-registered subset (NOT_APPLICABLE when CREDIT), not a post-hoc exclusion."
+    },
+    {
+      "rule": "no failure was relabelled unscorable",
+      "held": true,
+      "evidence": "the 3 failing gate items are reported as failing."
+    },
+    {
+      "rule": "the 14 historical false-credit cases were not dropped",
+      "held": true,
+      "evidence": "all 14 re-run and all 14 NO_CREDIT (07, 18)."
+    },
+    {
+      "rule": "nothing was rounded upward",
+      "held": true,
+      "evidence": "89.36% is reported as a FAIL against 90%. §9's warning was followed: one flip would have crossed the line and the flip was not taken, because no single mismatch was shown to violate the written contract."
+    }
+  ],
+  "allHeld": true
+}

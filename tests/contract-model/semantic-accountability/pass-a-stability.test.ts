@@ -256,8 +256,14 @@ describe("Pass A v3 - whole-unit source coverage + targeted gap re-inventory", (
     const stages: string[] = [];
     const inv = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, gap, stages) });
     expect(stages).toEqual(["semantic_inventory", "semantic_inventory_gap"]);
-    expect(inv.inventoryStatus).toBe("INVENTORY_OK");
-    expect(inv.gapReinventory).toMatchObject({ attempted: true, itemsAdded: 2, segmentsAfter: 0, error: null });
+    // The targeted call closes the segment it was called for. What remains is exactly I1's own declared
+    // residual set - the two arithmetic-operator fragments adjudicated in
+    // docs/phase-3-final-closure-resolution/09-semantic-accountability-residuals.json - which this test
+    // never had any items for, in either pass.
+    const declaredResiduals = scenario.expectedResidualSegments ?? [];
+    expect(inv.unaccountedSource.map((u) => u.excerpt)).toEqual(declaredResiduals);
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    expect(inv.gapReinventory).toMatchObject({ attempted: true, itemsAdded: 2, segmentsAfter: declaredResiduals.length, error: null });
     expect(inv.items).toHaveLength(scenario.items.length);
     expect(inv.items.filter((i) => i.semanticRole === "CONDITION")).toHaveLength(1);
     // The gap pass changes nothing about first-pass items: same ids, same count.
@@ -323,10 +329,20 @@ describe("Pass A v3 - whole-unit source coverage + targeted gap re-inventory", (
     expect(result.counts.unaccountedSource).toBeGreaterThan(0);
     expect(result.reasons.some((r) => r.includes("INVENTORY_COVERAGE_GAP"))).toBe(true);
     expect(result.reasons.some((r) => r.includes("stretch(es) of source"))).toBe(true);
-    // Contrast: the fully inventoried scenario is complete.
+    // Contrast 1, same scenario: supplying every item removes the head/dedupe gap and leaves only I1's own
+    // declared residual set, so the gap this test injected is genuinely what blocked completeness above.
     const full = reconcileScenario(built, normalizeScenarioComposition(built));
-    expect(full.semanticallyComplete).toBe(true);
-    expect(full.counts.unaccountedSource).toBe(0);
+    const declaredResiduals = built.scenario.expectedResidualSegments ?? [];
+    expect(full.counts.unaccountedSource).toBe(declaredResiduals.length);
+    // Same segment count, different content: the injected gap widened the residual text rather than
+    // adding a segment, so compare what is surfaced, not how many stretches it falls into.
+    expect(gapped.unaccountedSource.map((u) => u.excerpt)).not.toEqual(declaredResiduals);
+    expect(built.inventory.unaccountedSource.map((u) => u.excerpt)).toEqual(declaredResiduals);
+    // Contrast 2, a scenario that declares no residual at all: it reaches complete.
+    const clean = await buildScenario(CORPUS.find((c) => c.id === "I2")!);
+    const cleanResult = reconcileScenario(clean, normalizeScenarioComposition(clean));
+    expect(cleanResult.semanticallyComplete).toBe(true);
+    expect(cleanResult.counts.unaccountedSource).toBe(0);
   });
 
   it("audit B1: an EMPTY inventory (twice) over operative text that carries only the generic vocabulary (unless / subject to / to the extent / excluding) is INVENTORY_COVERAGE_GAP, never INVENTORY_OK, and never semanticallyComplete", async () => {
@@ -355,7 +371,14 @@ describe("Pass A v3 - whole-unit source coverage + targeted gap re-inventory", (
     // And the same echo items as MATERIAL do close it.
     const material = echoes.map((w) => ({ ...w, materiality: "MATERIAL" }));
     const closed = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, material, []) });
-    expect(closed.inventoryStatus).toBe("INVENTORY_OK");
+    // The MATERIAL echoes close the segment the non-material ones could not. What is left is only I1's
+    // own declared residual set, so the contrast the audit is making still holds strictly.
+    const declaredResiduals = scenario.expectedResidualSegments ?? [];
+    expect(closed.unaccountedSource.map((u) => u.excerpt)).toEqual(declaredResiduals);
+    // The non-material echoes leave strictly more source text surfaced than the MATERIAL ones do.
+    expect(inv.unaccountedSource.map((u) => u.excerpt)).not.toEqual(declaredResiduals);
+    const chars = (r: { excerpt: string }[]) => r.reduce((n, u) => n + u.excerpt.length, 0);
+    expect(chars(inv.unaccountedSource)).toBeGreaterThan(chars(closed.unaccountedSource));
   });
 
   it("audit defense in depth: Pass C refuses semanticallyComplete on residual segments even if the status string were INVENTORY_OK", async () => {

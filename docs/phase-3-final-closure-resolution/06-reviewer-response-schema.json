@@ -1,0 +1,123 @@
+{
+  "artifact": "§11 — machine-readable reviewer response schema",
+  "at": "2026-09-21T01:18:34.795Z",
+  "rubricVersion": "evaluation-contract-v3.1.v1",
+  "howToComplete": "Copy review-packets/<R>.json, and for every case in it emit one response object below. Save as review-packets/<R>-responses.json with the envelope shape shown in `envelope`. Prose-only classification is not accepted — every decision field must be one of the listed enum values.",
+  "envelope": {
+    "schemaVersion": "1.0",
+    "rubricVersion": "evaluation-contract-v3.1.v1",
+    "reviewerCode": "R1 | R2 | R3",
+    "completedAt": "RFC3339 timestamp",
+    "responses": "array of response objects, one per case, in any order"
+  },
+  "response": {
+    "caseId": {
+      "type": "string",
+      "required": true,
+      "note": "the anonymized id exactly as it appears in the packet"
+    },
+    "creditDecision": {
+      "type": "enum",
+      "required": true,
+      "allowed": [
+        "CREDIT",
+        "NO_CREDIT",
+        "ABSTAIN"
+      ]
+    },
+    "surfacingDecision": {
+      "type": "enum",
+      "required": true,
+      "allowed": [
+        "FULLY_SURFACED",
+        "PARTIALLY_SURFACED",
+        "NOT_SPECIFICALLY_SURFACED",
+        "NOT_APPLICABLE",
+        "ABSTAIN"
+      ],
+      "note": "NOT_APPLICABLE only when creditDecision is CREDIT"
+    },
+    "atomicPropositionsConsidered": {
+      "type": "string[]",
+      "required": true,
+      "note": "the atomic propositions you identified in this claim, one short phrase each. At least one entry."
+    },
+    "specificallySurfacedAtomicPropositions": {
+      "type": "string[]",
+      "required": true,
+      "note": "the subset you consider specifically warned about. May be empty."
+    },
+    "unsurfacedAtomicPropositions": {
+      "type": "string[]",
+      "required": true,
+      "note": "the subset you consider NOT warned about. May be empty."
+    },
+    "partialSurfacing": {
+      "type": "boolean",
+      "required": true,
+      "note": "true when some but not all material atomic propositions are surfaced"
+    },
+    "sourceAmbiguous": {
+      "type": "boolean",
+      "required": true,
+      "note": "true when the SOURCE TEXT itself admits more than one reading"
+    },
+    "contractAmbiguous": {
+      "type": "boolean",
+      "required": true,
+      "note": "true when the V3.1 RUBRIC does not tell you how to decide this case. Say what it fails to answer in the rationale."
+    },
+    "abstain": {
+      "type": "boolean",
+      "required": true,
+      "note": "must be true iff either decision field is ABSTAIN"
+    },
+    "rationale": {
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "note": "required on every case, not only on disagreements"
+    },
+    "rubricVersion": {
+      "type": "string",
+      "required": true,
+      "allowed": [
+        "evaluation-contract-v3.1.v1"
+      ]
+    }
+  },
+  "validationRules": [
+    "every case in the reviewer's packet must appear exactly once",
+    "no case id outside the packet may appear",
+    "enum values only — no free-text decisions",
+    "rubricVersion must match on the envelope and on every response",
+    "abstain must be consistent with the decision fields",
+    "specificallySurfacedAtomicPropositions and unsurfacedAtomicPropositions must both be subsets of atomicPropositionsConsidered",
+    "surfacingDecision NOT_APPLICABLE is permitted only when creditDecision is CREDIT",
+    "partialSurfacing must be true iff surfacingDecision is PARTIALLY_SURFACED",
+    "the file must contain no evaluator output and no prior consensus (checked by the importer)"
+  ],
+  "example": {
+    "caseId": "CASE-0123456789",
+    "creditDecision": "NO_CREDIT",
+    "surfacingDecision": "PARTIALLY_SURFACED",
+    "atomicPropositionsConsidered": [
+      "leverage ratio ceiling",
+      "interest coverage floor",
+      "springing liquidity test"
+    ],
+    "specificallySurfacedAtomicPropositions": [
+      "springing liquidity test"
+    ],
+    "unsurfacedAtomicPropositions": [
+      "leverage ratio ceiling",
+      "interest coverage floor"
+    ],
+    "partialSurfacing": true,
+    "sourceAmbiguous": false,
+    "contractAmbiguous": false,
+    "abstain": false,
+    "rationale": "The only review flag is anchored at the springing liquidity sub-test. Nothing in the system output warns about either leverage covenant.",
+    "rubricVersion": "evaluation-contract-v3.1.v1"
+  }
+}

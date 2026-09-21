@@ -1,0 +1,104 @@
+{
+  "artifact": "§8 — blinded re-adjudication packet manifest",
+  "generatedAt": "2026-09-21T01:17:26.342Z",
+  "builtBy": "scripts/build-v31-review-packets.ts",
+  "sourcePackets": {
+    "path": "docs/evaluation-contract-v3/08-validation-packets-BLINDED.json",
+    "sha256": "2ba83e8720d18630b8ed0f21c4b113766e116cfc25ff7a7a8ecaa62c36bf3f70",
+    "modified": false
+  },
+  "rubricVersion": "evaluation-contract-v3.1.v1",
+  "caseCount": 47,
+  "seedBase": "headroom-v3.1-readjudication:1189a1be883933c4670ca856ed67ed11db04c2d5",
+  "blindingAssertions": {
+    "enforcedAtBuildTime": true,
+    "forbiddenPatterns": [
+      "creditEligibility",
+      "surfacingStatus",
+      "compositeSurfacing",
+      "dangerousSilentOmission",
+      "derivedDiagnosticLabel",
+      "adjudicator[ABC]\\b",
+      "reviewer[ABC]\\b",
+      "\\bconsensus\\b",
+      "evaluatorSealed",
+      "sealed[- ]?label",
+      "agreement\\s*threshold",
+      "inter-?reviewer",
+      "\\b90\\s*%",
+      "0\\.9(0)?\\s*(threshold|required)",
+      "PHASE\\s*4E",
+      "readiness",
+      "FULLY_SURFACED",
+      "NOT_SPECIFICALLY_SURFACED",
+      "PARTIALLY_SURFACED",
+      "NO_CREDIT",
+      "currently\\s+fail",
+      "gate\\s*item"
+    ],
+    "whatIsWithheld": [
+      "evaluator output",
+      "prior Reviewer A/B/C decisions",
+      "the old consensus",
+      "every threshold and aggregate score",
+      "whether a case currently fails",
+      "Phase-4E readiness implications"
+    ],
+    "whatIsProvided": [
+      "anonymized case id",
+      "source excerpt",
+      "ground-truth claim",
+      "the claim's structural address",
+      "the system's candidate representations and their own self-reports",
+      "provenance",
+      "the V3.1 rubric",
+      "allowed decisions",
+      "required rationale fields"
+    ]
+  },
+  "presentationOrder": "deterministically shuffled per reviewer from the recorded seed; the seed is stored in each packet so the order is reproducible",
+  "reviewers": [
+    {
+      "reviewer": "R1",
+      "file": "review-packets/R1.json",
+      "caseCount": 47,
+      "sha256": "0b0e69bcf7f18e5256a6de2086f3b5b0ffe0a152be8882cd1f3557e2ab24ef74",
+      "presentationOrderSeed": "headroom-v3.1-readjudication:1189a1be883933c4670ca856ed67ed11db04c2d5:R1",
+      "firstFiveCaseIds": [
+        "CASE-32a8d38224",
+        "CASE-166617b06a",
+        "CASE-2aa00d5566",
+        "CASE-2034884b7a",
+        "CASE-5a66cad386"
+      ]
+    },
+    {
+      "reviewer": "R2",
+      "file": "review-packets/R2.json",
+      "caseCount": 47,
+      "sha256": "2f8d38476e1f6ef19e16efc6fa3aa44e081340805b92ef513a2bd1d409444813",
+      "presentationOrderSeed": "headroom-v3.1-readjudication:1189a1be883933c4670ca856ed67ed11db04c2d5:R2",
+      "firstFiveCaseIds": [
+        "CASE-55163b4198",
+        "CASE-7fd6c57745",
+        "CASE-ca1109d4da",
+        "CASE-963cc44044",
+        "CASE-e008d4278a"
+      ]
+    },
+    {
+      "reviewer": "R3",
+      "file": "review-packets/R3.json",
+      "caseCount": 47,
+      "sha256": "93dea2b7990bd0f6f5c697e909658e1513c7e08224eed9f045ee18121e91acb6",
+      "presentationOrderSeed": "headroom-v3.1-readjudication:1189a1be883933c4670ca856ed67ed11db04c2d5:R3",
+      "firstFiveCaseIds": [
+        "CASE-8de9def8ca",
+        "CASE-16a7d152b6",
+        "CASE-dd0a814e53",
+        "CASE-579c5d3f33",
+        "CASE-0c169f38c3"
+      ]
+    }
+  ]
+}

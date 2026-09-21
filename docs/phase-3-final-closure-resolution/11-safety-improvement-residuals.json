@@ -1,0 +1,33 @@
+{
+  "artifact": "§20 — the three fragments previously adjudicated TRUE_SAFETY_IMPROVEMENT, verified independently",
+  "at": "2026-09-21T01:27:38.543Z",
+  "fragments": [
+    {
+      "scenario": "I1",
+      "fragment": "\"plus,\"",
+      "oldExpectationWasUnsafe": true,
+      "currentBehaviourCorrect": true,
+      "testStale": true,
+      "proof": "the old expectation was INVENTORY_OK with the operator absorbed into its neighbour. An arithmetic operator determines the SIGN of a component; absorbing it would let a composition that subtracted where the source added pass Pass A unremarked. Refusing completeness is correct."
+    },
+    {
+      "scenario": "I4",
+      "fragment": "\"plus\"",
+      "oldExpectationWasUnsafe": true,
+      "currentBehaviourCorrect": true,
+      "testStale": true,
+      "proof": "identical class to I1."
+    },
+    {
+      "scenario": "I26",
+      "fragment": "\"The Borrower will furnish written notice to the Administrative Agent\"",
+      "oldExpectationWasUnsafe": true,
+      "currentBehaviourCorrect": true,
+      "testStale": true,
+      "proof": "the fragment carries the obligor, the obligation verb, the notice form and the recipient. The enumerated child carries only the deadline. Absorbing the chapeau into the deadline would leave WHO must do WHAT unaccounted."
+    }
+  ],
+  "actionTaken": "The stale expectations were corrected explicitly rather than left red. Each scenario now declares its residual set verbatim, and the suite asserts equality, so the active tests encode the current intended semantics (§23).",
+  "historicalExpectationPreserved": "The pre-correction expectation — 'every scenario reaches INVENTORY_OK with zero unaccounted source' — is recorded here and in 09, and remains readable in git history. It is not silently rewritten out of existence.",
+  "noKnownWrongTestLeftRed": true
+}

@@ -1,0 +1,54 @@
+{
+  "artifact": "\u00a78 confusion matrices with raw counts",
+  "at": "2026-09-21T00:00:00Z",
+  "creditEligibility": {
+    "n": 47,
+    "pairwiseAgreement": {
+      "A-B": 0.957447,
+      "A-C": 0.93617,
+      "B-C": 0.978723
+    },
+    "meanPairwise": 0.957447,
+    "unanimous": 44,
+    "nonUnanimousCaseIds": [
+      "doc-a::I::applicable-ebitda",
+      "fwrg-6.04-a-iii",
+      "lsb-6.02-liens"
+    ]
+  },
+  "surfacingStatus": {
+    "n": 36,
+    "pairwiseAgreement": {
+      "A-B": 0.75,
+      "A-C": 0.777778,
+      "B-C": 0.694444
+    },
+    "meanPairwise": 0.740741,
+    "unanimous": 22,
+    "nonUnanimousCaseIds": [
+      "a-7.1",
+      "a-7.10",
+      "a-7.2",
+      "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "doc-a::VI::6.05-chapeau",
+      "doc-a::VI::6.05-ip-flush-prohibition",
+      "doc-b::VI::6-04-lead-in",
+      "doc-b::VI::6-05-lead-in",
+      "doc-d::VI::6-04-chapeau",
+      "doc-d::VI::6-05-chapeau",
+      "lsb-6.01-m-secured-notes",
+      "lsb-6.02-liens",
+      "lsb-6.04-b-notes-collateral-disposal",
+      "lsb-6.08-subordinated-debt-payments"
+    ],
+    "dominantCell": "NOT_SPECIFICALLY_SURFACED <-> SPECIFICALLY_SURFACED"
+  },
+  "independentRecomputationMatchesRecorded": {
+    "credit": true,
+    "surfacing": true,
+    "recorded": {
+      "credit": 0.9574468085106383,
+      "surfacing": 0.7407407407407408
+    }
+  }
+}

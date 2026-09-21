@@ -1,0 +1,58 @@
+{
+  "artifact": "§12 — every disagreement classified to a root cause",
+  "at": "2026-09-21T00:31:57.637Z",
+  "classes": {
+    "A": "evaluator defect — the evaluator violates the written contract",
+    "B": "contract ambiguity — the written contract does not adjudicate between the readings the reviewers applied",
+    "C": "reviewer inconsistency — a reviewer contradicts their own stated rule",
+    "D": "consensus-construction defect — the majority rule or denominator is wrong",
+    "E_F_G": "Phase-3 production defect — the IR is wrong, incomplete or mis-attributed",
+    "H": "source ambiguity — the source text itself admits more than one reading"
+  },
+  "creditEligibility": {
+    "n": 47,
+    "unanimous": 44,
+    "nonUnanimous": 3,
+    "assignment": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E_F_G": 0,
+      "H": 3
+    },
+    "detail": "all 3 non-unanimous credit cases (doc-a::I::applicable-ebitda, fwrg-6.04-a-iii, lsb-6.02-liens) turn on whether the ground-truth proposition itself is one claim or several — class H."
+  },
+  "surfacingStatus": {
+    "n": 36,
+    "unanimous": 22,
+    "nonUnanimous": 14,
+    "assignment": {
+      "A": 0,
+      "B": 14,
+      "C": 0,
+      "D": 0,
+      "E_F_G": 0,
+      "H": 0
+    },
+    "detail": "all 14 turn on AMB-1: whether a claim-specific flag on one sub-part surfaces a composite claim. Adjudicator A applies INVARIANT_5 ('dominant material content'); B and C apply INVARIANT_3 ('any claim-specific flag'). All three cite the SAME facts."
+  },
+  "workedExample": {
+    "caseId": "a-7.1",
+    "facts": "Section 7.1 states four maintenance financial covenants. Only 7.1(d), the springing liquidity test, carries a claim-specific NEEDS_REVIEW flag. The two primary leverage covenants 7.1(a)/(b) carry none. All three adjudicators record exactly these facts.",
+    "adjudicatorA": "NOT_SPECIFICALLY_SURFACED — the flagged sub-part is not the dominant material content of the claim (INVARIANT_5)",
+    "adjudicatorB": "SPECIFICALLY_SURFACED — a claim-specific flag exists (INVARIANT_3)",
+    "adjudicatorC": "SPECIFICALLY_SURFACED — same rule as B",
+    "evaluator": "SPECIFICALLY_SURFACED — implements INVARIANT_3",
+    "adjudication": "the written contract adjudicates between INVARIANT_3 and INVARIANT_5 NOWHERE. This is not an evidence disagreement; it is an underspecified rule. Class B."
+  },
+  "totals": {
+    "A": 0,
+    "B": 14,
+    "C": 0,
+    "D": 0,
+    "E_F_G": 0,
+    "H": 3
+  },
+  "complianceNote": "§3: a disagreement between evaluator and reviewer was not treated as proof of a production defect. Each was traced to the specific rule the parties applied and to whether the contract decides between them."
+}

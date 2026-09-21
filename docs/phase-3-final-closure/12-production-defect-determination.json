@@ -1,0 +1,16 @@
+{
+  "artifact": "§12 — is there a Phase-3 PRODUCTION defect?",
+  "at": "2026-09-21T00:31:57.637Z",
+  "determination": "NO PHASE-3 PRODUCTION DEFECT WAS PROVED.",
+  "noProductionRemediationWasNecessary": true,
+  "basis": [
+    "0 of 17 non-unanimous cases classify to E/F/G (Phase-3 production). See 11-root-cause-classification.json.",
+    "0 evaluator defects found in the implementation audit. See 08-evaluator-implementation-audit.json.",
+    "Both source-document questions adjudicate IN PHASE 3'S FAVOUR: no quantified shared pool exists (09) and no reclassification mechanism exists (10).",
+    "All 14 historical false-credit controls remain NO_CREDIT and the 1,115-unit cross-dataset regression reproduces byte-identically (07, 18, 20).",
+    "The end-to-end real-data trace reproduces exactly: 31,000,000 gross, 1,000 drawn, 30,999,000 remaining, committable, no legacy engine (17)."
+  ],
+  "whatIsActuallyWrong": "The V3 adjudication CONTRACT is ambiguous on one point (AMB-1) and under-discloses on a second (AMB-2). That is a specification defect in the evaluation methodology, not a defect in Phase-3 output.",
+  "complianceNote": "§45: production was measured first and adjudicated second. It was not changed, because no real production defect was proved.",
+  "productionFilesChangedThisMission": 0
+}

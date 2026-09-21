@@ -1,0 +1,57 @@
+{
+  "artifact": "§40/§44 — Phase-3 closure verdict and Phase-4E readiness",
+  "at": "2026-09-21T00:33:20.723Z",
+  "phase3Verdict": "PHASE3_ADJUDICATION_CONTRACT_AMBIGUOUS",
+  "phase4eVerdict": "PHASE4E_FOUNDATION_NOT_READY",
+  "missionBranchSelected": "B — the evaluator/adjudication methodology is defective (ambiguous), while Phase-3 PRODUCTION is sound on every test this mission could run.",
+  "branchesConsidered": {
+    "A": "REJECTED — closure cannot be proved: 3 pre-registered gate items remain failing and §9/§25 forbid rounding or rescoping them into a pass.",
+    "B": "SELECTED — 14 of 14 non-unanimous surfacing disagreements and 0 of 17 disagreements overall trace to Phase-3 production. The contract, not the production, is what fails.",
+    "C": "REJECTED — no Phase-3 production defect was proved (12).",
+    "D": "PARTIALLY TRUE AND SUBSUMED — evidence IS insufficient for gate item 2, but the reason is specific and nameable (§7 independence), not general insufficiency."
+  },
+  "gateStatus": {
+    "passing": [
+      "1 creditEligibility inter-reviewer agreement 95.74% (>=90)",
+      "5 all 14 historical false-credit controls NO_CREDIT, re-run on 1,115 units",
+      "6 atomic contract invariants 18/18 and the full 135-test evaluation-v2 suite",
+      "7 sibling-claim protections 22/22; the frozen matcher was not modified",
+      "8 no prohibited tuning",
+      "9 no ground-truth or historical-artifact mutation",
+      "10 required evaluator tests pass"
+    ],
+    "failing": [
+      {
+        "item": "2 surfacingStatus inter-reviewer agreement",
+        "actual": 0.740741,
+        "required": 0.9,
+        "movableByEvaluatorChange": false,
+        "movableByProductionChange": false,
+        "reason": "contains no evaluator term. Only a fresh adjudication by genuinely independent reviewers under a disambiguated rubric can move it — see 15-independence-limitation.json."
+      },
+      {
+        "item": "3 evaluator vs consensus, creditEligibility",
+        "actual": 0.8936170212765957,
+        "required": 0.9,
+        "flipsToPass": 1,
+        "reason": "ONE flip would cross the line and the flip was NOT taken. No single mismatch was shown to violate the written contract."
+      },
+      {
+        "item": "4 evaluator vs consensus, surfacingStatus",
+        "actual": 0.6666666666666666,
+        "required": 0.9,
+        "flipsToPass": 9,
+        "reason": "dominated by AMB-1; resolving the ambiguity one way or the other is a prerequisite to re-measuring."
+      }
+    ]
+  },
+  "exactBlockingCondition": "The V3 contract does not state whether a claim-specific safety flag on ONE sub-part of a composite claim surfaces the WHOLE claim (AMB-1). Adjudicator A answers no (INVARIANT_5, dominant material content); adjudicators B, C and the evaluator answer yes (INVARIANT_3, any claim-specific flag). The written contract adjudicates between them nowhere. Until AMB-1 is decided and the sample is re-adjudicated by genuinely independent reviewers, gate items 2, 3 and 4 cannot be re-measured honestly.",
+  "whyPhase4EIsNotAuthorised": "Phase 4E would build on top of Phase-3 output whose semantic closure is not proven. The Phase-3 layer's mechanics are sound (determinism, false-credit prohibition, end-to-end trace, zero tuning all reproduce), but the measurement that would license calling it CLOSED does not.",
+  "alsoOutstanding": {
+    "semanticAccountabilityRedTests": 18,
+    "oneAcknowledgedFalseGap": "I27 'Notwithstanding' is classified OBVIOUS_FALSE_GAP in docs/source-coverage-repair/37-final-certification.json and is still unremediated.",
+    "note": "none of the 18 silently completes; all are conservative over-flagging. They do not change the verdict but they are not a green suite either, and this artifact does not pretend otherwise."
+  },
+  "recommendedNextStep": "Decide AMB-1 in the written contract FIRST (a specification decision, explicitly a human one), then re-adjudicate the frozen 47-case sample with genuinely independent reviewers under the disambiguated rubric, then re-measure gate items 2, 3 and 4. Do not start Phase 4E, Phase 5, a UI migration or a legacy deletion before that.",
+  "productionChangesMadeThisMission": 0
+}

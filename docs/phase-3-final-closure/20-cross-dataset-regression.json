@@ -1,0 +1,51 @@
+{
+  "artifact": "§10 — 1,115-unit cross-dataset regression, re-run at this HEAD",
+  "at": "2026-09-21T00:33:20.723Z",
+  "frozenArtifact": "docs/evaluation-contract-v3/20-cross-dataset-regression.json",
+  "frozenSha256BeforeAndAfter": "9d562deef08012c19f7fe0cd610e417f4b05e7d2cb31fa336543471e048b1d60",
+  "frozenArtifactModified": false,
+  "rerunIdenticalModuloTimestamp": true,
+  "totals": {
+    "units": 1115,
+    "datasets": 4
+  },
+  "perDataset": [
+    {
+      "datasetKey": "fwrg-2021-credit-agreement",
+      "unitCount": 18,
+      "creditEligibility": {
+        "CREDIT": 8,
+        "NO_CREDIT": 10
+      },
+      "dangerousSilentOmissionCount": 8
+    },
+    {
+      "datasetKey": "lsb-2023-abl-credit-agreement",
+      "unitCount": 14,
+      "creditEligibility": {
+        "CREDIT": 2,
+        "NO_CREDIT": 12
+      },
+      "dangerousSilentOmissionCount": 8
+    },
+    {
+      "datasetKey": "conmed-2025-credit-facility",
+      "unitCount": 67,
+      "creditEligibility": {
+        "NO_CREDIT": 67
+      },
+      "dangerousSilentOmissionCount": 44
+    },
+    {
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "unitCount": 1016
+    }
+  ],
+  "zeroTuningConfirmation": "atomic-contract.ts contains no dataset-, package-, documentId- or section-specific branching. Independently re-verified by reading the module in full this mission (see 08-evaluator-implementation-audit.json). Applying the SAME derivation across 4 structurally different drafting styles yields non-degenerate, dataset-appropriate distributions.",
+  "packageStatusDisclosure": "FWRG, LSB, CONMED and DSGR are permanent regression evidence, never unseen packages. Nothing here re-labels them or claims a new validation event.",
+  "falseCreditControls": {
+    "count": 14,
+    "allNoCredit": true,
+    "regressionDetected": false
+  }
+}

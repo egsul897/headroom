@@ -1,0 +1,40 @@
+{
+  "artifact": "§7 — historical adjudications are immutable evidence",
+  "at": "2026-09-21T01:18:34.795Z",
+  "rule": "Reviewer A/B/C's historical decisions are preserved exactly. V3.1 does not retroactively make any historical reviewer wrong; it records that the OLD contract did not decide the question they were split on.",
+  "historicalDecisionsModified": 0,
+  "files": [
+    {
+      "path": "docs/evaluation-contract-v3/09-adjudicator-a.json",
+      "sha256": "eed3d8ddc1a04fc5c3e84fef57ac5c69f41fe9ce3eb6adc7252e01bdfba3a10c",
+      "modified": false
+    },
+    {
+      "path": "docs/evaluation-contract-v3/10-adjudicator-b.json",
+      "sha256": "8335455b971f678b9f9d87a5487d397395df49e37c91a8cea568542ba2ca18b2",
+      "modified": false
+    },
+    {
+      "path": "docs/evaluation-contract-v3/11-adjudicator-c.json",
+      "sha256": "e716552d1ec3e92094afe7d268aa0f881a184442ccf92485f13c8a340a2b39ee",
+      "modified": false
+    },
+    {
+      "path": "docs/evaluation-contract-v3/02-atomic-contract-spec.json",
+      "sha256": "8f175dde7ada73fd7c2b5386d8679e7fd67e5f42c8a698b47bcc0d73f2a5a022",
+      "modified": false
+    },
+    {
+      "path": "docs/evaluation-contract-v3/20-cross-dataset-regression.json",
+      "sha256": "9d562deef08012c19f7fe0cd610e417f4b05e7d2cb31fa336543471e048b1d60",
+      "modified": false
+    }
+  ],
+  "twoSeparateFields": {
+    "historicalDecision": "what the reviewer actually decided under V3, preserved verbatim in 09/10/11",
+    "newContractExpectedDecision": "what V3.1 would expect — recorded ONLY once genuinely independent reviewers have re-adjudicated under V3.1. It is NOT back-filled by this agent onto the historical records.",
+    "neverMerged": "these two are never written into the same field, and the historical files are never edited."
+  },
+  "whatTheHistoricalSplitProves": "Adjudicator A applied a dominant-material-content reading; B and C applied an any-claim-specific-flag reading; all three cited the same facts. That is evidence the V3 contract was underspecified. Neither position is adopted by V3.1 — see 02 and 03.",
+  "correctionCarriedForward": "docs/phase-3-final-closure/11-root-cause-classification.json used a-7.1 as its worked example of the evaluator applying the any-flag rule. Measurement this mission shows a-7.1 has an EMPTY surfacedAsUnsafeBy, so the evaluator's disposition there was NOT_SPECIFICALLY_SURFACED. The correction is recorded in 04-evaluator-delta-analysis.json; the historical reviewer files are untouched by it."
+}

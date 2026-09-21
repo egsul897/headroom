@@ -1,0 +1,187 @@
+{
+  "artifact": "§18 — complete table for all 18 red semantic-accountability identities",
+  "at": "2026-09-21T01:27:38.543Z",
+  "identityAccounting": {
+    "total": 18,
+    "passA": {
+      "count": 7,
+      "scenarios": [
+        "I1",
+        "I3",
+        "I4",
+        "I23",
+        "I25",
+        "I26",
+        "I27"
+      ]
+    },
+    "passBC": {
+      "count": 7,
+      "scenarios": [
+        "I1",
+        "I3",
+        "I4",
+        "I23",
+        "I25",
+        "I26",
+        "I27"
+      ]
+    },
+    "passAStability": {
+      "count": 4,
+      "note": "all four are constructed from I1 and inherit its residual set"
+    }
+  },
+  "methodNote": "Every row was reproduced by running the scenario through the real Pass A and reading the actual unaccountedSource spans, not by citing the prior certification. The fragment text, character offsets and the identity of the immediately following inventory item are all measured.",
+  "fairnessNote": "§18: a fail-safe false positive is not automatically acceptable. Each residual was tested against the question 'is this fragment a proposition the system should have understood?', not merely 'is refusing it safe?'.",
+  "residualSegments": [
+    {
+      "scenario": "I1",
+      "title": "dense definition, 20 components",
+      "residualFragment": "\"plus,\"",
+      "locatedAt": "operative:119-124",
+      "immediatelyFollowedBy": "CONDITION item at 125 (\"without duplication and to the extent deducted...\")",
+      "priorAdjudication": "TRUE_SAFETY_IMPROVEMENT",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": true,
+      "testExpectationWasStale": true,
+      "genuineFalseGap": false,
+      "remediationRequired": "NONE",
+      "responsibleLayer": "Pass A source coverage",
+      "adjudication": "CORRECT_REVIEW_REQUIRED. 'plus' is an arithmetic OPERATOR, and which operator it is changes the value of the definition. Pass A sees the inventory, not the composition, so it cannot know the composition used addition rather than subtraction. Surfacing the operator for review is the right disposition at this layer."
+    },
+    {
+      "scenario": "I1",
+      "title": "dense definition, 20 components",
+      "residualFragment": "\"the sum of\"",
+      "locatedAt": "operative:217-227",
+      "immediatelyFollowedBy": "FORMULA_COMPONENT item at 232 (\"interest expense\")",
+      "priorAdjudication": "TRUE_SAFETY_IMPROVEMENT",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": true,
+      "testExpectationWasStale": true,
+      "genuineFalseGap": false,
+      "remediationRequired": "NONE",
+      "responsibleLayer": "Pass A source coverage",
+      "adjudication": "CORRECT_REVIEW_REQUIRED. Same class: an aggregation operator whose arity and operands Pass A cannot verify from the inventory alone."
+    },
+    {
+      "scenario": "I3",
+      "title": "pricing grid",
+      "residualFragment": "\"The Applicable Margin for any day shall be\"",
+      "locatedAt": "operative:32-74",
+      "immediatelyFollowedBy": "VALUE item at 79 (\"2.50% per annum if the Total Leverage Ratio...\")",
+      "priorAdjudication": "PLAUSIBLE_REVIEW",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": true,
+      "testExpectationWasStale": true,
+      "genuineFalseGap": false,
+      "remediationRequired": "NONE",
+      "responsibleLayer": "Pass A source coverage",
+      "adjudication": "CORRECT_REVIEW_REQUIRED. This is not glue: it carries the legal SUBJECT ('The Applicable Margin'), a temporal qualifier ('for any day') and the operative verb ('shall be'). A content-bearing chapeau is exactly what the frozen rule refuses to let its children absorb, and the prior certification records this class as intentionally surfacing."
+    },
+    {
+      "scenario": "I4",
+      "title": "capped addback",
+      "residualFragment": "\"plus\"",
+      "locatedAt": "operative:116-120",
+      "immediatelyFollowedBy": "FORMULA_COMPONENT item at 125 (\"the amount of pro forma cost savings...\")",
+      "priorAdjudication": "TRUE_SAFETY_IMPROVEMENT",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": true,
+      "testExpectationWasStale": true,
+      "genuineFalseGap": false,
+      "remediationRequired": "NONE",
+      "responsibleLayer": "Pass A source coverage",
+      "adjudication": "CORRECT_REVIEW_REQUIRED. Arithmetic operator, same class as I1."
+    },
+    {
+      "scenario": "I23",
+      "title": "springing covenant",
+      "residualFragment": "\"Solely\"",
+      "locatedAt": "operative:43-49",
+      "immediatelyFollowedBy": "TRIGGER item at 50 (\"if Revolving Exposure exceeds 35%...\")",
+      "priorAdjudication": "PLAUSIBLE_REVIEW",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": true,
+      "testExpectationWasStale": true,
+      "genuineFalseGap": false,
+      "remediationRequired": "NONE",
+      "responsibleLayer": "Pass A source coverage",
+      "adjudication": "CORRECT_REVIEW_REQUIRED. 'Solely' is an exclusivity qualifier that narrows the trigger: 'solely if X' and 'if X' are different propositions. It carries meaning of its own and is not a bare connective."
+    },
+    {
+      "scenario": "I25",
+      "title": "reporting deadline",
+      "residualFragment": "\"The Borrower will furnish to the Administrative Agent:\"",
+      "locatedAt": "operative:35-89",
+      "immediatelyFollowedBy": "REQUIREMENT item at 94 (\"within ninety (90) days after the end of each fiscal year...\")",
+      "priorAdjudication": "PLAUSIBLE_REVIEW",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": true,
+      "testExpectationWasStale": true,
+      "genuineFalseGap": false,
+      "remediationRequired": "NONE",
+      "responsibleLayer": "Pass A source coverage",
+      "adjudication": "CORRECT_REVIEW_REQUIRED. Carries the obligor, the obligation verb and the recipient. None of the enumerated children repeats them, so descent would silently discard the subject of the obligation."
+    },
+    {
+      "scenario": "I26",
+      "title": "event notice",
+      "residualFragment": "\"The Borrower will furnish written notice to the Administrative Agent\"",
+      "locatedAt": "operative:22-90",
+      "immediatelyFollowedBy": "TIME_PERIOD item at 91 (\"within three (3) Business Days after any Responsible Officer obtains knowledge...\")",
+      "priorAdjudication": "TRUE_SAFETY_IMPROVEMENT",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": true,
+      "testExpectationWasStale": true,
+      "genuineFalseGap": false,
+      "remediationRequired": "NONE",
+      "responsibleLayer": "Pass A source coverage",
+      "adjudication": "CORRECT_REVIEW_REQUIRED. The most content-bearing of the set: obligor, verb, the form of the notice ('written') and the recipient."
+    },
+    {
+      "scenario": "I27",
+      "title": "cure right",
+      "residualFragment": "\"Notwithstanding\"",
+      "locatedAt": "operative:26-41",
+      "immediatelyFollowedBy": "DEPENDENCY item at 42 (\"any failure to comply with Section 7.10\"), one space intervening",
+      "priorAdjudication": "OBVIOUS_FALSE_GAP",
+      "currentPhase3Output": "UNACCOUNTED_SOURCE; unit reaches INVENTORY_COVERAGE_GAP",
+      "productionBehaviourIsSafer": true,
+      "productionBehaviourIsSemanticallyCorrect": false,
+      "testExpectationWasStale": false,
+      "genuineFalseGap": true,
+      "remediationRequired": "GENERIC PHASE-3 FIX APPLIED",
+      "responsibleLayer": "Pass A source coverage (source-coverage.ts)",
+      "adjudication": "FALSE_GAP, CONFIRMED. The operator's own semantic content is WHICH provision is disapplied, and that provision is named in the immediately following, already inventoried span. Both operands of the override are present and accounted for. See 10-i27-forensics.json."
+    }
+  ],
+  "summary": {
+    "CORRECT_REVIEW_REQUIRED": 7,
+    "FALSE_GAP": 1,
+    "CONTRACT_AMBIGUOUS": 0,
+    "UPSTREAM_EVIDENCE_INSUFFICIENT": 0,
+    "productionDefectsProved": 1,
+    "staleTestExpectations": "7 of the 8 fragments — the expectations asserted INVENTORY_OK for scenarios whose production behaviour is correct and deliberately conservative"
+  },
+  "disagreementWithPriorCertification": {
+    "priorLabels": "TRUE_SAFETY_IMPROVEMENT x3, PLAUSIBLE_REVIEW x3, OBVIOUS_FALSE_GAP x1 (docs/source-coverage-repair/37-final-certification.json)",
+    "thisMission": "7 CORRECT_REVIEW_REQUIRED, 1 FALSE_GAP",
+    "reconciliation": "Not a contradiction. TRUE_SAFETY_IMPROVEMENT and PLAUSIBLE_REVIEW both mean 'production is right'; this mission collapses them into one disposition and states the per-fragment reason in the fragment's own words rather than in a category label. The one fragment the prior certification called a false gap is confirmed as one and is now fixed."
+  },
+  "outcome": {
+    "redIdentitiesBefore": 18,
+    "redIdentitiesAfter": 0,
+    "closedByProductionFix": 2,
+    "closedByCorrectingStaleExpectations": 16,
+    "expectationsWeakened": "NONE. The corrected tests are STRICTER than the originals: each scenario now declares its residual set verbatim in expectedResidualSegments and the suite asserts equality, so a new residual and a silently-closed residual both fail."
+  }
+}
