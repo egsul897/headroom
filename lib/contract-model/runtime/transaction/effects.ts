@@ -132,3 +132,107 @@ export function detectEffectCycles(effects: readonly TransactionEffect[], capaci
   for (const id of [...byId.keys()].sort()) walk(id, null);
   return cycles;
 }
+
+// ---------------------------------------------------------------------------
+// Composition conflicts (Phase-4D remediation)
+// ---------------------------------------------------------------------------
+
+/**
+ * The semantic target an effect ASSIGNS a state to, where two effects naming the same target must
+ * agree or the transaction is ambiguous. This is target identity, never an effect id and never a
+ * label, so no conflict is ever resolved by array order, map insertion order or id sorting.
+ */
+export function assignmentTargetOf(e: TransactionEffect): { target: string; assigned: string } | null {
+  switch (e.kind) {
+    case "ACTIVATE_EVENT": return { target: `event:${e.eventDescription}@${e.asOf ?? "none"}`, assigned: "ACTIVE" };
+    case "DEACTIVATE_EVENT": return { target: `event:${e.eventDescription}@${e.asOf ?? "none"}`, assigned: "INACTIVE" };
+    case "CHANGE_METRIC": return {
+      target: `metric:${e.metricKey}@${e.period ?? "none"}/${e.asOf ?? "none"}`,
+      // A SET fixes a value; two SETs of different values disagree. Two DELTAs accumulate and are
+      // only reported as disagreeing when one of them is a SET.
+      assigned: e.adjustment.kind === "SET" ? `SET:${JSON.stringify(e.adjustment.value)}` : "DELTA",
+    };
+    default: return null;
+  }
+}
+
+/** The historical ledger identity an effect claims as its predecessor, if any. */
+export function predecessorUsageOf(e: TransactionEffect): string | null {
+  return e.kind === "RESTORE_CAPACITY" || e.kind === "SUPERSEDE_LEDGER_USAGE" ? e.usageId : null;
+}
+
+/**
+ * Structural composition conflicts, detected before anything is evaluated.
+ *
+ * Each class fails closed rather than picking a winner:
+ *  - two effects claiming the same historical usage as predecessor would create competing
+ *    successors for one immutable record;
+ *  - two effects assigning incompatible states to one event or metric target would otherwise be
+ *    resolved by whichever happened to be written last;
+ *  - a dependency naming an effect that does not exist is a malformed transaction, not a no-op;
+ *  - a dependency pointing forward contradicts the stated sequential order.
+ */
+export function detectCompositionConflicts(effects: readonly TransactionEffect[]): SimulationLimitation[] {
+  const out: SimulationLimitation[] = [];
+  const position = new Map<string, number>();
+  effects.forEach((e, i) => { if (!position.has(e.effectId)) position.set(e.effectId, i); });
+
+  // Competing successors for one historical usage identity.
+  const byPredecessor = new Map<string, string[]>();
+  for (const e of effects) {
+    const u = predecessorUsageOf(e);
+    if (u) byPredecessor.set(u, [...(byPredecessor.get(u) ?? []), e.effectId]);
+  }
+  for (const [usageId, ids] of [...byPredecessor.entries()].sort(([a], [b]) => (a < b ? -1 : 1))) {
+    if (ids.length > 1) {
+      out.push({
+        code: "CONFLICTING_LEDGER_SUCCESSOR",
+        message: `effects ${[...ids].sort().join(", ")} each claim usage ${usageId} as their predecessor; one historical record may have at most one successor in a single transaction, and nothing is chosen between them`,
+        refs: [usageId, ...[...ids].sort()],
+      });
+    }
+  }
+
+  // Incompatible assignments to one event or metric target.
+  const byTarget = new Map<string, { effectId: string; assigned: string }[]>();
+  for (const e of effects) {
+    const t = assignmentTargetOf(e);
+    if (t) byTarget.set(t.target, [...(byTarget.get(t.target) ?? []), { effectId: e.effectId, assigned: t.assigned }]);
+  }
+  for (const [target, xs] of [...byTarget.entries()].sort(([a], [b]) => (a < b ? -1 : 1))) {
+    const distinct = [...new Set(xs.map((x) => x.assigned))].sort();
+    // Several DELTAs against one metric accumulate; they do not disagree.
+    const disagrees = distinct.length > 1 || (distinct.length === 1 && distinct[0]!.startsWith("SET:") && xs.length > 1);
+    if (!disagrees) continue;
+    const ids = xs.map((x) => x.effectId).sort();
+    out.push({
+      code: target.startsWith("event:") ? "CONFLICTING_EVENT_STATE" : "CONFLICTING_METRIC_ADJUSTMENT",
+      message: `effects ${ids.join(", ")} assign incompatible states (${distinct.join(", ")}) to ${target}; the outcome would depend on evaluation order alone, so the transaction is refused rather than resolved`,
+      refs: [target, ...ids],
+    });
+  }
+
+  // Dependency integrity. A dangling edge is never silently dropped.
+  for (const e of effects) {
+    for (const d of [...(e.dependsOnEffectIds ?? [])].sort()) {
+      if (!position.has(d)) {
+        out.push({
+          code: "INVALID_EFFECT_DEPENDENCY",
+          message: `effect ${e.effectId} declares a dependency on ${d}, which this transaction does not carry; a dependency that names nothing is a malformed transaction and is never ignored`,
+          refs: [e.effectId, d],
+        });
+        continue;
+      }
+      const here = position.get(e.effectId)!;
+      const there = position.get(d)!;
+      if (there > here) {
+        out.push({
+          code: "EFFECT_DEPENDENCY_CONTRADICTS_ORDER",
+          message: `effect ${e.effectId} is stated at position ${here + 1} but depends on ${d} at position ${there + 1}; effects apply in the stated order, so a dependency may not point forward`,
+          refs: [e.effectId, d],
+        });
+      }
+    }
+  }
+  return out;
+}

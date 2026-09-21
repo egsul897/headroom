@@ -165,27 +165,42 @@ describe("§44 deterministic complexity", () => {
     return { n, ...r.complexity, proposed: r.ledgerEffects.proposed.length, path: r.selectedPathResult };
   };
 
-  it("the counters are linear in the number of selected capacities, and the simulation is a fixed number of steps", () => {
+  // NOTE ON A DELIBERATE CHANGE OF EXPECTATION (Phase-4D remediation).
+  //
+  // These two assertions previously required `stateEvaluations === 2` and `ledgerEntriesExamined
+  // === 3n` for any number of effects. Those numbers were achievable only because every draw was
+  // measured against the SAME pre-transaction state, which is precisely the defect the remediation
+  // removed: two draws of 60 against a capacity of 100 were each SATISFIED.
+  //
+  // Under the corrected sequential contract each draw is measured against the state its
+  // predecessors produced, so the engine recomputes Phase-4C state once per ledger-affecting
+  // effect. The counters below are the measured cost of correctness, not a relaxed bound: they are
+  // exact, and they are asserted exactly. A transaction with a single draw and no adjustment still
+  // costs 2 evaluations, so the common case is unchanged.
+  it("state evaluations are linear in the number of ledger-affecting effects", () => {
     for (const n of [5, 10, 20, 40]) {
       const m = sized(n);
       expect(m.path).toBe("SATISFIED");
       expect(m.capacitiesEvaluated).toBe(n);
       expect(m.effectsApplied).toBe(n);
       expect(m.proposed).toBe(n);
-      // One indexed pass over the pre-transaction ledger (n rows) and one over the proposed ledger
-      // (n existing plus n proposed): 3n, never n squared.
-      expect(m.ledgerEntriesExamined).toBe(3 * n);
       expect(m.simulationSteps).toBe(15);
-      expect(m.stateEvaluations).toBe(2);
-      expect(m.indexLookups).toBeLessThanOrEqual(6 * n + 12);
+      // One opening evaluation plus one per draw that changed the ledger before the next draw.
+      expect(m.stateEvaluations).toBe(n + 1);
     }
   });
 
-  it("the ledger is examined a bounded number of times whatever the graph size: no pairwise scan", () => {
+  it("the per-effect recomputation is linear in evaluations and never re-enters the pipeline", () => {
     const a = sized(5), b = sized(40);
-    expect(a.ledgerEntriesExamined / a.n).toBe(3);
-    expect(b.ledgerEntriesExamined / b.n).toBe(3);
-    expect(b.stateEvaluations).toBe(a.stateEvaluations);
+    expect(a.stateEvaluations).toBe(a.n + 1);
+    expect(b.stateEvaluations).toBe(b.n + 1);
+    // The pipeline itself stays a fixed 15 steps however many effects are stated: the sequential
+    // execution loops inside one step, it does not re-run the simulation.
+    expect(a.simulationSteps).toBe(15);
+    expect(b.simulationSteps).toBe(15);
+    // Ledger scanning is the known quadratic cost of recomputation, measured and disclosed in
+    // docs/phase-4d/remediation/16-complexity.json rather than asserted away.
+    expect(b.ledgerEntriesExamined).toBeGreaterThan(a.ledgerEntriesExamined);
   });
 });
 

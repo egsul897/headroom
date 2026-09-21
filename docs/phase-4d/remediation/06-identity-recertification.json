@@ -1,0 +1,69 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §11 - canonical identity re-audited under the corrected ordering contract",
+ "at": "2026-09-20T23:21:23.954Z",
+ "orderSensitive": [
+  "transaction.effects - now genuinely order-sensitive in EXECUTION as well as in identity, which is what makes the declaration honest"
+ ],
+ "orderInsensitive": [
+  "transaction.entities",
+  "selectedPath.capacityNodeIds",
+  "selectedPath.ruleIds",
+  "selectedPath.sharedCapacityIds",
+  "selectedPath.reclassificationElectionIds",
+  "effect.dependsOnEffectIds",
+  "election.movesUsageIds",
+  "the snapshot id set"
+ ],
+ "excluded": [
+  "transaction.label",
+  "effect.note",
+  "diagnostics",
+  "trace",
+  "complexity counters",
+  "wall-clock",
+  "random or environment-specific identifiers"
+ ],
+ "metamorphic": {
+  "sameSemanticsSameIdentity": {
+   "displayLabelChange": true
+  },
+  "differentSemanticsDifferentIdentity": {
+   "effectOrder": true,
+   "amount": true
+  },
+  "replayHashes": [
+   {
+    "tx": "33eb0d58c1e8eed40fa39c0a81d3e153954c7f8f57b33ac8a02fd880ddc9849c",
+    "sim": "3f6b347efdd083ff55e26fd1626f5ffd83ec50e076c685ca3778987f592c6c70",
+    "post": "13ba1a31d22de13d7a8669c4cb7b7385d8dc520e60442af10fb6665052c6fd37"
+   },
+   {
+    "tx": "33eb0d58c1e8eed40fa39c0a81d3e153954c7f8f57b33ac8a02fd880ddc9849c",
+    "sim": "3f6b347efdd083ff55e26fd1626f5ffd83ec50e076c685ca3778987f592c6c70",
+    "post": "13ba1a31d22de13d7a8669c4cb7b7385d8dc520e60442af10fb6665052c6fd37"
+   },
+   {
+    "tx": "33eb0d58c1e8eed40fa39c0a81d3e153954c7f8f57b33ac8a02fd880ddc9849c",
+    "sim": "3f6b347efdd083ff55e26fd1626f5ffd83ec50e076c685ca3778987f592c6c70",
+    "post": "13ba1a31d22de13d7a8669c4cb7b7385d8dc520e60442af10fb6665052c6fd37"
+   },
+   {
+    "tx": "33eb0d58c1e8eed40fa39c0a81d3e153954c7f8f57b33ac8a02fd880ddc9849c",
+    "sim": "3f6b347efdd083ff55e26fd1626f5ffd83ec50e076c685ca3778987f592c6c70",
+    "post": "13ba1a31d22de13d7a8669c4cb7b7385d8dc520e60442af10fb6665052c6fd37"
+   },
+   {
+    "tx": "33eb0d58c1e8eed40fa39c0a81d3e153954c7f8f57b33ac8a02fd880ddc9849c",
+    "sim": "3f6b347efdd083ff55e26fd1626f5ffd83ec50e076c685ca3778987f592c6c70",
+    "post": "13ba1a31d22de13d7a8669c4cb7b7385d8dc520e60442af10fb6665052c6fd37"
+   }
+  ],
+  "replayIdentical": true,
+  "rebuiltSceneControl": {
+   "transactionHashStable": true,
+   "simulationIdDiffersBecauseGraphHashDiffers": true,
+   "graphHashA": "d59ec1a97bd459ff7c165c5d22d0fee8ce0b1d9df1673ca1035f1ffcfb86bb13",
+   "graphHashB": "77bdf9017e7334a9023bba392c5b13c28cbb2d57db21ea410ae8f701c50446f4"
+  }
+ }
+}

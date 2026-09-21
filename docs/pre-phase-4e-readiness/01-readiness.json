@@ -1,0 +1,79 @@
+{
+  "artifact": "PART V - Phase 4E foundation readiness. Readiness verdict only; Phase 4E remains unstarted.",
+  "at": "2026-09-21T00:00:00Z",
+  "conditions": [
+    {
+      "n": 1,
+      "condition": "Phase 3 final assurance passed",
+      "met": false,
+      "evidence": "PHASE3_SEMANTIC_CLOSURE_NOT_PROVEN. The V3 closure gate fails 3 of 10 items: surfacing inter-reviewer agreement 74.1%, evaluator-vs-consensus credit 89.4%, evaluator-vs-consensus surfacing 66.7%, all against a pre-registered 90%."
+    },
+    {
+      "n": 2,
+      "condition": "Phase 4A frozen and valid",
+      "met": true,
+      "evidence": "runtime root tree unchanged from the failed baseline; 436 Phase-4A tests pass"
+    },
+    {
+      "n": 3,
+      "condition": "Phase 4B frozen and valid",
+      "met": true,
+      "evidence": "input tree 07d9de17ac64 byte-identical at feab14f and HEAD"
+    },
+    {
+      "n": 4,
+      "condition": "Phase 4C independently recertified",
+      "met": true,
+      "evidence": "capacity tree c5f2d820d3c7 byte-identical; Phase-4C forensic and normal suites green; Phase 4C was the authority every Phase-4D safety assertion in this audit read from"
+    },
+    {
+      "n": 5,
+      "condition": "Phase 4D independently recertified",
+      "met": true,
+      "evidence": "21/21 audit gate after this audit found and fixed three further defects (N1, N2, N3); 186 Phase-4D tests pass"
+    },
+    {
+      "n": 6,
+      "condition": "no unresolved state-transition safety defect",
+      "met": true,
+      "evidence": "N1 and N2 found, reproduced, fixed generically and regression-tested; 64-composition sweep clean; zero committable-with-unsafe-post-state cases"
+    },
+    {
+      "n": 7,
+      "condition": "no unresolved semantic-evaluation defect capable of poisoning solver inputs",
+      "met": false,
+      "evidence": "this is the blocking condition. Phase 4E optimises over Phase-3 semantic output. The trustworthiness of that output is measured by an evaluator whose agreement with independent consensus is below the pre-registered threshold on two of three dimensions."
+    },
+    {
+      "n": 8,
+      "condition": "proven end-to-end trace through the target architecture",
+      "met": true,
+      "evidence": "docs/phase-4d/post-remediation-audit/02-end-to-end-trace.json - a real rule from the frozen compile result traced source to Phase-4D post-state, 31,000,000 to 30,999,000 after an explicit 1,000 draw, committable, no legacy engine used"
+    },
+    {
+      "n": 9,
+      "condition": "known real-fixture evidence gaps explicitly carried forward",
+      "met": true,
+      "evidence": "0 quantified shared-capacity resources and 0 executable reclassification edges in the frozen corpus, restated in 04-phase3-final-assurance.json; the source-document adjudication for both is carried forward as open, not guessed"
+    },
+    {
+      "n": 10,
+      "condition": "legacy product code clearly separated from target architecture",
+      "met": true,
+      "evidence": "separation is total and one-directional: zero UI surfaces import lib/contract-model/runtime. 8 UI surfaces run on the legacy covenant engine, 1 on the legacy solver."
+    }
+  ],
+  "phase4eStarted": false,
+  "phase5Started": false,
+  "verdict": "PHASE4E_FOUNDATION_NOT_READY",
+  "blockingConditions": [
+    1,
+    7
+  ],
+  "reasoning": "The state-transition foundation Phase 4E would operate on is now trustworthy: Phase 4D is recertified after three further defects were found and fixed, Phase 4A/4B/4C are byte-identical and green, and the architecture demonstrably connects end to end on real data. What is not trustworthy is the measurement of Phase-3 semantic quality. Phase 4E searches and optimises over Phase-3 propositions, so an evaluator that cannot agree with human consensus on how to classify a unit cannot yet certify that those propositions are complete and correct. Building a solver on top would optimise over inputs of unproven semantic fidelity.",
+  "shortestPathToReady": [
+    "resolve the V3 evaluator calibration: the three failing agreement dimensions, with the definitional gap over surfacing status diagnosed first",
+    "then adjudicate the two carried-forward source-document questions (quantified shared pool, reclassification mechanism) against the frozen package text",
+    "neither requires reopening Phase 3 architecture, and neither is solver work"
+  ]
+}

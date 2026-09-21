@@ -1,0 +1,37 @@
+{
+  "artifact": "PHASE 4D REMEDIATION §0 - reconciliation of the failed audit baseline before any production change",
+  "failedBaselineSha": "feab14fd7a0245586f92342b3833d5c224603e83",
+  "revokedVerdict": "PHASE4D_TRANSACTION_SIMULATION_READY",
+  "revokedGate": "docs/phase-4d/17-phase4d-gate.json (58/58), issued at the failed baseline and superseded by docs/phase-4d/remediation/10-recertification-gate.json",
+  "headAtStart": "feab14fd7a0245586f92342b3833d5c224603e83",
+  "headEqualsFailedBaseline": true,
+  "workingTreeAtStart": "clean",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "runtimeTreeIdentitiesAtFailedBaseline": {
+    "phase3Compiler": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+    "phase3Semantic": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+    "ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+    "runtimeRoot": "1c52ff9bcd8507fc74d9d1fda32c5a625719470d",
+    "phase4bInput": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+    "phase4cCapacity": "c5f2d820d3c764d03846450c529a3f5399c423b8"
+  },
+  "phase4cHandoffPreserved": {
+    "recertification": "docs/phase-4c/remediation/14-recertification.json",
+    "handoffSeal": "docs/phase-4c/remediation/15-phase4d-handoff.json",
+    "statement": "the recertified Phase-4C handoff is untouched by this remediation; Phase 4C remains the authority for capacity arithmetic and its tree object id is unchanged"
+  },
+  "originalEvidencePreserved": {
+    "path": "docs/phase-4d/01..17 and docs/phase-4d/README.md",
+    "statement": "the failed closure package is retained verbatim rather than overwritten. The remediation writes only under docs/phase-4d/remediation/, so the history of the revoked verdict stays inspectable."
+  },
+  "scopeOfRemediation": [
+    "lib/contract-model/runtime/transaction/ (the Phase-4D module)",
+    "tests/contract-model/runtime/transaction/ (its tests)",
+    "scripts/phase-4d-recertification.ts (new evidence + gate tooling)",
+    "docs/phase-4d/remediation/ (new evidence)"
+  ],
+  "priorPhaseDefectsFound": "none. No defect was found in Phase 3, 4A, 4B or 4C during this remediation, and no prior-phase production file was modified.",
+  "paidCalls": 0,
+  "modelCalls": 0,
+  "spendUsd": 0
+}

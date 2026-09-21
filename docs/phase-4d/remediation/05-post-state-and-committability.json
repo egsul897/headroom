@@ -1,0 +1,31 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §9, §10 - the post-state is validated, and committable means the final state is safe",
+ "at": "2026-09-20T23:21:23.954Z",
+ "committableDefinition": "postState !== null AND the post-state survived validation AND selectedPathResult === SATISFIED AND simulationStatus === SIMULATED. All four, never fewer.",
+ "postStateValidation": "after the transition is built, Phase 4C is asked what it produced. Every capacity and shared constraint the transaction touched is read for an OVER_CONSUMPTION limitation and for a negative remaining. Both are read because an over-draw that makes an entry non-authoritative WITHHOLDS the remaining figure rather than making it negative.",
+ "publishedVsRefused": {
+  "provisionalInformational": "a REVIEW_REQUIRED path may still publish a clearly non-committable post-state where the arithmetic is shown but legal reliance is unsafe - an unquantified shared relationship, a partially represented rule",
+  "contradictoryInvalid": "a transition that over-consumes a quantified constraint, carries conflicting ledger or event transitions, or rests on a malformed dependency graph publishes NO post-state at all"
+ },
+ "invariantSweep": {
+  "compositionsChecked": 104,
+  "violations": []
+ },
+ "atomicity": {
+  "conflictCase": {
+   "simulationStatus": "AMBIGUOUS",
+   "selectedPathResult": "INDETERMINATE",
+   "committable": false,
+   "postStatePublished": false,
+   "perEffectOutcomes": [],
+   "perEffectAvailable": [],
+   "postStateUnsafe": [],
+   "limitations": [
+    "CONFLICTING_LEDGER_SUCCESSOR"
+   ]
+  },
+  "postStateNull": true,
+  "postStateIdentityNull": true
+ },
+ "noMutationOfCallerState": true
+}

@@ -1,0 +1,49 @@
+{
+ "artifact": "PHASE 4D REMEDIATION §18 - regression against the exact pre-remediation baseline",
+ "at": "2026-09-20T23:21:23.955Z",
+ "headAtRun": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "failedBaseline": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "fullSuite": {
+  "tests": 4463,
+  "passed": 3778,
+  "failed": 161
+ },
+ "baselineSuite": {
+  "tests": 4417,
+  "passed": 3731,
+  "failed": 162
+ },
+ "newFailingIdentities": [],
+ "fixedVsBaseline": [
+  "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+ ],
+ "phase4dSuite": {
+  "tests": 125,
+  "failed": 0
+ },
+ "failureClassification": {
+  "newAttributable": [],
+  "inheritedIdentical": "every other failing identity fails identically on the pre-remediation baseline",
+  "inheritedUnstable": "the segmentCoordinateClauses wall-clock identities over the unchanged Phase-3 tree, carried forward and not waived"
+ },
+ "tsc": {
+  "newErrors": [],
+  "preExistingIgnored": "tests/foundation-audit/ errors present before this work"
+ },
+ "lint": true,
+ "build": true,
+ "deliberateTestChanges": [
+  {
+   "test": "identity-and-determinism: state evaluations",
+   "was": "stateEvaluations === 2 and ledgerEntriesExamined === 3n for any n",
+   "now": "stateEvaluations === n + 1, exactly asserted",
+   "why": "the old numbers were achievable only because every draw shared one pre-transaction evaluation, which is the defect. The new numbers are the measured cost of correctness and are asserted exactly, not relaxed."
+  },
+  {
+   "test": "synthetic-matrix M",
+   "was": "stateEvaluations === 2",
+   "now": "stateEvaluations === 3",
+   "why": "the adjustment is applied, the capacity is evaluated against the adjusted view, then the post-state is evaluated. Same reason."
+  }
+ ]
+}

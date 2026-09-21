@@ -1,0 +1,200 @@
+{
+ "artifact": "PHASE 4D POST-REMEDIATION INDEPENDENT AUDIT GATE",
+ "at": "2026-09-21T00:00:34.670Z",
+ "supersedes": "docs/phase-4d/remediation/10-recertification-gate.json (43/43 at ec506b40)",
+ "failedBaseline": "feab14fd7a0245586f92342b3833d5c224603e83",
+ "remediationCommit": "ec506b40adb1d9d6c8cda21c1603c2c986a0109a",
+ "headAtRun": "ec506b40adb1d9d6c8cda21c1603c2c986a0109a",
+ "transactionSimulationVersion": "transaction-simulation.v1",
+ "newDefectsFoundByThisAudit": [
+  {
+   "id": "N1",
+   "title": "an interleaving the engine flagged as unrepresentable was still committable",
+   "severity": "HIGH",
+   "fixed": true
+  },
+  {
+   "id": "N2",
+   "title": "reclassification composed with an independent change to the same usage manufactured capacity (negative recorded usage)",
+   "severity": "CRITICAL",
+   "fixed": true
+  },
+  {
+   "id": "N3",
+   "title": "the remediation gate validated a tsc log older than its own gate script",
+   "severity": "PROCESS",
+   "fixed": true
+  }
+ ],
+ "conditions": [
+  {
+   "n": 1,
+   "condition": "N1 an unrepresentable interleaving is refused AND non-committable",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "UNSUPPORTED/INDETERMINATE, committable false, UNSUPPORTED_EFFECT_INTERLEAVING"
+  },
+  {
+   "n": 2,
+   "condition": "N2 reclassification plus supersession of the same usage cannot manufacture capacity",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "INSUFFICIENT_AGGREGATE_CAPACITY,USAGE_CONSERVATION_VIOLATED; postState null"
+  },
+  {
+   "n": 3,
+   "condition": "N2 reclassification plus restore of the same usage cannot manufacture capacity",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "INSUFFICIENT_AGGREGATE_CAPACITY,USAGE_CONSERVATION_VIOLATED"
+  },
+  {
+   "n": 4,
+   "condition": "negative recorded usage is treated as unsafe wherever it appears",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "no successor state published for either"
+  },
+  {
+   "n": 5,
+   "condition": "aggregate same-node consumption still fails closed",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "INSUFFICIENT_CAPACITY"
+  },
+  {
+   "n": 6,
+   "condition": "exact aggregate exhaustion still succeeds",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "remaining 0"
+  },
+  {
+   "n": 7,
+   "condition": "aggregate shared-pool consumption still fails closed",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "INSUFFICIENT_CAPACITY"
+  },
+  {
+   "n": 8,
+   "condition": "committable implies a safe final state across the sweep",
+   "kind": "behavioural",
+   "status": "PASS",
+   "evidence": "64 compositions, 0 violations"
+  },
+  {
+   "n": 9,
+   "condition": "no production change outside the transaction module",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "none"
+  },
+  {
+   "n": 10,
+   "condition": "lib/contract-model/compiler is byte-identical to the failed baseline",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "b4e6a9da496a"
+  },
+  {
+   "n": 11,
+   "condition": "lib/contract-model/compiler/semantic is byte-identical to the failed baseline",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "f79bc12dd479"
+  },
+  {
+   "n": 12,
+   "condition": "lib/contract-model/ir is byte-identical to the failed baseline",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "5c3ff86f1961"
+  },
+  {
+   "n": 13,
+   "condition": "lib/contract-model/runtime/input is byte-identical to the failed baseline",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "07d9de17ac64"
+  },
+  {
+   "n": 14,
+   "condition": "lib/contract-model/runtime/capacity is byte-identical to the failed baseline",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "c5f2d820d3c7"
+  },
+  {
+   "n": 15,
+   "condition": "Phase 4E remains unstarted",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "no directory"
+  },
+  {
+   "n": 16,
+   "condition": "Phase 5 remains unstarted",
+   "kind": "structural",
+   "status": "PASS",
+   "evidence": "no directory"
+  },
+  {
+   "n": 17,
+   "condition": "N3 the tsc log is newer than every source it claims to cover",
+   "kind": "external",
+   "status": "PASS",
+   "evidence": "fresh"
+  },
+  {
+   "n": 18,
+   "condition": "tsc has no new error",
+   "kind": "external",
+   "status": "PASS",
+   "evidence": "0 new"
+  },
+  {
+   "n": 19,
+   "condition": "lint passes on a fresh log",
+   "kind": "external",
+   "status": "PASS",
+   "evidence": "fresh+clean"
+  },
+  {
+   "n": 20,
+   "condition": "build passes on a fresh log",
+   "kind": "external",
+   "status": "PASS",
+   "evidence": "fresh+compiled"
+  },
+  {
+   "n": 21,
+   "condition": "no new failing identity versus the remediation commit",
+   "kind": "external",
+   "status": "PASS",
+   "evidence": "now 161/4524; before 161/4463; new 0"
+  }
+ ],
+ "predicateMix": {
+  "behavioural": 8,
+  "structural": 8,
+  "external": 5
+ },
+ "sweep": {
+  "compositionsChecked": 64,
+  "violations": []
+ },
+ "regression": {
+  "newFailingIdentities": [],
+  "nowPassingThatPreviouslyFailed": []
+ },
+ "summary": {
+  "PASS": 21,
+  "FAIL": 0,
+  "total": 21
+ },
+ "verdict": "PHASE4D_TRANSACTION_SIMULATION_READY",
+ "paidCalls": 0,
+ "modelCalls": 0,
+ "spendUsd": 0
+}
