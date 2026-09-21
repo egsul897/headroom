@@ -1,0 +1,55 @@
+[
+  {
+    "model": "alibaba/qwen3.7-flash",
+    "pricePerMtokInput": 0.03,
+    "pricePerMtokOutput": 0.13,
+    "attempted": 12,
+    "completed": 6,
+    "completionRatePct": 50,
+    "schemaFailures": 0,
+    "schemaFailureRatePct": 0,
+    "toolFailures": 0,
+    "zeroTokenStalls": 0,
+    "wallClockTimeouts": 6,
+    "providerFailures": 7,
+    "medianWallClockSeconds": 0,
+    "p90WallClockSeconds": 0,
+    "toolUseWorks": false,
+    "structuredOutputsParse": true,
+    "spendUsd": 0.00892,
+    "costPerCompletedCandidateUsd": 0.00149,
+    "passesGate": false,
+    "gateReasons": [
+      "completion rate 50.0% below the 80% floor",
+      "tool-use workflow never engaged on any candidate",
+      "systemic provider failure: 7/12 refused"
+    ],
+    "gateVerdictReproducesFromFrozenRecords": true
+  },
+  {
+    "model": "inception/mercury-2.5",
+    "pricePerMtokInput": 0.04,
+    "pricePerMtokOutput": 0.15,
+    "attempted": 12,
+    "completed": 6,
+    "completionRatePct": 50,
+    "schemaFailures": 2,
+    "schemaFailureRatePct": 16.7,
+    "toolFailures": 0,
+    "zeroTokenStalls": 0,
+    "wallClockTimeouts": 5,
+    "providerFailures": 5,
+    "medianWallClockSeconds": 0,
+    "p90WallClockSeconds": 0,
+    "toolUseWorks": true,
+    "structuredOutputsParse": true,
+    "spendUsd": 0.03121,
+    "costPerCompletedCandidateUsd": 0.0052,
+    "passesGate": false,
+    "gateReasons": [
+      "completion rate 50.0% below the 80% floor",
+      "schema/malformed rate 16.7% above the 10% ceiling"
+    ],
+    "gateVerdictReproducesFromFrozenRecords": true
+  }
+]

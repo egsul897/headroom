@@ -1,0 +1,24 @@
+[
+  {
+    "model": "alibaba/qwen3.7-flash",
+    "meanWallClockSecondsPerCandidate": 539,
+    "latencySource": "run log (frozen records carry no latency for this run)",
+    "latencySampleSize": 6,
+    "includesTimeoutsAtCeiling": 6,
+    "sealedPopulationAfterDedup": 137,
+    "hoursAtConcurrency1": 20.5,
+    "hoursAtConcurrency2": 10.3,
+    "note": "Concurrency above 2 is not projected: §8 forbids returning to 6, and no evidence exists for anything between."
+  },
+  {
+    "model": "inception/mercury-2.5",
+    "meanWallClockSecondsPerCandidate": 460,
+    "latencySource": "run log (frozen records carry no latency for this run)",
+    "latencySampleSize": 7,
+    "includesTimeoutsAtCeiling": 5,
+    "sealedPopulationAfterDedup": 137,
+    "hoursAtConcurrency1": 17.5,
+    "hoursAtConcurrency2": 8.7,
+    "note": "Concurrency above 2 is not projected: §8 forbids returning to 6, and no evidence exists for anything between."
+  }
+]

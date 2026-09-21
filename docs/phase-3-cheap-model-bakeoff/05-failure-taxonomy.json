@@ -1,0 +1,44 @@
+[
+  {
+    "model": "alibaba/qwen3.7-flash",
+    "byCategory": {
+      "PROVIDER_OR_HARNESS": 7,
+      "MODEL_EXECUTION": 0,
+      "SEMANTIC_OUTCOME": 5
+    },
+    "byReason": {
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE": 3,
+      "WALL_CLOCK_TIMEOUT": 6,
+      "OPERATIVE_STATE_UNRESOLVED": 2,
+      "SEMANTIC_INVENTORY_COVERAGE_GAP": 3,
+      "PROVIDER_FAILURE": 1,
+      "SHARD_INCOMPLETE": 1,
+      "INVENTORY_ITEM_MISSING_FROM_COMPOSITION": 1
+    },
+    "onlyModelExecutionJustifiesAnotherModel": true,
+    "modelExecutionFailures": 0
+  },
+  {
+    "model": "inception/mercury-2.5",
+    "byCategory": {
+      "PROVIDER_OR_HARNESS": 5,
+      "MODEL_EXECUTION": 2,
+      "SEMANTIC_OUTCOME": 5
+    },
+    "byReason": {
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE": 2,
+      "WALL_CLOCK_TIMEOUT": 5,
+      "MODEL_SCHEMA_FAILURE": 2,
+      "SHARD_INCOMPLETE": 2,
+      "MISSING_CONTEXT": 1,
+      "OPERATIVE_STATE_UNRESOLVED": 3,
+      "SEMANTIC_INVENTORY_UNAVAILABLE": 1,
+      "SEMANTIC_INVENTORY_COVERAGE_GAP": 5,
+      "IR_VALIDATION_FAILURE": 1,
+      "PARTIAL_COMPILATION": 1,
+      "INVENTORY_ITEM_MISSING_FROM_COMPOSITION": 2
+    },
+    "onlyModelExecutionJustifiesAnotherModel": true,
+    "modelExecutionFailures": 2
+  }
+]

@@ -22,6 +22,7 @@ import {
   classifyFailureCategory,
 } from "./premium-lock";
 import type { ProbeSlot } from "./bakeoff";
+import { quarantineRows } from "./gateway-health";
 import type { CandidateRecord } from "./compile-run";
 
 const ROOT = process.cwd();
@@ -221,3 +222,76 @@ export function startingState(startingSha: string) {
     observedTokenShapePerCandidate: { input: OBSERVED_INPUT_TOKENS_PER_CANDIDATE, output: OBSERVED_OUTPUT_TOKENS_PER_CANDIDATE },
   };
 }
+
+/**
+ * Writes the artifact set. Free and deterministic: no model call, no network.
+ *
+ * The halt is recorded as a first-class fact rather than a footnote, because a reader who
+ * sees five model rows and no verdict needs to know that three of them measure an empty
+ * account and that the traversal stopped before reaching a decision.
+ */
+function main() {
+  const results = readRun<ModelBakeoffResult[]>("01-bakeoff-results") ?? [];
+  const probes = readRun<ProbeSlot[]>("00-probe-set") ?? [];
+  const { admissible, quarantined } = quarantineRows(results);
+  const fromLog = latencyFromLog();
+  const startingSha = git("rev-parse HEAD");
+
+  const written = [
+    write("01-starting-state.json", startingState(startingSha)),
+    write("02-probe-set.json", probes),
+    write("03-gate-matrix-admissible.json", gateMatrix(admissible)),
+    write("04-quarantined-rows.json", {
+      rule: "A row is evidence about a MODEL only if the gateway billed tokens for it. A model that genuinely fails is still served and still bills; a row that bills nothing measures the account.",
+      quarantined,
+      whyThisMatters: "Reporting these as model results would assert that three models score 0-8% on work they were never served.",
+    }),
+    write("05-failure-taxonomy.json", failureTaxonomy(admissible)),
+    write("06-sub-cent-completion.json", subCentCompletion(admissible, probes)),
+    write("07-wall-clock-projection.json", wallClockProjection(admissible, 900_000, fromLog)),
+    write("08-halt.json", {
+      verdict: "GATEWAY_NOT_READY",
+      subVerdict: "GATEWAY_CREDIT_EXHAUSTED_MID_RUN",
+      detectedAfterModels: results.length,
+      gatewayMessage: "A positive credit balance is required for all requests, including BYOK, so fallback providers remain available.",
+      httpStatus: 402,
+      healthCheckPassedAtStart: true,
+      modelsConfirmed402AfterHalt: ["inception/mercury-2.5", "alibaba/qwen3.7-flash", "nvidia/nemotron-3.5-lightning", "openai/gpt-5-nano", "deepseek/deepseek-v4-flash-0731"],
+      twoOfWhichHadServedNormallyEarlierInThisRun: ["inception/mercury-2.5", "alibaba/qwen3.7-flash"],
+      measuredSpendUsd: Number(admissible.reduce((s, r) => s + r.spendUsd, 0).toFixed(5)),
+      measuredSpendUnderstatesTrueSpend: true,
+      whyUnderstated:
+        "Every wall-clock timeout generated for the full 900s ceiling and was billed by the provider, but a request that never returns yields no usage object, so each was recorded as $0.00. The harness undercounts exactly the most expensive candidates, and the true account spend is not knowable from this side.",
+      unmeasuredTimeouts: admissible.reduce((s, r) => s + r.timeouts, 0),
+      notRun: ["§6 1800s timeout re-test", "§7 model selection", "§8 concurrency 2", "§9-§13 population resume and projection"],
+    }),
+  ];
+
+  write(
+    "README.md",
+    [
+      "# Cheap-model bakeoff — halted on gateway credit exhaustion",
+      "",
+      `Evidence label: \`${EVIDENCE_LABEL}\`. Starting sha \`${startingSha}\`.`,
+      "",
+      "The sequential cheapest-first bakeoff ran two complete model rows before the Vercel AI",
+      "Gateway began refusing every request with HTTP 402. Three further rows were produced",
+      "against a gateway that served nothing; they are quarantined in `04-quarantined-rows.json`",
+      "and are NOT evidence about those models.",
+      "",
+      "`03-gate-matrix-admissible.json` contains only rows the gateway actually served.",
+      "",
+      "Measured spend understates true spend. See `08-halt.json` for why.",
+      "",
+      "## Files",
+      ...written.map((w) => `- \`${w.name}\` — ${w.bytes} bytes, sha256 \`${w.sha256.slice(0, 16)}…\``),
+      "",
+    ].join("\n"),
+  );
+
+  console.log(`wrote ${written.length + 1} files to ${OUT}`);
+  console.log(`admissible rows: ${admissible.map((r) => r.model).join(", ") || "(none)"}`);
+  console.log(`quarantined rows: ${quarantined.map((q) => q.model).join(", ") || "(none)"}`);
+}
+
+if (process.argv[1]?.endsWith("build-bakeoff-artifacts.ts")) main();

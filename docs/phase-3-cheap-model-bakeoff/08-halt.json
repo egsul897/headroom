@@ -1,0 +1,29 @@
+{
+  "verdict": "GATEWAY_NOT_READY",
+  "subVerdict": "GATEWAY_CREDIT_EXHAUSTED_MID_RUN",
+  "detectedAfterModels": 5,
+  "gatewayMessage": "A positive credit balance is required for all requests, including BYOK, so fallback providers remain available.",
+  "httpStatus": 402,
+  "healthCheckPassedAtStart": true,
+  "modelsConfirmed402AfterHalt": [
+    "inception/mercury-2.5",
+    "alibaba/qwen3.7-flash",
+    "nvidia/nemotron-3.5-lightning",
+    "openai/gpt-5-nano",
+    "deepseek/deepseek-v4-flash-0731"
+  ],
+  "twoOfWhichHadServedNormallyEarlierInThisRun": [
+    "inception/mercury-2.5",
+    "alibaba/qwen3.7-flash"
+  ],
+  "measuredSpendUsd": 0.04013,
+  "measuredSpendUnderstatesTrueSpend": true,
+  "whyUnderstated": "Every wall-clock timeout generated for the full 900s ceiling and was billed by the provider, but a request that never returns yields no usage object, so each was recorded as $0.00. The harness undercounts exactly the most expensive candidates, and the true account spend is not knowable from this side.",
+  "unmeasuredTimeouts": 11,
+  "notRun": [
+    "§6 1800s timeout re-test",
+    "§7 model selection",
+    "§8 concurrency 2",
+    "§9-§13 population resume and projection"
+  ]
+}

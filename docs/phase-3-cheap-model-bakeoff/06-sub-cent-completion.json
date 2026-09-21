@@ -1,0 +1,309 @@
+{
+  "question": "What percentage of the real compiler workload can a sub-$0.01-per-candidate model complete cleanly under healthy sequential conditions?",
+  "conditions": "gateway funded and health-checked at both tiers before the run; concurrency 1; unchanged production compiler; 900s per-candidate wall-clock ceiling",
+  "modelsInScope": [
+    "alibaba/qwen3.7-flash",
+    "inception/mercury-2.5"
+  ],
+  "attempted": 24,
+  "completed": 12,
+  "completionRatePct": 50,
+  "answerIsMeasuredNotEstimated": true,
+  "byAxis": [
+    {
+      "axis": "SHORT_SIMPLE_PROHIBITION",
+      "sourceSectionRef": "7.8(b)",
+      "sourceTextChars": 37,
+      "attempts": 2,
+      "completions": 2,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "LONGER_COVENANT",
+      "sourceSectionRef": "7.2(k)",
+      "sourceTextChars": 9621,
+      "attempts": 2,
+      "completions": 0,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "NESTED_SUBSECTION",
+      "sourceSectionRef": "7.3(g)(ii)(B)",
+      "sourceTextChars": 7316,
+      "attempts": 2,
+      "completions": 0,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "THRESHOLD_PROVISION",
+      "sourceSectionRef": "7.4",
+      "sourceTextChars": 5980,
+      "attempts": 2,
+      "completions": 0,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "CROSS_REFERENCE_HEAVY",
+      "sourceSectionRef": "7.10(b)",
+      "sourceTextChars": 3490,
+      "attempts": 2,
+      "completions": 1,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "PARTIAL",
+          "failureReasons": [
+            "MODEL_SCHEMA_FAILURE",
+            "SHARD_INCOMPLETE",
+            "MISSING_CONTEXT",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+            "SEMANTIC_INVENTORY_UNAVAILABLE",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "EVIDENCE_RETRIEVAL_REQUIRED",
+      "sourceSectionRef": "7.2(f)",
+      "sourceTextChars": 149,
+      "attempts": 2,
+      "completions": 2,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "PREVIOUSLY_SUCCEEDED_ON_DEEPSEEK",
+      "sourceSectionRef": "7.2(j)",
+      "sourceTextChars": 191,
+      "attempts": 2,
+      "completions": 2,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "PREVIOUSLY_SUCCEEDED_ON_DEEPSEEK_2",
+      "sourceSectionRef": "7.1(d)",
+      "sourceTextChars": 399,
+      "attempts": 2,
+      "completions": 2,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "PREVIOUSLY_TIMED_OUT",
+      "sourceSectionRef": "7.2(d)",
+      "sourceTextChars": 9095,
+      "attempts": 2,
+      "completions": 0,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "PREVIOUSLY_TIMED_OUT_2",
+      "sourceSectionRef": "7.2(h)",
+      "sourceTextChars": 9312,
+      "attempts": 2,
+      "completions": 0,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "FAILED",
+          "failureReasons": [
+            "WALL_CLOCK_TIMEOUT"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "PREVIOUSLY_STALLED_AT_CONCURRENCY_6",
+      "sourceSectionRef": "7.8(g)",
+      "sourceTextChars": 153,
+      "attempts": 2,
+      "completions": 1,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "REVIEW_REQUIRED",
+          "failureReasons": [
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "FAILED",
+          "failureReasons": [
+            "PARTIAL_COMPILATION",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ]
+        }
+      ]
+    },
+    {
+      "axis": "MEDIAN_SIZE",
+      "sourceSectionRef": "7.13",
+      "sourceTextChars": 1212,
+      "attempts": 2,
+      "completions": 2,
+      "outcomes": [
+        {
+          "model": "alibaba/qwen3.7-flash",
+          "status": "PARTIAL",
+          "failureReasons": [
+            "PROVIDER_FAILURE",
+            "SHARD_INCOMPLETE",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        },
+        {
+          "model": "inception/mercury-2.5",
+          "status": "PARTIAL",
+          "failureReasons": [
+            "MODEL_SCHEMA_FAILURE",
+            "SHARD_INCOMPLETE",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP"
+          ]
+        }
+      ]
+    }
+  ],
+  "caveat": "The denominator is the 12-candidate probe set, which is deliberately weighted toward hard structural shapes (longest, deepest, most cross-referenced) and toward candidates that previously failed. It is not a random sample of the population, so this rate is a floor for the typical case, not a population mean."
+}
