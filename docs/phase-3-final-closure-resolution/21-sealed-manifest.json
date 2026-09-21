@@ -4,7 +4,7 @@
   "sealStatus": "PARTIAL — SEALED FOR EVERYTHING THIS MISSION CAN SEAL",
   "whyNotFinal": "§32 permits the final sealed evaluation only after genuine independent reviewer decisions are imported and the residual audit is resolved. The residual audit IS resolved; the reviewer decisions are not, so the final clean evaluation has not been run and nothing has been tuned after a measurement.",
   "sealed": {
-    "phase3CompilerTree": "CHANGED THIS MISSION — see below; re-hash at commit time",
+    "phase3CompilerTree": "be290e8d9f8e3582f102795a519d5d0b3dfb389e (after the override-operator fix; semantic subtree f79bc12d unchanged)",
     "phase3CompilerTreeAtStart": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
     "semanticTreeAtStart": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
     "irTree": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
@@ -35,7 +35,20 @@
       "passed": 3894,
       "failed": 144,
       "failingIdentitySetSha256": "25e454bd84b935cbd3385815923837fde7956bed2176e6bfb0fbe07c3f634cdd"
-    }
+    },
+    "evaluationV2Tree": {
+      "before": "8d764624f57da46e821c85964b222b31894fc5ab",
+      "after": "b17e9a04e2820ddbbf8cb98c68a199c901cf0dd7"
+    },
+    "phase4TreesUnchanged": {
+      "runtime": "8fa637768316a613524e821b913f56c86111a298",
+      "input": "07d9de17ac642192572ee3590b8e13ea8e00324f",
+      "capacity": "c5f2d820d3c764d03846450c529a3f5399c423b8",
+      "transaction": "a86c423439573fdc4d4051765efa0e6e9dfc06c1",
+      "ir": "5c3ff86f1961dd1b4cd6c9ba11a2c480757197bb",
+      "verified": "identical to the starting SHA"
+    },
+    "commit": "cfe8751"
   },
   "artifactsInThisPackage": [
     "01-starting-state.json",
