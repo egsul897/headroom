@@ -1,0 +1,1293 @@
+{
+  "artifact": "§8/§9/§10 — source-grounded deterministic adjudication of the affected set.",
+  "benchmarkVersion": "evaluation-contract-v3.1.1",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "method": {
+    "whatWasNotDone": "No second three-model review was commissioned (§8). No reviewer majority was treated as the source of truth (§11).",
+    "perCaseSteps": [
+      "read the corrected ground-truth claim",
+      "decompose it into explicit material atomic propositions, each stated as the source states it",
+      "inspect the exact systemOutput candidate pool",
+      "identify the exact candidate IDs relied on",
+      "evaluate same-claim identity by address and by content",
+      "evaluate material completeness proposition by proposition",
+      "evaluate the representation role of each candidate against §10",
+      "determine CREDIT / NO_CREDIT / ABSTAIN",
+      "for NO_CREDIT, determine the composite surfacing state over the UNREPRESENTED propositions only",
+      "cite the exact evidence"
+    ],
+    "materialityTest": "A proposition is MATERIAL_INDEPENDENT when losing it would change whether a transaction is permitted, or how much capacity exists. A measurement, delivery or transitional convention attached to a proposition already listed is a QUALIFIER.",
+    "surfacingRule": "The gap set is the set of material propositions with no SUBSTANTIVE_REPRESENTATION. FULLY_SURFACED when every gap proposition carries a claim-specific flag; PARTIALLY_SURFACED when at least one does and at least one does not; NOT_SPECIFICALLY_SURFACED when none does. This is V3.1's own instruction that an explicit atomic decomposition takes precedence over its derived structural and correspondence signals.",
+    "prohibitedAtoms": [
+      "remaining material components",
+      "rest of claim",
+      "other elements"
+    ]
+  },
+  "affectedCaseCount": 22,
+  "adjudications": [
+    {
+      "caseId": "CASE-1284ab8e71",
+      "bucket": "READJUDICATION_REQUIRED_BENCHMARK_CHANGE",
+      "correctedGroundTruthClaim": "Section 6.08(a) prohibits payments in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes) except for six enumerated carve-outs: (i) payments in respect of the Secured Obligations; (ii) scheduled principal, interest and other required amounts on Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness; (iii) payments resulting from a refinancing permitted by Section 6.01(d); (iv) payments of Subordinated Indebtedness to the extent its own subordination terms permit; (v) payments to the extent the Payment Conditions are satisfied; and (vi) payments not exceeding $500,000 in the aggregate in any fiscal year, available only where no other clause of Section 6.08(a) would permit the payment at the time. Section 6.08(b) separately prohibits amendments to Subordinated Indebtedness terms materially adverse to the Administrative Agent or the Lenders, as determined by the Administrative Agent in its Permitted Discretion.",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "General prohibition on making any payment in respect of Indebtedness other than Indebtedness in respect of the Secured Notes.",
+          "sourceQuotation": "“(a) Make any payment in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), except the following payments of Indebtedness shall be permitted:”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "compiler-rule:lsb-2023-abl-credit-agreement:7:Section6.08(a)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "Carve-out (i): payments in respect of the Secured Obligations are permitted.",
+          "sourceQuotation": "“(i) payments in respect of the Secured Obligations;”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P3",
+          "proposition": "Carve-out (ii): scheduled principal, interest and other required amounts on Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness, are permitted.",
+          "sourceQuotation": "“(ii) scheduled payments of principal and interest, and payment of any other amount, in each case to the extent such payment is required pursuant to the terms of any Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P4",
+          "proposition": "Carve-out (iii): payments resulting from a refinancing permitted by Section 6.01(d) are permitted.",
+          "sourceQuotation": "“(iii) payments of Indebtedness as a result of any refinancing of Indebtedness permitted by Section 6.01(d);”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P5",
+          "proposition": "Carve-out (iv): payments of Subordinated Indebtedness are permitted only to the extent permitted by its own terms or its subordination agreement.",
+          "sourceQuotation": "“(iv) payments of Subordinated Indebtedness to the extent permitted in accordance with the terms of such Subordinated Indebtedness or any agreement with respect thereto governing the subordination thereof;”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P6",
+          "proposition": "Carve-out (v): payments are permitted to the extent the Payment Conditions are satisfied.",
+          "sourceQuotation": "“(v) payments of Indebtedness to the extent the Payment Conditions are satisfied; and”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "discovery:discovery-candidate:67064d13c52b6ff4d62fefa3"
+          ]
+        },
+        {
+          "id": "P7",
+          "proposition": "Carve-out (vi): payments of Indebtedness not exceeding $500,000 in the aggregate in any fiscal year are permitted.",
+          "sourceQuotation": "“(vi) payments of Indebtedness not to exceed $500,000 in the aggregate in any fiscal year of the Loan Parties”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P8",
+          "proposition": "Anti-stacking proviso: a payment under clause (vi) is permitted only if it would not, at the time, be permitted under any other clause of Section 6.08(a).",
+          "sourceQuotation": "“it being understood and agreed that any payment of Indebtedness made pursuant this clause (vi) shall only be permitted if such payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.08(a)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P9",
+          "proposition": "Section 6.08(b) prohibits amending the terms of any document evidencing Subordinated Indebtedness in a manner materially adverse to the Administrative Agent or the Lenders, as determined by the Administrative Agent in its Permitted Discretion.",
+          "sourceQuotation": "“(b) No Loan Party shall amend, modify, alter, or change any of the terms or conditions of any agreement, instrument, document, indenture, or other writing evidencing or concerning Subordinated Indebtedness if such amendment, modification, alteration or change would be materially adverse to the Administrative Agent or the Lenders”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "compiler-rule:lsb-2023-abl-credit-agreement:7:Section6.08(a)",
+        "discovery:discovery-candidate:67064d13c52b6ff4d62fefa3",
+        "discovery:discovery-candidate:cea37d84cffe6e2e218270d9",
+        "discovery:discovery-candidate:0aedf65770c4567350dba903",
+        "discovery:discovery-candidate:7cf5d8bf8b51cb8a788e95e6"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "PARTIAL",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "FULL"
+      },
+      "reasoning": "The only SUBSTANTIVE_REPRESENTATION captures P1 and then points at the exceptions (“exception: See permitted payments (i)-(vi) of Section 6.08(a)”). §10 is explicit that a general pointer to enumerated exceptions does not represent each independently gated exception where losing the gates would alter transaction permission — and P6 (Payment Conditions), P7/P8 ($500,000 subject to anti-stacking) and P5 (subordination terms) each change what may be paid. P9 exists only as an INVENTORY_ONLY discovery candidate, which §10 forbids from supplying a missing substantive atom. For surfacing, the only claim-specific flag that names a gap proposition is the NEEDS_REVIEW flag on 6.08(a)(v), which surfaces P6. The section-level 6.08 container flag sits at the claim's own address but its own text declares its scope to be “the section's own general/chapeau language” — that is P1, which is already represented — so under §10's address-versus-scope rule it does not surface P2–P5 or P7–P9. One gap proposition surfaced, seven not: PARTIALLY_SURFACED."
+    },
+    {
+      "caseId": "CASE-166617b06a",
+      "bucket": "READJUDICATION_REQUIRED_RUBRIC_DEPENDENCY",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "On the Effective Date the Existing Credit Agreement is amended, superseded and restated in its entirety by this Agreement, and this is expressly not a novation.",
+          "sourceQuotation": "“Effective on the Effective Date, the terms and provisions of the Existing Credit Agreement are amended, superseded and restated in their entirety by this Agreement”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "ir-rule:ir-rule:4f30a13212fd33c21d641317",
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "Existing liens, guarantees and obligations outstanding on the Effective Date continue and are re-evidenced under this Agreement.",
+          "sourceQuotation": "“any deeds of trust, mortgages, liens, security interests or contractual or legal rights securing” the Existing Credit Agreement obligations",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "ir-rule:ir-rule:1eee93e6374572f5d91daab8",
+          "surfacedBy": [
+            "coverage-unit:64fb566abb3a1d75688e51a9e9bade982e00cecfc08b27bd61701dd46ab25e32",
+            "coverage-unit:1a44c60cbc0384a18597bed5c79f3a71e1fd9c5f4dd7afa9dd1e76a16eb6f266",
+            "coverage-unit:fdfba63ff43e31d747e5c8d001444cce721f65718552d7dc92d1299402ec39f7"
+          ]
+        },
+        {
+          "id": "P3",
+          "proposition": "“Commitments” under the Existing Credit Agreement continue as Revolving Commitments under this Agreement.",
+          "sourceQuotation": "Section 1.11(b) of the doc-a 2022 A&R, continuation of Existing Credit Agreement Commitments as Revolving Commitments",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P4",
+          "proposition": "The Administrative Agent may effect reallocations, sales and assignments among Lenders so that each Lender's Credit Exposure reflects its Applicable Percentage on the Effective Date, without payment of any assignment fee.",
+          "sourceQuotation": "“the reallocation, sales and assignments are deemed effected by way of, and subject to the terms and conditions of, Assignment and Assumptions, without payment of any related assignment fee”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "ir-rule:ir-rule:5ac07e3b86e39b1c198c590a",
+            "ir-rule:ir-rule:6889a4813012716f6b69cb3b",
+            "ir-rule:ir-rule:b1313b242ee5eadda4d8ed71",
+            "coverage-unit:766cb495f52e9f933d6913e8d10001f68f08f7a1065cda3c0866916ed4a60f65"
+          ]
+        },
+        {
+          "id": "P5",
+          "proposition": "Accrued interest and fees under the Existing Credit Agreement, plus break costs, are payable on the Effective Date.",
+          "sourceQuotation": "Section 1.11(b) of the doc-a 2022 A&R, accrued interest, fees and break funding amounts payable on the Effective Date",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P6",
+          "proposition": "Each Loan Party ratifies and reaffirms its prior guarantees and Lien grants.",
+          "sourceQuotation": "Section 1.11 of the doc-a 2022 A&R, ratification and reaffirmation by each Loan Party",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "ir-rule:ir-rule:4f30a13212fd33c21d641317",
+        "ir-rule:ir-rule:1eee93e6374572f5d91daab8",
+        "ir-rule:ir-rule:3ec755027950ed6ff173ab8f",
+        "ir-rule:ir-rule:5ac07e3b86e39b1c198c590a",
+        "ir-rule:ir-rule:6889a4813012716f6b69cb3b",
+        "ir-rule:ir-rule:b1313b242ee5eadda4d8ed71",
+        "coverage-unit:64fb566abb3a1d75688e51a9e9bade982e00cecfc08b27bd61701dd46ab25e32",
+        "discovery:discovery-candidate:2b735814977763255f1563c0"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "PARTIAL",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "PARTIAL"
+      },
+      "reasoning": "Six SUBSTANTIVE_REPRESENTATIONs sit at 1.11(a) and one at 1.11(b)(i). Between them they carry P1 and P2, so completeness is PARTIAL rather than NONE and credit stays NO_CREDIT because four material propositions are unrepresented. Of those four, P4 is specifically surfaced by a cluster of HONEST_UNRESOLVED rules at 1.11(b)(iv) that quote the reallocation and no-assignment-fee language directly. P3, P5 and P6 — the continuation of Commitments as Revolving Commitments, the Effective-Date payment of accrued interest, fees and break costs, and each Loan Party's ratification and reaffirmation — are neither represented nor warned. A scan of the whole 60-candidate pool for “Revolving Commitment”, “accrued interest”, “break”, “ratif” and “reaffirm” returns nothing anchored to this claim."
+    },
+    {
+      "caseId": "CASE-2034884b7a",
+      "bucket": "READJUDICATION_REQUIRED_RUBRIC_DEPENDENCY",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Prohibition on merger, consolidation or reclassification of stock.",
+          "sourceQuotation": "“SECTION 6.04 ... (a) merge into or consolidate with any other Person, or permit any other Person to merge into or consolidate with it, or reclassify its stock”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "compiler-rule:lsb-2023-abl-credit-agreement:4:Section6.03(a)"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "Prohibition on liquidation or dissolution, subject to a good-faith carve-out for a non-Loan-Party Subsidiary whose assets transfer to a Loan Party.",
+          "sourceQuotation": "“(b) liquidate or dissolve”, with the Borrower Representative good-faith carve-out",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "discovery:discovery-candidate:9b17a56d58808b2c60885829"
+          ]
+        },
+        {
+          "id": "P3",
+          "proposition": "Prohibition on the sale of all or substantially all of the assets of a Loan Party.",
+          "sourceQuotation": "“(c) ... sell ... all or substantially all of the assets”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "compiler-rule:lsb-2023-abl-credit-agreement:4:Section6.03(a)",
+        "discovery:discovery-candidate:9b17a56d58808b2c60885829",
+        "discovery:discovery-candidate:94b354aa0aa621e0de76a529"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "FULL"
+      },
+      "reasoning": "The two SUBSTANTIVE_REPRESENTATIONs in the pool are at Section 6.01(i) and Section 6.04(a) — different claims — so nothing represents this one. The HONEST_UNRESOLVED compiled rule at Section 6.03(a) declares “VERIFICATION_FAILED: cited section ‘Section 6.03(a)’ not found verbatim in source text”, which surfaces P1. The discovery SAFETY_FLAG sits at the claim's own address 6.03, but its own text describes only the good-faith liquidation carve-out, so under §10's address-versus-scope rule it surfaces P2 and not the rest. Nothing surfaces P3, the all-or-substantially-all asset sale limb. This is the case the frozen evaluator's own V3.1 delta already flagged as the AMB-1 shape in the LSB dataset."
+    },
+    {
+      "caseId": "CASE-2aa00d5566",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness.",
+          "sourceQuotation": "“SECTION 6.01. Indebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (q).",
+          "sourceQuotation": "clauses (a) through (q) of Section 6.01, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:9abe33eb7732e17856375faac8f15ca05abd4de316da282b870d4a2f5737c183",
+        "coverage-unit:b281fa9f21bb1eed86502eb4305f769b29b31f9af7e84055a2099c706ddd80a0",
+        "coverage-unit:bf99be6e72342e8839305e3c402e7a3a351e2eff3ad629865d43ffd45801b5d7"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "NOT_SPECIFICALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "NOT_SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "The candidate pool contains no SUBSTANTIVE_REPRESENTATION of any kind for this claim (60 candidates: 35 SAFETY_FLAG, 24 HONEST_UNRESOLVED, 1 INVENTORY_ONLY). Every claim-address-related flag is anchored at a strict enumerated descendant such as 6.01(i)(i)(ii)(ii)(ii), and each one's own text is a specific sub-basket (a supply-chain financing carve-out, a refinancing limb, a $25,000,000/25% basket). None names the chapeau prohibition or the enumeration. The decision is unchanged; what changes is that it can now be checked, because the packet's excerpt previously carried the “Prime Rate” definition instead of Section 6.01."
+    },
+    {
+      "caseId": "CASE-393f8732d2",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it.",
+          "sourceQuotation": "“SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:08c0cbe28dd53b1b4bd75df45c3ea36eb8da6eb7edce1c"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "No Loan Party will permit any Restricted Subsidiary to issue any additional Equity Interest in itself, other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04.",
+          "sourceQuotation": "“nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:08c0cbe28dd53b1b4bd75df45c3ea36eb8da6eb7edce1c"
+          ]
+        },
+        {
+          "id": "P3",
+          "proposition": "Both prohibitions are subject to the exceptions enumerated in clauses (a) through (k).",
+          "sourceQuotation": "clauses (a) through (k) of Section 6.05, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:08c0cbe28dd53b1b4bd75df45c3ea36eb8da6eb7edce1c"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:08c0cbe28dd53b1b4bd75df45c3ea36eb8da6eb7edce1c"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "FULLY_SURFACED",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "Identical shape to CASE-5a66cad386: no representation, and one whole-unit HONEST_UNRESOLVED coverage unit at the claim's own address declaring the section discovered but never compiled. Decision unchanged; the repaired excerpt replaces a compliance-certificate exhibit form that sat 326,537 characters away from the operative section."
+    },
+    {
+      "caseId": "CASE-3e2b123d74",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Notwithstanding the foregoing, no Loan Party or Restricted Subsidiary may consummate any transaction — by way of Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, in a single transaction or a series — that results in the Disposition of intellectual property material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary.",
+          "sourceQuotation": "“Notwithstanding the foregoing, no Loan Party or any Restricted Subsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transaction or a series of transactions) of intellectual property that is material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:19a05c35c04c2e7a0a9d568ff2f109a617ead1884",
+            "coverage-unit:b26882867f27c5727f22d790d95756c26c9586188"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "The Company and its Restricted Subsidiaries may nonetheless grant non-exclusive licences of intellectual property to an Unrestricted Subsidiary in the ordinary course of business so long as they retain the beneficial ownership and the same rights to use that intellectual property as held prior to the licence.",
+          "sourceQuotation": "“provided that the Company and its Restricted Subsidiaries may grant non-exclusive licenses of any intellectual property to any Unrestricted Subsidiary in the ordinary course of business so long as the Company and its Restricted Subsidiaries retain the beneficial ownership and the same rights to use such intellectual property as held prior to such license”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:19a05c35c04c2e7a0a9d568ff2f109a617ead1884",
+        "coverage-unit:b26882867f27c5727f22d790d95756c26c9586188"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "NOT_SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION. Two SAFETY_FLAG coverage units carry the flush prohibition inside their own 500-character unit text and declare it a CRITICAL unit with no adequate compiled or verified IR representation (CANDIDATE_DISCOVERED_NEVER_COMPILED), so P1 is specifically surfaced. Their unit text stops at “to any Un” and never reaches the licence proviso, so P2 is not. The binary projection is unchanged from the prior adjudication; the composite state is now recorded as PARTIALLY_SURFACED rather than collapsed, which is strictly more informative."
+    },
+    {
+      "caseId": "CASE-4a1c6a48a0",
+      "bucket": "READJUDICATION_REQUIRED_SOURCE_RESOLUTION",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "For the “Unrestricted Subsidiary” definition and the covenants under Sections 5.15 and 6.04, “investments” include the proportionate share of the fair market value of a Subsidiary's net assets at the time it is designated an Unrestricted Subsidiary.",
+          "sourceQuotation": "“For purposes of the definition of ‘Unrestricted Subsidiary’ and the covenants described under Section 5.15 and under this Section 6.04: (x) ‘investments’ shall include the portion (proportionate to the Company’s or the applicable Restricted Subsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of a Subsidiary at the time that such Subsidiary is designated an Unrestricted Subsidiary”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "On re-designation as a Restricted Subsidiary, a permanent deemed investment remains in an amount, if positive, equal to the investment at the time of re-designation less the proportionate fair market value of the Subsidiary's net assets at that time.",
+          "sourceQuotation": "“upon a re-designation of such Subsidiary as a Restricted Subsidiary, the Company (or the applicable Restricted Subsidiary owning such re-designated Subsidiary) shall be deemed to continue to have a permanent ‘investment’ in an Unrestricted Subsidiary in an amount (if positive) equal to (A) ... ‘investment’ in such Subsidiary at the time of such re-designation, less (B) the portion ... of the fair market value of the net assets of such Subsidiary at the time of such re-designation”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P3",
+          "proposition": "Any property transferred to or from an Unrestricted Subsidiary is valued at its fair market value at the time of the transfer.",
+          "sourceQuotation": "“(y) any property transferred to or from an Unrestricted Subsidiary shall be valued at its fair market value at the time of such transfer”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:f2a2729f36ccf2610ef3a501dfc7a84b5745927a4",
+        "coverage-unit:922d0d7c77217bce62ec6256478965cb352ef3f2f",
+        "coverage-unit:b6a49835c609f1683c0f7786c424a2ccda1dff9fe",
+        "coverage-unit:7ffe6af1f5c863b465b87abc895a553c67162cb38"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "NOT_SPECIFICALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "PARTIAL"
+      },
+      "reasoning": "SOURCE RESOLVED. The flush valuation rules sit 6,734 characters into the operative Section 6.04 span and the claim is confirmed verbatim, so the case moves from SOURCE_UNRESOLVED to VERIFIED. Locating them is what changes the adjudication. The pool's two SUBSTANTIVE_REPRESENTATIONs are the “Acquisition” definition and a Section 1.11(a) restatement rule — neither is this claim. Four flags carry a “6.04(2)” address and their own unit text is about redesignation and fair market value, which is why the prior adjudication read them as claim-specific. Against the located source they are not: their text — “the transfer of all or substantially all of the assets of an Unrestricted Subsidiary to a Borrower or any Restricted Subsidiary), the fair market value ... of the investment in such Unrestricted Subsidiary at the time of such redesignation, in each case, to the extent such investment ... was made using the Available Amount pursuant to Section 6.04(q)” — is clause (vi) of the Available Amount definition at offset 30254 in Article I, not the Section 6.04 flush. It governs how much the Available Amount builds back on redesignation, not what counts as an “investment” for the covenant. §10 says a warning counts only for the proposition it actually surfaces, so none of P1, P2 or P3 is surfaced. This is the only case in the corpus where resolving the source turned a claimed warning into a dangerous silent omission."
+    },
+    {
+      "caseId": "CASE-579c5d3f33",
+      "bucket": "READJUDICATION_REQUIRED_RUBRIC_DEPENDENCY",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Transactions with Affiliates involving more than $2,500,000 must be on terms no less favourable than those obtainable in a comparable arm's-length transaction.",
+          "sourceQuotation": "Section 7.10 of the CONMED Eighth A&R, fair-and-reasonable-terms requirement, “$2,500,000”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "The requirement is subject to enumerated carve-outs for ordinary-course transactions, cost allocations, tax arrangements and the Receivables Program.",
+          "sourceQuotation": "the enumerated exceptions of Section 7.10, including the clause (v) Investment limitation",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "discovery:discovery-candidate:176ac085bab5c6de92914f92",
+            "audit-finding:8af7ea5e1740c12ae545a735bf40ff367a607055e4944f3d92e9c5b4bdb3bbfa"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "discovery:discovery-candidate:176ac085bab5c6de92914f92",
+        "audit-finding:8af7ea5e1740c12ae545a735bf40ff367a607055e4944f3d92e9c5b4bdb3bbfa"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "PARTIAL"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION. The flag at the claim's own address 7.10 describes itself as a “Carve-out limiting the (v) exception so it does not cover an Investment not specifically contemplated by Section 7.8”, and the descendant flag at 7.10(b)(i) reports that six enumerated items were not separated by the structural parser. Both are about the carve-out set, so P2 is surfaced. Nothing warns that the operative arm's-length requirement and its $2,500,000 trigger — the economic substance of the covenant — are unrepresented."
+    },
+    {
+      "caseId": "CASE-5a66cad386",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it.",
+          "sourceQuotation": "“SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:1edc96335466b19295c339677ac5cdc61b039d637f55d6"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "No Loan Party will permit any Restricted Subsidiary to issue any additional Equity Interest in itself, other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04.",
+          "sourceQuotation": "“nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:1edc96335466b19295c339677ac5cdc61b039d637f55d6"
+          ]
+        },
+        {
+          "id": "P3",
+          "proposition": "Both prohibitions are subject to the exceptions enumerated in clauses (a) through (k).",
+          "sourceQuotation": "clauses (a) through (k) of Section 6.05, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:1edc96335466b19295c339677ac5cdc61b039d637f55d6"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:1edc96335466b19295c339677ac5cdc61b039d637f55d6"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "FULLY_SURFACED",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION, so NO_CREDIT. Surfacing turns on one candidate: a HONEST_UNRESOLVED coverage unit anchored at the claim's own address 6.05, whose own text is the section heading and opening words (“Asset Sales . No Loan Party will, nor will it”) and whose state is coverageState=SOURCE_CONTEXT_INCOMPLETE with “a candidate was discovered for this unit's region but never compiled to IR”. That is a whole-unit declaration that the section was seen and not represented, so it covers every proposition in the claim. Note for the record: the frozen evaluator's V3.1 projection demoted this case to PARTIALLY_SURFACED because the only flag that reached its surfacedAsUnsafeBy list was a descendant at 6.05(A)(a)(B). The explicit atomic decomposition, which V3.1 itself says takes precedence over the derived signals, reaches FULLY_SURFACED on the packet evidence."
+    },
+    {
+      "caseId": "CASE-5ac1cd56ef",
+      "bucket": "READJUDICATION_REQUIRED_RUBRIC_DEPENDENCY",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will enter into, incur or permit to exist any agreement prohibiting, restricting or conditioning the ability of a Loan Party or Restricted Subsidiary to create, incur or permit to exist any Lien upon its property.",
+          "sourceQuotation": "“(a) the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon any of its property”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:d39baa122dbbfca52dabc030a9c6d86430cb373a727ce3207a3a121d6f7bbf54"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "The same prohibition applies to any agreement restricting the ability of a Restricted Subsidiary to pay dividends or distributions on its Equity Interests, make or repay loans or advances to a Borrower or Restricted Subsidiary, or Guarantee Indebtedness of a Borrower or Restricted Subsidiary.",
+          "sourceQuotation": "“(b) the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interest”, and the loan/advance and Guarantee limbs that follow",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:c08f07c17673a0fe6111470ff2d58d1e7e7bd94d6e6d202774386497b0997188",
+            "coverage-unit:4947a0fbba5cdb6656ff38e3438b10b9cfb035de7cfc8b9c4ffc4d76531df4e8",
+            "coverage-unit:85ac5d16c7dcddfd734a9ba131e08f10375786699e7cfb3c84acc9b35c797372"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:d39baa122dbbfca52dabc030a9c6d86430cb373a727ce3207a3a121d6f7bbf54",
+        "coverage-unit:c08f07c17673a0fe6111470ff2d58d1e7e7bd94d6e6d202774386497b0997188",
+        "coverage-unit:061997e0bde697724fde2e789106910a500c8517e5713fcb8460e1963c24d4a9",
+        "coverage-unit:f953585b4489cab978d09e0552da751f311b2c7d5b18926ce39bd02760f2b27b"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "FULLY_SURFACED",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "FULL"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION, so NO_CREDIT. Every claim-specific flag is anchored at a strict descendant — 6.10(a), 6.10(b), 6.10(b)(i), 6.10(b)(i)(a) — and the frozen evaluator's V3.1 structural rule therefore demoted this case to PARTIALLY_SURFACED. The explicit atomic decomposition reaches the opposite answer and V3.1 says the decomposition takes precedence: the claim has exactly two material propositions, limb (a) and limb (b), and the descendant flags cover BOTH, quoting each limb's own operative words. When the descendants collectively tile the claim, nothing is left unwarned. Recorded deliberately as a promotion, in a mission whose other rubric-dependency findings all demote, so that the decomposition rule is visibly not being applied in one direction only."
+    },
+    {
+      "caseId": "CASE-5c33066800",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Applicable EBITDA means EBITDA for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP.",
+          "sourceQuotation": "“Applicable EBITDA means, at any time, EBITDA for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "ir-definition:ir-definition:2f660825c4d06c8c85d1c437",
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "The measurement period is the four consecutive fiscal quarters ended on or most recently prior to that time for which financial statements have been delivered to the Administrative Agent pursuant to Section 5.01(a) or (b).",
+          "sourceQuotation": "“for the period of four consecutive fiscal quarters of the Company ended on or most recently prior to such time for which financial statements have been delivered to the Administrative Agent pursuant to Section 5.01(a) or (b)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "ir-definition:ir-definition:2f660825c4d06c8c85d1c437",
+          "surfacedBy": []
+        },
+        {
+          "id": "P3",
+          "proposition": "Before the first delivery under Section 5.01(a) or (b), the most recent financial statements referred to in Section 3.04(a) are used instead.",
+          "sourceQuotation": "“(or, if prior to the date of the delivery of the first financial statements to be delivered pursuant to Section 5.01(a) or (b), the most recent financial statements referred to in Section 3.04(a))”",
+          "independence": "QUALIFIER",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "ir-definition:ir-definition:2f660825c4d06c8c85d1c437"
+      ],
+      "credit": "CREDIT",
+      "completeness": "FULL",
+      "compositeSurfacing": "NOT_APPLICABLE",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "CREDIT",
+        "surfacingBinary": "NOT_APPLICABLE",
+        "completeness": "FULL"
+      },
+      "reasoning": "A COMPILED_IR_DEFINITION of “Applicable EBITDA” with sufficiency=COMPLETE and no unresolvedReasons captures P1 and P2. §10 forbids rejecting a SUBSTANTIVE_REPRESENTATION merely because reviewStatus=REVIEW_REQUIRED. P3 is a one-time transitional convention selecting which financial statements to use before the first delivery; it does not change whether any transaction is permitted or how much capacity exists, so it is a QUALIFIER and does not defeat completeness. Disclosed limitation: the packet's stored excerpt for this candidate is 284 characters and stops at “have been delivered”, so whether the representation itself carries the Section 5.01(a)/(b) and Section 3.04(a) cross-references cannot be established from the packet. Decision unchanged from the prior adjudication."
+    },
+    {
+      "caseId": "CASE-768547a920",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Interest Coverage Ratio means, for any period of four consecutive fiscal quarters of the Company, the ratio of (a) EBITDA for such period to (b) Consolidated Interest Expense for such period.",
+          "sourceQuotation": "“‘ Interest Coverage Ratio ’ means, for any period of four consecutive fiscal quarters of the Company, the ratio of (a) EBITDA for such period to (b) Consolidated Interest Expense for such period.”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "For each Annualized Quarter ending 31 March, 30 June, 30 September and 31 December 2022, Consolidated Interest Expense equals post-Effective-Date Consolidated Interest Expense multiplied by four, two, four thirds and one respectively.",
+          "sourceQuotation": "“Notwithstanding the foregoing, solely for purposes of determining the Interest Coverage Ratio for any period of four consecutive fiscal quarters ending as of March 31, 2022, June 30, 2022, September 30, 2022 or December 31, 2022 (each such fiscal quarter being referred to as an ‘ Annualized Quarter ’), Consolidated Interest Expense shall be equal to the product of (I) ... multiplied by (II) (A) four ... (B) two ... (C) four thirds (4/3) ... or (D) one (1)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:1453d5df1475e6deab9b7e2bd960138e1b89df4efd9de3",
+            "coverage-unit:0bdc66dc7ca7d46ebfaf50209c577d4fd9da20d72bde4f"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:1453d5df1475e6deab9b7e2bd960138e1b89df4efd9de3",
+        "coverage-unit:0bdc66dc7ca7d46ebfaf50209c577d4fd9da20d72bde4f",
+        "ir-definition:ir-definition:2f660825c4d06c8c85d1c437",
+        "ir-definition:ir-definition:007a5206dfd349a2dec8b9c0"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "NOT_SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "The only two SUBSTANTIVE_REPRESENTATIONs in the pool define “Acquisition” and “Applicable EBITDA” — different defined terms — so nothing represents this claim. Two SAFETY_FLAG coverage units DO carry the Annualized Quarter proviso verbatim in their own unit text, with coverageState=UNREPRESENTED and flaggedDangerousUnaccounted=true, so P2 is specifically surfaced. Their unit text begins at “(b) Consolidated Interest Expense for such period” and never contains the ratio's own definition or its numerator, so P1 is not surfaced. Their addresses — 2.09(ii)(ii)(b)(a)(b) and 7.01(b)(a)(b) — are in different base sections from the claim, so structure is not decisive and the decision rests on content, as V3.1 requires. Binary projection unchanged from the prior adjudication."
+    },
+    {
+      "caseId": "CASE-88cfbb3bb8",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it.",
+          "sourceQuotation": "“SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "No Loan Party will permit any Restricted Subsidiary to issue any additional Equity Interest in itself, other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04.",
+          "sourceQuotation": "“nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P3",
+          "proposition": "Both prohibitions are subject to the exceptions enumerated in clauses (a) through (k).",
+          "sourceQuotation": "clauses (a) through (k) of Section 6.05, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "discovery:discovery-candidate:7a11d163ac0f012c731566f3"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "discovery:discovery-candidate:7a11d163ac0f012c731566f3",
+        "discovery:discovery-candidate:f00dadce443ea55a003d7fb8"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION. Two flags carry the claim's own address 6.05. The first says in its own words “Flagged sub-clause likely providing a specific exception or basket to the Asset Sales prohibition; full text not included in provided excerpt” — a sub-clause-scoped warning despite the parent address, which §10 says does not override the narrower scope its content shows; it surfaces P3. The second names the fair-value / 75%-cash requirement, which is the §6.05(k) proviso and is not one of this claim's propositions. Neither warns that the chapeau prohibitions P1 and P2 are unrepresented. One gap proposition surfaced, two not: PARTIALLY_SURFACED, which projects to NOT_SPECIFICALLY_SURFACED and makes this a dangerous silent omission of the chapeau."
+    },
+    {
+      "caseId": "CASE-8c29f13dc0",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness.",
+          "sourceQuotation": "“SECTION 6.01.\\nIndebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (r).",
+          "sourceQuotation": "clauses (a) through (r) of Section 6.01, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "NOT_SPECIFICALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "NOT_SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION, and — uniquely in this group — not a single one of the 60 candidates carries a 6.01 address at all. The section is entirely absent from the claim-address pool. Decision unchanged on repaired evidence."
+    },
+    {
+      "caseId": "CASE-9001417020",
+      "bucket": "READJUDICATION_REQUIRED_BENCHMARK_CHANGE",
+      "correctedGroundTruthClaim": "Restricted Debt Payments permitted so long as no Event of Default exists, in an aggregate amount not to exceed (A) the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period, plus (B) at the Borrower's election, the amount of Restricted Payments then permitted under Section 6.04(a)(x), with any amount so used reducing the amount available under Section 6.04(a)(x).",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Restricted Debt Payments are capped at the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA.",
+          "sourceQuotation": "“the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "analyzer-rule:fwrg-2021-credit-agreement:25:Section6.04(b)(iv)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "At the Borrower's election the basket is increased by the amount then available under Section 6.04(a)(x), and any amount so used reduces the amount available under Section 6.04(a)(x).",
+          "sourceQuotation": "“any amount utilized ... shall result in a reduction in the amount available under Section 6.04(a)(x)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "analyzer-rule:fwrg-2021-credit-agreement:25:Section6.04(b)(iv)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P3",
+          "proposition": "The permission is available only so long as no Event of Default exists.",
+          "sourceQuotation": "“(iv) so long as no Event of Default exists, Restricted Debt Payments in an aggregate amount not to exceed (A) ...”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "analyzer-rule:fwrg-2021-credit-agreement:25:Section6.04(b)(iv)",
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "analyzer-rule:fwrg-2021-credit-agreement:25:Section6.04(b)(iv)",
+        "discovery:discovery-candidate:505b87080fada588cc2975be"
+      ],
+      "credit": "CREDIT",
+      "completeness": "FULL",
+      "compositeSurfacing": "NOT_APPLICABLE",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "CREDIT",
+        "surfacingBinary": "NOT_APPLICABLE",
+        "completeness": "FULL"
+      },
+      "reasoning": "The representation carries threshold=21000000, formula=GREATER_OF_FLAT_OR_PCT_EBITDA, an explicit NO_DEFAULT condition, and prose naming the elective add-on and the corresponding reduction to Section 6.04(a)(x). The decision is unchanged, but the basis changes: the correction removes the risk that the source-confirmed NO_DEFAULT gate would be scored as an invented condition."
+    },
+    {
+      "caseId": "CASE-963cc44044",
+      "bucket": "READJUDICATION_REQUIRED_RUBRIC_DEPENDENCY",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Prohibition on consensual restrictions on a Subsidiary's ability to pay dividends or make other distributions in respect of its Capital Stock.",
+          "sourceQuotation": "“(a) pay dividends or make any other distributions in respect of any Capital Stock of such Subsidiary”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "discovery:discovery-candidate:53e4ea586b2732863f2d4c10"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "Prohibition on consensual restrictions on a Subsidiary's ability to make loans, advances or other Investments in the Parent Borrower or another Subsidiary.",
+          "sourceQuotation": "the second prohibited restriction type of Section 7.14",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "discovery:discovery-candidate:6d475ada38fa539312598179"
+          ]
+        },
+        {
+          "id": "P3",
+          "proposition": "Prohibition on consensual restrictions on a Subsidiary's ability to transfer assets to the Parent Borrower or another Subsidiary.",
+          "sourceQuotation": "the asset-transfer limb of Section 7.14",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P4",
+          "proposition": "The prohibition is subject to carve-outs for the Loan Documents, agreements governing a permitted Disposition, and the Receivables Program.",
+          "sourceQuotation": "the enumerated carve-outs of Section 7.14",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "discovery:discovery-candidate:53e4ea586b2732863f2d4c10",
+        "discovery:discovery-candidate:6d475ada38fa539312598179"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "PARTIAL"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION. The descendant flag at 7.14(a) carries the dividend limb verbatim and surfaces P1. The flag at the claim's own address 7.14 describes itself as identifying “the second prohibited type of restriction” — limb-scoped content under a parent address — and surfaces P2. The asset-transfer limb and the carve-out set carry no warning."
+    },
+    {
+      "caseId": "CASE-a898053843",
+      "bucket": "READJUDICATION_REQUIRED_BENCHMARK_CHANGE",
+      "correctedGroundTruthClaim": "A Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that (i) to the extent the disposition involves ABL Priority Collateral, the Borrowers shall have delivered, concurrently with or prior to the disposition, a new Borrowing Base Certificate demonstrating compliance with Section 2.01(a), (ii) the assets are sold for Fair Market Value, and (iii) the aggregate Fair Market Value of all assets sold in any fiscal year under Section 6.04(a) does not exceed the greater of $10,000,000 and 1.0% of the total consolidated assets of the Loan Parties and their Subsidiaries. The ABL Priority Collateral condition scopes the Borrowing Base Certificate requirement only; it does not scope the basket.",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "A Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets (a general disposal permission, not one limited to a collateral type).",
+          "sourceQuotation": "“(a) a Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "compiler-rule:lsb-2023-abl-credit-agreement:5:Section6.04(a)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "Aggregate Fair Market Value of assets sold in any fiscal year under this clause may not exceed the greater of $10,000,000 and 1.0% of total consolidated assets.",
+          "sourceQuotation": "“the greater of $10,000,000 and 1.0% of the total consolidated assets”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "compiler-rule:lsb-2023-abl-credit-agreement:5:Section6.04(a)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P3",
+          "proposition": "The assets must be sold for Fair Market Value.",
+          "sourceQuotation": "“sold for Fair Market Value”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "compiler-rule:lsb-2023-abl-credit-agreement:5:Section6.04(a)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P4",
+          "proposition": "A new Borrowing Base Certificate demonstrating compliance with Section 2.01(a) must be delivered concurrently with or prior to the disposition.",
+          "sourceQuotation": "“delivered a new Borrowing Base Certificate (giving effect to such disposition ...) demonstrating compliance with Section 2.01(a)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "compiler-rule:lsb-2023-abl-credit-agreement:5:Section6.04(a)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P5",
+          "proposition": "The Borrowing Base Certificate requirement applies only to the extent the disposition involves ABL Priority Collateral; it is a conditional branch, not the scope of the basket.",
+          "sourceQuotation": "“to the extent such disposition involves ABL Priority Collateral”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "compiler-rule:lsb-2023-abl-credit-agreement:5:Section6.04(a)",
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "compiler-rule:lsb-2023-abl-credit-agreement:5:Section6.04(a)",
+        "discovery:discovery-candidate:e79fa4f952a500410c504b81",
+        "discovery:discovery-candidate:8523d2aeab25a40630654f51"
+      ],
+      "credit": "CREDIT",
+      "completeness": "FULL",
+      "compositeSurfacing": "NOT_APPLICABLE",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "CREDIT",
+        "surfacingBinary": "NOT_APPLICABLE",
+        "completeness": "FULL"
+      },
+      "reasoning": "Headroom modelled §6.04(a) as a general SELL_ASSET permission with the ABL Priority Collateral requirement expressed as a conditional OTHER_RULE_SATISFIED branch — which is what the source says, and what the frozen benchmark denied. The decision is unchanged but the grounds invert: the system was right where the benchmark was wrong, and §10's rule that a source-confirmed condition must not be penalised because the old benchmark omitted it applies in reverse here — a correct general scope must not be penalised because the old benchmark narrowed it."
+    },
+    {
+      "caseId": "CASE-b2658c02e7",
+      "bucket": "READJUDICATION_REQUIRED_RUBRIC_DEPENDENCY",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Consolidated Senior Secured Leverage Ratio may not exceed 3.75 to 1.00, with a 0.50 step-up available on a Material Acquisition, usable at most twice and not in consecutive election periods.",
+          "sourceQuotation": "Section 7.1(a) of the CONMED Eighth A&R, “3.75 to 1.00” with the “0.50 to 1.00” Material Acquisition step-up",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "Consolidated Total Leverage Ratio may not exceed 5.50 to 1.00, with the same step-up mechanic capped at 6.00 to 1.00.",
+          "sourceQuotation": "Section 7.1(b), “5.50 to 1.00” capped at “6.00 to 1.00”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "audit-finding:93ae2fdb4c380a95718f63771e250fd0807480234cfe53c1e7582e24c20f228e",
+            "audit-finding:ff3d243e928756b0008f5187a5ee5cd804a4af47d0c31e5fb29062e5972c2c78",
+            "audit-finding:28f3e279e55f31f55a32f8ec8dd75afae276834195819b20177dac57d26839ed"
+          ]
+        },
+        {
+          "id": "P3",
+          "proposition": "Interest Coverage Ratio may not be less than 2.75 to 1.00.",
+          "sourceQuotation": "Section 7.1(c), “2.75 to 1.00”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P4",
+          "proposition": "A springing Liquidity covenant of $75,000,000 plus Early Maturing Debt applies from the date 91 days before the earliest Convertible Notes maturity, and only where Early Maturing Debt exceeds $200,000,000.",
+          "sourceQuotation": "Section 7.1(d), “$75,000,000” plus Early Maturing Debt, “91 days”, “$200,000,000”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "discovery:discovery-candidate:1b08da2e952127a1caebe77d",
+            "discovery:discovery-candidate:e37352369564a1e784e0560b",
+            "audit-finding:23392dbf53988f1c3057b7e0b43a49d2f1e9453768074915874128ad2f1d1ca7",
+            "audit-finding:9df55010bedf2cd1f00a3c89d264a10d684a7abe64966d60526a07915be0741d"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "discovery:discovery-candidate:1b08da2e952127a1caebe77d",
+        "discovery:discovery-candidate:e37352369564a1e784e0560b",
+        "audit-finding:23392dbf53988f1c3057b7e0b43a49d2f1e9453768074915874128ad2f1d1ca7",
+        "audit-finding:28f3e279e55f31f55a32f8ec8dd75afae276834195819b20177dac57d26839ed",
+        "audit-finding:93ae2fdb4c380a95718f63771e250fd0807480234cfe53c1e7582e24c20f228e",
+        "audit-finding:9df55010bedf2cd1f00a3c89d264a10d684a7abe64966d60526a07915be0741d",
+        "audit-finding:ff3d243e928756b0008f5187a5ee5cd804a4af47d0c31e5fb29062e5972c2c78"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "PARTIALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "PARTIAL"
+      },
+      "reasoning": "This is the exact scenario V3.1's own worked example describes. No SUBSTANTIVE_REPRESENTATION exists for any of the four maintenance covenants. Six flags are anchored at strict descendants — four at 7.1(d) or 7.1(d)(i) and two at 7.1(b) or 7.1(b)(ii) — so the springing Liquidity covenant and the Total Leverage covenant are specifically surfaced. The one flag at the claim's own address 7.1 says in its own words that it “Sets forth the two components (fixed $75,000,000 amount plus outstanding Early Maturing Debt) that together comprise the minimum Liquidity threshold in clause (d)” — content that is plainly clause (d)-scoped, which §10 says does not get whole-claim effect from the parent address. The Senior Secured Leverage covenant at 3.75x and the Interest Coverage covenant at 2.75x carry no warning at all. Two of four material covenants are dangerously silent."
+    },
+    {
+      "caseId": "CASE-b9ca777174",
+      "bucket": "READJUDICATION_REQUIRED_EVIDENCE_REPAIR",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness.",
+          "sourceQuotation": "“SECTION 6.01. Indebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (q).",
+          "sourceQuotation": "clauses (a) through (q) of Section 6.01, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "NOT_SPECIFICALLY_SURFACED",
+      "dangerousSilentOmission": true,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "NOT_SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION in the pool. Four flags carry a 6.01 address and all four are strict descendants — 6.01(c)(i) (the Guarantee limb) and 6.01(g)(i) (a Refinance Indebtedness limb). Neither names the chapeau prohibition or the enumeration. Decision unchanged on repaired evidence."
+    },
+    {
+      "caseId": "CASE-e008d4278a",
+      "bucket": "READJUDICATION_REQUIRED_RUBRIC_DEPENDENCY",
+      "correctedGroundTruthClaim": null,
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire Equity Interests, evidences of indebtedness or other securities of, make or permit loans or advances to, Guarantee obligations of, or make any investment or other interest in, any other Person, or acquire assets of another Person constituting a business unit.",
+          "sourceQuotation": "“SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire ...”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:cb696c3159ae21e95d4a848b809c03ffecdb91374dfbfefe5802c2975afd6583"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (r).",
+          "sourceQuotation": "clauses (a) through (r) of Section 6.04, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "coverage-unit:cb696c3159ae21e95d4a848b809c03ffecdb91374dfbfefe5802c2975afd6583"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "coverage-unit:cb696c3159ae21e95d4a848b809c03ffecdb91374dfbfefe5802c2975afd6583",
+        "discovery:discovery-candidate:c38a45beaaba2ac934b40009",
+        "discovery:discovery-candidate:94c7975a2964f042d65cd824"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "NONE",
+      "compositeSurfacing": "FULLY_SURFACED",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "FULL"
+      },
+      "reasoning": "No SUBSTANTIVE_REPRESENTATION. A HONEST_UNRESOLVED coverage unit is anchored at the claim's own address 6.04 and its own text is the section heading and chapeau (“Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted”) with coverageState=SOURCE_CONTEXT_INCOMPLETE and “a candidate was discovered for this unit's region but never compiled to IR”. That is a whole-unit declaration and it covers both propositions. As with CASE-5a66cad386, the frozen evaluator's V3.1 projection demoted this case because the only flag reaching its surfacedAsUnsafeBy list was a descendant at 6.04(2); the decomposition, which takes precedence, does not."
+    },
+    {
+      "caseId": "CASE-e3520246bd",
+      "bucket": "READJUDICATION_REQUIRED_BENCHMARK_CHANGE",
+      "correctedGroundTruthClaim": "Unlimited (uncapped-dollar) Restricted Payments, permitted so long as no Event of Default exists and so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00 as of the last day of the most recently ended Test Period.",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "The Borrower may make Restricted Payments in an uncapped dollar amount under this clause.",
+          "sourceQuotation": "“the Borrower may make Restricted Payments”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "analyzer-rule:fwrg-2021-credit-agreement:23:Section6.04(a)(xi)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P2",
+          "proposition": "The permission is gated on the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, not exceeding 3.50:1.00.",
+          "sourceQuotation": "“so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "analyzer-rule:fwrg-2021-credit-agreement:23:Section6.04(a)(xi)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P3",
+          "proposition": "The permission is available only so long as no Event of Default exists.",
+          "sourceQuotation": "“(xi) so long as no Event of Default exists”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": "analyzer-rule:fwrg-2021-credit-agreement:23:Section6.04(a)(xi)",
+          "surfacedBy": []
+        },
+        {
+          "id": "P4",
+          "proposition": "The ratio is measured as of the last day of the most recently ended Test Period.",
+          "sourceQuotation": "“as of the last day of the most recently ended Test Period”",
+          "independence": "QUALIFIER",
+          "representedBy": "analyzer-rule:fwrg-2021-credit-agreement:23:Section6.04(a)(xi)",
+          "surfacedBy": []
+        }
+      ],
+      "candidatesCited": [
+        "analyzer-rule:fwrg-2021-credit-agreement:23:Section6.04(a)(xi)",
+        "discovery:discovery-candidate:f5e9943acaa199496176a56d"
+      ],
+      "credit": "CREDIT",
+      "completeness": "FULL",
+      "compositeSurfacing": "NOT_APPLICABLE",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "NOT_SPECIFICALLY_SURFACED",
+        "completeness": "NONE"
+      },
+      "reasoning": "The single SUBSTANTIVE_REPRESENTATION at the claim's own address carries ruleType=RATIO_TEST, threshold 3.5, a RATIO_SATISFIED condition naming the Pro Forma Total Rent Adjusted Net Leverage Ratio at 3.50:1.00, and a NO_DEFAULT condition, with sufficiency=EXECUTABLE. Every material proposition of the CORRECTED claim is captured. Under the frozen benchmark the NO_DEFAULT condition read as an invented condition, because the benchmark affirmatively asserted the basket had “no default condition attached”; the primary source says the opposite. §3 is explicit that Headroom's NO_DEFAULT extraction is not to be classified as a system defect. This is the one credit flip in the corpus and it is caused entirely by the benchmark correction."
+    },
+    {
+      "caseId": "CASE-e555117f4c",
+      "bucket": "READJUDICATION_REQUIRED_SOURCE_RESOLUTION",
+      "correctedGroundTruthClaim": "EBITDA means, for any period, Net Income plus the twenty add-backs enumerated in clause (a)(i)-(xx) and minus the six deductions enumerated in clause (b)(i)-(vi), all calculated for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP; provided that the aggregate of all items added back under clauses (a)(vii), (a)(viii) and (a)(xviii)(b) may not exceed 20% of EBITDA calculated before those add-backs (the “Combined Cap”); and EBITDA for each of the four quarters of 2021 is a stipulated dollar amount that supersedes the formula for those quarters.",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "EBITDA is Net Income for the period plus the add-backs enumerated in clause (a), items (i) through (xx), and minus the deductions enumerated in clause (b), items (i) through (vi), consolidated under GAAP.",
+          "sourceQuotation": "“‘ EBITDA ’ means, for any period, Net Income for such period plus (a) ... the sum of: (i) ... (xx) ... minus (b) ... (i) ... (vi) ... all calculated for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "ir-definition:ir-definition:32c350f36f4d1860970bf978"
+          ]
+        },
+        {
+          "id": "P2",
+          "proposition": "Each of the twenty add-backs and six deductions carries its own conditions and provisos, which determine whether and how much of each item may be added or subtracted.",
+          "sourceQuotation": "the enumerated text of clauses (a)(i)–(a)(xx) and (b)(i)–(b)(vi) in the operative definition, each with its own qualifying language",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "ir-definition:ir-definition:32c350f36f4d1860970bf978"
+          ]
+        },
+        {
+          "id": "P3",
+          "proposition": "The aggregate of all items added back under clauses (a)(vii), (a)(viii) and (a)(xviii)(b) may not exceed 20% of EBITDA calculated before those add-backs.",
+          "sourceQuotation": "“the aggregate amount all items added back to Net Income during any period in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs (the ‘ Combined Cap ’)”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "ir-definition:ir-definition:32c350f36f4d1860970bf978"
+          ]
+        },
+        {
+          "id": "P4",
+          "proposition": "EBITDA for each quarter of 2021 is a stipulated dollar amount that supersedes the formula, and adjustments used in those amounts may not be reused after 31 December 2021.",
+          "sourceQuotation": "“Notwithstanding anything to the contrary set forth in this Agreement, EBITDA shall, in each case, be deemed to be the amount set forth below opposite such period, and any adjustments taken into account in calculating the amounts below will not be used in adjusting EBITDA after December 31, 2021”",
+          "independence": "MATERIAL_INDEPENDENT",
+          "representedBy": null,
+          "surfacedBy": [
+            "ir-definition:ir-definition:32c350f36f4d1860970bf978"
+          ]
+        }
+      ],
+      "candidatesCited": [
+        "ir-definition:ir-definition:32c350f36f4d1860970bf978"
+      ],
+      "credit": "NO_CREDIT",
+      "completeness": "PARTIAL",
+      "compositeSurfacing": "FULLY_SURFACED",
+      "dangerousSilentOmission": false,
+      "priorConsensus": {
+        "credit": "NO_CREDIT",
+        "surfacingBinary": "SPECIFICALLY_SURFACED",
+        "completeness": "PARTIAL"
+      },
+      "reasoning": "SOURCE RESOLVED. The definition is at offset 88521 of the doc-a extracted text and was located deterministically by matching the defined-term lead-in rather than the bare term; the integrity audit's failure to find it was a locator failure, not an absent provision. Reading it confirms exactly twenty add-backs (a)(i)-(xx) and six deductions (b)(i)-(vi), and also shows that the frozen claim OMITTED the 20% Combined Cap and the stipulated 2021 quarterly amounts. Both are added as propositions P3 and P4, which makes this benchmark case STRICTER than the version it replaces. On adjudication: the pool's representation of EBITDA is a COMPILED_IR_DEFINITION whose accountingRole is HONEST_UNRESOLVED, with sufficiency=PARTIAL and reviewStatus=REVIEW_REQUIRED. §10 says HONEST_UNRESOLVED may support surfacing but may not earn substantive CREDIT, so NO_CREDIT. Completeness is PARTIAL because the top-level structure is captured. Its unresolvedReasons name, in the system's own words, the aggregated twenty add-backs and six deductions, the Combined Cap held separately as a shared capacity, and the unmodelled 2021 quarterly overrides — so every material proposition of the corrected claim, including the two the benchmark had omitted, is specifically surfaced: FULLY_SURFACED."
+    }
+  ],
+  "rubricScreen": {
+    "population": "every case whose prior adjudication said SPECIFICALLY_SURFACED, because the AMB-1 resolution can only demote",
+    "populationSize": 21,
+    "cleared": 8,
+    "reAdjudicated": 13,
+    "records": [
+      {
+        "caseId": "CASE-8de9def8ca",
+        "claimSectionRef": "6.08(b)",
+        "outcome": "CLEARED",
+        "basis": "SAFETY_FLAG at the claim's own address 6.08(b) whose own text restates the prohibition itself — whole-unit content, not a limb."
+      },
+      {
+        "caseId": "CASE-7fd6c57745",
+        "claimSectionRef": "6.01(m)",
+        "outcome": "CLEARED",
+        "basis": "Single-proposition claim (unconditional carve-out for Secured Notes debt and guarantees). A claim with one atomic proposition cannot be partially surfaced. The HONEST_UNRESOLVED rule at the claim's own address reports VERIFICATION_FAILED on that provision."
+      },
+      {
+        "caseId": "CASE-d32081582b",
+        "claimSectionRef": "7.13",
+        "outcome": "CLEARED",
+        "basis": "Two flags at the own address cover the carve-out set and two descendant flags at 7.13(a) cover the prohibition limb. The descendants and the own-address flags together tile both material propositions."
+      },
+      {
+        "caseId": "CASE-a57ab21f38",
+        "claimSectionRef": "1.04",
+        "outcome": "CLEARED",
+        "basis": "Own-address flags carry the GAAP-as-in-effect general rule and the GAAP-freeze amendment mechanic; descendant flags at 1.04(i) and 1.04(ii) carry the ASC 825-10-25 and ASC 470-20 limbs. All four material propositions are covered."
+      },
+      {
+        "caseId": "CASE-9a30560f37",
+        "claimSectionRef": "7.17",
+        "outcome": "CLEARED",
+        "basis": "Own-address flag states the covenant's operative prohibition (covered activity / covered transaction) rather than a limb; descendants at 7.17(a) and 7.17(b)(i) add the defined-term limbs."
+      },
+      {
+        "caseId": "CASE-c8f9a9b5c0",
+        "claimSectionRef": "6.04(b)",
+        "outcome": "CLEARED",
+        "basis": "Single-proposition claim. HONEST_UNRESOLVED compiled rule at the claim's own address names the cross-document Secured Notes Documents dependency, which is the whole of the claim."
+      },
+      {
+        "caseId": "CASE-d2514bfbe7",
+        "claimSectionRef": "10.01(a)",
+        "outcome": "CLEARED",
+        "basis": "Four flags at the claim's own address, one of them a heading-matched whole-unit coverage flag on the Guaranty section itself. Whole-unit content."
+      },
+      {
+        "caseId": "CASE-16a7d152b6",
+        "claimSectionRef": "6.02",
+        "outcome": "CLEARED",
+        "basis": "Own-address flag names both the general prohibition on Liens and the Permitted Liens exception in one sentence, so both unrepresented propositions are covered; the replacement-lien limb is separately represented by a compiled rule."
+      },
+      {
+        "caseId": "CASE-b2658c02e7",
+        "claimSectionRef": "7.1",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Own-address flag is clause (d)-scoped on its own content; (a) and (c) carry no warning."
+      },
+      {
+        "caseId": "CASE-579c5d3f33",
+        "claimSectionRef": "7.10",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Own-address flag is carve-out-scoped; the arm's-length requirement and its $2,500,000 trigger carry no warning."
+      },
+      {
+        "caseId": "CASE-963cc44044",
+        "claimSectionRef": "7.14",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Own-address flag is second-limb-scoped; the asset-transfer limb and the carve-outs carry no warning."
+      },
+      {
+        "caseId": "CASE-166617b06a",
+        "claimSectionRef": "1.11",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "No own-address flag at all; three material propositions have neither representation nor warning."
+      },
+      {
+        "caseId": "CASE-2034884b7a",
+        "claimSectionRef": "6.03",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Own-address flag is liquidation-carve-out-scoped; the all-or-substantially-all limb carries no warning. Already identified by the frozen evaluator's V3.1 delta."
+      },
+      {
+        "caseId": "CASE-5ac1cd56ef",
+        "claimSectionRef": "6.10",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Identified by the frozen evaluator's V3.1 delta. Re-adjudication PROMOTES it: the descendants tile both limbs."
+      },
+      {
+        "caseId": "CASE-e008d4278a",
+        "claimSectionRef": "6.04",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Identified by the frozen evaluator's V3.1 delta. Re-adjudication PROMOTES it: a whole-unit coverage flag sits at the claim's own address."
+      },
+      {
+        "caseId": "CASE-e555117f4c",
+        "claimSectionRef": "1.01",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Also in the source-resolution bucket."
+      },
+      {
+        "caseId": "CASE-4a1c6a48a0",
+        "claimSectionRef": "6.04",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Also in the source-resolution bucket."
+      },
+      {
+        "caseId": "CASE-88cfbb3bb8",
+        "claimSectionRef": "6.05",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Also in the evidence-repair bucket."
+      },
+      {
+        "caseId": "CASE-5a66cad386",
+        "claimSectionRef": "6.05",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Also in the evidence-repair bucket."
+      },
+      {
+        "caseId": "CASE-393f8732d2",
+        "claimSectionRef": "6.05",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Also in the evidence-repair bucket."
+      },
+      {
+        "caseId": "CASE-1284ab8e71",
+        "claimSectionRef": "6.08",
+        "outcome": "RE_ADJUDICATED",
+        "basis": "Also in the benchmark-change bucket."
+      }
+    ]
+  }
+}

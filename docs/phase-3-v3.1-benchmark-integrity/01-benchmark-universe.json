@@ -1,0 +1,71 @@
+{
+  "artifact": "§1 — the canonical 47-case V3.1 benchmark universe",
+  "at": "2026-09-21T03:41:41.767Z",
+  "freeze": {
+    "headSha": "1cd08a595ea3d200986571eaa0eb722cdcf82be1",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTreeAtStart": "clean",
+    "remote": "synchronized"
+  },
+  "benchmarkArtifactPaths": {
+    "reviewerPackets": [
+      "docs/phase-3-final-closure-resolution/review-packets/R1.json",
+      "docs/phase-3-final-closure-resolution/review-packets/R2.json",
+      "docs/phase-3-final-closure-resolution/review-packets/R3.json"
+    ],
+    "upstreamSealedPackets": "docs/evaluation-contract-v3/08-validation-packets-BLINDED.json",
+    "frozenSample": "docs/evaluation-contract-v3/07-validation-sample.json",
+    "rubric": "docs/phase-3-final-closure-resolution/02-v31-atomic-surfacing-contract.json"
+  },
+  "inputHashes": {
+    "R1.json": "0b0e69bcf7f18e5256a6de2086f3b5b0ffe0a152be8882cd1f3557e2ab24ef74",
+    "R2.json": "2f8d38476e1f6ef19e16efc6fa3aa44e081340805b92ef513a2bd1d409444813",
+    "R3.json": "93dea2b7990bd0f6f5c697e909658e1513c7e08224eed9f045ee18121e91acb6",
+    "08-validation-packets-BLINDED.json": "2ba83e8720d18630b8ed0f21c4b113766e116cfc25ff7a7a8ecaa62c36bf3f70",
+    "07-validation-sample.json": "68e93db9867267d5786d4932bbac536034b2ce0c8d32fd146b3695dd25f70238"
+  },
+  "universe": {
+    "declaredCaseCount": 47,
+    "actualCaseCount": 47,
+    "uniqueCaseIds": 47,
+    "duplicates": 0,
+    "established": true
+  },
+  "requiredFieldsPresentOnAll47": [
+    "caseId",
+    "documentId",
+    "claimSectionRef",
+    "materiality",
+    "groundTruthClaim",
+    "sourceExcerpt",
+    "sourceExcerptResolution",
+    "groundTruthProvenance"
+  ],
+  "missingFields": {},
+  "reviewerPacketEquivalence": {
+    "substantiveEvidenceHashAllThree": "9cb5ea27c02ca84b44535a5a4e38dc54c322e4d80062392b3b821e6e899654e0",
+    "byteIdenticalSubstantiveEvidence": true,
+    "presentationOrderDistinct": true,
+    "note": "reviewer DECISIONS were not compared and were not consulted at any point in this audit."
+  },
+  "distribution": {
+    "byDocument": {
+      "fwrg": 9,
+      "doc-a": 13,
+      "lsb": 9,
+      "doc-b": 3,
+      "doc-d": 4,
+      "conmed-doc-a-eighth-ar-credit-agreement": 9
+    },
+    "byMateriality": {
+      "CRITICAL": 38,
+      "MATERIAL": 9
+    },
+    "bySourceExcerptResolution": {
+      "UNRESOLVED_DESCRIPTION_ONLY": 27,
+      "RESOLVED_FROM_RAW_SOURCE": 20
+    }
+  },
+  "firstStructuralObservation": "27 of 47 cases (all 9 FWRG, all 9 LSB, all 9 CONMED) carry sourceExcerpt = \"\" with sourceExcerptResolution = UNRESOLVED_DESCRIPTION_ONLY. For those cases the packet gives a reviewer NO verbatim legal text at all — only the benchmark author's description.",
+  "verdict": "BENCHMARK_UNIVERSE_ESTABLISHED"
+}

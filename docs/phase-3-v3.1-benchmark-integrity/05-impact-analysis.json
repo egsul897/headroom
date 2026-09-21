@@ -1,0 +1,86 @@
+{
+  "artifact": "§11 — impact of benchmark defects on prior adjudication. Consensus was NOT recomputed; R1/R2/R3 were NOT modified; no new canonical Phase-3 score was derived.",
+  "at": "2026-09-21T03:45:36.037Z",
+  "counts": {
+    "BENCHMARK_VERIFIED": 39,
+    "BENCHMARK_DEFECT": 4,
+    "BENCHMARK_IMPRECISE_NONMATERIAL": 2,
+    "BENCHMARK_SOURCE_UNRESOLVED": 2,
+    "BENCHMARK_AMBIGUOUS": 0,
+    "total": 47
+  },
+  "casesRequiringReAdjudicationAfterCorrection": {
+    "count": 4,
+    "caseIds": [
+      "CASE-e3520246bd",
+      "CASE-9001417020",
+      "CASE-a898053843",
+      "CASE-1284ab8e71"
+    ],
+    "reason": "each carries a material claim error that can flip a credit or completeness judgement in either direction"
+  },
+  "casesRequiringEvidenceRepairBeforeReAdjudication": {
+    "count": 9,
+    "caseIds": [
+      "CASE-2aa00d5566",
+      "CASE-5a66cad386",
+      "CASE-3e2b123d74",
+      "CASE-393f8732d2",
+      "CASE-b9ca777174",
+      "CASE-4a1c6a48a0",
+      "CASE-e555117f4c",
+      "CASE-88cfbb3bb8",
+      "CASE-8c29f13dc0"
+    ],
+    "reason": "the packet's sourceExcerpt does not contain text supporting the claimed provision, so a reviewer cannot check the claim from the packet alone. These are EVIDENCE-LAYER defects, not necessarily claim defects: 7 of the 9 have claims this audit independently VERIFIED against the real source."
+  },
+  "crossCuttingEvidenceDefect": {
+    "finding": "the packet's source-evidence layer is materially weaker than its sourceExcerptResolution labels imply",
+    "noExcerptAtAll": {
+      "count": 27,
+      "label": "UNRESOLVED_DESCRIPTION_ONLY",
+      "documents": [
+        "fwrg (9)",
+        "lsb (9)",
+        "conmed (9)"
+      ],
+      "consequence": "for 27 of 47 cases a reviewer is given the benchmark author's description and no verbatim legal text. Every one of the four material defects this audit found lies in that population, and all four were invisible from the packet alone."
+    },
+    "excerptPresentButWrong": {
+      "count": 9,
+      "of": 20,
+      "label": "RESOLVED_FROM_RAW_SOURCE",
+      "consequence": "the excerpt was resolved to raw source, but to the WRONG raw source — typically the first textual occurrence of the section number, which lands on a cross-reference inside a definition or on an exhibit form rather than on the operative section."
+    },
+    "examples": [
+      {
+        "caseId": "CASE-2aa00d5566",
+        "claimed": "doc-a §6.01 Indebtedness chapeau",
+        "excerptActuallyContains": "the “Prime Rate” definition"
+      },
+      {
+        "caseId": "CASE-393f8732d2",
+        "claimed": "doc-d §6.05 Asset Sales chapeau",
+        "excerptActuallyContains": "a compliance-certificate exhibit form with blank dollar lines"
+      },
+      {
+        "caseId": "CASE-5c33066800",
+        "claimed": "doc-a Applicable EBITDA definition",
+        "excerptActuallyContains": "the tail of a different definition plus “Acquired Entity or Business” and “Acquisition”"
+      }
+    ],
+    "labelAccuracy": "for those 9 cases the sourceExcerptResolution value RESOLVED_FROM_RAW_SOURCE is misleading and should be treated as unreliable metadata."
+  },
+  "claimCommentaryContamination": {
+    "finding": "groundTruthClaim concatenates the adjudicated legal description WITH the benchmark author's own methodology commentary",
+    "example": "CASE-e3520246bd's claim ends '... This is a designed adversarial probe for Task 12, not a schema issue.'",
+    "consequence": "reviewers are asked to adjudicate a field that mixes the proposition under test with authoring notes about ontology fit. In CASE-e3520246bd the erroneous assertion ('with no default condition attached') sits in the substantive half, so the contamination is not merely cosmetic.",
+    "affected": "observed across the FWRG, LSB and CONMED populations"
+  },
+  "whatWasNotDone": [
+    "consensus was not recomputed",
+    "R1/R2/R3 packets were not modified",
+    "no new canonical Phase-3 score was derived",
+    "no benchmark file was edited"
+  ]
+}

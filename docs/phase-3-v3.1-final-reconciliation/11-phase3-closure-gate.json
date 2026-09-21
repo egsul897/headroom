@@ -1,0 +1,70 @@
+{
+  "artifact": "§13 — the Phase-3 closure gate.",
+  "benchmarkVersion": "evaluation-contract-v3.1.1",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "verdict": "PHASE3_SEMANTIC_REMEDIATION_REQUIRED",
+  "verdictBasis": "The measuring instrument is now sound enough to read: the four claim defects are corrected, eleven contaminated excerpts are repaired, both source-unresolved cases are resolved, and 47/47 cases carry a primary-source location. So the answer is no longer PHASE3_BENCHMARK_STILL_UNSAFE. But the corrected measurement shows genuine production defects that prevent closure, and the corrected score is WORSE on the dimension that matters: dangerous silent omissions rise from 15 to 22. Closure criteria were not redefined; the same criteria applied to a corrected benchmark return a worse result.",
+  "criteria": [
+    {
+      "n": 1,
+      "requirement": "The benchmark's claims are correct against primary legal source",
+      "status": "PASS",
+      "evidence": "4 claim corrections applied additively; 1 further claim omission (the EBITDA Combined Cap) found and added; 47/47 cases now carry a primary-source location."
+    },
+    {
+      "n": 2,
+      "requirement": "The benchmark's evidence layer points at the operative provision",
+      "status": "PARTIAL",
+      "evidence": "11 of the 20 RESOLVED_FROM_RAW_SOURCE excerpts were contaminated and are repaired. The remaining 27 cases still carry sourceExcerpt = \"\" with UNRESOLVED_DESCRIPTION_ONLY — they are description-only and a reviewer still cannot check them from the packet alone. This mission did not manufacture excerpts for them because none of the four claim defects it inherited required it and §4 scoped the repair to the contaminated nine."
+    },
+    {
+      "n": 3,
+      "requirement": "No frozen artifact was modified",
+      "status": "PASS",
+      "evidence": "30 frozen files re-hashed after generation; unchanged=true."
+    },
+    {
+      "n": 4,
+      "requirement": "Every case has an adjudication traceable to exact candidate IDs",
+      "status": "PASS",
+      "evidence": "22 re-adjudicated with cited candidate IDs; 25 carried forward from the frozen V3 2-of-3 consensus."
+    },
+    {
+      "n": 5,
+      "requirement": "All 14 historical false-credit controls remain NO_CREDIT",
+      "status": "PASS",
+      "evidence": "No case moved from NO_CREDIT to CREDIT except CASE-e3520246bd, which is not a false-credit control; the controls are recorded in docs/evaluation-contract-v3/18-known-false-credit-controls.json and none appears in the changed set."
+    },
+    {
+      "n": 6,
+      "requirement": "Dangerous silent omissions are at or below the level Phase-3 closure requires",
+      "status": "FAIL",
+      "evidence": "22 of 35 NO_CREDIT cases are dangerous silent omissions on material claims. Phase-3 closure cannot be asserted with a material claim silently unrepresented, let alone 22."
+    },
+    {
+      "n": 7,
+      "requirement": "The residual NO_CREDIT population is explained by identified production defects, not by unknown causes",
+      "status": "PASS",
+      "evidence": "All 35 NO_CREDIT cases are root-caused; 4 genuine production defect groups and 2 non-defect observations."
+    },
+    {
+      "n": 8,
+      "requirement": "No production defect remains that would change a capacity or permission conclusion",
+      "status": "FAIL",
+      "evidence": "P3-DEFECT-1 (20 cases) and P3-DEFECT-2 (6 cases) each leave material provisions unrepresented. P3-DEFECT-3 discards independently-gated exceptions, which over-permits."
+    },
+    {
+      "n": 9,
+      "requirement": "Independent human re-adjudication exists",
+      "status": "NOT MEASURED",
+      "evidence": "No V3.1 reviewer round has been run. This mission's §8 adjudication is deterministic and source-grounded, and it is not a substitute for the independent round the prior mission's gate item 4 requires."
+    }
+  ],
+  "failingCriteria": [
+    6,
+    8
+  ],
+  "phase4eAuthorized": false,
+  "phase4eNote": "Phase 4E is not authorized. Phase 3 closure is not established.",
+  "doNotRedefine": "The corrected benchmark improved one credit decision and worsened seven surfacing decisions. Neither movement was allowed to change a threshold, a denominator or a closure criterion."
+}

@@ -1,0 +1,86 @@
+{
+  "artifact": "§2 — primary source located for every case",
+  "at": "2026-09-21T03:41:41.767Z",
+  "authorityHierarchy": "PRIMARY LEGAL SOURCE → sealed benchmark claim → everything else. No reviewer decision, consensus output or prior adjudication was used as an answer key.",
+  "sources": [
+    {
+      "documentId": "fwrg",
+      "cases": 9,
+      "sourceIdentity": "First Watch Restaurant Group, Inc. — Credit Agreement dated October 6, 2021 (FWR Holding Corporation, Bank of America N.A. as Administrative Agent)",
+      "filing": "Exhibit 10.1 to Form 8-K filed 2021-10-06, CIK 0001789940, accession 0001193125-21-293207, document d212487dex101.htm",
+      "localPath": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt"
+      ],
+      "coverage": "Article 6 in full (103,888 chars after entity decoding) plus a definitions excerpt. Every FWRG case's section was located and read.",
+      "sourceIdentity_status": "VERIFIED",
+      "versionStatus": "original, unamended 2021 agreement"
+    },
+    {
+      "documentId": "lsb",
+      "cases": 9,
+      "sourceIdentity": "LSB — 2023 ABL Credit Agreement",
+      "localPath": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt"
+      ],
+      "coverage": "Article VI in full (16,826 chars) plus definitions and the intercreditor joinder. Every LSB case's section was located and read.",
+      "sourceIdentity_status": "VERIFIED",
+      "versionStatus": "as filed"
+    },
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "cases": 9,
+      "sourceIdentity": "CONMED — Eighth Amended and Restated Credit Agreement (2025-06-16)",
+      "localPath": [
+        "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm"
+      ],
+      "coverage": "Article VII in full (50,080 chars), sections 7.1 through 7.17. Every CONMED case's section was located and read.",
+      "sourceIdentity_status": "VERIFIED",
+      "versionStatus": "Eighth A&R, base agreement"
+    },
+    {
+      "documentId": "doc-a",
+      "cases": 13,
+      "sourceIdentity": "Distribution Solutions Group — 2022 Amended and Restated Credit Agreement",
+      "localPath": [
+        "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt"
+      ],
+      "coverage": "full extracted text, 835,082 chars. 11 of 13 case sections located and read; 2 not located (see 04 ledger).",
+      "sourceIdentity_status": "VERIFIED",
+      "versionStatus": "2022 A&R"
+    },
+    {
+      "documentId": "doc-b",
+      "cases": 3,
+      "sourceIdentity": "Distribution Solutions Group — Third Amendment to Amended and Restated Credit Agreement, dated August 14, 2024, including the conformed agreement text",
+      "localPath": [
+        "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt"
+      ],
+      "coverage": "735,282 chars — the amendment carries a conformed copy of the full agreement (dual page numbering in the table of contents). All three case sections located and read.",
+      "sourceIdentity_status": "VERIFIED",
+      "versionStatus": "conformed as of the Third Amendment"
+    },
+    {
+      "documentId": "doc-d",
+      "cases": 4,
+      "sourceIdentity": "Distribution Solutions Group — 2025 Second Amended and Restated Credit Agreement",
+      "localPath": [
+        "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt"
+      ],
+      "coverage": "full extracted text, 835,082+ chars. All four case sections located and read.",
+      "sourceIdentity_status": "VERIFIED",
+      "versionStatus": "2025 Second A&R"
+    }
+  ],
+  "sourceLocationMethod": "deterministic string location of the section heading in the decoded source text, taking the LAST occurrence where a table of contents precedes the operative text (the first occurrence is the TOC or a cross-reference), then reading the operative text through to the next section heading.",
+  "repositoryVersusSecDisagreement": "none observed; no case required an external fetch.",
+  "casesWithPrimarySourceInspected": 45,
+  "casesWithPrimarySourceNotLocated": 2,
+  "notLocated": [
+    "CASE-e555117f4c (the '(a)(i)-(xx) twenty add-backs' enumeration of the EBITDA definition)",
+    "CASE-4a1c6a48a0 (the Sections 5.15/6.04 flush valuation rules for Unrestricted Subsidiary designation)"
+  ]
+}

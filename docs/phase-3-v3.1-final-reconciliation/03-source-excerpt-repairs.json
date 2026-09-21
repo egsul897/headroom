@@ -1,0 +1,527 @@
+{
+  "artifact": "§4/§9 — excerpt repairs, each proved to come from the operative provision.",
+  "benchmarkVersion": "evaluation-contract-v3.1.1",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "repairCount": 11,
+  "namedByPriorAudit": 9,
+  "addedByThisMission": [
+    "CASE-5c33066800",
+    "CASE-768547a920"
+  ],
+  "deterministicCheck": "For every repair, firstOccurrenceIsNotTheOperativeSection.distinct is true: the offset the frozen packet used is not the offset of the operative provision. CASE-4a1c6a48a0 is the exception that proves the rule — its frozen excerpt WAS inside the operative span and still failed to carry the claimed provision, which is why claim support, not span containment, is the test that matters.",
+  "repairs": [
+    {
+      "caseId": "CASE-2aa00d5566",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.01",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 436142,
+        "end": 444932,
+        "heading": "SECTION 6.01. Indebtedness . No Loan Party"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 4375,
+          "extent": 33,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 436142,
+          "extent": 8790,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 958,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 156440,
+        "insideOperativeSpan": false,
+        "landedIn": "the tail of a cross-reference inside Article I, immediately followed by the “Prime Rate” definition",
+        "text": "Section 6.01.\n\n“ Prime Rate ” means the rate of interest last quoted by The Wall Street Journal as the “Prime\nRate” in the U.S. or, if The Wall Street Journal ceases to quote such rate, the highest per annum interest rate published by the Federal Reserve Board in Federal Reserve Statistical Release H.15 (519) (Selected Interest Rates) as the “bank\nprime loan” rate or, if such rate is no longer quoted therein, any similar rate quoted therein (as determined by the Administrative Agent) or any similar release by the Federal Reserve Board (as determined by the Administrative Agent). Each\nchange in the Prime Rate shall be effective from and including the date such change is publicly announced or quoted as being effective.\n\n40\n\n“ Proceeding ” means any claim, litigation, investigation, action, suit,\narbitration or administrative, judicial or regulatory action or proceeding in any jurisdiction.\n\n“ Projections ” has the\nmeaning assigned to such term in"
+      },
+      "repairedExcerpt": {
+        "anchor": "SECTION\\s+6\\.01",
+        "offsetInSource": 436142,
+        "endOffsetInSource": 437042,
+        "length": 900,
+        "insideOperativeSpan": true,
+        "text": "SECTION 6.01. Indebtedness . No Loan Party\nwill, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:\n\n(a) the Secured\nObligations and the Guaranteed Obligations;\n\n106\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted\nSubsidiary owing to any Borrower or any other Restricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations\nset forth in Section 6.04, (ii) Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and\n(iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan P"
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 156440,
+        "operativeSpanStart": 436142,
+        "distinct": true,
+        "distanceChars": 279702
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "Operative §6.01 enumerates clauses (a) through (q); the claim's “(a) through (q)” is confirmed."
+    },
+    {
+      "caseId": "CASE-b9ca777174",
+      "documentId": "doc-b",
+      "claimSectionRef": "6.01",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "operativeSpan": {
+        "start": 488852,
+        "end": 497637,
+        "heading": "SECTION 6.01. Indebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume "
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 30125,
+          "extent": 37,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 488852,
+          "extent": 8785,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 954,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 191303,
+        "insideOperativeSpan": false,
+        "landedIn": "a cross-reference inside Article I, followed by the “Prime Rate” definition",
+        "text": "Section 6.01.\n\n“ Prime Rate ” means the rate of interest last quoted by The Wall Street Journal as the “Prime\nRate” in the U.S. or, if The Wall Street Journal ceases to quote such rate, the highest per annum interest rate published by the Federal Reserve Board in Federal Reserve Statistical Release H.15 (519) (Selected Interest Rates) as the\n“bank prime loan” rate or, if such rate is no longer quoted therein, any similar rate quoted therein (as determined by the Administrative Agent) or any similar release by the Federal Reserve Board (as determined by the Administrative\nAgent). Each change in the Prime Rate shall be effective from and including the date such change is publicly announced or quoted as being effective.\n\n“ Proceeding ” means any claim, litigation, investigation, action, suit, arbitration or administrative, judicial or regulatory\naction or proceeding in any jurisdiction.\n\n“ Projections ” has the meaning assigned to such term in"
+      },
+      "repairedExcerpt": {
+        "anchor": "SECTION\\s+6\\.01",
+        "offsetInSource": 488852,
+        "endOffsetInSource": 489752,
+        "length": 900,
+        "insideOperativeSpan": true,
+        "text": "SECTION 6.01. Indebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer\nto exist any Indebtedness, except:\n\n(a) the Secured Obligations and the Guaranteed Obligations;\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other\nRestricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations set forth in Section 6.04,\n(ii) Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and (iii) the aggregate\nprincipal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Partie"
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 191303,
+        "operativeSpanStart": 488852,
+        "distinct": true,
+        "distanceChars": 297549
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "Same defect and same repair as CASE-2aa00d5566, in the conformed Third Amendment text."
+    },
+    {
+      "caseId": "CASE-8c29f13dc0",
+      "documentId": "doc-d",
+      "claimSectionRef": "6.01",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 448104,
+        "end": 464193,
+        "heading": "SECTION 6.01."
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 4774,
+          "extent": 33,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 448104,
+          "extent": 16089,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 954,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 158157,
+        "insideOperativeSpan": false,
+        "landedIn": "a cross-reference inside Article I, followed by the “Prime Rate” definition",
+        "text": "Section 6.01.\n\n“ Prime Rate ” means the rate of interest last quoted by The Wall Street Journal as the “Prime\nRate” in the U.S. or, if The Wall Street Journal ceases to quote such rate, the highest per annum interest rate published by the Federal Reserve Board in Federal Reserve Statistical Release H.15 (519) (Selected Interest Rates) as the\n“bank prime loan” rate or, if such rate is no longer quoted therein, any similar rate quoted therein (as determined by the Administrative Agent) or any similar release by the Federal Reserve Board (as determined by the Administrative\nAgent). Each change in the Prime Rate shall be effective from and including the date such change is publicly announced or quoted as being effective.\n\n“ Proceeding ” means any claim, litigation, investigation, action, suit, arbitration or administrative, judicial or\nregulatory action or proceeding in any jurisdiction.\n\n“ Projections ” has the meaning assigned to such term in"
+      },
+      "repairedExcerpt": {
+        "anchor": "SECTION\\s+6\\.01",
+        "offsetInSource": 448104,
+        "endOffsetInSource": 449004,
+        "length": 900,
+        "insideOperativeSpan": true,
+        "text": "SECTION 6.01.\nIndebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:\n\n(a) the Secured Obligations and the Guaranteed Obligations;\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other\nRestricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations set forth in Section 6.04, (ii)\nIndebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and (iii) the aggregate principal amount\nof Indebtedness of Restricted Subsidiaries that are not U.S. Loan Partie"
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 158157,
+        "operativeSpanStart": 448104,
+        "distinct": true,
+        "distanceChars": 289947
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "Operative §6.01 of the 2025 Second A&R enumerates clauses (a) through (r); the claim's “(a) through (r)” is confirmed."
+    },
+    {
+      "caseId": "CASE-88cfbb3bb8",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.05",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 463076,
+        "end": 467325,
+        "heading": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, i"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 4552,
+          "extent": 32,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 463076,
+          "extent": 4249,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 2400,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 89023,
+        "insideOperativeSpan": false,
+        "landedIn": "the EBITDA definition's cross-reference “permitted under Section 6.05” in Article I",
+        "text": "Section 6.05 ,\n\n21\n\n(v)\nnon-cash losses or expenses, including, without limitation, noncash\ncosts of incentive compensation, for which no cash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect\nto accounts receivable in the normal course or Inventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company\nelects to add back any such non-cash item, the cash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid,\n\n(vi)\nany Closing Date Transaction Expenses that are paid, expensed or otherwise accounted for prior to or within 180\ndays following the consummation of the Transactions,\n\n(vii)\nnon-recurring or unusual expenses, including business optimization\nexpenses, IT implementation costs, severance costs, consulting fees, lease termination costs, relocation costs, restructuring charges, retention or completion bonuses, signing costs and other nonrecurring expenses not otherwise added back to EBITDA,\nin each case, actually incurred, in an aggregate amount not to exceed, for any four (4) fiscal quarter measurement period, together with the add-backs in clauses (a)(viii) and (a)(xviii)(b) below, the\nCombined Cap (as defined below),\n\n(viii)\nthe amount of “run-rate” cost savings (the “ Cost\nSavings ”) projected by the Company in good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities, which\nCost Savings shall be calculated on a pro forma basis as though such Cost Savings had been realized on the first day of such period, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any four\n(4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) above and (a)(xviii)(b) below, the Combined Cap; provided that, a Responsible Officer shall have provided a\nreasonably detailed statement or schedule of such Cost Savings and shall have certified to the Administrative Agent that (x) such Cost Savings are reasonably identifiable and factually supportable, reasonabl"
+      },
+      "repairedExcerpt": {
+        "anchor": "SECTION\\s+6\\.05",
+        "offsetInSource": 463076,
+        "endOffsetInSource": 463776,
+        "length": 700,
+        "insideOperativeSpan": true,
+        "text": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including\nany Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with\nSection 6.04), except:\n\n(a) Dispositions of (i) inventory, goods or other assets in the ordinary course of business,\n(ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted Subsidiaries, and (iv) other property (including "
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 89023,
+        "operativeSpanStart": 463076,
+        "distinct": true,
+        "distanceChars": 374053
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "Operative §6.05 enumerates clauses (a) through (k); the claim's “(a) through (k)” is confirmed."
+    },
+    {
+      "caseId": "CASE-5a66cad386",
+      "documentId": "doc-b",
+      "claimSectionRef": "6.05",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "operativeSpan": {
+        "start": 515785,
+        "end": 520430,
+        "heading": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 30318,
+          "extent": 36,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 515785,
+          "extent": 4645,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 2400,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 120335,
+        "insideOperativeSpan": false,
+        "landedIn": "the EBITDA definition's cross-reference “permitted under Section 6.05” in Article I",
+        "text": "Section 6.05 ,\n\n(v)\nnon-cash losses or expenses, including, without limitation, noncash costs of incentive compensation, for which\nno cash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect to accounts receivable in the normal course\nor Inventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company elects to add back any such non-cash item, the cash payment in respect thereof in such\nfuture period shall be subtracted from EBITDA in such future period to such extent paid,\n\n(vi)\nany Closing Date Transaction Expenses that are paid, expensed or otherwise accounted for prior to or within 180\ndays following the consummation of the Transactions,\n\n(vii)\nnon-recurring or unusual expenses, including business optimization expenses, IT implementation costs, severance\ncosts, consulting fees, lease termination costs, relocation costs, restructuring charges, retention or completion bonuses, signing costs and other nonrecurring expenses not otherwise added back to EBITDA, in each case, actually incurred, in an\naggregate amount not to exceed, for any four (4) fiscal quarter measurement period, together with the add-backs in clauses (a)(viii) and (a)(xviii)(b) below, the Combined Cap (as defined below),\n\n23\n\n(viii)\nthe amount of “run-rate” cost savings (the “ Cost Savings ”) projected by the Company\nin good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities, which Cost Savings shall be calculated on a pro\nforma basis as though such Cost Savings had been realized on the first day of such period, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any four (4) fiscal quarter measurement period,\ntogether with the add-backs in clauses (a)(vii) above and (a)(xviii)(b) below, the Combined Cap; provided that, a Responsible Officer shall have provided a reasonably detailed statement or schedule of such Cost Savings and shall have\ncertified to the Administrative Agent that (x) such Cost Savings are reasonably identifiable and factually supportable, reasonabl"
+      },
+      "repairedExcerpt": {
+        "anchor": "SECTION\\s+6\\.05",
+        "offsetInSource": 515785,
+        "endOffsetInSource": 516485,
+        "length": 700,
+        "insideOperativeSpan": true,
+        "text": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it\npermit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to\nanother Loan Party or another Restricted Subsidiary in compliance with Section 6.04), except:\n\n(a) Dispositions of (i) inventory,\ngoods or other assets in the ordinary course of business, (ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted Subsidiaries, and\n(iv) other property (including "
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 120335,
+        "operativeSpanStart": 515785,
+        "distinct": true,
+        "distanceChars": 395450
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "Same defect and same repair as CASE-88cfbb3bb8, in the conformed Third Amendment text."
+    },
+    {
+      "caseId": "CASE-393f8732d2",
+      "documentId": "doc-d",
+      "claimSectionRef": "6.05",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 484376,
+        "end": 489129,
+        "heading": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 4951,
+          "extent": 32,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 484376,
+          "extent": 4753,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 2400,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 810913,
+        "insideOperativeSpan": false,
+        "landedIn": "a compliance-certificate exhibit form with blank dollar lines",
+        "text": "Section 6.05 of the Credit Agreement,\n\n$___________\n\nv.\n\nnon-cash losses or expenses, including, without limitation, noncash costs of incentive compensation, for which no cash outlay (or cash receipt) has been made or is foreseeable prior to the\nMaturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect to accounts receivable in the normal course or Inventory; provided that, if any such\nnon-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company elects to add back any such non-cash item, the\ncash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid,\n\n$___________\n\nvi.\n\nany Closing Date Transaction Expenses that are paid, expensed or otherwise accounted for prior to or within 180 days following the consummation of the Transactions,\n\n$___________\n\nvii.\n\nnon-recurring or unusual expenses, including business optimization expenses, IT implementation/enhancement/update costs, severance costs, consulting fees, lease termination/activation costs,\nrelocation costs, restructuring charges, retention or completion bonuses, executive leadership signing costs, upfront costs in connection with a new strategic initiative, upfront costs in connection with a new strategic commercial initiative\nincluding, but not limited to, green fielding a new market or pilot costs in existing or new markets and other nonrecurring expenses not otherwise added back to EBITDA, in each case, actually incurred, in an aggregate amount not to exceed, for any\nfour (4) fiscal quarter measurement period, together with the add-backs in clauses (A)(viii) and (A)(xviii)(b) below, the Combined Cap (as defined below),\n\n$___________\n\n1\n\nviii.\n\nthe amount of “run-rate” cost savings (the “Cost Savings”) projected by the Company in good faith to result from actions taken prior to the last day of such period with\nrespect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities, which Cost Savings shall be calculated on a pro forma basis as though such Cost Savings had been realized on the first day of such\nperiod, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any four (4) fiscal quarter measurement period, to"
+      },
+      "repairedExcerpt": {
+        "anchor": "SECTION\\s+6\\.05",
+        "offsetInSource": 484376,
+        "endOffsetInSource": 485076,
+        "length": 700,
+        "insideOperativeSpan": true,
+        "text": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it\npermit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to\nanother Loan Party or another Restricted Subsidiary in compliance with Section 6.04), except:\n\n(a) Dispositions of\n(i) inventory, goods or other assets in the ordinary course of business, (ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted\nSubsidiaries, and (iv) other property (including "
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 810913,
+        "operativeSpanStart": 484376,
+        "distinct": true,
+        "distanceChars": 326537
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "The worst of the eleven: the excerpt came from an exhibit form near the end of the document, 326,537 characters past the operative section."
+    },
+    {
+      "caseId": "CASE-3e2b123d74",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.05",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 463076,
+        "end": 467325,
+        "heading": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, i"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 4552,
+          "extent": 32,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 463076,
+          "extent": 4249,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 2400,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 89023,
+        "insideOperativeSpan": false,
+        "landedIn": "the EBITDA definition's cross-reference “permitted under Section 6.05” in Article I",
+        "text": "Section 6.05 ,\n\n21\n\n(v)\nnon-cash losses or expenses, including, without limitation, noncash\ncosts of incentive compensation, for which no cash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect\nto accounts receivable in the normal course or Inventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company\nelects to add back any such non-cash item, the cash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid,\n\n(vi)\nany Closing Date Transaction Expenses that are paid, expensed or otherwise accounted for prior to or within 180\ndays following the consummation of the Transactions,\n\n(vii)\nnon-recurring or unusual expenses, including business optimization\nexpenses, IT implementation costs, severance costs, consulting fees, lease termination costs, relocation costs, restructuring charges, retention or completion bonuses, signing costs and other nonrecurring expenses not otherwise added back to EBITDA,\nin each case, actually incurred, in an aggregate amount not to exceed, for any four (4) fiscal quarter measurement period, together with the add-backs in clauses (a)(viii) and (a)(xviii)(b) below, the\nCombined Cap (as defined below),\n\n(viii)\nthe amount of “run-rate” cost savings (the “ Cost\nSavings ”) projected by the Company in good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities, which\nCost Savings shall be calculated on a pro forma basis as though such Cost Savings had been realized on the first day of such period, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any four\n(4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) above and (a)(xviii)(b) below, the Combined Cap; provided that, a Responsible Officer shall have provided a\nreasonably detailed statement or schedule of such Cost Savings and shall have certified to the Administrative Agent that (x) such Cost Savings are reasonably identifiable and factually supportable, reasonabl"
+      },
+      "repairedExcerpt": {
+        "anchor": "Notwithstanding the foregoing, no Loan Party",
+        "offsetInSource": 466510,
+        "endOffsetInSource": 467310,
+        "length": 800,
+        "insideOperativeSpan": true,
+        "text": "Notwithstanding the foregoing, no Loan Party or any Restricted\nSubsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transaction or a series of\ntransactions) of intellectual property that is material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary; provided that the Company and its Restricted Subsidiaries may grant non-exclusive licenses of any intellectual property to any Unrestricted Subsidiary in the ordinary course of business so long as the Company and its Restricted Subsidiaries retain the beneficial ownership and the\nsame rights to use such intellectual property as held prior to such "
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 89023,
+        "operativeSpanStart": 463076,
+        "distinct": true,
+        "distanceChars": 374053
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "The claim is about the unnumbered flush prohibition at the END of §6.05, so the anchor targets that sentence rather than the section heading."
+    },
+    {
+      "caseId": "CASE-5c33066800",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.01",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 18989,
+        "end": 19558,
+        "heading": "“ Applicable EBITDA ”\nmeans"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 18989,
+          "extent": 569,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 2400,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 13464,
+        "insideOperativeSpan": false,
+        "landedIn": "the tail of a different definition plus “Acquired Entity or Business” and “Acquisition”",
+        "text": "“EBITDA” (and in the component\ndefinitions used therein) were references to such Acquired Entity or Business and its subsidiaries.\n\n“ Acquired Entity or\nBusiness ” has the meaning assigned to such term in the definition of “EBITDA”.\n\n“ Acquisition ” means\nany transaction, or any series of related transactions, consummated on or after the Effective Date, by which any Loan Party or Restricted Subsidiary (a) acquires any going business or all or substantially all of the assets of any Person,\nwhether through purchase of assets, merger or otherwise or (b) directly or indirectly acquires (in one transaction or as the most recent transaction in a series of transactions) at least a majority (in number of votes) of the Equity Interests\nof a Person which has ordinary voting power for the election of directors or other similar management personnel of a Person (other than Equity Interests having such power only by reason of the happening of a contingency) or a majority of the\noutstanding Equity Interests of a Person.\n\n“ Adjusted Daily Simple SOFR ” means, with respect to any RFR Borrowing, an\ninterest rate per annum equal to (a) Daily Simple SOFR, plus (b) 0.10%; provided that if the Adjusted Daily Simple SOFR as so determined would be less than the Floor, such rate shall be deemed to be equal to the Floor for the purposes of this\nAgreement.\n\n“ Adjusted Term SOFR Rate ” means, with respect to any Term Benchmark Borrowing for any Interest Period or for\nany ABR Borrowing based on the Adjusted Term SOFR Rate, an interest rate per annum equal to (a) the Term SOFR Rate for such Interest Period, plus (b) 0.10%; provided that if the Adjusted Term SOFR Rate as so determined would be less than the\nFloor, such rate shall be deemed to be equal to the Floor for the purposes of this Agreement.\n\n“ Administrative Agent ”\nmeans JPMorgan Chase Bank, N.A. (or any of its designated branch offices or affiliates), in its capacity as administrative agent for the Lenders hereunder.\n\n“ Administrative Questionnaire ” means an Administrative Questionnaire in a form supplied by the Administrative Agent.\n\n“ Affected Financial Institution ” means (a) any EEA Financial Institution or (b) any UK Financial Institution.\n\n“ Affiliate ” means, with respect to a specified Person, another Person that directly, or indirectly through one or more\nintermediaries, Controls or is Controlled by or is under common"
+      },
+      "repairedExcerpt": {
+        "anchor": "“\\s*Applicable\\s+EBITDA\\s*”",
+        "offsetInSource": 18989,
+        "endOffsetInSource": 19558,
+        "length": 569,
+        "insideOperativeSpan": true,
+        "text": "“ Applicable EBITDA ”\nmeans, at any time, EBITDA for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP for the period of four consecutive fiscal quarters of the Company ended on or most recently prior to such time for which\nfinancial statements have been delivered to the Administrative Agent pursuant to Section 5.01(a) or (b) (or, if prior to the date of the delivery of the first financial statements to be delivered pursuant to Section 5.01(a) or (b), the\nmost recent financial statements referred to in Section 3.04(a)).\n\n"
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 13464,
+        "operativeSpanStart": 18989,
+        "distinct": true,
+        "distanceChars": 5525
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "ADDED BY THIS MISSION under §9. The integrity audit named this case as an example of the wrong-excerpt defect but left it out of its nine-case repair list. It fails the same deterministic containment test, so it is repaired here."
+    },
+    {
+      "caseId": "CASE-768547a920",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.01",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 121352,
+        "end": 122380,
+        "heading": "“ Interest Coverage Ratio ” means"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 121352,
+          "extent": 1028,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 2400,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 13464,
+        "insideOperativeSpan": false,
+        "landedIn": "the tail of a different definition plus “Acquired Entity or Business” and “Acquisition”",
+        "text": "“EBITDA” (and in the component\ndefinitions used therein) were references to such Acquired Entity or Business and its subsidiaries.\n\n“ Acquired Entity or\nBusiness ” has the meaning assigned to such term in the definition of “EBITDA”.\n\n“ Acquisition ” means\nany transaction, or any series of related transactions, consummated on or after the Effective Date, by which any Loan Party or Restricted Subsidiary (a) acquires any going business or all or substantially all of the assets of any Person,\nwhether through purchase of assets, merger or otherwise or (b) directly or indirectly acquires (in one transaction or as the most recent transaction in a series of transactions) at least a majority (in number of votes) of the Equity Interests\nof a Person which has ordinary voting power for the election of directors or other similar management personnel of a Person (other than Equity Interests having such power only by reason of the happening of a contingency) or a majority of the\noutstanding Equity Interests of a Person.\n\n“ Adjusted Daily Simple SOFR ” means, with respect to any RFR Borrowing, an\ninterest rate per annum equal to (a) Daily Simple SOFR, plus (b) 0.10%; provided that if the Adjusted Daily Simple SOFR as so determined would be less than the Floor, such rate shall be deemed to be equal to the Floor for the purposes of this\nAgreement.\n\n“ Adjusted Term SOFR Rate ” means, with respect to any Term Benchmark Borrowing for any Interest Period or for\nany ABR Borrowing based on the Adjusted Term SOFR Rate, an interest rate per annum equal to (a) the Term SOFR Rate for such Interest Period, plus (b) 0.10%; provided that if the Adjusted Term SOFR Rate as so determined would be less than the\nFloor, such rate shall be deemed to be equal to the Floor for the purposes of this Agreement.\n\n“ Administrative Agent ”\nmeans JPMorgan Chase Bank, N.A. (or any of its designated branch offices or affiliates), in its capacity as administrative agent for the Lenders hereunder.\n\n“ Administrative Questionnaire ” means an Administrative Questionnaire in a form supplied by the Administrative Agent.\n\n“ Affected Financial Institution ” means (a) any EEA Financial Institution or (b) any UK Financial Institution.\n\n“ Affiliate ” means, with respect to a specified Person, another Person that directly, or indirectly through one or more\nintermediaries, Controls or is Controlled by or is under common"
+      },
+      "repairedExcerpt": {
+        "anchor": "“\\s*Interest\\s+Coverage\\s+Ratio\\s*”",
+        "offsetInSource": 121352,
+        "endOffsetInSource": 122380,
+        "length": 1028,
+        "insideOperativeSpan": true,
+        "text": "“ Interest Coverage Ratio ” means, for any period of four consecutive fiscal quarters of the Company, the ratio of\n(a) EBITDA for such period to (b) Consolidated Interest Expense for such period. Notwithstanding the foregoing, solely for purposes of determining the Interest Coverage Ratio for any period of four consecutive fiscal quarters ending as of\nMarch 31, 2022, June 30, 2022, September 30, 2022 or December 31, 2022 (each such fiscal quarter being referred to as an “ Annualized Quarter ”), Consolidated Interest Expense shall be equal to the product of\n(I) Consolidated Interest Expense for the period commencing on the Effective Date and ending on the last day of such Annualized Quarter, multiplied by (II) (A) four, in the case of the Annualized Quarter ending March 31, 2022, (B)\ntwo, in the case of the Annualized Quarter ending June 30, 2022, (C) four thirds (4/3), in the case of the Annualized Quarter ending September 30, 2022, or (D) one (1), in the case of the Annualized Quarter ending December 31,\n2022.\n\n"
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 13464,
+        "operativeSpanStart": 121352,
+        "distinct": true,
+        "distanceChars": 107888
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "ADDED BY THIS MISSION under §9. Same contaminated excerpt as CASE-5c33066800; the containment test fails identically."
+    },
+    {
+      "caseId": "CASE-e555117f4c",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.01",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 88521,
+        "end": 99103,
+        "heading": "“ EBITDA ” means"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 88521,
+          "extent": 10582,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 2400,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 13464,
+        "insideOperativeSpan": false,
+        "landedIn": "the tail of a different definition plus “Acquired Entity or Business” and “Acquisition”",
+        "text": "“EBITDA” (and in the component\ndefinitions used therein) were references to such Acquired Entity or Business and its subsidiaries.\n\n“ Acquired Entity or\nBusiness ” has the meaning assigned to such term in the definition of “EBITDA”.\n\n“ Acquisition ” means\nany transaction, or any series of related transactions, consummated on or after the Effective Date, by which any Loan Party or Restricted Subsidiary (a) acquires any going business or all or substantially all of the assets of any Person,\nwhether through purchase of assets, merger or otherwise or (b) directly or indirectly acquires (in one transaction or as the most recent transaction in a series of transactions) at least a majority (in number of votes) of the Equity Interests\nof a Person which has ordinary voting power for the election of directors or other similar management personnel of a Person (other than Equity Interests having such power only by reason of the happening of a contingency) or a majority of the\noutstanding Equity Interests of a Person.\n\n“ Adjusted Daily Simple SOFR ” means, with respect to any RFR Borrowing, an\ninterest rate per annum equal to (a) Daily Simple SOFR, plus (b) 0.10%; provided that if the Adjusted Daily Simple SOFR as so determined would be less than the Floor, such rate shall be deemed to be equal to the Floor for the purposes of this\nAgreement.\n\n“ Adjusted Term SOFR Rate ” means, with respect to any Term Benchmark Borrowing for any Interest Period or for\nany ABR Borrowing based on the Adjusted Term SOFR Rate, an interest rate per annum equal to (a) the Term SOFR Rate for such Interest Period, plus (b) 0.10%; provided that if the Adjusted Term SOFR Rate as so determined would be less than the\nFloor, such rate shall be deemed to be equal to the Floor for the purposes of this Agreement.\n\n“ Administrative Agent ”\nmeans JPMorgan Chase Bank, N.A. (or any of its designated branch offices or affiliates), in its capacity as administrative agent for the Lenders hereunder.\n\n“ Administrative Questionnaire ” means an Administrative Questionnaire in a form supplied by the Administrative Agent.\n\n“ Affected Financial Institution ” means (a) any EEA Financial Institution or (b) any UK Financial Institution.\n\n“ Affiliate ” means, with respect to a specified Person, another Person that directly, or indirectly through one or more\nintermediaries, Controls or is Controlled by or is under common"
+      },
+      "repairedExcerpt": {
+        "anchor": "“\\s*EBITDA\\s*”\\s*means",
+        "offsetInSource": 88521,
+        "endOffsetInSource": 99103,
+        "length": 10582,
+        "insideOperativeSpan": true,
+        "text": "“ EBITDA ” means, for any period, Net Income for such period plus\n\n(a) without duplication and to the extent deducted (and not added back or excluded) in determining Net Income for such\nperiod, the sum of:\n\n(i)\nInterest Expense for such period,\n\n(ii)\nincome tax expense for such period net of tax refunds,\n\n(iii)\nall amounts attributable to depreciation and amortization expense for such period,\n\n(iv)\nnet losses realized from asset Dispositions outside the ordinary course of business permitted under\nSection 6.05 ,\n\n21\n\n(v)\nnon-cash losses or expenses, including, without limitation, noncash\ncosts of incentive compensation, for which no cash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect\nto accounts receivable in the normal course or Inventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company\nelects to add back any such non-cash item, the cash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid,\n\n(vi)\nany Closing Date Transaction Expenses that are paid, expensed or otherwise accounted for prior to or within 180\ndays following the consummation of the Transactions,\n\n(vii)\nnon-recurring or unusual expenses, including business optimization\nexpenses, IT implementation costs, severance costs, consulting fees, lease termination costs, relocation costs, restructuring charges, retention or completion bonuses, signing costs and other nonrecurring expenses not otherwise added back to EBITDA,\nin each case, actually incurred, in an aggregate amount not to exceed, for any four (4) fiscal quarter measurement period, together with the add-backs in clauses (a)(viii) and (a)(xviii)(b) below, the\nCombined Cap (as defined below),\n\n(viii)\nthe amount of “run-rate” cost savings (the “ Cost\nSavings ”) projected by the Company in good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities, which\nCost Savings shall be calculated on a pro forma basis as though such Cost Savings had been realized on the first day of such period, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any four\n(4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) above and (a)(xviii)(b) below, the Combined Cap; provided that, a Responsible Officer shall have provided a\nreasonably detailed statement or schedule of such Cost Savings and shall have certified to the Administrative Agent that (x) such Cost Savings are reasonably identifiable and factually supportable, reasonably attributable to the actions\nspecified and anticipated to result from such actions and (y) such actions have been taken and are ongoing, and the benefits resulting therefrom are anticipated by Company to be realized within eighteen (18) months of the end of such\nperiod,\n\n(ix)\nfees, costs and expenses relating to adjustments to purchase price adjustments, earnouts (to the extent\npermitted hereunder and actually paid), deferred compensation, or other arrangements representing acquisition consideration or deferred payments of similar nature incurred in connection with the Closing Date Acquisitions or any other Permitted\nAcquisitions that are, in each case, incurred by the Company and its Restricted Subsidiaries for such period,\n\n22\n\n(x)\nfees, costs and expenses (including\nout-of-pocket expenses) incurred during such period in connection with (A) the consummation of (a) asset Dispositions, (b) the issuance of Equity\nInterests or Indebtedness permitted under this Agreement, (c) the consummation of Permitted Acquisitions or any other investment outside of the ordinary course of business, in each case for this clause (A), (x) permitted under this Agreement\nand (y) consummated after the Effective Date (but whether or not any such transaction closes) and (B) to the extent actually reimbursed from insurance proceeds (and such reimbursement proceeds are not included in the calculation of Net\nIncome), any casualty, condemnation or similar event,\n\n(xi)\ndirectors’/managers’/governors’ fees and reimbursement of actual and reasonable out-of-pocket costs and expenses incurred in connection with attending board of directors/managers/governors meetings, to the extent permitted under this Agreement,\n\n(xii)\nreimbursement of actual and reasonable\nout-of-pocket expenses incurred by officers in connection with attending board of directors’/managers’/governors’ meetings in an aggregate amount in any\nfour (4) fiscal quarter measurement period not to exceed $250,000,\n\n(xiii)\nto the extent actually reimbursed from insurance proceeds (and such reimbursement proceeds are not included in\nthe calculation of Net Income), expenses with respect to business interruption,\n\n(xiv)\nfees, costs and expenses (including, without limitation, amendment fees and expenses paid (including\nreimbursement of third party expenses) to the Administrative Agent and/or Lenders) incurred in connection with amendments to the Loan Documents, in each case, to the extent disclosed to the Administrative Agent,\n\n(xv)\nfees, costs and expenses to the extent covered by indemnification provisions in any agreement or otherwise\nreimbursable by a third party,\n\n(xvi)\nany non-recurring, unusual or extraordinary non-cash charges for such period,\n\n(xvii)\nany other non-cash charges for such period which do not represent a\ncash item in such period (but excluding any non-cash charge in respect of an item that was included in Net Income in a prior period),\n\n(xviii)\n(a) the Acquired EBITDA of any Person, property, business or asset acquired by the Company or any Restricted\nSubsidiary during such period (but not the Acquired EBITDA of any related Person, property, business or assets to the extent not so acquired), to the extent not subsequently sold, transferred or otherwise disposed of by the Company or such\nRestricted Subsidiary during such period (each such Person, property, business or asset acquired and not subsequently so Disposed of, an “ Acquired Entity or Business ”) for the most recent twelve (12)-month period then ended and\n(b) cost savings projected by the Company in good faith to be realized\n\n23\n\nwithin twelve (12) months of the closing date of a Permitted Acquisition consummated prior to the last day of such period (which cost savings shall be calculated on a pro forma basis as\nthough such cost savings had been realized on the first day of such period), net of the amount of actual benefits realized or expected to be realized prior to or during such period from such actions in an aggregate amount not to exceed, for any four\n(4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) and (a)(viii), the Combined Cap; provided that, a Responsible Officer shall have provided a reasonably detailed\nstatement or schedule of such cost savings and shall have certified to the Administrative Agent that (x) such cost savings are reasonably identifiable and factually supportable, reasonably attributable to the actions specified and anticipated\nto result from such actions and (y) such acquisition has been consummated, and the benefits resulting therefrom are anticipated by Borrower to be realized within twelve (12) months of the end of such period,\n\n(xix)\nexpenses incurred under any transition agreement and other\nnon-recurring or unusual fees, costs or expenses in connection with the integration and operation of the Company and its Restricted Subsidiaries following the Closing Date Acquisitions and any Permitted\nAcquisition, and\n\n(xx)\nnon-cash expenses arising from grants of stock appreciation rights,\nstock performance rights, stock options or restricted stock or other equity instruments granted under the Company’s equity incentive plan;\n\nminus\n\n(b) without\nduplication and to the extent included in Net Income,\n\n(i)\nany cash payments made during such period in respect of non-cash\ncharges described in clause (a)(xvii) taken in a prior period,\n\n(ii)\nany extraordinary, non-recurring or unusual gains and any non-cash items of income for such period,\n\n(iii)\nany gains realized upon the disposition of property outside the ordinary course of business,\n\n(iv)\nthe Disposed EBITDA of any Person, property, business or asset sold, transferred or otherwise Disposed of or,\nclosed or classified as discontinued operations by the Borrower or any Restricted Subsidiary during such period (each such Person, property, business or asset so sold or Disposed of, a “ Disposed Entity or Business ”) for the most\nrecent twelve (12)-month period then ended,\n\n(v)\ngains realized from asset Dispositions outside the ordinary course of business permitted under\nSection 6.05 , and\n\n24\n\n(vi)\ngains or income including, without limitation, noncash gains or income of incentive compensation, for which no\ncash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect to accounts receivable in the normal course or\nInventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company elects to add back any such non-cash item, the cash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid;\n\nall calculated for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP; provided that, notwithstanding any of the\nforegoing, the aggregate amount all items added back to Net Income during any period in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs\n(the “ Combined Cap ”).\n\nNotwithstanding anything to the contrary set forth in this Agreement, EBITDA shall, in each case, be deemed to be\nthe amount set forth below opposite such period, and any adjustments taken into account in calculating the amounts below will not be used in adjusting EBITDA after December 31, 2021:\n\nQuarter ended March 31, 2021\n\n$\n24,044,000\n\nQuarter ended June 30, 2021\n\n$\n26,146,000\n\nQuarter ended September 30, 2021\n\n$\n23,253,000\n\nQuarter ended December 31, 2021\n\n$\n21,919,000\n\n"
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 13464,
+        "operativeSpanStart": 88521,
+        "distinct": true,
+        "distanceChars": 75057
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": "INCOMPLETE_ENUMERATION: the claim lists the twenty add-backs and six deductions but omits the 20% Combined Cap that limits clauses (a)(vii), (a)(viii) and (a)(xviii)(b), and the stipulated 2021 quarterly EBITDA overrides. Both are added to the corrected propositions, which makes the benchmark STRICTER, not easier.",
+      "note": "Also a §5 source resolution: the integrity audit could not locate this definition. It is at offset 88521 and was located deterministically by matching the defined-term lead-in rather than the bare term."
+    },
+    {
+      "caseId": "CASE-4a1c6a48a0",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.04",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "operativeSpan": {
+        "start": 455225,
+        "end": 463076,
+        "heading": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Res"
+      },
+      "spanCandidatesConsidered": [
+        {
+          "start": 4474,
+          "extent": 78,
+          "disposition": "TABLE_OF_CONTENTS_OR_STUB"
+        },
+        {
+          "start": 455225,
+          "extent": 7851,
+          "disposition": "OPERATIVE"
+        }
+      ],
+      "frozenExcerpt": {
+        "length": 1453,
+        "resolutionLabel": "RESOLVED_FROM_RAW_SOURCE",
+        "offsetInSource": 455225,
+        "insideOperativeSpan": true,
+        "landedIn": "the correct section, but only its first 1,453 characters — the §6.04 chapeau. The claim is about the flush valuation rules at the END of §6.04, 6,734 characters further in, which the excerpt never reaches.",
+        "text": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted\nSubsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire (including pursuant to any merger or amalgamation with any Person that was not a Loan Party and a wholly owned Restricted Subsidiary prior to such merger) any\nEquity Interests, evidences of indebtedness or other securities (including any option, warrant or other right to acquire any of the foregoing) of, make or permit to exist any loans or advances to, Guarantee any obligations of, or make or permit to\nexist any investment or any other interest in, any other Person, or purchase or otherwise acquire (in one transaction or a series of transactions) any assets of any other Person constituting a business unit (whether through purchase of assets,\nmerger or otherwise), except:\n\n111\n\n(a) Permitted Investments;\n\n(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Parties; provided\nthat any such Equity Interests held by a Loan Party shall be pledged pursuant to the applicable Security Agreement; provided further that the aggregate outstanding amount of investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under"
+      },
+      "repairedExcerpt": {
+        "anchor": "For purposes of the definition",
+        "offsetInSource": 461857,
+        "endOffsetInSource": 463076,
+        "length": 1219,
+        "insideOperativeSpan": true,
+        "text": "For purposes of the definition\nof “Unrestricted Subsidiary” and the covenants described under Section 5.15 and under this Section 6.04: (x) “investments” shall include the portion (proportionate to the Company’s or the applicable Restricted\nSubsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of a Subsidiary at the time that such Subsidiary is designated an Unrestricted Subsidiary; provided , that upon a\nre-designation of such Subsidiary as a Restricted Subsidiary, the Company (or the applicable Restricted Subsidiary owning such re-designated Subsidiary) shall be deemed\nto continue to have a permanent “investment” in an Unrestricted Subsidiary in an amount (if positive) equal to (A) the Company’s or such Restricted Subsidiary’s “investment” in such Subsidiary at the time of such re-designation, less (B) the portion (proportionate to the Company’s or the applicable Restricted Subsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of such\nSubsidiary at the time of such re-designation; and (y) any property transferred to or from an Unrestricted Subsidiary shall be valued at its fair market value at the time of such transfer.\n\n"
+      },
+      "firstOccurrenceIsNotTheOperativeSection": {
+        "firstOccurrenceOffset": 455225,
+        "operativeSpanStart": 455225,
+        "distinct": false,
+        "distanceChars": 0
+      },
+      "claimStillCorrect": true,
+      "claimDefectFound": null,
+      "note": "Also a §5 source resolution. This case shows that span containment alone is not sufficient: the original excerpt WAS inside the operative span and still failed to carry the claimed provision. The generator therefore applies a second, claim-support test."
+    }
+  ]
+}

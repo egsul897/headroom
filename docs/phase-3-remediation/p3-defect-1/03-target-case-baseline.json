@@ -1,0 +1,630 @@
+{
+  "artifact": "§2 — pre-remediation manifest. Each target independently re-checked against the frozen run artifacts before any code was considered.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "targetCaseCount": 20,
+  "truePromotionGapCount": 0,
+  "classificationTally": {
+    "OTHER / BENCHMARK_HARNESS_COMPILE_CAP": 9,
+    "MISCLASSIFIED_SECTION_MAPPING / VERBATIM_CITATION_CHECK_AGAINST_A_FORM_THE_DOCUMENT_NEVER_USES": 1,
+    "OTHER / SUPERSEDED_SUBSYSTEM_PHASE_C0_ANALYZER": 1,
+    "OTHER / BENCHMARK_HARNESS_NO_COMPILATION_STAGE": 9
+  },
+  "harnessFacts": {
+    "dsgr": {
+      "harness": "scripts/phase-3f-first-blind-run.ts",
+      "discoveryCandidates": 2847,
+      "eligibleForCompilation": 2687,
+      "compiled": 30,
+      "compileCapDeclaredInHarness": 30,
+      "budgetCeilingUsdDeclaredInHarness": 30,
+      "compiledDocuments": [
+        "doc-a"
+      ],
+      "compiledSectionRefs": [
+        "1.01",
+        "1.02",
+        "1.03",
+        "1.04",
+        "1.04(i)",
+        "1.04(ii)",
+        "1.05",
+        "1.06",
+        "1.07",
+        "1.10",
+        "1.10(a)",
+        "1.10(b)",
+        "1.11",
+        "1.11(a)",
+        "1.11(b)(i)",
+        "1.11(b)(ii)",
+        "1.11(b)(iii)",
+        "1.11(b)(iv)"
+      ],
+      "articleViCandidatesCompiled": 0,
+      "compiledSample": [
+        "doc-a::1.01",
+        "doc-a::1.01",
+        "doc-a::1.01",
+        "doc-a::1.01",
+        "doc-a::1.01"
+      ],
+      "compilationRanForFractionOfEligible": 0.01116
+    },
+    "conmed": {
+      "harness": "tests/fixtures/unseen-packages/phase-2f-freeze",
+      "stagesPresent": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "compilationStagePresent": false,
+      "discoveryCandidates": 163
+    },
+    "lsb": {
+      "harness": "legacy 11-stage orchestrator run (compiler-runs/run-1787767205274.json)",
+      "compilationStagePresent": true
+    },
+    "fwrg": {
+      "harness": "Phase-C0 analyzer run (analyzer-runs/...), predates the Phase-3B semantic compiler",
+      "compilationStagePresent": false
+    }
+  },
+  "productionIntakeFacts": {
+    "intakeExpression": "allCandidates.filter((c) => isEligibleForSemanticCompilation(c).eligible)",
+    "intakeExpressionPresentInProduction": true,
+    "intakeWindowChars": 2865,
+    "capMatchesInIntakeWindow": [],
+    "numericCapInOrchestratorIntake": false,
+    "numericCapInPackageCompile": false,
+    "ineligibleRoles": [
+      "REPRESENTATION"
+    ],
+    "ineligibleRolesDeclaredInProduction": true
+  },
+  "lsbCitationFacts": {
+    "composedCitationsSearched": [
+      "Section 6.03(a)",
+      "Section 6.01(m)"
+    ],
+    "composedCitationsFoundVerbatim": [],
+    "theProvisionsDoExist": {
+      "6.03": true,
+      "6.01(m)": true
+    }
+  },
+  "cases": [
+    {
+      "caseId": "CASE-88cfbb3bb8",
+      "dataset": "dsgr",
+      "documentId": "doc-a",
+      "sectionRef": "6.05",
+      "discoveryCandidatesAtOrUnderClaimAddress": 5,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:f00dadce443ea55a003d7fb8",
+        "discovery-candidate:3a0efb3caf7a47256da890b2",
+        "discovery-candidate:f615d354118794aee0203947"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-a §6.05: 5 discovery candidates at this exact address, 0 compiled."
+    },
+    {
+      "caseId": "CASE-5a66cad386",
+      "dataset": "dsgr",
+      "documentId": "doc-b",
+      "sectionRef": "6.05",
+      "discoveryCandidatesAtOrUnderClaimAddress": 22,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:c8a26aa4cb6c5c17e32b55c8",
+        "discovery-candidate:adaebbe02e93ffb11339ccc2",
+        "discovery-candidate:361d366f386bce2afe7ae6b1"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-b §6.05: discovery candidates exist, 0 compiled — no doc-b candidate was compiled at all."
+    },
+    {
+      "caseId": "CASE-393f8732d2",
+      "dataset": "dsgr",
+      "documentId": "doc-d",
+      "sectionRef": "6.05",
+      "discoveryCandidatesAtOrUnderClaimAddress": 20,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:33cd07e107d5f279ec5cf3e4",
+        "discovery-candidate:89c7edc02a32d1dbdee4423e",
+        "discovery-candidate:72f49864f0c8779fc1f5212b"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-d §6.05: discovery candidates exist, 0 compiled — no doc-d candidate was compiled at all."
+    },
+    {
+      "caseId": "CASE-3e2b123d74",
+      "dataset": "dsgr",
+      "documentId": "doc-a",
+      "sectionRef": "6.05",
+      "discoveryCandidatesAtOrUnderClaimAddress": 5,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:f00dadce443ea55a003d7fb8",
+        "discovery-candidate:3a0efb3caf7a47256da890b2",
+        "discovery-candidate:f615d354118794aee0203947"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-a §6.05 (IP flush): same 5 candidates, 0 compiled."
+    },
+    {
+      "caseId": "CASE-5ac1cd56ef",
+      "dataset": "dsgr",
+      "documentId": "doc-a",
+      "sectionRef": "6.10",
+      "discoveryCandidatesAtOrUnderClaimAddress": 4,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:9bd452237f2a408c952d0005",
+        "discovery-candidate:f98b3ca30dbc7e8aecaebd0f",
+        "discovery-candidate:687801163841c62f94bbf685"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-a §6.10: 2 discovery candidates at this exact address, 0 compiled."
+    },
+    {
+      "caseId": "CASE-e008d4278a",
+      "dataset": "dsgr",
+      "documentId": "doc-b",
+      "sectionRef": "6.04",
+      "discoveryCandidatesAtOrUnderClaimAddress": 8,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:c38a45beaaba2ac934b40009",
+        "discovery-candidate:b3b99513a130567ba39623c4",
+        "discovery-candidate:4e98507b56a4c7cf5b9e7be5"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-b §6.04: discovery candidates exist, 0 compiled."
+    },
+    {
+      "caseId": "CASE-30db965277",
+      "dataset": "dsgr",
+      "documentId": "doc-d",
+      "sectionRef": "6.04",
+      "discoveryCandidatesAtOrUnderClaimAddress": 7,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:3b51abe6c83cff81578e1cc4",
+        "discovery-candidate:ae2edfabca9ae39a116957ed",
+        "discovery-candidate:92d7e4c62186485aabf6a290"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-d §6.04: discovery candidates exist, 0 compiled."
+    },
+    {
+      "caseId": "CASE-8de9def8ca",
+      "dataset": "dsgr",
+      "documentId": "doc-d",
+      "sectionRef": "6.08",
+      "discoveryCandidatesAtOrUnderClaimAddress": 10,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:c81cce3987e79b7e44fc588e",
+        "discovery-candidate:54f9f21fdf8d6d9c4d3f6100",
+        "discovery-candidate:c8b40b5481cd883c6862011e"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-d §6.08: discovery candidates exist, 0 compiled."
+    },
+    {
+      "caseId": "CASE-d2514bfbe7",
+      "dataset": "dsgr",
+      "documentId": "doc-a",
+      "sectionRef": "10.01",
+      "discoveryCandidatesAtOrUnderClaimAddress": 10,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:def5df943603d59d4b92c8eb",
+        "discovery-candidate:67fbc9c830f2d933ffea9978",
+        "discovery-candidate:5004400a5e2b784a9ea5b370"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_COMPILE_CAP",
+      "firstStopPoint": "STAGE 6 of scripts/phase-3f-first-blind-run.ts never ran for this candidate. That harness compiles eligibleOrdered.slice(0, COMPILE_CAP) with COMPILE_CAP = 30 under a $30 ceiling; the first 30 eligible candidates in document-then-emission order are all doc-a Article I (§1.01–§1.11(b)(iv)). Zero Article VI candidates were sent to the compiler in the entire DSGR run.",
+      "evidence": "doc-a §10.01: exactly 1 discovery candidate, and it is a synthesized section-level container — the very mechanism P3-DEFECT-2 was said to be missing. It exists; it was simply never compiled."
+    },
+    {
+      "caseId": "CASE-2034884b7a",
+      "dataset": "lsb",
+      "documentId": "lsb",
+      "sectionRef": "6.03",
+      "discoveryCandidatesAtOrUnderClaimAddress": 7,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:d26cc301b196e01d4e54e56e",
+        "discovery-candidate:f7b1997c561b53c19da3cee2",
+        "discovery-candidate:25c1acc8abab9f9f20a20fe0"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "MISCLASSIFIED_SECTION_MAPPING",
+      "subReason": "VERBATIM_CITATION_CHECK_AGAINST_A_FORM_THE_DOCUMENT_NEVER_USES",
+      "firstStopPoint": "Compilation DID run and DID produce a rule at Section 6.03(a). The rule was then demoted to HONEST_UNRESOLVED by a verification check reporting “cited section ‘Section 6.03(a)’ not found verbatim in source text”. The provision exists — the LSB source writes “SECTION  6.03 Restrictions on Fundamental Changes . (a) Enter into any merger…” and never writes the composed string “Section 6.03(a)” anywhere.",
+      "evidence": "compiler-rule:lsb-2023-abl-credit-agreement:4:Section6.03(a) exists with accountingRole=HONEST_UNRESOLVED. Literal search of the LSB Article VI source for “Section 6.03(a)” returns no match; “SECTION  6.03 Restrictions on Fundamental Changes” is present. Same shape as CASE-7fd6c57745 at §6.01(m). This is P3-DEFECT-4 territory and §1/§10 forbid fixing it here."
+    },
+    {
+      "caseId": "CASE-ca1109d4da",
+      "dataset": "fwrg",
+      "documentId": "fwrg",
+      "sectionRef": "6.02",
+      "discoveryCandidatesAtOrUnderClaimAddress": 49,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:023d4a81bfe54a9fc9a38898",
+        "discovery-candidate:2a878c34f1a54346d5f1e47d",
+        "discovery-candidate:9a55782191e4a3934b3f6188"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "SUPERSEDED_SUBSYSTEM_PHASE_C0_ANALYZER",
+      "firstStopPoint": "The FWRG evidence layer contains zero COMPILED_IR_RULE candidates: every substantive FWRG representation is an ANALYZER_RULE from a Phase-C0 analyzer run that predates the Phase-3B semantic compiler. The analyzer emitted rules for §6.02, §6.02(k), §6.02(s) and §6.02(u) but not for §6.02(a). The production discovery→compilation seam was never on this path.",
+      "evidence": "discovery:discovery-candidate:2a878c34f1a54346d5f1e47d at sectionRef 6.02(a), INVENTORY_ONLY, “Permits Liens securing the Secured Obligations.”, excerpt “(a) Liens securing the Secured Obligations;”. This is the single closest case to a genuine promotion gap in the whole set — but it is a gap in a superseded subsystem, and it has never been run through the current production compiler."
+    },
+    {
+      "caseId": "CASE-b2658c02e7",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.1",
+      "discoveryCandidatesAtOrUnderClaimAddress": 6,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:8fe38049fe62ea9e9e741511",
+        "discovery-candidate:a26970121ceb558846ff8d1c",
+        "discovery-candidate:cf15af8f5fb1f77bd861a2ac"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.1: 6 discovery candidates, 0 compiled (no compile stage existed)."
+    },
+    {
+      "caseId": "CASE-579c5d3f33",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.10",
+      "discoveryCandidatesAtOrUnderClaimAddress": 5,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:c86a0310879ebc6a57e4e54b",
+        "discovery-candidate:41257e7574b41dd1089b396e",
+        "discovery-candidate:cac9b2bceb2e7314970a57f1"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.10: 5 discovery candidates, 0 compiled."
+    },
+    {
+      "caseId": "CASE-963cc44044",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.14",
+      "discoveryCandidatesAtOrUnderClaimAddress": 4,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:7a0d88191582f9316837f058",
+        "discovery-candidate:53e4ea586b2732863f2d4c10",
+        "discovery-candidate:6d475ada38fa539312598179"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.14: 4 discovery candidates, 0 compiled."
+    },
+    {
+      "caseId": "CASE-9948558e99",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.11",
+      "discoveryCandidatesAtOrUnderClaimAddress": 2,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:e543ec9effc5bef6a196de83",
+        "discovery-candidate:766fe1bf868f87b1a702575c"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.11: 2 discovery candidates, 0 compiled."
+    },
+    {
+      "caseId": "CASE-d32081582b",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.13",
+      "discoveryCandidatesAtOrUnderClaimAddress": 4,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:7f98f97d1da8d415d89cf4c5",
+        "discovery-candidate:8cc6d36a3898b45e63d7a0cc",
+        "discovery-candidate:6c3daaff31337b2767a15b68"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.13: 4 discovery candidates, 0 compiled."
+    },
+    {
+      "caseId": "CASE-55163b4198",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.16",
+      "discoveryCandidatesAtOrUnderClaimAddress": 2,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:f0466a27cbf457478a3eac0e",
+        "discovery-candidate:71cd58e50f8b3598cb7f1ffb"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.16: 2 discovery candidates, 0 compiled."
+    },
+    {
+      "caseId": "CASE-9a30560f37",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.17",
+      "discoveryCandidatesAtOrUnderClaimAddress": 3,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:c84bd941081822735ab8bf70",
+        "discovery-candidate:e52848d1db50133b0ae6b258",
+        "discovery-candidate:d375c748c3fbadc6014d5f26"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.17: 3 discovery candidates, 0 compiled."
+    },
+    {
+      "caseId": "CASE-b38c3b48eb",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.2",
+      "discoveryCandidatesAtOrUnderClaimAddress": 31,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:7f0346ffa36d1e56bcaca604",
+        "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+        "discovery-candidate:4bfbc3dbea17aec6bb21a58a"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.2: 31 discovery candidates — the richest inventory in the set — 0 compiled."
+    },
+    {
+      "caseId": "CASE-0c169f38c3",
+      "dataset": "conmed",
+      "documentId": "conmed",
+      "sectionRef": "7.2",
+      "discoveryCandidatesAtOrUnderClaimAddress": 31,
+      "compiledOfThose": 0,
+      "sampleCandidateIds": [
+        "discovery-candidate:7f0346ffa36d1e56bcaca604",
+        "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+        "discovery-candidate:4bfbc3dbea17aec6bb21a58a"
+      ],
+      "sixChecks": {
+        "1_materialPropositionDiscovered": true,
+        "2_candidateCorrespondsToClaim": true,
+        "3_failureIsPromotionOrCompilation": false,
+        "4_primarySourceEvidenceExists": true,
+        "5_merelySectionAdjacent": false,
+        "6_enoughSemanticContentToActOn": true
+      },
+      "classification": "OTHER",
+      "subReason": "BENCHMARK_HARNESS_NO_COMPILATION_STAGE",
+      "firstStopPoint": "There is no stage 6 in the CONMED evidence at all. tests/fixtures/unseen-packages/phase-2f-freeze contains stages 1–5 only (structure, discovery, package graph, context bundles, audit); Phase 2F predates the Phase-3B semantic compiler. Compilation was never invoked for ANY CONMED candidate.",
+      "evidence": "§7.2(c): covered by the same 31-candidate §7.2 inventory, 0 compiled."
+    }
+  ],
+  "backlogAttributionCorrections": [
+    {
+      "caseId": "CASE-2aa00d5566",
+      "wasClassified": "DISCOVERY_MISS",
+      "shouldBe": "OTHER / BENCHMARK_HARNESS_COMPILE_CAP",
+      "evidence": "doc-a §6.01 has 11 discovery candidates in stage2; none was compiled and only 1 of them appears anywhere in the 47 review packets."
+    },
+    {
+      "caseId": "CASE-b9ca777174",
+      "wasClassified": "DISCOVERY_MISS",
+      "shouldBe": "OTHER / BENCHMARK_HARNESS_COMPILE_CAP",
+      "evidence": "doc-b §6.01 has 7 discovery candidates in stage2; none appears in any packet and none was compiled."
+    },
+    {
+      "caseId": "CASE-8c29f13dc0",
+      "wasClassified": "DISCOVERY_MISS",
+      "shouldBe": "OTHER / BENCHMARK_HARNESS_COMPILE_CAP",
+      "evidence": "doc-d §6.01 has 4 discovery candidates in stage2, one of which describes the general prohibition explicitly; none appears in any packet."
+    },
+    {
+      "caseId": "CASE-641203d620",
+      "wasClassified": "DISCOVERY_MISS",
+      "shouldBe": "OTHER / BENCHMARK_HARNESS_COMPILE_CAP",
+      "evidence": "doc-a §6.04 has 5 discovery candidates in stage2; none was compiled."
+    },
+    {
+      "caseId": "CASE-90415d6765",
+      "wasClassified": "DISCOVERY_MISS",
+      "shouldBe": "OTHER / BENCHMARK_HARNESS_COMPILE_CAP",
+      "evidence": "doc-a §6.08 has 5 discovery candidates in stage2; none was compiled."
+    }
+  ],
+  "backlogCorrectionNote": "Additive. docs/phase-3-v3.1-final-reconciliation/ is preserved byte-for-byte; these five cases keep their V3.1.1 adjudications (all still NO_CREDIT with unchanged surfacing) and only their root-cause attribution is corrected."
+}

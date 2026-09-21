@@ -1,0 +1,31 @@
+{
+  "artifact": "§5 — the two cases the integrity audit could not locate in the primary source.",
+  "benchmarkVersion": "evaluation-contract-v3.1.1",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "cases": [
+    {
+      "caseId": "CASE-e555117f4c",
+      "priorStatus": "BENCHMARK_SOURCE_UNRESOLVED",
+      "newStatus": "RESOLVED_FROM_PRIMARY_SOURCE",
+      "whyItWasNotFound": "The audit searched for the bare term “EBITDA”, whose first occurrence in the document is inside the “Acquired Entity or Business” definition. The operative definition is found by matching the defined-term lead-in form (curly-quoted term followed by “means”), which occurs exactly once.",
+      "offset": 88521,
+      "verifiedAgainstSource": "twenty add-backs (a)(i)–(a)(xx) and six deductions (b)(i)–(b)(vi), counted from the operative text",
+      "furtherDefectFound": "The frozen claim omits the 20% Combined Cap on clauses (a)(vii), (a)(viii) and (a)(xviii)(b), and the stipulated 2021 quarterly EBITDA amounts. Both are added to the corrected propositions.",
+      "eligibleForCanonicalScoring": true,
+      "reviewerOutputUsed": false
+    },
+    {
+      "caseId": "CASE-4a1c6a48a0",
+      "priorStatus": "BENCHMARK_SOURCE_UNRESOLVED",
+      "newStatus": "RESOLVED_FROM_PRIMARY_SOURCE",
+      "whyItWasNotFound": "The provision is an unnumbered flush paragraph 6,734 characters inside the operative Section 6.04 span. The audit's excerpt stopped at the chapeau and never reached it.",
+      "offset": 461959,
+      "verifiedAgainstSource": "“For purposes of the definition of ‘Unrestricted Subsidiary’ and the covenants described under Section 5.15 and under this Section 6.04: (x) ‘investments’ shall include ... (y) any property transferred to or from an Unrestricted Subsidiary shall be valued at its fair market value at the time of such transfer.”",
+      "furtherDefectFound": null,
+      "eligibleForCanonicalScoring": true,
+      "reviewerOutputUsed": false
+    }
+  ],
+  "remainingUnresolved": 0,
+  "note": "No source was invented. Both resolutions are string locations in files already mapped by the integrity audit, reproducible by the locator in scripts/v3-1-1/source-locator.ts."
+}

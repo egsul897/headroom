@@ -1,0 +1,52 @@
+{
+  "artifact": "§2 — starting state and the frozen history, hashed before anything was written.",
+  "benchmarkVersion": "evaluation-contract-v3.1.1",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "startingSha": {
+    "statedInMission": "5cdcfac",
+    "actualHeadAtStart": "5c665bed62dae3e7b6a7e2f1d77da684e54fc78c",
+    "discrepancy": "The mission names 5cdcfac as the starting point. Actual HEAD was 5c665be, one commit further on. That commit adds CLAUDE.md and records a reporting preference; it touches no benchmark, evidence, adjudication or production file, so the benchmark state this mission starts from is byte-identical to 5cdcfac. Recorded rather than silently absorbed.",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTree": "clean",
+    "remote": "synchronized"
+  },
+  "priorAuditVerdict": "PHASE3_V3_1_BENCHMARK_REQUIRES_CORRECTION",
+  "frozenFileHashes": {
+    "docs/phase-3-final-closure-resolution/review-packets/R1.json": "0b0e69bcf7f18e5256a6de2086f3b5b0ffe0a152be8882cd1f3557e2ab24ef74",
+    "docs/phase-3-final-closure-resolution/review-packets/R2.json": "2f8d38476e1f6ef19e16efc6fa3aa44e081340805b92ef513a2bd1d409444813",
+    "docs/phase-3-final-closure-resolution/review-packets/R3.json": "93dea2b7990bd0f6f5c697e909658e1513c7e08224eed9f045ee18121e91acb6",
+    "docs/phase-3-final-closure-resolution/02-v31-atomic-surfacing-contract.json": "7161f141411a05fb740a6ca01e690e86f14d337d9182eaf7b1097b3f643f4988",
+    "docs/phase-3-final-closure-resolution/07-consensus-contract.json": "c04074d4104a3634e0c1439eff1f014ab5feefc63fed47f4ff8ded8ad8ba08e7",
+    "docs/phase-3-final-closure-resolution/08-historical-adjudication-preservation.json": "e573ae59d427992fe41685f2b09a4f8850efaa7bc08cbdd5fcfc6b5e8cec123d",
+    "docs/phase-3-final-closure-resolution/19-independent-review-import.json": "26fb9c95b9008c22e7f494f00bc2ccf8add6d9ba85558d457838903ff159adc5",
+    "docs/phase-3-final-closure-resolution/20-final-agreement-metrics.json": "308ecf416be4a90513fd8a1115351ae71a0f9d7f02f0f059892dfd0f063b96be",
+    "docs/phase-3-final-closure-resolution/22-phase3-final-gate.json": "ee7471b11775bc6119341b3e33a05c122b9a9557f12c6d1f5a3ddf2e2a60876e",
+    "docs/evaluation-contract-v3/05-operational-rubric.json": "72d109a873398df31c603d53ac7d51bc34ece5def50b91a131268fca6c0a4139",
+    "docs/evaluation-contract-v3/07-validation-sample.json": "68e93db9867267d5786d4932bbac536034b2ce0c8d32fd146b3695dd25f70238",
+    "docs/evaluation-contract-v3/08-validation-packets-BLINDED.json": "2ba83e8720d18630b8ed0f21c4b113766e116cfc25ff7a7a8ecaa62c36bf3f70",
+    "docs/evaluation-contract-v3/09-adjudicator-a.json": "eed3d8ddc1a04fc5c3e84fef57ac5c69f41fe9ce3eb6adc7252e01bdfba3a10c",
+    "docs/evaluation-contract-v3/10-adjudicator-b.json": "8335455b971f678b9f9d87a5487d397395df49e37c91a8cea568542ba2ca18b2",
+    "docs/evaluation-contract-v3/11-adjudicator-c.json": "e716552d1ec3e92094afe7d268aa0f881a184442ccf92485f13c8a340a2b39ee",
+    "docs/evaluation-contract-v3/19-evaluator-vs-consensus.json": "9a9ce6b166b9edc8ddf0ed8de40f6415f104091713db637eb1ba6091276ff75a",
+    "docs/evaluation-contract-v3/_sample-labels-SEALED.json": "e887333d59e904b4e3723d362f6a9b1e1e2fe6788e1159fd33753bdf4238c15c",
+    "docs/phase-3-v3.1-benchmark-integrity/01-benchmark-universe.json": "8661d18f961d623f1a2de499455870e2856c3db4577143e369a20a6d2265a6da",
+    "docs/phase-3-v3.1-benchmark-integrity/02-primary-source-map.json": "b37f9318accf386be4ba9c0e8e2e51bf7890e5a2a013d3dc7725cf76364829a9",
+    "docs/phase-3-v3.1-benchmark-integrity/03-atomic-ground-truth.json": "7bccc78ceba8d67a86392c8825d5bee5cb8b25d6247322279eea019a7eacfa38",
+    "docs/phase-3-v3.1-benchmark-integrity/04-benchmark-correction-ledger.json": "239d3c8415ef77dc0a819625d740fbc0266df2b620da39478e24a69845eeea32",
+    "docs/phase-3-v3.1-benchmark-integrity/04-benchmark-correction-ledger.md": "4342febadd3b6edbea751d247cfe3d6845f54ffe6b9ba026aa9558361358f907",
+    "docs/phase-3-v3.1-benchmark-integrity/05-impact-analysis.json": "aec9c8ff9fa23efd0e50ef789a680e778e0cb5a9b5cc3e60a8311dd3a81fa4e2",
+    "docs/phase-3-v3.1-benchmark-integrity/06-final-benchmark-integrity-report.md": "73975e394f732b60a6d2f7a5909cbb99ea2615e99e9328bdc076982a67f1d646",
+    "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+    "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+    "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+    "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+    "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+    "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f"
+  },
+  "frozenFileCount": 30,
+  "reviewerResponseArtifacts": {
+    "present": false,
+    "note": "No R1/R2/R3 response file exists. 19-independent-review-import.json records that the V3.1 reviewer round never ran, so there are no V3.1 reviewer decisions to preserve or to reuse. The prior adjudication this mission carries forward is the V3 2-of-3 consensus of adjudicators A, B and C."
+  },
+  "promise": "No file listed in frozenFileHashes is written by this mission. 10-regression-and-determinism.json re-hashes every one of them after generation."
+}

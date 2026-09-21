@@ -1,0 +1,15 @@
+{
+  "artifact": "§14 — non-target promotion audit.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "productionFilesChanged": 0,
+  "candidatesWhoseAccountingRoleChanged": 0,
+  "changedCandidates": [],
+  "classification": {
+    "EXPECTED_CORRECT_PROMOTION": 0,
+    "SAFE_RECLASSIFICATION": 0,
+    "FALSE_PROMOTION": 0,
+    "NEEDS_REVIEW": 0
+  },
+  "falsePromotionsFound": 0,
+  "method": "With zero production changes there is no new promotion rule and therefore no candidate whose accountingRole could change. The audit is reported as an explicit zero rather than omitted, and the locking tests assert that the intake predicate and the intake expression are unchanged."
+}
