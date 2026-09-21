@@ -72,7 +72,16 @@ export function evaluateGate(r: Omit<ModelBakeoffResult, "passesGate" | "gateRea
   if (r.schemaFailureRate > 0.1) reasons.push(`schema/malformed rate ${(r.schemaFailureRate * 100).toFixed(1)}% above the 10% ceiling`);
   if (!r.toolUseWorks) reasons.push("tool-use workflow never engaged on any candidate");
   if (!r.structuredOutputsParse) reasons.push("no structured output parsed into IR rules or definitions");
-  if (r.providerFailures > r.attempted / 2) reasons.push(`systemic provider failure: ${r.providerFailures}/${r.attempted} refused`);
+  if (r.providerFailures > r.attempted / 2) {
+    // PROVIDER_OR_HARNESS bundles refusals with wall-clock timeouts, because the mission's
+    // taxonomy files both there. They are not the same event and must not be described as
+    // one: a 402 is a refusal, a timeout is a model that never converged inside a ceiling
+    // the harness chose. Naming the split keeps the reader from reading "refused" as a
+    // billing problem.
+    const timedOut = r.timeouts;
+    const refused = r.providerFailures - timedOut;
+    reasons.push(`systemic provider-or-harness failure: ${r.providerFailures}/${r.attempted} (${refused} provider refusal(s), ${timedOut} wall-clock timeout(s) at the harness ceiling)`);
+  }
   return { passesGate: reasons.length === 0, gateReasons: reasons };
 }
 
@@ -123,6 +132,10 @@ async function main() {
         const result = await withTimeout(compileCovenantToIR(input, { caller }), PER_CANDIDATE_TIMEOUT_MS);
         frozen.push({ model: m.id, discoveryId: c.discoveryId, result });
         const rec = record(c, input, result, raw, 1, null);
+        // The compiler's telemetry does not always carry wallClockMs, and a null there
+        // silently collapses every latency statistic to zero. The elapsed time is measured
+        // here regardless, so the wall-clock projection has a real denominator.
+        if (rec.wallClockMs === null) rec.wallClockMs = Date.now() - t0;
         spend += rec.actualCostUsd;
         recs.push(rec);
         console.log(`  ${p.axis.padEnd(36)} ${rec.sourceSectionRef.padEnd(14)} ${rec.status.padEnd(16)} rules=${String(rec.rules).padStart(2)} tools=${String(rec.toolCalls).padStart(2)} tok=${rec.inputTokens}/${rec.outputTokens} ${Math.round((Date.now() - t0) / 1000)}s $${spend.toFixed(4)}`);

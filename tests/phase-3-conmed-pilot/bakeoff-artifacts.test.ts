@@ -4,7 +4,10 @@
  * indistinguishable from a real finding.
  */
 import { describe, expect, it } from "vitest";
-import { gateMatrix, failureTaxonomy, subCentCompletion, wallClockProjection, SEALED_POPULATION_AFTER_DEDUP } from "../../scripts/p3-conmed-pilot/build-bakeoff-artifacts";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { gateMatrix, failureTaxonomy, subCentCompletion, wallClockProjection, latencyFromLog, SEALED_POPULATION_AFTER_DEDUP } from "../../scripts/p3-conmed-pilot/build-bakeoff-artifacts";
 import { evaluateGate, type ModelBakeoffResult } from "../../scripts/p3-conmed-pilot/run-bakeoff";
 import { PREFERRED_CEILING_USD_PER_CANDIDATE, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, OBSERVED_OUTPUT_TOKENS_PER_CANDIDATE } from "../../scripts/p3-conmed-pilot/premium-lock";
 import type { CandidateRecord } from "../../scripts/p3-conmed-pilot/compile-run";
@@ -143,5 +146,60 @@ describe("wall-clock projection", () => {
     expect(p.sealedPopulationAfterDedup).toBe(SEALED_POPULATION_AFTER_DEDUP);
     expect(p.hoursAtConcurrency1).toBeCloseTo((SEALED_POPULATION_AFTER_DEDUP * 60_000) / 3_600_000, 1);
     expect(p.hoursAtConcurrency2).toBeCloseTo(p.hoursAtConcurrency1 / 2, 1);
+  });
+});
+
+describe("gate wording", () => {
+  it("does not describe a wall-clock timeout as a refusal", () => {
+    const perCandidate = Array.from({ length: 12 }, (_, i) =>
+      rec({ discoveryId: `d${i}`, status: "FAILED", failureReasons: ["WALL_CLOCK_TIMEOUT"], inputTokens: null, outputTokens: null, wallClockMs: null }),
+    );
+    const r = result({ perCandidate, providerFailures: 12, timeouts: 12, toolUseWorks: false, structuredOutputsParse: false });
+    const systemic = r.gateReasons.find((x) => x.startsWith("systemic"))!;
+    expect(systemic).toContain("12 wall-clock timeout(s)");
+    expect(systemic).toContain("0 provider refusal(s)");
+    expect(systemic).not.toMatch(/\d+\/\d+ refused/);
+  });
+});
+
+describe("latency recovered from the run log", () => {
+  const log = [
+    "=== alibaba/qwen3.7-flash ($0.00118/cand est) — concurrency 1 ===",
+    "  SHORT_SIMPLE_PROHIBITION             7.8(b)         REVIEW_REQUIRED  rules= 1 tools= 0 tok=14152/6918 83s $0.0013",
+    "  LONGER_COVENANT                      7.2(k)         THREW CandidateTimeoutError 900s",
+    "  MEDIAN_SIZE                          7.13           PARTIAL          rules= 1 tools= 0 tok=267/8746 427s $0.0089",
+    "=== inception/mercury-2.5 ($0.00152/cand est) — concurrency 1 ===",
+    "  SHORT_SIMPLE_PROHIBITION             7.8(b)         REVIEW_REQUIRED  rules= 1 tools= 0 tok=13747/2164 18s $0.0098",
+  ].join("\n");
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "bakeoff-log-")), "bakeoff.log");
+  fs.writeFileSync(file, log);
+
+  it("attributes each latency to the model whose section of the log it appeared under", () => {
+    const m = latencyFromLog(file);
+    expect(m.get("alibaba/qwen3.7-flash")!.get("7.8(b)")).toBe(83_000);
+    expect(m.get("inception/mercury-2.5")!.get("7.8(b)")).toBe(18_000);
+  });
+
+  it("does not pick up a THREW line, which carries the ceiling rather than a measurement", () => {
+    expect(latencyFromLog(file).get("alibaba/qwen3.7-flash")!.has("7.2(k)")).toBe(false);
+  });
+
+  it("returns an empty map rather than throwing when there is no log", () => {
+    expect(latencyFromLog(path.join(os.tmpdir(), "definitely-absent.log")).size).toBe(0);
+  });
+
+  it("uses the log only where the frozen record has no latency of its own, and says which source it used", () => {
+    const perCandidate = [rec({ sourceSectionRef: "7.8(b)", wallClockMs: null }), rec({ discoveryId: "d2", sourceSectionRef: "7.13", wallClockMs: null })];
+    const p = wallClockProjection([result({ model: "alibaba/qwen3.7-flash", perCandidate })], 900_000, latencyFromLog(file))[0]!;
+    // (83s + 427s) / 2 = 255s. Without the log both would have been charged at 900s.
+    expect(p.meanWallClockSecondsPerCandidate).toBe(255);
+    expect(p.latencySource).toContain("run log");
+    expect(p.latencySampleSize).toBe(2);
+  });
+
+  it("prefers the frozen record when it does carry latency", () => {
+    const p = wallClockProjection([result({ model: "alibaba/qwen3.7-flash", perCandidate: [rec({ sourceSectionRef: "7.8(b)", wallClockMs: 10_000 })] })], 900_000, latencyFromLog(file))[0]!;
+    expect(p.meanWallClockSecondsPerCandidate).toBe(10);
+    expect(p.latencySource).toBe("frozen per-candidate records");
   });
 });

@@ -145,19 +145,56 @@ export function subCentCompletion(results: ModelBakeoffResult[], probes: ProbeSl
 }
 
 /**
+ * Per-candidate latency recovered from the run log.
+ *
+ * The first bakeoff run predates the fix that measures elapsed time in the runner, so its
+ * frozen records carry wallClockMs: null on every candidate — including the ones that
+ * completed. Falling back to the timeout ceiling for those would report a ~900s mean for a
+ * model whose completions actually took 18-427s, which is wrong in the pessimistic
+ * direction and would misprice the whole population projection.
+ *
+ * The console line for each completion carries the measured seconds, so they are parsed
+ * back out here. This is a SECONDARY source, used only where the frozen record has no
+ * latency of its own, and it is labelled as such wherever it is consumed.
+ */
+export function latencyFromLog(logPath = "/tmp/claude-0/pilot/bakeoff.log"): Map<string, Map<string, number>> {
+  const byModel = new Map<string, Map<string, number>>();
+  if (!fs.existsSync(logPath)) return byModel;
+  let current: string | null = null;
+  for (const line of fs.readFileSync(logPath, "utf8").split("\n")) {
+    const header = /^=== (\S+) \(/.exec(line);
+    if (header) {
+      current = header[1]!;
+      byModel.set(current, new Map());
+      continue;
+    }
+    if (!current) continue;
+    // "  AXIS_NAME   7.2(f)   STATUS  rules= 1 tools= 0 tok=.../... 124s $0.0030"
+    const row = /^\s{2}[A-Z_0-9]+\s+(\S+)\s+\S+\s+rules=.*?\s(\d+)s\s/.exec(line);
+    if (row) byModel.get(current)!.set(row[1]!, Number(row[2]) * 1000);
+  }
+  return byModel;
+}
+
+/**
  * Wall clock, not dollars, is the constraint the probe set exposes. This projects the
  * sealed population under the measured per-candidate latency, at the concurrency the
  * mission permits.
  */
-export function wallClockProjection(results: ModelBakeoffResult[], perCandidateTimeoutMs: number) {
+export function wallClockProjection(results: ModelBakeoffResult[], perCandidateTimeoutMs: number, fromLog?: Map<string, Map<string, number>>) {
   return results.map((r) => {
-    const observed = r.perCandidate.map((c) => c.wallClockMs ?? 0).filter((x) => x > 0);
+    const logged = fromLog?.get(r.model);
+    const observed = r.perCandidate
+      .map((c) => c.wallClockMs ?? logged?.get(c.sourceSectionRef) ?? 0)
+      .filter((x) => x > 0);
     const timeoutCost = r.timeouts * perCandidateTimeoutMs;
     const meanMs = observed.length === 0 ? perCandidateTimeoutMs : (observed.reduce((s, x) => s + x, 0) + timeoutCost) / (observed.length + r.timeouts);
     const hours = (n: number, conc: number) => Number(((n * meanMs) / conc / 3_600_000).toFixed(1));
     return {
       model: r.model,
       meanWallClockSecondsPerCandidate: Math.round(meanMs / 1000),
+      latencySource: r.perCandidate.some((c) => c.wallClockMs !== null) ? "frozen per-candidate records" : observed.length > 0 ? "run log (frozen records carry no latency for this run)" : "none — every candidate charged at the timeout ceiling",
+      latencySampleSize: observed.length,
       includesTimeoutsAtCeiling: r.timeouts,
       sealedPopulationAfterDedup: SEALED_POPULATION_AFTER_DEDUP,
       hoursAtConcurrency1: hours(SEALED_POPULATION_AFTER_DEDUP, 1),
