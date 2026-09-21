@@ -1,0 +1,1988 @@
+{
+  "artifact": "§6 — the versioned corrected 47-case corpus.",
+  "benchmarkVersion": "evaluation-contract-v3.1.1",
+  "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "caseCount": 47,
+  "benchmarkContentHash": "fdba3cb2c1c226d4444f4af89a786efeb662677a8df17666ce8e2ffbcf0c1d59",
+  "determinism": "cases are sorted by caseId and the content hash covers only the semantic payload, so regeneration is byte-identical.",
+  "cases": [
+    {
+      "caseId": "CASE-0c169f38c3",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.2-c",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.2(c)",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Indebtedness secured by Liens permitted under 7.3(g), conditioned on pro forma compliance with the 7.1 financial covenants.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.2(c)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Indebtedness secured by Liens permitted by 7.3(g), conditioned on pro forma compliance with the Section 7.1 financial covenants",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(c) Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 ...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-0f6ac984b3",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.04-a-x",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.04(a)(x)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Restricted Payments up to the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA, conditioned on no continuing Event of Default. $21,000,000; 35% of Consolidated Adjusted EBITDA",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.04(a)(x)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"in an aggregate amount not to exceed the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "conditioned on no continuing Event of Default",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(x) so long as no Event of Default exists,\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-1284ab8e71",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.08-subordinated-debt-payments",
+      "documentId": "lsb",
+      "claimSectionRef": "6.08",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Section 6.08(a) prohibits payments in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes) except for six enumerated carve-outs: (i) payments in respect of the Secured Obligations; (ii) scheduled principal, interest and other required amounts on Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness; (iii) payments resulting from a refinancing permitted by Section 6.01(d); (iv) payments of Subordinated Indebtedness to the extent its own subordination terms permit; (v) payments to the extent the Payment Conditions are satisfied; and (vi) payments not exceeding $500,000 in the aggregate in any fiscal year, available only where no other clause of Section 6.08(a) would permit the payment at the time. Section 6.08(b) separately prohibits amendments to Subordinated Indebtedness terms materially adverse to the Administrative Agent or the Lenders, as determined by the Administrative Agent in its Permitted Discretion.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.08",
+      "benchmarkIntegrityStatus": "CORRECTED_FROM_PRIMARY_SOURCE",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "General prohibition on making any payment in respect of Indebtedness other than Indebtedness in respect of the Secured Notes.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(a) Make any payment in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), except the following payments of Indebtedness shall be permitted:”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Carve-out (i): payments in respect of the Secured Obligations are permitted.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(i) payments in respect of the Secured Obligations;”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Carve-out (ii): scheduled principal, interest and other required amounts on Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness, are permitted.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(ii) scheduled payments of principal and interest, and payment of any other amount, in each case to the extent such payment is required pursuant to the terms of any Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P4",
+          "proposition": "Carve-out (iii): payments resulting from a refinancing permitted by Section 6.01(d) are permitted.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(iii) payments of Indebtedness as a result of any refinancing of Indebtedness permitted by Section 6.01(d);”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P5",
+          "proposition": "Carve-out (iv): payments of Subordinated Indebtedness are permitted only to the extent permitted by its own terms or its subordination agreement.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(iv) payments of Subordinated Indebtedness to the extent permitted in accordance with the terms of such Subordinated Indebtedness or any agreement with respect thereto governing the subordination thereof;”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P6",
+          "proposition": "Carve-out (v): payments are permitted to the extent the Payment Conditions are satisfied.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(v) payments of Indebtedness to the extent the Payment Conditions are satisfied; and”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P7",
+          "proposition": "Carve-out (vi): payments of Indebtedness not exceeding $500,000 in the aggregate in any fiscal year are permitted.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(vi) payments of Indebtedness not to exceed $500,000 in the aggregate in any fiscal year of the Loan Parties”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P8",
+          "proposition": "Anti-stacking proviso: a payment under clause (vi) is permitted only if it would not, at the time, be permitted under any other clause of Section 6.08(a).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“it being understood and agreed that any payment of Indebtedness made pursuant this clause (vi) shall only be permitted if such payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.08(a)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P9",
+          "proposition": "Section 6.08(b) prohibits amending the terms of any document evidencing Subordinated Indebtedness in a manner materially adverse to the Administrative Agent or the Lenders, as determined by the Administrative Agent in its Permitted Discretion.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(b) No Loan Party shall amend, modify, alter, or change any of the terms or conditions of any agreement, instrument, document, indenture, or other writing evidencing or concerning Subordinated Indebtedness if such amendment, modification, alteration or change would be materially adverse to the Administrative Agent or the Lenders”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "CLAIM_CORRECTION",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": "Prohibition on payments of Indebtedness generally (other than the Secured Notes/Secured Obligations), with carve-outs for scheduled payments of permitted debt, refinancing payments, payments of Subordinated Indebtedness only as its own subordination terms allow, Payment-Conditions-gated payments, and a $500,000/year fixed basket; separately, no amendment of Subordinated Indebtedness terms materially adverse to the Lenders. $500,000 PRIORITY_RULE is the correct ContractRuleType (this gates payment priority among debt tiers, mirroring FWRG's own fwrg-def-restricted-debt finding), but this section actually bundles at least 3 independently-gated payment baskets (scheduled-payment carve-out, Payment-Conditions-gated, $500k fixed) into one Section 6.08(a) - the same decomposition-discipline risk FWRG's Available Amount provision raised: a single flattened rule here would either over- or under-permit depending which sub-clause's condition got dropped.",
+        "supersededExcerptOffset": null,
+        "defectType": "BENCHMARK_DEFECT"
+      }
+    },
+    {
+      "caseId": "CASE-166617b06a",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::I::1.11-amendment-and-restatement",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.11",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "This Agreement amends, supersedes and restates the October 11, 2019 Existing Credit Agreement in its entirety without novation: existing liens, guarantees and obligations continue and are re-evidenced hereunder; Existing Credit Agreement 'Commitments' continue as Revolving Commitments; the Administrative Agent may effect reallocations/assignments among Lenders without assignment fees; accrued interest and fees plus break costs under the Existing Credit Agreement are payable on the Effective Date; and each Loan Party ratifies and reaffirms its prior guarantees and Lien grants.",
+      "correctedSourceExcerpt": "SECTION 1.11. Amendment and Restatement .\n\n(a) The parties to this Agreement agree that, on the Effective Date, the terms and provisions of the Existing Credit Agreement shall be and\nhereby are amended, superseded and restated in their entirety by the terms and provisions of this Agreement. Neither the execution, delivery and acceptance of this Agreement nor any of the terms, covenants, conditions or other provisions set forth\nherein are intended, nor shall they be deemed or construed, to effect a novation of any liens or indebtedness or other obligations under the Existing Credit Agreement or any other Loan Document (as defined in the Existing Credit Agreement) or to\npay, extinguish, release, satisfy or discharge (i) all or any part of the indebtedness or other obligations evidenced by the Existing Credit Agreement, (ii) the liability of any Person under the Existing Credit Agreement or the Loan\nDocuments (as defined under the Existing Credit Agreement) executed and delivered in connection therewith, (iii) the liability of any Person with respect to the Existing Credit Agreement or any indebtedness or other obligations evidenced\nthereby, or (iv) any deeds of trust,\n\n53\n\nmortgages, liens, security interests or contractual or legal rights securing all or any part of such indebtedness or other obligations. All Loans made, and Obligations incurred, under the\nExisting Credit Agreement which are outstanding on the Effective Date (and not terminated or otherwise repaid with the proceeds of any Loans made hereunder on the Effective Date) shall be re-evidenced as Loans\nand Obligations, respectively, under (and shall be governed by the terms of) this Agreement and the other Loan Documents.\n\n(b) Without\nlimiting the foregoing, upon the effectiveness of the amendment and restatement contemplated hereby on the Effective Date and except as otherwise expressly provided herein:\n\n(i) all references in the “Loan Documents” (as defined in the Existing Credit Agreement) to the “Administrative\nAgent”, the “Credit Agreement” and the “Loan Documents” shall be deemed to refer to the Administrative Agent, this Agreement and the Loan Documents;\n\n(ii) the “Commitments” (as defined in the Existing Credit Agreement) shall continue as Revolving Commitments\nhereunder as set forth on the Commitment Schedule ;\n\n(iii) the “Revolving Loans” (as defined in the\nExisting Credit Agreement) outst",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-a 1.11",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "On the Effective Date the Existing Credit Agreement is amended, superseded and restated in its entirety by this Agreement, and this is expressly not a novation.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“Effective on the Effective Date, the terms and provisions of the Existing Credit Agreement are amended, superseded and restated in their entirety by this Agreement”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Existing liens, guarantees and obligations outstanding on the Effective Date continue and are re-evidenced under this Agreement.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“any deeds of trust, mortgages, liens, security interests or contractual or legal rights securing” the Existing Credit Agreement obligations",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "“Commitments” under the Existing Credit Agreement continue as Revolving Commitments under this Agreement.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 1.11(b) of the doc-a 2022 A&R, continuation of Existing Credit Agreement Commitments as Revolving Commitments",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P4",
+          "proposition": "The Administrative Agent may effect reallocations, sales and assignments among Lenders so that each Lender's Credit Exposure reflects its Applicable Percentage on the Effective Date, without payment of any assignment fee.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“the reallocation, sales and assignments are deemed effected by way of, and subject to the terms and conditions of, Assignment and Assumptions, without payment of any related assignment fee”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P5",
+          "proposition": "Accrued interest and fees under the Existing Credit Agreement, plus break costs, are payable on the Effective Date.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 1.11(b) of the doc-a 2022 A&R, accrued interest, fees and break funding amounts payable on the Effective Date",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P6",
+          "proposition": "Each Loan Party ratifies and reaffirms its prior guarantees and Lien grants.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 1.11 of the doc-a 2022 A&R, ratification and reaffirmation by each Loan Party",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-16a7d152b6",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.02-liens",
+      "documentId": "lsb",
+      "claimSectionRef": "6.02",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "General Lien prohibition on all Loan Party assets, subject only to Permitted Liens (including replacement liens for refinanced Section 6.01(d) debt).",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.02",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "general Lien prohibition on all Loan Party assets subject only to Permitted Liens, including replacement liens for refinanced 6.01(d) debt",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"Create, incur, assume, or permit to exist ... any Lien on or with respect to any of its assets ... except for Permitted Liens (including Liens that are replacements of Permitted Liens to the extent that the original Indebtedness is refinanced ... under Section 6.01(d) and so long as the replacement Liens only encumber those assets that secured the refinanced ... Indebtedness)\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-2034884b7a",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.03-fundamental-changes",
+      "documentId": "lsb",
+      "claimSectionRef": "6.03",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Prohibition on merger/consolidation/reclassification of stock (a), liquidation/dissolution (b), and sale of all-or-substantially-all assets (c), with several intercompany/ordinary-course/good-faith carve-outs.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.03",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Prohibition on merger, consolidation or reclassification of stock.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.04 ... (a) merge into or consolidate with any other Person, or permit any other Person to merge into or consolidate with it, or reclassify its stock”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Prohibition on liquidation or dissolution, subject to a good-faith carve-out for a non-Loan-Party Subsidiary whose assets transfer to a Loan Party.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(b) liquidate or dissolve”, with the Borrower Representative good-faith carve-out",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Prohibition on the sale of all or substantially all of the assets of a Loan Party.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(c) ... sell ... all or substantially all of the assets”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-2aa00d5566",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::VI::6.01-chapeau",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.01",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except as permitted by clauses (a) through (q).",
+      "correctedSourceExcerpt": "SECTION 6.01. Indebtedness . No Loan Party\nwill, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:\n\n(a) the Secured\nObligations and the Guaranteed Obligations;\n\n106\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted\nSubsidiary owing to any Borrower or any other Restricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations\nset forth in Section 6.04, (ii) Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and\n(iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan P",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 436142–437042 inside the operative span [436142, 444932)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.01. Indebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (q).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clauses (a) through (q) of Section 6.01, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 156440,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-30db965277",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-d::VI::6-04-chapeau",
+      "documentId": "doc-d",
+      "claimSectionRef": "6.04",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "General prohibition on forming subsidiaries after the Effective Date, purchasing or holding Equity Interests, evidences of indebtedness or securities, making or permitting loans or advances, Guaranteeing obligations, making or permitting investments, or acquiring assets constituting a business unit, except as permitted by clauses (a) through (s).",
+      "correctedSourceExcerpt": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan\nParty will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire (including pursuant to any merger or amalgamation with any Person that was not a Loan Party and a wholly owned\nRestricted Subsidiary prior to such merger) any Equity Interests, evidences of indebtedness or other securities (including any option, warrant or other right to acquire any of the foregoing) of, make or permit to exist any loans or advances to,\nGuarantee any obligations of, or make or permit to exist any investment or any other interest in, any other Person, or purchase or otherwise acquire (in one transaction or a series of transactions) any assets of any other Person constituting a\nbusiness unit (whether through purchase of assets, merger or otherwise), except:\n\n(a) Permitted Investments;\n\n(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Parties; provided\nthat any such Equity Interests held by a Loan Party shall be pledged pursuant to the applicable Security Agreement; provided further that the aggregate outstanding amount of investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-d 6.04",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire Equity Interests, evidences of indebtedness or other securities of, make or permit loans or advances to, Guarantee obligations of, or make any investment or other interest in, any other Person, or acquire assets of another Person constituting a business unit, except as permitted by clauses (a) through (s).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date ...\"",
+          "independence": "MATERIAL_INDEPENDENT",
+          "restatedFrom": "same lead-in"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-32a8d38224",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.01-g-i",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.01(g)(i)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Guaranties of supplier/customer/franchisee/licensee obligations in the ordinary course, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA. $2,500,000; 5% of Consolidated Adjusted EBITDA",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.01(g)(i)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "guaranties of supplier/customer/franchisee/licensee obligations in the ordinary course",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(g) (i) guaranties by the Borrower and/or any Restricted Subsidiary of the obligations of suppliers, customers, franchisees and licensees in the ordinary course of business\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "capped at the greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"in an aggregate outstanding principal amount not to exceed the greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-393f8732d2",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-d::VI::6-05-chapeau",
+      "documentId": "doc-d",
+      "claimSectionRef": "6.05",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "No Loan Party or Restricted Subsidiary may Dispose of any asset, including Equity Interests it owns, and no Restricted Subsidiary may issue additional Equity Interests (other than to another Loan Party or Restricted Subsidiary in compliance with Section 6.04), except as permitted by clauses (a) through (k).",
+      "correctedSourceExcerpt": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it\npermit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to\nanother Loan Party or another Restricted Subsidiary in compliance with Section 6.04), except:\n\n(a) Dispositions of\n(i) inventory, goods or other assets in the ordinary course of business, (ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted\nSubsidiaries, and (iv) other property (including ",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 484376–485076 inside the operative span [484376, 489129)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "No Loan Party will permit any Restricted Subsidiary to issue any additional Equity Interest in itself, other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Both prohibitions are subject to the exceptions enumerated in clauses (a) through (k).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clauses (a) through (k) of Section 6.05, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 810913,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-3e2b123d74",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::VI::6.05-ip-flush-prohibition",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.05",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Flush prohibition: notwithstanding any other clause, no Loan Party or Restricted Subsidiary may consummate any transaction - whether by Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, in a single transaction or a series - resulting in the Disposition of intellectual property material to the business to any Unrestricted Subsidiary; non-exclusive ordinary-course licenses to Unrestricted Subsidiaries are permitted so long as the Company and Restricted Subsidiaries retain beneficial ownership and the same rights of use.",
+      "correctedSourceExcerpt": "Notwithstanding the foregoing, no Loan Party or any Restricted\nSubsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transaction or a series of\ntransactions) of intellectual property that is material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary; provided that the Company and its Restricted Subsidiaries may grant non-exclusive licenses of any intellectual property to any Unrestricted Subsidiary in the ordinary course of business so long as the Company and its Restricted Subsidiaries retain the beneficial ownership and the\nsame rights to use such intellectual property as held prior to such ",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 466510–467310 inside the operative span [463076, 467325)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Notwithstanding the foregoing, no Loan Party or Restricted Subsidiary may consummate any transaction — by way of Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, in a single transaction or a series — that results in the Disposition of intellectual property material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“Notwithstanding the foregoing, no Loan Party or any Restricted Subsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transaction or a series of transactions) of intellectual property that is material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The Company and its Restricted Subsidiaries may nonetheless grant non-exclusive licences of intellectual property to an Unrestricted Subsidiary in the ordinary course of business so long as they retain the beneficial ownership and the same rights to use that intellectual property as held prior to the licence.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“provided that the Company and its Restricted Subsidiaries may grant non-exclusive licenses of any intellectual property to any Unrestricted Subsidiary in the ordinary course of business so long as the Company and its Restricted Subsidiaries retain the beneficial ownership and the same rights to use such intellectual property as held prior to such license”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 89023,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-466dbaa257",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-def-abl-notes-priority-collateral",
+      "documentId": "lsb",
+      "claimSectionRef": "Article 1 (ABL Priority Collateral / Notes Priority Collateral)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Both 'ABL Priority Collateral' and 'Notes Priority Collateral' are defined ONLY by cross-reference to the Intercreditor Agreement ('shall have the meaning set forth in the Intercreditor Agreement') - this Credit Agreement's own text never states which specific assets fall into each category. The CORRECT extraction from THIS document alone is an UnresolvedContractItem (itemType UNRESOLVED_CROSS_REFERENCE, blocking=true, pointing at 'the Intercreditor Agreement' as a document this package does not contain) for both terms - not a guessed definition. This is the single clearest test in this package of whether a real extractor invents plausible-sounding collateral-scope content when the actual source is silent, which would be a textbook DANGEROUS_UNFLAGGED failure.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb Article 1 (ABL Priority Collateral / Notes Priority Collateral)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "\"ABL Priority Collateral\" is defined only by cross-reference to the Intercreditor Agreement",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"ABL Priority Collateral ” shall have the meaning set forth in the Intercreditor Agreement\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "“Notes Priority Collateral” is likewise defined only by cross-reference to the Intercreditor Agreement, which is not filed in this package.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"Notes Priority Collateral ” has the meaning set forth in the Intercreditor\"",
+          "independence": "MATERIAL_INDEPENDENT",
+          "restatedFrom": "\"Notes Priority Collateral\" likewise"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-4a1c6a48a0",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.04",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Flush valuation rules for Sections 5.15 and 6.04: designating a Subsidiary as Unrestricted is an 'investment' equal to the Company's proportionate share of the fair market value of that Subsidiary's net assets at designation; upon redesignation as Restricted, a permanent deemed investment remains equal to the original investment less the proportionate net asset fair market value at redesignation (if positive); and property transferred to or from an Unrestricted Subsidiary is valued at fair market value at transfer.",
+      "correctedSourceExcerpt": "For purposes of the definition\nof “Unrestricted Subsidiary” and the covenants described under Section 5.15 and under this Section 6.04: (x) “investments” shall include the portion (proportionate to the Company’s or the applicable Restricted\nSubsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of a Subsidiary at the time that such Subsidiary is designated an Unrestricted Subsidiary; provided , that upon a\nre-designation of such Subsidiary as a Restricted Subsidiary, the Company (or the applicable Restricted Subsidiary owning such re-designated Subsidiary) shall be deemed\nto continue to have a permanent “investment” in an Unrestricted Subsidiary in an amount (if positive) equal to (A) the Company’s or such Restricted Subsidiary’s “investment” in such Subsidiary at the time of such re-designation, less (B) the portion (proportionate to the Company’s or the applicable Restricted Subsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of such\nSubsidiary at the time of such re-designation; and (y) any property transferred to or from an Unrestricted Subsidiary shall be valued at its fair market value at the time of such transfer.\n\n",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 461857–463076 inside the operative span [455225, 463076)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "For the “Unrestricted Subsidiary” definition and the covenants under Sections 5.15 and 6.04, “investments” include the proportionate share of the fair market value of a Subsidiary's net assets at the time it is designated an Unrestricted Subsidiary.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“For purposes of the definition of ‘Unrestricted Subsidiary’ and the covenants described under Section 5.15 and under this Section 6.04: (x) ‘investments’ shall include the portion (proportionate to the Company’s or the applicable Restricted Subsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of a Subsidiary at the time that such Subsidiary is designated an Unrestricted Subsidiary”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "On re-designation as a Restricted Subsidiary, a permanent deemed investment remains in an amount, if positive, equal to the investment at the time of re-designation less the proportionate fair market value of the Subsidiary's net assets at that time.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“upon a re-designation of such Subsidiary as a Restricted Subsidiary, the Company (or the applicable Restricted Subsidiary owning such re-designated Subsidiary) shall be deemed to continue to have a permanent ‘investment’ in an Unrestricted Subsidiary in an amount (if positive) equal to (A) ... ‘investment’ in such Subsidiary at the time of such re-designation, less (B) the portion ... of the fair market value of the net assets of such Subsidiary at the time of such re-designation”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Any property transferred to or from an Unrestricted Subsidiary is valued at its fair market value at the time of the transfer.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(y) any property transferred to or from an Unrestricted Subsidiary shall be valued at its fair market value at the time of such transfer”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 455225,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-55163b4198",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.16",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.16",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Use-of-proceeds restriction: no Anti-Corruption Law violations, no Sanctioned Person/Country activity, no Sanctions violations.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.16",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "use-of-proceeds restriction covering Anti-Corruption Law violations, Sanctioned Person/Country activity and Sanctions violations",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money ... in violation of any Anti-Corruption Laws, (b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country ..., or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto.\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-57227cc234",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.01-general-ratio-gated",
+      "documentId": "lsb",
+      "claimSectionRef": "6.01",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "General (uncapped, no dollar ceiling) Indebtedness permission for the Loan Parties, unlocked ONLY if, as of the incurrence date, (i) Fixed Charge Coverage Ratio > 2.0:1.0 for the trailing four fiscal quarters AND (ii) Payment Conditions are satisfied - distinct from the enumerated (a)-(t) exceptions that follow it. 2.0:1.00 Fixed Charge Coverage Ratio This basket has NO dollar cap - the only gates are the ratio and Payment Conditions. thresholdValue/thresholdUnit are honestly null/unlimited-shaped for this rule (the ontology's own capacityUnlimited-style representation, not a missing field), and Payment Conditions itself is a compound MINIMUM_LIQUIDITY+NO_DEFAULT+certificate condition folded into one named defined term rather than being spelled out per-basket - representable as a single condition citing the defined term, but only if the extractor resists the temptation to inline the underlying sub-conditions redundantly on every basket that references it.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.01",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "uncapped general Indebtedness permission",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if ...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Fixed Charge Coverage Ratio greater than 2.0 to 1.0 for the trailing four quarters",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(i) after giving effect to the incurrence thereof, the Fixed Charge Coverage Ratio of the Parent and its Subsidiaries for the most recently ended four full fiscal quarter period is greater than 2.0 to 1.0\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "The general ratio-gated Indebtedness permission is additionally conditioned on the Payment Conditions being satisfied with respect to the incurrence.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"and (ii) the Payment Conditions are satisfied with respect to such incurrence\"",
+          "independence": "MATERIAL_INDEPENDENT",
+          "restatedFrom": "and the Payment Conditions are satisfied"
+        },
+        {
+          "id": "P4",
+          "proposition": "This general ratio-gated permission stands apart from the enumerated exceptions in clauses (a) through (t), which the limitation does not apply to.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"The foregoing limitation shall not apply to: (a) ... (t) ...\"",
+          "independence": "MATERIAL_INDEPENDENT",
+          "restatedFrom": "distinct from the enumerated (a)-(t) exceptions"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-579c5d3f33",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.10",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.10",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Fair-and-reasonable-terms requirement for affiliate transactions over $2,500,000, with ordinary-course/allocation/tax/receivables-program carve-outs. $2,500,000",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.10",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Transactions with Affiliates involving more than $2,500,000 must be on terms no less favourable than those obtainable in a comparable arm's-length transaction.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 7.10 of the CONMED Eighth A&R, fair-and-reasonable-terms requirement, “$2,500,000”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The requirement is subject to enumerated carve-outs for ordinary-course transactions, cost allocations, tax arrangements and the Receivables Program.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "the enumerated exceptions of Section 7.10, including the clause (v) Investment limitation",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-5a537d2858",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.01-j",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.01(j)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Debt of Restricted Subsidiaries that are not Loan Parties, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA. $30,000,000; 50% of Consolidated Adjusted EBITDA Entity-scope gate ('by a Restricted Subsidiary that is not a Loan Party') is representable via entityScope/entityScopeExcluded plus an ENTITY_TYPE condition; no gap, but two entity-scope fields must both be populated correctly for the rule not to silently overstate who the basket is available to.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.01(j)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "debt of Restricted Subsidiaries that are not Loan Parties, greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(j) Indebtedness of Restricted Subsidiaries that are not Loan Parties; provided that the aggregate outstanding principal amount of such Indebtedness shall not exceed the greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-5a66cad386",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-b::VI::6-05-lead-in",
+      "documentId": "doc-b",
+      "claimSectionRef": "6.05",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Asset sale covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue additional Equity Interests (other than to another Loan Party or Restricted Subsidiary in compliance with Section 6.04), except as permitted by clauses (a) through (k).",
+      "correctedSourceExcerpt": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it\npermit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to\nanother Loan Party or another Restricted Subsidiary in compliance with Section 6.04), except:\n\n(a) Dispositions of (i) inventory,\ngoods or other assets in the ordinary course of business, (ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted Subsidiaries, and\n(iv) other property (including ",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "primarySourceLocation": "offset 515785–516485 inside the operative span [515785, 520430)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "No Loan Party will permit any Restricted Subsidiary to issue any additional Equity Interest in itself, other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Both prohibitions are subject to the exceptions enumerated in clauses (a) through (k).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clauses (a) through (k) of Section 6.05, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 120335,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-5ac1cd56ef",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::VI::6.10-chapeau",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.10",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, enter into, incur or permit to exist any agreement prohibiting, restricting or conditioning (a) the ability of a Loan Party or Restricted Subsidiary to create, incur or permit Liens on its property, or (b) the ability of any Restricted Subsidiary to pay dividends or distributions on Equity Interests, make or repay loans or advances to any Borrower or Restricted Subsidiary, or Guarantee Indebtedness of any Borrower or Restricted Subsidiary.",
+      "correctedSourceExcerpt": "SECTION 6.10. Restrictive Agreements . No Loan Party will, nor will it permit any Restricted Subsidiary to, directly or indirectly\nenter into, incur or permit to exist any agreement or other arrangement that prohibits, restricts or imposes any condition upon (a) the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon\nany of its property or assets, or (b) the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interests or to make or repay loans or advances to any Borrower or any other Restricted Subsidiary\nor to Guarantee Indebtedness of any Borrower or any other Restricted Subsidiary; provided that (i) the foregoing shall not apply to restrictions and conditions imposed by any applicable law or by any Loan Document, (ii) the foregoing shall\nnot apply to restrictions and conditions existing on the date hereof identified on Schedule 6.10 (but shall apply to any extension or renewal of, or any amendment or modification expanding the scope of, any such restriction or condition), (iii) the\nforegoing shall not apply to customary restrictions and conditions contained in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale, provided such restrictions and conditions apply only to such assets or the\nRestricted Subsidiary that is to be sold and, in each case, such sale is permitted hereunder, (iv) clause (a) of the foregoing shall not apply to restrictions or conditions imposed by any agreement relating to secured Indebtedness permitted by\nthis Agreement if such restrictions or conditions apply only to the property or assets securing such Indebtedness and (v) clause (a) of the foregoing shall not apply to customary provisions in leases and other contracts restricting the\nassignment thereof.\n\n116",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-a 6.10",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will enter into, incur or permit to exist any agreement prohibiting, restricting or conditioning the ability of a Loan Party or Restricted Subsidiary to create, incur or permit to exist any Lien upon its property.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(a) the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon any of its property”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The same prohibition applies to any agreement restricting the ability of a Restricted Subsidiary to pay dividends or distributions on its Equity Interests, make or repay loans or advances to a Borrower or Restricted Subsidiary, or Guarantee Indebtedness of a Borrower or Restricted Subsidiary.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(b) the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interest”, and the loan/advance and Guarantee limbs that follow",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-5c33066800",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::I::applicable-ebitda",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.01",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "'Applicable EBITDA' means EBITDA of the Company and Restricted Subsidiaries for the four consecutive fiscal quarters most recently ended for which financials have been delivered under Section 5.01(a)/(b) (or, pre-first delivery, the Section 3.04(a) financials).",
+      "correctedSourceExcerpt": "“ Applicable EBITDA ”\nmeans, at any time, EBITDA for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP for the period of four consecutive fiscal quarters of the Company ended on or most recently prior to such time for which\nfinancial statements have been delivered to the Administrative Agent pursuant to Section 5.01(a) or (b) (or, if prior to the date of the delivery of the first financial statements to be delivered pursuant to Section 5.01(a) or (b), the\nmost recent financial statements referred to in Section 3.04(a)).\n\n",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 18989–19558 inside the operative span [18989, 19558)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Applicable EBITDA means EBITDA for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“Applicable EBITDA means, at any time, EBITDA for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The measurement period is the four consecutive fiscal quarters ended on or most recently prior to that time for which financial statements have been delivered to the Administrative Agent pursuant to Section 5.01(a) or (b).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“for the period of four consecutive fiscal quarters of the Company ended on or most recently prior to such time for which financial statements have been delivered to the Administrative Agent pursuant to Section 5.01(a) or (b)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Before the first delivery under Section 5.01(a) or (b), the most recent financial statements referred to in Section 3.04(a) are used instead.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(or, if prior to the date of the delivery of the first financial statements to be delivered pursuant to Section 5.01(a) or (b), the most recent financial statements referred to in Section 3.04(a))”",
+          "independence": "QUALIFIER"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "THIS_MISSION",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 13464,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-641203d620",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::VI::6.04-chapeau",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.04",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or acquire or hold Equity Interests, evidences of indebtedness or securities of, make or permit loans or advances to, Guarantee obligations of, or make or hold any investment in, any other Person, or acquire assets constituting a business unit, except as permitted by clauses (a) through (r).",
+      "correctedSourceExcerpt": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted\nSubsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire (including pursuant to any merger or amalgamation with any Person that was not a Loan Party and a wholly owned Restricted Subsidiary prior to such merger) any\nEquity Interests, evidences of indebtedness or other securities (including any option, warrant or other right to acquire any of the foregoing) of, make or permit to exist any loans or advances to, Guarantee any obligations of, or make or permit to\nexist any investment or any other interest in, any other Person, or purchase or otherwise acquire (in one transaction or a series of transactions) any assets of any other Person constituting a business unit (whether through purchase of assets,\nmerger or otherwise), except:\n\n111\n\n(a) Permitted Investments;\n\n(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Parties; provided\nthat any such Equity Interests held by a Loan Party shall be pledged pursuant to the applicable Security Agreement; provided further that the aggregate outstanding amount of investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-a 6.04",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "investments/loans/advances/guarantees/acquisitions lead-in",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire ... any Equity Interests, evidences of indebtedness or other securities ...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-768547a920",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::I::interest-coverage-ratio",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.01",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "'Interest Coverage Ratio' = EBITDA divided by Consolidated Interest Expense for a four-quarter period. For the 'Annualized Quarters' ending 3/31/2022, 6/30/2022, 9/30/2022 and 12/31/2022, Consolidated Interest Expense is annualized by multiplying post-Effective-Date interest expense by 4, 2, 4/3 and 1 respectively.",
+      "correctedSourceExcerpt": "“ Interest Coverage Ratio ” means, for any period of four consecutive fiscal quarters of the Company, the ratio of\n(a) EBITDA for such period to (b) Consolidated Interest Expense for such period. Notwithstanding the foregoing, solely for purposes of determining the Interest Coverage Ratio for any period of four consecutive fiscal quarters ending as of\nMarch 31, 2022, June 30, 2022, September 30, 2022 or December 31, 2022 (each such fiscal quarter being referred to as an “ Annualized Quarter ”), Consolidated Interest Expense shall be equal to the product of\n(I) Consolidated Interest Expense for the period commencing on the Effective Date and ending on the last day of such Annualized Quarter, multiplied by (II) (A) four, in the case of the Annualized Quarter ending March 31, 2022, (B)\ntwo, in the case of the Annualized Quarter ending June 30, 2022, (C) four thirds (4/3), in the case of the Annualized Quarter ending September 30, 2022, or (D) one (1), in the case of the Annualized Quarter ending December 31,\n2022.\n\n",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 121352–122380 inside the operative span [121352, 122380)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Interest Coverage Ratio means, for any period of four consecutive fiscal quarters of the Company, the ratio of (a) EBITDA for such period to (b) Consolidated Interest Expense for such period.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“‘ Interest Coverage Ratio ’ means, for any period of four consecutive fiscal quarters of the Company, the ratio of (a) EBITDA for such period to (b) Consolidated Interest Expense for such period.”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "For each Annualized Quarter ending 31 March, 30 June, 30 September and 31 December 2022, Consolidated Interest Expense equals post-Effective-Date Consolidated Interest Expense multiplied by four, two, four thirds and one respectively.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“Notwithstanding the foregoing, solely for purposes of determining the Interest Coverage Ratio for any period of four consecutive fiscal quarters ending as of March 31, 2022, June 30, 2022, September 30, 2022 or December 31, 2022 (each such fiscal quarter being referred to as an ‘ Annualized Quarter ’), Consolidated Interest Expense shall be equal to the product of (I) ... multiplied by (II) (A) four ... (B) two ... (C) four thirds (4/3) ... or (D) one (1)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "THIS_MISSION",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 13464,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-7b607feb5f",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-def-cadj-ebitda",
+      "documentId": "fwrg",
+      "claimSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Consolidated Adjusted EBITDA: Consolidated Net Income plus a long, itemized stack of addbacks (interest expense, taxes, D&A, non-cash/impairment items, business-interruption insurance proceeds, and more). Clean for REPRESENTATION (a DEFINITION node with definitionExcerpt plus USES_TERM/USES_FINANCIAL_INPUT dependency edges to each addback concept it references) - not a claim of full line-item EXECUTABILITY, which Phase B never promised for any covenant-defined-EBITDA metric and which RuleEvaluationClass=JUDGMENT_REQUIRED already signals honestly. CALCULATION_RULE_KINDS has no dedicated 'itemized-addback-stack' kind; OTHER is the correct, non-misleading fallback for this specific shape.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg Article 1 (Consolidated Adjusted EBITDA)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Consolidated Net Income plus an itemized addback stack",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"means ... the sum of: (a) Consolidated Net Income for such period; plus (b) ... business interruption insurance policy ...; plus (c) without duplication, those amounts which ... have been deducted for: (i) Consolidated Interest Expense; ... (iii) Taxes ...; (iv) all depreciation and amortization ... impairment Charges ...; (vi) any non-cash Charge\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-7fd6c57745",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.01-m-secured-notes",
+      "documentId": "lsb",
+      "claimSectionRef": "6.01(m)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Unconditional carve-out for the Loan Parties' existing Indebtedness under the Secured Notes and guarantees thereof.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.01(m)",
+      "benchmarkIntegrityStatus": "IMPRECISE_NONMATERIAL",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "unconditional carve-out for Secured Notes Indebtedness and guarantees thereof",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(m) Indebtedness of the Loan Parties and their Subsidiaries under the Secured Notes and guarantees thereof;\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "entity scope is \"the Loan Parties\"",
+          "status": "SOURCE_PARTIALLY_CONFIRMED",
+          "sourceQuotation": "\"of the Loan Parties AND THEIR SUBSIDIARIES\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "the carve-out is for EXISTING Indebtedness",
+          "status": "SOURCE_NOT_LOCATED",
+          "sourceQuotation": "the clause contains no temporal qualifier",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-88cfbb3bb8",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::VI::6.05-chapeau",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.05",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue additional Equity Interests other than to a Loan Party or another Restricted Subsidiary in compliance with Section 6.04, except as permitted by clauses (a) through (k).",
+      "correctedSourceExcerpt": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including\nany Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with\nSection 6.04), except:\n\n(a) Dispositions of (i) inventory, goods or other assets in the ordinary course of business,\n(ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted Subsidiaries, and (iv) other property (including ",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 463076–463776 inside the operative span [463076, 467325)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including any Equity Interest owned by it”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "No Loan Party will permit any Restricted Subsidiary to issue any additional Equity Interest in itself, other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with Section 6.04)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Both prohibitions are subject to the exceptions enumerated in clauses (a) through (k).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clauses (a) through (k) of Section 6.05, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 89023,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-8c29f13dc0",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-d::VI::6-01-chapeau",
+      "documentId": "doc-d",
+      "claimSectionRef": "6.01",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "General prohibition on creating, incurring, assuming or suffering to exist any Indebtedness, subject to the exceptions in clauses (a) through (r).",
+      "correctedSourceExcerpt": "SECTION 6.01.\nIndebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:\n\n(a) the Secured Obligations and the Guaranteed Obligations;\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other\nRestricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations set forth in Section 6.04, (ii)\nIndebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and (iii) the aggregate principal amount\nof Indebtedness of Restricted Subsidiaries that are not U.S. Loan Partie",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 448104–449004 inside the operative span [448104, 464193)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.01.\\nIndebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (r).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clauses (a) through (r) of Section 6.01, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 158157,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-8de9def8ca",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-d::VI::6-08-b-chapeau",
+      "documentId": "doc-d",
+      "claimSectionRef": "6.08(b)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "General prohibition on making or agreeing to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, subject to clauses (i) through (iv).",
+      "correctedSourceExcerpt": "SECTION 6.08. Restricted Payments; Certain Payments of Indebtedness .\n\n(a) No Loan Party will, nor will it permit any Restricted Subsidiary to, declare or make, or agree to declare or make, directly or indirectly,\nany Restricted Payment, or incur any obligation (contingent or otherwise) to do so, except (i) each of the Borrowers may declare and pay dividends with respect to its common stock payable solely in additional shares of its common stock, and,\nwith respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock, (ii) Restricted Subsidiaries may declare and pay dividends\nratably with respect to their Equity Interests, (iii) the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their\nRestricted Subsidiaries, (iv) other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as at the time of making such Restricted Payment and\nimmediately after giving effect (including giving effect on a pro forma basis) thereto, (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the lesser of (A) 2.5 to 1.00\nand (B) the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-d 6.08(b)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, except as permitted by clauses (i) through (iv).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(b) No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to pay or make, directly or indirectly, any payment or other distribution ... except: (i) payment of Indebtedness created under the Loan Documents; (ii) payment of regularly scheduled interest and principal payments ...; (iii) refinancings of Indebtedness to the extent permitted by Section 6.01; and (iv) payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness ...\"",
+          "independence": "MATERIAL_INDEPENDENT",
+          "restatedFrom": "same prohibition, subject to clauses (i)-(iv)"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-9001417020",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.04-b",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.04(b)(iv)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Restricted Debt Payments permitted so long as no Event of Default exists, in an aggregate amount not to exceed (A) the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period, plus (B) at the Borrower's election, the amount of Restricted Payments then permitted under Section 6.04(a)(x), with any amount so used reducing the amount available under Section 6.04(a)(x).",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.04(b)(iv)",
+      "benchmarkIntegrityStatus": "CORRECTED_FROM_PRIMARY_SOURCE",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Restricted Debt Payments are capped at the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "At the Borrower's election the basket is increased by the amount then available under Section 6.04(a)(x), and any amount so used reduces the amount available under Section 6.04(a)(x).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“any amount utilized ... shall result in a reduction in the amount available under Section 6.04(a)(x)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "The permission is available only so long as no Event of Default exists.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(iv) so long as no Event of Default exists, Restricted Debt Payments in an aggregate amount not to exceed (A) ...”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "CLAIM_CORRECTION",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": "Restricted Debt Payments (early/voluntary paydown of subordinated/junior/unsecured debt above a size threshold) permitted up to the greater of a fixed dollar amount and a % of EBITDA, with an explicit cross-basket offset against the 6.04(a)(x) Restricted Payments basket. $21,000,000; 35% of Consolidated Adjusted EBITDA The cross-basket offset ('any amount utilized ... shall result in a reduction in the amount available under Section 6.04(a)(x)') is exactly what ContractRuleRelationshipType.SHARES_CAPACITY_WITH exists for - representable, but only if the extractor actually emits that relationship edge rather than treating the two baskets as independent.",
+        "supersededExcerptOffset": null,
+        "defectType": "BENCHMARK_DEFECT"
+      }
+    },
+    {
+      "caseId": "CASE-90415d6765",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::VI::6.08b-chapeau",
+      "documentId": "doc-a",
+      "claimSectionRef": "6.08(b)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, make or agree to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, except as permitted by clauses (i) through (iv).",
+      "correctedSourceExcerpt": "SECTION 6.08. Restricted Payments; Certain Payments of Indebtedness .\n\n(a) No Loan Party will, nor will it permit any Restricted Subsidiary to, declare or make, or agree to declare or make, directly or indirectly,\nany Restricted Payment, or incur any obligation (contingent or otherwise) to do so, except (i) each of the Borrowers may declare and pay dividends with respect to its common stock payable solely in additional shares of its common stock, and,\nwith respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock, (ii) Restricted Subsidiaries may declare and pay dividends\nratably with respect to their Equity Interests, (iii) the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their\nRestricted Subsidiaries, (iv) other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as at the time of making such Restricted Payment and\nimmediately after giving effect (including giving effect on a pro forma basis) thereto, (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00\nlower than the maximum Total Net Leverage Ratio permitted under",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-a 6.08(b)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "prohibition on payments/distributions of principal or interest on Indebtedness or on purchase/redemption/retirement/acquisition/cancellation/termination of Indebtedness, subject to clauses (i)-(iv)",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(b) No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to pay or make, directly or indirectly, any payment or other distribution ... of or in respect of principal of or interest on any Indebtedness, or any payment or other distribution ... on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, except: (i) ... (iv) ...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-963cc44044",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.14",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.14",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Prohibition on consensual restrictions on Subsidiary dividends/loans/asset-transfers to the Parent Borrower/other Subsidiaries, with Loan Document / Disposition-agreement / Receivables-Program carve-outs.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.14",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Prohibition on consensual restrictions on a Subsidiary's ability to pay dividends or make other distributions in respect of its Capital Stock.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(a) pay dividends or make any other distributions in respect of any Capital Stock of such Subsidiary”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Prohibition on consensual restrictions on a Subsidiary's ability to make loans, advances or other Investments in the Parent Borrower or another Subsidiary.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "the second prohibited restriction type of Section 7.14",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Prohibition on consensual restrictions on a Subsidiary's ability to transfer assets to the Parent Borrower or another Subsidiary.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "the asset-transfer limb of Section 7.14",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P4",
+          "proposition": "The prohibition is subject to carve-outs for the Loan Documents, agreements governing a permitted Disposition, and the Receivables Program.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "the enumerated carve-outs of Section 7.14",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-9948558e99",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.11",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.11",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Sale-leaseback prohibition except assets with FMV under the greater of $75,000,000 and 3.5% of Consolidated Total Assets. $75,000,000; 3.5% of Consolidated Total Assets",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.11",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "sale-leaseback prohibition except assets whose aggregate fair market value does not exceed the greater of $75,000,000 and 3.5% of Consolidated Total Assets",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"except in respect of assets the aggregate fair market value of which does not exceed the greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of such sale and leaseback transaction).\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-99ee6598d1",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.04-a-iii",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.04(a)(iii)(A)-(B)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Restricted Payments up to the Available Amount plus the Available Excluded Contribution Amount - a builder-basket permission whose capacity is itself a separately defined, cumulative, multi-component, conditionally-gated amount (see fwrg-def-available-amount below). The permission rule itself is clean (a QUANTITATIVE_PERMISSION whose formulaRef points at a separate builder-basket definition via definedTermRefs, exactly how the ontology's dependency graph is meant to be used). The stretch is entirely inside the referenced Available Amount definition - see fwrg-def-available-amount.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.04(a)(iii)(A)-(B)",
+      "benchmarkIntegrityStatus": "IMPRECISE_NONMATERIAL",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Restricted Payments up to the Available Amount and the Available Excluded Contribution Amount",
+          "status": "SOURCE_PARTIALLY_CONFIRMED",
+          "sourceQuotation": "\"(iii) the Borrower may make Restricted Payments in an amount not to exceed (A) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (iii)(A) and/or (B) the portion, if any, of the Available Excluded Contribution Amount...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Section 6.04(a)(iii) carries no Event-of-Default prefix: the Restricted Payment permission under this clause is not gated on the absence of a Default or Event of Default.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clause (iii) carries no Event-of-Default prefix",
+          "independence": "MATERIAL_INDEPENDENT",
+          "restatedFrom": "no default condition asserted"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-9a30560f37",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.17",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.17",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Outbound Investment Rules compliance covenant (a real, relatively novel 2024-era CFIUS-outbound-investment-regime covenant type - notable as a covenant family that likely did not appear in FWRG (2021) or LSB (2023) at all, since the U.S. outbound investment rules regime postdates both).",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.17",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Outbound Investment Rules compliance covenant",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"SECTION 7.17 Outbound Investment Rules (a) Be or become a \\\"covered foreign person\\\", as that term is defined in the Outbound Investment Rules, or (b) engage, directly or indirectly, in (i) a \\\"covered activity\\\" or a \\\"covered transaction\\\" ...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-a57ab21f38",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::I::1.04-accounting-terms-gaap",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.04",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Accounting terms follow GAAP as in effect from time to time, but either the Borrower Representative or the Required Lenders may freeze a provision at pre-change GAAP by requesting an amendment to neutralize a GAAP change (frozen pending withdrawal or amendment). All computations must ignore fair-value elections under ASC 825-10-25 and must value convertible debt (ASC 470-20) at full stated principal.",
+      "correctedSourceExcerpt": "SECTION 1.04. Accounting Terms; GAAP . Except as otherwise expressly provided herein, all terms of an accounting or financial\nnature shall be construed in accordance with GAAP, as in effect from time to time; provided that, if after the date hereof there occurs any change in GAAP or in the application thereof on the operation of any provision hereof and the Borrower\nRepresentative notifies the Administrative Agent that the Borrowers request an amendment to any provision hereof to eliminate the effect of such change in GAAP or in the application thereof (or if the Administrative Agent notifies the Borrower\nRepresentative that the Required Lenders request an amendment to any provision hereof for such purpose), regardless of whether any such notice is given before or after such change in GAAP or in the application thereof, then such provision shall be\ninterpreted on the basis of GAAP as in effect and applied immediately before such change shall have become effective until such notice shall have been withdrawn or such provision amended in accordance herewith. Notwithstanding any other provision\ncontained herein, all terms of an accounting or financial nature used herein shall be construed, and all computations of amounts and ratios referred to herein shall be made (i) without giving effect to any election under Financial Accounting\nStandards Board Accounting Standards Codification 825-10-25 (or any other Accounting Standards Codification or Financial Accounting Standard having a similar result or\neffect) to value any Indebtedness or other liabilities of any Borrower or any Subsidiary at “fair value”, as defined therein and (ii) without giving effect to any treatment of Indebtedness in respect of convertible debt instruments\nunder Financial Accounting Standards Board Accounting Standards Codification 470-20 (or any other Accounting Standards Codification or Financial Accounting Standard having a similar result or effect) to value\nany such Indebtedness in a reduced or bifurcated manner as described therein, and such Indebtedness shall at all times be valued at the full stated principal amount thereof.",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-a 1.04",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "accounting terms follow GAAP as in effect from time to time, with either the Borrower Representative or the Required Lenders able to request a neutralising amendment, the provision frozen pending withdrawal or amendment",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"SECTION 1.04. Accounting Terms; GAAP . Except as otherwise expressly provided herein, all terms of an accounting or financial nature shall be construed in accordance with GAAP, as in effect from time to time; provided that, if after the date hereof there occurs any change in GAAP ... and the Borrower Representative notifies the Administrative Agent that the Borrowers request an amendment ... (or if the Administrative Agent notifies the Borrower Representative that the Required Lenders request an amendment ...)\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-a898053843",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.04-a-abl-collateral-disposal",
+      "documentId": "lsb",
+      "claimSectionRef": "6.04(a)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "A Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that (i) to the extent the disposition involves ABL Priority Collateral, the Borrowers shall have delivered, concurrently with or prior to the disposition, a new Borrowing Base Certificate demonstrating compliance with Section 2.01(a), (ii) the assets are sold for Fair Market Value, and (iii) the aggregate Fair Market Value of all assets sold in any fiscal year under Section 6.04(a) does not exceed the greater of $10,000,000 and 1.0% of the total consolidated assets of the Loan Parties and their Subsidiaries. The ABL Priority Collateral condition scopes the Borrowing Base Certificate requirement only; it does not scope the basket.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.04(a)",
+      "benchmarkIntegrityStatus": "CORRECTED_FROM_PRIMARY_SOURCE",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "A Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets (a general disposal permission, not one limited to a collateral type).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(a) a Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Aggregate Fair Market Value of assets sold in any fiscal year under this clause may not exceed the greater of $10,000,000 and 1.0% of total consolidated assets.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“the greater of $10,000,000 and 1.0% of the total consolidated assets”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "The assets must be sold for Fair Market Value.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“sold for Fair Market Value”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P4",
+          "proposition": "A new Borrowing Base Certificate demonstrating compliance with Section 2.01(a) must be delivered concurrently with or prior to the disposition.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“delivered a new Borrowing Base Certificate (giving effect to such disposition ...) demonstrating compliance with Section 2.01(a)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P5",
+          "proposition": "The Borrowing Base Certificate requirement applies only to the extent the disposition involves ABL Priority Collateral; it is a conditional branch, not the scope of the basket.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“to the extent such disposition involves ABL Priority Collateral”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "CLAIM_CORRECTION",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": "Disposal of ABL Priority Collateral permitted only if (i) a new Borrowing Base Certificate is delivered demonstrating continued compliance, (ii) sold at Fair Market Value, and (iii) aggregate annual dispositions under this clause do not exceed the greater of $10,000,000 and 1.0% of total consolidated assets. $10,000,000; 1.0% of total consolidated assets Same TOTAL_ASSETS-percentage gap as lsb-6.01-i. Additionally, this basket's own eligibility is scoped by SECURITY_SCOPE (only ABL Priority Collateral) - a real, correctly-representable use of the ContractConditionType SECURITY_SCOPE, but the security-scope VALUE itself (ABL Priority Collateral) is defined only by reference to a document (the Intercreditor Agreement) not in this filing - see lsb-def-abl-notes-priority-collateral below.",
+        "supersededExcerptOffset": null,
+        "defectType": "BENCHMARK_DEFECT"
+      }
+    },
+    {
+      "caseId": "CASE-b2658c02e7",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.1",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.1",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Four maintenance financial covenants: (a) Consolidated Senior Secured Leverage Ratio <= 3.75x (with a 0.50x Material-Acquisition step-up, max twice, 2-quarter gap); (b) Consolidated Total Leverage Ratio <= 5.50x (same step-up mechanic, capped at 6.00x); (c) Minimum Interest Coverage Ratio >= 2.75x; (d) a springing Liquidity covenant ($75M + Early Maturing Debt) that activates only within 91 days of Convertible Notes maturity and only if Early Maturing Debt exceeds $200M. 3.75 to 1.00; 0.50 to 1.00 step-up; 5.50 to 1.00; 6.00 to 1.00; 2.75 to 1.00; $75,000,000; $200,000,000",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.1",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Consolidated Senior Secured Leverage Ratio may not exceed 3.75 to 1.00, with a 0.50 step-up available on a Material Acquisition, usable at most twice and not in consecutive election periods.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 7.1(a) of the CONMED Eighth A&R, “3.75 to 1.00” with the “0.50 to 1.00” Material Acquisition step-up",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Consolidated Total Leverage Ratio may not exceed 5.50 to 1.00, with the same step-up mechanic capped at 6.00 to 1.00.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 7.1(b), “5.50 to 1.00” capped at “6.00 to 1.00”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "Interest Coverage Ratio may not be less than 2.75 to 1.00.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 7.1(c), “2.75 to 1.00”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P4",
+          "proposition": "A springing Liquidity covenant of $75,000,000 plus Early Maturing Debt applies from the date 91 days before the earliest Convertible Notes maturity, and only where Early Maturing Debt exceeds $200,000,000.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "Section 7.1(d), “$75,000,000” plus Early Maturing Debt, “91 days”, “$200,000,000”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-b38c3b48eb",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.2",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.2",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "General prohibition on Indebtedness except 19 enumerated baskets (a)-(s), with a cross-basket reclassification right.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.2",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "general prohibition on Indebtedness except 19 enumerated baskets (a)-(s), with a cross-basket reclassification right",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"Create, incur, assume or suffer to exist any Indebtedness, except: (a) ... (s) ...\" and \"the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness (or any portion thereof) in any manner that complies with this Section 7.2\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-b9ca777174",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-b::VI::6-01-lead-in",
+      "documentId": "doc-b",
+      "claimSectionRef": "6.01",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Debt covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness except as permitted by clauses (a) through (q).",
+      "correctedSourceExcerpt": "SECTION 6.01. Indebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer\nto exist any Indebtedness, except:\n\n(a) the Secured Obligations and the Guaranteed Obligations;\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other\nRestricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations set forth in Section 6.04,\n(ii) Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and (iii) the aggregate\nprincipal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Partie",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "primarySourceLocation": "offset 488852–489752 inside the operative span [488852, 497637)",
+      "benchmarkIntegrityStatus": "EVIDENCE_REPAIRED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.01. Indebtedness . No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (q).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clauses (a) through (q) of Section 6.01, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "EVIDENCE_REPAIR",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": null,
+        "supersededExcerptOffset": 191303,
+        "defectType": "CONTAMINATED_SOURCE_EXCERPT"
+      }
+    },
+    {
+      "caseId": "CASE-c8f9a9b5c0",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.04-b-notes-collateral-disposal",
+      "documentId": "lsb",
+      "claimSectionRef": "6.04(b)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Disposal of Notes Priority Collateral is permitted so long as permitted under the Secured Notes Documents or consented to by the requisite Secured Notes holders - a permission whose actual gating condition lives entirely OUTSIDE this Credit Agreement, in documents this package does not contain. The correct, honest extraction is a rule with evaluationClass JUDGMENT_REQUIRED and an UNSUPPORTED/cross-document condition explicitly naming 'Secured Notes Documents' (not filed in this package) as an unresolved dependency - a genuinely UNRESOLVABLE-from-this-document-alone reference (task §23), not a extractor failure if flagged honestly. A confident EXECUTABLE extraction here (inventing a dollar figure or ratio that does not exist in this text) would be exactly the DANGEROUS_UNFLAGGED failure mode this whole exercise measures.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.04(b)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Notes Priority Collateral disposals permitted so long as permitted under the Secured Notes Documents or consented to by the requisite holders",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(b) notwithstanding anything to the contrary contained herein, any Loan Party ... may sell, transfer or otherwise dispose of any Notes Priority Collateral owned by such Person so long as such disposition is permitted under the Secured Notes Documents or if the requisite holders of the Secured Notes otherwise consent\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-ca1109d4da",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.02-a",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.02(a)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Liens securing the Secured Obligations are permitted without a dollar cap - an unconditional, non-quantitative permission scoped to a defined obligation pool rather than a basket amount. thresholdValue/thresholdUnit are optional on CandidateContractRuleSchema, so an uncapped permission scoped by definedTermRefs rather than a number is not blocked. Noted only because ContractRuleType's name ('QUANTITATIVE_PERMISSION') reads as if every instance must carry a number - it does not, but a naive extractor could wrongly infer a missing/zero threshold means 'not representable' rather than 'uncapped by definition'. Nomenclature risk, not a schema gap.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.02(a)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Liens securing the Secured Obligations permitted without a dollar cap",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(a) Liens securing the Secured Obligations;\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-d2514bfbe7",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::X::10.01a-us-guaranty",
+      "documentId": "doc-a",
+      "claimSectionRef": "10.01(a)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Each U.S. Loan Guarantor (other than those delivering a separate Guaranty) is jointly and severally liable as primary obligor and unconditionally guarantees to the Secured Parties the prompt payment when due of the Secured Obligations plus Section 9.03 collection costs (the 'U.S. Guaranteed Obligations'), excluding any guarantee of Excluded Swap Obligations; extensions and renewals do not release the guarantor, and the guaranty is enforceable by any branch or Affiliate of any Lender extending part of the obligations.",
+      "correctedSourceExcerpt": "(a) Each U.S. Loan Guarantor (other than those that have delivered a separate Guaranty) hereby\nagrees that it is jointly and severally liable for, and, as a primary obligor and not merely as surety, absolutely, unconditionally and irrevocably guarantees to the Secured Parties, the prompt payment when due, whether at stated maturity, upon\nacceleration or otherwise, and at all times thereafter, of the Secured Obligations and all costs and expenses to the extent required by",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "doc-a 10.01(a)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "each U.S. Loan Guarantor other than those delivering a separate Guaranty is jointly and severally liable as primary obligor and unconditionally guarantees prompt payment of the Secured Obligations plus Section 9.03 costs",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(a) Each U.S. Loan Guarantor (other than those that have delivered a separate Guaranty) hereby agrees that it is jointly and severally liable for, and, as a primary obligor and not merely as surety, absolutely, unconditionally and irrevocably guarantees to the Secured Parties, the prompt payment when due ... of the Secured Obligations and all costs and expenses to the extent required by Section 9.03 ...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-d32081582b",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "a-7.13",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "claimSectionRef": "7.13",
+      "materiality": "MATERIAL",
+      "correctedGroundTruthClaim": "Negative-pledge-clause prohibition (agreements that would prohibit/limit Lien creation securing the Obligations), with Loan Document / purchase-money / Receivables-Program carve-outs.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "primarySourceLocation": "conmed-doc-a-eighth-ar-credit-agreement 7.13",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "negative-pledge-clause prohibition with Loan Document / purchase-money-and-permitted-Lien / Receivables-Program carve-outs",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"Enter into or suffer to exist or become effective any agreement which prohibits or limits the ability ... to create, incur, assume or suffer to exist any Lien ... to secure the Obligations ... other than (a) this Agreement and the other Loan Documents, (b) any agreements governing any purchase money Liens, Finance Lease Obligations ... or Liens permitted by Sections 7.3(f), (g), or (l) ... and (c) any agreement entered into in connection with a Receivables Transfer Program ...\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-dd0a814e53",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.01-m",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.01(m)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Capital Leases and purchase money Indebtedness, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA. $30,000,000; 50% of Consolidated Adjusted EBITDA",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.01(m)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "Capital Leases and purchase money Indebtedness capped at the greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(m) Indebtedness of the Borrower and/or any Restricted Subsidiary with respect to Capital Leases and purchase money Indebtedness in an aggregate outstanding principal amount not to exceed the greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-e008d4278a",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-b::VI::6-04-lead-in",
+      "documentId": "doc-b",
+      "claimSectionRef": "6.04",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Investment covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire Equity Interests, evidences of indebtedness or other securities of, make or permit loans or advances to, Guarantee obligations of, or make or permit any investment or other interest in, any other Person, or acquire assets of another Person constituting a business unit, except as permitted by clauses (a) through (r).",
+      "correctedSourceExcerpt": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted\nSubsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire (including pursuant to any merger or amalgamation with any Person that was not a Loan Party and a wholly owned Restricted Subsidiary prior to such merger) any\nEquity Interests, evidences of indebtedness or other securities (including any option, warrant or other right to acquire any of the foregoing) of, make or permit to exist any loans or advances to, Guarantee any obligations of, or make or permit to\nexist any investment or any other interest in, any other Person, or purchase or otherwise acquire (in one transaction or a series of transactions) any assets of any other Person constituting a business unit (whether through purchase of assets,\nmerger or otherwise), except:\n\n(a) Permitted Investments;\n\n(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Parties; provided\nthat any such Equity Interests held by a Loan Party shall be pledged pursuant to the applicable Security Agreement; provided further that the aggregate outstanding amount of investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under",
+      "sourceExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "primarySourceLocation": "doc-b 6.04",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "No Loan Party will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire Equity Interests, evidences of indebtedness or other securities of, make or permit loans or advances to, Guarantee obligations of, or make any investment or other interest in, any other Person, or acquire assets of another Person constituting a business unit.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire ...”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The prohibition is subject to the exceptions enumerated in clauses (a) through (r).",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "clauses (a) through (r) of Section 6.04, enumerated in the operative span",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-e3520246bd",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "fwrg-6.04-a-xi",
+      "documentId": "fwrg",
+      "claimSectionRef": "6.04(a)(xi)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Unlimited (uncapped-dollar) Restricted Payments, permitted so long as no Event of Default exists and so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00 as of the last day of the most recently ended Test Period.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "fwrg 6.04(a)(xi)",
+      "benchmarkIntegrityStatus": "CORRECTED_FROM_PRIMARY_SOURCE",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "The Borrower may make Restricted Payments in an uncapped dollar amount under this clause.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“the Borrower may make Restricted Payments”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "The permission is gated on the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, not exceeding 3.50:1.00.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "The permission is available only so long as no Event of Default exists.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“(xi) so long as no Event of Default exists”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P4",
+          "proposition": "The ratio is measured as of the last day of the most recently ended Test Period.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“as of the last day of the most recently ended Test Period”",
+          "independence": "QUALIFIER"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "CLAIM_CORRECTION",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "PRIOR_INTEGRITY_AUDIT",
+        "supersededClaimText": "Unlimited (uncapped-dollar) Restricted Payments so long as the Total Rent Adjusted Net Leverage Ratio, calculated Pro Forma, would not exceed a fixed ratio - a ratio-gated unlimited basket with no default condition attached. 3.50:1.00 Total Rent Adjusted Net Leverage Ratio, Pro Forma Basis The single most dangerous plausible extraction error in this whole package: an extractor that reports a dollar threshold (or omits the ratio gate) for this clause instead of 'uncapped subject to a leverage-ratio test' would be confidently wrong and, unless conditions[] is checked, unflagged. This is a designed adversarial probe for Task 12, not a schema issue.",
+        "supersededExcerptOffset": null,
+        "defectType": "BENCHMARK_DEFECT"
+      }
+    },
+    {
+      "caseId": "CASE-e4e5c887fb",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "lsb-6.01-i-flat-or-pct-assets",
+      "documentId": "lsb",
+      "claimSectionRef": "6.01(i)",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "Additional unconditional Indebtedness basket capped at the greater of a fixed dollar amount and a percentage of the Loan Parties' total consolidated assets (per GAAP balance sheet) - NOT a percentage of EBITDA. $70,000,000; 5.5% of total consolidated assets GREATER_OF_FLAT_OR_PCT_EBITDA is the closest existing CalculationRuleKind, but its own name says EBITDA and this basket's percentage component is of TOTAL CONSOLIDATED ASSETS, not EBITDA - the same real, previously-documented ontology-fit gap Matthews' own onboarding found for a percent-of-Total-Assets sub-cap (docs/matthews-international-onboarding.md), now independently re-confirmed by a second, unrelated real company via a completely different unseen-package methodology. lib/contract-model/types.ts's INPUT_REQUIREMENT_KEYS also has no TOTAL_ASSETS member (only COVENANT_EBITDA, NET_DEBT, SECURED_DEBT, etc.) - OTHER is the honest fallback, not a blocking gap, but a real, recurring, worth-fixing generalization candidate for Phase C+1.",
+      "correctedSourceExcerpt": "",
+      "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "primarySourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "primarySourceLocation": "lsb 6.01(i)",
+      "benchmarkIntegrityStatus": "VERIFIED",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "greater of $70,000,000 and 5.5% of total consolidated assets per the GAAP balance sheet, not of EBITDA",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "\"(i) other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and 5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP\"",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": false,
+        "changeKind": "NONE",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": null,
+        "supersededClaimText": null,
+        "supersededExcerptOffset": null,
+        "defectType": null
+      }
+    },
+    {
+      "caseId": "CASE-e555117f4c",
+      "benchmarkVersion": "evaluation-contract-v3.1.1",
+      "originalBenchmarkVersion": "evaluation-contract-v3.1.v1",
+      "groundTruthUnitId": "doc-a::I::ebitda",
+      "documentId": "doc-a",
+      "claimSectionRef": "1.01",
+      "materiality": "CRITICAL",
+      "correctedGroundTruthClaim": "EBITDA means, for any period, Net Income plus the twenty add-backs enumerated in clause (a)(i)-(xx) and minus the six deductions enumerated in clause (b)(i)-(vi), all calculated for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP; provided that the aggregate of all items added back under clauses (a)(vii), (a)(viii) and (a)(xviii)(b) may not exceed 20% of EBITDA calculated before those add-backs (the “Combined Cap”); and EBITDA for each of the four quarters of 2021 is a stipulated dollar amount that supersedes the formula for those quarters.",
+      "correctedSourceExcerpt": "“ EBITDA ” means, for any period, Net Income for such period plus\n\n(a) without duplication and to the extent deducted (and not added back or excluded) in determining Net Income for such\nperiod, the sum of:\n\n(i)\nInterest Expense for such period,\n\n(ii)\nincome tax expense for such period net of tax refunds,\n\n(iii)\nall amounts attributable to depreciation and amortization expense for such period,\n\n(iv)\nnet losses realized from asset Dispositions outside the ordinary course of business permitted under\nSection 6.05 ,\n\n21\n\n(v)\nnon-cash losses or expenses, including, without limitation, noncash\ncosts of incentive compensation, for which no cash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect\nto accounts receivable in the normal course or Inventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company\nelects to add back any such non-cash item, the cash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid,\n\n(vi)\nany Closing Date Transaction Expenses that are paid, expensed or otherwise accounted for prior to or within 180\ndays following the consummation of the Transactions,\n\n(vii)\nnon-recurring or unusual expenses, including business optimization\nexpenses, IT implementation costs, severance costs, consulting fees, lease termination costs, relocation costs, restructuring charges, retention or completion bonuses, signing costs and other nonrecurring expenses not otherwise added back to EBITDA,\nin each case, actually incurred, in an aggregate amount not to exceed, for any four (4) fiscal quarter measurement period, together with the add-backs in clauses (a)(viii) and (a)(xviii)(b) below, the\nCombined Cap (as defined below),\n\n(viii)\nthe amount of “run-rate” cost savings (the “ Cost\nSavings ”) projected by the Company in good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities, which\nCost Savings shall be calculated on a pro forma basis as though such Cost Savings had been realized on the first day of such period, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any four\n(4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) above and (a)(xviii)(b) below, the Combined Cap; provided that, a Responsible Officer shall have provided a\nreasonably detailed statement or schedule of such Cost Savings and shall have certified to the Administrative Agent that (x) such Cost Savings are reasonably identifiable and factually supportable, reasonably attributable to the actions\nspecified and anticipated to result from such actions and (y) such actions have been taken and are ongoing, and the benefits resulting therefrom are anticipated by Company to be realized within eighteen (18) months of the end of such\nperiod,\n\n(ix)\nfees, costs and expenses relating to adjustments to purchase price adjustments, earnouts (to the extent\npermitted hereunder and actually paid), deferred compensation, or other arrangements representing acquisition consideration or deferred payments of similar nature incurred in connection with the Closing Date Acquisitions or any other Permitted\nAcquisitions that are, in each case, incurred by the Company and its Restricted Subsidiaries for such period,\n\n22\n\n(x)\nfees, costs and expenses (including\nout-of-pocket expenses) incurred during such period in connection with (A) the consummation of (a) asset Dispositions, (b) the issuance of Equity\nInterests or Indebtedness permitted under this Agreement, (c) the consummation of Permitted Acquisitions or any other investment outside of the ordinary course of business, in each case for this clause (A), (x) permitted under this Agreement\nand (y) consummated after the Effective Date (but whether or not any such transaction closes) and (B) to the extent actually reimbursed from insurance proceeds (and such reimbursement proceeds are not included in the calculation of Net\nIncome), any casualty, condemnation or similar event,\n\n(xi)\ndirectors’/managers’/governors’ fees and reimbursement of actual and reasonable out-of-pocket costs and expenses incurred in connection with attending board of directors/managers/governors meetings, to the extent permitted under this Agreement,\n\n(xii)\nreimbursement of actual and reasonable\nout-of-pocket expenses incurred by officers in connection with attending board of directors’/managers’/governors’ meetings in an aggregate amount in any\nfour (4) fiscal quarter measurement period not to exceed $250,000,\n\n(xiii)\nto the extent actually reimbursed from insurance proceeds (and such reimbursement proceeds are not included in\nthe calculation of Net Income), expenses with respect to business interruption,\n\n(xiv)\nfees, costs and expenses (including, without limitation, amendment fees and expenses paid (including\nreimbursement of third party expenses) to the Administrative Agent and/or Lenders) incurred in connection with amendments to the Loan Documents, in each case, to the extent disclosed to the Administrative Agent,\n\n(xv)\nfees, costs and expenses to the extent covered by indemnification provisions in any agreement or otherwise\nreimbursable by a third party,\n\n(xvi)\nany non-recurring, unusual or extraordinary non-cash charges for such period,\n\n(xvii)\nany other non-cash charges for such period which do not represent a\ncash item in such period (but excluding any non-cash charge in respect of an item that was included in Net Income in a prior period),\n\n(xviii)\n(a) the Acquired EBITDA of any Person, property, business or asset acquired by the Company or any Restricted\nSubsidiary during such period (but not the Acquired EBITDA of any related Person, property, business or assets to the extent not so acquired), to the extent not subsequently sold, transferred or otherwise disposed of by the Company or such\nRestricted Subsidiary during such period (each such Person, property, business or asset acquired and not subsequently so Disposed of, an “ Acquired Entity or Business ”) for the most recent twelve (12)-month period then ended and\n(b) cost savings projected by the Company in good faith to be realized\n\n23\n\nwithin twelve (12) months of the closing date of a Permitted Acquisition consummated prior to the last day of such period (which cost savings shall be calculated on a pro forma basis as\nthough such cost savings had been realized on the first day of such period), net of the amount of actual benefits realized or expected to be realized prior to or during such period from such actions in an aggregate amount not to exceed, for any four\n(4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) and (a)(viii), the Combined Cap; provided that, a Responsible Officer shall have provided a reasonably detailed\nstatement or schedule of such cost savings and shall have certified to the Administrative Agent that (x) such cost savings are reasonably identifiable and factually supportable, reasonably attributable to the actions specified and anticipated\nto result from such actions and (y) such acquisition has been consummated, and the benefits resulting therefrom are anticipated by Borrower to be realized within twelve (12) months of the end of such period,\n\n(xix)\nexpenses incurred under any transition agreement and other\nnon-recurring or unusual fees, costs or expenses in connection with the integration and operation of the Company and its Restricted Subsidiaries following the Closing Date Acquisitions and any Permitted\nAcquisition, and\n\n(xx)\nnon-cash expenses arising from grants of stock appreciation rights,\nstock performance rights, stock options or restricted stock or other equity instruments granted under the Company’s equity incentive plan;\n\nminus\n\n(b) without\nduplication and to the extent included in Net Income,\n\n(i)\nany cash payments made during such period in respect of non-cash\ncharges described in clause (a)(xvii) taken in a prior period,\n\n(ii)\nany extraordinary, non-recurring or unusual gains and any non-cash items of income for such period,\n\n(iii)\nany gains realized upon the disposition of property outside the ordinary course of business,\n\n(iv)\nthe Disposed EBITDA of any Person, property, business or asset sold, transferred or otherwise Disposed of or,\nclosed or classified as discontinued operations by the Borrower or any Restricted Subsidiary during such period (each such Person, property, business or asset so sold or Disposed of, a “ Disposed Entity or Business ”) for the most\nrecent twelve (12)-month period then ended,\n\n(v)\ngains realized from asset Dispositions outside the ordinary course of business permitted under\nSection 6.05 , and\n\n24\n\n(vi)\ngains or income including, without limitation, noncash gains or income of incentive compensation, for which no\ncash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect to accounts receivable in the normal course or\nInventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company elects to add back any such non-cash item, the cash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid;\n\nall calculated for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP; provided that, notwithstanding any of the\nforegoing, the aggregate amount all items added back to Net Income during any period in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs\n(the “ Combined Cap ”).\n\nNotwithstanding anything to the contrary set forth in this Agreement, EBITDA shall, in each case, be deemed to be\nthe amount set forth below opposite such period, and any adjustments taken into account in calculating the amounts below will not be used in adjusting EBITDA after December 31, 2021:\n\nQuarter ended March 31, 2021\n\n$\n24,044,000\n\nQuarter ended June 30, 2021\n\n$\n26,146,000\n\nQuarter ended September 30, 2021\n\n$\n23,253,000\n\nQuarter ended December 31, 2021\n\n$\n21,919,000\n\n",
+      "sourceExcerptResolution": "RESOLVED_FROM_OPERATIVE_PROVISION",
+      "primarySourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "primarySourceLocation": "offset 88521–99103 inside the operative span [88521, 99103)",
+      "benchmarkIntegrityStatus": "CORRECTED_FROM_PRIMARY_SOURCE",
+      "propositions": [
+        {
+          "id": "P1",
+          "proposition": "EBITDA is Net Income for the period plus the add-backs enumerated in clause (a), items (i) through (xx), and minus the deductions enumerated in clause (b), items (i) through (vi), consolidated under GAAP.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“‘ EBITDA ’ means, for any period, Net Income for such period plus (a) ... the sum of: (i) ... (xx) ... minus (b) ... (i) ... (vi) ... all calculated for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P2",
+          "proposition": "Each of the twenty add-backs and six deductions carries its own conditions and provisos, which determine whether and how much of each item may be added or subtracted.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "the enumerated text of clauses (a)(i)–(a)(xx) and (b)(i)–(b)(vi) in the operative definition, each with its own qualifying language",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P3",
+          "proposition": "The aggregate of all items added back under clauses (a)(vii), (a)(viii) and (a)(xviii)(b) may not exceed 20% of EBITDA calculated before those add-backs.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“the aggregate amount all items added back to Net Income during any period in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs (the ‘ Combined Cap ’)”",
+          "independence": "MATERIAL_INDEPENDENT"
+        },
+        {
+          "id": "P4",
+          "proposition": "EBITDA for each quarter of 2021 is a stipulated dollar amount that supersedes the formula, and adjustments used in those amounts may not be reused after 31 December 2021.",
+          "status": "SOURCE_CONFIRMED",
+          "sourceQuotation": "“Notwithstanding anything to the contrary set forth in this Agreement, EBITDA shall, in each case, be deemed to be the amount set forth below opposite such period, and any adjustments taken into account in calculating the amounts below will not be used in adjusting EBITDA after December 31, 2021”",
+          "independence": "MATERIAL_INDEPENDENT"
+        }
+      ],
+      "correctionProvenance": {
+        "changedFromV31": true,
+        "changeKind": "CLAIM_CORRECTION",
+        "originatingAudit": "docs/phase-3-v3.1-benchmark-integrity/",
+        "foundBy": "THIS_MISSION",
+        "supersededClaimText": "EBITDA = Net Income plus twenty enumerated add-backs (a)(i)-(xx) (interest, taxes, D&A, losses on permitted asset sales, non-cash losses, Closing Date Transaction Expenses paid within 180 days, non-recurring/unusual expenses, run-rate Cost Savings realizable within 18 months, acquisition-related fees, transaction fees, director fees, up to $250,000 of officer board-meeting expense reimbursement, insured business interruption, amendment fees, indemnified fees, non-cash charges, Acquired EBITDA plus acquisition cost savings realizable within 12 months, integration expenses, equity-comp) minus (b)(i)-(vi) deductions (cash payments on prior non-cash charges, extraordinary gains, gains on out-of-ordinary-course dispositions, Disposed EBITDA, gains from permitted asset sales, non-cash gains).",
+        "supersededExcerptOffset": 13464,
+        "defectType": "BENCHMARK_SOURCE_UNRESOLVED"
+      }
+    }
+  ]
+}

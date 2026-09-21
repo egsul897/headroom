@@ -1,0 +1,161 @@
+/**
+ * §12 — the real Phase-3 defect backlog, derived only AFTER the benchmark was corrected
+ * and the affected set re-adjudicated. Nothing here is implemented in this mission (§16).
+ */
+
+export type RootCause =
+  | "DISCOVERY_MISS"
+  | "WRONG_SECTION_MAPPING"
+  | "WRONG_CANDIDATE_BINDING"
+  | "SEMANTIC_EXTRACTION_ERROR"
+  | "DEFINITION_INCOMPLETE"
+  | "CONDITION_OMITTED"
+  | "CONDITION_INVENTED"
+  | "THRESHOLD_ERROR"
+  | "FORMULA_ERROR"
+  | "ENTITY_SCOPE_ERROR"
+  | "CROSS_DOCUMENT_DEPENDENCY_MISSING"
+  | "CROSS_RULE_RELATIONSHIP_MISSING"
+  | "COMPOSITE_RULE_FLATTENED"
+  | "INVENTORY_NOT_PROMOTED"
+  | "UNSUPPORTED_BUT_HONEST"
+  | "OTHER";
+
+export interface CaseRootCause {
+  caseId: string;
+  rootCause: RootCause;
+  secondaryRootCause: RootCause | null;
+  evidence: string;
+}
+
+export const CASE_ROOT_CAUSES: CaseRootCause[] = [
+  { caseId: "CASE-2aa00d5566", rootCause: "DISCOVERY_MISS", secondaryRootCause: null, evidence: "Zero candidates carry the claim's own address 6.01; the five same-base candidates all sit at strict descendants. The section's own chapeau was never raised as a unit." },
+  { caseId: "CASE-b9ca777174", rootCause: "DISCOVERY_MISS", secondaryRootCause: null, evidence: "Zero own-address candidates; four same-base candidates, all descendants." },
+  { caseId: "CASE-8c29f13dc0", rootCause: "DISCOVERY_MISS", secondaryRootCause: null, evidence: "Zero candidates carry a 6.01 address at all, in either form." },
+  { caseId: "CASE-641203d620", rootCause: "DISCOVERY_MISS", secondaryRootCause: null, evidence: "Zero own-address candidates for the 6.04 chapeau; four same-base candidates, all descendants." },
+  { caseId: "CASE-90415d6765", rootCause: "DISCOVERY_MISS", secondaryRootCause: null, evidence: "Zero candidates carry a 6.08(b) address." },
+  { caseId: "CASE-4a1c6a48a0", rootCause: "DISCOVERY_MISS", secondaryRootCause: "WRONG_SECTION_MAPPING", evidence: "The Section 6.04 flush valuation rules, at offset 461,959 of the source, have no candidate. The four candidates carrying a “6.04(2)” address hold clause (vi) of the Available Amount definition from Article I, at offset 30,254." },
+  { caseId: "CASE-88cfbb3bb8", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Two discovery candidates sit at the claim's own address 6.05 and neither was compiled; four same-base units carry CANDIDATE_DISCOVERED_NEVER_COMPILED." },
+  { caseId: "CASE-5a66cad386", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: "WRONG_SECTION_MAPPING", evidence: "A coverage unit at the claim's own address reports “a candidate was discovered for this unit's region but never compiled to IR”. Of the 58 same-base units, a large share carry EBITDA add-back text under 6.05(A)(...) addresses." },
+  { caseId: "CASE-393f8732d2", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: "WRONG_SECTION_MAPPING", evidence: "Identical shape to CASE-5a66cad386 in the 2025 Second A&R: own-address coverage unit discovered but never compiled, 59 same-base units including mis-mapped EBITDA text." },
+  { caseId: "CASE-3e2b123d74", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: "WRONG_SECTION_MAPPING", evidence: "The IP flush prohibition is inside two coverage units marked CRITICAL and CANDIDATE_DISCOVERED_NEVER_COMPILED, but they are anchored at 6.05(k)(ii) rather than at the flush's own position after clause (k)." },
+  { caseId: "CASE-2034884b7a", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Six INVENTORY_ONLY discovery candidates at the claim's address; no compiled rule for any limb of Section 6.03." },
+  { caseId: "CASE-5ac1cd56ef", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Eight INVENTORY_ONLY candidates and six coverage units marked CANDIDATE_DISCOVERED_NEVER_COMPILED, across both limbs of Section 6.10." },
+  { caseId: "CASE-e008d4278a", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Own-address coverage unit reports the region discovered and never compiled; eight same-base units carry the same reason." },
+  { caseId: "CASE-30db965277", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Two INVENTORY_ONLY candidates and four CANDIDATE_DISCOVERED_NEVER_COMPILED units at 6.04 in the 2025 Second A&R." },
+  { caseId: "CASE-8de9def8ca", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "A single flag at the claim's own address restating the prohibition, with no compiled rule behind it." },
+  { caseId: "CASE-d2514bfbe7", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Four flags at the claim's own address 10.01(a), three of them CANDIDATE_DISCOVERED_NEVER_COMPILED, plus three INVENTORY_ONLY candidates." },
+  { caseId: "CASE-b2658c02e7", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Four INVENTORY_ONLY candidates across the four maintenance covenants; none compiled." },
+  { caseId: "CASE-579c5d3f33", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Four INVENTORY_ONLY candidates at Section 7.10; none compiled." },
+  { caseId: "CASE-963cc44044", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Two INVENTORY_ONLY candidates at Section 7.14; none compiled." },
+  { caseId: "CASE-9948558e99", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Two INVENTORY_ONLY candidates at the claim's own address 7.11 and no flag of any kind — discovered, not compiled, not warned." },
+  { caseId: "CASE-d32081582b", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Two INVENTORY_ONLY candidates and four flags at 7.13; no compiled rule." },
+  { caseId: "CASE-55163b4198", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Two INVENTORY_ONLY candidates at 7.16 and no flag of any kind." },
+  { caseId: "CASE-9a30560f37", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Three flags at 7.17 and its descendants; no compiled rule for the Outbound Investment Rules covenant." },
+  { caseId: "CASE-b38c3b48eb", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "Nineteen INVENTORY_ONLY candidates at Section 7.2 and its descendants — the largest un-promoted inventory in the corpus — with no compiled rule." },
+  { caseId: "CASE-0c169f38c3", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "One INVENTORY_ONLY candidate at 7.2(c) and no flag." },
+  { caseId: "CASE-ca1109d4da", rootCause: "INVENTORY_NOT_PROMOTED", secondaryRootCause: null, evidence: "One INVENTORY_ONLY candidate at 6.02(a) and no flag." },
+  { caseId: "CASE-1284ab8e71", rootCause: "COMPOSITE_RULE_FLATTENED", secondaryRootCause: "CONDITION_OMITTED", evidence: "One compiled rule captures the chapeau and points at “permitted payments (i)-(vi)” without modelling the Payment Conditions gate, the subordination-terms gate or the $500,000 anti-stacking proviso; Section 6.08(b) exists only as INVENTORY_ONLY." },
+  { caseId: "CASE-166617b06a", rootCause: "COMPOSITE_RULE_FLATTENED", secondaryRootCause: null, evidence: "Seven compiled rules cover the restatement and lien-continuation limbs of Section 1.11; the Commitments continuation, the Effective-Date payment obligation and the ratification limb have no rule and no flag." },
+  { caseId: "CASE-a57ab21f38", rootCause: "COMPOSITE_RULE_FLATTENED", secondaryRootCause: null, evidence: "Three compiled rules cover 1.04(i) and 1.04(ii); the GAAP-as-in-effect general rule and the GAAP-freeze amendment mechanic are flagged but not compiled." },
+  { caseId: "CASE-16a7d152b6", rootCause: "COMPOSITE_RULE_FLATTENED", secondaryRootCause: null, evidence: "The one compiled rule at Section 6.02 is a RECLASSIFICATION_RULE for replacement liens on refinanced Section 6.01(d) debt; the general Lien prohibition and the Permitted Liens exception are flagged, not modelled." },
+  { caseId: "CASE-768547a920", rootCause: "WRONG_SECTION_MAPPING", secondaryRootCause: "DEFINITION_INCOMPLETE", evidence: "The Interest Coverage Ratio definition text appears in two coverage units addressed 2.09(ii)(ii)(b)(a)(b) and 7.01(b)(a)(b), both far from Article I, and is never compiled as a definition." },
+  { caseId: "CASE-e555117f4c", rootCause: "UNSUPPORTED_BUT_HONEST", secondaryRootCause: "DEFINITION_INCOMPLETE", evidence: "The EBITDA definition IS compiled, with sufficiency=PARTIAL and reviewStatus=REVIEW_REQUIRED, and its unresolvedReasons name the aggregated add-backs, the separately held Combined Cap and the unmodelled 2021 quarterly overrides." },
+  { caseId: "CASE-7fd6c57745", rootCause: "UNSUPPORTED_BUT_HONEST", secondaryRootCause: "WRONG_SECTION_MAPPING", evidence: "The compiled rule for Section 6.01(m) is HONEST_UNRESOLVED and reports “VERIFICATION_FAILED: cited section ‘Section 6.01(m)’ not found verbatim in source text”." },
+  { caseId: "CASE-c8f9a9b5c0", rootCause: "CROSS_DOCUMENT_DEPENDENCY_MISSING", secondaryRootCause: null, evidence: "The gating condition lives in the Secured Notes Documents, which are not in the package. The compiled rule is HONEST_UNRESOLVED and names the dependency, which is the correct behaviour." },
+  { caseId: "CASE-466dbaa257", rootCause: "CROSS_DOCUMENT_DEPENDENCY_MISSING", secondaryRootCause: null, evidence: "Both defined terms are defined only by cross-reference to the Intercreditor Agreement, which is not in the package. No candidate of any kind exists for the claim." },
+];
+
+export interface DefectGroup {
+  id: string;
+  rootCause: RootCause;
+  caseIds: string[];
+  likelyProductionModule: string;
+  oneGenericFixResolvesMultiple: boolean;
+  regressionRisk: string;
+  remediationOrder: number;
+  statement: string;
+}
+
+export const DEFECT_GROUPS: DefectGroup[] = [
+  {
+    id: "P3-DEFECT-1",
+    rootCause: "INVENTORY_NOT_PROMOTED",
+    caseIds: [
+      "CASE-88cfbb3bb8", "CASE-5a66cad386", "CASE-393f8732d2", "CASE-3e2b123d74", "CASE-2034884b7a",
+      "CASE-5ac1cd56ef", "CASE-e008d4278a", "CASE-30db965277", "CASE-8de9def8ca", "CASE-d2514bfbe7",
+      "CASE-b2658c02e7", "CASE-579c5d3f33", "CASE-963cc44044", "CASE-9948558e99", "CASE-d32081582b",
+      "CASE-55163b4198", "CASE-9a30560f37", "CASE-b38c3b48eb", "CASE-0c169f38c3", "CASE-ca1109d4da",
+    ],
+    likelyProductionModule:
+      "the discovery-to-compilation handoff: lib/contract-model/compiler (the stage that turns Phase-2B discovery candidates into compiled IR rules), and the planner that decides which discovered candidates enter a compilation shard",
+    oneGenericFixResolvesMultiple: true,
+    regressionRisk:
+      "HIGH. Promoting more inventory into compilation increases compiled volume and cost on every package, and a promotion rule that is too eager will convert honest INVENTORY_ONLY records into low-quality SUBSTANTIVE_REPRESENTATIONs — which is exactly the shape of a false credit. Any fix must be gated on the 14 historical false-credit controls staying NO_CREDIT.",
+    remediationOrder: 1,
+    statement:
+      "Twenty of the 35 NO_CREDIT cases — 57% — fail for one reason: the system found the provision and never compiled it. This is not an extraction-quality problem and not a discovery-recall problem. It is a throughput problem at one seam, and it is by a wide margin the largest single lever in Phase 3.",
+  },
+  {
+    id: "P3-DEFECT-2",
+    rootCause: "DISCOVERY_MISS",
+    caseIds: ["CASE-2aa00d5566", "CASE-b9ca777174", "CASE-8c29f13dc0", "CASE-641203d620", "CASE-90415d6765", "CASE-4a1c6a48a0"],
+    likelyProductionModule:
+      "the Phase-2B discovery pipeline's section-container synthesis, and the structural router that decides which regions become their own semantic units",
+    oneGenericFixResolvesMultiple: true,
+    regressionRisk:
+      "MEDIUM. All six are chapeau or flush provisions — text that belongs to a section but sits outside any numbered clause. The LSB and FWRG datasets DO synthesise a “Section-level container” candidate for exactly this purpose (visible in the pool for CASE-1284ab8e71); the DSGR datasets do not. Extending that synthesis is additive, but it will raise the unit count on every document and needs a materiality gate so it does not flood review queues.",
+    remediationOrder: 2,
+    statement:
+      "Six cases fail because a section's own general language — the chapeau that states the prohibition, or an unnumbered flush paragraph that qualifies every clause above it — was never raised as a unit at all. Every candidate in the pool sits at a numbered descendant. The chapeau is the part that states what is forbidden.",
+  },
+  {
+    id: "P3-DEFECT-3",
+    rootCause: "COMPOSITE_RULE_FLATTENED",
+    caseIds: ["CASE-1284ab8e71", "CASE-166617b06a", "CASE-a57ab21f38", "CASE-16a7d152b6"],
+    likelyProductionModule:
+      "the semantic compiler's decomposition discipline — the step that decides whether one section becomes one rule or several, and how an “except as permitted by clauses (a)–(x)” pointer is modelled",
+    oneGenericFixResolvesMultiple: true,
+    regressionRisk:
+      "MEDIUM. Forcing per-clause decomposition multiplies rule count and can fragment rules that genuinely are one proposition. The existing recursive fused-claim decomposition work is the right place to extend rather than a new mechanism.",
+    remediationOrder: 3,
+    statement:
+      "Four cases have a compiled rule that captures the chapeau and then points at the exceptions instead of modelling them. Where an exception carries its own gate — the Payment Conditions test, the $500,000 anti-stacking proviso — the pointer silently discards the gate, and a pointer that discards a gate over-permits.",
+  },
+  {
+    id: "P3-DEFECT-4",
+    rootCause: "WRONG_SECTION_MAPPING",
+    caseIds: ["CASE-768547a920", "CASE-4a1c6a48a0", "CASE-5a66cad386", "CASE-393f8732d2", "CASE-3e2b123d74", "CASE-7fd6c57745"],
+    likelyProductionModule: "lib/contract-model/compiler structural indexing — the step that assigns a sectionRef path to a discovered unit",
+    oneGenericFixResolvesMultiple: true,
+    regressionRisk:
+      "MEDIUM-HIGH. Re-anchoring units changes sectionRef values, and sectionRef is load-bearing for the V3.1 surfacing rule, for claim identity and for the coverage audit. Every downstream consumer of the structural path would need re-running.",
+    remediationOrder: 4,
+    statement:
+      "A cross-reference is being absorbed as structural containment. Text in Article I that says “permitted under Section 6.05” ends up addressed 6.05(A)(a)(B)(b); clause (vi) of the Available Amount definition ends up addressed 6.04(2); the Interest Coverage Ratio definition ends up at 2.09(ii)(ii)(b)(a)(b) and 7.01(b)(a)(b). This is the SAME failure mode that produced the benchmark's own bad excerpts — treating the first textual occurrence of a section number as that section — which is why it is worth fixing once, generically, on both sides.",
+  },
+  {
+    id: "P3-OBSERVATION-5",
+    rootCause: "CROSS_DOCUMENT_DEPENDENCY_MISSING",
+    caseIds: ["CASE-c8f9a9b5c0", "CASE-466dbaa257"],
+    likelyProductionModule: "none — no production change is proposed",
+    oneGenericFixResolvesMultiple: false,
+    regressionRisk: "N/A",
+    remediationOrder: 99,
+    statement:
+      "Two cases cannot be represented from the filed package because the governing text is in a document the package does not contain (the Secured Notes Documents; the Intercreditor Agreement). One of the two is handled correctly today — a HONEST_UNRESOLVED rule naming the dependency. These are NOT Phase-3 defects and are listed so the backlog's denominator is honest.",
+  },
+  {
+    id: "P3-OBSERVATION-6",
+    rootCause: "UNSUPPORTED_BUT_HONEST",
+    caseIds: ["CASE-e555117f4c", "CASE-7fd6c57745"],
+    likelyProductionModule:
+      "the IR's composition rules for large enumerated definitions (the EBITDA case reports that ADD and SUBTRACT operands do not type-check together)",
+    oneGenericFixResolvesMultiple: false,
+    regressionRisk:
+      "LOW for the honesty behaviour itself, which is working as designed and should not be changed. MEDIUM for extending the IR to model twenty conditioned add-backs and a shared 20% cap.",
+    remediationOrder: 5,
+    statement:
+      "Two cases are NO_CREDIT because the system compiled the provision and then said, in its own words, that it had not fully modelled it. CASE-e555117f4c's unresolvedReasons name the Combined Cap and the 2021 quarterly overrides — including the very Combined Cap the frozen benchmark had omitted from its own claim. That is the system being more accurate than the benchmark that was grading it. The remediation here is IR expressiveness, not a correctness fix.",
+  },
+];
