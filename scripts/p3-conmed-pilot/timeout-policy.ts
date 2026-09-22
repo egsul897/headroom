@@ -31,7 +31,18 @@ export const LONG_RETRY_CEILING_MS = 900_000;
 /** §5 — no paid request may run this long without separate authorization. */
 export const FORBIDDEN_LONG_CALL_MS = 1_800_000;
 
-/** §1 forbids lowering the ceiling further within this mission. */
+/**
+ * Qualification-stage ceiling — 240s, explicitly authorized for MODEL SCREENING only.
+ *
+ * Screening asks a different question from corpus execution: not "can this model finish
+ * the work" but "can it demonstrate the protocol at all". A model that cannot show
+ * structured output, tool use and convergence inside four minutes should not be granted
+ * hundreds of paid candidates on the chance it eventually would. It is deliberately
+ * BELOW the population floor and may only be used with tier: "QUALIFICATION".
+ */
+export const QUALIFICATION_TIMEOUT_MS = 240_000;
+
+/** §1 forbids lowering the POPULATION ceiling further within this mission. */
 export const MIN_ALLOWED_TIMEOUT_MS = DEFAULT_CANDIDATE_TIMEOUT_MS;
 
 export const SLOWEST_OBSERVED_SUCCESS_MS = 427_000;
@@ -110,7 +121,19 @@ export class ForbiddenTimeoutError extends Error {
  * Rejects anything at or above 1800s outright, rejects a long retry that was not explicitly
  * authorized, and rejects attempts to tighten below 480s (which §1 forbids in this mission).
  */
-export function assertAllowedTimeout(ms: number, opts: { longRetryAuthorized?: boolean } = {}): void {
+export function assertAllowedTimeout(ms: number, opts: { longRetryAuthorized?: boolean; tier?: "POPULATION" | "QUALIFICATION" } = {}): void {
+  // The qualification tier is a separate, narrower authorization: one fixed ceiling, no
+  // retry, and no access to the long-retry path. It cannot be used to smuggle in an
+  // arbitrary shorter population timeout.
+  if (opts.tier === "QUALIFICATION") {
+    if (ms !== QUALIFICATION_TIMEOUT_MS) {
+      throw new ForbiddenTimeoutError(`qualification runs use exactly ${QUALIFICATION_TIMEOUT_MS}ms; ${ms}ms is not authorized`);
+    }
+    if (opts.longRetryAuthorized) {
+      throw new ForbiddenTimeoutError("a qualification probe may not be combined with long-retry authorization");
+    }
+    return;
+  }
   if (ms >= FORBIDDEN_LONG_CALL_MS) {
     throw new ForbiddenTimeoutError(`${ms}ms is at or above the ${FORBIDDEN_LONG_CALL_MS}ms hard limit; §5 forbids it without separate authorization`);
   }
