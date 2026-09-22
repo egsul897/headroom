@@ -17,7 +17,7 @@ function rec(over: Partial<CandidateRecord> = {}): CandidateRecord {
     outputTokens: 3843, attemptCount: 1, actualCostUsd: 0.001, outputHash: "o", wallClockMs: 51_000, ...over,
   };
 }
-const pr = (over: Partial<ProbeResult>): ProbeResult => ({ slot: "A_SHORT_CONTROL", sourceSectionRef: "7.8(b)", outcome: "PASS", status: "REVIEW_REQUIRED", failureReasons: [], rules: 1, definitions: 0, toolCalls: 0, inputTokens: 1, outputTokens: 1, elapsedMs: 1000, gatewayCostUsd: 0, provider: "x", sortOptionApplied: "cost", ...over });
+const pr = (over: Partial<ProbeResult>): ProbeResult => ({ slot: "A_SHORT_CONTROL", sourceSectionRef: "7.8(b)", outcome: "PASS", status: "REVIEW_REQUIRED", failureReasons: [], rules: 1, definitions: 0, toolCalls: 0, inputTokens: 1, outputTokens: 1, elapsedMs: 1000, gatewayCostUsd: 0, provider: "x", sortOptionApplied: "cost", costSource: "COMPUTED_FROM_USAGE", ...over });
 
 describe("shortlist discipline (§1)", () => {
   it("is exactly the five authorized models, in the authorized order", () => {
@@ -134,5 +134,38 @@ describe("gateway cost capture (§2)", () => {
 
   it("degrades safely when a response carries no gateway metadata", () => {
     expect(extractGatewayCost({})).toEqual({ provider: null, gatewayCostUsd: 0, sortOptionApplied: null, generationId: null });
+  });
+});
+
+describe("provider failures are not model failures (§5B 'provider-independent')", () => {
+  it("grades a zero-token transport break as PROVIDER_ERROR, not EXECUTION_FAIL", () => {
+    expect(gradeProbe(rec({ status: "FAILED", failureReasons: ["TRANSPORT_OR_INTERNAL_ERROR"], rules: 0, inputTokens: 0, outputTokens: 0 }), false, false)).toBe("PROVIDER_ERROR");
+  });
+
+  it("grades a zero-token provider refusal as PROVIDER_ERROR", () => {
+    expect(gradeProbe(rec({ status: "FAILED", failureReasons: ["PROVIDER_FAILURE"], rules: 0, inputTokens: 0, outputTokens: 0 }), false, false)).toBe("PROVIDER_ERROR");
+  });
+
+  it("still grades a SERVED but empty result as EXECUTION_FAIL — tokens were billed", () => {
+    expect(gradeProbe(rec({ status: "FAILED", failureReasons: [], rules: 0, definitions: 0, inputTokens: 5000, outputTokens: 200 }), false, false)).toBe("EXECUTION_FAIL");
+  });
+
+  it("does NOT eliminate on one provider error plus one real failure", () => {
+    const out = shouldEliminate([pr({ slot: "A_SHORT_CONTROL", outcome: "PROVIDER_ERROR" }), pr({ slot: "C_HARD_LONG", outcome: "TIMEOUT_240" })]);
+    expect(out.eliminate).toBe(false);
+  });
+
+  it("DOES eliminate on two genuine model failures", () => {
+    expect(shouldEliminate([pr({ outcome: "TIMEOUT_240" }), pr({ outcome: "SCHEMA_FAIL" })]).eliminate).toBe(true);
+  });
+
+  it("eliminates under §5D when provider errors repeat", () => {
+    const out = shouldEliminate([pr({ slot: "A_SHORT_CONTROL", outcome: "PROVIDER_ERROR" }), pr({ slot: "B_EVIDENCE_TOOL_REQUIRED", outcome: "PROVIDER_ERROR" })]);
+    expect(out.eliminate).toBe(true);
+    expect(out.reason).toMatch(/^D:/);
+  });
+
+  it("still eliminates immediately on a tool failure even alongside a provider error", () => {
+    expect(shouldEliminate([pr({ outcome: "PROVIDER_ERROR" }), pr({ slot: "B_EVIDENCE_TOOL_REQUIRED", outcome: "TOOL_FAIL" })]).reason).toMatch(/^A:/);
   });
 });

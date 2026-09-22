@@ -58,6 +58,15 @@ export interface GatewayCallCost {
 }
 
 /**
+ * Where a cost figure came from. This matters: the gateway exposes exact billed cost in
+ * provider_metadata on a NON-streaming create, but the compiler streams, and a streamed
+ * finalMessage carries no provider_metadata at all. So on the real path the exact figure
+ * is unavailable and cost must be computed from usage and list price. Saying which one a
+ * number is keeps "computed" from being read as "billed".
+ */
+export type CostSource = "GATEWAY_METADATA" | "COMPUTED_FROM_USAGE";
+
+/**
  * §2 — prefer the cheapest provider, and record what the gateway actually did.
  *
  * The routing preference is verified rather than assumed: the gateway echoes the applied
@@ -81,23 +90,51 @@ export function extractGatewayCost(raw: unknown): GatewayCallCost {
  * response's real billed cost is captured. The compiler is untouched; it receives an
  * ordinary client.
  */
-function routedClient(sink: GatewayCallCost[]) {
+function priceFromUsage(model: GatewayModel, usage: { input_tokens?: number; output_tokens?: number } | undefined): number {
+  return (usage?.input_tokens ?? 0) * Number(model.pricing.input) + (usage?.output_tokens ?? 0) * Number(model.pricing.output);
+}
+
+function routedClient(sink: GatewayCallCost[], model: GatewayModel, sources: CostSource[]) {
   const inner = new Anthropic({ apiKey: process.env.AI_GATEWAY_API_KEY, baseURL: AI_GATEWAY_BASE_URL, maxRetries: 2 });
+  // The caller streams — it calls messages.stream(...).finalMessage(), never messages.create.
+  // The wrapper must mirror that exact shape or every call throws before reaching the
+  // network, which looks identical to a provider refusal in the per-candidate record.
   return {
     messages: {
-      create: async (body: Record<string, unknown>) => {
-        const res = await (inner as unknown as { messages: { create: (b: unknown) => Promise<unknown> } }).messages.create({
-          ...body,
+      stream: (params: Record<string, unknown>) => {
+        const s = (inner as unknown as { messages: { stream: (b: unknown) => { finalMessage: () => Promise<unknown> } } }).messages.stream({
+          ...params,
           providerOptions: { gateway: { sort: "cost" } },
         });
-        sink.push(extractGatewayCost(res));
-        return res;
+        return {
+          finalMessage: async () => {
+            const msg = await s.finalMessage();
+            const meta = extractGatewayCost(msg);
+            if (meta.gatewayCostUsd > 0 || meta.provider) {
+              sink.push(meta);
+              sources.push("GATEWAY_METADATA");
+            } else {
+              // Streaming responses carry no provider_metadata. Compute from usage and
+              // label it, rather than recording $0 for a call that was certainly billed.
+              sink.push({ ...meta, gatewayCostUsd: priceFromUsage(model, (msg as { usage?: { input_tokens?: number; output_tokens?: number } }).usage) });
+              sources.push("COMPUTED_FROM_USAGE");
+            }
+            return msg;
+          },
+        };
       },
     },
   } as unknown as ConstructorParameters<typeof RealSemanticCaller>[2];
 }
 
-export type ProbeOutcome = "PASS" | "TIMEOUT_240" | "SCHEMA_FAIL" | "TOOL_FAIL" | "EXECUTION_FAIL";
+export type ProbeOutcome = "PASS" | "TIMEOUT_240" | "SCHEMA_FAIL" | "TOOL_FAIL" | "EXECUTION_FAIL" | "PROVIDER_ERROR";
+
+/**
+ * Signals that the request never reached the model, or the provider broke mid-flight.
+ * These say nothing about the model's capability and §5B counts only PROVIDER-INDEPENDENT
+ * failures, so they must not be pooled with schema failures and timeouts.
+ */
+export const PROVIDER_SIDE_REASONS = ["PROVIDER_FAILURE", "TRANSPORT_OR_INTERNAL_ERROR", "HTTP_402", "HTTP_429", "INSUFFICIENT_FUNDS", "ZERO_TOKEN_STALL"] as const;
 
 export interface ProbeResult {
   slot: string;
@@ -114,6 +151,7 @@ export interface ProbeResult {
   gatewayCostUsd: number;
   provider: string | null;
   sortOptionApplied: string | null;
+  costSource: CostSource | null;
 }
 
 /**
@@ -122,6 +160,12 @@ export interface ProbeResult {
  */
 export function gradeProbe(rec: CandidateRecord, toolUseRequired: boolean, timedOut: boolean): ProbeOutcome {
   if (timedOut) return "TIMEOUT_240";
+  // A provider-side break is not evidence about the model. Nothing was served, or the
+  // transport died; grading it as an execution failure would eliminate models for the
+  // provider's behaviour, which §5B explicitly excludes.
+  const billedNothing = (rec.inputTokens ?? 0) + (rec.outputTokens ?? 0) === 0;
+  if (rec.failureReasons.some((r) => (PROVIDER_SIDE_REASONS as readonly string[]).includes(r)) && billedNothing) return "PROVIDER_ERROR";
+  if (rec.status === "FAILED" && billedNothing) return "PROVIDER_ERROR";
   if (rec.failureReasons.some((r) => r === "MODEL_SCHEMA_FAILURE" || r === "REPEATED_INVALID_STRUCTURED_OUTPUT" || r === "MALFORMED_TOOL_CALL")) return "SCHEMA_FAIL";
   const producedStructuredOutput = rec.rules + rec.definitions > 0;
   if (!producedStructuredOutput) return "EXECUTION_FAIL";
@@ -133,8 +177,15 @@ export function gradeProbe(rec: CandidateRecord, toolUseRequired: boolean, timed
 export function shouldEliminate(results: ProbeResult[]): { eliminate: boolean; reason: string | null } {
   const toolFail = results.find((r) => r.outcome === "TOOL_FAIL");
   if (toolFail) return { eliminate: true, reason: `A: evidence-required probe ${toolFail.sourceSectionRef} completed WITHOUT using the evidence tools` };
-  const failures = results.filter((r) => r.outcome !== "PASS");
-  if (failures.length >= 2) return { eliminate: true, reason: `B: two qualification failures (${failures.map((f) => `${f.slot}=${f.outcome}`).join(", ")})` };
+
+  // §5B counts provider-INDEPENDENT failures only.
+  const modelFailures = results.filter((r) => r.outcome !== "PASS" && r.outcome !== "PROVIDER_ERROR");
+  if (modelFailures.length >= 2) return { eliminate: true, reason: `B: two qualification failures (${modelFailures.map((f) => `${f.slot}=${f.outcome}`).join(", ")})` };
+
+  // §5D — provider instability is its own elimination rule, and needs repetition.
+  const providerErrors = results.filter((r) => r.outcome === "PROVIDER_ERROR");
+  if (providerErrors.length >= 2) return { eliminate: true, reason: `D: repeated provider/zero-token failures on a healthy gateway (${providerErrors.map((f) => f.slot).join(", ")})` };
+
   return { eliminate: false, reason: null };
 }
 
@@ -201,7 +252,8 @@ async function main() {
       const candidate = candidateById.get(probe.discoveryId)!;
       const input = buildInput(candidate, bundles.get(candidate.discoveryId), stages, operativeState, amendment.effects);
       const costSink: GatewayCallCost[] = [];
-      const caller = new RealSemanticCaller("vercel-ai-gateway", modelId, routedClient(costSink));
+      const costSources: CostSource[] = [];
+      const caller = new RealSemanticCaller("vercel-ai-gateway", modelId, routedClient(costSink, raw, costSources));
       const t0 = Date.now();
       let rec: CandidateRecord;
       let timedOut = false;
@@ -225,9 +277,10 @@ async function main() {
         gatewayCostUsd: Number(gatewayCostUsd.toFixed(8)),
         provider: costSink.find((c) => c.provider)?.provider ?? null,
         sortOptionApplied: costSink.find((c) => c.sortOptionApplied)?.sortOptionApplied ?? null,
+        costSource: costSources.includes("GATEWAY_METADATA") ? "GATEWAY_METADATA" : costSources.length > 0 ? "COMPUTED_FROM_USAGE" : null,
       };
       probes.push(pr);
-      console.log(`  ${probe.slot.padEnd(26)} ${probe.sourceSectionRef.padEnd(9)} ${outcome.padEnd(14)} status=${rec.status.padEnd(16)} tools=${rec.toolCalls} rules=${rec.rules} tok=${rec.inputTokens}/${rec.outputTokens} ${Math.round(elapsedMs / 1000)}s $${gatewayCostUsd.toFixed(6)} provider=${pr.provider} sort=${pr.sortOptionApplied}`);
+      console.log(`  ${probe.slot.padEnd(26)} ${probe.sourceSectionRef.padEnd(9)} ${outcome.padEnd(14)} status=${rec.status.padEnd(16)} tools=${rec.toolCalls} rules=${rec.rules} tok=${rec.inputTokens}/${rec.outputTokens} ${Math.round(elapsedMs / 1000)}s $${gatewayCostUsd.toFixed(6)} [${pr.costSource}]`);
 
       const elim = shouldEliminate(probes);
       if (elim.eliminate) {
