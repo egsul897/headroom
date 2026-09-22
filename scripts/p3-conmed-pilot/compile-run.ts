@@ -23,6 +23,7 @@ import { IR_SCHEMA_VERSION } from "../../lib/contract-model/ir/types";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
 import { COMPANY_ID, INSTRUMENT_KEY, buildDeterministicStages, contextBundlesFor, operativeTextFor, rehydrateNodeIds, sealedPopulation, sha256 } from "./pipeline";
 import { blendedPricePerMtok, loadCatalogue, type GatewayModel } from "./probe-models";
+import { DEFAULT_CANDIDATE_TIMEOUT_MS, assertAllowedTimeout } from "./timeout-policy";
 
 /**
  * §2 — the ONLY conditions that justify moving a candidate to a more expensive model.
@@ -81,10 +82,23 @@ export function realCost(m: GatewayModel, inTok: number | null, outTok: number |
  * A per-candidate wall-clock ceiling. The compiler's own guards bound TURNS and TOOL
  * CALLS, not time, so a cheap model that answers slowly (or stalls mid-stream) can hang
  * a run indefinitely with no signal. A timeout turns that into a recorded execution
- * failure — which §2 then treats as a legitimate escalation trigger — instead of a
- * silent stall that would be indistinguishable from progress.
+ * outcome instead of a silent stall indistinguishable from progress.
+ *
+ * 480s, lowered from 900s. A timeout is not free: the provider bills every token it
+ * generated before we hung up, and a request that never returns yields no usage object,
+ * so that spend was previously recorded as $0.00. The ceiling is set from the observed
+ * distribution — the slowest SUCCESSFUL probe finished at 427s — so it keeps every
+ * observed success while nearly halving worst-case hidden spend per non-converging
+ * candidate. A timeout is NOT an escalation trigger; see timeout-policy.ts §2.
+ *
+ * An override is still read from the environment, but it passes through the same policy
+ * gate as everything else, so it cannot reach 1800s or drop below the 480s floor.
  */
-export const PER_CANDIDATE_TIMEOUT_MS = Number(process.env.PILOT_CANDIDATE_TIMEOUT_MS ?? 900_000);
+export const PER_CANDIDATE_TIMEOUT_MS = (() => {
+  const requested = Number(process.env.PILOT_CANDIDATE_TIMEOUT_MS ?? DEFAULT_CANDIDATE_TIMEOUT_MS);
+  assertAllowedTimeout(requested);
+  return requested;
+})();
 
 export class CandidateTimeoutError extends Error {
   constructor(ms: number) {

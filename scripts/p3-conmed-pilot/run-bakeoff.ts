@@ -19,7 +19,8 @@ import type { SemanticCompilationResult } from "../../lib/contract-model/compile
 import { INSTRUMENT_KEY, operativeTextFor, sha256 } from "./pipeline";
 import { PER_CANDIDATE_TIMEOUT_MS, buildInput, callerFor, maxTokensFor, prepare, record, withTimeout, type CandidateRecord } from "./compile-run";
 import { discoverModels, buildProbeSet, type BakeoffCandidateModel } from "./bakeoff";
-import { assertNotPremium, classifyFailureCategory } from "./premium-lock";
+import { assertNotPremium, classifyFailureCategory, OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "./premium-lock";
+import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest, classifyTimeout, mayAutomaticallyRetry, NO_PROGRESS, type CostRecord, type ProgressEvidence, type TimeoutClassification } from "./timeout-policy";
 import type { GatewayModel } from "./probe-models";
 
 const OUT = "/tmp/claude-0/pilot/bakeoff";
@@ -104,6 +105,10 @@ async function main() {
   const amendment = await runAmendmentPipeline(stageCaller, { documents: stages.documents, packageGraph: stages.packageGraph, index: stages.index });
   const operativeState = computeOperativeContractState({ instrumentKey: INSTRUMENT_KEY, baseDocumentId: "conmed-doc-a-eighth-ar-credit-agreement", asOfDate: new Date().toISOString().slice(0, 10), index: stages.index, allEffects: amendment.effects });
 
+  // §7 — the guard reads COMMITTED spend (exact + retained unknown timeouts + outstanding
+  // reservations), not exact spend. Exact spend is what let 11 billed timeouts read as $0.
+  const ledger = new BudgetLedger(SPEND_CEILING_USD, SPEND_STOP_AT_USD);
+  const costRecords: (CostRecord & { discoveryId: string; timeoutClassification: TimeoutClassification | null })[] = [];
   let spend = 0;
   const results: ModelBakeoffResult[] = [];
   const frozen: { model: string; discoveryId: string; result: SemanticCompilationResult }[] = [];
@@ -113,8 +118,8 @@ async function main() {
     // §3: throws before dispatch. Belt and braces — the id was already filtered.
     assertNotPremium(m.id, raw.pricing);
 
-    if (spend >= SPEND_STOP_AT_USD) {
-      console.log(`budget guard: $${spend.toFixed(4)} spent, stopping before the $${SPEND_CEILING_USD} ceiling`);
+    if (ledger.mustStop()) {
+      console.log(`budget guard: $${ledger.committedUsd.toFixed(4)} committed (exact $${ledger.exactSpendUsd.toFixed(4)} + retained-unknown $${ledger.retainedUnknownUsd.toFixed(4)}), stopping before the $${SPEND_CEILING_USD} ceiling`);
       break;
     }
 
@@ -123,11 +128,19 @@ async function main() {
     const recs: CandidateRecord[] = [];
     console.log(`\n=== ${m.id} ($${m.estimatedCostPerCandidateUsd}/cand est) — concurrency 1 ===`);
 
+    // §7 — a conservative maximum for one cheap-model candidate held for the full ceiling.
+    // Output rate is the fastest sustained rate observed across the admissible rows.
+    const reservation = BudgetLedger.reservationFor(raw, PER_CANDIDATE_TIMEOUT_MS, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, OBSERVED_OUTPUT_TOKENS_PER_SECOND);
+
     for (const p of probes) {
-      if (spend >= SPEND_STOP_AT_USD) break;
+      if (ledger.mustStop(reservation)) {
+        console.log(`  budget guard: $${ledger.committedUsd.toFixed(4)} committed; a further $${reservation.toFixed(4)} reservation would cross the stop line`);
+        break;
+      }
       const c = byId.get(p.discoveryId)!;
       const input = buildInput(c, bundles.get(c.discoveryId), stages, operativeState, amendment.effects);
       const t0 = Date.now();
+      ledger.reserve(c.discoveryId, reservation);
       try {
         const result = await withTimeout(compileCovenantToIR(input, { caller }), PER_CANDIDATE_TIMEOUT_MS);
         frozen.push({ model: m.id, discoveryId: c.discoveryId, result });
@@ -136,15 +149,48 @@ async function main() {
         // silently collapses every latency statistic to zero. The elapsed time is measured
         // here regardless, so the wall-clock projection has a real denominator.
         if (rec.wallClockMs === null) rec.wallClockMs = Date.now() - t0;
-        spend += rec.actualCostUsd;
+        const billed = (rec.inputTokens ?? 0) + (rec.outputTokens ?? 0) > 0;
+        const cost = accountForRequest({
+          model: raw,
+          elapsedWallClockMs: Date.now() - t0,
+          timedOut: false,
+          providerUsage: billed ? { inputTokens: rec.inputTokens ?? 0, outputTokens: rec.outputTokens ?? 0 } : null,
+          streamedOutputTokensObserved: rec.outputTokens,
+          reservationUsd: reservation,
+          providerRefused: !billed && rec.status === "FAILED",
+        });
+        ledger.settle(c.discoveryId, cost);
+        costRecords.push({ ...cost, discoveryId: c.discoveryId, timeoutClassification: null });
+        spend = ledger.committedUsd;
         recs.push(rec);
         console.log(`  ${p.axis.padEnd(36)} ${rec.sourceSectionRef.padEnd(14)} ${rec.status.padEnd(16)} rules=${String(rec.rules).padStart(2)} tools=${String(rec.toolCalls).padStart(2)} tok=${rec.inputTokens}/${rec.outputTokens} ${Math.round((Date.now() - t0) / 1000)}s $${spend.toFixed(4)}`);
       } catch (err) {
         const name = err instanceof Error ? err.name : "UnknownError";
-        const synthetic = { status: "FAILED", failureReasons: [name === "CandidateTimeoutError" ? "WALL_CLOCK_TIMEOUT" : "TRANSPORT_OR_INTERNAL_ERROR"], rules: [], definitions: [], toolCallLog: [], telemetry: null } as unknown as SemanticCompilationResult;
+        const timedOut = name === "CandidateTimeoutError";
+        const elapsed = Date.now() - t0;
+        // §3 — evidence captured before termination decides retry eligibility. The compiler
+        // surfaces nothing on a timeout today, so this is NO_PROGRESS and the candidate is
+        // classified NONCONVERGENT: absent evidence must mean "no retry", never "maybe".
+        const evidence: ProgressEvidence = NO_PROGRESS;
+        const classification: TimeoutClassification | null = timedOut ? classifyTimeout(evidence) : null;
+        const cost = accountForRequest({
+          model: raw,
+          elapsedWallClockMs: elapsed,
+          timedOut,
+          providerUsage: null,
+          streamedOutputTokensObserved: evidence.outputTokensObserved,
+          reservationUsd: reservation,
+          providerRefused: !timedOut,
+        });
+        // §2 — nothing here authorizes another dispatch, of any model, at any ceiling.
+        void mayAutomaticallyRetry();
+        ledger.settle(c.discoveryId, cost);
+        costRecords.push({ ...cost, discoveryId: c.discoveryId, timeoutClassification: classification });
+        spend = ledger.committedUsd;
+        const synthetic = { status: "FAILED", failureReasons: [timedOut ? "WALL_CLOCK_TIMEOUT" : "TRANSPORT_OR_INTERNAL_ERROR"], rules: [], definitions: [], toolCallLog: [], telemetry: null } as unknown as SemanticCompilationResult;
         frozen.push({ model: m.id, discoveryId: c.discoveryId, result: synthetic });
         recs.push(record(c, input, synthetic, raw, 1, null));
-        console.log(`  ${p.axis.padEnd(36)} ${String(c.normalizedSourceRef).padEnd(14)} THREW ${name} ${Math.round((Date.now() - t0) / 1000)}s`);
+        console.log(`  ${p.axis.padEnd(36)} ${String(c.normalizedSourceRef).padEnd(14)} ${classification ?? "THREW " + name} ${Math.round(elapsed / 1000)}s committed=$${ledger.committedUsd.toFixed(4)} [${cost.costAccountingStatus}]`);
       }
     }
 
@@ -185,6 +231,7 @@ async function main() {
     results.push(full);
     save("01-bakeoff-results", results);
     save("02-frozen", frozen.map((f) => ({ ...f, resultHash: sha256(JSON.stringify(f.result)) })));
+    save("04-cost-ledger", { snapshot: ledger.snapshot(), perRequest: costRecords });
 
     console.log(`  -> completion ${(full.completionRate * 100).toFixed(1)}% | schema-fail ${(full.schemaFailureRate * 100).toFixed(1)}% | stalls ${full.zeroTokenStalls} | timeouts ${full.timeouts} | $${full.spendUsd} | GATE ${full.passesGate ? "PASS" : "FAIL: " + full.gateReasons.join("; ")}`);
 
@@ -194,8 +241,8 @@ async function main() {
     }
   }
 
-  save("03-summary", { spendUsd: Number(spend.toFixed(5)), ceilingUsd: SPEND_CEILING_USD, modelsTested: results.length, selected: results.find((r) => r.passesGate)?.model ?? null });
-  console.log(`\nbakeoff spend $${spend.toFixed(4)} of $${SPEND_CEILING_USD}; models tested ${results.length}`);
+  save("03-summary", { budget: ledger.snapshot(), ceilingUsd: SPEND_CEILING_USD, modelsTested: results.length, selected: results.find((r) => r.passesGate)?.model ?? null });
+  console.log(`\nbakeoff committed $${ledger.committedUsd.toFixed(4)} of $${SPEND_CEILING_USD} (exact $${ledger.exactSpendUsd.toFixed(4)}, retained-unknown $${ledger.retainedUnknownUsd.toFixed(4)}); models tested ${results.length}`);
 }
 
 if (process.argv[1]?.endsWith("run-bakeoff.ts")) void main();
