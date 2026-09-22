@@ -210,6 +210,14 @@ function save(name: string, body: unknown) {
 async function main() {
   assertAllowedTimeout(QUALIFICATION_TIMEOUT_MS, { tier: "QUALIFICATION" });
 
+  // Model-lock validation mode: run the frozen probes against ONE explicitly named model.
+  // This is not model shopping — it confirms a model that has already been selected still
+  // executes the protocol before a full population run is committed to it.
+  const argvModels = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+  const skipHard = process.argv.includes("--skip-hard");
+  const models: readonly string[] = argvModels.length > 0 ? argvModels : SHORTLIST;
+  const activeProbes = skipHard ? FROZEN_PROBES.filter((p) => p.slot !== "C_HARD_LONG") : FROZEN_PROBES;
+
   const catalogue = JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/models-bakeoff.json", "utf8")).data as GatewayModel[];
   const byId = new Map(catalogue.map((m) => [m.id, m]));
   const { stages, bundles, rehydrated } = await prepare();
@@ -220,12 +228,12 @@ async function main() {
   const operativeState = computeOperativeContractState({ instrumentKey: INSTRUMENT_KEY, baseDocumentId: "conmed-doc-a-eighth-ar-credit-agreement", asOfDate: new Date().toISOString().slice(0, 10), index: stages.index, allEffects: amendment.effects });
 
   console.log(`probes frozen: ${FROZEN_PROBES.map((p) => `${p.slot}=${p.sourceSectionRef}`).join(", ")}`);
-  console.log(`shortlist: ${SHORTLIST.join(", ")}\n`);
+  console.log(`models: ${models.join(", ")}${skipHard ? "  (hard probe skipped — KNOWN_HARD_CASE)" : ""}\n`);
 
   const qualifications: ModelQualification[] = [];
   let totalSpend = 0;
 
-  for (const modelId of SHORTLIST) {
+  for (const modelId of models) {
     if (totalSpend >= TOTAL_SELECTION_CEILING_USD) {
       qualifications.push({ model: modelId, verdict: "NOT_TESTED", eliminationReason: `total selection ceiling $${TOTAL_SELECTION_CEILING_USD} reached`, probes: [], totalGatewayCostUsd: 0, toolUseDemonstrated: false, hardProbeElapsedMs: null, providersSeen: [] });
       continue;
@@ -242,7 +250,7 @@ async function main() {
     let verdict: ModelVerdict = "QUALIFIED";
     let eliminationReason: string | null = null;
 
-    for (const probe of FROZEN_PROBES) {
+    for (const probe of activeProbes) {
       if (modelSpend >= PER_MODEL_CEILING_USD) {
         verdict = "QUALIFICATION_COST_LIMIT";
         eliminationReason = `consumed $${modelSpend.toFixed(4)} before qualifying (ceiling $${PER_MODEL_CEILING_USD})`;
@@ -291,7 +299,7 @@ async function main() {
       }
     }
 
-    if (verdict === "QUALIFIED" && probes.length < FROZEN_PROBES.length) {
+    if (verdict === "QUALIFIED" && probes.length < activeProbes.length) {
       verdict = "ELIMINATED";
       eliminationReason = eliminationReason ?? "did not complete all three probes";
     }
