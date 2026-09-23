@@ -20,6 +20,7 @@ import { dedupExact } from "./dedup";
 import { PER_CANDIDATE_TIMEOUT_MS, buildInput, callerFor, maxTokensFor, prepare, record, withTimeout, type CandidateRecord } from "./compile-run";
 import { assertNotPremium, OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "./premium-lock";
 import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest, type CostRecord } from "./timeout-policy";
+import { buildCandidateEvidence, writeCandidateEvidence } from "./evidence";
 import type { GatewayModel } from "./probe-models";
 
 const OUT = "/tmp/claude-0/pilot/population";
@@ -103,6 +104,12 @@ async function main() {
       const result = await withTimeout(compileCovenantToIR(input, { caller }), PER_CANDIDATE_TIMEOUT_MS);
       frozen.push({ discoveryId: candidate.discoveryId, result });
       rec = record(candidate, input, result, raw, 1, null);
+      // Complete forensic evidence for this execution - rawModelOutput, the tool log, the full
+      // parsed IR and the exact input it came from. A summary row cannot answer "which stage first
+      // emitted this value"; this can. Verification is null here because this runner compiles only
+      // (verifying would mean two more model calls per candidate, which this run is not authorized
+      // to spend) - recorded honestly rather than left for a reader to assume.
+      writeCandidateEvidence(path.join(OUT, "evidence"), candidate.discoveryId, buildCandidateEvidence(input, result, null, { model: LOCKED_MODEL, tier: 1, wallClockMs: rec.wallClockMs, inputTokens: rec.inputTokens, outputTokens: rec.outputTokens, costUsd: rec.actualCostUsd, costStatus: null, timedOut: false, notes: ["compile-only run; no verification performed"] }));
     } catch (err) {
       timedOut = err instanceof Error && err.name === "CandidateTimeoutError";
       rec = record(candidate, input, { status: "FAILED", failureReasons: [timedOut ? "WALL_CLOCK_TIMEOUT" : "TRANSPORT_OR_INTERNAL_ERROR"], rules: [], definitions: [], toolCallLog: [], telemetry: null } as unknown as SemanticCompilationResult, raw, 1, null);

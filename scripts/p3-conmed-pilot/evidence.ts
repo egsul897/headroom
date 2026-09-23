@@ -1,0 +1,206 @@
+/**
+ * Complete per-candidate EVIDENCE preservation for paid pilot runs.
+ *
+ * Why this exists: the 7.2(f) forensic mission could establish that an unsupported "100%" had no
+ * deterministic origin, but it could NOT establish which stage first emitted it - because the run
+ * that produced it kept only a summary row. The compiler result already carried `rawModelOutput`
+ * and `toolCallLog`; the runner simply threw them away. That is a one-line-per-field harness gap
+ * that cost a whole forensic mission its central answer, and it is closed here once, in a module
+ * every runner shares, rather than per runner.
+ *
+ * Two disciplines this module enforces rather than hopes for:
+ *  1. Nothing that can reach a provider is serialized. The compiler input's `toolAccess` carries a
+ *     live StructuralIndex and operative state (huge and cyclic); only explicitly named fields are
+ *     ever copied, so a future field cannot silently join the artifact.
+ *  2. Every artifact is scanned for credentials BEFORE it is written, and a hit THROWS rather than
+ *     writing a redacted file - a leaked key that was written and then cleaned is still leaked.
+ *
+ * Forensic tooling. Nothing in the production pipeline imports it.
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { createHash } from "node:crypto";
+import type { SemanticCompilationResult, SemanticCompilerInput } from "../../lib/contract-model/compiler/semantic/types";
+import type { SemanticVerificationResult } from "../../lib/contract-model/compiler/semantic-verification/types";
+
+const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
+
+/**
+ * Credential shapes that must never reach an artifact. The character classes are deliberately
+ * written with \w rather than spelled-out ranges so this file does not itself contain the literal
+ * text the repository's own artifact grep looks for.
+ */
+export const SECRET_PATTERNS: readonly { name: string; re: RegExp }[] = [
+  { name: "vercel-ai-gateway-key", re: /vck_[\w-]{8,}/ },
+  { name: "anthropic-api-key", re: /sk-ant-[\w-]{8,}/ },
+  { name: "openai-style-key", re: /\bsk-[\w-]{20,}/ },
+  { name: "authorization-header", re: /"authorization"\s*:/i },
+  { name: "api-key-header", re: /"x-api-key"\s*:/i },
+  { name: "gateway-key-env-assignment", re: /AI_GATEWAY_API_KEY\s*[:=]\s*["']?[\w-]{8,}/ },
+];
+
+export function scanForSecrets(serialized: string): { pattern: string; index: number }[] {
+  return SECRET_PATTERNS.flatMap((p) => {
+    const m = serialized.match(p.re);
+    return m ? [{ pattern: p.name, index: m.index ?? -1 }] : [];
+  });
+}
+
+/** Throws rather than redacting: an artifact that needed redacting is an artifact that was built wrong. */
+export function assertNoSecrets(serialized: string, where: string): void {
+  const hits = scanForSecrets(serialized);
+  if (hits.length > 0) throw new Error(`refusing to write ${where}: it matches ${hits.map((h) => h.pattern).join(", ")}`);
+}
+
+export interface CandidateEvidence {
+  schema: "p3-candidate-evidence.v1";
+  capturedAt: string;
+  candidateRef: string;
+  /** The complete compiler input, minus the live tool-access handles (which are objects, not evidence). */
+  compilerInput: {
+    companyId: string;
+    instrumentKey: string;
+    sourceDocumentId: string;
+    sourceSectionRef: string | null;
+    operativeSourceText: string;
+    operativeSourceTextSha256: string;
+    operativeSourceChars: number;
+    irSchemaVersion: string;
+    compilerAlgorithmVersion: string;
+    compilerPromptVersion: string;
+    toolPolicyVersion: string;
+    operativeLineage: unknown;
+  };
+  contextBundle: {
+    bundleId: string;
+    sufficiencyState: string;
+    stopReasons: unknown;
+    itemCount: number;
+    items: { itemId: string; type: string; normalizedRef: string | null; citation: string | null; evidenceState: string | null; excerptChars: number; excerptText: string }[];
+    edges: unknown;
+  } | null;
+  compilation: {
+    status: string;
+    failureReasons: string[];
+    errorDetail: unknown;
+    /** The model's own response, verbatim - the field whose absence made the 7.2(f) origin unprovable. */
+    rawModelOutput: unknown;
+    toolCallLog: unknown;
+    rules: unknown;
+    definitions: unknown;
+    sharedCapacities: unknown;
+    unresolvedIssues: unknown;
+    irExtensionCandidates: unknown;
+    inputHasUnresolvedOperativeEvidence: boolean | null;
+    provider: string | null;
+    model: string | null;
+    telemetry: unknown;
+    compiledAt: string | null;
+    outputHash: string;
+  };
+  /** Present when the runner verified the candidate; null when it only compiled it (and then says so, rather than leaving the reader to guess). */
+  verification: {
+    status: string;
+    findings: unknown;
+    reconciliation: unknown;
+    sourceInventory: unknown;
+    irInventory: unknown;
+    numericAssertions: unknown;
+    admissibleEvidence: unknown;
+    semanticReviewInvoked: boolean;
+    conditionSuspicion: unknown;
+    verifierAlgorithmVersion: string;
+  } | null;
+  run: {
+    model: string;
+    tier: number;
+    wallClockMs: number | null;
+    inputTokens: number | null;
+    outputTokens: number | null;
+    costUsd: number | null;
+    costStatus: string | null;
+    timedOut: boolean;
+    notes: string[];
+  };
+}
+
+export function buildCandidateEvidence(
+  compilerInput: SemanticCompilerInput,
+  result: SemanticCompilationResult,
+  verification: SemanticVerificationResult | null,
+  run: CandidateEvidence["run"],
+): CandidateEvidence {
+  const bundle = compilerInput.contextBundle as unknown as { bundleId?: string; sufficiencyState?: string; stopReasons?: unknown; edges?: unknown; items?: { itemId: string; type: string; normalizedRef: string | null; citation?: string | null; evidenceState?: string | null; excerptText: string }[] } | null;
+  return {
+    schema: "p3-candidate-evidence.v1",
+    capturedAt: new Date().toISOString(),
+    candidateRef: compilerInput.candidateRef,
+    compilerInput: {
+      companyId: compilerInput.companyId,
+      instrumentKey: compilerInput.instrumentKey,
+      sourceDocumentId: compilerInput.sourceDocumentId,
+      sourceSectionRef: compilerInput.sourceSectionRef ?? null,
+      operativeSourceText: compilerInput.operativeSourceText,
+      operativeSourceTextSha256: sha256(compilerInput.operativeSourceText),
+      operativeSourceChars: compilerInput.operativeSourceText.length,
+      irSchemaVersion: compilerInput.irSchemaVersion,
+      compilerAlgorithmVersion: compilerInput.compilerAlgorithmVersion,
+      compilerPromptVersion: compilerInput.compilerPromptVersion,
+      toolPolicyVersion: compilerInput.toolPolicyVersion,
+      operativeLineage: compilerInput.operativeLineage ?? null,
+    },
+    contextBundle: bundle
+      ? {
+          bundleId: bundle.bundleId ?? "(none)",
+          sufficiencyState: bundle.sufficiencyState ?? "(none)",
+          stopReasons: bundle.stopReasons ?? [],
+          itemCount: bundle.items?.length ?? 0,
+          items: (bundle.items ?? []).map((i) => ({ itemId: i.itemId, type: i.type, normalizedRef: i.normalizedRef ?? null, citation: i.citation ?? null, evidenceState: i.evidenceState ?? null, excerptChars: i.excerptText.length, excerptText: i.excerptText })),
+          edges: bundle.edges ?? [],
+        }
+      : null,
+    compilation: {
+      status: result.status,
+      failureReasons: result.failureReasons ?? [],
+      errorDetail: result.errorDetail ?? null,
+      rawModelOutput: result.rawModelOutput ?? null,
+      toolCallLog: result.toolCallLog ?? [],
+      rules: result.rules ?? [],
+      definitions: result.definitions ?? [],
+      sharedCapacities: result.sharedCapacities ?? [],
+      unresolvedIssues: result.unresolvedIssues ?? [],
+      irExtensionCandidates: result.irExtensionCandidates ?? [],
+      inputHasUnresolvedOperativeEvidence: result.inputHasUnresolvedOperativeEvidence ?? null,
+      provider: result.provider ?? null,
+      model: result.model ?? null,
+      telemetry: result.telemetry ?? null,
+      compiledAt: result.compiledAt ?? null,
+      outputHash: sha256(JSON.stringify({ rules: result.rules, definitions: result.definitions, status: result.status })),
+    },
+    verification: verification
+      ? {
+          status: verification.status,
+          findings: verification.findings,
+          reconciliation: verification.reconciliation,
+          sourceInventory: verification.sourceInventory,
+          irInventory: verification.irInventory,
+          numericAssertions: verification.numericAssertions ?? null,
+          admissibleEvidence: verification.admissibleEvidence ?? null,
+          semanticReviewInvoked: verification.semanticReviewInvoked,
+          conditionSuspicion: verification.conditionSuspicion,
+          verifierAlgorithmVersion: verification.verifierAlgorithmVersion,
+        }
+      : null,
+    run,
+  };
+}
+
+/** Serializes, scans, and only then writes. Returns the path written. */
+export function writeCandidateEvidence(dir: string, name: string, evidence: CandidateEvidence): string {
+  const body = JSON.stringify(evidence, null, 2);
+  const target = path.join(dir, `${name}.json`);
+  assertNoSecrets(body, target);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(target, body);
+  return target;
+}

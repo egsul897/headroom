@@ -1,0 +1,56 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION",
+  "section": "\u00a719 - PAID VALIDATION MANIFEST: DESIGNED, NOT EXECUTED",
+  "paidModelCallsThisMission": 0,
+  "runner": "scripts/p3-conmed-pilot/numeric-grounding-validation.ts",
+  "startGuard": "refuses to run unless NUMERIC_GROUNDING_VALIDATION_AUTHORIZED=1 AND a gateway credential is present - a paid runner that exists in the tree but cannot start by accident",
+  "model": "deepseek/deepseek-v4-flash",
+  "concurrency": 1,
+  "perCandidateTimeoutMs": 480000,
+  "retries": 0,
+  "incrementalCeilingUsd": 0.05,
+  "stopAtUsd": 0.04,
+  "candidates": [
+    {
+      "role": "THE_CASE",
+      "ref": "7.2(f)",
+      "why": "the forensic case itself",
+      "expectation": "either an UNSUPPORTED_NUMERIC_ASSERTION finding naming the exact field path, or a clean compilation asserting no ungrounded figure",
+      "notAFailure": "a clean re-run is an honest observation about a non-deterministic model, recorded as one - never retried until it misbehaves again"
+    },
+    {
+      "role": "SUPPORTED_CONTEXT_CONTROL",
+      "ref": "7.1(d)",
+      "why": "economics that legitimately come from an authenticated definition rather than the anchor",
+      "expectation": "every asserted figure GROUNDED_OPERATIVE or GROUNDED_CONTEXT",
+      "blocksTheFix": "a single UNGROUNDED here is a false positive and blocks Fix B"
+    }
+  ],
+  "evidencePersisted": [
+    "complete compiler input",
+    "context bundle with full excerpts",
+    "rawModelOutput",
+    "toolCallLog",
+    "complete parsed rules",
+    "complete definitions",
+    "normalized IR",
+    "verifier result",
+    "reconciliation findings",
+    "numeric-grounding verdicts",
+    "token/cost/runtime metadata"
+  ],
+  "secretDiscipline": "every artifact is scanned before it is written; a credential match THROWS instead of writing a redacted file",
+  "prohibitions": [
+    "no retry on any outcome",
+    "no model substitution",
+    "no timeout change",
+    "no candidate added mid-run",
+    "no premium model, ever",
+    "PREMIUM_MODEL_BUDGET_USD = 0"
+  ],
+  "cumulativeSpendBeforeThisValidation": {
+    "candidateSpanProgramme": 0.323489,
+    "f1SingleCheck": 0.005653,
+    "numericGroundingMission": 0.0
+  }
+}

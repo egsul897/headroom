@@ -12,8 +12,9 @@
  * value/text-containment/count comparison that would behave identically on
  * a package this module has never seen.
  */
-import type { IrInventory, IrInventoryItem, ReconciliationItem, ReconciliationResult, RetrievedEvidenceInventory, RetrievedEvidenceInventoryEntry, SourceInventory, SourceInventoryItem } from "./types";
+import type { IrInventory, IrInventoryItem, NumericAssertionEvidenceText, NumericAssertionInventory, ReconciliationItem, ReconciliationResult, RetrievedEvidenceInventory, RetrievedEvidenceInventoryEntry, SourceInventory, SourceInventoryItem } from "./types";
 import { citationNamesDefinition, citationNamesSection, normalizeTermScopeKey } from "./retrieved-evidence";
+import { groundNumericAssertions } from "./numeric-assertion";
 
 const NUMERIC_TOLERANCE_RELATIVE = 1e-6;
 
@@ -142,6 +143,31 @@ function findIrOnlyNumericItems(irItems: IrInventoryItem[], claimedIrItemIds: Se
     .map((ir) => ({ classification: "IR_ONLY" as const, sourceItem: null, irItems: [ir], reason: `compiled IR ${ir.kind} value ${ir.numericValue} at ${ir.irPath} has no matching source-side figure` }));
 }
 
+/**
+ * FIX B - the SECOND numeric pass: figures the compiler asserted in FREE TEXT rather than in an
+ * expression node (numeric-assertion.ts). Deliberately a separate pass rather than more kinds in
+ * reconcileNumericItems above, because the two must never be confused in either direction:
+ *
+ *  - a prose figure must NEVER account for a source figure. "$5,000,000" mentioned in a rule
+ *    description does not represent the source's $5,000,000 basket; the structured MISSING_BASKET
+ *    detection above stays exactly as strict as it was.
+ *  - a source figure must never silently claim a prose figure either, which is why these items
+ *    carry no sourceItem and never enter claimedIrItemIds.
+ *
+ * Only UNGROUNDED becomes IR_ONLY (the unsupported-assertion signal); a value the source really
+ * states, in the operative window or in authenticated retrieved evidence, is ACCOUNTED_FOR and
+ * costs nothing; a figure whose own magnitude could not be read safely is AMBIGUOUS, never guessed.
+ */
+function reconcileNumericAssertions(inventory: NumericAssertionInventory, evidence: NumericAssertionEvidenceText[]): ReconciliationItem[] {
+  return groundNumericAssertions(inventory, evidence).map((grounding) => ({
+    classification: grounding.status === "UNGROUNDED" ? ("IR_ONLY" as const) : grounding.status === "AMBIGUOUS" ? ("AMBIGUOUS" as const) : ("ACCOUNTED_FOR" as const),
+    sourceItem: null,
+    irItems: [],
+    reason: grounding.reason,
+    numericGrounding: grounding,
+  }));
+}
+
 /** Fuzzy, low-confidence metric/defined-term-name matching - the source-side METRIC_MENTION detector is deliberately over-inclusive (task's own disclosed "false positives are filtered out downstream" design), so a miss here is POSSIBLY_ACCOUNTED_FOR, never a material NOT_ACCOUNTED_FOR on its own. */
 function reconcileMetricMentions(sourceItems: SourceInventoryItem[], irItems: IrInventoryItem[]): ReconciliationItem[] {
   const metricRefs = irItems.filter((ir) => ir.kind === "METRIC_REFERENCE" || ir.kind === "DEFINED_TERM_REFERENCE");
@@ -247,7 +273,7 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
   return out;
 }
 
-export function reconcileInventories(source: SourceInventory, ir: IrInventory, retrieved: RetrievedEvidenceInventory | null = null): ReconciliationResult {
+export function reconcileInventories(source: SourceInventory, ir: IrInventory, retrieved: RetrievedEvidenceInventory | null = null, numericAssertions: { inventory: NumericAssertionInventory; evidence: NumericAssertionEvidenceText[] } | null = null): ReconciliationResult {
   const { items: numericItems, claimedIrItemIds } = reconcileNumericItems(source.items, ir.items);
   // F-4: authenticated retrieved evidence is reconciled AFTER the local window (which always has first claim) and
   // BEFORE the IR_ONLY sweep, so a value the IR correctly took from an authenticated definition is never reported
@@ -257,7 +283,10 @@ export function reconcileInventories(source: SourceInventory, ir: IrInventory, r
   const metricItems = reconcileMetricMentions(source.items, ir.items);
   const aggregateItems = buildAggregateSignals(source, ir);
 
-  const items = [...numericItems, ...retrievedItems, ...irOnlyItems, ...metricItems, ...aggregateItems];
+  // FIX B: appended AFTER the structured sweep so the structured path's own claim order is untouched.
+  const numericAssertionItems = numericAssertions ? reconcileNumericAssertions(numericAssertions.inventory, numericAssertions.evidence) : [];
+
+  const items = [...numericItems, ...retrievedItems, ...irOnlyItems, ...metricItems, ...aggregateItems, ...numericAssertionItems];
   const materialUnresolvedCount = items.filter((i) => i.classification === "NOT_ACCOUNTED_FOR" || i.classification === "IR_ONLY" || i.classification === "AMBIGUOUS").length;
 
   return { candidateRef: source.candidateRef, items, materialUnresolvedCount };

@@ -1,0 +1,473 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION (Fix B)",
+  "section": "§15 - offline scan of every preserved compiler output",
+  "paidModelCalls": 0,
+  "scope": [
+    "docs",
+    "tests/fixtures/unseen-packages"
+  ],
+  "filesRead": 1754,
+  "filesWithCompilerOutput": 52,
+  "sitesScanned": 169,
+  "rulesScanned": 911,
+  "assertionsFound": 700,
+  "byStatus": {
+    "GROUNDED_OPERATIVE": 97,
+    "GROUNDED_CONTEXT": 0,
+    "NORMALIZED_EQUIVALENT": 14,
+    "UNGROUNDED": 1,
+    "AMBIGUOUS": 0,
+    "INSUFFICIENT_ARTIFACT": 588
+  },
+  "ungrounded": [
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-liens-dsgr-a.json",
+      "jsonPath": ".compile",
+      "ruleOrDefinitionId": "ir-rule:449f1b90ca216c557fc2fea7",
+      "fieldPath": "rules[2].conditions[0].description",
+      "rawText": "60 days",
+      "fieldClass": "MATERIAL_ASSERTION_FIELD",
+      "contextPreserved": false,
+      "reason": "compiled IR asserts QUALIFIED_QUANTITY \"60 days\" (canonical 60 day) in free text at rules[2].conditions[0].description, and no authenticated source figure - operative window or retrieved context - supports it"
+    }
+  ],
+  "insufficient": [
+    {
+      "file": "docs/phase-3-conmed-low-cost-pilot/08-frozen-responses.json",
+      "jsonPath": ".responsesWithModelOutput[2].result",
+      "assertions": 5,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "docs/phase-3-conmed-low-cost-pilot/08-frozen-responses.json",
+      "jsonPath": ".responsesWithModelOutput[3].result",
+      "assertions": 4,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "docs/phase-3-conmed-low-cost-pilot/08-frozen-responses.json",
+      "jsonPath": ".responsesWithModelOutput[4].result",
+      "assertions": 10,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "docs/phase-3-conmed-low-cost-pilot/08-frozen-responses.json",
+      "jsonPath": ".responsesWithModelOutput[6].result",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "docs/phase-3-conmed-low-cost-pilot/08-frozen-responses.json",
+      "jsonPath": ".responsesWithModelOutput[7].result",
+      "assertions": 10,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "docs/phase-3-conmed-low-cost-pilot/08-frozen-responses.json",
+      "jsonPath": ".responsesWithModelOutput[8].result",
+      "assertions": 22,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "docs/phase-3-conmed-low-cost-pilot/08-frozen-responses.json",
+      "jsonPath": ".responsesWithModelOutput[10].result",
+      "assertions": 7,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/f7b1-chewy-101-canary-rerun/shard-26-4f06625557e9aecbbb7a.json",
+      "jsonPath": ".result.composition",
+      "assertions": 18,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/f7b1-chewy-101-canary-rerun/shard-26-4f06625557e9aecbbb7a.json",
+      "jsonPath": ".compile",
+      "assertions": 18,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/f7b3-chewy-101-stage2/shard-25-f048973d2e9a58498b81.json",
+      "jsonPath": ".result.composition",
+      "assertions": 14,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/f7b3-chewy-101-stage2/shard-25-f048973d2e9a58498b81.json",
+      "jsonPath": ".compile",
+      "assertions": 14,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup-run/stage6-compiled-results.json",
+      "jsonPath": "[6]",
+      "assertions": 4,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup-run/stage6-compiled-results.json",
+      "jsonPath": "[11]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-financial-covenant-dsgr.json",
+      "jsonPath": ".compile",
+      "assertions": 1,
+      "reason": "definitions[0].provenance.excerpt belongs to an IRDefinition whose own source text this artifact did not preserve - not gradeable"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-restricted-payments-dsgr.json",
+      "jsonPath": ".compile",
+      "assertions": 1,
+      "reason": "definitions[0].provenance.excerpt belongs to an IRDefinition whose own source text this artifact did not preserve - not gradeable"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-restricted-payments-dsgr.json",
+      "jsonPath": ".compile",
+      "assertions": 1,
+      "reason": "definitions[1].provenance.excerpt belongs to an IRDefinition whose own source text this artifact did not preserve - not gradeable"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-restricted-payments-dsgr.json",
+      "jsonPath": ".compile",
+      "assertions": 1,
+      "reason": "definitions[1].calculationExpression.semanticDescription belongs to an IRDefinition whose own source text this artifact did not preserve - not gradeable"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-restricted-payments-dsgr.json",
+      "jsonPath": ".compile",
+      "assertions": 1,
+      "reason": "definitions[1].calculationExpression.sourceEvidence belongs to an IRDefinition whose own source text this artifact did not preserve - not gradeable"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/compile-result.json",
+      "jsonPath": "$",
+      "assertions": 33,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-shards/4b97a4f01be352664f66d7165e37f3b0a42600a829e306f819c7b3489123fc2f.json",
+      "jsonPath": ".result.composition",
+      "assertions": 10,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-shards/f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c.json",
+      "jsonPath": ".result.composition",
+      "assertions": 25,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-funded-run/compile-result.json",
+      "jsonPath": "$",
+      "assertions": 42,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+      "jsonPath": "$",
+      "assertions": 42,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/durable-shards/0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08.json",
+      "jsonPath": ".result.composition",
+      "assertions": 6,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/durable-shards/10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed.json",
+      "jsonPath": ".result.composition",
+      "assertions": 5,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/durable-shards/6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a.json",
+      "jsonPath": ".result.composition",
+      "assertions": 7,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/durable-shards/ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0.json",
+      "jsonPath": ".result.composition",
+      "assertions": 7,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/durable-shards/b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965.json",
+      "jsonPath": ".result.composition",
+      "assertions": 9,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/durable-shards/f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b.json",
+      "jsonPath": ".result.composition",
+      "assertions": 8,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/compile-result.json",
+      "jsonPath": "$",
+      "assertions": 55,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards/1062323032becaf237dfc81159e419b24e31a6f5bc28b1d06b529670df163910.json",
+      "jsonPath": ".result.composition",
+      "assertions": 8,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards/3c35a8e94b73b98a306bf16b6a43c9651c8c642f9d89ddf45497fca8aad03cf2.json",
+      "jsonPath": ".result.composition",
+      "assertions": 8,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards/691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed.json",
+      "jsonPath": ".result.composition",
+      "assertions": 18,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards/69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02.json",
+      "jsonPath": ".result.composition",
+      "assertions": 7,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards/9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51.json",
+      "jsonPath": ".result.composition",
+      "assertions": 8,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards/b25611ece65e46a58ae2b24fb02347f329fbefc6e788d09274f0f47f8aa4ea85.json",
+      "jsonPath": ".result.composition",
+      "assertions": 10,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+      "jsonPath": ".compile",
+      "assertions": 19,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[0].result",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[1].result",
+      "assertions": 6,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[2].result",
+      "assertions": 5,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[3].result",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[5].result",
+      "assertions": 4,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[8].result",
+      "assertions": 7,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[9].result",
+      "assertions": 3,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "jsonPath": ".results[10].result",
+      "assertions": 4,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787870304722.json",
+      "jsonPath": ".results[0].result",
+      "assertions": 5,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787871112005.json",
+      "jsonPath": ".results[0].result",
+      "assertions": 16,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787871112005.json",
+      "jsonPath": ".results[1].result",
+      "assertions": 4,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+      "jsonPath": "[2]",
+      "assertions": 14,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+      "jsonPath": "[7]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+      "jsonPath": "[8]",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+      "jsonPath": "[9]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[1]",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[10]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[13]",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[14]",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[16]",
+      "assertions": 3,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[21]",
+      "assertions": 3,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[22]",
+      "assertions": 6,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[24]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[25]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/combined-compiled-results.json",
+      "jsonPath": "[33]",
+      "assertions": 4,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[7]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[10]",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[11]",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[13]",
+      "assertions": 3,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[18]",
+      "assertions": 3,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[19]",
+      "assertions": 6,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[21]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[22]",
+      "assertions": 2,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/stage6-new-compiled-results.json",
+      "jsonPath": "[30]",
+      "assertions": 4,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3f2-riot-unseen-run/stage6-compiled-results.json",
+      "jsonPath": "[1]",
+      "assertions": 1,
+      "reason": "the artifact preserved the compiled rules but not the operative source text they were compiled from - a figure cannot be called unsupported when the source was never kept"
+    }
+  ],
+  "honestLimits": [
+    "A preserved artifact whose source text was not kept is INSUFFICIENT_ARTIFACT, never UNGROUNDED - the fix is not permitted to accuse a figure whose evidence was thrown away.",
+    "Context here is whatever context EXCERPTS the artifact itself preserved, which is weaker than the live verifier's authenticated evidence set (retrieved-evidence.ts re-resolves and hash-checks each one). An UNGROUNDED result in this scan is therefore a candidate for review, not a proven fabrication.",
+    "Hand-authored IR fixtures are included: they are compiler OUTPUT shapes, and a prose numeric in one is exactly as ungrounded as a model's would be - but their provenance is an author, not a model."
+  ]
+}

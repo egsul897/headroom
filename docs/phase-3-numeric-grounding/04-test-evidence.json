@@ -1,0 +1,96 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION (Fix B)",
+  "section": "\u00a73/\u00a710/\u00a711/\u00a712/\u00a713/\u00a718 - test evidence",
+  "paidModelCalls": 0,
+  "redBaseline": {
+    "capturedBefore": "any wiring of numeric-assertion.ts into the pipeline (the module existed but nothing called it)",
+    "artifact": "02-red-baseline.json",
+    "newTestsWrittenBeforeTheFix": 39,
+    "failingBeforeTheFix": 7,
+    "passingBeforeTheFix": 31,
+    "failingIdentitiesBeforeTheFix": [
+      "\u00a710 detects the assertion, finds no supporting source figure, emits an IR_ONLY finding naming the exact field path, and forces review",
+      "\u00a710 a representationSufficiency of COMPLETE cannot hide the defect (\u00a79)",
+      "\u00a73B the same percentage, stated in the candidate's own anchor, is GROUNDED_OPERATIVE with no unsupported-numeric finding",
+      "\u00a711 figures absent from the anchor but present in an authenticated DEFINITION stay grounded",
+      "\u00a712 the closed 7.2(k)(i) shape - GROUNDED_CONTEXT, grounding and ownership independently inspectable",
+      "\u00a713 a fabricated provenance excerpt cannot self-authenticate",
+      "\u00a713 section numbering never becomes a numeric assertion (the inventory did not exist to be empty)"
+    ],
+    "alreadyGreenBeforeTheFixAndStillGreen": "\u00a73C the STRUCTURED path - an unsupported PERCENT literal still produces exactly one IR_ONLY / UNSUPPORTED_IR_ADDITION. This is the non-regression sentinel: it was correct before and had to stay correct.",
+    "redBaselineStatusOfTheForensicCase": "VERIFIED_WITH_NON_MATERIAL_FINDINGS - the unfixed verifier BLESSED a rule asserting a 100% that appears in no anchor, no context, no prompt and no few-shot, while that rule's own sufficiency said COMPLETE"
+  },
+  "afterTheFix": {
+    "numericGroundingTests": "39/39",
+    "evidencePreservationTests": "6/6",
+    "caseA_7_2_f": {
+      "grounding": "UNGROUNDED",
+      "fieldPath": "rules[0].conditions[0].description",
+      "finding": "UNSUPPORTED_NUMERIC_ASSERTION / MATERIAL",
+      "status": "MATERIAL_DISCREPANCY"
+    },
+    "caseB_supportedProse": {
+      "grounding": "GROUNDED_OPERATIVE",
+      "unsupportedNumericFindings": 0
+    },
+    "caseC_structuredControl": {
+      "structuredIrOnlyItems": 1,
+      "unsupportedIrAdditionFindings": 1,
+      "unsupportedNumericFindings": 0,
+      "verdict": "unchanged"
+    },
+    "caseD_supportedContext": {
+      "groundings": [
+        "$800,000,000=GROUNDED_CONTEXT",
+        "2.25%=GROUNDED_CONTEXT"
+      ],
+      "unsupportedNumericFindings": 0
+    },
+    "caseE_parentEconomics": {
+      "groundings": [
+        "$150,000,000=GROUNDED_CONTEXT",
+        "10.0%=GROUNDED_CONTEXT"
+      ],
+      "groundedIn": "CONTEXT",
+      "note": "numeric grounding says supported; it says nothing about whether the child clause OWNS those figures - that remains the candidate-span/F1 attribution dimension, separately inspectable via groundedIn"
+    },
+    "caseF_fabricatedExcerpt": {
+      "grounding": "UNGROUNDED",
+      "fieldClass": "SOURCE_QUOTATION_FIELD",
+      "finding": "PROVENANCE_MISMATCH",
+      "status": "not VERIFIED"
+    },
+    "caseG_citationNumbering": {
+      "assertionsInventoried": 0,
+      "fieldsWalked": ">0",
+      "verdict": "section numbering produced nothing"
+    }
+  },
+  "regressionMatrix": {
+    "semantic-verification-* (10 files)": "147/147",
+    "f3-verifier-scale-normalization": "40/40",
+    "f4-authenticated-retrieved-evidence": "30/30",
+    "semantic-verification-condition-remediation + rx": "included in the 22-file targeted run",
+    "candidate-span-contract + candidate-span-implementation + f1-linked-context-typing": "green",
+    "v311-reconciliation": "green",
+    "false-credit controls (false-credit-prohibitions 10 + dsgr-false-credit-gate 4)": "14/14",
+    "targetedRunTotal": "402 passed, 5 failed",
+    "theFiveFailures": "all in tests/phase-3-conmed-pilot/premium-lock.test.ts, all ENOENT on /tmp/claude-0/pilot/* - frozen pilot inventories destroyed when this container was reclaimed in an earlier mission. Present identically in the pre-change baseline; not caused by this change."
+  },
+  "fullSuite": {
+    "before": {
+      "testFiles": "104 failed | 259 passed (363)",
+      "tests": "148 failed | 4196 passed | 524 skipped (4868)"
+    },
+    "after": {
+      "testFiles": "105 failed | 259 passed (364)",
+      "tests": "149 failed | 4233 passed | 524 skipped (4906)"
+    },
+    "newFailingIdentities": [
+      "V3.1 benchmark-integrity audit > 7. no production code was modified by this audit"
+    ],
+    "newFailingIdentityExplanation": "that assertion is `git status --porcelain lib` === '' - a working-tree-cleanliness gate, not a semantic one. It fails for any uncommitted production change and clears on commit; verified green after committing.",
+    "disappearedFailingIdentities": [],
+    "baselineFailureCharacter": "the ~148 pre-existing failures are overwhelmingly database-backed tests with no Prisma database in this container; identical before and after"
+  }
+}

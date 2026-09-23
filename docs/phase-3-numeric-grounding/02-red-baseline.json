@@ -1,0 +1,105 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION (Fix B)",
+  "section": "§3 RED BASELINE - the UNFIXED verifier's own behavior",
+  "paidModelCalls": 0,
+  "cases": [
+    {
+      "caseId": "A_unsupported_prose_percentage",
+      "status": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+      "findingTypes": [
+        "WRONG_ENTITY_SCOPE/NON_MATERIAL"
+      ],
+      "structuredIrOnlyCount": 0,
+      "structuredIrOnlyReasons": [],
+      "materialUnresolvedCount": 1,
+      "numericAssertionsInventoried": null,
+      "numericGroundingStatuses": null,
+      "numericGroundingFindings": 0
+    },
+    {
+      "caseId": "B_supported_prose_percentage",
+      "status": "MATERIAL_DISCREPANCY",
+      "findingTypes": [
+        "MISSING_BASKET/MATERIAL",
+        "WRONG_ENTITY_SCOPE/NON_MATERIAL"
+      ],
+      "structuredIrOnlyCount": 0,
+      "structuredIrOnlyReasons": [],
+      "materialUnresolvedCount": 2,
+      "numericAssertionsInventoried": null,
+      "numericGroundingStatuses": null,
+      "numericGroundingFindings": 0
+    },
+    {
+      "caseId": "C_structured_numeric_control",
+      "status": "MATERIAL_DISCREPANCY",
+      "findingTypes": [
+        "UNSUPPORTED_IR_ADDITION/MATERIAL",
+        "WRONG_ENTITY_SCOPE/NON_MATERIAL"
+      ],
+      "structuredIrOnlyCount": 1,
+      "structuredIrOnlyReasons": [
+        "compiled IR PERCENT value 1 at rules[0].capacityExpression has no matching source-side figure"
+      ],
+      "materialUnresolvedCount": 2,
+      "numericAssertionsInventoried": null,
+      "numericGroundingStatuses": null,
+      "numericGroundingFindings": 0
+    },
+    {
+      "caseId": "D_supported_context_control",
+      "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
+      "findingTypes": [],
+      "structuredIrOnlyCount": 0,
+      "structuredIrOnlyReasons": [],
+      "materialUnresolvedCount": 0,
+      "numericAssertionsInventoried": null,
+      "numericGroundingStatuses": null,
+      "numericGroundingFindings": 0
+    },
+    {
+      "caseId": "E_parent_economics_in_context",
+      "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
+      "findingTypes": [],
+      "structuredIrOnlyCount": 0,
+      "structuredIrOnlyReasons": [],
+      "materialUnresolvedCount": 0,
+      "numericAssertionsInventoried": null,
+      "numericGroundingStatuses": null,
+      "numericGroundingFindings": 0
+    },
+    {
+      "caseId": "F_fabricated_excerpt",
+      "status": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+      "findingTypes": [
+        "WRONG_ENTITY_SCOPE/NON_MATERIAL"
+      ],
+      "structuredIrOnlyCount": 0,
+      "structuredIrOnlyReasons": [],
+      "materialUnresolvedCount": 1,
+      "numericAssertionsInventoried": null,
+      "numericGroundingStatuses": null,
+      "numericGroundingFindings": 0
+    },
+    {
+      "caseId": "G_citation_numbering",
+      "status": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+      "findingTypes": [
+        "WRONG_ENTITY_SCOPE/NON_MATERIAL"
+      ],
+      "structuredIrOnlyCount": 0,
+      "structuredIrOnlyReasons": [],
+      "materialUnresolvedCount": 1,
+      "numericAssertionsInventoried": null,
+      "numericGroundingStatuses": null,
+      "numericGroundingFindings": 0
+    }
+  ],
+  "redBaselineAssertions": {
+    "A_prose_100_percent_produces_no_numeric_grounding_finding": true,
+    "A_prose_100_percent_produces_no_structured_IR_ONLY_either": true,
+    "C_structured_percent_still_produces_IR_ONLY": true,
+    "F_fabricated_excerpt_produces_no_finding": true
+  },
+  "interpretation": "The structured path works and is not the defect. The hole is that a numeric asserted only in free text is never inventoried at all, so no comparison against the source ever happens - which is why a 100% supported by nothing produced no finding, and why a fabricated provenance excerpt self-authenticated."
+}

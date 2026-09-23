@@ -15,6 +15,7 @@ import { buildSourceInventory } from "./source-inventory";
 import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { NodeSupersessionIndex } from "../amendment/types";
 import { buildIrInventory } from "./ir-inventory";
+import { collectNumericAssertions } from "./numeric-assertion";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
@@ -22,7 +23,7 @@ import { runAdversarialSemanticReview } from "./reviewer";
 import type { SemanticReviewResult } from "./reviewer";
 import { classifyConditionSuspicion, type ConditionSuspicionCache, type ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
-import type { AdmissibleEvidenceSet, IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
+import type { AdmissibleEvidenceSet, IrInventory, NumericAssertionEvidenceText, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
 import type { StageCaller } from "../llm-caller";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
 
@@ -157,7 +158,12 @@ function mergeFindings(deterministic: SemanticVerificationFinding[], semantic: S
  */
 function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFinding[], reconciliation: ReconciliationResult, review: SemanticReviewResult): SemanticVerificationFinding[] {
   if (review.failed || review.isSynthetic) return findings;
-  const ambiguousReasons = new Set(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS").map((i) => i.reason));
+  // FIX B: a numeric assertion whose own magnitude could not be read safely is AMBIGUOUS for a
+  // completely different reason than an aggregate structural signal - it is real, unreconciled
+  // numeric evidence, and like every other numeric-evidence item it keeps its severity whether or
+  // not a model call happens to notice it. Only buildAggregateSignals' coarse presence-vs-absence
+  // reasons are eligible for this downgrade.
+  const ambiguousReasons = new Set(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS" && !i.numericGrounding).map((i) => i.reason));
   if (ambiguousReasons.size === 0) return findings;
   const semanticFindingTypes = new Set(review.findings.map((f) => f.findingType));
 
@@ -353,7 +359,24 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   // against it, never read as evidence.
   const admissibleEvidence = collectAdmissibleEvidence(input, irInventory, { supersessionIndex });
   const retrievedInventory = buildRetrievedEvidenceInventory(compilerInput.candidateRef, admissibleEvidence, compilationResult.definitions, supersessionIndex);
-  const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory);
+  // FIX B - the free-text numeric-assertion pass. Its evidence universe is deliberately the SAME
+  // one the structured path already uses and nothing more: the candidate's own operative window,
+  // plus every retrieved source this verifier independently re-resolved and authenticated. A
+  // context-bundle excerpt the verifier could not authenticate is not evidence here either, and a
+  // few-shot, a tool schema or the model's own prose never was.
+  const numericAssertionInventory = collectNumericAssertions(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
+  const numericAssertionEvidence: NumericAssertionEvidenceText[] = [
+    { scope: "OPERATIVE", evidenceId: "PRIMARY_LOCAL", label: "the candidate's own operative source window", text: compilerInput.operativeSourceText },
+    ...admissibleEvidence.authenticated.map((e) => ({
+      // Evidence whose span lies inside the candidate's own window is the window's text, not
+      // someone else's - it must not be reported as context-derived support.
+      scope: (e.duplicatesLocalWindow ? "OPERATIVE" : "CONTEXT") as "OPERATIVE" | "CONTEXT",
+      evidenceId: e.evidenceId,
+      label: `authenticated ${e.requestKind === "DEFINITION" ? `definition of "${e.requestKey}"` : `section ${e.requestKey}`} (document ${e.documentId}, sha256 ${e.contentHash.slice(0, 12)}...)`,
+      text: e.rawText,
+    })),
+  ];
+  const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
   const deterministicFindings = buildFindingsFromReconciliation(input, reconciliation);
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
@@ -416,6 +439,9 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     conditionSuspicion,
     admissibleEvidence,
     evidenceSetHash: admissibleEvidence.evidenceSetHash,
+    // Lifted off the reconciliation rather than recomputed, so the reported grounding verdicts are
+    // by construction the same ones the findings above were built from.
+    numericAssertions: { inventory: numericAssertionInventory, groundings: reconciliation.items.flatMap((i) => (i.numericGrounding ? [i.numericGrounding] : [])) },
     verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION,
     verifiedAt: new Date().toISOString(),
   };

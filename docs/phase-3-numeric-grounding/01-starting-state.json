@@ -1,0 +1,42 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION (harness evidence + Fix B only)",
+  "startingSha": "39ae7413c264c3e5b748028fc681073da40d525e",
+  "startingShaMatchedMissionExpectation": true,
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeStateAtStart": "clean",
+  "paidModelCalls": 0,
+  "frozen": {
+    "candidateSpanContextOwnership": "CANDIDATE_SPAN_CONTEXT_OWNERSHIP_VALIDATED",
+    "closureArtifact": "docs/phase-3-f1-linked-context-typing/05-closure-verdict.json",
+    "closureArtifactSha256_16": "7cff60fff9fd0664",
+    "r1_r3_f1_modified": false
+  },
+  "hashesBefore": {
+    "lib/contract-model/compiler/semantic-verification/reconciliation.ts": "007a2328da8096ae",
+    "lib/contract-model/compiler/semantic-verification/verify.ts": "ba5e30777da76a6e",
+    "lib/contract-model/compiler/semantic-verification/findings.ts": "2ee374c5cb0056cd",
+    "lib/contract-model/compiler/semantic-verification/types.ts": "6e18d19c45df8693",
+    "lib/contract-model/compiler/semantic/normalize.ts (IR normalization)": "f253e9364fc32819",
+    "scripts/p3-conmed-pilot/compile-run.ts (pilot runner)": "549358a311c0ee3b",
+    "scripts/p3-conmed-pilot/run-population.ts (pilot runner)": "8aaee56a0e0aac47",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json (benchmark)": "5f0eb08834f2056f"
+  },
+  "hashesAfter": {
+    "lib/contract-model/compiler/semantic-verification/reconciliation.ts": "f661331d7034c276",
+    "lib/contract-model/compiler/semantic-verification/numeric-assertion.ts": "893805e3fae0c3e9",
+    "lib/contract-model/compiler/semantic-verification/verify.ts": "313e5e07413e9089",
+    "lib/contract-model/compiler/semantic-verification/findings.ts": "78ce41c143c9afca",
+    "lib/contract-model/compiler/semantic-verification/types.ts": "d30c62436274920d",
+    "lib/contract-model/compiler/semantic/normalize.ts (IR normalization)": "f253e9364fc32819",
+    "scripts/p3-conmed-pilot/compile-run.ts (pilot runner)": "549358a311c0ee3b",
+    "scripts/p3-conmed-pilot/run-population.ts (pilot runner)": "c6519f962eb1414e",
+    "scripts/p3-conmed-pilot/evidence.ts (new)": "6dc98fecd39fcca7",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json (benchmark)": "5f0eb08834f2056f"
+  },
+  "unchanged": {
+    "irNormalization": "normalize.ts is byte-identical - Fix B changes no IR shape and no parsing",
+    "benchmark": "byte-identical; no benchmark expectation was touched",
+    "phase4TreeHashAtStartAndEnd": "8fa637768316a613524e821b913f56c86111a298",
+    "phase4FilesChanged": 0
+  }
+}

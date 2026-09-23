@@ -26,6 +26,14 @@ import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
 import type { ReconciliationItem, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
 
 function mapClassificationToFindingType(item: ReconciliationItem): SemanticVerificationFindingType {
+  // FIX B: a free-text numeric assertion is its own finding class, and splits in two. A figure
+  // asserted in a field that states what the rule MEANS is an unsupported assertion; the same
+  // figure in a provenance excerpt is a claim about what the SOURCE SAYS, so an unsupported one
+  // is a provenance defect - the excerpt is not the source, and quoting a figure into it can
+  // never authenticate that figure.
+  if (item.numericGrounding) {
+    return item.numericGrounding.assertion.fieldClass === "SOURCE_QUOTATION_FIELD" ? "PROVENANCE_MISMATCH" : "UNSUPPORTED_NUMERIC_ASSERTION";
+  }
   if (item.classification === "IR_ONLY") return "UNSUPPORTED_IR_ADDITION";
   if (item.classification === "NOT_ACCOUNTED_FOR") {
     // F-4: a figure present in the authenticated text of a definition the IR claims to represent, but absent from
@@ -74,12 +82,20 @@ export function buildFindingsFromReconciliation(input: VerificationInput, reconc
     if (item.classification === "ACCOUNTED_FOR" || item.classification === "POSSIBLY_ACCOUNTED_FOR") continue;
 
     const findingType = mapClassificationToFindingType(item);
-    const ruleOrDefinitionId = item.irItems[0]?.ruleOrDefinitionId ?? null;
-    const irPath = item.irItems[0]?.irPath ?? null;
+    // FIX B: a free-text assertion has no IR inventory item to borrow identity from - its own
+    // rule/field path IS the location, and naming the exact field is the point (a reviewer must be
+    // able to go straight to the sentence that made the claim).
+    const assertion = item.numericGrounding?.assertion ?? null;
+    const ruleOrDefinitionId = assertion?.ruleOrDefinitionId ?? item.irItems[0]?.ruleOrDefinitionId ?? null;
+    const irPath = assertion?.fieldPath ?? item.irItems[0]?.irPath ?? null;
     const severity = determineDeterministicSeverity(item, anyRuleOrDefinitionComplete);
     const sourceCitation = item.sourceItem?.sourceCitation ?? compilerInput.sourceSectionRef ?? "(unknown)";
-    const sourceEvidence = item.sourceItem?.rawText ?? "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)";
-    const proposedIrEvidence = item.irItems.length > 0 ? item.irItems.map((i) => `${i.irPath}=${i.numericValue ?? i.textValue ?? "(non-value node)"}`).join("; ") : "(absent from compiled IR)";
+    const sourceEvidence = assertion
+      ? "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)"
+      : item.sourceItem?.rawText ?? "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)";
+    const proposedIrEvidence = assertion
+      ? `${assertion.fieldPath} asserts ${JSON.stringify(assertion.rawText)} (canonical ${assertion.normalizedValue}${assertion.unit ? ` ${assertion.unit}` : ""}) in: ${JSON.stringify(assertion.fieldText)}`
+      : item.irItems.length > 0 ? item.irItems.map((i) => `${i.irPath}=${i.numericValue ?? i.textValue ?? "(non-value node)"}`).join("; ") : "(absent from compiled IR)";
 
     findings.push({
       findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, ruleOrDefinitionId, irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION),
