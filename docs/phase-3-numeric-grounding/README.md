@@ -20,5 +20,13 @@ the stage that first emitted the value.
 | `06-phase4-gating-handoff.json` | §16 documentation only — including a **correction** to the forensics mission's Phase-4 claim |
 | `07-paid-validation-manifest.json` | §19 designed, not executed |
 | `08-verdict.json` | §20 success gate, verdict, honest limits |
+| `09-paid-validation-results.json` | The two-candidate paid validation — including what the preserved raw output revealed about the original "100%" |
+| `paid-validation-evidence/` | The complete per-candidate evidence records from that run (raw model output, tool log, full IR, verifier result) |
 
-Zero paid model calls. No Phase-4 change. No IR shape change. No benchmark expectation changed.
+The paid validation (2 candidates, $0.0122 of a $0.05 ceiling) then turned up something the
+forensics could not reach: the preserved raw output shows the model quoting `(100%)` out of the
+**real** "Subsidiary Guarantor" definition it had retrieved. That figure is genuine source text.
+The original "unsourced 100%" was most likely a false alarm by a harness that never looked at tool
+output — see `09-paid-validation-results.json`.
+
+No Phase-4 change. No IR shape change. No benchmark expectation changed.

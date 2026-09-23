@@ -1,0 +1,85 @@
+{
+  "manifest": {
+    "model": "deepseek/deepseek-v4-flash",
+    "concurrency": 1,
+    "perCandidateTimeoutMs": 480000,
+    "incrementalCeilingUsd": 0.05,
+    "stopAtUsd": 0.04,
+    "retries": 0,
+    "candidates": [
+      {
+        "role": "THE_CASE",
+        "normalizedSourceRef": "7.2(f)",
+        "why": "the forensic case itself - a qualitative permission whose compiled IR once asserted an unsupported 100%",
+        "expectation": "either an UNSUPPORTED_NUMERIC_ASSERTION finding naming the exact field path, or a clean compilation that asserts no ungrounded figure; both are real outcomes and neither is retried"
+      },
+      {
+        "role": "SUPPORTED_CONTEXT_CONTROL",
+        "normalizedSourceRef": "7.1(d)",
+        "why": "economics that legitimately come from an authenticated definition rather than the anchor",
+        "expectation": "every asserted figure GROUNDED_CONTEXT or GROUNDED_OPERATIVE; a single UNGROUNDED here is a false positive and blocks the fix"
+      }
+    ],
+    "prohibitions": [
+      "no retry on any outcome",
+      "no model substitution",
+      "no timeout change",
+      "no second candidate added mid-run",
+      "no premium model, ever"
+    ]
+  },
+  "results": [
+    {
+      "role": "THE_CASE",
+      "ref": "7.2(f)",
+      "status": "REVIEW_REQUIRED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "assertions": 0,
+      "ungrounded": [],
+      "costUsd": 0.0033426899999999997
+    },
+    {
+      "role": "SUPPORTED_CONTEXT_CONTROL",
+      "ref": "7.1(d)",
+      "status": "REVIEW_REQUIRED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "assertions": 9,
+      "ungrounded": [],
+      "costUsd": 0.00367588
+    }
+  ],
+  "budget": {
+    "ceilingUsd": 0.05,
+    "stopAtUsd": 0.04,
+    "exactSpendUsd": 0.007019,
+    "retainedUnknownTimeoutUsd": 0,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 0.007019,
+    "remainingUsd": 0.042981
+  },
+  "sideCalls": [
+    {
+      "stage": "amendment_interpretation",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 830,
+      "outputTokens": 614,
+      "costUsd": 0.00026754000000000003
+    },
+    {
+      "stage": "semantic_verification",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 4616,
+      "outputTokens": 3671,
+      "costUsd": 0.00155454
+    },
+    {
+      "stage": "semantic_verification",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 8770,
+      "outputTokens": 5785,
+      "costUsd": 0.0026442
+    }
+  ],
+  "sideSpendUsd": 0.00446628,
+  "totalSpendUsd": 0.01148528
+}

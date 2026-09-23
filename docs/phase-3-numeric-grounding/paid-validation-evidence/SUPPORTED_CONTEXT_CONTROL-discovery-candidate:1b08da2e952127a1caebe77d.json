@@ -1,0 +1,2139 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-23T22:23:29.269Z",
+  "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.1(d)",
+    "operativeSourceText": "(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes\nand so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity\nat any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.\n",
+    "operativeSourceTextSha256": "0f3bc22ce3c023f8d833b91ba463850fd359fd29bac0cb53e42a551f3bc3b6b7",
+    "operativeSourceChars": 399,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:f14365fa37fb37be232284bd77d841ba7ecc2aa3d0d6c2b6baf7fb5bfb1fb18d",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 24,
+    "items": [
+      {
+        "itemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.1(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 399,
+        "excerptText": "(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes\nand so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity\nat any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.\n"
+      },
+      {
+        "itemId": "context-item:aebc42c1e845426a83a4a993fe546233a17030a20b6eb52dc48cf235006dc613",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.1",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 44,
+        "excerptText": "SECTION 7.1 Financial Condition\nCovenants .\n"
+      },
+      {
+        "itemId": "context-item:61d7484723c71965b9859c627a9c4ec9e583cb3059d06ac3e512d3f68d48d713",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.1(d)(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 21,
+        "excerptText": "(i) $75,000,000 plus "
+      },
+      {
+        "itemId": "context-item:fb5eb6fdf112a56084407668fd6877328e34d12a78d15c2efead761a71e28f96",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.1(d)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 76,
+        "excerptText": "(ii) the aggregate outstanding principal amount of the Early Maturing Debt.\n"
+      },
+      {
+        "itemId": "context-item:7e564ccdbefa3280067442308d490a09b32ac54b71aaf9e3a2f16d769565587d",
+        "type": "PROVISO",
+        "normalizedRef": "7.1(a)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 501,
+        "excerptText": "(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of "
+      },
+      {
+        "itemId": "context-item:afe29c51fc62f45058f1a091fec1c11d98ff1245f851a300241845ba570072cb",
+        "type": "PROVISO",
+        "normalizedRef": "7.1(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 980,
+        "excerptText": "(b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition\nis consummated; provided that (x) such step-up shall be permitted only twice during the term of this Agreement and (y) there shall\nbe at least two fiscal quarters in between any such step-ups.\n(b)\nConsolidated Total Leverage Ratio . Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed 5.50 to 1.00. Notwithstanding\nthe foregoing, if the Parent Borrower or any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent\n94\nBorrower\n(the notice of which election shall be given prior to the earlier of "
+      },
+      {
+        "itemId": "context-item:d6e44690792359bf998c420d60abeabd09a9ef541b3583bb44b57fff2e4be081",
+        "type": "DEFINITION",
+        "normalizedRef": "Convertible Notes",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 151,
+        "excerptText": "\"Convertible Notes\": $800,000,000 aggregate principal amount of the Parent Borrower's 2.25% Convertible Senior Notes due 2027 issued on June 6, 2022.\n\n"
+      },
+      {
+        "itemId": "context-item:8ac40f09e24d1d0e319c8662d979acc345ba0ca765aa65190f5cce9b3ee9286a",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Notes",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 62,
+        "excerptText": "\"Notes\": collectively,\nany promissory note evidencing Loans.\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:ffe7600553bba449afc7c03b58376ee068f85b21e644104634ccfbec8868728d",
+        "type": "DEFINITION",
+        "normalizedRef": "Early Maturing Debt",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 162,
+        "excerptText": "\"Early Maturing Debt\": the Convertible Notes (or any refinancing thereof) with a maturity date earlier than 91 days after the Revolving Credit Termination Date.\n\n"
+      },
+      {
+        "itemId": "context-item:4752a30ba0702d22f074dbdf2769a390d131d67af7ddc87e54ba9110ca7ded31",
+        "type": "DEFINITION",
+        "normalizedRef": "Liquidity",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 978,
+        "excerptText": "\"Liquidity\": at any\ntime, the sum of (a) the aggregate amount of unrestricted cash and Cash Equivalents of the Parent Borrower and its Subsidiaries that would\nappear on the consolidated balance sheet of the Parent Borrower and its Subsidiaries at such time plus (b) the aggregate amount\nof the Available Revolving Credit Commitments at such time in respect of which the Parent Borrower could borrow and remain in compliance,\non a pro forma basis after giving effect to the incurrence of such Indebtedness and the repayment in full of the principal amount\nof the Early Maturing Debt, with the financial covenants contained in Sections 7.1(a) and (b) recomputed as at the last day of the most\nrecently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness\nhad been incurred and such Early Maturing Debt was no longer outstanding on the first day of such relevant period for testing such compliance.\n\n"
+      },
+      {
+        "itemId": "context-item:0103b3cddb5b059216486afb9769b8aad822a77ab959fd0501020687c77f6680",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Cash Equivalents",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 3500,
+        "excerptText": "\"Cash Equivalents\": (a) marketable direct obligations issued by, or unconditionally guaranteed by, the United States Government or issued by any agency thereof\nand backed by the full faith and credit of the United States, in each case maturing within one year from the date of acquisition; (b)\ncertificates of deposit, time deposits, eurocurrency time deposits or overnight bank deposits having maturities of six months or less\nfrom the date of acquisition issued by any Lender or by any commercial bank organized under the laws of the United States or any state\nthereof having combined capital and surplus of not less than $500,000,000; (c) commercial paper of an issuer rated at least A-1 by S&amp;P\nGlobal Ratings (\" S&amp;P \") or P-1 by Moody's Investors\n9\nService, Inc. (\" Moody's \"), or\ncarrying an equivalent rating by a nationally recognized rating agency, if both of the two named rating agencies cease publishing ratings\nof commercial paper issuers generally, and maturing within six months from the date of acquisition; (d) repurchase obligations of any\nLender or of any commercial bank satisfying the requirements of clause (b) of this definition, having a term of not more than 30 days\nwith respect to securities issued or fully guaranteed or insured by the United States government; (e) securities with maturities of one\nyear or less from the date of acquisition issued or fully guaranteed by any state, commonwealth or territory of the United States, by\nany political subdivision or taxing authority of any such state, commonwealth or territory or by any foreign government, the securities\nof which state, commonwealth, territory, political subdivision, taxing authority or foreign government (as the case may be) are rated\nat least A by S&amp;P or A by Moody's; (f) securities with maturities of six months or less from the date of acquisition backed\nby standby letters of credit issued by any Lender or any commercial bank satisfying the requirements of clause (b) of this definition;\n(g) shares of money market mutual or similar funds which invest exclusively in assets satisfying the requirements of clauses (a) through\n(f) of this definition; or (h) money market funds that (i) comply with the criteria set forth in SEC Rule 2a-7 under the Investment Company\nAct of 1940, as amended, (ii) are rated AAA by S&amp;P and Aaa by Moody's and (iii) have portfolio assets of at least $5,000,000,000.\nIn the case of any Investments made in a country outside the United States of\nAmerica, Cash Equivalents shall also include (i) Euro and Sterling, (ii) investments of the type and maturity described in clauses (a)\nthrough (h) above of foreign obligors, which investments are reasonably appropriate in connection with any business conducted by the Parent\nBorrower or its Subsidiaries (as determined by the Parent Borrower in good faith) and which investments or obligors (or the parent companies\nof such obligors) have the ratings described in such clauses or equivalent ratings from S&amp;P and Moody's and (iii) other short\nterm investments utilized by the Parent Borrower and its Subsidiaries in accordance with normal investment practices for cash management\nin such country in investments analogous to the investments described in the foregoing clauses (a) through (h) and in this paragraph and\nwhich are reasonably appropriate in connection with any business conducted by the Parent Borrower or its Subsidiaries in such country\n(as determined by the Parent Borrower in good faith).\n\n"
+      },
+      {
+        "itemId": "context-item:d7a0dcceb1749a0beaa935647de00ed0e43b81f53da18a46bed20f3e27f5bc0f",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Investment",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 42,
+        "excerptText": "\"Investment\": as defined\nin Section 7.8.\n\n"
+      },
+      {
+        "itemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 2920,
+        "excerptText": "\"Indebtedness\": of\nany Person at any date, without duplication, (a) all indebtedness of such Person for borrowed money, (b) all obligations of\nsuch Person for the deferred purchase price of Property or services (other than current trade payables incurred in the ordinary course\nof such Person's business, and overdue trade payables incurred in the ordinary course of such Person's business to the extent\nthe amount or validity thereof is currently being contested in good faith by appropriate procedures and reserves in conformity with GAAP\nwith respect thereto have been provided on the books of the Parent Borrower or its Subsidiaries, as the case may be), (c) all obligations\nof such Person evidenced by notes, bonds, debentures or other similar instruments, (d) all indebtedness created or arising under\nany conditional sale or other title retention agreement with respect to Property acquired by such Person (even though the rights and remedies\nof the seller or lender under such agreement in the event of default are limited to repossession or sale of such Property), (e) all\nFinance Lease Obligations of such Person (the amount of which shall be calculated without regard to imputed interest), (f) all obligations\nof such Person, contingent or otherwise, as an account party under acceptance, letter of credit or similar facilities, (g) all obligations\nof such Person, contingent or otherwise, to purchase, redeem, retire or otherwise acquire for value any Capital Stock (other than common\nstock) of such Person, (h) all Guarantee Obligations of such Person in respect of obligations of the kind referred to in clauses\n(a) through (g) above to the extent quantified as liabilities, contingent obligations or like term in accordance with GAAP on the balance\nsheet (including notes thereto) of such Person; (i) all obligations of the kind referred to in clauses (a) through (h) above secured\nby (or for which the holder of such obligation has an existing right, contingent or otherwise, to be secured by) any Lien on Property\n(including accounts and contract rights) owned by such Person, whether or not such Person has assumed or become liable for the payment\nof such obligation (but only to the extent of the fair market value of such Property); (j) for purposes of clause (e) of Article\nVIII, all obligations of such Person in respect of Swap Agreements and (k) the liquidation value of any preferred Capital Stock of\nsuch Person or its Subsidiaries held by any Person other than such Person and its\n22\nWholly-Owned Subsidiaries; provided that no earn-out\nobligation arising in connection with any acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness\nunless and until such obligation is finally determined to be due and payable under the relevant acquisition agreement and solely if not\npaid within five days after the date it is finally determined to be due and payable.\n\n"
+      },
+      {
+        "itemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Finance Lease Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 973,
+        "excerptText": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right\nto use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance\nleases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time\nshall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein,\nany lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in\neffect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change\nin GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      },
+      {
+        "itemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "VIII",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 14,
+        "excerptText": "ARTICLE\nVIII. "
+      },
+      {
+        "itemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "type": "AMENDMENT_LEAD",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "OPERATIVE_STATE_UNRESOLVED",
+          "isCurrentTruth": false,
+          "reason": "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task §19)."
+        },
+        "excerptChars": 274,
+        "excerptText": "[AMENDMENT_RESOLUTION_REQUIRED] CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01): the dollar amount \"$100,000,000\". (iii) The definition of \" Indebtedness \" is hereby amended by inserting the following proviso at the end thereof: \"; provided, further, th"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:aebc42c1e845426a83a4a993fe546233a17030a20b6eb52dc48cf235006dc613",
+        "toItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "toItemId": "context-item:61d7484723c71965b9859c627a9c4ec9e583cb3059d06ac3e512d3f68d48d713",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "toItemId": "context-item:fb5eb6fdf112a56084407668fd6877328e34d12a78d15c2efead761a71e28f96",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:7e564ccdbefa3280067442308d490a09b32ac54b71aaf9e3a2f16d769565587d",
+        "toItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:afe29c51fc62f45058f1a091fec1c11d98ff1245f851a300241845ba570072cb",
+        "toItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "toItemId": "context-item:d6e44690792359bf998c420d60abeabd09a9ef541b3583bb44b57fff2e4be081",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:d6e44690792359bf998c420d60abeabd09a9ef541b3583bb44b57fff2e4be081",
+        "toItemId": "context-item:8ac40f09e24d1d0e319c8662d979acc345ba0ca765aa65190f5cce9b3ee9286a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:d6e44690792359bf998c420d60abeabd09a9ef541b3583bb44b57fff2e4be081",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "toItemId": "context-item:ffe7600553bba449afc7c03b58376ee068f85b21e644104634ccfbec8868728d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:ffe7600553bba449afc7c03b58376ee068f85b21e644104634ccfbec8868728d",
+        "toItemId": "context-item:d6e44690792359bf998c420d60abeabd09a9ef541b3583bb44b57fff2e4be081",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:ffe7600553bba449afc7c03b58376ee068f85b21e644104634ccfbec8868728d",
+        "toItemId": "context-item:8ac40f09e24d1d0e319c8662d979acc345ba0ca765aa65190f5cce9b3ee9286a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "toItemId": "context-item:4752a30ba0702d22f074dbdf2769a390d131d67af7ddc87e54ba9110ca7ded31",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:4752a30ba0702d22f074dbdf2769a390d131d67af7ddc87e54ba9110ca7ded31",
+        "toItemId": "context-item:0103b3cddb5b059216486afb9769b8aad822a77ab959fd0501020687c77f6680",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0103b3cddb5b059216486afb9769b8aad822a77ab959fd0501020687c77f6680",
+        "toItemId": "context-item:d7a0dcceb1749a0beaa935647de00ed0e43b81f53da18a46bed20f3e27f5bc0f",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0103b3cddb5b059216486afb9769b8aad822a77ab959fd0501020687c77f6680",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:4752a30ba0702d22f074dbdf2769a390d131d67af7ddc87e54ba9110ca7ded31",
+        "toItemId": "context-item:ffe7600553bba449afc7c03b58376ee068f85b21e644104634ccfbec8868728d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:4752a30ba0702d22f074dbdf2769a390d131d67af7ddc87e54ba9110ca7ded31",
+        "toItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:4752a30ba0702d22f074dbdf2769a390d131d67af7ddc87e54ba9110ca7ded31",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:076f972f40efbf086fca5a62f1138a39157a07b70ee8b4d365ea282f4869acf2",
+        "toItemId": "context-item:8ac40f09e24d1d0e319c8662d979acc345ba0ca765aa65190f5cce9b3ee9286a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "toItemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "edgeType": "REFERENCES",
+        "reason": "\"Article\nVIII\" inside a definition."
+      },
+      {
+        "fromItemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "toItemId": "context-item:da7e110a35a479913effc05d5549de4ccce4541e34aeb208f93c7a4ad68aa5ba",
+        "edgeType": "AMENDMENT_CANDIDATE",
+        "reason": "Candidate amendment target - resolution required before treating as operative."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED",
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7_1_d",
+          "sourceSectionRef": "7.1(d)",
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "MINIMUM_LIQUIDITY_TEST",
+          "posture": "OBLIGATION",
+          "action": "MAINTAIN_MINIMUM_LIQUIDITY",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "COMPARE",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Liquidity"
+              },
+              "operator": "GTE",
+              "right": {
+                "kind": "ADD",
+                "operands": [
+                  {
+                    "kind": "MONEY",
+                    "amount": 75000000,
+                    "currency": "USD",
+                    "citation": "§7.1(d)",
+                    "inventoryItemIds": []
+                  },
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "metricName": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+                    "citation": "§7.1(d)",
+                    "inventoryItemIds": [
+                      "inv-item:76957d0ee877db7bdc72c2f0"
+                    ]
+                  }
+                ],
+                "citation": "§7.1(d)",
+                "inventoryItemIds": [
+                  "inv-item:14c6002ea61a1ede25ecc4ba",
+                  "inv-item:8eae66f1a3ede4da5e5dbbcc"
+                ]
+              },
+              "citation": "§7.1(d)"
+            },
+            "citation": "§7.1(d)"
+          },
+          "conditions": [
+            {
+              "conditionType": "TIME_WINDOW",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes",
+              "citation": "§7.1(d)",
+              "excerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes",
+              "inventoryItemIds": [
+                "inv-item:531afc0f516640cf6e3bac61"
+              ]
+            },
+            {
+              "conditionType": "THRESHOLD_SATISFIED",
+              "expression": {
+                "kind": "COMPARE",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+                  "citation": "§7.1(d)"
+                },
+                "operator": "GT",
+                "right": {
+                  "kind": "MONEY",
+                  "amount": 200000000,
+                  "currency": "USD",
+                  "citation": "§7.1(d)"
+                },
+                "citation": "§7.1(d)"
+              },
+              "referencesDefinitionId": null,
+              "description": "So long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000",
+              "citation": "§7.1(d)",
+              "excerpt": "so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000",
+              "inventoryItemIds": [
+                "inv-item:4923d71346e8e4c87424abd0"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Definition of Convertible Notes",
+              "description": "The operative window starts from and after the date 91 days prior to the earliest scheduled maturity date of the Convertible Notes.",
+              "inventoryItemIds": [
+                "inv-item:531afc0f516640cf6e3bac61"
+              ]
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Definition & aggregate outstanding principal amount of Early Maturing Debt",
+              "description": "The $200,000,000 trigger condition and the addend (ii) of the floor both depend on the outstanding principal amount of the Early Maturing Debt.",
+              "inventoryItemIds": [
+                "inv-item:4923d71346e8e4c87424abd0",
+                "inv-item:76957d0ee877db7bdc72c2f0"
+              ]
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.1(d)",
+          "excerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.",
+          "inventoryItemIds": [
+            "inv-item:8c93c6adcbb6ca996da837c3"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "inv-item:bdcf7e55c5c23de7062ad44e",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "note": "Subsection heading '(d) Liquidity.' naming the covenant; descriptive, not a computable mechanic."
+        }
+      ],
+      "overallNotes": [
+        "§7.1(d) is a minimum-Liquidity financial covenant (obligation not to permit Liquidity below a floor), operative only during a window defined by TWO conjunctive conditions: (1) from and after 91 days before the earliest scheduled maturity date of the Convertible Notes (time trigger), and (2) so long as the aggregate outstanding principal amount of the Early Maturing Debt exceeds $200,000,000 (threshold). The floor is $75,000,000 plus the aggregate outstanding principal amount of the Early Maturing Debt. Compliance test modeled as Liquidity >= floor within the window. All operative text and dependent definitions (Convertible Notes, Early Maturing Debt, Liquidity) are confirmed CURRENT, and the provision has no amendment history, so sufficiency is COMPLETE. Note the source context is UNKNOWN_SOURCE_COMPLETENESS against its unit boundary, but the provision's own economics are fully present."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:8529bed3934a2f9b3276d529",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.1(d)",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:06daea1bca73d35a2b7ab524",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Liquidity",
+              "companyId": "conmed-pilot",
+              "instrumentKey": "conmed-eighth-ar-credit-agreement",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:10913f27beb4ebb6c4ede18a"
+            },
+            "operator": "GTE",
+            "right": {
+              "kind": "ADD",
+              "type": "MONEY",
+              "exprId": "ir-expr:ffc186dacd428222d72357a9",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 75000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.1(d)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:ba37138bb087df4d5f29310b"
+                },
+                {
+                  "kind": "METRIC_REFERENCE",
+                  "type": "MONEY",
+                  "metricName": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+                  "companyId": "conmed-pilot",
+                  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:1870484dbf7985af2551d3c1",
+                  "inventoryItemIds": [
+                    "inv-item:76957d0ee877db7bdc72c2f0"
+                  ]
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.1(d)",
+                "excerpt": null
+              },
+              "inventoryItemIds": [
+                "inv-item:14c6002ea61a1ede25ecc4ba",
+                "inv-item:8eae66f1a3ede4da5e5dbbcc"
+              ]
+            },
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.1(d)",
+              "excerpt": null
+            }
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.1(d)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7_1_d].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.1(d)",
+              "excerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes"
+            },
+            "inventoryItemIds": [
+              "inv-item:531afc0f516640cf6e3bac61"
+            ]
+          },
+          {
+            "conditionId": "rule[r7_1_d].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:ebd6e1c3b508c237a19b4744",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+                "companyId": "conmed-pilot",
+                "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:1870484dbf7985af2551d3c1"
+              },
+              "operator": "GT",
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 200000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.1(d)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:ad92798b4001c17d69b7279d"
+              },
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.1(d)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "So long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.1(d)",
+              "excerpt": "so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000"
+            },
+            "inventoryItemIds": [
+              "inv-item:4923d71346e8e4c87424abd0"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Definition of Convertible Notes",
+            "description": "The operative window starts from and after the date 91 days prior to the earliest scheduled maturity date of the Convertible Notes.",
+            "reason": "dependsOn[0].targetRef \"Definition of Convertible Notes\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "inv-item:531afc0f516640cf6e3bac61"
+            ]
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Definition & aggregate outstanding principal amount of Early Maturing Debt",
+            "description": "The $200,000,000 trigger condition and the addend (ii) of the floor both depend on the outstanding principal amount of the Early Maturing Debt.",
+            "reason": "dependsOn[1].targetRef \"Definition & aggregate outstanding principal amount of Early Maturing Debt\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "inv-item:4923d71346e8e4c87424abd0",
+              "inv-item:76957d0ee877db7bdc72c2f0"
+            ]
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "ruleType \"MINIMUM_LIQUIDITY_TEST\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"TIME_WINDOW\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"THRESHOLD_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Definition of Convertible Notes\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[1].targetRef \"Definition & aggregate outstanding principal amount of Early Maturing Debt\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.1(d)",
+          "excerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNWITNESSED",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNWITNESSED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:8c93c6adcbb6ca996da837c3"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r7_1_d]] ruleType \"MINIMUM_LIQUIDITY_TEST\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r7_1_d]] condition[0].conditionType \"TIME_WINDOW\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_1_d]] condition[1].conditionType \"THRESHOLD_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_1_d]] dependsOn[0].targetRef \"Definition of Convertible Notes\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r7_1_d]] dependsOn[1].targetRef \"Definition & aggregate outstanding principal amount of Early Maturing Debt\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "§7.1(d) is a minimum-Liquidity financial covenant (obligation not to permit Liquidity below a floor), operative only during a window defined by TWO conjunctive conditions: (1) from and after 91 days before the earliest scheduled maturity date of the Convertible Notes (time trigger), and (2) so long as the aggregate outstanding principal amount of the Early Maturing Debt exceeds $200,000,000 (threshold). The floor is $75,000,000 plus the aggregate outstanding principal amount of the Early Maturing Debt. Compliance test modeled as Liquidity >= floor within the window. All operative text and dependent definitions (Convertible Notes, Early Maturing Debt, Liquidity) are confirmed CURRENT, and the provision has no amendment history, so sufficiency is COMPLETE. Note the source context is UNKNOWN_SOURCE_COMPLETENESS against its unit boundary, but the provision's own economics are fully present.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 7 item(s) accepted (1 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:4-15) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:4-15: \"Liquidity .\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-23T22:22:52.179Z",
+      "inputTokens": 17438,
+      "outputTokens": 5419,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 30231,
+      "calculatedCostUsd": 0.089066
+    },
+    "compiledAt": "2026-09-23T22:22:52.179Z",
+    "outputHash": "ee078343dd8372ad3c91d7e903ca920276ff6095677834d3537d1034a0b155ca"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "9d7e3b6bddb6ec992d3ae269bec1a20c4b7ea698c4d210a3ec5e0fa2572d2db0",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.1(d)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 3 apparent independent enumerated unit(s) ((d), (i), (ii)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 3 apparent independent enumerated unit(s) ((d), (i), (ii)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-23T22:22:52.190Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "02602009b0f8c0edb1507988c64fd8c03f75d98ce0f7a61edf81f90fca635dc7",
+            "kind": "AMOUNT",
+            "rawText": "$200,000,000,",
+            "numericValue": 200000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(d)",
+            "structuralNodeKey": null,
+            "charStart": 228,
+            "charEnd": 241,
+            "parsedAmount": 200000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "a99745ec107b9d32d1998dc7a3fff4fb8462644fa6f03eca95202ae0c5c4dd5f",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "irPath": "rules[0].conditions[1].expression.right",
+              "numericValue": 200000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§7.1(d)",
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 200000000 (canonical 200000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "eadd15b72f2df736630b1840f7ccaeb30d71a80abfdd6a76368b1f1a12115590",
+            "kind": "AMOUNT",
+            "rawText": "$75,000,000",
+            "numericValue": 75000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(d)",
+            "structuralNodeKey": null,
+            "charStart": 306,
+            "charEnd": 317,
+            "parsedAmount": 75000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "5eabf2f8aaa9eb0f77e1450bc94591d23b8fbe2b35292ea05cf3ef44a9987c95",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "irPath": "rules[0].capacityExpression.gatedBy.right.operands[0]",
+              "numericValue": 75000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§7.1(d)",
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 75000000 (canonical 75000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "dd7ff05ecb9ad12f92b215362ee9ad3f302f2c999ff5cd426162f0555755fa36",
+            "kind": "METRIC_MENTION",
+            "rawText": "Convertible Notes",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(d)",
+            "structuralNodeKey": null,
+            "charStart": 109,
+            "charEnd": 126
+          },
+          "irItems": [],
+          "reason": "source mention \"Convertible Notes\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8a0ba90c80c8f2e23058005258acc774293c56e0e8d90efc4c35f09d2bd81562",
+            "kind": "METRIC_MENTION",
+            "rawText": "Early Maturing Debt",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(d)",
+            "structuralNodeKey": null,
+            "charStart": 192,
+            "charEnd": 211
+          },
+          "irItems": [
+            {
+              "itemId": "866bc1c10c25c8f72e83e6ed998789751cd9fff6d273120e2fe44a4393110618",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "irPath": "rules[0].conditions[1].expression.left",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            },
+            {
+              "itemId": "6a18ce4e9eb3b6f2684b2ef52dc46be56b02c8ab8cdc54b144041c479d197962",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "irPath": "rules[0].capacityExpression.gatedBy.right.operands[1]",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Early Maturing Debt\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d810c346f93ba1d6adafa721e3da83102b6153aae822a46a98332138aec6306b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Early Maturing Debt",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(d)",
+            "structuralNodeKey": null,
+            "charStart": 378,
+            "charEnd": 397
+          },
+          "irItems": [
+            {
+              "itemId": "866bc1c10c25c8f72e83e6ed998789751cd9fff6d273120e2fe44a4393110618",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "irPath": "rules[0].conditions[1].expression.left",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            },
+            {
+              "itemId": "6a18ce4e9eb3b6f2684b2ef52dc46be56b02c8ab8cdc54b144041c479d197962",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "irPath": "rules[0].capacityExpression.gatedBy.right.operands[1]",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Early Maturing Debt\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 3 apparent independent enumerated unit(s) ((d), (i), (ii)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \" 91 days\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "QUALIFIED_QUANTITY",
+              "rawText": " 91 days",
+              "normalizedValue": 91,
+              "currency": null,
+              "unit": "day",
+              "charStart": 31,
+              "charEnd": 39,
+              "withheldReason": null,
+              "itemId": "7326442cef82ed135b8a3880ea939be5415971a5faec405a430278ed865b3a60",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": " 91 days",
+            "reason": "numeric assertion \" 91 days\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$200,000,000,\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$200,000,000,",
+              "normalizedValue": 200000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 212,
+              "charEnd": 225,
+              "withheldReason": null,
+              "itemId": "e5d5285709ed1e02c38cd56154967c39dd6c2c94dd0be5554e1ab63edbd840ce",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$200,000,000,",
+            "reason": "numeric assertion \"$200,000,000,\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$75,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$75,000,000",
+              "normalizedValue": 75000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 290,
+              "charEnd": 301,
+              "withheldReason": null,
+              "itemId": "f8a98f611e6ce68a58f814e274eed54045c81cec2b28e5e9bbd13b0b6d81c2dc",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$75,000,000",
+            "reason": "numeric assertion \"$75,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \" 91 days\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "QUALIFIED_QUANTITY",
+              "rawText": " 91 days",
+              "normalizedValue": 91,
+              "currency": null,
+              "unit": "day",
+              "charStart": 31,
+              "charEnd": 39,
+              "withheldReason": null,
+              "itemId": "ee9ead81cd719a607399e41a7953bc4af0dfc2b7f46cef0698be29f5768bc289",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].conditions[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes"
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": " 91 days",
+            "reason": "numeric assertion \" 91 days\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \" 91 days\" at rules[0].conditions[0].provenance.excerpt appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "QUALIFIED_QUANTITY",
+              "rawText": " 91 days",
+              "normalizedValue": 91,
+              "currency": null,
+              "unit": "day",
+              "charStart": 31,
+              "charEnd": 39,
+              "withheldReason": null,
+              "itemId": "1a5c244734418b975e30106e0fe8495a16ef3494884723d060e215f8c26cb8a8",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].conditions[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes"
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": " 91 days",
+            "reason": "numeric assertion \" 91 days\" at rules[0].conditions[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$200,000,000\" at rules[0].conditions[1].description appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$200,000,000",
+              "normalizedValue": 200000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 97,
+              "charEnd": 109,
+              "withheldReason": null,
+              "itemId": "93c762ec0289df67289cf3973fac2c704cea90acbc01126fa1bc68951deb3e15",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].conditions[1].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "So long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000"
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$200,000,000,",
+            "reason": "numeric assertion \"$200,000,000\" at rules[0].conditions[1].description appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$200,000,000\" at rules[0].conditions[1].provenance.excerpt appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$200,000,000",
+              "normalizedValue": 200000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 97,
+              "charEnd": 109,
+              "withheldReason": null,
+              "itemId": "d1ff4681e1fe087cc70ad0bb5d5fc549369905d9ba51edb36ace7b2c90c9bbd2",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].conditions[1].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000"
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$200,000,000,",
+            "reason": "numeric assertion \"$200,000,000\" at rules[0].conditions[1].provenance.excerpt appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \" 91 days\" at rules[0].unresolvedDependencies[0].description appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "QUALIFIED_QUANTITY",
+              "rawText": " 91 days",
+              "normalizedValue": 91,
+              "currency": null,
+              "unit": "day",
+              "charStart": 51,
+              "charEnd": 59,
+              "withheldReason": null,
+              "itemId": "4e414cf2aea32ead29f4459061e8abb2f5f0d110e64fd4938889e8774e07615c",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].unresolvedDependencies[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The operative window starts from and after the date 91 days prior to the earliest scheduled maturity date of the Convertible Notes."
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": " 91 days",
+            "reason": "numeric assertion \" 91 days\" at rules[0].unresolvedDependencies[0].description appears verbatim in the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$200,000,000\" at rules[0].unresolvedDependencies[1].description appears verbatim in the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$200,000,000",
+              "normalizedValue": 200000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 4,
+              "charEnd": 16,
+              "withheldReason": null,
+              "itemId": "0e462597d7462eee8b027da9a9a325c6670f844939636e33d4b0000ad833cf5b",
+              "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+              "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+              "fieldPath": "rules[0].unresolvedDependencies[1].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The $200,000,000 trigger condition and the addend (ii) of the floor both depend on the outstanding principal amount of the Early Maturing Debt."
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$200,000,000,",
+            "reason": "numeric assertion \"$200,000,000\" at rules[0].unresolvedDependencies[1].description appears verbatim in the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+      "items": [
+        {
+          "itemId": "02602009b0f8c0edb1507988c64fd8c03f75d98ce0f7a61edf81f90fca635dc7",
+          "kind": "AMOUNT",
+          "rawText": "$200,000,000,",
+          "numericValue": 200000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": 228,
+          "charEnd": 241,
+          "parsedAmount": 200000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "eadd15b72f2df736630b1840f7ccaeb30d71a80abfdd6a76368b1f1a12115590",
+          "kind": "AMOUNT",
+          "rawText": "$75,000,000",
+          "numericValue": 75000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": 306,
+          "charEnd": 317,
+          "parsedAmount": 75000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "9bb1478bbb7919eaa848a3c6cf3e3a3efea68765fef92da3f5e14d60d366d00a",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "so long as",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": 131,
+          "charEnd": 141,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "dd7ff05ecb9ad12f92b215362ee9ad3f302f2c999ff5cd426162f0555755fa36",
+          "kind": "METRIC_MENTION",
+          "rawText": "Convertible Notes",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": 109,
+          "charEnd": 126
+        },
+        {
+          "itemId": "8a0ba90c80c8f2e23058005258acc774293c56e0e8d90efc4c35f09d2bd81562",
+          "kind": "METRIC_MENTION",
+          "rawText": "Early Maturing Debt",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": 192,
+          "charEnd": 211
+        },
+        {
+          "itemId": "d810c346f93ba1d6adafa721e3da83102b6153aae822a46a98332138aec6306b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Early Maturing Debt",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": 378,
+          "charEnd": 397
+        },
+        {
+          "itemId": "d39983ea3a649398c513a933b0e4baf3d16e6f403d6250e9d53920358c2a3555",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "dc4c0c594045e143dc8187b11e33793705d36d9b3d0d72da6bc288b16a88010c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "ccdf6786b043f1bc9822b7b9623ea5270df65d8fc521cd993b26453829bd384f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 3,
+      "apparentIndependentUnitEvidence": [
+        "(d)",
+        "(i)",
+        "(ii)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+      "items": [
+        {
+          "itemId": "f7c2eadc61194f4aeeafe7e5ed3d075180562cdd87c7672fbe7f70f40151063f",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f56b82084df20f47bc3cf1cf99bc0867c8e7b26321de3db04246eefbc6dce328",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9c5e179036e98bac601f1f3907bf0bdfb28e3db31a8cdc97a596fbf1d545853f",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9698e7f69ee66ee90db3afa69a641c0983df4adcc9cb0d38d2692fe4e5ac2147",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "074474f7188285b2afa86ae6bee6d5d4784e03bd07e4c45470bd1533d7615130",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "So long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": "so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "daaa2309f9ca45d2041d8249f450398084b6620e487daa0e1eb6f153401d40d5",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].conditions[1].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "COMPARE:GT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "866bc1c10c25c8f72e83e6ed998789751cd9fff6d273120e2fe44a4393110618",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].conditions[1].expression.left",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a99745ec107b9d32d1998dc7a3fff4fb8462644fa6f03eca95202ae0c5c4dd5f",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].conditions[1].expression.right",
+          "numericValue": 200000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "43e9f872f2cd1b7a3dfe4b83ee8f277cb69126ed6b289cf172c7537474f37f7e",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "5f2811ae4e0ce2b788685d54c84896f652a954cb66c650b0b9a28dea164c1a6d",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].capacityExpression.gatedBy",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "COMPARE:GTE",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d9e1d7a75abbe007f8efc72178e050677e951bccab2ba658589fcb22926f6f04",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].capacityExpression.gatedBy.left",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Liquidity",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "5eabf2f8aaa9eb0f77e1450bc94591d23b8fbe2b35292ea05cf3ef44a9987c95",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].capacityExpression.gatedBy.right.operands[0]",
+          "numericValue": 75000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "6a18ce4e9eb3b6f2684b2ef52dc46be56b02c8ab8cdc54b144041c479d197962",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+          "irPath": "rules[0].capacityExpression.gatedBy.right.operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Aggregate Outstanding Principal Amount of Early Maturing Debt",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+        "items": [
+          {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 31,
+            "charEnd": 39,
+            "withheldReason": null,
+            "itemId": "7326442cef82ed135b8a3880ea939be5415971a5faec405a430278ed865b3a60",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000,",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 212,
+            "charEnd": 225,
+            "withheldReason": null,
+            "itemId": "e5d5285709ed1e02c38cd56154967c39dd6c2c94dd0be5554e1ab63edbd840ce",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$75,000,000",
+            "normalizedValue": 75000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 290,
+            "charEnd": 301,
+            "withheldReason": null,
+            "itemId": "f8a98f611e6ce68a58f814e274eed54045c81cec2b28e5e9bbd13b0b6d81c2dc",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+          },
+          {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 31,
+            "charEnd": 39,
+            "withheldReason": null,
+            "itemId": "ee9ead81cd719a607399e41a7953bc4af0dfc2b7f46cef0698be29f5768bc289",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes"
+          },
+          {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 31,
+            "charEnd": 39,
+            "withheldReason": null,
+            "itemId": "1a5c244734418b975e30106e0fe8495a16ef3494884723d060e215f8c26cb8a8",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes"
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 97,
+            "charEnd": 109,
+            "withheldReason": null,
+            "itemId": "93c762ec0289df67289cf3973fac2c704cea90acbc01126fa1bc68951deb3e15",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "So long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000"
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 97,
+            "charEnd": 109,
+            "withheldReason": null,
+            "itemId": "d1ff4681e1fe087cc70ad0bb5d5fc549369905d9ba51edb36ace7b2c90c9bbd2",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000"
+          },
+          {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 51,
+            "charEnd": 59,
+            "withheldReason": null,
+            "itemId": "4e414cf2aea32ead29f4459061e8abb2f5f0d110e64fd4938889e8774e07615c",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].unresolvedDependencies[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The operative window starts from and after the date 91 days prior to the earliest scheduled maturity date of the Convertible Notes."
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 16,
+            "withheldReason": null,
+            "itemId": "0e462597d7462eee8b027da9a9a325c6670f844939636e33d4b0000ad833cf5b",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].unresolvedDependencies[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The $200,000,000 trigger condition and the addend (ii) of the floor both depend on the outstanding principal amount of the Early Maturing Debt."
+          }
+        ],
+        "fieldsWalked": 13,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 31,
+            "charEnd": 39,
+            "withheldReason": null,
+            "itemId": "7326442cef82ed135b8a3880ea939be5415971a5faec405a430278ed865b3a60",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": " 91 days",
+          "reason": "numeric assertion \" 91 days\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000,",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 212,
+            "charEnd": 225,
+            "withheldReason": null,
+            "itemId": "e5d5285709ed1e02c38cd56154967c39dd6c2c94dd0be5554e1ab63edbd840ce",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$200,000,000,",
+          "reason": "numeric assertion \"$200,000,000,\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$75,000,000",
+            "normalizedValue": 75000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 290,
+            "charEnd": 301,
+            "withheldReason": null,
+            "itemId": "f8a98f611e6ce68a58f814e274eed54045c81cec2b28e5e9bbd13b0b6d81c2dc",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes and so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity at any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt."
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$75,000,000",
+          "reason": "numeric assertion \"$75,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 31,
+            "charEnd": 39,
+            "withheldReason": null,
+            "itemId": "ee9ead81cd719a607399e41a7953bc4af0dfc2b7f46cef0698be29f5768bc289",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes"
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": " 91 days",
+          "reason": "numeric assertion \" 91 days\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 31,
+            "charEnd": 39,
+            "withheldReason": null,
+            "itemId": "1a5c244734418b975e30106e0fe8495a16ef3494884723d060e215f8c26cb8a8",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes"
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": " 91 days",
+          "reason": "numeric assertion \" 91 days\" at rules[0].conditions[0].provenance.excerpt appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 97,
+            "charEnd": 109,
+            "withheldReason": null,
+            "itemId": "93c762ec0289df67289cf3973fac2c704cea90acbc01126fa1bc68951deb3e15",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "So long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000"
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$200,000,000,",
+          "reason": "numeric assertion \"$200,000,000\" at rules[0].conditions[1].description appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 97,
+            "charEnd": 109,
+            "withheldReason": null,
+            "itemId": "d1ff4681e1fe087cc70ad0bb5d5fc549369905d9ba51edb36ace7b2c90c9bbd2",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].conditions[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000"
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$200,000,000,",
+          "reason": "numeric assertion \"$200,000,000\" at rules[0].conditions[1].provenance.excerpt appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "QUALIFIED_QUANTITY",
+            "rawText": " 91 days",
+            "normalizedValue": 91,
+            "currency": null,
+            "unit": "day",
+            "charStart": 51,
+            "charEnd": 59,
+            "withheldReason": null,
+            "itemId": "4e414cf2aea32ead29f4459061e8abb2f5f0d110e64fd4938889e8774e07615c",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].unresolvedDependencies[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The operative window starts from and after the date 91 days prior to the earliest scheduled maturity date of the Convertible Notes."
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": " 91 days",
+          "reason": "numeric assertion \" 91 days\" at rules[0].unresolvedDependencies[0].description appears verbatim in the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$200,000,000",
+            "normalizedValue": 200000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 16,
+            "withheldReason": null,
+            "itemId": "0e462597d7462eee8b027da9a9a325c6670f844939636e33d4b0000ad833cf5b",
+            "candidateRef": "discovery-candidate:1b08da2e952127a1caebe77d",
+            "ruleOrDefinitionId": "ir-rule:8529bed3934a2f9b3276d529",
+            "fieldPath": "rules[0].unresolvedDependencies[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The $200,000,000 trigger condition and the addend (ii) of the floor both depend on the outstanding principal amount of the Early Maturing Debt."
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$200,000,000,",
+          "reason": "numeric assertion \"$200,000,000\" at rules[0].unresolvedDependencies[1].description appears verbatim in the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "0f3bc22ce3c023f8d833b91ba463850fd359fd29bac0cb53e42a551f3bc3b6b7",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "bbcd7ec295c10f875259c695dbda41b78ae7a7a0f69c5857615f2a790748ae39",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 91778,
+    "inputTokens": 17438,
+    "outputTokens": 5419,
+    "costUsd": 0.00367588,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "economics that legitimately come from an authenticated definition rather than the anchor",
+      "every asserted figure GROUNDED_CONTEXT or GROUNDED_OPERATIVE; a single UNGROUNDED here is a false positive and blocks the fix"
+    ]
+  }
+}

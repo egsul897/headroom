@@ -1,0 +1,203 @@
+{
+  "mission": "HEADROOM PHASE-3 - FIX B NUMERIC GROUNDING PAID VALIDATION (two candidates only)",
+  "startingSha": "2dcbf704e708d13dc2555a0c8a676939e2991e1b",
+  "model": "deepseek/deepseek-v4-flash",
+  "concurrency": 1,
+  "perCandidateTimeoutMs": 480000,
+  "retries": 0,
+  "premiumLock": "ANALYZER_MODEL was pinned to the locked model before any caller was constructed and asserted via assertNotPremium. Without that pin getStageCaller() defaults to anthropic/claude-sonnet-5 for the amendment pipeline and BOTH verifier gates - a real premium exposure this run closed rather than discovered afterwards. Every one of the 5 calls is recorded with its model: all deepseek/deepseek-v4-flash.",
+  "gatewayHealth": {
+    "tierA_tiny": {
+      "ok": true,
+      "status": 200,
+      "inputTokens": 11,
+      "outputTokens": 32
+    },
+    "tierB_workload": {
+      "ok": true,
+      "status": 200,
+      "inputTokens": 5353,
+      "outputTokens": 203
+    },
+    "creditExhaustion": false
+  },
+  "spend": {
+    "compileCallsUsd": 0.007019,
+    "sideCallsUsd": 0.00446628,
+    "gatewayHealthProbesUsd": 0.000759,
+    "totalUsd": 0.01224428,
+    "ceilingUsd": 0.05,
+    "stopAtUsd": 0.04,
+    "reservedTimeoutSpendUsd": 0.0,
+    "timeouts": 0
+  },
+  "calls": {
+    "compile": 2,
+    "amendmentPipeline": 1,
+    "verifierLayer2Review": 2,
+    "gatewayHealthProbes": 2,
+    "total": 7
+  },
+  "candidate_7_2_f": {
+    "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+    "anchorChars": 149,
+    "anchorSha256_16": "833be69a24a7d0c6",
+    "anchorIdenticalToForensicRun": true,
+    "compileStatus": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "rules": 1,
+    "definitions": 0,
+    "toolCalls": 3,
+    "tokens": {
+      "input": 15201,
+      "output": 5256
+    },
+    "wallClockMs": 70023,
+    "costUsd": 0.00334269,
+    "costStatus": "EXACT",
+    "outcome": "NO_UNSUPPORTED_NUMERIC_EMITTED_THIS_RUN",
+    "numericAssertionsInventoried": 0,
+    "freeTextFieldsWalked": 8,
+    "ungrounded": 0,
+    "compiledIrContainsNoNumericOfAnyKind": true,
+    "verificationStatus": "VERIFICATION_INCOMPLETE",
+    "verificationStatusReason": "contextBundle.sufficiencyState was REVIEW_REQUIRED, so determineStatus returns VERIFICATION_INCOMPLETE before any finding is considered. Pre-existing behaviour, unrelated to Fix B; no VERIFIED status was reachable either way.",
+    "findings": []
+  },
+  "theRawOutputFinding": {
+    "headline": "The model DID emit the string '100%' this run - and the preserved raw output shows exactly where, which the forensic mission could not.",
+    "location": "rawModelOutput.overallNotes[0] - a narrative note, not a rule or definition field, and not part of the compiled IR.",
+    "content": "The note quotes the definition the model retrieved: \"'Subsidiary Guarantor' means each Material Domestic Subsidiary and each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%)\".",
+    "toolCallThatSuppliedIt": "toolCallLog[0] getDefinition {\"term\":\"Subsidiary Guarantor\"}, 157 chars, evidence CURRENT, evidenceUnresolved false",
+    "independentVerificationAgainstTheRealDocument": "StructuralIndex.getDefinitionFullText('Subsidiary Guarantor') returns: \"Subsidiary Guarantor\": (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%). The figure is REAL source text in this instrument.",
+    "consequenceForTheForensicConclusion": "The forensic mission's item 13 (TOOL_OUTPUT_SUPPORTS_100_PERCENT) was UNKNOWN because the tool log had not been persisted, and its primary root cause was recorded as MODEL_HALLUCINATION_NOT_CAUGHT at MEDIUM confidence. That answer is now available and it points the other way: an authenticated definition this candidate's compiler really retrieves contains '(100%)'. The original '100%' was most likely a quotation of genuine retrieved source, and the old harness scored it 'unsourced' because its attribution check compared against the anchor and bundle only - never against tool output.",
+    "whatIsStillNotProven": "The original run's raw output is gone, so it cannot be shown that ITS '100%' also sat in a narrative note rather than a rule field. What is proven: the figure exists in authenticated source, the compiler retrieves it for this exact candidate, and the old harness could not see that.",
+    "counterfactualMeasurement": "Injecting '...up to 100% of the obligations...' into rules[0].conditions[0].description of this run's own real IR, with this run's own real tool log, Fix B classifies it GROUNDED_CONTEXT (matched verbatim in the authenticated definition of 'Subsidiary Guarantor') and raises zero findings. Fix B would have avoided the very false positive the old harness produced."
+  },
+  "candidate_7_1_d": {
+    "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+    "role": "FINANCIAL_TEST",
+    "anchorChars": 399,
+    "premiseCorrection": "The sealed population's 7.1(d) is the LIQUIDITY financial test (91 days / $200,000,000 / $75,000,000), not the Convertible Notes indebtedness clause the mission brief described. Its anchor references the Convertible Notes but states its own figures.",
+    "compileStatus": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED",
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "rules": 1,
+    "definitions": 0,
+    "toolCalls": 0,
+    "tokens": {
+      "input": 17438,
+      "output": 5419
+    },
+    "wallClockMs": 91778,
+    "costUsd": 0.00367588,
+    "costStatus": "EXACT",
+    "numericAssertionsInventoried": 9,
+    "ungrounded": 0,
+    "falsePositives": 0,
+    "groundings": [
+      {
+        "figure": "91 days",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].provenance.excerpt"
+      },
+      {
+        "figure": "$200,000,000,",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].provenance.excerpt"
+      },
+      {
+        "figure": "$75,000,000",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].provenance.excerpt"
+      },
+      {
+        "figure": "91 days",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].conditions[0].description"
+      },
+      {
+        "figure": "91 days",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].conditions[0].provenance.excerpt"
+      },
+      {
+        "figure": "$200,000,000",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].conditions[1].description"
+      },
+      {
+        "figure": "$200,000,000",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].conditions[1].provenance.excerpt"
+      },
+      {
+        "figure": "91 days",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].unresolvedDependencies[0].description"
+      },
+      {
+        "figure": "$200,000,000",
+        "status": "GROUNDED_OPERATIVE",
+        "fieldPath": "rules[0].unresolvedDependencies[1].description"
+      }
+    ],
+    "namedFiguresNotEmitted": "The $800,000,000 and 2.25% the mission named were NOT asserted by the model this run, so they could not be classified live. They are real: the authenticated 'Convertible Notes' definition reads \"$800,000,000 aggregate principal amount of the Parent Borrower's 2.25% Convertible Senior Notes due 2027\".",
+    "counterfactualMeasurement": {
+      "withTheGetDefinitionRetrieval_asTheOriginalRunHad": {
+        "$800,000,000": "GROUNDED_CONTEXT",
+        "2.25%": "GROUNDED_CONTEXT"
+      },
+      "withoutIt_asThisRunActuallyWas": {
+        "$800,000,000": "UNGROUNDED",
+        "2.25%": "UNGROUNDED"
+      },
+      "interpretation": "Correct on both sides, and an honest statement of the limit: grounding depends on the compiler having actually retrieved the source and the verifier having authenticated it. A figure asserted from a definition the compilation never retrieved is, on that compilation's own evidence, unsupported."
+    },
+    "verificationStatus": "VERIFICATION_INCOMPLETE",
+    "verificationStatusReason": "contextBundle.sufficiencyState was BUDGET_EXCEEDED. Pre-existing behaviour, unrelated to Fix B.",
+    "findings": [
+      [
+        "MISSING_RULE",
+        "NON_MATERIAL"
+      ]
+    ]
+  },
+  "evidenceCompleteness": "COMPLETE for both candidates: compiler input, context bundle, rawModelOutput, toolCallLog, complete rules, complete definitions, normalized IR, verifier result, reconciliation, numeric assertions with grounding classifications, token usage, runtime and cost all present and asserted field by field.",
+  "secretLeakTest": "PASS - all three artifacts CLEAN under every guarded credential pattern.",
+  "falsePositiveCount": 0,
+  "postRunSafetyMatrix": {
+    "numericGroundingTests": "tests/contract-model/numeric-grounding-fix-b.test.ts 39/39",
+    "harnessEvidenceTests": "tests/phase-3-conmed-pilot/evidence-preservation.test.ts 6/6",
+    "structuredNumericReconciliation": "semantic-verification-reconciliation 7/7, -findings 6/6, -verify 9/9, f3-verifier-scale-normalization 40/40, f4-authenticated-retrieved-evidence 30/30",
+    "candidateSpanF1": "candidate-span-contract 24/24, candidate-span-implementation 24/24, f1-linked-context-typing 7/7",
+    "semanticCompiler": "14 suite files green, 0 failures",
+    "semanticAccountability": "11 suite files green, 0 failures",
+    "benchmarkIntegrity": "v31-benchmark-integrity 11/11 (including 'no production code was modified by this audit', which now passes - last mission's single new identity was that working-tree gate and it has cleared)",
+    "v311Reconciliation": "17/17",
+    "evaluationV2": "green, including the 14 false-credit controls",
+    "falseCreditControls": "14/14 (false-credit-prohibitions 10/10 + dsgr-false-credit-gate 4/4)",
+    "phase4AtoD": "tests/contract-model/runtime/* 22 suite files green, 0 failures; 0 Phase-4 files changed",
+    "fullSuiteBefore": "104 failed | 259 passed files; 148 failed | 4196 passed | 524 skipped tests (measured on a clean worktree at 39ae741, before Fix B)",
+    "fullSuiteAfter": "104 failed | 261 passed files; 148 failed | 4241 passed | 524 skipped tests",
+    "newFailingIdentities": 0,
+    "disappearedFailingIdentities": [
+      "V3.1 benchmark-integrity audit > 7. no production code was modified by this audit (a working-tree-cleanliness gate, cleared by committing)"
+    ],
+    "tsc": "clean - byte-identical to the pre-Fix-B baseline (the same 6 pre-existing errors in tests/foundation-audit/)",
+    "lint": "No ESLint warnings or errors",
+    "build": "succeeds"
+  },
+  "verdict": "NUMERIC_GROUNDING_REMEDIATION_VALIDATED",
+  "verdictBasis": [
+    "7.1(d)'s legitimate figures remained grounded: 9 of 9 GROUNDED_OPERATIVE, 0 ungrounded, 0 false positives.",
+    "7.2(f) emitted no unsupported numeric in its compiled IR this run (outcome B), and the deterministic synthetic detector remains green at 39/39 - including the reproduction that fails closed without it.",
+    "Complete evidence was persisted for both candidates and verified field by field.",
+    "No false-positive regression and no new repository failure identity.",
+    "Not retried: 7.2(f) was run exactly once, as required."
+  ]
+}
