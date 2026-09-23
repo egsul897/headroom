@@ -1,0 +1,88 @@
+{
+  "verdict": "CANDIDATE_SPAN_CONTEXT_OWNERSHIP_VALIDATED",
+  "modelCalls": 6,
+  "scope": "The six changed candidates that completed cleanly before F1. 7.2(k)(i) excluded (already validated post-F1); Cohort C and the unchanged single-key controls deliberately not run.",
+  "result": {
+    "completed": "6/6",
+    "modelFailures": 0,
+    "rules": 6,
+    "numericAssertions": 10,
+    "attributionViolations": 0,
+    "contextRetentionViolations": 0,
+    "operativeSourceAnchorOnly": "6/6",
+    "linkedParentStillPresent": "6/6"
+  },
+  "perValueChannelClassification": {
+    "total": 10,
+    "ANCHOR_OPERATIVE": 10,
+    "PARENT_SCOPE_only": 0,
+    "SIBLING_CONTEXT_only": 0,
+    "DEFINITION_CONTEXT_only": 0,
+    "CROSS_REFERENCE_CONTEXT_only": 0,
+    "UNSUPPORTED": 0,
+    "note": "Every emitted value is present in the candidate's own anchor text. Several also appear in PARENT_SCOPE, which is expected and not a violation: the parent's DESCENDANTS text literally contains the child's clause, so a child citing its own figure will always match both. The decisive test is whether the value is in the ANCHOR - for all 10 it is. Contrast the pre-F1 7.2(k)(i) failure, where $150,000,000 and 10.0% were in PARENT_SCOPE and NOT in the 54-char anchor."
+  },
+  "safetyRegression": {
+    "falseCreditControls": "14/14",
+    "multipleOperativeSourceCandidates": 0,
+    "operativeForeignEconomicItems": 0,
+    "parentScopeForeignEconomicItems": 819,
+    "contextLoss": 0,
+    "coverageHashBefore": "d95518f2c97732b06a81b7dba817d9fe",
+    "coverageHashAfter": "d95518f2c97732b06a81b7dba817d9fe",
+    "coverageUnchanged": true,
+    "r3ParentConditionReachability": "65/65; chapeau text present in a PARENT_SCOPE item for 67/67"
+  },
+  "parentScopeObservationOnly": {
+    "changedNothing": "No dedupe-order change, no chapeau narrowing, no context-retrieval edit. Observation only, per \u00a710.",
+    "perCase": {
+      "7.2(e) long": {
+        "parentScopeChars": 8843,
+        "gate2InputChars": 9044,
+        "wallClockSec": 299,
+        "outcome": "COMPLETED"
+      },
+      "7.2(k)": {
+        "parentScopeChars": 8843,
+        "gate2InputChars": 9620,
+        "wallClockSec": 285,
+        "outcome": "COMPLETED"
+      },
+      "7.2(k)(ii)": {
+        "parentScopeChars": 9110,
+        "gate2InputChars": 9567,
+        "wallClockSec": 289,
+        "outcome": "COMPLETED"
+      },
+      "7.2(d)": {
+        "parentScopeChars": 8843,
+        "gate2InputChars": 9094,
+        "wallClockSec": 160,
+        "outcome": "COMPLETED"
+      },
+      "7.2(g)": {
+        "parentScopeChars": 8843,
+        "gate2InputChars": 9156,
+        "wallClockSec": 233,
+        "outcome": "COMPLETED"
+      },
+      "7.2(h)": {
+        "parentScopeChars": 8843,
+        "gate2InputChars": 9311,
+        "wallClockSec": 202,
+        "outcome": "COMPLETED"
+      }
+    },
+    "reading": "PARENT_SCOPE is 8,843-9,110 chars and the Gate-2 condition-suspicion input 9,044-9,620 chars for all six. Every one still COMPLETED, in 160-299s against the 480s ceiling, so the large contextual span did not materially impair execution on these cases. That is a baseline observation, not an argument for keeping it: the six are all small-anchor candidates, and no inference is drawn here about larger anchors."
+  },
+  "modelReliabilityContext": "No timeouts in this run. Earlier attempts timed out on candidates with LARGE operative spans (1,886-8,843 chars, spans the remediation never changed); all six here have anchors of 200-776 chars.",
+  "budget": {
+    "totalCeilingUsd": 0.4,
+    "priorCumulativeUsd": 0.276597,
+    "incrementalCeilingUsd": 0.08,
+    "incrementalExactUsd": 0.046892,
+    "incrementalReservedUnknownUsd": 0,
+    "incrementalCommittedUsd": 0.046892,
+    "cumulativeCommittedUsd": 0.323489
+  }
+}

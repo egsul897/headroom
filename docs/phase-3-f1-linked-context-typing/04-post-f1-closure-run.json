@@ -1,0 +1,450 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/f1-closure-run.ts",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "halted": null,
+  "budget": {
+    "totalCeilingUsd": 0.4,
+    "priorCumulativeUsd": 0.276597,
+    "incrementalCeilingUsd": 0.08,
+    "incrementalExactUsd": 0.046892,
+    "incrementalReservedUnknownUsd": 0,
+    "incrementalCommittedUsd": 0.046892,
+    "cumulativeCommittedUsd": 0.323489
+  },
+  "counts": {
+    "paid": 6,
+    "completed": 6,
+    "modelFailures": 0,
+    "rules": 6,
+    "numericAssertions": 10
+  },
+  "safety": {
+    "attributionViolations": 0,
+    "contextRetentionViolations": 0,
+    "operativeSourceAnchorOnly": 6,
+    "linkedParentStillPresent": 6
+  },
+  "parentScopeObservation": {
+    "7.2(e) long": {
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9044,
+      "wallClockSec": 299,
+      "outcome": "COMPLETED"
+    },
+    "7.2(k)": {
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9620,
+      "wallClockSec": 285,
+      "outcome": "COMPLETED"
+    },
+    "7.2(k)(ii)": {
+      "parentScopeChars": 9110,
+      "gate2InputChars": 9567,
+      "wallClockSec": 289,
+      "outcome": "COMPLETED"
+    },
+    "7.2(d)": {
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9094,
+      "wallClockSec": 160,
+      "outcome": "COMPLETED"
+    },
+    "7.2(g)": {
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9156,
+      "wallClockSec": 233,
+      "outcome": "COMPLETED"
+    },
+    "7.2(h)": {
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9311,
+      "wallClockSec": 202,
+      "outcome": "COMPLETED"
+    }
+  },
+  "rows": [
+    {
+      "cohort": "B",
+      "slot": "7.2(e) long",
+      "ref": "7.2(e)",
+      "discoveryId": "discovery-candidate:62512247bce898548b6f9b63",
+      "preR1OperativeChars": 9045,
+      "postR1OperativeChars": 200,
+      "preF1Result": "COMPLETED / REVIEW_REQUIRED, 2 rules, 266s",
+      "postF1Status": "REVIEW_REQUIRED",
+      "postF1Outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 299427,
+      "toolCalls": 5,
+      "inputTokens": 37538,
+      "outputTokens": 27851,
+      "exactCostUsd": 0.0121212,
+      "costStatus": "EXACT",
+      "ruleCount": 1,
+      "rules": [
+        {
+          "index": 0,
+          "sourceSection": "7.2(e)",
+          "operativeCitation": "§7.2(e)",
+          "numericValues": []
+        }
+      ],
+      "numericAssertions": 0,
+      "contextualEvidenceTypes": [
+        "OPERATIVE_SOURCE",
+        "PARENT_SCOPE",
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "DEFINITION",
+        "DEFINITION_DEPENDENCY",
+        "CROSS_REFERENCE",
+        "AMENDMENT_LEAD"
+      ],
+      "operativeSourceNodes": [
+        "structural-node:dc188a480a69dcf3fb6e1120"
+      ],
+      "operativeSourceIsAnchorOnly": true,
+      "linkedParentStillPresent": true,
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9044,
+      "attributionViolations": [],
+      "contextRetentionViolations": 0
+    },
+    {
+      "cohort": "B",
+      "slot": "7.2(k)",
+      "ref": "7.2(k)",
+      "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22",
+      "preR1OperativeChars": 9621,
+      "postR1OperativeChars": 776,
+      "preF1Result": "COMPLETED / REVIEW_REQUIRED, 1 rule, 266s",
+      "postF1Status": "REVIEW_REQUIRED",
+      "postF1Outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 284964,
+      "toolCalls": 4,
+      "inputTokens": 23090,
+      "outputTokens": 18067,
+      "exactCostUsd": 0.00769912,
+      "costStatus": "EXACT",
+      "ruleCount": 1,
+      "rules": [
+        {
+          "index": 0,
+          "sourceSection": "7.2(k)",
+          "operativeCitation": "§7.2(k)",
+          "numericValues": [
+            {
+              "value": "$150,000,000",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            },
+            {
+              "value": "10.0%",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            }
+          ]
+        }
+      ],
+      "numericAssertions": 2,
+      "contextualEvidenceTypes": [
+        "OPERATIVE_SOURCE",
+        "PARENT_SCOPE",
+        "CHILD_RULE",
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "DEFINITION",
+        "DEFINITION_DEPENDENCY",
+        "CROSS_REFERENCE",
+        "AMENDMENT_LEAD"
+      ],
+      "operativeSourceNodes": [
+        "structural-node:10fcf067cf545b21e045f3bd"
+      ],
+      "operativeSourceIsAnchorOnly": true,
+      "linkedParentStillPresent": true,
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9620,
+      "attributionViolations": [],
+      "contextRetentionViolations": 0
+    },
+    {
+      "cohort": "B",
+      "slot": "7.2(k)(ii)",
+      "ref": "7.2(k)(ii)",
+      "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+      "preR1OperativeChars": 9300,
+      "postR1OperativeChars": 455,
+      "preF1Result": "COMPLETED / REVIEW_REQUIRED, 1 rule, 370s",
+      "postF1Status": "REVIEW_REQUIRED",
+      "postF1Outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 288528,
+      "toolCalls": 2,
+      "inputTokens": 23708,
+      "outputTokens": 18388,
+      "exactCostUsd": 0.00786292,
+      "costStatus": "EXACT",
+      "ruleCount": 1,
+      "rules": [
+        {
+          "index": 0,
+          "sourceSection": "7.2(k)(ii)",
+          "operativeCitation": "§7.2(k)(ii)",
+          "numericValues": [
+            {
+              "value": "$150,000,000",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            },
+            {
+              "value": "10.0%",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            }
+          ]
+        }
+      ],
+      "numericAssertions": 2,
+      "contextualEvidenceTypes": [
+        "OPERATIVE_SOURCE",
+        "PARENT_SCOPE",
+        "CHILD_RULE",
+        "DEFINITION",
+        "DEFINITION_DEPENDENCY",
+        "CROSS_REFERENCE",
+        "AMENDMENT_LEAD"
+      ],
+      "operativeSourceNodes": [
+        "structural-node:c4f76df0943560ce3828386c"
+      ],
+      "operativeSourceIsAnchorOnly": true,
+      "linkedParentStillPresent": true,
+      "parentScopeChars": 9110,
+      "gate2InputChars": 9567,
+      "attributionViolations": [],
+      "contextRetentionViolations": 0
+    },
+    {
+      "cohort": "D",
+      "slot": "7.2(d)",
+      "ref": "7.2(d)",
+      "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "preR1OperativeChars": 9095,
+      "postR1OperativeChars": 250,
+      "preF1Result": "COMPLETED / REVIEW_REQUIRED, 1 rule, 207s",
+      "postF1Status": "REVIEW_REQUIRED",
+      "postF1Outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 160171,
+      "toolCalls": 2,
+      "inputTokens": 12677,
+      "outputTokens": 11453,
+      "exactCostUsd": 0.00462579,
+      "costStatus": "EXACT",
+      "ruleCount": 1,
+      "rules": [
+        {
+          "index": 0,
+          "sourceSection": "7.2(d)",
+          "operativeCitation": "§7.2(d)",
+          "numericValues": [
+            {
+              "value": "$50,000,000",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE",
+                "SIBLING_CONTEXT"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            },
+            {
+              "value": "3.0%",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE",
+                "SIBLING_CONTEXT"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            }
+          ]
+        }
+      ],
+      "numericAssertions": 2,
+      "contextualEvidenceTypes": [
+        "OPERATIVE_SOURCE",
+        "PARENT_SCOPE",
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "DEFINITION",
+        "DEFINITION_DEPENDENCY"
+      ],
+      "operativeSourceNodes": [
+        "structural-node:bb90729fb99b77b69fe187b9"
+      ],
+      "operativeSourceIsAnchorOnly": true,
+      "linkedParentStillPresent": true,
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9094,
+      "attributionViolations": [],
+      "contextRetentionViolations": 0
+    },
+    {
+      "cohort": "D",
+      "slot": "7.2(g)",
+      "ref": "7.2(g)",
+      "discoveryId": "discovery-candidate:7b3977f0fa58ecd5c864b1fc",
+      "preR1OperativeChars": 9157,
+      "postR1OperativeChars": 312,
+      "preF1Result": "COMPLETED / REVIEW_REQUIRED, 1 rule, 198s",
+      "postF1Status": "REVIEW_REQUIRED",
+      "postF1Outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 233146,
+      "toolCalls": 2,
+      "inputTokens": 20907,
+      "outputTokens": 17606,
+      "exactCostUsd": 0.00729547,
+      "costStatus": "EXACT",
+      "ruleCount": 1,
+      "rules": [
+        {
+          "index": 0,
+          "sourceSection": "7.2(g)",
+          "operativeCitation": "§7.2(g)",
+          "numericValues": [
+            {
+              "value": "$50,000,000",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE",
+                "SIBLING_CONTEXT"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            },
+            {
+              "value": "3.0%",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE",
+                "SIBLING_CONTEXT"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            }
+          ]
+        }
+      ],
+      "numericAssertions": 2,
+      "contextualEvidenceTypes": [
+        "OPERATIVE_SOURCE",
+        "PARENT_SCOPE",
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "DEFINITION",
+        "DEFINITION_DEPENDENCY",
+        "CROSS_REFERENCE",
+        "AMENDMENT_LEAD"
+      ],
+      "operativeSourceNodes": [
+        "structural-node:b6adf7a479f08673c77041ea"
+      ],
+      "operativeSourceIsAnchorOnly": true,
+      "linkedParentStillPresent": true,
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9156,
+      "attributionViolations": [],
+      "contextRetentionViolations": 0
+    },
+    {
+      "cohort": "D",
+      "slot": "7.2(h)",
+      "ref": "7.2(h)",
+      "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+      "preR1OperativeChars": 9312,
+      "postR1OperativeChars": 467,
+      "preF1Result": "COMPLETED / REVIEW_REQUIRED, 1 rule, 267s",
+      "postF1Status": "REVIEW_REQUIRED",
+      "postF1Outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 201672,
+      "toolCalls": 2,
+      "inputTokens": 22803,
+      "outputTokens": 16627,
+      "exactCostUsd": 0.00728741,
+      "costStatus": "EXACT",
+      "ruleCount": 1,
+      "rules": [
+        {
+          "index": 0,
+          "sourceSection": "7.2(h)",
+          "operativeCitation": "§7.2(h)",
+          "numericValues": [
+            {
+              "value": "$50,000,000",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            },
+            {
+              "value": "3.0%",
+              "channels": [
+                "ANCHOR_OPERATIVE",
+                "PARENT_SCOPE"
+              ],
+              "support": "ANCHOR_OPERATIVE"
+            }
+          ]
+        }
+      ],
+      "numericAssertions": 2,
+      "contextualEvidenceTypes": [
+        "OPERATIVE_SOURCE",
+        "PARENT_SCOPE",
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "DEFINITION",
+        "DEFINITION_DEPENDENCY",
+        "CROSS_REFERENCE",
+        "AMENDMENT_LEAD"
+      ],
+      "operativeSourceNodes": [
+        "structural-node:972a2d1d3d741a39cee308ab"
+      ],
+      "operativeSourceIsAnchorOnly": true,
+      "linkedParentStillPresent": true,
+      "parentScopeChars": 8843,
+      "gate2InputChars": 9311,
+      "attributionViolations": [],
+      "contextRetentionViolations": 0
+    }
+  ]
+}

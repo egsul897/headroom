@@ -1,0 +1,60 @@
+{
+  "label": "postclosure",
+  "generatedBy": "scripts/p3-conmed-pilot/bundle-typing-audit.ts",
+  "modelCalls": 0,
+  "totalCandidates": 163,
+  "dualKeyCandidates": 67,
+  "candidatesWithMultipleOperativeSource": 0,
+  "offenders": [],
+  "operativeSourceItems": 161,
+  "parentScopeItems": 167,
+  "siblingContextItems": 0,
+  "itemTypeTotals": {
+    "OPERATIVE_SOURCE": 161,
+    "PARENT_SCOPE": 167,
+    "CHILD_RULE": 350,
+    "PROVISO": 22,
+    "UNVERIFIED_SIBLING_SIGNAL": 313,
+    "DEFINITION": 665,
+    "DEFINITION_DEPENDENCY": 1553,
+    "CROSS_REFERENCE": 295,
+    "AMENDMENT_LEAD": 76,
+    "SHARED_CAP": 1,
+    "CALCULATION_PROVISION": 4
+  },
+  "contextLossCases": 0,
+  "contextLossDetail": [],
+  "foreignEconomicItems": {
+    "operativeChannel": 0,
+    "contextualChannel": 819
+  },
+  "case_7_2_k_i": {
+    "operativeText": "(i) the requirements of Section 6.9 are satisfied and ",
+    "items": [
+      {
+        "type": "OPERATIVE_SOURCE",
+        "sectionRef": "7.2(k)(i)",
+        "chars": 54,
+        "sourceNode": "structural-node:a3ebda5616de1efe2a748229",
+        "has150M": false,
+        "has10pct": false
+      },
+      {
+        "type": "PARENT_SCOPE",
+        "sectionRef": "7.2",
+        "chars": 8843,
+        "sourceNode": "structural-node:a9b723686e58119d7cd922a5",
+        "has150M": true,
+        "has10pct": true
+      },
+      {
+        "type": "PARENT_SCOPE",
+        "sectionRef": "7.2(k)",
+        "chars": 267,
+        "sourceNode": "structural-node:10fcf067cf545b21e045f3bd",
+        "has150M": false,
+        "has10pct": false
+      }
+    ]
+  }
+}
