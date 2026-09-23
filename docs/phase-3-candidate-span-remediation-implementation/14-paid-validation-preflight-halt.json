@@ -78,11 +78,34 @@
     "D"
   ],
   "whatIsUnaffected": "The implementation itself is intact and every deterministic property it claims re-verified in this session. Only the paid execution evidence is outstanding.",
-  "unblockStep": "Set AI_GATEWAY_API_KEY in the cloud environment's settings (environment menu in the session title bar -> Edit -> API credentials, or as an environment variable of that exact name). A new session picks it up. Then re-run this mission unchanged; pre-flight 1-9 are expected to reproduce identically and 10 becomes the only new evidence needed before Cohort A.",
+  "unblockStep": "Set AI_GATEWAY_API_KEY in the cloud environment's settings (environment menu in the session title bar -> Edit -> API credentials, or an environment variable of that exact name), then START A NEW SESSION and re-issue the validation mission. A session already running when the secret is added does not inherit it.",
   "hashesAtStop": {
     "lib/contract-model/analysis/orchestrator.ts": "a8c242f9d3b46ce2",
     "lib/contract-model/compiler/candidate-span.ts": "f0661d32ff345bdc",
     "lib/contract-model/compiler/semantic-verification/verify.ts": "ba5e30777da76a6e",
     "scripts/p3-conmed-pilot/pipeline.ts": "b520989c1824da95"
-  }
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "startingSha": "5a901886b621a71fd352ee0446ec48fa4c9a34d5",
+      "result": "HALTED at pre-flight 10",
+      "paidCalls": 0,
+      "spendUsd": 0
+    },
+    {
+      "attempt": 2,
+      "startingSha": "ad04dc2cea5ce615777ddfab747eb3091163ac4b",
+      "instruction": "restore and use AI_GATEWAY_API_KEY, then resume",
+      "result": "HALTED at pre-flight 10 again",
+      "paidCalls": 0,
+      "spendUsd": 0,
+      "preFlight1to9": "all reproduced exactly - 505,889->104,459; 9,045->200, 9,621->776, 8,899->54, 9,300->455; verifier window 9,179->2,185; coverage hash d95518f2c97732b06a81b7dba817d9fe; 14/14 controls",
+      "preFlight10a_smallHealthCheck": "not dispatched - no credential present",
+      "preFlight10b_workloadShapedCompilerPathCheck": "not dispatched - no credential present",
+      "whyTheKeyCouldNotBeRestored": "The value existed only in .env.local, which is gitignored by design (never committed) and was destroyed when the session container was reclaimed. No copy exists on disk, in the repository, or in any environment variable. It is not something this session can regenerate, and searching transcripts or logs for a live credential is not an acceptable recovery route.",
+      "mostLikelyExplanationIfTheKeyWasAlreadySet": "An environment secret added in the cloud environment's settings is picked up by a NEWLY STARTED session. This session began before the change, so it would not see it even if it is now configured correctly.",
+      "shaNote": "The mission quoted ad04dc2cea5ce615777dfab747eb3091163ac4b; the actual commit is ad04dc2cea5ce615777ddfab747eb3091163ac4b (one 'd' dropped in transcription). Same commit - reconciled, not silently absorbed."
+    }
+  ]
 }
