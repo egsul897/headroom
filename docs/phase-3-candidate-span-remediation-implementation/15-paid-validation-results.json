@@ -1,0 +1,430 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/span-validation.ts",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "ceilingUsd": 0.4,
+  "halted": "COHORT_A_REGRESSION completed=7/9 attributionViolations=0",
+  "spend": {
+    "exactUsd": 0.047075,
+    "retainedUnknownTimeoutUsd": 0.0182,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 0.065275
+  },
+  "counts": {
+    "total": 9,
+    "completed": 7,
+    "timeouts": 1,
+    "providerFailures": 0,
+    "schemaFailures": 0,
+    "toolFailures": 0,
+    "other": 1,
+    "totalRules": 10
+  },
+  "byCohort": {
+    "A": {
+      "n": 9,
+      "completed": 7,
+      "rules": 10
+    },
+    "B": {
+      "n": 0,
+      "completed": 0,
+      "rules": 0
+    },
+    "C": {
+      "n": 0,
+      "completed": 0,
+      "rules": 0
+    },
+    "D": {
+      "n": 0,
+      "completed": 0,
+      "rules": 0
+    }
+  },
+  "safety": {
+    "operativeAttributionViolations": 0,
+    "candidatesWithViolations": [],
+    "contextRetentionViolations": 0,
+    "unsourcedAmounts": 3
+  },
+  "rows": [
+    {
+      "cohort": "A",
+      "slot": "7.1(a)",
+      "ref": "7.1(a)",
+      "discoveryId": "discovery-candidate:8fe38049fe62ea9e9e741511",
+      "role": "FINANCIAL_TEST",
+      "anchorChars": 712,
+      "preChangeChars": 712,
+      "dual": false,
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "rules": 1,
+      "definitions": 0,
+      "sufficiency": {
+        "PARTIAL": 1
+      },
+      "citations": [
+        "§7.1(a)"
+      ],
+      "toolCalls": 3,
+      "inputTokens": 20259,
+      "outputTokens": 9023,
+      "costUsd": 0.00497965,
+      "costStatus": "EXACT",
+      "wallClockMs": 139851,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.1",
+      "ref": "7.1",
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "role": "PROVISO",
+      "anchorChars": 3275,
+      "preChangeChars": 3275,
+      "dual": false,
+      "status": "FAILED",
+      "outcome": "OTHER_EXECUTION_FAILURE",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": 2,
+      "inputTokens": 19471,
+      "outputTokens": 8197,
+      "costUsd": 0.00466245,
+      "costStatus": "EXACT",
+      "wallClockMs": 355189,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.1(b)",
+      "ref": "7.1(b)",
+      "discoveryId": "discovery-candidate:cf15af8f5fb1f77bd861a2ac",
+      "role": "FINANCIAL_TEST",
+      "anchorChars": 1886,
+      "preChangeChars": 1886,
+      "dual": false,
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480003,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.1(c)",
+      "ref": "7.1(c)",
+      "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+      "role": "FINANCIAL_TEST",
+      "anchorChars": 234,
+      "preChangeChars": 234,
+      "dual": false,
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "rules": 1,
+      "definitions": 1,
+      "sufficiency": {
+        "COMPLETE": 1
+      },
+      "citations": [
+        "§7.1(c)"
+      ],
+      "toolCalls": 2,
+      "inputTokens": 14678,
+      "outputTokens": 4674,
+      "costUsd": 0.0031233800000000003,
+      "costStatus": "EXACT",
+      "wallClockMs": 86361,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.1(d)",
+      "ref": "7.1(d)",
+      "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+      "role": "FINANCIAL_TEST",
+      "anchorChars": 399,
+      "preChangeChars": 399,
+      "dual": false,
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "rules": 1,
+      "definitions": 4,
+      "sufficiency": {
+        "COMPLETE": 1
+      },
+      "citations": [
+        "§7.1(d)"
+      ],
+      "toolCalls": 4,
+      "inputTokens": 40211,
+      "outputTokens": 20787,
+      "costUsd": 0.01063205,
+      "costStatus": "EXACT",
+      "wallClockMs": 256262,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "$75,000,000",
+          "$200,000,000",
+          "$200,000,000,",
+          "$800,000,000",
+          "2.25%"
+        ],
+        "supportedByAnchor": [
+          "$75,000,000",
+          "$200,000,000",
+          "$200,000,000,"
+        ],
+        "violations": [],
+        "unsourced": [
+          "$800,000,000",
+          "2.25%"
+        ]
+      },
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.2(a)",
+      "ref": "7.2(a)",
+      "discoveryId": "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+      "role": "PERMISSION",
+      "anchorChars": 66,
+      "preChangeChars": 66,
+      "dual": false,
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 2,
+      "definitions": 1,
+      "sufficiency": {
+        "PARTIAL": 2
+      },
+      "citations": [
+        "§7.2(a)",
+        "§7.2"
+      ],
+      "toolCalls": 7,
+      "inputTokens": 25327,
+      "outputTokens": 11399,
+      "costUsd": 0.00625625,
+      "costStatus": "EXACT",
+      "wallClockMs": 92041,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.2(b)",
+      "ref": "7.2(b)",
+      "discoveryId": "discovery-candidate:4bfbc3dbea17aec6bb21a58a",
+      "role": "PERMISSION",
+      "anchorChars": 138,
+      "preChangeChars": 138,
+      "dual": false,
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 2,
+      "definitions": 0,
+      "sufficiency": {
+        "PARTIAL": 2
+      },
+      "citations": [
+        "§7.2(b)",
+        "§7.2(b)"
+      ],
+      "toolCalls": 0,
+      "inputTokens": 17752,
+      "outputTokens": 5503,
+      "costUsd": 0.00373854,
+      "costStatus": "EXACT",
+      "wallClockMs": 57583,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.2(e) short",
+      "ref": "7.2(e)",
+      "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "role": "REFINANCING_PERMISSION",
+      "anchorChars": 200,
+      "preChangeChars": 200,
+      "dual": false,
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 2,
+      "definitions": 0,
+      "sufficiency": {
+        "PARTIAL": 2
+      },
+      "citations": [
+        "§7.2(e)",
+        "§7.2(e)"
+      ],
+      "toolCalls": 3,
+      "inputTokens": 38911,
+      "outputTokens": 19689,
+      "costUsd": 0.01017757,
+      "costStatus": "EXACT",
+      "wallClockMs": 231300,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true
+    },
+    {
+      "cohort": "A",
+      "slot": "7.2(f)",
+      "ref": "7.2(f)",
+      "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+      "role": "PERMISSION",
+      "anchorChars": 149,
+      "preChangeChars": 149,
+      "dual": false,
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 1,
+      "definitions": 1,
+      "sufficiency": {
+        "COMPLETE": 1
+      },
+      "citations": [
+        "§7.2(f)"
+      ],
+      "toolCalls": 2,
+      "inputTokens": 14759,
+      "outputTokens": 6102,
+      "costUsd": 0.00350519,
+      "costStatus": "EXACT",
+      "wallClockMs": 69697,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "100%"
+        ],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": [
+          "100%"
+        ]
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true
+    }
+  ]
+}
