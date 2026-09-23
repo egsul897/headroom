@@ -1,0 +1,66 @@
+{
+  "primaryRootCause": "MODEL_HALLUCINATION_NOT_CAUGHT",
+  "why": "Every alternative origin is ruled out deterministically. No production path can generate 100%: normalize.ts passes PERCENT through verbatim with no default or scaling, the wire schema makes numeric fields optional, UNLIMITED_CAPACITY exists for exactly this uncapped shape, and the prompt and few-shots contain no 100%. The value is absent from the anchor and from all nine context items - the bare token '100' appears nowhere in the candidate's evidence. What remains is an assertion the model produced, which nothing downstream examined.",
+  "confidence": "HIGH on the elimination of deterministic origins; MEDIUM on the model-origin attribution itself, because the raw response was not persisted and cannot be quoted. I am not claiming to have seen the model emit it.",
+  "secondaryRootCauses": [
+    {
+      "cause": "VERIFIER_NUMERIC_GROUNDING_GAP",
+      "detail": "The numeric-grounding gate (reconciliation.ts findIrOnlyNumericItems) inventories only structured AMOUNT | PERCENT | RATIO nodes. A number in a free-text field is never inventoried, so it is never reconciled. Proven by probe: the prose shape produces no IR_ONLY finding."
+    },
+    {
+      "cause": "ACCOUNTABILITY_CREDIT_GAP",
+      "detail": "Sufficiency is declared per RULE, not per numeric field. 7.2(f)'s rule reported sufficiency COMPLETE while the unit was REVIEW_REQUIRED for two unrelated reasons, so nothing in the record says 'this number is ungrounded'."
+    },
+    {
+      "cause": "HARNESS_EVIDENCE_GAP",
+      "detail": "My own validation runner persisted only summary fields, discarding rawModelOutput and the tool log that the compiler result already carried. That is why the first stage cannot be pinned. A one-line change to the runner would have settled this mission definitively."
+    }
+  ],
+  "notTheCause": [
+    "NORMALIZER_INVENTED_VALUE - no such transform exists on the compile path",
+    "PROMPT_SCHEMA_FORCED_VALUE - numeric fields are optional and UNLIMITED_CAPACITY is available",
+    "NOT_ACTUALLY_UNSUPPORTED - the token '100' is absent from every channel",
+    "the candidate-span defect - 7.2(f) is single-key, its operative text was byte-identical before and after R1, and it has no linked parent"
+  ],
+  "remediationOptions": [
+    {
+      "id": "A",
+      "name": "Numeric-bearing IR fields require source-backed evidence or are nulled / marked unresolved",
+      "falseCreditProtection": "HIGHEST - an ungrounded number cannot survive in the IR at all.",
+      "falseNegativeRisk": "HIGH - a legitimate value drawn from an authenticated definition or cross-reference would be destroyed unless the evidence check covers every retrieval channel, which is exactly where 7.1(d)'s $800,000,000 lives. Nulling loses information a reviewer needs.",
+      "downstreamImpact": "Large - changes IR shape and what the runtime sees.",
+      "provenance": "Requires per-value provenance to know which channel supported it.",
+      "complexity": "HIGH"
+    },
+    {
+      "id": "B",
+      "name": "Verifier explicitly reconciles every material numeric assertion, including prose, against operative + authenticated context",
+      "falseCreditProtection": "HIGH - closes the measured gap: prose numerics become visible to reconciliation.",
+      "falseNegativeRisk": "LOW-MEDIUM - risk is noise, not loss: prose numbers legitimately restating a supported value would need matching. Review volume rises.",
+      "downstreamImpact": "None - verification-side only, no IR shape change.",
+      "provenance": "Unchanged.",
+      "complexity": "MEDIUM - extend the IR inventory to scan free-text fields and route hits through findIrOnlyNumericItems."
+    },
+    {
+      "id": "C",
+      "name": "Compiler schema permits explicit UNKNOWN / null rather than forcing numeric completion",
+      "falseCreditProtection": "LOW here - the schema ALREADY permits this. Numeric wire fields are optional and UNLIMITED_CAPACITY exists. Nothing forced the value.",
+      "falseNegativeRisk": "n/a",
+      "downstreamImpact": "n/a",
+      "provenance": "n/a",
+      "complexity": "n/a - measured as already satisfied; listed only to record that it is not the fix."
+    },
+    {
+      "id": "D",
+      "name": "An unsupported numeric forces rule-level REVIEW_REQUIRED and blocks executable downstream use",
+      "falseCreditProtection": "MEDIUM on its own, HIGH combined with B - B detects, D contains.",
+      "falseNegativeRisk": "LOW - it gates rather than deletes, so nothing is lost.",
+      "downstreamImpact": "Significant and independently valuable: the Phase-4 runtime currently has ZERO references to sufficiency or verification state, so today an ungrounded structured number would evaluate as a normal executable value. D is the only option that closes that.",
+      "provenance": "Needs a per-rule grounding flag the runtime can read.",
+      "complexity": "MEDIUM-HIGH - touches the Phase-4 boundary, which is frozen in this programme."
+    }
+  ],
+  "recommendedFix": "B first, then D. B is verification-side only, closes the measured gap (prose numerics invisible to reconciliation), changes no IR shape and carries the lowest false-negative risk. D is the larger and more important finding - REVIEW_REQUIRED does not currently stop anything downstream - but it touches the Phase-4 boundary and deserves its own mission rather than being folded into a numeric-grounding fix. A is rejected: nulling would destroy legitimately context-supported values like 7.1(d)'s. C is already satisfied.",
+  "falseCreditRiskOfRecommendedFix": "LOW. B only adds detections; it cannot create credit. It reduces the chance an ungrounded number is presented as a populated term.",
+  "falseNegativeRiskOfRecommendedFix": "LOW-MEDIUM. B may raise review volume by flagging prose numbers that merely restate a supported value; mitigated by matching prose hits against the same authenticated-evidence set the structured path already uses, so a value present in an authenticated definition is not re-flagged."
+}
