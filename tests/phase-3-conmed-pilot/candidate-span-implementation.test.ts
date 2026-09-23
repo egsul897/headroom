@@ -237,7 +237,11 @@ describe("R3 — verifier Gate-2 condition safety (§3C, §6)", () => {
       const scopes = (fixture.bundles.get(c.discoveryId)?.items ?? []).filter((i) => i.type === "PARENT_SCOPE");
       return scopes.some((i) => CONDITION_MARKERS.some((m) => i.excerptText.toLowerCase().includes(m) && !anchor.includes(m)));
     });
-    expect(parentOnly.length).toBe(15); // recorded RED in 02-red-baseline.json
+    // 15 before F1, when PARENT_SCOPE carried only the linked node's 107-char chapeau; 65 after it,
+    // because F1 retypes the linked node's full subtree as PARENT_SCOPE instead of OPERATIVE_SOURCE.
+    // The count is a consequence of how much parent text is in scope, so the invariant asserted here
+    // is that EVERY such candidate's condition language reaches Gate 2 - not a frozen number.
+    expect(parentOnly.length).toBeGreaterThanOrEqual(15);
     for (const c of parentOnly) {
       const scopes = (fixture.bundles.get(c.discoveryId)?.items ?? []).filter((i) => i.type === "PARENT_SCOPE");
       const built = buildConditionSuspicionInput(inputWith(operativeSourceTextFor(c, fixture.index), scopes as ContextItem[]));

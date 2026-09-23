@@ -22,7 +22,7 @@ import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { createRetrievalState, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
-import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext } from "./structural-context";
+import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext } from "./structural-context";
 import { retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
@@ -159,9 +159,18 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
     return finalize(input, state, documentId, start);
   }
 
-  // Any additional structural nodes the discovery candidate itself already spans (Pass C neighborhood expansion) are retrieved as further operative source items, never dropped.
+  // F1 - LINKED CONTEXT SOURCE-TYPING. The nodes after the anchor are Pass C's neighborhood LINKS
+  // (discovery/pass-c-neighborhood.ts: the section an exception/basket/proviso/condition modifies),
+  // not further operative source. Retrieving them as OPERATIVE_SOURCE told the compiler that the
+  // whole containing section was this candidate's own operative text - the same mistake the
+  // candidate-span contract (compiler/candidate-span.ts) fixed one layer up, and the one that let a
+  // 54-character clause emit its parent's cap as though it owned it. They are retrieved here with
+  // their text and citation unchanged, under the contextual type that describes what they actually
+  // are: PARENT_SCOPE for a containing node, SIBLING_CONTEXT for a linked neighbour that is not an
+  // ancestor. Nothing is dropped; only the ownership label changes.
+  const ancestorIds = new Set(access.index.getAncestors(primaryNodeId).map((n) => n.nodeId));
   for (const extraNodeId of candidate.structuralNodeIds.slice(1)) {
-    retrieveOperativeSource(state, access.index, documentId, extraNodeId);
+    retrieveLinkedStructuralContext(state, access.index, documentId, extraNodeId, operativeItem.itemId, ancestorIds.has(extraNodeId));
   }
 
   retrieveParentScope(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
