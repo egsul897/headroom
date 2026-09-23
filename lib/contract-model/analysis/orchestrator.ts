@@ -59,6 +59,7 @@
  * its siblings, so one malformed instrument's pipeline never discards
  * already-computed, unrelated valid claims for the rest of the package.
  */
+import { operativeSourceTextFor } from "../compiler/candidate-span";
 import { prisma } from "../../prisma";
 import { getDocumentStorageProvider } from "../../document-storage";
 import { parseDocument } from "../../extraction/parse";
@@ -401,21 +402,18 @@ async function analyzeInstrument(params: {
   const eligibleCandidates = allCandidates.filter((c) => isEligibleForSemanticCompilation(c).eligible);
   const compilationCandidates: PackageCompilationCandidate[] = eligibleCandidates.map((candidate) => {
     const bundle = bundlesByDiscoveryId.get(candidate.discoveryId)!;
-    // NOTE (disclosed minimal integration fix - see this file's own header
-    // comment on "genuine integration-blocking bug found while wiring"):
-    // the frozen reference run (scripts/phase-3f-first-blind-run.ts) builds
-    // this exact same operativeSourceText from `candidate.structuralNodeKeys`
-    // (the label-shaped, NOT occurrence-safe, `${documentId}::${sectionRef}`
-    // key - see DiscoveredCandidate's own @deprecated comment on that
-    // field). StructuralIndex.getNodeText looks its argument up via a real
-    // node-id map (structural-index.ts's own `nodesById.get(nodeId)`), which
-    // a label-shaped key never matches, so that line silently returns ""
-    // for every candidate - the compiler would receive empty operative
-    // source text. This orchestrator uses `structuralNodeIds` instead - the
-    // real, occurrence-safe counterpart DiscoveredCandidate's own comment
-    // names as the field to use for identity/lookup - which is what
-    // getNodeText actually requires.
-    const operativeSourceText = candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\n\n");
+    // CANDIDATE-SPAN CONTRACT (compiler/candidate-span.ts): the operative source is the ANCHOR
+    // node's own text. Any further entry in `structuralNodeIds` is Pass C's neighborhood LINK -
+    // the section an exception/basket/proviso/condition modifies - and reaches the compiler as
+    // typed PARENT_SCOPE context via `bundle`, never as this candidate's own operative text.
+    // `candidate.structuralNodeIds` itself is untouched, so coverage accounting, provenance and
+    // the supersession lineage below all keep receiving exactly what they received before.
+    //
+    // (The node-ID lookup discipline this line has always carried still applies: getNodeText
+    // resolves through structural-index's real `nodesById` map, so the occurrence-safe
+    // `structuralNodeIds` is used here, never the label-shaped, @deprecated `structuralNodeKeys`
+    // - a label-shaped key never matches and would silently yield empty source text.)
+    const operativeSourceText = operativeSourceTextFor(candidate, index);
     // Phase 3F.1.6.RX orchestrator-integration fix (paired with the
     // supersessionIndex wiring above): operativeLineage was previously
     // hardcoded null, silently disabling normalize.ts's own

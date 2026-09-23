@@ -1,0 +1,2543 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/red-baseline.ts",
+  "modelCalls": 0,
+  "contractUnderTest": "CURRENT - operativeSourceText = every structuralNodeId's DESCENDANTS text, joined",
+  "A_parentTextContamination": {
+    "population": 137,
+    "dualKey": 67,
+    "carryingTextOutsideTheirAnchorSpan": 67,
+    "dualKeyCarryingForeignText": 67,
+    "singleKeyCarryingForeignText": 0,
+    "totalCharsOutsideAnchorSpans": 401430,
+    "verdict": "RED - every dual-key candidate's operative window extends beyond its own anchor node."
+  },
+  "B_manufacturedFocusSpans": {
+    "long_7_2_e": {
+      "ref": "7.2(e)",
+      "anchorChars": 200,
+      "currentOperativeChars": 9045,
+      "appendedChars": 8845,
+      "linkedRefs": [
+        "7.2"
+      ]
+    },
+    "long_7_2_k": {
+      "ref": "7.2(k)",
+      "anchorChars": 776,
+      "currentOperativeChars": 9621,
+      "appendedChars": 8845,
+      "linkedRefs": [
+        "7.2"
+      ]
+    },
+    "k_i": {
+      "ref": "7.2(k)(i)",
+      "anchorChars": 54,
+      "currentOperativeChars": 8899,
+      "appendedChars": 8845,
+      "linkedRefs": [
+        "7.2"
+      ]
+    },
+    "k_ii": {
+      "ref": "7.2(k)(ii)",
+      "anchorChars": 455,
+      "currentOperativeChars": 9300,
+      "appendedChars": 8845,
+      "linkedRefs": [
+        "7.2"
+      ]
+    }
+  },
+  "C_gate2ParentOnlyConditions": {
+    "dualKeyCandidatesWithAParentOnlyConditionMarker": 15,
+    "ofDualKey": 67,
+    "examples": [
+      {
+        "ref": "7.2(k)(i)",
+        "role": "CONDITION",
+        "anchorChars": 54,
+        "parentScopeRefs": [
+          "7.2",
+          "7.2(k)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "so long as",
+          "no default",
+          "shall have occurred and be continuing",
+          "at the time of"
+        ]
+      },
+      {
+        "ref": "7.2(k)(ii)",
+        "role": "BASKET",
+        "anchorChars": 455,
+        "parentScopeRefs": [
+          "7.2",
+          "7.2(k)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "so long as",
+          "no default",
+          "shall have occurred and be continuing",
+          "at the time of"
+        ]
+      },
+      {
+        "ref": "7.3(l)(i)",
+        "role": "CONDITION",
+        "anchorChars": 932,
+        "parentScopeRefs": [
+          "7.3",
+          "7.3(l)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "provided that"
+        ]
+      },
+      {
+        "ref": "7.3(m)(i)",
+        "role": "BASKET",
+        "anchorChars": 86,
+        "parentScopeRefs": [
+          "7.3",
+          "7.3(m)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "so long as"
+        ]
+      },
+      {
+        "ref": "7.3(m)(ii)",
+        "role": "BASKET",
+        "anchorChars": 299,
+        "parentScopeRefs": [
+          "7.3",
+          "7.3(m)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "so long as"
+        ]
+      },
+      {
+        "ref": "7.3(m)(ii)(A)",
+        "role": "BASKET",
+        "anchorChars": 20,
+        "parentScopeRefs": [
+          "7.3",
+          "7.3(m)",
+          "7.3(m)(ii)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "so long as"
+        ]
+      },
+      {
+        "ref": "7.3(m)(ii)(B)",
+        "role": "BASKET",
+        "anchorChars": 90,
+        "parentScopeRefs": [
+          "7.3",
+          "7.3(m)",
+          "7.3(m)(ii)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "so long as"
+        ]
+      },
+      {
+        "ref": "7.4(c)(1)",
+        "role": "CONDITION",
+        "anchorChars": 144,
+        "parentScopeRefs": [
+          "7.4",
+          "7.4(c)"
+        ],
+        "parentOnlyConditionMarkers": [
+          "provided that"
+        ]
+      }
+    ],
+    "verdict": "Each of these carries a condition marker that exists ONLY in its parent chapeau. Today Gate 2 sees it because the whole parent is inside operativeSourceText. After R1 it would not - which is exactly why R3 must feed Gate 2 the PARENT_SCOPE excerpts."
+  },
+  "rows": [
+    {
+      "discoveryId": "discovery-candidate:8fe38049fe62ea9e9e741511",
+      "ref": "7.1(a)",
+      "role": "FINANCIAL_TEST",
+      "dual": false,
+      "anchorChars": 712,
+      "currentOperativeChars": 712,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeChars": 44,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "ref": "7.1",
+      "role": "PROVISO",
+      "dual": false,
+      "anchorChars": 3275,
+      "currentOperativeChars": 3275,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:cf15af8f5fb1f77bd861a2ac",
+      "ref": "7.1(b)",
+      "role": "FINANCIAL_TEST",
+      "dual": false,
+      "anchorChars": 1886,
+      "currentOperativeChars": 1886,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeChars": 44,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+      "ref": "7.1(c)",
+      "role": "FINANCIAL_TEST",
+      "dual": false,
+      "anchorChars": 234,
+      "currentOperativeChars": 234,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeChars": 44,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+      "ref": "7.1(d)",
+      "role": "FINANCIAL_TEST",
+      "dual": false,
+      "anchorChars": 399,
+      "currentOperativeChars": 399,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeChars": 44,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "ref": "7.2",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 8843,
+      "currentOperativeChars": 8843,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+      "ref": "7.2(a)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 66,
+      "currentOperativeChars": 66,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:4bfbc3dbea17aec6bb21a58a",
+      "ref": "7.2(b)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 138,
+      "currentOperativeChars": 138,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "ref": "7.2(c)",
+      "role": "RATIO_BASED_PERMISSION",
+      "dual": false,
+      "anchorChars": 529,
+      "currentOperativeChars": 529,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "ref": "7.2(d)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 250,
+      "currentOperativeChars": 9095,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:62512247bce898548b6f9b63",
+      "ref": "7.2(e)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 200,
+      "currentOperativeChars": 9045,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "ref": "7.2(e)",
+      "role": "REFINANCING_PERMISSION",
+      "dual": false,
+      "anchorChars": 200,
+      "currentOperativeChars": 200,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+      "ref": "7.2(f)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 149,
+      "currentOperativeChars": 149,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:7b3977f0fa58ecd5c864b1fc",
+      "ref": "7.2(g)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 312,
+      "currentOperativeChars": 9157,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+      "ref": "7.2(h)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 467,
+      "currentOperativeChars": 9312,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:7feb9e228591558f958bb0d1",
+      "ref": "7.2(i)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 319,
+      "currentOperativeChars": 9164,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:06a4e449333717a1dc8bbc58",
+      "ref": "7.2(j)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 191,
+      "currentOperativeChars": 191,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:28d7bafd7a1fedde253333ef",
+      "ref": "7.2(k)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 776,
+      "currentOperativeChars": 776,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "ref": "7.2(k)(i)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 54,
+      "currentOperativeChars": 8899,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(k)"
+      ],
+      "parentScopeChars": 374,
+      "parentOnlyConditionMarkers": [
+        "so long as",
+        "no default",
+        "shall have occurred and be continuing",
+        "at the time of"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+      "ref": "7.2(k)(ii)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 455,
+      "currentOperativeChars": 9300,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(k)"
+      ],
+      "parentScopeChars": 374,
+      "parentOnlyConditionMarkers": [
+        "so long as",
+        "no default",
+        "shall have occurred and be continuing",
+        "at the time of"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22",
+      "ref": "7.2(k)",
+      "role": "PROVISO",
+      "dual": true,
+      "anchorChars": 776,
+      "currentOperativeChars": 9621,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:0cdfa0a5a2266bd5aec20849",
+      "ref": "7.2(l)(i)",
+      "role": "RATIO_BASED_PERMISSION",
+      "dual": false,
+      "anchorChars": 649,
+      "currentOperativeChars": 649,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(l)"
+      ],
+      "parentScopeChars": 111,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:2fa8e7f8da38b86c6b75629d",
+      "ref": "7.2(l)(ii)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 293,
+      "currentOperativeChars": 293,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(l)"
+      ],
+      "parentScopeChars": 111,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:3d233f1364657aeffc32c4a7",
+      "ref": "7.2(m)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 293,
+      "currentOperativeChars": 9138,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:6da1a256e226a50878be09d8",
+      "ref": "7.2(n)(i)",
+      "role": "RATIO_BASED_PERMISSION",
+      "dual": false,
+      "anchorChars": 497,
+      "currentOperativeChars": 497,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(n)"
+      ],
+      "parentScopeChars": 111,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:63cca6f524f3c06639a35a7b",
+      "ref": "7.2(n)(ii)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 375,
+      "currentOperativeChars": 375,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(n)"
+      ],
+      "parentScopeChars": 111,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:4f89c3b081ac7eb79d270167",
+      "ref": "7.2(o)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 252,
+      "currentOperativeChars": 9097,
+      "charsOutsideAnchorSpan": 8845,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:cdccb3650edb9287f09fb2a9",
+      "ref": "7.2(p)(i)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 634,
+      "currentOperativeChars": 634,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(p)"
+      ],
+      "parentScopeChars": 111,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:4db3011a2619a9dd89a19330",
+      "ref": "7.2(r)",
+      "role": "REFINANCING_PERMISSION",
+      "dual": false,
+      "anchorChars": 96,
+      "currentOperativeChars": 96,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:468b10c82bc07efa732354ac",
+      "ref": "7.2(s)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 2222,
+      "currentOperativeChars": 2222,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeChars": 107,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:5b0cf887a4cf4a3b5caa1c81",
+      "ref": "7.2(s)(i)",
+      "role": "FINANCIAL_TEST",
+      "dual": false,
+      "anchorChars": 2068,
+      "currentOperativeChars": 2068,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(s)"
+      ],
+      "parentScopeChars": 261,
+      "parentOnlyConditionMarkers": [
+        "so long as"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:08919c086272421431dd7aed",
+      "ref": "7.3",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 7053,
+      "currentOperativeChars": 7053,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:7eb2dc07250e5d73988ceed4",
+      "ref": "7.3(a)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 300,
+      "currentOperativeChars": 7355,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:aa625ee78b68bd09e0932fea",
+      "ref": "7.3(b)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 391,
+      "currentOperativeChars": 7446,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:db29c9b94a34be2eb9d38885",
+      "ref": "7.3(c)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 128,
+      "currentOperativeChars": 7183,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:3eb1e00eb8df475c0d2697c2",
+      "ref": "7.3(d)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 255,
+      "currentOperativeChars": 7310,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:c615523fa38fd789d31e9657",
+      "ref": "7.3(e)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 385,
+      "currentOperativeChars": 7440,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:0a2f4f23dae2b83c3e6c4ed0",
+      "ref": "7.3(f)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 329,
+      "currentOperativeChars": 7384,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:082c80836268c7277cc39c18",
+      "ref": "7.3(g)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 958,
+      "currentOperativeChars": 8013,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:4fc1d579b699d89ba0428259",
+      "ref": "7.3(g)(i)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 111,
+      "currentOperativeChars": 7166,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(g)"
+      ],
+      "parentScopeChars": 380,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:f99359a26388274479373cdb",
+      "ref": "7.3(g)(ii)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 642,
+      "currentOperativeChars": 7697,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(g)"
+      ],
+      "parentScopeChars": 380,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:2983e5f23dbd949b7b58db01",
+      "ref": "7.3(g)(ii)(A)",
+      "role": "PROVISO",
+      "dual": true,
+      "anchorChars": 150,
+      "currentOperativeChars": 7205,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(g)",
+        "7.3(g)(ii)"
+      ],
+      "parentScopeChars": 611,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:038eb0cd010fc21f941c2555",
+      "ref": "7.3(g)(ii)(B)",
+      "role": "PROVISO",
+      "dual": true,
+      "anchorChars": 261,
+      "currentOperativeChars": 7316,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(g)",
+        "7.3(g)(ii)"
+      ],
+      "parentScopeChars": 611,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:058231fd0222f19b20b9d181",
+      "ref": "7.3(h)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 54,
+      "currentOperativeChars": 7109,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:4c5fdf9ee2015e2d920b416e",
+      "ref": "7.3(i)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 193,
+      "currentOperativeChars": 7248,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:e48d5bf75208a61f8260e190",
+      "ref": "7.3(j)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 216,
+      "currentOperativeChars": 7271,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:c059bb56a36b1af78f5bbe23",
+      "ref": "7.3(k)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 251,
+      "currentOperativeChars": 7306,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:92a453a94fb79b96795a0081",
+      "ref": "7.3(l)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 1271,
+      "currentOperativeChars": 8326,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:87c0370dad1da9b0c9941d1c",
+      "ref": "7.3(l)(i)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 932,
+      "currentOperativeChars": 7987,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(l)"
+      ],
+      "parentScopeChars": 514,
+      "parentOnlyConditionMarkers": [
+        "provided that"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:b5bb07b092f9863985f89812",
+      "ref": "7.3(m)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 458,
+      "currentOperativeChars": 7513,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:ac0b4888228d3f32e7123d6b",
+      "ref": "7.3(m)(i)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 86,
+      "currentOperativeChars": 7141,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(m)"
+      ],
+      "parentScopeChars": 248,
+      "parentOnlyConditionMarkers": [
+        "so long as"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:416e6e08da5964e403f8d78b",
+      "ref": "7.3(m)(ii)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 299,
+      "currentOperativeChars": 7354,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(m)"
+      ],
+      "parentScopeChars": 248,
+      "parentOnlyConditionMarkers": [
+        "so long as"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:998b06bfc970aee50608d465",
+      "ref": "7.3(m)(ii)(A)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 20,
+      "currentOperativeChars": 7075,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(m)",
+        "7.3(m)(ii)"
+      ],
+      "parentScopeChars": 437,
+      "parentOnlyConditionMarkers": [
+        "so long as"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:87b494be0746c3d27aa4d2db",
+      "ref": "7.3(m)(ii)(B)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 90,
+      "currentOperativeChars": 7145,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3",
+        "7.3(m)",
+        "7.3(m)(ii)"
+      ],
+      "parentScopeChars": 437,
+      "parentOnlyConditionMarkers": [
+        "so long as"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:6382a89b88aee52433a287a9",
+      "ref": "7.3(n)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 143,
+      "currentOperativeChars": 7198,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:d18b92bda1f7a6b6b03245bf",
+      "ref": "7.3(o)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 291,
+      "currentOperativeChars": 7346,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:d743c01b399ff5f9bd439df9",
+      "ref": "7.3(p)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 1255,
+      "currentOperativeChars": 8310,
+      "charsOutsideAnchorSpan": 7055,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.3"
+      ],
+      "parentScopeRefs": [
+        "7.3"
+      ],
+      "parentScopeChars": 175,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:01215421a15b014f020e2d41",
+      "ref": "7.4",
+      "role": "CONDITION",
+      "dual": false,
+      "anchorChars": 5980,
+      "currentOperativeChars": 5980,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:7394f8406279afd41fc8210b",
+      "ref": "7.4(a)(i)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 375,
+      "currentOperativeChars": 375,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.4",
+        "7.4(a)"
+      ],
+      "parentScopeChars": 311,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:ee066977a88258cd6cfcd217",
+      "ref": "7.4(a)(ii)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 3899,
+      "currentOperativeChars": 3899,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.4",
+        "7.4(a)"
+      ],
+      "parentScopeChars": 311,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:90d9d73e1fda41693532da4a",
+      "ref": "7.4(a)(iii)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 0,
+      "currentOperativeChars": 0,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:179a1f3046d17abc490af6b9",
+      "ref": "7.4(a)(iv)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 0,
+      "currentOperativeChars": 0,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:3fa3730524870bb58ef593a4",
+      "ref": "7.4(b)(i)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 248,
+      "currentOperativeChars": 248,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.4",
+        "7.4(b)"
+      ],
+      "parentScopeChars": 311,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:5bc35e5a4b020669b235c00a",
+      "ref": "7.4(b)(ii)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 301,
+      "currentOperativeChars": 301,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.4",
+        "7.4(b)"
+      ],
+      "parentScopeChars": 311,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:0ccd597ff16ac8d7809b19e5",
+      "ref": "7.4(c)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 798,
+      "currentOperativeChars": 798,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.4"
+      ],
+      "parentScopeChars": 307,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:2935113412c51d5268d5b0ca",
+      "ref": "7.4(c)(1)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 144,
+      "currentOperativeChars": 6126,
+      "charsOutsideAnchorSpan": 5982,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.4"
+      ],
+      "parentScopeRefs": [
+        "7.4",
+        "7.4(c)"
+      ],
+      "parentScopeChars": 425,
+      "parentOnlyConditionMarkers": [
+        "provided that"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:420b56c046442b528b156245",
+      "ref": "7.4(d)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 44,
+      "currentOperativeChars": 6026,
+      "charsOutsideAnchorSpan": 5982,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.4"
+      ],
+      "parentScopeRefs": [
+        "7.4"
+      ],
+      "parentScopeChars": 307,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:192f0f846ef50bc2eb957eb6",
+      "ref": "7.5",
+      "role": "EXCEPTION",
+      "dual": false,
+      "anchorChars": 4658,
+      "currentOperativeChars": 4658,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:baca43714b8502cc9c596c23",
+      "ref": "7.5(a)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 89,
+      "currentOperativeChars": 4749,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:c71e3fc24ba69a95fb59dd41",
+      "ref": "7.5(b)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 83,
+      "currentOperativeChars": 4743,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:65062d82436b8dbda43a66be",
+      "ref": "7.5(c)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 46,
+      "currentOperativeChars": 4706,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:8c32e0a68dc5b7267f9d2152",
+      "ref": "7.5(d)(i)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 230,
+      "currentOperativeChars": 4890,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5",
+        "7.5(d)"
+      ],
+      "parentScopeChars": 343,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:15cd009747aa780609455c48",
+      "ref": "7.5(e)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 168,
+      "currentOperativeChars": 4828,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:8507d3f28616a4f0af9f74b0",
+      "ref": "7.5(f)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 1618,
+      "currentOperativeChars": 6278,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:6be98acecf709257ad512776",
+      "ref": "7.5(f)(i)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 648,
+      "currentOperativeChars": 5308,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5",
+        "7.5(f)"
+      ],
+      "parentScopeChars": 420,
+      "parentOnlyConditionMarkers": [
+        "provided that"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:224e416870eac0d7ae9cafad",
+      "ref": "7.5(f)(ii)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 844,
+      "currentOperativeChars": 5504,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5",
+        "7.5(f)"
+      ],
+      "parentScopeChars": 420,
+      "parentOnlyConditionMarkers": [
+        "provided that"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:8f16a2f1fc23309fec02928d",
+      "ref": "7.5(g)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 67,
+      "currentOperativeChars": 4727,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:184c41389f233b2c2de269a4",
+      "ref": "7.5(h)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 208,
+      "currentOperativeChars": 4868,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+      "ref": "7.5(i)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 190,
+      "currentOperativeChars": 4850,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "ref": "7.5(j)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 508,
+      "currentOperativeChars": 5168,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:7a871f5e26e8a48783882460",
+      "ref": "7.5(k)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 163,
+      "currentOperativeChars": 4823,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:445f471043ccfc3dd9cfc568",
+      "ref": "7.5(l)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 170,
+      "currentOperativeChars": 4830,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:980d0bd83512327db977a2e8",
+      "ref": "7.5(m)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 140,
+      "currentOperativeChars": 4800,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:0578fe547dd42317ce0df107",
+      "ref": "7.5(n)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 635,
+      "currentOperativeChars": 5295,
+      "charsOutsideAnchorSpan": 4660,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.5"
+      ],
+      "parentScopeRefs": [
+        "7.5"
+      ],
+      "parentScopeChars": 294,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:42423b37324ac426d0f961e2",
+      "ref": "7.6",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 3501,
+      "currentOperativeChars": 3501,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:8befac8ab345ffa1d1e259ee",
+      "ref": "7.6(a)(i)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 131,
+      "currentOperativeChars": 131,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(a)"
+      ],
+      "parentScopeChars": 752,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:753e3a550c4f83d63a851184",
+      "ref": "7.6(a)(ii)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 111,
+      "currentOperativeChars": 111,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(a)"
+      ],
+      "parentScopeChars": 752,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:488409a7f662ed7814693bc7",
+      "ref": "7.6(b)(i)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 280,
+      "currentOperativeChars": 3783,
+      "charsOutsideAnchorSpan": 3503,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.6"
+      ],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(b)"
+      ],
+      "parentScopeChars": 747,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:959f65d2872a027bcae3ddef",
+      "ref": "7.6(b)(ii)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 186,
+      "currentOperativeChars": 3689,
+      "charsOutsideAnchorSpan": 3503,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.6"
+      ],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(b)"
+      ],
+      "parentScopeChars": 747,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:ac354ffa81d6ca806759ba60",
+      "ref": "7.6(b)",
+      "role": "SHARED_CAP",
+      "dual": false,
+      "anchorChars": 470,
+      "currentOperativeChars": 470,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.6"
+      ],
+      "parentScopeChars": 743,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:565fd64640e534d8a46bbe7a",
+      "ref": "7.6(c)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 191,
+      "currentOperativeChars": 3694,
+      "charsOutsideAnchorSpan": 3503,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.6"
+      ],
+      "parentScopeRefs": [
+        "7.6"
+      ],
+      "parentScopeChars": 743,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:9e35243e01539edee04ff6a5",
+      "ref": "7.6(d)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 122,
+      "currentOperativeChars": 3625,
+      "charsOutsideAnchorSpan": 3503,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.6"
+      ],
+      "parentScopeRefs": [
+        "7.6"
+      ],
+      "parentScopeChars": 743,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:667f625c7ae3602d9972fdea",
+      "ref": "7.6(e)(i)",
+      "role": "RATIO_BASED_PERMISSION",
+      "dual": false,
+      "anchorChars": 410,
+      "currentOperativeChars": 410,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(e)"
+      ],
+      "parentScopeChars": 758,
+      "parentOnlyConditionMarkers": [
+        "so long as"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:72e65025f7418737c58d95eb",
+      "ref": "7.6(e)(ii)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 156,
+      "currentOperativeChars": 3659,
+      "charsOutsideAnchorSpan": 3503,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.6"
+      ],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(e)"
+      ],
+      "parentScopeChars": 758,
+      "parentOnlyConditionMarkers": [
+        "so long as"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:e9236b1dc9d46e13db1b7678",
+      "ref": "7.6(f)(i)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 170,
+      "currentOperativeChars": 170,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(f)"
+      ],
+      "parentScopeChars": 771,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:f66b630df2e63c97a5c9bd90",
+      "ref": "7.6(f)(ii)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 312,
+      "currentOperativeChars": 312,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.6",
+        "7.6(f)"
+      ],
+      "parentScopeChars": 771,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:fec9992df21d56e593ce440e",
+      "ref": "7.6(g)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 633,
+      "currentOperativeChars": 633,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.6"
+      ],
+      "parentScopeChars": 743,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:25a7ac71a68f0535fad268cd",
+      "ref": "7.8",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 4667,
+      "currentOperativeChars": 4667,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:5c8863c9378ed219563334fb",
+      "ref": "7.8(a)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 67,
+      "currentOperativeChars": 4736,
+      "charsOutsideAnchorSpan": 4669,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.8"
+      ],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+      "ref": "7.8(b)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 37,
+      "currentOperativeChars": 37,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:b5296614bd927a8e4ea227bc",
+      "ref": "7.8(c)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 52,
+      "currentOperativeChars": 52,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "ref": "7.8(d)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 389,
+      "currentOperativeChars": 5058,
+      "charsOutsideAnchorSpan": 4669,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.8"
+      ],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+      "ref": "7.8(e)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 176,
+      "currentOperativeChars": 176,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:deff46f63658cfd219009b2b",
+      "ref": "7.8(f)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 126,
+      "currentOperativeChars": 126,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:03a446b1ec89b4309b0572e9",
+      "ref": "7.8(g)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 153,
+      "currentOperativeChars": 153,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+      "ref": "7.8(h)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 335,
+      "currentOperativeChars": 335,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:ac28256f7476a6914247e7c9",
+      "ref": "7.8(i)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 350,
+      "currentOperativeChars": 5019,
+      "charsOutsideAnchorSpan": 4669,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.8"
+      ],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:718510e2901771adb5a31722",
+      "ref": "7.8(j)",
+      "role": "RATIO_BASED_PERMISSION",
+      "dual": false,
+      "anchorChars": 971,
+      "currentOperativeChars": 971,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:0c86f64e8580df76e45e16f0",
+      "ref": "7.8(k)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 68,
+      "currentOperativeChars": 68,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+      "ref": "7.8(l)",
+      "role": "BASKET",
+      "dual": true,
+      "anchorChars": 427,
+      "currentOperativeChars": 5096,
+      "charsOutsideAnchorSpan": 4669,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.8"
+      ],
+      "parentScopeRefs": [
+        "7.8"
+      ],
+      "parentScopeChars": 395,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:e9616549c13c2debd957c533",
+      "ref": "7.8(m)(i)",
+      "role": "PERMISSION",
+      "dual": false,
+      "anchorChars": 225,
+      "currentOperativeChars": 225,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.8",
+        "7.8(m)"
+      ],
+      "parentScopeChars": 443,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:1bf90deb6bd9041e04c8728a",
+      "ref": "7.9(a)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 1403,
+      "currentOperativeChars": 1403,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9"
+      ],
+      "parentScopeChars": 89,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:c95bfdcb359c0a4a81b5fd6b",
+      "ref": "7.9(a)(i)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 164,
+      "currentOperativeChars": 4505,
+      "charsOutsideAnchorSpan": 4341,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.9"
+      ],
+      "parentScopeRefs": [
+        "7.9",
+        "7.9(a)"
+      ],
+      "parentScopeChars": 350,
+      "parentOnlyConditionMarkers": [
+        "unless"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:635980cf26209b960a1e57d1",
+      "ref": "7.9(a)(ii)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 978,
+      "currentOperativeChars": 5319,
+      "charsOutsideAnchorSpan": 4341,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.9"
+      ],
+      "parentScopeRefs": [
+        "7.9",
+        "7.9(a)"
+      ],
+      "parentScopeChars": 350,
+      "parentOnlyConditionMarkers": [
+        "unless"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:248f4e6a15e5a2424e2a2397",
+      "ref": "7.9",
+      "role": "EXCEPTION",
+      "dual": false,
+      "anchorChars": 4339,
+      "currentOperativeChars": 4339,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:3675ce686bd277452c61595b",
+      "ref": "7.9(b)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 1139,
+      "currentOperativeChars": 1139,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9"
+      ],
+      "parentScopeChars": 89,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+      "ref": "7.9(b)(i)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 77,
+      "currentOperativeChars": 77,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9",
+        "7.9(b)"
+      ],
+      "parentScopeChars": 253,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:708135ded35624a61b97dcbd",
+      "ref": "7.9(b)(ii)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 417,
+      "currentOperativeChars": 417,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9",
+        "7.9(b)"
+      ],
+      "parentScopeChars": 253,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:d2d61a0f46f53960376211d3",
+      "ref": "7.9(b)(iii)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 297,
+      "currentOperativeChars": 297,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9",
+        "7.9(b)"
+      ],
+      "parentScopeChars": 253,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+      "ref": "7.9(b)(iv)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 184,
+      "currentOperativeChars": 184,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9",
+        "7.9(b)"
+      ],
+      "parentScopeChars": 253,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:915a72b626950c21a3dee456",
+      "ref": "7.9(c)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 1558,
+      "currentOperativeChars": 1558,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9"
+      ],
+      "parentScopeChars": 89,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:523c83bba21c499f3344a3e7",
+      "ref": "7.9(c)(i)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 732,
+      "currentOperativeChars": 732,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9",
+        "7.9(c)"
+      ],
+      "parentScopeChars": 250,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:93b369778c6bbdf6dbc61844",
+      "ref": "7.9(d)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 150,
+      "currentOperativeChars": 150,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.9"
+      ],
+      "parentScopeChars": 89,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "ref": "7.10",
+      "role": "PROVISO",
+      "dual": false,
+      "anchorChars": 1995,
+      "currentOperativeChars": 1995,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:41257e7574b41dd1089b396e",
+      "ref": "7.10(a)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 54,
+      "currentOperativeChars": 2051,
+      "charsOutsideAnchorSpan": 1997,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.10"
+      ],
+      "parentScopeRefs": [
+        "7.10"
+      ],
+      "parentScopeChars": 448,
+      "parentOnlyConditionMarkers": [
+        "unless"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:cac9b2bceb2e7314970a57f1",
+      "ref": "7.10(b)",
+      "role": "CONDITION",
+      "dual": true,
+      "anchorChars": 1493,
+      "currentOperativeChars": 3490,
+      "charsOutsideAnchorSpan": 1997,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.10"
+      ],
+      "parentScopeRefs": [
+        "7.10"
+      ],
+      "parentScopeChars": 448,
+      "parentOnlyConditionMarkers": [
+        "unless"
+      ]
+    },
+    {
+      "discoveryId": "discovery-candidate:766fe1bf868f87b1a702575c",
+      "ref": "7.11",
+      "role": "BASKET",
+      "dual": false,
+      "anchorChars": 696,
+      "currentOperativeChars": 696,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "ref": "7.13",
+      "role": "EXCEPTION",
+      "dual": false,
+      "anchorChars": 1212,
+      "currentOperativeChars": 1212,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:8cc6d36a3898b45e63d7a0cc",
+      "ref": "7.13(a)",
+      "role": "EXCEPTION",
+      "dual": true,
+      "anchorChars": 731,
+      "currentOperativeChars": 1945,
+      "charsOutsideAnchorSpan": 1214,
+      "carriesTextOutsideItsAnchorSpan": true,
+      "linkedRefs": [
+        "7.13"
+      ],
+      "parentScopeRefs": [
+        "7.13"
+      ],
+      "parentScopeChars": 481,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "ref": "7.14",
+      "role": "OTHER_RELEVANT_RULE",
+      "dual": false,
+      "anchorChars": 1106,
+      "currentOperativeChars": 1106,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:53e4ea586b2732863f2d4c10",
+      "ref": "7.14(a)",
+      "role": "OTHER_RELEVANT_RULE",
+      "dual": false,
+      "anchorChars": 908,
+      "currentOperativeChars": 908,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.14"
+      ],
+      "parentScopeChars": 198,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:3985f29e81fa30e1cfec25a0",
+      "ref": "7.15",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 281,
+      "currentOperativeChars": 281,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:f0466a27cbf457478a3eac0e",
+      "ref": "7.16(a)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 787,
+      "currentOperativeChars": 787,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.16"
+      ],
+      "parentScopeChars": 357,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "ref": "7.16",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 1144,
+      "currentOperativeChars": 1144,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:c84bd941081822735ab8bf70",
+      "ref": "7.17(a)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 106,
+      "currentOperativeChars": 106,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.17"
+      ],
+      "parentScopeChars": 39,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:e52848d1db50133b0ae6b258",
+      "ref": "7.17(b)(i)",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 611,
+      "currentOperativeChars": 611,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [
+        "7.17",
+        "7.17(b)"
+      ],
+      "parentScopeChars": 78,
+      "parentOnlyConditionMarkers": []
+    },
+    {
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "ref": "7.17",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "anchorChars": 795,
+      "currentOperativeChars": 795,
+      "charsOutsideAnchorSpan": 0,
+      "carriesTextOutsideItsAnchorSpan": false,
+      "linkedRefs": [],
+      "parentScopeRefs": [],
+      "parentScopeChars": 0,
+      "parentOnlyConditionMarkers": []
+    }
+  ]
+}

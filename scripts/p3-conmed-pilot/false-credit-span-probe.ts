@@ -15,6 +15,7 @@ import { parseDocumentStructure } from "../../lib/contract-model/compiler/stage-
 import { operativeTextFor } from "./pipeline";
 import { prepare } from "./compile-run";
 import { dedupExact } from "./dedup";
+import { preChangeOperativeText } from "./pre-change-span";
 
 const OUT = "docs/phase-3-candidate-span-remediation";
 const DSGR_DOCS: Record<string, string> = {
@@ -79,11 +80,11 @@ function dsgrProbe() {
 
 async function main() {
   const { stages, rehydrated } = await prepare();
-  const { keep } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
+  const { keep } = dedupExact(rehydrated, (c) => preChangeOperativeText(c, stages.index));
   const rows = keep.map((c) => {
     const ids = c.structuralNodeIds ?? [];
-    const curText = operativeTextFor(c, stages.index);
-    const anchorText = ids[0] ? stages.index.getNodeText(ids[0], "DESCENDANTS") : "";
+    const curText = preChangeOperativeText(c, stages.index);
+    const anchorText = operativeTextFor(c, stages.index); // the production rule after R1/R2
     const inherited = foreignItems(curText, anchorText, String(c.normalizedSourceRef));
     return { discoveryId: c.discoveryId, ref: String(c.normalizedSourceRef), role: String(c.role), dual: ids.length > 1, currentItems: economicItems(curText, String(c.normalizedSourceRef)).length, ownItems: economicItems(anchorText, String(c.normalizedSourceRef)).length, inheritedItems: inherited.length, inheritedSample: [...new Set(inherited)].slice(0, 6) };
   });

@@ -15,6 +15,7 @@ import { THRESHOLDS } from "./shard-threshold-sim";
 import { prepare } from "./compile-run";
 import { operativeTextFor } from "./pipeline";
 import { dedupExact } from "./dedup";
+import { preChangeOperativeText } from "./pre-change-span";
 
 const OUT = "docs/phase-3-shard-threshold-simulation";
 const FIX = "tests/fixtures/unseen-packages";
@@ -112,7 +113,7 @@ async function main() {
   const fwrgC = census("fwrg", eligible(readJson(P.fwrgDiscovery).candidates, "fwrg"), (_c, k) => fwrgSpans.get(k) ?? null);
   // CONMED: the sealed 137 (post-dedup), exact text lengths from the real index the pilot compiles against.
   const { stages, rehydrated } = await prepare();
-  const { keep } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
+  const { keep } = dedupExact(rehydrated, (c) => preChangeOperativeText(c, stages.index));
   const conmedC = census("conmed", keep as unknown as Cand[], (c, k) => { const i = (c as any).structuralNodeIds?.[(c.structuralNodeKeys ?? []).indexOf(k)]; return i ? stages.index.getNodeText(i, "DESCENDANTS").length : null; });
 
   const datasets = [

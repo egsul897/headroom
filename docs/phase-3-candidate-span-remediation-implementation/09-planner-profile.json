@@ -1,0 +1,38 @@
+{
+  "modelCalls": 0,
+  "note": "Corroborating evidence only - no correctness claim rests on these numbers. Re-derived from the real planner after the implementation, against the explicit pre-change span as the baseline.",
+  "shards": {
+    "before": 374,
+    "after": 191
+  },
+  "shardedCandidates": {
+    "before": 77,
+    "after": 33
+  },
+  "inventoryCalls": {
+    "before": 354,
+    "after": 278
+  },
+  "sixteenSequentialCallCandidates": {
+    "before": 40,
+    "after": 2
+  },
+  "sequentialCallHistogram": {
+    "before": {
+      "14": 97,
+      "16": 40
+    },
+    "after": {
+      "14": 135,
+      "16": 2
+    }
+  },
+  "firstTurnTokens": {
+    "beforeTotal": 3456365,
+    "afterTotal": 2773504,
+    "beforeMax": 35087,
+    "afterMax": 30494
+  },
+  "inventoryTier": "TIER_2_STRUCTURAL_ONLY for all candidates (the pilot's frozen responses are not on disk in this container; the planner uses the inventory only for ownership/must-link, so every operative-span figure here is unaffected and only shard counts could differ for the 17 candidates that have a real inventory)",
+  "matchesDesignSimulation": true
+}

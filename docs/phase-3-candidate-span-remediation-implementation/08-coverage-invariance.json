@@ -1,0 +1,75 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/span-implementation-evidence.ts",
+  "modelCalls": 0,
+  "note": "Computed from structuralNodeIds only - the field the change does not touch - so 'before' and 'after' are the same computation over the same array. The parent-candidate-existence check is the independent, on-the-merits proof.",
+  "discoveredNodeIdsHash": "d95518f2c97732b06a81b7dba817d9fe",
+  "coveredUnitSetHash": "b0940e2c51fb3dfb0db18de44a70f98b",
+  "semanticCoverageMapInputHash": "fe3869b6ce64b042d30a4fe86b9add8b",
+  "distinctNodesCovered": 133,
+  "appendedParents": [
+    {
+      "nodeId": "structural-node:a9b723686e58119d7cd922a5",
+      "ref": "7.2",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:fa65b905770511a338d69070",
+      "ref": "7.3",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:ebb1ed1fe74fd527feb48567",
+      "ref": "7.4",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:2e794887bf69b231906465c8",
+      "ref": "7.5",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:8091dea774bff74d708f9ddc",
+      "ref": "7.6",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:f0f31081de73c3bc3f45e490",
+      "ref": "7.8",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:a72e4b69a232cb730d335ffb",
+      "ref": "7.9",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:16d27380f57d9e4fa728cc89",
+      "ref": "7.10",
+      "isItselfACandidateAnchor": true
+    },
+    {
+      "nodeId": "structural-node:e75eaf7fc2bcd124707fbdaa",
+      "ref": "7.13",
+      "isItselfACandidateAnchor": true
+    }
+  ],
+  "appendedParentsIndependentlyAnchored": 9,
+  "appendedParentsTotal": 9,
+  "harnessDedupConsequence": {
+    "populationUnderPreChangeSpan": 137,
+    "populationUnderNewSpan": 135,
+    "collapsedPairs": [
+      {
+        "ref": "7.2(e)",
+        "role": "EXCEPTION",
+        "discoveryId": "discovery-candidate:62512247bce898548b6f9b63"
+      },
+      {
+        "ref": "7.2(k)",
+        "role": "PROVISO",
+        "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22"
+      }
+    ],
+    "note": "The PILOT harness dedups by operative text, so two same-anchor candidates that differ only in discovered role now collapse. Production candidate identity is unaffected: discovery reconciliation keys on anchor+role+fingerprint and never on the source text."
+  }
+}

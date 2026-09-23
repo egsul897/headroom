@@ -1,0 +1,94 @@
+{
+  "modelCalls": 0,
+  "change": "R1 - operativeSourceText is the ANCHOR node's text alone",
+  "productionFiles": [
+    {
+      "file": "lib/contract-model/compiler/candidate-span.ts",
+      "status": "ADDED",
+      "why": "States the candidate-span rule once so production and the Phase-3 harness cannot drift. A shared rule is the only way to make the \u00a75 parity requirement structural rather than a coincidence of two copies; the design's '2 files' estimate assumed two independent edits, and this is disclosed as the one deviation.",
+      "exports": [
+        "operativeSourceTextFor(candidate, index)"
+      ]
+    },
+    {
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "status": "MODIFIED",
+      "line": 416,
+      "from": "const operativeSourceText = candidate.structuralNodeIds.map((id) => index.getNodeText(id, \"DESCENDANTS\")).join(\"\\n\\n\");",
+      "to": "const operativeSourceText = operativeSourceTextFor(candidate, index);"
+    }
+  ],
+  "invariantsHeld": {
+    "structuralNodeIdsMutated": false,
+    "discoveryChanged": false,
+    "passCChanged": false,
+    "candidateIdentityChanged": false,
+    "emptyNodeArrayStillYieldsEmptyString": true,
+    "issuerOrSectionSpecificLogic": false
+  },
+  "measuredOverTheSealed137": {
+    "beforeChars": 505889,
+    "afterChars": 104459,
+    "reductionPct": 79.35,
+    "p50": {
+      "before": 3689,
+      "after": 300
+    },
+    "p90": {
+      "before": 7987,
+      "after": 1558
+    },
+    "p95": {
+      "before": 9095,
+      "after": 3501
+    },
+    "max": {
+      "before": 9621,
+      "after": 8843
+    },
+    "over4k": {
+      "before": 65,
+      "after": 6
+    },
+    "over6k": {
+      "before": 40,
+      "after": 2
+    },
+    "over8k": {
+      "before": 14,
+      "after": 1
+    },
+    "residualOver4kAreAllSingleNodeSectionCandidates": [
+      "7.2",
+      "7.3",
+      "7.4",
+      "7.5",
+      "7.8",
+      "7.9"
+    ]
+  },
+  "focusCases": {
+    "long_7_2_e": {
+      "before": 9045,
+      "after": 200
+    },
+    "long_7_2_k": {
+      "before": 9621,
+      "after": 776
+    },
+    "k_i": {
+      "before": 8899,
+      "after": 54
+    },
+    "k_ii": {
+      "before": 9300,
+      "after": 455
+    },
+    "unchangedControls": {
+      "short_7_2_e": 200,
+      "parent_7_2_k": 776,
+      "medium_7_6": 3501
+    }
+  },
+  "matchesDesignSimulation": true
+}

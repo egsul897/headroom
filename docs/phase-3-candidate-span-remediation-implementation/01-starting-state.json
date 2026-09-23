@@ -1,0 +1,26 @@
+{
+  "mission": "HEADROOM PHASE-3 - CANDIDATE-SPAN CONTRACT R1 + R2 + R3 (bounded implementation)",
+  "startingSha": "f6f576d089daa392b01b7ac144ccaeb9cca7fb11",
+  "startingShaMatchedMissionExpectation": true,
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeStateAtStart": "clean",
+  "paidModelCalls": 0,
+  "hashesBefore": {
+    "lib/contract-model/analysis/orchestrator.ts": "883d91c937e02d88",
+    "lib/contract-model/compiler/semantic-verification/verify.ts": "bbfd896a0020caa7",
+    "scripts/p3-conmed-pilot/pipeline.ts": "a0b0751294dd26be",
+    "docs/phase-3-candidate-span-remediation/09-minimal-implementation-design.json": "3caf389d07558254",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json (benchmark)": "5f0eb08834f2056f"
+  },
+  "hashesAfter": {
+    "lib/contract-model/analysis/orchestrator.ts": "a8c242f9d3b46ce2",
+    "lib/contract-model/compiler/semantic-verification/verify.ts": "ba5e30777da76a6e",
+    "lib/contract-model/compiler/candidate-span.ts": "f0661d32ff345bdc",
+    "scripts/p3-conmed-pilot/pipeline.ts": "b520989c1824da95",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json": "5f0eb08834f2056f"
+  },
+  "phase4TreeFilesTracked": 112,
+  "phase4Changed": 0,
+  "benchmarkChanged": 0,
+  "reconciliation": "HEAD matched the mission's expected SHA exactly; no unrelated work was absorbed."
+}

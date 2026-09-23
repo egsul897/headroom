@@ -1,0 +1,21 @@
+{
+  "modelCalls": 0,
+  "change": "R3 - Gate 2 keeps seeing parent-level conditions",
+  "file": "lib/contract-model/compiler/semantic-verification/verify.ts",
+  "added": "buildConditionSuspicionInput(compilerInput) - the anchor's operative text plus the PARENT_SCOPE excerpts already present in the context bundle.",
+  "wiredAt": "classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput), ...) - Gate 2 only.",
+  "whyRequired": "Gate 2 is the only gate that can PERMIT a review skip; Gate 1 can only force review. The red baseline measured 15 of the 67 dual-key CONMED candidates carrying condition language that exists ONLY in their parent chapeau - after R1 an unmodified Gate 2 would stop seeing it and could report NO_MATERIAL_CONDITION_SUSPECTED for a candidate whose governing condition simply lives one level up.",
+  "deliberatelyNotWidened": [
+    "SIBLING_CONTEXT",
+    "CHILD_RULE",
+    "DEFINITION",
+    "DEFINITION_DEPENDENCY",
+    "CROSS_REFERENCE",
+    "CROSS_DOCUMENT_REFERENCE",
+    "the linked node's OPERATIVE_SOURCE item",
+    "every other ContextItemType"
+  ],
+  "separationProven": "The reconciliation's source side is still buildSourceInventory(compilerInput.operativeSourceText, ...) - unchanged. Gate 2's reading window widened; the candidate's operative source did not. A test asserts both halves on the same input: the builder sees a parent amount, and compilerInput.operativeSourceText does not contain it.",
+  "behaviourWhenNoParentScope": "returns compilerInput.operativeSourceText unchanged; an absent contextBundle is tolerated.",
+  "candidatesWithParentOnlyConditionLanguage": 15
+}

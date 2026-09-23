@@ -13,6 +13,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { parseDocumentStructure } from "../../lib/contract-model/compiler/stage-structure";
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
+import { operativeSourceTextFor } from "../../lib/contract-model/compiler/candidate-span";
 import { detectStructuralReferences } from "../../lib/contract-model/compiler/structural-references";
 import { detectStructuralDefinitions } from "../../lib/contract-model/compiler/structural-definitions";
 import { buildPackageGraph } from "../../lib/contract-model/compiler/package-graph/pipeline";
@@ -133,7 +134,10 @@ export function contextBundlesFor(candidates: DiscoveredCandidate[], access: Ret
 
 /** The exact operative text production would compile for a candidate. */
 export function operativeTextFor(candidate: DiscoveredCandidate, index: ReturnType<typeof buildStructuralIndex>): string {
-  return candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\n\n");
+  // Delegates to the single production rule (compiler/candidate-span.ts) rather than restating it:
+  // a harness that keeps its own copy of the candidate-span contract can drift from the pipeline it
+  // is supposed to be measuring, which is exactly how the concatenated span went unnoticed.
+  return operativeSourceTextFor(candidate, index);
 }
 
 if (process.argv[1]?.endsWith("pipeline.ts")) {

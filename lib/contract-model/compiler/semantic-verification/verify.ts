@@ -295,6 +295,36 @@ function determineStatus(
   return "VERIFIED_NO_MATERIAL_GAP_FOUND";
 }
 
+/**
+ * GATE 2's READING WINDOW (candidate-span contract, R3).
+ *
+ * Gate 2 (classifyConditionSuspicion) is the only gate that can PERMIT a review skip - Gate 1 can
+ * only ever force review. Under the candidate-span contract a candidate's operative source is its
+ * ANCHOR node's text alone, so a material condition drafted in the parent chapeau ("...shall not
+ * incur Indebtedness so long as no Default has occurred, except:") is no longer inside that text,
+ * and a Gate 2 reading it alone could report NO_MATERIAL_CONDITION_SUSPECTED for a candidate whose
+ * governing condition simply lives one level up.
+ *
+ * So Gate 2 - and ONLY Gate 2 - reads the anchor's operative text plus the PARENT_SCOPE excerpts
+ * the context bundle already carries (context-retrieval's retrieveParentScope, which yields each
+ * non-ARTICLE ancestor's OWN text, i.e. the chapeau rather than the whole subtree). Nothing else is
+ * admitted: not SIBLING_CONTEXT, not CHILD_RULE, not DEFINITION, not CROSS_REFERENCE, and not the
+ * linked node's OPERATIVE_SOURCE item - widening past the enclosing scope would re-import exactly
+ * the sibling material the contract exists to exclude.
+ *
+ * This widens ONE suspicion classifier's reading window. It does not make the parent's text part of
+ * the candidate's operative source: the reconciliation's source side is still built from
+ * `compilerInput.operativeSourceText` alone (buildSourceInventory, below), so parent and sibling
+ * economics can never be reconciled as evidence this candidate owns.
+ */
+export function buildConditionSuspicionInput(compilerInput: SemanticCompilerInput): string {
+  const parentScope = (compilerInput.contextBundle?.items ?? [])
+    .filter((item) => item.type === "PARENT_SCOPE")
+    .map((item) => item.excerptText.trim())
+    .filter((text) => text.length > 0);
+  return parentScope.length === 0 ? compilerInput.operativeSourceText : [compilerInput.operativeSourceText, ...parentScope].join("\n\n");
+}
+
 export async function verifyCompiledCandidate(input: VerificationInput, options: VerifyOptions = {}): Promise<SemanticVerificationResult> {
   const { compilerInput, compilationResult } = input;
 
@@ -352,7 +382,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   } else if (deterministicForcesReview) {
     needsSemanticReview = true;
   } else {
-    conditionSuspicion = await classifyConditionSuspicion(compilerInput.operativeSourceText, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache);
+    conditionSuspicion = await classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput), { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache);
     needsSemanticReview = conditionSuspicion.status !== "NO_MATERIAL_CONDITION_SUSPECTED";
   }
 

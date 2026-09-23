@@ -153,13 +153,29 @@ describe("§3/§4 — model discovery and cost exclusion", () => {
 });
 
 describe("§5/§12 — population and probe set are unchanged and structural", () => {
-  it("the sealed population is still 163 / 137 after exact dedup", () => {
+  it("the sealed population is still 163, and exact dedup now yields 135 - the two collapsed pairs recorded, not lost", () => {
+    // The sealed 163 is untouched. Exact dedup moved 137 -> 135 when the candidate-span contract
+    // became anchor-only (compiler/candidate-span.ts): two candidates that share an anchor but
+    // differ only in discovered ROLE used to be handed different operative text - one with its
+    // parent section appended, one without - and so survived as "distinct bytes". They now produce
+    // identical bytes, which is what dedup's own equivalence rule is for: `role` never reaches
+    // SemanticCompilerInput, so compiling one really is equivalent to compiling the other. Nothing
+    // is silently dropped - the dedup report keeps the kept/dropped mapping for both pairs.
     const stages = buildDeterministicStages();
     const pop = sealedPopulation();
     const { rehydrated } = rehydrateNodeIds(pop.eligible, stages.index);
-    const { keep } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
+    const preChangeSpan = (c: Parameters<typeof operativeTextFor>[0]) =>
+      c.structuralNodeIds.map((id) => stages.index.getNodeText(id, "DESCENDANTS")).join("\n\n");
+    const before = dedupExact(rehydrated, preChangeSpan);
+    const { keep, report } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
     expect(pop.all).toHaveLength(163);
-    expect(keep).toHaveLength(137);
+    expect(before.keep).toHaveLength(137);
+    expect(keep).toHaveLength(135);
+    const newlyDropped = before.keep.filter((c) => !keep.some((k) => k.discoveryId === c.discoveryId));
+    expect(newlyDropped.map((c) => c.normalizedSourceRef).sort()).toEqual(["7.2(e)", "7.2(k)"]);
+    // each collapsed candidate is RECORDED as dropped against the twin that now carries its bytes
+    const droppedIds = new Set(report.groups.flatMap((g) => g.droppedDiscoveryIds));
+    for (const c of newlyDropped) expect(droppedIds.has(c.discoveryId)).toBe(true);
   });
 
   it("the probe set covers the required axes and is deterministic", () => {

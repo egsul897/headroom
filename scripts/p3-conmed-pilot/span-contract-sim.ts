@@ -21,6 +21,7 @@ import { COMPANY_ID, INSTRUMENT_KEY, operativeTextFor } from "./pipeline";
 import { prepare, buildInput } from "./compile-run";
 import { dedupExact } from "./dedup";
 import { budgetFor, emptyInventory } from "./shard-threshold-sim";
+import { preChangeOperativeText } from "./pre-change-span";
 
 const OUT = "docs/phase-3-candidate-span-remediation";
 const INVENTORY_BATCH_CHARS = 6000, INVENTORY_PASSES = 2, MAX_TOOL_CALLS = 8, MAX_TURN_OVERHEAD = 4;
@@ -50,7 +51,8 @@ export const FOCUS_IDS: Record<string, string> = {
 
 async function main() {
   const { stages, bundles, rehydrated } = await prepare();
-  const { keep } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
+  // The sealed 137 population is defined by the PRE-CHANGE span, so before/after stays comparable.
+  const { keep } = dedupExact(rehydrated, (c) => preChangeOperativeText(c, stages.index));
   // Tier 1 (real frozen inventories) is used when the pilot's frozen responses are on disk. They live in
   // the session scratch directory, so a reclaimed container leaves every candidate on the structural-only
   // path. The planner consumes the inventory ONLY for ownership/must-link, so operative-span measurements
@@ -65,8 +67,8 @@ async function main() {
   for (const c of keep) {
     const ids = c.structuralNodeIds ?? [];
     const anchorId = ids[0];
-    const currentText = operativeTextFor(c, stages.index);
-    const proposedText = anchorId ? stages.index.getNodeText(anchorId, "DESCENDANTS") : "";
+    const currentText = preChangeOperativeText(c, stages.index);
+    const proposedText = operativeTextFor(c, stages.index); // now the production rule itself
     const bundle = bundles.get(c.discoveryId);
 
     // What the REAL production context bundle already holds for this candidate.

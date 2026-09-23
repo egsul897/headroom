@@ -17,16 +17,19 @@ const src = (f: string) => fs.readFileSync(f, "utf8");
 /** The cross-dataset census lives with the preceding mission's artifacts; this mission extended it. */
 const census = () => JSON.parse(fs.readFileSync("docs/phase-3-shard-threshold-simulation/05-cross-dataset-span-census.json", "utf8"));
 
-describe("the current contract, read from production source (§2)", () => {
-  it("orchestrator.ts builds operativeSourceText by concatenating EVERY structural node's subtree", () => {
-    expect(src("lib/contract-model/analysis/orchestrator.ts")).toContain(
-      'const operativeSourceText = candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\\n\\n");',
-    );
+describe("the contract this design proposed, now implemented in production source (§2)", () => {
+  // These three began as sentinels recording the DEFECT (a concatenated span, a harness copy of it,
+  // and a Gate 2 reading the operative window alone). R1/R2/R3 inverted all three, so they now
+  // record the fix - and still fail loudly if the old shape ever returns.
+  it("orchestrator.ts derives operativeSourceText from the anchor alone", () => {
+    const orch = src("lib/contract-model/analysis/orchestrator.ts");
+    expect(orch).toContain("const operativeSourceText = operativeSourceTextFor(candidate, index);");
+    expect(orch).not.toContain('structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\\n\\n")');
   });
-  it("the pilot harness reproduces that expression byte-for-byte", () => {
-    expect(src("scripts/p3-conmed-pilot/pipeline.ts")).toContain(
-      'candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\\n\\n")',
-    );
+  it("the pilot harness delegates to that same production rule instead of restating it", () => {
+    const pipeline = src("scripts/p3-conmed-pilot/pipeline.ts");
+    expect(pipeline).toContain("return operativeSourceTextFor(candidate, index);");
+    expect(pipeline).not.toContain('candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\\n\\n")');
   });
   it("Pass C appends the containing section only as a LINK, and only for the four modifier roles", () => {
     const passC = src("lib/contract-model/compiler/discovery/pass-c-neighborhood.ts");
@@ -44,10 +47,10 @@ describe("the current contract, read from production source (§2)", () => {
       "buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText,",
     );
   });
-  it("Gate 2 - the only gate that can permit a review skip - reads operativeSourceText alone", () => {
-    expect(src("lib/contract-model/compiler/semantic-verification/verify.ts")).toContain(
-      "conditionSuspicion = await classifyConditionSuspicion(compilerInput.operativeSourceText,",
-    );
+  it("Gate 2 - the only gate that can permit a review skip - now also reads the PARENT_SCOPE excerpts", () => {
+    const v = src("lib/contract-model/compiler/semantic-verification/verify.ts");
+    expect(v).toContain("classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput)");
+    expect(v).not.toContain("classifyConditionSuspicion(compilerInput.operativeSourceText,");
   });
 });
 

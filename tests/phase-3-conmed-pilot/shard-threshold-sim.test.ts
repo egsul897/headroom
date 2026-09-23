@@ -127,13 +127,17 @@ describe("candidate-span premise (§4C/§10): the parent section is appended as 
     }
     expect(sealed.filter((c) => (c.structuralNodeKeys ?? []).length === 1).every((c) => !(c.discoveryMethods ?? []).includes("NEIGHBORHOOD_EXPANSION"))).toBe(true);
   });
-  it("production and the pilot harness both concatenate DESCENDANTS text of every structural node id (read-only sentinel)", () => {
+  it("Pass C still LINKS the containing section, and neither caller turns that link into a span", () => {
+    // Recorded the defect when this simulation found it; records the fix now that R1/R2 landed.
     const orchestrator = fs.readFileSync("lib/contract-model/analysis/orchestrator.ts", "utf8");
     const pipeline = fs.readFileSync("scripts/p3-conmed-pilot/pipeline.ts", "utf8");
     const passC = fs.readFileSync("lib/contract-model/compiler/discovery/pass-c-neighborhood.ts", "utf8");
-    expect(orchestrator).toContain('candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\\n\\n")');
-    expect(pipeline).toContain('candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\\n\\n")');
     expect(passC).toContain("structuralNodeIds.push(sectionNodeId)");
+    for (const caller of [orchestrator, pipeline]) {
+      expect(caller).not.toContain('candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\\n\\n")');
+    }
+    expect(orchestrator).toContain("operativeSourceTextFor(candidate, index)");
+    expect(pipeline).toContain("operativeSourceTextFor(candidate, index)");
   });
   it("the cross-dataset census and the controls inspection agree with the fixtures", () => {
     const census = read("05-cross-dataset-span-census.json");
