@@ -1,0 +1,845 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/span-validation-b2.ts",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "halted": null,
+  "budget": {
+    "totalCeilingUsd": 0.4,
+    "alreadySpentUsd": 0.065275,
+    "thisRunExactUsd": 0.060069,
+    "thisRunRetainedUnknownUsd": 0.1456,
+    "thisRunCommittedUsd": 0.205669,
+    "cumulativeCommittedUsd": 0.270944
+  },
+  "controlRecheck": {
+    "completed": 0,
+    "of": 2,
+    "inputsByteIdenticalToPreRemediation": true
+  },
+  "cohortB": {
+    "completed": 4,
+    "of": 4
+  },
+  "cohortC": {
+    "completed": 0,
+    "of": 6
+  },
+  "cohortD": {
+    "completed": 3,
+    "of": 3
+  },
+  "safety": {
+    "operativeAttributionViolations": 2,
+    "candidatesWithViolations": [
+      "7.2(k)(i)"
+    ],
+    "contextRetentionViolations": 0,
+    "unsourcedAssertions": []
+  },
+  "rows": [
+    {
+      "group": "CONTROL_RECHECK",
+      "slot": "7.1",
+      "ref": "7.1",
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "role": "PROVISO",
+      "dual": false,
+      "operativeChars": 3275,
+      "preChangeChars": 3275,
+      "contextualParentChars": 0,
+      "parentScopeChars": 0,
+      "operativeTextHash": "2f13484ecf26ca7c",
+      "preChangeTextHash": "2f13484ecf26ca7c",
+      "compilerInputHash": "b6cf378b34d437ce",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480057,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 4,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 5,
+        "DEFINITION_DEPENDENCY": 13,
+        "CROSS_REFERENCE": 2,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "CONTROL_RECHECK",
+      "slot": "7.1(b)",
+      "ref": "7.1(b)",
+      "discoveryId": "discovery-candidate:cf15af8f5fb1f77bd861a2ac",
+      "role": "FINANCIAL_TEST",
+      "dual": false,
+      "operativeChars": 1886,
+      "preChangeChars": 1886,
+      "contextualParentChars": 0,
+      "parentScopeChars": 44,
+      "operativeTextHash": "fae51305fd8c5453",
+      "preChangeTextHash": "fae51305fd8c5453",
+      "compilerInputHash": "6cc9ba30dfcf3383",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480003,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.1"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "PARENT_SCOPE": 1,
+        "CHILD_RULE": 2,
+        "PROVISO": 1,
+        "UNVERIFIED_SIBLING_SIGNAL": 1,
+        "DEFINITION": 2,
+        "DEFINITION_DEPENDENCY": 3
+      }
+    },
+    {
+      "group": "B",
+      "slot": "7.2(e) long",
+      "ref": "7.2(e)",
+      "discoveryId": "discovery-candidate:62512247bce898548b6f9b63",
+      "role": "EXCEPTION",
+      "dual": true,
+      "operativeChars": 200,
+      "preChangeChars": 9045,
+      "contextualParentChars": 8843,
+      "parentScopeChars": 107,
+      "operativeTextHash": "222cc7114f3145fe",
+      "preChangeTextHash": "d5e092eaed812132",
+      "compilerInputHash": "e71bf0d4544c82d0",
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 2,
+      "definitions": 0,
+      "sufficiency": {
+        "MISSING_CONTEXT": 1,
+        "PARTIAL": 1
+      },
+      "citations": [
+        "§7.2(e)",
+        "§7.2(e)"
+      ],
+      "toolCalls": 6,
+      "inputTokens": 23449,
+      "outputTokens": 24204,
+      "costUsd": 0.00934141,
+      "costStatus": "EXACT",
+      "wallClockMs": 265603,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 2,
+        "PARENT_SCOPE": 1,
+        "UNVERIFIED_SIBLING_SIGNAL": 4,
+        "DEFINITION": 1,
+        "DEFINITION_DEPENDENCY": 9,
+        "CROSS_REFERENCE": 1,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "B",
+      "slot": "7.2(k)",
+      "ref": "7.2(k)",
+      "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22",
+      "role": "PROVISO",
+      "dual": true,
+      "operativeChars": 776,
+      "preChangeChars": 9621,
+      "contextualParentChars": 8843,
+      "parentScopeChars": 107,
+      "operativeTextHash": "2b5551e2daf81d2a",
+      "preChangeTextHash": "65c50a5af0631d6a",
+      "compilerInputHash": "d32a1c14d773555c",
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "rules": 1,
+      "definitions": 0,
+      "sufficiency": {
+        "MISSING_CONTEXT": 1
+      },
+      "citations": [
+        "§7.2(k)"
+      ],
+      "toolCalls": 2,
+      "inputTokens": 22765,
+      "outputTokens": 17112,
+      "costUsd": 0.00740857,
+      "costStatus": "EXACT",
+      "wallClockMs": 265902,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "$150,000,000",
+          "10.0%"
+        ],
+        "supportedByAnchor": [
+          "$150,000,000",
+          "10.0%"
+        ],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 2,
+        "PARENT_SCOPE": 1,
+        "CHILD_RULE": 2,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 7,
+        "DEFINITION_DEPENDENCY": 13,
+        "CROSS_REFERENCE": 2,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "B",
+      "slot": "7.2(k)(i)",
+      "ref": "7.2(k)(i)",
+      "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "role": "CONDITION",
+      "dual": true,
+      "operativeChars": 54,
+      "preChangeChars": 8899,
+      "contextualParentChars": 8843,
+      "parentScopeChars": 374,
+      "operativeTextHash": "38a51688f7d7d668",
+      "preChangeTextHash": "e6015328b2e17f9c",
+      "compilerInputHash": "689640113b154823",
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 1,
+      "definitions": 0,
+      "sufficiency": {
+        "PARTIAL": 1
+      },
+      "citations": [
+        "§7.2(k)(i)"
+      ],
+      "toolCalls": 4,
+      "inputTokens": 23289,
+      "outputTokens": 24233,
+      "costUsd": 0.00932815,
+      "costStatus": "EXACT",
+      "wallClockMs": 251317,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "$150,000,000",
+          "10.0%"
+        ],
+        "supportedByAnchor": [],
+        "violations": [
+          "$150,000,000",
+          "10.0%"
+        ],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(k)"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 2,
+        "PARENT_SCOPE": 2
+      }
+    },
+    {
+      "group": "B",
+      "slot": "7.2(k)(ii)",
+      "ref": "7.2(k)(ii)",
+      "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+      "role": "BASKET",
+      "dual": true,
+      "operativeChars": 455,
+      "preChangeChars": 9300,
+      "contextualParentChars": 8843,
+      "parentScopeChars": 374,
+      "operativeTextHash": "176b1137bc4713f4",
+      "preChangeTextHash": "1c5fe3aba40dc110",
+      "compilerInputHash": "a113ca6a1b7b8aea",
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 1,
+      "definitions": 13,
+      "sufficiency": {
+        "PARTIAL": 1
+      },
+      "citations": [
+        "§7.2(k)(ii)"
+      ],
+      "toolCalls": 2,
+      "inputTokens": 30608,
+      "outputTokens": 31904,
+      "costUsd": 0.01227408,
+      "costStatus": "EXACT",
+      "wallClockMs": 370398,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "$150,000,000",
+          "10.0%"
+        ],
+        "supportedByAnchor": [
+          "$150,000,000",
+          "10.0%"
+        ],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2",
+        "7.2(k)"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 2,
+        "PARENT_SCOPE": 2,
+        "CHILD_RULE": 2,
+        "DEFINITION": 4,
+        "DEFINITION_DEPENDENCY": 8,
+        "CROSS_REFERENCE": 2,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "C",
+      "slot": "7.2",
+      "ref": "7.2",
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "role": "PERMISSION",
+      "dual": false,
+      "operativeChars": 8843,
+      "preChangeChars": 8843,
+      "contextualParentChars": 0,
+      "parentScopeChars": 0,
+      "operativeTextHash": "de732942e7dde586",
+      "preChangeTextHash": "de732942e7dde586",
+      "compilerInputHash": "3341a5853429b85e",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480005,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 19,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 15,
+        "DEFINITION_DEPENDENCY": 22
+      }
+    },
+    {
+      "group": "C",
+      "slot": "7.3",
+      "ref": "7.3",
+      "discoveryId": "discovery-candidate:08919c086272421431dd7aed",
+      "role": "GENERAL_PROHIBITION",
+      "dual": false,
+      "operativeChars": 7053,
+      "preChangeChars": 7053,
+      "contextualParentChars": 0,
+      "parentScopeChars": 0,
+      "operativeTextHash": "25fe6c9bb5d6e961",
+      "preChangeTextHash": "25fe6c9bb5d6e961",
+      "compilerInputHash": "dfe9e124507ca456",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480004,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 16,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 10,
+        "DEFINITION_DEPENDENCY": 13,
+        "CROSS_REFERENCE": 10,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "C",
+      "slot": "7.4",
+      "ref": "7.4",
+      "discoveryId": "discovery-candidate:01215421a15b014f020e2d41",
+      "role": "CONDITION",
+      "dual": false,
+      "operativeChars": 5980,
+      "preChangeChars": 5980,
+      "contextualParentChars": 0,
+      "parentScopeChars": 0,
+      "operativeTextHash": "0b428f59c556f6b4",
+      "preChangeTextHash": "0b428f59c556f6b4",
+      "compilerInputHash": "15f66788a522338d",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480003,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 4,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 16,
+        "DEFINITION_DEPENDENCY": 18,
+        "CROSS_REFERENCE": 5,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "C",
+      "slot": "7.5",
+      "ref": "7.5",
+      "discoveryId": "discovery-candidate:192f0f846ef50bc2eb957eb6",
+      "role": "EXCEPTION",
+      "dual": false,
+      "operativeChars": 4658,
+      "preChangeChars": 4658,
+      "contextualParentChars": 0,
+      "parentScopeChars": 0,
+      "operativeTextHash": "a479dd725ace6c24",
+      "preChangeTextHash": "a479dd725ace6c24",
+      "compilerInputHash": "324eb6af04090cc5",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480003,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 14,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 11,
+        "DEFINITION_DEPENDENCY": 23,
+        "CROSS_REFERENCE": 5,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "C",
+      "slot": "7.8",
+      "ref": "7.8",
+      "discoveryId": "discovery-candidate:25a7ac71a68f0535fad268cd",
+      "role": "PERMISSION",
+      "dual": false,
+      "operativeChars": 4667,
+      "preChangeChars": 4667,
+      "contextualParentChars": 0,
+      "parentScopeChars": 0,
+      "operativeTextHash": "17b19011b492b681",
+      "preChangeTextHash": "17b19011b492b681",
+      "compilerInputHash": "7f4f4c31e0c281bc",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480003,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 13,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 11,
+        "DEFINITION_DEPENDENCY": 22,
+        "CROSS_REFERENCE": 7,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "C",
+      "slot": "7.9",
+      "ref": "7.9",
+      "discoveryId": "discovery-candidate:248f4e6a15e5a2424e2a2397",
+      "role": "EXCEPTION",
+      "dual": false,
+      "operativeChars": 4339,
+      "preChangeChars": 4339,
+      "contextualParentChars": 0,
+      "parentScopeChars": 0,
+      "operativeTextHash": "03dc44d0c758fc98",
+      "preChangeTextHash": "03dc44d0c758fc98",
+      "compilerInputHash": "93959bedd7cbdbf1",
+      "status": "TIMEOUT",
+      "outcome": "TIMEOUT",
+      "failureReasons": [
+        "candidate exceeded the 480000ms pilot wall-clock ceiling"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sufficiency": {},
+      "citations": [],
+      "toolCalls": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.0182,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "wallClockMs": 480004,
+      "timedOut": true,
+      "attribution": {
+        "assertedAmounts": [],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 4,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 8,
+        "DEFINITION_DEPENDENCY": 22,
+        "CROSS_REFERENCE": 6,
+        "CALCULATION_PROVISION": 1,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "D",
+      "slot": "7.2(d)",
+      "ref": "7.2(d)",
+      "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "role": "BASKET",
+      "dual": true,
+      "operativeChars": 250,
+      "preChangeChars": 9095,
+      "contextualParentChars": 8843,
+      "parentScopeChars": 107,
+      "operativeTextHash": "d8ca3fb8fd50449e",
+      "preChangeTextHash": "22bca7af47a7c7af",
+      "compilerInputHash": "dde88a885f689fa7",
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 1,
+      "definitions": 1,
+      "sufficiency": {
+        "COMPLETE": 1
+      },
+      "citations": [
+        "§7.2(d)"
+      ],
+      "toolCalls": 1,
+      "inputTokens": 18885,
+      "outputTokens": 14999,
+      "costUsd": 0.00635479,
+      "costStatus": "EXACT",
+      "wallClockMs": 206593,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "$50,000,000",
+          "3.0%"
+        ],
+        "supportedByAnchor": [
+          "$50,000,000",
+          "3.0%"
+        ],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 2,
+        "PARENT_SCOPE": 1,
+        "UNVERIFIED_SIBLING_SIGNAL": 4,
+        "DEFINITION": 1,
+        "DEFINITION_DEPENDENCY": 4
+      }
+    },
+    {
+      "group": "D",
+      "slot": "7.2(g)",
+      "ref": "7.2(g)",
+      "discoveryId": "discovery-candidate:7b3977f0fa58ecd5c864b1fc",
+      "role": "BASKET",
+      "dual": true,
+      "operativeChars": 312,
+      "preChangeChars": 9157,
+      "contextualParentChars": 8843,
+      "parentScopeChars": 107,
+      "operativeTextHash": "1bc5d5cff78aedbe",
+      "preChangeTextHash": "90f7758bee6ac9e4",
+      "compilerInputHash": "5735d8bd32bde6af",
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "rules": 1,
+      "definitions": 3,
+      "sufficiency": {
+        "COMPLETE": 1
+      },
+      "citations": [
+        "§7.2(g)"
+      ],
+      "toolCalls": 2,
+      "inputTokens": 18843,
+      "outputTokens": 15625,
+      "costUsd": 0.00651209,
+      "costStatus": "EXACT",
+      "wallClockMs": 197551,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "$50,000,000",
+          "3.0%"
+        ],
+        "supportedByAnchor": [
+          "$50,000,000",
+          "3.0%"
+        ],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 2,
+        "PARENT_SCOPE": 1,
+        "UNVERIFIED_SIBLING_SIGNAL": 4,
+        "DEFINITION": 2,
+        "DEFINITION_DEPENDENCY": 9,
+        "CROSS_REFERENCE": 1,
+        "AMENDMENT_LEAD": 1
+      }
+    },
+    {
+      "group": "D",
+      "slot": "7.2(h)",
+      "ref": "7.2(h)",
+      "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+      "role": "BASKET",
+      "dual": true,
+      "operativeChars": 467,
+      "preChangeChars": 9312,
+      "contextualParentChars": 8843,
+      "parentScopeChars": 107,
+      "operativeTextHash": "e6e05a5735e3f2a7",
+      "preChangeTextHash": "e633d28be8e4393c",
+      "compilerInputHash": "516ddee26265edbc",
+      "status": "REVIEW_REQUIRED",
+      "outcome": "COMPLETED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "rules": 1,
+      "definitions": 0,
+      "sufficiency": {
+        "PARTIAL": 1
+      },
+      "citations": [
+        "§7.2(h)"
+      ],
+      "toolCalls": 3,
+      "inputTokens": 24102,
+      "outputTokens": 21988,
+      "costUsd": 0.00885014,
+      "costStatus": "EXACT",
+      "wallClockMs": 266584,
+      "timedOut": false,
+      "attribution": {
+        "assertedAmounts": [
+          "$50,000,000",
+          "3.0%"
+        ],
+        "supportedByAnchor": [
+          "$50,000,000",
+          "3.0%"
+        ],
+        "violations": [],
+        "unsourced": []
+      },
+      "parentScopeRefs": [
+        "7.2"
+      ],
+      "parentScopeRetained": true,
+      "contextTypes": {
+        "OPERATIVE_SOURCE": 2,
+        "PARENT_SCOPE": 1,
+        "UNVERIFIED_SIBLING_SIGNAL": 3,
+        "DEFINITION": 3,
+        "DEFINITION_DEPENDENCY": 11,
+        "CROSS_REFERENCE": 1,
+        "AMENDMENT_LEAD": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "issueId": "POTENTIAL_MODEL_GROUNDING_OR_VERIFIER_GAP-7.2(f)-100PCT",
+  "classification": "POTENTIAL_MODEL_GROUNDING_OR_VERIFIER_GAP",
+  "explicitlyNotA": "candidate-span regression",
+  "why": "7.2(f) is SINGLE-KEY. Its operative text is byte-identical before and after the remediation (149 chars), and it has no linked parent, so there is no parent or sibling material the value could have leaked from.",
+  "observedIn": "attempt 1, Cohort A, 7.2(f) - COMPLETED, 1 rule, 70s",
+  "candidateRef": "7.2(f)",
+  "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59 (as recorded in the attempt-1 rows)",
+  "emittedValue": "100%",
+  "ruleCitation": "the emitted rule cites 7.2(f) as its source section",
+  "sourceEvidenceSearched": "the candidate's own 149-char anchor operative text - value NOT present",
+  "contextualEvidenceSearched": "every ContextItem in the candidate's retrieval bundle - value NOT present in any excerpt (0 of the retrieved items contain it)",
+  "contrastWithLegitimateBehaviour": "7.1(d) also asserted values absent from its anchor ($800,000,000 and 2.25%), but BOTH appear in a retrieved DEFINITION item ('Convertible Notes') - the intended typed-context channel. 7.2(f)'s 100% has no such source.",
+  "verifierBehaviour": "Not exercised in this run: the runner calls compileCovenantToIR directly and does not invoke verifyCompiledCandidate, so whether the independent verifier would have caught this is UNKNOWN and must not be assumed either way.",
+  "action": "RECORDED ONLY. Not investigated and not fixed in this mission, per its explicit scope.",
+  "recommendedFollowUp": "A separate bounded investigation after candidate-span validation closes: reproduce, determine whether the value is model fabrication or an untracked retrieval channel, and check whether the verifier's reconciliation flags it as UNSUPPORTED."
+}
