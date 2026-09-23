@@ -1,0 +1,160 @@
+{
+  "title": "Root cause surfaced by the shard-threshold simulation: the containing section is appended as OPERATIVE text",
+  "modelCalls": 0,
+  "mechanism": [
+    {
+      "step": 1,
+      "where": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts:158-166",
+      "what": "'Neighborhood guarantee': for EXCEPTION / BASKET / PROVISO / CONDITION roles the containing section node is pushed onto structuralNodeIds / structuralNodeKeys as a LINK ('what does this exception modify')."
+    },
+    {
+      "step": 2,
+      "where": "lib/contract-model/analysis/orchestrator.ts:418 and scripts/p3-conmed-pilot/pipeline.ts:135-137 (operativeTextFor)",
+      "what": "operativeSourceText = structuralNodeIds.map(id => index.getNodeText(id, 'DESCENDANTS')).join('\\n\\n') - every linked node, including the whole parent section, becomes operative text."
+    },
+    {
+      "step": 3,
+      "where": "lib/contract-model/compiler/semantic-accountability/source-context.ts",
+      "what": "resolveSourceContext presents the joined text as ONE contiguous OPERATIVE region anchored at the first node (7.2(k) is reported as abs 50,520-60,141 although the node spans 50,520-51,296)."
+    },
+    {
+      "step": 4,
+      "where": "lib/contract-model/compiler/semantic/shard-planner.ts structuralUnits/partitionSourceSlots",
+      "what": "only the anchor node's subtree is recognised as units; the appended parent text collapses into one residue NODE_OWN_TEXT unit ('<ref>~2') that no threshold can split (atomic; oversized at 4,000)."
+    }
+  ],
+  "evidence": {
+    "conmedSealed": {
+      "candidates": 163,
+      "dualKey": 67,
+      "allDualHaveNeighborhoodExpansion": true,
+      "allSecondKeysAreParentPrefix": true,
+      "rolesOfDual": {
+        "EXCEPTION": 29,
+        "BASKET": 24,
+        "CONDITION": 11,
+        "PROVISO": 3
+      }
+    },
+    "conmedDedup137": {
+      "dualKey": 67,
+      "single": 70,
+      "dualOperativeChars": {
+        "min": 1945,
+        "mean": 6356,
+        "median": 7109,
+        "max": 9621
+      },
+      "singleOperativeChars": {
+        "min": 0,
+        "mean": 1143,
+        "median": 443.5,
+        "max": 8843
+      },
+      "charsOver4000": {
+        "dual": 59,
+        "single": 6
+      },
+      "appendedParents": {
+        "7.3": 25,
+        "7.5": 16,
+        "7.2": 10,
+        "7.6": 5,
+        "7.8": 4,
+        "7.4": 2,
+        "7.9": 2,
+        "7.10": 2,
+        "7.13": 1
+      },
+      "appendedCharsTotal": 401296,
+      "shardedAt12000": {
+        "dual": "60/67",
+        "single": "17/70 (cross-reference expansion regions, each its own shard)"
+      }
+    },
+    "focusCasesDecomposition": {
+      "long_7_2_e": "200 (7.2(e)) + 2 + 8,843 (all of 7.2) = 9,045",
+      "7_2_k": "776 + 2 + 8,843 = 9,621",
+      "7_2_k_i": "54 + 2 + 8,843 = 8,899",
+      "7_2_k_ii": "455 + 2 + 8,843 = 9,300",
+      "note": "every 'long' focus case is a short provision followed by the identical 8,843-char section 7.2, which itself contains the provision again (true duplication inside the operative text)."
+    },
+    "realRecords": {
+      "frozenPilotRun_0731_262records": {
+        "dualKey": {
+          "records": 134,
+          "FAILED": 134,
+          "nonFailed": 0
+        },
+        "singleKey": {
+          "records": 121,
+          "FAILED": 109,
+          "REVIEW_REQUIRED": 12
+        },
+        "executionMode": {
+          "SHARDED_MULTIPLE_SHARDS_REQUIRED": 147,
+          "MONOLITHIC_SINGLE_BOUNDED_SHARD": 108,
+          "none": 7
+        },
+        "note": "the real compile path DID take the SHARDED branch at the default 12,000 budget for 147/262 records; the previous mission's 'runs MONOLITHIC below 12,000' statement was a character comparison, not a planner run, and is corrected here."
+      },
+      "populationRun_deepseek_v4_flash_20records": {
+        "dualKey": {
+          "COMPLETED": 0,
+          "TIMEOUT": 4,
+          "PROVIDER_FAILURE": 3
+        },
+        "singleKey": {
+          "COMPLETED": 9,
+          "TIMEOUT": 2,
+          "PROVIDER_FAILURE": 1,
+          "KNOWN_HARD_CASE": 1
+        }
+      }
+    },
+    "crossDataset": {
+      "universe": {
+        "candidates": 1248,
+        "dual": 488,
+        "dualPct": 39.1
+      },
+      "dsgr": {
+        "n": 777,
+        "dual": 234,
+        "pct": 30.1,
+        "appendedParentMedian": 6481,
+        "appendedParentMax": 48893,
+        "method": "largest physical occurrence per nodeKey - upper bound"
+      },
+      "conmed": {
+        "n": 137,
+        "dual": 67,
+        "pct": 48.9,
+        "appendedParentMedian": 7053,
+        "appendedParentMax": 8843
+      },
+      "lsb": {
+        "n": 82,
+        "dual": 45,
+        "pct": 54.9,
+        "appendedParentMedian": 1872,
+        "appendedParentMax": 4287
+      },
+      "fwrg": {
+        "n": 252,
+        "dual": 142,
+        "pct": 56.3,
+        "appendedParentMedian": 17454,
+        "appendedParentMax": 20614
+      }
+    },
+    "falseCreditControls": {
+      "controls": 14,
+      "controlSectionsAppendedAsParent": 9,
+      "candidatesCarryingAControlSection": 93,
+      "reading": "chapeau / lead-in text of 9 control sections is duplicated verbatim into 93 exception/basket/condition candidates' OPERATIVE text - a chapeau rule can be emitted (and credited) from any of those child candidates. No shard threshold changes this; the candidate-span contract does."
+    }
+  },
+  "classification": "CANDIDATE_SPAN_CONTRACT_MISMATCH (discovery linkage consumed as operative span) - PRODUCTION defect at orchestrator.ts:418, reproduced identically by the pilot harness; NOT a sharding-threshold problem.",
+  "notImplemented": "No production, benchmark or Phase-4 file was modified. Remediation design is the exact next bounded action."
+}

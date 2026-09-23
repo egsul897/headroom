@@ -1,0 +1,652 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/span-census.ts",
+  "modelCalls": 0,
+  "universe": {
+    "candidates": 1248,
+    "dual": 488,
+    "dualPct": 39.1
+  },
+  "datasets": [
+    {
+      "dataset": "dsgr",
+      "method": "STAGE1_NODE_SPANS_LARGEST_OCCURRENCE",
+      "candidates": 777,
+      "dual": 234,
+      "dualPct": 30.1,
+      "allDualAreNeighborhoodExpansion": true,
+      "dualRoles": {
+        "EXCEPTION": 140,
+        "BASKET": 42,
+        "PROVISO": 18,
+        "CONDITION": 34
+      },
+      "topAppendedParents": [
+        [
+          "6.02",
+          76
+        ],
+        [
+          "6.01",
+          30
+        ],
+        [
+          "6.05",
+          30
+        ],
+        [
+          "6.04",
+          19
+        ],
+        [
+          "10.03",
+          17
+        ],
+        [
+          "6.09",
+          9
+        ],
+        [
+          "6.12",
+          7
+        ],
+        [
+          "1.04",
+          6
+        ],
+        [
+          "6.07",
+          6
+        ],
+        [
+          "6.08",
+          6
+        ]
+      ],
+      "unresolvedKeys": 0,
+      "operativeChars": {
+        "all": {
+          "n": 777,
+          "min": 20,
+          "mean": 5214,
+          "median": 2338,
+          "p90": 9961,
+          "max": 51325
+        },
+        "dual": {
+          "n": 234,
+          "min": 910,
+          "mean": 8211,
+          "median": 6814,
+          "p90": 10979,
+          "max": 51325
+        },
+        "single": {
+          "n": 543,
+          "min": 20,
+          "mean": 3923,
+          "median": 1623,
+          "p90": 7750,
+          "max": 48893
+        }
+      },
+      "ownCharsOfDual": {
+        "n": 234,
+        "min": 10,
+        "mean": 721,
+        "median": 304,
+        "p90": 1555,
+        "max": 21697
+      },
+      "appendedParentChars": {
+        "n": 234,
+        "min": 570,
+        "mean": 7488,
+        "median": 6481,
+        "p90": 9982,
+        "max": 48893
+      },
+      "appendedCharsTotal": 1752123,
+      "perThreshold": [
+        {
+          "threshold": 12000,
+          "maxPrimaryChars": 24000,
+          "candidatesOverTarget": 61,
+          "dualSplitOwnFromParent": 22,
+          "appendedParentOversizedAtomic": 19,
+          "singleKeyOversizedAtomic": 20
+        },
+        {
+          "threshold": 10000,
+          "maxPrimaryChars": 20000,
+          "candidatesOverTarget": 74,
+          "dualSplitOwnFromParent": 35,
+          "appendedParentOversizedAtomic": 19,
+          "singleKeyOversizedAtomic": 20
+        },
+        {
+          "threshold": 9000,
+          "maxPrimaryChars": 18000,
+          "candidatesOverTarget": 81,
+          "dualSplitOwnFromParent": 38,
+          "appendedParentOversizedAtomic": 19,
+          "singleKeyOversizedAtomic": 25
+        },
+        {
+          "threshold": 8000,
+          "maxPrimaryChars": 16000,
+          "candidatesOverTarget": 105,
+          "dualSplitOwnFromParent": 58,
+          "appendedParentOversizedAtomic": 19,
+          "singleKeyOversizedAtomic": 39
+        },
+        {
+          "threshold": 7000,
+          "maxPrimaryChars": 14000,
+          "candidatesOverTarget": 168,
+          "dualSplitOwnFromParent": 103,
+          "appendedParentOversizedAtomic": 19,
+          "singleKeyOversizedAtomic": 39
+        },
+        {
+          "threshold": 6000,
+          "maxPrimaryChars": 12000,
+          "candidatesOverTarget": 225,
+          "dualSplitOwnFromParent": 145,
+          "appendedParentOversizedAtomic": 19,
+          "singleKeyOversizedAtomic": 39
+        },
+        {
+          "threshold": 5000,
+          "maxPrimaryChars": 10000,
+          "candidatesOverTarget": 251,
+          "dualSplitOwnFromParent": 152,
+          "appendedParentOversizedAtomic": 19,
+          "singleKeyOversizedAtomic": 39
+        },
+        {
+          "threshold": 4000,
+          "maxPrimaryChars": 8000,
+          "candidatesOverTarget": 263,
+          "dualSplitOwnFromParent": 154,
+          "appendedParentOversizedAtomic": 47,
+          "singleKeyOversizedAtomic": 47
+        }
+      ]
+    },
+    {
+      "dataset": "conmed",
+      "method": "EXACT_INDEX_DESCENDANTS_TEXT",
+      "candidates": 137,
+      "dual": 67,
+      "dualPct": 48.9,
+      "allDualAreNeighborhoodExpansion": true,
+      "dualRoles": {
+        "BASKET": 24,
+        "EXCEPTION": 29,
+        "CONDITION": 11,
+        "PROVISO": 3
+      },
+      "topAppendedParents": [
+        [
+          "7.3",
+          25
+        ],
+        [
+          "7.5",
+          16
+        ],
+        [
+          "7.2",
+          10
+        ],
+        [
+          "7.6",
+          5
+        ],
+        [
+          "7.8",
+          4
+        ],
+        [
+          "7.4",
+          2
+        ],
+        [
+          "7.9",
+          2
+        ],
+        [
+          "7.10",
+          2
+        ],
+        [
+          "7.13",
+          1
+        ]
+      ],
+      "unresolvedKeys": 2,
+      "operativeChars": {
+        "all": {
+          "n": 135,
+          "min": 37,
+          "mean": 3747,
+          "median": 3694,
+          "p90": 7987,
+          "max": 9621
+        },
+        "dual": {
+          "n": 67,
+          "min": 1945,
+          "mean": 6356,
+          "median": 7109,
+          "p90": 9095,
+          "max": 9621
+        },
+        "single": {
+          "n": 68,
+          "min": 37,
+          "mean": 1177,
+          "median": 470,
+          "p90": 3501,
+          "max": 8843
+        }
+      },
+      "ownCharsOfDual": {
+        "n": 67,
+        "min": 20,
+        "mean": 365,
+        "median": 251,
+        "p90": 844,
+        "max": 1618
+      },
+      "appendedParentChars": {
+        "n": 67,
+        "min": 1212,
+        "mean": 5989,
+        "median": 7053,
+        "p90": 8843,
+        "max": 8843
+      },
+      "appendedCharsTotal": 401296,
+      "perThreshold": [
+        {
+          "threshold": 12000,
+          "maxPrimaryChars": 24000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 10000,
+          "maxPrimaryChars": 20000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 9000,
+          "maxPrimaryChars": 18000,
+          "candidatesOverTarget": 9,
+          "dualSplitOwnFromParent": 9,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 8000,
+          "maxPrimaryChars": 16000,
+          "candidatesOverTarget": 14,
+          "dualSplitOwnFromParent": 13,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 7000,
+          "maxPrimaryChars": 14000,
+          "candidatesOverTarget": 37,
+          "dualSplitOwnFromParent": 35,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 6000,
+          "maxPrimaryChars": 12000,
+          "candidatesOverTarget": 40,
+          "dualSplitOwnFromParent": 38,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 5000,
+          "maxPrimaryChars": 10000,
+          "candidatesOverTarget": 49,
+          "dualSplitOwnFromParent": 46,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 4000,
+          "maxPrimaryChars": 8000,
+          "candidatesOverTarget": 65,
+          "dualSplitOwnFromParent": 59,
+          "appendedParentOversizedAtomic": 10,
+          "singleKeyOversizedAtomic": 1
+        }
+      ]
+    },
+    {
+      "dataset": "lsb",
+      "method": "REPARSED_ARTICLE_TEXT_SPANS",
+      "candidates": 82,
+      "dual": 45,
+      "dualPct": 54.9,
+      "allDualAreNeighborhoodExpansion": true,
+      "dualRoles": {
+        "EXCEPTION": 26,
+        "BASKET": 11,
+        "PROVISO": 3,
+        "CONDITION": 5
+      },
+      "topAppendedParents": [
+        [
+          "6.01",
+          15
+        ],
+        [
+          "6.13",
+          13
+        ],
+        [
+          "6.08",
+          5
+        ],
+        [
+          "6.11",
+          5
+        ],
+        [
+          "6.04",
+          4
+        ],
+        [
+          "6.03",
+          2
+        ],
+        [
+          "6.14",
+          1
+        ]
+      ],
+      "unresolvedKeys": 2,
+      "operativeChars": {
+        "all": {
+          "n": 80,
+          "min": 92,
+          "mean": 2096,
+          "median": 1544,
+          "p90": 4287,
+          "max": 5360
+        },
+        "dual": {
+          "n": 43,
+          "min": 1053,
+          "mean": 2831,
+          "median": 2081,
+          "p90": 4314,
+          "max": 5360
+        },
+        "single": {
+          "n": 37,
+          "min": 92,
+          "mean": 1243,
+          "median": 599,
+          "p90": 4043,
+          "max": 4287
+        }
+      },
+      "ownCharsOfDual": {
+        "n": 43,
+        "min": 33,
+        "mean": 228,
+        "median": 108,
+        "p90": 464,
+        "max": 1071
+      },
+      "appendedParentChars": {
+        "n": 45,
+        "min": 599,
+        "mean": 2561,
+        "median": 1872,
+        "p90": 4043,
+        "max": 4287
+      },
+      "appendedCharsTotal": 115256,
+      "perThreshold": [
+        {
+          "threshold": 12000,
+          "maxPrimaryChars": 24000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 10000,
+          "maxPrimaryChars": 20000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 9000,
+          "maxPrimaryChars": 18000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 8000,
+          "maxPrimaryChars": 16000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 7000,
+          "maxPrimaryChars": 14000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 6000,
+          "maxPrimaryChars": 12000,
+          "candidatesOverTarget": 0,
+          "dualSplitOwnFromParent": 0,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 5000,
+          "maxPrimaryChars": 10000,
+          "candidatesOverTarget": 4,
+          "dualSplitOwnFromParent": 4,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 4000,
+          "maxPrimaryChars": 8000,
+          "candidatesOverTarget": 25,
+          "dualSplitOwnFromParent": 19,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        }
+      ]
+    },
+    {
+      "dataset": "fwrg",
+      "method": "REPARSED_ARTICLE_TEXT_SPANS",
+      "candidates": 252,
+      "dual": 142,
+      "dualPct": 56.3,
+      "allDualAreNeighborhoodExpansion": true,
+      "dualRoles": {
+        "EXCEPTION": 58,
+        "BASKET": 73,
+        "PROVISO": 3,
+        "CONDITION": 8
+      },
+      "topAppendedParents": [
+        [
+          "6.02",
+          43
+        ],
+        [
+          "6.06",
+          35
+        ],
+        [
+          "6.07",
+          34
+        ],
+        [
+          "6.04",
+          19
+        ],
+        [
+          "6.01",
+          7
+        ],
+        [
+          "6.10",
+          2
+        ],
+        [
+          "6.05",
+          1
+        ],
+        [
+          "6.09",
+          1
+        ]
+      ],
+      "unresolvedKeys": 4,
+      "operativeChars": {
+        "all": {
+          "n": 248,
+          "min": 30,
+          "mean": 11656,
+          "median": 16462,
+          "p90": 18212,
+          "max": 21410
+        },
+        "dual": {
+          "n": 141,
+          "min": 4146,
+          "mean": 17331,
+          "median": 17663,
+          "p90": 18684,
+          "max": 21410
+        },
+        "single": {
+          "n": 107,
+          "min": 30,
+          "mean": 4178,
+          "median": 507,
+          "p90": 17454,
+          "max": 20614
+        }
+      },
+      "ownCharsOfDual": {
+        "n": 141,
+        "min": 4,
+        "mean": 430,
+        "median": 304,
+        "p90": 822,
+        "max": 3022
+      },
+      "appendedParentChars": {
+        "n": 142,
+        "min": 3468,
+        "mean": 16823,
+        "median": 17454,
+        "p90": 17693,
+        "max": 20614
+      },
+      "appendedCharsTotal": 2388805,
+      "perThreshold": [
+        {
+          "threshold": 12000,
+          "maxPrimaryChars": 24000,
+          "candidatesOverTarget": 157,
+          "dualSplitOwnFromParent": 138,
+          "appendedParentOversizedAtomic": 0,
+          "singleKeyOversizedAtomic": 0
+        },
+        {
+          "threshold": 10000,
+          "maxPrimaryChars": 20000,
+          "candidatesOverTarget": 157,
+          "dualSplitOwnFromParent": 138,
+          "appendedParentOversizedAtomic": 7,
+          "singleKeyOversizedAtomic": 4
+        },
+        {
+          "threshold": 9000,
+          "maxPrimaryChars": 18000,
+          "candidatesOverTarget": 157,
+          "dualSplitOwnFromParent": 138,
+          "appendedParentOversizedAtomic": 7,
+          "singleKeyOversizedAtomic": 4
+        },
+        {
+          "threshold": 8000,
+          "maxPrimaryChars": 16000,
+          "candidatesOverTarget": 158,
+          "dualSplitOwnFromParent": 139,
+          "appendedParentOversizedAtomic": 119,
+          "singleKeyOversizedAtomic": 17
+        },
+        {
+          "threshold": 7000,
+          "maxPrimaryChars": 14000,
+          "candidatesOverTarget": 159,
+          "dualSplitOwnFromParent": 139,
+          "appendedParentOversizedAtomic": 138,
+          "singleKeyOversizedAtomic": 18
+        },
+        {
+          "threshold": 6000,
+          "maxPrimaryChars": 12000,
+          "candidatesOverTarget": 160,
+          "dualSplitOwnFromParent": 140,
+          "appendedParentOversizedAtomic": 138,
+          "singleKeyOversizedAtomic": 19
+        },
+        {
+          "threshold": 5000,
+          "maxPrimaryChars": 10000,
+          "candidatesOverTarget": 167,
+          "dualSplitOwnFromParent": 140,
+          "appendedParentOversizedAtomic": 138,
+          "singleKeyOversizedAtomic": 19
+        },
+        {
+          "threshold": 4000,
+          "maxPrimaryChars": 8000,
+          "candidatesOverTarget": 170,
+          "dualSplitOwnFromParent": 141,
+          "appendedParentOversizedAtomic": 138,
+          "singleKeyOversizedAtomic": 19
+        }
+      ]
+    }
+  ],
+  "note": "operativeChars = sum of DESCENDANTS spans of every structuralNodeKey + 2 chars per join, i.e. exactly what orchestrator.ts:418 / operativeTextFor() hand the compiler. DSGR spans use the largest physical occurrence per nodeKey (nodeKeys are not unique) and are an upper bound; CONMED spans are exact."
+}
