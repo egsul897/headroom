@@ -85,5 +85,31 @@
       "tests": 1,
       "what": "the sealed-population invariant: 163 unchanged, exact dedup 137 before / 135 after, naming the two collapsed pairs and asserting the dedup report records them."
     }
-  ]
+  ],
+  "fullSuite": {
+    "before": {
+      "tests": 4836,
+      "passed": 4164,
+      "failed": 148
+    },
+    "after": {
+      "tests": 4861,
+      "passed": 4189,
+      "failed": 148
+    },
+    "newFailingIdentities": 0,
+    "noLongerFailing": 0,
+    "method": "vitest --reporter=json over the whole repository, before and after, compared by full test identity (file :: fullName) rather than by count.",
+    "preExistingFailuresUnchanged": "the 148 identities are byte-identical across the two runs - database-backed service/UI suites, the fix-3 adversarial certification set, solver and foundation-audit suites, and premium-lock's 5 scratch-path tests"
+  },
+  "gates": {
+    "tsc": "clean apart from 6 pre-existing tests/foundation-audit errors present before the change",
+    "eslint": "clean",
+    "build": "next build succeeded"
+  },
+  "independenceGuardUpdated": {
+    "file": "tests/contract-model/condition-suspicion-classifier-independence.test.ts",
+    "why": "the guard pinned Gate 2's first argument to the literal compilerInput.operativeSourceText. R3 replaces it with buildConditionSuspicionInput(compilerInput). The guard's intent - the classifier must never see compiled IR - is unchanged and now ALSO asserts that the builder's body reads no compilationResult/IRRule/inventory/reconciliation, and admits PARENT_SCOPE only (never SIBLING_CONTEXT, CHILD_RULE, DEFINITION, CROSS_REFERENCE or the linked OPERATIVE_SOURCE item). Net: one guard updated, one new guard added.",
+    "strengthened": true
+  }
 }
