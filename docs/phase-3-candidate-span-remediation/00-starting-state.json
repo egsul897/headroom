@@ -1,0 +1,36 @@
+{
+  "mission": "HEADROOM PHASE-3 - CANDIDATE-SPAN CONTRACT REMEDIATION DESIGN (zero-cost, design only)",
+  "startingSha": "60be8c7dd7b98ad1bf0648297cf9b59b8b8fc2c3",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeCleanAtStart": true,
+  "paidModelCalls": 0,
+  "productionFilesChanged": 0,
+  "environmentNote": "The session container was reclaimed mid-mission and re-cloned at an unrelated older commit (b069f9c, a merge of PR #54, which is NOT an ancestor of this branch). The remote branch ref was and remained 60be8c7; the local tree was resynced to it and npm install re-run. Two consequences are disclosed rather than hidden: (1) the session scratch directory /tmp/claude-0/pilot was destroyed, so the pilot's frozen Pass-A inventories are no longer on disk and every planner figure in 02-conmed-before-after.json is TIER_2_STRUCTURAL_ONLY (the planner consumes the inventory only for ownership/must-link, so operative-span figures are identical either way; only first-turn token estimates, which include rendered inventory text, differ); (2) the halted population run's per-candidate cost records were in the same directory - see 10 for how the cost basis is reconstructed and independently checked.",
+  "frozenModuleHashes": {
+    "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts": "ce835df5ffd3c3f4",
+    "lib/contract-model/compiler/discovery/pass-d-reconcile.ts": "106c2e40bab53205",
+    "lib/contract-model/compiler/discovery/types.ts": "3108fc6612259663",
+    "lib/contract-model/analysis/orchestrator.ts": "883d91c937e02d88",
+    "lib/contract-model/compiler/context-retrieval/pipeline.ts": "eb02d6e97ddbf9bc",
+    "lib/contract-model/compiler/context-retrieval/structural-context.ts": "b4f8eaf0471249f1",
+    "lib/contract-model/compiler/context-retrieval/types.ts": "07f4422e1f4f0441",
+    "lib/contract-model/compiler/semantic-accountability/source-context.ts": "3e7ff751f769b644",
+    "lib/contract-model/compiler/semantic-accountability/inventory.ts": "79811746c9010364",
+    "lib/contract-model/compiler/semantic/compile.ts": "60fcf65995efefc5",
+    "lib/contract-model/compiler/semantic/caller.ts": "0c4d51b062d4e678",
+    "lib/contract-model/compiler/semantic/shard-planner.ts": "06bbf5a0e309ca4f",
+    "lib/contract-model/compiler/semantic-verification/verify.ts": "bbfd896a0020caa7",
+    "lib/contract-model/compiler/semantic-verification/source-inventory.ts": "b021971544acc2d8",
+    "lib/contract-model/compiler/semantic-coverage/reconciliation.ts": "9324f0143caca0a5",
+    "lib/contract-model/compiler/coverage-audit/discovery-comparison.ts": "343dab536f65222c",
+    "lib/contract-model/compiler/coverage-audit/pipeline.ts": "7cf6d631013bef77",
+    "lib/contract-model/compiler/safe-failure/identity.ts": "61a36a47d21733a3",
+    "lib/contract-model/ir/types.ts": "9442aef8927dab62"
+  },
+  "sealedPopulation": {
+    "path": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+    "sha256_16": "5f0eb08834f2056f",
+    "discovered": 163,
+    "exactDedup": 137
+  }
+}

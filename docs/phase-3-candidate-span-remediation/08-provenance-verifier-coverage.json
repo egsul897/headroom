@@ -1,0 +1,119 @@
+{
+  "modelCalls": 0,
+  "provenance": {
+    "currentType": "lib/contract-model/ir/types.ts:99-106 SourceProvenance { documentId, sourceNodeKey, sourceCitation, excerpt } - flat, no operative-vs-contextual discriminator. Attached optionally to IRRule and to expression / condition / exception / shared-capacity nodes.",
+    "problemToday": "A rule compiled from a child candidate can carry sourceCitation = the child's ref while its excerpt is drawn from anywhere in the concatenated span, i.e. from a sibling clause. Nothing in the type marks that.",
+    "canExistingTypesExpressIt": "NO for the rule's own provenance; YES for the retrieval side - ContextItemType already distinguishes OPERATIVE_SOURCE from PARENT_SCOPE / SIBLING_CONTEXT / DEFINITION / CROSS_REFERENCE, and every ContextItem carries structuralNodeId and itemId.",
+    "smallestAdditiveChange": "Two optional fields on SourceProvenance: `role?: 'OPERATIVE' | 'CONTEXTUAL'` (absent reads as OPERATIVE, so every existing artifact stays valid) and `contextItemId?: string` linking a CONTEXTUAL provenance back to the ContextItem it came from. Both optional, so no IR fixture, golden or benchmark artifact changes shape and ir/validate.ts needs no new required-field rule.",
+    "classification": "SAFETY_FOLLOWUP - the span fix alone already removes the misattribution channel, because the operative window no longer CONTAINS the foreign text. The discriminator is what makes a future contextual citation auditable; it is not required to make the span fix safe."
+  },
+  "verifier": {
+    "whatItValidatesToday": [
+      "source section: resolveUniqueNodeByRef(sourceDocumentId, sourceSectionRef) -> structuralNodeId (verify.ts:315) - anchor-based already, unaffected.",
+      "operative text: buildSourceInventory(compilerInput.operativeSourceText) extracts AMOUNT / PERCENTAGE / METRIC_MENTION etc. as the SOURCE side of reconcileInventories (verify.ts:319).",
+      "linked source: collectAdmissibleEvidence + buildRetrievedEvidenceInventory - only evidence the verifier can independently RE-RESOLVE and authenticate; compiler retrieval records are checked against it, never read as evidence.",
+      "citation: reconciliation matches IR items against the source inventory.",
+      "material conditions: two-gate routing - Gate 1 deterministic (can only FORCE review), Gate 2 classifyConditionSuspicion(operativeSourceText), the only gate that can PERMIT a skip."
+    ],
+    "doesItPreventMisattributionToday": "NO, and it structurally cannot: its own notion of 'the source' is the same over-wide span the compiler saw. Measured over the 137 CONMED candidates: the verifier's source window holds 9179 economic items of which 5505 (60%) belong to sibling clauses under the linked parent; all 67 dual-key candidates are affected; mean 82.2 foreign items each, max 195. 7.2(k)(i) has 2 items of its own and 198 in its window. A rule citing any of those 195 foreign amounts reconciles as SUPPORTED.",
+    "wouldAnchorOnlyCauseFalseVerifierFailures": "One real risk, the same as legal case E/F: a material condition living in the chapeau or in a flush proviso leaves the Gate-2 window (verify.ts:355), so classifyConditionSuspicion could return NO_MATERIAL_CONDITION_SUSPECTED and permit a skip it should not. This is a FALSE-NEGATIVE (under-review) risk, not a false failure.",
+    "requiredMitigation": "R3 - Gate 2 must read the anchor text PLUS the PARENT_SCOPE excerpts already in the bundle. One argument change at one call site, no new machinery, no new model call; measured cost is a mean 319 extra chars (max 758) on that one classifier input. REQUIRED, because without it the span fix could reduce review volume for exactly the composite cases the 14 controls exist to protect.",
+    "improvement": "With the anchor-only window a foreign-amount citation reconciles as UNSUPPORTED and forces review instead of passing. The verifier's source window shrinks 9179 -> 2185 items (CONMED) and 90057 -> 66417 (DSGR).",
+    "composedCitationBug": "SEPARATE, PRE-EXISTING, NOT BUNDLED HERE. This design neither fixes nor depends on it; the span fix changes which text a citation is checked against, not how a composed citation is parsed."
+  },
+  "coverage": {
+    "howLinkedNodesAreUsedToday": [
+      "coverage-audit/pipeline.ts:162 - discoveredNodeIds = flatMap(structuralNodeIds) builds the package coverage map.",
+      "coverage-audit/discovery-comparison.ts:32/51/55 - DISCOVERED_EXACTLY / BY_DESCENDANT / BY_ANCESTOR.",
+      "semantic-coverage/reconciliation.ts:67 - a material unit is covered when its node is one of the candidate's nodes or nested under one.",
+      "semantic-accountability/inventory.ts - per-candidate sourceCoverage / unaccountedSource over the resolved OPERATIVE region."
+    ],
+    "theRule": "Moving a parent from OPERATIVE to CONTEXTUAL must not make it appear uncovered if it is independently represented elsewhere; and contextual presence must not earn substantive representation credit for the parent's proposition.",
+    "firstHalfSatisfiedBy": "The proposal does not modify structuralNodeIds, so all three package-level consumers receive byte-identical input and the coverage map is unchanged BY CONSTRUCTION. Independently verified on the merits as well: every appended parent section is itself an anchored candidate with its own operative text - CONMED 9/9, DSGR 46/46, LSB 7/7, FWRG 8/8 (70/70 across the four datasets).",
+    "secondHalfSatisfiedBy": "Per-candidate accountability (inventory.ts) is computed over the candidate's own OPERATIVE region, so under the proposal a child is no longer asked to inventory - and can no longer be credited for - the parent's text. The existing ExternalAccountabilityLink / externallyAccountedRegions mechanism is the designed place to record 'this region is accounted for by ownerCandidateRef'; it needs no extension here because the parent is a first-class candidate rather than an external region.",
+    "expectedSignalChange": "INVENTORY_COVERAGE_GAP should fall sharply for child candidates (today a 54-char clause is asked to account for 8,899 chars, and the frozen pilot recorded 109 inventory items for it). That is a REDUCTION IN SPURIOUS ACCOUNTABILITY WORK, not a loss of coverage; the package-level coverage map is unchanged.",
+    "classification": "NO REQUIRED CHANGE. One SAFETY_FOLLOWUP (F3): a test asserting discoveredNodeIds and the 3E covered-unit set are identical before and after."
+  },
+  "falseCreditSummary": {
+    "conmed": {
+      "population": 137,
+      "dualKey": 67,
+      "candidatesInheritingForeignEconomicItems": 67,
+      "totalForeignItemsInVerifierSourceWindow": 5505,
+      "currentTotalItems": 9179,
+      "proposedTotalItems": 2185,
+      "meanForeignItemsPerDualCandidate": 82.2,
+      "maxForeignItems": 195
+    },
+    "dsgr": {
+      "candidates": 777,
+      "spansResolved": 751,
+      "spansUnresolved": 26,
+      "dual": 225,
+      "inheritingForeignItems": 225,
+      "totalForeignItems": 17497,
+      "currentTotalItems": 90057,
+      "proposedTotalItems": 66417
+    },
+    "dsgrControls": {
+      "candidates": 74,
+      "inheritingForeignItems": 74,
+      "totalForeignItems": 10130,
+      "meanForeign": 136.9,
+      "maxForeign": 290,
+      "byParentSection": {
+        "doc-a::6.01": 2,
+        "doc-a::6.04": 11,
+        "doc-b::6.01": 16,
+        "doc-b::6.04": 3,
+        "doc-b::6.05": 16,
+        "doc-d::6.04": 2,
+        "doc-d::6.05": 14,
+        "doc-d::6.01": 10
+      },
+      "exposedControlSections": [
+        "doc-a::6.01",
+        "doc-a::6.04",
+        "doc-b::6.01",
+        "doc-b::6.04",
+        "doc-b::6.05",
+        "doc-d::6.01",
+        "doc-d::6.04",
+        "doc-d::6.05"
+      ],
+      "unexposedControlSections": [
+        "doc-a::6.05",
+        "doc-a::6.08(b)",
+        "doc-a::6.10",
+        "doc-d::6.08(b)"
+      ]
+    },
+    "controlsExposureVerdict": {
+      "controlsTotal": 14,
+      "distinctControlSections": 12,
+      "theoreticallyExposedSections": 8,
+      "unexposedSections": 4,
+      "controlsMappingToExposedSections": [
+        "doc-a::VI::6.01-chapeau",
+        "doc-a::VI::6.04-chapeau",
+        "doc-a::VI::6.04-unrestricted-sub-valuation",
+        "doc-b::VI::6-01-lead-in",
+        "doc-b::VI::6-04-lead-in",
+        "doc-b::VI::6-05-lead-in",
+        "doc-d::VI::6-01-chapeau",
+        "doc-d::VI::6-04-chapeau",
+        "doc-d::VI::6-05-chapeau"
+      ],
+      "controlsStructurallyUnaffected": [
+        "doc-a::VI::6.05-chapeau",
+        "doc-a::VI::6.05-ip-flush-prohibition",
+        "doc-a::VI::6.08b-chapeau",
+        "doc-a::VI::6.10-chapeau",
+        "doc-d::VI::6-08-b-chapeau"
+      ],
+      "exactReason": "A control is theoretically exposed when its own section is appended verbatim into some CHILD candidate's operative text: that child can emit the chapeau's prohibition, threshold, entity scope or permission as its own proposition, and the verifier's source window contains the supporting words, so the reconciliation returns SUPPORTED. 74 DSGR child candidates carry one of 8 control sections this way (mean 136.9 foreign economic items each, max 290). The remaining 4 control sections are never appended to any child and are exposed only through their own candidate, which is correct behaviour.",
+      "correctionToPriorArtifact": "The preceding mission's docs/phase-3-shard-threshold-simulation/06-false-credit-controls-structural.json reported 'appendedCandidateTotal: 93', and this mission's brief repeats it. That figure sums PER CONTROL, and two control pairs share one section (6.04-chapeau with 6.04-unrestricted-sub-valuation; 6.05-chapeau with 6.05-ip-flush-prohibition), so doc-a::6.04's 14 carriers were counted twice. The correct DISTINCT-candidate counts are 79 by that artifact's own frozen-nodeKey method and 74 by this mission's independent re-parse of the preserved DSGR source (26 of 777 candidate spans do not resolve under the re-parse and are excluded). 93 is wrong; the right number is 74-79."
+    },
+    "doesRemediationStrengthenOrWeakenTheBoundary": "STRENGTHENS, and it is the only lever of the two examined in this programme that touches the boundary at all. The parent's words leave the window the verifier treats as the child's own source, so a chapeau-derived claim emitted by a child stops reconciling as SUPPORTED and starts forcing review. The single weakening vector is the Gate-2 narrowing, which R3 closes."
+  }
+}

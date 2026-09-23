@@ -1,0 +1,318 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/span-contract-sim.ts",
+  "modelCalls": 0,
+  "inventoryTier": "TIER_2_STRUCTURAL_ONLY for all candidates (the pilot's frozen responses are not on disk in this container; the planner uses the inventory only for ownership/must-link, so every operative-span figure here is unaffected and only shard counts could differ for the 17 candidates that have a real inventory)",
+  "population": 137,
+  "dual": 67,
+  "current": {
+    "n": 137,
+    "total": 505889,
+    "mean": 3693,
+    "p50": 3689,
+    "p90": 7987,
+    "p95": 9095,
+    "max": 9621,
+    "over4k": 65,
+    "over6k": 40,
+    "over8k": 14,
+    "over10k": 0
+  },
+  "proposed": {
+    "n": 137,
+    "total": 104459,
+    "mean": 762,
+    "p50": 300,
+    "p90": 1558,
+    "p95": 3501,
+    "max": 8843,
+    "over4k": 6,
+    "over6k": 2,
+    "over8k": 1,
+    "over10k": 0
+  },
+  "reductionPct": 79.35,
+  "shards": {
+    "current": 374,
+    "proposed": 191,
+    "currentSharded": 77,
+    "proposedSharded": 33
+  },
+  "inventoryCalls": {
+    "current": 354,
+    "proposed": 278
+  },
+  "maxSequentialCalls": {
+    "currentMax": 16,
+    "proposedMax": 16,
+    "currentHistogram": {
+      "14": 97,
+      "16": 40
+    },
+    "proposedHistogram": {
+      "14": 135,
+      "16": 2
+    }
+  },
+  "firstTurnTokens": {
+    "currentMax": 35087,
+    "proposedMax": 30494,
+    "currentTotal": 3456365,
+    "proposedTotal": 2773504
+  },
+  "linkedContextRetention": {
+    "dualCandidates": 67,
+    "parentPresentInRealContextBundle": 67,
+    "parentPresentAsTypedPARENT_SCOPEalone": 67,
+    "parentScopeChars": {
+      "n": 67,
+      "total": 21402,
+      "mean": 319,
+      "p50": 294,
+      "p90": 514,
+      "p95": 743,
+      "max": 758,
+      "over4k": 0,
+      "over6k": 0,
+      "over8k": 0,
+      "over10k": 0
+    },
+    "contextLossCases": []
+  },
+  "residualOver4k": [
+    {
+      "ref": "7.2",
+      "role": "PERMISSION",
+      "chars": 8843,
+      "nodeIds": 1
+    },
+    {
+      "ref": "7.3",
+      "role": "GENERAL_PROHIBITION",
+      "chars": 7053,
+      "nodeIds": 1
+    },
+    {
+      "ref": "7.4",
+      "role": "CONDITION",
+      "chars": 5980,
+      "nodeIds": 1
+    },
+    {
+      "ref": "7.5",
+      "role": "EXCEPTION",
+      "chars": 4658,
+      "nodeIds": 1
+    },
+    {
+      "ref": "7.8",
+      "role": "PERMISSION",
+      "chars": 4667,
+      "nodeIds": 1
+    },
+    {
+      "ref": "7.9",
+      "role": "EXCEPTION",
+      "chars": 4339,
+      "nodeIds": 1
+    }
+  ],
+  "focus": {
+    "short_7_2_e": {
+      "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "ref": "7.2(e)",
+      "role": "REFINANCING_PERMISSION",
+      "nodeIds": 1,
+      "dual": false,
+      "currentChars": 200,
+      "proposedChars": 200,
+      "removedChars": 0,
+      "currentShards": 1,
+      "proposedShards": 1,
+      "currentMaxPrimary": 200,
+      "proposedMaxPrimary": 200,
+      "currentInvCalls": 2,
+      "proposedInvCalls": 2,
+      "currentMaxSeq": 14,
+      "proposedMaxSeq": 14,
+      "currentFirstTurnTok": 19581,
+      "proposedFirstTurnTok": 19581,
+      "linkedRefs": [],
+      "parentScopeItems": [
+        "7.2"
+      ],
+      "parentCoveredByContext": true,
+      "parentCoveredByParentScopeAlone": true,
+      "parentScopeChars": 107
+    },
+    "long_7_2_e": {
+      "discoveryId": "discovery-candidate:62512247bce898548b6f9b63",
+      "ref": "7.2(e)",
+      "role": "EXCEPTION",
+      "nodeIds": 2,
+      "dual": true,
+      "currentChars": 9045,
+      "proposedChars": 200,
+      "removedChars": 8845,
+      "currentShards": 4,
+      "proposedShards": 1,
+      "currentMaxPrimary": 9045,
+      "proposedMaxPrimary": 200,
+      "currentInvCalls": 4,
+      "proposedInvCalls": 2,
+      "currentMaxSeq": 16,
+      "proposedMaxSeq": 14,
+      "currentFirstTurnTok": 34981,
+      "proposedFirstTurnTok": 19581,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeItems": [
+        "7.2"
+      ],
+      "parentCoveredByContext": true,
+      "parentCoveredByParentScopeAlone": true,
+      "parentScopeChars": 107
+    },
+    "parent_7_2_k": {
+      "discoveryId": "discovery-candidate:28d7bafd7a1fedde253333ef",
+      "ref": "7.2(k)",
+      "role": "PERMISSION",
+      "nodeIds": 1,
+      "dual": false,
+      "currentChars": 776,
+      "proposedChars": 776,
+      "removedChars": 0,
+      "currentShards": 1,
+      "proposedShards": 1,
+      "currentMaxPrimary": 776,
+      "proposedMaxPrimary": 776,
+      "currentInvCalls": 2,
+      "proposedInvCalls": 2,
+      "currentMaxSeq": 14,
+      "proposedMaxSeq": 14,
+      "currentFirstTurnTok": 21715,
+      "proposedFirstTurnTok": 21715,
+      "linkedRefs": [],
+      "parentScopeItems": [
+        "7.2"
+      ],
+      "parentCoveredByContext": true,
+      "parentCoveredByParentScopeAlone": true,
+      "parentScopeChars": 107
+    },
+    "long_7_2_k": {
+      "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22",
+      "ref": "7.2(k)",
+      "role": "PROVISO",
+      "nodeIds": 2,
+      "dual": true,
+      "currentChars": 9621,
+      "proposedChars": 776,
+      "removedChars": 8845,
+      "currentShards": 3,
+      "proposedShards": 1,
+      "currentMaxPrimary": 9621,
+      "proposedMaxPrimary": 776,
+      "currentInvCalls": 4,
+      "proposedInvCalls": 2,
+      "currentMaxSeq": 16,
+      "proposedMaxSeq": 14,
+      "currentFirstTurnTok": 34902,
+      "proposedFirstTurnTok": 21715,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeItems": [
+        "7.2"
+      ],
+      "parentCoveredByContext": true,
+      "parentCoveredByParentScopeAlone": true,
+      "parentScopeChars": 107
+    },
+    "k_i": {
+      "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "ref": "7.2(k)(i)",
+      "role": "CONDITION",
+      "nodeIds": 2,
+      "dual": true,
+      "currentChars": 8899,
+      "proposedChars": 54,
+      "removedChars": 8845,
+      "currentShards": 3,
+      "proposedShards": 1,
+      "currentMaxPrimary": 8899,
+      "proposedMaxPrimary": 54,
+      "currentInvCalls": 4,
+      "proposedInvCalls": 2,
+      "currentMaxSeq": 16,
+      "proposedMaxSeq": 14,
+      "currentFirstTurnTok": 34923,
+      "proposedFirstTurnTok": 17356,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeItems": [
+        "7.2",
+        "7.2(k)"
+      ],
+      "parentCoveredByContext": true,
+      "parentCoveredByParentScopeAlone": true,
+      "parentScopeChars": 374
+    },
+    "k_ii": {
+      "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+      "ref": "7.2(k)(ii)",
+      "role": "BASKET",
+      "nodeIds": 2,
+      "dual": true,
+      "currentChars": 9300,
+      "proposedChars": 455,
+      "removedChars": 8845,
+      "currentShards": 3,
+      "proposedShards": 1,
+      "currentMaxPrimary": 9300,
+      "proposedMaxPrimary": 455,
+      "currentInvCalls": 4,
+      "proposedInvCalls": 2,
+      "currentMaxSeq": 16,
+      "proposedMaxSeq": 14,
+      "currentFirstTurnTok": 35082,
+      "proposedFirstTurnTok": 20233,
+      "linkedRefs": [
+        "7.2"
+      ],
+      "parentScopeItems": [
+        "7.2",
+        "7.2(k)"
+      ],
+      "parentCoveredByContext": true,
+      "parentCoveredByParentScopeAlone": true,
+      "parentScopeChars": 374
+    },
+    "medium_7_6": {
+      "discoveryId": "discovery-candidate:42423b37324ac426d0f961e2",
+      "ref": "7.6",
+      "role": "GENERAL_PROHIBITION",
+      "nodeIds": 1,
+      "dual": false,
+      "currentChars": 3501,
+      "proposedChars": 3501,
+      "removedChars": 0,
+      "currentShards": 1,
+      "proposedShards": 1,
+      "currentMaxPrimary": 3501,
+      "proposedMaxPrimary": 3501,
+      "currentInvCalls": 2,
+      "proposedInvCalls": 2,
+      "currentMaxSeq": 14,
+      "proposedMaxSeq": 14,
+      "currentFirstTurnTok": 26251,
+      "proposedFirstTurnTok": 26251,
+      "linkedRefs": [],
+      "parentScopeItems": [],
+      "parentCoveredByContext": true,
+      "parentCoveredByParentScopeAlone": true,
+      "parentScopeChars": 0
+    }
+  }
+}

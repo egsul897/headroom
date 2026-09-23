@@ -1,0 +1,61 @@
+{
+  "modelCalls": 0,
+  "question": "Are the short and long forms of cases like 7.2(e) duplicate discoveries of the same proposition, distinct candidates with different semantic purpose, or artifacts of the current candidate-span contract?",
+  "measurement": "Over the 137 exact-dedup CONMED candidates, exactly 2 anchor nodes carry more than one candidate, and both are the mission's own examples.",
+  "groups": [
+    {
+      "anchorNodeId": "structural-node:dc188a480a69dcf3fb6e1120",
+      "anchorRef": "7.2(e)",
+      "members": [
+        {
+          "discoveryId": "discovery-candidate:62512247bce898548b6f9b63",
+          "ref": "7.2(e)",
+          "role": "EXCEPTION",
+          "currentChars": 9045,
+          "proposedChars": 200
+        },
+        {
+          "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+          "ref": "7.2(e)",
+          "role": "REFINANCING_PERMISSION",
+          "currentChars": 200,
+          "proposedChars": 200
+        }
+      ]
+    },
+    {
+      "anchorNodeId": "structural-node:10fcf067cf545b21e045f3bd",
+      "anchorRef": "7.2(k)",
+      "members": [
+        {
+          "discoveryId": "discovery-candidate:28d7bafd7a1fedde253333ef",
+          "ref": "7.2(k)",
+          "role": "PERMISSION",
+          "currentChars": 776,
+          "proposedChars": 776
+        },
+        {
+          "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22",
+          "ref": "7.2(k)",
+          "role": "PROVISO",
+          "currentChars": 9621,
+          "proposedChars": 776
+        }
+      ]
+    }
+  ],
+  "answer": {
+    "identityIsNotAnArtifact": "Both members of each pair share the SAME anchor node - 7.2(e) = structural-node:dc188a480a69dcf3fb6e1120, 7.2(k) = structural-node:10fcf067cf545b21e045f3bd - and were kept apart by pass-d-reconcile's mergeKey `anchor::role::contentFingerprint`, which already ignores the linked node entirely. They differ in ROLE: 7.2(e) as EXCEPTION vs REFINANCING_PERMISSION, 7.2(k) as PROVISO vs PERMISSION. So they are NOT duplicates created by the span contract; discovery genuinely proposed two different characterisations of one clause.",
+    "divergentTextIsAnArtifact": "What IS a pure span artifact is that the two members of a pair are handed DIFFERENT operative text today - 200 vs 9,045 chars for 7.2(e), 776 vs 9,621 for 7.2(k) - purely because one member's role is in {EXCEPTION, BASKET, PROVISO, CONDITION} and so triggered Pass C's neighborhood append and the other's is not. Two readings of one clause are therefore compiled against two different sources, which is incoherent and makes them impossible to compare.",
+    "afterTheProposedContract": "Both members compile the identical anchor text (200 and 200; 776 and 776), differing only in the role each claims. That is the precondition Option 2 structural deduplication needs and does not have today.",
+    "shouldTheyBeDeduplicated": "NOT in this remediation, and not automatically. A clause that is genuinely both a permission and a proviso is real drafting, and collapsing the pair would silently drop one reading. The right disposition is a reviewable same-anchor conflict, not a merge.",
+    "whatCandidateIdentityShouldDependOn": {
+      "anchorNode": "YES - already the primary key, occurrence-safe since Phase 3F.1.2, and unchanged by this proposal.",
+      "semanticRole": "YES - already part of mergeKey; it is the only thing distinguishing the two members of each pair.",
+      "contentFingerprint": "YES - already part of mergeKey; distinguishes two genuinely different propositions discovered at one anchor.",
+      "linkedContextualNodes": "NO - they describe what the anchor MODIFIES, not what it IS. Including them would make identity depend on retrieval breadth. They are correctly absent from mergeKey today.",
+      "sourceSpan": "NO, not independently - it is a function of the anchor node, and making it an identity input is precisely what produced the divergent-text artifact above.",
+      "recommendation": "Keep identity exactly as it is: anchor + role + content fingerprint. The proposal changes no discoveryId."
+    }
+  }
+}
