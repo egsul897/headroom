@@ -1,0 +1,251 @@
+{
+  "mission": "HEADROOM PHASE-3 - AUTHENTICATED EVIDENCE UNIVERSE CONSISTENCY AUDIT (semantic accountability vs numeric grounding)",
+  "startingSha": "152dc0cbbd893f527844a9ed2907f620002285e7",
+  "paidModelCalls": 0,
+  "productionFilesChanged": 0,
+  "frozen": {
+    "fixB": "NUMERIC_GROUNDING_REMEDIATION_VALIDATED",
+    "candidateSpan": "CANDIDATE_SPAN_CONTEXT_OWNERSHIP_VALIDATED",
+    "benchmarkSha256_16": "5f0eb08834f2056f",
+    "phase4TreeHash": "8fa637768316a613524e821b913f56c86111a298"
+  },
+  "headline": "There is no production semantic-accountability attribution check. The historical `attribution.unsourced: [\"100%\"]` was produced by a FORENSIC HARNESS function that nothing else in the repository consumes, and no benchmark or scoring path takes an IR-to-source attribution input of any kind. The architectural discrepancy the mission suspected is therefore not where it was expected - but two real ones were found in its place.",
+  "evidenceChannelMatrix": [
+    {
+      "channel": "ANCHOR_OPERATIVE",
+      "sourceBacked": true,
+      "hasEvidenceState": true,
+      "numericGroundingEligible": "YES (scope OPERATIVE)",
+      "accountabilityAttributionEligible": "YES - the only channel the historical harness check searched",
+      "verifierReconciliationEligible": "YES - buildSourceInventory is built from it and it has first claim",
+      "earnsRepresentationCredit": "YES - this is the region source-coverage requires the IR to account for"
+    },
+    {
+      "channel": "CONTEXT_BUNDLE",
+      "sourceBacked": true,
+      "hasEvidenceState": true,
+      "numericGroundingEligible": "ONLY IF independently authenticated - a bundle excerpt is not admitted as evidence on its own",
+      "accountabilityAttributionEligible": "NO - the harness check never read the bundle (it read the anchor and the Pass C linked nodes)",
+      "verifierReconciliationEligible": "ONLY via collectAdmissibleEvidence re-resolution + hash check",
+      "earnsRepresentationCredit": "NO - production accountability resolves its own regions from the structural index, never from the bundle"
+    },
+    {
+      "channel": "TOOL_RETRIEVED_DEFINITION",
+      "sourceBacked": true,
+      "hasEvidenceState": true,
+      "numericGroundingEligible": "YES when authenticated (scope CONTEXT)",
+      "accountabilityAttributionEligible": "NO - never searched; this is the channel that produced the 7.2(f) false UNSOURCED",
+      "verifierReconciliationEligible": "YES, and with a STRICTER relation than Fix B uses (irItemScopedToEvidence)",
+      "earnsRepresentationCredit": "NO"
+    },
+    {
+      "channel": "TOOL_RETRIEVED_CROSS_REFERENCE",
+      "sourceBacked": true,
+      "hasEvidenceState": true,
+      "numericGroundingEligible": "YES when authenticated as a PROVISION request",
+      "accountabilityAttributionEligible": "NO",
+      "verifierReconciliationEligible": "YES (section-scoped)",
+      "earnsRepresentationCredit": "Indirectly: resolveSourceContext builds CROSS_REFERENCE_EXPANSION regions from the index, independently of any tool call"
+    },
+    {
+      "channel": "TOOL_RETRIEVED_SIBLING",
+      "sourceBacked": true,
+      "hasEvidenceState": true,
+      "numericGroundingEligible": "YES if a provision request authenticates - and this is exactly the false-credit risk in \u00a711",
+      "accountabilityAttributionEligible": "NO",
+      "verifierReconciliationEligible": "YES, scoped",
+      "earnsRepresentationCredit": "NO - candidate-span/F1 deliberately keeps sibling material out of the operative window"
+    },
+    {
+      "channel": "TOOL_RETRIEVED_OTHER",
+      "sourceBacked": "DEPENDS",
+      "hasEvidenceState": true,
+      "numericGroundingEligible": "Only through the same authentication path",
+      "accountabilityAttributionEligible": "NO",
+      "verifierReconciliationEligible": "Only if it resolves to a definition or provision request",
+      "earnsRepresentationCredit": "NO"
+    },
+    {
+      "channel": "COMPILER_GENERATED_TEXT",
+      "sourceBacked": false,
+      "hasEvidenceState": false,
+      "numericGroundingEligible": "NO - and this is the point of Fix B: a provenance excerpt is compiler-generated text and cannot authenticate itself",
+      "accountabilityAttributionEligible": "NO",
+      "verifierReconciliationEligible": "NO",
+      "earnsRepresentationCredit": "NO"
+    },
+    {
+      "channel": "FEW_SHOT_OR_PROMPT",
+      "sourceBacked": false,
+      "hasEvidenceState": false,
+      "numericGroundingEligible": "NO",
+      "accountabilityAttributionEligible": "NO",
+      "verifierReconciliationEligible": "NO",
+      "earnsRepresentationCredit": "NO"
+    },
+    {
+      "channel": "UNAUTHENTICATED_OR_REFUSED_TOOL_RESULT",
+      "sourceBacked": false,
+      "hasEvidenceState": "REFUSED / UNRESOLVED / STALE",
+      "numericGroundingEligible": "NO - rejected by collectAdmissibleEvidence; a compiler-claimed rejection also forces REVIEW_REQUIRED",
+      "accountabilityAttributionEligible": "NO",
+      "verifierReconciliationEligible": "NO - surfaced as PROVENANCE_MISMATCH instead",
+      "earnsRepresentationCredit": "NO"
+    }
+  ],
+  "attributionTrace": {
+    "function": "attributionCheck(result, anchorText, parentText) - scripts/p3-conmed-pilot/span-validation.ts:71",
+    "valueExtraction": "assertedAmounts() at span-validation.ts:64 - regex /\\$[\\d,]{4,}|\\b\\d+(?:\\.\\d+)?%/g over JSON.stringify({rules, definitions}); it reads the WHOLE serialized IR including provenance excerpts, and recognizes only $-amounts and percentages",
+    "evidenceSearch": "plain substring containment (after whitespace normalization) in exactly two strings: anchorText = index.getNodeText(structuralNodeIds[0], 'DESCENDANTS'), and parentText = the Pass C linked nodes' DESCENDANTS text (span-validation.ts:123)",
+    "classification": "supportedByAnchor / violations (in the linked material only) / unsourced (in neither). There is no third bucket - tool-retrieved evidence cannot be expressed at all",
+    "accountabilityResult": "none - the value is written into a forensic JSON report and consumed by nothing",
+    "consumers": "grep over lib/, app/ and tests/ for attributionCheck | unsourced | assertedAmounts returns ZERO hits outside span-validation.ts and span-validation-b2.ts"
+  },
+  "productionAccountabilityDirection": {
+    "finding": "Production semantic accountability runs SOURCE -> IR, never IR -> SOURCE.",
+    "evidence": [
+      "INVENTORY_DISPOSITIONS (REPRESENTED / INTENTIONALLY_NON_COMPUTATIONAL / UNSUPPORTED / AMBIGUOUS / MISSING_FROM_COMPOSITION) are dispositions OF A SOURCE INVENTORY ITEM - 'UNSUPPORTED' means the composition consumed the source item into an UNSUPPORTED node, not that the model asserted something unsupported",
+      "computeSourceCoverage asks whether every stretch of the candidate's own source REGION is accounted for; its universe is SourceContextRegion[] (OPERATIVE, CROSS_REFERENCE_EXPANSION, ENCLOSING_NODE_EXPANSION) resolved from the structural index",
+      "the compiler prompt's own accountability clause is phrased entirely in the source->IR direction, including 'additional deterministically-detected values ... must be represented'",
+      "no check anywhere asks whether an IR node lacks inventory lineage"
+    ],
+    "consequence": "Accountability cannot call an assertion - numeric or qualitative - unsourced, because it never grades assertions. The only production IR->source checks are the verifier's findIrOnlyNumericItems (structured) and Fix B (free-text)."
+  },
+  "replay_7_2_f": {
+    "artifact": "docs/phase-3-numeric-grounding/paid-validation-evidence/THE_CASE-...json",
+    "anchorChars": 149,
+    "linkedNodeChars": 0,
+    "authenticatedToolTexts": 1,
+    "actualNewRunIr": {
+      "assertedValues": [],
+      "viewA_unsourced": [],
+      "viewB_unsourced": [],
+      "fixB": "no material numeric assertion"
+    },
+    "reconstructedHistoricalCondition": {
+      "note": "the original run's IR is lost, so '100%' was injected into this run's own real rule field to reproduce the observed condition - labelled as a reconstruction, not as the original",
+      "assertedValues": [
+        "100%"
+      ],
+      "viewA_anchor_plus_linked": {
+        "unsourced": [
+          "100%"
+        ],
+        "violations": []
+      },
+      "viewB_plus_authenticated_tool_retrieval": {
+        "unsourced": [],
+        "violations": [
+          "100%"
+        ]
+      },
+      "fixB": "GROUNDED_CONTEXT",
+      "theFlip": "YES - '100%' flips out of UNSOURCED once authenticated tool retrieval is admitted",
+      "butAlsoRevealing": "under view B the harness moves it into 'violations' rather than a grounded bucket, because attributionCheck has only two buckets and cannot express tool-retrieved evidence. Widening that function's inputs alone would replace one wrong label with another."
+    },
+    "groundingSource": "toolCallLog[0] getDefinition{term:'Subsidiary Guarantor'} -> retrievedSource.rawText = '\"Subsidiary Guarantor\": (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%).', charStart 42258, charEnd 42415, contentHash e0ae4ef9188e..., evidenceStatus CURRENT, evidenceUnresolved false, textOrigin BASE_DOCUMENT_TEXT"
+  },
+  "corpusReplay": {
+    "artifacts": 54,
+    "sites": 171,
+    "sitesWithToolEvidence": 4,
+    "assertions": 133,
+    "counts": {
+      "BOTH_GROUNDED": 23,
+      "BOTH_UNGROUNDED": 3,
+      "ACCOUNTABILITY_ONLY_GROUNDED": 0,
+      "FIX_B_ONLY_GROUNDED": 4,
+      "INSUFFICIENT_ARTIFACT": 103
+    },
+    "disagreements": [
+      {
+        "pairClass": "FIX_B_ONLY_GROUNDED",
+        "file": "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-cash-sweep-cure.json",
+        "jsonPath": ".compile",
+        "value": "$50,000,000",
+        "fixBStatus": "NORMALIZED_EQUIVALENT",
+        "fixBGroundedIn": "OPERATIVE",
+        "accountabilityGrounded": false,
+        "toolEvidencePresent": false,
+        "contextEvidencePresent": false
+      },
+      {
+        "pairClass": "FIX_B_ONLY_GROUNDED",
+        "file": "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-cash-sweep-cure.json",
+        "jsonPath": ".compile",
+        "value": "$115,000,000",
+        "fixBStatus": "NORMALIZED_EQUIVALENT",
+        "fixBGroundedIn": "OPERATIVE",
+        "accountabilityGrounded": false,
+        "toolEvidencePresent": false,
+        "contextEvidencePresent": false
+      },
+      {
+        "pairClass": "FIX_B_ONLY_GROUNDED",
+        "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/holdout-cash-sweep-cure.json",
+        "jsonPath": ".compile",
+        "value": "$50,000,000",
+        "fixBStatus": "NORMALIZED_EQUIVALENT",
+        "fixBGroundedIn": "OPERATIVE",
+        "accountabilityGrounded": false,
+        "toolEvidencePresent": false,
+        "contextEvidencePresent": false
+      },
+      {
+        "pairClass": "FIX_B_ONLY_GROUNDED",
+        "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/holdout-cash-sweep-cure.json",
+        "jsonPath": ".compile",
+        "value": "$115,000,000",
+        "fixBStatus": "NORMALIZED_EQUIVALENT",
+        "fixBGroundedIn": "OPERATIVE",
+        "accountabilityGrounded": false,
+        "toolEvidencePresent": false,
+        "contextEvidencePresent": false
+      }
+    ]
+  },
+  "corpusInterpretation": {
+    "headline": "Zero ACCOUNTABILITY_ONLY_GROUNDED across the whole corpus: the historical universe never grounds anything Fix B does not. It is strictly narrower.",
+    "theFourDisagreements": "All four are FIX_B_ONLY_GROUNDED and all four are NORMALIZED_EQUIVALENT in the OPERATIVE window - not a tool-retrieval issue at all. The source writes '$50\\u00a0million' and '$115\\u00a0million' (with a non-breaking space); the IR asserts '$50,000,000' and '$115,000,000'. A substring test calls that unsourced; Fix B's scale-aware canonicalization grounds it correctly in the candidate's own anchor.",
+    "toolEvidenceCoverage": "only 4 of 171 preserved compilation sites carry authenticated tool rawText at all, so the corpus can say very little about the tool-retrieval channel specifically - the 7.2(f) replay is the direct evidence there",
+    "insufficientArtifacts": "103 of 133 assertions were not gradeable because the artifact preserved compiled rules without the source text they came from"
+  },
+  "creditSemantics": {
+    "doesUnsourcedReduceRepresentationCredit": "NO",
+    "canItTurnCreditIntoNoCredit": "NO",
+    "doesItCreateDangerousSilentMissClassifications": "NO",
+    "doesItAlterCompletenessOrAccountabilityStatus": "NO",
+    "doesItAffectBenchmarkScoring": "NO",
+    "why": "the signal has no consumer: grep for attributionCheck/unsourced/assertedAmounts outside the two harness scripts returns nothing, and evaluation-v2 / benchmark scoring take no IR->source attribution input at all",
+    "consequence": "the too-narrow universe made the COMPILER LOOK WORSE IN A FORENSIC REPORT, and misled two missions, but it never cost the pipeline a single point of credit"
+  },
+  "falseCreditAnalysis": {
+    "measurement": "Fix B was tested against its own weakness on the real 7.2(f) input and its real authenticated evidence: an assertion genuinely about the retrieved definition ('may cover up to 100% of the obligations of any Subsidiary Guarantor') and an assertion that has nothing to do with it ('may prepay up to 100% of the outstanding Revolving Loans') BOTH return GROUNDED_CONTEXT with zero findings.",
+    "conclusion": "Fix B's relation is 'this figure occurs in authenticated source', which is exactly right for its own job - catching a figure supported by NOTHING - and is NOT strong enough to carry attribution credit.",
+    "contrastWithTheStructuredPath": "reconciliation.ts's irItemScopedToEvidence already imposes the stricter relation for STRUCTURED numerics: retrieved evidence may support an IR value only when that value is scoped to it (the item belongs to that term's IRDefinition, or its own citation names that definition/section). Fix B deliberately does not, and the two are therefore inconsistent with each other.",
+    "risksIfAttributionWereWidenedNaively": [
+      "a retrieved definition is misapplied to the wrong proposition",
+      "a retrieved sibling basket's threshold is attributed to the current clause - precisely the attribution class candidate-span/F1 exists to prevent",
+      "a cross-reference figure is used for a different proposition",
+      "the same figure appears in several retrieved results and any of them 'supports' it"
+    ]
+  },
+  "rootCause": {
+    "primary": "7_2_F_HARNESS_ONLY_DEFECT - the false UNSOURCED came from a forensic harness function with a two-string evidence universe and a substring test, not from any production accountability path.",
+    "secondary": [
+      "ACCOUNTABILITY_EVIDENCE_UNIVERSE_TOO_NARROW, in the narrow sense that applies: the harness check omitted BOTH authenticated tool retrieval AND rendering equivalence. Production accountability is not too narrow because it does not perform attribution at all - which is itself the gap.",
+      "FIX_B_EVIDENCE_UNIVERSE_TOO_BROAD for attribution purposes: it matches a figure anywhere in authenticated evidence, with no semantic relation to the assertion, unlike the structured path's irItemScopedToEvidence.",
+      "RENDERING_EQUIVALENCE_GAP: 4 of 4 corpus disagreements are '$50 million' vs '$50,000,000', independent of any tool channel.",
+      "NO_IR_TO_SOURCE_QUALITATIVE_CHECK: nothing anywhere grades a qualitative assertion against evidence, so qualitative false-unsourced cannot occur - and neither can qualitative fabrication detection."
+    ]
+  },
+  "remediationDesign": {
+    "required": "YES, but not where the mission expected, and not urgently - nothing is scoring wrong today",
+    "R1_harness": "Retire attributionCheck's two-string universe. Have the forensic runners call Fix B's groundNumericAssertions against the authenticated evidence set instead of re-implementing a weaker test. Smallest possible change, removes a whole class of misleading forensic output, touches no production code.",
+    "R2_fixB_relation": "Give Fix B the same scoping discipline the structured path already has: a free-text assertion may be GROUNDED_CONTEXT by a retrieved definition only when the owning rule/condition's own citation names that definition or section, or the assertion's field belongs to that definition's unit. Anything else becomes a new, weaker status rather than full grounding.",
+    "statusVocabulary": "GROUNDED_OPERATIVE / GROUNDED_CONTEXT / GROUNDED_TOOL_EVIDENCE / UNSOURCED / AMBIGUOUS - do NOT collapse. The existing NumericGroundingStatus union already carries GROUNDED_OPERATIVE, GROUNDED_CONTEXT, NORMALIZED_EQUIVALENT, UNGROUNDED and AMBIGUOUS, and `groundedIn` already separates OPERATIVE from CONTEXT. Adding GROUNDED_TOOL_EVIDENCE (or, equivalently, extending groundedIn with TOOL_RETRIEVAL) is a two-value additive change - the types can express the distinction with no restructuring.",
+    "invariantToPreserve": "authenticated tool-retrieved source may SUPPORT an assertion through its actual source channel and semantic relationship, and is never promoted to anchor-owned operative evidence",
+    "typeChangesRequired": "MINIMAL AND ADDITIVE - one new enum member on an existing union, or one new value on groundedIn",
+    "fixBChangeRequired": "YES for R2, and it TIGHTENS rather than widens - it cannot create false credit"
+  }
+}
