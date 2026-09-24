@@ -1,0 +1,126 @@
+{
+  "mission": "HEADROOM PHASE-3 - verified unit artifact persistence",
+  "section": "§25 CONMED dry run, zero model calls",
+  "scratchDir": "(temporary, not preserved)",
+  "paidModelCalls": 0,
+  "filesWritten": [
+    "dry-run-candidate.json",
+    "verified-units/dry-run-candidate.verified-units.json",
+    "verified-units-manifest.json"
+  ],
+  "forensicEvidence": {
+    "schema": "p3-candidate-evidence.v1",
+    "hasRawModelOutput": true,
+    "hasToolCallLog": true,
+    "rules": 1,
+    "definitions": 1,
+    "hasContextBundle": true,
+    "verificationStatus": "MATERIAL_DISCREPANCY",
+    "verifiedUnitsRef": {
+      "file": "verified-units/dry-run-candidate.verified-units.json",
+      "packageHash": "4b090b8837e6c60e1b3efa2797a20137330ba0fc8384a442ea8b7f1e646ef042",
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": []
+    }
+  },
+  "verifiedUnitPackage": {
+    "schema": "p3-verified-unit-package.v1",
+    "complete": true,
+    "counts": {
+      "artifactsPersisted": 2,
+      "definitionsCompiled": 1,
+      "rulesCompiled": 1,
+      "unitsMissingIr": 0,
+      "unitsMissingVerification": 0,
+      "unitsVerified": 2
+    },
+    "units": [
+      {
+        "id": "ng-definition:subsidiary-guarantor",
+        "kind": "DEFINITION",
+        "identity": {
+          "companyId": "sem-test-co",
+          "compilerVersion": "v1",
+          "instrumentKey": "sem-test-instrument",
+          "irSchemaVersion": "v1",
+          "ruleOrDefinitionId": "ng-definition:subsidiary-guarantor",
+          "sourceContentVersion": null
+        },
+        "artifactHash": "ae974e9d341c3dfd88a79ea23702681b219bd14756541238872d2ee45a9776c2",
+        "findingsInResult": 2
+      },
+      {
+        "id": "ng-rule:1",
+        "kind": "RULE",
+        "identity": {
+          "companyId": "sem-test-co",
+          "compilerVersion": "v1",
+          "instrumentKey": "sem-test-instrument",
+          "irSchemaVersion": "v1",
+          "ruleOrDefinitionId": "ng-rule:1",
+          "sourceContentVersion": null
+        },
+        "artifactHash": "7a776d7069289cbc093b4e1074f91230db450253fcffe971c10014650f119520",
+        "findingsInResult": 2
+      }
+    ],
+    "problems": [],
+    "packageHash": "4b090b8837e6c60e1b3efa2797a20137330ba0fc8384a442ea8b7f1e646ef042"
+  },
+  "manifest": {
+    "schema": "p3-verified-unit-manifest.v1",
+    "complete": true,
+    "totals": {
+      "rulesCompiled": 1,
+      "definitionsCompiled": 1,
+      "unitsVerified": 2,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "unitsMissingIr": 0,
+      "candidates": 1,
+      "completePackages": 1,
+      "incompletePackages": 0,
+      "problemsByCode": {
+        "IR_WITHOUT_VERIFICATION": 0,
+        "VERIFICATION_WITHOUT_IR": 0,
+        "DUPLICATE_UNIT_ID": 0,
+        "IDENTITY_MISMATCH": 0,
+        "MIXED_COMPANY": 0,
+        "MIXED_INSTRUMENT": 0
+      }
+    },
+    "verificationStatusCounts": {
+      "MATERIAL_DISCREPANCY": 1
+    }
+  },
+  "strictBoundary": {
+    "outcome": "EXECUTED",
+    "policy": "REQUIRE",
+    "coverage": {
+      "unitsInPackage": 2,
+      "unitsWithVerification": 2,
+      "unitsMissingVerification": [],
+      "unitsRefusedByGate": [],
+      "unitsIncompletelyVerified": [],
+      "identityStrength": {
+        "STRONG": 0,
+        "WEAK": 2
+      },
+      "verificationStatuses": {
+        "MATERIAL_DISCREPANCY": 2
+      },
+      "complete": true
+    },
+    "capacities": [
+      {
+        "ruleId": "ng-rule:1",
+        "status": "UNSUPPORTED",
+        "limitations": [
+          "PHASE3_VERIFICATION_MATERIAL_FINDING"
+        ]
+      }
+    ]
+  }
+}

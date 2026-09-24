@@ -15,12 +15,12 @@ import { computeOperativeContractState } from "../../lib/contract-model/compiler
 import { getStageCaller } from "../../lib/contract-model/compiler/llm-caller";
 import { compileCovenantToIR } from "../../lib/contract-model/compiler/semantic/compile";
 import type { SemanticCompilationResult } from "../../lib/contract-model/compiler/semantic/types";
-import { INSTRUMENT_KEY, operativeTextFor, sha256 } from "./pipeline";
+import { COMPANY_ID, INSTRUMENT_KEY, operativeTextFor, sha256 } from "./pipeline";
 import { dedupExact } from "./dedup";
 import { PER_CANDIDATE_TIMEOUT_MS, buildInput, callerFor, maxTokensFor, prepare, record, withTimeout, type CandidateRecord } from "./compile-run";
 import { assertNotPremium, OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "./premium-lock";
 import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest, type CostRecord } from "./timeout-policy";
-import { buildCandidateEvidence, writeCandidateEvidence } from "./evidence";
+import { persistCandidate, VerifiedUnitManifestWriter } from "./evidence";
 import type { GatewayModel } from "./probe-models";
 
 const OUT = "/tmp/claude-0/pilot/population";
@@ -78,6 +78,10 @@ async function main() {
   const records: (CandidateRecord & { outcome: Outcome })[] = [];
   const costs: (CostRecord & { discoveryId: string })[] = [];
   const frozen: { discoveryId: string; result: SemanticCompilationResult }[] = [];
+  // The paired verified-unit manifest for this run. A compile-only run records every unit as
+  // unverified and the manifest says complete: false - honestly, rather than by omission.
+  const runId = `population-${new Date().toISOString()}`;
+  const verifiedUnits = new VerifiedUnitManifestWriter(path.join(OUT, "evidence"), COMPANY_ID, INSTRUMENT_KEY, runId);
   let consecutiveClean = 0;
   let done = 0;
 
@@ -105,11 +109,12 @@ async function main() {
       frozen.push({ discoveryId: candidate.discoveryId, result });
       rec = record(candidate, input, result, raw, 1, null);
       // Complete forensic evidence for this execution - rawModelOutput, the tool log, the full
-      // parsed IR and the exact input it came from. A summary row cannot answer "which stage first
-      // emitted this value"; this can. Verification is null here because this runner compiles only
+      // parsed IR and the exact input it came from - AND the paired verified-unit package, from the
+      // same in-memory objects. Verification is null here because this runner compiles only
       // (verifying would mean two more model calls per candidate, which this run is not authorized
-      // to spend) - recorded honestly rather than left for a reader to assume.
-      writeCandidateEvidence(path.join(OUT, "evidence"), candidate.discoveryId, buildCandidateEvidence(input, result, null, { model: LOCKED_MODEL, tier: 1, wallClockMs: rec.wallClockMs, inputTokens: rec.inputTokens, outputTokens: rec.outputTokens, costUsd: rec.actualCostUsd, costStatus: null, timedOut: false, notes: ["compile-only run; no verification performed"] }));
+      // to spend); the package therefore records every unit as unverified and is not complete.
+      const persisted = persistCandidate({ dir: path.join(OUT, "evidence"), name: candidate.discoveryId, runId, compilerInput: input, result, verification: null, run: { model: LOCKED_MODEL, tier: 1, wallClockMs: rec.wallClockMs, inputTokens: rec.inputTokens, outputTokens: rec.outputTokens, costUsd: rec.actualCostUsd, costStatus: null, timedOut: false, notes: ["compile-only run; no verification performed"] } });
+      verifiedUnits.add(persisted.package, persisted.verifiedUnitsPath);
     } catch (err) {
       timedOut = err instanceof Error && err.name === "CandidateTimeoutError";
       rec = record(candidate, input, { status: "FAILED", failureReasons: [timedOut ? "WALL_CLOCK_TIMEOUT" : "TRANSPORT_OR_INTERNAL_ERROR"], rules: [], definitions: [], toolCallLog: [], telemetry: null } as unknown as SemanticCompilationResult, raw, 1, null);
@@ -125,10 +130,11 @@ async function main() {
     consecutiveClean = outcome === "COMPLETED" ? consecutiveClean + 1 : 0;
     console.log(`  [${++done}/${keep.length}] ${ref.padEnd(14)} ${outcome.padEnd(24)} rules=${String(rec.rules).padStart(2)} tools=${String(rec.toolCalls).padStart(2)} tok=${rec.inputTokens}/${rec.outputTokens} ${Math.round(rec.wallClockMs / 1000)}s committed=$${ledger.committedUsd.toFixed(4)}`);
 
-    if (done % 20 === 0) { save("01-records", records); save("02-costs", { snapshot: ledger.snapshot(), perRequest: costs }); }
+    if (done % 20 === 0) { save("01-records", records); save("02-costs", { snapshot: ledger.snapshot(), perRequest: costs }); verifiedUnits.write(); }
   }
 
   save("01-records", records);
+  verifiedUnits.write();
   save("02-costs", { snapshot: ledger.snapshot(), perRequest: costs });
   save("03-frozen", frozen.map((f) => ({ ...f, resultHash: sha256(JSON.stringify(f.result)) })));
   const byOutcome = records.reduce((a: Record<string, number>, r) => { a[r.outcome] = (a[r.outcome] ?? 0) + 1; return a; }, {});

@@ -22,6 +22,10 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../../lib/contract-model/compiler/semantic/types";
 import type { SemanticVerificationResult } from "../../lib/contract-model/compiler/semantic-verification/types";
+import {
+  buildVerifiedUnitPackage, buildVerifiedUnitRunManifest, serializeVerifiedUnitPackage, snapshotUnitsForVerification,
+  type PersistedVerifiedUnitPackage, type UnitSnapshot, type VerifiedUnitRunManifest,
+} from "../../lib/contract-model/verified-units";
 
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
@@ -122,6 +126,12 @@ export interface CandidateEvidence {
     timedOut: boolean;
     notes: string[];
   };
+  /**
+   * The paired verified-unit package written beside this evidence (lib/contract-model/verified-units.ts):
+   * the runtime/audit contract, produced from the same in-memory objects. Present whenever the
+   * candidate compiled at least one unit; its `complete` is false when the run did not verify.
+   */
+  verifiedUnits?: { file: string; packageHash: string; complete: boolean; artifactsPersisted: number; unitsMissingVerification: number; problems: string[] };
 }
 
 export function buildCandidateEvidence(
@@ -203,4 +213,67 @@ export function writeCandidateEvidence(dir: string, name: string, evidence: Cand
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(target, body);
   return target;
+}
+
+// ---------------------------------------------------------------------------
+// Paired verified-unit persistence - the runtime/audit contract, written beside the evidence
+// ---------------------------------------------------------------------------
+
+export interface PersistCandidateArgs {
+  dir: string;
+  name: string;
+  runId: string;
+  compilerInput: SemanticCompilerInput;
+  result: SemanticCompilationResult;
+  verification: SemanticVerificationResult | null;
+  run: CandidateEvidence["run"];
+  /**
+   * The units snapshotted BEFORE the verifier ran (snapshotUnitsForVerification). A runner that
+   * verifies MUST take the snapshot first and pass it here; a compile-only runner may omit it, in
+   * which case the snapshot is taken now and the package records every unit as unverified.
+   */
+  snapshot?: UnitSnapshot;
+}
+
+/**
+ * Writes the evidence AND the paired verified-unit package from the same in-memory objects, in one
+ * call, so no runner can write one without the other and no later script has to reconstruct the
+ * pairing. The package is serialized, scanned and written first; a secret hit aborts both.
+ */
+export function persistCandidate(a: PersistCandidateArgs): { evidencePath: string; verifiedUnitsPath: string | null; package: PersistedVerifiedUnitPackage } {
+  if (a.verification && !a.snapshot) throw new Error(`persistCandidate(${a.name}): a verifying runner must snapshot the units before verifying and pass that snapshot; identity is captured at verification time, not reconstructed afterwards`);
+  const snapshot = a.snapshot ?? snapshotUnitsForVerification(a.result);
+  const pkg = buildVerifiedUnitPackage({
+    companyId: a.compilerInput.companyId, instrumentKey: a.compilerInput.instrumentKey, candidateRef: a.compilerInput.candidateRef, runId: a.runId,
+    snapshot, verification: a.verification, currentUnits: [...(a.result.rules ?? []), ...(a.result.definitions ?? [])],
+  });
+  let verifiedUnitsPath: string | null = null;
+  if (snapshot.units.length > 0) {
+    const body = serializeVerifiedUnitPackage(pkg);
+    const vdir = path.join(a.dir, "verified-units");
+    verifiedUnitsPath = path.join(vdir, `${a.name}.verified-units.json`);
+    assertNoSecrets(body, verifiedUnitsPath);
+    fs.mkdirSync(vdir, { recursive: true });
+    fs.writeFileSync(verifiedUnitsPath, body);
+  }
+  const evidence = buildCandidateEvidence(a.compilerInput, a.result, a.verification, a.run);
+  if (verifiedUnitsPath) evidence.verifiedUnits = { file: path.relative(a.dir, verifiedUnitsPath), packageHash: pkg.packageHash, complete: pkg.complete, artifactsPersisted: pkg.counts.artifactsPersisted, unitsMissingVerification: pkg.counts.unitsMissingVerification, problems: [...new Set(pkg.problems.map((p) => p.code))].sort() };
+  const evidencePath = writeCandidateEvidence(a.dir, a.name, evidence);
+  return { evidencePath, verifiedUnitsPath, package: pkg };
+}
+
+/** Accumulates the packages of one run and writes the manifest that exposes incomplete coverage. */
+export class VerifiedUnitManifestWriter {
+  private readonly packages: { pkg: PersistedVerifiedUnitPackage; file: string | null }[] = [];
+  constructor(private readonly dir: string, private readonly companyId: string, private readonly instrumentKey: string, private readonly runId: string) {}
+  add(pkg: PersistedVerifiedUnitPackage, file: string | null): void { this.packages.push({ pkg, file: file ? path.relative(this.dir, file) : null }); }
+  build(): VerifiedUnitRunManifest { return buildVerifiedUnitRunManifest({ companyId: this.companyId, instrumentKey: this.instrumentKey, runId: this.runId, packages: this.packages }); }
+  write(name = "verified-units-manifest"): string {
+    const body = JSON.stringify(this.build(), null, 2);
+    const target = path.join(this.dir, `${name}.json`);
+    assertNoSecrets(body, target);
+    fs.mkdirSync(this.dir, { recursive: true });
+    fs.writeFileSync(target, body);
+    return target;
+  }
 }

@@ -27,11 +27,12 @@ import { computeOperativeContractState } from "../../lib/contract-model/compiler
 import { getStageCaller, type StageCaller } from "../../lib/contract-model/compiler/llm-caller";
 import { compileCovenantToIR } from "../../lib/contract-model/compiler/semantic/compile";
 import { verifyCompiledCandidate } from "../../lib/contract-model/compiler/semantic-verification/verify";
-import { INSTRUMENT_KEY } from "./pipeline";
+import { COMPANY_ID, INSTRUMENT_KEY } from "./pipeline";
 import { PER_CANDIDATE_TIMEOUT_MS, buildInput, callerFor, loadModel, maxTokensFor, prepare, realCost, record, withTimeout } from "./compile-run";
 import { assertNotPremium, OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "./premium-lock";
 import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest } from "./timeout-policy";
-import { buildCandidateEvidence, writeCandidateEvidence } from "./evidence";
+import { persistCandidate, VerifiedUnitManifestWriter } from "./evidence";
+import { snapshotUnitsForVerification } from "../../lib/contract-model/verified-units";
 import { LOCKED_MODEL } from "./run-population";
 
 /** The two candidates, and nothing else. Both are already in the sealed population. */
@@ -100,6 +101,8 @@ async function main() {
   const ledger = new BudgetLedger(VALIDATION_MANIFEST.incrementalCeilingUsd, VALIDATION_MANIFEST.stopAtUsd);
   const reservation = BudgetLedger.reservationFor(raw, PER_CANDIDATE_TIMEOUT_MS, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, OBSERVED_OUTPUT_TOKENS_PER_SECOND);
   const results = [];
+  const runId = `numeric-grounding-validation-${new Date().toISOString()}`;
+  const verifiedUnits = new VerifiedUnitManifestWriter(OUT, COMPANY_ID, INSTRUMENT_KEY, runId);
 
   for (const spec of VALIDATION_MANIFEST.candidates) {
     const candidate = rehydrated.find((c) => String(c.normalizedSourceRef) === spec.normalizedSourceRef);
@@ -116,9 +119,12 @@ async function main() {
     ledger.settle(candidate.discoveryId, cost);
 
     // The verifier's own two gates run on the SAME locked model and through the same recorded
-    // caller - never on getStageCaller()'s premium default.
+    // caller - never on getStageCaller()'s premium default. The units are snapshotted BEFORE the
+    // verifier runs, so the persisted pair carries exactly what the verifier saw.
+    const snapshot = snapshotUnitsForVerification(result);
     const verification = await verifyCompiledCandidate({ compilerInput: input, compilationResult: result }, { reviewCaller: stageCaller, conditionSuspicionCaller: stageCaller });
-    writeCandidateEvidence(OUT, `${spec.role}-${candidate.discoveryId}`, buildCandidateEvidence(input, result, verification, { model: VALIDATION_MANIFEST.model, tier: 1, wallClockMs, inputTokens: rec.inputTokens, outputTokens: rec.outputTokens, costUsd: cost.chargedToBudgetUsd, costStatus: cost.costAccountingStatus, timedOut: false, notes: [spec.why, spec.expectation] }));
+    const persisted = persistCandidate({ dir: OUT, name: `${spec.role}-${candidate.discoveryId}`, runId, compilerInput: input, result, verification, snapshot, run: { model: VALIDATION_MANIFEST.model, tier: 1, wallClockMs, inputTokens: rec.inputTokens, outputTokens: rec.outputTokens, costUsd: cost.chargedToBudgetUsd, costStatus: cost.costAccountingStatus, timedOut: false, notes: [spec.why, spec.expectation] } });
+    verifiedUnits.add(persisted.package, persisted.verifiedUnitsPath);
 
     const groundings = verification.numericAssertions?.groundings ?? [];
     results.push({ role: spec.role, ref: spec.normalizedSourceRef, status: result.status, verificationStatus: verification.status, assertions: groundings.length, ungrounded: groundings.filter((g) => g.status === "UNGROUNDED").map((g) => `${g.assertion.fieldPath}=${g.assertion.rawText}`), costUsd: cost.chargedToBudgetUsd });
@@ -126,6 +132,7 @@ async function main() {
   }
 
   fs.mkdirSync(OUT, { recursive: true });
+  verifiedUnits.write();
   fs.writeFileSync(path.join(OUT, "summary.json"), JSON.stringify({ manifest: VALIDATION_MANIFEST, results, budget: ledger.snapshot(), sideCalls, sideSpendUsd: sideSpend(), totalSpendUsd: ledger.committedUsd + sideSpend() }, null, 2));
   console.log(`\nside calls (amendment + verifier gates): ${sideCalls.length}, $${sideSpend().toFixed(6)}`);
   console.log(`TOTAL committed $${(ledger.committedUsd + sideSpend()).toFixed(6)} of ceiling $${VALIDATION_MANIFEST.incrementalCeilingUsd}`);

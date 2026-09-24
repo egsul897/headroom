@@ -1,0 +1,82 @@
+{
+  "mission": "HEADROOM PHASE-3 - VERIFIED UNIT ARTIFACT PERSISTENCE (compile + verify + identity pairing; prerequisite to resuming CONMED)",
+  "startingSha": "60112fc9731ea1a392a9e5255385c9473d4aebdf",
+  "treeStateAtStart": "clean",
+  "paidModelCalls": 0,
+  "treeHashesAtStart": {
+    "phase3Compiler": "1a3732c93fba0681687656f9a7679310bffeb8ba",
+    "phase3SemanticVerification": "4168da82734ada4a38efd83de88b1e139d869e42",
+    "phase4Runtime": "97219f24fb676e493af6f3b1f16b7d5904b0b51f",
+    "verificationEnvelopeAdapter": "295ce51009a94599dd4cf09a87c976fd732a23db",
+    "strictBoundary": "cd19396db5b620b56474beb636fc8e0399ff8a66"
+  },
+  "unchangedAtEnd": ["phase3 compiler tree", "semantic-verification tree", "phase4 runtime tree", "resolver adapter", "strict boundary", "benchmark fixtures", "every file under docs/ from earlier runs"],
+  "frozenClosed": ["candidate span", "F1", "Fix B", "R2", "forensic harness R1", "envelope/resolver", "verification gate", "strict verified boundary"],
+
+  "artifactContract": {
+    "module": "lib/contract-model/verified-units.ts (Phase-3 side; imports IR + verification types and, for the adapter, the boundary's types - all type-only; no runtime code)",
+    "perUnit": "PersistedVerifiedUnit { ruleOrDefinitionId; kind: RULE|DEFINITION; verifiedIdentity: RuntimeVerificationIdentity; unit: complete IRRule|IRDefinition; verification: complete SemanticVerificationResult (verbatim); artifactHash }",
+    "perCandidate": "PersistedVerifiedUnitPackage { schema p3-verified-unit-package.v1; companyId; instrumentKey; candidateRef; runId; compilerVersion; verifierAlgorithmVersion; verificationStatus; units[]; unpaired[{id, kind, reason}]; problems[]; counts; complete; packageHash }",
+    "perRun": "VerifiedUnitRunManifest { schema p3-verified-unit-manifest.v1; companyId; instrumentKey; runId; compilerVersion; verifierAlgorithmVersion; candidates[{candidateRef, packageFile, packageHash, complete, artifactHashes, counts, problems}]; totals (+ problemsByCode, completePackages, incompletePackages); verificationStatusCounts; complete }",
+    "shapeReuse": "PersistedVerifiedUnit is the boundary's VerifiedUnitArtifact plus `unit` and `artifactHash`; toVerifiedUnitArtifact is the identity function on the shared fields; toVerifiedExecutionPackage builds the boundary package from the persisted units' own IR (the exact units verified), never from whatever IR is loaded.",
+    "noBooleanShortcut": "no verified / isVerified / passedVerification field exists in the module or in any persisted record (source-shape test + serialized-bytes test).",
+    "identityTiming": "snapshotUnitsForVerification(compiled) is taken BEFORE the verifier runs: deep-frozen clones plus identity read from each unit at that moment. buildVerifiedUnitPackage persists from the snapshot; if `currentUnits` (the live IR now) disagree with the snapshot identity, the unit is refused as IDENTITY_MISMATCH rather than persisted under a stale claim. persistCandidate throws if a verifying runner does not pass the pre-verification snapshot.",
+    "whatIsNotDoneHere": "no path -> exprId resolution, no MATERIAL filtering, no execution decision, no clock read, no compiler or verifier semantic change. sourceContentVersion is persisted as the compiler emits it (null today, so identities are WEAK) - populating it is a compiler concern, not touched."
+  },
+
+  "completeness": {
+    "rule": "complete = no problems AND no unpaired unit AND every snapshotted unit persisted AND at least one unit",
+    "problems": {
+      "IR_WITHOUT_VERIFICATION": "compiled but not verified (the compile-only run) - every unit listed as unpaired, complete false",
+      "VERIFICATION_WITHOUT_IR": "the result names a unit the candidate did not compile - the 411/498 pattern - named by id, complete false; bindable units are still persisted",
+      "DUPLICATE_UNIT_ID": "a unit id twice - both refused, nothing chosen",
+      "IDENTITY_MISMATCH": "identity drifted between verification and persistence - refused",
+      "MIXED_COMPANY / MIXED_INSTRUMENT": "a unit for another company/instrument - refused and named"
+    },
+    "manifest": "complete only when every candidate package is complete and there is at least one; totals and problemsByCode expose every gap; an empty run is not complete"
+  },
+
+  "determinismAndImmutability": {
+    "serialization": "canonicalJson: sorted object keys, array order preserved (a finding list's order is part of the exact result); no timestamps inside the artifact - runId is caller-supplied",
+    "artifactHash": "sha256 over canonical (id, kind, verifiedIdentity, unit, verification); changes when unit content, identity or result changes (pinned)",
+    "packageHash": "sha256 over the canonical package body; re-checked on parse along with every artifact hash, so an edited file is refused rather than trusted (pinned)",
+    "byteIdentity": "same units (in any order) + same result + same identity -> identical bytes and hashes (pinned)",
+    "snapshot": "JSON-clone then deep-freeze; mutating the live IR or the live verification result after build changes nothing in the stored package; the stored package is frozen (pinned)"
+  },
+
+  "harnessIntegration": {
+    "evidenceWriter": "scripts/p3-conmed-pilot/evidence.ts: persistCandidate({dir, name, runId, compilerInput, result, verification, run, snapshot?}) writes verified-units/<name>.verified-units.json (serialized, secret-scanned, written FIRST) then the evidence file with a `verifiedUnits` pointer {file, packageHash, complete, artifactsPersisted, unitsMissingVerification, problems}; VerifiedUnitManifestWriter accumulates packages and writes verified-units-manifest.json (secret-scanned). A secret hit anywhere aborts both writes.",
+    "runPopulation": "run-population.ts now calls persistCandidate (compile-only: verification null, package records every unit unverified, complete false) and writes the manifest every 20 candidates and at the end. The bare writeCandidateEvidence call is gone.",
+    "numericGroundingValidation": "numeric-grounding-validation.ts snapshots BEFORE verifyCompiledCandidate, then persistCandidate with the snapshot, and writes the manifest. Pinned: the snapshot call precedes the verify call in source.",
+    "forensicEvidencePreserved": "buildCandidateEvidence is unchanged in content: rawModelOutput, toolCallLog, full IR, context bundle, verifier result (incl. numericAssertions groundings, admissibleEvidence), run metadata; schema still p3-candidate-evidence.v1 with one additive optional field.",
+    "noPostProcessing": "the pair is produced from the same in-memory objects in one call; no script reconstructs it later."
+  },
+
+  "roundTripsThroughTheStrictBoundary": {
+    "path": "buildVerifiedUnitPackage -> serializeVerifiedUnitPackage -> parseVerifiedUnitPackage -> toVerifiedExecutionPackage -> evaluateVerifiedCapacity / simulateVerifiedTransaction. No hand-built envelope, no patched identity, no inserted fields.",
+    "CLEAN": "STRONG-identity rule MUL(PCT(0.2), fig-1=1000) -> EXECUTED, AVAILABLE, effectiveRemaining 200, coverage complete",
+    "RULE_AND_DEFINITION_AND_REFERENCED_RULE": "definition + rule via TERM + rule via RULE_REFERENCE all persisted (definitions-then-rules by id) and all bind: 200 and 500, coverage complete",
+    "MATERIAL_NODE": "finding path rules[0].capacityExpression.operands[0] persisted verbatim -> resolver NODE exprId -> UNSUPPORTED [MATERIAL_NODE_HIT], diagnostic names the exact exprId, 200 absent",
+    "UNIT_FALLBACK": "prose path 'rules[].capacityExpression (the second operand, roughly)' persisted untouched -> resolver UNIT -> REVIEW_REQUIRED [MATERIAL_UNIT_FINDING], coverage refused",
+    "INCOMPLETE": "VERIFICATION_INCOMPLETE persisted (package complete: the pair exists) -> boundary EXECUTED (not REFUSED), REVIEW_REQUIRED under PHASE3_VERIFICATION_INCOMPLETE only, provisional 200, coverage.unitsIncompletelyVerified named; versus verifications [] -> REFUSED",
+    "IDENTITY_MISMATCH": "persisted for compilerVersion c1, executed against a recompile c2 -> REVIEW_REQUIRED [IDENTITY_MISMATCH … compilerVersion] through the existing gate; Phase 4 unchanged",
+    "BLOCKED_TRANSACTION": "through the round-tripped package: REVIEW_REQUIRED, committable false"
+  },
+
+  "conmedDryRun": {
+    "script": "scripts/p3-conmed-pilot/verified-units-dry-run.ts -> docs/phase-3-verified-units/02-conmed-dry-run.json",
+    "how": "deterministic fixture compile result (a rule with PERCENT(1) capacity + a definition), the REAL verifier driven by stub callers, persistCandidate + manifest into a temp dir, reload from disk, adapt, evaluateVerifiedCapacity",
+    "produced": ["dry-run-candidate.json (evidence: rawModelOutput, toolCallLog, 1 rule, 1 definition, context bundle, verification MATERIAL_DISCREPANCY, verifiedUnits pointer)", "verified-units/dry-run-candidate.verified-units.json (2 units, complete)", "verified-units-manifest.json (complete, 1 candidate)"],
+    "boundary": "EXECUTED under REQUIRE, coverage complete, the real verifier's UNSUPPORTED_IR_ADDITION on PERCENT(1) carried through persistence, resolution and the gate: capacity UNSUPPORTED [PHASE3_VERIFICATION_MATERIAL_FINDING]",
+    "paidModelCalls": 0
+  },
+
+  "historical": { "filesRewritten": 0, "fabricatedPairs": 0, "note": "the module and the runners never open a docs/ path for writing (pinned); old artifacts stay historical/incomplete" },
+
+  "tests": {
+    "verifiedUnitPersistence": "tests/phase-3-conmed-pilot/verified-unit-persistence.test.ts 27/27 (artifact 6, completeness 4, determinism/immutability 4, round trips 6, harness 7)",
+    "runtimeGateBoundaryEvidencePilot": "27 files, 694/694 (runtime 626 incl. gate 51; boundary 29; evidence-preservation; pilot-integrity)",
+    "phase3Verifier": "68/68", "numericGroundingR2": "57/57 (Fix B 39, R2 7, forensic 11)", "candidateSpanF1": "55/55",
+    "tsc": "clean apart from the same 6 pre-existing errors in tests/foundation-audit/", "lint": "clean"
+  }
+}
