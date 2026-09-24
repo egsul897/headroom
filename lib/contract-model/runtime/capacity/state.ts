@@ -18,6 +18,7 @@
  *       component lookups are indexed; the operation counters below are the complexity proof.
  */
 import type { RuntimeVerificationEnvelope, VerificationGatePolicy } from "../verification-envelope";
+import { assessUnit, capacityVerificationFloor, gateIsActive, verificationBlocksIn, verificationIncompleteIn, VERIFICATION_DOMINANCE } from "../verification-gate";
 import { rationalFromString } from "../decimal";
 import { evaluateExpression } from "../evaluate-expression";
 import { addAll, subtractValues, compareValues } from "../units";
@@ -49,9 +50,9 @@ export interface EvaluateCapacityStateArgs {
   ledger?: readonly LedgerUsageRecord[];
   ledgerPolicy?: LedgerPolicy;
   asOf?: string | null;
-  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  /** PHASE-4 VERIFICATION GATE: the envelope. Every expression evaluated here is gated against it, and VERIFICATION_DOMINANCE floors each capacity. */
   verification?: RuntimeVerificationEnvelope;
-  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  /** PHASE-4 VERIFICATION GATE: ALLOW_MISSING (default) or REQUIRE. */
   policy?: VerificationGatePolicy;
 }
 
@@ -74,6 +75,16 @@ export const SUFFICIENCY_DOMINANCE: Record<RepresentationSufficiency, { status: 
   UNSUPPORTED: { status: "UNSUPPORTED", limitation: "PHASE3_RULE_UNSUPPORTED" },
 };
 const UNKNOWN_SUFFICIENCY = { status: "UNSUPPORTED" as CapacityStatus, limitation: "PHASE3_RULE_UNSUPPORTED" as CapacityLimitationCode };
+
+/**
+ * PHASE-4 VERIFICATION GATE: the second dominance table lives in ../verification-gate.ts as
+ * VERIFICATION_DOMINANCE and is re-exported here so the two tables can be read side by side. They
+ * are NOT merged: sufficiency asks whether the rule is fully REPRESENTED, verification asks whether
+ * what it represents is SUPPORTED. Their outputs meet only in the worst-of over
+ * CAPACITY_STATUS_PRECEDENCE below, so neither can lower the other's floor and arithmetic can lift
+ * neither.
+ */
+export { VERIFICATION_DOMINANCE };
 
 /** The status floor each limitation code imposes. One table, used for pools and capacities alike. */
 export const LIMITATION_STATUS_FLOOR: Record<CapacityLimitationCode, CapacityStatus> = {
@@ -101,6 +112,9 @@ export const LIMITATION_STATUS_FLOOR: Record<CapacityLimitationCode, CapacitySta
   RECLASSIFICATION_NOT_EXECUTABLE: "REVIEW_REQUIRED",
   SNAPSHOT_BINDING_AMBIGUOUS: "AMBIGUOUS",
   USAGE_AMOUNT_NOT_REPRESENTABLE: "REVIEW_REQUIRED",
+  // The weaker of the two verification floors; a NODE hit adds its UNSUPPORTED floor through VERIFICATION_DOMINANCE.
+  PHASE3_VERIFICATION_MATERIAL_FINDING: "REVIEW_REQUIRED",
+  PHASE3_VERIFICATION_INCOMPLETE: "REVIEW_REQUIRED",
 };
 
 /** Statuses under which published amounts are withheld and the arithmetic goes to `provisional`. */
@@ -195,6 +209,7 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
   const asOf = args.asOf ?? null;
   const policy = args.ledgerPolicy ?? DEFAULT_LEDGER_POLICY;
   const { companyId, instrumentKey } = graph;
+  const gateActive = gateIsActive(args.verification, args.policy);
 
   // Identity: unique or refused (R7). A rule or pool id claimed twice among the supplied resources
   // resolves to nothing, never to whichever came last into a Map.
@@ -220,7 +235,7 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
   for (const d of graph.dependencyManifest.dependencies) for (const e of d.exprIds) if (!keyByExprId.has(e)) keyByExprId.set(e, d.key);
 
   const evaluate = (expression: Parameters<typeof evaluateExpression>[0]["expression"], context: Parameters<typeof evaluateExpression>[0]["context"]): EvaluationResult => {
-    const r = evaluateExpression({ expression, inputs, context });
+    const r = evaluateExpression({ expression, inputs, context, verification: args.verification, policy: args.policy });
     complexity.expressionsEvaluated++;
     complexity.maxDepth = Math.max(complexity.maxDepth, r.stats.maxDepth);
     complexity.cacheHits += r.stats.cacheHits;
@@ -293,7 +308,13 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
     const cap = claimants[0]!;
     const evaluation = evaluate(cap.capExpression, { companyId, instrumentKey, asOf });
     const gross = amountOf(evaluation.value, evaluation.status === "NEEDS_INPUT" ? "a financial fact the shared cap depends on is missing" : `shared cap not evaluable: ${evaluation.status}`);
-    if (evaluation.status === "AMBIGUOUS") limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact the shared cap depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
+    // PHASE-4 VERIFICATION GATE: a pool is not a verifiable unit, but its cap may expand into one, and
+    // under REQUIRE the pool itself is unverified. A refusal is reported as what it is, not as an
+    // ambiguous financial fact.
+    const poolBlocks = gateActive ? verificationBlocksIn(evaluation) : [];
+    if (poolBlocks.length > 0) limitations.push({ code: "PHASE3_VERIFICATION_MATERIAL_FINDING", message: `[${poolBlocks[0]!.reason}] ${poolBlocks[0]!.message}`, refs: [node.capacityNodeId, ...new Set(poolBlocks.flatMap((b) => b.findingIds))].sort() });
+    if (gateActive && verificationIncompleteIn(evaluation)) limitations.push({ code: "PHASE3_VERIFICATION_INCOMPLETE", message: "a unit this shared cap depends on was not completely verified; the pool is reviewable, not defective", refs: [node.capacityNodeId] });
+    if (evaluation.status === "AMBIGUOUS" && !(poolBlocks.length > 0 && ambiguousKeysOf(evaluation).length === 0)) limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact the shared cap depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
     const currency = currencyOf(gross);
     const memberRuleIds = [...new Set(cap.memberRuleIds)].sort();
 
@@ -369,13 +390,23 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
     // A share relationship nothing quantifies: an unknown constraint could bind (R9).
     const sharedUnknown = node.unquantifiedSharedWith.length > 0;
     if (sharedUnknown) limitations.push({ code: "SHARED_CAPACITY_NOT_QUANTIFIED", message: `this capacity shares with ${node.unquantifiedSharedWith.join(", ")} under a relationship no shared-capacity resource quantifies; its effective availability is not authoritative`, refs: [node.capacityNodeId, ...node.unquantifiedSharedWith] });
-    const legalFloor: CapacityStatus[] = [dominance.status, scopeUnsafe ? "REVIEW_REQUIRED" : null, sharedUnknown ? "REVIEW_REQUIRED" : null].filter((s): s is CapacityStatus => s !== null);
+    // PHASE-4 VERIFICATION GATE: the rule's own record, assessed once against the rule's own identity.
+    // The floor is read AFTER evaluation because a NODE hit inside the capacity-driving expression
+    // (including inside an expanded definition) is only known once the evaluator reached it.
+    const identity = { ruleOrDefinitionId: rule.ruleId, companyId: rule.companyId, instrumentKey: rule.instrumentKey, irSchemaVersion: rule.irSchemaVersion, compilerVersion: rule.compilerVersion, sourceContentVersion: rule.sourceContentVersion };
+    const own = gateActive ? assessUnit(rule.ruleId, args.verification, args.policy, identity) : null;
+
+    const evaluation = evaluate(rule.capacityExpression, { companyId, instrumentKey, asOf, ruleId: rule.ruleId, unitId: rule.ruleId, unitIdentity: identity });
+    const verificationFloor = own ? capacityVerificationFloor(own, evaluation, node.capacityNodeId) : null;
+    if (verificationFloor) limitations.push(...verificationFloor.limitations);
+    const legalFloor: CapacityStatus[] = [dominance.status, scopeUnsafe ? "REVIEW_REQUIRED" : null, sharedUnknown ? "REVIEW_REQUIRED" : null, ...(verificationFloor?.floors ?? [])].filter((s): s is CapacityStatus => s !== null);
     const legalUnsafe = legalFloor.length > 0;
 
-    const evaluation = evaluate(rule.capacityExpression, { companyId, instrumentKey, asOf, ruleId: rule.ruleId });
     const gross = amountOf(evaluation.value, evaluation.status === "NEEDS_INPUT" ? "a financial fact this capacity depends on is missing" : `capacity not evaluable: ${evaluation.status}`);
     if (evaluation.status === "NEEDS_INPUT") limitations.push({ code: "MISSING_FINANCIAL_INPUT", message: `missing: ${evaluation.missingInputKeys.join(", ")}`, refs: evaluation.missingInputKeys });
-    if (evaluation.status === "AMBIGUOUS") limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact this capacity depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
+    // An AMBIGUOUS that is purely a verification refusal is already reported above as what it is.
+    const ambiguousIsVerificationOnly = (verificationFloor?.conditions.some((c) => c !== "NONE" && c !== "ATTEMPTED_INCOMPLETE") ?? false) && ambiguousKeysOf(evaluation).length === 0;
+    if (evaluation.status === "AMBIGUOUS" && !ambiguousIsVerificationOnly) limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact this capacity depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
     if (evaluation.status === "UNSUPPORTED") limitations.push({ code: "UNSUPPORTED_EXPRESSION", message: evaluation.diagnostics.map((d) => d.message)[0] ?? "the capacity expression contains a node Phase 3 could not represent", refs: [node.capacityNodeId] });
 
     const currency = currencyOf(gross);

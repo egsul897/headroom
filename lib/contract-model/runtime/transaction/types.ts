@@ -263,7 +263,12 @@ export type SimulationLimitationCode =
   /** The stated sequence cannot be honoured alongside an effect group that must apply atomically. */
   | "UNSUPPORTED_EFFECT_INTERLEAVING"
   /** The combined effects remove more usage from a resource than it carried: capacity from nothing. */
-  | "USAGE_CONSERVATION_VIOLATED";
+  | "USAGE_CONSERVATION_VIOLATED"
+  // --- PHASE-4 VERIFICATION GATE (migration step 3) ----------------------------
+  /** The selected path depends on legal state the verification gate refused. The path is REVIEW_REQUIRED; nothing is consumed. */
+  | "PHASE3_VERIFICATION_MATERIAL_FINDING"
+  /** A unit on the selected path was verified incompletely. Reviewable, not defective. */
+  | "PHASE3_VERIFICATION_INCOMPLETE";
 
 export interface SimulationLimitation {
   code: SimulationLimitationCode;
@@ -591,9 +596,9 @@ export interface SimulateTransactionArgs {
     ledger?: readonly LedgerUsageRecord[];
     ledgerPolicy?: { acceptableUsageStatuses: UsageStatus[] };
     asOf?: string | null;
-    /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+    /** PHASE-4 VERIFICATION GATE: the envelope every capacity evaluation and condition inside the simulation is gated against. */
     verification?: import("../verification-envelope").RuntimeVerificationEnvelope;
-    /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+    /** PHASE-4 VERIFICATION GATE: ALLOW_MISSING (default) or REQUIRE. */
     policy?: import("../verification-envelope").VerificationGatePolicy;
   };
 }

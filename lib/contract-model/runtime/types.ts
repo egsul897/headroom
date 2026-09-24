@@ -15,6 +15,7 @@ import type { EntityClassTag } from "@prisma/client";
 import type { IRDefinition, IRRule, IRValueType, SourceProvenance } from "../ir/types";
 import type { Rational } from "./decimal";
 import type { ResolutionResult, TermResolutionOutcome } from "./input/types";
+import type { RuntimeVerificationEnvelope, RuntimeVerificationIdentity, VerificationBlock, VerificationGatePolicy } from "./verification-envelope";
 
 // ---------------------------------------------------------------------------
 // Runtime values
@@ -99,7 +100,12 @@ export type RuntimeDiagnosticCode =
   /** A supplied term value competes with an evaluable Phase-3 definition without declaring itself an override. */
   | "TERM_RESOLUTION_CONFLICT"
   /** The snapshot set itself is not safe to resolve against (duplicate ids, supersession cycle, competing successors). */
-  | "SNAPSHOT_SET_UNSAFE";
+  | "SNAPSHOT_SET_UNSAFE"
+  // ---- PHASE-4 VERIFICATION GATE (migration step 3) ----
+  /** The verification gate refused this node: a MATERIAL finding names it, or its whole unit is blocked. The diagnostic's `verification` says which. */
+  | "MATERIAL_VERIFICATION_FINDING"
+  /** Informational (status EXECUTABLE): the unit entered was verified incompletely. Not a defect claim; kept distinct from MATERIAL_VERIFICATION_FINDING on purpose. */
+  | "VERIFICATION_INCOMPLETE";
 
 export interface RuntimeDiagnostic {
   code: RuntimeDiagnosticCode;
@@ -110,6 +116,8 @@ export interface RuntimeDiagnostic {
   provenance: SourceProvenance | null;
   /** Reason text carried from Phase 3 (UNSUPPORTED reason, sufficiency reasons, ...). */
   phase3Reason?: string;
+  /** Present on MATERIAL_VERIFICATION_FINDING only: the structured refusal from the verification gate. */
+  verification?: VerificationBlock;
 }
 
 export type MissingInputKind = "METRIC" | "TERM" | "RULE" | "LEDGER_USAGE" | "TRANSACTION_INPUT" | "EVENT" | "AS_OF_DATE";
@@ -237,12 +245,21 @@ export interface EvaluationContext {
   ruleId?: string | null;
   definitionId?: string | null;
   /**
-   * MIGRATION STEP 1 (inert): the stable id of the compiled unit that OWNS the expression being
-   * evaluated - rule.ruleId or definition.definitionId, never an array position. A later matcher
-   * needs it to find the right verification record; nothing reads it today and it is not
-   * serialized into any result.
+   * The stable id of the compiled unit that OWNS the expression being evaluated - rule.ruleId or
+   * definition.definitionId, never an array position. The verification gate looks the unit's record
+   * up by it. Not serialized into any result.
    */
   unitId?: string | null;
+  /**
+   * What the caller knows about the owning unit's identity (the version trio, company, instrument),
+   * for the gate's identity check. evaluateRule / 4C / 4D supply the full trio from the IR object; a
+   * bare call may omit it, in which case only the fields it does know are compared.
+   */
+  unitIdentity?: Partial<RuntimeVerificationIdentity> | null;
+  /** PHASE-4 VERIFICATION GATE: the envelope to gate against. Absent = legacy behaviour. */
+  verification?: RuntimeVerificationEnvelope;
+  /** PHASE-4 VERIFICATION GATE: ALLOW_MISSING (default) or REQUIRE. */
+  policy?: VerificationGatePolicy;
 }
 
 export interface EvaluationStats {

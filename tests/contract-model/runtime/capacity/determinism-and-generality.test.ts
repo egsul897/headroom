@@ -126,7 +126,7 @@ describe("anti-enumeration scans (§40)", () => {
     const imports = FILES.flatMap((f) => [...readFileSync(`${DIR}/${f}`, "utf8").matchAll(/from "([^"]+)"/g)].map((m) => m[1]!)).filter((i) => i.startsWith("."));
     const outside = [...new Set(imports.filter((i) => !i.startsWith("./")))].sort();
     expect(outside.every((i) => i.startsWith("../") && !i.includes("compiler"))).toBe(true);
-    expect(outside).toEqual(["../../ir/types", "../decimal", "../evaluate-expression", "../input/identity", "../input/manifest", "../input/types", "../input/version", "../types", "../units", "../values", "../verification-envelope", "../version"]);
+    expect(outside).toEqual(["../../ir/types", "../decimal", "../evaluate-expression", "../input/identity", "../input/manifest", "../input/types", "../input/version", "../types", "../units", "../values", "../verification-envelope", "../verification-gate", "../version"]);
   });
 
   it("no Phase-3 compiler or IR module imports the capacity layer", () => {

@@ -1,0 +1,706 @@
+{
+  "mission": "HEADROOM PHASE-4 - verification gate, migration step 3",
+  "section": "§27 real envelope impact probe + §28 false-positive inspection",
+  "paidModelCalls": 0,
+  "caveat": "FUNCTIONAL IMPACT PROBE ONLY - not a prevalence estimate. Only findings whose unit IR is preserved beside the verification result can be bound (87 of 498 material findings at steps 1+2). No financial inputs were supplied.",
+  "materialFindingsProbed": 87,
+  "boundUnits": 56,
+  "boundRules": 23,
+  "boundDefinitions": 33,
+  "unevaluableUnits": 0,
+  "nodeBlocks": {
+    "distinctNodes": 30,
+    "occurrences": 32
+  },
+  "unitBlocks": {
+    "total": 30,
+    "byReason": {
+      "MATERIAL_UNIT_FINDING": 30
+    }
+  },
+  "identityMismatchBlocks": 0,
+  "identityMismatchNote": "0 by construction: each envelope was resolved from the very IR object it is checked against. A mismatch needs a stale record, which this corpus cannot exhibit.",
+  "requireSimulation": {
+    "capacitiesFailingClosedForMissingRecord": 75,
+    "rulesInArtifactsProbed": 130
+  },
+  "ruleEvaluationStatus": {
+    "before": {
+      "NEEDS_INPUT": 12,
+      "UNSUPPORTED": 7,
+      "EXECUTABLE": 3,
+      "AMBIGUOUS": 1
+    },
+    "after": {
+      "AMBIGUOUS": 23
+    }
+  },
+  "capacityStatus": {
+    "before": {
+      "NEEDS_INPUT": 23,
+      "REVIEW_REQUIRED": 14,
+      "AVAILABLE": 37,
+      "UNSUPPORTED": 16,
+      "AMBIGUOUS": 2
+    },
+    "after": {
+      "UNSUPPORTED": 25,
+      "REVIEW_REQUIRED": 19,
+      "AVAILABLE": 34,
+      "NEEDS_INPUT": 12,
+      "AMBIGUOUS": 2
+    },
+    "transitions": {
+      "NEEDS_INPUT->UNSUPPORTED": 10,
+      "UNSUPPORTED->REVIEW_REQUIRED": 1,
+      "NEEDS_INPUT->REVIEW_REQUIRED": 1,
+      "AVAILABLE->REVIEW_REQUIRED": 3
+    }
+  },
+  "previouslyAvailableNow": {
+    "REVIEW_REQUIRED": 3,
+    "UNSUPPORTED": 0,
+    "AMBIGUOUS": 0
+  },
+  "unitBlockCauses": {
+    "UNIT_PROSE": {
+      "unitBlocks": 17,
+      "findings": 17,
+      "pathNamesSubpart": 13,
+      "findingTypes": {
+        "OTHER_MATERIAL_SEMANTIC_DISCREPANCY": 16,
+        "MISSING_CONDITION": 1
+      }
+    },
+    "UNIT_NOT_AN_EXPRESSION": {
+      "unitBlocks": 9,
+      "findings": 11,
+      "pathNamesSubpart": 8,
+      "findingTypes": {
+        "OTHER_MATERIAL_SEMANTIC_DISCREPANCY": 5,
+        "WRONG_ENTITY_SCOPE": 4,
+        "MISSING_RULE": 2
+      }
+    },
+    "UNIT_WILDCARD": {
+      "unitBlocks": 2,
+      "findings": 2,
+      "pathNamesSubpart": 1,
+      "findingTypes": {
+        "OTHER_MATERIAL_SEMANTIC_DISCREPANCY": 2
+      }
+    },
+    "UNIT_MALFORMED": {
+      "unitBlocks": 4,
+      "findings": 4,
+      "pathNamesSubpart": 4,
+      "findingTypes": {
+        "OTHER_MATERIAL_SEMANTIC_DISCREPANCY": 3,
+        "MISSING_DEPENDENCY": 1
+      }
+    }
+  },
+  "unitBlockInspection": [
+    {
+      "file": "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-applicable-liquidity-rate.json",
+      "unitId": "ir-definition:9251a6449740d8c52c49b3ef",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "66b45a7bad11726ed41279168ec2ae2156e70b9a94948df2c05c86574e7b7076",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[0].calculationExpression.condition.left (and duplicated at .then.operands[0].operands[1].operands[1].left)",
+          "reasonExcerpt": "The proposed IR's core input to the entire Applicable Liquidity Threshold formula is a METRIC_REFERENCE whose descriptive metricName correctly tracks the source"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-ebitda.json",
+      "unitId": "ir-definition:e5142608789af5f1f88fbcaf",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "e3b63464d5b051fc68119a2ccaf3a3fed55887d9fa90ced222b159da57cdf043",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "definitions[0].sufficiency",
+          "reasonExcerpt": "The definition's calculationExpression is itself tagged kind=\"UNSUPPORTED\" and the rules array is entirely empty (no sub-expressions for any of the 12 enumerate"
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/holdout-applicable-liquidity-rate.json",
+      "unitId": "ir-definition:70e33e4f392b3431947089db",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "32010f85c440e4107ebf071e30a1e5a50ba78894f18964140d1db9263bd4f5a8",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[2].calculationExpression...attemptedStructure.else.attemptedStructure.condition (OR of two EVENT_ACTIVE nodes)",
+          "reasonExcerpt": "The source makes the Pricing Level 1 override for a missed Compliance Certificate or a continuing Event of Default an elective right of the Required Facility Le"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/holdout-cash-sweep-cure.json",
+      "unitId": "ir-definition:1daf6a33d1606f0a04f9621e",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "83d6e7415babde064ee74b4754ce13dd000473965ef8236a6bf1b3bc89a1d492",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[0] (termName='Maintenance Liquidity').calculationExpression",
+          "reasonExcerpt": "The operative source text given for §2(b) only USES the term 'Maintenance Liquidity' (as a pre-existing defined term) in clause (ii); it never defines it. No re"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/holdout-ebitda.json",
+      "unitId": "ir-definition:e5142608789af5f1f88fbcaf",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "c7ace409a3f35bb145d5f45508eff44d48034c87f3615728631ef016c2ca9d3b",
+          "findingType": "MISSING_CONDITION",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[0].calculationExpression.attemptedStructure.left (SUM operands (a)-(l))",
+          "reasonExcerpt": "The chapeau to clause (1) is an independently operative qualifier: every addback in (a) through (l) is only permitted 'to the extent deducted (and not added bac"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-asset-sales-dsgr.json",
+      "unitId": "ir-rule:59b506348ffccc77b250f622",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "958106d15502257ec5239efd611fc91f1606d15e3d7e73f09a1615ee5acc8812",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[2].conditions[2]",
+          "reasonExcerpt": "The 75% cash-consideration and fair-value requirement is explicit, unambiguous, fully-supported source text (not dependent on any missing schedule for its basel"
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-cross-reference-dsgr.json",
+      "unitId": "ir-rule:d059f37748ce6c764a4358f6",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "cada43c054671be52a786c921af21bee7d25adc23724efb9bb1e9fc62346e2fa",
+          "findingType": "WRONG_ENTITY_SCOPE",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[1].entityScope",
+          "reasonExcerpt": "Clause (b), unlike clause (a), speaks exclusively about the ability of 'any Restricted Subsidiary' - not any Loan Party generally - to pay dividends, make/repay"
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-debt-lsb.json",
+      "unitId": "ir-rule:dd7509e5e2ee7355b5313a15",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "7c1d9e06b4c53aa022efc0a52388bad941352dd503697ffd0dc3cbb9e7887e4b",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_WILDCARD",
+          "irPathAsGiven": "rules[].ruleId=ir-rule:dd7509e5e2ee7355b5313a15 (sourceSectionRef 6.08(a))",
+          "reasonExcerpt": "The source's opening parenthetical - '(other than Indebtedness in respect of the Secured Notes)' - removes Secured Notes payments from the scope of the §6.08(a)"
+        }
+      ],
+      "causes": [
+        "UNIT_WILDCARD"
+      ],
+      "pathNamesSubpart": false
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-debt-lsb.json",
+      "unitId": "ir-definition:193e90993f0a8b954b97df04",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "8eae36603000090f04e84e4cc3602668fa340915d78719d782f6896f23587943",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[0] termName=Restricted Payment",
+          "reasonExcerpt": "The source expressly excludes dividends paid in the Loan Party's own common Stock from the definition of 'Restricted Payment' (only cash/other-property dividend"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": false
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-debt-lsb.json",
+      "unitId": "ir-rule:517ac7fc05e02df8894bd098",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "c8d890ef700ab6bd74908e30f79ccb31814e8ff1fa1bda312a8355fbc786f0b1",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_WILDCARD",
+          "irPathAsGiven": "rules[].capacityExpression.gatedBy (kind=COMPARE, exprId ir-expr:885da134ef4a211fa56eb18c); conditions[2]",
+          "reasonExcerpt": "Unlike the §6.01 case above, here the 75%-cash-consideration condition (source clause (i)) is not duplicated anywhere else in the rule - its only representation"
+        }
+      ],
+      "causes": [
+        "UNIT_WILDCARD"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-definitions-dsgr.json",
+      "unitId": "ir-definition:4267fcae7229728557546d9e",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "93e571bb91c5b5d0d8dd388fbfb3f9a60ea616f941e87a6df7ef47727bc5ac43",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[termName=ABR]",
+          "reasonExcerpt": "The source text contains a second, independently operative sentence within the ABR definition - a mandatory currency restriction ('All ABR Loans shall be denomi"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": false
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-definitions-dsgr.json",
+      "unitId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "e6cf476a6e8fae7cdec1a8a7f36bad6080fa948bd9fccf257eb8781a651098f0",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[termName=Alternate Base Rate].calculationExpression",
+          "reasonExcerpt": "The only source text I was given for this definition is truncated exactly at the point where the specific formula components (Prime Rate, NYFRB Rate spread, Adj"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-definitions-lsb.json",
+      "unitId": "ir-definition:89b8542e33e6d5916f35ab29",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "752b813de1c33fbe9c5fd4117e1ab854f788392c62aca139f2abdc7fd1cdf1ba",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[termName=Specified Availability].calculationExpression",
+          "reasonExcerpt": "\"Specified Availability\" is expressly defined as Availability calculated 'pursuant to clause (a)' of the Availability definition (minus the Block), so it necess"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-financial-covenant-dsgr.json",
+      "unitId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "1f5a962c4056e4170d02dae63519a6389c4a0ca88584e4185ae93816453e213d",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "rules[2] (ir-rule:9b7acf5fb4d7bbddce84f90f).capacityExpression / rules[1].exceptions[0]",
+          "reasonExcerpt": "The source ties a concrete, operative numeric adjustment (0.50x) to the Material Acquisition election. The proposed IR never encodes this number as a computable"
+        },
+        {
+          "findingId": "c1965d311be462f9657cd38138e29bb6b7a45b389b7ef64b70de7c63173ffd8e",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[2].conditions[0].referencesDefinitionId",
+          "reasonExcerpt": "The condition is plainly intended to depend on the 'Material Acquisition' definition (its own description names 'Material Acquisition'), but the reference id us"
+        },
+        {
+          "findingId": "f27a33997c0b603a07a140b0417a24b61b8d23094dc33141666155f8c3d25bc1",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_MALFORMED",
+          "irPathAsGiven": "rules[2].conditions[1] / rules[2].sufficiency",
+          "reasonExcerpt": "The IR itself internally flags that it could not formally represent the 'only twice during the term of this Agreement' cap - a real, independently operative res"
+        }
+      ],
+      "causes": [
+        "UNIT_MALFORMED",
+        "UNIT_NOT_AN_EXPRESSION",
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-investments-dsgr.json",
+      "unitId": "ir-rule:b4ebe266e44457d0a6af2fda",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "0cde39bacb4243be27231deffa95937a1cae89b60f06cf9274f92b3fd89ce6e9",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "rules[3] (ir-rule:b4ebe266e44457d0a6af2fda), referenced nowhere from rules[0].exceptions or any dependsOn array",
+          "reasonExcerpt": "The source text's clause (b) proviso creates an operative, independently meaningful cap (shared with 6.01(b)(iii) and 6.01(c)(iii)) that limits investments by U"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-liens-dsgr-a.json",
+      "unitId": "ir-rule:ea96e74ab8116a21e96fc790",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "77a367218638a22d13c41daf4f985548618342c8b4d8020dc3f509de0c2a576d",
+          "findingType": "MISSING_RULE",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[0].action",
+          "reasonExcerpt": "Section 6.02 actually prohibits two distinct kinds of conduct: (1) creating/incurring/permitting Liens, and (2) assigning or selling income, revenues (including"
+        },
+        {
+          "findingId": "ce02feda93c70daa10254c3e0b075e974768e78be225ced8c8db571f4bfa02a2",
+          "findingType": "WRONG_ENTITY_SCOPE",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[0].entityScope",
+          "reasonExcerpt": "The source prohibition is not limited to acts by Loan Parties themselves - it also bars Loan Parties from 'permitting' any Restricted Subsidiary to create a Lie"
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-liens-dsgr-a.json",
+      "unitId": "ir-rule:449f1b90ca216c557fc2fea7",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "393e13b3a7e6c8ba49f613e53deeeb1ca62f0e2c86883f804075d1a8f04ff2f7",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[2].conditions[0].description",
+          "reasonExcerpt": "The operative source text provided says only '(b) Permitted Encumbrances;' and cross-references a defined term. The context bundle supplied to this review expli"
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-liens-dsgr-d.json",
+      "unitId": "ir-rule:86a30550cb1333b4c723e64a",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "2bfa40a362e3ef8434591b956ad4a37d692575a8e71f992694ba489192259f48",
+          "findingType": "MISSING_RULE",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[0].action",
+          "reasonExcerpt": "The operative source sentence prohibits two independently operative things: (1) creating/incurring/assuming/permitting to exist a Lien, and (2) assigning or sel"
+        },
+        {
+          "findingId": "872ba0558b51fa5c68db750c66dcf954f6f6458fc47340b191b0426e8664d09c",
+          "findingType": "WRONG_ENTITY_SCOPE",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[0].entityScope",
+          "reasonExcerpt": "The source text expressly extends the substantive prohibition to Restricted Subsidiaries (through the Loan Party's obligation not to 'permit' them to create Lie"
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-reality-check/reality-check-liens-dsgr-d.json",
+      "unitId": "ir-rule:aa306c6a0c619bee0bc179df",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "e11aeb30cddf30e5b45c350ac1f703d2d70f74f256c1aca33e6173c24e90f567",
+          "findingType": "WRONG_ENTITY_SCOPE",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[3].entityScope",
+          "reasonExcerpt": "Exception (c) explicitly applies to scheduled existing Liens on property of 'any Borrower or any Restricted Subsidiary,' not Borrowers alone. The proposed IR's "
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+      "unitId": "ir-definition:930efa2b63880d3f6f0afef3",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "bf00d23a6608ceb5ab8fcd2047447fc6cc456cc0e2f2eacd086fbbbf6e18e915",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[2] (termName: Threshold Amount).calculationExpression",
+          "reasonExcerpt": "This is a fabricated/unsupported numeric addition: no source text or retrieved context anywhere states that Threshold Amount equals the greater of $324.0 millio"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+      "unitId": "ir-rule:92f832eccf22ae3e16c08e87",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "debeb1e7a51a2327f6095ce040efb8e4ef8a80342b6812c227584997f14434ef",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "rules[0].entityScope / entityScopeExcluded (and this pattern repeats across essentially every rule in the IR)",
+          "reasonExcerpt": "The source text is explicit and operative about who is bound: the prohibition runs against the Borrowers and any Restricted Subsidiaries they permit to act, and"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+      "unitId": "ir-rule:bbf15a1d53bd3a669ac53eb5",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "64d9e1ac0ffca6aed787661eb8f624ea0b7a33ce14374019548c8d0275e16c60",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "rules[18] (sourceSectionRef 6.08(b)(18)).capacityExpression",
+          "reasonExcerpt": "This is a real, independently operative limiting proviso in the source (a 'cash-box' carve-out preventing this basket from being used to distribute out an Unres"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-3f2-riot-regression-replay/discovery-candidate-ae1291f397735dffa79d3f52.json",
+      "unitId": "ir-definition:e734f4257cf5ab2a27a89002",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "725a9f29dd0d84bbdbe0c0e51ed51a4171c8e6e006f0d8c1cf972d26b42ca12a",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_MALFORMED",
+          "irPathAsGiven": "definitions[Deleveraging Trigger Period].calculationExpression",
+          "reasonExcerpt": "The source defines a stateful, hysteretic *period* with distinct entry (PMV < 70% of Initial, on two consecutive days) and exit (PMV >= 100% of Initial, on two "
+        }
+      ],
+      "causes": [
+        "UNIT_MALFORMED"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-3f2-riot-regression-replay/discovery-candidate-ae1291f397735dffa79d3f52.json",
+      "unitId": "ir-definition:5258bf8486cf7fb91d5c69a6",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "0155c84639f680f0b0715b04aced390fc0ea48bb9f0d0648ba1c94e1500f85c5",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_MALFORMED",
+          "irPathAsGiven": "definitions[Second Deleveraging Trigger Period].calculationExpression",
+          "reasonExcerpt": "As with Deleveraging Trigger Period, the source defines this as a hysteretic period with a distinct exit condition that fires on EITHER full recovery to 100% of"
+        }
+      ],
+      "causes": [
+        "UNIT_MALFORMED"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-3f2-riot-regression-replay/discovery-candidate-b33c341e3169731f00d02245.json",
+      "unitId": "ir-definition:e734f4257cf5ab2a27a89002",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "97d2d0d33fc09a5b030959d26c40e9e91d3acf9854ec911ebca314fe2e58d6cb",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[termName='Deleveraging Trigger Period'].calculationExpression.triggerCondition",
+          "reasonExcerpt": "The source text explicitly carves Second Deleveraging Trigger Periods out of the Deleveraging Trigger Period definition ('other than a Second Deleveraging Trigg"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-3f2-riot-regression-replay/discovery-candidate-b33c341e3169731f00d02245.json",
+      "unitId": "ir-definition:96c04c5170d6315aa2da1791",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "ecf02e0fa63397c137a71987d2da896aba6eaf2ac2214864de1a7ad4282d13af",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[termName='LTV Table']",
+          "reasonExcerpt": "None of the twelve actual percentage values in the LTV Table (80/75/70, 70/65/60, 60/55/50, 50/45/40) are captured anywhere in the proposed IR - every sub-defin"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": false
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-3f2-riot-regression-replay/replay-summary.json",
+      "unitId": "ir-definition:e734f4257cf5ab2a27a89002",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "97d2d0d33fc09a5b030959d26c40e9e91d3acf9854ec911ebca314fe2e58d6cb",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[termName='Deleveraging Trigger Period'].calculationExpression.triggerCondition",
+          "reasonExcerpt": "The source text explicitly carves Second Deleveraging Trigger Periods out of the Deleveraging Trigger Period definition ('other than a Second Deleveraging Trigg"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": true
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-3f2-riot-regression-replay/replay-summary.json",
+      "unitId": "ir-definition:96c04c5170d6315aa2da1791",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "ecf02e0fa63397c137a71987d2da896aba6eaf2ac2214864de1a7ad4282d13af",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_PROSE",
+          "irPathAsGiven": "definitions[termName='LTV Table']",
+          "reasonExcerpt": "None of the twelve actual percentage values in the LTV Table (80/75/70, 70/65/60, 60/55/50, 50/45/40) are captured anywhere in the proposed IR - every sub-defin"
+        }
+      ],
+      "causes": [
+        "UNIT_PROSE"
+      ],
+      "pathNamesSubpart": false
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-holdout-semantic-remediation-rerun/holdout-cash-sweep-cure.json",
+      "unitId": "ir-rule:e408239793d6f2c0165d911d",
+      "unitKind": "RULE",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "909c1851c3eab51d936b90b590c3fdbaaba94b1ccf31b7a1ff8ad79f6960b6f8",
+          "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "resolution": "UNIT_NOT_AN_EXPRESSION",
+          "irPathAsGiven": "rules[3]",
+          "reasonExcerpt": "This clause is an independently operative provision: it affirmatively relieves the Administrative Agent of any obligation to refund overpaid amounts when a subs"
+        }
+      ],
+      "causes": [
+        "UNIT_NOT_AN_EXPRESSION"
+      ],
+      "pathNamesSubpart": false
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/post-holdout-semantic-remediation-rerun/holdout-secured-net-leverage.json",
+      "unitId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+      "unitKind": "DEFINITION",
+      "reason": "MATERIAL_UNIT_FINDING",
+      "findings": [
+        {
+          "findingId": "1b0fc374d1d4ad8ec9b3a227b4c3963c71036ecdf48a7ef67e3bdcd9e18d1206",
+          "findingType": "MISSING_DEPENDENCY",
+          "resolution": "UNIT_MALFORMED",
+          "irPathAsGiven": "definitions[0].calculationExpression / definitions[0].dependsOnTerms",
+          "reasonExcerpt": "The source text closes the definition with an operative instruction that both the numerator (Consolidated Secured Debt net of qualifying cash) and the denominat"
+        }
+      ],
+      "causes": [
+        "UNIT_MALFORMED"
+      ],
+      "pathNamesSubpart": true
+    }
+  ],
+  "artifactStateUnevaluable": 0
+}

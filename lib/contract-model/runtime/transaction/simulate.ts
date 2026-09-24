@@ -15,6 +15,7 @@
  */
 import { rationalFromString } from "../decimal";
 import { evaluateExpression } from "../evaluate-expression";
+import { blocksUnit, entryHasIncompleteVerification, entryHasVerificationBlock, gateIsActive, verificationBlocksIn, verificationIncompleteIn, VERIFICATION_INCOMPLETE_LIMITATION, VERIFICATION_MATERIAL_LIMITATION } from "../verification-gate";
 import { addAll, compareValues, subtractValues } from "../units";
 import { serializeValue } from "../values";
 import { CONTRACT_RUNTIME_VERSION } from "../version";
@@ -78,6 +79,8 @@ const SIMULATION_FLOOR: Record<string, SimulationStatus> = {
   PHASE3_RULE_NOT_SAFE_TO_RELY_ON: "REVIEW_REQUIRED", ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON: "REVIEW_REQUIRED",
   SHARED_CAPACITY_NOT_QUANTIFIED: "REVIEW_REQUIRED", ENTITY_SCOPE_UNSPECIFIED: "REVIEW_REQUIRED",
   INVALID_RECLASSIFICATION_SOURCE: "ERROR", INVALID_RECLASSIFICATION_TARGET: "ERROR",
+  // --- PHASE-4 VERIFICATION GATE: the legal floor. A refused unit or node needs a human; nothing is consumed.
+  PHASE3_VERIFICATION_MATERIAL_FINDING: "REVIEW_REQUIRED", PHASE3_VERIFICATION_INCOMPLETE: "REVIEW_REQUIRED",
   // --- composition safety (Phase-4D remediation) ---------------------------
   // An aggregate over-draw is a conclusion the engine reached, not a failure to evaluate, so it
   // does not by itself raise the simulation dimension above SIMULATED.
@@ -248,7 +251,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   // ---- 8. evaluate the relevant capacities against the pro-forma view -------
   let postOverlayState: CapacityState | null = null;
   if (!blockedBeforeEvaluation) {
-    postOverlayState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: baseLedger, ledgerPolicy: policy, asOf });
+    postOverlayState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: baseLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy });
     complexity.stateEvaluations++;
     complexity.capacitiesEvaluated += postOverlayState.capacities.length;
     complexity.sharedResourcesEvaluated += postOverlayState.sharedConstraints.length;
@@ -263,12 +266,29 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   const conditions: ConditionResult[] = [];
   const entityScope: EntityScopeResult[] = [];
   if (postOverlayState) {
+    const gateActive = gateIsActive(ctx.verification, ctx.policy);
     for (const rule of selectedRules) {
       const unsafeLegal = rule.sufficiency !== "COMPLETE";
+      // PHASE-4 VERIFICATION GATE, beside unsafeLegal: a whole-rule refusal is asked of the gate
+      // module. It makes every condition on the rule REVIEW_REQUIRED - the same shape as
+      // unsafeLegal - and records the limitation once per rule. Node-level refusals inside a
+      // condition's expression surface through its evaluation (conditionOutcome reads them).
+      const identity = { ruleOrDefinitionId: rule.ruleId, companyId: rule.companyId, instrumentKey: rule.instrumentKey, irSchemaVersion: rule.irSchemaVersion, compilerVersion: rule.compilerVersion, sourceContentVersion: rule.sourceContentVersion };
+      const unitBlock = gateActive ? blocksUnit(rule.ruleId, ctx.verification, ctx.policy, identity) : null;
+      if (unitBlock) limit(VERIFICATION_MATERIAL_LIMITATION, `[${unitBlock.reason}] rule ${rule.ruleId} is refused by verification: ${unitBlock.message}`, [rule.ruleId, ...unitBlock.findingIds]);
+      let incompleteNoted = false;
       for (const c of rule.conditions) {
         complexity.conditionsEvaluated++;
-        const evaluation: EvaluationResult | null = c.expression ? evaluateExpression({ expression: c.expression, inputs: overlay.resolver, context: { companyId: rule.companyId, instrumentKey: rule.instrumentKey, asOf, ruleId: rule.ruleId } }) : null;
-        conditions.push({ ruleId: rule.ruleId, conditionId: c.conditionId, conditionType: String(c.conditionType), description: c.description, ...conditionOutcome(evaluation, unsafeLegal, c.referencesDefinitionId), evaluation });
+        const evaluation: EvaluationResult | null = c.expression ? evaluateExpression({ expression: c.expression, inputs: overlay.resolver, context: { companyId: rule.companyId, instrumentKey: rule.instrumentKey, asOf, ruleId: rule.ruleId, unitId: rule.ruleId, unitIdentity: identity, verification: ctx.verification, policy: ctx.policy } }) : null;
+        const nodeBlocks = gateActive ? verificationBlocksIn(evaluation) : [];
+        for (const b of nodeBlocks) limit(VERIFICATION_MATERIAL_LIMITATION, `[${b.reason}] condition ${c.conditionId} on rule ${rule.ruleId} depends on a node verification refused: ${b.message}`, [rule.ruleId, c.conditionId, ...b.findingIds]);
+        if (gateActive && !incompleteNoted && verificationIncompleteIn(evaluation)) { incompleteNoted = true; limit(VERIFICATION_INCOMPLETE_LIMITATION, `a unit condition ${c.conditionId} on rule ${rule.ruleId} depends on was not completely verified; the condition's result is reviewable, not relied on`, [rule.ruleId, c.conditionId]); }
+        const outcome = unitBlock
+          ? { result: "REVIEW_REQUIRED" as const, reason: `the rule this condition belongs to is refused by verification (${unitBlock.reason}); the condition's result is not relied on` }
+          : nodeBlocks.length > 0
+            ? { result: "REVIEW_REQUIRED" as const, reason: `a node this condition depends on is refused by verification (${nodeBlocks.map((b) => b.findingIds.join("/")).join(", ") || nodeBlocks[0]!.reason}); the condition's result is not relied on` }
+            : conditionOutcome(evaluation, unsafeLegal, c.referencesDefinitionId);
+        conditions.push({ ruleId: rule.ruleId, conditionId: c.conditionId, conditionType: String(c.conditionType), description: c.description, ...outcome, evaluation });
       }
       entityScope.push(entityScopeOutcome(rule, tx.entities ?? []));
     }
@@ -341,7 +361,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   const refreshCursor = (): CapacityState | null => {
     if (!cursorDirty && cursorState) return cursorState;
     const stepOverlay = buildOverlay({ base: inputs, transactionId: tx.transactionId, companyId: graph.companyId, instrumentKey: graph.instrumentKey, metricEffects: appliedMetrics, eventEffects: appliedEvents });
-    cursorState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: stepOverlay.resolver, ledger: workingLedger, ledgerPolicy: policy, asOf });
+    cursorState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: stepOverlay.resolver, ledger: workingLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy });
     complexity.stateEvaluations++;
     complexity.ledgerEntriesExamined += cursorState.complexity.ledgerEntriesExamined;
     cursorDirty = false;
@@ -511,7 +531,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   let postStateConflicts: string[] = [];
   if (applicable) {
     const proposedLedger = workingLedger;
-    postState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: proposedLedger, ledgerPolicy: policy, asOf });
+    postState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: proposedLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy });
     complexity.stateEvaluations++;
     complexity.ledgerEntriesExamined += postState.complexity.ledgerEntriesExamined;
     ledgerPostHash = ledgerHash(proposedLedger);
@@ -705,6 +725,8 @@ function consumptionResult(e: ConsumeCapacityEffect, ruleId: string | null, shar
     if (l.code === "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON") limitations.push({ code: "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON", message: l.message, refs: l.refs });
     if (l.code === "MISSING_FINANCIAL_INPUT") limitations.push({ code: "MISSING_FINANCIAL_INPUT", message: l.message, refs: l.refs });
     if (l.code === "AMBIGUOUS_FINANCIAL_INPUT") limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: l.message, refs: l.refs });
+    if (l.code === VERIFICATION_MATERIAL_LIMITATION) limitations.push({ code: VERIFICATION_MATERIAL_LIMITATION, message: l.message, refs: l.refs });
+    if (l.code === VERIFICATION_INCOMPLETE_LIMITATION) limitations.push({ code: VERIFICATION_INCOMPLETE_LIMITATION, message: l.message, refs: l.refs });
   }
   const measure = (available: CapacityAmount): { outcome: SelectedPathResult; shortfall: CapacityEffectResult["shortfallAmount"]; note: SimulationLimitation | null } => {
     if (available.kind === "UNLIMITED") return { outcome: "SATISFIED", shortfall: null, note: null };
@@ -741,6 +763,11 @@ function consumptionResult(e: ConsumeCapacityEffect, ruleId: string | null, shar
   } else if (entry.status === "NEEDS_INPUT") {
     outcome = "INDETERMINATE";
   }
+  // PHASE-4 VERIFICATION GATE: a draw on a capacity whose legal state verification refused is
+  // REVIEW_REQUIRED, not merely indeterminate - the number is withheld BECAUSE a human has to look
+  // at a finding, and that is the answer. A definite negative (insufficient, not satisfied) stands.
+  if (entryHasVerificationBlock(entry.limitations) && outcome === "INDETERMINATE") outcome = "REVIEW_REQUIRED";
+  if (entryHasIncompleteVerification(entry.limitations) && outcome === "SATISFIED") outcome = "REVIEW_REQUIRED";
   return { ...base, availableAmount: entry.effectiveRemaining, shortfallAmount: authoritative.shortfall, outcome, capacityStatus: entry.status, provisional, limitations };
 }
 

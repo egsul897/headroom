@@ -13,6 +13,8 @@
 import type { IRRule } from "../ir/types";
 import { evaluateExpression } from "./evaluate-expression";
 import type { EvaluationContext, EvaluationResult, InputResolver, RuntimeStatus } from "./types";
+import type { VerificationBlock } from "./verification-envelope";
+import { blocksUnit, gateIsActive } from "./verification-gate";
 import { CONTRACT_RUNTIME_VERSION } from "./version";
 
 /** How confidently the runtime may attach a computed capacity to the rule's entityScope - derived from the Phase-3 entity-scope audit, never repaired here. */
@@ -32,6 +34,8 @@ export interface RuleEvaluation {
   reclassification: { status: "NOT_IMPLEMENTED_IN_PHASE_4A"; edgeType: "RECLASSIFIABLE_TO"; edgesPresentOnRule: number; note: string };
   solveForX: { status: "NOT_IMPLEMENTED_IN_PHASE_4A"; note: string };
   ledgerConsumption: { status: "NOT_IMPLEMENTED_IN_PHASE_4A"; note: string };
+  /** PHASE-4 VERIFICATION GATE: present only when the whole rule was refused by verification (UNIT finding, identity mismatch, or REQUIRE without a record). */
+  verificationBlock?: VerificationBlock;
 }
 
 function scopeApplicability(rule: IRRule): RuleEvaluation["entityScope"] {
@@ -42,19 +46,23 @@ function scopeApplicability(rule: IRRule): RuleEvaluation["entityScope"] {
 }
 
 export function evaluateRule(rule: IRRule, inputs: InputResolver, context: EvaluationContext = {}): RuleEvaluation {
-  // MIGRATION STEP 1: unitId is the STABLE compiled-unit id, never an array position. It is not
-  // serialized into any result (provenance carries ruleId/definitionId only), so populating it
-  // changes nothing observable - it exists so a later matcher knows which verified unit owns the
-  // expression it is about to evaluate.
-  const ctx: EvaluationContext = { ...context, ruleId: rule.ruleId, unitId: rule.ruleId, companyId: rule.companyId, instrumentKey: rule.instrumentKey };
-  const blocked = rule.sufficiency === "AMBIGUOUS" || rule.sufficiency === "MISSING_CONTEXT" || rule.sufficiency === "CONFLICTED";
+  // unitId is the STABLE compiled-unit id, never an array position; the verification gate looks the
+  // rule's record up by it and checks the record's identity against the rule's own version trio.
+  const identity = { ruleOrDefinitionId: rule.ruleId, companyId: rule.companyId, instrumentKey: rule.instrumentKey, irSchemaVersion: rule.irSchemaVersion, compilerVersion: rule.compilerVersion, sourceContentVersion: rule.sourceContentVersion };
+  const ctx: EvaluationContext = { ...context, ruleId: rule.ruleId, unitId: rule.ruleId, unitIdentity: identity, companyId: rule.companyId, instrumentKey: rule.instrumentKey };
+  // PHASE-4 VERIFICATION GATE (whole rule): asked of the gate module, never re-derived here. A
+  // UNIT-scope refusal fails the rule before any of its expressions is treated as legally usable;
+  // NODE-scope findings stay node-local and are handled inside evaluateExpression.
+  const verificationBlock = gateIsActive(context.verification, context.policy) ? blocksUnit(rule.ruleId, context.verification, context.policy, identity) : null;
+  const blockedBySufficiency = rule.sufficiency === "AMBIGUOUS" || rule.sufficiency === "MISSING_CONTEXT" || rule.sufficiency === "CONFLICTED";
+  const blocked = blockedBySufficiency || verificationBlock !== null;
   const capacity = blocked || !rule.capacityExpression ? null : evaluateExpression({ expression: rule.capacityExpression, inputs, context: ctx });
   const conditions = rule.conditions.map((c) => ({
     conditionId: c.conditionId,
     conditionType: c.conditionType,
     description: c.description,
     evaluation: blocked || !c.expression ? null : evaluateExpression({ expression: c.expression, inputs, context: ctx }),
-    note: blocked ? "not evaluated: rule blocked by its Phase-3 sufficiency" : c.expression ? null : c.referencesDefinitionId ? `condition references definition ${c.referencesDefinitionId}; not expanded by the shell` : "condition carries no boolean expression (real but not reducible in the IR)",
+    note: blockedBySufficiency ? "not evaluated: rule blocked by its Phase-3 sufficiency" : verificationBlock ? `not evaluated: rule refused by verification (${verificationBlock.reason})` : c.expression ? null : c.referencesDefinitionId ? `condition references definition ${c.referencesDefinitionId}; not expanded by the shell` : "condition carries no boolean expression (real but not reducible in the IR)",
   }));
   const statuses: RuntimeStatus[] = [...(capacity ? [capacity.status] : []), ...conditions.flatMap((c) => (c.evaluation ? [c.evaluation.status] : []))];
   const order: RuntimeStatus[] = ["ERROR", "UNSUPPORTED", "AMBIGUOUS", "NEEDS_INPUT", "EXECUTABLE"];
@@ -71,5 +79,6 @@ export function evaluateRule(rule: IRRule, inputs: InputResolver, context: Evalu
     reclassification: { status: "NOT_IMPLEMENTED_IN_PHASE_4A", edgeType: "RECLASSIFIABLE_TO", edgesPresentOnRule: rule.dependsOn.filter((d) => d.relationshipType === "RECLASSIFIABLE_TO").length, note: "reclassification execution is a later Phase-4 subphase; the legal right, where represented, stays on the rule's conditions/dependsOn untouched" },
     solveForX: { status: "NOT_IMPLEMENTED_IN_PHASE_4A", note: "ratio literals and comparisons evaluate; solving a ratio test for a maximum incurrence amount is the later solver subphase" },
     ledgerConsumption: { status: "NOT_IMPLEMENTED_IN_PHASE_4A", note: "LEDGER_USAGE_REFERENCE resolves only through the InputResolver; no consumption ledger exists yet" },
+    ...(verificationBlock ? { verificationBlock } : {}),
   };
 }

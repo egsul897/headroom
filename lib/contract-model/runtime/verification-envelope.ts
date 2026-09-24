@@ -1,19 +1,15 @@
 /**
- * PHASE-4 VERIFICATION ENVELOPE - migration steps 1+2. TYPES AND IDENTITY ONLY.
+ * PHASE-4 VERIFICATION ENVELOPE - the carrier. TYPES AND IDENTITY ONLY.
  *
- * ================================ READ THIS FIRST ================================
- * NOTHING IN THIS FILE GATES ANYTHING. There is no blocksNode, no blocksUnit, no
- * dominance table and no status floor. An envelope passed into any Phase-4 entry point
- * today has EXACTLY ZERO effect on execution, deliberately and verifiably (see
- * tests/contract-model/runtime/verification-envelope.test.ts, which asserts precisely
- * that and will be INVERTED by migration step 3).
- *
- * A future maintainer should not read `policy: "REQUIRE"` as an active gate. It is
- * interface vocabulary being put in place ahead of the enforcement that will consume it.
- * =================================================================================
+ * Migration steps 1+2 put this interface in place and proved it inert. Migration step 3 made it
+ * LIVE: runtime/verification-gate.ts now reads an envelope supplied to any Phase-4 entry point and
+ * imposes the approved semantics (a MATERIAL finding on the exact node blocks that node; a UNIT
+ * finding, an identity mismatch or - under REQUIRE - a missing record blocks the whole unit). This
+ * file still gates nothing itself: it defines what is carried and how identity is compared. The
+ * semantics live in ONE place, verification-gate.ts, and the four runtime sites ask it.
  *
  * Why the envelope exists at all: Phase 4 honours Phase-3 representation SUFFICIENCY in four
- * places and has never been given Phase-3 semantic VERIFICATION state. So a rule can be
+ * places and had never been given Phase-3 semantic VERIFICATION state. So a rule could be
  * sufficiency COMPLETE, carry a MATERIAL finding on the exact numeric its capacity expression
  * evaluates, and still hand the runtime something executable. Closing that needs the runtime to
  * receive verification state; this is the carrier, and it is deliberately the smallest one that
@@ -25,13 +21,13 @@
  */
 
 /**
- * Migration vocabulary for step 4, present now so the plumbing is typed end to end.
+ * How a runtime call treats a unit with NO verification record.
  *
- * ALLOW_MISSING - a unit with no envelope record executes as it does today.
- * REQUIRE       - a unit with no envelope record will be treated as unverified once step 3 lands.
- *
- * IN THIS MISSION BOTH VALUES BEHAVE IDENTICALLY, because no code reads this field to make a
- * decision. REQUIRE is inert.
+ * ALLOW_MISSING - the unit executes as it always has. The default for every runtime primitive, so
+ *                 historical fixtures and Phase-4 gate artifacts keep their exact meaning.
+ * REQUIRE       - the unit fails closed: absence of verification is not evidence of correctness.
+ *                 Live since migration step 3 for any caller that states it. NOT the default
+ *                 anywhere, and no product caller states it yet (that is migration step 4).
  */
 export type VerificationGatePolicy = "ALLOW_MISSING" | "REQUIRE";
 
@@ -102,19 +98,46 @@ export interface RuntimeVerificationEnvelope {
 
 export const RUNTIME_VERIFICATION_ENVELOPE_VERSION = "phase-4-verification-envelope.v1";
 
-/** What a caller may hand any Phase-4 entry point. Both fields optional; omitting them is today's behaviour and the only behaviour. */
+/** What a caller may hand any Phase-4 entry point. Both optional; omitting both is the legacy behaviour, byte for byte. */
 export interface VerificationAwareArgs {
-  /** Optional. Inert in this migration - carried, never consulted. */
+  /** Optional. When supplied, verification-gate.ts acts on it. */
   verification?: RuntimeVerificationEnvelope;
-  /** Optional. Inert in this migration - see VerificationGatePolicy. */
+  /** Optional. Defaults to ALLOW_MISSING - see VerificationGatePolicy. */
   policy?: VerificationGatePolicy;
 }
 
 // ---------------------------------------------------------------------------
-// Identity binding - DETECTION ONLY (migration step 2, mission §15).
-//
-// These helpers make a mismatch *observable* so step 3 can fail closed on it. They impose no
-// consequence themselves: nothing in the runtime calls them, and a mismatch today changes nothing.
+// The shape of a refusal (produced by verification-gate.ts, carried on 4A diagnostics)
+// ---------------------------------------------------------------------------
+
+export type VerificationBlockReason =
+  /** A MATERIAL NODE finding names exactly the evaluated exprId. */
+  | "MATERIAL_NODE_FINDING"
+  /** A MATERIAL finding on the unit could not be scoped to a node, so the whole unit is refused. */
+  | "MATERIAL_UNIT_FINDING"
+  /** The record's identity disagrees with the IR in hand; nothing is salvaged from it. */
+  | "IDENTITY_MISMATCH"
+  /** Policy REQUIRE and no record exists for the unit. */
+  | "REQUIRED_VERIFICATION_MISSING"
+  /** More than one record claims the unit; none is chosen. */
+  | "AMBIGUOUS_UNIT_RECORD";
+
+export interface VerificationBlock {
+  reason: VerificationBlockReason;
+  scope: RuntimeFindingScope;
+  unitId: string;
+  /** The blocked node, for NODE scope; null for a whole-unit block. */
+  exprId: string | null;
+  /** Sorted. Empty for REQUIRED_VERIFICATION_MISSING. */
+  findingIds: string[];
+  /** Populated for IDENTITY_MISMATCH only. */
+  mismatches: IdentityMismatchField[];
+  identityStrength: VerificationIdentityStrength | null;
+  message: string;
+}
+
+// ---------------------------------------------------------------------------
+// Identity binding - comparison helpers. verification-gate.ts fails closed on a mismatch.
 // ---------------------------------------------------------------------------
 
 export type IdentityMismatchField = "ruleOrDefinitionId" | "companyId" | "instrumentKey" | "irSchemaVersion" | "compilerVersion" | "sourceContentVersion";
@@ -137,7 +160,7 @@ export function identityStrengthOf(identity: RuntimeVerificationIdentity): Verif
   return identity.compilerVersion !== null && identity.sourceContentVersion !== null && identity.irSchemaVersion.length > 0 ? "STRONG" : "WEAK";
 }
 
-/** Compares a unit record's claimed identity against the IR object in hand. Pure; no side effects; no gating. */
+/** Compares a unit record's claimed identity against the IR object in hand, on every field. Pure. */
 export function compareVerificationIdentity(claimed: RuntimeVerificationIdentity, actual: RuntimeVerificationIdentity): IdentityMatchResult {
   const mismatches = FIELDS.filter((f) => claimed[f] !== actual[f]);
   return { matches: mismatches.length === 0, mismatches, strength: identityStrengthOf(claimed) };
@@ -155,7 +178,7 @@ export function identityOfUnit(unit: { ruleId?: string; definitionId?: string; c
   };
 }
 
-/** Looks a unit record up by id. A pure lookup - it does NOT decide anything, and it is not a gate. */
+/** Looks a unit record up by id. A pure lookup; the gate's own lookup additionally refuses duplicates. */
 export function findVerificationUnit(envelope: RuntimeVerificationEnvelope | undefined, ruleOrDefinitionId: string): RuntimeVerificationUnit | null {
   return envelope?.units.find((u) => u.identity.ruleOrDefinitionId === ruleOrDefinitionId) ?? null;
 }

@@ -5,11 +5,9 @@
  *
  *  1. The envelope can be carried end to end through every Phase-4 entry point, and the Phase-3
  *     resolver turns MATERIAL findings into identity-bound, exprId-scoped records deterministically.
- *  2. Carrying it changes NOTHING. A fully populated envelope with a MATERIAL finding on the exact
- *     value being evaluated executes exactly as it does today.
- *
- * (2) is the acceptance criterion of this migration and it is also the thing step 3 will
- * deliberately invert. The test named "...will be INVERTED by step 3" is the marker for that.
+ *  2. (steps 1+2) Carrying it changed NOTHING. (step 3) Carrying it now changes exactly what the
+ *     design says: the sentinel test that asserted byte-identity has been INVERTED and asserts the
+ *     refusal instead, while the no-envelope path stays byte-identical to the legacy result.
  */
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -208,28 +206,43 @@ describe("step 2 - identity mismatch is detectable (M)", () => {
   });
 });
 
-describe("step 1 - the envelope is INERT", () => {
+describe("step 3 - the envelope is LIVE (the step-1 inertness sentinel, inverted)", () => {
   const pct = PCT(1);
   const disputed = rule({ ruleId: "ir-rule:disputed", capacityExpression: pct as never });
   const envelope: RuntimeVerificationEnvelope = resolve([{ kind: "RULE", unit: disputed, verification: verification([finding({ ruleOrDefinitionId: "ir-rule:disputed", irPath: "rules[0].capacityExpression" })]) }]).envelope;
   const inputs = fixtureInputResolver({ metrics: [] });
 
-  it("carries a NODE-scoped MATERIAL finding on the exact evaluated value - the setup step 3 will act on", () => {
+  it("carries a NODE-scoped MATERIAL finding on the exact evaluated value - the setup step 3 acts on", () => {
     const unit = findVerificationUnit(envelope, "ir-rule:disputed")!;
     expect(unit.materialFindings[0]).toMatchObject({ scope: "NODE", exprIds: [pct.exprId] });
   });
 
-  it("WILL BE INVERTED BY STEP 3: with that envelope supplied, evaluation is still byte-identical to omitting it", () => {
-    const without = evaluateExpression({ expression: disputed.capacityExpression as never, inputs });
-    const withEnvelope = evaluateExpression({ expression: disputed.capacityExpression as never, inputs, verification: envelope, policy: "REQUIRE" });
-    expect(JSON.stringify(withEnvelope)).toBe(JSON.stringify(without));
-    expect(withEnvelope.status).toBe("EXECUTABLE");
+  it("INVERTED BY STEP 3: COMPLETE PERCENT(1) + exact NODE MATERIAL finding no longer executes - AMBIGUOUS, value null, MATERIAL_VERIFICATION_FINDING", () => {
+    const withEnvelope = evaluateExpression({ expression: disputed.capacityExpression as never, inputs, context: { unitId: "ir-rule:disputed" }, verification: envelope, policy: "REQUIRE" });
+    expect(withEnvelope.status).toBe("AMBIGUOUS");
+    expect(withEnvelope.value).toBeNull();
+    expect(withEnvelope.diagnostics.map((d) => d.code)).toEqual(["MATERIAL_VERIFICATION_FINDING"]);
+    expect(withEnvelope.diagnostics[0]!.verification).toMatchObject({ reason: "MATERIAL_NODE_FINDING", scope: "NODE", unitId: "ir-rule:disputed", exprId: pct.exprId, findingIds: ["finding-1"] });
+    // the literal never reached arithmetic: nothing in the result carries the value 1
+    expect(JSON.stringify(withEnvelope)).not.toMatch(/"fraction":"1"/);
   });
 
-  it("evaluateRule, buildCapacityGraph and evaluateCapacityState are equally unaffected", () => {
+  it("and with NO envelope the same evaluation is byte-identical to the pre-step-3 legacy result", () => {
+    const without = evaluateExpression({ expression: disputed.capacityExpression as never, inputs });
+    const withUnitOnly = evaluateExpression({ expression: disputed.capacityExpression as never, inputs, context: { unitId: "ir-rule:disputed" } });
+    expect(without.status).toBe("EXECUTABLE");
+    expect(JSON.stringify(withUnitOnly)).toBe(JSON.stringify(without));
+  });
+
+  it("evaluateRule and evaluateCapacityState now act on it; buildCapacityGraph still imposes nothing", () => {
     const rules = [disputed];
     const definitions: IRDefinition[] = [];
-    expect(JSON.stringify(evaluateRule(disputed, inputs, { asOf: "2026-01-01" }))).toBe(JSON.stringify(evaluateRule(disputed, inputs, { asOf: "2026-01-01", unitId: "ir-rule:disputed" })));
+    const plainRule = evaluateRule(disputed, inputs, { asOf: "2026-01-01" });
+    const gatedRule = evaluateRule(disputed, inputs, { asOf: "2026-01-01", verification: envelope });
+    expect(plainRule.status).toBe("EXECUTABLE");
+    expect(gatedRule.status).toBe("AMBIGUOUS");
+    expect(gatedRule.capacity!.diagnostics[0]!.code).toBe("MATERIAL_VERIFICATION_FINDING");
+    expect(gatedRule.verificationBlock).toBeUndefined(); // NODE finding: node-local, not a whole-rule refusal
 
     const graphPlain = buildCapacityGraph({ companyId: "env-co", instrumentKey: "env-inst", rules, definitions, asOf: "2026-01-01" });
     const graphEnv = buildCapacityGraph({ companyId: "env-co", instrumentKey: "env-inst", rules, definitions, asOf: "2026-01-01", verification: envelope });
@@ -237,33 +250,45 @@ describe("step 1 - the envelope is INERT", () => {
 
     const statePlain = evaluateCapacityState({ graph: graphPlain, rules, definitions, inputs, asOf: "2026-01-01" });
     const stateEnv = evaluateCapacityState({ graph: graphEnv, rules, definitions, inputs, asOf: "2026-01-01", verification: envelope, policy: "REQUIRE" });
-    expect(JSON.stringify(stateEnv)).toBe(JSON.stringify(statePlain));
+    expect(statePlain.capacities[0]!.status).toBe("AVAILABLE");
+    expect(stateEnv.capacities[0]!.status).toBe("UNSUPPORTED");
+    expect(stateEnv.capacities[0]!.limitations.map((l) => l.code)).toEqual(["PHASE3_VERIFICATION_MATERIAL_FINDING"]);
+    expect(stateEnv.capacities[0]!.grossCapacity.kind).toBe("NOT_DETERMINED");
   });
 
-  it("the default policy is ALLOW_MISSING, and REQUIRE is documented as inert", () => {
+  it("the default policy is still ALLOW_MISSING, and the envelope file no longer claims to be inert", () => {
     expect(DEFAULT_VERIFICATION_POLICY).toBe("ALLOW_MISSING");
     const src = fs.readFileSync("lib/contract-model/runtime/verification-envelope.ts", "utf8");
-    expect(src).toMatch(/NOTHING IN THIS FILE GATES ANYTHING/);
-    expect(src).toMatch(/REQUIRE is inert/);
+    expect(src).not.toMatch(/NOTHING IN THIS FILE GATES ANYTHING/);
+    expect(src).not.toMatch(/REQUIRE is inert/);
+    expect(src).toMatch(/verification-gate\.ts/);
   });
 });
 
-describe("step 3 has NOT been implemented", () => {
-  it("no matcher, dominance table, runtime diagnostic or limitation code for verification exists in production", () => {
-    const offenders: string[] = [];
-    const walk = (dir: string) => {
-      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-        const full = `${dir}/${e.name}`;
-        if (e.isDirectory()) walk(full);
-        else if (e.name.endsWith(".ts")) {
-          // Comments are stripped first: verification-envelope.ts deliberately NAMES the step-3
-          // machinery in order to say it does not exist. A real implementation would survive this.
-          const code = fs.readFileSync(full, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
-          if (/\bblocksNode\b|\bblocksUnit\b|VERIFICATION_DOMINANCE|MATERIAL_VERIFICATION_FINDING|PHASE3_VERIFICATION_MATERIAL_FINDING/.test(code)) offenders.push(full);
-        }
-      }
-    };
-    walk("lib");
-    expect(offenders).toHaveLength(0);
+describe("step 3 IS implemented, in exactly one module", () => {
+  const stripped = (file: string) => fs.readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+  const walk = (dir: string, out: string[] = []): string[] => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = `${dir}/${e.name}`;
+      if (e.isDirectory()) walk(full, out);
+      else if (e.name.endsWith(".ts")) out.push(full);
+    }
+    return out;
+  };
+
+  it("blocksNode, blocksUnit and VERIFICATION_DOMINANCE are DEFINED only in runtime/verification-gate.ts", () => {
+    const definers = walk("lib").filter((f) => /(export )?(function|const) (blocksNode|blocksUnit|VERIFICATION_DOMINANCE)\b/.test(stripped(f)));
+    expect(definers).toEqual(["lib/contract-model/runtime/verification-gate.ts"]);
+  });
+
+  it("the four runtime sites import the gate rather than re-deriving policy", () => {
+    for (const f of ["lib/contract-model/runtime/evaluate-expression.ts", "lib/contract-model/runtime/rule-evaluator.ts", "lib/contract-model/runtime/capacity/state.ts", "lib/contract-model/runtime/transaction/simulate.ts"]) {
+      expect(stripped(f)).toMatch(/from "\.{1,2}\/verification-gate"/);
+    }
+  });
+
+  it("nothing in the Phase-3 compiler or the IR knows the gate exists", () => {
+    const offenders = [...walk("lib/contract-model/compiler"), ...walk("lib/contract-model/ir")].filter((f) => /verification-gate|blocksNode|blocksUnit|VERIFICATION_DOMINANCE|MATERIAL_VERIFICATION_FINDING|PHASE3_VERIFICATION_MATERIAL_FINDING/.test(stripped(f)));
+    expect(offenders).toEqual([]);
   });
 });

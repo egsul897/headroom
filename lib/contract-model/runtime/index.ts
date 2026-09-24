@@ -9,3 +9,4 @@ export * from "./evaluate-expression";
 export * from "./dependency-graph";
 export * from "./rule-evaluator";
 export * from "./verification-envelope";
+export * from "./verification-gate";

@@ -174,7 +174,12 @@ export type CapacityLimitationCode =
   | "USAGE_NOT_ATTRIBUTABLE_IN_GRAPH"
   | "PHASE3_RULE_UNSUPPORTED"
   /** A usage record whose amount is negative or unparsable and is not one half of a conserved reclassification pair. */
-  | "USAGE_AMOUNT_NOT_REPRESENTABLE";
+  | "USAGE_AMOUNT_NOT_REPRESENTABLE"
+  // --- PHASE-4 VERIFICATION GATE (migration step 3) ----------------------------
+  /** Verification refused a node this capacity depends on, or the whole unit (message names the condition). */
+  | "PHASE3_VERIFICATION_MATERIAL_FINDING"
+  /** Verification of the unit (or one it depends on) did not complete. Reviewable, not defective; never conflated with the above. */
+  | "PHASE3_VERIFICATION_INCOMPLETE";
 
 export interface CapacityLimitation {
   code: CapacityLimitationCode;
@@ -529,6 +534,6 @@ export interface BuildCapacityGraphArgs {
   companyId: string;
   instrumentKey: string;
   asOf?: string | null;
-  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  /** PHASE-4 VERIFICATION GATE: carried for node-level attribution. The graph itself imposes no floor; evaluateCapacityState does. */
   verification?: RuntimeVerificationEnvelope;
 }
