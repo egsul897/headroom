@@ -591,5 +591,9 @@ export interface SimulateTransactionArgs {
     ledger?: readonly LedgerUsageRecord[];
     ledgerPolicy?: { acceptableUsageStatuses: UsageStatus[] };
     asOf?: string | null;
+    /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+    verification?: import("../verification-envelope").RuntimeVerificationEnvelope;
+    /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+    policy?: import("../verification-envelope").VerificationGatePolicy;
   };
 }

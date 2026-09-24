@@ -14,15 +14,26 @@ import { addAll, compareWith, divideValues, extreme, multiplyAll, subtractValues
 import { boolean, capacity, date, entitySet, isIsoDate, lineage, money, number, percent, ratio, serializeValue, withLineage } from "./values";
 import { CONTRACT_RUNTIME_VERSION } from "./version";
 import { resolutionToMetricInput } from "./input/snapshot-resolver";
+import type { RuntimeVerificationEnvelope, VerificationGatePolicy } from "./verification-envelope";
 import type { ResolutionResult } from "./input/types";
 
 export interface EvaluateExpressionArgs {
   expression: IRCapacityExpression;
   inputs: InputResolver;
   context?: EvaluationContext;
+  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  verification?: RuntimeVerificationEnvelope;
+  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  policy?: VerificationGatePolicy;
 }
 
-interface Env { asOf: string | null; period: string | null; depth: number }
+/**
+ * MIGRATION STEP 1: `unitId` is the stable id of the compiled unit that owns the node currently
+ * being evaluated, and it CHANGES as the evaluator expands into a referenced definition or rule -
+ * exactly what a later matcher needs, since a verification finding is scoped to one unit. Env is
+ * never serialized, so carrying it changes nothing observable today.
+ */
+interface Env { asOf: string | null; period: string | null; depth: number; unitId: string | null }
 
 interface NodeResult {
   status: RuntimeStatus;
@@ -397,7 +408,8 @@ class Evaluator {
     if (cyc) return cyc;
     this.expansionStack.push(frame);
     this.expanded.push({ kind: "DEFINITION", id: def.definitionId });
-    const inner = this.evaluate(def.calculationExpression, env);
+    // everything inside a definition's calculation is owned by that definition
+    const inner = this.evaluate(def.calculationExpression, { ...env, unitId: def.definitionId });
     this.expansionStack.pop();
     if (inner.status !== "EXECUTABLE") return this.propagate(expr, [inner], { note: `via definition ${def.definitionId}` });
     if (!valueMatchesType(inner.value!, expr.type)) return this.fail(expr, "ERROR", "TYPE_CONTRACT_VIOLATION", `definition "${def.termName}" evaluated to ${inner.value!.type} where the reference declares ${expr.type}`, [inner]);
@@ -413,7 +425,8 @@ class Evaluator {
     if (cyc) return cyc;
     this.expansionStack.push(frame);
     this.expanded.push({ kind: "RULE", id: rule.ruleId });
-    const inner = this.evaluate(rule.capacityExpression, env);
+    // everything inside a referenced rule's capacity is owned by that rule
+    const inner = this.evaluate(rule.capacityExpression, { ...env, unitId: rule.ruleId });
     this.expansionStack.pop();
     if (inner.status !== "EXECUTABLE") return this.propagate(expr, [inner], { note: `via rule ${rule.ruleId}` });
     const v = inner.value!;
@@ -432,7 +445,7 @@ function dedupeMissing(missing: MissingInput[]): MissingInput[] {
 export function evaluateExpression(args: EvaluateExpressionArgs): EvaluationResult {
   const context = args.context ?? {};
   const ev = new Evaluator(args.inputs, context);
-  const root = ev.evaluate(args.expression, { asOf: context.asOf ?? null, period: null, depth: 0 });
+  const root = ev.evaluate(args.expression, { asOf: context.asOf ?? null, period: null, depth: 0, unitId: context.unitId ?? context.ruleId ?? context.definitionId ?? null });
   const missingInputs = dedupeMissing(root.missing);
   const serializeBounds = (b: NodeResult["bounds"]): EvaluationResult["bounds"] => b ? { ...(b.knownLowerBound ? { knownLowerBound: serializeValue(b.knownLowerBound) } : {}), ...(b.knownUpperBound ? { knownUpperBound: serializeValue(b.knownUpperBound) } : {}) } : null;
   const value: SerializedRuntimeValue | null = root.status === "EXECUTABLE" && root.value ? serializeValue(root.value) : null;

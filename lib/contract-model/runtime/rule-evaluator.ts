@@ -42,7 +42,11 @@ function scopeApplicability(rule: IRRule): RuleEvaluation["entityScope"] {
 }
 
 export function evaluateRule(rule: IRRule, inputs: InputResolver, context: EvaluationContext = {}): RuleEvaluation {
-  const ctx: EvaluationContext = { ...context, ruleId: rule.ruleId, companyId: rule.companyId, instrumentKey: rule.instrumentKey };
+  // MIGRATION STEP 1: unitId is the STABLE compiled-unit id, never an array position. It is not
+  // serialized into any result (provenance carries ruleId/definitionId only), so populating it
+  // changes nothing observable - it exists so a later matcher knows which verified unit owns the
+  // expression it is about to evaluate.
+  const ctx: EvaluationContext = { ...context, ruleId: rule.ruleId, unitId: rule.ruleId, companyId: rule.companyId, instrumentKey: rule.instrumentKey };
   const blocked = rule.sufficiency === "AMBIGUOUS" || rule.sufficiency === "MISSING_CONTEXT" || rule.sufficiency === "CONFLICTED";
   const capacity = blocked || !rule.capacityExpression ? null : evaluateExpression({ expression: rule.capacityExpression, inputs, context: ctx });
   const conditions = rule.conditions.map((c) => ({

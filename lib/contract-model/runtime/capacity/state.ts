@@ -17,6 +17,7 @@
  *   R13 the ledger is indexed once and selection is memoized per (path, currency); membership and
  *       component lookups are indexed; the operation counters below are the complexity proof.
  */
+import type { RuntimeVerificationEnvelope, VerificationGatePolicy } from "../verification-envelope";
 import { rationalFromString } from "../decimal";
 import { evaluateExpression } from "../evaluate-expression";
 import { addAll, subtractValues, compareValues } from "../units";
@@ -48,6 +49,10 @@ export interface EvaluateCapacityStateArgs {
   ledger?: readonly LedgerUsageRecord[];
   ledgerPolicy?: LedgerPolicy;
   asOf?: string | null;
+  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  verification?: RuntimeVerificationEnvelope;
+  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  policy?: VerificationGatePolicy;
 }
 
 // ---------------------------------------------------------------------------

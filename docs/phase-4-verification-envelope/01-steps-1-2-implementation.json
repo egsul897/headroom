@@ -1,0 +1,101 @@
+{
+  "mission": "HEADROOM PHASE-4 - VERIFICATION-AWARE RUNTIME GATE, MIGRATION STEPS 1+2 (envelope interface + Phase-3 resolver, no gating)",
+  "startingSha": "274ea2c316a40ec788d09ed1e4d71eef605595a4",
+  "treeStateAtStart": "clean",
+  "paidModelCalls": 0,
+  "treeHashesAtStart": {
+    "phase3Compiler": "1a3732c93fba0681687656f9a7679310bffeb8ba",
+    "phase4Runtime": "8fa637768316a613524e821b913f56c86111a298",
+    "verificationTypes": "da607cb7d10dba99d08f9a499dcbf6042f1d6fc0"
+  },
+  "frozenClosed": [
+    "CANDIDATE_SPAN_CONTEXT_OWNERSHIP_VALIDATED",
+    "NUMERIC_GROUNDING_REMEDIATION_VALIDATED",
+    "FIX_B_EVIDENCE_SCOPING_TIGHTENING_VALIDATED",
+    "FORENSIC_ATTRIBUTION_HARNESS_ALIGNED"
+  ],
+  "whatWasBuilt": {
+    "envelopeTypes": "lib/contract-model/runtime/verification-envelope.ts - types, the policy vocabulary, and DETECTION-ONLY identity helpers. Its header states in block capitals that nothing in it gates anything.",
+    "resolver": "lib/contract-model/verification-envelope/resolver.ts - an ADAPTER package, in neither core layer",
+    "plumbing": "optional verification?/policy? on the entry types, plus EvaluationContext.unitId and an Env.unitId that follows the owner as the evaluator expands into a referenced definition or rule"
+  },
+  "layeringCorrection": {
+    "whatIHadDone": "the resolver was first placed under compiler/semantic-verification/ with a type-only import of the runtime envelope types, on the reasoning that `import type` erases and creates no runtime edge",
+    "whatCaughtIt": "two existing architecture invariants - runtime/anti-enumeration.test.ts's `no Phase-3 compiler or IR module imports the Phase-4 runtime` (a grep over compiler/ and ir/, which a type-only import still trips) and capacity/determinism-and-generality.test.ts's pinned intra-runtime import list",
+    "whyTheTestWasRight": "the invariant is about which layer may know the other exists, not about what survives compilation. A type-only import still encodes that knowledge in the source.",
+    "resolution": "the resolver moved to lib/contract-model/verification-envelope/ - an adapter that depends on BOTH compiler types and runtime types, while compiler/ and runtime/ stay ignorant of each other. The invariant grep is clean. The capacity pin gained one entry, ../verification-envelope, which is an intra-runtime import and still satisfies that test's own semantic check (nothing from compiler/)."
+  },
+  "inertnessProof": {
+    "method": "scripts/phase-4-inertness-probe.ts drives evaluateExpression, buildDependencyGraph, evaluateRule over six sufficiency shapes, buildCapacityGraph and evaluateCapacityState across fixed fixtures, serializes every field the runtime returns and prints one sha256. The runtime emits no wall-clock field, which is what makes the comparison exact rather than approximate.",
+    "before": "d0c8d91351e03b2bba1e5bb6d229d3bb2e642044c9184463e20a39476f1de031 (68286 bytes)",
+    "after": "d0c8d91351e03b2bba1e5bb6d229d3bb2e642044c9184463e20a39476f1de031 (68286 bytes)",
+    "identical": true,
+    "whyUnitIdIsInvisible": "provenance carries ruleId/definitionId only; unitId is never serialized, and Env is internal"
+  },
+  "envelopePresentButInert": {
+    "test": "tests/contract-model/runtime/verification-envelope.test.ts, 'WILL BE INVERTED BY STEP 3'",
+    "setup": "a COMPLETE rule whose capacity is PERCENT(1), with a resolved envelope carrying a NODE-scoped MATERIAL finding on that exact node, passed with policy REQUIRE",
+    "result": "byte-identical to omitting the envelope; status EXECUTABLE",
+    "interimCondition": "this is deliberate and temporary. Step 3 inverts it."
+  },
+  "resolverRules": {
+    "acceptedPathDialect": "^(rules|definitions|sharedCapacities)\\\\[\\\\d+\\\\]((\\\\.[A-Za-z_][A-Za-z0-9_]*(\\\\[\\\\d+\\\\])?)*)$ - concrete indices only, no fuzzy fallback",
+    "rootIndexIgnoredDeliberately": "the root's INDEX is positional and is ignored; binding is by ruleOrDefinitionId. The root's KIND is checked, so a definitions[...] path on a rule is UNIT_WRONG_ROOT_KIND.",
+    "failClosedOutcomes": [
+      "UNIT_NO_PATH",
+      "UNIT_WILDCARD",
+      "UNIT_PROSE",
+      "UNIT_MALFORMED",
+      "UNIT_NO_SUCH_NODE",
+      "UNIT_NOT_AN_EXPRESSION",
+      "UNIT_WRONG_ROOT_KIND"
+    ],
+    "neverDone": [
+      "dropping a MATERIAL finding",
+      "softening it to non-material",
+      "inventing an exprId",
+      "hopping from a landed non-expression (a description, a sufficiency value) to a nearby sibling that happens to have one"
+    ],
+    "determinism": "units sorted by id; findings sorted NODE-before-UNIT then by findingId; exprIds sorted and de-duplicated; no reliance on map or object iteration order"
+  },
+  "corpusResolution": {
+    "verificationResultsInspected": 166,
+    "materialFindingsBindable": 87,
+    "materialFindingsEmitted": 87,
+    "droppedMaterialFindings": 0,
+    "nodeScoped": 53,
+    "unitScoped": 34,
+    "byResolution": {
+      "NODE_EXACT": 53,
+      "UNIT_PROSE": 17,
+      "UNIT_NOT_AN_EXPRESSION": 11,
+      "UNIT_MALFORMED": 4,
+      "UNIT_WILDCARD": 2,
+      "UNIT_NO_PATH": 0,
+      "UNIT_NO_SUCH_NODE": 0,
+      "UNIT_WRONG_ROOT_KIND": 0
+    },
+    "materialFindingsWhoseUnitCouldNotBeFound": 411,
+    "strongIdentityUnits": 0,
+    "weakIdentityUnits": 56,
+    "differenceFromTheDesignEstimate": "the design estimated 498 MATERIAL findings with 208 machine-resolvable. Only 87 of the 498 could be RESOLVED at all, because 411 name a ruleOrDefinitionId whose compiled IR object is not preserved alongside the verification result in the same artifact. That is a corpus-preservation gap, not a resolver defect - the estimate counted findings whose path LOOKED parseable, while the resolver must also find the node. Of the 87 that could be bound, 61% resolved to an exact node, which is better than the 42% the path-shape estimate implied.",
+    "strongIdentityIsZero": "every preserved unit has a null sourceContentVersion, exactly as the design warned. Every envelope built from this corpus is WEAK, and none is reported as verified-clean."
+  },
+  "notImplemented": [
+    "blocksNode",
+    "blocksUnit",
+    "VERIFICATION_DOMINANCE",
+    "MATERIAL_VERIFICATION_FINDING runtime diagnostic",
+    "PHASE3_VERIFICATION_MATERIAL_FINDING limitation code",
+    "any runtime status floor",
+    "product-boundary REQUIRE enforcement",
+    "Phase 4E"
+  ],
+  "proofOfAbsence": "a test walks every .ts under lib/, strips comments, and fails if any of those names appear in code. verification-envelope.ts names them in prose only, to say they do not exist.",
+  "sufficiencyUntouched": [
+    "blockedBySufficiency",
+    "rule-evaluator sufficiency behaviour",
+    "SUFFICIENCY_DOMINANCE",
+    "transaction unsafeLegal"
+  ]
+}

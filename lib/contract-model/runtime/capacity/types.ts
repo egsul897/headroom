@@ -10,6 +10,7 @@
  * algebra; every financial fact comes through the Phase-4B strict resolver.
  */
 import type { EntityClassTag } from "@prisma/client";
+import type { RuntimeVerificationEnvelope } from "../verification-envelope";
 import type { IRRule, IRSharedCapacity, RepresentationSufficiency } from "../../ir/types";
 import type { EvaluationResult, SerializedRuntimeValue } from "../types";
 import type { FinancialDependencyManifest } from "../input/types";
@@ -528,4 +529,6 @@ export interface BuildCapacityGraphArgs {
   companyId: string;
   instrumentKey: string;
   asOf?: string | null;
+  /** MIGRATION STEP 1 (inert): carried, never consulted. No gate reads this today - see runtime/verification-envelope.ts. */
+  verification?: RuntimeVerificationEnvelope;
 }

@@ -236,6 +236,13 @@ export interface EvaluationContext {
   /** The Phase-3 object the expression belongs to, for provenance. */
   ruleId?: string | null;
   definitionId?: string | null;
+  /**
+   * MIGRATION STEP 1 (inert): the stable id of the compiled unit that OWNS the expression being
+   * evaluated - rule.ruleId or definition.definitionId, never an array position. A later matcher
+   * needs it to find the right verification record; nothing reads it today and it is not
+   * serialized into any result.
+   */
+  unitId?: string | null;
 }
 
 export interface EvaluationStats {
