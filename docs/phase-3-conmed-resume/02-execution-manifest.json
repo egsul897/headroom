@@ -1,0 +1,98 @@
+{
+  "mission": "HEADROOM PHASE-3 - CONMED CURRENT-PIPELINE RESUME: execution manifest (prepared, NOT executed)",
+  "status": "CONMED_RESUME_MANIFEST_READY - awaiting explicit authorization; no paid call was made preparing it",
+  "paidModelCallsThisMission": 0,
+  "preparedAtSha": "51cdefd2f35e76f7501977153899a00672c564c6",
+
+  "entrypoint": {
+    "command": "CONMED_RESUME_AUTHORIZED=1 AI_GATEWAY_API_KEY=<active key> npx tsx scripts/p3-conmed-pilot/run-population-verified.ts",
+    "dryRun": "npx tsx scripts/p3-conmed-pilot/run-population-verified.ts --dry-run   (credential removed from the process, nothing dispatched, writes 00-plan.json)",
+    "startGuard": "refuses without CONMED_RESUME_AUTHORIZED=1 AND a gateway credential; refuses a model id ending in -0731; asserts PREMIUM_MODEL_BUDGET_USD === 0",
+    "output": "/tmp/claude-0/pilot/population-verified/ - 00-plan, 01-statuses, 02-costs, 03-run-manifest, evidence/<discoveryId>.json, evidence/verified-units/<discoveryId>.verified-units.json, evidence/verified-units-manifest.json",
+    "preserveAfterRun": "copy the whole output directory into docs/ or tests/fixtures before the session ends - the scratch directory does not survive a container reclaim (that is how the halted run's rows were lost)"
+  },
+
+  "modelLock": {
+    "model": "deepseek/deepseek-v4-flash",
+    "suffix": "none - the runner refuses -0731",
+    "price": { "inputPerMtok": 0.13, "outputPerMtok": 0.26, "source": "/tmp/claude-0/pilot/models.json gateway catalogue, reconciled against every EXACT historical row" },
+    "premiumLock": "ANALYZER_MODEL pinned to the locked model before any caller is constructed and asserted non-premium; the recorded stage caller is asserted non-premium again; the catalogue row is asserted non-premium by id and price",
+    "premiumModelBudgetUsd": 0,
+    "modelSelectionWork": "none; no bakeoff; no fallback; no retry on another model"
+  },
+
+  "execution": {
+    "timeoutMs": 480000,
+    "timeoutAppliesTo": "each compile call and each verifier call, separately (withTimeout)",
+    "timeoutRaisedForLongParents": false,
+    "concurrency": 1,
+    "concurrency2": "NOT implemented in the runner. It may only become a condition of a later manifest revision, explicitly: after >= 10 consecutive clean rows AND a re-issued authorization naming concurrency 2. Nothing escalates automatically.",
+    "attemptsPerCandidate": 1,
+    "autoRetry": false,
+    "retryOnTimeout": false, "retryOnExecutionFailure": false, "retryOnVerifierFailure": false,
+    "laterRetryMission": "may be separately authorized for a bounded failure subset; not part of this run",
+    "candidateOrder": "sorted by normalizedSourceRef then discoveryId, as 00-plan.json lists; deterministic",
+    "longParentPolicy": "candidates whose operative span is >= 1,886 chars (13 of 133) are run once like any other, expected to time out as every observed one did, recorded as TIMEOUT with the reservation retained; no timeout raise, no model switch, no re-sharding. Their result is the model's capability limit, reported as such - never as a semantic miss.",
+    "knownHardCase_7_2_k": "the earlier compile-only runner skipped 7.2(k); the candidate-span repair collapsed it to 776 chars and it completed in the continuation run, so it is in the population and is attempted once like any other"
+  },
+
+  "paidCallsPerCandidate": {
+    "compile": { "count": 1, "note": "one accounted call; the tool loop (0-7 observed tool turns) is internal to it and its tokens are inside the exact figure" },
+    "verifierConditionSuspicion": { "count": "0 or 1", "when": "only when deterministic reconciliation does NOT already force review" },
+    "verifierLayer2Review": { "count": "0 or 1", "when": "deterministic evidence forces review, or the classifier does not report NO_MATERIAL_CONDITION_SUSPECTED, or the classifier fails" },
+    "perCandidate": { "minimum": 1, "typical": 2, "maximum": 3 },
+    "oneTimePerRun": { "amendmentPipeline": "1 observed (interpretation of ambiguous amendment operations; $0.000268)", "gatewayHealthProbes": "2 (tiny + workload; $0.000759 observed) - part of the runner's own precondition, not of this mission" }
+  },
+
+  "budget": {
+    "empiricalBasis": "docs/phase-3-conmed-resume/01-calibration.json - 17 EXACT compile calls, 9 UNKNOWN_TIMEOUT_BILLED compiles, 2 verifier Layer-2 calls, 1 amendment call, 1 health-probe pair; all deepseek/deepseek-v4-flash",
+    "compileExactUsd": { "n": 17, "min": 0.003123, "median": 0.006355, "mean": 0.006715, "p75": 0.009328, "max": 0.012274 },
+    "verifyLayer2Usd": { "n": 2, "min": 0.001555, "mean": 0.002099, "max": 0.002644, "typicalPerCandidate": 0.002099, "conservativePerCandidate": 0.005288 },
+    "timeoutReservationPerCallUsd": 0.019423,
+    "timeoutReservationFormula": "29,408 input tokens x $0.13/Mtok + ceil(480 s x 125 tok/s) x $0.26/Mtok; UNKNOWN_TIMEOUT_BILLED, retained, never released",
+    "population": { "attemptable": 133, "short_lte_776": 101, "mid_777_to_1885": 19, "long_gte_1886": 13, "emptySkipped": 2 },
+    "scenariosUsd": { "LOW": 1.1254, "CENTRAL": 1.2853, "CONSERVATIVE": 2.3125, "HARD_WORST_AUTHORIZED": 3.2876 },
+    "hardCeilingUsd": 3.5,
+    "stopAtUsd": 3.450577,
+    "stopRule": "no call starts once committed + its reservation >= STOP_AT; reserve-before-dispatch means the ceiling cannot be crossed by an unbilled timeout",
+    "haltConditions": ["STOP_AT reached", "HTTP 402 / credit exhaustion (recorded as PROVIDER_FAILURE; the run stops at the next budget check rather than burning the remaining candidates as refusals)", "persistence refusal (secret-leak guard) is recorded per candidate and does not halt the run", "operator interrupt - partial outputs are flushed every 10 candidates"]
+  },
+
+  "completeCandidateDefinition": {
+    "executionComplete": ["compile call returned (not TIMEOUT, not PROVIDER_FAILURE, not other execution failure)", "verifier ran to a result (COMPLETED, whatever its status)", "forensic evidence written", "paired verified-unit package written with complete: true", "run-manifest entry present", "no secret-leak refusal", "cost EXACT for both calls, or conservatively reserved where the provider gave no usage"],
+    "verificationSemanticallyClean": "a SEPARATE property: verification status VERIFIED_* with no MATERIAL finding. VERIFICATION_INCOMPLETE / FAILED / MATERIAL_DISCREPANCY / REVIEW_REQUIRED results still yield an execution-complete candidate with a complete paired package; the strict boundary then floors or blocks them as steps 3-4 specify",
+    "notComplete": ["compile-only (no verifier run)", "compile TIMEOUT or failure", "verifier TIMEOUT or execution failure (the package is written, honestly incomplete: IR without verification)", "persistence refused"]
+  },
+
+  "persistencePath": "scripts/p3-conmed-pilot/evidence.ts persistCandidate + VerifiedUnitManifestWriter (lib/contract-model/verified-units.ts): units snapshotted BEFORE the verifier runs; evidence + paired package from the same in-memory objects; secret-scanned; package complete only when every compiled unit pairs with the verification result; manifest rewritten every 10 candidates and at the end",
+  "runManifestSchema": "p3-conmed-resume-run-manifest.v1 (03-run-manifest.json): denominator {dedup, attemptable, skippedEmpty}, attempted, compileCompleted, compileTimeout, compileOtherFailure, verificationCompleted, verificationIncomplete, verificationFailed, verificationStatusCounts, pairedPackagesComplete, pairedPackagesIncomplete, pairedPackagesNotWritten, spend {exactUsd, timeoutReservationsRetainedUsd, committedUsd, ceilingUsd, stopAtUsd, amendmentPipelineUsd}, candidateStatuses[], verifiedUnitsManifest; plus p3-verified-unit-manifest.v1 beside the evidence",
+
+  "benchmark": {
+    "corpus": "docs/phase-3-v3.1-final-reconciliation/05-v3.1.1-corrected-47-case-corpus.json",
+    "conmedCases": 9,
+    "allInPopulation": true,
+    "alreadyCurrentPipelineComplete": 0,
+    "stillNeedingExecution": 9,
+    "byBand": { "SHORT": ["7.2(c)", "7.11"], "MID": ["7.13", "7.14", "7.16", "7.17"], "LONG (expected timeout)": ["7.1", "7.2", "7.10"] },
+    "evidenceSourceComplete": "0 of 9 - every CONMED case carries sourceExcerptResolution UNRESOLVED_DESCRIPTION_ONLY in the corrected corpus (benchmarkIntegrityStatus VERIFIED); scoring must use the corrected claim and propositions, not a verbatim excerpt",
+    "scoringDeferred": true
+  },
+
+  "postRunScoringPlan": {
+    "groundTruth": "V3.1.1 corrected corpus, held constant (benchmarkContentHash recorded in 01-calibration.json)",
+    "evidence": "current-pipeline artifacts from this run ONLY: the paired verified-unit packages (exact IR + exact verification) and their forensic evidence; no historical frozen compiler output, no earlier run's rows",
+    "ownership": "current candidate-span source ownership (anchor-only operative window, PARENT_SCOPE as typed context) and current semantic accountability; verifier results consulted where relevant to surfacing",
+    "classifications": { "credit": ["CREDIT", "NO_CREDIT"], "completeness": ["FULL", "PARTIAL", "NONE"], "compositeSurfacing": ["FULLY_SURFACED", "PARTIALLY_SURFACED", "NOT_SPECIFICALLY_SURFACED", "NOT_APPLICABLE"], "dangerousSilentOmission": "boolean - NO_CREDIT and NOT_SPECIFICALLY_SURFACED", "executionLimited": "a TIMEOUT or execution failure is recorded as EXECUTION_LIMITED and is NEVER scored as a semantic miss" },
+    "baselineForComparison": "docs/phase-3-v3.1-final-reconciliation/08-final-47-case-results.json (CONMED: 9 cases, all NO_CREDIT / MATERIAL)",
+    "notProducedHere": true
+  },
+
+  "postRunDecision": {
+    "A_strongCurrentPerformance": "consider expanding regeneration beyond CONMED to the remaining V3.1.1 corpus (DSGR, LSB, FWRG)",
+    "B_materialCurrentSemanticDefects": "fix only demonstrated production defects before broader regeneration",
+    "C_modelExecutionLimitationDominates": "separate compiler-model capability from semantic correctness; timeouts on the 13 long parents are the expected shape of this outcome and are not semantic misses",
+    "D_evidencePersistenceFailure": "fix the harness only if the current evidence cannot be trusted (secret-leak refusals, incomplete packages that should be complete, hash mismatches on reload)"
+  },
+
+  "closedWorkNotReopened": ["candidate-span", "F1", "Fix B", "R2", "forensic harness", "Phase-4 gate", "strict boundary", "verified-unit persistence", "prompts", "model choice", "shard planner", "PARENT_SCOPE", "composed citations"]
+}

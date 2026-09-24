@@ -1,0 +1,1794 @@
+{
+  "mission": "HEADROOM PHASE-3 - CONMED current-pipeline resume: budget calibration",
+  "paidModelCalls": 0,
+  "lockedModel": "deepseek/deepseek-v4-flash",
+  "premiumModelBudgetUsd": 0,
+  "companyId": "conmed-pilot",
+  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+  "denominator": {
+    "discovered": 163,
+    "eligible": 163,
+    "ineligible": 0,
+    "unresolvedNodeKeys": 2,
+    "rehydrated": 163,
+    "exactDuplicatesRemoved": 28,
+    "dedupDenominator": 135,
+    "emptyOperativeText": 2,
+    "attemptable": 133,
+    "dual": 65,
+    "bands": {
+      "LONG": 13,
+      "SHORT": 101,
+      "MID": 19,
+      "EMPTY": 2
+    }
+  },
+  "candidates": [
+    {
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "ref": "7.1",
+      "operativeChars": 3275,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:8fe38049fe62ea9e9e741511",
+      "ref": "7.1(a)",
+      "operativeChars": 712,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:cf15af8f5fb1f77bd861a2ac",
+      "ref": "7.1(b)",
+      "operativeChars": 1886,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+      "ref": "7.1(c)",
+      "operativeChars": 234,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+      "ref": "7.1(d)",
+      "operativeChars": 399,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "ref": "7.10",
+      "operativeChars": 1995,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:41257e7574b41dd1089b396e",
+      "ref": "7.10(a)",
+      "operativeChars": 54,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:cac9b2bceb2e7314970a57f1",
+      "ref": "7.10(b)",
+      "operativeChars": 1493,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:766fe1bf868f87b1a702575c",
+      "ref": "7.11",
+      "operativeChars": 696,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "ref": "7.13",
+      "operativeChars": 1212,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:8cc6d36a3898b45e63d7a0cc",
+      "ref": "7.13(a)",
+      "operativeChars": 731,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "ref": "7.14",
+      "operativeChars": 1106,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:53e4ea586b2732863f2d4c10",
+      "ref": "7.14(a)",
+      "operativeChars": 908,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:3985f29e81fa30e1cfec25a0",
+      "ref": "7.15",
+      "operativeChars": 281,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "ref": "7.16",
+      "operativeChars": 1144,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:f0466a27cbf457478a3eac0e",
+      "ref": "7.16(a)",
+      "operativeChars": 787,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "ref": "7.17",
+      "operativeChars": 795,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:c84bd941081822735ab8bf70",
+      "ref": "7.17(a)",
+      "operativeChars": 106,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:e52848d1db50133b0ae6b258",
+      "ref": "7.17(b)(i)",
+      "operativeChars": 611,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "ref": "7.2",
+      "operativeChars": 8843,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+      "ref": "7.2(a)",
+      "operativeChars": 66,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:4bfbc3dbea17aec6bb21a58a",
+      "ref": "7.2(b)",
+      "operativeChars": 138,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "ref": "7.2(c)",
+      "operativeChars": 529,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "ref": "7.2(d)",
+      "operativeChars": 250,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "ref": "7.2(e)",
+      "operativeChars": 200,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+      "ref": "7.2(f)",
+      "operativeChars": 149,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:7b3977f0fa58ecd5c864b1fc",
+      "ref": "7.2(g)",
+      "operativeChars": 312,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+      "ref": "7.2(h)",
+      "operativeChars": 467,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:7feb9e228591558f958bb0d1",
+      "ref": "7.2(i)",
+      "operativeChars": 319,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:06a4e449333717a1dc8bbc58",
+      "ref": "7.2(j)",
+      "operativeChars": 191,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:28d7bafd7a1fedde253333ef",
+      "ref": "7.2(k)",
+      "operativeChars": 776,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "ref": "7.2(k)(i)",
+      "operativeChars": 54,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+      "ref": "7.2(k)(ii)",
+      "operativeChars": 455,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:0cdfa0a5a2266bd5aec20849",
+      "ref": "7.2(l)(i)",
+      "operativeChars": 649,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:2fa8e7f8da38b86c6b75629d",
+      "ref": "7.2(l)(ii)",
+      "operativeChars": 293,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:3d233f1364657aeffc32c4a7",
+      "ref": "7.2(m)",
+      "operativeChars": 293,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:6da1a256e226a50878be09d8",
+      "ref": "7.2(n)(i)",
+      "operativeChars": 497,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:63cca6f524f3c06639a35a7b",
+      "ref": "7.2(n)(ii)",
+      "operativeChars": 375,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:4f89c3b081ac7eb79d270167",
+      "ref": "7.2(o)",
+      "operativeChars": 252,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:cdccb3650edb9287f09fb2a9",
+      "ref": "7.2(p)(i)",
+      "operativeChars": 634,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:4db3011a2619a9dd89a19330",
+      "ref": "7.2(r)",
+      "operativeChars": 96,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:468b10c82bc07efa732354ac",
+      "ref": "7.2(s)",
+      "operativeChars": 2222,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:5b0cf887a4cf4a3b5caa1c81",
+      "ref": "7.2(s)(i)",
+      "operativeChars": 2068,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:08919c086272421431dd7aed",
+      "ref": "7.3",
+      "operativeChars": 7053,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:7eb2dc07250e5d73988ceed4",
+      "ref": "7.3(a)",
+      "operativeChars": 300,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:aa625ee78b68bd09e0932fea",
+      "ref": "7.3(b)",
+      "operativeChars": 391,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:db29c9b94a34be2eb9d38885",
+      "ref": "7.3(c)",
+      "operativeChars": 128,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:3eb1e00eb8df475c0d2697c2",
+      "ref": "7.3(d)",
+      "operativeChars": 255,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:c615523fa38fd789d31e9657",
+      "ref": "7.3(e)",
+      "operativeChars": 385,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:0a2f4f23dae2b83c3e6c4ed0",
+      "ref": "7.3(f)",
+      "operativeChars": 329,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:082c80836268c7277cc39c18",
+      "ref": "7.3(g)",
+      "operativeChars": 958,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:4fc1d579b699d89ba0428259",
+      "ref": "7.3(g)(i)",
+      "operativeChars": 111,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:f99359a26388274479373cdb",
+      "ref": "7.3(g)(ii)",
+      "operativeChars": 642,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:2983e5f23dbd949b7b58db01",
+      "ref": "7.3(g)(ii)(A)",
+      "operativeChars": 150,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:038eb0cd010fc21f941c2555",
+      "ref": "7.3(g)(ii)(B)",
+      "operativeChars": 261,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:058231fd0222f19b20b9d181",
+      "ref": "7.3(h)",
+      "operativeChars": 54,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:4c5fdf9ee2015e2d920b416e",
+      "ref": "7.3(i)",
+      "operativeChars": 193,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:e48d5bf75208a61f8260e190",
+      "ref": "7.3(j)",
+      "operativeChars": 216,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:c059bb56a36b1af78f5bbe23",
+      "ref": "7.3(k)",
+      "operativeChars": 251,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:92a453a94fb79b96795a0081",
+      "ref": "7.3(l)",
+      "operativeChars": 1271,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:87c0370dad1da9b0c9941d1c",
+      "ref": "7.3(l)(i)",
+      "operativeChars": 932,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:b5bb07b092f9863985f89812",
+      "ref": "7.3(m)",
+      "operativeChars": 458,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:ac0b4888228d3f32e7123d6b",
+      "ref": "7.3(m)(i)",
+      "operativeChars": 86,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:416e6e08da5964e403f8d78b",
+      "ref": "7.3(m)(ii)",
+      "operativeChars": 299,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:998b06bfc970aee50608d465",
+      "ref": "7.3(m)(ii)(A)",
+      "operativeChars": 20,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:87b494be0746c3d27aa4d2db",
+      "ref": "7.3(m)(ii)(B)",
+      "operativeChars": 90,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:6382a89b88aee52433a287a9",
+      "ref": "7.3(n)",
+      "operativeChars": 143,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:d18b92bda1f7a6b6b03245bf",
+      "ref": "7.3(o)",
+      "operativeChars": 291,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:d743c01b399ff5f9bd439df9",
+      "ref": "7.3(p)",
+      "operativeChars": 1255,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:01215421a15b014f020e2d41",
+      "ref": "7.4",
+      "operativeChars": 5980,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:7394f8406279afd41fc8210b",
+      "ref": "7.4(a)(i)",
+      "operativeChars": 375,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:ee066977a88258cd6cfcd217",
+      "ref": "7.4(a)(ii)",
+      "operativeChars": 3899,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:90d9d73e1fda41693532da4a",
+      "ref": "7.4(a)(iii)",
+      "operativeChars": 0,
+      "dual": false,
+      "nodeKeys": 0,
+      "band": "EMPTY"
+    },
+    {
+      "discoveryId": "discovery-candidate:179a1f3046d17abc490af6b9",
+      "ref": "7.4(a)(iv)",
+      "operativeChars": 0,
+      "dual": false,
+      "nodeKeys": 0,
+      "band": "EMPTY"
+    },
+    {
+      "discoveryId": "discovery-candidate:3fa3730524870bb58ef593a4",
+      "ref": "7.4(b)(i)",
+      "operativeChars": 248,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:5bc35e5a4b020669b235c00a",
+      "ref": "7.4(b)(ii)",
+      "operativeChars": 301,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:0ccd597ff16ac8d7809b19e5",
+      "ref": "7.4(c)",
+      "operativeChars": 798,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:2935113412c51d5268d5b0ca",
+      "ref": "7.4(c)(1)",
+      "operativeChars": 144,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:420b56c046442b528b156245",
+      "ref": "7.4(d)",
+      "operativeChars": 44,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:192f0f846ef50bc2eb957eb6",
+      "ref": "7.5",
+      "operativeChars": 4658,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:baca43714b8502cc9c596c23",
+      "ref": "7.5(a)",
+      "operativeChars": 89,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:c71e3fc24ba69a95fb59dd41",
+      "ref": "7.5(b)",
+      "operativeChars": 83,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:65062d82436b8dbda43a66be",
+      "ref": "7.5(c)",
+      "operativeChars": 46,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:8c32e0a68dc5b7267f9d2152",
+      "ref": "7.5(d)(i)",
+      "operativeChars": 230,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:15cd009747aa780609455c48",
+      "ref": "7.5(e)",
+      "operativeChars": 168,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:8507d3f28616a4f0af9f74b0",
+      "ref": "7.5(f)",
+      "operativeChars": 1618,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:6be98acecf709257ad512776",
+      "ref": "7.5(f)(i)",
+      "operativeChars": 648,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:224e416870eac0d7ae9cafad",
+      "ref": "7.5(f)(ii)",
+      "operativeChars": 844,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:8f16a2f1fc23309fec02928d",
+      "ref": "7.5(g)",
+      "operativeChars": 67,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:184c41389f233b2c2de269a4",
+      "ref": "7.5(h)",
+      "operativeChars": 208,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+      "ref": "7.5(i)",
+      "operativeChars": 190,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "ref": "7.5(j)",
+      "operativeChars": 508,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:7a871f5e26e8a48783882460",
+      "ref": "7.5(k)",
+      "operativeChars": 163,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:445f471043ccfc3dd9cfc568",
+      "ref": "7.5(l)",
+      "operativeChars": 170,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:980d0bd83512327db977a2e8",
+      "ref": "7.5(m)",
+      "operativeChars": 140,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:0578fe547dd42317ce0df107",
+      "ref": "7.5(n)",
+      "operativeChars": 635,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:42423b37324ac426d0f961e2",
+      "ref": "7.6",
+      "operativeChars": 3501,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:8befac8ab345ffa1d1e259ee",
+      "ref": "7.6(a)(i)",
+      "operativeChars": 131,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:753e3a550c4f83d63a851184",
+      "ref": "7.6(a)(ii)",
+      "operativeChars": 111,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:ac354ffa81d6ca806759ba60",
+      "ref": "7.6(b)",
+      "operativeChars": 470,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:488409a7f662ed7814693bc7",
+      "ref": "7.6(b)(i)",
+      "operativeChars": 280,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:959f65d2872a027bcae3ddef",
+      "ref": "7.6(b)(ii)",
+      "operativeChars": 186,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:565fd64640e534d8a46bbe7a",
+      "ref": "7.6(c)",
+      "operativeChars": 191,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:9e35243e01539edee04ff6a5",
+      "ref": "7.6(d)",
+      "operativeChars": 122,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:667f625c7ae3602d9972fdea",
+      "ref": "7.6(e)(i)",
+      "operativeChars": 410,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:72e65025f7418737c58d95eb",
+      "ref": "7.6(e)(ii)",
+      "operativeChars": 156,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:e9236b1dc9d46e13db1b7678",
+      "ref": "7.6(f)(i)",
+      "operativeChars": 170,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:f66b630df2e63c97a5c9bd90",
+      "ref": "7.6(f)(ii)",
+      "operativeChars": 312,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:fec9992df21d56e593ce440e",
+      "ref": "7.6(g)",
+      "operativeChars": 633,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:25a7ac71a68f0535fad268cd",
+      "ref": "7.8",
+      "operativeChars": 4667,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:5c8863c9378ed219563334fb",
+      "ref": "7.8(a)",
+      "operativeChars": 67,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+      "ref": "7.8(b)",
+      "operativeChars": 37,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:b5296614bd927a8e4ea227bc",
+      "ref": "7.8(c)",
+      "operativeChars": 52,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "ref": "7.8(d)",
+      "operativeChars": 389,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+      "ref": "7.8(e)",
+      "operativeChars": 176,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:deff46f63658cfd219009b2b",
+      "ref": "7.8(f)",
+      "operativeChars": 126,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:03a446b1ec89b4309b0572e9",
+      "ref": "7.8(g)",
+      "operativeChars": 153,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+      "ref": "7.8(h)",
+      "operativeChars": 335,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:ac28256f7476a6914247e7c9",
+      "ref": "7.8(i)",
+      "operativeChars": 350,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:718510e2901771adb5a31722",
+      "ref": "7.8(j)",
+      "operativeChars": 971,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:0c86f64e8580df76e45e16f0",
+      "ref": "7.8(k)",
+      "operativeChars": 68,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+      "ref": "7.8(l)",
+      "operativeChars": 427,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:e9616549c13c2debd957c533",
+      "ref": "7.8(m)(i)",
+      "operativeChars": 225,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:248f4e6a15e5a2424e2a2397",
+      "ref": "7.9",
+      "operativeChars": 4339,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "LONG"
+    },
+    {
+      "discoveryId": "discovery-candidate:1bf90deb6bd9041e04c8728a",
+      "ref": "7.9(a)",
+      "operativeChars": 1403,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:c95bfdcb359c0a4a81b5fd6b",
+      "ref": "7.9(a)(i)",
+      "operativeChars": 164,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:635980cf26209b960a1e57d1",
+      "ref": "7.9(a)(ii)",
+      "operativeChars": 978,
+      "dual": true,
+      "nodeKeys": 2,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:3675ce686bd277452c61595b",
+      "ref": "7.9(b)",
+      "operativeChars": 1139,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+      "ref": "7.9(b)(i)",
+      "operativeChars": 77,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:708135ded35624a61b97dcbd",
+      "ref": "7.9(b)(ii)",
+      "operativeChars": 417,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:d2d61a0f46f53960376211d3",
+      "ref": "7.9(b)(iii)",
+      "operativeChars": 297,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+      "ref": "7.9(b)(iv)",
+      "operativeChars": 184,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:915a72b626950c21a3dee456",
+      "ref": "7.9(c)",
+      "operativeChars": 1558,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "MID"
+    },
+    {
+      "discoveryId": "discovery-candidate:523c83bba21c499f3344a3e7",
+      "ref": "7.9(c)(i)",
+      "operativeChars": 732,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    },
+    {
+      "discoveryId": "discovery-candidate:93b369778c6bbdf6dbc61844",
+      "ref": "7.9(d)",
+      "operativeChars": 150,
+      "dual": false,
+      "nodeKeys": 1,
+      "band": "SHORT"
+    }
+  ],
+  "historicalCostTable": {
+    "included": [
+      {
+        "source": "span-validation-15",
+        "candidate": "7.1(a)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 139851,
+        "inputTokens": 20259,
+        "outputTokens": 9023,
+        "costUsd": 0.00497965,
+        "costStatus": "EXACT",
+        "operativeChars": 712
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.1",
+        "stage": "compile",
+        "outcome": "OTHER_EXECUTION_FAILURE",
+        "elapsedMs": 355189,
+        "inputTokens": 19471,
+        "outputTokens": 8197,
+        "costUsd": 0.00466245,
+        "costStatus": "EXACT",
+        "operativeChars": 3275
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.1(b)",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480003,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 1886
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.1(c)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 86361,
+        "inputTokens": 14678,
+        "outputTokens": 4674,
+        "costUsd": 0.0031233800000000003,
+        "costStatus": "EXACT",
+        "operativeChars": 234
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.1(d)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 256262,
+        "inputTokens": 40211,
+        "outputTokens": 20787,
+        "costUsd": 0.01063205,
+        "costStatus": "EXACT",
+        "operativeChars": 399
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.2(a)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 92041,
+        "inputTokens": 25327,
+        "outputTokens": 11399,
+        "costUsd": 0.00625625,
+        "costStatus": "EXACT",
+        "operativeChars": 66
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.2(b)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 57583,
+        "inputTokens": 17752,
+        "outputTokens": 5503,
+        "costUsd": 0.00373854,
+        "costStatus": "EXACT",
+        "operativeChars": 138
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.2(e) short",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 231300,
+        "inputTokens": 38911,
+        "outputTokens": 19689,
+        "costUsd": 0.01017757,
+        "costStatus": "EXACT",
+        "operativeChars": 200
+      },
+      {
+        "source": "span-validation-15",
+        "candidate": "7.2(f)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 69697,
+        "inputTokens": 14759,
+        "outputTokens": 6102,
+        "costUsd": 0.00350519,
+        "costStatus": "EXACT",
+        "operativeChars": 149
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.1",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480057,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 3275
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.1(b)",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480003,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 1886
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2(e) long",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 265603,
+        "inputTokens": 23449,
+        "outputTokens": 24204,
+        "costUsd": 0.00934141,
+        "costStatus": "EXACT",
+        "operativeChars": 200
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2(k)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 265902,
+        "inputTokens": 22765,
+        "outputTokens": 17112,
+        "costUsd": 0.00740857,
+        "costStatus": "EXACT",
+        "operativeChars": 776
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2(k)(i)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 251317,
+        "inputTokens": 23289,
+        "outputTokens": 24233,
+        "costUsd": 0.00932815,
+        "costStatus": "EXACT",
+        "operativeChars": 54
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2(k)(ii)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 370398,
+        "inputTokens": 30608,
+        "outputTokens": 31904,
+        "costUsd": 0.01227408,
+        "costStatus": "EXACT",
+        "operativeChars": 455
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480005,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 8843
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.3",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480004,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 7053
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.4",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480003,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 5980
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.5",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480003,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 4658
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.8",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480003,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 4667
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.9",
+        "stage": "compile",
+        "outcome": "TIMEOUT",
+        "elapsedMs": 480004,
+        "inputTokens": null,
+        "outputTokens": null,
+        "costUsd": 0.0182,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "operativeChars": 4339
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2(d)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 206593,
+        "inputTokens": 18885,
+        "outputTokens": 14999,
+        "costUsd": 0.00635479,
+        "costStatus": "EXACT",
+        "operativeChars": 250
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2(g)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 197551,
+        "inputTokens": 18843,
+        "outputTokens": 15625,
+        "costUsd": 0.00651209,
+        "costStatus": "EXACT",
+        "operativeChars": 312
+      },
+      {
+        "source": "span-validation-17",
+        "candidate": "7.2(h)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 266584,
+        "inputTokens": 24102,
+        "outputTokens": 21988,
+        "costUsd": 0.00885014,
+        "costStatus": "EXACT",
+        "operativeChars": 467
+      },
+      {
+        "source": "numeric-grounding-09",
+        "candidate": "7.2(f)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 70023,
+        "inputTokens": 15201,
+        "outputTokens": 5256,
+        "costUsd": 0.00334269,
+        "costStatus": "EXACT",
+        "operativeChars": 149
+      },
+      {
+        "source": "numeric-grounding-09",
+        "candidate": "7.1(d)",
+        "stage": "compile",
+        "outcome": "COMPLETED",
+        "elapsedMs": 91778,
+        "inputTokens": 17438,
+        "outputTokens": 5419,
+        "costUsd": 0.00367588,
+        "costStatus": "EXACT",
+        "operativeChars": 399
+      },
+      {
+        "source": "numeric-grounding-summary",
+        "candidate": "(run)",
+        "stage": "amendment_pipeline",
+        "outcome": "COMPLETED",
+        "elapsedMs": null,
+        "inputTokens": 830,
+        "outputTokens": 614,
+        "costUsd": 0.00026754000000000003,
+        "costStatus": "EXACT",
+        "operativeChars": null
+      },
+      {
+        "source": "numeric-grounding-summary",
+        "candidate": "(verify)",
+        "stage": "verifier_layer2",
+        "outcome": "COMPLETED",
+        "elapsedMs": null,
+        "inputTokens": 4616,
+        "outputTokens": 3671,
+        "costUsd": 0.00155454,
+        "costStatus": "EXACT",
+        "operativeChars": null
+      },
+      {
+        "source": "numeric-grounding-summary",
+        "candidate": "(verify)",
+        "stage": "verifier_layer2",
+        "outcome": "COMPLETED",
+        "elapsedMs": null,
+        "inputTokens": 8770,
+        "outputTokens": 5785,
+        "costUsd": 0.0026442,
+        "costStatus": "EXACT",
+        "operativeChars": null
+      },
+      {
+        "source": "numeric-grounding-09",
+        "candidate": "(run)",
+        "stage": "gateway_health",
+        "outcome": "COMPLETED",
+        "elapsedMs": null,
+        "inputTokens": 5364,
+        "outputTokens": 235,
+        "costUsd": 0.000759,
+        "costStatus": "EXACT",
+        "operativeChars": null
+      }
+    ],
+    "excluded": [
+      {
+        "source": "docs/phase-3-conmed-low-cost-pilot (137 candidates, $0.0434)",
+        "why": "tier-1 model was deepseek/deepseek-v4-flash-0731 (forbidden suffix) and 118/137 were HTTP 402 refusals with no provider work"
+      },
+      {
+        "source": "docs/phase-3-cheap-model-bakeoff",
+        "why": "model-selection spend across Qwen / Mercury / GPT-nano / GLM / MiMo; not population economics"
+      },
+      {
+        "source": "halted population run (9 completed, $0.04655, 32/137)",
+        "why": "per-candidate records were destroyed with the session scratch directory; only the aggregate survives in docs/phase-3-candidate-span-remediation/10 and it cannot be attributed to calls. Its mean ($0.00517) is reported as corroboration only, never as a row."
+      },
+      {
+        "source": "docs/phase-3-validation (Chewy, $13.96)",
+        "why": "anthropic/claude-sonnet-5 stage callers; a different instrument and a premium model"
+      },
+      {
+        "source": "F1 single check ($0.005653)",
+        "why": "recorded only as a cumulative figure in the numeric-grounding manifest; no call-level record with tokens survives, so it cannot enter a table that re-derives every row from tokens x price"
+      }
+    ]
+  },
+  "calibration": {
+    "price": {
+      "inputPerMtok": 0.13,
+      "outputPerMtok": 0.26,
+      "source": "/tmp/claude-0/pilot/models.json (gateway catalogue), reconciled against every EXACT row"
+    },
+    "compileCost": {
+      "all": {
+        "n": 17,
+        "min": 0.0031233800000000003,
+        "median": 0.00635479,
+        "mean": 0.006715463529411764,
+        "p75": 0.00932815,
+        "max": 0.01227408
+      },
+      "shortBand": {
+        "n": 16,
+        "min": 0.0031233800000000003,
+        "median": 0.00643344,
+        "mean": 0.006843776874999999,
+        "p75": 0.00932815,
+        "max": 0.01227408
+      },
+      "midLongBand": {
+        "n": 1,
+        "min": 0.00466245,
+        "median": 0.00466245,
+        "mean": 0.00466245,
+        "p75": null,
+        "max": 0.00466245
+      },
+      "exactRows": 17,
+      "timeoutRows": 9,
+      "observedTimeoutRate": 0.346154,
+      "shortBandElapsedMs": {
+        "n": 16,
+        "min": 57583,
+        "median": 202072,
+        "mean": 182427.75,
+        "p75": 256262,
+        "max": 370398
+      }
+    },
+    "verifyCost": {
+      "layer2Review": {
+        "n": 2,
+        "min": 0.00155454,
+        "median": 0.00209937,
+        "mean": 0.00209937,
+        "p75": null,
+        "max": 0.0026442
+      },
+      "calls": 2,
+      "typicalPerCandidateUsd": 0.002099,
+      "conservativePerCandidateUsd": 0.005288,
+      "note": "the condition-suspicion classifier was not invoked in either observed verification (deterministic evidence forced review), so its cost is bounded by the review call's maximum rather than measured"
+    },
+    "oneTime": {
+      "amendmentPipelineUsd": 0.00026754000000000003,
+      "gatewayHealthUsd": 0.000759
+    },
+    "timeoutReservation": {
+      "perCallUsd": 0.019423,
+      "formula": "29408 input tokens x $0.13/Mtok + ceil(480s x 125 tok/s) x $0.26/Mtok",
+      "observedRetainedPerTimeout": {
+        "n": 9,
+        "min": 0.0182,
+        "median": 0.0182,
+        "mean": 0.018199999999999997,
+        "p75": 0.0182,
+        "max": 0.0182
+      },
+      "note": "the observed $0.0182 retentions used 20,000 input tokens; the runner's constant is 29,408 and yields the larger figure, which is the one the manifest uses"
+    },
+    "population": {
+      "attemptable": 133,
+      "short": 101,
+      "mid": 19,
+      "long": 13,
+      "empty": 2
+    },
+    "scenarios": {
+      "LOW": {
+        "formula": "N x (median exact compile) + N x (typical verify) + one-time",
+        "usd": 1.12543
+      },
+      "CENTRAL": {
+        "formula": "SHORT x (mean short compile + typical verify) + MID x (mean mid/long compile + typical verify) + LONG x reservation + one-time  [LONG assumed to time out as every observed >= 1,886-char candidate did; MID has no observation and is priced as a completion here]",
+        "usd": 1.285258
+      },
+      "CONSERVATIVE": {
+        "formula": "SHORT x (p75 short compile + conservative verify) + (MID + LONG) x reservation + 10% of SHORT x reservation (a compile or verify timeout allowance among the short candidates) + one-time",
+        "usd": 2.312489
+      },
+      "HARD_WORST_AUTHORIZED": {
+        "formula": "N x reservation (every compile charged the full timeout reservation) + N x conservative verify + one-time - the most the accounting policy can charge if every candidate hits the ceiling and every verifier call also runs",
+        "usd": 3.287648
+      }
+    },
+    "recommended": {
+      "hardCeilingUsd": 3.5,
+      "stopAtUsd": 3.450577,
+      "rule": "no call starts if committed + its reservation >= STOP_AT; the ceiling is never crossed because every dispatch reserves first and an unbilled timeout keeps its reservation"
+    }
+  },
+  "benchmark": {
+    "benchmarkContentHash": "fdba3cb2c1c226d4444f4af89a786efeb662677a8df17666ce8e2ffbcf0c1d59",
+    "benchmarkVersion": "evaluation-contract-v3.1.1",
+    "cases": [
+      {
+        "caseId": "CASE-0c169f38c3",
+        "claimSectionRef": "7.2(c)",
+        "groundTruthUnitId": "a-7.2-c",
+        "materiality": "MATERIAL",
+        "propositions": 1,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+            "operativeChars": 529,
+            "band": "SHORT"
+          }
+        ],
+        "childCandidates": 0,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-55163b4198",
+        "claimSectionRef": "7.16",
+        "groundTruthUnitId": "a-7.16",
+        "materiality": "MATERIAL",
+        "propositions": 1,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+            "operativeChars": 1144,
+            "band": "MID"
+          }
+        ],
+        "childCandidates": 1,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-579c5d3f33",
+        "claimSectionRef": "7.10",
+        "groundTruthUnitId": "a-7.10",
+        "materiality": "MATERIAL",
+        "propositions": 2,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+            "operativeChars": 1995,
+            "band": "LONG"
+          }
+        ],
+        "childCandidates": 2,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-963cc44044",
+        "claimSectionRef": "7.14",
+        "groundTruthUnitId": "a-7.14",
+        "materiality": "MATERIAL",
+        "propositions": 4,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+            "operativeChars": 1106,
+            "band": "MID"
+          }
+        ],
+        "childCandidates": 1,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-9948558e99",
+        "claimSectionRef": "7.11",
+        "groundTruthUnitId": "a-7.11",
+        "materiality": "MATERIAL",
+        "propositions": 1,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:766fe1bf868f87b1a702575c",
+            "operativeChars": 696,
+            "band": "SHORT"
+          }
+        ],
+        "childCandidates": 0,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-9a30560f37",
+        "claimSectionRef": "7.17",
+        "groundTruthUnitId": "a-7.17",
+        "materiality": "MATERIAL",
+        "propositions": 1,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+            "operativeChars": 795,
+            "band": "MID"
+          }
+        ],
+        "childCandidates": 2,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-b2658c02e7",
+        "claimSectionRef": "7.1",
+        "groundTruthUnitId": "a-7.1",
+        "materiality": "MATERIAL",
+        "propositions": 4,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+            "operativeChars": 3275,
+            "band": "LONG"
+          }
+        ],
+        "childCandidates": 4,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-b38c3b48eb",
+        "claimSectionRef": "7.2",
+        "groundTruthUnitId": "a-7.2",
+        "materiality": "MATERIAL",
+        "propositions": 1,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+            "operativeChars": 8843,
+            "band": "LONG"
+          }
+        ],
+        "childCandidates": 23,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      },
+      {
+        "caseId": "CASE-d32081582b",
+        "claimSectionRef": "7.13",
+        "groundTruthUnitId": "a-7.13",
+        "materiality": "MATERIAL",
+        "propositions": 1,
+        "benchmarkIntegrityStatus": "VERIFIED",
+        "sourceExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+        "directCandidates": [
+          {
+            "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+            "operativeChars": 1212,
+            "band": "MID"
+          }
+        ],
+        "childCandidates": 1,
+        "inPopulation": true,
+        "alreadyCurrentPipelineComplete": false,
+        "stillNeedsExecution": true,
+        "evidenceSourceComplete": false
+      }
+    ]
+  }
+}
