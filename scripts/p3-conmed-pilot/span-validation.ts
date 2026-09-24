@@ -17,6 +17,7 @@ import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/disc
 import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest } from "./timeout-policy";
 import { PER_CANDIDATE_TIMEOUT_MS, CandidateTimeoutError, buildInput, callerFor, loadModel, prepare, realCost, record, withTimeout } from "./compile-run";
 import { classifyOutcome, LOCKED_MODEL, FORBIDDEN_MODEL, CLEAN_RUNS_BEFORE_CONCURRENCY_2 } from "./run-population";
+import { emptyForensicGrounding, groundCompiledResult, type ForensicGroundingResult } from "./forensic-grounding";
 
 const OUT = "docs/phase-3-candidate-span-remediation-implementation";
 const RUN = "/tmp/claude-0/pilot/span-validation";
@@ -60,14 +61,31 @@ export const COHORT_A_BASELINE: Record<string, { status: string; chars: number; 
 const AMOUNT_RE = /\$[\d,]{4,}|\b\d+(?:\.\d+)?%/g;
 const norm = (s: string) => s.replace(/\s+/g, " ").trim();
 
-/** Every economic term a compiled result asserts, from the whole serialized IR. */
+/**
+ * DEPRECATED (harness R1) - see attributionCheck below. A regex over the serialized IR that knows
+ * only "$" amounts and percentages, and cannot tell a rule's own assertion from a provenance
+ * excerpt. Retained only for the legacy side of the before/after comparison.
+ * @deprecated the production inventory (collectNumericAssertions) is authoritative.
+ */
 export function assertedAmounts(result: SemanticCompilationResult): string[] {
   const blob = JSON.stringify({ rules: result.rules ?? [], definitions: result.definitions ?? [] });
   return [...new Set(blob.match(AMOUNT_RE) ?? [])];
 }
 
-/** §CRITICAL SAFETY: a rule may only assert an economic term its ANCHOR text contains. A term that
- *  exists solely in the linked parent/sibling material is an operative-attribution violation. */
+/**
+ * DEPRECATED (harness R1). The historical attribution test: a substring search over the anchor and
+ * the Pass C linked nodes, with no notion of authenticated tool retrieval, no scale-aware
+ * normalization ("$50 million" never matched "$50,000,000") and no bucket for evidence scoped to a
+ * retrieved definition. It is what reported `unsourced: ["100%"]` for 7.2(f) - a figure that is
+ * real source text in the authenticated "Subsidiary Guarantor" definition the compiler had
+ * retrieved and quoted.
+ *
+ * It no longer decides anything. forensic-grounding.ts calls the production grounder instead.
+ * This function survives for exactly one purpose: reproducing the old verdict side by side with
+ * the new one, so the correction is demonstrable rather than asserted.
+ *
+ * @deprecated use groundCompiledResult() from ./forensic-grounding.
+ */
 export function attributionCheck(result: SemanticCompilationResult, anchorText: string, parentText: string) {
   const anchor = norm(anchorText);
   const parent = norm(parentText);
@@ -88,7 +106,9 @@ interface Row {
   sufficiency: Record<string, number>; citations: string[]; toolCalls: number | null;
   inputTokens: number | null; outputTokens: number | null; costUsd: number; costStatus: string;
   wallClockMs: number; timedOut: boolean;
-  attribution: ReturnType<typeof attributionCheck>; parentScopeRefs: string[]; parentScopeRetained: boolean;
+  /** Authoritative: the production grounder's verdict for every asserted figure. */
+  grounding: ForensicGroundingResult;
+  parentScopeRefs: string[]; parentScopeRetained: boolean;
 }
 
 async function main() {
@@ -145,7 +165,9 @@ async function main() {
     const rec = result ? record(c, input, result, model, 1, null) : null;
     if (rec) rec.wallClockMs = wallClockMs;
     const outcome = rec ? classifyOutcome(rec, timedOut) : (timedOut ? "TIMEOUT" : "PROVIDER_FAILURE");
-    const attribution = result ? attributionCheck(result, anchorText, parentText) : { assertedAmounts: [], supportedByAnchor: [], violations: [], unsourced: [] };
+    // R1: graded by the SAME production grounder the verifier uses - one implementation, one
+    // evidence relation, one vocabulary. The legacy substring test no longer decides anything.
+    const grounding = result ? groundCompiledResult(input, result) : emptyForensicGrounding(c.discoveryId);
 
     const row: Row = {
       cohort, slot, ref: String(c.normalizedSourceRef), discoveryId: c.discoveryId, role: String(c.role),
@@ -158,10 +180,10 @@ async function main() {
       toolCalls: rec?.toolCalls ?? null, inputTokens: usage?.inputTokens ?? null, outputTokens: usage?.outputTokens ?? null,
       costUsd: result ? realCost(model, usage?.inputTokens ?? 0, usage?.outputTokens ?? 0) : cost.chargedToBudgetUsd,
       costStatus: cost.costAccountingStatus, wallClockMs, timedOut,
-      attribution, parentScopeRefs: scopes.map((i) => i.normalizedRef), parentScopeRetained: ids2.length > 1 ? scopes.length > 0 : true,
+      grounding, parentScopeRefs: scopes.map((i) => i.normalizedRef), parentScopeRetained: ids2.length > 1 ? scopes.length > 0 : true,
     };
     if (err && !result) row.failureReasons = [err.slice(0, 200)];
-    console.log(`  [${cohort}] ${slot.padEnd(13)} ${row.status.padEnd(16)} ${outcome.padEnd(12)} rules=${row.rules} tools=${row.toolCalls ?? "-"} ${Math.round(wallClockMs / 1000)}s $${row.costUsd.toFixed(5)} anchor=${row.anchorChars} viol=${attribution.violations.length} | spent $${ledger.committedUsd.toFixed(4)}`);
+    console.log(`  [${cohort}] ${slot.padEnd(13)} ${row.status.padEnd(16)} ${outcome.padEnd(12)} rules=${row.rules} tools=${row.toolCalls ?? "-"} ${Math.round(wallClockMs / 1000)}s $${row.costUsd.toFixed(5)} anchor=${row.anchorChars} notAnchorOwned=${grounding.notAnchorOwned.length} | spent $${ledger.committedUsd.toFixed(4)}`);
     return row;
   };
 
@@ -178,8 +200,11 @@ async function main() {
     }
     if (halted) break;
     const done = rows.filter((r) => r.cohort === co.cohort && r.outcome === "COMPLETED").length;
-    const viol = rows.filter((r) => r.cohort === co.cohort && r.attribution.violations.length > 0);
-    if (co.cohort === "A" && (done < 9 || viol.length > 0)) { halted = `COHORT_A_REGRESSION completed=${done}/9 attributionViolations=${viol.length}`; break; }
+    // The halt keeps its meaning - a figure the candidate's own anchor does not own - but now
+    // reads it off the grounding result, which sees authenticated retrieval and normalized
+    // renderings the substring test could not.
+    const viol = rows.filter((r) => r.cohort === co.cohort && r.grounding.notAnchorOwned.length > 0);
+    if (co.cohort === "A" && (done < 9 || viol.length > 0)) { halted = `COHORT_A_REGRESSION completed=${done}/9 candidatesWithNonAnchorOwnedFigures=${viol.length}`; break; }
     if (viol.length > 0) { halted = `ATTRIBUTION_VIOLATION in cohort ${co.cohort}`; break; }
     console.log(`=== COHORT ${co.cohort}: ${done}/${entries.length} completed ===`);
   }
@@ -205,10 +230,11 @@ async function main() {
       rules: rows.filter((r) => r.cohort === co.cohort).reduce((a, r) => a + r.rules, 0),
     }])),
     safety: {
-      operativeAttributionViolations: rows.reduce((a, r) => a + r.attribution.violations.length, 0),
-      candidatesWithViolations: rows.filter((r) => r.attribution.violations.length > 0).map((r) => r.slot),
+      operativeAttributionViolations: rows.reduce((a, r) => a + r.grounding.legacy.violations.length, 0),
+      candidatesWithViolations: rows.filter((r) => r.grounding.legacy.violations.length > 0).map((r) => r.slot),
       contextRetentionViolations: rows.filter((r) => !r.parentScopeRetained).length,
-      unsourcedAmounts: rows.reduce((a, r) => a + r.attribution.unsourced.length, 0),
+      unsourcedAmounts: rows.reduce((a, r) => a + r.grounding.legacy.unsourced.length, 0),
+      groundingCountsByStatus: rows.reduce((acc: Record<string, number>, r) => { for (const [k, v] of Object.entries(r.grounding.countsByStatus)) acc[k] = (acc[k] ?? 0) + v; return acc; }, {}),
     },
     rows,
   };

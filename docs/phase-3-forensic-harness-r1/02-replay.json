@@ -1,0 +1,115 @@
+{
+  "mission": "HEADROOM PHASE-3 - FORENSIC ATTRIBUTION HARNESS CLEANUP (R1)",
+  "paidModelCalls": 0,
+  "case_7_2_f": [
+    {
+      "label": "RELATED",
+      "assertion": "the guarantee may cover up to 100% of the obligations of any Subsidiary Guarantor",
+      "legacy": {
+        "assertedAmounts": [
+          "100%"
+        ],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": [
+          "100%"
+        ]
+      },
+      "new": {
+        "status": "GROUNDED_TOOL_EVIDENCE",
+        "groundedIn": "CONTEXT",
+        "relation": "the assertion's own text names the defined term \"Subsidiary Guarantor\"",
+        "matchedEvidenceId": "7133a6b08c385f3186cd0cc28689f4dd17dd74b7470faf0bc829509c3562c275",
+        "fieldPath": "rules[0].conditions[0].description"
+      }
+    },
+    {
+      "label": "UNRELATED",
+      "assertion": "the Borrower may prepay up to 100% of the outstanding Revolving Loans at any time",
+      "legacy": {
+        "assertedAmounts": [
+          "100%"
+        ],
+        "supportedByAnchor": [],
+        "violations": [],
+        "unsourced": [
+          "100%"
+        ]
+      },
+      "new": {
+        "status": "UNGROUNDED",
+        "groundedIn": null,
+        "relation": null,
+        "matchedEvidenceId": null,
+        "fieldPath": "rules[0].conditions[0].description"
+      }
+    }
+  ],
+  "renderingEquivalence": {
+    "source": "The Borrower shall not permit Liquidity to be less than $50 million at any time.",
+    "asserted": "$50,000,000",
+    "legacy": {
+      "unsourced": [
+        "$50,000,000"
+      ],
+      "supportedByAnchor": []
+    },
+    "new": {
+      "status": "NORMALIZED_EQUIVALENT",
+      "groundedIn": "OPERATIVE",
+      "matchedText": "$50 million"
+    }
+  },
+  "corpus": {
+    "sites": 79,
+    "assertions": 709,
+    "counts": {
+      "GROUNDED_OPERATIVE": 106,
+      "GROUNDED_CONTEXT": 0,
+      "GROUNDED_TOOL_EVIDENCE": 0,
+      "NORMALIZED_EQUIVALENT": 14,
+      "UNGROUNDED": 6,
+      "AMBIGUOUS": 0,
+      "INSUFFICIENT_ARTIFACT": 583
+    },
+    "legacyCalledUnsourcedButIsGrounded": 4,
+    "disagreements": [
+      {
+        "file": "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-cash-sweep-cure.json",
+        "value": "$50,000,000",
+        "fieldPath": "rules[0].conditions[0].description",
+        "legacy": "unsourced",
+        "new": "NORMALIZED_EQUIVALENT",
+        "groundedIn": "OPERATIVE",
+        "relation": "the candidate's own operative source window"
+      },
+      {
+        "file": "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-cash-sweep-cure.json",
+        "value": "$115,000,000",
+        "fieldPath": "rules[1].conditions[0].description",
+        "legacy": "unsourced",
+        "new": "NORMALIZED_EQUIVALENT",
+        "groundedIn": "OPERATIVE",
+        "relation": "the candidate's own operative source window"
+      },
+      {
+        "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/holdout-cash-sweep-cure.json",
+        "value": "$50,000,000",
+        "fieldPath": "rules[0].conditions[0].description",
+        "legacy": "unsourced",
+        "new": "NORMALIZED_EQUIVALENT",
+        "groundedIn": "OPERATIVE",
+        "relation": "the candidate's own operative source window"
+      },
+      {
+        "file": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/holdout-cash-sweep-cure.json",
+        "value": "$115,000,000",
+        "fieldPath": "rules[1].conditions[0].description",
+        "legacy": "unsourced",
+        "new": "NORMALIZED_EQUIVALENT",
+        "groundedIn": "OPERATIVE",
+        "relation": "the candidate's own operative source window"
+      }
+    ]
+  }
+}

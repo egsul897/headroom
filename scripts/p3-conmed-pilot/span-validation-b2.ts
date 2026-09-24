@@ -18,7 +18,7 @@ import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/disc
 import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest } from "./timeout-policy";
 import { PER_CANDIDATE_TIMEOUT_MS, CandidateTimeoutError, buildInput, callerFor, loadModel, prepare, realCost, record, withTimeout } from "./compile-run";
 import { classifyOutcome, LOCKED_MODEL, FORBIDDEN_MODEL } from "./run-population";
-import { attributionCheck } from "./span-validation";
+import { emptyForensicGrounding, groundCompiledResult, type ForensicGroundingResult } from "./forensic-grounding";
 
 const OUT = "docs/phase-3-candidate-span-remediation-implementation";
 const RUN = "/tmp/claude-0/pilot/span-validation-b2";
@@ -53,7 +53,9 @@ async function main() {
   fs.mkdirSync(RUN, { recursive: true });
   console.log(`cumulative ceiling $${TOTAL_CEILING_USD}; already spent $${ALREADY_SPENT_USD}; this run may commit $${REMAINING_CEILING_USD}`);
 
-  const rows: Record<string, unknown>[] = [];
+  // R1: `grounding` is typed rather than lost in the loose row bag, so the summary below reads
+  // the production verdict directly instead of casting its way back to it.
+  const rows: (Record<string, unknown> & { slot: string; grounding: ForensicGroundingResult })[] = [];
   let halted: string | null = null;
 
   for (const p of PLAN) {
@@ -93,7 +95,8 @@ async function main() {
     const rec = result ? record(c, input, result, model, 1, null) : null;
     if (rec) rec.wallClockMs = wallClockMs;
     const outcome = rec ? classifyOutcome(rec, timedOut) : (timedOut ? "TIMEOUT" : "PROVIDER_FAILURE");
-    const attribution = result ? attributionCheck(result, anchorText, parentText) : { assertedAmounts: [], supportedByAnchor: [], violations: [], unsourced: [] };
+    // R1: the production grounder decides, not a substring test local to this harness.
+    const grounding = result ? groundCompiledResult(input, result) : emptyForensicGrounding(c.discoveryId);
 
     const row = {
       group: p.group, slot: p.slot, ref: String(c.normalizedSourceRef), discoveryId: c.discoveryId, role: String(c.role),
@@ -110,12 +113,12 @@ async function main() {
       toolCalls: rec?.toolCalls ?? null, inputTokens: usage?.inputTokens ?? null, outputTokens: usage?.outputTokens ?? null,
       costUsd: result ? realCost(model, usage?.inputTokens ?? 0, usage?.outputTokens ?? 0) : cost.chargedToBudgetUsd,
       costStatus: cost.costAccountingStatus, wallClockMs, timedOut,
-      attribution, parentScopeRefs: scopes.map((i) => i.normalizedRef),
+      grounding, parentScopeRefs: scopes.map((i) => i.normalizedRef),
       parentScopeRetained: ids.length > 1 ? scopes.length > 0 : true, contextTypes,
     };
     rows.push(row);
     fs.writeFileSync(path.join(RUN, "rows.json"), JSON.stringify(rows, null, 2));
-    console.log(`  [${p.group}] ${p.slot.padEnd(13)} ${row.status.padEnd(16)} ${outcome.padEnd(24)} rules=${row.rules} tools=${row.toolCalls ?? "-"} ${Math.round(wallClockMs / 1000)}s $${row.costUsd.toFixed(5)} op=${row.operativeChars}(was ${row.preChangeChars}) viol=${attribution.violations.length} | cum $${(ALREADY_SPENT_USD + ledger.committedUsd).toFixed(4)}`);
+    console.log(`  [${p.group}] ${p.slot.padEnd(13)} ${row.status.padEnd(16)} ${outcome.padEnd(24)} rules=${row.rules} tools=${row.toolCalls ?? "-"} ${Math.round(wallClockMs / 1000)}s $${row.costUsd.toFixed(5)} op=${row.operativeChars}(was ${row.preChangeChars}) notAnchorOwned=${grounding.notAnchorOwned.length} | cum $${(ALREADY_SPENT_USD + ledger.committedUsd).toFixed(4)}`);
   }
 
   const snap = ledger.snapshot();
@@ -128,10 +131,11 @@ async function main() {
       inputsByteIdenticalToPreRemediation: by("CONTROL_RECHECK").every((r) => r.operativeTextHash === r.preChangeTextHash) },
     cohortB: { completed: done("B"), of: by("B").length }, cohortC: { completed: done("C"), of: by("C").length }, cohortD: { completed: done("D"), of: by("D").length },
     safety: {
-      operativeAttributionViolations: rows.reduce((a, r) => a + (r.attribution as { violations: string[] }).violations.length, 0),
-      candidatesWithViolations: rows.filter((r) => (r.attribution as { violations: string[] }).violations.length > 0).map((r) => r.slot),
+      operativeAttributionViolations: rows.reduce((a, r) => a + r.grounding.legacy.violations.length, 0),
+      candidatesWithViolations: rows.filter((r) => r.grounding.legacy.violations.length > 0).map((r) => r.slot),
       contextRetentionViolations: rows.filter((r) => !r.parentScopeRetained).length,
-      unsourcedAssertions: rows.filter((r) => (r.attribution as { unsourced: string[] }).unsourced.length > 0).map((r) => ({ slot: r.slot, values: (r.attribution as { unsourced: string[] }).unsourced })),
+      unsourcedAssertions: rows.filter((r) => r.grounding.legacy.unsourced.length > 0).map((r) => ({ slot: r.slot, values: r.grounding.legacy.unsourced })),
+      groundingCountsByStatus: rows.reduce((acc: Record<string, number>, r) => { for (const [k, v] of Object.entries(r.grounding.countsByStatus)) acc[k] = (acc[k] ?? 0) + v; return acc; }, {}),
     },
     rows,
   };
