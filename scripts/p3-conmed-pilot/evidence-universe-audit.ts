@@ -11,6 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { collectNumericAssertions, groundNumericAssertions } from "../../lib/contract-model/compiler/semantic-verification/numeric-assertion";
 import { attributionCheck } from "./span-validation";
+import { normalizeSectionScopeKey, normalizeTermScopeKey } from "../../lib/contract-model/compiler/semantic-verification/retrieved-evidence";
 import type { NumericAssertionEvidenceText } from "../../lib/contract-model/compiler/semantic-verification/types";
 import type { IRDefinition, IRRule } from "../../lib/contract-model/ir/types";
 import type { SemanticCompilationResult } from "../../lib/contract-model/compiler/semantic/types";
@@ -48,7 +49,8 @@ export function accountabilityGrounds(value: string, universeText: string): bool
 // Preserved-artifact walk (same shape the §15 scan uses).
 // ---------------------------------------------------------------------------
 
-interface Site { file: string; jsonPath: string; rules: IRRule[]; definitions: IRDefinition[]; operativeText: string | null; contextExcerpts: string[]; toolTexts: string[] }
+interface ToolEvidence { text: string; requestKind: "DEFINITION" | "PROVISION"; requestKey: string }
+interface Site { file: string; jsonPath: string; rules: IRRule[]; definitions: IRDefinition[]; operativeText: string | null; contextExcerpts: string[]; toolTexts: ToolEvidence[] }
 
 const STRING_FIELD = (o: Record<string, unknown>, ...names: string[]): string | null => {
   for (const n of names) if (typeof o[n] === "string" && (o[n] as string).length > 0) return o[n] as string;
@@ -57,7 +59,7 @@ const STRING_FIELD = (o: Record<string, unknown>, ...names: string[]): string | 
 
 function collectSites(file: string, root: unknown): Site[] {
   const sites: Site[] = [];
-  const walk = (node: unknown, jsonPath: string, text: string | null, excerpts: string[], tools: string[]) => {
+  const walk = (node: unknown, jsonPath: string, text: string | null, excerpts: string[], tools: ToolEvidence[]) => {
     if (Array.isArray(node)) { node.forEach((v, i) => walk(v, `${jsonPath}[${i}]`, text, excerpts, tools)); return; }
     if (typeof node !== "object" || node === null) return;
     const obj = node as Record<string, unknown>;
@@ -69,9 +71,9 @@ function collectSites(file: string, root: unknown): Site[] {
     const nextExcerpts = Array.isArray(bundle?.items) ? [...excerpts, ...bundle!.items!.map((i) => (typeof i.excerptText === "string" ? i.excerptText : "")).filter(Boolean)] : excerpts;
 
     // §7: only a tool result that actually carries authenticated, current, non-refused source text counts.
-    const log = obj.toolCallLog as { retrievedSource?: { rawText?: unknown; evidenceStatus?: unknown }; evidenceUnresolved?: unknown; outputSummary?: unknown }[] | undefined;
+    const log = obj.toolCallLog as { retrievedSource?: { rawText?: unknown; evidenceStatus?: unknown; requestKind?: unknown; requestKey?: unknown }; evidenceUnresolved?: unknown; outputSummary?: unknown }[] | undefined;
     const nextTools = Array.isArray(log)
-      ? [...tools, ...log.filter((e) => e.retrievedSource && typeof e.retrievedSource.rawText === "string" && e.retrievedSource.evidenceStatus === "CURRENT" && e.evidenceUnresolved !== true && !String(e.outputSummary ?? "").startsWith("refused")).map((e) => e.retrievedSource!.rawText as string)]
+      ? [...tools, ...log.filter((e) => e.retrievedSource && typeof e.retrievedSource.rawText === "string" && e.retrievedSource.evidenceStatus === "CURRENT" && e.evidenceUnresolved !== true && !String(e.outputSummary ?? "").startsWith("refused")).map((e) => ({ text: e.retrievedSource!.rawText as string, requestKind: (e.retrievedSource!.requestKind === "PROVISION" ? "PROVISION" : "DEFINITION") as "DEFINITION" | "PROVISION", requestKey: String(e.retrievedSource!.requestKey ?? "") }))]
       : tools;
 
     if (Array.isArray(obj.rules) && obj.rules.length > 0 && obj.rules.every((r) => typeof (r as { ruleId?: unknown })?.ruleId === "string")) {
@@ -117,7 +119,9 @@ export function auditCorpus() {
         const complete: NumericAssertionEvidenceText[] = [
           { scope: "OPERATIVE", evidenceId: "OPERATIVE", label: "preserved operative source", text: site.operativeText },
           ...site.contextExcerpts.map((t, i) => ({ scope: "CONTEXT" as const, evidenceId: `CTX_${i}`, label: `preserved context excerpt ${i}`, text: t })),
-          ...site.toolTexts.map((t, i) => ({ scope: "CONTEXT" as const, evidenceId: `TOOL_${i}`, label: `authenticated tool-retrieved source ${i}`, text: t })),
+          // R2: the retrieval identity travels with the text, so the audit exercises the same
+          // relation test production now applies - not a looser stand-in for it.
+          ...site.toolTexts.map((t, i) => ({ scope: "CONTEXT" as const, evidenceId: `TOOL_${i}`, label: `authenticated ${t.requestKind === "DEFINITION" ? `definition of "${t.requestKey}"` : `section ${t.requestKey}`}`, text: t.text, requestKind: t.requestKind, scopeKey: t.requestKind === "DEFINITION" ? normalizeTermScopeKey(t.requestKey) : normalizeSectionScopeKey(t.requestKey), requestKey: t.requestKey })),
         ];
 
         for (const value of asserted) {

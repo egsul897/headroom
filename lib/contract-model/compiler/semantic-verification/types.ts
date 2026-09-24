@@ -594,6 +594,16 @@ export interface NumericAssertionItem extends ExtractedNumeric {
   itemId: string;
   candidateRef: string;
   ruleOrDefinitionId: string;
+  /** R2 relation inputs - what the asserting unit itself says about where its meaning comes from.
+   *  These are the free-text analogue of the structured path's ownerTermName/sourceCitation, and
+   *  they are the ONLY basis on which retrieved evidence may be called related. */
+  ownerTermName: string | null;
+  /** The nearest provenance citation governing the field (the element's own, else its rule's). */
+  ownerCitation: string | null;
+  /** Defined terms/metrics the asserting unit references structurally (expression references, dependsOnTerms). */
+  referencedTerms: string[];
+  /** Section references the asserting unit cites (its own citation plus any dependency targets). */
+  referencedSections: string[];
   /** Exact path from the compilation unit root, e.g. "rules[0].conditions[1].description". */
   fieldPath: string;
   fieldClass: "MATERIAL_ASSERTION_FIELD" | "SOURCE_QUOTATION_FIELD";
@@ -601,11 +611,24 @@ export interface NumericAssertionItem extends ExtractedNumeric {
   fieldText: string;
 }
 
-export type NumericGroundingStatus = "GROUNDED_OPERATIVE" | "GROUNDED_CONTEXT" | "NORMALIZED_EQUIVALENT" | "UNGROUNDED" | "AMBIGUOUS";
+/**
+ * R2: GROUNDED_TOOL_EVIDENCE is the one additive member. It marks support that came from
+ * AUTHENTICATED RETRIEVED evidence (a definition or provision the verifier independently
+ * re-resolved) whose relation to the asserting unit was actually established - never merely that
+ * the same figure occurred somewhere. GROUNDED_CONTEXT stays live and now means the narrower
+ * thing it always should have: context-scope evidence carrying no retrieval identity to scope
+ * against (the offline corpus replay's preserved excerpts). Anchor-owned grounding remains
+ * GROUNDED_OPERATIVE and is never reachable from retrieved evidence.
+ */
+export type NumericGroundingStatus = "GROUNDED_OPERATIVE" | "GROUNDED_CONTEXT" | "GROUNDED_TOOL_EVIDENCE" | "NORMALIZED_EQUIVALENT" | "UNGROUNDED" | "AMBIGUOUS";
 
 export interface NumericAssertionGrounding {
   assertion: NumericAssertionItem;
   status: NumericGroundingStatus;
+  /** R2: WHY the grounding evidence was admitted as related to this assertion - never just "the number is there". Null when nothing grounded it. */
+  relation: string | null;
+  /** R2: authenticated evidence that carries the same figure but whose relation to this assertion could NOT be established. Two or more of these, with no related match, is what makes an assertion AMBIGUOUS rather than silently grounded or silently unsupported. */
+  unrelatedEvidenceIds: string[];
   /** Where the supporting figure was found. Kept separate from `status` so a NORMALIZED_EQUIVALENT still discloses whether the support was the candidate's own anchor or someone else's text. */
   groundedIn: "OPERATIVE" | "CONTEXT" | null;
   matchedEvidenceId: string | null;
@@ -627,6 +650,12 @@ export interface NumericAssertionEvidenceText {
   evidenceId: string;
   label: string;
   text: string;
+  /** R2: the retrieval identity this evidence carries, when it is authenticated retrieved source. Absent for the operative window and for preserved excerpts with no retrieval record - such evidence can never establish a relation and so can never fully ground an assertion. */
+  requestKind?: "DEFINITION" | "PROVISION";
+  /** Normalized scope identity (retrieved-evidence.ts's normalizeTermScopeKey / normalizeSectionScopeKey). */
+  scopeKey?: string;
+  /** The term or section as requested, for relation-by-mention and for the reason string. */
+  requestKey?: string;
 }
 
 export type { IRDefinition, IRRule, IRSharedCapacity };

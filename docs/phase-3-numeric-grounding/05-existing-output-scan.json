@@ -6,13 +6,13 @@
     "docs",
     "tests/fixtures/unseen-packages"
   ],
-  "filesRead": 1754,
-  "filesWithCompilerOutput": 52,
-  "sitesScanned": 169,
-  "rulesScanned": 911,
-  "assertionsFound": 700,
+  "filesRead": 1765,
+  "filesWithCompilerOutput": 54,
+  "sitesScanned": 171,
+  "rulesScanned": 913,
+  "assertionsFound": 709,
   "byStatus": {
-    "GROUNDED_OPERATIVE": 97,
+    "GROUNDED_OPERATIVE": 106,
     "GROUNDED_CONTEXT": 0,
     "NORMALIZED_EQUIVALENT": 14,
     "UNGROUNDED": 1,
@@ -28,7 +28,7 @@
       "rawText": "60 days",
       "fieldClass": "MATERIAL_ASSERTION_FIELD",
       "contextPreserved": false,
-      "reason": "compiled IR asserts QUALIFIED_QUANTITY \"60 days\" (canonical 60 day) in free text at rules[2].conditions[0].description, and no authenticated source figure - operative window or retrieved context - supports it"
+      "reason": "compiled IR asserts QUALIFIED_QUANTITY \"60 days\" (canonical 60 day) in free text at rules[2].conditions[0].description, and no authenticated source RELATED to the asserting unit supports it"
     }
   ],
   "insufficient": [

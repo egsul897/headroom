@@ -25,8 +25,11 @@ export const NG_DOC = "ng-doc";
 export const NG_TEXT = [
   "SECTION 1.01. Defined Terms .",
   "“Convertible Notes” means the 2.25% convertible senior notes of the Parent Borrower in an aggregate principal amount of $800,000,000.",
+  "“Subsidiary Guarantor” means each Material Domestic Subsidiary and each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%).",
   "“Unrelated Term” means a defined term with no economic content whatsoever.",
   "SECTION 7.1. Limitation on Indebtedness . The Parent Borrower shall not incur Indebtedness, except: (d) Indebtedness in respect of the Convertible Notes;",
+  "SECTION 7.3. Limitation on Prepayments . The Parent Borrower shall not prepay more than 100% of the outstanding Revolving Loans in any fiscal year.",
+  "SECTION 7.4. Mandatory Prepayments . The Parent Borrower shall apply 100% of the Net Cash Proceeds of any Disposition to prepay the Loans.",
   "SECTION 7.2. Limitation on Guarantees . The Parent Borrower shall not make Guarantees, except: (f) guarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary Guarantor; (k) guarantees of Indebtedness in an aggregate principal amount not to exceed $150,000,000 or 10.0% of Consolidated Total Assets, provided that no Default has occurred and is continuing.",
 ].join("\n");
 
@@ -201,3 +204,53 @@ export const NG_CASES: Readonly<Record<string, () => VerificationInput>> = {
   F_fabricated_excerpt: caseF_fabricatedExcerpt,
   G_citation_numbering: caseG_citationNumbering,
 };
+
+// ---------------------------------------------------------------------------
+// R2 - evidence-scoping cases. One authenticated definition containing 100%, and assertions that
+// are related to it, unrelated to it, or related to nothing at all.
+// ---------------------------------------------------------------------------
+
+export function definitionCall(term: string, charsReturned = 160): ToolCallLogEntry {
+  return { toolName: "getDefinition", input: { term }, outputSummary: `definition "${term}" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)`, charsReturned, timestamp: "2026-01-01T00:00:00.000Z", evidenceUnresolved: false, evidenceTruncated: false };
+}
+
+const r2Case = (description: string, toolCallLog: ToolCallLogEntry[]): VerificationInput =>
+  ngInput({
+    operativeSourceText: ANCHOR_7_2_F,
+    rules: [ngRule({ conditions: [condition(description, { provenance: provenance("\u00a77.2(f)") })] })],
+    toolCallLog,
+  });
+
+/** \u00a73A: the assertion really is about the retrieved definition - it names the defined term. */
+export const caseR2_relatedDefinitionAssertion = (): VerificationInput =>
+  r2Case("the guarantee may cover up to 100% of the obligations of any Subsidiary Guarantor", [definitionCall("Subsidiary Guarantor")]);
+
+/** \u00a73B: same figure, same evidence, a proposition the evidence says nothing about. */
+export const caseR2_unrelatedDefinitionAssertion = (): VerificationInput =>
+  r2Case("the Borrower may prepay up to 100% of the outstanding Revolving Loans at any time", [definitionCall("Subsidiary Guarantor")]);
+
+/** \u00a710: the same figure in a relevant definition AND two unrelated retrieved provisions. */
+export const caseR2_duplicateValueEvidence = (): VerificationInput =>
+  r2Case("the guarantee may cover up to 100% of the obligations of any Subsidiary Guarantor", [definitionCall("Subsidiary Guarantor"), provisionCall("7.3"), provisionCall("7.4")]);
+
+/** \u00a711: the figure appears in two authenticated sources, neither related to the assertion. */
+export const caseR2_ambiguousDuplicateEvidence = (): VerificationInput =>
+  r2Case("the applicable coverage requirement is 100% for this purpose", [provisionCall("7.3"), provisionCall("7.4")]);
+
+/** \u00a79: the 7.1(d)-shaped definition control, related half - the assertion names Convertible Notes. */
+export const caseR2_relatedConvertibleNotes = (): VerificationInput =>
+  ngInput({
+    operativeSourceText: ANCHOR_7_1_D,
+    sectionRef: "7.1",
+    rules: [ngRule({ sourceSectionRef: "7.1", provenance: provenance("\u00a77.1"), conditions: [condition("permitted only in respect of the 2.25% Convertible Notes in an aggregate principal amount of $800,000,000", { provenance: provenance("\u00a77.1") })] })],
+    definitions: [ngDefinition("Convertible Notes")],
+  });
+
+/** \u00a79: same figures, a proposition that has nothing to do with the Convertible Notes. */
+export const caseR2_unrelatedConvertibleNotes = (): VerificationInput =>
+  ngInput({
+    operativeSourceText: ANCHOR_7_1_D,
+    sectionRef: "7.1",
+    rules: [ngRule({ sourceSectionRef: "7.1", provenance: provenance("\u00a77.1"), conditions: [condition("the Borrower may make Restricted Payments of up to $800,000,000 so long as the Fixed Charge Coverage Ratio is at least 2.25%", { provenance: provenance("\u00a77.1") })] })],
+    toolCallLog: [definitionCall("Convertible Notes")],
+  });

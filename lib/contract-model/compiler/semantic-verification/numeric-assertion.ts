@@ -36,6 +36,7 @@
  */
 import { hashParts } from "../hashing";
 import { AMOUNT_RE, parseScaledAmount } from "./amount-parser";
+import { citationNamesDefinition, citationNamesSection, normalizeSectionScopeKey, normalizeTermScopeKey } from "./retrieved-evidence";
 import type {
   ExtractedNumeric,
   IRDefinition,
@@ -209,33 +210,60 @@ function extractEvidenceNumerics(text: string): ExtractedNumeric[] {
 // The IR free-text walk.
 // ---------------------------------------------------------------------------
 
-interface FieldVisit { fieldPath: string; fieldClass: NumericAssertionItem["fieldClass"]; text: string | null | undefined }
+interface FieldVisit { fieldPath: string; fieldClass: NumericAssertionItem["fieldClass"]; text: string | null | undefined; ownerCitation: string | null }
 
-function provenanceFields(path: string, provenance: { excerpt: string | null } | null | undefined): FieldVisit[] {
-  return provenance ? [{ fieldPath: `${path}.provenance.excerpt`, fieldClass: "SOURCE_QUOTATION_FIELD" as const, text: provenance.excerpt }] : [];
+/**
+ * R2 - what the ASSERTING UNIT itself says about where its meaning comes from. Gathered once per
+ * rule/definition and carried onto every assertion read out of it, so the relation test below is a
+ * property of the unit, never of the number.
+ */
+interface UnitRelation {
+  ownerTermName: string | null;
+  referencedTerms: string[];
+  referencedSections: string[];
+  unitCitation: string | null;
 }
 
-function expressionFields(expr: IRExpression | null | undefined, path: string): FieldVisit[] {
+const citationOf = (p: { sourceCitation?: string } | null | undefined): string | null => p?.sourceCitation ?? null;
+
+/** Every defined term / metric the unit references structurally - the same names the structured path resolves definitions by. */
+function collectReferencedTerms(expr: IRExpression | null | undefined, out: string[]): void {
+  if (!expr) return;
+  const e = expr as unknown as Record<string, unknown>;
+  if (expr.kind === "METRIC_REFERENCE") out.push(expr.metricName);
+  if (expr.kind === "DEFINED_TERM_REFERENCE") out.push(expr.termName);
+  for (const v of Object.values(e)) {
+    if (Array.isArray(v)) v.forEach((x) => { if (x && typeof x === "object" && "kind" in (x as object)) collectReferencedTerms(x as IRExpression, out); else if (x && typeof x === "object" && "value" in (x as object)) collectReferencedTerms((x as { value?: IRExpression }).value, out); });
+    else if (v && typeof v === "object" && "kind" in (v as object)) collectReferencedTerms(v as IRExpression, out);
+  }
+}
+
+function provenanceFields(path: string, provenance: { excerpt: string | null; sourceCitation?: string } | null | undefined, inherited: string | null): FieldVisit[] {
+  return provenance ? [{ fieldPath: `${path}.provenance.excerpt`, fieldClass: "SOURCE_QUOTATION_FIELD" as const, text: provenance.excerpt, ownerCitation: citationOf(provenance) ?? inherited }] : [];
+}
+
+function expressionFields(expr: IRExpression | null | undefined, path: string, inherited: string | null): FieldVisit[] {
   if (!expr) return [];
-  const out: FieldVisit[] = [...provenanceFields(path, (expr as { provenance?: { excerpt: string | null } }).provenance)];
-  const walk = (e: IRExpression | null | undefined, p: string) => out.push(...expressionFields(e, p));
+  const own = citationOf((expr as { provenance?: { sourceCitation?: string } }).provenance) ?? inherited;
+  const out: FieldVisit[] = [...provenanceFields(path, (expr as { provenance?: { excerpt: string | null; sourceCitation?: string } }).provenance, inherited)];
+  const walk = (e: IRExpression | null | undefined, p: string) => out.push(...expressionFields(e, p, own));
 
   switch (expr.kind) {
     case "UNSUPPORTED":
-      out.push({ fieldPath: `${path}.semanticDescription`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.semanticDescription });
-      out.push({ fieldPath: `${path}.sourceEvidence`, fieldClass: "SOURCE_QUOTATION_FIELD", text: expr.sourceEvidence });
+      out.push({ fieldPath: `${path}.semanticDescription`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.semanticDescription, ownerCitation: own });
+      out.push({ fieldPath: `${path}.sourceEvidence`, fieldClass: "SOURCE_QUOTATION_FIELD", text: expr.sourceEvidence, ownerCitation: own });
       return out;
     case "SCHEDULE":
-      expr.cases.forEach((c, i) => { out.push({ fieldPath: `${path}.cases[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: c.description }); walk(c.value, `${path}.cases[${i}].value`); });
+      expr.cases.forEach((c, i) => { out.push({ fieldPath: `${path}.cases[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: c.description, ownerCitation: own }); walk(c.value, `${path}.cases[${i}].value`); });
       walk(expr.defaultValue, `${path}.defaultValue`);
       return out;
     case "EVENT_ACTIVE":
-      out.push({ fieldPath: `${path}.eventDescription`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.eventDescription });
-      out.push({ fieldPath: `${path}.activeDuration`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.activeDuration });
+      out.push({ fieldPath: `${path}.eventDescription`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.eventDescription, ownerCitation: own });
+      out.push({ fieldPath: `${path}.activeDuration`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.activeDuration, ownerCitation: own });
       walk(expr.triggerCondition, `${path}.triggerCondition`);
       return out;
     case "DURING_PERIOD":
-      out.push({ fieldPath: `${path}.periodDescription`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.periodDescription });
+      out.push({ fieldPath: `${path}.periodDescription`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: expr.periodDescription, ownerCitation: own });
       walk(expr.value, `${path}.value`);
       return out;
     case "ADD": case "SUM": case "MULTIPLY": case "MAX": case "MIN": case "AND": case "OR":
@@ -260,44 +288,67 @@ function expressionFields(expr: IRExpression | null | undefined, path: string): 
   }
 }
 
-function conditionFields(condition: IRCondition, path: string): FieldVisit[] {
+function conditionFields(condition: IRCondition, path: string, inherited: string | null): FieldVisit[] {
+  const own = citationOf(condition.provenance) ?? inherited;
   return [
-    { fieldPath: `${path}.description`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: condition.description },
-    ...provenanceFields(path, condition.provenance),
-    ...expressionFields(condition.expression, `${path}.expression`),
+    { fieldPath: `${path}.description`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: condition.description, ownerCitation: own },
+    ...provenanceFields(path, condition.provenance, inherited),
+    ...expressionFields(condition.expression, `${path}.expression`, own),
   ];
 }
 
-function exceptionFields(exception: IRException, path: string): FieldVisit[] {
+function exceptionFields(exception: IRException, path: string, inherited: string | null): FieldVisit[] {
+  const own = citationOf(exception.provenance) ?? inherited;
   return [
-    { fieldPath: `${path}.description`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: exception.description },
-    ...provenanceFields(path, exception.provenance),
-    ...(exception.conditions ?? []).flatMap((c, i) => conditionFields(c, `${path}.conditions[${i}]`)),
+    { fieldPath: `${path}.description`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: exception.description, ownerCitation: own },
+    ...provenanceFields(path, exception.provenance, inherited),
+    ...(exception.conditions ?? []).flatMap((c, i) => conditionFields(c, `${path}.conditions[${i}]`, own)),
   ];
 }
 
-function ruleFields(rule: IRRule, path: string): FieldVisit[] {
+function ruleFields(rule: IRRule, path: string): { visits: FieldVisit[]; relation: UnitRelation } {
+  const unitCitation = citationOf(rule.provenance);
   const capacity = rule.capacityExpression;
   const capacityVisits: FieldVisit[] = capacity
     ? capacity.kind === "UNLIMITED_CAPACITY"
-      ? [...provenanceFields(`${path}.capacityExpression`, capacity.provenance), ...expressionFields(capacity.gatedBy, `${path}.capacityExpression.gatedBy`)]
-      : expressionFields(capacity as IRExpression, `${path}.capacityExpression`)
+      ? [...provenanceFields(`${path}.capacityExpression`, capacity.provenance, unitCitation), ...expressionFields(capacity.gatedBy, `${path}.capacityExpression.gatedBy`, citationOf(capacity.provenance) ?? unitCitation)]
+      : expressionFields(capacity as IRExpression, `${path}.capacityExpression`, unitCitation)
     : [];
-  return [
-    ...provenanceFields(path, rule.provenance),
-    // Defensive `?? []`: this walker is also run offline over preserved and hand-authored IR,
-    // where a partial rule shape is real. A malformed unit must never crash verification - the
-    // fields that ARE present are still read.
-    ...(rule.conditions ?? []).flatMap((c, i) => conditionFields(c, `${path}.conditions[${i}]`)),
-    ...(rule.exceptions ?? []).flatMap((e, i) => exceptionFields(e, `${path}.exceptions[${i}]`)),
-    ...(rule.dependsOn ?? []).map((d, i) => ({ fieldPath: `${path}.dependsOn[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD" as const, text: d.description })),
-    ...(rule.unresolvedDependencies ?? []).map((d, i) => ({ fieldPath: `${path}.unresolvedDependencies[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD" as const, text: d.description })),
-    ...capacityVisits,
+
+  const referencedTerms: string[] = [];
+  for (const c of rule.conditions ?? []) collectReferencedTerms(c.expression, referencedTerms);
+  for (const e of rule.exceptions ?? []) for (const c of e.conditions ?? []) collectReferencedTerms(c.expression, referencedTerms);
+  if (capacity) collectReferencedTerms(capacity.kind === "UNLIMITED_CAPACITY" ? capacity.gatedBy : (capacity as IRExpression), referencedTerms);
+
+  const referencedSections: string[] = [
+    ...(rule.sourceSectionRef ? [rule.sourceSectionRef] : []),
+    ...(unitCitation ? [unitCitation] : []),
+    ...(rule.conditions ?? []).map((c) => citationOf(c.provenance)).filter((x): x is string => x !== null),
+    ...(rule.exceptions ?? []).map((e) => citationOf(e.provenance)).filter((x): x is string => x !== null),
+    ...(rule.unresolvedDependencies ?? []).map((d) => d.targetRef),
   ];
+
+  return {
+    visits: [
+      ...provenanceFields(path, rule.provenance, unitCitation),
+      ...(rule.conditions ?? []).flatMap((c, i) => conditionFields(c, `${path}.conditions[${i}]`, unitCitation)),
+      ...(rule.exceptions ?? []).flatMap((e, i) => exceptionFields(e, `${path}.exceptions[${i}]`, unitCitation)),
+      ...(rule.dependsOn ?? []).map((d, i) => ({ fieldPath: `${path}.dependsOn[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD" as const, text: d.description, ownerCitation: unitCitation })),
+      ...(rule.unresolvedDependencies ?? []).map((d, i) => ({ fieldPath: `${path}.unresolvedDependencies[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD" as const, text: d.description, ownerCitation: unitCitation })),
+      ...capacityVisits,
+    ],
+    relation: { ownerTermName: null, referencedTerms, referencedSections, unitCitation },
+  };
 }
 
-function definitionFields(definition: IRDefinition, path: string): FieldVisit[] {
-  return [...provenanceFields(path, definition.provenance), ...expressionFields(definition.calculationExpression, `${path}.calculationExpression`)];
+function definitionFields(definition: IRDefinition, path: string): { visits: FieldVisit[]; relation: UnitRelation } {
+  const unitCitation = citationOf(definition.provenance);
+  const referencedTerms = [...(definition.dependsOnTerms ?? [])];
+  collectReferencedTerms(definition.calculationExpression, referencedTerms);
+  return {
+    visits: [...provenanceFields(path, definition.provenance, unitCitation), ...expressionFields(definition.calculationExpression, `${path}.calculationExpression`, unitCitation)],
+    relation: { ownerTermName: definition.termName, referencedTerms, referencedSections: unitCitation ? [unitCitation] : [], unitCitation },
+  };
 }
 
 /** Mission §5's preserved record for every assertion: original text, normalized value, unit/type, exact field path, rule id and local span. */
@@ -305,7 +356,7 @@ export function collectNumericAssertions(candidateRef: string, rules: IRRule[], 
   const items: NumericAssertionItem[] = [];
   let fieldsWalked = 0;
 
-  const visitAll = (visits: FieldVisit[], ruleOrDefinitionId: string) => {
+  const visitAll = (visits: FieldVisit[], ruleOrDefinitionId: string, relation: UnitRelation) => {
     for (const visit of visits) {
       fieldsWalked++;
       if (typeof visit.text !== "string" || visit.text.trim().length === 0) continue;
@@ -318,13 +369,17 @@ export function collectNumericAssertions(candidateRef: string, rules: IRRule[], 
           fieldPath: visit.fieldPath,
           fieldClass: visit.fieldClass,
           fieldText: visit.text,
+          ownerTermName: relation.ownerTermName,
+          ownerCitation: visit.ownerCitation ?? relation.unitCitation,
+          referencedTerms: [...new Set(relation.referencedTerms)],
+          referencedSections: [...new Set(relation.referencedSections)],
         });
       }
     }
   };
 
-  rules.forEach((rule, i) => visitAll(ruleFields(rule, `rules[${i}]`), rule.ruleId));
-  definitions.forEach((def, i) => visitAll(definitionFields(def, `definitions[${i}]`), def.definitionId));
+  rules.forEach((rule, i) => { const { visits, relation } = ruleFields(rule, `rules[${i}]`); visitAll(visits, rule.ruleId, relation); });
+  definitions.forEach((def, i) => { const { visits, relation } = definitionFields(def, `definitions[${i}]`); visitAll(visits, def.definitionId, relation); });
 
   return { candidateRef, items, fieldsWalked, algorithmVersion: NUMERIC_ASSERTION_ALGORITHM_VERSION };
 }
@@ -348,51 +403,121 @@ function comparable(assertion: ExtractedNumeric, evidence: ExtractedNumeric): bo
 }
 
 /**
- * Mission §8. Precedence is deliberate: the candidate's OWN operative window first (a value the
- * anchor itself states is owned by this candidate), then authenticated context (real support, but
- * from somewhere else - the distinction the candidate-span/F1 work exists to keep visible), then a
- * rendering equivalence anywhere, then nothing. `groundedIn` stays populated for a
- * NORMALIZED_EQUIVALENT so numeric grounding and source OWNERSHIP remain independently
- * inspectable (mission §12) rather than collapsed into one verdict.
+ * R2 - the RELATION test, ported from the structured path.
+ *
+ * reconciliation.ts's irItemScopedToEvidence already refuses to let a retrieved figure support a
+ * structured IR value unless that value is scoped to the evidence. Free-text grounding had no such
+ * rule, so any authenticated text containing the same number counted - which is how "may prepay up
+ * to 100% of the Revolving Loans" was grounded by a definition about foreign-subsidiary pledge
+ * percentages. This function is the free-text analogue, and it deliberately reuses
+ * retrieved-evidence.ts's OWN citation/term scoping helpers rather than inventing a second,
+ * drifting notion of relatedness.
+ *
+ * Returning null means "no relation established" - never "unrelated, therefore fabricated". The
+ * caller decides what absence means, and it fails closed either way.
+ */
+function evidenceRelation(assertion: NumericAssertionItem, ev: NumericAssertionEvidenceText): string | null {
+  if (ev.scope === "OPERATIVE") return "the candidate's own operative source window";
+  // Context evidence with no retrieval identity (a preserved excerpt, an offline replay) cannot be
+  // scoped against anything, so it can never establish a relation on its own.
+  if (!ev.requestKind || !ev.scopeKey) return null;
+  const key = ev.scopeKey;
+  const shown = ev.requestKey ?? key;
+
+  if (ev.requestKind === "DEFINITION") {
+    if (assertion.ownerTermName && normalizeTermScopeKey(assertion.ownerTermName) === key) return `the assertion belongs to the compiled definition of "${shown}"`;
+    if (assertion.ownerCitation && citationNamesDefinition(assertion.ownerCitation, key)) return `the asserting unit's own citation names the definition of "${shown}"`;
+    if (assertion.referencedTerms.some((t) => normalizeTermScopeKey(t) === key)) return `the asserting unit references the defined term "${shown}"`;
+    if (mentionsTerm(assertion.fieldText, shown)) return `the assertion's own text names the defined term "${shown}"`;
+    return null;
+  }
+
+  if (assertion.ownerCitation && citationNamesSection(assertion.ownerCitation, key)) return `the asserting unit's own citation is ${shown} or a sub-clause of it`;
+  if (assertion.referencedSections.some((r) => citationNamesSection(r, key))) return `the asserting unit cites ${shown}`;
+  if (mentionsSection(assertion.fieldText, key)) return `the assertion's own text cites ${shown}`;
+  return null;
+}
+
+/** A textual reference to a defined term, on whole-word boundaries so "Notes" never matches inside "Noteshare". */
+function mentionsTerm(text: string, term: string): boolean {
+  const t = term.replace(/[“”"']/g, "").trim();
+  if (t.length < 3) return false;
+  return new RegExp(`(?:^|[^\\w])${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+")}(?:[^\\w]|$)`, "i").test(text);
+}
+
+/** A textual citation of a section ("Section 6.01(b)", "§ 6.01(b)") or of one of its sub-clauses. */
+function mentionsSection(text: string, sectionScopeKey: string): boolean {
+  const escaped = sectionScopeKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(?:section|sec\\.?|§)\\s*${escaped}(?:\\b|\\()`, "i").test(text);
+}
+
+interface EvidenceMatch { ev: NumericAssertionEvidenceText; rawText: string; exact: boolean; relation: string | null }
+
+/**
+ * Mission §8, as tightened by R2. Precedence is deliberate: the candidate's OWN operative window
+ * first (a value the anchor itself states is owned by this candidate), then RELATED authenticated
+ * evidence, and nothing else. `groundedIn` stays populated for a NORMALIZED_EQUIVALENT so numeric
+ * grounding and source OWNERSHIP remain independently inspectable (mission §12) rather than
+ * collapsed into one verdict.
+ *
+ * When no relation can be established, the outcome depends on how the figure is scattered:
+ * two or more authenticated sources carrying it with no relation to any of them is genuinely
+ * AMBIGUOUS and says so; a single unrelated occurrence, or none at all, is UNGROUNDED. Both route
+ * to review - the choice is about telling a reviewer the truth, not about severity.
  */
 export function groundNumericAssertions(inventory: NumericAssertionInventory, evidence: NumericAssertionEvidenceText[]): NumericAssertionGrounding[] {
   const extracted = evidence.map((e) => ({ evidence: e, numerics: extractEvidenceNumerics(e.text) }));
 
   return inventory.items.map((assertion) => {
     if (assertion.normalizedValue === null) {
-      return { assertion, status: "AMBIGUOUS" as const, groundedIn: null, matchedEvidenceId: null, matchedText: null, reason: `numeric assertion "${assertion.rawText}" at ${assertion.fieldPath} could not be read confidently (${assertion.withheldReason ?? "value withheld"}) - review required, never compared` };
+      return { assertion, status: "AMBIGUOUS" as const, groundedIn: null, matchedEvidenceId: null, matchedText: null, relation: null, unrelatedEvidenceIds: [], reason: `numeric assertion "${assertion.rawText}" at ${assertion.fieldPath} could not be read confidently (${assertion.withheldReason ?? "value withheld"}) - review required, never compared` };
     }
 
-    let equivalent: { scope: "OPERATIVE" | "CONTEXT"; evidenceId: string; label: string; rawText: string } | null = null;
-    for (const scope of ["OPERATIVE", "CONTEXT"] as const) {
-      for (const { evidence: ev, numerics } of extracted) {
-        if (ev.scope !== scope) continue;
-        for (const candidate of numerics) {
-          if (candidate.normalizedValue === null || !comparable(assertion, candidate)) continue;
-          if (!valuesMatch(assertion.normalizedValue, candidate.normalizedValue)) continue;
-          if (normalizeRendering(candidate.rawText) === normalizeRendering(assertion.rawText)) {
-            return {
-              assertion,
-              status: scope === "OPERATIVE" ? ("GROUNDED_OPERATIVE" as const) : ("GROUNDED_CONTEXT" as const),
-              groundedIn: scope,
-              matchedEvidenceId: ev.evidenceId,
-              matchedText: candidate.rawText,
-              reason: `numeric assertion "${assertion.rawText}" at ${assertion.fieldPath} appears verbatim in ${ev.label}`,
-            };
-          }
-          equivalent ??= { scope, evidenceId: ev.evidenceId, label: ev.label, rawText: candidate.rawText };
-        }
+    const matches: EvidenceMatch[] = [];
+    for (const { evidence: ev, numerics } of extracted) {
+      for (const candidate of numerics) {
+        if (candidate.normalizedValue === null || !comparable(assertion, candidate)) continue;
+        if (!valuesMatch(assertion.normalizedValue, candidate.normalizedValue)) continue;
+        matches.push({ ev, rawText: candidate.rawText, exact: normalizeRendering(candidate.rawText) === normalizeRendering(assertion.rawText), relation: evidenceRelation(assertion, ev) });
       }
     }
 
-    if (equivalent) {
+    const related = matches.filter((m) => m.relation !== null);
+    const unrelatedEvidenceIds = [...new Set(matches.filter((m) => m.relation === null).map((m) => m.ev.evidenceId))];
+
+    if (related.length > 0) {
+      const best = [...related].sort((a, b) => (a.ev.scope === "OPERATIVE" ? 0 : 1) - (b.ev.scope === "OPERATIVE" ? 0 : 1) || (a.exact ? 0 : 1) - (b.exact ? 0 : 1))[0]!;
+      const status = !best.exact
+        ? ("NORMALIZED_EQUIVALENT" as const)
+        : best.ev.scope === "OPERATIVE"
+          ? ("GROUNDED_OPERATIVE" as const)
+          : best.ev.requestKind
+            ? ("GROUNDED_TOOL_EVIDENCE" as const)
+            : ("GROUNDED_CONTEXT" as const);
       return {
         assertion,
-        status: "NORMALIZED_EQUIVALENT" as const,
-        groundedIn: equivalent.scope,
-        matchedEvidenceId: equivalent.evidenceId,
-        matchedText: equivalent.rawText,
-        reason: `numeric assertion "${assertion.rawText}" at ${assertion.fieldPath} matches "${equivalent.rawText}" in ${equivalent.label} under rendering equivalence (same canonical value ${assertion.normalizedValue}${assertion.unit ? ` ${assertion.unit}` : ""})`,
+        status,
+        groundedIn: best.ev.scope,
+        matchedEvidenceId: best.ev.evidenceId,
+        matchedText: best.rawText,
+        relation: best.relation,
+        unrelatedEvidenceIds,
+        reason: best.exact
+          ? `numeric assertion "${assertion.rawText}" at ${assertion.fieldPath} appears verbatim in ${best.ev.label}, which is related to this assertion because ${best.relation}${unrelatedEvidenceIds.length > 0 ? ` (${unrelatedEvidenceIds.length} further authenticated source(s) carry the same figure but bear no established relation to it)` : ""}`
+          : `numeric assertion "${assertion.rawText}" at ${assertion.fieldPath} matches "${best.rawText}" in ${best.ev.label} under rendering equivalence (same canonical value ${assertion.normalizedValue}${assertion.unit ? ` ${assertion.unit}` : ""}), and that source is related to this assertion because ${best.relation}`,
+      };
+    }
+
+    if (unrelatedEvidenceIds.length >= 2) {
+      return {
+        assertion,
+        status: "AMBIGUOUS" as const,
+        groundedIn: null,
+        matchedEvidenceId: null,
+        matchedText: null,
+        relation: null,
+        unrelatedEvidenceIds,
+        reason: `compiled IR asserts ${assertion.kind} "${assertion.rawText}" at ${assertion.fieldPath}; the same figure appears in ${unrelatedEvidenceIds.length} authenticated sources but no semantic relation to any of them could be established - which of them (if any) supports this assertion cannot be decided deterministically, so it is not decided`,
       };
     }
 
@@ -402,9 +527,11 @@ export function groundNumericAssertions(inventory: NumericAssertionInventory, ev
       groundedIn: null,
       matchedEvidenceId: null,
       matchedText: null,
+      relation: null,
+      unrelatedEvidenceIds,
       reason: assertion.fieldClass === "SOURCE_QUOTATION_FIELD"
-        ? `provenance excerpt at ${assertion.fieldPath} quotes "${assertion.rawText}" as source text, but that figure appears in no authenticated source for this candidate - a model-generated excerpt is not evidence merely because it sits inside provenance`
-        : `compiled IR asserts ${assertion.kind} "${assertion.rawText}" (canonical ${assertion.normalizedValue}${assertion.unit ? ` ${assertion.unit}` : ""}) in free text at ${assertion.fieldPath}, and no authenticated source figure - operative window or retrieved context - supports it`,
+        ? `provenance excerpt at ${assertion.fieldPath} quotes "${assertion.rawText}" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance`
+        : `compiled IR asserts ${assertion.kind} "${assertion.rawText}" (canonical ${assertion.normalizedValue}${assertion.unit ? ` ${assertion.unit}` : ""}) in free text at ${assertion.fieldPath}, and no authenticated source RELATED to the asserting unit supports it${unrelatedEvidenceIds.length > 0 ? " (the figure does occur in authenticated evidence bearing no established relation to this assertion, which is not support)" : ""}`,
     };
   });
 }

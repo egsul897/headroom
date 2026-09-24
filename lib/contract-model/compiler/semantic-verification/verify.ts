@@ -374,6 +374,12 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
       evidenceId: e.evidenceId,
       label: `authenticated ${e.requestKind === "DEFINITION" ? `definition of "${e.requestKey}"` : `section ${e.requestKey}`} (document ${e.documentId}, sha256 ${e.contentHash.slice(0, 12)}...)`,
       text: e.rawText,
+      // R2: the retrieval identity travels with the text, so the grounding pass can ask whether
+      // this evidence is actually RELATED to an assertion instead of only whether it contains the
+      // same number - the same discipline reconciliation.ts already applies to structured values.
+      requestKind: e.requestKind,
+      scopeKey: e.scopeKey,
+      requestKey: e.requestKey,
     })),
   ];
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });

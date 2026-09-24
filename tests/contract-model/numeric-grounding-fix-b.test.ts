@@ -209,19 +209,25 @@ describe("Fix B - the controls that must NOT newly fail", () => {
 
   it("§11: figures absent from the anchor but present in an authenticated DEFINITION stay grounded (the 7.1(d) shape - Fix B must not reject legitimate context-supported economics)", async () => {
     const result = await verify(caseD_supportedContextControl());
+    // R2: still grounded, and now through a named relation to the definition rather than merely
+    // because the figure occurred in authenticated text somewhere.
     const statuses = groundingsFor(result).map((g) => `${g.assertion.rawText}=${g.status}/${g.groundedIn}`).sort();
-    expect(statuses).toEqual(["$800,000,000=GROUNDED_CONTEXT/CONTEXT", "2.25%=GROUNDED_CONTEXT/CONTEXT"]);
+    expect(statuses).toEqual(["$800,000,000=GROUNDED_TOOL_EVIDENCE/CONTEXT", "2.25%=GROUNDED_TOOL_EVIDENCE/CONTEXT"]);
+    expect(groundingsFor(result).every((g) => (g.relation ?? "").includes("Convertible Notes"))).toBe(true);
     expect(unsupportedNumericFindings(result)).toHaveLength(0);
   });
 
-  it("§12: the closed 7.2(k)(i) shape - numeric grounding says GROUNDED_CONTEXT, and records that the support came from CONTEXT rather than the candidate's own anchor, so grounding and source OWNERSHIP stay independently inspectable", async () => {
+  it("\u00a712: the closed 7.2(k)(i) shape - numeric grounding says GROUNDED_TOOL_EVIDENCE, and records that the support came from CONTEXT rather than the candidate's own anchor, so grounding and source OWNERSHIP stay independently inspectable", async () => {
     const result = await verify(caseE_parentEconomicsInContext());
     const groundings = groundingsFor(result);
     expect(groundings.map((g) => g.assertion.rawText).sort()).toEqual(["$150,000,000", "10.0%"]);
     for (const g of groundings) {
-      expect(g.status).toBe("GROUNDED_CONTEXT");
+      // R2: GROUNDED_TOOL_EVIDENCE - the parent section is authenticated retrieved source, and the
+      // child clause's own citation is a sub-clause of it, which is what establishes the relation.
+      expect(g.status).toBe("GROUNDED_TOOL_EVIDENCE");
       expect(g.groundedIn).toBe("CONTEXT");
       expect(g.matchedEvidenceId).not.toBeNull();
+      expect(g.relation).toBeTruthy();
     }
     expect(unsupportedNumericFindings(result)).toHaveLength(0);
     // Grounding is NOT an ownership verdict: nothing here claims the child clause owns the parent's figures.
