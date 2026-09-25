@@ -27,9 +27,9 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { parseVerifiedUnitPackage } from "../../lib/contract-model/verified-units";
 import { scanForSecrets } from "./evidence";
-import { CONTINUATION_SCRATCH_DIR, ORIGINAL_RUN_DIR } from "./run-population-continuation";
+import { continuationScratchDir, DOCS_DIR, ORIGINAL_RUN_DIR, preservedContinuationSegments } from "./run-population-continuation";
 
-export const CONTINUATION_DEST = "docs/phase-3-conmed-population-verified/run-continuation";
+export const continuationDest = (segment: number) => path.join(DOCS_DIR, `run-continuation-${segment}`);
 const sha256File = (p: string) => createHash("sha256").update(fs.readFileSync(p)).digest("hex");
 const walk = (dir: string, out: string[] = []): string[] => { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const f = path.join(dir, e.name); if (e.isDirectory()) walk(f, out); else out.push(f); } return out; };
 const BENCHMARK_REFS = ["7.1", "7.2", "7.10", "7.2(c)", "7.11", "7.13", "7.14", "7.16", "7.17"];
@@ -41,7 +41,7 @@ type Status = { discoveryId: string; ref: string; operativeChars: number; compil
 
 export interface P1Occurrence { candidate: string; discoveryId: string; findingId: string; findingType: string; materiality: string; suppliedRuleOrDefinitionId: string; irPath: string | null; compiledUnitIds: string[]; binding: "UNBOUND_NO_SUCH_UNIT"; packageComplete: boolean; packageProblems: string[] }
 
-export function validateContinuation(scratch = CONTINUATION_SCRATCH_DIR, dest = CONTINUATION_DEST) {
+export function validateContinuation(segment: number, scratch = continuationScratchDir(segment), dest = continuationDest(segment)) {
   const read = (n: string) => JSON.parse(fs.readFileSync(path.join(scratch, n), "utf8"));
   const problems: string[] = [];
   const files = walk(scratch).sort();
@@ -56,7 +56,8 @@ export function validateContinuation(scratch = CONTINUATION_SCRATCH_DIR, dest = 
 
   // 3. reconciliation
   const plan = read("00-plan.json");
-  const preflight = read("preflight-health.json");
+  // health probes: at most two for the whole continuation; a relaunched segment carries none of its own
+  const preflight = fs.existsSync(path.join(scratch, "preflight-health.json")) ? read("preflight-health.json") : null;
   const statuses = read("01-statuses.json") as Status[];
   const costs = read("02-costs.json") as { snapshot: Record<string, number>; perRequest: { discoveryId: string; stage: string; chargedToBudgetUsd: number; costAccountingStatus: string }[]; sideCalls: { discoveryId: string | null; stage: string; costUsd: number }[] };
   const checkpoint = read("03-run-manifest.checkpoint.json") as { attempted: number; toDispatch: number; committedUsd: number; lastCandidate: string | null };
@@ -102,7 +103,7 @@ export function validateContinuation(scratch = CONTINUATION_SCRATCH_DIR, dest = 
   const ledger = {
     source: terminatedNormally ? "final ledger snapshot (flushed after the last candidate)" : `ledger snapshot flushed after row ${statuses.length}; the in-flight candidate charged one reservation`,
     seededPrior: { exactUsd: prior.exactUsd, retainedUnknownUsd: prior.retainedUnknownUsd },
-    thisRun: { amendmentUsd: r6(amendmentUsd), exactUsd: r6(amendmentUsd + perExact), timeoutReservationsRetainedUsd: r6(perRetained), committedUsd: r6(amendmentUsd + perExact + perRetained), inFlightReservationUsd: inFlight ? reservation : 0, committedIncludingInFlightUsd: r6(amendmentUsd + perExact + perRetained + (inFlight ? reservation : 0)), preflightProbesUsd: preflight.spendUsd as number },
+    thisRun: { amendmentUsd: r6(amendmentUsd), exactUsd: r6(amendmentUsd + perExact), timeoutReservationsRetainedUsd: r6(perRetained), committedUsd: r6(amendmentUsd + perExact + perRetained), inFlightReservationUsd: inFlight ? reservation : 0, committedIncludingInFlightUsd: r6(amendmentUsd + perExact + perRetained + (inFlight ? reservation : 0)), preflightProbesUsd: (preflight?.spendUsd as number | undefined) ?? 0 },
     cumulative: { exactUsd: snap.exactSpendUsd, timeoutReservationsRetainedUsd: snap.retainedUnknownTimeoutUsd, committedUsd: snap.committedUsd, committedIncludingInFlightUsd: r6(snap.committedUsd! + (inFlight ? reservation : 0)), ceilingUsd: plan.ceilingUsd, stopAtUsd: plan.stopAtUsd },
     inFlightAtTermination: inFlight ? { ...inFlight, billing: "UNKNOWN - dispatched, process died before any result; charged one full reservation (never $0)", chargedUsd: reservation } : null,
     budgetStopTriggered: log.includes("BUDGET STOP") || log.includes("STOP_AT"),
@@ -166,11 +167,12 @@ export function validateContinuation(scratch = CONTINUATION_SCRATCH_DIR, dest = 
 
   // 5. preserve verbatim (never into the original run's directory)
   if (path.resolve(dest) === path.resolve(ORIGINAL_RUN_DIR)) throw new Error("refusing to preserve over the original run");
+  if (fs.existsSync(dest)) throw new Error(`refusing to preserve over an existing segment directory ${dest}`);
   fs.mkdirSync(dest, { recursive: true });
   const inventory = files.map((f) => { const rel = path.relative(scratch, f); const target = path.join(dest, rel); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.copyFileSync(f, target); const a = sha256File(f), b = sha256File(target); if (a !== b) problems.push(`copy mismatch ${rel}`); return { file: rel, bytes: fs.statSync(f).size, sha256: a }; });
 
   const report = {
-    scratch, dest, terminatedNormally, filesPreserved: inventory.length, bytesPreserved: inventory.reduce((s, i) => s + i.bytes, 0),
+    segment, scratch, dest, terminatedNormally, filesPreserved: inventory.length, bytesPreserved: inventory.reduce((s, i) => s + i.bytes, 0),
     secretHits: 0, packagesOnDisk: packages.length, packagesValidated: packages.length, packagesComplete: packages.filter((p) => p.pkg.complete).length,
     dispatch: { toDispatch: order.length, attempted: statuses.length, inFlightAtTermination: inFlight, notAttempted: notAttempted.map((n) => n.ref), skipSetSize: skip.size, priorCandidatesReattempted: ids.filter((id) => skip.has(id)).length },
     flush: { flushEvery: plan.flushEvery, logRows: logRows.length, statusRows: statuses.length, checkpointAttempted: checkpoint.attempted, rowsNeedingRecovery: 0 },
@@ -178,40 +180,66 @@ export function validateContinuation(scratch = CONTINUATION_SCRATCH_DIR, dest = 
     verification: { ran: count((s) => s.verify.outcome === "COMPLETED"), statusCounts: statuses.reduce((a: Record<string, number>, s) => { const k = s.verify.status ?? s.verify.outcome; a[k] = (a[k] ?? 0) + 1; return a; }, {}), findingsTotal: statuses.reduce((s, x) => s + (x.verify.findings ?? 0), 0), reviewInvoked: count((s) => s.verify.semanticReviewInvoked === true) },
     packages: { complete: count((s) => s.package?.complete === true), incomplete: count((s) => s.package !== null && s.package.complete === false), notWritten: count((s) => s.package === null), problemsByCode: statuses.flatMap((s) => s.package?.problems ?? []).reduce((a: Record<string, number>, c) => { a[c] = (a[c] ?? 0) + 1; return a; }, {}) },
     byBand, benchmark, p1Occurrences: p1,
-    preflight: { ok: preflight.ok, spendUsd: preflight.spendUsd, probes: preflight.probes.map((p: { tier: string; status: number; inputTokens: number; outputTokens: number; costUsd: number }) => ({ tier: p.tier, status: p.status, inputTokens: p.inputTokens, outputTokens: p.outputTokens, costUsd: p.costUsd })) },
+    preflight: preflight === null ? null : { ok: preflight.ok, spendUsd: preflight.spendUsd, probes: preflight.probes.map((p: { tier: string; status: number; inputTokens: number; outputTokens: number; costUsd: number }) => ({ tier: p.tier, status: p.status, inputTokens: p.inputTokens, outputTokens: p.outputTokens, costUsd: p.costUsd })) },
     ledger, ledgerSnapshot: snap,
-    paidCalls: { compile: costs.perRequest.filter((r) => r.stage === "compile").length, compileInFlightUnknown: inFlight ? 1 : 0, verify: costs.perRequest.filter((r) => r.stage === "verify").length, verifierSideCalls: costs.sideCalls.filter((c) => c.discoveryId !== null).length, amendment: costs.sideCalls.filter((c) => c.discoveryId === null).length, healthProbes: preflight.probes.length },
+    paidCalls: { compile: costs.perRequest.filter((r) => r.stage === "compile").length, compileInFlightUnknown: inFlight ? 1 : 0, verify: costs.perRequest.filter((r) => r.stage === "verify").length, verifierSideCalls: costs.sideCalls.filter((c) => c.discoveryId !== null).length, amendment: costs.sideCalls.filter((c) => c.discoveryId === null).length, healthProbes: preflight ? preflight.probes.length : 0 },
     problems, inventory,
   };
-  fs.writeFileSync(path.join(path.dirname(dest), "03-continuation-validation.json"), JSON.stringify(report, null, 2));
+  fs.writeFileSync(path.join(path.dirname(dest), `03-continuation-${segment}-validation.json`), JSON.stringify(report, null, 2));
   return report;
 }
 
 /** One row per dedup candidate, exactly once. */
-export interface PopulationRow { discoveryId: string; ref: string; operativeChars: number; band: string; disposition: "TERMINAL_ATTEMPT" | "EMPTY_OPERATIVE_TEXT" | "IN_FLIGHT_UNKNOWN" | "NEVER_ATTEMPTED"; source: "original" | "continuation" | null; compile: string | null; verify: string | null; verificationStatus: string | null; packageComplete: boolean | null; recovered: boolean; evidenceFile: string | null }
+export interface PopulationRow { discoveryId: string; ref: string; operativeChars: number; band: string; disposition: "TERMINAL_ATTEMPT" | "EMPTY_OPERATIVE_TEXT" | "IN_FLIGHT_UNKNOWN" | "NEVER_ATTEMPTED"; source: "original" | `continuation-${number}` | null; compile: string | null; verify: string | null; verificationStatus: string | null; packageComplete: boolean | null; recovered: boolean; evidenceFile: string | null }
 
-export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, continuationDir = CONTINUATION_DEST, docsDir = path.dirname(CONTINUATION_DEST)) {
+export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, segmentDirs = preservedContinuationSegments(), docsDir = DOCS_DIR) {
   const rd = (d: string, n: string) => JSON.parse(fs.readFileSync(path.join(d, n), "utf8"));
   const problems: string[] = [];
   const oPlan = rd(originalDir, "00-plan.json");
   const oManifest = rd(originalDir, "03-run-manifest.reconstructed.json");
   const oValidation = rd(path.dirname(originalDir), "01-run-validation.json");
-  const cPlan = rd(continuationDir, "00-plan.json");
-  const cStatuses = rd(continuationDir, "01-statuses.json") as Status[];
-  const cValidation = rd(docsDir, "03-continuation-validation.json");
   const chars = new Map<string, number>((oPlan.order as { discoveryId: string; operativeChars: number }[]).map((o) => [o.discoveryId, o.operativeChars]));
   const rows: PopulationRow[] = [];
-  const oById = new Map<string, Status>();
-  for (const s of rd(originalDir, "01-statuses.json") as Status[]) oById.set(s.discoveryId, s);
   for (const c of oManifest.candidateStatuses as { discoveryId: string; ref: string; compile: string; verify: string; verificationStatus: string | null; packageComplete: boolean | null; recovered: boolean }[]) {
     rows.push({ discoveryId: c.discoveryId, ref: c.ref, operativeChars: chars.get(c.discoveryId)!, band: bandOf(chars.get(c.discoveryId)!), disposition: "TERMINAL_ATTEMPT", source: "original", compile: c.compile, verify: c.verify, verificationStatus: c.verificationStatus, packageComplete: c.packageComplete, recovered: c.recovered, evidenceFile: path.join(path.basename(originalDir), "evidence", `${c.discoveryId}.json`) });
   }
   const inFlight = oManifest.terminated.inFlightCandidate as { discoveryId: string; ref: string; operativeChars: number };
   rows.push({ discoveryId: inFlight.discoveryId, ref: inFlight.ref, operativeChars: inFlight.operativeChars, band: bandOf(inFlight.operativeChars), disposition: "IN_FLIGHT_UNKNOWN", source: "original", compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null });
-  for (const s of cStatuses) rows.push({ discoveryId: s.discoveryId, ref: s.ref, operativeChars: s.operativeChars, band: bandOf(s.operativeChars), disposition: "TERMINAL_ATTEMPT", source: "continuation", compile: s.compile.outcome, verify: s.verify.outcome, verificationStatus: s.verify.status, packageComplete: s.package?.complete ?? null, recovered: false, evidenceFile: path.join(path.basename(continuationDir), "evidence", `${s.discoveryId}.json`) });
-  if (cValidation.dispatch.inFlightAtTermination) { const f = cValidation.dispatch.inFlightAtTermination; rows.push({ discoveryId: f.discoveryId, ref: f.ref, operativeChars: f.operativeChars, band: bandOf(f.operativeChars), disposition: "IN_FLIGHT_UNKNOWN", source: "continuation", compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null }); }
+  // cost merge - labelled components, each counted once
+  const oL = oValidation.ledger;
+  const components: { component: string; usd: number; status: string; source: string }[] = [
+    { component: "original run: exact (compile + verify + amendment)", usd: oL.exactUsd, status: "EXACT", source: `${path.basename(originalDir)} ledger (01-run-validation.json)` },
+    { component: "original run: timeout reservations retained", usd: oL.timeoutReservationsRetainedUsd, status: "UNKNOWN_TIMEOUT_BILLED", source: `${path.basename(originalDir)} ledger` },
+    { component: `original run: interrupted request ${inFlight.ref}, one reservation (counted here only)`, usd: oL.inFlightAtTermination.chargedUsd, status: "UNKNOWN_IN_FLIGHT", source: `${path.basename(originalDir)} in-flight` },
+    { component: "original run: health probes", usd: oValidation.preflight.spendUsd, status: "EXACT", source: `${path.basename(originalDir)}/preflight-health.json` },
+    { component: "original run: possible amendment call from the aborted first launch", usd: 0.0004, status: "UNKNOWN_POSSIBLE", source: "02-run-report.json (upper bound)" },
+  ];
+  const segments: Record<string, unknown>[] = [];
+  const p1: P1Occurrence[] = [];
+  let lastCumulative: number | null = null; let lastProbes = 0;
+  for (const [i, dir] of segmentDirs.entries()) {
+    const n = i + 1; const name = path.basename(dir);
+    const cPlan = rd(dir, "00-plan.json");
+    const cStatuses = rd(dir, "01-statuses.json") as Status[];
+    const cValidation = rd(docsDir, `03-continuation-${n}-validation.json`);
+    if (cValidation.dest !== dir && path.resolve(cValidation.dest) !== path.resolve(dir)) problems.push(`${name}: validation report is for ${cValidation.dest}`);
+    for (const s of cStatuses) rows.push({ discoveryId: s.discoveryId, ref: s.ref, operativeChars: s.operativeChars, band: bandOf(s.operativeChars), disposition: "TERMINAL_ATTEMPT", source: `continuation-${n}`, compile: s.compile.outcome, verify: s.verify.outcome, verificationStatus: s.verify.status, packageComplete: s.package?.complete ?? null, recovered: false, evidenceFile: path.join(name, "evidence", `${s.discoveryId}.json`) });
+    if (cValidation.dispatch.inFlightAtTermination) { const f = cValidation.dispatch.inFlightAtTermination; rows.push({ discoveryId: f.discoveryId, ref: f.ref, operativeChars: f.operativeChars, band: bandOf(f.operativeChars), disposition: "IN_FLIGHT_UNKNOWN", source: `continuation-${n}`, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null }); }
+    const cL = cValidation.ledger;
+    if (cL.thisRun.preflightProbesUsd > 0) components.push({ component: `${name}: health probes`, usd: cL.thisRun.preflightProbesUsd, status: "EXACT", source: `${name}/preflight-health.json` });
+    components.push({ component: `${name}: exact (compile + verify + amendment), this segment only`, usd: cL.thisRun.exactUsd, status: "EXACT", source: `${name} ledger minus seeded prior` });
+    components.push({ component: `${name}: timeout reservations retained, this segment only`, usd: cL.thisRun.timeoutReservationsRetainedUsd, status: "UNKNOWN_TIMEOUT_BILLED", source: `${name} ledger minus seeded prior` });
+    if (cL.thisRun.inFlightReservationUsd > 0) components.push({ component: `${name}: interrupted request ${cValidation.dispatch.inFlightAtTermination?.ref}, one reservation (counted here only)`, usd: cL.thisRun.inFlightReservationUsd, status: "UNKNOWN_IN_FLIGHT", source: `${name} validation` });
+    // the seeded prior of this segment must equal everything merged before it
+    const mergedBefore = r6(components.filter((c) => !c.component.startsWith(`${name}:`)).reduce((s, c) => s + c.usd, 0));
+    const seeded = cPlan.priorSpend as { exactUsd: number; retainedUnknownUsd: number };
+    if (!near(seeded.exactUsd + seeded.retainedUnknownUsd, mergedBefore, 5e-6)) problems.push(`${name}: seeded prior ${r6(seeded.exactUsd + seeded.retainedUnknownUsd)} != components merged before it ${mergedBefore}`);
+    lastCumulative = cL.cumulative.committedIncludingInFlightUsd; lastProbes = cL.thisRun.preflightProbesUsd;
+    p1.push(...(cValidation.p1Occurrences as P1Occurrence[]));
+    segments.push({ dir: name, runId: cPlan.runId, toDispatch: cPlan.toDispatch, attempted: cStatuses.length, terminatedNormally: cValidation.terminatedNormally, inFlightAtTermination: cValidation.dispatch.inFlightAtTermination?.ref ?? null, notAttempted: cValidation.dispatch.notAttempted.length, priorCandidatesReattempted: cValidation.dispatch.priorCandidatesReattempted, healthProbes: cValidation.paidCalls.healthProbes });
+  }
   const covered = new Set(rows.map((r) => r.discoveryId));
-  for (const o of cPlan.order as { discoveryId: string; ref: string; operativeChars: number }[]) if (!covered.has(o.discoveryId)) rows.push({ discoveryId: o.discoveryId, ref: o.ref, operativeChars: o.operativeChars, band: bandOf(o.operativeChars), disposition: "NEVER_ATTEMPTED", source: null, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null });
+  for (const o of oPlan.order as { discoveryId: string; ref: string; operativeChars: number }[]) if (!covered.has(o.discoveryId)) rows.push({ discoveryId: o.discoveryId, ref: o.ref, operativeChars: o.operativeChars, band: bandOf(o.operativeChars), disposition: "NEVER_ATTEMPTED", source: null, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null });
   for (const e of oPlan.skippedEmpty as { discoveryId: string; ref: string }[]) rows.push({ discoveryId: e.discoveryId, ref: e.ref, operativeChars: 0, band: "EMPTY", disposition: "EMPTY_OPERATIVE_TEXT", source: null, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null });
   rows.sort((a, b) => (a.ref < b.ref ? -1 : a.ref > b.ref ? 1 : a.discoveryId < b.discoveryId ? -1 : 1));
   // exactly once, and exactly the dedup population
@@ -224,25 +252,8 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, continuati
   if (rows.length !== oPlan.dedupDenominator) problems.push(`rows ${rows.length} != dedup denominator ${oPlan.dedupDenominator}`);
   for (const r of rows) if (r.evidenceFile && !fs.existsSync(path.join(docsDir, r.evidenceFile))) problems.push(`evidence file missing for ${r.ref}`);
 
-  // cost merge - labelled components, each counted once
-  const oL = oValidation.ledger; const cL = cValidation.ledger;
-  const components = [
-    { component: "original run: exact (compile + verify + amendment)", usd: oL.exactUsd, status: "EXACT", source: "run-original ledger (01-run-validation.json)" },
-    { component: "original run: timeout reservations retained", usd: oL.timeoutReservationsRetainedUsd, status: "UNKNOWN_TIMEOUT_BILLED", source: "run-original ledger" },
-    { component: "original run: interrupted request 7.6(f)(i), one reservation (counted here only)", usd: oL.inFlightAtTermination.chargedUsd, status: "UNKNOWN_IN_FLIGHT", source: "run-original in-flight" },
-    { component: "original run: health probes", usd: oValidation.preflight.spendUsd, status: "EXACT", source: "run-original/preflight-health.json" },
-    { component: "original run: possible amendment call from the aborted first launch", usd: 0.0004, status: "UNKNOWN_POSSIBLE", source: "02-run-report.json (upper bound)" },
-    { component: "continuation: health probes", usd: cValidation.preflight.spendUsd, status: "EXACT", source: "run-continuation/preflight-health.json" },
-    { component: "continuation: exact (compile + verify + amendment), this run only", usd: cL.thisRun.exactUsd, status: "EXACT", source: "run-continuation ledger minus seeded prior" },
-    { component: "continuation: timeout reservations retained, this run only", usd: cL.thisRun.timeoutReservationsRetainedUsd, status: "UNKNOWN_TIMEOUT_BILLED", source: "run-continuation ledger minus seeded prior" },
-    { component: "continuation: in-flight reservation at termination", usd: cL.thisRun.inFlightReservationUsd, status: "UNKNOWN_IN_FLIGHT", source: "run-continuation validation" },
-  ];
   const totalUsd = r6(components.reduce((s, c) => s + c.usd, 0));
-  const seeded = cPlan.priorSpend as { exactUsd: number; retainedUnknownUsd: number };
-  const seededExpected = oL.exactUsd + oValidation.preflight.spendUsd + oL.timeoutReservationsRetainedUsd + oL.inFlightAtTermination.chargedUsd + 0.0004;
-  if (!near(seeded.exactUsd + seeded.retainedUnknownUsd, seededExpected, 2e-6)) problems.push("continuation seeded prior != original components");
-  const cumulativeFromLedger = r6(cL.cumulative.committedIncludingInFlightUsd + cValidation.preflight.spendUsd);
-  if (!near(totalUsd, cumulativeFromLedger, 5e-6)) problems.push(`merged total ${totalUsd} != continuation cumulative ledger + its probes ${cumulativeFromLedger}`);
+  if (lastCumulative !== null && !near(totalUsd, r6(lastCumulative + lastProbes), 5e-6)) problems.push(`merged total ${totalUsd} != last segment's cumulative ledger + its probes ${r6(lastCumulative + lastProbes)}`);
   const exactUsd = r6(components.filter((c) => c.status === "EXACT").reduce((s, c) => s + c.usd, 0));
 
   const terminal = rows.filter((r) => r.disposition === "TERMINAL_ATTEMPT");
@@ -253,7 +264,7 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, continuati
   const manifest = {
     schema: "p3-conmed-population-manifest.v1",
     evidenceLabel: "CURRENT_PIPELINE_COMPILE_AND_VERIFY",
-    runs: { original: { dir: path.basename(originalDir), runId: oPlan.runId, attempted: oManifest.attempted, terminated: oManifest.terminated.reason }, continuation: { dir: path.basename(continuationDir), runId: cPlan.runId, attempted: cStatuses.length, terminatedNormally: cValidation.terminatedNormally } },
+    runs: { original: { dir: path.basename(originalDir), runId: oPlan.runId, attempted: oManifest.attempted, terminated: oManifest.terminated.reason, inFlightAtTermination: inFlight.ref }, continuationSegments: segments },
     model: oPlan.model, timeoutMs: oPlan.timeoutMs, concurrency: oPlan.concurrency, autoRetry: oPlan.autoRetry, fallbackModel: oPlan.fallbackModel, premiumModelBudgetUsd: oPlan.premiumModelBudgetUsd, attemptsPerCandidate: 1,
     denominator: { discovered: 163, dedup: oPlan.dedupDenominator, emptyOperativeText: (oPlan.skippedEmpty as unknown[]).length, attemptable: oPlan.attemptable },
     dispositions: rows.reduce((a: Record<string, number>, r) => { a[r.disposition] = (a[r.disposition] ?? 0) + 1; return a; }, {}),
@@ -261,8 +272,8 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, continuati
     compileOutcomes: tally((r) => r.compile), verifyOutcomes: tally((r) => r.verify), verificationStatuses: tally((r) => r.verificationStatus ?? r.verify),
     packages: { complete: terminal.filter((r) => r.packageComplete === true).length, incomplete: terminal.filter((r) => r.packageComplete === false).length, none: terminal.filter((r) => r.packageComplete === null).length },
     byBand, benchmarkExecutionFactsOnly: benchmark, scored: false,
-    spend: { components, totalUsd, exactUsd, unknownOrRetainedUsd: r6(totalUsd - exactUsd), ceilingUsd: oPlan.ceilingUsd, stopAtUsd: oPlan.stopAtUsd, ceilingExceeded: totalUsd > oPlan.ceilingUsd, remainingUnderCeilingUsd: r6(oPlan.ceilingUsd - totalUsd), doubleCountingCheck: "the interrupted 7.6(f)(i) request appears once (its reservation); the continuation's seeded prior is excluded from its own components; merged total equals the continuation's cumulative ledger + its probes" },
-    p1OccurrencesContinuation: cValidation.p1Occurrences,
+    spend: { components, totalUsd, exactUsd, unknownOrRetainedUsd: r6(totalUsd - exactUsd), ceilingUsd: oPlan.ceilingUsd, stopAtUsd: oPlan.stopAtUsd, ceilingExceeded: totalUsd > oPlan.ceilingUsd, remainingUnderCeilingUsd: r6(oPlan.ceilingUsd - totalUsd), doubleCountingCheck: "each interrupted request appears once (its reservation); each segment's seeded prior equals the components merged before it and is excluded from that segment's own components; the merged total equals the last segment's cumulative ledger plus its probes" },
+    p1OccurrencesContinuation: p1,
     rows, problems,
   };
   fs.writeFileSync(path.join(docsDir, "04-population-manifest.json"), JSON.stringify(manifest, null, 2));
@@ -270,7 +281,9 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, continuati
 }
 
 if (process.argv[1]?.endsWith("conmed-continuation-postrun.ts")) {
-  const r = validateContinuation();
+  const segment = Number(process.argv[2]);
+  if (!Number.isInteger(segment) || segment < 1) throw new Error("usage: conmed-continuation-postrun.ts <segment>");
+  const r = validateContinuation(segment);
   const { inventory, ...summary } = r;
   console.log(JSON.stringify({ ...summary, inventoryFiles: inventory.length }, null, 1));
   if (r.problems.length > 0) process.exitCode = 2;

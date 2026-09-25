@@ -1,0 +1,39 @@
+[
+  {
+    "discoveryId": "discovery-candidate:f66b630df2e63c97a5c9bd90",
+    "ref": "7.6(f)(ii)",
+    "operativeChars": 312,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480007,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "69ff82e5f2b1603f9a637baa1d0071d2924ad9217344da482c9e7b789e9f6848",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-continuation/evidence/discovery-candidate:f66b630df2e63c97a5c9bd90.json",
+    "committedUsd": 1.704393
+  }
+]

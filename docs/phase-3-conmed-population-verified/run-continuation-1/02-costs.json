@@ -1,0 +1,35 @@
+{
+  "snapshot": {
+    "ceilingUsd": 3.5,
+    "stopAtUsd": 3.450577,
+    "exactSpendUsd": 0.732841,
+    "retainedUnknownTimeoutUsd": 0.971552,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 1.704393,
+    "remainingUsd": 1.795607
+  },
+  "perRequest": [
+    {
+      "model": "deepseek/deepseek-v4-flash",
+      "elapsedWallClockMs": 480007,
+      "streamedOutputTokensObserved": null,
+      "providerUsageObserved": null,
+      "locallyCalculatedCostUsd": 0,
+      "finalProviderBillingUnavailable": true,
+      "costAccountingStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "chargedToBudgetUsd": 0.01942304,
+      "discoveryId": "discovery-candidate:f66b630df2e63c97a5c9bd90",
+      "stage": "compile"
+    }
+  ],
+  "sideCalls": [
+    {
+      "discoveryId": null,
+      "stage": "amendment_interpretation",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 871,
+      "outputTokens": 938,
+      "costUsd": 0.00035711
+    }
+  ]
+}
