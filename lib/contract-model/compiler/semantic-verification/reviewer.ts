@@ -17,6 +17,7 @@
 import { getStageCaller, type StageCaller } from "../llm-caller";
 import { buildVerifierFewShotExamplesBlock, buildVerifierSystemPrompt } from "./prompt";
 import { computeSemanticVerificationFindingId } from "./identity";
+import { normalizeFindingOwner } from "./finding-owner";
 import { SubmitVerificationFindingsSchema, type WireVerificationFinding } from "./wire-schema";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION } from "./types";
 import type { AdmissibleEvidenceSet, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
@@ -51,6 +52,7 @@ const VALID_FINDING_TYPES: SemanticVerificationFindingType[] = [
   "POSSIBLE_RULE_SPLIT_ERROR",
   "VERIFICATION_CONTEXT_INCOMPLETE",
   "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+ "QUALITATIVE_ASSERTION_UNGROUNDED",
 ];
 const VALID_SEVERITIES: SemanticVerificationSeverity[] = ["MATERIAL", "NON_MATERIAL", "UNCERTAIN"];
 
@@ -183,14 +185,20 @@ function normalizeWireFinding(wire: WireVerificationFinding, input: Verification
   const findingType = matchEnum(wire.findingType, VALID_FINDING_TYPES, "OTHER_MATERIAL_SEMANTIC_DISCREPANCY");
   const severity = matchEnum(wire.severity, VALID_SEVERITIES, "UNCERTAIN");
   const sourceCitation = wire.sourceCitation || compilerInput.sourceSectionRef || "(unknown)";
+  // P-1 remediation: the wire owner id is never trusted verbatim. It is resolved against the
+  // real unit ids of THIS compilation (finding-owner.ts); a repaired owner comes from irPath,
+  // an ambiguous multi-unit owner stays null, and the finding id is computed from the
+  // normalized owner so a fabricated id can never mint a distinct finding.
+  const owner = normalizeFindingOwner({ ruleOrDefinitionId: wire.ruleOrDefinitionId, irPath: wire.irPath }, { rules: input.compilationResult.rules, definitions: input.compilationResult.definitions });
 
   return {
-    findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, wire.ruleOrDefinitionId, wire.irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION),
+    findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, owner.ownerId, wire.irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION),
     companyId: compilerInput.companyId,
     instrumentKey: compilerInput.instrumentKey,
     sourceDocumentId: compilerInput.sourceDocumentId,
     candidateRef: compilerInput.candidateRef,
-    ruleOrDefinitionId: wire.ruleOrDefinitionId,
+    ruleOrDefinitionId: owner.ownerId,
+    ownerNormalization: owner,
     irPath: wire.irPath,
     findingType,
     severity,
@@ -209,12 +217,12 @@ function normalizeWireFinding(wire: WireVerificationFinding, input: Verification
   };
 }
 
-export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller(), conditionSuspicion: ConditionSuspicionResult | null = null, evidence: AdmissibleEvidenceSet | null = null): Promise<SemanticReviewResult> {
+export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller(), conditionSuspicion: ConditionSuspicionResult | null = null, evidence: AdmissibleEvidenceSet | null = null, callOptions: import("../llm-caller").StageCallOptions = {}): Promise<SemanticReviewResult> {
   const systemPrompt = buildVerifierSystemPrompt({ verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, verifierPromptVersion: SEMANTIC_VERIFIER_PROMPT_VERSION }) + "\n\n" + buildVerifierFewShotExamplesBlock();
   const userContent = buildUserContent(input, reconciliation, conditionSuspicion, evidence);
 
   try {
-    const wireResult = await caller.call(SubmitVerificationFindingsSchema, "semantic_verification", systemPrompt, userContent);
+    const wireResult = await caller.call(SubmitVerificationFindingsSchema, "semantic_verification", systemPrompt, userContent, callOptions);
     const findings = wireResult.findings.map((f) => normalizeWireFinding(f, input, caller.providerName, caller.model));
     return { findings, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null, isSynthetic: caller.isSynthetic };
   } catch (err) {

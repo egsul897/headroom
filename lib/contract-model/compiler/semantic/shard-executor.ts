@@ -26,12 +26,15 @@ import { DEFAULT_TOOL_BUDGET } from "./types";
 import type { ToolCallLogEntry } from "./types";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "./types";
 import type { NormalizedCompilation } from "./normalize";
+import type { SemanticCompileCallOptions } from "./caller";
 
 export interface BoundedShardExecutorInput {
   /** compile.ts's own callerInput for the whole unit (carries the resolved sourceContext and the frozen inventory). */
   baseInput: SemanticCompilerInput;
   plan: ShardPlan;
   caller: SemanticCaller;
+  /** Certified path: abort signal + dispatch budget for every shard call. */
+  callOptions?: SemanticCompileCallOptions;
 }
 
 /**
@@ -93,6 +96,7 @@ export function createBoundedShardExecutor(input: BoundedShardExecutorInput): Sh
       cacheKey: `${input.plan.planHash}#${shard.shardHash}`,
       evidenceFlags: contextBundleEvidenceFlags(shardInput),
       accountability: { sourceContext: null, frozenInventory: null, inventoryMode: null, inventoryPasses: null },
+      callOptions: input.callOptions,
     });
     return shardOutcomeFromBoundedResult(outcome.result, outcome.inventoryDispositions, shard);
   };

@@ -18,13 +18,17 @@
  */
 import type { ZodType } from "zod";
 import { AnthropicContractAnalyzer, VercelAIGatewayContractAnalyzer, DEFAULT_ANALYZER_MODEL, DEFAULT_GATEWAY_ANALYZER_MODEL } from "../analyzer/anthropic-analyzer";
+import type { DispatchBudget } from "../analyzer/dispatch-budget";
 import type { AnalyzerCallTelemetry } from "../analyzer/telemetry";
+
+/** Per-call execution controls: the candidate's abort signal and the hard dispatch budget (both certified-path requirements). */
+export interface StageCallOptions { signal?: AbortSignal; budget?: DispatchBudget }
 
 export interface StageCaller {
   providerName: string;
   model: string;
   isSynthetic: boolean;
-  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string): Promise<T>;
+  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string, options?: StageCallOptions): Promise<T>;
   lastTelemetry(): AnalyzerCallTelemetry | null;
 }
 
@@ -40,8 +44,8 @@ class RealStageCaller implements StageCaller {
     this.analyzer = analyzer;
   }
 
-  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string): Promise<T> {
-    return this.analyzer.runStructuredStage(schema, stage, systemPrompt, userContent);
+  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string, options?: StageCallOptions): Promise<T> {
+    return this.analyzer.runStructuredStage(schema, stage, systemPrompt, userContent, options);
   }
 
   lastTelemetry(): AnalyzerCallTelemetry | null {

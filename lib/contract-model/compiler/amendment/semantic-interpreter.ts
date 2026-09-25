@@ -99,9 +99,9 @@ function normalizeOperation(raw: string): { operation: AmendmentOperation; match
   return { operation: "UNKNOWN_CHANGE", matched: false };
 }
 
-export async function interpretAmendmentClause(caller: StageCaller, input: SemanticInterpretationInput): Promise<{ candidate: AmendmentEffectCandidate; rawWireOutput: WireAmendmentInterpretation }> {
+export async function interpretAmendmentClause(caller: StageCaller, input: SemanticInterpretationInput, callOptions: import("../llm-caller").StageCallOptions = {}): Promise<{ candidate: AmendmentEffectCandidate; rawWireOutput: WireAmendmentInterpretation }> {
   const content = buildContent(input);
-  const wire = await caller.call(WireAmendmentInterpretationSchema, "amendment_interpretation", SYSTEM_PROMPT, content);
+  const wire = await caller.call(WireAmendmentInterpretationSchema, "amendment_interpretation", SYSTEM_PROMPT, content, callOptions);
   const { operation, matched } = normalizeOperation(wire.operation);
 
   const needsReview = !matched || !wire.targetConfirmed || wire.confidence < 0.6 || wire.unresolvedQuestions.length > 0;

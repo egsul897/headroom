@@ -24,6 +24,7 @@ import { reconcileInventoryWithComposition } from "../semantic-accountability/re
 import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-accountability/types";
 import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass";
 import type { NormalizedCompilation } from "./normalize";
+import type { SemanticCompileCallOptions } from "./caller";
 
 const MAX_SANITIZED_MESSAGE_LENGTH = 500;
 /** Redacts common credential/token shapes before a message is ever persisted (task §33's "no secrets" instruction) - defensive even though a compile-time exception message should not ordinarily contain one. */
@@ -137,6 +138,8 @@ export interface BoundedCompositionContext {
   cacheKey: string;
   evidenceFlags: EvidenceFlags;
   accountability: AccountabilityFields;
+  /** Abort signal + dispatch budget for the model call (certified path). */
+  callOptions?: SemanticCompileCallOptions;
 }
 
 export interface BoundedCompositionOutcome {
@@ -165,7 +168,7 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
   // try/catch did.
   let callResult: Awaited<ReturnType<SemanticCaller["compile"]>>;
   try {
-    callResult = await caller.compile(callerInput);
+    callResult = await caller.compile(callerInput, ctx.callOptions);
   } catch (err) {
     return { result: { ...buildTransportFailureResult(err, caller, cacheKey, null, evidenceFlags), ...accountabilityFields, accountability: null }, cacheable: false, inventoryDispositions: [] };
   }

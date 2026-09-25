@@ -1,3 +1,4 @@
+import { priceUsage } from "./pricing";
 /**
  * Phase C0 (task "PROVE THE CONTRACT ANALYZER BEFORE PHASE C" §25-28) - per
  * model-call telemetry and rate-limit resilience for the analyzer vertical
@@ -38,6 +39,10 @@ export interface AnalyzerCallTelemetry {
   latencyMs: number;
   /** Real, returned by the provider's own billing API. Not exposed per-call by the SDK today - always undefined, never fabricated. */
   providerCost: number | undefined;
+  /** Pricing identity of calculatedCostUsd (pricing.ts). Absent on legacy records. */
+  pricing?: { pricingVersion: string; pricingStatus: "PRICED" | "UNKNOWN_MODEL" | "CACHED_UNKNOWN" | "NO_USAGE" };
+  /** Transport attempts under the single retry owner (transport-retry.ts). Absent on legacy records. */
+  transport?: { attempts: number; retries: number; policyVersion: string };
   /** thresholdValue-USD = tokens x a cited published rate card. Always labeled PROJECTED wherever surfaced in the report. */
   calculatedCostUsd: number | null;
   error?: string;
@@ -47,14 +52,18 @@ export interface AnalyzerCallTelemetry {
 export const SONNET_5_RATE_CARD = { inputPerToken: 2 / 1_000_000, outputPerToken: 10 / 1_000_000 };
 export const OPUS_5_RATE_CARD = { inputPerToken: 5 / 1_000_000, outputPerToken: 25 / 1_000_000 };
 
-function rateCardForModel(model: string): { inputPerToken: number; outputPerToken: number } {
+/** @deprecated legacy: kept for the two named Anthropic cards; every other model goes through pricing.ts. */
+export function rateCardForModel(model: string): { inputPerToken: number; outputPerToken: number } {
   return model.includes("opus") ? OPUS_5_RATE_CARD : SONNET_5_RATE_CARD;
 }
 
+/**
+ * Cost through the provider/model pricing adapter (pricing.ts). A model without a rate card prices
+ * to null - never to another vendor's rate. (The pre-cleanse rate card priced every non-Opus model
+ * as Sonnet, which recorded a DeepSeek call at ~17x its real cost.)
+ */
 export function calculateCostUsd(inputTokens: number | null, outputTokens: number | null, model: string = "claude-sonnet-5"): number | null {
-  if (inputTokens === null || outputTokens === null) return null;
-  const rateCard = rateCardForModel(model);
-  return inputTokens * rateCard.inputPerToken + outputTokens * rateCard.outputPerToken;
+  return priceUsage({ inputTokens, outputTokens }, model).costUsd;
 }
 
 /** True for a real Anthropic SDK rate-limit error (HTTP 429) - narrow, not a catch-all for any failure. */

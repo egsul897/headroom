@@ -1,3 +1,4 @@
+import { auditQualitativeLineage, qualitativeGroundingFindings } from "./qualitative-grounding";
 /**
  * Phase 3C - the verifier's own public API: verifyCompiledCandidate.
  * Orchestrates Layer 1 (deterministic source/IR inventory + reconciliation
@@ -28,6 +29,9 @@ import type { StageCaller } from "../llm-caller";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
 
 export interface VerifyOptions {
+  /** Certified path: the candidate abort signal and hard dispatch budget for every verifier call. */
+  signal?: AbortSignal;
+  budget?: import("../../analyzer/dispatch-budget").DispatchBudget;
   /** Injectable for testing - defaults to the real getStageCaller() env-var-driven selection inside reviewer.ts when omitted. */
   reviewCaller?: StageCaller;
   /** Injectable for testing - defaults to the real getStageCaller() env-var-driven selection inside condition-suspicion-classifier.ts when omitted. Deliberately a SEPARATE injection point from reviewCaller (they are two independent calls with two independent schemas/prompts), even though both typically resolve to the same provider/model in production. */
@@ -383,7 +387,9 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     })),
   ];
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
-  const deterministicFindings = buildFindingsFromReconciliation(input, reconciliation);
+  // qualitative accountability: material qualitative claims without source-backed lineage are MATERIAL findings
+  const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null });
+  const deterministicFindings = [...buildFindingsFromReconciliation(input, reconciliation), ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef })];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
   // (see docs/phase-3f1-terminal-architecture-decision/02-architecture-
@@ -411,7 +417,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   } else if (deterministicForcesReview) {
     needsSemanticReview = true;
   } else {
-    conditionSuspicion = await classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput), { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache);
+    conditionSuspicion = await classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput), { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache, { signal: options.signal, budget: options.budget });
     needsSemanticReview = conditionSuspicion.status !== "NO_MATERIAL_CONDITION_SUSPECTED";
   }
 
@@ -427,7 +433,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
 
   if (needsSemanticReview) {
     semanticReviewInvoked = true;
-    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion, admissibleEvidence);
+    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion, admissibleEvidence, { signal: options.signal, budget: options.budget });
     semanticReviewFailed = review.failed;
     allFindings = mergeFindings(deterministicFindings, review.findings);
     allFindings = downgradeUnconfirmedAmbiguousFindings(allFindings, reconciliation, review);
@@ -448,6 +454,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     // Lifted off the reconciliation rather than recomputed, so the reported grounding verdicts are
     // by construction the same ones the findings above were built from.
     numericAssertions: { inventory: numericAssertionInventory, groundings: reconciliation.items.flatMap((i) => (i.numericGrounding ? [i.numericGrounding] : [])) },
+    qualitativeLineage: qualitativeAudit,
     verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION,
     verifiedAt: new Date().toISOString(),
   };

@@ -45,6 +45,8 @@ import { resolveSourceContext } from "../semantic-accountability/source-context"
 import { runSemanticInventory } from "../semantic-accountability/inventory";
 import { resolveSemanticInventoryMode, runDualPassSemanticInventory, type SemanticInventoryMode } from "../semantic-accountability/dual-pass";
 import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-accountability/types";
+import type { SemanticCompileCallOptions } from "./caller";
+import { certifiedConfigIdentity, type CertifiedCompilerConfig } from "../certified-config";
 
 // The helpers below moved to bounded-composition.ts (F-7C) so the monolithic
 // unit and every shard share ONE implementation; re-exported here so existing
@@ -106,6 +108,13 @@ export interface CompileOptions {
   shardMaxAttempts?: number;
   /** F-7C (tests / offline replay only): replaces the production bounded shard executor. Production never sets this. */
   shardExecutor?: ShardExecutor;
+  /**
+   * CERTIFIED EXECUTION: the explicit configuration (certified-config.ts). When present, the inventory mode and the
+   * shard attempt policy come from it - never from the environment - and its identity enters the cache key.
+   */
+  certified?: CertifiedCompilerConfig;
+  /** The candidate's abort signal and hard dispatch budget, threaded to EVERY provider request this compile makes. */
+  callOptions?: SemanticCompileCallOptions;
 }
 
 interface WholeUnitSignals { failureReasons: SemanticCompilerFailureReason[]; issues: string[] }
@@ -188,8 +197,10 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   const cache = options.cache ?? defaultCache;
   // F-5.3B: the inventory mode is part of the compile's identity - a single-pass result must never be served from cache
   // for a dual-pass request (or vice versa).
-  const inventoryMode: SemanticInventoryMode | null = options.accountability !== false ? resolveSemanticInventoryMode(options.inventoryMode) : null;
-  const providerIdentity = `${caller.providerName}::${caller.model}${inventoryMode ? `::inventory=${inventoryMode}` : ""}`;
+  // CERTIFIED: the mode is the explicit config's; the env-var fallback exists only for the non-certified legacy path.
+  const inventoryMode: SemanticInventoryMode | null = options.accountability !== false ? (options.certified ? options.certified.inventoryMode : resolveSemanticInventoryMode(options.inventoryMode)) : null;
+  const providerIdentity = `${caller.providerName}::${caller.model}${inventoryMode ? `::inventory=${inventoryMode}` : ""}${options.certified ? `::${certifiedConfigIdentity(options.certified)}` : ""}`;
+  const callOptions: SemanticCompileCallOptions = options.callOptions ?? {};
   const evidenceFlags = contextBundleEvidenceFlags(input);
 
   // F-7C.1: the CURRENT source context is resolved before the cache lookup. It is deterministic and free, and its
@@ -263,11 +274,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       // F-5.3B: two independent Pass A executions -> deterministic ensemble (STRICT compatibility). The second paid
       // call is made here, visibly, by the orchestration module - never inside ensemble.ts, never a third pass.
       const passCallers = options.inventoryPassCallers ?? (options.inventoryCaller ? ([options.inventoryCaller, options.inventoryCaller] as [StageCaller, StageCaller]) : undefined);
-      const dual = await runDualPassSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, structuralIndex: index, passCallers });
+      const dual = await runDualPassSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, structuralIndex: index, passCallers, signal: callOptions.signal, budget: callOptions.budget });
       frozenInventory = dual.inventory;
       inventoryPasses = dual.passes.map((p) => ({ passId: p.passId, frozenContentHash: p.inventory.frozenContentHash, inventoryStatus: p.inventory.inventoryStatus, items: p.inventory.items.length, telemetryCostUsd: p.inventory.telemetryCostUsd }));
     } else {
-      frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, caller: options.inventoryCaller });
+      frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, caller: options.inventoryCaller, signal: callOptions.signal, budget: callOptions.budget });
     }
     // The COMPILATION UNIT (mission §13) is the resolved operative region - when the
     // supplied window was extended to its real unit boundary (with provenance on
@@ -288,7 +299,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
 
   if (decision.mode === "MONOLITHIC" || !plan) {
     // ---- the pre-F-7 bounded path, byte-for-byte the same machinery (bounded-composition.ts).
-    const outcome = await compileBoundedComposition(callerInput, input, { caller, cacheKey, evidenceFlags, accountability: accountabilityFields });
+    const outcome = await compileBoundedComposition(callerInput, input, { caller, cacheKey, evidenceFlags, accountability: accountabilityFields, callOptions });
     const result: SemanticCompilationResult = { ...outcome.result, execution: { ...executionBase, sharded: null } };
     if (outcome.cacheable) cache.set(cacheKey, result);
     return result;
@@ -296,11 +307,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
 
   // ---- SHARDED: certified planner -> bounded per-shard composition -> certified stitcher -> GLOBAL Pass C.
   const started = Date.now();
-  const executor = options.shardExecutor ?? createBoundedShardExecutor({ baseInput: callerInput, plan, caller });
+  const executor = options.shardExecutor ?? createBoundedShardExecutor({ baseInput: callerInput, plan, caller, callOptions });
   const run = await executeShardPlan({
     plan, executor, frozenInventory: frozenInventory!, sourceContextState: sourceContext!.state,
     companyId: input.companyId, instrumentKey: input.instrumentKey, candidateRef: input.candidateRef,
-    priorResults: options.priorShardResults, maxAttemptsPerShard: options.shardMaxAttempts ?? DEFAULT_SHARD_MAX_ATTEMPTS,
+    priorResults: options.priorShardResults, maxAttemptsPerShard: options.certified ? options.certified.shardMaxAttempts : (options.shardMaxAttempts ?? DEFAULT_SHARD_MAX_ATTEMPTS),
     sourceRegions: sourceContext!.regions.map((r) => ({ regionId: r.regionId, text: r.text })),
   });
   const stitched = run.stitched;

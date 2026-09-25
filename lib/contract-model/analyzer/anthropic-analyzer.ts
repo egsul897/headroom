@@ -25,7 +25,17 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { ZodType } from "zod";
 import { ContractAnalysisResultSchema, type ContractAnalysisResult, type ContractAnalyzerInput } from "./schema";
 import type { ContractAnalyzerProvider } from "./provider";
-import { calculateCostUsd, withRetry, type AnalyzerCallTelemetry } from "./telemetry";
+import { calculateCostUsd, type AnalyzerCallTelemetry } from "./telemetry";
+import { priceUsage } from "./pricing";
+import { normalizeProviderError } from "./provider-error";
+import { runWithTransportRetry, TRANSPORT_RETRY_POLICY_VERSION } from "./transport-retry";
+import { throwIfAborted } from "./deadline";
+import type { DispatchBudget, DispatchTicket } from "./dispatch-budget";
+
+/** Per-call execution controls (mirrors llm-caller.ts StageCallOptions without a circular import). */
+export interface StructuredStageOptions { signal?: AbortSignal; budget?: DispatchBudget }
+/** Calibrated chars-per-token used only for the pre-dispatch maximum-cost reservation of a stage call. */
+const RESERVATION_TOKENS_PER_CHAR = 0.3957;
 
 /** Claude Sonnet 5, per explicit user instruction to use the cheaper model for this spike ($2/$10 per M tokens vs. Opus 5's $5/$25). */
 export const DEFAULT_ANALYZER_MODEL = "claude-sonnet-5";
@@ -69,24 +79,35 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
    * reports both rely on) is now implemented in terms of this method, not the
    * other way around.
    */
-  async runStructuredStage<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string): Promise<T> {
+  async runStructuredStage<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string, options: StructuredStageOptions = {}): Promise<T> {
     const startedAt = Date.now();
     const timestamp = new Date().toISOString();
+    throwIfAborted(options.signal, stage);
+    // HARD BUDGET before dispatch: the maximum this request can cost (every prompt char at the input rate, the full
+    // max_tokens at the output rate) must fit under the ceiling, or the request is never sent.
+    let ticket: DispatchTicket | null = null;
+    if (options.budget) ticket = options.budget.reserve({ stage, model: this.model, maxInputTokens: Math.ceil((systemPrompt.length + userContent.length) * RESERVATION_TOKENS_PER_CHAR) + 64, maxOutputTokens: this.maxTokens });
+    let transport: { attempts: number; retries: number; rateLimitFailures: number } = { attempts: 0, retries: 0, rateLimitFailures: 0 };
     try {
-      const { value: message, attemptCount, retryCount, rateLimitFailures } = await withRetry(async () => {
+      // ONE retry owner (transport-retry.ts); the client itself is constructed with maxRetries: 0.
+      const outcome = await runWithTransportRetry(async () => {
         const stream = this.client.messages.stream({
           model: this.model,
           max_tokens: this.maxTokens,
           system: systemPrompt,
           messages: [{ role: "user", content: userContent }],
           output_config: { format: zodOutputFormat(schema) },
-        });
+        }, { signal: options.signal });
         return stream.finalMessage();
-      });
-
+      }, { provider: this.providerName, model: this.model, signal: options.signal, stage });
+      const message = outcome.value;
+      transport = { attempts: outcome.transportAttempts, retries: outcome.retries, rateLimitFailures: outcome.rateLimitFailures };
       const usage = message.usage;
       const inputTokens = usage?.input_tokens ?? null;
       const outputTokens = usage?.output_tokens ?? null;
+      const priced = priceUsage({ inputTokens, outputTokens, cachedInputTokens: usage?.cache_read_input_tokens ?? null, cacheCreationInputTokens: usage?.cache_creation_input_tokens ?? null }, this.model);
+      if (ticket && options.budget) options.budget.settle(ticket, { inputTokens, outputTokens, cachedInputTokens: usage?.cache_read_input_tokens ?? null, cacheCreationInputTokens: usage?.cache_creation_input_tokens ?? null }, inputTokens === null ? "UNKNOWN_RETAINED" : "EXACT");
+      ticket = null;
       this.lastCallTelemetry = {
         provider: this.providerName,
         model: this.model,
@@ -98,19 +119,23 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
         outputTokens,
         cachedInputTokens: usage?.cache_read_input_tokens ?? null,
         cacheCreationInputTokens: usage?.cache_creation_input_tokens ?? null,
-        attemptCount,
-        retryCount,
-        rateLimitFailures,
+        attemptCount: transport.attempts,
+        retryCount: transport.retries,
+        rateLimitFailures: transport.rateLimitFailures,
         latencyMs: Date.now() - startedAt,
         providerCost: undefined,
-        calculatedCostUsd: calculateCostUsd(inputTokens, outputTokens, this.model),
+        calculatedCostUsd: priced.costUsd,
+        pricing: { pricingVersion: priced.pricingVersion, pricingStatus: priced.pricingStatus },
+        transport: { attempts: transport.attempts, retries: transport.retries, policyVersion: TRANSPORT_RETRY_POLICY_VERSION },
       };
-
       if (!message.parsed_output) {
-        throw new Error(`${this.constructor.name}: model response for stage "${stage}" did not parse against its schema (stop_reason=${message.stop_reason})`);
+        throw normalizeProviderError(Object.assign(new Error(`${this.constructor.name}: model response for stage "${stage}" did not parse against its schema (stop_reason=${message.stop_reason})`), { name: "SchemaFailure" }), { provider: this.providerName, model: this.model });
       }
       return message.parsed_output;
     } catch (err) {
+      const pe = normalizeProviderError(err, { provider: this.providerName, model: this.model });
+      // settle: a refusal that provably billed nothing releases the reservation; anything else retains it in full
+      if (ticket && options.budget) options.budget.settle(ticket, pe.usageIfKnown, pe.billingKnown && pe.usageIfKnown && pe.usageIfKnown.inputTokens === 0 && pe.usageIfKnown.outputTokens === 0 ? "REFUSED_NO_COST" : "UNKNOWN_RETAINED");
       this.lastCallTelemetry = {
         provider: this.providerName,
         model: this.model,
@@ -122,15 +147,17 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
         outputTokens: null,
         cachedInputTokens: null,
         cacheCreationInputTokens: null,
-        attemptCount: 1,
-        retryCount: 0,
-        rateLimitFailures: 0,
+        attemptCount: Math.max(1, transport.attempts),
+        retryCount: transport.retries,
+        rateLimitFailures: transport.rateLimitFailures,
         latencyMs: Date.now() - startedAt,
         providerCost: undefined,
         calculatedCostUsd: null,
-        error: err instanceof Error ? err.message : String(err),
+        pricing: { pricingVersion: priceUsage({ inputTokens: null, outputTokens: null }, this.model).pricingVersion, pricingStatus: "NO_USAGE" },
+        transport: { attempts: Math.max(1, transport.attempts), retries: transport.retries, policyVersion: TRANSPORT_RETRY_POLICY_VERSION },
+        error: `${pe.kind}${pe.httpStatus ? ` ${pe.httpStatus}` : ""}${pe.providerCode ? ` ${pe.providerCode}` : ""}: ${pe.message}`,
       };
-      throw err;
+      throw pe;
     }
   }
 
@@ -141,7 +168,8 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
 
 export class AnthropicContractAnalyzer extends AnthropicMessagesAnalyzer {
   constructor(options?: { apiKey?: string; model?: string; maxTokens?: number }) {
-    const client = new Anthropic(options?.apiKey ? { apiKey: options.apiKey } : {});
+    // maxRetries: 0 - the SDK never retries; transport-retry.ts is the ONE retry owner
+    const client = new Anthropic({ ...(options?.apiKey ? { apiKey: options.apiKey } : {}), maxRetries: 0 });
     const model = options?.model ?? process.env.ANALYZER_MODEL ?? DEFAULT_ANALYZER_MODEL;
     super(client, model, "anthropic-direct", options?.maxTokens ?? DEFAULT_MAX_TOKENS);
   }
@@ -153,7 +181,8 @@ export class VercelAIGatewayContractAnalyzer extends AnthropicMessagesAnalyzer {
     if (!apiKey) {
       throw new Error("VercelAIGatewayContractAnalyzer requires AI_GATEWAY_API_KEY (or an explicit apiKey option) - none was provided.");
     }
-    const client = new Anthropic({ apiKey, baseURL: options?.baseURL ?? AI_GATEWAY_BASE_URL });
+    // maxRetries: 0 - the SDK never retries; transport-retry.ts is the ONE retry owner
+    const client = new Anthropic({ apiKey, baseURL: options?.baseURL ?? AI_GATEWAY_BASE_URL, maxRetries: 0 });
     const model = options?.model ?? process.env.ANALYZER_MODEL ?? DEFAULT_GATEWAY_ANALYZER_MODEL;
     super(client, model, "vercel-ai-gateway", options?.maxTokens ?? DEFAULT_MAX_TOKENS);
   }

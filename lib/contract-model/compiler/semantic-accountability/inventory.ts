@@ -61,6 +61,9 @@ export interface SemanticInventoryInput {
   structuralIndex?: StructuralIndex | null;
   /** F-5 (v4): primary-text budget per bounded model call (default 6000 chars). */
   batchChars?: number;
+  /** Certified path: the candidate abort signal and hard dispatch budget for every inventory call. */
+  signal?: AbortSignal;
+  budget?: import("../../analyzer/dispatch-budget").DispatchBudget;
 }
 
 const MAX_EXCERPT_CHARS = 400;
@@ -486,7 +489,7 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
   let firstPassWireCount = 0;
   for (const batch of batches) {
     try {
-      const wire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory", buildInventorySystemPrompt(), buildInventoryUserContent(input.sourceContext, batch));
+      const wire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory", buildInventorySystemPrompt(), buildInventoryUserContent(input.sourceContext, batch), { signal: input.signal, budget: input.budget });
       wireItems.push(...wire.items);
       firstPassWireCount += wire.items.length;
     } catch (err) {
@@ -515,7 +518,7 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
     for (const gb of gapBatches) {
       const gaps = gb.slots.map((slot) => affected.find((g) => g.slot.slotId === slot.slotId)!);
       try {
-        const wire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory_gap", buildInventorySystemPrompt(), buildGapReinventoryUserContent(input.sourceContext, gaps, gb.precedingText));
+        const wire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory_gap", buildInventorySystemPrompt(), buildGapReinventoryUserContent(input.sourceContext, gaps, gb.precedingText), { signal: input.signal, budget: input.budget });
         gapWire.push(...wire.items);
         gapCallCount++;
         gapCost = sumCost(gapCost, caller.lastTelemetry()?.calculatedCostUsd ?? null);

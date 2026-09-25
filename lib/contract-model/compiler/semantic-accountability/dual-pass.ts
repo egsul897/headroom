@@ -59,7 +59,7 @@ export async function runDualPassSemanticInventory(input: DualPassInventoryInput
   const passIds = input.passIds ?? DUAL_PASS_IDS;
   if (passIds[0] === passIds[1]) throw new Error("dual-pass ensemble needs two distinct pass ids");
   const callers = input.passCallers ?? [undefined, undefined];
-  const base: Omit<SemanticInventoryInput, "caller"> = { candidateRef: input.candidateRef, documentId: input.documentId, sourceContext: input.sourceContext, externalAccountability: input.externalAccountability, structuralIndex: input.structuralIndex, batchChars: input.batchChars };
+  const base: Omit<SemanticInventoryInput, "caller"> = { candidateRef: input.candidateRef, documentId: input.documentId, sourceContext: input.sourceContext, externalAccountability: input.externalAccountability, structuralIndex: input.structuralIndex, batchChars: input.batchChars, signal: input.signal, budget: input.budget };
   const passes: DualPassInventoryResult["passes"] = [];
   // Sequential and independent: pass 2 starts from the same frozen input as pass 1, never from pass 1's output.
   for (let i = 0; i < 2; i++) {

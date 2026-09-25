@@ -256,7 +256,7 @@ export interface AmendmentPipelineResult {
   summary: AmendmentPipelineSummary;
 }
 
-export async function runAmendmentPipeline(caller: StageCaller, input: AmendmentPipelineInput): Promise<AmendmentPipelineResult> {
+export async function runAmendmentPipeline(caller: StageCaller, input: AmendmentPipelineInput, callOptions: import("../llm-caller").StageCallOptions = {}): Promise<AmendmentPipelineResult> {
   const start = performance.now();
   const deterministicEffects = runDeterministicPass(input);
 
@@ -282,7 +282,7 @@ export async function runAmendmentPipeline(caller: StageCaller, input: Amendment
       targetCurrentText,
       effectiveDate: effect.effectiveDate,
       sourceCitation: effect.sourceCitation,
-    });
+    }, callOptions);
     semanticCallsMade++;
     const telemetry = caller.lastTelemetry();
     inputTokens += telemetry?.inputTokens ?? 0;

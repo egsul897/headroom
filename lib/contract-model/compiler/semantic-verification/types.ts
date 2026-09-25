@@ -168,6 +168,7 @@ export type SemanticVerificationFindingType =
   | "POSSIBLE_RULE_MERGE_ERROR"
   | "POSSIBLE_RULE_SPLIT_ERROR"
   | "VERIFICATION_CONTEXT_INCOMPLETE"
+  | "QUALITATIVE_ASSERTION_UNGROUNDED"
   | "OTHER_MATERIAL_SEMANTIC_DISCREPANCY";
 
 /**
@@ -201,6 +202,14 @@ export interface SemanticVerificationFinding {
   candidateRef: string;
   /** The specific IRRule.ruleId/IRDefinition.definitionId this finding concerns, when the finding is about one particular compiled unit rather than the whole compilation attempt. */
   ruleOrDefinitionId: string | null;
+  /**
+   * P-1 remediation. How ruleOrDefinitionId was arrived at for a semantic (adversarial-review)
+   * finding: OWNER_EXACT when the reviewer named a real unit of this compilation, a repair
+   * marker when the id was fabricated and irPath resolved it, AMBIGUOUS / UNRESOLVED when it
+   * could not be pinned to one unit (ruleOrDefinitionId is then null - never invented).
+   * Absent on deterministic findings, whose owner comes from the reconciliation itself.
+   */
+  ownerNormalization?: import("./finding-owner").FindingOwnerNormalization;
   /** Dot/bracket path into the IR subexpression tree where applicable (e.g. "rules[0].capacityExpression.operands[1]") - never just "somewhere in the rule." */
   irPath: string | null;
   findingType: SemanticVerificationFindingType;
@@ -546,6 +555,8 @@ export interface SemanticVerificationResult {
   evidenceSetHash?: string;
   /** FIX B: the free-text numeric-assertion inventory and its grounding verdicts - the evidence behind every UNSUPPORTED_NUMERIC_ASSERTION finding, and the positive record that every other asserted figure WAS grounded. Absent on pre-Fix-B results. */
   numericAssertions?: { inventory: NumericAssertionInventory; groundings: NumericAssertionGrounding[] };
+  /** Deterministic qualitative accountability audit (qualitative-grounding.ts). */
+  qualitativeLineage?: import("./qualitative-grounding").QualitativeLineageAudit;
   verifierAlgorithmVersion: string;
   verifiedAt: string;
 }
