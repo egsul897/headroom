@@ -110,3 +110,16 @@ Each answer cites the file that makes it true. "Before" refers to HEAD `e9f6b97`
 27. **What does the CI job run?** `.github/workflows/canonical-compiler.yml`: typecheck, the certified suites, the
     verifier/retrieval suites the cleanse touched, the pilot evidence/persistence suites, a credential-literal scan
     and eslint on the certified path - with `AI_GATEWAY_API_KEY` deliberately empty.
+
+## Pass A addendum
+
+28. **Why did tiny clauses burn 40k-117k output tokens?** `inventory.ts` called the generic `getStageCaller()`,
+    whose analyzer sends `max_tokens: 128000` and no `thinking` parameter to a reasoning model, with an unbounded
+    wire schema and a prompt that demanded exhaustive atomic decomposition (`07-pass-a-root-cause.md`, P3-E10..E13).
+29. **What bounds a Pass A call now?** `inventory-policy.ts#deriveInventoryOutputBound`: the derived `max_tokens`
+    (7.2(c): 6,218), the per-call schema `maxItems`, the per-slot allowance in the prompt, `thinking: disabled`, a
+    per-call deadline, and a per-pass call cap. Proven offline by `pass-a-bounds.test.ts` (request bodies captured
+    with a fake fetch) and by the eight-target replay.
+30. **Can the preserved telemetry say whether those tokens were reasoning?** No (P3-E14). The SDK types
+    `usage.output_tokens_details.thinking_tokens`; the analyzer never read it. Every call now records it, plus the raw
+    usage object, the stop reason and the requested ceiling.

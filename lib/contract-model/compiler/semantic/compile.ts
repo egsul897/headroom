@@ -280,11 +280,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       // F-5.3B: two independent Pass A executions -> deterministic ensemble (STRICT compatibility). The second paid
       // call is made here, visibly, by the orchestration module - never inside ensemble.ts, never a third pass.
       const passCallers = options.inventoryPassCallers ?? (options.inventoryCaller ? ([options.inventoryCaller, options.inventoryCaller] as [StageCaller, StageCaller]) : undefined);
-      const dual = await runDualPassSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext: accountabilityContext!, structuralIndex: index, passCallers, signal: callOptions.signal, budget: callOptions.budget });
+      const dual = await runDualPassSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext: accountabilityContext!, structuralIndex: index, passCallers, signal: callOptions.signal, budget: callOptions.budget, policy: options.certified?.inventory });
       frozenInventory = dual.inventory;
       inventoryPasses = dual.passes.map((p) => ({ passId: p.passId, frozenContentHash: p.inventory.frozenContentHash, inventoryStatus: p.inventory.inventoryStatus, items: p.inventory.items.length, telemetryCostUsd: p.inventory.telemetryCostUsd }));
     } else {
-      frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext: accountabilityContext!, caller: options.inventoryCaller, signal: callOptions.signal, budget: callOptions.budget });
+      frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext: accountabilityContext!, structuralIndex: index, caller: options.inventoryCaller, signal: callOptions.signal, budget: callOptions.budget, policy: options.certified?.inventory });
     }
     // The COMPILATION UNIT (mission §13) is the resolved operative region - when the
     // supplied window was extended to its real unit boundary (with provenance on

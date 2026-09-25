@@ -25,8 +25,13 @@ describe("one operative-source builder", () => {
     const constructors = [...LIB, ...walk("scripts/p3-conmed-pilot")].filter((f) => { const s = read(f); return /operativeSourceText:\s/.test(s) && /toolPolicyVersion:\s/.test(s) && /toolAccess: \{/.test(s); });
     expect(constructors.map((f) => f.replace(/\\/g, "/")).sort()).toEqual(["lib/contract-model/covenant-map/candidate-input.ts"]);
     // no other module reads a candidate anchor's DESCENDANTS text to make operative text
-    const descendantsReaders = LIB.filter((f) => /structuralNodeIds\[0\][^\n]*getNodeText\(|getNodeText\([^\n]*structuralNodeIds\[0\]/.test(read(f)));
-    expect(descendantsReaders).toEqual(["lib/contract-model/compiler/candidate-span.ts"]);
+    // no other module turns a candidate's anchor (structuralNodeIds[0]) into operative text via getNodeText
+    const descendantsReaders = LIB.filter((f) => { const s = read(f); return /structuralNodeIds\[0\]/.test(s) && /getNodeText\([^\n]*"DESCENDANTS"\)/.test(s); });
+    // context-retrieval/pipeline.ts reads the anchor's text for the OPERATIVE_SOURCE context ITEM (an excerpt in the bundle), never as compiler input
+    expect(descendantsReaders.sort()).toEqual(["lib/contract-model/compiler/candidate-span.ts", "lib/contract-model/compiler/context-retrieval/pipeline.ts"]);
+    // and the operative-source functions are defined exactly once
+    const definers = LIB.filter((f) => /export function (resolveOperativeSource|operativeSourceTextFor)\(/.test(read(f)));
+    expect(definers).toEqual(["lib/contract-model/compiler/candidate-span.ts"]);
     // the pilot delegates
     expect(read("scripts/p3-conmed-pilot/pipeline.ts")).toMatch(/return operativeSourceTextFor\(candidate, index\)/);
     expect(read("scripts/p3-conmed-pilot/compile-run.ts")).toMatch(/return assembleCompilerInput\(/);

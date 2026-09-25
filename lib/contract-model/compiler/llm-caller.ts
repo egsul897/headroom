@@ -22,7 +22,9 @@ import type { DispatchBudget } from "../analyzer/dispatch-budget";
 import type { AnalyzerCallTelemetry } from "../analyzer/telemetry";
 
 /** Per-call execution controls: the candidate's abort signal and the hard dispatch budget (both certified-path requirements). */
-export interface StageCallOptions { signal?: AbortSignal; budget?: DispatchBudget }
+/** Per-call execution overrides: an explicit output ceiling and an explicit reasoning policy (P3-E10 / P3-E11). Absent = the caller's configured ceiling and PROVIDER_DEFAULT reasoning. */
+export interface StageExecutionOverrides { purpose?: string; maxOutputTokens?: number; reasoning?: "DISABLED" | "MINIMAL" | "PROVIDER_DEFAULT" }
+export interface StageCallOptions { signal?: AbortSignal; budget?: DispatchBudget; execution?: StageExecutionOverrides }
 
 export interface StageCaller {
   providerName: string;

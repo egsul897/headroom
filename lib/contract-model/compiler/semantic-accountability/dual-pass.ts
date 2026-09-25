@@ -63,14 +63,14 @@ export async function runDualPassSemanticInventory(input: DualPassInventoryInput
   const passes: DualPassInventoryResult["passes"] = [];
   // Sequential and independent: pass 2 starts from the same frozen input as pass 1, never from pass 1's output.
   for (let i = 0; i < 2; i++) {
-    const inventory = await runSemanticInventory({ ...base, caller: callers[i] });
+    const inventory = await runSemanticInventory({ ...base, caller: callers[i], passId: passIds[i]!, policy: input.policy });
     passes.push({ passId: passIds[i]!, inventory });
   }
   const notRun = passes.filter((p) => p.inventory.inventoryStatus !== "INVENTORY_OK" && p.inventory.inventoryStatus !== "INVENTORY_COVERAGE_GAP");
   if (notRun.length > 0) {
     const worst = notRun[0]!;
     const refusal = `dual-pass ensemble not built: ${notRun.map((p) => `${p.passId} ${p.inventory.inventoryStatus}`).join(", ")} - a pass that did not run cannot corroborate or be corroborated`;
-    const inventory: FrozenSemanticInventory = { ...worst.inventory, inventoryStatusReason: `${refusal}; ${worst.inventory.inventoryStatusReason}` };
+    const inventory: FrozenSemanticInventory = { ...worst.inventory, inventoryStatusReason: `${refusal}; ${worst.inventory.inventoryStatusReason}`, calls: passes.flatMap((p) => p.inventory.calls ?? []) };
     return { inventory, passes, ensembleBuilt: false, ensembleRefusal: refusal };
   }
   const partition = partitionSourceSlots({ sourceContext: input.sourceContext, structuralIndex: input.structuralIndex ?? null });
@@ -89,5 +89,9 @@ export async function runDualPassSemanticInventory(input: DualPassInventoryInput
     ensemble.partition = { ...partitionRecord, batches: passes.reduce((n, p) => n + (p.inventory.partition?.batches ?? 0), 0), gapBatches: passes.reduce((n, p) => n + (p.inventory.partition?.gapBatches ?? 0), 0), firstPassCalls: passes.reduce((n, p) => n + (p.inventory.partition?.firstPassCalls ?? 0), 0), gapCalls: passes.reduce((n, p) => n + (p.inventory.partition?.gapCalls ?? 0), 0) };
   }
   ensemble.gapReinventory = passes[0]!.inventory.gapReinventory && passes[1]!.inventory.gapReinventory ? { attempted: passes.some((p) => p.inventory.gapReinventory?.attempted), segmentsBefore: passes.reduce((n, p) => n + (p.inventory.gapReinventory?.segmentsBefore ?? 0), 0), itemsAdded: passes.reduce((n, p) => n + (p.inventory.gapReinventory?.itemsAdded ?? 0), 0), duplicatesDropped: passes.reduce((n, p) => n + (p.inventory.gapReinventory?.duplicatesDropped ?? 0), 0), unverifiableDropped: passes.reduce((n, p) => n + (p.inventory.gapReinventory?.unverifiableDropped ?? 0), 0), segmentsAfter: ensemble.unaccountedSource.length, costUsd: passes.reduce<number | null>((acc, p) => (acc === null && (p.inventory.gapReinventory?.costUsd ?? null) === null ? null : (acc ?? 0) + (p.inventory.gapReinventory?.costUsd ?? 0)), null), error: passes.map((p) => p.inventory.gapReinventory?.error).filter(Boolean).join("; ") || null } : null;
+  // P3-E14: the ensemble carries EVERY call of both passes (pass id on each record), the shared policy identity and the over-bound total.
+  ensemble.calls = passes.flatMap((p) => p.inventory.calls ?? []);
+  ensemble.executionPolicy = passes[0]!.inventory.executionPolicy;
+  ensemble.rejectedOverBoundItems = passes.reduce((n, p) => n + (p.inventory.rejectedOverBoundItems ?? 0), 0);
   return { inventory: ensemble, passes, ensembleBuilt: true, ensembleRefusal: null };
 }

@@ -87,6 +87,8 @@ export interface CandidateEvidence {
   sourceContext: { state: string; reasons: string[]; regions: { regionId: string; kind: string; documentId: string; sectionRef: string | null; chars: number; charStart: number; truncatedAtBudget: boolean }[] } | null;
   /** v2: the explicit certified configuration identity and the candidate's execution telemetry (conversations, transport attempts, shard attempts, cost separation). */
   certified: { configIdentity: string; telemetry: unknown } | null;
+  /** v2 (P3-E14): Pass A call-by-call records (pass id, batch, slot ids, requested ceiling, reasoning policy, input / visible / reasoning / total output tokens, latency, stop reason, schema outcome, item counts) and the policy identity. */
+  passA: { executionPolicy: string | null; calls: unknown[]; passes: unknown } | null;
   contextBundle: {
     bundleId: string;
     sufficiencyState: string;
@@ -184,6 +186,7 @@ export function buildCandidateEvidence(
       ? { state: result.sourceContext.state, reasons: result.sourceContext.reasons, regions: result.sourceContext.regions.map((r) => ({ regionId: r.regionId, kind: r.kind, documentId: r.documentId, sectionRef: r.sectionRef, chars: r.text.length, charStart: r.charStart, truncatedAtBudget: r.truncatedAtBudget })) }
       : null,
     certified: extras.certified ?? null,
+    passA: result.frozenInventory ? { executionPolicy: result.frozenInventory.executionPolicy ?? null, calls: result.frozenInventory.calls ?? [], passes: result.inventoryPasses ?? null } : null,
     contextBundle: bundle
       ? {
           bundleId: bundle.bundleId ?? "(none)",

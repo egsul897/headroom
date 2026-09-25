@@ -310,7 +310,7 @@ describe("harness integration (§21-§25)", () => {
     expect(fs.existsSync(out.verifiedUnitsPath!)).toBe(true);
     const evidence = JSON.parse(fs.readFileSync(out.evidencePath, "utf8"));
     expect(evidence.schema).toBe("p3-candidate-evidence.v2");
-    expect(evidence).toMatchObject({ execution: null, sourceContext: null, certified: null }); // additive v2 sections, null when the compile carried none
+    expect(evidence).toMatchObject({ execution: null, sourceContext: null, certified: null, passA: null }); // additive v2 sections, null when the compile carried none
     expect(evidence.compilerInput.operativeSourceOrigin).toBeNull();
     expect(evidence.compilation.rules).toHaveLength(1);
     expect(evidence.verification.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");

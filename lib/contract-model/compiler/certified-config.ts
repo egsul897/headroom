@@ -17,6 +17,7 @@ import type { SemanticInventoryMode } from "./semantic-accountability/dual-pass"
 import type { TransportRetryPolicy } from "../analyzer/transport-retry";
 import { CERTIFIED_TRANSPORT_RETRY_POLICY } from "../analyzer/transport-retry";
 import { DEFAULT_TOOL_BUDGET } from "./semantic/types";
+import { CERTIFIED_INVENTORY_EXECUTION_POLICY, inventoryPolicyIdentity, type Phase3InventoryExecutionPolicy } from "./semantic-accountability/inventory-policy";
 
 export const CERTIFIED_COMPILER_CONFIG_VERSION = "certified-compiler-config.v1";
 export const CERTIFIED_INVENTORY_MODE: SemanticInventoryMode = "DUAL_PASS_ENSEMBLE";
@@ -49,6 +50,8 @@ export interface CertifiedCompilerConfig {
    * pre-remediation behaviour, selectable explicitly.
    */
   expansionRegionPolicy: "CONTEXT_ONLY" | "OWNED";
+  /** P3-E10..E13: the Pass A execution policy (derived output ceilings, explicit reasoning, bounded schema, call caps). */
+  inventory: Phase3InventoryExecutionPolicy;
 }
 
 export function certifiedConfig(overrides: Pick<CertifiedCompilerConfig, "semanticModel" | "inventoryModel" | "verifierModel"> & Partial<Omit<CertifiedCompilerConfig, "configVersion" | "semanticModel" | "inventoryModel" | "verifierModel">>): CertifiedCompilerConfig {
@@ -64,6 +67,7 @@ export function certifiedConfig(overrides: Pick<CertifiedCompilerConfig, "semant
     transportRetry: CERTIFIED_TRANSPORT_RETRY_POLICY,
     executionPolicyVersion: "certified-execution.v1",
     expansionRegionPolicy: "CONTEXT_ONLY",
+    inventory: CERTIFIED_INVENTORY_EXECUTION_POLICY,
     ...overrides,
   };
 }
@@ -81,10 +85,12 @@ export function validateCertifiedConfig(c: CertifiedCompilerConfig): string[] {
   if (!(c.maxOutputTokens > 0)) problems.push("maxOutputTokens");
   if (c.transportRetry.maxAttempts < 1 || c.transportRetry.maxAttempts > 3) problems.push("transportRetry.maxAttempts must be 1..3");
   if (c.expansionRegionPolicy !== "CONTEXT_ONLY" && c.expansionRegionPolicy !== "OWNED") problems.push("expansionRegionPolicy must be explicit");
+  if (!c.inventory || (c.inventory.reasoning !== "DISABLED" && c.inventory.reasoning !== "MINIMAL" && c.inventory.reasoning !== "PROVIDER_DEFAULT")) problems.push("inventory.reasoning must be explicit");
+  if (c.inventory && !(c.inventory.perSlot.cap >= 1 && c.inventory.maxCallsPerPass >= 1 && c.inventory.bounds.excerptChars > 0)) problems.push("inventory policy bounds");
   return problems;
 }
 
 /** Deterministic identity string entering cache keys and evidence. */
 export function certifiedConfigIdentity(c: CertifiedCompilerConfig): string {
-  return [c.configVersion, `inventory=${c.inventoryMode}`, `semantic=${c.semanticModel}`, `inventoryModel=${c.inventoryModel}`, `verifier=${c.verifierModel}`, `tools=${c.toolBudget.maxToolCalls}/${c.toolBudget.maxRecursionDepth}/${c.toolBudget.maxAdditionalSourceChars}`, `conv=${c.maxSemanticConversations}+${c.maxRefinementConversations}`, `shardAttempts=${c.shardMaxAttempts}`, `maxOut=${c.maxOutputTokens}`, `deadline=${c.candidateDeadlineMs}`, `retry=${c.transportRetry.maxAttempts}`, `expansions=${c.expansionRegionPolicy}`, c.executionPolicyVersion].join("|");
+  return [c.configVersion, `inventory=${c.inventoryMode}`, `semantic=${c.semanticModel}`, `inventoryModel=${c.inventoryModel}`, `verifier=${c.verifierModel}`, `tools=${c.toolBudget.maxToolCalls}/${c.toolBudget.maxRecursionDepth}/${c.toolBudget.maxAdditionalSourceChars}`, `conv=${c.maxSemanticConversations}+${c.maxRefinementConversations}`, `shardAttempts=${c.shardMaxAttempts}`, `maxOut=${c.maxOutputTokens}`, `deadline=${c.candidateDeadlineMs}`, `retry=${c.transportRetry.maxAttempts}`, `expansions=${c.expansionRegionPolicy}`, `passA=${inventoryPolicyIdentity(c.inventory)}`, c.executionPolicyVersion].join("|");
 }

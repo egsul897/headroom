@@ -32,7 +32,8 @@ export const ENSEMBLE_ALGORITHM_VERSION = "semantic-ensemble.v1";
 export type UnionPolicy = "INTERSECTION_ONLY" | "RAW_UNION" | "SUPPORT_AWARE_CANONICAL_UNION";
 /** The Pass A evidence generations this ensemble may combine under STRICT. Exactly the current generation: a new generation is a deliberate, versioned decision, never an implicit one. */
 export const ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS: readonly string[] = [SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION];
-export const ENSEMBLE_SUPPORTED_PROMPT_VERSIONS: readonly string[] = [SEMANTIC_INVENTORY_PROMPT_VERSION];
+/** v5 (the preserved phase-3 runs) and v6 (the bounded slot-classification prompt) are both ensemble-compatible generations; the STRICT gate still requires both passes of ONE ensemble to share a version. */
+export const ENSEMBLE_SUPPORTED_PROMPT_VERSIONS: readonly string[] = ["semantic-inventory-prompt.v5", SEMANTIC_INVENTORY_PROMPT_VERSION];
 
 export interface EnsemblePass {
   /** Generic pass identifier (e.g. "pass-1"); never a semantic label. */

@@ -27,6 +27,16 @@ database suites need a database service and are not part of that job.
   a past bake-off run that does not survive the sandbox. Red on the baseline commit as well. The module is classified
   BENCHMARKING ONLY (see `03-pilot-module-classification.md`).
 
+## 2b. Environment-dependent, not code-dependent
+
+- `tests/benchmark-integrity/v31-benchmark-integrity.test.ts` asserts a clean git working tree; it is red while
+  work is uncommitted and green after the commit.
+- `tests/contract-model/part-b-terminal-recert-open3-independent.test.ts` ("measured multi-point scaling is
+  consistent with O(n)") is a wall-clock timing test; it fails under the full parallel suite (2.46 vs a 2.40 bound)
+  and passes when run alone. Timing-sensitive, not a code regression.
+- `tests/certification/part-b-recert-fix3-independent-adversarial.test.ts` is database-backed (its first
+  `prisma.analysisFailureLog.deleteMany` fails) although its failure message does not name Prisma.
+
 ## 3. Pre-existing TypeScript errors outside the compiler
 
 `tests/foundation-audit/*` carries 6 pre-existing `tsc` errors (recorded at mission start). Not touched.
@@ -34,7 +44,17 @@ database suites need a database service and are not part of that job.
 ## 4. What the cleanse changed in test expectations
 
 - `tests/phase-3-conmed-pilot/verified-unit-persistence.test.ts`: evidence schema pin `p3-candidate-evidence.v1` ->
-  `v2` (additive sections `execution`, `sourceContext`, `certified`, `compilerInput.operativeSourceOrigin`,
+  `v2` (additive sections `execution`, `sourceContext`, `certified`, `passA`, `compilerInput.operativeSourceOrigin`,
   `compilation.providerError`, `verification.qualitativeLineage`).
+- `tests/phase-3-conmed-pilot/benchmark-recovery-preflight.test.ts`: the Pass A batch-size mirror now reads the
+  explicit inventory policy (`input.batchChars ?? policy.batchChars`, certified value 6,000) instead of a literal.
+- `tests/contract-model/phase-3-601-hd4-durable-replay.test.ts`, `scripts/phase-3-601-hd4-scripted.ts`
+  (`stripVolatile`): the new `FrozenSemanticInventory.calls` execution records (latency, live-vs-replay token
+  counters) are stripped like `frozenAt` before content equality; `frozenContentHash` never covered them.
+- `tests/contract-model/f7c-production-activation.test.ts`: unchanged assertion; the SINGLE_PASS compile path now
+  receives the structural index like DUAL_PASS does (it partitioned slots without it before), so both modes make the
+  same number of Pass A calls under the batch-slot ceiling.
+- `lib/contract-model/compiler/semantic-accountability/ensemble.ts`: prompt generations v5 (preserved runs) and v6
+  (bounded prompt) are both ensemble-compatible; the STRICT gate still requires one ensemble's two passes to match.
 
 No test was skipped, disabled or quarantined by the cleanse.

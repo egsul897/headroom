@@ -7,6 +7,7 @@
 delete process.env.AI_GATEWAY_API_KEY;
 delete process.env.ANTHROPIC_API_KEY;
 
+import { CERTIFIED_INVENTORY_EXECUTION_POLICY } from "../../lib/contract-model/compiler/semantic-accountability/inventory-policy";
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { accountForRequest, BudgetLedger, DEFAULT_CANDIDATE_TIMEOUT_MS, MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND, OBSERVED_OUTPUT_TOKENS_PER_SECOND } from "../../scripts/p3-conmed-pilot/timeout-policy";
@@ -170,7 +171,9 @@ describe("P-7: reservations cover the execution shape the runner permits", () =>
   it("the mirrored compiler limits match the frozen source they mirror", () => {
     expect(src("lib/contract-model/compiler/semantic/caller.ts")).toMatch(new RegExp(`const MAX_TURN_OVERHEAD = ${MAX_TURN_OVERHEAD_MIRROR};`));
     expect(src("lib/contract-model/compiler/semantic/caller.ts")).toMatch(/const maxTurns = budget\.maxToolCalls \+ MAX_TURN_OVERHEAD;/);
-    expect(src("lib/contract-model/compiler/semantic-accountability/inventory.ts")).toMatch(new RegExp(`input\\.batchChars \\?\\? ${PASS_A_BATCH_CHARS_MIRROR};`));
+    // the batch size now comes from the explicit inventory execution policy (P3-E10..E13), whose certified value the harness mirrors
+    expect(src("lib/contract-model/compiler/semantic-accountability/inventory.ts")).toMatch(/input\.batchChars \?\? policy\.batchChars;/);
+    expect(CERTIFIED_INVENTORY_EXECUTION_POLICY.batchChars).toBe(PASS_A_BATCH_CHARS_MIRROR);
     expect(TURNS_PER_CONVERSATION).toBe(DEFAULT_TOOL_BUDGET.maxToolCalls + 4);
     expect(src("scripts/p3-conmed-pilot/gateway-health.ts")).toMatch(/max_tokens: 32/); expect(src("scripts/p3-conmed-pilot/gateway-health.ts")).toMatch(/max_tokens: 1024/); expect(src("scripts/p3-conmed-pilot/gateway-health.ts")).toMatch(/\.repeat\(220\)/);
   });

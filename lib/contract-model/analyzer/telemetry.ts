@@ -46,6 +46,14 @@ export interface AnalyzerCallTelemetry {
   /** thresholdValue-USD = tokens x a cited published rate card. Always labeled PROJECTED wherever surfaced in the report. */
   calculatedCostUsd: number | null;
   error?: string;
+  /** P3-E14 (additive): the provider's stop reason, the requested output ceiling and reasoning policy, and the reasoning/visible split when the provider reports it (Anthropic usage.output_tokens_details.thinking_tokens). */
+  stopReason?: string | null;
+  requestedMaxOutputTokens?: number;
+  reasoningPolicy?: "DISABLED" | "MINIMAL" | "PROVIDER_DEFAULT";
+  thinkingTokens?: number | null;
+  visibleOutputTokens?: number | null;
+  /** The usage object exactly as received (a gateway may add fields the SDK type does not declare). */
+  rawUsage?: Record<string, unknown> | null;
 }
 
 /** Anthropic's own published rate cards (USD per token) - current as of this session, per Anthropic's own pricing reference. */

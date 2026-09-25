@@ -51,7 +51,7 @@
  * derived compatibility field. Ids are re-keyed relative to v4 evidence (cross-run comparison is semantic).
  */
 export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v5";
-export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v5";
+export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v6";
 
 // ---------------------------------------------------------------------------
 // Semantic roles (mission §3) - compact semantic PRIMITIVES, never covenant
@@ -268,6 +268,31 @@ export interface GapReinventoryRecord {
   error: string | null;
 }
 
+/** P3-E14: one record per Pass A provider call - what was asked, what came back, what was kept. */
+export interface InventoryCallRecord {
+  passId: string | null;
+  batchId: string;
+  stage: "semantic_inventory" | "semantic_inventory_gap";
+  slotIds: string[];
+  requestedMaxOutputTokens: number | null;
+  reasoningPolicy: string | null;
+  maxItems: number | null;
+  inputTokens: number | null;
+  /** Visible structured-output tokens when the provider separates them (output - thinking); null when it does not. */
+  visibleOutputTokens: number | null;
+  /** Reasoning/thinking tokens when the provider reports them (Anthropic usage.output_tokens_details.thinking_tokens); null when not reported. */
+  reasoningTokens: number | null;
+  totalOutputTokens: number | null;
+  latencyMs: number | null;
+  stopReason: string | null;
+  schemaOk: boolean;
+  error: string | null;
+  itemsReturned: number;
+  itemsAccepted: number;
+  /** Items beyond the slot allowance (telemetry; not dropped). */
+  itemsRejectedOverBound: number;
+}
+
 export interface FrozenSemanticInventory {
   candidateRef: string;
   items: SemanticInventoryItem[];
@@ -293,6 +318,12 @@ export interface FrozenSemanticInventory {
   provider: string;
   model: string;
   telemetryCostUsd: number | null;
+  /** P3-E14: call-by-call execution records (both passes under DUAL_PASS_ENSEMBLE). Additive. */
+  calls?: InventoryCallRecord[];
+  /** Identity of the inventory execution policy the calls ran under (inventory-policy.ts). Additive. */
+  executionPolicy?: string;
+  /** Items beyond their slot's derived proposition allowance (counted for telemetry; never dropped - the schema ceiling bounds volume before the call). Additive. */
+  rejectedOverBoundItems?: number;
   /** F-5 (v4): the deterministic slot partition Pass A inventoried against, and how many bounded calls it took. Absent on v3-and-earlier evidence. */
   /** F-5.3: present only on an ensemble (dual-pass) inventory built by ensemble.ts. */
   ensemble?: EnsembleRecord;

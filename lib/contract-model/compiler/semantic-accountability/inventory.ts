@@ -36,10 +36,12 @@ import { hashParts } from "../hashing";
 import { computeStableKey } from "../../stable-keys";
 import { buildGapReinventoryUserContent, buildInventorySystemPrompt, buildInventoryUserContent } from "./prompt";
 import { quantitativeValuesEquivalent, scanQuantitativeValues } from "./quantitative";
-import { SubmitSemanticInventorySchema, type WireInventoryItem } from "./wire-schema";
+import { buildSubmitSemanticInventorySchema, type WireInventoryItem } from "./wire-schema";
+import { CERTIFIED_INVENTORY_EXECUTION_POLICY, computeSlotSignals, deriveInventoryOutputBound, inventoryPolicyIdentity, type InventoryOutputBound, type Phase3InventoryExecutionPolicy, type SlotDeterministicSignals } from "./inventory-policy";
+import { createDeadline } from "../../analyzer/deadline";
 import { INVENTORY_AMBIGUITIES, INVENTORY_MATERIALITIES, OPERATIVE_FLAGS, QUANTITATIVE_KINDS, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, SEMANTIC_INVENTORY_PROMPT_VERSION, SEMANTIC_ROLES } from "./types";
 import { deriveLegacyRole, deriveSemanticFunctions, effectsContradict, functionsSignature, unionFunctions, type SemanticFunctions } from "./semantic-functions";
-import type { FrozenSemanticInventory, GapReinventoryRecord, InventoryAmbiguity, InventoryMateriality, InventoryStatus, OperativeFlag, QuantitativeKind, QuantitativeValue, SemanticInventoryItem, SemanticRole, SourceCoverageSummary, SourceContextRegion, SourceContextResult, UnaccountedSourceSpan } from "./types";
+import type { FrozenSemanticInventory, GapReinventoryRecord, InventoryCallRecord, InventoryAmbiguity, InventoryMateriality, InventoryStatus, OperativeFlag, QuantitativeKind, QuantitativeValue, SemanticInventoryItem, SemanticRole, SourceCoverageSummary, SourceContextRegion, SourceContextResult, UnaccountedSourceSpan } from "./types";
 import { computeSourceCoverage, isAccountedDisposition, type AccountingSpanInput, type ExternalAccountabilityLink, type SourceCoverageResult } from "./source-coverage";
 import { batchSlots, coordinationIndex, partitionSourceSlots, slotForOffset, type SlotBatch, type SlotPartition, type SourceSlot } from "./slots";
 import { computePartitionHash, computeSourceContextHash } from "./source-identity";
@@ -64,6 +66,10 @@ export interface SemanticInventoryInput {
   /** Certified path: the candidate abort signal and hard dispatch budget for every inventory call. */
   signal?: AbortSignal;
   budget?: import("../../analyzer/dispatch-budget").DispatchBudget;
+  /** P3-E10..E13: the explicit Pass A execution policy (output ceiling derived per call, reasoning policy, bounds, call caps). Default: the certified policy. */
+  policy?: Phase3InventoryExecutionPolicy;
+  /** Dual-pass: which pass this run is (recorded on every call record). */
+  passId?: string;
 }
 
 const MAX_EXCERPT_CHARS = 400;
@@ -229,7 +235,7 @@ function freezeHash(items: SemanticInventoryItem[], uninventoried: FrozenSemanti
   return hashParts([SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, ...parts.sort()]);
 }
 
-function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: SemanticInventoryItem[], status: InventoryStatus, statusReason: string, rejectedUnverifiable: number, rejectedDuplicates: number, cov: SourceCoverageResult, gapReinventory: GapReinventoryRecord | null, costUsd: number | null, partition?: FrozenSemanticInventory["partition"]): FrozenSemanticInventory {
+function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: SemanticInventoryItem[], status: InventoryStatus, statusReason: string, rejectedUnverifiable: number, rejectedDuplicates: number, cov: SourceCoverageResult, gapReinventory: GapReinventoryRecord | null, costUsd: number | null, partition?: FrozenSemanticInventory["partition"], execution?: { calls: InventoryCallRecord[]; policy: Phase3InventoryExecutionPolicy; rejectedOverBound: number }): FrozenSemanticInventory {
   // Quantitative accounting comes from the same coverage pass as the text: EVERY quantitative kind, EVERY region.
   // There is no money/percent/ratio shortlist and no "operative" region filter - the audit demonstrated both as
   // silent-omission channels. A value inside deterministically non-semantic source (page furniture, a heading) is
@@ -256,6 +262,7 @@ function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: 
     provider: caller.providerName,
     model: caller.model,
     telemetryCostUsd: costUsd,
+    ...(execution ? { calls: execution.calls, executionPolicy: inventoryPolicyIdentity(execution.policy), rejectedOverBoundItems: execution.rejectedOverBound } : {}),
     ...(partition ? { partition } : {}),
     // F-5.3B: the exact input this run inventoried, pinned at freeze so the dual-pass ensemble's compatibility gate can
     // key on it (never on candidateRef alone). Not part of frozenContentHash (which covers the run's OUTPUT).
@@ -466,8 +473,82 @@ function gapsBySlot(partition: SlotPartition, unaccounted: { regionId: string; c
  * returns, coverage is recomputed, and anything still unaccounted is surfaced
  * with status INVENTORY_COVERAGE_GAP - never INVENTORY_OK.
  */
+/** ONE bounded Pass A call: derived schema + ceiling, explicit reasoning, its own deadline, over-bound rejection, a call record. */
+async function boundedInventoryCall(input: SemanticInventoryInput, caller: StageCaller, policy: Phase3InventoryExecutionPolicy, stage: InventoryCallRecord["stage"], batchId: string, slots: SourceSlot[], userContent: (bound: InventoryOutputBound, signals: Map<string, SlotDeterministicSignals>) => string, calls: InventoryCallRecord[]): Promise<{ items: WireInventoryItem[]; rejectedOverBound: number }> {
+  const signals = new Map(slots.map((sl) => [sl.slotId, computeSlotSignals(sl, input.structuralIndex ?? null)] as const));
+  const bound = deriveInventoryOutputBound(slots, input.structuralIndex ?? null, policy);
+  const schema = buildSubmitSemanticInventorySchema(policy.bounds, bound.parseCeiling);
+  const deadline = createDeadline(policy.callDeadlineMs, input.signal);
+  const record: InventoryCallRecord = { passId: input.passId ?? null, batchId, stage, slotIds: slots.map((sl) => sl.slotId), requestedMaxOutputTokens: bound.maxOutputTokens, reasoningPolicy: policy.reasoning, maxItems: bound.maxItems, inputTokens: null, visibleOutputTokens: null, reasoningTokens: null, totalOutputTokens: null, latencyMs: null, stopReason: null, schemaOk: false, error: null, itemsReturned: 0, itemsAccepted: 0, itemsRejectedOverBound: 0 };
+  const startedAt = Date.now();
+  try {
+    const wire = await caller.call(schema, stage, buildInventorySystemPrompt(policy), userContent(bound, signals), { signal: deadline.signal, budget: input.budget, execution: { purpose: "SEMANTIC_INVENTORY", maxOutputTokens: bound.maxOutputTokens, reasoning: policy.reasoning } });
+    // per-slot allowance enforced in code: the first N items of a slot are kept in submission order, the rest dropped and counted
+    const allowance = new Map(bound.perSlot.map((p) => [p.slotId, p.maxPropositions] as const));
+    const used = new Map<string, number>();
+    const kept: WireInventoryItem[] = [];
+    let rejected = 0;
+    // the allowance is charged to the slot the excerpt REALLY comes from (named slot first, then located by text) -
+    // a missing or wrong slotId is recovered exactly as normalization recovers it, never charged to a phantom slot
+    const regionText = new Map(input.sourceContext.regions.map((r) => [r.regionId, r.text] as const));
+    const slotOf = (it: WireInventoryItem): string => {
+      if (it.slotId && allowance.has(it.slotId) && locateExcerpt(slots.find((sl) => sl.slotId === it.slotId)!.text, it.excerpt)) return it.slotId;
+      const inSlot = slots.find((sl) => locateExcerpt(sl.text, it.excerpt));
+      if (inSlot) return inSlot.slotId;
+      // an excerpt spanning slot boundaries is charged to the slot its START falls in (exactly how normalization anchors it)
+      for (const regionId of new Set(slots.map((sl) => sl.regionId))) {
+        const loc = locateExcerpt(regionText.get(regionId) ?? "", it.excerpt);
+        if (!loc) continue;
+        const owner = slots.find((sl) => sl.regionId === regionId && sl.charStart <= loc.charStart && loc.charStart < sl.charEnd);
+        if (owner) return owner.slotId;
+      }
+      return "(unslotted)";
+    };
+    // Volume is bounded BEFORE the call (schema maxItems + max_tokens). The per-slot allowance is measured here, after
+    // the call, as telemetry: an item beyond its slot's allowance is counted (itemsRejectedOverBound is the count of
+    // over-allowance items) but NOT dropped - deterministic excerpt verification and identity clustering decide what
+    // is accepted, and a legitimate cross-slot proposition must never be lost to a counting rule.
+    for (const it of wire.items) {
+      const key = slotOf(it);
+      const cap = key === "(unslotted)" ? policy.perSlot.unslottedPerCall : allowance.get(key)!;
+      const n = (used.get(key) ?? 0) + 1;
+      used.set(key, n);
+      if (n > cap) rejected++;
+      kept.push(it);
+    }
+    const t = caller.lastTelemetry();
+    Object.assign(record, { schemaOk: true, itemsReturned: wire.items.length, itemsAccepted: kept.length, itemsRejectedOverBound: rejected, inputTokens: t?.inputTokens ?? null, totalOutputTokens: t?.outputTokens ?? null, reasoningTokens: t?.thinkingTokens ?? null, visibleOutputTokens: t?.visibleOutputTokens ?? null, latencyMs: t?.latencyMs ?? Date.now() - startedAt, stopReason: t?.stopReason ?? null });
+    calls.push(record);
+    return { items: kept, rejectedOverBound: rejected };
+  } catch (err) {
+    const t = caller.lastTelemetry();
+    Object.assign(record, { schemaOk: false, error: err instanceof Error ? err.message : String(err), inputTokens: t?.inputTokens ?? null, totalOutputTokens: t?.outputTokens ?? null, reasoningTokens: t?.thinkingTokens ?? null, visibleOutputTokens: t?.visibleOutputTokens ?? null, latencyMs: Date.now() - startedAt, stopReason: t?.stopReason ?? null });
+    calls.push(record);
+    throw err;
+  } finally {
+    deadline.dispose();
+  }
+}
+
+/** A batch never carries more slots than the policy allows; an oversized batch is split in order (the derived ceiling is per call). */
+export function splitOversizedBatches(batches: SlotBatch[], maxSlots: number): SlotBatch[] {
+  const out: SlotBatch[] = [];
+  for (const b of batches) {
+    if (b.slots.length <= maxSlots) { out.push({ ...b, batchIndex: out.length }); continue; }
+    for (let i = 0; i < b.slots.length; i += maxSlots) {
+      const slots = b.slots.slice(i, i + maxSlots);
+      out.push({ batchIndex: out.length, slots, precedingText: i === 0 ? b.precedingText : "", chars: slots.reduce((n, sl) => n + sl.text.length, 0) });
+    }
+  }
+  return out;
+}
+
 export async function runSemanticInventory(input: SemanticInventoryInput): Promise<FrozenSemanticInventory> {
   const caller = input.caller ?? getStageCaller();
+  const policy = input.policy ?? CERTIFIED_INVENTORY_EXECUTION_POLICY;
+  const calls: InventoryCallRecord[] = [];
+  let rejectedOverBound = 0;
+  const execution = () => ({ calls, policy, rejectedOverBound });
   const emptyCoverage = () => coverageFor(input, []);
   if (caller.isSynthetic) {
     return buildResult(input, caller, [], "INVENTORY_SKIPPED_NO_PROVIDER", "no real model provider is configured (synthetic StageCaller) - the inventory was not generated; accountability cannot be established for this unit", 0, 0, emptyCoverage(), null, null);
@@ -475,25 +556,29 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
   // F-5 (v4): deterministic slots first, then bounded calls over consecutive slot batches. The source, not the
   // model, decides the boundaries; the model interprets each slot's semantics within them.
   const partition = partitionSourceSlots({ sourceContext: input.sourceContext, structuralIndex: input.structuralIndex ?? null });
-  const batchChars = input.batchChars ?? 6000;
+  const batchChars = input.batchChars ?? policy.batchChars;
   // First pass: the OPERATIVE region(s) only, exactly as v3 - expansion regions are read-only context ("inventory a
   // non-operative region's own components only where the operative text incorporates them"). Every region stays
   // in the partition so an item located in an expansion region still gets a slot identity, and the gap pass can
   // re-present any region's unaccounted slots.
   const operativeRegionIds = new Set(input.sourceContext.regions.filter((r) => r.kind === "OPERATIVE").map((r) => r.regionId));
   const firstPassPartition: SlotPartition = { slots: partition.slots.filter((sl) => operativeRegionIds.size === 0 || operativeRegionIds.has(sl.regionId)), methods: partition.methods };
-  const batches: SlotBatch[] = batchSlots(firstPassPartition, input.sourceContext, batchChars);
+  const batches: SlotBatch[] = splitOversizedBatches(batchSlots(firstPassPartition, input.sourceContext, batchChars), policy.maxBatchSlots);
+  if (batches.length > policy.maxCallsPerPass) {
+    return buildResult(input, caller, [], "INVENTORY_FAILED", `the unit needs ${batches.length} first-pass calls, above the policy ceiling of ${policy.maxCallsPerPass} - refused before any call was made`, 0, 0, emptyCoverage(), null, null, undefined, execution());
+  }
   const partitionRecord = (gapBatches: number, gapCalls: number): FrozenSemanticInventory["partition"] => ({ methods: partition.methods, slots: partition.slots.map((sl) => ({ slotId: sl.slotId, regionId: sl.regionId, sectionRef: sl.sectionRef, charStart: sl.charStart, charEnd: sl.charEnd })), batches: batches.length, batchChars, gapBatches, firstPassCalls: batches.length, gapCalls });
   const wireItems: WireInventoryItem[] = [];
   let firstPassCost: number | null = null;
   let firstPassWireCount = 0;
   for (const batch of batches) {
     try {
-      const wire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory", buildInventorySystemPrompt(), buildInventoryUserContent(input.sourceContext, batch), { signal: input.signal, budget: input.budget });
-      wireItems.push(...wire.items);
-      firstPassWireCount += wire.items.length;
+      const r = await boundedInventoryCall(input, caller, policy, "semantic_inventory", `b${batch.batchIndex + 1}`, batch.slots, (bound, signals) => buildInventoryUserContent(input.sourceContext, batch, { bound, signals }), calls);
+      wireItems.push(...r.items);
+      rejectedOverBound += r.rejectedOverBound;
+      firstPassWireCount += r.items.length;
     } catch (err) {
-      return buildResult(input, caller, [], "INVENTORY_FAILED", `inventory call failed on batch ${batch.batchIndex + 1}/${batches.length}: ${err instanceof Error ? err.message : String(err)}`, 0, 0, emptyCoverage(), null, sumCost(firstPassCost, caller.lastTelemetry()?.calculatedCostUsd ?? null), partitionRecord(0, 0));
+      return buildResult(input, caller, [], "INVENTORY_FAILED", `inventory call failed on batch ${batch.batchIndex + 1}/${batches.length}: ${err instanceof Error ? err.message : String(err)}`, 0, 0, emptyCoverage(), null, sumCost(firstPassCost, caller.lastTelemetry()?.calculatedCostUsd ?? null), partitionRecord(0, 0), execution());
     }
     firstPassCost = sumCost(firstPassCost, caller.lastTelemetry()?.calculatedCostUsd ?? null);
   }
@@ -510,7 +595,7 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
     const segmentsBefore = cov.unaccounted.length;
     const affected = gapsBySlot(partition, cov.unaccounted);
     const gapPartition: SlotPartition = { slots: affected.map((g) => g.slot), methods: partition.methods };
-    const gapBatches = batchSlots(gapPartition, input.sourceContext, batchChars);
+    const gapBatches = splitOversizedBatches(batchSlots(gapPartition, input.sourceContext, batchChars), policy.maxBatchSlots).slice(0, Math.max(0, policy.maxCallsPerPass - batches.length));
     gapBatchCount = gapBatches.length;
     const gapWire: WireInventoryItem[] = [];
     let gapCost: number | null = null;
@@ -518,8 +603,9 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
     for (const gb of gapBatches) {
       const gaps = gb.slots.map((slot) => affected.find((g) => g.slot.slotId === slot.slotId)!);
       try {
-        const wire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory_gap", buildInventorySystemPrompt(), buildGapReinventoryUserContent(input.sourceContext, gaps, gb.precedingText), { signal: input.signal, budget: input.budget });
-        gapWire.push(...wire.items);
+        const r = await boundedInventoryCall(input, caller, policy, "semantic_inventory_gap", `g${gb.batchIndex + 1}`, gb.slots, (bound, signals) => buildGapReinventoryUserContent(input.sourceContext, gaps, gb.precedingText, { bound, signals }), calls);
+        gapWire.push(...r.items);
+        rejectedOverBound += r.rejectedOverBound;
         gapCallCount++;
         gapCost = sumCost(gapCost, caller.lastTelemetry()?.calculatedCostUsd ?? null);
       } catch (err) {
@@ -548,14 +634,14 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
   // both refuse completeness identically, and EMPTY_SUSPECT names the more specific failure. Its span list is the
   // same coverage result, so no unaccounted text is lost by taking this branch.
   if (items.length === 0 && sourceLooksMaterial(input.sourceContext)) {
-    return buildResult(input, caller, items, "INVENTORY_EMPTY_SUSPECT", `the model returned ${firstPassWireCount} item(s), ${rejectedUnverifiable} rejected as unverifiable, leaving an EMPTY inventory over source that carries quantitative values or operative language - treated as suspect, never as 'nothing material here'; ${cov.unaccounted.length} stretch(es) of source are unaccounted`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo);
+    return buildResult(input, caller, items, "INVENTORY_EMPTY_SUSPECT", `the model returned ${firstPassWireCount} item(s), ${rejectedUnverifiable} rejected as unverifiable, leaving an EMPTY inventory over source that carries quantitative values or operative language - treated as suspect, never as 'nothing material here'; ${cov.unaccounted.length} stretch(es) of source are unaccounted`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo, execution());
   }
   if (cov.unaccounted.length > 0) {
     const preview = cov.unaccounted.slice(0, 3).map((s) => `${s.regionId}:${s.charStart}-${s.charEnd}`).join(", ");
-    return buildResult(input, caller, items, "INVENTORY_COVERAGE_GAP", `${items.length} item(s) accepted (${gapReinventory.itemsAdded} added by the targeted gap re-inventory), but ${cov.unaccounted.length} stretch(es) of source across ${cov.regionsConsidered.length} region(s) remain UNACCOUNTED_SOURCE (${preview}${cov.unaccounted.length > 3 ? ", ..." : ""})${gapReinventory.error ? ` (${gapReinventory.error})` : ""} - accountability for that text is not established; see unaccountedSource`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo);
+    return buildResult(input, caller, items, "INVENTORY_COVERAGE_GAP", `${items.length} item(s) accepted (${gapReinventory.itemsAdded} added by the targeted gap re-inventory), but ${cov.unaccounted.length} stretch(es) of source across ${cov.regionsConsidered.length} region(s) remain UNACCOUNTED_SOURCE (${preview}${cov.unaccounted.length > 3 ? ", ..." : ""})${gapReinventory.error ? ` (${gapReinventory.error})` : ""} - accountability for that text is not established; see unaccountedSource`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo, execution());
   }
   if (items.length === 0) {
-    return buildResult(input, caller, items, "INVENTORY_OK", "empty inventory over source that source coverage accounts for in full as non-semantic (headings, citations, formatting) with no quantitative value and no operative language", rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo);
+    return buildResult(input, caller, items, "INVENTORY_OK", "empty inventory over source that source coverage accounts for in full as non-semantic (headings, citations, formatting) with no quantitative value and no operative language", rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo, execution());
   }
-  return buildResult(input, caller, items, "INVENTORY_OK", `${items.length} item(s) accepted over ${partition.slots.length} slot(s) in ${batches.length} bounded call(s), ${rejectedUnverifiable} rejected as unverifiable, ${rejectedDuplicates} same-identity wording(s) merged; source coverage accounts for every stretch of source in ${cov.regionsConsidered.length} region(s)${gapReinventory.attempted ? ` (the targeted gap re-inventory closed ${gapReinventory.segmentsBefore} unaccounted stretch(es) with ${gapReinventory.itemsAdded} added item(s))` : ""}`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo);
+  return buildResult(input, caller, items, "INVENTORY_OK", `${items.length} item(s) accepted over ${partition.slots.length} slot(s) in ${batches.length} bounded call(s), ${rejectedUnverifiable} rejected as unverifiable, ${rejectedDuplicates} same-identity wording(s) merged; source coverage accounts for every stretch of source in ${cov.regionsConsidered.length} region(s)${gapReinventory.attempted ? ` (the targeted gap re-inventory closed ${gapReinventory.segmentsBefore} unaccounted stretch(es) with ${gapReinventory.itemsAdded} added item(s))` : ""}`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost, partitionInfo, execution());
 }

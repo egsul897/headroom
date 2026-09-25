@@ -33,7 +33,7 @@ import { throwIfAborted } from "./deadline";
 import type { DispatchBudget, DispatchTicket } from "./dispatch-budget";
 
 /** Per-call execution controls (mirrors llm-caller.ts StageCallOptions without a circular import). */
-export interface StructuredStageOptions { signal?: AbortSignal; budget?: DispatchBudget }
+export interface StructuredStageOptions { signal?: AbortSignal; budget?: DispatchBudget; execution?: import("../compiler/llm-caller").StageExecutionOverrides }
 /** Calibrated chars-per-token used only for the pre-dispatch maximum-cost reservation of a stage call. */
 const RESERVATION_TOKENS_PER_CHAR = 0.3957;
 
@@ -86,14 +86,20 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
     // HARD BUDGET before dispatch: the maximum this request can cost (every prompt char at the input rate, the full
     // max_tokens at the output rate) must fit under the ceiling, or the request is never sent.
     let ticket: DispatchTicket | null = null;
-    if (options.budget) ticket = options.budget.reserve({ stage, model: this.model, maxInputTokens: Math.ceil((systemPrompt.length + userContent.length) * RESERVATION_TOKENS_PER_CHAR) + 64, maxOutputTokens: this.maxTokens });
+    // P3-E10 / P3-E11: an explicit per-call output ceiling and reasoning policy override the analyzer's configured
+    // ceiling; the reasoning policy goes on the wire as the Messages `thinking` parameter, never left to the provider.
+    const maxTokens = options.execution?.maxOutputTokens ?? this.maxTokens;
+    const reasoning = options.execution?.reasoning ?? "PROVIDER_DEFAULT";
+    const thinking: Anthropic.ThinkingConfigParam | undefined = reasoning === "DISABLED" ? { type: "disabled" } : reasoning === "MINIMAL" ? { type: "enabled", budget_tokens: 1024 } : undefined;
+    if (options.budget) ticket = options.budget.reserve({ stage, model: this.model, maxInputTokens: Math.ceil((systemPrompt.length + userContent.length) * RESERVATION_TOKENS_PER_CHAR) + 64, maxOutputTokens: maxTokens });
     let transport: { attempts: number; retries: number; rateLimitFailures: number } = { attempts: 0, retries: 0, rateLimitFailures: 0 };
     try {
       // ONE retry owner (transport-retry.ts); the client itself is constructed with maxRetries: 0.
       const outcome = await runWithTransportRetry(async () => {
         const stream = this.client.messages.stream({
           model: this.model,
-          max_tokens: this.maxTokens,
+          max_tokens: maxTokens,
+          ...(thinking ? { thinking } : {}),
           system: systemPrompt,
           messages: [{ role: "user", content: userContent }],
           output_config: { format: zodOutputFormat(schema) },
@@ -127,6 +133,12 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
         calculatedCostUsd: priced.costUsd,
         pricing: { pricingVersion: priced.pricingVersion, pricingStatus: priced.pricingStatus },
         transport: { attempts: transport.attempts, retries: transport.retries, policyVersion: TRANSPORT_RETRY_POLICY_VERSION },
+        stopReason: message.stop_reason ?? null,
+        requestedMaxOutputTokens: maxTokens,
+        reasoningPolicy: reasoning,
+        thinkingTokens: usage?.output_tokens_details?.thinking_tokens ?? null,
+        visibleOutputTokens: outputTokens !== null && usage?.output_tokens_details?.thinking_tokens !== undefined && usage?.output_tokens_details?.thinking_tokens !== null ? outputTokens - usage.output_tokens_details.thinking_tokens : null,
+        rawUsage: usage ? ({ ...usage } as unknown as Record<string, unknown>) : null,
       };
       if (!message.parsed_output) {
         throw normalizeProviderError(Object.assign(new Error(`${this.constructor.name}: model response for stage "${stage}" did not parse against its schema (stop_reason=${message.stop_reason})`), { name: "SchemaFailure" }), { provider: this.providerName, model: this.model });

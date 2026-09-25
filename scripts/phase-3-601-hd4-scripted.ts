@@ -35,4 +35,5 @@ export function scriptedPassACaller(opts: ScriptedPassAOptions = {}): StageCalle
   return self;
 }
 
-export const stripVolatile = (v: unknown): unknown => Array.isArray(v) ? v.map(stripVolatile) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([k]) => !["frozenAt", "verifiedAt", "at", "timestamp", "createdAt", "compiledAt"].includes(k)).map(([k, x]) => [k, stripVolatile(x)])) : v;
+// `calls` (P3-E14 per-call execution records) is execution telemetry, not frozen content - stripped like frozenAt.
+export const stripVolatile = (v: unknown): unknown => Array.isArray(v) ? v.map(stripVolatile) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([k]) => !["frozenAt", "verifiedAt", "at", "timestamp", "createdAt", "compiledAt", "calls"].includes(k)).map(([k, x]) => [k, stripVolatile(x)])) : v;
