@@ -1,0 +1,39 @@
+{
+  "artifact": "§9 — the 47-case result under current-pipeline evidence.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "status": "NOT_GENERATED",
+  "reason": "awaiting paid-call authorization",
+  "detail": "§1 requires the deterministic cost and model-call plan to be recorded before any paid call, and instructs the mission to STOP and return PAID_CALL_AUTHORIZATION_REQUIRED if the environment requires explicit human approval for paid calls. This environment does. No model call has been made, so this artifact has no content to carry.",
+  "unblockedBy": "an explicit authorization naming one of the scope options in 02-cost-plan.json",
+  "comparisonBaseline": {
+    "credit": {
+      "NO_CREDIT": 35,
+      "CREDIT": 12
+    },
+    "completeness": {
+      "FULL": 21,
+      "PARTIAL": 8,
+      "NONE": 18
+    },
+    "compositeSurfacing": {
+      "NOT_SPECIFICALLY_SURFACED": 13,
+      "NOT_APPLICABLE": 12,
+      "PARTIALLY_SURFACED": 9,
+      "FULLY_SURFACED": 13
+    },
+    "binarySurfacing": {
+      "NOT_SPECIFICALLY_SURFACED": 22,
+      "NOT_APPLICABLE": 12,
+      "SPECIFICALLY_SURFACED": 13
+    },
+    "surfacingDenominator": 35,
+    "dangerousSilentOmissions": 22,
+    "fullySurfacedNoCredit": 13,
+    "partiallySurfacedNoCredit": 9,
+    "notSpecificallySurfacedNoCredit": 13,
+    "readjudicated": 22,
+    "carriedForward": 25,
+    "creditDecisionsChanged": 1,
+    "surfacingDecisionsChanged": 9
+  }
+}

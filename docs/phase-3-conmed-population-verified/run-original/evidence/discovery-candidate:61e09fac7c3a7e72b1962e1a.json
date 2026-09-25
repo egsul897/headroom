@@ -1,0 +1,997 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:29:41.536Z",
+  "candidateRef": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.5(i)",
+    "operativeSourceText": "(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n",
+    "operativeSourceTextSha256": "aae3c13678c92bcd550f2ad9f622b32214304083c98d58b61acbcb26a1788040",
+    "operativeSourceChars": 190,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:b23cff7511b49464c219eb3ca4e0afbff1d88aae4933dc8f169efac9ea5c6b42",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 17,
+    "items": [
+      {
+        "itemId": "context-item:a3c6638f2ea16079062d8a130b6688f6f493d9d7da44f9a478dd173251bb239d",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.5(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 190,
+        "excerptText": "(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n"
+      },
+      {
+        "itemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.5",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 4658,
+        "excerptText": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n(a)\nthe Disposition of obsolete or worn out property in the ordinary course of business;\n(b)\nthe sale or other Disposition of Inventory in the ordinary course of business;\n(c)\nDispositions permitted by Section 7.4(b);\n(d)\nthe sale or issuance of the Capital Stock of (i) any Subsidiary to the Parent Borrower or any Subsidiary Guarantor, (ii) any Subsidiary\n(other than a Subsidiary Guarantor) to any Subsidiary Guarantor and (iii) any Subsidiary that is not a Loan Party to any other Subsidiary;\n(e)\nthe sale or transfer of any Capital Stock of any Subsidiary that is not a Loan Party acquired pursuant to a Permitted Business\nAcquisition to any other Subsidiary;\n(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and (ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and its Subsidiaries for\nwhich audited financial statements are available) in any fiscal year and (y) 15% of Consolidated EBITDA (measured based on Consolidated\nEBITDA for the most recently ended period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries for which financial\nstatements are available, but tested only at incurrence) in the aggregate during any four-year rolling period; provided , further ,\nthat the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;\n(g)\nmonetary payments made in the ordinary course of business;\n101\n(h)\nthe sale or discount without recourse of accounts receivable arising in the ordinary course of business of the Parent Borrower\nor its Subsidiaries in connection with the compromise or collection thereof;\n(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n(l)\nthe sale, transfer, encumbrance or other disposition of securities or related ancillary rights and assets pursuant to sales, marketing\nand distribution arrangements;\n(m)\nDispositions of Property from the Parent Borrower or a Subsidiary Guarantor to the Parent Borrower or another Subsidiary Guarantor;\nand\n(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 126,
+        "excerptText": "(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n"
+      },
+      {
+        "itemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(n)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 635,
+        "excerptText": "(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "type": "DEFINITION",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:40ab0ff50c274eb7c5dc84f2093ecc718622f4b57430cf53b45aef9b34bbc8bd",
+        "type": "DEFINITION",
+        "normalizedRef": "Foreign Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 157,
+        "excerptText": "\"Foreign Subsidiary\": except as provided in the definition of Domestic Subsidiary, any Subsidiary of the Parent Borrower that is not a Domestic Subsidiary.\n\n"
+      },
+      {
+        "itemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Domestic Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 2471,
+        "excerptText": "\"Domestic Subsidiary\": any Subsidiary of the Parent Borrower organized under the laws of any jurisdiction within the United States; provided that, for\npurposes of this Agreement, none of the following shall be deemed to be a Domestic Subsidiary or a Foreign Subsidiary (i) CONMED\nReceivables Corporation, its successors and permitted transferees, or any other single purpose corporation formed and operating solely\nin connection with a Receivables Transfer Program permitted under this Agreement, so long as the grant of a security interest in the Capital\nStock of such Subsidiary is prohibited under such Receivables Transfer Program, (ii) GWH, Ltd., Largo Lakes &ndash; I Limited Partnership\nor their respective successors and permitted transferees, so long as the Capital Stock and all of the property of each such Subsidiary\nis held and is subject to a security interest granted in connection with the acquisition of the Largo, Florida facility, (iii) Largo\nRealty, LLC, so long as it holds only the property held by it on the Closing Date,\n16\n(iv) Palmerton Holdings, Inc., so long as it holds\nonly the property held by it on the Closing Date, (v) any Foreign Subsidiary Holdco, (vi) any Subsidiary that is not a Wholly-Owned\nSubsidiary, (vii) any Subsidiary that (A) is prohibited from guaranteeing the Obligations or granting Liens to secure the Obligations\nby any applicable Contractual Obligation existing on the Closing Date or at the time such Subsidiary becomes a Subsidiary, to the extent\nsuch restriction was not entered into in contemplation of such Subsidiary being excluded from constituting a Domestic Subsidiary, (B)\nis prohibited from guaranteeing the Obligations or granting Liens to secure the Obligations by any applicable Requirement of Law or (C)\nwould require a consent, approval, license or authorization from any Governmental Authority in order to provide any guarantee of the Obligations\nor grant any Lien to secure the Obligations, unless such consent, approval, license or authorization has been obtained, (viii) any not-for-profit\nSubsidiary, (ix) any captive insurance company, (x) any Subsidiary that is a special purpose entity or (xi) any other Subsidiary in respect\nof which the Parent Borrower and the Administrative Agent determine in good faith that the cost or burden of such Subsidiary providing\na guarantee of, or granting Liens to secure, the Obligations is excessive in relation to the value afforded to the Lenders thereby.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Foreign Subsidiary Holdco",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 275,
+        "excerptText": "\"Foreign Subsidiary Holdco\": any Subsidiary of the Parent Borrower organized under the laws of any jurisdiction within the United States (including CONMED Andover\nMedical, Inc.) substantially all of whose assets consist of Capital Stock of one or more Foreign Subsidiaries.\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:f16ef71d961ae597a8b9be76baec8e5a9ae416ce023d3d32493cf0c2ef1caa7d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lenders",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 47,
+        "excerptText": "\"Lenders\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      },
+      {
+        "itemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Receivables Transfer Program",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 714,
+        "excerptText": "\"Receivables Transfer Program\": a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable\nor related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit\ndilution provisions) other than with respect to the Parent Borrower's or such Subsidiary's retained interest in such accounts\nreceivable or related ancillary rights or assets, such program to have substantially the terms and conditions provided to the Administrative\nAgent prior to the Closing Date, as such terms and conditions may be amended, supplemented or otherwise modified from time to time.\n34\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "toItemId": "context-item:a3c6638f2ea16079062d8a130b6688f6f493d9d7da44f9a478dd173251bb239d",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "toItemId": "context-item:a3c6638f2ea16079062d8a130b6688f6f493d9d7da44f9a478dd173251bb239d",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "toItemId": "context-item:a3c6638f2ea16079062d8a130b6688f6f493d9d7da44f9a478dd173251bb239d",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:a3c6638f2ea16079062d8a130b6688f6f493d9d7da44f9a478dd173251bb239d",
+        "toItemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:a3c6638f2ea16079062d8a130b6688f6f493d9d7da44f9a478dd173251bb239d",
+        "toItemId": "context-item:40ab0ff50c274eb7c5dc84f2093ecc718622f4b57430cf53b45aef9b34bbc8bd",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:40ab0ff50c274eb7c5dc84f2093ecc718622f4b57430cf53b45aef9b34bbc8bd",
+        "toItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:40ab0ff50c274eb7c5dc84f2093ecc718622f4b57430cf53b45aef9b34bbc8bd",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Cyclic dependency (foreign subsidiary -> domestic subsidiary -> foreign subsidiary) - not re-expanded."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:40ab0ff50c274eb7c5dc84f2093ecc718622f4b57430cf53b45aef9b34bbc8bd",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Cyclic dependency (foreign subsidiary -> domestic subsidiary -> foreign subsidiary holdco -> foreign subsidiary) - not re-expanded."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:f16ef71d961ae597a8b9be76baec8e5a9ae416ce023d3d32493cf0c2ef1caa7d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:40ab0ff50c274eb7c5dc84f2093ecc718622f4b57430cf53b45aef9b34bbc8bd",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:40ab0ff50c274eb7c5dc84f2093ecc718622f4b57430cf53b45aef9b34bbc8bd",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:a3c6638f2ea16079062d8a130b6688f6f493d9d7da44f9a478dd173251bb239d",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.5(i)",
+          "covenantFamily": "ASSET_DISPOSITIONS",
+          "ruleType": "QUALITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "ISSUE_CAPITAL_STOCK",
+          "entityScope": [
+            "Parent Borrower and its Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": null,
+            "citation": "§7.5(i)",
+            "excerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States"
+          },
+          "conditions": [
+            {
+              "conditionType": "PERMITTED_RECIPIENT",
+              "description": "the sale or issuance must be made to a foreign national",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "citation": "§7.5(i)",
+              "excerpt": "to a foreign national",
+              "inventoryItemIds": [
+                "c6aadd7dc7998aa843282183"
+              ]
+            },
+            {
+              "conditionType": "SUBJECT_CAPITAL_STOCK",
+              "description": "the exception covers only a minimal number of any Foreign Subsidiary's Capital Stock; 'Foreign Subsidiary' and 'Capital Stock' are defined terms",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "citation": "§7.5(i)",
+              "excerpt": "a minimal number of any Foreign Subsidiary's Capital Stock",
+              "inventoryItemIds": [
+                "d38ed50bf3ed87ef12da5342"
+              ]
+            },
+            {
+              "conditionType": "LOCAL_LAW_REQUIREMENT",
+              "description": "the sale or issuance is permitted only to the extent required by local law",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "citation": "§7.5(i)",
+              "excerpt": "to the extent required",
+              "inventoryItemIds": [
+                "4fa046d4ef18bbe71871ee23"
+              ]
+            },
+            {
+              "conditionType": "JURISDICTION_OUTSIDE_US",
+              "description": "the local-law requirement must arise in a jurisdiction outside the United States",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "citation": "§7.5(i)",
+              "excerpt": "by local law in a jurisdiction outside the United States",
+              "inventoryItemIds": [
+                "a4d42cbdcbc7e63c50efa4f5"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Clause 7.5(i) is a qualitative exception to the Section 7.5 limitation, with no dollar ceiling; the operative gate is the conjunction of being made to a foreign national, involving a minimal number of a Foreign Subsidiary's Capital Stock, and being required by local law in a jurisdiction outside the United States. Both flagged defined terms ('Foreign Subsidiary', 'Capital Stock') are resolved to confirmed current definitions, so all material dependencies are closed."
+          ],
+          "citation": "§7.5(i)",
+          "excerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States",
+          "inventoryItemIds": [
+            "c6aadd7dc7998aa843282183"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "§7.5(i) is one of the excepted Dispositions under Section 7.5 (Limitation on Sale of Assets), confirmed by the parent scope showing clauses (a)-(n). It is represented as a single conditional qualitative permission (no freestanding prohibition rule is separately emitted for the already-given §7.5 chapeau, which is context of this submission's window rather than its operative subject).",
+        "The substantive gate is a conjunction of qualitative conditions (foreign-national recipient, minimal number of Foreign Subsidiary Capital Stock, required by local law, jurisdiction outside the US); these are qualitative propositions captured in the conditions array rather than numeric comparisons, and the capacity is UNLIMITED_CAPACITY to reflect the absence of any dollar ceiling.",
+        "Both defined terms the inventory flagged as material (Foreign Subsidiary, Capital Stock) are confirmed current in context, so no MISSING_CONTEXT component remains."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:f00344fce693bb125915e096",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.5(i)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.5(i)",
+            "excerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the sale or issuance must be made to a foreign national",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(i)",
+              "excerpt": "to a foreign national"
+            },
+            "inventoryItemIds": [
+              "c6aadd7dc7998aa843282183"
+            ]
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the exception covers only a minimal number of any Foreign Subsidiary's Capital Stock; 'Foreign Subsidiary' and 'Capital Stock' are defined terms",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(i)",
+              "excerpt": "a minimal number of any Foreign Subsidiary's Capital Stock"
+            },
+            "inventoryItemIds": [
+              "d38ed50bf3ed87ef12da5342"
+            ]
+          },
+          {
+            "conditionId": "rule[r1].condition[2]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the sale or issuance is permitted only to the extent required by local law",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(i)",
+              "excerpt": "to the extent required"
+            },
+            "inventoryItemIds": [
+              "4fa046d4ef18bbe71871ee23"
+            ]
+          },
+          {
+            "conditionId": "rule[r1].condition[3]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the local-law requirement must arise in a jurisdiction outside the United States",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(i)",
+              "excerpt": "by local law in a jurisdiction outside the United States"
+            },
+            "inventoryItemIds": [
+              "a4d42cbdcbc7e63c50efa4f5"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Clause 7.5(i) is a qualitative exception to the Section 7.5 limitation, with no dollar ceiling; the operative gate is the conjunction of being made to a foreign national, involving a minimal number of a Foreign Subsidiary's Capital Stock, and being required by local law in a jurisdiction outside the United States. Both flagged defined terms ('Foreign Subsidiary', 'Capital Stock') are resolved to confirmed current definitions, so all material dependencies are closed.",
+          "covenantFamily \"ASSET_DISPOSITIONS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"PERMITTED_RECIPIENT\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"SUBJECT_CAPITAL_STOCK\" not recognized - normalized to UNSUPPORTED",
+          "condition[2].conditionType \"LOCAL_LAW_REQUIREMENT\" not recognized - normalized to UNSUPPORTED",
+          "condition[3].conditionType \"JURISDICTION_OUTSIDE_US\" not recognized - normalized to UNSUPPORTED",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Parent Borrower and its Subsidiaries\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: wire entity tag(s) \"Parent Borrower and its Subsidiaries\" (entityScope) are not EntityClassTag values; the affected scope field is reset to unspecified and the tag is preserved verbatim in entityScopeAudit - its meaning is not guessed"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.5(i)",
+          "excerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNRECOGNIZED_TAG",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNRECOGNIZED_TAG"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower and its Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower and its Subsidiaries",
+              "outcome": "UNRECOGNIZED_ENTITY_TAG",
+              "normalized": null,
+              "viaAlias": false
+            }
+          ],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "c6aadd7dc7998aa843282183"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] covenantFamily \"ASSET_DISPOSITIONS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r1]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r1]] condition[0].conditionType \"PERMITTED_RECIPIENT\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] condition[1].conditionType \"SUBJECT_CAPITAL_STOCK\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] condition[2].conditionType \"LOCAL_LAW_REQUIREMENT\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] condition[3].conditionType \"JURISDICTION_OUTSIDE_US\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Parent Borrower and its Subsidiaries\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+      "§7.5(i) is one of the excepted Dispositions under Section 7.5 (Limitation on Sale of Assets), confirmed by the parent scope showing clauses (a)-(n). It is represented as a single conditional qualitative permission (no freestanding prohibition rule is separately emitted for the already-given §7.5 chapeau, which is context of this submission's window rather than its operative subject).",
+      "The substantive gate is a conjunction of qualitative conditions (foreign-national recipient, minimal number of Foreign Subsidiary Capital Stock, required by local law, jurisdiction outside the US); these are qualitative propositions captured in the conditions array rather than numeric comparisons, and the capacity is UNLIMITED_CAPACITY to reflect the absence of any dollar ceiling.",
+      "Both defined terms the inventory flagged as material (Foreign Subsidiary, Capital Stock) are confirmed current in context, so no MISSING_CONTEXT component remains.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T03:29:30.889Z",
+      "inputTokens": 14267,
+      "outputTokens": 3657,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 11953,
+      "calculatedCostUsd": 0.06510400000000001
+    },
+    "compiledAt": "2026-09-25T03:29:30.889Z",
+    "outputHash": "873abeb220ab0c2af8657bf68d771c451f01282dabc865f50d4c895d5355c8a9"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "39aed924307c0b6e2ea7e3dd6151b5396ad94fc6dfa22b9c88e34bdb5a3dd056",
+            "kind": "METRIC_MENTION",
+            "rawText": "Foreign Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(i)",
+            "structuralNodeKey": null,
+            "charStart": 52,
+            "charEnd": 70
+          },
+          "irItems": [],
+          "reason": "source mention \"Foreign Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "676621907919becf8eb1fbad501e50cf876b556f53e8747bac581eb012aa59b5",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capital Stock",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(i)",
+            "structuralNodeKey": null,
+            "charStart": 73,
+            "charEnd": 86
+          },
+          "irItems": [],
+          "reason": "source mention \"Capital Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f4e0bce3b93b898db76ac62ff69650cb3a922c465421c02b9662d15adcd27577",
+            "kind": "METRIC_MENTION",
+            "rawText": "United States",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(i)",
+            "structuralNodeKey": null,
+            "charStart": 175,
+            "charEnd": 188
+          },
+          "irItems": [],
+          "reason": "source mention \"United States\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+      "items": [
+        {
+          "itemId": "9f1dda83eda93418ccb1314e3ec7292c582ad023d1da522bcebfe7c44a6cdd4a",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Foreign Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(i)",
+          "structuralNodeKey": null,
+          "charStart": 52,
+          "charEnd": 70,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "39aed924307c0b6e2ea7e3dd6151b5396ad94fc6dfa22b9c88e34bdb5a3dd056",
+          "kind": "METRIC_MENTION",
+          "rawText": "Foreign Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(i)",
+          "structuralNodeKey": null,
+          "charStart": 52,
+          "charEnd": 70
+        },
+        {
+          "itemId": "676621907919becf8eb1fbad501e50cf876b556f53e8747bac581eb012aa59b5",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capital Stock",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(i)",
+          "structuralNodeKey": null,
+          "charStart": 73,
+          "charEnd": 86
+        },
+        {
+          "itemId": "f4e0bce3b93b898db76ac62ff69650cb3a922c465421c02b9662d15adcd27577",
+          "kind": "METRIC_MENTION",
+          "rawText": "United States",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(i)",
+          "structuralNodeKey": null,
+          "charStart": 175,
+          "charEnd": 188
+        },
+        {
+          "itemId": "7831af74fd0d6e19206fbe9023cb6ed9bf17bfc0f66a3fe3958ba714778ec29c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(i)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(i)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+      "items": [
+        {
+          "itemId": "023175c1b3b16b66553943af34e879e0a2367f64e40949b448bc728b8e0e305c",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:f00344fce693bb125915e096",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(i)",
+          "sourceExcerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "c220163b3b09eaacd91c1cf6b92c8b2574f57eae51e697c3be8e9b3006f82172",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:f00344fce693bb125915e096",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(i)",
+          "sourceExcerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "68556226967786e1bbb9b0c78a1a8868f28a3a39c0e97afeb9a35663b11a25c0",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f00344fce693bb125915e096",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the sale or issuance must be made to a foreign national",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(i)",
+          "sourceExcerpt": "to a foreign national",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9d5a0ee7a322d4048d314c34e2db3ff0345b834c7377056b24bdc08aec85ecaf",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f00344fce693bb125915e096",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the exception covers only a minimal number of any Foreign Subsidiary's Capital Stock; 'Foreign Subsidiary' and 'Capital Stock' are defined terms",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(i)",
+          "sourceExcerpt": "a minimal number of any Foreign Subsidiary's Capital Stock",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "1088309082fd0969d9a7d6a61ce756bd84c240cdb57993721314304f406c1165",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f00344fce693bb125915e096",
+          "irPath": "rules[0].conditions[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the sale or issuance is permitted only to the extent required by local law",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(i)",
+          "sourceExcerpt": "to the extent required",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "719e14878973c386cd03ac2c4ec02aab6f9bf7efc8721235dffa571f3798a9a2",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f00344fce693bb125915e096",
+          "irPath": "rules[0].conditions[3]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the local-law requirement must arise in a jurisdiction outside the United States",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(i)",
+          "sourceExcerpt": "by local law in a jurisdiction outside the United States",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "eac8a4e851596ef272c6b0a403c7f0a8c3a5e1219ccc07ef02daf7488cb64dff",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:f00344fce693bb125915e096",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(i)",
+          "sourceExcerpt": "the sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required by local law in a jurisdiction outside the United States",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+        "items": [],
+        "fieldsWalked": 10,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "aae3c13678c92bcd550f2ad9f622b32214304083c98d58b61acbcb26a1788040",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "5c9187493d90cf9c7a33d41e86fcd28b1cef842cd508a7c13808eb832c39f79f",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 29454,
+    "inputTokens": 14267,
+    "outputTokens": 3657,
+    "costUsd": 0.00280553,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:61e09fac7c3a7e72b1962e1a.verified-units.json",
+    "packageHash": "70b01548ef946716393822c79ca8606c889c01b903a5ea3c6ad3b72616125b61",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

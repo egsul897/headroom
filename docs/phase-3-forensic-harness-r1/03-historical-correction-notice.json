@@ -1,0 +1,42 @@
+{
+  "mission": "HEADROOM PHASE-3 - FORENSIC ATTRIBUTION HARNESS CLEANUP (R1)",
+  "section": "\u00a78 - ADDITIVE CORRECTION NOTICE for historical forensic artifacts",
+  "scope": "This notice does NOT rewrite any committed artifact. Every historical evidence file keeps its original bytes and remains reproducible; this states how to read the attribution fields in them.",
+  "oldHarnessSemantics": {
+    "function": "attributionCheck(result, anchorText, parentText) in scripts/p3-conmed-pilot/span-validation.ts",
+    "valueExtraction": "regex /\\$[\\d,]{4,}|\\b\\d+(?:\\.\\d+)?%/g over the whole serialized IR, including provenance excerpts; only $-amounts and percentages",
+    "evidenceUniverse": "two strings - the anchor's DESCENDANTS text and the Pass C linked nodes' DESCENDANTS text",
+    "matching": "literal substring containment after whitespace normalization",
+    "buckets": "supportedByAnchor / violations / unsourced - no bucket for tool-retrieved evidence existed"
+  },
+  "newAuthoritativeSemantics": {
+    "function": "groundCompiledResult() in scripts/p3-conmed-pilot/forensic-grounding.ts, which calls production's collectNumericAssertions + groundNumericAssertions",
+    "evidenceUniverse": "operative window + authenticated retrieved sources (identity-carrying) + unauthenticated context excerpts that cannot ground",
+    "matching": "the production extractor and scale-aware canonicalization, plus R2's semantic relation test",
+    "vocabulary": "GROUNDED_OPERATIVE / GROUNDED_CONTEXT / GROUNDED_TOOL_EVIDENCE / NORMALIZED_EQUIVALENT / UNGROUNDED / AMBIGUOUS"
+  },
+  "knownLimitationsOfHISTORICALLabels": [
+    {
+      "limitation": "7.2(f) unsourced [\"100%\"]",
+      "artifacts": [
+        "docs/phase-3-candidate-span-remediation-implementation/15-paid-validation-results.json",
+        "docs/phase-3-candidate-span-remediation-implementation/17-validation-continuation-results.json",
+        "docs/phase-3-candidate-span-remediation-implementation/19-7-2-f-grounding-issue.json",
+        "docs/phase-3-unsupported-numeric-forensics/*"
+      ],
+      "correction": "The old universe never saw tool output. '100%' is real source text in the authenticated \"Subsidiary Guarantor\" definition the compiler retrieved (charStart 42258, contentHash e0ae4ef9188e...). Re-graded with the production grounder, a related assertion of that figure is GROUNDED_TOOL_EVIDENCE.",
+      "whatRemainsUnprovable": "The original run's raw model output was not preserved, so it cannot be shown that ITS '100%' sat in a field related to that definition. The label 'unsourced' is unreliable for that record; it is not thereby proven grounded."
+    },
+    {
+      "limitation": "normalized-equivalence blindness",
+      "effect": "any artifact whose source writes a scaled amount ('$50 million') while the IR asserts the canonical magnitude ('$50,000,000') recorded a false 'unsourced'. Four such values were found in the preserved corpus, all in holdout-cash-sweep-cure records.",
+      "correction": "re-graded as NORMALIZED_EQUIVALENT, grounded in the candidate's own operative window"
+    },
+    {
+      "limitation": "no scoped tool-evidence bucket",
+      "effect": "under the old helper a figure supported by a retrieved definition could only be recorded as 'unsourced' or, if it happened to appear in the linked nodes, as an operative-attribution 'violation' - two wrong labels with no right one available"
+    }
+  ],
+  "whatIsNOTCorrected": "Operative-attribution violations recorded against the candidate-span work remain meaningful: they concern anchor ownership, which R2's groundedIn preserves as a first-class distinction. Nothing in this notice weakens the candidate-span/F1 findings.",
+  "scoringImpact": "NONE. No production or benchmark path imports the forensic result; representation credit, benchmark scoring and dangerous-silent classification are untouched and structurally cannot be affected by this change."
+}

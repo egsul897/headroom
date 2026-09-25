@@ -1,0 +1,1214 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:49:27.837Z",
+  "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.6(e)(ii)",
+    "operativeSourceText": "(ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may\nmake Restricted Payments in an unlimited amount;\n",
+    "operativeSourceTextSha256": "678af44a15bba15716b75d16038c47cce57112f09fbe05b25441bd96a3bc05ef",
+    "operativeSourceChars": 156,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:7c76f721633e89fe872e1a70fc835e5cc477af4d901f6e63da9847839b12837d",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 9,
+    "items": [
+      {
+        "itemId": "context-item:d0299f04b48c3526418a689b4cbcf1a1c32c59810890f2ff95389a758d197c42",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.6(e)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 156,
+        "excerptText": "(ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may\nmake Restricted Payments in an unlimited amount;\n"
+      },
+      {
+        "itemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.6",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 3501,
+        "excerptText": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeasance,\nretirement or other acquisition of, any shares of any class of Capital Stock of the Parent Borrower or any Subsidiary or any warrants\nor options to purchase any such Capital Stock, whether now or hereafter outstanding, or make any other distribution in respect thereof,\neither directly or indirectly, whether in cash or property or in obligations of the Parent Borrower or any Subsidiary (collectively, \" Restricted\nPayments \"), except:\n(a)\nthat (i) any Subsidiary that is not a Loan Party may make Restricted Payments to the Parent Borrower or any Wholly-Owned Subsidiary\nand (ii) any Subsidiary Guarantor may make Restricted Payments to the Parent Borrower or any Subsidiary Guarantor;\n(b)\n(i) repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee\nor director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\n102\nand (ii) cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes\nof clauses (i) and (ii) not to exceed $25,000,000 per year;\n(c)\nredemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate\namount equal to $25,000,000 since the Closing Date;\n(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n(e)\nso long as (i) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro\nforma basis (giving effect to such Restricted Payment and any Indebtedness incurred in connection therewith) as at the last day of\nthe most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no\ngreater than 3.50 to 1.00 and (ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may\nmake Restricted Payments in an unlimited amount;\n(f)\nthe Parent Borrower may (i) pay any premium or other amount in respect of, and otherwise perform its obligations under, any Permitted\nBond Hedge Transaction or Permitted Warrant Transaction and (ii) make any Restricted Payments and/or payments or deliveries required by\nthe terms of, and otherwise perform its obligations under, any Permitted Bond Hedge Transaction or Permitted Warrant Transaction (including\nmaking payments and/or deliveries due upon exercise and settlement or termination thereof); and\n(g)\nthe Parent Borrower or any Subsidiary Borrower may make any Restricted Payments and/or payments or deliveries in shares of common\nstock (or other securities or property following a merger event or other change of the common stock of the Parent Borrower or any such\nSubsidiary Borrower) (and cash in lieu of fractional shares) and/or cash required by the terms of, and otherwise perform its obligations\nunder, any Permitted Unsecured Indebtedness (including making payments of interest and principal thereon, making payments due upon required\nrepurchase thereof and/or making payments and deliveries due upon conversion thereof).\n"
+      },
+      {
+        "itemId": "context-item:aa0d4f079f4b86ee5631770b0231e314f3a8fe091e0cde0eab92a9021baae128",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.6(e)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 15,
+        "excerptText": "(e)\nso long as "
+      },
+      {
+        "itemId": "context-item:7615e66dbb756ae401ba23e09e8a197da7899f838d5a03e2fbd3a92e2f2c5018",
+        "type": "DEFINITION",
+        "normalizedRef": "Default",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 162,
+        "excerptText": "\"Default\": any of the\nevents specified in Article VIII, whether or not any requirement for the giving of notice, the lapse of time, or both, has been satisfied.\n\n"
+      },
+      {
+        "itemId": "context-item:dadaf053095f8e26d51a5cb6537cce9b40cd924ad6dde139f62819b307072c88",
+        "type": "DEFINITION",
+        "normalizedRef": "Event of Default",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 235,
+        "excerptText": "\"Event of Default\": any of the events specified in Article VIII; provided that any requirement for the giving of notice, the lapse of time, or both,\nhas been satisfied.\n&quot; Exchange Act \": as defined\nin clause (k) of Article VIII.\n\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:5ee6f8d537bb387d7e9975c204d42b133b6f8ba57cf98c9fb61cc7de4913a61e",
+        "type": "DEFINITION",
+        "normalizedRef": "Restricted Payments",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 51,
+        "excerptText": "\"Restricted Payments\": as defined in Section 7.6.\n\n"
+      },
+      {
+        "itemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "VIII",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 14,
+        "excerptText": "ARTICLE\nVIII. "
+      },
+      {
+        "itemId": "context-item:e3386402c6629a67e3e2b9583c952226ac116ef4a484221fc03277d4e3153a21",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "7.6",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 743,
+        "excerptText": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeasance,\nretirement or other acquisition of, any shares of any class of Capital Stock of the Parent Borrower or any Subsidiary or any warrants\nor options to purchase any such Capital Stock, whether now or hereafter outstanding, or make any other distribution in respect thereof,\neither directly or indirectly, whether in cash or property or in obligations of the Parent Borrower or any Subsidiary (collectively, \" Restricted\nPayments \"), except:\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "toItemId": "context-item:d0299f04b48c3526418a689b4cbcf1a1c32c59810890f2ff95389a758d197c42",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:aa0d4f079f4b86ee5631770b0231e314f3a8fe091e0cde0eab92a9021baae128",
+        "toItemId": "context-item:d0299f04b48c3526418a689b4cbcf1a1c32c59810890f2ff95389a758d197c42",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:d0299f04b48c3526418a689b4cbcf1a1c32c59810890f2ff95389a758d197c42",
+        "toItemId": "context-item:7615e66dbb756ae401ba23e09e8a197da7899f838d5a03e2fbd3a92e2f2c5018",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:d0299f04b48c3526418a689b4cbcf1a1c32c59810890f2ff95389a758d197c42",
+        "toItemId": "context-item:dadaf053095f8e26d51a5cb6537cce9b40cd924ad6dde139f62819b307072c88",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:dadaf053095f8e26d51a5cb6537cce9b40cd924ad6dde139f62819b307072c88",
+        "toItemId": "context-item:7615e66dbb756ae401ba23e09e8a197da7899f838d5a03e2fbd3a92e2f2c5018",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:d0299f04b48c3526418a689b4cbcf1a1c32c59810890f2ff95389a758d197c42",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:d0299f04b48c3526418a689b4cbcf1a1c32c59810890f2ff95389a758d197c42",
+        "toItemId": "context-item:5ee6f8d537bb387d7e9975c204d42b133b6f8ba57cf98c9fb61cc7de4913a61e",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:7615e66dbb756ae401ba23e09e8a197da7899f838d5a03e2fbd3a92e2f2c5018",
+        "toItemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "edgeType": "REFERENCES",
+        "reason": "\"Article VIII\" inside a definition."
+      },
+      {
+        "fromItemId": "context-item:dadaf053095f8e26d51a5cb6537cce9b40cd924ad6dde139f62819b307072c88",
+        "toItemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "edgeType": "REFERENCES",
+        "reason": "\"Article VIII\" inside a definition."
+      },
+      {
+        "fromItemId": "context-item:5ee6f8d537bb387d7e9975c204d42b133b6f8ba57cf98c9fb61cc7de4913a61e",
+        "toItemId": "context-item:e3386402c6629a67e3e2b9583c952226ac116ef4a484221fc03277d4e3153a21",
+        "edgeType": "REFERENCES",
+        "reason": "\"Section 7.6\" inside a definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.6(e)(ii)",
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_RESTRICTED_PAYMENT",
+          "entityScope": [
+            "Parent Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "AND",
+              "operands": [
+                {
+                  "kind": "NOT",
+                  "operand": {
+                    "kind": "DEFINED_TERM_REFERENCE",
+                    "termName": "Event of Default",
+                    "citation": "§7.6(e)(ii)",
+                    "excerpt": "no Event of Default has occurred and is continuing"
+                  },
+                  "citation": "§7.6(e)(ii)"
+                },
+                {
+                  "kind": "NOT",
+                  "operand": {
+                    "kind": "DEFINED_TERM_REFERENCE",
+                    "termName": "Event of Default",
+                    "citation": "§7.6(e)(ii)",
+                    "excerpt": "or would result therefrom"
+                  },
+                  "citation": "§7.6(e)(ii)"
+                }
+              ]
+            },
+            "citation": "§7.6(e)(ii)",
+            "excerpt": "make Restricted Payments in an unlimited amount"
+          },
+          "conditions": [
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "NOT",
+                "operand": {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "termName": "Event of Default"
+                },
+                "citation": "§7.6(e)(ii)",
+                "excerpt": "no Event of Default has occurred and is continuing"
+              },
+              "referencesDefinitionId": "Event of Default",
+              "description": "No Event of Default has occurred and is continuing (no Event of Default is then outstanding) at the time of the Restricted Payment",
+              "citation": "§7.6(e)(ii)",
+              "excerpt": "no Event of Default has occurred and is continuing",
+              "inventoryItemIds": [
+                "bd1fd96c9b74a145162dde26"
+              ]
+            },
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "NOT",
+                "operand": {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "termName": "Event of Default"
+                },
+                "citation": "§7.6(e)(ii)",
+                "excerpt": "or would result therefrom"
+              },
+              "referencesDefinitionId": "Event of Default",
+              "description": "No Event of Default would result from the making of the Restricted Payments",
+              "citation": "§7.6(e)(ii)",
+              "excerpt": "or would result therefrom",
+              "inventoryItemIds": [
+                "a7b5e168449c53b9f1b79d42"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "7.6(e)(i)",
+              "description": "The unlimited Restricted Payment permission under clause (e) is conjunctive: it also requires the Consolidated Senior Secured Leverage Ratio condition in clause (e)(i) (no greater than 3.50 to 1.00 on a pro forma basis), which is outside this compilation window and represented by an adjacent sub-clause"
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Both Event of Default conditions are faithfully represented from current operative text",
+            "The conjunctive ratio condition of clause (e)(i) is preserved as an explicit cross-unit dependency to the sibling sub-clause rather than compiled here"
+          ],
+          "citation": "§7.6(e)(ii)",
+          "excerpt": "no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount",
+          "inventoryItemIds": [
+            "bea419cddd7c64b01240a40b",
+            "12c311c0200e8a26252558e0"
+          ]
+        }
+      ],
+      "definitions": [
+        {
+          "localRef": "d1",
+          "termName": "Event of Default",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": {
+            "kind": "UNSUPPORTED",
+            "semanticDescription": "Event of Default means any of the events specified in Article VIII, provided that any requirement for the giving of notice or lapse of time has been satisfied",
+            "reason": "Represents a catalogue of default events defined by reference to Article VIII; its precise enumerated events (and any notice/grace conditions) are not itemized in the supplied evidence, so it is preserved as a defined-term reference rather than a computational expression",
+            "sourceEvidence": "definition of \"Event of Default\""
+          },
+          "dependsOnTerms": [
+            "Article VIII default events"
+          ],
+          "sufficiency": "PARTIAL",
+          "citation": "Definition of \"Event of Default\"",
+          "excerpt": "\"Event of Default\": any of the events specified in Article VIII; provided that any requirement for the giving of notice, the lapse of time, or both, has been satisfied."
+        }
+      ],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "Source context state is UNKNOWN_SOURCE_COMPLETENESS: the (e)(ii) operative window is complete against its own boundary, but the full clause (e) permission requires both condition (i) (Consolidated Senior Secured Leverage Ratio <= 3.50:1.00 pro forma) and condition (ii) (no Event of Default). Condition (i) is preserved as a REQUIRES dependency to sibling sub-clause 7.6(e)(i) rather than assumed into this window.",
+        "The capacity is genuinely unlimited (no dollar cap or basket); represented as UNLIMITED_CAPACITY gated by the conjunctive no-Event-of-Default conditions, not a fabricated dollar ceiling.",
+        "The Event of Default defined term is included as a definition for completeness and referenced from the conditions; it is a catalogue of Article VIII events, so its computation is UNSUPPORTED (events not itemized) while its use as a condition gate is fully preserved."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:492602c271c73e124011dea2",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.6(e)(ii)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "AND",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:fd9e88c065af67b7df15671d",
+            "operands": [
+              {
+                "kind": "NOT",
+                "type": "BOOLEAN",
+                "exprId": "ir-expr:abe4567e8310fc752d62d979",
+                "operand": {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "type": "BOOLEAN",
+                  "termName": "Event of Default",
+                  "companyId": "conmed-pilot",
+                  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:ed485bb1044957b795574028"
+                },
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.6(e)(ii)",
+                  "excerpt": null
+                }
+              },
+              {
+                "kind": "NOT",
+                "type": "BOOLEAN",
+                "exprId": "ir-expr:abe4567e8310fc752d62d979",
+                "operand": {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "type": "BOOLEAN",
+                  "termName": "Event of Default",
+                  "companyId": "conmed-pilot",
+                  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:ed485bb1044957b795574028"
+                },
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.6(e)(ii)",
+                  "excerpt": null
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.6(e)(ii)",
+              "excerpt": null
+            }
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.6(e)(ii)",
+            "excerpt": "make Restricted Payments in an unlimited amount"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": {
+              "kind": "NOT",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:abe4567e8310fc752d62d979",
+              "operand": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "type": "BOOLEAN",
+                "termName": "Event of Default",
+                "companyId": "conmed-pilot",
+                "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:ed485bb1044957b795574028"
+              },
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.6(e)(ii)",
+                "excerpt": "no Event of Default has occurred and is continuing"
+              }
+            },
+            "referencesDefinitionId": "Event of Default",
+            "description": "No Event of Default has occurred and is continuing (no Event of Default is then outstanding) at the time of the Restricted Payment",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.6(e)(ii)",
+              "excerpt": "no Event of Default has occurred and is continuing"
+            },
+            "inventoryItemIds": [
+              "bd1fd96c9b74a145162dde26"
+            ]
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": {
+              "kind": "NOT",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:abe4567e8310fc752d62d979",
+              "operand": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "type": "BOOLEAN",
+                "termName": "Event of Default",
+                "companyId": "conmed-pilot",
+                "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:ed485bb1044957b795574028"
+              },
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.6(e)(ii)",
+                "excerpt": "or would result therefrom"
+              }
+            },
+            "referencesDefinitionId": "Event of Default",
+            "description": "No Event of Default would result from the making of the Restricted Payments",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.6(e)(ii)",
+              "excerpt": "or would result therefrom"
+            },
+            "inventoryItemIds": [
+              "a7b5e168449c53b9f1b79d42"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "7.6(e)(i)",
+            "description": "The unlimited Restricted Payment permission under clause (e) is conjunctive: it also requires the Consolidated Senior Secured Leverage Ratio condition in clause (e)(i) (no greater than 3.50 to 1.00 on a pro forma basis), which is outside this compilation window and represented by an adjacent sub-clause",
+            "reason": "dependsOn[0].targetRef \"7.6(e)(i)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Both Event of Default conditions are faithfully represented from current operative text",
+          "The conjunctive ratio condition of clause (e)(i) is preserved as an explicit cross-unit dependency to the sibling sub-clause rather than compiled here",
+          "dependsOn[0].targetRef \"7.6(e)(i)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.6(e)(ii)",
+          "excerpt": "no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 89,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "bea419cddd7c64b01240a40b",
+          "12c311c0200e8a26252558e0"
+        ]
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:15e70f5c3a3def1fae041906",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "termName": "Event of Default",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "definition of \"Event of Default\"",
+          "semanticDescription": "Event of Default means any of the events specified in Article VIII, provided that any requirement for the giving of notice or lapse of time has been satisfied",
+          "reason": "Represents a catalogue of default events defined by reference to Article VIII; its precise enumerated events (and any notice/grace conditions) are not itemized in the supplied evidence, so it is preserved as a defined-term reference rather than a computational expression",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.6(e)(ii)",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:b7c5c5ae54c34f15fe92830b"
+        },
+        "dependsOnTerms": [
+          "Article VIII default events"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Represents a catalogue of default events defined by reference to Article VIII; its precise enumerated events (and any notice/grace conditions) are not itemized in the supplied evidence, so it is preserved as a defined-term reference rather than a computational expression"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definition of \"Event of Default\"",
+          "excerpt": "\"Event of Default\": any of the events specified in Article VIII; provided that any requirement for the giving of notice, the lapse of time, or both, has been satisfied."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null
+      }
+    ],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] dependsOn[0].targetRef \"7.6(e)(i)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[definition[d1]] Represents a catalogue of default events defined by reference to Article VIII; its precise enumerated events (and any notice/grace conditions) are not itemized in the supplied evidence, so it is preserved as a defined-term reference rather than a computational expression",
+      "Source context state is UNKNOWN_SOURCE_COMPLETENESS: the (e)(ii) operative window is complete against its own boundary, but the full clause (e) permission requires both condition (i) (Consolidated Senior Secured Leverage Ratio <= 3.50:1.00 pro forma) and condition (ii) (no Event of Default). Condition (i) is preserved as a REQUIRES dependency to sibling sub-clause 7.6(e)(i) rather than assumed into this window.",
+      "The capacity is genuinely unlimited (no dollar cap or basket); represented as UNLIMITED_CAPACITY gated by the conjunctive no-Event-of-Default conditions, not a fabricated dollar ceiling.",
+      "The Event of Default defined term is included as a definition for completeness and referenced from the conditions; it is a catalogue of Article VIII events, so its computation is UNSUPPORTED (events not itemized) while its use as a condition gate is fully preserved.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T03:49:17.325Z",
+      "inputTokens": 11866,
+      "outputTokens": 5519,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 16335,
+      "calculatedCostUsd": 0.078922
+    },
+    "compiledAt": "2026-09-25T03:49:17.325Z",
+    "outputHash": "7412547706f0c037bcc91d3b9e8a0a1256ad914305143f0d02fa3f38e8726300"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "3fabe854501aced19e13d3e233d481f8c78e8bdc1af56932b66a18b511b9d85b",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+        "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+        "irPath": "rules[0].capacityExpression.gatedBy / rules[0].conditions",
+        "findingType": "MISSING_CONDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "§7.6(e) (as retrieved in context-item 9d607d9a...): \"so long as (i) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis (giving effect to such Restricted Payment and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than 3.50 to 1.00 and (ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount;\"",
+        "sourceCitation": "§7.6(e)",
+        "proposedIrEvidence": "Proposed IR represents the permission as an UNLIMITED_CAPACITY gated only by an AND of two Event-of-Default negations (\"no Event of Default has occurred and is continuing\" / \"or would result therefrom\"), with no representation of the Consolidated Senior Secured Leverage Ratio condition in either the capacityExpression.gatedBy or the conditions array.",
+        "verifierReasoning": "The unlimited Restricted Payment permission granted by §7.6(e) is expressly conditioned on BOTH (i) the Consolidated Senior Secured Leverage Ratio being no greater than 3.50 to 1.00 (computed on a pro forma basis giving effect to the Restricted Payment and any related incurrence of Indebtedness, as at the last day of the most recently ended fiscal quarter for which financials are available) AND (ii) the no-Event-of-Default test. The two clauses are conjoined by \"and\" in the operative text, so condition (i) is an independently operative gate on the same permission. The proposed IR silently drops condition (i) entirely: it represents the capacity as gated solely by the two Event-of-Default negations, and it marks its sufficiency as COMPLETE. A competent reviewer reading this IR would wrongly conclude that the Parent Borrower may make Restricted Payments in an unlimited amount whenever no Event of Default is outstanding or would result, with no regard to the 3.50-to-1.00 leverage ratio condition — a materially more permissive picture than the source. I verified the 3.50 to 1.00 ratio is genuinely present in the authenticated source (§7.6(e)(i)), so the deterministic signal's claim that no source supports the figure reflects a provenance/scope problem rather than a fabricated number: the IR's treatment omits the ratio as an operative condition even though it is real, gating source language. The two Event-of-Default conditions as represented (NOT continuous-EoD AND NOT would-result) do faithfully track clause (ii); the defect is confined to the dropped clause (i) gate.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T03:49:27.833Z"
+      },
+      {
+        "findingId": "2dc52f1eec06f4e8847d537ee1f8bc68fa312f6de926167b2ed9d5f1d5add829",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+        "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+        "irPath": "rules[0].unresolvedDependencies[0].description",
+        "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)",
+        "sourceCitation": "7.6(e)(ii)",
+        "proposedIrEvidence": "rules[0].unresolvedDependencies[0].description asserts \"3.50 to 1.00\" (canonical 3.5 x) in: \"The unlimited Restricted Payment permission under clause (e) is conjunctive: it also requires the Consolidated Senior Secured Leverage Ratio condition in clause (e)(i) (no greater than 3.50 to 1.00 on a pro forma basis), which is outside this compilation window and represented by an adjacent sub-clause\"",
+        "verifierReasoning": "compiled IR asserts RATIO \"3.50 to 1.00\" (canonical 3.5 x) in free text at rules[0].unresolvedDependencies[0].description, and no authenticated source RELATED to the asserting unit supports it",
+        "deterministicSignals": [
+          "compiled IR asserts RATIO \"3.50 to 1.00\" (canonical 3.5 x) in free text at rules[0].unresolvedDependencies[0].description, and no authenticated source RELATED to the asserting unit supports it"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T03:49:17.329Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5698ca796cab8165666ef9cb6d1bf88f93cd9e32be53d3fd24ece6d92ef64c9e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(e)(ii)",
+            "structuralNodeKey": null,
+            "charStart": 87,
+            "charEnd": 102
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "97033e45d8d4deee7be4259809cc08bc78310536985066c8d28fda5d2e152cd7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payments",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(e)(ii)",
+            "structuralNodeKey": null,
+            "charStart": 112,
+            "charEnd": 131
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payments\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "compiled IR asserts RATIO \"3.50 to 1.00\" (canonical 3.5 x) in free text at rules[0].unresolvedDependencies[0].description, and no authenticated source RELATED to the asserting unit supports it",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "RATIO",
+              "rawText": "3.50 to 1.00",
+              "normalizedValue": 3.5,
+              "currency": null,
+              "unit": "x",
+              "charStart": 185,
+              "charEnd": 197,
+              "withheldReason": null,
+              "itemId": "fd0b5fabe3145dd38065ff40f8bf2bef1c0ae8391cc6178e2942fcf293bfd59c",
+              "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+              "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+              "fieldPath": "rules[0].unresolvedDependencies[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The unlimited Restricted Payment permission under clause (e) is conjunctive: it also requires the Consolidated Senior Secured Leverage Ratio condition in clause (e)(i) (no greater than 3.50 to 1.00 on a pro forma basis), which is outside this compilation window and represented by an adjacent sub-clause",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(e)(ii)",
+              "referencedTerms": [
+                "Event of Default"
+              ],
+              "referencedSections": [
+                "7.6(e)(ii)",
+                "§7.6(e)(ii)",
+                "7.6(e)(i)"
+              ]
+            },
+            "status": "UNGROUNDED",
+            "groundedIn": null,
+            "matchedEvidenceId": null,
+            "matchedText": null,
+            "relation": null,
+            "unrelatedEvidenceIds": [],
+            "reason": "compiled IR asserts RATIO \"3.50 to 1.00\" (canonical 3.5 x) in free text at rules[0].unresolvedDependencies[0].description, and no authenticated source RELATED to the asserting unit supports it"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+      "items": [
+        {
+          "itemId": "cc511aade8ff47105cbb5dee7f12aac726551733e359098a3c0acb3479563be3",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "no Event of Default",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(e)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 5,
+          "charEnd": 24,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "8dae32c246c58a600d92c206ce04d153cc5c19b692f01d61e5076610e7e61e1e",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "has occurred",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(e)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 25,
+          "charEnd": 37,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "cc12929cb19122ceb86cf56ff3adc7a0b9029062e201b3f2e1db36bcc0a70d08",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(e)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 94,
+          "charEnd": 102,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "5698ca796cab8165666ef9cb6d1bf88f93cd9e32be53d3fd24ece6d92ef64c9e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(e)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 87,
+          "charEnd": 102
+        },
+        {
+          "itemId": "97033e45d8d4deee7be4259809cc08bc78310536985066c8d28fda5d2e152cd7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payments",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(e)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 112,
+          "charEnd": 131
+        },
+        {
+          "itemId": "068a20845fafe28baf0d1d8a67c45762c358b3e9428c7df23b5d48940e0fc29a",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(e)(ii)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(ii)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+      "items": [
+        {
+          "itemId": "62f75724ab93ae3946db71cc2b2e929a932147151d821d169efacf4bc38a5239",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(e)(ii)",
+          "sourceExcerpt": "no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "5ac3c95e989c5294e380aa9b28a6e36a718aad57ea39d1ca22d8291920ac0ed1",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(e)(ii)",
+          "sourceExcerpt": "no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "27035dc2e2c4dc998751c012165b86ec6a7d6ce2299f09b7e5bd01aaac87082f",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(e)(ii)",
+          "sourceExcerpt": "no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "bc373d1453f6fed698692526e9a558620ffcb5e17d43a2f098bdc75034163354",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "No Event of Default has occurred and is continuing (no Event of Default is then outstanding) at the time of the Restricted Payment",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(e)(ii)",
+          "sourceExcerpt": "no Event of Default has occurred and is continuing",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "8dfdaaa0474ad5995ad257bd26693e360c75bf553ddfe09a3095b359a21cdaa6",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].conditions[0].expression.operand",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Event of Default",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "41a219f05211fb55bb9b3d5036110b8eab66f8ea880a3dde6f7b32ef5124c153",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "No Event of Default would result from the making of the Restricted Payments",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(e)(ii)",
+          "sourceExcerpt": "or would result therefrom",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "6fd37dae97ff20d60ea1a785162a12bd1b016b3f6a5e74d6f704d9916dc73db7",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].conditions[1].expression.operand",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Event of Default",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "c016b55820f953f45f2ff17222f4790dd4470eada5a4d608ac3795d9817805ba",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(e)(ii)",
+          "sourceExcerpt": "make Restricted Payments in an unlimited amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "c07447169fdf646764401d99b155d51843afc8b384b9d9cbf14fdfa422bd33fa",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].capacityExpression.gatedBy.operands[0].operand",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Event of Default",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "2016d47e7a9c94ad319159cbd0673887321d85769c4af8b22fc92e2e37f96fa7",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+          "irPath": "rules[0].capacityExpression.gatedBy.operands[1].operand",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Event of Default",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "e7b069f497b3ab50c97bdb6b45ae09cf3c2e41235cc5e224bd78d799a6602116",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:15e70f5c3a3def1fae041906",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Article VIII default events",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Event of Default"
+        },
+        {
+          "itemId": "96bc2658a083097060e3e7b10f1840eb9546eacea504fdec500e902f779651f7",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:15e70f5c3a3def1fae041906",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Event of Default means any of the events specified in Article VIII, provided that any requirement for the giving of notice or lapse of time has been satisfied",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(e)(ii)",
+          "sourceExcerpt": null,
+          "ownerTermName": "Event of Default"
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+        "items": [
+          {
+            "kind": "RATIO",
+            "rawText": "3.50 to 1.00",
+            "normalizedValue": 3.5,
+            "currency": null,
+            "unit": "x",
+            "charStart": 185,
+            "charEnd": 197,
+            "withheldReason": null,
+            "itemId": "fd0b5fabe3145dd38065ff40f8bf2bef1c0ae8391cc6178e2942fcf293bfd59c",
+            "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+            "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+            "fieldPath": "rules[0].unresolvedDependencies[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The unlimited Restricted Payment permission under clause (e) is conjunctive: it also requires the Consolidated Senior Secured Leverage Ratio condition in clause (e)(i) (no greater than 3.50 to 1.00 on a pro forma basis), which is outside this compilation window and represented by an adjacent sub-clause",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(e)(ii)",
+            "referencedTerms": [
+              "Event of Default"
+            ],
+            "referencedSections": [
+              "7.6(e)(ii)",
+              "§7.6(e)(ii)",
+              "7.6(e)(i)"
+            ]
+          }
+        ],
+        "fieldsWalked": 16,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "RATIO",
+            "rawText": "3.50 to 1.00",
+            "normalizedValue": 3.5,
+            "currency": null,
+            "unit": "x",
+            "charStart": 185,
+            "charEnd": 197,
+            "withheldReason": null,
+            "itemId": "fd0b5fabe3145dd38065ff40f8bf2bef1c0ae8391cc6178e2942fcf293bfd59c",
+            "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb",
+            "ruleOrDefinitionId": "ir-rule:492602c271c73e124011dea2",
+            "fieldPath": "rules[0].unresolvedDependencies[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The unlimited Restricted Payment permission under clause (e) is conjunctive: it also requires the Consolidated Senior Secured Leverage Ratio condition in clause (e)(i) (no greater than 3.50 to 1.00 on a pro forma basis), which is outside this compilation window and represented by an adjacent sub-clause",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(e)(ii)",
+            "referencedTerms": [
+              "Event of Default"
+            ],
+            "referencedSections": [
+              "7.6(e)(ii)",
+              "§7.6(e)(ii)",
+              "7.6(e)(i)"
+            ]
+          },
+          "status": "UNGROUNDED",
+          "groundedIn": null,
+          "matchedEvidenceId": null,
+          "matchedText": null,
+          "relation": null,
+          "unrelatedEvidenceIds": [],
+          "reason": "compiled IR asserts RATIO \"3.50 to 1.00\" (canonical 3.5 x) in free text at rules[0].unresolvedDependencies[0].description, and no authenticated source RELATED to the asserting unit supports it"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "678af44a15bba15716b75d16038c47cce57112f09fbe05b25441bd96a3bc05ef",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "d4ea6e572e3a98128c8a5e3b7487226000e8e94349f2659d142af4ba65f7cbbb",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Event of Default",
+          "scopeKey": "event of default",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 16502,
+          "charEnd": 16737,
+          "rawText": "\"Event of Default\": any of the events specified in Article VIII; provided that any requirement for the giving of notice, the lapse of time, or both,\nhas been satisfied.\n&quot; Exchange Act \": as defined\nin clause (k) of Article VIII.\n\n",
+          "contentHash": "4520ba57faa16e13082f746aeee2413142f8323f722e71fc3640c4b07fb15b99",
+          "retrievalReason": "the IR contains a definition of this term",
+          "relationshipToUnit": "definition of \"Event of Default\" represented by IR ir-definition:15e70f5c3a3def1fae041906 of candidate discovery-candidate:72e65025f7418737c58d95eb",
+          "role": "REPRESENTED_DEFINITION",
+          "representedDefinitionIds": [
+            "ir-definition:15e70f5c3a3def1fae041906"
+          ],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": false,
+            "matched": null,
+            "toolCallIndexes": []
+          },
+          "linkage": [
+            {
+              "origin": "IR_DEFINITION_TERM",
+              "detail": "definitions[0].termName = \"Event of Default\"",
+              "compilerRecordedContentHash": null
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Event of Default\" resolved to node (none) span [16502, 16737)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [16502, 16737) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(16502, 16737)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 4520ba57faa16e13082f746aeee2413142f8323f722e71fc3640c4b07fb15b99 computed independently from the resolved text"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "1dc59a08ec5a96a3de7c15242b3e563afefee7f03158aadc0e4ffc831e8a6031",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 48722,
+    "inputTokens": 11866,
+    "outputTokens": 5519,
+    "costUsd": 0.00297752,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:72e65025f7418737c58d95eb.verified-units.json",
+    "packageHash": "f457c3aed18823511e40ce4b603ac9c9784a26b265a4e7b1a02d043575cb2065",
+    "complete": true,
+    "artifactsPersisted": 2,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

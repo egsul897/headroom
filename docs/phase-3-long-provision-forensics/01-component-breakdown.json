@@ -1,0 +1,356 @@
+{
+  "calibration": {
+    "tokensPerChar": 0.3957,
+    "fixedCallOverheadChars": 43806,
+    "maxFirstTurnInputTokens": 100000
+  },
+  "toolBudget": {
+    "maxToolCalls": 8,
+    "maxRecursionDepth": 3,
+    "maxAdditionalSourceChars": 20000
+  },
+  "shardBudget": {
+    "targetPrimaryChars": 12000,
+    "maxPrimaryChars": 24000,
+    "maxContextChars": 10000,
+    "maxRequiredContextChars": 64000,
+    "maxContextEntryChars": 1800,
+    "maxUnitsPerShard": 16
+  },
+  "breakdowns": [
+    {
+      "slot": "SHORT_CONTROL",
+      "sourceSectionRef": "7.2(e)",
+      "sourceChars": 200,
+      "sourceTokens": 80,
+      "systemPromptChars": 13528,
+      "fewShotChars": 12283,
+      "toolSchemaChars": 7922,
+      "contextBundleChars": 24895,
+      "contextItemCount": 18,
+      "contextItemChars": 23819,
+      "operativeTextInBundleChars": 200,
+      "accountabilityChars": 876,
+      "initialPromptChars": 58628,
+      "initialPromptTokens": 23200,
+      "expansionRatio": 290,
+      "fixedOverheadShare": 0.575
+    },
+    {
+      "slot": "MEDIUM",
+      "sourceSectionRef": "7.6",
+      "sourceChars": 3501,
+      "sourceTokens": 1386,
+      "systemPromptChars": 13528,
+      "fewShotChars": 12283,
+      "toolSchemaChars": 7922,
+      "contextBundleChars": 73709,
+      "contextItemCount": 47,
+      "contextItemChars": 64881,
+      "operativeTextInBundleChars": 3501,
+      "accountabilityChars": 5327,
+      "initialPromptChars": 107442,
+      "initialPromptTokens": 42515,
+      "expansionRatio": 30.7,
+      "fixedOverheadShare": 0.314
+    },
+    {
+      "slot": "LONG",
+      "sourceSectionRef": "7.2(e)",
+      "sourceChars": 9045,
+      "sourceTokens": 3580,
+      "systemPromptChars": 13528,
+      "fewShotChars": 12283,
+      "toolSchemaChars": 7922,
+      "contextBundleChars": 43359,
+      "contextItemCount": 19,
+      "contextItemChars": 33437,
+      "operativeTextInBundleChars": 9045,
+      "accountabilityChars": 877,
+      "initialPromptChars": 77092,
+      "initialPromptTokens": 30506,
+      "expansionRatio": 8.5,
+      "fixedOverheadShare": 0.438
+    },
+    {
+      "slot": "HARD",
+      "sourceSectionRef": "7.2(k)",
+      "sourceChars": 9621,
+      "sourceTokens": 3808,
+      "systemPromptChars": 13528,
+      "fewShotChars": 12283,
+      "toolSchemaChars": 7922,
+      "contextBundleChars": 60944,
+      "contextItemCount": 31,
+      "contextItemChars": 48482,
+      "operativeTextInBundleChars": 9621,
+      "accountabilityChars": 2841,
+      "initialPromptChars": 94677,
+      "initialPromptTokens": 37464,
+      "expansionRatio": 9.8,
+      "fixedOverheadShare": 0.356
+    }
+  ],
+  "toolLoop": {
+    "SHORT_CONTROL": [
+      {
+        "turn": 0,
+        "newEvidenceChars": 0,
+        "cumulativeContextChars": 58628,
+        "cumulativeTokens": 23200,
+        "billedTokensIfResent": 23200
+      },
+      {
+        "turn": 1,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 61128,
+        "cumulativeTokens": 24189,
+        "billedTokensIfResent": 47389
+      },
+      {
+        "turn": 2,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 63628,
+        "cumulativeTokens": 25178,
+        "billedTokensIfResent": 72567
+      },
+      {
+        "turn": 3,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 66128,
+        "cumulativeTokens": 26167,
+        "billedTokensIfResent": 98734
+      },
+      {
+        "turn": 4,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 68628,
+        "cumulativeTokens": 27157,
+        "billedTokensIfResent": 125891
+      },
+      {
+        "turn": 5,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 71128,
+        "cumulativeTokens": 28146,
+        "billedTokensIfResent": 154037
+      },
+      {
+        "turn": 6,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 73628,
+        "cumulativeTokens": 29135,
+        "billedTokensIfResent": 183172
+      },
+      {
+        "turn": 7,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 76128,
+        "cumulativeTokens": 30124,
+        "billedTokensIfResent": 213296
+      },
+      {
+        "turn": 8,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 78628,
+        "cumulativeTokens": 31114,
+        "billedTokensIfResent": 244410
+      }
+    ],
+    "MEDIUM": [
+      {
+        "turn": 0,
+        "newEvidenceChars": 0,
+        "cumulativeContextChars": 107442,
+        "cumulativeTokens": 42515,
+        "billedTokensIfResent": 42515
+      },
+      {
+        "turn": 1,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 109942,
+        "cumulativeTokens": 43505,
+        "billedTokensIfResent": 86020
+      },
+      {
+        "turn": 2,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 112442,
+        "cumulativeTokens": 44494,
+        "billedTokensIfResent": 130514
+      },
+      {
+        "turn": 3,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 114942,
+        "cumulativeTokens": 45483,
+        "billedTokensIfResent": 175997
+      },
+      {
+        "turn": 4,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 117442,
+        "cumulativeTokens": 46472,
+        "billedTokensIfResent": 222469
+      },
+      {
+        "turn": 5,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 119942,
+        "cumulativeTokens": 47462,
+        "billedTokensIfResent": 269931
+      },
+      {
+        "turn": 6,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 122442,
+        "cumulativeTokens": 48451,
+        "billedTokensIfResent": 318382
+      },
+      {
+        "turn": 7,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 124942,
+        "cumulativeTokens": 49440,
+        "billedTokensIfResent": 367822
+      },
+      {
+        "turn": 8,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 127442,
+        "cumulativeTokens": 50429,
+        "billedTokensIfResent": 418251
+      }
+    ],
+    "LONG": [
+      {
+        "turn": 0,
+        "newEvidenceChars": 0,
+        "cumulativeContextChars": 77092,
+        "cumulativeTokens": 30506,
+        "billedTokensIfResent": 30506
+      },
+      {
+        "turn": 1,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 79592,
+        "cumulativeTokens": 31495,
+        "billedTokensIfResent": 62001
+      },
+      {
+        "turn": 2,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 82092,
+        "cumulativeTokens": 32484,
+        "billedTokensIfResent": 94485
+      },
+      {
+        "turn": 3,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 84592,
+        "cumulativeTokens": 33474,
+        "billedTokensIfResent": 127959
+      },
+      {
+        "turn": 4,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 87092,
+        "cumulativeTokens": 34463,
+        "billedTokensIfResent": 162422
+      },
+      {
+        "turn": 5,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 89592,
+        "cumulativeTokens": 35452,
+        "billedTokensIfResent": 197874
+      },
+      {
+        "turn": 6,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 92092,
+        "cumulativeTokens": 36441,
+        "billedTokensIfResent": 234315
+      },
+      {
+        "turn": 7,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 94592,
+        "cumulativeTokens": 37431,
+        "billedTokensIfResent": 271746
+      },
+      {
+        "turn": 8,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 97092,
+        "cumulativeTokens": 38420,
+        "billedTokensIfResent": 310166
+      }
+    ],
+    "HARD": [
+      {
+        "turn": 0,
+        "newEvidenceChars": 0,
+        "cumulativeContextChars": 94677,
+        "cumulativeTokens": 37464,
+        "billedTokensIfResent": 37464
+      },
+      {
+        "turn": 1,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 97177,
+        "cumulativeTokens": 38453,
+        "billedTokensIfResent": 75917
+      },
+      {
+        "turn": 2,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 99677,
+        "cumulativeTokens": 39443,
+        "billedTokensIfResent": 115360
+      },
+      {
+        "turn": 3,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 102177,
+        "cumulativeTokens": 40432,
+        "billedTokensIfResent": 155792
+      },
+      {
+        "turn": 4,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 104677,
+        "cumulativeTokens": 41421,
+        "billedTokensIfResent": 197213
+      },
+      {
+        "turn": 5,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 107177,
+        "cumulativeTokens": 42410,
+        "billedTokensIfResent": 239623
+      },
+      {
+        "turn": 6,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 109677,
+        "cumulativeTokens": 43400,
+        "billedTokensIfResent": 283023
+      },
+      {
+        "turn": 7,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 112177,
+        "cumulativeTokens": 44389,
+        "billedTokensIfResent": 327412
+      },
+      {
+        "turn": 8,
+        "newEvidenceChars": 2500,
+        "cumulativeContextChars": 114677,
+        "cumulativeTokens": 45378,
+        "billedTokensIfResent": 372790
+      }
+    ]
+  }
+}

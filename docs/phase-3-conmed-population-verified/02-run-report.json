@@ -1,0 +1,62 @@
+{
+  "mission": "HEADROOM PHASE-3 - CONMED CURRENT-PIPELINE POPULATION EXECUTION (authorized run: compile + verify + paired persistence)",
+  "verdict": "CONMED_CURRENT_PIPELINE_POPULATION_PARTIAL_EXECUTION",
+  "whyPartial": "The session container restarted while candidate 105 of 133 (7.6(f)(i)) was in flight, killing the detached runner. Not a budget stop ($1.68 of $3.50 committed including the in-flight reservation), not an evidence failure (every persisted file validates), not a decision to stop. The runner was NOT restarted, per the mission's decision rule; the 28 unattempted and 1 in-flight candidates are listed for a separately authorized continuation.",
+  "startingSha": "be2ac1fc0f614dffeafb9257b9f36ed7f2a8961d",
+  "runId": "conmed-resume-2026-09-24T15:26:49.940Z",
+  "startedAt": "2026-09-24T15:26:49Z",
+  "lastTerminalResultAt": "2026-09-25T03:49:27Z",
+  "detectedTerminatedAt": "2026-09-25T04:20:05Z (container uptime under one minute; runner process absent; scratch directory intact)",
+
+  "dryRunInvariants": { "discovered": 163, "dedupDenominator": 135, "emptyOperativeSkips": 2, "attemptable": 133, "reservationPerCallUsd": 0.01942304, "hardCeilingUsd": 3.5, "stopAtUsd": 3.450577, "retries": "disabled", "fallback": null, "concurrency": 1, "allHeld": true },
+  "preflight": { "tierA_tiny": { "status": 200, "inputTokens": 90, "outputTokens": 13, "costUsd": 0.00001508 }, "tierB_workload": { "status": 200, "inputTokens": 5431, "outputTokens": 290, "costUsd": 0.00078143 }, "spendUsd": 0.00079651, "model": "deepseek/deepseek-v4-flash" },
+  "abortedFirstLaunch": "the runner was first started under the tool's 10-minute lifecycle, recognised as unsafe for a multi-hour run, and killed before its first candidate row (log empty); it may have dispatched the one-time amendment-pipeline call (≤ $0.0004, unrecoverable locally). Relaunched detached (nohup/setsid). Recorded, not hidden.",
+
+  "execution": {
+    "model": "deepseek/deepseek-v4-flash (unsuffixed; ANALYZER_MODEL pinned; every recorded side call shows this model)",
+    "timeoutMs": 480000, "concurrency": 1, "attemptsPerCandidate": 1, "autoRetries": 0, "fallbackCalls": 0, "premiumCalls": 0,
+    "attempted": 104, "inFlightAtTermination": "7.6(f)(i) (discovery-candidate:e9236b1dc9d46e13db1b7678, 170 chars, SHORT)", "unattempted": 28, "skippedEmptyOperative": 2,
+    "compile": { "COMPLETED": 51, "TIMEOUT": 48, "PROVIDER_FAILURE_billed": 3, "SCHEMA_FAILURE": 2, "note": "the three provider failures (7.2(i), 7.2(r), 7.3(d)) were served and billed before the provider errored, so classifyOutcome records them as OTHER_EXECUTION_FAILURE with failureReasons PROVIDER_FAILURE; 7.5(j) and 7.6 returned output the schema rejected" },
+    "byBand": { "SHORT_lte_776": { "attempted": 79, "COMPLETED": 50, "TIMEOUT": 25, "PROVIDER_FAILURE": 3, "SCHEMA_FAILURE": 1 }, "MID_777_to_1885": { "attempted": 14, "COMPLETED": 1, "TIMEOUT": 13 }, "LONG_gte_1886": { "attempted": 11, "COMPLETED": 0, "TIMEOUT": 10, "SCHEMA_FAILURE": 1 } },
+    "verification": { "ran": 51, "statusCounts": { "MATERIAL_DISCREPANCY": 31, "VERIFICATION_INCOMPLETE": 18, "REVIEW_REQUIRED": 1, "VERIFICATION_FAILED": 1 }, "adversarialReviewInvoked": "47 of 47 flushed completions (46 Layer-2 review calls + 2 condition-suspicion calls among the flushed rows)", "findingsTotalFlushed": 120 },
+    "pairedPackages": { "complete": 49, "incomplete": 55, "notWritten": 0, "incompleteBreakdown": { "compileFailedOrTimedOut_noUnits_noFile": 53, "VERIFICATION_WITHOUT_IR": 2 } },
+    "packageCompletenessVsSemantics": "31 MATERIAL_DISCREPANCY and 18 VERIFICATION_INCOMPLETE results have complete packages: IR + verification + identity all present. The two incomplete packages after a completed compile+verify are the VERIFICATION_WITHOUT_IR cases below, not semantic statuses."
+  },
+
+  "spend": {
+    "exactUsd": 0.731688, "timeoutReservationsRetainedUsd": 0.932306, "committedUsd": 1.663994, "inFlightReservationUsd": 0.019423, "committedIncludingInFlightUsd": 1.683417,
+    "preflightUsd": 0.000797, "abortedLaunchPossibleAmendmentUsd": "≤ 0.0004 (unknown)",
+    "totalAccountedUsd": 1.684214, "ceilingUsd": 3.5, "stopAtUsd": 3.450577, "budgetStopTriggered": false, "remainingUnderCeilingUsd": 1.815786,
+    "ledgerSource": "flushed ledger snapshot at 100 rows ($1.586394) + 4 recovered rows from the log's committed deltas ($0.0776) = $1.663994, which matches the last logged committed $1.6640",
+    "paidCalls": { "compile": 104, "compileInFlightUnknown": 1, "verifierCallsFlushed": 48, "verifierCallsRecoveredRowsMinimum": 4, "amendmentPipeline": 1, "healthProbes": 2, "totalKnown": 159, "plusInFlightUnknown": 1 },
+    "compileExactCost": { "n": 52, "min": 0.002002, "median": 0.005905, "mean": 0.009428, "max": 0.087623, "note": "the $0.0876 outlier is a billed provider failure with a very long tool loop; the calibration's median $0.006355 held" },
+    "verifyCostPerCandidate": { "n": 47, "median": 0.005127, "mean": 0.004715, "max": 0.008951, "note": "higher than the calibration's $0.0021 typical (2 observations) and at the $0.0053 conservative figure; every completion invoked Layer-2 review" },
+    "completedCompileWallClock": { "medianS": 291.5, "maxS": 476.6 }
+  },
+
+  "benchmarkCandidatesExecutionFactsOnly": {
+    "7.1": { "band": "LONG", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "7.2": { "band": "LONG", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "7.10": { "band": "LONG", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "7.2(c)": { "band": "SHORT", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "7.11": { "band": "SHORT", "compile": "COMPLETED", "verify": "COMPLETED", "verificationStatus": "MATERIAL_DISCREPANCY", "packageComplete": true, "executionLimited": false },
+    "7.13": { "band": "MID", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "7.14": { "band": "MID", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "7.16": { "band": "MID", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "7.17": { "band": "MID", "compile": "TIMEOUT", "verify": "NOT_RUN", "packageComplete": false, "executionLimited": true },
+    "executionLimited": 8, "executable": 1, "scored": false
+  },
+
+  "newPipelineDefectsObserved_notRemediated": [
+    { "id": "P-1", "what": "verifier findings whose ruleOrDefinitionId is not a compiled unit id", "instances": ["7.16(a): 'rule[r1].condition[1]' (path-shaped)", "7.6(b): two real-looking rule ids (ir-rule:73c5929d…, ir-rule:7850f7d8…) that the candidate did not compile"], "consequence": "persistence correctly refuses package completeness (VERIFICATION_WITHOUT_IR), and at the strict boundary such a MATERIAL finding binds to nothing - a finding that cannot block anything. A verifier-side id-normalisation gap; post-run finding." },
+    { "id": "P-2", "what": "timeout rate far above the calibration's band model", "detail": "SHORT band 25 of 79 timed out (calibration priced 10% as an allowance); MID 13 of 14; LONG 10 of 11. Zero tool calls and no telemetry on every timeout. Several short candidates that completed in earlier validation runs (7.1(a), 7.1(d), 7.2(f)) timed out here. Model/provider execution variance on the locked model, recorded as EXECUTION_LIMITED; not a semantic finding." },
+    { "id": "P-3", "what": "billed provider failures", "detail": "3 candidates were served, billed exactly, then failed with PROVIDER_FAILURE (one at $0.0876 after a long tool loop); classified OTHER_EXECUTION_FAILURE because billed. Not retried." },
+    { "id": "P-4", "what": "MODEL_SCHEMA_FAILURE", "detail": "7.5(j) and 7.6: output rejected by the IR schema. Not retried." },
+    { "id": "P-5", "what": "VERIFICATION_FAILED on 7.3(k)", "detail": "the adversarial review call failed; the result is persisted with a complete package (the pair exists) and floors REVIEW_REQUIRED at the boundary." },
+    { "id": "H-1", "what": "harness: no flush on abnormal termination", "detail": "statuses/ledger flush every 10 rows; the container restart lost 4 rows from memory. Recovered deterministically from their evidence files + the log, labelled `recovered: true`; verify side-call breakdown for those 4 is not recoverable (only the per-candidate total). A per-candidate flush is a harness improvement for the continuation, not applied here." }
+  ],
+
+  "integrity": { "secretLeakScan": "0 hits over 163 files", "packageHashesRevalidated": "51 of 51 (package hash + every artifact hash)", "copyVerification": "163 files sha256-identical between scratch and repository (162 verbatim + the labelled reconstructed manifest written to both)", "duplicateRows": 0, "manifestReconciliation": "0 problems", "ledgerReconciliation": "0 problems", "unrecordedPaidCalls": "0 known; 1 in-flight compile of unknown billing charged a full reservation; ≤1 amendment call from the aborted first launch (≤ $0.0004)" },
+  "preserved": { "scratch": "/tmp/claude-0/pilot/population-verified", "repository": "docs/phase-3-conmed-population-verified/run", "validation": "docs/phase-3-conmed-population-verified/01-run-validation.json" },
+  "historicalArtifactsModified": 0, "productionFilesChanged": 0, "closedWorkReopened": false, "benchmarkScored": false
+}

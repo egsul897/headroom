@@ -1,0 +1,58 @@
+{
+  "mission": "HEADROOM PHASE-3 - FORENSIC ATTRIBUTION HARNESS CLEANUP (R1, harness only)",
+  "startingSha": "dad0d3201b2f85d34b34644b74dacfb24fcb44b3",
+  "paidModelCalls": 0,
+  "productionFilesChanged": 0,
+  "preconditionsVerified": {
+    "cleanTree": true,
+    "fixBScoping": "FIX_B_EVIDENCE_SCOPING_TIGHTENING_VALIDATED",
+    "numericGroundingTests": "46/46",
+    "candidateSpan": "CANDIDATE_SPAN_CONTEXT_OWNERSHIP_VALIDATED (55/55)",
+    "benchmarkSha256_16": "5f0eb08834f2056f",
+    "phase4TreeHash": "8fa637768316a613524e821b913f56c86111a298"
+  },
+  "whatChanged": {
+    "new": "scripts/p3-conmed-pilot/forensic-grounding.ts - assembles the evidence universe exactly as verify.ts does and calls the SAME production functions (collectNumericAssertions + groundNumericAssertions). It reimplements nothing.",
+    "rewired": [
+      "scripts/p3-conmed-pilot/span-validation.ts",
+      "scripts/p3-conmed-pilot/span-validation-b2.ts"
+    ],
+    "legacyHelpers": "assertedAmounts() and attributionCheck() are RETAINED, marked @deprecated with the reason, and no longer decide anything. Their only remaining callers are the explicit legacy-vs-new comparisons (forensic-grounding-replay.ts, evidence-universe-audit.ts) - keeping them is what makes the correction demonstrable instead of asserted.",
+    "haltSemantics": "cohort A's halt kept its meaning - a figure the candidate's own anchor does not own - but now reads it off `grounding.notAnchorOwned`, which sees authenticated retrieval and normalized renderings the substring test could not."
+  },
+  "evidenceUniverse": {
+    "included": [
+      "the candidate's own operative window (OPERATIVE)",
+      "every retrieved source collectAdmissibleEvidence independently re-resolved and hash-checked, carrying its retrieval identity (requestKind / scopeKey / requestKey) so R2's relation test applies",
+      "context-bundle excerpts, as CONTEXT-scope text with NO retrieval identity"
+    ],
+    "excludedByConstruction": [
+      "refused tool results",
+      "unresolved evidence",
+      "stale or unauthenticated retrievals",
+      "prompt and few-shot text",
+      "model-generated prose",
+      "diagnostic notes"
+    ],
+    "howExclusionIsEnforced": "not by a filter written in the harness - by calling collectAdmissibleEvidence, which is the same authentication production uses. A refused or unresolved retrieval simply never appears in `authenticated`.",
+    "contextBundleNote": "included as a channel but structurally unable to ground: under R2 evidence with no retrieval identity can never establish a relation, so a bundle excerpt can only ever contribute to an AMBIGUOUS verdict. This is how the channel is present without granting support production would refuse."
+  },
+  "reportedFields": [
+    "status (the six production values)",
+    "fieldPath",
+    "normalizedValue",
+    "kind",
+    "unit",
+    "ruleOrDefinitionId",
+    "fieldClass",
+    "groundedIn",
+    "matchedEvidenceId",
+    "matchedText",
+    "relation",
+    "unrelatedEvidenceIds",
+    "reason",
+    "authenticatedEvidence[]",
+    "rejectedEvidence[]"
+  ],
+  "legacyViewPolicy": "supportedByAnchor / violations / unsourced remain in the report for backward-readable display ONLY, derived mechanically from assertions[].status and groundedIn, carrying deprecated:true and a derivedFrom string. Nothing reads them to decide anything; a test pins that they are disjoint and jointly complete over the asserted set."
+}

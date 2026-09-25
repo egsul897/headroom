@@ -1,0 +1,39 @@
+{
+  "mission": "HEADROOM PHASE-3 - FIX B FREE-TEXT NUMERIC EVIDENCE-SCOPING TIGHTENING (R2)",
+  "section": "the audit's measured counterexample, re-measured on the real CONMED evidence after R2",
+  "paidModelCalls": 0,
+  "evidenceRecord": "docs/phase-3-numeric-grounding/paid-validation-evidence/THE_CASE-discovery-candidate:1084b12277d101d1e3928d59.json",
+  "authenticatedEvidence": "getDefinition(\"Subsidiary Guarantor\") - real source text reading \"... Pledge Eligible Foreign Subsidiary (100%)\"",
+  "beforeR2": {
+    "RELATED": "GROUNDED_CONTEXT",
+    "UNRELATED": "GROUNDED_CONTEXT (the defect)"
+  },
+  "afterR2": [
+    {
+      "label": "RELATED",
+      "assertion": "the guarantee may cover up to 100% of the obligations of any Subsidiary Guarantor",
+      "value": "100%",
+      "status": "GROUNDED_TOOL_EVIDENCE",
+      "groundedIn": "CONTEXT",
+      "relation": "the assertion's own text names the defined term \"Subsidiary Guarantor\"",
+      "matchedEvidenceId": "7133a6b08c385f3186cd0cc28689f4dd17dd74b7470faf0bc829509c3562c275",
+      "unrelatedEvidenceIds": [],
+      "unsupportedNumericFindings": 0,
+      "verificationStatus": "VERIFICATION_INCOMPLETE"
+    },
+    {
+      "label": "UNRELATED",
+      "assertion": "the Borrower may prepay up to 100% of the outstanding Revolving Loans at any time",
+      "value": "100%",
+      "status": "UNGROUNDED",
+      "groundedIn": null,
+      "relation": null,
+      "matchedEvidenceId": null,
+      "unrelatedEvidenceIds": [
+        "7133a6b08c385f3186cd0cc28689f4dd17dd74b7470faf0bc829509c3562c275"
+      ],
+      "unsupportedNumericFindings": 1,
+      "verificationStatus": "MATERIAL_DISCREPANCY"
+    }
+  ]
+}

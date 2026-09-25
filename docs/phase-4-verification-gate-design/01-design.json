@@ -1,0 +1,472 @@
+{
+  "mission": "HEADROOM PHASE-4 - VERIFICATION-AWARE RUNTIME GATE (interface + dominance design, zero-cost)",
+  "startingSha": "5e2015753ece67e06209295ddfe346c472fb91b7",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeStateAtStart": "clean",
+  "paidModelCalls": 0,
+  "productionFilesChanged": 0,
+  "treeHashes": {
+    "phase3Compiler": "1a3732c93fba0681687656f9a7679310bffeb8ba",
+    "phase4Runtime": "8fa637768316a613524e821b913f56c86111a298",
+    "phase3VerificationTypes": "da607cb7d10dba99d08f9a499dcbf6042f1d6fc0"
+  },
+  "frozenClosed": [
+    "candidate-span/context ownership",
+    "Fix B numeric grounding",
+    "Fix B evidence scoping (R2)",
+    "forensic attribution harness alignment (R1)"
+  ],
+  "structuralFindingThatShapesEverything": {
+    "finding": "Phase 4 has NO production caller. Nothing under lib/ or app/ imports lib/contract-model/runtime - every consumer today is a script (phase-4a..4d gates, recertifications) or a test.",
+    "consequence": "There is no flag day to manage and no live surface to break. The strict production boundary does not have to be migrated INTO strictness; it can be born strict whenever it is built, while the runtime primitives keep permissive defaults so existing fixtures are never silently reinterpreted."
+  },
+  "currentPhase3ToPhase4Contract": [
+    {
+      "boundary": "4A expression",
+      "entry": "evaluateExpression({ expression: IRCapacityExpression, inputs: InputResolver, context?: EvaluationContext })",
+      "sufficiencyAvailable": "only indirectly - the expression carries none; the owning rule/definition is reached through InputResolver.resolveRule/resolveDefinition when a RULE_REFERENCE or DEFINED_TERM_REFERENCE is expanded",
+      "verificationStatus": "NO",
+      "findings": "NO",
+      "irPath": "NO (nodes carry exprId, not a path)",
+      "canDistinguishVerifiedFromDisputed": "NO"
+    },
+    {
+      "boundary": "4A rule",
+      "entry": "evaluateRule(rule: IRRule, inputs, context?)",
+      "sufficiencyAvailable": "YES (rule.sufficiency)",
+      "verificationStatus": "NO",
+      "findings": "NO",
+      "irPath": "NO",
+      "canDistinguishVerifiedFromDisputed": "NO"
+    },
+    {
+      "boundary": "4B input binding",
+      "entry": "InputResolver (fixtureInputResolver / snapshotInputResolver), resolveInput({query, snapshots, policy, graph})",
+      "sufficiencyAvailable": "NO - it resolves financial facts, not legal state",
+      "verificationStatus": "NO",
+      "findings": "NO",
+      "irPath": "NO",
+      "canDistinguishVerifiedFromDisputed": "NO"
+    },
+    {
+      "boundary": "4C graph",
+      "entry": "buildCapacityGraph({ companyId, instrumentKey, rules, sharedCapacities?, definitions?, asOf? })",
+      "sufficiencyAvailable": "YES (copied onto node.phase3)",
+      "verificationStatus": "NO",
+      "findings": "NO",
+      "irPath": "NO",
+      "canDistinguishVerifiedFromDisputed": "NO",
+      "note": "rules are re-sorted by ruleId here - see the irPath instability finding"
+    },
+    {
+      "boundary": "4C state",
+      "entry": "evaluateCapacityState({ graph, rules, sharedCapacities?, definitions?, inputs, ledger?, ledgerPolicy?, asOf? })",
+      "sufficiencyAvailable": "YES (SUFFICIENCY_DOMINANCE)",
+      "verificationStatus": "NO",
+      "findings": "NO",
+      "irPath": "NO",
+      "canDistinguishVerifiedFromDisputed": "NO"
+    },
+    {
+      "boundary": "4D simulation",
+      "entry": "simulateTransaction({ transaction, currentState, capacityGraph, selectedPath, inputs, context })",
+      "sufficiencyAvailable": "YES (rule.sufficiency !== 'COMPLETE' -> unsafeLegal)",
+      "verificationStatus": "NO",
+      "findings": "NO",
+      "irPath": "NO",
+      "canDistinguishVerifiedFromDisputed": "NO"
+    }
+  ],
+  "currentSufficiencyGates": [
+    {
+      "site": "evaluate-expression.ts:36 BLOCKED_SUFFICIENCY + :133 blockedBySufficiency",
+      "behaviour": "AMBIGUOUS / MISSING_CONTEXT / CONFLICTED on an expanded rule or definition -> the NODE fails AMBIGUOUS with diagnostic AMBIGUOUS_SEMANTICS. COMPLETE, PARTIAL and UNSUPPORTED pass through.",
+      "failClosed": "partially - PARTIAL is not blocked here"
+    },
+    {
+      "site": "rule-evaluator.ts:46",
+      "behaviour": "the same three values block the WHOLE rule: capacity and every condition are left unevaluated and the rule status is AMBIGUOUS",
+      "failClosed": "yes, at rule granularity"
+    },
+    {
+      "site": "capacity/state.ts:64 SUFFICIENCY_DOMINANCE",
+      "behaviour": "COMPLETE -> no floor; PARTIAL -> REVIEW_REQUIRED + PHASE3_RULE_NOT_SAFE_TO_RELY_ON; AMBIGUOUS/MISSING_CONTEXT/CONFLICTED -> AMBIGUOUS + PHASE3_RULE_AMBIGUOUS; UNSUPPORTED -> UNSUPPORTED + PHASE3_RULE_UNSUPPORTED; a value outside the union fails closed to UNSUPPORTED",
+      "failClosed": "yes - the only site with an exhaustive Record plus an unknown-value default"
+    },
+    {
+      "site": "transaction/simulate.ts:267",
+      "behaviour": "rule.sufficiency !== 'COMPLETE' -> unsafeLegal -> every condition on that rule returns REVIEW_REQUIRED without relying on its evaluation",
+      "failClosed": "yes"
+    }
+  ],
+  "gateImplementationSharing": "NOT shared. Four sites express overlapping but different rules: two use the same three-value BLOCKED_SUFFICIENCY list, state.ts uses a five-value dominance table, simulate.ts uses a binary !== COMPLETE. A verification gate must not add a fifth dialect - hence the single-module recommendation below.",
+  "verificationDataCurrentlyAvailableToRuntime": "NONE. grep over lib/contract-model/runtime for verificationStatus / SemanticVerificationResult / findings / claimReview returns zero. The runtime has never been given a verification result and no argument type can carry one.",
+  "proposedVerificationEnvelope": {
+    "shape": "option B - a sibling RuntimeVerificationEnvelope, never attached to IRRule",
+    "whyNotOnIRRule": "IRRule is the compilation artifact: hashed, persisted, identity-bearing. Hanging verification state on it would make the same legal rule hash differently depending on whether a verifier had run, and would blur the Phase-3 boundary this design exists to sharpen.",
+    "whyNotOptionC": "a runtime context keyed by rule identity is the same thing with weaker typing and nowhere to record envelope-level provenance",
+    "typescript": "interface RuntimeVerificationEnvelope { envelopeVersion: string; companyId: string; instrumentKey: string; units: VerificationUnitRecord[] }\ninterface VerificationUnitRecord { ruleOrDefinitionId: string; identity: { irSchemaVersion: string; compilerVersion: string | null; sourceContentVersion: string | null }; verificationStatus: SemanticVerificationStatus; verifierAlgorithmVersion: string; evidenceSetHash: string | null; blocks: VerificationBlock[] }\ninterface VerificationBlock { findingId: string; findingType: SemanticVerificationFindingType; scope: 'NODE' | 'UNIT'; exprIds: string[]; irPathAsGiven: string | null; reason: string }",
+    "keyDecision": "The envelope carries RESOLVED exprIds, not path strings. Phase 3 resolves each MATERIAL finding's irPath against the very compilation unit it verified - where the array indices are still valid - and records the exprId(s) it lands on. Runtime never parses a path. Anything that fails to parse or resolve is recorded scope 'UNIT', which fails closed to whole-rule blocking.",
+    "whatIsDeliberatelyNotCarried": [
+      "the compiler execution artifact",
+      "raw model output",
+      "inventories, reconciliation items, admissible evidence",
+      "non-material findings - they cannot impose a floor, so runtime has no use for them",
+      "anything that would require a call to produce"
+    ]
+  },
+  "typeChangesRequired": {
+    "newTypes": [
+      "RuntimeVerificationEnvelope",
+      "VerificationUnitRecord",
+      "VerificationBlock",
+      "VerificationGatePolicy ('REQUIRE' | 'ALLOW_MISSING')"
+    ],
+    "modifiedExistingTypes": [
+      "EvaluateExpressionArgs += verification?, policy?",
+      "EvaluationContext += unitId? (the rule/definition the current expression belongs to)",
+      "EvaluateCapacityStateArgs += verification?, policy?",
+      "BuildCapacityGraphArgs += verification? (for node-level limitation attribution)",
+      "SimulateTransactionArgs.context += verification?, policy?"
+    ],
+    "newEnumMembers": [
+      "RuntimeDiagnosticCode += MATERIAL_VERIFICATION_FINDING",
+      "CapacityLimitationCode += PHASE3_VERIFICATION_MATERIAL_FINDING",
+      "SimulationLimitationCode += PHASE3_VERIFICATION_MATERIAL_FINDING"
+    ],
+    "newRuntimeStatusRequired": "NO - every status this gate needs already exists. The additions above are CODES, not statuses; adding a status would fragment the precedence tables for no semantic gain."
+  },
+  "irIdentityBinding": {
+    "fieldsAvailableToday": {
+      "onIRRule": [
+        "ruleId (deterministic, content-derived per identity.ts - never array position)",
+        "companyId",
+        "instrumentKey",
+        "sourceDocumentId",
+        "sourceSectionRef",
+        "irSchemaVersion",
+        "compilerVersion",
+        "sourceContentVersion"
+      ],
+      "onIRDefinition": [
+        "definitionId",
+        "termName",
+        "the same version trio"
+      ],
+      "onSemanticVerificationFinding": [
+        "findingId (stable, content-derived)",
+        "companyId",
+        "instrumentKey",
+        "sourceDocumentId",
+        "candidateRef",
+        "ruleOrDefinitionId",
+        "irPath",
+        "verifierAlgorithmVersion"
+      ],
+      "onSemanticVerificationResult": [
+        "candidateRef",
+        "evidenceSetHash",
+        "verifierAlgorithmVersion",
+        "verifiedAt"
+      ]
+    },
+    "bindingRule": "a unit record applies to an IRRule/IRDefinition only when ruleOrDefinitionId matches AND companyId/instrumentKey match AND (irSchemaVersion, compilerVersion, sourceContentVersion) match exactly",
+    "mismatchBehaviour": "FAIL CLOSED - a record naming this rule but disagreeing on any version field becomes a UNIT-scope block, never a silent discard. A stale verification that disagrees about which IR it saw is itself a reason not to execute.",
+    "honestWeakness": "sourceContentVersion is nullable and is null across every fixture inspected, so a null-null comparison 'matches' while proving nothing. The design records identityStrength STRONG|WEAK; a WEAK match with a MATERIAL finding still blocks, and a WEAK match is never reported as verified-clean. Populating sourceContentVersion is Phase-3 hygiene, not a blocker here."
+  },
+  "irPathFormat": {
+    "producedBy": [
+      "ir-inventory.ts walk paths, e.g. rules[0].capacityExpression.operands[1], definitions[0].calculationExpression.cases[0].value",
+      "Fix B free-text field paths, e.g. rules[0].conditions[0].description",
+      "reviewer / hand-authored findings"
+    ],
+    "measuredAcrossThePreservedCorpus": {
+      "materialFindings": 498,
+      "withAnIrPath": 279,
+      "ruleLevelNoPath": 219,
+      "ofThoseWithAPath": {
+        "machineParseableStrict": 208,
+        "wildcardIndices": 9,
+        "proseOrAnnotated": 62
+      }
+    },
+    "examplesOfTheUnusable": [
+      "rules[].exceptions",
+      "rules[].capacityExpression.gatedBy.operands[].operands[]",
+      "definitions[0].calculationExpression (EBITDA, SCHEDULE)",
+      "definitions[termName=\"Applicable EBITDA\"].sufficiency; definitions[termName=\"Acquired EBITDA\"].sufficiency"
+    ],
+    "precisionSufficient": "NO - not as a raw string contract at runtime",
+    "twoIndependentReasons": [
+      "25% of pathed material findings (71 of 279) are wildcard or prose and cannot be resolved by any parser",
+      "even a perfectly formed path is POSITIONAL - it indexes the array of the unit that was verified. buildCapacityGraph re-sorts rules by ruleId and callers routinely pass a subset, so rules[0] at verification time is not rules[0] at runtime."
+    ],
+    "resolution": "do not redesign paths. Resolve them ONCE on the Phase-3 side against the exact unit they came from, into exprIds - content-derived and already carried by every evaluated node. Unparseable, wildcard, prose or unresolvable paths downgrade to UNIT scope."
+  },
+  "pathMatchingRules": {
+    "runtimePredicate": "blocksNode(unitId, exprId) - a pure set-membership test against the bound unit record. No string matching of any kind.",
+    "EXACT": "the evaluated node's exprId is in blocks.exprIds -> that node is blocked",
+    "DESCENDANT": "a blocked exprId lies inside the subtree being evaluated -> falls out for free. Evaluation is bottom-up and every child result propagates its status upward, so a blocked child already poisons its parent without a second rule.",
+    "ANCESTOR": "a blocked exprId is an enclosing expression -> that enclosing node is itself blocked when reached. A caller evaluating only the inner node gets no block, which is correct: it is evaluating a different question.",
+    "SIBLING_UNRELATED": "exprId not in the evaluated subtree -> NO effect. This is what stops a disputed threshold on conditions[1] from blocking conditions[0].",
+    "UNIT": "scope UNIT -> the whole rule/definition is blocked at rule-evaluator and at 4C dominance, and evaluation of that unit's nodes is refused",
+    "knownGap": "UNLIMITED_CAPACITY carries no exprId (graph.ts:22 reads it defensively), so a material finding on it can only ever be UNIT-scoped. Stated rather than papered over."
+  },
+  "materialityRules": {
+    "onlyMATERIALmayImposeAFloor": "UNCERTAIN and NON_MATERIAL findings are never carried into the envelope and can never block. A rule does not become unexecutable because someone wrote a note about it.",
+    "effectsMatrix": [
+      {
+        "severity": "MATERIAL",
+        "pathRelation": "EXACT or DESCENDANT of the evaluated node",
+        "phase4A": "node fails AMBIGUOUS with diagnostic MATERIAL_VERIFICATION_FINDING",
+        "phase4C": "UNSUPPORTED floor + PHASE3_VERIFICATION_MATERIAL_FINDING",
+        "phase4D": "SelectedPathResult REVIEW_REQUIRED, limitation recorded, no state mutation"
+      },
+      {
+        "severity": "MATERIAL",
+        "pathRelation": "UNIT (rule-level, unresolvable path, or identity mismatch)",
+        "phase4A": "whole rule blocked at evaluateRule, status AMBIGUOUS",
+        "phase4C": "REVIEW_REQUIRED floor + PHASE3_VERIFICATION_MATERIAL_FINDING",
+        "phase4D": "REVIEW_REQUIRED, no mutation"
+      },
+      {
+        "severity": "MATERIAL",
+        "pathRelation": "SIBLING / unrelated subtree",
+        "phase4A": "ALLOW",
+        "phase4C": "no floor from this finding",
+        "phase4D": "unaffected"
+      },
+      {
+        "severity": "UNCERTAIN or NON_MATERIAL",
+        "pathRelation": "any",
+        "phase4A": "ALLOW",
+        "phase4C": "no floor",
+        "phase4D": "unaffected"
+      },
+      {
+        "severity": "n/a",
+        "pathRelation": "unit status VERIFICATION_INCOMPLETE or VERIFICATION_FAILED",
+        "phase4A": "ALLOW with a recorded diagnostic",
+        "phase4C": "REVIEW_REQUIRED floor",
+        "phase4D": "REVIEW_REQUIRED"
+      },
+      {
+        "severity": "n/a",
+        "pathRelation": "unit verified clean",
+        "phase4A": "ALLOW",
+        "phase4C": "no floor",
+        "phase4D": "unaffected"
+      }
+    ],
+    "whyUNSUPPORTEDforANodeHit": "CapacityStatus precedence is AVAILABLE 0 < NEEDS_INPUT 1 < AMBIGUOUS 2 < REVIEW_REQUIRED 3 < UNSUPPORTED 4 < ERROR 5. A number the verifier says nothing supports is not a reviewable quantity - it is not a quantity. UNSUPPORTED is the existing status that says exactly that, and it sits above REVIEW_REQUIRED so nothing downstream can lift it."
+  },
+  "reviewRequiredStatusPolicy": {
+    "decision": "REVIEW_REQUIRED is NEVER the runtime predicate. The predicate is (a MATERIAL finding) x (its path relation to the node being evaluated).",
+    "whyStatusIsTooCoarse": "determineStatus returns REVIEW_REQUIRED for at least seven distinct situations, most saying nothing about any evaluated value: any UNCERTAIN finding; an unauthenticated compiler retrieval claim; a CONFLICTED or REVIEW_REQUIRED operative lineage; unresolved definition evidence from a tool call; unresolved context-bundle evidence; a stale referenced definition; a KNOWN_SUPERSEDED source node. Several are provenance hygiene on a rule whose arithmetic is untouched.",
+    "corpusLimitation": "the preserved corpus contains ZERO REVIEW_REQUIRED verification results (94 MATERIAL_DISCREPANCY, 53 VERIFICATION_INCOMPLETE, 19 VERIFICATION_FAILED), so this classification is argued from determineStatus's own branches rather than measured. Stated as such rather than dressed up as evidence."
+  },
+  "verificationIncompletePolicy": {
+    "threeStatesKeptDistinct": [
+      "NOT_ATTEMPTED - no unit record exists",
+      "ATTEMPTED_INCOMPLETE - VERIFICATION_INCOMPLETE or VERIFICATION_FAILED",
+      "COMPLETED_CLEAN - VERIFIED_NO_MATERIAL_GAP_FOUND or VERIFIED_WITH_NON_MATERIAL_FINDINGS"
+    ],
+    "decision": "ATTEMPTED_INCOMPLETE does NOT block execution. It imposes a REVIEW_REQUIRED floor at 4C and records a diagnostic at 4A.",
+    "reasoning": "Incompleteness is a statement about evidence or infrastructure - a context budget, a provider failure, a missing verifier - not a defect claim about any value. Blocking it would make a provider outage indistinguishable from a fabricated number, the exact conflation this programme has spent several missions undoing. It must equally never read as verified, which is what the REVIEW_REQUIRED floor prevents.",
+    "sizing": "72 of 166 preserved verification results (43%) are in these two states. Treating them as blocks would disable nearly half the corpus while proving nothing about any of it.",
+    "explicitProductSafetyNote": "This is the mission's named major decision and it is a real trade: a rule whose verification never completed can execute. The mitigation is that it can never execute SILENTLY - the REVIEW_REQUIRED floor lands at the capacity layer, which is the layer a human or a product surface actually reads."
+  },
+  "missingVerificationPolicy": {
+    "recommendation": "caller-configured strictness, defaulted per LAYER rather than globally",
+    "runtimePrimitives": "default ALLOW_MISSING - evaluateExpression / evaluateRule / buildCapacityGraph / evaluateCapacityState / simulateTransaction keep working unchanged with no envelope, so the 1375 existing Phase-4 tests and every historical fixture keep their exact current meaning",
+    "productionBoundary": "born REQUIRE - because Phase 4 has no production caller today, the first real caller can demand an envelope from day one and never pass through a permissive phase",
+    "whatREQUIREdoes": "a rule with no unit record is treated as UNIT-blocked - absence of verification is not evidence of correctness",
+    "whyNotFailClosedEverywhere": "it would rewrite the meaning of every historical fixture and every recorded Phase-4 gate artifact in one commit - the flag day this mission is told to avoid",
+    "migrationState": "the envelope records envelopeVersion and a per-unit coverage count so a caller can assert 'every rule I am about to execute is covered' without the runtime guessing"
+  },
+  "exemplars": {
+    "structuredUnsupportedPercent": {
+      "setup": "IRRule sufficiency COMPLETE, capacityExpression = PERCENT(value 1) with no authenticated supporting source; the verifier emits a MATERIAL UNSUPPORTED_IR_ADDITION whose irPath is the PERCENT node; Phase 3 resolves that path to the node's exprId",
+      "phase4A": "evaluateExpression returns status AMBIGUOUS, value null, diagnostic MATERIAL_VERIFICATION_FINDING naming the findingId - it MUST NOT evaluate to 1",
+      "phase4C": "capacity status UNSUPPORTED with limitation PHASE3_VERIFICATION_MATERIAL_FINDING; SUFFICIENCY_DOMINANCE.COMPLETE contributes no floor, which is exactly the hole this closes",
+      "phase4D": "any effect drawing on that capacity yields REVIEW_REQUIRED and no state mutation",
+      "invariant": "arithmetic never sees the disputed literal - the block happens at node entry, before dispatch"
+    },
+    "benignReview": {
+      "setup": "sufficiency COMPLETE, verification status REVIEW_REQUIRED because a retrieved definition could not be re-authenticated; the only findings are UNCERTAIN; the capacity expression is a clean MONEY literal the anchor states",
+      "phase4A": "EXECUTABLE - no MATERIAL finding exists, so nothing is carried into the envelope and the predicate finds nothing",
+      "phase4C": "AVAILABLE - no floor",
+      "why": "the predicate is the finding, not the status; a provenance concern does not make a stated dollar figure unexecutable"
+    },
+    "mixedRule": {
+      "setup": "one rule with a clean capacity expression, a materially disputed threshold inside conditions[1].expression.right, and an unrelated NON_MATERIAL finding",
+      "phase4A": "the capacity expression evaluates normally; conditions[0] evaluates normally; conditions[1] fails AMBIGUOUS at the disputed node and propagates to that condition only",
+      "ruleStatus": "AMBIGUOUS overall (worst-of, unchanged semantics) while the clean results stay readable on the RuleEvaluation object",
+      "principle": "node-level gating wherever exprIds resolved; whole-rule blocking only where they did not"
+    },
+    "multipleFindings": {
+      "decision": "evaluate independently where path precision allows, fail closed where it does not. A NODE-scoped and a UNIT-scoped material finding on the same rule collapse to UNIT. Envelope precedence: UNIT > NODE > none."
+    }
+  },
+  "gateLocations": {
+    "phase4A": {
+      "primary": "evaluate-expression.ts - one predicate at NODE ENTRY in Evaluator.evaluate, beside the existing blockedBySufficiency check and before any arithmetic dispatch",
+      "secondary": "rule-evaluator.ts:46 - extend the existing `blocked` boolean with UNIT-scope blocks so the whole-rule path and the sufficiency path share one shape",
+      "doNotTouch": "arithmetic semantics, unit/currency handling, status precedence"
+    },
+    "phase4B": {
+      "changesRequired": "NONE",
+      "reasoning": "binding a financial fact and legally authorising the expression that consumes it are different acts. resolveInput answers 'what is EBITDA'; it has no view of, and no business having a view of, whether a rule may use it. A disputed literal is an IR node, a disputed metric definition is a definition expansion, a disputed formula relation is an expression shape - all three are already covered by the 4A node-entry predicate, so a gate here would be a second enforcement point with nothing extra to enforce."
+    },
+    "phase4C": {
+      "location": "capacity/state.ts, beside SUFFICIENCY_DOMINANCE",
+      "recommendation": "a SEPARATE VERIFICATION_DOMINANCE table whose output is combined with the sufficiency floor by the existing worst-of precedence - NOT merged into one table",
+      "why": "they answer different questions (is this rule fully REPRESENTED vs is what it represents SUPPORTED) with different owners and lifecycles. Merging would force one combined enum whose cells mean two things at once and would let a future change to one semantics silently reshape the other. Combining the OUTPUTS through CAPACITY_STATUS_PRECEDENCE gives the same fail-closed floor with none of that coupling.",
+      "invariantPreserved": "both tables produce a status FLOOR and the precedence table is monotone, so no arithmetic result can lower a floor once imposed"
+    },
+    "phase4D": {
+      "location": "transaction/simulate.ts, beside the existing unsafeLegal derivation at :267",
+      "behaviour": "an effect depending on a verification-blocked capacity or rule yields SelectedPathResult REVIEW_REQUIRED with limitation PHASE3_VERIFICATION_MATERIAL_FINDING",
+      "newTransactionStatus": "NONE - REVIEW_REQUIRED already exists in SelectedPathResult and in SIMULATION_STATUS_PRECEDENCE and means exactly this",
+      "failureAtomicity": "preserved by construction - simulate builds a proposed view and never mutates currentState, the approved snapshot or the base ledger (types.ts:308/363/580/584/590). A verification block adds a limitation and a status floor; it creates no new write path, so there is nothing new to roll back."
+    }
+  },
+  "realFixtureImpact": {
+    "corpusScanned": "docs/ + tests/fixtures/unseen-packages",
+    "rulesSeen": 913,
+    "verificationResultObjects": 166,
+    "verificationStatusBreakdown": {
+      "MATERIAL_DISCREPANCY": 94,
+      "VERIFICATION_INCOMPLETE": 53,
+      "VERIFICATION_FAILED": 19,
+      "REVIEW_REQUIRED": 0,
+      "VERIFIED_any": 0
+    },
+    "findingsTotal": 788,
+    "materialFindings": 498,
+    "materialWithIrPath": 279,
+    "materialRuleLevelNoPath": 219,
+    "materialPathsMachineParseable": 208,
+    "materialPathsWildcard": 9,
+    "materialPathsProse": 62,
+    "distinctRulesWithAtLeastOneMaterialFinding": 97,
+    "rulesBlockedUnderProposalIfTheseEnvelopesWereSupplied": "97 distinct rule/definition ids - 208 findings node-scoped, 290 (219 pathless + 71 unresolvable) collapsing to UNIT scope",
+    "rulesBlockedInPhase4sOwnFixturesToday": 0,
+    "whyZero": "no Phase-4 runtime fixture carries verification data at all, so enabling the gate changes nothing until an envelope is deliberately supplied - the migration property this design is built around, not a coincidence",
+    "reviewRequiredRulesThatWouldRemainExecutable": "not measurable from this corpus - it contains zero REVIEW_REQUIRED results. The policy keeping them executable is argued structurally, not sized."
+  },
+  "determinism": "The gate is a pure set-membership test over data computed before runtime was entered. No model call, no verifier call, no retrieval, no clock, no filesystem. Same IR + same envelope + same inputs + same context yields the same status and the same diagnostics.",
+  "migration": {
+    "step1": "Add the optional envelope and policy to the five entry types and thread them into EvaluationContext. No predicate, no behaviour change - the full Phase-4 suite must be byte-identical.",
+    "step2": "Add the Phase-3-side resolver turning MATERIAL findings into a RuntimeVerificationEnvelope: parse paths against the unit they came from, resolve to exprIds, downgrade anything unresolvable to UNIT scope, bind identity. Ships with its own tests; still no gate.",
+    "step3": "Add the deterministic matcher (blocksNode / blocksUnit) and the two dominance tables behind ALLOW_MISSING defaults, with the full synthetic matrix. Live for callers that supply an envelope, inert for everyone else.",
+    "step4": "Enable at the product boundary: create the first real Phase-4 caller with policy REQUIRE. This is the commit where absence of verification starts to mean something.",
+    "step5": "Optional and later - tighten the runtime primitives to REQUIRE once every caller supplies an envelope. May never be needed.",
+    "commitShape": "steps 1+2 can share a mission (both additive and provably inert). Step 3 is its own mission - that is where the semantics live and where the matrix has to be argued. Step 4 is its own mission because it is a product decision, not a code change. Explicitly not a flag day."
+  },
+  "testMatrixDesign": {
+    "count": 14,
+    "cases": [
+      {
+        "id": "A",
+        "setup": "COMPLETE + no findings",
+        "expect": "executes, no diagnostic"
+      },
+      {
+        "id": "B",
+        "setup": "COMPLETE + MATERIAL finding exactly on the evaluated PERCENT node",
+        "expect": "4A AMBIGUOUS + MATERIAL_VERIFICATION_FINDING, value null; 4C UNSUPPORTED"
+      },
+      {
+        "id": "C",
+        "setup": "COMPLETE + MATERIAL finding on an ancestor expression",
+        "expect": "the ancestor blocks when evaluated; evaluating the inner node alone does not"
+      },
+      {
+        "id": "D",
+        "setup": "COMPLETE + MATERIAL finding on an unrelated sibling field",
+        "expect": "target expression EXECUTABLE"
+      },
+      {
+        "id": "E",
+        "setup": "COMPLETE + NON_MATERIAL finding on the evaluated node",
+        "expect": "EXECUTABLE. Justified: non-material means a competent reviewer would not change a conclusion; blocking on it would make every annotation a denial of service on the rule."
+      },
+      {
+        "id": "F",
+        "setup": "MISSING_CONTEXT sufficiency + no findings",
+        "expect": "existing sufficiency block unchanged, byte-identical to today"
+      },
+      {
+        "id": "G",
+        "setup": "AMBIGUOUS sufficiency + clean verification",
+        "expect": "existing block unchanged - verification never LIFTS a sufficiency floor"
+      },
+      {
+        "id": "H",
+        "setup": "MATERIAL finding + UNLIMITED_CAPACITY",
+        "expect": "verification dominates; UNLIMITED_CAPACITY has no exprId so the finding is UNIT-scoped and the whole rule floors"
+      },
+      {
+        "id": "I",
+        "setup": "no envelope supplied",
+        "expect": "ALLOW_MISSING -> unchanged behaviour; REQUIRE -> UNIT block. Both asserted."
+      },
+      {
+        "id": "J",
+        "setup": "envelope unit whose version trio disagrees with the rule",
+        "expect": "fail closed to UNIT block, identityStrength recorded"
+      },
+      {
+        "id": "K",
+        "setup": "4D transaction depending on a verification-blocked capacity",
+        "expect": "REVIEW_REQUIRED, limitation recorded, currentState and ledger unmutated"
+      },
+      {
+        "id": "L",
+        "setup": "one clean and one disputed expression in the same rule",
+        "expect": "node-level - the clean one evaluates, the disputed one blocks"
+      },
+      {
+        "id": "M",
+        "setup": "MATERIAL finding whose irPath is a wildcard or prose string",
+        "expect": "UNIT block - the matcher never string-matches and never guesses"
+      },
+      {
+        "id": "N",
+        "setup": "unit status VERIFICATION_INCOMPLETE, no findings",
+        "expect": "executes at 4A with a diagnostic; REVIEW_REQUIRED floor at 4C"
+      }
+    ]
+  },
+  "phase4E": {
+    "status": "REMAINS BLOCKED",
+    "prerequisite": "4E may start only when all three hold: (1) the verification dominance floor is live at capacity/state.ts and proven by cases B and H; (2) the solver consumes CapacityState rather than IRRule directly, so it inherits that floor instead of re-deriving capacity from raw IR; (3) a test proves a materially disputed capacity is not optimisable. A solver that maximises over a value the runtime would have refused to execute is a worse failure than the original unsupported number, because it presents it as an answer."
+  },
+  "risks": {
+    "falsePositiveBlocking": {
+      "level": "MODERATE, concentrated in one place",
+      "detail": "290 of 498 material findings (58%) would land as UNIT-scope blocks - 219 carrying no path at all, 71 carrying an unusable one. A UNIT block disables a whole rule for a finding that may concern one clause of it. This is the deliberate fail-closed direction, but it should be measured after step 3 rather than assumed acceptable.",
+      "mitigation": "improving Phase-3 finding paths raises node-scoping coverage without touching the runtime contract - the envelope resolver absorbs it"
+    },
+    "falseNegativeExecution": {
+      "level": "REAL and named",
+      "detail": "three routes by which a disputed value still executes: (a) verification never attempted under ALLOW_MISSING; (b) ATTEMPTED_INCOMPLETE deliberately does not block - 43% of the corpus; (c) a MATERIAL finding whose path resolves to a node that is not the one actually consumed. (a) and (b) are stated policy choices; (c) is bounded by resolving exprIds on the Phase-3 side where the indices are valid."
+    },
+    "nonRisk": "nothing here can change a historical fixture's meaning - with no envelope the predicate has nothing to test, and no existing Phase-4 fixture carries verification data"
+  },
+  "recommendedImplementationBoundary": "lib/contract-model/runtime/verification-gate.ts - one module owning the envelope types, the identity binding, blocksNode/blocksUnit and the two dominance tables, imported by evaluate-expression.ts, rule-evaluator.ts, capacity/state.ts and transaction/simulate.ts. One predicate, four call sites - deliberately unlike the four divergent sufficiency dialects that exist today.",
+  "successCriterionAnswers": {
+    "1_whatDataPhase4Receives": "a RuntimeVerificationEnvelope carrying, per compiled unit, its verification status, its identity trio, and only its MATERIAL findings resolved to exprIds",
+    "2_identityBinding": "ruleOrDefinitionId + company/instrument + the version trio, fail closed on mismatch, identityStrength recorded because sourceContentVersion is null in practice",
+    "3_whichFindingsBlock": "MATERIAL only, and only when their scope relates to the node being evaluated",
+    "4_findingToNodeMapping": "exprId set membership, resolved Phase-3 side; never string matching",
+    "5_benignReviewSurvives": "the predicate is the finding, not the status - a REVIEW_REQUIRED rule with no material finding executes",
+    "6_missingOrIncomplete": "missing is caller-configured (ALLOW_MISSING for primitives, REQUIRE at the product boundary); incomplete does not block but floors at REVIEW_REQUIRED",
+    "7_gateEntryPoints": "4A node entry + rule-evaluator; 4C beside SUFFICIENCY_DOMINANCE; 4D beside unsafeLegal; 4B unchanged",
+    "8_migrationSafety": "no Phase-4 fixture carries verification data and Phase 4 has no production caller, so steps 1-3 are provably inert",
+    "9_arithmeticCannotOverride": "the gate refuses at node entry before dispatch, and at 4C it is a floor under a monotone precedence table",
+    "10_phase4Eprerequisite": "the three conditions above"
+  },
+  "verdict": "PHASE4_VERIFICATION_GATE_DESIGN_READY"
+}

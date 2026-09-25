@@ -1,0 +1,894 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-23T22:21:20.406Z",
+  "candidateRef": "discovery-candidate:1084b12277d101d1e3928d59",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.2(f)",
+    "operativeSourceText": "(f)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary\nGuarantor;\n",
+    "operativeSourceTextSha256": "833be69a24a7d0c622c9716fa6354c65ff07bf562bf5dcd1ddd26d95cf51245e",
+    "operativeSourceChars": 149,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:37369f67201c117937950377ac401062acedef35767e7af607ae300c22af9c56",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 9,
+    "items": [
+      {
+        "itemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.2(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 149,
+        "excerptText": "(f)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary\nGuarantor;\n"
+      },
+      {
+        "itemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.2",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 107,
+        "excerptText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n"
+      },
+      {
+        "itemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(c)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 529,
+        "excerptText": "(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n"
+      },
+      {
+        "itemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(h)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 467,
+        "excerptText": "(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Indebtedness);\n"
+      },
+      {
+        "itemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(k)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 267,
+        "excerptText": "(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat "
+      },
+      {
+        "itemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(s)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 154,
+        "excerptText": "(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as "
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "type": "DEFINITION",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "toItemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "toItemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "toItemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "toItemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "toItemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.2(f)",
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "GUARANTEE",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiary"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": null
+          },
+          "conditions": [
+            {
+              "conditionType": "ORDINARY_COURSE_OF_BUSINESS",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "guarantee must be made in the ordinary course of business",
+              "citation": "§7.2(f)",
+              "excerpt": "guarantees made in the ordinary course of business",
+              "inventoryItemIds": [
+                "inv-item:f9c4f23129fbb33952f9bf60"
+              ]
+            },
+            {
+              "conditionType": "MAKER_SCOPE",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "the guarantee must be made by the Parent Borrower or any of its Subsidiaries",
+              "citation": "§7.2(f)",
+              "excerpt": "by the Parent Borrower or any of its Subsidiaries",
+              "inventoryItemIds": [
+                "inv-item:d5a7ee1de2cf215f1592f129"
+              ]
+            },
+            {
+              "conditionType": "OBLIGOR_SCOPE",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "the obligations guaranteed must be obligations of any Subsidiary Guarantor (the line-break 'any Subsidiary / Guarantor' resolves to the defined term 'Subsidiary Guarantor')",
+              "citation": "§7.2(f)",
+              "excerpt": "of obligations of any Subsidiary Guarantor",
+              "inventoryItemIds": [
+                "inv-item:ff9dd480e5dcf9186918331a",
+                "inv-item:3b958c744d190c88736b6eaf"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.2(f)",
+          "excerpt": "guarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary Guarantor",
+          "inventoryItemIds": [
+            "inv-item:7146cf91be4b92edfea50fab"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "The final 'Guarantor;' token is the line-broken continuation of the defined term 'Subsidiary Guarantor' (confirmed via getDefinition: 'Subsidiary Guarantor' means each Material Domestic Subsidiary and each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%)). Thus the permitted obligors are obligations of 'any Subsidiary Guarantor', not a separate 'Guarantor' category - no standalone 'Guarantor' term exists in the instrument. This resolves the AMBIGUOUS_DRAFTING item 3b958c, which is accordingly consumed by the obligor-scope condition.",
+        "Section 7.2(f) is an unlimited exception basket (no dollar ceiling) under the Section 7.2 'Limitation on Indebtedness' chapeau ('Create, incur, assume or suffer to exist any Indebtedness, except:'). It is qualified only by qualitative conditions (ordinary course; maker scope; obligor scope). Represented via UNLIMITED_CAPACITY with the conditions carried in the rule's conditions array rather than a fabricated dollar figure.",
+        "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node/document text was supplied, so the operative window's completeness against its own unit boundary could not be independently verified. The provision's own economics are nonetheless fully representable from the supplied text plus the resolved 'Subsidiary Guarantor' definition."
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Subsidiary Guarantor"
+        },
+        "outputSummary": "definition \"Subsidiary Guarantor\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+        "charsReturned": 157,
+        "timestamp": "2026-09-23T22:20:29.333Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "DEFINITION",
+          "requestKey": "Subsidiary Guarantor",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 42258,
+          "charEnd": 42415,
+          "rawText": "\"Subsidiary Guarantor\": (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%).\n\n",
+          "contentHash": "e0ae4ef9188e6abc3bf817af25edf414f954e9ea0261a4ee9d8cc55fbf19f03d",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT",
+          "isCurrentTruth": true
+        }
+      },
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Guarantor"
+        },
+        "outputSummary": "refused: no defined term matching \"Guarantor\" found in this instrument's documents",
+        "charsReturned": 73,
+        "timestamp": "2026-09-23T22:20:29.333Z"
+      },
+      {
+        "toolName": "getSiblingClauses",
+        "input": {
+          "nodeId": "18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc"
+        },
+        "outputSummary": "refused: nodeId \"18b37e069f8c6824f6fb946b4b7a285076b9f2f1c59da35fe52f836c43e117dc\" is not a valid node in this instrument's documents",
+        "charsReturned": 124,
+        "timestamp": "2026-09-23T22:20:29.334Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2(f)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(f)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "guarantee must be made in the ordinary course of business",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(f)",
+              "excerpt": "guarantees made in the ordinary course of business"
+            },
+            "inventoryItemIds": [
+              "inv-item:f9c4f23129fbb33952f9bf60"
+            ]
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the guarantee must be made by the Parent Borrower or any of its Subsidiaries",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(f)",
+              "excerpt": "by the Parent Borrower or any of its Subsidiaries"
+            },
+            "inventoryItemIds": [
+              "inv-item:d5a7ee1de2cf215f1592f129"
+            ]
+          },
+          {
+            "conditionId": "rule[r1].condition[2]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the obligations guaranteed must be obligations of any Subsidiary Guarantor (the line-break 'any Subsidiary / Guarantor' resolves to the defined term 'Subsidiary Guarantor')",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(f)",
+              "excerpt": "of obligations of any Subsidiary Guarantor"
+            },
+            "inventoryItemIds": [
+              "inv-item:ff9dd480e5dcf9186918331a",
+              "inv-item:3b958c744d190c88736b6eaf"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "condition[0].conditionType \"ORDINARY_COURSE_OF_BUSINESS\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"MAKER_SCOPE\" not recognized - normalized to UNSUPPORTED",
+          "condition[2].conditionType \"OBLIGOR_SCOPE\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2(f)",
+          "excerpt": "guarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary Guarantor"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiary"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiary",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "guarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary Guarantor",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 65,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 88,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 123,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Guarantor",
+                "index": 134,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "PARENT"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:7146cf91be4b92edfea50fab"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] condition[0].conditionType \"ORDINARY_COURSE_OF_BUSINESS\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] condition[1].conditionType \"MAKER_SCOPE\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] condition[2].conditionType \"OBLIGOR_SCOPE\" not recognized - normalized to UNSUPPORTED",
+      "The final 'Guarantor;' token is the line-broken continuation of the defined term 'Subsidiary Guarantor' (confirmed via getDefinition: 'Subsidiary Guarantor' means each Material Domestic Subsidiary and each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%)). Thus the permitted obligors are obligations of 'any Subsidiary Guarantor', not a separate 'Guarantor' category - no standalone 'Guarantor' term exists in the instrument. This resolves the AMBIGUOUS_DRAFTING item 3b958c, which is accordingly consumed by the obligor-scope condition.",
+      "Section 7.2(f) is an unlimited exception basket (no dollar ceiling) under the Section 7.2 'Limitation on Indebtedness' chapeau ('Create, incur, assume or suffer to exist any Indebtedness, except:'). It is qualified only by qualitative conditions (ordinary course; maker scope; obligor scope). Represented via UNLIMITED_CAPACITY with the conditions carried in the rule's conditions array rather than a fabricated dollar figure.",
+      "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node/document text was supplied, so the operative window's completeness against its own unit boundary could not be independently verified. The provision's own economics are nonetheless fully representable from the supplied text plus the resolved 'Subsidiary Guarantor' definition.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 5 item(s) accepted (3 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:4-14) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:4-14: \"guarantees\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-23T22:20:55.135Z",
+      "inputTokens": 15201,
+      "outputTokens": 5256,
+      "cachedInputTokens": 13315,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 36942,
+      "calculatedCostUsd": 0.08296200000000001
+    },
+    "compiledAt": "2026-09-23T22:20:55.135Z",
+    "outputHash": "d62c444f03f92c357b9823ba1d9a9f96d19cf692c00b4230074dc4077152f854"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:1084b12277d101d1e3928d59",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d1e4a9d0d2e1e0c29878b88c4508d7a2d86cbc09b1b1a192d9488cd7d8a34cb5",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(f)",
+            "structuralNodeKey": null,
+            "charStart": 62,
+            "charEnd": 77
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "df3a285e5f4072a0119e357ded3220db0d4d7bf0aedccc19ad1c2ba08882d7d7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Subsidiary\nGuarantor",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(f)",
+            "structuralNodeKey": null,
+            "charStart": 127,
+            "charEnd": 147
+          },
+          "irItems": [],
+          "reason": "source mention \"Subsidiary\nGuarantor\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:1084b12277d101d1e3928d59",
+      "items": [
+        {
+          "itemId": "52a5a7e3160cd1b930bc63bfc20cc8fc31ab7dff73d99443d5d0b066777f0f5b",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(f)",
+          "structuralNodeKey": null,
+          "charStart": 69,
+          "charEnd": 77,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "33902fa906c2ec03d34bf794feb8ea90817a5e272a7fb7add34f0de573bdd92e",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Guarantor",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(f)",
+          "structuralNodeKey": null,
+          "charStart": 138,
+          "charEnd": 147,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "d1e4a9d0d2e1e0c29878b88c4508d7a2d86cbc09b1b1a192d9488cd7d8a34cb5",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(f)",
+          "structuralNodeKey": null,
+          "charStart": 62,
+          "charEnd": 77
+        },
+        {
+          "itemId": "df3a285e5f4072a0119e357ded3220db0d4d7bf0aedccc19ad1c2ba08882d7d7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Subsidiary\nGuarantor",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(f)",
+          "structuralNodeKey": null,
+          "charStart": 127,
+          "charEnd": 147
+        },
+        {
+          "itemId": "88ff0277f8fb8ec67d0ba370973bc912c9053d1706e9dcf02b6326c92dce998d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(f)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(f)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(f)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:1084b12277d101d1e3928d59",
+      "items": [
+        {
+          "itemId": "b3eff35c668351de0b6829d3e0b5542f382513e9f9f203c545b7f2bbdfff4816",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(f)",
+          "sourceExcerpt": "guarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary Guarantor",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a2dd0a7ad15ffbd5157333ddbc7dea7fedf175c6233e0b07c8c5c7588b2754f2",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(f)",
+          "sourceExcerpt": "guarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary Guarantor",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "dc456ad8c56897d2c37a00af009a4360496ef3b32c87d66541e8d57849de614b",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(f)",
+          "sourceExcerpt": "guarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary Guarantor",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "70503ada57964adf13e98e7913cde2d9781d8b2a4b07cf76a060eddb3d7be171",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "guarantee must be made in the ordinary course of business",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(f)",
+          "sourceExcerpt": "guarantees made in the ordinary course of business",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "1ae90fc79655341e554f6a9dd6bdfc8f464ebae764ef84a000949aee8ff3ac06",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the guarantee must be made by the Parent Borrower or any of its Subsidiaries",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(f)",
+          "sourceExcerpt": "by the Parent Borrower or any of its Subsidiaries",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a34f798305c71aaa843fbcd191117642f2ae0d6fb4f7aaf3723ff49cc5208510",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+          "irPath": "rules[0].conditions[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the obligations guaranteed must be obligations of any Subsidiary Guarantor (the line-break 'any Subsidiary / Guarantor' resolves to the defined term 'Subsidiary Guarantor')",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(f)",
+          "sourceExcerpt": "of obligations of any Subsidiary Guarantor",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a9caa7e426995f471315cda92f354a9396dd8c4e6638fe3e4633d4aa25dfeeae",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:5e1a07870cc5c427bd4dd1b0",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(f)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:1084b12277d101d1e3928d59",
+        "items": [],
+        "fieldsWalked": 8,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "833be69a24a7d0c622c9716fa6354c65ff07bf562bf5dcd1ddd26d95cf51245e",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "7133a6b08c385f3186cd0cc28689f4dd17dd74b7470faf0bc829509c3562c275",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Subsidiary Guarantor",
+          "scopeKey": "subsidiary guarantor",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 42258,
+          "charEnd": 42415,
+          "rawText": "\"Subsidiary Guarantor\": (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%).\n\n",
+          "contentHash": "e0ae4ef9188e6abc3bf817af25edf414f954e9ea0261a4ee9d8cc55fbf19f03d",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "definition \"Subsidiary Guarantor\" consulted for candidate discovery-candidate:1084b12277d101d1e3928d59 (7.2(f)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              0
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[0] getDefinition {\"term\":\"Subsidiary Guarantor\"}",
+              "compilerRecordedContentHash": "e0ae4ef9188e6abc3bf817af25edf414f954e9ea0261a4ee9d8cc55fbf19f03d"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Subsidiary Guarantor\" resolved to node (none) span [42258, 42415)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [42258, 42415) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(42258, 42415)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash e0ae4ef9188e6abc3bf817af25edf414f954e9ea0261a4ee9d8cc55fbf19f03d and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / (none)) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "d577f7d25e5205e984a2990691b0bfc3baa35326e8742fd9d6acb0b694813dda",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 70023,
+    "inputTokens": 15201,
+    "outputTokens": 5256,
+    "costUsd": 0.0033426899999999997,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "the forensic case itself - a qualitative permission whose compiled IR once asserted an unsupported 100%",
+      "either an UNSUPPORTED_NUMERIC_ASSERTION finding naming the exact field path, or a clean compilation that asserts no ungrounded figure; both are real outcomes and neither is retried"
+    ]
+  }
+}

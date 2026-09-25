@@ -1,0 +1,65 @@
+{
+  "verdict": "F1_CONTEXT_SOURCE_REMEDIATION_VALIDATED",
+  "modelCalls": 1,
+  "successCriteria": {
+    "1_onlyAnchorTypedOperativeSource": {
+      "pass": true,
+      "evidence": "candidates with >1 OPERATIVE_SOURCE 67 -> 0 across all 163; OPERATIVE_SOURCE items 228 -> 161 = exactly one per candidate that has an anchor"
+    },
+    "2_linkedParentRemainsContextual": {
+      "pass": true,
+      "evidence": "0 context-loss cases; all 67 linked nodes present as PARENT_SCOPE with text, citation, node id and evidence state unchanged"
+    },
+    "3_operativeItemCarriesNeitherValue": {
+      "pass": true,
+      "evidence": "7.2(k)(i)'s single OPERATIVE_SOURCE item is the 54-char anchor; has150M false, has10pct false"
+    },
+    "4_modelDidNotClaimParentValues": {
+      "pass": true,
+      "evidence": "the emitted rule cites \u00a77.2(k)(i) and asserts ZERO numeric values. Before F1 the same candidate on the same model asserted $150,000,000 and 10.0%."
+    },
+    "5_hedgedOrContextualised": {
+      "pass": true,
+      "evidence": "status REVIEW_REQUIRED with failureReasons MISSING_CONTEXT and SEMANTIC_ACCOUNTABILITY_INCOMPLETE - the compiler reported missing context instead of borrowing the parent's numbers"
+    },
+    "6_noContextLoss": {
+      "pass": true,
+      "evidence": "0 cases; the parent still carries both values, under PARENT_SCOPE"
+    },
+    "7_coverageUnchanged": {
+      "pass": true,
+      "evidence": "d95518f2c97732b06a81b7dba817d9fe before and after; covered-unit set b0940e2c51fb3dfb0db18de44a70f98b; 133 nodes"
+    },
+    "8_falseCreditControls": {
+      "pass": true,
+      "evidence": "14/14 protected; no expectation changed, none excluded"
+    },
+    "9_r3ParentConditionDetection": {
+      "pass": true,
+      "evidence": "65/65 parent-only condition markers still reach Gate 2; chapeau text present in a PARENT_SCOPE item for 67/67"
+    },
+    "10_noNewRepositoryRegression": {
+      "pass": true,
+      "evidence": "full suite 4,868/4,196/148 with 0 new failing identities; tsc, lint and build clean"
+    }
+  },
+  "paidValidation": {
+    "candidate": "7.2(k)(i)",
+    "calls": 1,
+    "model": "deepseek/deepseek-v4-flash",
+    "exactSpendUsd": 0.005653,
+    "reservedUsd": 0,
+    "ceilingUsd": 0.05,
+    "before": "1 rule asserting $150,000,000 and 10.0% - 2 attribution violations",
+    "after": "1 rule, 0 numeric values, 0 attribution violations, REVIEW_REQUIRED"
+  },
+  "disclosedConsequence": "Preserving the linked node's full text (per \u00a76 and \u00a78) means its PARENT_SCOPE item is the 8,843-char subtree rather than retrieveParentScope's 107-char chapeau, so Gate 2's mean input for dual-key candidates grows ~627 -> ~6,412 chars. Inside the authorized anchor + PARENT_SCOPE channel, no new type admitted, and it errs toward forcing review - but a real change in scale, reported rather than absorbed.",
+  "notDone": [
+    "7.2(f) grounding issue - record preserved untouched",
+    "composed citations",
+    "provenance redesign",
+    "Phase 4E",
+    "CONMED population",
+    "A_FULL"
+  ]
+}

@@ -1,0 +1,441 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T16:57:19.746Z",
+  "candidateRef": "discovery-candidate:8cc6d36a3898b45e63d7a0cc",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.13(a)",
+    "operativeSourceText": "(a) this Agreement and the other Loan Documents, (b) any agreements governing any purchase money\nLiens, Finance Lease Obligations otherwise permitted hereby or Liens permitted by Sections 7.3(f), (g), or (l) (in which case, any prohibition\nor limitation shall only be effective against the assets financed thereby) and (c) any agreement entered into in connection with a Receivables\nTransfer Program that prohibits or limits the ability of the Parent Borrower or any of its Subsidiaries to create, incur, assume or suffer\nto exist any Lien upon the accounts receivable or related ancillary rights or assets, or interests therein, sold, transferred, encumbered\nor otherwise disposed of pursuant to such Receivable Transfer Program.\n",
+    "operativeSourceTextSha256": "745750af8ed246fc1ffcc3ca89e3b0e2cd5fd01f602795b92d8478cf67c3718f",
+    "operativeSourceChars": 731,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:63d73e9048e9097f38155b93a7355dabefdb8467a9862881b2c0b1f6e89a25f7",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 15,
+    "items": [
+      {
+        "itemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.13(a)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 731,
+        "excerptText": "(a) this Agreement and the other Loan Documents, (b) any agreements governing any purchase money\nLiens, Finance Lease Obligations otherwise permitted hereby or Liens permitted by Sections 7.3(f), (g), or (l) (in which case, any prohibition\nor limitation shall only be effective against the assets financed thereby) and (c) any agreement entered into in connection with a Receivables\nTransfer Program that prohibits or limits the ability of the Parent Borrower or any of its Subsidiaries to create, incur, assume or suffer\nto exist any Lien upon the accounts receivable or related ancillary rights or assets, or interests therein, sold, transferred, encumbered\nor otherwise disposed of pursuant to such Receivable Transfer Program.\n"
+      },
+      {
+        "itemId": "context-item:fdf6e85331e0d4c66985345f84554b4d1476d5f3634f912d03667c5191ae4c10",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.13",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1212,
+        "excerptText": "SECTION 7.13 Limitation on Negative\nPledge Clauses . Enter into or suffer to exist or become effective any agreement which prohibits or limits the ability of the Parent\nBorrower or any of its Subsidiaries to create, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether\nnow owned or hereafter acquired, to secure the Obligations or, in the case of any Subsidiary Guarantor, its obligations under the Guarantee\nand Collateral Agreement, other than (a) this Agreement and the other Loan Documents, (b) any agreements governing any purchase money\nLiens, Finance Lease Obligations otherwise permitted hereby or Liens permitted by Sections 7.3(f), (g), or (l) (in which case, any prohibition\nor limitation shall only be effective against the assets financed thereby) and (c) any agreement entered into in connection with a Receivables\nTransfer Program that prohibits or limits the ability of the Parent Borrower or any of its Subsidiaries to create, incur, assume or suffer\nto exist any Lien upon the accounts receivable or related ancillary rights or assets, or interests therein, sold, transferred, encumbered\nor otherwise disposed of pursuant to such Receivable Transfer Program.\n"
+      },
+      {
+        "itemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "type": "DEFINITION",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "type": "DEFINITION",
+        "normalizedRef": "Finance Lease Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 973,
+        "excerptText": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right\nto use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance\nleases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time\nshall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein,\nany lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in\neffect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change\nin GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      },
+      {
+        "itemId": "context-item:01c3ead887238141d5da98cdf33b0ab789ff1940d83e482e17a3e519f3580288",
+        "type": "DEFINITION",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:57af79c5cdd4e74650eb4ae34b08b6d6cf03e83bf0699281cca80065c12f2000",
+        "type": "DEFINITION",
+        "normalizedRef": "Loan Documents",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 129,
+        "excerptText": "\"Loan Documents\": this\nAgreement, the Security Documents, the Applications and, except for purposes of Section 10.1, the Notes.\n\n"
+      },
+      {
+        "itemId": "context-item:8ac40f09e24d1d0e319c8662d979acc345ba0ca765aa65190f5cce9b3ee9286a",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Notes",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 62,
+        "excerptText": "\"Notes\": collectively,\nany promissory note evidencing Loans.\n\n"
+      },
+      {
+        "itemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Security Documents",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 302,
+        "excerptText": "\"Security Documents\": the collective reference to the Guarantee and Collateral Agreement and all other security documents hereafter delivered to the Administrative\nAgent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document.\n\n"
+      },
+      {
+        "itemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Collateral",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 153,
+        "excerptText": "\"Collateral\": all Property\nof the Loan Parties, now owned or hereafter acquired, upon which a Lien is purported to be created by any Security Document.\n\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Guarantee and Collateral Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 231,
+        "excerptText": "\"Guarantee and Collateral Agreement\": the Amended and Restated Guarantee and Collateral Agreement, dated as of the Closing Date, made by the Parent Borrower and its Subsidiaries\nparty thereto in favor of the Administrative Agent.\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:fdf6e85331e0d4c66985345f84554b4d1476d5f3634f912d03667c5191ae4c10",
+        "toItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "toItemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "toItemId": "context-item:01c3ead887238141d5da98cdf33b0ab789ff1940d83e482e17a3e519f3580288",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "toItemId": "context-item:57af79c5cdd4e74650eb4ae34b08b6d6cf03e83bf0699281cca80065c12f2000",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:57af79c5cdd4e74650eb4ae34b08b6d6cf03e83bf0699281cca80065c12f2000",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:57af79c5cdd4e74650eb4ae34b08b6d6cf03e83bf0699281cca80065c12f2000",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:57af79c5cdd4e74650eb4ae34b08b6d6cf03e83bf0699281cca80065c12f2000",
+        "toItemId": "context-item:8ac40f09e24d1d0e319c8662d979acc345ba0ca765aa65190f5cce9b3ee9286a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:57af79c5cdd4e74650eb4ae34b08b6d6cf03e83bf0699281cca80065c12f2000",
+        "toItemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "toItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "toItemId": "context-item:01c3ead887238141d5da98cdf33b0ab789ff1940d83e482e17a3e519f3580288",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "toItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "toItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "toItemId": "context-item:01c3ead887238141d5da98cdf33b0ab789ff1940d83e482e17a3e519f3580288",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:356645eccf0d2bc2f2e0d9784a7fa1a1ce3df4ca8e1ff08d049218011803c615",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:41c87268921abed1f945a28e6609f2baacfd4dc197d9a3c4735f2c364d309a5c",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "WALL_CLOCK_TIMEOUT"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": null,
+    "toolCallLog": [],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": null,
+    "provider": null,
+    "model": null,
+    "telemetry": null,
+    "compiledAt": null,
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 480002,
+    "inputTokens": null,
+    "outputTokens": null,
+    "costUsd": 0.01942304,
+    "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+    "timedOut": true,
+    "notes": [
+      "compile TIMEOUT",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

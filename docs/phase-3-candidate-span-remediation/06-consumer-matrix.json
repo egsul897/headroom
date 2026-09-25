@@ -1,0 +1,225 @@
+{
+  "modelCalls": 0,
+  "method": "Every production reference to structuralNodeIds (or an equivalent linked-node array) in lib/ and app/, found by exhaustive grep, classified by what it does with element [1..]. 10 production files, 12 consumer sites, plus 7 sites that consume the over-wide TEXT rather than the array. Scripts are listed separately because they are harness, not production.",
+  "totals": {
+    "productionFiles": 10,
+    "productionConsumerSites": 12,
+    "assumeAllLinkedNodesOperative": 2,
+    "wouldChangeBehaviourUnderProposal": 1,
+    "shouldKeepReceivingLinkedNodes": 11,
+    "needTypeDistinction": 1
+  },
+  "consumers": [
+    {
+      "id": "C1",
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "line": 418,
+      "site": "operativeSourceText = structuralNodeIds.map(getNodeText(id,'DESCENDANTS')).join('\\n\\n')",
+      "class": "OPERATIVE_SEMANTICS",
+      "assumesAllLinkedNodesOperative": true,
+      "anchorOnlyChangesBehaviour": true,
+      "shouldKeepReceivingLinkedNodes": "not as operative text; the array itself stays on the candidate for C2-C12",
+      "needsTypeDistinction": false,
+      "note": "THE ONE SITE THAT TREATS THE LINK AS A SPAN. This is the whole change."
+    },
+    {
+      "id": "C2",
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "line": 303,
+      "site": "deriveOperativeLineage - worst supersession status across every structuralNodeId",
+      "class": "PROVENANCE",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES - conservative worst-status is correct for a linked node too",
+      "needsTypeDistinction": false,
+      "note": "Reads the array, not the text. Untouched."
+    },
+    {
+      "id": "C3",
+      "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "line": 149,
+      "site": "primaryNodeId = structuralNodeIds[0]",
+      "class": "CONTEXT_RETRIEVAL",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES",
+      "needsTypeDistinction": false,
+      "note": "Already anchor-first - independent confirmation that [0] is the anchor by construction."
+    },
+    {
+      "id": "C4",
+      "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "line": 163,
+      "site": "for (extraNodeId of structuralNodeIds.slice(1)) retrieveOperativeSource(...)",
+      "class": "CONTEXT_RETRIEVAL",
+      "assumesAllLinkedNodesOperative": true,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES, but typed PARENT_SCOPE rather than a second OPERATIVE_SOURCE",
+      "needsTypeDistinction": true,
+      "note": "SAFETY_FOLLOWUP (F1), not REQUIRED. It types the linked parent's full subtree as OPERATIVE_SOURCE inside the bundle. Measured redundancy: retrieveParentScope already emits the same parent as PARENT_SCOPE for 67/67 dual CONMED candidates at a mean 319 chars (OWN text) instead of the subtree. Leaving C4 alone keeps the first change strictly context-preserving - nothing a compiler sees today disappears."
+    },
+    {
+      "id": "C5",
+      "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "line": 277,
+      "site": "bundle.originatingStructuralNodeIds = candidate.structuralNodeIds",
+      "class": "PROVENANCE",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES",
+      "needsTypeDistinction": false,
+      "note": "compile.ts reads [0] of this as the accountability anchorNodeId; unchanged."
+    },
+    {
+      "id": "C6",
+      "file": "lib/contract-model/compiler/coverage-audit/discovery-comparison.ts",
+      "line": 32,
+      "site": "candidatesTouchingNode -> DISCOVERED_EXACTLY",
+      "class": "COVERAGE_ACCOUNTING",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES - REQUIRED, this is what keeps the parent covered",
+      "needsTypeDistinction": false,
+      "note": "Reads the array, never the text. Because the proposal does not touch the array, package coverage is bit-identical."
+    },
+    {
+      "id": "C7",
+      "file": "lib/contract-model/compiler/coverage-audit/discovery-comparison.ts",
+      "lines": [
+        51,
+        55
+      ],
+      "site": "DISCOVERED_BY_DESCENDANT / DISCOVERED_BY_ANCESTOR",
+      "class": "COVERAGE_ACCOUNTING",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES",
+      "needsTypeDistinction": false,
+      "note": "Same - array only."
+    },
+    {
+      "id": "C8",
+      "file": "lib/contract-model/compiler/coverage-audit/pipeline.ts",
+      "line": 162,
+      "site": "discoveredNodeIds = new Set(candidates.flatMap(c => c.structuralNodeIds))",
+      "class": "COVERAGE_ACCOUNTING",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES - REQUIRED",
+      "needsTypeDistinction": false,
+      "note": "The package coverage map. Unchanged by construction."
+    },
+    {
+      "id": "C9",
+      "file": "lib/contract-model/compiler/semantic-coverage/reconciliation.ts",
+      "line": 67,
+      "site": "candidatesCoveringUnit - unit's node IS one of the candidate's nodes or nested under one",
+      "class": "COVERAGE_ACCOUNTING",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES - REQUIRED",
+      "needsTypeDistinction": false,
+      "note": "3E material-unit coverage. Array only; unchanged."
+    },
+    {
+      "id": "C10",
+      "file": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts",
+      "lines": [
+        158,
+        164,
+        207,
+        212
+      ],
+      "site": "the array's producer + sectionAlreadyRepresented guard",
+      "class": "OTHER",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "n/a (producer)",
+      "needsTypeDistinction": false,
+      "note": "Not changed: the link is correct and useful; only its consumption at C1 is wrong."
+    },
+    {
+      "id": "C11",
+      "file": "lib/contract-model/compiler/discovery/pass-d-reconcile.ts",
+      "lines": [
+        104,
+        109,
+        116
+      ],
+      "site": "mergeKey from structuralNodeIds[0]; NEIGHBORHOOD_EXPANSION; union on merge",
+      "class": "PROVENANCE",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "YES",
+      "needsTypeDistinction": false,
+      "note": "Candidate identity is already anchor-only, so the proposal changes NO discoveryId."
+    },
+    {
+      "id": "C12",
+      "file": "lib/contract-model/compiler/safe-failure/identity.ts",
+      "line": 20,
+      "site": "claim identity via candidateRef (discoveryId)",
+      "class": "VERIFICATION",
+      "assumesAllLinkedNodesOperative": false,
+      "anchorOnlyChangesBehaviour": false,
+      "shouldKeepReceivingLinkedNodes": "n/a",
+      "needsTypeDistinction": false,
+      "note": "discoveryId is unchanged, so every ClaimReviewEvent identity is stable across the change."
+    }
+  ],
+  "consumersOfTheOverWideTextRatherThanTheArray": [
+    {
+      "id": "T1",
+      "file": "lib/contract-model/compiler/semantic/caller.ts:229-236",
+      "class": "OPERATIVE_SEMANTICS",
+      "effect": "renders operativeSourceText as the prompt's 'Operative source text' block",
+      "underProposal": "shrinks to the anchor text; the parent still reaches the model in the adjacent 'Already-gathered context' block as a typed PARENT_SCOPE item"
+    },
+    {
+      "id": "T2",
+      "file": "lib/contract-model/compiler/semantic-accountability/source-context.ts + inventory.ts",
+      "class": "COVERAGE_ACCOUNTING",
+      "effect": "the OPERATIVE region and the per-candidate sourceCoverage / unaccountedSource computed over it",
+      "underProposal": "the child accounts for its own text only; the parent is accounted for by the parent's own candidate (verified: 70/70 appended parents across the four datasets are themselves anchored candidates)"
+    },
+    {
+      "id": "T3",
+      "file": "lib/contract-model/compiler/semantic/shard-planner.ts",
+      "class": "OPERATIVE_SEMANTICS",
+      "effect": "units and shards derived from the OPERATIVE region",
+      "underProposal": "374 -> 191 shards over the 137; 77 -> 33 sharded candidates"
+    },
+    {
+      "id": "T4",
+      "file": "lib/contract-model/compiler/semantic-verification/verify.ts:319 -> source-inventory.ts",
+      "class": "VERIFICATION",
+      "effect": "the SOURCE side of the independent reconciliation",
+      "underProposal": "window narrows to the anchor text - this is the false-credit fix (05-false-credit-span-probe.json)"
+    },
+    {
+      "id": "T5",
+      "file": "lib/contract-model/compiler/semantic-verification/verify.ts:355",
+      "class": "VERIFICATION",
+      "effect": "classifyConditionSuspicion(operativeSourceText) - Gate 2, the only gate that can permit a review skip",
+      "underProposal": "a condition living only in the chapeau leaves its window -> REQUIRED mitigation R3"
+    },
+    {
+      "id": "T6",
+      "file": "lib/contract-model/compiler/semantic/cache.ts:34,75",
+      "class": "OTHER",
+      "effect": "operativeSourceText participates in the compile cache key",
+      "underProposal": "every affected candidate's key changes once - a one-time cold cache, no correctness effect"
+    },
+    {
+      "id": "T7",
+      "file": "lib/contract-model/compiler/semantic/precedent-integration.ts:121,144,249",
+      "class": "OTHER",
+      "effect": "precedent retrieval signature over the operative text",
+      "underProposal": "signatures become anchor-scoped, i.e. more specific; no safety claim depends on the wider text"
+    }
+  ],
+  "scriptHarnessConsumers": {
+    "count": 21,
+    "note": "scripts/p3-conmed-pilot/pipeline.ts:135-137 reproduces C1 exactly and must change with it (R2); the other 20 construct single-node candidates or read the array for reporting only."
+  }
+}

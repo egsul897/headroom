@@ -1,0 +1,66 @@
+{
+  "generatedBy": "scripts/p3-conmed-pilot/f1-paid-check.ts",
+  "candidate": "7.2(k)(i)",
+  "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "paidCalls": 1,
+  "spend": {
+    "exactUsd": 0.005653,
+    "retainedUnknownTimeoutUsd": 0,
+    "committedUsd": 0.005653,
+    "ceilingUsd": 0.05,
+    "costStatus": "EXACT"
+  },
+  "bundleShape": [
+    {
+      "type": "OPERATIVE_SOURCE",
+      "ref": "7.2(k)(i)",
+      "chars": 54,
+      "has150M": false,
+      "has10pct": false
+    },
+    {
+      "type": "PARENT_SCOPE",
+      "ref": "7.2",
+      "chars": 8843,
+      "has150M": true,
+      "has10pct": true
+    },
+    {
+      "type": "PARENT_SCOPE",
+      "ref": "7.2(k)",
+      "chars": 267,
+      "has150M": false,
+      "has10pct": false
+    }
+  ],
+  "operativeText": "(i) the requirements of Section 6.9 are satisfied and ",
+  "operativeChars": 54,
+  "execution": {
+    "status": "REVIEW_REQUIRED",
+    "outcome": "COMPLETED",
+    "failureReasons": [
+      "MISSING_CONTEXT",
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "rules": 1,
+    "definitions": 0,
+    "toolCalls": 3,
+    "inputTokens": 22560,
+    "outputTokens": 10462,
+    "costUsd": 0.0056529200000000005,
+    "wallClockMs": 124669
+  },
+  "rules": [
+    {
+      "index": 0,
+      "sourceSection": "7.2(k)(i)",
+      "operativeCitation": "§7.2(k)(i)",
+      "sufficiency": null,
+      "numericValues": []
+    }
+  ],
+  "attributionViolations": [],
+  "verdict": "NO_PARENT_VALUE_CLAIMED_AS_CHILD_OWNED_OPERATIVE_EVIDENCE"
+}

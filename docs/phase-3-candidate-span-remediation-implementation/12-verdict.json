@@ -1,0 +1,76 @@
+{
+  "verdict": "CANDIDATE_SPAN_REMEDIATION_READY_FOR_PAID_VALIDATION",
+  "modelCalls": 0,
+  "successGate": {
+    "1_childOperativeTextIsAnchorOnly": {
+      "pass": true,
+      "evidence": "asserted for all 137 sealed candidates: operativeSourceTextFor(c) === getNodeText(anchor,'DESCENDANTS') with no exceptions; 401,430 chars of foreign text removed"
+    },
+    "2_linkedParentsRemainAsPARENT_SCOPE": {
+      "pass": true,
+      "evidence": "67/67 dual-key candidates keep their link on the candidate AND carry the linked node as a typed PARENT_SCOPE item (mean 319 chars of chapeau)"
+    },
+    "3_focusFamilyCollapses": {
+      "pass": true,
+      "evidence": "9,045->200, 9,621->776, 8,899->54, 9,300->455; each a single shard under the unchanged planner"
+    },
+    "4_gate2StillSeesParentConditions": {
+      "pass": true,
+      "evidence": "buildConditionSuspicionInput feeds Gate 2 the PARENT_SCOPE excerpts; asserted over the 15 real candidates whose condition language is parent-only, and asserted NOT to admit sibling/child/definition/cross-reference/linked-operative material"
+    },
+    "5_parentEconomicsNoLongerChildOwned": {
+      "pass": true,
+      "evidence": "64 dual-key candidates inherited foreign amounts under the old contract; 0 foreign amounts remain inside any candidate's operative window. Verifier source window 9,179 -> 2,185 items (CONMED), 90,057 -> 66,417 (DSGR)"
+    },
+    "6_coverageInputsUnchanged": {
+      "pass": true,
+      "evidence": "structuralNodeIds never written; discoveredNodeIds hash d95518f2c97732b06a81b7dba817d9fe over 133 distinct nodes; bundle originatingStructuralNodeIds equal to the candidate's array for all 137; 9/9 appended parents are themselves candidate anchors"
+    },
+    "7_falseCreditControls": {
+      "pass": true,
+      "evidence": "14/14 protected - dsgr-false-credit-gate (4) and false-credit-prohibitions (10) all green; no expected result changed, none excluded"
+    },
+    "8_productionPilotParity": {
+      "pass": true,
+      "evidence": "the harness delegates to the production rule; byte-identical for all 137 and for each named candidate shape"
+    },
+    "9_deterministicReplay": {
+      "pass": true,
+      "evidence": "operative text, context-bundle ids, PARENT_SCOPE item ids and coverage inputs all hash identically across two passes"
+    },
+    "10_phase4Green": {
+      "pass": true,
+      "evidence": "tests/contract-model/runtime 543/543"
+    },
+    "11_noNewFailingIdentities": {
+      "pass": true,
+      "evidence": "full suite before 4,836/4,164/148 and after 4,861/4,189/148; the failing-identity SETS are identical - 0 new, 0 fixed. One independence guard was updated and strengthened rather than weakened (see 10-test-evidence.json)."
+    },
+    "12_noBenchmarkSpecificLogic": {
+      "pass": true,
+      "evidence": "candidate-span.ts contains no section ref, issuer, document id or dataset name; asserted by test"
+    }
+  },
+  "deviationsFromTheDesign": [
+    {
+      "what": "a third production file, lib/contract-model/compiler/candidate-span.ts",
+      "why": "the design estimated two independent edits. Stating the rule once is the only way to make production/harness parity structural rather than a coincidence of two copies that can drift - which is exactly how the concatenated span went unnoticed. The rule itself is unchanged from the design."
+    },
+    {
+      "what": "harness exact-text dedup yields 135 rather than 137",
+      "why": "two same-anchor candidate pairs differing only in discovered role now produce identical compiler input; role never reaches SemanticCompilerInput, so the dedup's own equivalence rule genuinely applies. Recorded in the dedup report, production identity unaffected. Surfaced rather than suppressed."
+    }
+  ],
+  "notImplementedByDesign": [
+    "F1 context typing (the linked node is still retrieved as OPERATIVE_SOURCE inside the bundle)",
+    "F2 provenance role discriminator",
+    "composed-citation repair",
+    "shard-threshold, prompt, few-shot, model, timeout, Pass C, structuralNodeIds migration, coverage model, Phase 4"
+  ],
+  "gates": {
+    "tsc": "clean (6 pre-existing foundation-audit errors, unchanged)",
+    "eslint": "clean",
+    "build": "succeeded",
+    "fullSuite": "0 new failing identities"
+  }
+}

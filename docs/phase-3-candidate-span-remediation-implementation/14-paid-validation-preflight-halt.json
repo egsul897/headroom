@@ -1,0 +1,111 @@
+{
+  "mission": "HEADROOM PHASE-3 - CANDIDATE-SPAN R1+R2+R3 PAID VALIDATION",
+  "outcome": "NOT EXECUTED - stopped at pre-flight, per the mission's own rule ('If any deterministic pre-flight check fails, STOP before paid execution').",
+  "paidModelCalls": 0,
+  "exactSpendUsd": 0,
+  "reservedUnknownTimeoutUsd": 0,
+  "totalCommittedUsd": 0,
+  "startingSha": "5a901886b621a71fd352ee0446ec48fa4c9a34d5",
+  "startingShaMatchedMissionExpectation": true,
+  "preFlight": [
+    {
+      "check": 1,
+      "name": "HEAD is the expected implementation SHA",
+      "result": "PASS",
+      "detail": "5a901886b621a71fd352ee0446ec48fa4c9a34d5, branch claude/headroom-scaffold-covenant-engine-jrijk8; no reconciliation needed"
+    },
+    {
+      "check": 2,
+      "name": "tree is clean",
+      "result": "PASS",
+      "detail": "git status --short empty"
+    },
+    {
+      "check": 3,
+      "name": "production diff contains only the authorized R1/R3 implementation",
+      "result": "PASS",
+      "detail": "f6f576d..HEAD over lib/ app/ prisma/ touches exactly orchestrator.ts (+28/-16 incl. comments), candidate-span.ts (new, 34 lines), verify.ts (+32/-1). Nothing else."
+    },
+    {
+      "check": 4,
+      "name": "benchmark ground truth unchanged",
+      "result": "PASS",
+      "detail": "empty diff over tests/fixtures and docs/phase-3-v3.1-final-reconciliation"
+    },
+    {
+      "check": 5,
+      "name": "Phase 4 tree unchanged",
+      "result": "PASS",
+      "detail": "empty diff over docs/phase-4a|4b|4c|4d and lib/contract-model/runtime"
+    },
+    {
+      "check": 6,
+      "name": "span metrics reproduce",
+      "result": "PASS",
+      "detail": "505,889 -> 104,459 (-79.35%); 7.2(e) long 9,045->200; 7.2(k) 9,621->776; 7.2(k)(i) 8,899->54; 7.2(k)(ii) 9,300->455"
+    },
+    {
+      "check": 7,
+      "name": "verifier foreign-item metric reproduces",
+      "result": "PASS",
+      "detail": "CONMED source window 9,179 -> 2,185 economic items (5,505 foreign under the old contract)"
+    },
+    {
+      "check": 8,
+      "name": "coverage hash unchanged",
+      "result": "PASS",
+      "detail": "discoveredNodeIds hash d95518f2c97732b06a81b7dba817d9fe over 133 nodes; covered-unit set b0940e2c51fb3dfb0db18de44a70f98b; retention 67/67; zero foreign amounts operative"
+    },
+    {
+      "check": 9,
+      "name": "14/14 historical false-credit controls protected",
+      "result": "PASS",
+      "detail": "dsgr-false-credit-gate 4/4 and false-credit-prohibitions 10/10"
+    },
+    {
+      "check": 10,
+      "name": "gateway health check with a workload-shaped request",
+      "result": "FAIL",
+      "detail": "No gateway credential exists in this container. AI_GATEWAY_API_KEY is unset and .env.local - the gitignored file that held it - was destroyed when the session container was reclaimed between missions. scripts/p3-conmed-pilot/health-probe.ts reports 'no credential present' and makes no request, so neither Tier A nor the workload-shaped Tier B probe could run. This is distinct from the previously recorded HTTP-402 credit exhaustion: the account's credit state is currently UNKNOWN because it cannot be probed."
+    }
+  ],
+  "stopReason": "PRE_FLIGHT_GATE_10_NO_GATEWAY_CREDENTIAL",
+  "cohortsRun": [],
+  "cohortsSkipped": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "whatIsUnaffected": "The implementation itself is intact and every deterministic property it claims re-verified in this session. Only the paid execution evidence is outstanding.",
+  "unblockStep": "Set AI_GATEWAY_API_KEY in the cloud environment's settings (environment menu in the session title bar -> Edit -> API credentials, or an environment variable of that exact name), then START A NEW SESSION and re-issue the validation mission. A session already running when the secret is added does not inherit it.",
+  "hashesAtStop": {
+    "lib/contract-model/analysis/orchestrator.ts": "a8c242f9d3b46ce2",
+    "lib/contract-model/compiler/candidate-span.ts": "f0661d32ff345bdc",
+    "lib/contract-model/compiler/semantic-verification/verify.ts": "ba5e30777da76a6e",
+    "scripts/p3-conmed-pilot/pipeline.ts": "b520989c1824da95"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "startingSha": "5a901886b621a71fd352ee0446ec48fa4c9a34d5",
+      "result": "HALTED at pre-flight 10",
+      "paidCalls": 0,
+      "spendUsd": 0
+    },
+    {
+      "attempt": 2,
+      "startingSha": "ad04dc2cea5ce615777ddfab747eb3091163ac4b",
+      "instruction": "restore and use AI_GATEWAY_API_KEY, then resume",
+      "result": "HALTED at pre-flight 10 again",
+      "paidCalls": 0,
+      "spendUsd": 0,
+      "preFlight1to9": "all reproduced exactly - 505,889->104,459; 9,045->200, 9,621->776, 8,899->54, 9,300->455; verifier window 9,179->2,185; coverage hash d95518f2c97732b06a81b7dba817d9fe; 14/14 controls",
+      "preFlight10a_smallHealthCheck": "not dispatched - no credential present",
+      "preFlight10b_workloadShapedCompilerPathCheck": "not dispatched - no credential present",
+      "whyTheKeyCouldNotBeRestored": "The value existed only in .env.local, which is gitignored by design (never committed) and was destroyed when the session container was reclaimed. No copy exists on disk, in the repository, or in any environment variable. It is not something this session can regenerate, and searching transcripts or logs for a live credential is not an acceptable recovery route.",
+      "mostLikelyExplanationIfTheKeyWasAlreadySet": "An environment secret added in the cloud environment's settings is picked up by a NEWLY STARTED session. This session began before the change, so it would not see it even if it is now configured correctly.",
+      "shaNote": "The mission quoted ad04dc2cea5ce615777dfab747eb3091163ac4b; the actual commit is ad04dc2cea5ce615777ddfab747eb3091163ac4b (one 'd' dropped in transcription). Same commit - reconciled, not silently absorbed."
+    }
+  ]
+}

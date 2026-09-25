@@ -69,17 +69,33 @@ describe("condition-suspicion-classifier independence - static/call-site (mirror
     expect(/SemanticCompilationResult/.test(classifierSource)).toBe(false);
   });
 
-  it("verify.ts's call site passes classifyConditionSuspicion ONLY compilerInput.operativeSourceText as its first (content) argument - never compilationResult or any of its fields", () => {
+  it("verify.ts's call site passes classifyConditionSuspicion ONLY input-derived content as its first argument - never compilationResult or any of its fields", () => {
     const callMatch = verifySource.match(/classifyConditionSuspicion\(([^;]*?)\);/s);
     expect(callMatch, "verify.ts must call classifyConditionSuspicion somewhere").toBeTruthy();
     const callArgs = callMatch![1]!;
-    // The first argument (up to the first top-level comma) must be exactly
-    // compilerInput.operativeSourceText.
+    // The first argument is the content window. Under the candidate-span contract it is built by
+    // buildConditionSuspicionInput (Gate 2 must still see a condition drafted in the parent
+    // chapeau once operative text is anchor-only); before that it was the raw operative text.
+    // Either shape is admissible here - what must never be admissible is compiled IR.
     const firstArg = callArgs.split(",")[0]!.trim();
-    expect(firstArg).toBe("compilerInput.operativeSourceText");
+    expect(["compilerInput.operativeSourceText", "buildConditionSuspicionInput(compilerInput)"]).toContain(firstArg);
     // Defense in depth: nothing in the ENTIRE call expression references
     // compilationResult at all.
     expect(callArgs.includes("compilationResult")).toBe(false);
+  });
+
+  it("buildConditionSuspicionInput - Gate 2's content window - is built from the compiler INPUT alone, never from compiled IR", () => {
+    const fn = verifySource.match(/export function buildConditionSuspicionInput\(compilerInput: SemanticCompilerInput\): string \{(.*?)\n\}/s);
+    expect(fn, "verify.ts must define buildConditionSuspicionInput").toBeTruthy();
+    const body = fn![1]!;
+    for (const forbidden of ["compilationResult", "IRRule", "SemanticCompilationResult", "irInventory", "reconciliation"]) {
+      expect(body.includes(forbidden), `Gate 2's window must never read ${forbidden}`).toBe(false);
+    }
+    // and it may widen only to the enclosing scope - never to sibling, child or definition material
+    expect(body).toContain('item.type === "PARENT_SCOPE"');
+    for (const otherType of ["SIBLING_CONTEXT", "CHILD_RULE", "DEFINITION", "CROSS_REFERENCE", "OPERATIVE_SOURCE"]) {
+      expect(body.includes(`"${otherType}"`), `Gate 2's window must not admit ${otherType}`).toBe(false);
+    }
   });
 
   it("verify.ts never passes compilationResult (or any IRRule/IRDefinition field) to any function whose name contains 'ConditionSuspicion'", () => {

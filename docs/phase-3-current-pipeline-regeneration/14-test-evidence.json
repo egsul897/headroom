@@ -1,0 +1,82 @@
+{
+  "artifact": "§16 — test evidence.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "newTests": {
+    "file": "tests/phase-3-regeneration/evidence-generation.test.ts",
+    "tests": 38,
+    "passed": 38,
+    "covers": [
+      "§16.1 candidate-population completeness",
+      "§16.2 no hidden compile cap",
+      "§16.3 no truncation over the defined population",
+      "§16.4 the selection rule is benchmark-blind",
+      "§16.5 provenance completeness",
+      "§16.6 case-to-output mapping",
+      "§16.7 cost plan integrity",
+      "§16.8 no paid call was made",
+      "§6 LSB verification replay (Question 4)",
+      "§19 production freeze",
+      "determinism"
+    ]
+  },
+  "targetedSuites": [
+    {
+      "suite": "tests/benchmark-integrity + tests/benchmark-v311 + tests/phase-3-remediation + tests/phase-3-regeneration + tests/evaluation-v2",
+      "files": 13,
+      "tests": 244,
+      "passed": 244,
+      "failed": 0
+    },
+    {
+      "suite": "tests/contract-model/runtime (Phase 4A-4D) + semantic-accountability + compiler",
+      "files": 35,
+      "tests": 930,
+      "passed": 930,
+      "failed": 0
+    }
+  ],
+  "fullSuite": {
+    "files": 352,
+    "tests": 4642,
+    "passed": 4639,
+    "failed": 3,
+    "beforeAndAfterIdentical": true,
+    "howVerified": "The three failing files were re-run against a stashed working tree at the starting SHA and failed identically, with the same three test names. This mission introduced no failure and fixed none.",
+    "preExistingFailures": [
+      {
+        "test": "tests/contract-model/architecture-proposal-node-identity.test.ts > no new directory was created under tests/fixtures/unseen-packages/",
+        "why": "A stale allow-list from the ARCH-PROP era. Later missions legitimately added chwy-, riot-, f7b-, final-* and post-* fixture directories, which the allow-list never learned about. git status on that directory is clean, so this mission added nothing to it.",
+        "introducedByThisMission": false
+      },
+      {
+        "test": "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts > no new package directory was created under tests/fixtures/unseen-packages/",
+        "why": "The same stale allow-list, duplicated into the Phase 3F.1.1 forensic suite.",
+        "introducedByThisMission": false
+      },
+      {
+        "test": "tests/certification/open2-final-direct-patch-independent-confirmation.test.ts > Item 15 - clean controls > real end-to-end persistence",
+        "why": "A Postgres-backed certification control that fails at the starting SHA as well.",
+        "introducedByThisMission": false
+      }
+    ],
+    "notFixedHere": "§19 freezes prior audit artifacts and §0 makes this an evidence-regeneration mission. Editing another phase's freeze assertion to make a red suite green would be exactly the kind of quiet benchmark edit this whole line of work exists to prevent. They are reported, not patched."
+  },
+  "gates": {
+    "tsc --noEmit": {
+      "errors": 6,
+      "introducedByThisMission": 0,
+      "note": "All 6 are pre-existing, in tests/foundation-audit/. Verified by typechecking a stashed tree at the starting SHA: 6 there, 6 here."
+    },
+    "next lint": "clean — no ESLint warnings or errors",
+    "next build": "succeeded"
+  },
+  "credentialScan": {
+    "pattern": "gateway and provider credential prefixes (named in the test, not reproduced here)",
+    "scannedPaths": [
+      "docs/phase-3-current-pipeline-regeneration/",
+      "scripts/p3-regen/",
+      "tests/phase-3-regeneration/"
+    ],
+    "hits": 0
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "artifact": "§1 — the deterministic cost and model-call plan, recorded BEFORE any paid call.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "selectionRule": {
+    "dsgr": {
+      "articles": [
+        "1",
+        "6",
+        "10"
+      ],
+      "rationale": "DSGR's negative covenants are Article VI and its guaranty is Article X; Article I carries the defined terms those covenants depend on. The benchmark happens to draw from all three, but the slice is the agreement's own structure."
+    },
+    "conmed": {
+      "articles": [
+        "7"
+      ],
+      "rationale": "CONMED's Eighth A&R places its negative covenants in Article VII."
+    },
+    "lsb": {
+      "articles": [
+        "6"
+      ],
+      "rationale": "LSB's ABL agreement places its negative covenants in Article VI."
+    },
+    "fwrg": {
+      "articles": [
+        "6"
+      ],
+      "rationale": "FWRG's 2021 agreement places its negative covenants in Article VI."
+    }
+  },
+  "selectionRuleIsBenchmarkBlind": true,
+  "selectionRuleProof": "population() reads only discovery artifacts and an Article number per package. It never reads the benchmark corpus, a caseId, a claim address or an expected answer.",
+  "population": {
+    "dsgr": {
+      "count": 777,
+      "byDocument": {
+        "doc-a": 232,
+        "doc-b": 279,
+        "doc-d": 266
+      },
+      "bySection": {
+        "1": 1,
+        "6": 1,
+        "10": 9,
+        "6.02": 92,
+        "6.01": 70,
+        "10.03": 66,
+        "6.05": 47,
+        "1.11": 46,
+        "6.04": 43,
+        "6.12": 40,
+        "6.08": 36,
+        "6.03": 32,
+        "10.01": 32,
+        "10.08": 22,
+        "10.11": 22,
+        "1.06": 21,
+        "1.04": 17,
+        "1.01": 16,
+        "6.09": 16,
+        "6.10": 16,
+        "6.11": 16,
+        "6.06": 14,
+        "1.10": 13,
+        "10.09": 13,
+        "10.13": 12,
+        "1.05": 10,
+        "6.07": 9,
+        "10.02": 9,
+        "10.04": 8,
+        "1.07": 7,
+        "1.03": 6,
+        "10.10": 6,
+        "10.12": 6,
+        "1.02": 3
+      }
+    },
+    "conmed": {
+      "count": 163,
+      "byDocument": {
+        "conmed-doc-a-eighth-ar-credit-agreement": 163
+      },
+      "bySection": {
+        "7.2": 31,
+        "7.3": 28,
+        "7.5": 20,
+        "7.8": 17,
+        "7.4": 13,
+        "7.6": 13,
+        "7.9": 13,
+        "7.1": 6,
+        "7.10": 5,
+        "7.13": 4,
+        "7.14": 4,
+        "7.17": 3,
+        "7.11": 2,
+        "7.15": 2,
+        "7.16": 2
+      }
+    },
+    "lsb": {
+      "count": 82,
+      "byDocument": {
+        "lsb": 82
+      },
+      "bySection": {
+        "6.01": 19,
+        "6.04": 14,
+        "6.13": 14,
+        "6.08": 9,
+        "6.03": 7,
+        "6.11": 6,
+        "6.14": 5,
+        "6.02": 4,
+        "6.07": 2,
+        "6.15": 2
+      }
+    },
+    "fwrg": {
+      "count": 252,
+      "byDocument": {
+        "fwrg": 252
+      },
+      "bySection": {
+        "6.02": 49,
+        "6.04": 47,
+        "6.07": 47,
+        "6.06": 46,
+        "6.01": 38,
+        "6.09": 10,
+        "6.10": 8,
+        "6.05": 5,
+        "6.08": 2
+      }
+    },
+    "total": 1274
+  },
+  "unitEconomics": {
+    "measuredOn": "30 real compilations in the frozen DSGR first-blind run",
+    "compilationCostUsd": 9.1205,
+    "inputTokens": 2399858,
+    "outputTokens": 432083,
+    "modelAttempts": 72,
+    "attemptsPerCandidate": 2.4,
+    "perCandidate": {
+      "inputTokens": 79995,
+      "outputTokens": 14403,
+      "costUsd": 0.304
+    },
+    "wholeRunCostUsd": 9.344626,
+    "verificationCostUsd": 0.2241,
+    "wallClockMsForThirty": 25419744,
+    "wallClockMinutesPerCandidate": 14.1,
+    "caveat": "Measured under prompt v2. Current production runs prompt v5 with a different tool policy, so per-candidate cost may move in either direction. The figure is the only empirical anchor available and is used as the central estimate, with a +/-50% band reported."
+  },
+  "modelConfiguration": {
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "credentialLocation": "AI_GATEWAY_API_KEY in gitignored .env.local",
+    "credentialPresent": true,
+    "note": "Provider and model are read from the frozen run's own telemetry; the current getSemanticCaller() resolves the same gateway when the credential is present."
+  },
+  "expectedModelCalls": {
+    "compilationCandidates": 1274,
+    "attemptsPerCandidateObserved": 2.4,
+    "expectedModelCalls": 3058,
+    "verificationCalls": "one deterministic structural pass per compiled candidate (free) plus a bounded semantic review only where the deterministic layer escalates; the frozen run's semantic review was almost entirely skipped, costing $0.2241"
+  },
+  "batching": {
+    "canBatch": false,
+    "why": "compileCovenantToIR is a per-candidate tool-use loop with its own evidence retrieval; there is no batch endpoint in the existing caller and adding one would be a production change this mission forbids.",
+    "concurrency": "compilePackageToIR runs a bounded pool, default 4. That is the only parallelism available without touching production."
+  },
+  "cacheReuse": {
+    "anyResultReproducibleFromCache": false,
+    "why": "the semantic compilation cache key includes the compiler algorithm and prompt versions. The frozen evidence was produced under \"30 real compilations in the frozen DSGR first-blind run\" with prompt phase-3b1-semantic-compiler-prompt.v2; production now stamps semantic-accountability-compiler-prompt.v5, so every key misses.",
+    "cachedCallsAvailable": 0
+  },
+  "deterministicStagesThatNeedNoModelCall": {
+    "before": [
+      "structural index (frozen stage 1 reused)",
+      "discovery candidates (frozen stage 2 reused — this mission does not regenerate discovery)",
+      "eligibility filtering"
+    ],
+    "after": [
+      "normalization",
+      "IR type and sufficiency checks",
+      "the deterministic structural verification pass",
+      "accountingRole derivation",
+      "V3.1.1 adjudication",
+      "packet construction",
+      "aggregate recomputation"
+    ],
+    "note": "Only semantic compilation, and any escalated semantic review, cost money."
+  },
+  "scopeOptions": [
+    {
+      "id": "A_FULL",
+      "label": "Every dataset's Article family — the only scope that can return a complete verdict",
+      "datasets": [
+        "dsgr",
+        "conmed",
+        "lsb",
+        "fwrg"
+      ],
+      "candidates": 1274,
+      "estimatedCostUsd": 387.3,
+      "estimatedCostBandUsd": [
+        193.65,
+        580.94
+      ],
+      "estimatedWallClockHoursAtConcurrency4": 74.8,
+      "answersQuestions": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4",
+        "Q5",
+        "Q6",
+        "Q7"
+      ],
+      "verdictIfChosen": "PHASE3_CURRENT_PIPELINE_EVIDENCE_REGENERATED"
+    },
+    {
+      "id": "B_NEGATIVE_COVENANTS_ONLY",
+      "label": "Drop DSGR Articles I and X; negative-covenant articles only",
+      "datasets": [
+        "dsgr(VI)",
+        "conmed",
+        "lsb",
+        "fwrg"
+      ],
+      "candidates": 929,
+      "estimatedCostUsd": 282.42,
+      "estimatedCostBandUsd": [
+        141.21,
+        423.62
+      ],
+      "estimatedWallClockHoursAtConcurrency4": 54.6,
+      "answersQuestions": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+      ],
+      "verdictIfChosen": "PHASE3_CURRENT_PIPELINE_EVIDENCE_PARTIAL — 8 cases (7 DSGR Article I, 1 Article X) cannot be re-scored"
+    },
+    {
+      "id": "C_CONMED_FIRST",
+      "label": "CONMED only — the dataset with no compilation evidence at all",
+      "datasets": [
+        "conmed"
+      ],
+      "candidates": 163,
+      "estimatedCostUsd": 49.55,
+      "estimatedCostBandUsd": [
+        24.78,
+        74.33
+      ],
+      "estimatedWallClockHoursAtConcurrency4": 9.6,
+      "answersQuestions": [
+        "Q2"
+      ],
+      "verdictIfChosen": "PHASE3_CURRENT_PIPELINE_EVIDENCE_PARTIAL"
+    },
+    {
+      "id": "D_LSB_FWRG_SMALL",
+      "label": "LSB + FWRG — the two smallest packages, answering Q3 and confirming Q4 end-to-end",
+      "datasets": [
+        "lsb",
+        "fwrg"
+      ],
+      "candidates": 334,
+      "estimatedCostUsd": 101.54,
+      "estimatedCostBandUsd": [
+        50.77,
+        152.3
+      ],
+      "estimatedWallClockHoursAtConcurrency4": 19.6,
+      "answersQuestions": [
+        "Q3",
+        "Q4 (end-to-end)"
+      ],
+      "verdictIfChosen": "PHASE3_CURRENT_PIPELINE_EVIDENCE_PARTIAL"
+    }
+  ],
+  "ceilingPolicy": {
+    "requestedCeilingUsd": null,
+    "rule": "§1 forbids silently reusing the $30 cap and forbids a new cap that could bias coverage. A ceiling must be at or above the chosen option's upper band, or the mission is declared incomplete.",
+    "priorRunCeilingUsd": 30,
+    "priorRunActualUsd": 9.344626,
+    "whyThePriorCeilingIsTheProblem": "The $30 ceiling was never reached — the run stopped at COMPILE_CAP = 30 candidates for $9.34. The cap, not the budget, is what truncated coverage."
+  }
+}

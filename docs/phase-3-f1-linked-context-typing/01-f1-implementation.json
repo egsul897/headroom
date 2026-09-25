@@ -1,0 +1,127 @@
+{
+  "mission": "HEADROOM PHASE-3 - F1 LINKED CONTEXT SOURCE-TYPING",
+  "startingSha": "1863b309c414fcd3c1e77582d170c4c21e5018b3",
+  "startingShaMatchedExpectation": true,
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeCleanAtStart": true,
+  "hashesBefore": {
+    "context-retrieval/pipeline.ts": "eb02d6e97ddbf9bc",
+    "orchestrator.ts": "a8c242f9d3b46ce2",
+    "candidate-span.ts": "f0661d32ff345bdc",
+    "verify.ts": "ba5e30777da76a6e",
+    "benchmark(sealed population)": "5f0eb08834f2056f",
+    "phase4TreeHash": "2b02e5be41ebf6e1",
+    "coverageHash": "d95518f2c97732b06a81b7dba817d9fe"
+  },
+  "hashesAfter": {
+    "pipeline.ts": "90af16b1a2093227",
+    "structural-context.ts": "d8c152763ad68d8f",
+    "orchestrator.ts": "a8c242f9d3b46ce2",
+    "candidate-span.ts": "f0661d32ff345bdc",
+    "verify.ts": "ba5e30777da76a6e",
+    "phase-2f-stage2-discovery-candidates.json": "5f0eb08834f2056f"
+  },
+  "unchangedByThisMission": [
+    "R1 anchor-only operative span (candidate-span.ts, orchestrator.ts)",
+    "R3 Gate-2 builder logic (verify.ts)",
+    "prompts, few-shots, model, timeout, shard planner, Pass C, structuralNodeIds, coverage model, provenance schema, composed citations, 7.2(f), Phase 4"
+  ],
+  "implementation": {
+    "files": [
+      {
+        "file": "lib/contract-model/compiler/context-retrieval/structural-context.ts",
+        "change": "ADDED retrieveLinkedStructuralContext - retrieves a linked node with the SAME text (DESCENDANTS) and citation retrieveOperativeSource would have produced, under an existing contextual type. No new ContextItemType."
+      },
+      {
+        "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+        "change": "the structuralNodeIds.slice(1) loop now calls retrieveLinkedStructuralContext with an ancestor test, instead of retrieveOperativeSource."
+      }
+    ],
+    "classification": "PARENT_SCOPE when the linked node is an ancestor of the anchor, SIBLING_CONTEXT otherwise. Measured over the sealed population: all 67 linked nodes are ancestors, so 67 became PARENT_SCOPE and none needed SIBLING_CONTEXT.",
+    "onlyLabelChanged": "text, citation, node id and evidence state are all identical to what the OPERATIVE_SOURCE item carried."
+  },
+  "auditBeforeAfter": {
+    "totalCandidates": {
+      "before": 163,
+      "after": 163
+    },
+    "dualKeyCandidates": {
+      "before": 67,
+      "after": 67
+    },
+    "candidatesWithMultipleOperativeSource": {
+      "before": 67,
+      "after": 0
+    },
+    "operativeSourceItems": {
+      "before": 228,
+      "after": 161
+    },
+    "parentScopeItems": {
+      "before": 167,
+      "after": 167
+    },
+    "siblingContextItems": {
+      "before": 0,
+      "after": 0
+    },
+    "contextLossCases": {
+      "before": 0,
+      "after": 0
+    },
+    "foreignEconomicItems": {
+      "operativeChannel": {
+        "before": 238,
+        "after": 0
+      },
+      "contextualChannel": {
+        "before": 583,
+        "after": 819
+      }
+    },
+    "reading": "228 -> 161 OPERATIVE_SOURCE items is exactly one per candidate that has an anchor (161 of 163; two candidates carry no structural node at all). The 67 linked items did not vanish - they moved into PARENT_SCOPE, which is why 238 foreign economic terms left the operative channel and appear in the contextual channel instead (583 -> 819). No architecture case needed more than one operative node, so the invariant holds without exception."
+  },
+  "case_7_2_k_i": {
+    "operativeText": "(i) the requirements of Section 6.9 are satisfied and ",
+    "items": [
+      {
+        "type": "OPERATIVE_SOURCE",
+        "sectionRef": "7.2(k)(i)",
+        "chars": 54,
+        "sourceNode": "structural-node:a3ebda5616de1efe2a748229",
+        "has150M": false,
+        "has10pct": false
+      },
+      {
+        "type": "PARENT_SCOPE",
+        "sectionRef": "7.2",
+        "chars": 8843,
+        "sourceNode": "structural-node:a9b723686e58119d7cd922a5",
+        "has150M": true,
+        "has10pct": true
+      },
+      {
+        "type": "PARENT_SCOPE",
+        "sectionRef": "7.2(k)",
+        "chars": 267,
+        "sourceNode": "structural-node:10fcf067cf545b21e045f3bd",
+        "has150M": false,
+        "has10pct": false
+      }
+    ],
+    "requiredShapeMet": true,
+    "note": "One OPERATIVE_SOURCE item: the 54-char anchor, containing neither $150,000,000 nor 10.0%. The parent section still carries both values but is now typed PARENT_SCOPE - exactly the \u00a78 required shape."
+  },
+  "r3Safety": {
+    "parentOnlyConditionMarkersVisibleToGate2": "65/65",
+    "chapeauTextStillInsideAPARENT_SCOPEItem": "67/67",
+    "disclosedConsequence": "Because F1 preserves the linked node's full text (per \u00a76 'only its classification changes' and \u00a78 'the parent may still contain those values'), the PARENT_SCOPE item for a linked parent is now its 8,843-char subtree rather than the 107-char chapeau retrieveParentScope produced. Gate 2's mean input for dual-key candidates therefore grows from ~627 to ~6,412 chars. This stays inside the authorized 'anchor + PARENT_SCOPE' channel and admits no new type, and it moves Gate 2 in the safe direction (more likely to force review), but it is a real change in scale and is reported rather than absorbed. If the narrower window is preferred, reversing the dedupe order so retrieveParentScope's chapeau wins is a one-line change."
+  },
+  "coverage": {
+    "expected": "d95518f2c97732b06a81b7dba817d9fe",
+    "after": "d95518f2c97732b06a81b7dba817d9fe",
+    "unchanged": true,
+    "coveredUnitSet": "b0940e2c51fb3dfb0db18de44a70f98b",
+    "nodes": 133
+  }
+}

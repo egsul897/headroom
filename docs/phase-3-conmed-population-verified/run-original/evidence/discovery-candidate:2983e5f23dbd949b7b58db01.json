@@ -1,0 +1,797 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T22:50:25.578Z",
+  "candidateRef": "discovery-candidate:2983e5f23dbd949b7b58db01",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.3(g)(ii)(A)",
+    "operativeSourceText": "(A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and ",
+    "operativeSourceTextSha256": "bead364b0bad0165b3078e8a2cbfc6113f7223726a26cb16bdbcd86addcd9f95",
+    "operativeSourceChars": 150,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:be07c5601063a2cd09aceae645cb26bf9df62f5c0dc68f54ef676eb2d9700f43",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 9,
+    "items": [
+      {
+        "itemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.3(g)(ii)(A)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 150,
+        "excerptText": "(A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and "
+      },
+      {
+        "itemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 7053,
+        "excerptText": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n(a)\nLiens for taxes, assessments or charges not yet due or which are being contested in good faith by appropriate proceedings; provided\nthat adequate reserves with respect thereto are maintained on the books of the Parent Borrower or its Subsidiaries, as the case may be,\nin conformity with GAAP;\n97\n(b)\ncarriers', warehousemen's, mechanics', materialmen's, repairmen's, supplier's or other like\nLiens arising in the ordinary course of business which are not overdue for a period of more than 30 days or which are being contested\nin good faith by appropriate proceedings and Liens securing judgments to the extent not constituting an Event of Default pursuant to clause\n(h) of Article VIII;\n(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n(e)\neasements, rights-of-way, restrictions and other similar encumbrances incurred in the ordinary course of business which, in the\naggregate, are not substantial in amount and which do not in any case materially detract from the value of the Property subject thereto\nor materially interfere with the ordinary conduct of the business of the Parent Borrower or any of its Subsidiaries;\n(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secured thereby is not increased;\n(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n(h)\nLiens created pursuant to the Security Documents;\n(i)\nany interest or title of a lessor under any lease entered into by the Parent Borrower or any other Subsidiary in the ordinary course\nof its business and covering only the assets so leased;\n(j)\nLiens arising from precautionary UCC financing statement filings regarding operating leases or consignment arrangements entered\ninto by the Parent Borrower or its Subsidiaries in the ordinary course of business;\n(k)\nLiens in favor of banking institutions encumbering the deposits (including the right of setoff) held by such banking institutions\nin the ordinary course of business and which are within the general parameters customary in the banking industry;\n98\n(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary of the Parent Borrower; provided that (i) any Indebtedness that is secured by such Liens is permitted\nto exist under Section 7.2, (ii) such Liens are not created in anticipation of such Permitted Business Acquisition or similar Investment\nor such Person otherwise becoming a Subsidiary of the Parent Borrower and do not attach to any other asset of the Parent Borrower or any\nof its Subsidiaries other than any replacements of such property or assets and accessions thereto and proceeds thereof, or, in the case\nof any acquired Subsidiary, after-acquired property of such Person of the same type and consistent with that contemplated at the time\nsuch original Lien was created and (iii) such Liens secure no greater principal amount of Indebtedness than the aggregate principal amount\nof the Indebtedness, if any, secured by such Liens on the date of such Permitted Business Acquisition or similar Investment or date on\nwhich such Person otherwise becomes a Subsidiary;\n(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations\nsecured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Liens);\n(n)\nLiens securing Indebtedness permitted by Section 7.2(e) on the real property of the Parent Borrower or its Subsidiaries in Largo,\nFlorida;\n(o)\nLiens on accounts receivable or related ancillary rights and assets sold, transferred, encumbered or otherwise disposed of, or\npurported to have been sold, transferred, encumbered or otherwise disposed of pursuant to a Receivables Transfer Program in accordance\nwith Section 7.5(k); and\n(p)\nLiens in the nature of escrow arrangements for deferred payments to be made in connection with a Permitted Business Acquisition\nto the extent such payments constitute amounts permitted under Section 7.8(k) and the rights of any beneficiary thereunder.\nFor purposes of determining compliance with\nthis Section 7.3, (A) a Lien securing an item of Indebtedness need not be permitted solely by reference to one category of permitted Liens\ndescribed in Section 7.3(a) through (q) but may be permitted in part under any combination thereof and (B) in the event that a Lien securing\nan item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section\n7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify,\nsuch Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant and will only be\nrequired to include the amount and type of such Lien or such item of Indebtedness secured by such Lien in one of the above clauses and\nsuch Lien securing such item of Indebtedness will be treated as being incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:fe16511cbf12d4b69ea05fcf2ac4d9f51a9f3360d90423f9d25bce58b7c07b38",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3(g)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 205,
+        "excerptText": "(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either "
+      },
+      {
+        "itemId": "context-item:3351ad7af05a3f8fc8382061f8103167d2b105b8dcffcbda57b804ac32d3474f",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3(g)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 231,
+        "excerptText": "(ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat "
+      },
+      {
+        "itemId": "context-item:01c3ead887238141d5da98cdf33b0ab789ff1940d83e482e17a3e519f3580288",
+        "type": "DEFINITION",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:fcfad364ca87e92c7ea6b7b841fccc12482b5419c6996471ca1cdaa2ebcbff2e",
+        "type": "DEFINITION",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "type": "DEFINITION",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "toItemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:fe16511cbf12d4b69ea05fcf2ac4d9f51a9f3360d90423f9d25bce58b7c07b38",
+        "toItemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:3351ad7af05a3f8fc8382061f8103167d2b105b8dcffcbda57b804ac32d3474f",
+        "toItemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "toItemId": "context-item:01c3ead887238141d5da98cdf33b0ab789ff1940d83e482e17a3e519f3580288",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "toItemId": "context-item:fcfad364ca87e92c7ea6b7b841fccc12482b5419c6996471ca1cdaa2ebcbff2e",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:9f60c33f55e647dee63dfde9c4a1de41b4a783180c07666f7a48217ce06ebdde",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.3(g)(ii)(A)",
+          "covenantFamily": "LIENS",
+          "ruleType": "PROHIBITION",
+          "posture": "PROHIBITION",
+          "action": "GRANT_LIEN",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiary"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": null,
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "The Lien may extend to or cover the Property so acquired; the prohibition does not reach the Property acquired (by purchase, construction or otherwise) itself.",
+              "permissionRef": null,
+              "conditions": [],
+              "citation": "§7.3(g)(ii)(A)",
+              "excerpt": "other than the Property so acquired",
+              "inventoryItemIds": [
+                "54c34cad205eb8f3fd4ef0fb"
+              ]
+            },
+            {
+              "description": "The carve-out from the prohibition also covers the Property so financed - the 'or financed' alternative - in addition to the Property acquired.",
+              "permissionRef": null,
+              "conditions": [],
+              "citation": "§7.3(g)(ii)(A)",
+              "excerpt": "or financed",
+              "inventoryItemIds": [
+                "3ce6c3ff18b9d44fa0998dc6"
+              ]
+            }
+          ],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.3(g)",
+              "description": "This proviso qualifies the Liens permitted under Section 7.3(g) (Liens upon real and/or tangible personal Property acquired after the Closing Date by the Parent Borrower or any of its Subsidiaries); the proviso's meaning is anchored to the property-acquisition/financing permission in that basket.",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.2",
+              "description": "Clause (g)(ii), whose proviso this is, requires the Indebtedness secured by such Lien to be permitted under Section 7.2; that debt-permissibility gate is outside this submission's operative window and is preserved as an explicit unresolved cross-unit dependency.",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "The full operative text of sub-clause (A) is present and confirmed CURRENT (context item 9f60c3...); the prohibition and both carve-outs (Property acquired; Property financed) are faithfully represented as a PROHIBITION rule with two alternative exceptions.",
+            "The parent permission chain (Section 7.3, Section 7.3(g), Section 7.3(g)(ii)) is supplied and confirmed CURRENT; sibling proviso (B) - principal amount of secured Indebtedness not exceeding 80% of the fair market value of such Property - is a separate independently operative rule not in this submission's window.",
+            "The inventory's AMBIGUOUS_REFERENCE flags are resolved: the definitions of Lien, Property, Parent Borrower and Subsidiary are present in the context bundle with CURRENT evidence status.",
+            "The rule carries no quantitative capacity by design: the proviso is a qualitative collateral-scope restriction, so capacityExpression is null and the operative mechanics sit in the prohibition's exceptions."
+          ],
+          "citation": "§7.3(g)(ii)(A)",
+          "excerpt": "no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed",
+          "inventoryItemIds": [
+            "4127cf17fdb84e9d5e4a47fc"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Operative window is sub-clause 7.3(g)(ii)(A) only. It is one independently operative rule: a prohibition on a Lien permitted under Section 7.3(g) extending to or covering any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed.",
+        "The 'other than the Property so acquired or financed' carve-out is modeled as two alternative exceptions (acquired / financed), one per inventory item, preserving the OR-alternative structure.",
+        "Sibling proviso 7.3(g)(ii)(B) (securing Indebtedness not to exceed 80% of the fair market value of such Property at acquisition, per a Responsible Officer's good-faith determination) is an independently operative quantitative rule in the same basket and is NOT part of this submission; it is left uncompiled and called out here rather than merged with (A).",
+        "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: the operative window's completeness against its own unit boundary cannot be independently established, but the full text of (A) itself is present and confirmed CURRENT, and parent scope items (full Section 7.3, (g), (g)(ii)) plus definitions of Lien, Property, Parent Borrower and Subsidiary were supplied as CURRENT context.",
+        "No shared capacity exists among the items in this window - (A) is a scope restriction, not a dollar ceiling - so no WireSharedCapacity is emitted and no LEDGER_USAGE_REFERENCE is used.",
+        "No IR extension candidate is warranted: qualitative prohibitions with carve-out exceptions are expressible with the existing PROHIBITION rule + exceptions constructs; the expression primitives are not required to compute collateral set-membership.",
+        "Per the no-recorded-amendment-history note, no current-version verification was needed beyond the confirmed CURRENT evidence status already attached to the supplied context items."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:0677fe69c1cf22b8383db893",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.3(g)(ii)(A)",
+        "covenantFamily": "LIENS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r1].exception[0]",
+            "appliesToRuleId": "ir-rule:0677fe69c1cf22b8383db893",
+            "description": "The Lien may extend to or cover the Property so acquired; the prohibition does not reach the Property acquired (by purchase, construction or otherwise) itself.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(g)(ii)(A)",
+              "excerpt": "other than the Property so acquired"
+            },
+            "inventoryItemIds": [
+              "54c34cad205eb8f3fd4ef0fb"
+            ]
+          },
+          {
+            "exceptionId": "rule[r1].exception[1]",
+            "appliesToRuleId": "ir-rule:0677fe69c1cf22b8383db893",
+            "description": "The carve-out from the prohibition also covers the Property so financed - the 'or financed' alternative - in addition to the Property acquired.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(g)(ii)(A)",
+              "excerpt": "or financed"
+            },
+            "inventoryItemIds": [
+              "3ce6c3ff18b9d44fa0998dc6"
+            ]
+          }
+        ],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.3(g)",
+            "description": "This proviso qualifies the Liens permitted under Section 7.3(g) (Liens upon real and/or tangible personal Property acquired after the Closing Date by the Parent Borrower or any of its Subsidiaries); the proviso's meaning is anchored to the property-acquisition/financing permission in that basket.",
+            "reason": "dependsOn[0].targetRef \"Section 7.3(g)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.2",
+            "description": "Clause (g)(ii), whose proviso this is, requires the Indebtedness secured by such Lien to be permitted under Section 7.2; that debt-permissibility gate is outside this submission's operative window and is preserved as an explicit unresolved cross-unit dependency.",
+            "reason": "dependsOn[1].targetRef \"Section 7.2\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The full operative text of sub-clause (A) is present and confirmed CURRENT (context item 9f60c3...); the prohibition and both carve-outs (Property acquired; Property financed) are faithfully represented as a PROHIBITION rule with two alternative exceptions.",
+          "The parent permission chain (Section 7.3, Section 7.3(g), Section 7.3(g)(ii)) is supplied and confirmed CURRENT; sibling proviso (B) - principal amount of secured Indebtedness not exceeding 80% of the fair market value of such Property - is a separate independently operative rule not in this submission's window.",
+          "The inventory's AMBIGUOUS_REFERENCE flags are resolved: the definitions of Lien, Property, Parent Borrower and Subsidiary are present in the context bundle with CURRENT evidence status.",
+          "The rule carries no quantitative capacity by design: the proviso is a qualitative collateral-scope restriction, so capacityExpression is null and the operative mechanics sit in the prohibition's exceptions.",
+          "dependsOn[0].targetRef \"Section 7.3(g)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[1].targetRef \"Section 7.2\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.3(g)(ii)(A)",
+          "excerpt": "no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiary"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiary",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 65,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 82,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "4127cf17fdb84e9d5e4a47fc"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] dependsOn[0].targetRef \"Section 7.3(g)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[1].targetRef \"Section 7.2\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Operative window is sub-clause 7.3(g)(ii)(A) only. It is one independently operative rule: a prohibition on a Lien permitted under Section 7.3(g) extending to or covering any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed.",
+      "The 'other than the Property so acquired or financed' carve-out is modeled as two alternative exceptions (acquired / financed), one per inventory item, preserving the OR-alternative structure.",
+      "Sibling proviso 7.3(g)(ii)(B) (securing Indebtedness not to exceed 80% of the fair market value of such Property at acquisition, per a Responsible Officer's good-faith determination) is an independently operative quantitative rule in the same basket and is NOT part of this submission; it is left uncompiled and called out here rather than merged with (A).",
+      "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: the operative window's completeness against its own unit boundary cannot be independently established, but the full text of (A) itself is present and confirmed CURRENT, and parent scope items (full Section 7.3, (g), (g)(ii)) plus definitions of Lien, Property, Parent Borrower and Subsidiary were supplied as CURRENT context.",
+      "No shared capacity exists among the items in this window - (A) is a scope restriction, not a dollar ceiling - so no WireSharedCapacity is emitted and no LEDGER_USAGE_REFERENCE is used.",
+      "No IR extension candidate is warranted: qualitative prohibitions with carve-out exceptions are expressible with the existing PROHIBITION rule + exceptions constructs; the expression primitives are not required to compute collateral set-membership.",
+      "Per the no-recorded-amendment-history note, no current-version verification was needed beyond the confirmed CURRENT evidence status already attached to the supplied context items.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T22:46:27.222Z",
+      "inputTokens": 4480,
+      "outputTokens": 15378,
+      "cachedInputTokens": 10240,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 174060,
+      "calculatedCostUsd": 0.16274
+    },
+    "compiledAt": "2026-09-24T22:46:27.222Z",
+    "outputHash": "d0fef449b495db5c3a16a735e89d8884cdfa035e7b665993917b1e11af4de6e6"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "a82a18bf899444f4a1d974c1bd255f20491bc088d3b077bc702cf3f1990bcd20",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:2983e5f23dbd949b7b58db01",
+        "ruleOrDefinitionId": "ir-rule:0677fe69c1cf22b8383db893",
+        "irPath": "rules[0].entityScope",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "Section 7.3(g)(ii)(A): 'no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed', read with the opening of clause (g): 'Liens upon real and/or tangible personal Property acquired after the Closing Date ... by the Parent Borrower or any of its Subsidiaries'.",
+        "sourceCitation": "§7.3(g)(ii)(A), read with §7.3(g)",
+        "proposedIrEvidence": "\"entityScope\": [\"BORROWER\", \"ANY_SUBSIDIARY\"]",
+        "verifierReasoning": "In the source, 'such Subsidiary' is an anaphoric reference to the particular Subsidiary that acquired (or financed) the property that is subject to the Lien described in clause (g). The proviso therefore limits the Lien to the property of the Parent Borrower and of that specific Subsidiary; it does not, by its own terms, extend the restriction to all subsidiaries. The proposed IR instead states the rule applies to ANY_SUBSIDIARY. This overbreadth is material: under the source, a Lien that qualifies under (g)(ii) on Subsidiary X's acquired property but also extends to Subsidiary Y's separately-permitted property would not violate clause (A) because Y is not 'such Subsidiary'; the proposed IR would treat that as a violation of this rule. The IR also substitutes 'BORROWER' for the defined term 'Parent Borrower' and does not carry forward the antecedent limitation that 'such Lien' means a Lien within clause (g)(ii) securing Section 7.2-permitted Indebtedness.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T22:50:25.575Z"
+      },
+      {
+        "findingId": "4f12bc23267dbf1c941ea264f3fcbe6ab79c00e90a44f4e010602e2cdc7a9ccd",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:2983e5f23dbd949b7b58db01",
+        "ruleOrDefinitionId": "ir-rule:0677fe69c1cf22b8383db893",
+        "irPath": "rules[0]",
+        "findingType": "MISSING_CONDITION",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "Section 7.3(g)(ii)(B): 'the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);'",
+        "sourceCitation": "§7.3(g)(ii)(B) (same proviso, joined to (A) by 'and')",
+        "proposedIrEvidence": "The proposed IR contains no condition or exception representing the 80% fair-market-value limit; its conditions array is empty and the rule's sufficiency is 'COMPLETE'.",
+        "verifierReasoning": "The source's proviso to the (g) exception is a two-part conjunctive condition: (A) limits the property covered by the Lien, and (B) limits the secured principal to 80% of the property's fair market value at acquisition. The proposed IR represents only (A) and marks itself COMPLETE. If the IR is consumed as the representation of the (g)(ii) proviso or of the scope of the exception, a Lien that covers only the acquired property but secures more than 80% of FMV would appear compliant even though it fails condition (B). Because the IR's sourceSectionRef is expressly limited to '7.3(g)(ii)(A)', the omission may be outside the intended representation; I therefore mark this UNCERTAIN rather than MATERIAL, but it is a real gap in the complete proviso that the source itself presents as a single 'provided that' unit ending in 'and'.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T22:50:25.575Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:2983e5f23dbd949b7b58db01",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bcde97e9943df39bc78fbfa5f1888c72ec2206e55c33decc86f6d406b03d83ef",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.3(g)(ii)(A)",
+            "structuralNodeKey": null,
+            "charStart": 62,
+            "charEnd": 77
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:2983e5f23dbd949b7b58db01",
+      "items": [
+        {
+          "itemId": "1069d910e7b865f98d8f5f2e61b97e801db035d06e981cbe3a0f6f6808089167",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(g)(ii)(A)",
+          "structuralNodeKey": null,
+          "charStart": 97,
+          "charEnd": 107,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "fb85bda70a73b480e1f868dfd1697db5767c177d86a8d36f319b2e50bb77ff01",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(g)(ii)(A)",
+          "structuralNodeKey": null,
+          "charStart": 69,
+          "charEnd": 77,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "bcde97e9943df39bc78fbfa5f1888c72ec2206e55c33decc86f6d406b03d83ef",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(g)(ii)(A)",
+          "structuralNodeKey": null,
+          "charStart": 62,
+          "charEnd": 77
+        },
+        {
+          "itemId": "336af781eec684f761af253ce10d79c77eb4d8d7133065139ee9712849915367",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(g)(ii)(A)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(a)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:2983e5f23dbd949b7b58db01",
+      "items": [
+        {
+          "itemId": "a2bf61df6424abedefa06d17718a46b0173216676510514cef6ff704050d52f1",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:0677fe69c1cf22b8383db893",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(A)",
+          "sourceExcerpt": "no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "93ce5831bc44c480b654b9f96741587eba8219be0190299e69b1522d2c41e549",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:0677fe69c1cf22b8383db893",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(A)",
+          "sourceExcerpt": "no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "da55f0b36b5974f5bca05390a2ec4dfea2a6b2a797377b0f3a6c85bf39d13b4a",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:0677fe69c1cf22b8383db893",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(A)",
+          "sourceExcerpt": "no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "6e6f03fc445d1a2faab75c2e238fab94e497ed448d3acd0a11f33b5f3e6083bd",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:0677fe69c1cf22b8383db893",
+          "irPath": "rules[0].exceptions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The Lien may extend to or cover the Property so acquired; the prohibition does not reach the Property acquired (by purchase, construction or otherwise) itself.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(A)",
+          "sourceExcerpt": "other than the Property so acquired",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "b6e7101e78c4b63f82bdffb1f9d0a9f0a81d5553cd2c6e53d72ef5e50eb0e8bb",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:0677fe69c1cf22b8383db893",
+          "irPath": "rules[0].exceptions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The carve-out from the prohibition also covers the Property so financed - the 'or financed' alternative - in addition to the Property acquired.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(A)",
+          "sourceExcerpt": "or financed",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:2983e5f23dbd949b7b58db01",
+        "items": [],
+        "fieldsWalked": 7,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "bead364b0bad0165b3078e8a2cbfc6113f7223726a26cb16bdbcd86addcd9f95",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "b22b6622646ac8a54e80f39900b8b7ebaa42a732bf31c022a8abb50ad8d4c22f",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": {
+      "status": "MATERIAL_CONDITION_POSSIBLE",
+      "evidence": [
+        {
+          "sourceSpan": "Create, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except for:",
+          "description": "The covenant is an obligation prohibited unless one of the listed exceptions applies; the exceptions are conditions that qualify the operative rule.",
+          "category": "EXCEPTION_OR_PROVISO"
+        },
+        {
+          "sourceSpan": "provided that adequate reserves with respect thereto are maintained on the books of the Parent Borrower or its Subsidiaries, as the case may be, in conformity with GAAP;",
+          "description": "The exception for contested taxes and charges is itself conditioned on maintaining adequate reserves, so the permitted-liens treatment depends on that ongoing condition.",
+          "category": "PRO_FORMA_REQUIREMENT"
+        },
+        {
+          "sourceSpan": "provided that (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);",
+          "description": "The (g) exception for after-acquired property is qualified by two express provisos limiting the property covered and the secured debt amount, so downstream representation of this exception as unconditional would be materially incomplete.",
+          "category": "OTHER_CONDITIONAL_DEPENDENCY"
+        },
+        {
+          "sourceSpan": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+          "description": "The catch-all permitted-liens exception is gated by a 'so long as' condition tied to principal amount and fair market value thresholds, making the exception a conditional eligibility carveout.",
+          "category": "ELIGIBILITY_REQUIREMENT"
+        },
+        {
+          "sourceSpan": "and (B) in the event that a Lien securing an item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section 7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant",
+          "description": "The classification mechanism operates only 'in the event that' the Lien meets criteria from cross-referenced permitted-lien categories, embedding both an event condition and incorporated cross-reference conditions.",
+          "category": "EVENT_DEPENDENCY"
+        }
+      ],
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+      "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+      "telemetry": {
+        "provider": "vercel-ai-gateway",
+        "model": "deepseek/deepseek-v4-flash",
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "stage": "condition_suspicion_classification",
+        "timestamp": "2026-09-24T22:46:27.225Z",
+        "inputTokens": 3771,
+        "outputTokens": 3549,
+        "cachedInputTokens": null,
+        "cacheCreationInputTokens": null,
+        "attemptCount": 1,
+        "retryCount": 0,
+        "rateLimitFailures": 0,
+        "latencyMs": 37321,
+        "calculatedCostUsd": 0.043032
+      },
+      "failed": false,
+      "failureDetail": null,
+      "isSynthetic": false,
+      "fromCache": false
+    },
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 318035,
+    "inputTokens": 4480,
+    "outputTokens": 15378,
+    "costUsd": 0.00458068,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:2983e5f23dbd949b7b58db01.verified-units.json",
+    "packageHash": "2b47babf7460b5eea2ba03406f615a7d3587720a3d4322555a33e8baaa3bc656",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

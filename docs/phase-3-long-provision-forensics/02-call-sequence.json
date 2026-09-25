@@ -1,0 +1,135 @@
+{
+  "inventoryBatchChars": 6000,
+  "inventoryPasses": 2,
+  "toolBudget": {
+    "maxToolCalls": 8,
+    "maxRecursionDepth": 3,
+    "maxAdditionalSourceChars": 20000
+  },
+  "maxTurnOverhead": 4,
+  "shardBudget": {
+    "targetPrimaryChars": 12000,
+    "maxPrimaryChars": 24000,
+    "maxContextChars": 10000,
+    "maxRequiredContextChars": 64000,
+    "maxContextEntryChars": 1800,
+    "maxUnitsPerShard": 16
+  },
+  "cases": [
+    {
+      "slot": "SHORT_CONTROL",
+      "ref": "7.2(e)",
+      "chars": 200,
+      "seq": {
+        "sourceChars": 200,
+        "batchesPerPass": 1,
+        "inventoryCalls": 2,
+        "maxCompileTurns": 12,
+        "maxSequentialCalls": 14,
+        "secondsPerCallAt480s": 34.3
+      },
+      "shard": {
+        "sharded": false,
+        "reason": "below targetPrimaryChars 12000 — handled MONOLITHICALLY as one conversation"
+      }
+    },
+    {
+      "slot": "MEDIUM",
+      "ref": "7.6",
+      "chars": 3501,
+      "seq": {
+        "sourceChars": 3501,
+        "batchesPerPass": 1,
+        "inventoryCalls": 2,
+        "maxCompileTurns": 12,
+        "maxSequentialCalls": 14,
+        "secondsPerCallAt480s": 34.3
+      },
+      "shard": {
+        "sharded": false,
+        "reason": "below targetPrimaryChars 12000 — handled MONOLITHICALLY as one conversation"
+      }
+    },
+    {
+      "slot": "LONG",
+      "ref": "7.2(e)",
+      "chars": 9045,
+      "seq": {
+        "sourceChars": 9045,
+        "batchesPerPass": 2,
+        "inventoryCalls": 4,
+        "maxCompileTurns": 12,
+        "maxSequentialCalls": 16,
+        "secondsPerCallAt480s": 30
+      },
+      "shard": {
+        "sharded": false,
+        "reason": "below targetPrimaryChars 12000 — handled MONOLITHICALLY as one conversation"
+      }
+    },
+    {
+      "slot": "HARD",
+      "ref": "7.2(k)",
+      "chars": 9621,
+      "seq": {
+        "sourceChars": 9621,
+        "batchesPerPass": 2,
+        "inventoryCalls": 4,
+        "maxCompileTurns": 12,
+        "maxSequentialCalls": 16,
+        "secondsPerCallAt480s": 30
+      },
+      "shard": {
+        "sharded": false,
+        "reason": "below targetPrimaryChars 12000 — handled MONOLITHICALLY as one conversation"
+      }
+    }
+  ],
+  "structuralMap72k": [
+    {
+      "ref": "7.2(k)",
+      "chars": 776,
+      "sourceChars": 776,
+      "batchesPerPass": 1,
+      "inventoryCalls": 2,
+      "maxCompileTurns": 12,
+      "maxSequentialCalls": 14,
+      "secondsPerCallAt480s": 34.3
+    },
+    {
+      "ref": "7.2(k)",
+      "chars": 9621,
+      "sourceChars": 9621,
+      "batchesPerPass": 2,
+      "inventoryCalls": 4,
+      "maxCompileTurns": 12,
+      "maxSequentialCalls": 16,
+      "secondsPerCallAt480s": 30
+    },
+    {
+      "ref": "7.2(k)(i)",
+      "chars": 8899,
+      "sourceChars": 8899,
+      "batchesPerPass": 2,
+      "inventoryCalls": 4,
+      "maxCompileTurns": 12,
+      "maxSequentialCalls": 16,
+      "secondsPerCallAt480s": 30
+    },
+    {
+      "ref": "7.2(k)(ii)",
+      "chars": 9300,
+      "sourceChars": 9300,
+      "batchesPerPass": 2,
+      "inventoryCalls": 4,
+      "maxCompileTurns": 12,
+      "maxSequentialCalls": 16,
+      "secondsPerCallAt480s": 30
+    }
+  ],
+  "overlap": {
+    "parentChars": 776,
+    "childCount": 2,
+    "childChars": 18199
+  }
+}

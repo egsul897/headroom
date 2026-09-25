@@ -155,7 +155,7 @@ describe("§29 / §43 no persistence and no ingestion", () => {
       "../../ir/types", "../capacity/graph", "../capacity/reclassification", "../capacity/state",
       "../capacity/types", "../capacity/version", "../decimal", "../evaluate-expression",
       "../input/identity", "../input/manifest", "../input/types", "../input/version", "../types",
-      "../units", "../values", "../version",
+      "../units", "../values", "../verification-gate", "../version",
     ]);
   });
 

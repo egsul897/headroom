@@ -1,0 +1,4064 @@
+[
+  {
+    "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+    "ref": "7.1",
+    "operativeChars": 3275,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480007,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "7a1cadd82879bd57fd631479800091e99b8eeb9e3d3f8b0a43e8bb33c8e2536f",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:a26970121ceb558846ff8d1c.json",
+    "committedUsd": 0.019847
+  },
+  {
+    "discoveryId": "discovery-candidate:8fe38049fe62ea9e9e741511",
+    "ref": "7.1(a)",
+    "operativeChars": 712,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "82a1b6692f3a7e65285fdcfbe628bd053e49195d0fc21ce27845787a8f287246",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:8fe38049fe62ea9e9e741511.json",
+    "committedUsd": 0.03927
+  },
+  {
+    "discoveryId": "discovery-candidate:cf15af8f5fb1f77bd861a2ac",
+    "ref": "7.1(b)",
+    "operativeChars": 1886,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "a5e734e328db61b24b2960f7f755536e95aaafa695ebc9320ff8e817e944dbce",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:cf15af8f5fb1f77bd861a2ac.json",
+    "committedUsd": 0.058693
+  },
+  {
+    "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+    "ref": "7.1(c)",
+    "operativeChars": 234,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 272552,
+      "inputTokens": 2886,
+      "outputTokens": 8131,
+      "costUsd": 0.00248924,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4515,
+          "outputTokens": 17149,
+          "costUsd": 0.00504569
+        }
+      ],
+      "costUsd": 0.00504569,
+      "costStatus": "EXACT",
+      "wallClockMs": 194727
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "df37f789bc9695918d4fb616d8d0b1e59e349f82b3301ec90dfac8e83553a1c4",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:5f83b15ed6cd0ea8b06289a0.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:5f83b15ed6cd0ea8b06289a0.json",
+    "committedUsd": 0.066228
+  },
+  {
+    "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+    "ref": "7.1(d)",
+    "operativeChars": 399,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "7f3ec6469aeb9aba84f63662126c353726d989e9bf5e81badd94bb3552c33ecf",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:1b08da2e952127a1caebe77d.json",
+    "committedUsd": 0.085651
+  },
+  {
+    "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+    "ref": "7.10",
+    "operativeChars": 1995,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480005,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "bf9c9f802b8725fc574589a2b91e348db29147cb49c6fdbee06ecebce9012252",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:176ac085bab5c6de92914f92.json",
+    "committedUsd": 0.105074
+  },
+  {
+    "discoveryId": "discovery-candidate:41257e7574b41dd1089b396e",
+    "ref": "7.10(a)",
+    "operativeChars": 54,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "a867537f54ed9dd9959ae455abdf748c9e4328ad6f947d44db6dc02c0e2601c9",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:41257e7574b41dd1089b396e.json",
+    "committedUsd": 0.124497
+  },
+  {
+    "discoveryId": "discovery-candidate:cac9b2bceb2e7314970a57f1",
+    "ref": "7.10(b)",
+    "operativeChars": 1493,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6d7db38f661b9e9687ea79e1fb3f4dca822d47e14e512e2c719dbc197799e4be",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:cac9b2bceb2e7314970a57f1.json",
+    "committedUsd": 0.14392
+  },
+  {
+    "discoveryId": "discovery-candidate:766fe1bf868f87b1a702575c",
+    "ref": "7.11",
+    "operativeChars": 696,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 429454,
+      "inputTokens": 19359,
+      "outputTokens": 17338,
+      "costUsd": 0.007024549999999999,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 3,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 6152,
+          "outputTokens": 17330,
+          "costUsd": 0.00530556
+        }
+      ],
+      "costUsd": 0.00530556,
+      "costStatus": "EXACT",
+      "wallClockMs": 198702
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "a80c03a04845c1510e9dd34c5c1de7f6cdf9d701e9f2c67748535c214f65d5e6",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:766fe1bf868f87b1a702575c.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:766fe1bf868f87b1a702575c.json",
+    "committedUsd": 0.15625
+  },
+  {
+    "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+    "ref": "7.13",
+    "operativeChars": 1212,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "d4da854477563a4267b0ae715ccf5efcd3d0a76fbe146a4f417ce3bfba43719d",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:6c3daaff31337b2767a15b68.json",
+    "committedUsd": 0.175673
+  },
+  {
+    "discoveryId": "discovery-candidate:8cc6d36a3898b45e63d7a0cc",
+    "ref": "7.13(a)",
+    "operativeChars": 731,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "283df52b7659832fca6f2d66f4413bba08d0b0bdd4e30a15593941bbce9f01ac",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:8cc6d36a3898b45e63d7a0cc.json",
+    "committedUsd": 0.195096
+  },
+  {
+    "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+    "ref": "7.14",
+    "operativeChars": 1106,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6ce4b7c560902089bd1a3eb77d60ad29aa7a6b84e86f3cfd3bd0ccaf7937b4c0",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:6d475ada38fa539312598179.json",
+    "committedUsd": 0.214519
+  },
+  {
+    "discoveryId": "discovery-candidate:53e4ea586b2732863f2d4c10",
+    "ref": "7.14(a)",
+    "operativeChars": 908,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6bec5011fe9b50b7f3ed08497cea29ec7d178d268a2d2cf16fb85146b40a27d4",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:53e4ea586b2732863f2d4c10.json",
+    "committedUsd": 0.233942
+  },
+  {
+    "discoveryId": "discovery-candidate:3985f29e81fa30e1cfec25a0",
+    "ref": "7.15",
+    "operativeChars": 281,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "wallClockMs": 374874,
+      "inputTokens": 17456,
+      "outputTokens": 15874,
+      "costUsd": 0.006396519999999999,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5778,
+          "outputTokens": 28096,
+          "costUsd": 0.0080561
+        }
+      ],
+      "costUsd": 0.0080561,
+      "costStatus": "EXACT",
+      "wallClockMs": 301709
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "239416e5b413ea2c3d3582a321fdbf03bbb8ba7d95d6704bb83885c4aefc1a5c",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:3985f29e81fa30e1cfec25a0.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:3985f29e81fa30e1cfec25a0.json",
+    "committedUsd": 0.248395
+  },
+  {
+    "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+    "ref": "7.16",
+    "operativeChars": 1144,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "53797381b4f787a4f795ff899183c80c650a43801db8c2892d0ff9e1fb4bcab9",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:71cd58e50f8b3598cb7f1ffb.json",
+    "committedUsd": 0.267818
+  },
+  {
+    "discoveryId": "discovery-candidate:f0466a27cbf457478a3eac0e",
+    "ref": "7.16(a)",
+    "operativeChars": 787,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 390151,
+      "inputTokens": 19907,
+      "outputTokens": 19967,
+      "costUsd": 0.007779330000000001,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 3,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4508,
+          "outputTokens": 23184,
+          "costUsd": 0.00661388
+        }
+      ],
+      "costUsd": 0.00661388,
+      "costStatus": "EXACT",
+      "wallClockMs": 251026
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [
+        "VERIFICATION_WITHOUT_IR"
+      ],
+      "packageHash": "c6f05d6de07e1f2838608927dd966bd1f92d22f09b39f93e7d0e13226d696b38",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:f0466a27cbf457478a3eac0e.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:f0466a27cbf457478a3eac0e.json",
+    "committedUsd": 0.282211
+  },
+  {
+    "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+    "ref": "7.17",
+    "operativeChars": 795,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6bf5e4a6c19ce138c9f272387643b076f4ca709f03805a783535fb92593079ad",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:d375c748c3fbadc6014d5f26.json",
+    "committedUsd": 0.301634
+  },
+  {
+    "discoveryId": "discovery-candidate:c84bd941081822735ab8bf70",
+    "ref": "7.17(a)",
+    "operativeChars": 106,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 221911,
+      "inputTokens": 11760,
+      "outputTokens": 14197,
+      "costUsd": 0.00522002,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "semanticReviewInvoked": true,
+      "findings": 1,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 2159,
+          "outputTokens": 14577,
+          "costUsd": 0.00407069
+        }
+      ],
+      "costUsd": 0.00407069,
+      "costStatus": "EXACT",
+      "wallClockMs": 172844
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "51112afc28eed37cee3be1baec3c046d5e38fac1fbeacc21c46051ac0fd94856",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:c84bd941081822735ab8bf70.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:c84bd941081822735ab8bf70.json",
+    "committedUsd": 0.310925
+  },
+  {
+    "discoveryId": "discovery-candidate:e52848d1db50133b0ae6b258",
+    "ref": "7.17(b)(i)",
+    "operativeChars": 611,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "7a57d4bdb002a2570cd8bd943f6fea8474d690f40348f355ea00564c76a479f0",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:e52848d1db50133b0ae6b258.json",
+    "committedUsd": 0.330348
+  },
+  {
+    "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+    "ref": "7.2",
+    "operativeChars": 8843,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480004,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "aa9eec50c2ccae3206cbd8c47f64ca87813869b3692e1236735ddbcec5337622",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:4cd22c1476a7c5046da3cc41.json",
+    "committedUsd": 0.349771
+  },
+  {
+    "discoveryId": "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+    "ref": "7.2(a)",
+    "operativeChars": 66,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 273131,
+      "inputTokens": 23887,
+      "outputTokens": 19185,
+      "costUsd": 0.008093409999999999,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4515,
+          "outputTokens": 17462,
+          "costUsd": 0.00512707
+        }
+      ],
+      "costUsd": 0.00512707,
+      "costStatus": "EXACT",
+      "wallClockMs": 194894
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "d3ca273e5a5460f15d4b8e3371c9f6c5fe5ded451c00cca437dd7285b0a48969",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:4f932341d5cd33c9ee0c3abd.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:4f932341d5cd33c9ee0c3abd.json",
+    "committedUsd": 0.362991
+  },
+  {
+    "discoveryId": "discovery-candidate:4bfbc3dbea17aec6bb21a58a",
+    "ref": "7.2(b)",
+    "operativeChars": 138,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 298655,
+      "inputTokens": 21380,
+      "outputTokens": 19936,
+      "costUsd": 0.00796276,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 8585,
+          "outputTokens": 26584,
+          "costUsd": 0.00802789
+        }
+      ],
+      "costUsd": 0.00802789,
+      "costStatus": "EXACT",
+      "wallClockMs": 276988
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "d07a3459e10fb2676d97bd58127a67f6f91284f2d993e70d993cc3c73767c9e3",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:4bfbc3dbea17aec6bb21a58a.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:4bfbc3dbea17aec6bb21a58a.json",
+    "committedUsd": 0.378982
+  },
+  {
+    "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "ref": "7.2(c)",
+    "operativeChars": 529,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "1ca43d0958418c87dc072f25758082dd8939b322fc73758711ff8f23995be962",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:7a3f36589dacd05c41331a80.json",
+    "committedUsd": 0.398405
+  },
+  {
+    "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+    "ref": "7.2(d)",
+    "operativeChars": 250,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 347533,
+      "inputTokens": 18064,
+      "outputTokens": 18978,
+      "costUsd": 0.0072826,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 3,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7258,
+          "outputTokens": 16588,
+          "costUsd": 0.0052564199999999995
+        }
+      ],
+      "costUsd": 0.0052564199999999995,
+      "costStatus": "EXACT",
+      "wallClockMs": 183431
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 3,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "abeba2872ec43e4db81ff402963b4078c59de61de55d57a859de7343cd565655",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:19f36eb8514494897cd4a5b6.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:19f36eb8514494897cd4a5b6.json",
+    "committedUsd": 0.410944
+  },
+  {
+    "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+    "ref": "7.2(e)",
+    "operativeChars": 200,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 274768,
+      "inputTokens": 20266,
+      "outputTokens": 19825,
+      "costUsd": 0.00778908,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5004,
+          "outputTokens": 16859,
+          "costUsd": 0.00503386
+        }
+      ],
+      "costUsd": 0.00503386,
+      "costStatus": "EXACT",
+      "wallClockMs": 166616
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "1d973cd76e5a123be2a306974ab804cf09f861c4ed6c72da002c5ae329cd91c8",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:31223fa50581f12fb594ec0d.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:31223fa50581f12fb594ec0d.json",
+    "committedUsd": 0.423767
+  },
+  {
+    "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+    "ref": "7.2(f)",
+    "operativeChars": 149,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "de2a63ed112598c1f6916f5d57211cf911d4cf97e18b39ad9e466acbd3c4d96c",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:1084b12277d101d1e3928d59.json",
+    "committedUsd": 0.44319
+  },
+  {
+    "discoveryId": "discovery-candidate:7b3977f0fa58ecd5c864b1fc",
+    "ref": "7.2(g)",
+    "operativeChars": 312,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 319031,
+      "inputTokens": 18401,
+      "outputTokens": 10982,
+      "costUsd": 0.005247450000000001,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7639,
+          "outputTokens": 16247,
+          "costUsd": 0.005217289999999999
+        }
+      ],
+      "costUsd": 0.005217289999999999,
+      "costStatus": "EXACT",
+      "wallClockMs": 185237
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "19adb6ebf49c092cd5f71753e574a3eacfccc5efee3ff793ed2caf8d7516e43b",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:7b3977f0fa58ecd5c864b1fc.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:7b3977f0fa58ecd5c864b1fc.json",
+    "committedUsd": 0.453655
+  },
+  {
+    "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+    "ref": "7.2(h)",
+    "operativeChars": 467,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 365428,
+      "inputTokens": 27788,
+      "outputTokens": 21517,
+      "costUsd": 0.00920686,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 3,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 9733,
+          "outputTokens": 20453,
+          "costUsd": 0.00658307
+        }
+      ],
+      "costUsd": 0.00658307,
+      "costStatus": "EXACT",
+      "wallClockMs": 208893
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 6,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "4a22688d395d7ecfd9c67b5cbc41d4d15d599c71ecc396f1059cbbbabaf3661b",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:365e2c75cf8681ecfa480ad2.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:365e2c75cf8681ecfa480ad2.json",
+    "committedUsd": 0.469445
+  },
+  {
+    "discoveryId": "discovery-candidate:7feb9e228591558f958bb0d1",
+    "ref": "7.2(i)",
+    "operativeChars": 319,
+    "compile": {
+      "outcome": "OTHER_EXECUTION_FAILURE",
+      "status": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "wallClockMs": 383887,
+      "inputTokens": 8477,
+      "outputTokens": 11340,
+      "costUsd": 0.00405041,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "059b918663d96e02373aa8d48daf2cd0e5967221d1b9a3bb3fed0d383de25ce9",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:7feb9e228591558f958bb0d1.json",
+    "committedUsd": 0.473495
+  },
+  {
+    "discoveryId": "discovery-candidate:06a4e449333717a1dc8bbc58",
+    "ref": "7.2(j)",
+    "operativeChars": 191,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 377898,
+      "inputTokens": 19084,
+      "outputTokens": 24098,
+      "costUsd": 0.008746400000000001,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 5,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5316,
+          "outputTokens": 12132,
+          "costUsd": 0.0038453999999999997
+        }
+      ],
+      "costUsd": 0.0038453999999999997,
+      "costStatus": "EXACT",
+      "wallClockMs": 136053
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "31933f86b24b1832b986ff9628123f903bf08917de9dd71c27e70cd894413b30",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:06a4e449333717a1dc8bbc58.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:06a4e449333717a1dc8bbc58.json",
+    "committedUsd": 0.486087
+  },
+  {
+    "discoveryId": "discovery-candidate:28d7bafd7a1fedde253333ef",
+    "ref": "7.2(k)",
+    "operativeChars": 776,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "8fad161ae6c9956efb1c4261c99170c7a09fe327d8358bb7cc1f76492547ca07",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:28d7bafd7a1fedde253333ef.json",
+    "committedUsd": 0.50551
+  },
+  {
+    "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+    "ref": "7.2(k)(i)",
+    "operativeChars": 54,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 159905,
+      "inputTokens": 14938,
+      "outputTokens": 13500,
+      "costUsd": 0.005451940000000001,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4024,
+          "outputTokens": 7992,
+          "costUsd": 0.0026010399999999998
+        }
+      ],
+      "costUsd": 0.0026010399999999998,
+      "costStatus": "EXACT",
+      "wallClockMs": 88803
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "947eaeed38bd7ee9464c5bfbfac2a29ccf599ba69c4a07ae33711b4e2bfc87f3",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:abc8af03ac51f922f06ded82.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:abc8af03ac51f922f06ded82.json",
+    "committedUsd": 0.513563
+  },
+  {
+    "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+    "ref": "7.2(k)(ii)",
+    "operativeChars": 455,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "3af8fc4c07db645a92369896163c995097e14709bae51b1078c3175958502fad",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:42316093889582e0874f69a6.json",
+    "committedUsd": 0.532986
+  },
+  {
+    "discoveryId": "discovery-candidate:0cdfa0a5a2266bd5aec20849",
+    "ref": "7.2(l)(i)",
+    "operativeChars": 649,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480005,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "279a38907501e249f3e0a32f3a1c7b3fc8fb60efc57127537367f953596ccdcf",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:0cdfa0a5a2266bd5aec20849.json",
+    "committedUsd": 0.552409
+  },
+  {
+    "discoveryId": "discovery-candidate:2fa8e7f8da38b86c6b75629d",
+    "ref": "7.2(l)(ii)",
+    "operativeChars": 293,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "41eb6871715380ab4cdf7cc3f54d3b6f9b4f9d5ebdb48b3b58d7eedac6cc3d62",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:2fa8e7f8da38b86c6b75629d.json",
+    "committedUsd": 0.571832
+  },
+  {
+    "discoveryId": "discovery-candidate:3d233f1364657aeffc32c4a7",
+    "ref": "7.2(m)",
+    "operativeChars": 293,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 338471,
+      "inputTokens": 17197,
+      "outputTokens": 13026,
+      "costUsd": 0.00562237,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 9882,
+          "outputTokens": 4876,
+          "costUsd": 0.0025524199999999997
+        }
+      ],
+      "costUsd": 0.0025524199999999997,
+      "costStatus": "EXACT",
+      "wallClockMs": 58918
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "dc210991999701dc407ac4cbcadf3be87dc2805846d94bcacf9814d74e532595",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:3d233f1364657aeffc32c4a7.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:3d233f1364657aeffc32c4a7.json",
+    "committedUsd": 0.580007
+  },
+  {
+    "discoveryId": "discovery-candidate:6da1a256e226a50878be09d8",
+    "ref": "7.2(n)(i)",
+    "operativeChars": 497,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480001,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "f13e00818990327f6b29286f3e8659d2f341e34e89b12a776de6e16249fe2ef9",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:6da1a256e226a50878be09d8.json",
+    "committedUsd": 0.59943
+  },
+  {
+    "discoveryId": "discovery-candidate:63cca6f524f3c06639a35a7b",
+    "ref": "7.2(n)(ii)",
+    "operativeChars": 375,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "fdee2265284cfc212f3460b89324e843531db97ee684cd9e97b2a4c38dd35374",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:63cca6f524f3c06639a35a7b.json",
+    "committedUsd": 0.618853
+  },
+  {
+    "discoveryId": "discovery-candidate:4f89c3b081ac7eb79d270167",
+    "ref": "7.2(o)",
+    "operativeChars": 252,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 214345,
+      "inputTokens": 14905,
+      "outputTokens": 11346,
+      "costUsd": 0.0048876100000000006,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 1,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7979,
+          "outputTokens": 26160,
+          "costUsd": 0.00783887
+        }
+      ],
+      "costUsd": 0.00783887,
+      "costStatus": "EXACT",
+      "wallClockMs": 318734
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "08693c47be6bd4d4c211f89f514dbe0a2ae86ba7b4aaf7617c033fdfb90b68c1",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:4f89c3b081ac7eb79d270167.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:4f89c3b081ac7eb79d270167.json",
+    "committedUsd": 0.631579
+  },
+  {
+    "discoveryId": "discovery-candidate:cdccb3650edb9287f09fb2a9",
+    "ref": "7.2(p)(i)",
+    "operativeChars": 634,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 476565,
+      "inputTokens": 32043,
+      "outputTokens": 34882,
+      "costUsd": 0.01323491,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 5,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 12364,
+          "outputTokens": 24648,
+          "costUsd": 0.0080158
+        }
+      ],
+      "costUsd": 0.0080158,
+      "costStatus": "EXACT",
+      "wallClockMs": 292764
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 12,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "c671cbe7f74729213c393ef169cb641a9190a671e868631699855811506e1969",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:cdccb3650edb9287f09fb2a9.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:cdccb3650edb9287f09fb2a9.json",
+    "committedUsd": 0.65283
+  },
+  {
+    "discoveryId": "discovery-candidate:4db3011a2619a9dd89a19330",
+    "ref": "7.2(r)",
+    "operativeChars": 96,
+    "compile": {
+      "outcome": "OTHER_EXECUTION_FAILURE",
+      "status": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "wallClockMs": 335550,
+      "inputTokens": 22746,
+      "outputTokens": 19322,
+      "costUsd": 0.0079807,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "ba9dd12e6a21038e5e79aba20792add96b35c31eeee7f88f0e512d0c8ea70185",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:4db3011a2619a9dd89a19330.json",
+    "committedUsd": 0.660811
+  },
+  {
+    "discoveryId": "discovery-candidate:468b10c82bc07efa732354ac",
+    "ref": "7.2(s)",
+    "operativeChars": 2222,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480005,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "924ae6d167d179a8b4b9730f4c222c93aaf7e6786f2a4ec8824f3c45a58c24e5",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:468b10c82bc07efa732354ac.json",
+    "committedUsd": 0.680234
+  },
+  {
+    "discoveryId": "discovery-candidate:5b0cf887a4cf4a3b5caa1c81",
+    "ref": "7.2(s)(i)",
+    "operativeChars": 2068,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480005,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "13fd751f20055da19607e772d2639ac98a77840a04a93408a019f95364883f70",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:5b0cf887a4cf4a3b5caa1c81.json",
+    "committedUsd": 0.699657
+  },
+  {
+    "discoveryId": "discovery-candidate:08919c086272421431dd7aed",
+    "ref": "7.3",
+    "operativeChars": 7053,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "2fb2900f4c7e7ec83748235264faaa6f7cd96256b69107049183e4057d578fb7",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:08919c086272421431dd7aed.json",
+    "committedUsd": 0.71908
+  },
+  {
+    "discoveryId": "discovery-candidate:7eb2dc07250e5d73988ceed4",
+    "ref": "7.3(a)",
+    "operativeChars": 300,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 450333,
+      "inputTokens": 33304,
+      "outputTokens": 32049,
+      "costUsd": 0.01266226,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7314,
+          "outputTokens": 19603,
+          "costUsd": 0.0060476
+        }
+      ],
+      "costUsd": 0.0060476,
+      "costStatus": "EXACT",
+      "wallClockMs": 238966
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "15685d1877193ea219b974a174f001786caacce1b349a3b14b4d1714a2aa0c53",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:7eb2dc07250e5d73988ceed4.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:7eb2dc07250e5d73988ceed4.json",
+    "committedUsd": 0.73779
+  },
+  {
+    "discoveryId": "discovery-candidate:aa625ee78b68bd09e0932fea",
+    "ref": "7.3(b)",
+    "operativeChars": 391,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "fe70de2d429169d64856131536a202e4c9569d55c08793d71ca2124d31198976",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:aa625ee78b68bd09e0932fea.json",
+    "committedUsd": 0.757213
+  },
+  {
+    "discoveryId": "discovery-candidate:db29c9b94a34be2eb9d38885",
+    "ref": "7.3(c)",
+    "operativeChars": 128,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 195000,
+      "inputTokens": 3938,
+      "outputTokens": 12125,
+      "costUsd": 0.0036644399999999997,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 3335,
+          "outputTokens": 3330,
+          "costUsd": 0.00129935
+        }
+      ],
+      "costUsd": 0.00129935,
+      "costStatus": "EXACT",
+      "wallClockMs": 46492
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "c5270597e48d56ea627a79e7243866b9a0f82eaff65dca3443fa7c4608ac55ed",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:db29c9b94a34be2eb9d38885.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:db29c9b94a34be2eb9d38885.json",
+    "committedUsd": 0.762177
+  },
+  {
+    "discoveryId": "discovery-candidate:3eb1e00eb8df475c0d2697c2",
+    "ref": "7.3(d)",
+    "operativeChars": 255,
+    "compile": {
+      "outcome": "OTHER_EXECUTION_FAILURE",
+      "status": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "wallClockMs": 384801,
+      "inputTokens": 4353,
+      "outputTokens": 18515,
+      "costUsd": 0.005379790000000001,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "88656ee550fb5c5c5fffd4c1b7f47d58bf55dba9dc4b3e343aa8d5e74b039204",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:3eb1e00eb8df475c0d2697c2.json",
+    "committedUsd": 0.767556
+  },
+  {
+    "discoveryId": "discovery-candidate:c615523fa38fd789d31e9657",
+    "ref": "7.3(e)",
+    "operativeChars": 385,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 291515,
+      "inputTokens": 21670,
+      "outputTokens": 19778,
+      "costUsd": 0.00795938,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5463,
+          "outputTokens": 29955,
+          "costUsd": 0.00849849
+        }
+      ],
+      "costUsd": 0.00849849,
+      "costStatus": "EXACT",
+      "wallClockMs": 362093
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 3,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "bc6fbba0c23db1a8e6525a88b2604949b9e2c9c4b446d7524df336c66afdabcd",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:c615523fa38fd789d31e9657.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:c615523fa38fd789d31e9657.json",
+    "committedUsd": 0.784014
+  },
+  {
+    "discoveryId": "discovery-candidate:0a2f4f23dae2b83c3e6c4ed0",
+    "ref": "7.3(f)",
+    "operativeChars": 329,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "ba9af0405b99b0f282deeac6ad0d0d7d3920df1f1a774e3d594df4a35a96a335",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:0a2f4f23dae2b83c3e6c4ed0.json",
+    "committedUsd": 0.803437
+  },
+  {
+    "discoveryId": "discovery-candidate:082c80836268c7277cc39c18",
+    "ref": "7.3(g)",
+    "operativeChars": 958,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "5b64554d34c3c34311abd2f771f1d8cf3a33f45f0d544faa73d6db2dc3208236",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:082c80836268c7277cc39c18.json",
+    "committedUsd": 0.82286
+  },
+  {
+    "discoveryId": "discovery-candidate:4fc1d579b699d89ba0428259",
+    "ref": "7.3(g)(i)",
+    "operativeChars": 111,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 323161,
+      "inputTokens": 26039,
+      "outputTokens": 28474,
+      "costUsd": 0.01078831,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 6,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7492,
+          "outputTokens": 21678,
+          "costUsd": 0.00661024
+        }
+      ],
+      "costUsd": 0.00661024,
+      "costStatus": "EXACT",
+      "wallClockMs": 267748
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "1935b0da8511262864e0d440bd71ea2b624837c6288ee3e7783e84109e552d52",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:4fc1d579b699d89ba0428259.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:4fc1d579b699d89ba0428259.json",
+    "committedUsd": 0.840259
+  },
+  {
+    "discoveryId": "discovery-candidate:f99359a26388274479373cdb",
+    "ref": "7.3(g)(ii)",
+    "operativeChars": 642,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "366ef29c39489e3bd106509e7c6055dd7178815ff9bb1acc9f33574a13eb68d1",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:f99359a26388274479373cdb.json",
+    "committedUsd": 0.859682
+  },
+  {
+    "discoveryId": "discovery-candidate:2983e5f23dbd949b7b58db01",
+    "ref": "7.3(g)(ii)(A)",
+    "operativeChars": 150,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 318035,
+      "inputTokens": 4480,
+      "outputTokens": 15378,
+      "costUsd": 0.00458068,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "condition_suspicion_classification",
+          "inputTokens": 3771,
+          "outputTokens": 3549,
+          "costUsd": 0.00141297
+        },
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4382,
+          "outputTokens": 16925,
+          "costUsd": 0.0049701599999999995
+        }
+      ],
+      "costUsd": 0.00638313,
+      "costStatus": "EXACT",
+      "wallClockMs": 238352
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "2b47babf7460b5eea2ba03406f615a7d3587720a3d4322555a33e8baaa3bc656",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:2983e5f23dbd949b7b58db01.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:2983e5f23dbd949b7b58db01.json",
+    "committedUsd": 0.870646
+  },
+  {
+    "discoveryId": "discovery-candidate:038eb0cd010fc21f941c2555",
+    "ref": "7.3(g)(ii)(B)",
+    "operativeChars": 261,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "PARTIAL",
+      "failureReasons": [
+        "IR_VALIDATION_FAILURE",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 343482,
+      "inputTokens": 6849,
+      "outputTokens": 19788,
+      "costUsd": 0.00603525,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 6295,
+          "outputTokens": 16671,
+          "costUsd": 0.00515281
+        }
+      ],
+      "costUsd": 0.00515281,
+      "costStatus": "EXACT",
+      "wallClockMs": 210645
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "d4ba43666f009b1ec64fb1d3b768cc960c539859925d2e9f25773903f938136d",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:038eb0cd010fc21f941c2555.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:038eb0cd010fc21f941c2555.json",
+    "committedUsd": 0.881834
+  },
+  {
+    "discoveryId": "discovery-candidate:058231fd0222f19b20b9d181",
+    "ref": "7.3(h)",
+    "operativeChars": 54,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 235460,
+      "inputTokens": 4852,
+      "outputTokens": 14784,
+      "costUsd": 0.0044746,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4764,
+          "outputTokens": 18723,
+          "costUsd": 0.0054873000000000005
+        }
+      ],
+      "costUsd": 0.0054873000000000005,
+      "costStatus": "EXACT",
+      "wallClockMs": 235620
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 3,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "5556101387e1f352ff5c7cd34ce2b69d9e84255cfe5f2d60d4332a6226aca619",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:058231fd0222f19b20b9d181.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:058231fd0222f19b20b9d181.json",
+    "committedUsd": 0.891796
+  },
+  {
+    "discoveryId": "discovery-candidate:4c5fdf9ee2015e2d920b416e",
+    "ref": "7.3(i)",
+    "operativeChars": 193,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 446398,
+      "inputTokens": 25664,
+      "outputTokens": 23227,
+      "costUsd": 0.00937534,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5542,
+          "outputTokens": 22970,
+          "costUsd": 0.00669266
+        }
+      ],
+      "costUsd": 0.00669266,
+      "costStatus": "EXACT",
+      "wallClockMs": 267706
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 3,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "b83fcc558fb848146270d4e51cfc1e0d4d54f95eb291f7eedc10ace3635a5aa3",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:4c5fdf9ee2015e2d920b416e.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:4c5fdf9ee2015e2d920b416e.json",
+    "committedUsd": 0.907864
+  },
+  {
+    "discoveryId": "discovery-candidate:e48d5bf75208a61f8260e190",
+    "ref": "7.3(j)",
+    "operativeChars": 216,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 228918,
+      "inputTokens": 14721,
+      "outputTokens": 3242,
+      "costUsd": 0.0027566500000000002,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "condition_suspicion_classification",
+          "inputTokens": 3681,
+          "outputTokens": 5692,
+          "costUsd": 0.00195845
+        },
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 6931,
+          "outputTokens": 4493,
+          "costUsd": 0.00206921
+        }
+      ],
+      "costUsd": 0.00402766,
+      "costStatus": "EXACT",
+      "wallClockMs": 90600
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "2efe6f97808985f1ce86b3061a32f352946317e2fd0ef578922c6e12e1b0e073",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:e48d5bf75208a61f8260e190.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:e48d5bf75208a61f8260e190.json",
+    "committedUsd": 0.914648
+  },
+  {
+    "discoveryId": "discovery-candidate:c059bb56a36b1af78f5bbe23",
+    "ref": "7.3(k)",
+    "operativeChars": 251,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 393306,
+      "inputTokens": 16172,
+      "outputTokens": 14004,
+      "costUsd": 0.0057434,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_FAILED",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": "ESTIMATED_FROM_STREAM",
+      "wallClockMs": 213037
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "2b0f18a977e7b5512d16a043dec29943df50656b3f1130d327a60f5cc020bab2",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:c059bb56a36b1af78f5bbe23.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:c059bb56a36b1af78f5bbe23.json",
+    "committedUsd": 0.920391
+  },
+  {
+    "discoveryId": "discovery-candidate:92a453a94fb79b96795a0081",
+    "ref": "7.3(l)",
+    "operativeChars": 1271,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6bd2bb6eb52c58a3b1fc341758f10bbea6611e4c91667c97a93c861c716c068d",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:92a453a94fb79b96795a0081.json",
+    "committedUsd": 0.939814
+  },
+  {
+    "discoveryId": "discovery-candidate:87c0370dad1da9b0c9941d1c",
+    "ref": "7.3(l)(i)",
+    "operativeChars": 932,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480004,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6aca214d99e4f2fdeeffd144725a21386518fc51f0596b7c0574b94fe9c94e06",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:87c0370dad1da9b0c9941d1c.json",
+    "committedUsd": 0.959237
+  },
+  {
+    "discoveryId": "discovery-candidate:b5bb07b092f9863985f89812",
+    "ref": "7.3(m)",
+    "operativeChars": 458,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "4c1863d7e7fef85a5ea11edd3855b28b2cce254ae50de5f54540dc66e4bd9c2c",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:b5bb07b092f9863985f89812.json",
+    "committedUsd": 0.978661
+  },
+  {
+    "discoveryId": "discovery-candidate:ac0b4888228d3f32e7123d6b",
+    "ref": "7.3(m)(i)",
+    "operativeChars": 86,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 355201,
+      "inputTokens": 15488,
+      "outputTokens": 15011,
+      "costUsd": 0.0059163,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 21,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 8882,
+          "outputTokens": 18378,
+          "costUsd": 0.00593294
+        }
+      ],
+      "costUsd": 0.00593294,
+      "costStatus": "EXACT",
+      "wallClockMs": 233170
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "bd142fe4a7875090dcbdeb1ed0c34aec056a794932b6619767bad1429f16733c",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:ac0b4888228d3f32e7123d6b.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:ac0b4888228d3f32e7123d6b.json",
+    "committedUsd": 0.99051
+  },
+  {
+    "discoveryId": "discovery-candidate:416e6e08da5964e403f8d78b",
+    "ref": "7.3(m)(ii)",
+    "operativeChars": 299,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 384008,
+      "inputTokens": 27380,
+      "outputTokens": 26850,
+      "costUsd": 0.0105404,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 6171,
+          "outputTokens": 15622,
+          "costUsd": 0.00486395
+        }
+      ],
+      "costUsd": 0.00486395,
+      "costStatus": "EXACT",
+      "wallClockMs": 163167
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 4,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "c79759d52c7a59d8182542c496af18c910423963fab837566e00a6340df75346",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:416e6e08da5964e403f8d78b.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:416e6e08da5964e403f8d78b.json",
+    "committedUsd": 1.005914
+  },
+  {
+    "discoveryId": "discovery-candidate:998b06bfc970aee50608d465",
+    "ref": "7.3(m)(ii)(A)",
+    "operativeChars": 20,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "PARTIAL",
+      "failureReasons": [
+        "IR_VALIDATION_FAILURE",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 197939,
+      "inputTokens": 3539,
+      "outputTokens": 17730,
+      "costUsd": 0.00506987,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 6,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5335,
+          "outputTokens": 23966,
+          "costUsd": 0.006924710000000001
+        }
+      ],
+      "costUsd": 0.006924710000000001,
+      "costStatus": "EXACT",
+      "wallClockMs": 254286
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "974c9138e225dcef824ce26002375e0e20db67717a0a6d6a9b908f7546c43d76",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:998b06bfc970aee50608d465.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:998b06bfc970aee50608d465.json",
+    "committedUsd": 1.017909
+  },
+  {
+    "discoveryId": "discovery-candidate:87b494be0746c3d27aa4d2db",
+    "ref": "7.3(m)(ii)(B)",
+    "operativeChars": 90,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 330873,
+      "inputTokens": 3887,
+      "outputTokens": 29640,
+      "costUsd": 0.008211709999999999,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 11,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7109,
+          "outputTokens": 22257,
+          "costUsd": 0.00671099
+        }
+      ],
+      "costUsd": 0.00671099,
+      "costStatus": "EXACT",
+      "wallClockMs": 260689
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 3,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "ba78d4f0e5a2ce4c11d7ec262208ce57b9574f0fc334f6daa757ba0896009c4e",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:87b494be0746c3d27aa4d2db.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:87b494be0746c3d27aa4d2db.json",
+    "committedUsd": 1.032831
+  },
+  {
+    "discoveryId": "discovery-candidate:6382a89b88aee52433a287a9",
+    "ref": "7.3(n)",
+    "operativeChars": 143,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "3cb1fa318bea23aa1cd1df8e14f6d840c58dc62b4d4f1b54efe1cfca95e260cd",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:6382a89b88aee52433a287a9.json",
+    "committedUsd": 1.052254
+  },
+  {
+    "discoveryId": "discovery-candidate:d18b92bda1f7a6b6b03245bf",
+    "ref": "7.3(o)",
+    "operativeChars": 291,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480004,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "5f294018f6702d528bb3002201a25ef2e70b4692aa42101df8bd05d8cca34d60",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:d18b92bda1f7a6b6b03245bf.json",
+    "committedUsd": 1.071677
+  },
+  {
+    "discoveryId": "discovery-candidate:d743c01b399ff5f9bd439df9",
+    "ref": "7.3(p)",
+    "operativeChars": 1255,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "0c69a12b9d2c8106b05f13fe63b8e0de3c45664895cedc5ae0ae471b642ceb50",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:d743c01b399ff5f9bd439df9.json",
+    "committedUsd": 1.091101
+  },
+  {
+    "discoveryId": "discovery-candidate:01215421a15b014f020e2d41",
+    "ref": "7.4",
+    "operativeChars": 5980,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "ef8c1cf5b75524c8f2a3687ba55f48954c1a09e7a339b1ac332af10ac0d2a4d7",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:01215421a15b014f020e2d41.json",
+    "committedUsd": 1.110524
+  },
+  {
+    "discoveryId": "discovery-candidate:7394f8406279afd41fc8210b",
+    "ref": "7.4(a)(i)",
+    "operativeChars": 375,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "840c919857a5fc9e84cfec6ab63d196f8f255acef42bbbfea6b436136d7d8b02",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:7394f8406279afd41fc8210b.json",
+    "committedUsd": 1.129947
+  },
+  {
+    "discoveryId": "discovery-candidate:ee066977a88258cd6cfcd217",
+    "ref": "7.4(a)(ii)",
+    "operativeChars": 3899,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "80051eb7ae11e5dd6e46fa0afae6121b12ac36267ed96acb633c93608a0b2771",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:ee066977a88258cd6cfcd217.json",
+    "committedUsd": 1.14937
+  },
+  {
+    "discoveryId": "discovery-candidate:3fa3730524870bb58ef593a4",
+    "ref": "7.4(b)(i)",
+    "operativeChars": 248,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "099464bb9544d6b86139cb42c7699f81b81cb23808423b87ae79d210fb6b318a",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:3fa3730524870bb58ef593a4.json",
+    "committedUsd": 1.168793
+  },
+  {
+    "discoveryId": "discovery-candidate:5bc35e5a4b020669b235c00a",
+    "ref": "7.4(b)(ii)",
+    "operativeChars": 301,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 393667,
+      "inputTokens": 21563,
+      "outputTokens": 20060,
+      "costUsd": 0.00801879,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 1,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 8132,
+          "outputTokens": 30359,
+          "costUsd": 0.0089505
+        }
+      ],
+      "costUsd": 0.0089505,
+      "costStatus": "EXACT",
+      "wallClockMs": 337936
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "4057eb02bb04b0e06e3dad000d2e1b170afa058f57ab8bc296a147a7fdbffe2a",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:5bc35e5a4b020669b235c00a.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:5bc35e5a4b020669b235c00a.json",
+    "committedUsd": 1.185762
+  },
+  {
+    "discoveryId": "discovery-candidate:0ccd597ff16ac8d7809b19e5",
+    "ref": "7.4(c)",
+    "operativeChars": 798,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "143dc81b2c851dda4c12bccab3d9a81a242b93f68a3555fc4f985c60527832d7",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:0ccd597ff16ac8d7809b19e5.json",
+    "committedUsd": 1.205185
+  },
+  {
+    "discoveryId": "discovery-candidate:2935113412c51d5268d5b0ca",
+    "ref": "7.4(c)(1)",
+    "operativeChars": 144,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "TRUNCATED_EVIDENCE_USED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 443073,
+      "inputTokens": 28241,
+      "outputTokens": 26761,
+      "costUsd": 0.01062919,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 8056,
+          "outputTokens": 21028,
+          "costUsd": 0.00651456
+        }
+      ],
+      "costUsd": 0.00651456,
+      "costStatus": "EXACT",
+      "wallClockMs": 238240
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 7,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "4111fe784f35c75aa207fbe12b6e7e8452b2bdac630616a470522e0db5cfa774",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:2935113412c51d5268d5b0ca.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:2935113412c51d5268d5b0ca.json",
+    "committedUsd": 1.222329
+  },
+  {
+    "discoveryId": "discovery-candidate:420b56c046442b528b156245",
+    "ref": "7.4(d)",
+    "operativeChars": 44,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "f706e8d773bdf0044d46245a3c9972d7e1bc8ee915c87b4e98a31bc5adcc602b",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:420b56c046442b528b156245.json",
+    "committedUsd": 1.241752
+  },
+  {
+    "discoveryId": "discovery-candidate:192f0f846ef50bc2eb957eb6",
+    "ref": "7.5",
+    "operativeChars": 4658,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6cee80296a1933c77eefca3aca20c51d8d799c13978ff468e93d69d385f1f947",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:192f0f846ef50bc2eb957eb6.json",
+    "committedUsd": 1.261175
+  },
+  {
+    "discoveryId": "discovery-candidate:baca43714b8502cc9c596c23",
+    "ref": "7.5(a)",
+    "operativeChars": 89,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 188940,
+      "inputTokens": 3742,
+      "outputTokens": 13868,
+      "costUsd": 0.00409214,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 3133,
+          "outputTokens": 14801,
+          "costUsd": 0.00425555
+        }
+      ],
+      "costUsd": 0.00425555,
+      "costStatus": "EXACT",
+      "wallClockMs": 170181
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "a36bff5f71c023ea727c93df69142a152f99b04cf83b0a10e3668e77a55a439e",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:baca43714b8502cc9c596c23.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:baca43714b8502cc9c596c23.json",
+    "committedUsd": 1.269523
+  },
+  {
+    "discoveryId": "discovery-candidate:c71e3fc24ba69a95fb59dd41",
+    "ref": "7.5(b)",
+    "operativeChars": 83,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 398147,
+      "inputTokens": 30967,
+      "outputTokens": 28990,
+      "costUsd": 0.01156311,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 1,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5355,
+          "outputTokens": 17900,
+          "costUsd": 0.00535015
+        }
+      ],
+      "costUsd": 0.00535015,
+      "costStatus": "EXACT",
+      "wallClockMs": 218504
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 4,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "bd8455fa790b1c0011b09b80f7596055578ecfc3e3721600e4b76e684611a6f7",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:c71e3fc24ba69a95fb59dd41.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:c71e3fc24ba69a95fb59dd41.json",
+    "committedUsd": 1.286436
+  },
+  {
+    "discoveryId": "discovery-candidate:65062d82436b8dbda43a66be",
+    "ref": "7.5(c)",
+    "operativeChars": 46,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "469628ca99b0502c61ba406387fc87b26d57f50a4ac4e58abd2fee4ccabd4966",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:65062d82436b8dbda43a66be.json",
+    "committedUsd": 1.305859
+  },
+  {
+    "discoveryId": "discovery-candidate:8c32e0a68dc5b7267f9d2152",
+    "ref": "7.5(d)(i)",
+    "operativeChars": 230,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 400864,
+      "inputTokens": 23372,
+      "outputTokens": 18561,
+      "costUsd": 0.00786422,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 5,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 9410,
+          "outputTokens": 17140,
+          "costUsd": 0.0056797
+        }
+      ],
+      "costUsd": 0.0056797,
+      "costStatus": "EXACT",
+      "wallClockMs": 194917
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 3,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "c84ca6d1a41c17ffbcd3804b7197bbdfff15bf3432ddd9063faab1f0f055855c",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:8c32e0a68dc5b7267f9d2152.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:8c32e0a68dc5b7267f9d2152.json",
+    "committedUsd": 1.319403
+  },
+  {
+    "discoveryId": "discovery-candidate:15cd009747aa780609455c48",
+    "ref": "7.5(e)",
+    "operativeChars": 168,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "c5cdb99e24f716886d5d2dc8b01066a4d914ae2010da70b9d8a55938d8119100",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:15cd009747aa780609455c48.json",
+    "committedUsd": 1.338826
+  },
+  {
+    "discoveryId": "discovery-candidate:8507d3f28616a4f0af9f74b0",
+    "ref": "7.5(f)",
+    "operativeChars": 1618,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "1f85eed97b2cb458dce713bd01b9770c9068baf2cf0c2748dd849fd7072610c4",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:8507d3f28616a4f0af9f74b0.json",
+    "committedUsd": 1.358249
+  },
+  {
+    "discoveryId": "discovery-candidate:6be98acecf709257ad512776",
+    "ref": "7.5(f)(i)",
+    "operativeChars": 648,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "aceade809a3888d5a2ee9c47aae4c684d76c1b71183daa3728cb2445e362b07f",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:6be98acecf709257ad512776.json",
+    "committedUsd": 1.377672
+  },
+  {
+    "discoveryId": "discovery-candidate:224e416870eac0d7ae9cafad",
+    "ref": "7.5(f)(ii)",
+    "operativeChars": 844,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480002,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 0.01942304,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "421e857838c61b79a0f94cda1407f955b0574df64f6511c48679c9e96fa3705f",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:224e416870eac0d7ae9cafad.json",
+    "committedUsd": 1.397095
+  },
+  {
+    "discoveryId": "discovery-candidate:8f16a2f1fc23309fec02928d",
+    "ref": "7.5(g)",
+    "operativeChars": 67,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "PARTIAL",
+      "failureReasons": [
+        "IR_VALIDATION_FAILURE",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 159950,
+      "inputTokens": 666860,
+      "outputTokens": 3583,
+      "costUsd": 0.08762338,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4593,
+          "outputTokens": 6996,
+          "costUsd": 0.00241605
+        }
+      ],
+      "costUsd": 0.00241605,
+      "costStatus": "EXACT",
+      "wallClockMs": 19828
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "a3eb91e0fcb0006cd268144fa6f85f059bf405b33545ef091fe64185a488c11c",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:8f16a2f1fc23309fec02928d.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:8f16a2f1fc23309fec02928d.json",
+    "committedUsd": 1.487134
+  },
+  {
+    "discoveryId": "discovery-candidate:184c41389f233b2c2de269a4",
+    "ref": "7.5(h)",
+    "operativeChars": 208,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "PARTIAL",
+      "failureReasons": [
+        "IR_VALIDATION_FAILURE",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 58561,
+      "inputTokens": 667190,
+      "outputTokens": 2996,
+      "costUsd": 0.08751366,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 1,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5571,
+          "outputTokens": 2097,
+          "costUsd": 0.00126945
+        }
+      ],
+      "costUsd": 0.00126945,
+      "costStatus": "EXACT",
+      "wallClockMs": 8271
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "bfd5040bec03060eb4b41c5f14335ed293bb26dc83dc04767ea26d5b70a11a93",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:184c41389f233b2c2de269a4.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:184c41389f233b2c2de269a4.json",
+    "committedUsd": 1.575917
+  },
+  {
+    "discoveryId": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+    "ref": "7.5(i)",
+    "operativeChars": 190,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 29454,
+      "inputTokens": 14267,
+      "outputTokens": 3657,
+      "costUsd": 0.00280553,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7209,
+          "outputTokens": 3234,
+          "costUsd": 0.00177801
+        }
+      ],
+      "costUsd": 0.00177801,
+      "costStatus": "EXACT",
+      "wallClockMs": 10644
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "70b01548ef946716393822c79ca8606c889c01b903a5ea3c6ad3b72616125b61",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:61e09fac7c3a7e72b1962e1a.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:61e09fac7c3a7e72b1962e1a.json",
+    "committedUsd": 1.580501
+  },
+  {
+    "discoveryId": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "ref": "7.5(j)",
+    "operativeChars": 508,
+    "compile": {
+      "outcome": "SCHEMA_FAILURE",
+      "status": "FAILED",
+      "failureReasons": [
+        "MODEL_SCHEMA_FAILURE"
+      ],
+      "wallClockMs": 66802,
+      "inputTokens": 30428,
+      "outputTokens": 7452,
+      "costUsd": 0.00589316,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "3162aefb1a653995533fde30b383d394f1f268eaace8bd7585409dd74eb646d6",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:5aeac47ab31feb23331e4f89.json",
+    "committedUsd": 1.586394
+  },
+  {
+    "discoveryId": "discovery-candidate:7a871f5e26e8a48783882460",
+    "ref": "7.5(k)",
+    "operativeChars": 163,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 78300,
+      "inputTokens": 12258,
+      "outputTokens": 3874,
+      "costUsd": 0.00260078,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5485,
+          "outputTokens": 1973,
+          "costUsd": 0.00122603
+        }
+      ],
+      "costUsd": 0.00122603,
+      "costStatus": "EXACT",
+      "wallClockMs": 7281
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "943309eb38d78ad7f7be9013fffc9568a505d31e179803d8fc3e638a6a047f4c",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:7a871f5e26e8a48783882460.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:7a871f5e26e8a48783882460.json",
+    "committedUsd": 1.590221
+  },
+  {
+    "discoveryId": "discovery-candidate:445f471043ccfc3dd9cfc568",
+    "ref": "7.5(l)",
+    "operativeChars": 170,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 15063,
+      "inputTokens": 11530,
+      "outputTokens": 2778,
+      "costUsd": 0.00222118,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 5119,
+          "outputTokens": 3957,
+          "costUsd": 0.00169429
+        }
+      ],
+      "costUsd": 0.00169429,
+      "costStatus": "EXACT",
+      "wallClockMs": 13749
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "030b4e3d57d8ce4d3b452107591490f7da8ab578da424a4f2001f26f02164cf7",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:445f471043ccfc3dd9cfc568.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:445f471043ccfc3dd9cfc568.json",
+    "committedUsd": 1.594136
+  },
+  {
+    "discoveryId": "discovery-candidate:980d0bd83512327db977a2e8",
+    "ref": "7.5(m)",
+    "operativeChars": 140,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 15640,
+      "inputTokens": 15242,
+      "outputTokens": 2656,
+      "costUsd": 0.0026720199999999998,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "VERIFICATION_INCOMPLETE",
+      "semanticReviewInvoked": true,
+      "findings": 0,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 9820,
+          "outputTokens": 5305,
+          "costUsd": 0.0026559
+        }
+      ],
+      "costUsd": 0.0026559,
+      "costStatus": "EXACT",
+      "wallClockMs": 15400
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "10bdd50ea0e685b2d70eea6b850e239556641d6be3ea7be24a43ceae4b2f8d4f",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:980d0bd83512327db977a2e8.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:980d0bd83512327db977a2e8.json",
+    "committedUsd": 1.599464
+  },
+  {
+    "discoveryId": "discovery-candidate:0578fe547dd42317ce0df107",
+    "ref": "7.5(n)",
+    "operativeChars": 635,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 60939,
+      "inputTokens": 31392,
+      "outputTokens": 6667,
+      "costUsd": 0.00581438,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7840,
+          "outputTokens": 9345,
+          "costUsd": 0.0034489
+        }
+      ],
+      "costUsd": 0.0034489,
+      "costStatus": "EXACT",
+      "wallClockMs": 25214
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "8c30721752657623bc6910ea3496479bb9cef48be8a73b53b483b1fe29b1c019",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:0578fe547dd42317ce0df107.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:0578fe547dd42317ce0df107.json",
+    "committedUsd": 1.608728
+  },
+  {
+    "discoveryId": "discovery-candidate:42423b37324ac426d0f961e2",
+    "ref": "7.6",
+    "operativeChars": 3501,
+    "compile": {
+      "outcome": "SCHEMA_FAILURE",
+      "status": "FAILED",
+      "failureReasons": [
+        "MODEL_SCHEMA_FAILURE"
+      ],
+      "wallClockMs": 115678,
+      "inputTokens": 23704,
+      "outputTokens": 8491,
+      "costUsd": 0.00528918,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "3b45fe895d8e3cddd4cf353fc103fd9d72e8ff7784a3278e2fcf6a7ea964ca72",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:42423b37324ac426d0f961e2.json",
+    "committedUsd": 1.614017
+  },
+  {
+    "discoveryId": "discovery-candidate:8befac8ab345ffa1d1e259ee",
+    "ref": "7.6(a)(i)",
+    "operativeChars": 131,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "TRUNCATED_EVIDENCE_USED",
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 18058,
+      "inputTokens": 12225,
+      "outputTokens": 4182,
+      "costUsd": 0.0026765699999999996,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 4,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4307,
+          "outputTokens": 10846,
+          "costUsd": 0.0033798699999999997
+        }
+      ],
+      "costUsd": 0.0033798699999999997,
+      "costStatus": "EXACT",
+      "wallClockMs": 32429
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "25d903371e77909dd8ee3dd554ac37bc3f9215c5bdcc528d980d0149429b97da",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:8befac8ab345ffa1d1e259ee.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:8befac8ab345ffa1d1e259ee.json",
+    "committedUsd": 1.620073
+  },
+  {
+    "discoveryId": "discovery-candidate:753e3a550c4f83d63a851184",
+    "ref": "7.6(a)(ii)",
+    "operativeChars": 111,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "wallClockMs": 13750,
+      "inputTokens": 14084,
+      "outputTokens": 2291,
+      "costUsd": 0.0024265800000000002,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7020,
+          "outputTokens": 3384,
+          "costUsd": 0.00179244
+        }
+      ],
+      "costUsd": 0.00179244,
+      "costStatus": "EXACT",
+      "wallClockMs": 10431
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "fdcf2da654bce879f955064696f30547848cad50cf1c6a9b6d5beb91660c5ea0",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:753e3a550c4f83d63a851184.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:753e3a550c4f83d63a851184.json",
+    "committedUsd": 1.624292
+  },
+  {
+    "discoveryId": "discovery-candidate:ac354ffa81d6ca806759ba60",
+    "ref": "7.6(b)",
+    "operativeChars": 470,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "PARTIAL",
+      "failureReasons": [
+        "IR_VALIDATION_FAILURE",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 55807,
+      "inputTokens": 11817,
+      "outputTokens": 3121,
+      "costUsd": 0.00234767,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 2,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 4964,
+          "outputTokens": 3254,
+          "costUsd": 0.00149136
+        }
+      ],
+      "costUsd": 0.00149136,
+      "costStatus": "EXACT",
+      "wallClockMs": 12603
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 2,
+      "unitsMissingVerification": 0,
+      "problems": [
+        "VERIFICATION_WITHOUT_IR"
+      ],
+      "packageHash": "e63d5d77efb61cfcc261505b10fae1762d4baebd59aec084d84cea64ac337162",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:ac354ffa81d6ca806759ba60.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:ac354ffa81d6ca806759ba60.json",
+    "committedUsd": 1.628131
+  },
+  {
+    "discoveryId": "discovery-candidate:488409a7f662ed7814693bc7",
+    "ref": "7.6(b)(i)",
+    "operativeChars": 280,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "PARTIAL",
+      "failureReasons": [
+        "IR_VALIDATION_FAILURE",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP"
+      ],
+      "wallClockMs": 250778,
+      "inputTokens": 20325,
+      "outputTokens": 22923,
+      "costUsd": 0.00860223,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 4,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 7471,
+          "outputTokens": 9150,
+          "costUsd": 0.00335023
+        }
+      ],
+      "costUsd": 0.00335023,
+      "costStatus": "EXACT",
+      "wallClockMs": 24645
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 6,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "03a24d39f6d224a2c6422c22bfd043a4ade70abef3d15b3dc6485e6f8aeed41f",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:488409a7f662ed7814693bc7.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:488409a7f662ed7814693bc7.json",
+    "committedUsd": 1.640084
+  },
+  {
+    "discoveryId": "discovery-candidate:959f65d2872a027bcae3ddef",
+    "ref": "7.6(b)(ii)",
+    "operativeChars": 186,
+    "compile": {
+      "outcome": "COMPLETED",
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ],
+      "wallClockMs": 12750,
+      "inputTokens": 11306,
+      "outputTokens": 2046,
+      "costUsd": 0.00200174,
+      "costStatus": "EXACT"
+    },
+    "verify": {
+      "outcome": "COMPLETED",
+      "status": "MATERIAL_DISCREPANCY",
+      "semanticReviewInvoked": true,
+      "findings": 4,
+      "sideCalls": [
+        {
+          "stage": "semantic_verification",
+          "inputTokens": 3955,
+          "outputTokens": 7670,
+          "costUsd": 0.00250835
+        }
+      ],
+      "costUsd": 0.00250835,
+      "costStatus": "EXACT",
+      "wallClockMs": 24282
+    },
+    "package": {
+      "complete": true,
+      "artifactsPersisted": 1,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "ae1aa44ff4dc826f937e5d6008032b8547bb3631b0300cdba9ba08809b09ceff",
+      "file": "/tmp/claude-0/pilot/population-verified/evidence/verified-units/discovery-candidate:959f65d2872a027bcae3ddef.verified-units.json"
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/population-verified/evidence/discovery-candidate:959f65d2872a027bcae3ddef.json",
+    "committedUsd": 1.644594
+  }
+]

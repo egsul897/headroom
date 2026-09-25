@@ -1,0 +1,18 @@
+{
+  "rule": "A row is evidence about a MODEL only if the gateway billed tokens for it. A model that genuinely fails is still served and still bills; a row that bills nothing measures the account.",
+  "quarantined": [
+    {
+      "model": "nvidia/nemotron-3-nano-30b-a3b",
+      "reason": "11/12 candidates failed in under 5s with zero tokens billed; the row is dominated by refusals, not by model behaviour"
+    },
+    {
+      "model": "nvidia/nemotron-3.5-lightning",
+      "reason": "no candidate billed a single token across 12 attempts; the gateway served nothing, so this row measures the account and not the model"
+    },
+    {
+      "model": "openai/gpt-5-nano",
+      "reason": "no candidate billed a single token across 12 attempts; the gateway served nothing, so this row measures the account and not the model"
+    }
+  ],
+  "whyThisMatters": "Reporting these as model results would assert that three models score 0-8% on work they were never served."
+}

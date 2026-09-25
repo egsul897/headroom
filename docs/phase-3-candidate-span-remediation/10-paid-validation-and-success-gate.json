@@ -1,0 +1,97 @@
+{
+  "modelCalls": 0,
+  "status": "DESIGNED, NOT RUN. Blocked on (a) the implementation landing and (b) the standing GATEWAY_CREDIT_EXHAUSTED (HTTP 402) that halted the population run at 32/137.",
+  "model": "deepseek/deepseek-v4-flash (locked; no re-qualification, no premium fallback, PREMIUM_MODEL_BUDGET_USD = 0)",
+  "timeoutMs": 480000,
+  "concurrency": "1, rising to 2 after 10 clean rows",
+  "costBasis": {
+    "measured": "The halted population run completed 9 candidates for $0.04655 total - mean $0.00517 each, mean wall-clock 184 s.",
+    "provenanceCaveat": "Those per-candidate records lived in the session scratch directory, which this container's reclaim destroyed, so the figure is reported from the run log rather than a surviving artifact.",
+    "independentCheck": "It reconstructs exactly from the catalogue price and the recorded token counts: deepseek/deepseek-v4-flash is $0.13 / $0.26 per Mtok, and the completed rows averaged ~18.6k input and ~10.7k output tokens -> 18.6k x 0.13/1e6 + 10.7k x 0.26/1e6 = $0.0024 + $0.0028 = $0.0052, matching $0.00517."
+  },
+  "cohorts": [
+    {
+      "cohort": "A",
+      "name": "PREVIOUSLY-SUCCESSFUL CONTROLS (regression)",
+      "n": 9,
+      "candidates": [
+        "7.1(a)",
+        "7.1",
+        "7.1(b)",
+        "7.1(c)",
+        "7.1(d)",
+        "7.2(a)",
+        "7.2(b)",
+        "7.2(e) short",
+        "7.2(f)"
+      ],
+      "why": "All 9 are single-key, so R1 does not change their operative text by a single character. The negative control.",
+      "passCriterion": "9/9 COMPLETED, with rule counts and output hashes comparable to the pre-change run. Any change here means R1 touched something it should not have."
+    },
+    {
+      "cohort": "B",
+      "name": "MANUFACTURED-LONG CASES (the target)",
+      "n": 4,
+      "candidates": [
+        "7.2(e) long (9,045 -> 200)",
+        "7.2(k) long (9,621 -> 776)",
+        "7.2(k)(i) (8,899 -> 54)",
+        "7.2(k)(ii) (9,300 -> 455)"
+      ],
+      "why": "Every one TIMED OUT or failed in the real runs. Simulated post-change: 1 shard each, max sequential calls 16 -> 14.",
+      "passCriterion": "at least 3 of 4 COMPLETED within 480 s (7.2(k) is the designated flush-proviso risk case from legal case E/F and may legitimately require review); every cited source span must lie inside the anchor span."
+    },
+    {
+      "cohort": "C",
+      "name": "FALSE-CREDIT SAFETY",
+      "n": 6,
+      "candidates": [
+        "7.2",
+        "7.3",
+        "7.4",
+        "7.5",
+        "7.8",
+        "7.9 - the CONMED parent sections that are themselves candidates and are the text being appended"
+      ],
+      "why": "These are the propositions the children were borrowing; after the change only these candidates may emit them. CONMED has no false-credit control of its own, so this is the CONMED-side proxy. The 14 DSGR controls are re-checked ZERO-COST by replaying the existing deterministic control check, never by new model calls.",
+      "passCriterion": "each parent still compiles its own chapeau rule, and the deterministic re-check shows 14/14 DSGR controls still protected."
+    },
+    {
+      "cohort": "D",
+      "name": "DUAL-KEY BEFORE/AFTER PAIRS",
+      "n": 3,
+      "candidates": [
+        "7.2(d)",
+        "7.2(g)",
+        "7.2(h)"
+      ],
+      "why": "Dual-key rows that TIMED OUT or hit PROVIDER_FAILURE in the halted run - a direct before/after on the same candidates.",
+      "passCriterion": "at least 2 of 3 COMPLETED, versus 0 of 3 before."
+    }
+  ],
+  "candidateCount": 22,
+  "estimatedCost": {
+    "expectedUsd": 0.114,
+    "basis": "22 x $0.00517",
+    "ceilingUsd": 0.4,
+    "note": "The ceiling allows for UNKNOWN_TIMEOUT_BILLED reservations under the standing timeout policy (the halted run retained $0.117 of those across 6 timeouts). Comfortably under the $1 target."
+  },
+  "zeroCostChecksBeforeAnyPaidCall": [
+    "re-run scripts/p3-conmed-pilot/span-contract-sim.ts and assert the before/after figures in 02-conmed-before-after.json reproduce exactly",
+    "re-run the false-credit probe and assert the verifier source window shrinks 9,179 -> 2,185 items (CONMED)",
+    "assert the package coverage map (discoveredNodeIds) and the 3E covered-unit set are unchanged",
+    "full vitest + tsc + eslint"
+  ],
+  "implementationSuccessGate": {
+    "1": "Manufactured parent-section text no longer enters any child's operativeSourceText - asserted mechanically over all 137 CONMED and all four datasets, not sampled.",
+    "2": "The parent/chapeau remains available as typed context for every affected candidate - PARENT_SCOPE present for 67/67 CONMED dual candidates (true today; must remain true).",
+    "3": "7.2(e)/7.2(k)-family operative spans collapse to their true anchor spans - 9,045->200, 9,621->776, 8,899->54, 9,300->455; planner shards 4/3/3/3 -> 1/1/1/1.",
+    "4": "Provenance distinguishes operative from contextual source - fully satisfied by F2; until F2 lands, satisfied in the weaker but sufficient form that the operative window no longer contains contextual text.",
+    "5": "Coverage does not disappear - discoveredNodeIds and the 3E covered-unit set byte-identical before/after (F3), and every appended parent is independently anchored (70/70 across the four datasets).",
+    "6": "Contextual text cannot independently earn substantive credit for a child - the verifier's source window shrinks from 9,179 to 2,185 items (CONMED) and 90,057 to 66,417 (DSGR); a rule citing a foreign amount reconciles UNSUPPORTED.",
+    "7": "14/14 false-credit controls remain protected - deterministic re-check, zero cost, no benchmark change.",
+    "8": "No benchmark-specific or issuer-specific logic - a two-line expression over a generic field; the diff contains no section ref, document id, company or issuer name.",
+    "9": "Deterministic output - same inputs, same operativeSourceText, same planHash; verified by running the simulation twice and diffing.",
+    "10": "Downstream Phase 4 interfaces unchanged - SemanticCompilerInput, CovenantContextBundle, IRRule and SourceProvenance keep their shapes (F2 is additive and optional); docs/phase-4* diff stays 0."
+  }
+}

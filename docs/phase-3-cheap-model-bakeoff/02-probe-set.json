@@ -1,0 +1,98 @@
+[
+  {
+    "axis": "SHORT_SIMPLE_PROHIBITION",
+    "rationale": "shortest non-empty candidate: the cheapest possible compilation",
+    "discoveryId": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+    "sourceSectionRef": "7.8(b)",
+    "sourceTextChars": 37,
+    "priorOutcome": "PROVIDER_FAILURE"
+  },
+  {
+    "axis": "LONGER_COVENANT",
+    "rationale": "longest candidate: stresses output ceiling and wall clock",
+    "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22",
+    "sourceSectionRef": "7.2(k)",
+    "sourceTextChars": 9621,
+    "priorOutcome": "PROVIDER_FAILURE"
+  },
+  {
+    "axis": "NESTED_SUBSECTION",
+    "rationale": "deepest structural nesting: stresses reference resolution",
+    "discoveryId": "discovery-candidate:038eb0cd010fc21f941c2555",
+    "sourceSectionRef": "7.3(g)(ii)(B)",
+    "sourceTextChars": 7316,
+    "priorOutcome": "PROVIDER_FAILURE"
+  },
+  {
+    "axis": "THRESHOLD_PROVISION",
+    "rationale": "carries an explicit numeric threshold the IR must capture",
+    "discoveryId": "discovery-candidate:01215421a15b014f020e2d41",
+    "sourceSectionRef": "7.4",
+    "sourceTextChars": 5980,
+    "priorOutcome": "PROVIDER_FAILURE"
+  },
+  {
+    "axis": "CROSS_REFERENCE_HEAVY",
+    "rationale": "highest density of section references per 1k chars",
+    "discoveryId": "discovery-candidate:cac9b2bceb2e7314970a57f1",
+    "sourceSectionRef": "7.10(b)",
+    "sourceTextChars": 3490,
+    "priorOutcome": "PROVIDER_FAILURE"
+  },
+  {
+    "axis": "EVIDENCE_RETRIEVAL_REQUIRED",
+    "rationale": "prior run used the evidence tools on this candidate",
+    "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+    "sourceSectionRef": "7.2(f)",
+    "sourceTextChars": 149,
+    "priorOutcome": "COMPLETED"
+  },
+  {
+    "axis": "PREVIOUSLY_SUCCEEDED_ON_DEEPSEEK",
+    "rationale": "known-good control: establishes the harness still works",
+    "discoveryId": "discovery-candidate:06a4e449333717a1dc8bbc58",
+    "sourceSectionRef": "7.2(j)",
+    "sourceTextChars": 191,
+    "priorOutcome": "COMPLETED"
+  },
+  {
+    "axis": "PREVIOUSLY_SUCCEEDED_ON_DEEPSEEK_2",
+    "rationale": "second known-good control",
+    "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+    "sourceSectionRef": "7.1(d)",
+    "sourceTextChars": 399,
+    "priorOutcome": "COMPLETED"
+  },
+  {
+    "axis": "PREVIOUSLY_TIMED_OUT",
+    "rationale": "hit the 900s ceiling while still streaming",
+    "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+    "sourceSectionRef": "7.2(d)",
+    "sourceTextChars": 9095,
+    "priorOutcome": "WALL_CLOCK_TIMEOUT"
+  },
+  {
+    "axis": "PREVIOUSLY_TIMED_OUT_2",
+    "rationale": "second timeout candidate, per §9's minimum of two",
+    "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+    "sourceSectionRef": "7.2(h)",
+    "sourceTextChars": 9312,
+    "priorOutcome": "WALL_CLOCK_TIMEOUT"
+  },
+  {
+    "axis": "PREVIOUSLY_STALLED_AT_CONCURRENCY_6",
+    "rationale": "zero-token stall in the concurrency-6 pass",
+    "discoveryId": "discovery-candidate:03a446b1ec89b4309b0572e9",
+    "sourceSectionRef": "7.8(g)",
+    "sourceTextChars": 153,
+    "priorOutcome": "PROVIDER_FAILURE"
+  },
+  {
+    "axis": "MEDIAN_SIZE",
+    "rationale": "median-length candidate: the typical case, not an extreme",
+    "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+    "sourceSectionRef": "7.13",
+    "sourceTextChars": 1212,
+    "priorOutcome": "PROVIDER_FAILURE"
+  }
+]

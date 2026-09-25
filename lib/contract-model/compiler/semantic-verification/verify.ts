@@ -15,6 +15,7 @@ import { buildSourceInventory } from "./source-inventory";
 import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { NodeSupersessionIndex } from "../amendment/types";
 import { buildIrInventory } from "./ir-inventory";
+import { collectNumericAssertions } from "./numeric-assertion";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
@@ -22,7 +23,7 @@ import { runAdversarialSemanticReview } from "./reviewer";
 import type { SemanticReviewResult } from "./reviewer";
 import { classifyConditionSuspicion, type ConditionSuspicionCache, type ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
-import type { AdmissibleEvidenceSet, IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
+import type { AdmissibleEvidenceSet, IrInventory, NumericAssertionEvidenceText, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
 import type { StageCaller } from "../llm-caller";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
 
@@ -157,7 +158,12 @@ function mergeFindings(deterministic: SemanticVerificationFinding[], semantic: S
  */
 function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFinding[], reconciliation: ReconciliationResult, review: SemanticReviewResult): SemanticVerificationFinding[] {
   if (review.failed || review.isSynthetic) return findings;
-  const ambiguousReasons = new Set(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS").map((i) => i.reason));
+  // FIX B: a numeric assertion whose own magnitude could not be read safely is AMBIGUOUS for a
+  // completely different reason than an aggregate structural signal - it is real, unreconciled
+  // numeric evidence, and like every other numeric-evidence item it keeps its severity whether or
+  // not a model call happens to notice it. Only buildAggregateSignals' coarse presence-vs-absence
+  // reasons are eligible for this downgrade.
+  const ambiguousReasons = new Set(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS" && !i.numericGrounding).map((i) => i.reason));
   if (ambiguousReasons.size === 0) return findings;
   const semanticFindingTypes = new Set(review.findings.map((f) => f.findingType));
 
@@ -295,6 +301,36 @@ function determineStatus(
   return "VERIFIED_NO_MATERIAL_GAP_FOUND";
 }
 
+/**
+ * GATE 2's READING WINDOW (candidate-span contract, R3).
+ *
+ * Gate 2 (classifyConditionSuspicion) is the only gate that can PERMIT a review skip - Gate 1 can
+ * only ever force review. Under the candidate-span contract a candidate's operative source is its
+ * ANCHOR node's text alone, so a material condition drafted in the parent chapeau ("...shall not
+ * incur Indebtedness so long as no Default has occurred, except:") is no longer inside that text,
+ * and a Gate 2 reading it alone could report NO_MATERIAL_CONDITION_SUSPECTED for a candidate whose
+ * governing condition simply lives one level up.
+ *
+ * So Gate 2 - and ONLY Gate 2 - reads the anchor's operative text plus the PARENT_SCOPE excerpts
+ * the context bundle already carries (context-retrieval's retrieveParentScope, which yields each
+ * non-ARTICLE ancestor's OWN text, i.e. the chapeau rather than the whole subtree). Nothing else is
+ * admitted: not SIBLING_CONTEXT, not CHILD_RULE, not DEFINITION, not CROSS_REFERENCE, and not the
+ * linked node's OPERATIVE_SOURCE item - widening past the enclosing scope would re-import exactly
+ * the sibling material the contract exists to exclude.
+ *
+ * This widens ONE suspicion classifier's reading window. It does not make the parent's text part of
+ * the candidate's operative source: the reconciliation's source side is still built from
+ * `compilerInput.operativeSourceText` alone (buildSourceInventory, below), so parent and sibling
+ * economics can never be reconciled as evidence this candidate owns.
+ */
+export function buildConditionSuspicionInput(compilerInput: SemanticCompilerInput): string {
+  const parentScope = (compilerInput.contextBundle?.items ?? [])
+    .filter((item) => item.type === "PARENT_SCOPE")
+    .map((item) => item.excerptText.trim())
+    .filter((text) => text.length > 0);
+  return parentScope.length === 0 ? compilerInput.operativeSourceText : [compilerInput.operativeSourceText, ...parentScope].join("\n\n");
+}
+
 export async function verifyCompiledCandidate(input: VerificationInput, options: VerifyOptions = {}): Promise<SemanticVerificationResult> {
   const { compilerInput, compilationResult } = input;
 
@@ -323,7 +359,30 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   // against it, never read as evidence.
   const admissibleEvidence = collectAdmissibleEvidence(input, irInventory, { supersessionIndex });
   const retrievedInventory = buildRetrievedEvidenceInventory(compilerInput.candidateRef, admissibleEvidence, compilationResult.definitions, supersessionIndex);
-  const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory);
+  // FIX B - the free-text numeric-assertion pass. Its evidence universe is deliberately the SAME
+  // one the structured path already uses and nothing more: the candidate's own operative window,
+  // plus every retrieved source this verifier independently re-resolved and authenticated. A
+  // context-bundle excerpt the verifier could not authenticate is not evidence here either, and a
+  // few-shot, a tool schema or the model's own prose never was.
+  const numericAssertionInventory = collectNumericAssertions(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
+  const numericAssertionEvidence: NumericAssertionEvidenceText[] = [
+    { scope: "OPERATIVE", evidenceId: "PRIMARY_LOCAL", label: "the candidate's own operative source window", text: compilerInput.operativeSourceText },
+    ...admissibleEvidence.authenticated.map((e) => ({
+      // Evidence whose span lies inside the candidate's own window is the window's text, not
+      // someone else's - it must not be reported as context-derived support.
+      scope: (e.duplicatesLocalWindow ? "OPERATIVE" : "CONTEXT") as "OPERATIVE" | "CONTEXT",
+      evidenceId: e.evidenceId,
+      label: `authenticated ${e.requestKind === "DEFINITION" ? `definition of "${e.requestKey}"` : `section ${e.requestKey}`} (document ${e.documentId}, sha256 ${e.contentHash.slice(0, 12)}...)`,
+      text: e.rawText,
+      // R2: the retrieval identity travels with the text, so the grounding pass can ask whether
+      // this evidence is actually RELATED to an assertion instead of only whether it contains the
+      // same number - the same discipline reconciliation.ts already applies to structured values.
+      requestKind: e.requestKind,
+      scopeKey: e.scopeKey,
+      requestKey: e.requestKey,
+    })),
+  ];
+  const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
   const deterministicFindings = buildFindingsFromReconciliation(input, reconciliation);
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
@@ -352,7 +411,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   } else if (deterministicForcesReview) {
     needsSemanticReview = true;
   } else {
-    conditionSuspicion = await classifyConditionSuspicion(compilerInput.operativeSourceText, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache);
+    conditionSuspicion = await classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput), { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache);
     needsSemanticReview = conditionSuspicion.status !== "NO_MATERIAL_CONDITION_SUSPECTED";
   }
 
@@ -386,6 +445,9 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     conditionSuspicion,
     admissibleEvidence,
     evidenceSetHash: admissibleEvidence.evidenceSetHash,
+    // Lifted off the reconciliation rather than recomputed, so the reported grounding verdicts are
+    // by construction the same ones the findings above were built from.
+    numericAssertions: { inventory: numericAssertionInventory, groundings: reconciliation.items.flatMap((i) => (i.numericGrounding ? [i.numericGrounding] : [])) },
     verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION,
     verifiedAt: new Date().toISOString(),
   };

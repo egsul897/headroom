@@ -1,0 +1,698 @@
+{
+  "runId": "conmed-resume-2026-09-24T15:26:49.940Z",
+  "model": "deepseek/deepseek-v4-flash",
+  "price": {
+    "inputPerMtok": 0.13,
+    "outputPerMtok": 0.26
+  },
+  "timeoutMs": 480000,
+  "concurrency": 1,
+  "autoRetry": false,
+  "fallbackModel": null,
+  "premiumModelBudgetUsd": 0,
+  "ceilingUsd": 3.5,
+  "stopAtUsd": 3.450577,
+  "reservationPerCallUsd": 0.01942304,
+  "dedupDenominator": 135,
+  "exactDuplicatesRemoved": 28,
+  "attemptable": 133,
+  "skippedEmpty": [
+    {
+      "discoveryId": "discovery-candidate:90d9d73e1fda41693532da4a",
+      "ref": "7.4(a)(iii)",
+      "reason": "EMPTY_OPERATIVE_TEXT"
+    },
+    {
+      "discoveryId": "discovery-candidate:179a1f3046d17abc490af6b9",
+      "ref": "7.4(a)(iv)",
+      "reason": "EMPTY_OPERATIVE_TEXT"
+    }
+  ],
+  "order": [
+    {
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "ref": "7.1",
+      "operativeChars": 3275
+    },
+    {
+      "discoveryId": "discovery-candidate:8fe38049fe62ea9e9e741511",
+      "ref": "7.1(a)",
+      "operativeChars": 712
+    },
+    {
+      "discoveryId": "discovery-candidate:cf15af8f5fb1f77bd861a2ac",
+      "ref": "7.1(b)",
+      "operativeChars": 1886
+    },
+    {
+      "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+      "ref": "7.1(c)",
+      "operativeChars": 234
+    },
+    {
+      "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+      "ref": "7.1(d)",
+      "operativeChars": 399
+    },
+    {
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "ref": "7.10",
+      "operativeChars": 1995
+    },
+    {
+      "discoveryId": "discovery-candidate:41257e7574b41dd1089b396e",
+      "ref": "7.10(a)",
+      "operativeChars": 54
+    },
+    {
+      "discoveryId": "discovery-candidate:cac9b2bceb2e7314970a57f1",
+      "ref": "7.10(b)",
+      "operativeChars": 1493
+    },
+    {
+      "discoveryId": "discovery-candidate:766fe1bf868f87b1a702575c",
+      "ref": "7.11",
+      "operativeChars": 696
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "ref": "7.13",
+      "operativeChars": 1212
+    },
+    {
+      "discoveryId": "discovery-candidate:8cc6d36a3898b45e63d7a0cc",
+      "ref": "7.13(a)",
+      "operativeChars": 731
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "ref": "7.14",
+      "operativeChars": 1106
+    },
+    {
+      "discoveryId": "discovery-candidate:53e4ea586b2732863f2d4c10",
+      "ref": "7.14(a)",
+      "operativeChars": 908
+    },
+    {
+      "discoveryId": "discovery-candidate:3985f29e81fa30e1cfec25a0",
+      "ref": "7.15",
+      "operativeChars": 281
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "ref": "7.16",
+      "operativeChars": 1144
+    },
+    {
+      "discoveryId": "discovery-candidate:f0466a27cbf457478a3eac0e",
+      "ref": "7.16(a)",
+      "operativeChars": 787
+    },
+    {
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "ref": "7.17",
+      "operativeChars": 795
+    },
+    {
+      "discoveryId": "discovery-candidate:c84bd941081822735ab8bf70",
+      "ref": "7.17(a)",
+      "operativeChars": 106
+    },
+    {
+      "discoveryId": "discovery-candidate:e52848d1db50133b0ae6b258",
+      "ref": "7.17(b)(i)",
+      "operativeChars": 611
+    },
+    {
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "ref": "7.2",
+      "operativeChars": 8843
+    },
+    {
+      "discoveryId": "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+      "ref": "7.2(a)",
+      "operativeChars": 66
+    },
+    {
+      "discoveryId": "discovery-candidate:4bfbc3dbea17aec6bb21a58a",
+      "ref": "7.2(b)",
+      "operativeChars": 138
+    },
+    {
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "ref": "7.2(c)",
+      "operativeChars": 529
+    },
+    {
+      "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "ref": "7.2(d)",
+      "operativeChars": 250
+    },
+    {
+      "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "ref": "7.2(e)",
+      "operativeChars": 200
+    },
+    {
+      "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+      "ref": "7.2(f)",
+      "operativeChars": 149
+    },
+    {
+      "discoveryId": "discovery-candidate:7b3977f0fa58ecd5c864b1fc",
+      "ref": "7.2(g)",
+      "operativeChars": 312
+    },
+    {
+      "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+      "ref": "7.2(h)",
+      "operativeChars": 467
+    },
+    {
+      "discoveryId": "discovery-candidate:7feb9e228591558f958bb0d1",
+      "ref": "7.2(i)",
+      "operativeChars": 319
+    },
+    {
+      "discoveryId": "discovery-candidate:06a4e449333717a1dc8bbc58",
+      "ref": "7.2(j)",
+      "operativeChars": 191
+    },
+    {
+      "discoveryId": "discovery-candidate:28d7bafd7a1fedde253333ef",
+      "ref": "7.2(k)",
+      "operativeChars": 776
+    },
+    {
+      "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "ref": "7.2(k)(i)",
+      "operativeChars": 54
+    },
+    {
+      "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+      "ref": "7.2(k)(ii)",
+      "operativeChars": 455
+    },
+    {
+      "discoveryId": "discovery-candidate:0cdfa0a5a2266bd5aec20849",
+      "ref": "7.2(l)(i)",
+      "operativeChars": 649
+    },
+    {
+      "discoveryId": "discovery-candidate:2fa8e7f8da38b86c6b75629d",
+      "ref": "7.2(l)(ii)",
+      "operativeChars": 293
+    },
+    {
+      "discoveryId": "discovery-candidate:3d233f1364657aeffc32c4a7",
+      "ref": "7.2(m)",
+      "operativeChars": 293
+    },
+    {
+      "discoveryId": "discovery-candidate:6da1a256e226a50878be09d8",
+      "ref": "7.2(n)(i)",
+      "operativeChars": 497
+    },
+    {
+      "discoveryId": "discovery-candidate:63cca6f524f3c06639a35a7b",
+      "ref": "7.2(n)(ii)",
+      "operativeChars": 375
+    },
+    {
+      "discoveryId": "discovery-candidate:4f89c3b081ac7eb79d270167",
+      "ref": "7.2(o)",
+      "operativeChars": 252
+    },
+    {
+      "discoveryId": "discovery-candidate:cdccb3650edb9287f09fb2a9",
+      "ref": "7.2(p)(i)",
+      "operativeChars": 634
+    },
+    {
+      "discoveryId": "discovery-candidate:4db3011a2619a9dd89a19330",
+      "ref": "7.2(r)",
+      "operativeChars": 96
+    },
+    {
+      "discoveryId": "discovery-candidate:468b10c82bc07efa732354ac",
+      "ref": "7.2(s)",
+      "operativeChars": 2222
+    },
+    {
+      "discoveryId": "discovery-candidate:5b0cf887a4cf4a3b5caa1c81",
+      "ref": "7.2(s)(i)",
+      "operativeChars": 2068
+    },
+    {
+      "discoveryId": "discovery-candidate:08919c086272421431dd7aed",
+      "ref": "7.3",
+      "operativeChars": 7053
+    },
+    {
+      "discoveryId": "discovery-candidate:7eb2dc07250e5d73988ceed4",
+      "ref": "7.3(a)",
+      "operativeChars": 300
+    },
+    {
+      "discoveryId": "discovery-candidate:aa625ee78b68bd09e0932fea",
+      "ref": "7.3(b)",
+      "operativeChars": 391
+    },
+    {
+      "discoveryId": "discovery-candidate:db29c9b94a34be2eb9d38885",
+      "ref": "7.3(c)",
+      "operativeChars": 128
+    },
+    {
+      "discoveryId": "discovery-candidate:3eb1e00eb8df475c0d2697c2",
+      "ref": "7.3(d)",
+      "operativeChars": 255
+    },
+    {
+      "discoveryId": "discovery-candidate:c615523fa38fd789d31e9657",
+      "ref": "7.3(e)",
+      "operativeChars": 385
+    },
+    {
+      "discoveryId": "discovery-candidate:0a2f4f23dae2b83c3e6c4ed0",
+      "ref": "7.3(f)",
+      "operativeChars": 329
+    },
+    {
+      "discoveryId": "discovery-candidate:082c80836268c7277cc39c18",
+      "ref": "7.3(g)",
+      "operativeChars": 958
+    },
+    {
+      "discoveryId": "discovery-candidate:4fc1d579b699d89ba0428259",
+      "ref": "7.3(g)(i)",
+      "operativeChars": 111
+    },
+    {
+      "discoveryId": "discovery-candidate:f99359a26388274479373cdb",
+      "ref": "7.3(g)(ii)",
+      "operativeChars": 642
+    },
+    {
+      "discoveryId": "discovery-candidate:2983e5f23dbd949b7b58db01",
+      "ref": "7.3(g)(ii)(A)",
+      "operativeChars": 150
+    },
+    {
+      "discoveryId": "discovery-candidate:038eb0cd010fc21f941c2555",
+      "ref": "7.3(g)(ii)(B)",
+      "operativeChars": 261
+    },
+    {
+      "discoveryId": "discovery-candidate:058231fd0222f19b20b9d181",
+      "ref": "7.3(h)",
+      "operativeChars": 54
+    },
+    {
+      "discoveryId": "discovery-candidate:4c5fdf9ee2015e2d920b416e",
+      "ref": "7.3(i)",
+      "operativeChars": 193
+    },
+    {
+      "discoveryId": "discovery-candidate:e48d5bf75208a61f8260e190",
+      "ref": "7.3(j)",
+      "operativeChars": 216
+    },
+    {
+      "discoveryId": "discovery-candidate:c059bb56a36b1af78f5bbe23",
+      "ref": "7.3(k)",
+      "operativeChars": 251
+    },
+    {
+      "discoveryId": "discovery-candidate:92a453a94fb79b96795a0081",
+      "ref": "7.3(l)",
+      "operativeChars": 1271
+    },
+    {
+      "discoveryId": "discovery-candidate:87c0370dad1da9b0c9941d1c",
+      "ref": "7.3(l)(i)",
+      "operativeChars": 932
+    },
+    {
+      "discoveryId": "discovery-candidate:b5bb07b092f9863985f89812",
+      "ref": "7.3(m)",
+      "operativeChars": 458
+    },
+    {
+      "discoveryId": "discovery-candidate:ac0b4888228d3f32e7123d6b",
+      "ref": "7.3(m)(i)",
+      "operativeChars": 86
+    },
+    {
+      "discoveryId": "discovery-candidate:416e6e08da5964e403f8d78b",
+      "ref": "7.3(m)(ii)",
+      "operativeChars": 299
+    },
+    {
+      "discoveryId": "discovery-candidate:998b06bfc970aee50608d465",
+      "ref": "7.3(m)(ii)(A)",
+      "operativeChars": 20
+    },
+    {
+      "discoveryId": "discovery-candidate:87b494be0746c3d27aa4d2db",
+      "ref": "7.3(m)(ii)(B)",
+      "operativeChars": 90
+    },
+    {
+      "discoveryId": "discovery-candidate:6382a89b88aee52433a287a9",
+      "ref": "7.3(n)",
+      "operativeChars": 143
+    },
+    {
+      "discoveryId": "discovery-candidate:d18b92bda1f7a6b6b03245bf",
+      "ref": "7.3(o)",
+      "operativeChars": 291
+    },
+    {
+      "discoveryId": "discovery-candidate:d743c01b399ff5f9bd439df9",
+      "ref": "7.3(p)",
+      "operativeChars": 1255
+    },
+    {
+      "discoveryId": "discovery-candidate:01215421a15b014f020e2d41",
+      "ref": "7.4",
+      "operativeChars": 5980
+    },
+    {
+      "discoveryId": "discovery-candidate:7394f8406279afd41fc8210b",
+      "ref": "7.4(a)(i)",
+      "operativeChars": 375
+    },
+    {
+      "discoveryId": "discovery-candidate:ee066977a88258cd6cfcd217",
+      "ref": "7.4(a)(ii)",
+      "operativeChars": 3899
+    },
+    {
+      "discoveryId": "discovery-candidate:3fa3730524870bb58ef593a4",
+      "ref": "7.4(b)(i)",
+      "operativeChars": 248
+    },
+    {
+      "discoveryId": "discovery-candidate:5bc35e5a4b020669b235c00a",
+      "ref": "7.4(b)(ii)",
+      "operativeChars": 301
+    },
+    {
+      "discoveryId": "discovery-candidate:0ccd597ff16ac8d7809b19e5",
+      "ref": "7.4(c)",
+      "operativeChars": 798
+    },
+    {
+      "discoveryId": "discovery-candidate:2935113412c51d5268d5b0ca",
+      "ref": "7.4(c)(1)",
+      "operativeChars": 144
+    },
+    {
+      "discoveryId": "discovery-candidate:420b56c046442b528b156245",
+      "ref": "7.4(d)",
+      "operativeChars": 44
+    },
+    {
+      "discoveryId": "discovery-candidate:192f0f846ef50bc2eb957eb6",
+      "ref": "7.5",
+      "operativeChars": 4658
+    },
+    {
+      "discoveryId": "discovery-candidate:baca43714b8502cc9c596c23",
+      "ref": "7.5(a)",
+      "operativeChars": 89
+    },
+    {
+      "discoveryId": "discovery-candidate:c71e3fc24ba69a95fb59dd41",
+      "ref": "7.5(b)",
+      "operativeChars": 83
+    },
+    {
+      "discoveryId": "discovery-candidate:65062d82436b8dbda43a66be",
+      "ref": "7.5(c)",
+      "operativeChars": 46
+    },
+    {
+      "discoveryId": "discovery-candidate:8c32e0a68dc5b7267f9d2152",
+      "ref": "7.5(d)(i)",
+      "operativeChars": 230
+    },
+    {
+      "discoveryId": "discovery-candidate:15cd009747aa780609455c48",
+      "ref": "7.5(e)",
+      "operativeChars": 168
+    },
+    {
+      "discoveryId": "discovery-candidate:8507d3f28616a4f0af9f74b0",
+      "ref": "7.5(f)",
+      "operativeChars": 1618
+    },
+    {
+      "discoveryId": "discovery-candidate:6be98acecf709257ad512776",
+      "ref": "7.5(f)(i)",
+      "operativeChars": 648
+    },
+    {
+      "discoveryId": "discovery-candidate:224e416870eac0d7ae9cafad",
+      "ref": "7.5(f)(ii)",
+      "operativeChars": 844
+    },
+    {
+      "discoveryId": "discovery-candidate:8f16a2f1fc23309fec02928d",
+      "ref": "7.5(g)",
+      "operativeChars": 67
+    },
+    {
+      "discoveryId": "discovery-candidate:184c41389f233b2c2de269a4",
+      "ref": "7.5(h)",
+      "operativeChars": 208
+    },
+    {
+      "discoveryId": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+      "ref": "7.5(i)",
+      "operativeChars": 190
+    },
+    {
+      "discoveryId": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "ref": "7.5(j)",
+      "operativeChars": 508
+    },
+    {
+      "discoveryId": "discovery-candidate:7a871f5e26e8a48783882460",
+      "ref": "7.5(k)",
+      "operativeChars": 163
+    },
+    {
+      "discoveryId": "discovery-candidate:445f471043ccfc3dd9cfc568",
+      "ref": "7.5(l)",
+      "operativeChars": 170
+    },
+    {
+      "discoveryId": "discovery-candidate:980d0bd83512327db977a2e8",
+      "ref": "7.5(m)",
+      "operativeChars": 140
+    },
+    {
+      "discoveryId": "discovery-candidate:0578fe547dd42317ce0df107",
+      "ref": "7.5(n)",
+      "operativeChars": 635
+    },
+    {
+      "discoveryId": "discovery-candidate:42423b37324ac426d0f961e2",
+      "ref": "7.6",
+      "operativeChars": 3501
+    },
+    {
+      "discoveryId": "discovery-candidate:8befac8ab345ffa1d1e259ee",
+      "ref": "7.6(a)(i)",
+      "operativeChars": 131
+    },
+    {
+      "discoveryId": "discovery-candidate:753e3a550c4f83d63a851184",
+      "ref": "7.6(a)(ii)",
+      "operativeChars": 111
+    },
+    {
+      "discoveryId": "discovery-candidate:ac354ffa81d6ca806759ba60",
+      "ref": "7.6(b)",
+      "operativeChars": 470
+    },
+    {
+      "discoveryId": "discovery-candidate:488409a7f662ed7814693bc7",
+      "ref": "7.6(b)(i)",
+      "operativeChars": 280
+    },
+    {
+      "discoveryId": "discovery-candidate:959f65d2872a027bcae3ddef",
+      "ref": "7.6(b)(ii)",
+      "operativeChars": 186
+    },
+    {
+      "discoveryId": "discovery-candidate:565fd64640e534d8a46bbe7a",
+      "ref": "7.6(c)",
+      "operativeChars": 191
+    },
+    {
+      "discoveryId": "discovery-candidate:9e35243e01539edee04ff6a5",
+      "ref": "7.6(d)",
+      "operativeChars": 122
+    },
+    {
+      "discoveryId": "discovery-candidate:667f625c7ae3602d9972fdea",
+      "ref": "7.6(e)(i)",
+      "operativeChars": 410
+    },
+    {
+      "discoveryId": "discovery-candidate:72e65025f7418737c58d95eb",
+      "ref": "7.6(e)(ii)",
+      "operativeChars": 156
+    },
+    {
+      "discoveryId": "discovery-candidate:e9236b1dc9d46e13db1b7678",
+      "ref": "7.6(f)(i)",
+      "operativeChars": 170
+    },
+    {
+      "discoveryId": "discovery-candidate:f66b630df2e63c97a5c9bd90",
+      "ref": "7.6(f)(ii)",
+      "operativeChars": 312
+    },
+    {
+      "discoveryId": "discovery-candidate:fec9992df21d56e593ce440e",
+      "ref": "7.6(g)",
+      "operativeChars": 633
+    },
+    {
+      "discoveryId": "discovery-candidate:25a7ac71a68f0535fad268cd",
+      "ref": "7.8",
+      "operativeChars": 4667
+    },
+    {
+      "discoveryId": "discovery-candidate:5c8863c9378ed219563334fb",
+      "ref": "7.8(a)",
+      "operativeChars": 67
+    },
+    {
+      "discoveryId": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+      "ref": "7.8(b)",
+      "operativeChars": 37
+    },
+    {
+      "discoveryId": "discovery-candidate:b5296614bd927a8e4ea227bc",
+      "ref": "7.8(c)",
+      "operativeChars": 52
+    },
+    {
+      "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "ref": "7.8(d)",
+      "operativeChars": 389
+    },
+    {
+      "discoveryId": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+      "ref": "7.8(e)",
+      "operativeChars": 176
+    },
+    {
+      "discoveryId": "discovery-candidate:deff46f63658cfd219009b2b",
+      "ref": "7.8(f)",
+      "operativeChars": 126
+    },
+    {
+      "discoveryId": "discovery-candidate:03a446b1ec89b4309b0572e9",
+      "ref": "7.8(g)",
+      "operativeChars": 153
+    },
+    {
+      "discoveryId": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+      "ref": "7.8(h)",
+      "operativeChars": 335
+    },
+    {
+      "discoveryId": "discovery-candidate:ac28256f7476a6914247e7c9",
+      "ref": "7.8(i)",
+      "operativeChars": 350
+    },
+    {
+      "discoveryId": "discovery-candidate:718510e2901771adb5a31722",
+      "ref": "7.8(j)",
+      "operativeChars": 971
+    },
+    {
+      "discoveryId": "discovery-candidate:0c86f64e8580df76e45e16f0",
+      "ref": "7.8(k)",
+      "operativeChars": 68
+    },
+    {
+      "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+      "ref": "7.8(l)",
+      "operativeChars": 427
+    },
+    {
+      "discoveryId": "discovery-candidate:e9616549c13c2debd957c533",
+      "ref": "7.8(m)(i)",
+      "operativeChars": 225
+    },
+    {
+      "discoveryId": "discovery-candidate:248f4e6a15e5a2424e2a2397",
+      "ref": "7.9",
+      "operativeChars": 4339
+    },
+    {
+      "discoveryId": "discovery-candidate:1bf90deb6bd9041e04c8728a",
+      "ref": "7.9(a)",
+      "operativeChars": 1403
+    },
+    {
+      "discoveryId": "discovery-candidate:c95bfdcb359c0a4a81b5fd6b",
+      "ref": "7.9(a)(i)",
+      "operativeChars": 164
+    },
+    {
+      "discoveryId": "discovery-candidate:635980cf26209b960a1e57d1",
+      "ref": "7.9(a)(ii)",
+      "operativeChars": 978
+    },
+    {
+      "discoveryId": "discovery-candidate:3675ce686bd277452c61595b",
+      "ref": "7.9(b)",
+      "operativeChars": 1139
+    },
+    {
+      "discoveryId": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+      "ref": "7.9(b)(i)",
+      "operativeChars": 77
+    },
+    {
+      "discoveryId": "discovery-candidate:708135ded35624a61b97dcbd",
+      "ref": "7.9(b)(ii)",
+      "operativeChars": 417
+    },
+    {
+      "discoveryId": "discovery-candidate:d2d61a0f46f53960376211d3",
+      "ref": "7.9(b)(iii)",
+      "operativeChars": 297
+    },
+    {
+      "discoveryId": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+      "ref": "7.9(b)(iv)",
+      "operativeChars": 184
+    },
+    {
+      "discoveryId": "discovery-candidate:915a72b626950c21a3dee456",
+      "ref": "7.9(c)",
+      "operativeChars": 1558
+    },
+    {
+      "discoveryId": "discovery-candidate:523c83bba21c499f3344a3e7",
+      "ref": "7.9(c)(i)",
+      "operativeChars": 732
+    },
+    {
+      "discoveryId": "discovery-candidate:93b369778c6bbdf6dbc61844",
+      "ref": "7.9(d)",
+      "operativeChars": 150
+    }
+  ]
+}

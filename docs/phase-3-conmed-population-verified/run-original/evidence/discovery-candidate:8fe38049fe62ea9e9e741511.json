@@ -1,0 +1,281 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T15:43:04.254Z",
+  "candidateRef": "discovery-candidate:8fe38049fe62ea9e9e741511",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.1(a)",
+    "operativeSourceText": "(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant Material Acquisition and (ii) the\ndate by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a) or ",
+    "operativeSourceTextSha256": "279be8014665daefaefab16ae1014161ec941da0e901ca1f7afff5ea2c2b8d04",
+    "operativeSourceChars": 712,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:51e0929ddd6851b58dcde4b220cafc47ca5ac888bff58be195623977394cbe61",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 11,
+    "items": [
+      {
+        "itemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.1(a)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 712,
+        "excerptText": "(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant Material Acquisition and (ii) the\ndate by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a) or "
+      },
+      {
+        "itemId": "context-item:aebc42c1e845426a83a4a993fe546233a17030a20b6eb52dc48cf235006dc613",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.1",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 44,
+        "excerptText": "SECTION 7.1 Financial Condition\nCovenants .\n"
+      },
+      {
+        "itemId": "context-item:1890cca0028c56f6fe6cc35238204ca5d7fbe915070eb764db108e639378009c",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.1(a)(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 95,
+        "excerptText": "(i) the date that is thirty (30) days after consummating the relevant Material Acquisition and "
+      },
+      {
+        "itemId": "context-item:f5a46ee1d32da366dddd43f3611f4ebb40ac675d9f83f3f9f393c4deb1275b1a",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.1(a)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 116,
+        "excerptText": "(ii) the\ndate by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a) or "
+      },
+      {
+        "itemId": "context-item:afe29c51fc62f45058f1a091fec1c11d98ff1245f851a300241845ba570072cb",
+        "type": "PROVISO",
+        "normalizedRef": "7.1(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 980,
+        "excerptText": "(b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition\nis consummated; provided that (x) such step-up shall be permitted only twice during the term of this Agreement and (y) there shall\nbe at least two fiscal quarters in between any such step-ups.\n(b)\nConsolidated Total Leverage Ratio . Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed 5.50 to 1.00. Notwithstanding\nthe foregoing, if the Parent Borrower or any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent\n94\nBorrower\n(the notice of which election shall be given prior to the earlier of "
+      },
+      {
+        "itemId": "context-item:d37909c5837439365f2cba0f7320df1121d6fd8bf3d83cde22bbf45fa6b70650",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.1(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 302,
+        "excerptText": "(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes\nand so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity\nat any time to be less than the sum of "
+      },
+      {
+        "itemId": "context-item:70978651ecfa0e382d406e0b1b4aff406f2ff958d560b2f72c661fa984fd1500",
+        "type": "DEFINITION",
+        "normalizedRef": "Material Acquisition",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 476,
+        "excerptText": "\"Material Acquisition\": any acquisition of Property or series of related acquisitions of Property (other than from the Parent Borrower or any Subsidiary) that\n(x) constitutes assets comprising all or substantially all of an operating unit or a business, line of business or product line or constitutes\nall or substantially all of the common stock of a Person and (y) involves the payment of consideration by the Parent Borrower and its\nSubsidiaries in excess of $25,000,000.\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:aebc42c1e845426a83a4a993fe546233a17030a20b6eb52dc48cf235006dc613",
+        "toItemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "toItemId": "context-item:1890cca0028c56f6fe6cc35238204ca5d7fbe915070eb764db108e639378009c",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "toItemId": "context-item:f5a46ee1d32da366dddd43f3611f4ebb40ac675d9f83f3f9f393c4deb1275b1a",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:afe29c51fc62f45058f1a091fec1c11d98ff1245f851a300241845ba570072cb",
+        "toItemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:d37909c5837439365f2cba0f7320df1121d6fd8bf3d83cde22bbf45fa6b70650",
+        "toItemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "toItemId": "context-item:70978651ecfa0e382d406e0b1b4aff406f2ff958d560b2f72c661fa984fd1500",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:70978651ecfa0e382d406e0b1b4aff406f2ff958d560b2f72c661fa984fd1500",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:70978651ecfa0e382d406e0b1b4aff406f2ff958d560b2f72c661fa984fd1500",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:70978651ecfa0e382d406e0b1b4aff406f2ff958d560b2f72c661fa984fd1500",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:3c3de6196300973b102fcffb06e943eecbe762578d978cc0914b7d5c4adf9b22",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "WALL_CLOCK_TIMEOUT"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": null,
+    "toolCallLog": [],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": null,
+    "provider": null,
+    "model": null,
+    "telemetry": null,
+    "compiledAt": null,
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 480003,
+    "inputTokens": null,
+    "outputTokens": null,
+    "costUsd": 0.01942304,
+    "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+    "timedOut": true,
+    "notes": [
+      "compile TIMEOUT",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

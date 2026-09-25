@@ -1,0 +1,89 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION",
+  "section": "\u00a716 - PHASE-4 GATING RISK: DOCUMENTED ONLY, NOTHING CHANGED",
+  "phase4FilesChanged": 0,
+  "phase4TreeHash": "8fa637768316a613524e821b913f56c86111a298",
+  "correctionToTheEarlierForensicFinding": {
+    "whatTheForensicsMissionReported": "grep over lib/contract-model/runtime/ for representationSufficiency / verificationStatus / SemanticVerification / claimReview returns 0 references, therefore the Phase-4 runtime does not gate on Phase-3 state at all.",
+    "whatARE-CHECKFOUND": "That grep searched for the TYPE name (RepresentationSufficiency) rather than the FIELD name (rule.sufficiency). The runtime consumes rule.sufficiency and definition.sufficiency extensively. The earlier item overstated the gap, and the corrected finding is narrower and more precise.",
+    "corrected": "Phase 4 DOES gate on Phase-3 representation SUFFICIENCY. Phase 4 does NOT gate on Phase-3 semantic VERIFICATION status or findings - that surface has zero references, and that is the real gap."
+  },
+  "phase4EntryPointsConsumingPhase3Ir": [
+    {
+      "entryPoint": "lib/contract-model/runtime/evaluate-expression.ts:432 evaluateExpression",
+      "consumes": "IRExpression trees, IRRule, IRDefinition"
+    },
+    {
+      "entryPoint": "lib/contract-model/runtime/rule-evaluator.ts:44 evaluateRule",
+      "consumes": "IRRule"
+    },
+    {
+      "entryPoint": "lib/contract-model/runtime/capacity/graph.ts:169 buildCapacityGraph",
+      "consumes": "IRRule (+ shared capacities)"
+    },
+    {
+      "entryPoint": "lib/contract-model/runtime/capacity/state.ts:188 evaluateCapacityState",
+      "consumes": "the capacity graph built from IRRule"
+    },
+    {
+      "entryPoint": "lib/contract-model/runtime/transaction/simulate.ts",
+      "consumes": "IRRule (rule.sufficiency !== 'COMPLETE' -> unsafeLegal)"
+    },
+    {
+      "entryPoint": "lib/contract-model/runtime/input/manifest.ts:197 buildRuleDependencyManifest",
+      "consumes": "IRRule"
+    }
+  ],
+  "phase3StateTHATISHONOURED": [
+    {
+      "field": "IRRule.sufficiency / IRDefinition.sufficiency",
+      "where": "evaluate-expression.ts:36 BLOCKED_SUFFICIENCY = [AMBIGUOUS, MISSING_CONTEXT, CONFLICTED] -> the node fails AMBIGUOUS_SEMANTICS",
+      "effect": "blocks evaluation"
+    },
+    {
+      "field": "IRRule.sufficiency",
+      "where": "rule-evaluator.ts:46",
+      "effect": "conditions are not evaluated when AMBIGUOUS/MISSING_CONTEXT/CONFLICTED"
+    },
+    {
+      "field": "IRRule.sufficiency",
+      "where": "capacity/state.ts:64 SUFFICIENCY_DOMINANCE",
+      "effect": "PARTIAL -> REVIEW_REQUIRED floor; AMBIGUOUS/MISSING_CONTEXT/CONFLICTED -> AMBIGUOUS; UNSUPPORTED -> UNSUPPORTED; an unknown value fails closed to UNSUPPORTED"
+    },
+    {
+      "field": "IRRule.entityScopeAudit.safeToRely",
+      "where": "capacity/state.ts",
+      "effect": "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON -> REVIEW_REQUIRED floor"
+    }
+  ],
+  "phase3StateTHATISIGNORED": [
+    {
+      "field": "SemanticVerificationResult.status (MATERIAL_DISCREPANCY / REVIEW_REQUIRED / VERIFICATION_INCOMPLETE / VERIFICATION_FAILED)",
+      "references in lib/contract-model/runtime": 0
+    },
+    {
+      "field": "SemanticVerificationFinding[] (including UNSUPPORTED_IR_ADDITION and the new UNSUPPORTED_NUMERIC_ASSERTION)",
+      "references in lib/contract-model/runtime": 0
+    },
+    {
+      "field": "SemanticVerificationResult.numericAssertions grounding verdicts",
+      "references in lib/contract-model/runtime": 0
+    },
+    {
+      "field": "SemanticVerificationResult.admissibleEvidence / evidenceSetHash",
+      "references in lib/contract-model/runtime": 0
+    }
+  ],
+  "couldAnUngroundedStructuredNumericBecomeExecutableToday": {
+    "answer": "YES",
+    "worked": "A rule whose capacityExpression is PERCENT(1) with no supporting source figure gets an IR_ONLY reconciliation item and an UNSUPPORTED_IR_ADDITION/MATERIAL finding, and the candidate's verification status becomes MATERIAL_DISCREPANCY. But the rule's own sufficiency stays whatever the compiler declared - COMPLETE in the observed 7.2(f) shape - and SUFFICIENCY_DOMINANCE.COMPLETE imposes no floor at all. evaluate-expression.ts:179 then evaluates the PERCENT literal to an ordinary value. Nothing on the runtime path ever reads the verification result.",
+    "sevenTwoFShape": "sufficiency COMPLETE + verification REVIEW_REQUIRED - which is precisely the combination that passes every gate the runtime has."
+  },
+  "exactFutureGateLocation": {
+    "primary": "lib/contract-model/runtime/capacity/state.ts - alongside SUFFICIENCY_DOMINANCE, as a second dominance table keyed on the candidate's SemanticVerificationStatus (and on the presence of any MATERIAL finding), imposing the same kind of status FLOOR. This is the one place that already understands 'a legal state imposes a floor arithmetic can never lift'.",
+    "secondary": "lib/contract-model/runtime/evaluate-expression.ts blockedBySufficiency - the natural sibling hook for blocking an individual node whose own value is the ungrounded one (irPath is already recorded on every finding, so node-level blocking is possible, not just rule-level).",
+    "prerequisite": "the runtime's inputs do not currently carry a verification result at all - buildCapacityGraph/evaluateRule receive IRRule only. The boundary change comes first: a per-rule verification verdict must be threaded in (or attached to the trusted IR) before any gate can read it. That is a Phase-4 interface change and is out of scope here.",
+    "designWarning": "Gating on verification status alone would over-block: REVIEW_REQUIRED is common and often benign. The narrow, defensible gate is 'a MATERIAL finding whose irPath names a value this expression actually evaluates'."
+  },
+  "thisIsAHandoff": "No Phase-4 file was read for modification, and none was modified. This artifact is the input to a separate mission."
+}

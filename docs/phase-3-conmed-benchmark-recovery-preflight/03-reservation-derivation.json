@@ -1,0 +1,102 @@
+{
+  "policy": "reservation-policy.v1 - mechanically derived from the execution shape the runner permits, priced at catalogue rates",
+  "model": {
+    "id": "deepseek/deepseek-v4-flash",
+    "inputUsdPerToken": "0.00000013",
+    "outputUsdPerToken": "0.00000026",
+    "maxTokens": 384000,
+    "contextWindow": 1000000
+  },
+  "limits": {
+    "turnsPerConversation": {
+      "value": 12,
+      "from": "DEFAULT_TOOL_BUDGET.maxToolCalls (8, compiler/semantic/types.ts) + MAX_TURN_OVERHEAD (4, caller.ts module-private, mirrored and pinned by test)"
+    },
+    "firstTurnInputTokens": {
+      "value": 100000,
+      "from": "MAX_FIRST_TURN_INPUT_TOKENS (shard-planner.ts): the planner bounds a shard first turn to half the 200k window"
+    },
+    "toolRetrievedSourceTokens": {
+      "value": 7914,
+      "from": "DEFAULT_TOOL_BUDGET.maxAdditionalSourceChars (20000) x CALIBRATED_TOKENS_PER_CHAR (0.3957)"
+    },
+    "outputTokensPerCandidate": {
+      "value": 60000,
+      "from": "min(480 s x 125 tok/s, min(model.max_tokens, 128000)); the wall-clock ceiling wraps the whole compile (Pass A + shards); output is the only rate-bounded term"
+    },
+    "inputTokensPerTurn": {
+      "value": 167914,
+      "from": "firstTurnInputTokens + toolRetrievedSourceTokens + outputTokensPerCandidate (prior assistant turns re-sent)"
+    },
+    "conversationsPerCompile": {
+      "value": 5,
+      "from": "NO runner-side cap exists (the certified planner decides the shard count; one re-execution per shard on SHARD_PROVIDER_FAILURE). Harness-declared cap = the population-observed maximum over 72 billed compiles (retries included); ENFORCED: telemetry beyond the reserved shape stops the run (RESERVATION_SHAPE_EXCEEDED) before another dispatch"
+    },
+    "passACalls": {
+      "formula": "2 x ceil(operativeChars / 6000)",
+      "from": "inventory.ts batchChars default 6000: one first-pass call per batch plus at most one gap-pass call per batch; each bounded by firstTurnInputTokens"
+    },
+    "verifierCalls": {
+      "value": 2,
+      "from": "reviewer.ts (1 call site) + condition-suspicion-classifier.ts (1 call site); each bounded by firstTurnInputTokens; output bounded as above"
+    }
+  },
+  "compileAtMaxSpan": {
+    "operativeChars": 4667,
+    "shape": {
+      "conversations": 5,
+      "turnsPerConversation": 12,
+      "inputTokensPerTurn": 167914,
+      "passACalls": 2,
+      "passAInputTokensPerCall": 100000,
+      "outputTokens": 60000,
+      "inputTokens": 10274840,
+      "calls": 62
+    },
+    "reservationUsd": 1.3513292,
+    "arithmetic": "5 x 12 x 167914 + 2 x 100000 = 10274840 input tokens x $0.00000013 + 60000 output tokens x $0.00000026"
+  },
+  "compileAtMinSpan": {
+    "operativeChars": 37,
+    "reservationUsd": 1.3513292
+  },
+  "verify": {
+    "shape": {
+      "conversations": 0,
+      "turnsPerConversation": 0,
+      "inputTokensPerTurn": 100000,
+      "passACalls": 0,
+      "passAInputTokensPerCall": 0,
+      "outputTokens": 60000,
+      "inputTokens": 200000,
+      "calls": 2
+    },
+    "reservationUsd": 0.0416
+  },
+  "candidateMaxReservationUsd": 1.3929292,
+  "stageCallReservationUsd": 0.0286,
+  "healthProbes": {
+    "tierA": 0.00007488,
+    "tierB": 0.00122746,
+    "both": 0.00130234
+  },
+  "coverage": {
+    "candidate78": {
+      "exactUsd": 0.2094469,
+      "reservedUsd": 1.3513292,
+      "ratio": 6.451894012277097
+    },
+    "monolithic667k": {
+      "exactUsd": 0.087623,
+      "reservedUsd": 1.3513292
+    }
+  },
+  "hardInvariant": "before every dispatch: committed (exact + retained + outstanding) + next reservation <= ceiling, and committed + next < STOP_AT; refused => BUDGET_STOP before the request begins",
+  "settlement": {
+    "exact": "reservation replaced by the exact charge, unused part released",
+    "timeoutOrUnknownBilling": "full reservation retained (UNKNOWN_TIMEOUT_BILLED)",
+    "zeroToken402OrRefusal": "PROVIDER_REFUSED_NO_COST: $0 exact, reservation released; nothing was served, nothing billed",
+    "partiallyServedThen402": "EXACT from provider telemetry, then the run stops"
+  },
+  "consequenceForRecovery": "with $1.462384 left under the population ceiling, the compile reservation ($1.3513292) admits exactly one further dispatch. At concurrency 1 a recovery mission needs its ceiling to exceed committed + one candidateMaxReservation ($1.3929292) at every dispatch; N candidates need a ceiling of roughly N x their exact costs + one reservation, not N x reservation."
+}

@@ -1,0 +1,91 @@
+{
+  "artifact": "§17/§20 — verdict.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "verdict": "PHASE3_EVIDENCE_REGENERATION_BLOCKED",
+  "blockedOn": "PAID_CALL_AUTHORIZATION_REQUIRED",
+  "whatIsSettled": [
+    "All 47 cases carry non-current-pipeline evidence — a wider scope than the 20 the prior investigation named.",
+    "The regeneration population is sized, benchmark-blind and uncapped: 1,274 candidates.",
+    "Unit economics are measured from the frozen run's own telemetry, not estimated from a price list.",
+    "Question 4 is answered at zero cost: the composed-citation demotion still reproduces in current production.",
+    "No cached call can be reused: the cache key carries the prompt version, and every key misses across v2 → v5."
+  ],
+  "whatIsNotSettled": [
+    "Whether current production surfaces the 22 dangerous silent omissions.",
+    "Whether the CREDIT count moves under current-pipeline evidence.",
+    "Whether any defect beyond P3-CURRENT-1 belongs to current production."
+  ],
+  "productionFreeze": {
+    "startingSha": "f2cd4982dea5495b7962f5020b23b8d3e39a51e9",
+    "frozenSurfacesChanged": [],
+    "perSurface": [
+      {
+        "surface": "lib/contract-model/compiler/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "lib/contract-model/analyzer/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "lib/contract-model/analysis/orchestrator.ts",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "lib/contract-model/semantic-accountability/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "lib/contract-model/runtime/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "lib/contract-model/evaluation-v2/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "lib/contract-model/discovery/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "lib/contract-model/ir/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "tests/fixtures/unseen-packages/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "docs/phase-3-v3.1-final-reconciliation/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "docs/phase-3-final-closure-resolution/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "docs/phase-3-remediation/",
+        "changed": false,
+        "diffStat": "(no change)"
+      }
+    ],
+    "filesChangedSinceStartingSha": [],
+    "allChangesAreAdditive": true,
+    "productionDiffIsEmpty": true,
+    "benchmarkGroundTruthDiffIsEmpty": true,
+    "priorAuditArtifactsDiffIsEmpty": true
+  },
+  "paidCallsMade": 0,
+  "nextStep": "A human authorization naming a scope option in 02-cost-plan.json. A_FULL is the only option §17 allows a complete verdict from, because it is the only one whose population is not truncated."
+}

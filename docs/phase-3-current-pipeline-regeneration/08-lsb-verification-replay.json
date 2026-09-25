@@ -1,0 +1,135 @@
+{
+  "artifact": "§6 — LSB verification replay against the unchanged current production verifier. COMPLETE; cost $0.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "question": "Does the current production verifier still demote a compiled rule whose cited subsection address is not printed verbatim in the source, even when the parent section IS present?",
+  "answer": "YES — still reproduces in current production",
+  "controlBehavedCorrectly": true,
+  "verifierUnchangedByThisMission": true,
+  "costUsd": 0,
+  "modelCalls": 0,
+  "citationsReplayed": 11,
+  "demotedCitations": [
+    "Section 6.01(i)",
+    "Section 6.01(m)",
+    "Section 6.03(a)",
+    "Section 6.04(b)",
+    "Section 99.99"
+  ],
+  "passedCitations": [
+    "Section 6.01",
+    "Section 6.02",
+    "Section 6.04(a)",
+    "Section 6.08(a)",
+    "Section 6.11",
+    "Section 6.15"
+  ],
+  "composedDemotionsWithResolvingParent": [
+    "Section 6.01(i)",
+    "Section 6.01(m)",
+    "Section 6.03(a)",
+    "Section 6.04(b)"
+  ],
+  "mechanism": "findCitationIndex() is whitespace-tolerant but still literal: it looks for the citation string itself. An agreement that prints 'SECTION 6.03' as a header and then '(a)' as an indented clause never contains the literal 'Section 6.03(a)', so a correct subsection citation fails the lookup and the rule is demoted to JUDGMENT_REQUIRED.",
+  "scopeNote": "§6 forbids fixing verification in this mission. This replay only establishes that the behaviour is current, so that a future remediation mission has a measured starting point.",
+  "rows": [
+    {
+      "citation": "Section 6.01",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": true,
+      "composed": false,
+      "parentResolved": true,
+      "outcome": "PASSED",
+      "demotionNote": null
+    },
+    {
+      "citation": "Section 6.01(i)",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": false,
+      "composed": true,
+      "parentResolved": true,
+      "outcome": "DEMOTED",
+      "demotionNote": "VERIFICATION_FAILED: cited section \"Section 6.01(i)\" not found verbatim in source text."
+    },
+    {
+      "citation": "Section 6.01(m)",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": false,
+      "composed": true,
+      "parentResolved": true,
+      "outcome": "DEMOTED",
+      "demotionNote": "VERIFICATION_FAILED: cited section \"Section 6.01(m)\" not found verbatim in source text."
+    },
+    {
+      "citation": "Section 6.02",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": true,
+      "composed": false,
+      "parentResolved": true,
+      "outcome": "PASSED",
+      "demotionNote": null
+    },
+    {
+      "citation": "Section 6.03(a)",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": false,
+      "composed": true,
+      "parentResolved": true,
+      "outcome": "DEMOTED",
+      "demotionNote": "VERIFICATION_FAILED: cited section \"Section 6.03(a)\" not found verbatim in source text."
+    },
+    {
+      "citation": "Section 6.04(a)",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": true,
+      "composed": true,
+      "parentResolved": true,
+      "outcome": "PASSED",
+      "demotionNote": null
+    },
+    {
+      "citation": "Section 6.04(b)",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": false,
+      "composed": true,
+      "parentResolved": true,
+      "outcome": "DEMOTED",
+      "demotionNote": "VERIFICATION_FAILED: cited section \"Section 6.04(b)\" not found verbatim in source text."
+    },
+    {
+      "citation": "Section 6.08(a)",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": true,
+      "composed": true,
+      "parentResolved": true,
+      "outcome": "PASSED",
+      "demotionNote": null
+    },
+    {
+      "citation": "Section 6.11",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": true,
+      "composed": false,
+      "parentResolved": true,
+      "outcome": "PASSED",
+      "demotionNote": null
+    },
+    {
+      "citation": "Section 6.15",
+      "origin": "frozen-lsb-evidence",
+      "citationResolved": true,
+      "composed": false,
+      "parentResolved": true,
+      "outcome": "PASSED",
+      "demotionNote": null
+    },
+    {
+      "citation": "Section 99.99",
+      "origin": "control",
+      "citationResolved": false,
+      "composed": false,
+      "parentResolved": false,
+      "outcome": "DEMOTED",
+      "demotionNote": "VERIFICATION_FAILED: cited section \"Section 99.99\" not found verbatim in source text."
+    }
+  ]
+}

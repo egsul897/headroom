@@ -1,0 +1,228 @@
+{
+  "mission": "HEADROOM PHASE-3 - CONMED BENCHMARK RECOVERY PREFLIGHT - P-6 / P-7 harness safety only",
+  "verdict": "BENCHMARK_RECOVERY_HARNESS_READY",
+  "paidModelCalls": 0,
+  "productionFilesChanged": 0,
+  "populationFilesChanged": 0,
+  "populationManifestChanged": false,
+  "startingSha": "8748fa6abf905c679cbd32c85133368d24aa31ea",
+  "harnessFiles": {
+    "new": [
+      "scripts/p3-conmed-pilot/gateway-credit.ts",
+      "scripts/p3-conmed-pilot/reservation-policy.ts",
+      "scripts/p3-conmed-pilot/population-loop.ts",
+      "scripts/p3-conmed-pilot/recovery-preflight-baseline.ts",
+      "tests/phase-3-conmed-pilot/benchmark-recovery-preflight.test.ts"
+    ],
+    "modified": [
+      "scripts/p3-conmed-pilot/run-population-verified.ts (loop delegated; sentinel; recorded Pass A; shape reservations; stopReason manifest)",
+      "scripts/p3-conmed-pilot/timeout-policy.ts (BudgetLedger.dispatchDecision / reserveOrRefuse)",
+      "scripts/p3-conmed-pilot/compile-run.ts (callerFor accepts a fetch implementation)",
+      "tests/phase-3-conmed-pilot/continuation-harness.test.ts (source pins)",
+      "tests/phase-3-conmed-pilot/resume-manifest.test.ts (reservation pin)"
+    ]
+  },
+  "p6": {
+    "redBaseline": {
+      "observedSignal": {
+        "httpStatusPrefix": "402",
+        "body": {
+          "error": {
+            "message": "A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.",
+            "type": "insufficient_funds"
+          }
+        },
+        "whereItSurfaces": "compilation.unresolvedIssues[0] as the string `402 {json}` (the SDK APIError message); compilation.errorDetail is null; telemetry inputTokens/outputTokens 0",
+        "sdkErrorFieldsDestroyedAt": "lib/contract-model/compiler/semantic/caller.ts:373-376 - `err.message` only; `.status` and `.error` of the APIError are dropped before the result reaches the harness"
+      },
+      "currentClassification": {
+        "classifyOutcome": "PROVIDER_FAILURE",
+        "costStatus": "ESTIMATED_FROM_STREAM",
+        "chargedUsd": 0
+      },
+      "loopContinued": {
+        "candidatesDispatchedAfterFirst402": 9,
+        "allUnserved402": true,
+        "refs": [
+          "7.9(a)(ii)",
+          "7.9(b)",
+          "7.9(b)(i)",
+          "7.9(b)(ii)",
+          "7.9(b)(iii)",
+          "7.9(b)(iv)",
+          "7.9(c)",
+          "7.9(c)(i)",
+          "7.9(d)"
+        ]
+      },
+      "runnerHasNoCreditStop": true,
+      "red": true
+    },
+    "signal": {
+      "httpStatus": 402,
+      "errorType": "insufficient_funds",
+      "structure": "{error:{message,type}}"
+    },
+    "detectionLocations": [
+      "GatewayResponseSentinel: a fetch wrapper on the Anthropic client the harness constructs (compile-run.ts callerFor) records status + parsed error type before the SDK raises (structured, primary)",
+      "stage caller wrapper in the runner: the stage analyzer rethrows the SDK APIError intact (anthropic-analyzer.ts:132), so .status / .error are read directly for Pass A, verify and amendment calls (structured)",
+      "detectCreditExhaustionInResult: the compiler keeps only err.message (caller.ts:373-376) as `402 {json}` under unresolvedIssues; parsed strictly and accepted only with error.type insufficient_funds or status 402 (corroboration)"
+    ],
+    "stopBehaviour": "candidate N recorded honestly (PROVIDER_FAILURE; PROVIDER_REFUSED_NO_COST $0 when zero tokens, EXACT when partially served), persisted, statuses + ledger + verified-unit manifest + checkpoint flushed, then RUN STOP GATEWAY_CREDIT_EXHAUSTED; N+1 never dispatched; no retry, no alternate provider, no fallback model; the final manifest carries stopReason, stoppedAtCandidate, stoppedAt, stopDetail, creditExhaustionSignal, committed spend and remainingCandidates",
+    "negativeControls": [
+      "provider 500 (message containing the word funds) -> ordinary PROVIDER_FAILURE, loop continues",
+      "429 -> not credit exhaustion",
+      "schema failure -> recorded, loop continues",
+      "timeout -> UNKNOWN_TIMEOUT_BILLED, loop continues",
+      "prose with 'fund' / a 402 not in the NNN {json} shape / a 402 text without PROVIDER_FAILURE -> not detected"
+    ]
+  },
+  "p7": {
+    "redBaseline": {
+      "historicalReservationUsd": 0.01942304,
+      "reservationInputs": {
+        "observedInputTokensPerCandidate": 29408,
+        "timeoutMs": 480000,
+        "outputTokensPerSecond": 125,
+        "reservedOutputTokens": 60000
+      },
+      "candidate78": {
+        "exactUsd": 0.2094469,
+        "inputTokens": 1510950,
+        "outputTokens": 50090,
+        "wallClockMs": 399743
+      },
+      "coverageRatio": 0.09273491276309175,
+      "underReservationFactor": 10.783425251659885,
+      "syntheticGuard": {
+        "ceilingUsd": 1,
+        "remainingBeforeUsd": 0.1,
+        "nextReservationUsd": 0.01942304,
+        "oldGuardWouldDispatch": true,
+        "committedAfterCandidate78Usd": 1.109447,
+        "ceilingExceededByUsd": 0.109447
+      },
+      "red": true
+    },
+    "rootCause": "REPEATED_FULL_CONTEXT_TURNS x SHARD_COUNT",
+    "rootCauseDetail": "Five bounded conversations (sharded compile; telemetry.attemptCount 5, retryCount 0 - no shard retries, no rate-limit retries). Each conversation is the caller tool loop of up to 12 turns (maxToolCalls 8 + MAX_TURN_OVERHEAD 4) and EVERY turn re-sends the whole conversation: system prompt + few-shot block + context bundle + all prior tool results and assistant turns; cachedInputTokens is null, so nothing is credited as cached. About 302k input per conversation is about 25k per turn x 12 turns, all five conversations ending SHARD_SCHEMA_FAILURE after exhausting their turns (133 unresolved stitch issues). The verifier never ran. Output (50,090, about 10k per conversation) is a minor term; wall clock (399.7 s, 181.2 s of it inside the shard run) bounds output only. The same multiplier produced the two 667k-token MONOLITHIC compiles of the original run (7.5(g) 67 chars, 7.5(h) 208 chars: one conversation, about 55.6k per turn x 12), so operative-span length does not predict it.",
+    "derivation": {
+      "policy": "reservation-policy.v1 - mechanically derived from the execution shape the runner permits, priced at catalogue rates",
+      "model": {
+        "id": "deepseek/deepseek-v4-flash",
+        "inputUsdPerToken": "0.00000013",
+        "outputUsdPerToken": "0.00000026",
+        "maxTokens": 384000,
+        "contextWindow": 1000000
+      },
+      "limits": {
+        "turnsPerConversation": {
+          "value": 12,
+          "from": "DEFAULT_TOOL_BUDGET.maxToolCalls (8, compiler/semantic/types.ts) + MAX_TURN_OVERHEAD (4, caller.ts module-private, mirrored and pinned by test)"
+        },
+        "firstTurnInputTokens": {
+          "value": 100000,
+          "from": "MAX_FIRST_TURN_INPUT_TOKENS (shard-planner.ts): the planner bounds a shard first turn to half the 200k window"
+        },
+        "toolRetrievedSourceTokens": {
+          "value": 7914,
+          "from": "DEFAULT_TOOL_BUDGET.maxAdditionalSourceChars (20000) x CALIBRATED_TOKENS_PER_CHAR (0.3957)"
+        },
+        "outputTokensPerCandidate": {
+          "value": 60000,
+          "from": "min(480 s x 125 tok/s, min(model.max_tokens, 128000)); the wall-clock ceiling wraps the whole compile (Pass A + shards); output is the only rate-bounded term"
+        },
+        "inputTokensPerTurn": {
+          "value": 167914,
+          "from": "firstTurnInputTokens + toolRetrievedSourceTokens + outputTokensPerCandidate (prior assistant turns re-sent)"
+        },
+        "conversationsPerCompile": {
+          "value": 5,
+          "from": "NO runner-side cap exists (the certified planner decides the shard count; one re-execution per shard on SHARD_PROVIDER_FAILURE). Harness-declared cap = the population-observed maximum over 72 billed compiles (retries included); ENFORCED: telemetry beyond the reserved shape stops the run (RESERVATION_SHAPE_EXCEEDED) before another dispatch"
+        },
+        "passACalls": {
+          "formula": "2 x ceil(operativeChars / 6000)",
+          "from": "inventory.ts batchChars default 6000: one first-pass call per batch plus at most one gap-pass call per batch; each bounded by firstTurnInputTokens"
+        },
+        "verifierCalls": {
+          "value": 2,
+          "from": "reviewer.ts (1 call site) + condition-suspicion-classifier.ts (1 call site); each bounded by firstTurnInputTokens; output bounded as above"
+        }
+      },
+      "compileAtMaxSpan": {
+        "operativeChars": 4667,
+        "shape": {
+          "conversations": 5,
+          "turnsPerConversation": 12,
+          "inputTokensPerTurn": 167914,
+          "passACalls": 2,
+          "passAInputTokensPerCall": 100000,
+          "outputTokens": 60000,
+          "inputTokens": 10274840,
+          "calls": 62
+        },
+        "reservationUsd": 1.3513292,
+        "arithmetic": "5 x 12 x 167914 + 2 x 100000 = 10274840 input tokens x $0.00000013 + 60000 output tokens x $0.00000026"
+      },
+      "compileAtMinSpan": {
+        "operativeChars": 37,
+        "reservationUsd": 1.3513292
+      },
+      "verify": {
+        "shape": {
+          "conversations": 0,
+          "turnsPerConversation": 0,
+          "inputTokensPerTurn": 100000,
+          "passACalls": 0,
+          "passAInputTokensPerCall": 0,
+          "outputTokens": 60000,
+          "inputTokens": 200000,
+          "calls": 2
+        },
+        "reservationUsd": 0.0416
+      },
+      "candidateMaxReservationUsd": 1.3929292,
+      "stageCallReservationUsd": 0.0286,
+      "healthProbes": {
+        "tierA": 7.488e-05,
+        "tierB": 0.00122746,
+        "both": 0.00130234
+      },
+      "coverage": {
+        "candidate78": {
+          "exactUsd": 0.2094469,
+          "reservedUsd": 1.3513292,
+          "ratio": 6.451894012277097
+        },
+        "monolithic667k": {
+          "exactUsd": 0.087623,
+          "reservedUsd": 1.3513292
+        }
+      },
+      "hardInvariant": "before every dispatch: committed (exact + retained + outstanding) + next reservation <= ceiling, and committed + next < STOP_AT; refused => BUDGET_STOP before the request begins",
+      "settlement": {
+        "exact": "reservation replaced by the exact charge, unused part released",
+        "timeoutOrUnknownBilling": "full reservation retained (UNKNOWN_TIMEOUT_BILLED)",
+        "zeroToken402OrRefusal": "PROVIDER_REFUSED_NO_COST: $0 exact, reservation released; nothing was served, nothing billed",
+        "partiallyServedThen402": "EXACT from provider telemetry, then the run stops"
+      },
+      "consequenceForRecovery": "with $1.462384 left under the population ceiling, the compile reservation ($1.3513292) admits exactly one further dispatch. At concurrency 1 a recovery mission needs its ceiling to exceed committed + one candidateMaxReservation ($1.3929292) at every dispatch; N candidates need a ceiling of roughly N x their exact costs + one reservation, not N x reservation."
+    }
+  },
+  "populationImmutability": {
+    "populationTreeSha256": "4c53b31aeeba54015c95ebc18f7aa44b893d30aa7b6ad15aa576037c6dfe8701",
+    "populationManifestSha256": "9c5e2c59797b142ec8ba91eb48f1d48dc388182c97d33615875c7035770428f6",
+    "phase3CompilerTreeSha256": "b10473765e6d000a815fe80ee0b3b87184df0f758204e39d1c92e0683f73d213",
+    "verifierTreeSha256": "536b944170f0c15c141470f311f70ba0f6bd69fc9b8e7daabc6bb6cc7e4f751b",
+    "phase4RuntimeTreeSha256": "9cd36dc78120f4d5b379e8d8e653581dffe20ec81a5776d596d40c43cff80d34",
+    "assertedBy": "tests/phase-3-conmed-pilot/benchmark-recovery-preflight.test.ts (population immutability) + hashes re-taken after the change"
+  },
+  "notDone": [
+    "no benchmark case executed",
+    "no gateway top-up or probe",
+    "no retry policy decided",
+    "P-1 untouched",
+    "Phase 3 semantics, Phase 4, Phase 4E untouched"
+  ],
+  "exactNextBoundedAction": "Authorize a benchmark-recovery mission with its own ceiling: 8 EXECUTION_LIMITED benchmark candidates (7.1, 7.2, 7.10 LONG; 7.13, 7.14, 7.16, 7.17 MID; 7.2(c) SHORT), one attempt each, concurrency 1, requiring at each dispatch ceiling > committed + $1.3929 (candidateMaxReservation); the gateway balance must be topped up first (last state: 402 insufficient_funds at 2026-09-25T08:06:27Z) and re-proven by the two health probes (reserved $0.0013)."
+}

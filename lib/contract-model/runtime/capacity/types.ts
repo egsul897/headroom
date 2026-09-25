@@ -10,6 +10,7 @@
  * algebra; every financial fact comes through the Phase-4B strict resolver.
  */
 import type { EntityClassTag } from "@prisma/client";
+import type { RuntimeVerificationEnvelope } from "../verification-envelope";
 import type { IRRule, IRSharedCapacity, RepresentationSufficiency } from "../../ir/types";
 import type { EvaluationResult, SerializedRuntimeValue } from "../types";
 import type { FinancialDependencyManifest } from "../input/types";
@@ -173,7 +174,12 @@ export type CapacityLimitationCode =
   | "USAGE_NOT_ATTRIBUTABLE_IN_GRAPH"
   | "PHASE3_RULE_UNSUPPORTED"
   /** A usage record whose amount is negative or unparsable and is not one half of a conserved reclassification pair. */
-  | "USAGE_AMOUNT_NOT_REPRESENTABLE";
+  | "USAGE_AMOUNT_NOT_REPRESENTABLE"
+  // --- PHASE-4 VERIFICATION GATE (migration step 3) ----------------------------
+  /** Verification refused a node this capacity depends on, or the whole unit (message names the condition). */
+  | "PHASE3_VERIFICATION_MATERIAL_FINDING"
+  /** Verification of the unit (or one it depends on) did not complete. Reviewable, not defective; never conflated with the above. */
+  | "PHASE3_VERIFICATION_INCOMPLETE";
 
 export interface CapacityLimitation {
   code: CapacityLimitationCode;
@@ -528,4 +534,6 @@ export interface BuildCapacityGraphArgs {
   companyId: string;
   instrumentKey: string;
   asOf?: string | null;
+  /** PHASE-4 VERIFICATION GATE: carried for node-level attribution. The graph itself imposes no floor; evaluateCapacityState does. */
+  verification?: RuntimeVerificationEnvelope;
 }

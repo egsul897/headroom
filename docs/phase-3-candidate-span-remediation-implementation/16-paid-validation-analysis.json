@@ -1,0 +1,98 @@
+{
+  "generatedBy": "post-run analysis of 15-paid-validation-results.json",
+  "modelCalls": 0,
+  "haltGate": "COHORT_A_REGRESSION completed=7/9 - the authorized stop gate fired and cohorts B, C and D were not run.",
+  "attributionOfTheCohortAFailures": {
+    "finding": "NOT attributable to the candidate-span change.",
+    "proof": [
+      "All 9 Cohort A candidates are single-key (structuralNodeIds.length === 1), so R1's anchor-only rule yields the identical string the previous concatenation yielded. Measured per candidate in this run: anchorChars == preChangeChars for 9/9.",
+      "The compiler input is therefore byte-identical to the pre-change run; the only remaining variables are model nondeterminism and provider conditions.",
+      "R3 touches semantic-verification/verify.ts, which runs AFTER compilation and was not invoked by this runner at all, so it cannot have influenced these outcomes.",
+      "The two failures are the two slowest candidates in the pre-change baseline - 7.1 at 456 s and 7.1(b) at 393 s against a 480 s ceiling. Both were already marginal; 7.1 failed at 355 s and 7.1(b) reached the ceiling.",
+      "Zero operative-attribution violations and zero context-retention violations across the cohort."
+    ],
+    "counterEvidenceConsidered": "If the span change had broken something, the damage would be expected on DUAL-key candidates whose text actually changed - and none of those ran. A failure confined to byte-identical inputs is the signature of execution variance, not of a contract change.",
+    "runtimeVarianceAcrossTheCohort": {
+      "7.1(a)": {
+        "prevSec": 203,
+        "nowSec": 140,
+        "prevTools": 3,
+        "nowTools": 3
+      },
+      "7.1": {
+        "prevSec": 456,
+        "nowSec": 355,
+        "prevTools": 3,
+        "nowTools": 2
+      },
+      "7.1(b)": {
+        "prevSec": 393,
+        "nowSec": 480,
+        "prevTools": 0,
+        "nowTools": null
+      },
+      "7.1(c)": {
+        "prevSec": 145,
+        "nowSec": 86,
+        "prevTools": 0,
+        "nowTools": 2
+      },
+      "7.1(d)": {
+        "prevSec": 176,
+        "nowSec": 256,
+        "prevTools": 0,
+        "nowTools": 4
+      },
+      "7.2(a)": {
+        "prevSec": 62,
+        "nowSec": 92,
+        "prevTools": 4,
+        "nowTools": 7
+      },
+      "7.2(b)": {
+        "prevSec": 87,
+        "nowSec": 58,
+        "prevTools": 2,
+        "nowTools": 0
+      },
+      "7.2(e) short": {
+        "prevSec": 65,
+        "nowSec": 231,
+        "prevTools": 2,
+        "nowTools": 3
+      },
+      "7.2(f)": {
+        "prevSec": 64,
+        "nowSec": 70,
+        "prevTools": 2,
+        "nowTools": 2
+      }
+    }
+  },
+  "semanticSafety": {
+    "operativeAttributionViolations": 0,
+    "contextRetentionViolations": 0,
+    "note": "No rule asserted an economic term that exists in linked parent/sibling material but not in its own anchor text - the violation class the span contract exists to prevent.",
+    "separateObservationOutsideThisMission": {
+      "what": "Three asserted values were not literally present in the anchor text.",
+      "7.1(d)": "$800,000,000 and 2.25% both appear in a retrieved DEFINITION context item ('Convertible Notes') - legitimate typed contextual evidence, exactly the channel the design intends.",
+      "7.2(f)": "100% appears in neither the anchor nor any retrieved context item. That is a model-grounding question, not a span-contract violation: 7.2(f) is single-key, so there is no parent or sibling text it could have leaked from. Recorded, not acted on - grounding/citation work is explicitly out of scope here."
+    }
+  },
+  "whatRemainsUnanswered": [
+    "Cohort B - whether the manufactured-long cases (7.2(e) long, 7.2(k), 7.2(k)(i), 7.2(k)(ii)) now complete. This is the primary execution question the remediation exists to answer and it is UNTESTED.",
+    "Cohort C - whether the six parent sections still compile their own chapeau semantics under a paid run.",
+    "Cohort D - whether the previously 0/3 dual-key cases now complete."
+  ],
+  "spend": {
+    "exactUsd": 0.047075,
+    "retainedUnknownTimeoutUsd": 0.0182,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 0.065275
+  },
+  "budgetHeadroom": {
+    "ceilingUsd": 0.4,
+    "committedUsd": 0.065275,
+    "remainingUsd": 0.3347
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "schema": "p3-conmed-resume-run-manifest.v1",
+  "evidenceLabel": "CURRENT_PIPELINE_COMPILE_AND_VERIFY",
+  "runId": "conmed-continuation-2-2026-09-25T07:37:23.236Z",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "concurrencyUsed": 1,
+  "autoRetry": false,
+  "fallbackModel": null,
+  "premiumModelBudgetUsd": 0,
+  "denominator": {
+    "dedup": 135,
+    "attemptable": 133,
+    "skippedEmpty": 2,
+    "skippedPriorAttempts": 107,
+    "toDispatch": 26
+  },
+  "priorSpend": {
+    "exactUsd": 0.73365128,
+    "retainedUnknownUsd": 0.9909751199999999,
+    "label": "original run (validated ledger) + in-flight reservation + pre-flight probes + possible aborted-launch amendment call + 1 preserved continuation segment(s)",
+    "breakdown": {
+      "originalExactUsd": 0.73168763,
+      "originalTimeoutReservationsUsd": 0.932306,
+      "originalInFlightReservationUsd": 0.01942304,
+      "originalPreflightProbesUsd": 0.00079651,
+      "abortedFirstLaunchPossibleAmendmentUsd": 0.0004,
+      "continuation1ExactUsd": 0.00035711,
+      "continuation1TimeoutReservationsUsd": 0.01942304,
+      "continuation1InFlightReservationUsd": 0.01942304,
+      "continuation1PreflightProbesUsd": 0.00081003
+    }
+  },
+  "attempted": 26,
+  "compileCompleted": 9,
+  "compileTimeout": 0,
+  "compileOtherFailure": 17,
+  "verificationCompleted": 9,
+  "verificationIncomplete": 6,
+  "verificationFailed": 0,
+  "verificationStatusCounts": {
+    "NOT_RUN_COMPILE_FAILED": 17,
+    "VERIFICATION_INCOMPLETE": 6,
+    "MATERIAL_DISCREPANCY": 3
+  },
+  "pairedPackagesComplete": 9,
+  "pairedPackagesIncomplete": 17,
+  "pairedPackagesNotWritten": 0,
+  "spend": {
+    "exactUsd": 1.046641,
+    "timeoutReservationsRetainedUsd": 0.990975,
+    "committedUsd": 2.037616,
+    "ceilingUsd": 3.5,
+    "stopAtUsd": 3.450577,
+    "amendmentPipelineUsd": 0.00047254999999999997,
+    "note": "cumulative: includes the seeded prior spend"
+  },
+  "candidateStatuses": [
+    {
+      "discoveryId": "discovery-candidate:25a7ac71a68f0535fad268cd",
+      "ref": "7.8",
+      "compile": "SCHEMA_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:5c8863c9378ed219563334fb",
+      "ref": "7.8(a)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+      "ref": "7.8(b)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:b5296614bd927a8e4ea227bc",
+      "ref": "7.8(c)",
+      "compile": "SCHEMA_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "ref": "7.8(d)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "MATERIAL_DISCREPANCY",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+      "ref": "7.8(e)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:deff46f63658cfd219009b2b",
+      "ref": "7.8(f)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:03a446b1ec89b4309b0572e9",
+      "ref": "7.8(g)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+      "ref": "7.8(h)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:ac28256f7476a6914247e7c9",
+      "ref": "7.8(i)",
+      "compile": "SCHEMA_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:718510e2901771adb5a31722",
+      "ref": "7.8(j)",
+      "compile": "SCHEMA_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:0c86f64e8580df76e45e16f0",
+      "ref": "7.8(k)",
+      "compile": "SCHEMA_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+      "ref": "7.8(l)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "MATERIAL_DISCREPANCY",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:e9616549c13c2debd957c533",
+      "ref": "7.8(m)(i)",
+      "compile": "COMPLETED",
+      "verify": "COMPLETED",
+      "verificationStatus": "MATERIAL_DISCREPANCY",
+      "packageComplete": true
+    },
+    {
+      "discoveryId": "discovery-candidate:248f4e6a15e5a2424e2a2397",
+      "ref": "7.9",
+      "compile": "SCHEMA_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:1bf90deb6bd9041e04c8728a",
+      "ref": "7.9(a)",
+      "compile": "SCHEMA_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:c95bfdcb359c0a4a81b5fd6b",
+      "ref": "7.9(a)(i)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:635980cf26209b960a1e57d1",
+      "ref": "7.9(a)(ii)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:3675ce686bd277452c61595b",
+      "ref": "7.9(b)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+      "ref": "7.9(b)(i)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:708135ded35624a61b97dcbd",
+      "ref": "7.9(b)(ii)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:d2d61a0f46f53960376211d3",
+      "ref": "7.9(b)(iii)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+      "ref": "7.9(b)(iv)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:915a72b626950c21a3dee456",
+      "ref": "7.9(c)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:523c83bba21c499f3344a3e7",
+      "ref": "7.9(c)(i)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    },
+    {
+      "discoveryId": "discovery-candidate:93b369778c6bbdf6dbc61844",
+      "ref": "7.9(d)",
+      "compile": "PROVIDER_FAILURE",
+      "verify": "NOT_RUN_COMPILE_FAILED",
+      "verificationStatus": null,
+      "packageComplete": false
+    }
+  ],
+  "verifiedUnitsManifest": "evidence/verified-units-manifest.json"
+}

@@ -1,0 +1,105 @@
+{
+  "modelCalls": 0,
+  "principle": "Change WHAT BECOMES OPERATIVE TEXT. Do NOT change structuralNodeIds itself. Keeping the array intact is what makes every coverage / provenance / supersession consumer bit-identical (06-consumer-matrix.json C2, C5-C12).",
+  "changes": [
+    {
+      "id": "R1",
+      "classification": "REQUIRED",
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "function": "analyzeInstrument - the compilationCandidates map",
+      "line": 418,
+      "current": "const operativeSourceText = candidate.structuralNodeIds.map((id) => index.getNodeText(id, \"DESCENDANTS\")).join(\"\\n\\n\");",
+      "proposed": "const anchorNodeId = candidate.structuralNodeIds[0] ?? null;\nconst operativeSourceText = anchorNodeId ? index.getNodeText(anchorNodeId, \"DESCENDANTS\") : \"\";",
+      "why": "The one site that turns Pass C's LINK into a span. Everything else in this design follows from it.",
+      "risks": [
+        "A candidate with an empty structuralNodeIds array yields \"\" - exactly what the current expression already yields for that case (an empty map joins to \"\"), so no new failure mode.",
+        "The compile cache key changes for every affected candidate (cache.ts:34): a one-time cold cache, no correctness effect."
+      ]
+    },
+    {
+      "id": "R2",
+      "classification": "REQUIRED",
+      "file": "scripts/p3-conmed-pilot/pipeline.ts",
+      "function": "operativeTextFor",
+      "lines": [
+        135,
+        137
+      ],
+      "current": "return candidate.structuralNodeIds.map((id) => index.getNodeText(id, \"DESCENDANTS\")).join(\"\\n\\n\");",
+      "proposed": "the same anchor-only expression as R1",
+      "why": "The pilot harness reproduces R1 byte-for-byte and is what every Phase-3 measurement runs through. Without it the validation would measure the old contract. Harness file - it does not count toward PRODUCTION_FILES_CHANGED, but it is REQUIRED for the change to be observable."
+    },
+    {
+      "id": "R3",
+      "classification": "REQUIRED",
+      "file": "lib/contract-model/compiler/semantic-verification/verify.ts",
+      "function": "verifyCompiledCandidate - Gate 2",
+      "line": 355,
+      "current": "classifyConditionSuspicion(compilerInput.operativeSourceText, ...)",
+      "proposed": "classifyConditionSuspicion([compilerInput.operativeSourceText, ...compilerInput.contextBundle.items.filter((i) => i.type === \"PARENT_SCOPE\").map((i) => i.excerptText)].join(\"\\n\\n\"), ...)",
+      "why": "Gate 2 is the ONLY gate that can permit a review skip. Anchor-only operative text removes chapeau conditions from its window, so without this the fix could REDUCE review on exactly the composite cases the 14 false-credit controls protect.",
+      "risks": [
+        "A mean 319 extra chars (max 758) on that one classifier input. No new call, no new model."
+      ]
+    },
+    {
+      "id": "F1",
+      "classification": "SAFETY_FOLLOWUP",
+      "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "lines": [
+        163,
+        165
+      ],
+      "current": "for (const extraNodeId of candidate.structuralNodeIds.slice(1)) retrieveOperativeSource(state, access.index, documentId, extraNodeId);",
+      "proposed": "retrieve the linked node as a typed PARENT_SCOPE item (or SIBLING_CONTEXT when it is not an ancestor) rather than a second OPERATIVE_SOURCE item.",
+      "why": "After R1 this is the last place a linked parent's full subtree is still LABELLED operative. Measured: retrieveParentScope already emits the same parent as PARENT_SCOPE for 67/67 dual CONMED candidates, so the item is redundant as well as mislabelled. Deliberately NOT bundled with R1: leaving it keeps the first change strictly context-preserving - nothing a compiler sees today disappears - which is the property the paid validation should test first."
+    },
+    {
+      "id": "F2",
+      "classification": "SAFETY_FOLLOWUP",
+      "file": "lib/contract-model/ir/types.ts",
+      "type": "SourceProvenance",
+      "proposed": "add optional `role?: \"OPERATIVE\" | \"CONTEXTUAL\"` and optional `contextItemId?: string`; absent reads as OPERATIVE, so every existing IR artifact stays valid.",
+      "why": "Makes a contextual citation auditable. Not required for the span fix to be safe, because after R1 the operative window no longer contains the foreign text."
+    },
+    {
+      "id": "F3",
+      "classification": "SAFETY_FOLLOWUP",
+      "file": "tests/",
+      "proposed": "an invariant test asserting that coverage-audit's discoveredNodeIds set and semantic-coverage's covered-unit set are identical before and after R1.",
+      "why": "Mechanically pins the 'coverage cannot disappear' claim instead of relying on the argument."
+    },
+    {
+      "id": "O1",
+      "classification": "OPTIONAL",
+      "file": "lib/contract-model/compiler/discovery/types.ts",
+      "proposed": "reword the field's doc comment from 'nodes this discovery's evidence spans' to 'anchor node, followed by linked nodes that contextualise it'.",
+      "why": "The wording is what invited the defect. No behaviour change."
+    },
+    {
+      "id": "O2",
+      "classification": "OPTIONAL",
+      "file": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts",
+      "proposed": "emit the linkage as a separate named field (e.g. contextualNodeIds) instead of position [1..] of structuralNodeIds.",
+      "why": "Structurally clearer, but it touches every consumer in the matrix and turns a 2-line change into a migration. NOT recommended for this remediation."
+    }
+  ],
+  "notChanged": [
+    "the compiler prompt or few-shots (the operative/context split already exists at caller.ts:229-244)",
+    "targetPrimaryChars or any ShardBudget field",
+    "maxToolCalls",
+    "timeouts",
+    "the compiler model",
+    "structuralNodeIds itself",
+    "Pass C's linkage rule",
+    "any benchmark artifact"
+  ],
+  "exactRequiredProductionFiles": [
+    "lib/contract-model/analysis/orchestrator.ts (R1)",
+    "lib/contract-model/compiler/semantic-verification/verify.ts (R3)"
+  ],
+  "requiredHarnessFiles": [
+    "scripts/p3-conmed-pilot/pipeline.ts (R2)"
+  ],
+  "totalRequiredProductionChange": "2 files, ~4 lines"
+}

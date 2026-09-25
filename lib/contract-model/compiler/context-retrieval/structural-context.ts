@@ -137,6 +137,30 @@ export function retrieveOperativeSource(state: RetrievalState, index: Structural
   return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
 }
 
+/**
+ * F1 - a structural node the discovery candidate LINKS to (structuralNodeIds[1..]), retrieved as
+ * contextual evidence rather than as a second operative source.
+ *
+ * The text and citation are exactly what retrieveOperativeSource would have produced for this node,
+ * so no context is lost; only the ownership label changes. `isAncestor` decides between the two
+ * existing contextual types - PARENT_SCOPE for a containing section (the overwhelmingly common Pass
+ * C case: an exception linked to the section it modifies) and SIBLING_CONTEXT for a linked neighbour
+ * that does not enclose the anchor. No new ContextItemType is introduced.
+ */
+export function retrieveLinkedStructuralContext(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string, isAncestor: boolean): ContextItem | null {
+  const node = index.getNodeById(nodeId);
+  if (!node) return null;
+  const text = index.getNodeText(nodeId, "DESCENDANTS");
+  const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId, sectionRef: node.sectionRef });
+  const type = isAncestor ? "PARENT_SCOPE" : "SIBLING_CONTEXT";
+  const reason = isAncestor
+    ? `Enclosing scope for Section ${node.sectionRef}, linked to this candidate by neighborhood expansion - it governs how the candidate's own clause is read, but its text is NOT this candidate's operative source.`
+    : `Structurally linked neighbour Section ${node.sectionRef}, retrieved by neighborhood expansion as context - it is not this candidate's operative source.`;
+  const item = addItem(state, makeItemInput(type, documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, reason, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
+  addEdge(state, item.itemId, operativeItemId, isAncestor ? "PARENT_OF" : "SIBLING_OF", isAncestor ? "Encloses the operative provision." : "Structurally linked to the operative provision.");
+  return item;
+}
+
 /** Every ancestor closer than the enclosing ARTICLE (an ARTICLE heading is never itself operative language) - task §7's "the individual exception cannot be interpreted correctly without that [parent] scope." */
 export function retrieveParentScope(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string): void {
   const ancestors = index.getAncestors(nodeId).filter((n) => n.nodeType !== "ARTICLE");

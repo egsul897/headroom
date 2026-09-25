@@ -1,0 +1,778 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:45:34.373Z",
+  "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.6(d)",
+    "operativeSourceText": "(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n",
+    "operativeSourceTextSha256": "f05abb8e96bd0e07bf402a5be904232ddaccbfe994e3594d36bc4acde59669e9",
+    "operativeSourceChars": 122,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:abb6e2afdbb0e4da29062e2cfb3bff3e985eccb965a4379b3b19c797b9da4ff7",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 6,
+    "items": [
+      {
+        "itemId": "context-item:aeb7bcc0fe451adb99a6275dc1b8235b501416023d39c69e781ea49ea2ec4642",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.6(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 122,
+        "excerptText": "(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n"
+      },
+      {
+        "itemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.6",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 3501,
+        "excerptText": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeasance,\nretirement or other acquisition of, any shares of any class of Capital Stock of the Parent Borrower or any Subsidiary or any warrants\nor options to purchase any such Capital Stock, whether now or hereafter outstanding, or make any other distribution in respect thereof,\neither directly or indirectly, whether in cash or property or in obligations of the Parent Borrower or any Subsidiary (collectively, \" Restricted\nPayments \"), except:\n(a)\nthat (i) any Subsidiary that is not a Loan Party may make Restricted Payments to the Parent Borrower or any Wholly-Owned Subsidiary\nand (ii) any Subsidiary Guarantor may make Restricted Payments to the Parent Borrower or any Subsidiary Guarantor;\n(b)\n(i) repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee\nor director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\n102\nand (ii) cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes\nof clauses (i) and (ii) not to exceed $25,000,000 per year;\n(c)\nredemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate\namount equal to $25,000,000 since the Closing Date;\n(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n(e)\nso long as (i) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro\nforma basis (giving effect to such Restricted Payment and any Indebtedness incurred in connection therewith) as at the last day of\nthe most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no\ngreater than 3.50 to 1.00 and (ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may\nmake Restricted Payments in an unlimited amount;\n(f)\nthe Parent Borrower may (i) pay any premium or other amount in respect of, and otherwise perform its obligations under, any Permitted\nBond Hedge Transaction or Permitted Warrant Transaction and (ii) make any Restricted Payments and/or payments or deliveries required by\nthe terms of, and otherwise perform its obligations under, any Permitted Bond Hedge Transaction or Permitted Warrant Transaction (including\nmaking payments and/or deliveries due upon exercise and settlement or termination thereof); and\n(g)\nthe Parent Borrower or any Subsidiary Borrower may make any Restricted Payments and/or payments or deliveries in shares of common\nstock (or other securities or property following a merger event or other change of the common stock of the Parent Borrower or any such\nSubsidiary Borrower) (and cash in lieu of fractional shares) and/or cash required by the terms of, and otherwise perform its obligations\nunder, any Permitted Unsecured Indebtedness (including making payments of interest and principal thereon, making payments due upon required\nrepurchase thereof and/or making payments and deliveries due upon conversion thereof).\n"
+      },
+      {
+        "itemId": "context-item:abc6ac14a275ce166ef4b5f8ca5c433780611282cf199d512316b2e7e2b7026b",
+        "type": "PROVISO",
+        "normalizedRef": "7.6(e)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 15,
+        "excerptText": "(e)\nso long as "
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:5ee6f8d537bb387d7e9975c204d42b133b6f8ba57cf98c9fb61cc7de4913a61e",
+        "type": "DEFINITION",
+        "normalizedRef": "Restricted Payments",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 51,
+        "excerptText": "\"Restricted Payments\": as defined in Section 7.6.\n\n"
+      },
+      {
+        "itemId": "context-item:e3386402c6629a67e3e2b9583c952226ac116ef4a484221fc03277d4e3153a21",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "7.6",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 743,
+        "excerptText": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeasance,\nretirement or other acquisition of, any shares of any class of Capital Stock of the Parent Borrower or any Subsidiary or any warrants\nor options to purchase any such Capital Stock, whether now or hereafter outstanding, or make any other distribution in respect thereof,\neither directly or indirectly, whether in cash or property or in obligations of the Parent Borrower or any Subsidiary (collectively, \" Restricted\nPayments \"), except:\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "toItemId": "context-item:aeb7bcc0fe451adb99a6275dc1b8235b501416023d39c69e781ea49ea2ec4642",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:abc6ac14a275ce166ef4b5f8ca5c433780611282cf199d512316b2e7e2b7026b",
+        "toItemId": "context-item:aeb7bcc0fe451adb99a6275dc1b8235b501416023d39c69e781ea49ea2ec4642",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:aeb7bcc0fe451adb99a6275dc1b8235b501416023d39c69e781ea49ea2ec4642",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:aeb7bcc0fe451adb99a6275dc1b8235b501416023d39c69e781ea49ea2ec4642",
+        "toItemId": "context-item:5ee6f8d537bb387d7e9975c204d42b133b6f8ba57cf98c9fb61cc7de4913a61e",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:5ee6f8d537bb387d7e9975c204d42b133b6f8ba57cf98c9fb61cc7de4913a61e",
+        "toItemId": "context-item:e3386402c6629a67e3e2b9583c952226ac116ef4a484221fc03277d4e3153a21",
+        "edgeType": "REFERENCES",
+        "reason": "\"Section 7.6\" inside a definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.6(d)",
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "PAY_RESTRICTED_PAYMENT",
+          "entityScope": [
+            "Parent Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "DURING_PERIOD",
+            "operand": {
+              "kind": "MONEY",
+              "amount": 40000000,
+              "currency": "USD",
+              "citation": "§7.6(d)"
+            },
+            "periodDescription": "any fiscal year",
+            "citation": "§7.6(d)"
+          },
+          "conditions": [],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.6(d)",
+          "excerpt": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+          "inventoryItemIds": [
+            "7f5c2ccafdc074f23859058e"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Section 7.6 is a prohibition ('Declare or pay any dividend... except:') with listed exceptions (a)-(g). The operative provision compiled here, 7.6(d), is one of those exceptions: a quantitative permission for the Parent Borrower to make Restricted Payments up to an aggregate $40,000,000 per fiscal year. The other exceptions (a)-(c), (e)-(g) are outside the scope of this compilation task, which is limited to 7.6(d).",
+        "Source is confirmed CURRENT with no amendment history; sufficiency is COMPLETE."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:86694be8f316884445d7ce6e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.6(d)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "DURING_PERIOD",
+          "type": "MONEY",
+          "exprId": "ir-expr:6401365f90c63520edd5b993",
+          "value": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 40000000,
+            "currency": "USD",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.6(d)",
+              "excerpt": null
+            },
+            "exprId": "ir-expr:ae3ba98a3f7859d73ba8d284"
+          },
+          "periodDescription": "any fiscal year",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.6(d)",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.6(d)",
+          "excerpt": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 11,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "7f5c2ccafdc074f23859058e"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "Section 7.6 is a prohibition ('Declare or pay any dividend... except:') with listed exceptions (a)-(g). The operative provision compiled here, 7.6(d), is one of those exceptions: a quantitative permission for the Parent Borrower to make Restricted Payments up to an aggregate $40,000,000 per fiscal year. The other exceptions (a)-(c), (e)-(g) are outside the scope of this compilation task, which is limited to 7.6(d).",
+      "Source is confirmed CURRENT with no amendment history; sufficiency is COMPLETE.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T03:45:05.763Z",
+      "inputTokens": 11306,
+      "outputTokens": 890,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 4119,
+      "calculatedCostUsd": 0.031512
+    },
+    "compiledAt": "2026-09-25T03:45:05.763Z",
+    "outputHash": "e3d11078db43072efcef6c7eccbb15faa870693fffb4c618d512840bb76f8afe"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "50a6ba82287d0c6d6637896931f389598c0b72c6eb29c7cb5c2ea9bb50827fb7",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+        "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+        "irPath": "rules[0].entityScope",
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "\"(d) the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\" and, for contrast, \"(g) the Parent Borrower or any Subsidiary Borrower may make any Restricted Payments ...\"",
+        "sourceCitation": "§7.6(d), §7.6(g)",
+        "proposedIrEvidence": "\"entityScope\": [\"BORROWER\"]",
+        "verifierReasoning": "The source provision limits the $40,000,000 basket to the defined term \"Parent Borrower\". The proposed IR instead records the entity scope as \"BORROWER\". The same section uses \"Parent Borrower\" and \"Subsidiary Borrower\" as distinct concepts, and clause (g) separately permits \"the Parent Borrower or any Subsidiary Borrower\" to act. If \"BORROWER\" in the representation is broader or generic (for example, covering any borrower or all borrowers), then the IR would expand who is permitted to use the $40,000,000 basket beyond the parent borrower, and a reviewer relying on the IR could reach a different permission conclusion. The IR also provides no definition for \"BORROWER\" to show that it is equivalent to \"Parent Borrower\".",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T03:45:34.370Z"
+      },
+      {
+        "findingId": "ed49eeeefd7f2873cd7e2580cc5204ad1ecd68552bdfe0fb18140f0ce283995c",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+        "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+        "irPath": "rules[0].dependsOn / top-level definitions",
+        "findingType": "MISSING_DEPENDENCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "\"Parent Borrower\": as defined in the preamble hereto. / \"Restricted Payments\": as defined in Section 7.6.",
+        "sourceCitation": "Definitions of \"Parent Borrower\" and \"Restricted Payments\" in the source instrument",
+        "proposedIrEvidence": "\"dependsOn\": [], \"definitions\": []",
+        "verifierReasoning": "The operative clause is an exception permitting the \"Parent Borrower\" to make \"Restricted Payments\", both defined terms tied to other provisions. The proposed IR does not reference either definition in its dependencies, and its top-level definitions array is empty. In particular, the IR assigns the action as the generic \"OTHER\" rather than preserving the defined term \"Restricted Payments\". If a consumer of the IR relies on it without the source instrument's definitions, the scope of the permitted action (what counts as a Restricted Payment) and the precise actor (Parent Borrower, not merely any \"BORROWER\") could be understated or overstated. The materiality is uncertain because the impact depends on whether downstream consumers of the IR have access to the source definitions, but the IR marks itself COMPLETE while omitting these dependencies.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T03:45:34.370Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4273ac6f5f46983f4a3c91f9c435bd830ff4bbac93a9d9cbf71b6abac531d6cf",
+            "kind": "AMOUNT",
+            "rawText": "$40,000,000",
+            "numericValue": 40000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(d)",
+            "structuralNodeKey": null,
+            "charStart": 109,
+            "charEnd": 120,
+            "parsedAmount": 40000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "f687cadc78e4690b1dcfca57699b6e5b1541fcb621e07764def6cc6c18f7b34f",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+              "irPath": "rules[0].capacityExpression.value",
+              "numericValue": 40000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§7.6(d)",
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 40000000 (canonical 40000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aaf71c0d644dd9de1267b478466c7a0699176cf1252fe4883c5b8b7253878d27",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(d)",
+            "structuralNodeKey": null,
+            "charStart": 8,
+            "charEnd": 23
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8e05dc4317622d649283767dfa30cc8a524defaa591d31f6f8b75c72c08c404b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payments",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(d)",
+            "structuralNodeKey": null,
+            "charStart": 33,
+            "charEnd": 52
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payments\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$40,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$40,000,000",
+              "normalizedValue": 40000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 105,
+              "charEnd": 116,
+              "withheldReason": null,
+              "itemId": "ad8cefb69e9359c91d08b3d26987895b7cf9d981d330b695468856eb1b9f7876",
+              "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+              "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.6(d)",
+                "§7.6(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$40,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$40,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+      "items": [
+        {
+          "itemId": "4273ac6f5f46983f4a3c91f9c435bd830ff4bbac93a9d9cbf71b6abac531d6cf",
+          "kind": "AMOUNT",
+          "rawText": "$40,000,000",
+          "numericValue": 40000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(d)",
+          "structuralNodeKey": null,
+          "charStart": 109,
+          "charEnd": 120,
+          "parsedAmount": 40000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "120af6730887b958d36e3f76989d3f85bbb8ca35a399baafe22fb64aca7096dd",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(d)",
+          "structuralNodeKey": null,
+          "charStart": 95,
+          "charEnd": 108,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "4088b1d6ded0860168da0b3eec5a885151d1901cd4e8dae7b01de7e30e3e6e3e",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(d)",
+          "structuralNodeKey": null,
+          "charStart": 15,
+          "charEnd": 23,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "aaf71c0d644dd9de1267b478466c7a0699176cf1252fe4883c5b8b7253878d27",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(d)",
+          "structuralNodeKey": null,
+          "charStart": 8,
+          "charEnd": 23
+        },
+        {
+          "itemId": "8e05dc4317622d649283767dfa30cc8a524defaa591d31f6f8b75c72c08c404b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payments",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(d)",
+          "structuralNodeKey": null,
+          "charStart": 33,
+          "charEnd": 52
+        },
+        {
+          "itemId": "92e3b3c0dd886b887882d44c391435958bbacca3d6a1d78d0e128fae1f9a56b9",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(d)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+      "items": [
+        {
+          "itemId": "3e1ff11c0d00972ae5459f2af1044682a6a2a84602254739b94d1b400d931a8f",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(d)",
+          "sourceExcerpt": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9c4a6d0766ad2e1161fc8989614ef1cf5c30ff3eb64d2545053d68af1a7a9ba0",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(d)",
+          "sourceExcerpt": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f792bfa81f0251be6aa108a632fc8a412e9519804100a84fea830d3b4bb7d286",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(d)",
+          "sourceExcerpt": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f687cadc78e4690b1dcfca57699b6e5b1541fcb621e07764def6cc6c18f7b34f",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+          "irPath": "rules[0].capacityExpression.value",
+          "numericValue": 40000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$40,000,000",
+            "normalizedValue": 40000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 105,
+            "charEnd": 116,
+            "withheldReason": null,
+            "itemId": "ad8cefb69e9359c91d08b3d26987895b7cf9d981d330b695468856eb1b9f7876",
+            "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+            "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(d)",
+              "§7.6(d)"
+            ]
+          }
+        ],
+        "fieldsWalked": 4,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$40,000,000",
+            "normalizedValue": 40000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 105,
+            "charEnd": 116,
+            "withheldReason": null,
+            "itemId": "ad8cefb69e9359c91d08b3d26987895b7cf9d981d330b695468856eb1b9f7876",
+            "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+            "ruleOrDefinitionId": "ir-rule:86694be8f316884445d7ce6e",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(d)",
+              "§7.6(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$40,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$40,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "f05abb8e96bd0e07bf402a5be904232ddaccbfe994e3594d36bc4acde59669e9",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "45916279351c6e2174f3656e9412ff96b6507d649d31eab457f436cbbd5510c6",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": {
+      "status": "MATERIAL_CONDITION_POSSIBLE",
+      "evidence": [
+        {
+          "sourceSpan": "in any fiscal year in an aggregate amount not to exceed $40,000,000",
+          "description": "The permission to make Restricted Payments is qualified by a quantitative cap (not to exceed $40,000,000) and a limiting temporal period (any fiscal year). Omitting the cap would convert a limited permission into an unlimited one, materially changing what the clause permits.",
+          "category": "OTHER_CONDITIONAL_DEPENDENCY"
+        }
+      ],
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+      "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+      "telemetry": {
+        "provider": "vercel-ai-gateway",
+        "model": "deepseek/deepseek-v4-flash",
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "stage": "condition_suspicion_classification",
+        "timestamp": "2026-09-25T03:45:05.765Z",
+        "inputTokens": 2640,
+        "outputTokens": 1120,
+        "cachedInputTokens": null,
+        "cacheCreationInputTokens": null,
+        "attemptCount": 1,
+        "retryCount": 0,
+        "rateLimitFailures": 0,
+        "latencyMs": 4589,
+        "calculatedCostUsd": 0.01648
+      },
+      "failed": false,
+      "failureDetail": null,
+      "isSynthetic": false,
+      "fromCache": false
+    },
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 11504,
+    "inputTokens": 11306,
+    "outputTokens": 890,
+    "costUsd": 0.00170118,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:9e35243e01539edee04ff6a5.verified-units.json",
+    "packageHash": "090473f73d2a25228724eed9af7565be3e3b58d0dbaac781b1bfdb200c7df740",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

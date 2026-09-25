@@ -1,0 +1,73 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION (harness evidence + Fix B only)",
+  "section": "\u00a720 - SUCCESS GATE",
+  "gate": [
+    {
+      "n": 1,
+      "requirement": "unsupported prose 100% produces an explicit numeric-grounding finding",
+      "met": true,
+      "evidence": "caseA: UNGROUNDED at rules[0].conditions[0].description -> IR_ONLY -> UNSUPPORTED_NUMERIC_ASSERTION/MATERIAL -> MATERIAL_DISCREPANCY (red baseline: VERIFIED_WITH_NON_MATERIAL_FINDINGS)"
+    },
+    {
+      "n": 2,
+      "requirement": "supported context numerics remain grounded",
+      "met": true,
+      "evidence": "caseD: $800,000,000 and 2.25% both GROUNDED_CONTEXT from the authenticated 'Convertible Notes' definition; zero unsupported-numeric findings"
+    },
+    {
+      "n": 3,
+      "requirement": "structured numeric behavior is unchanged",
+      "met": true,
+      "evidence": "caseC: exactly one structured IR_ONLY item and one UNSUPPORTED_IR_ADDITION finding, as before; prose items carry numericGrounding and are therefore separable; 147/147 across the ten semantic-verification suites, 40/40 F-3, 30/30 F-4"
+    },
+    {
+      "n": 4,
+      "requirement": "citation numbering does not create false findings",
+      "met": true,
+      "evidence": "caseG: 0 assertions inventoried from a description naming Section 7.2(f), Article 10.1, clause (iii) of Section 6.01(b) and December 31, 2029; citation fields are excluded by CLASS and the grammar only reads semantically qualified figures"
+    },
+    {
+      "n": 5,
+      "requirement": "fabricated provenance excerpts cannot self-authenticate",
+      "met": true,
+      "evidence": "caseF: UNGROUNDED in a SOURCE_QUOTATION_FIELD -> PROVENANCE_MISMATCH; status not VERIFIED"
+    },
+    {
+      "n": 6,
+      "requirement": "rule/unit becomes review-required for unsupported material numerics",
+      "met": true,
+      "evidence": "IR_ONLY severity is MATERIAL when any unit claims COMPLETE and UNCERTAIN otherwise; both floors are at or above REVIEW_REQUIRED, and the AMBIGUOUS-downgrade path was explicitly scoped to exclude numeric-grounding items"
+    },
+    {
+      "n": 7,
+      "requirement": "14/14 false-credit controls remain protected",
+      "met": true,
+      "evidence": "false-credit-prohibitions 10/10 + dsgr-false-credit-gate 4/4, no expectation changed"
+    },
+    {
+      "n": 8,
+      "requirement": "candidate-span/context ownership remains green",
+      "met": true,
+      "evidence": "candidate-span-contract, candidate-span-implementation and f1-linked-context-typing all green; R1/R3/F1 files untouched; caseE keeps grounding and ownership independently inspectable via groundedIn"
+    },
+    {
+      "n": 9,
+      "requirement": "Phase 4 unchanged",
+      "met": true,
+      "evidence": "phase4 tree hash 8fa637768316a613524e821b913f56c86111a298 at start and end; 0 files changed; \u00a716 is documentation only"
+    },
+    {
+      "n": 10,
+      "requirement": "no new repository failure identity",
+      "met": true,
+      "evidence": "full-suite diff: exactly one new identity, 'V3.1 benchmark-integrity audit > 7. no production code was modified by this audit', which asserts `git status --porcelain lib` === '' - a working-tree-cleanliness gate that clears on commit and was verified green afterwards. Zero new semantic failures."
+    }
+  ],
+  "verdict": "NUMERIC_GROUNDING_REMEDIATION_READY_FOR_PAID_VALIDATION",
+  "honestLimits": [
+    "The extractor's unit vocabulary is a closed list. A quantity noun outside it fails CLOSED - no assertion is inventoried - so the failure mode is a missed detection, never a false accusation. That is the right direction to fail, but it IS a limit.",
+    "Grounding is rendering equivalence only. A source that states a figure in a form the grammar does not recognize (an unusual scale abbreviation, a wholly spelled-out currency amount) could still yield a false UNGROUNDED. The \u00a715 scan found and closed one such class - the parenthetical-numeral form 'ninety (90) days' - before shipping; others may exist.",
+    "The evidence universe is the authenticated set. A figure the compiler legitimately took from a PARENT_SCOPE context item the verifier could not independently authenticate will read as UNGROUNDED. Widening the authenticated universe was explicitly out of scope and would have weakened the structured IR_ONLY detector.",
+    "\u00a715's scan could grade only 112 of 700 preserved assertions; 588 were INSUFFICIENT_ARTIFACT. That is the harness gap this same mission closes for FUTURE runs, not for past ones."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "modelCalls": 0,
+  "change": "R2 - the pilot harness derives the identical span",
+  "file": "scripts/p3-conmed-pilot/pipeline.ts",
+  "how": "operativeTextFor now delegates to operativeSourceTextFor rather than restating the rule, so the harness cannot drift from the pipeline it measures.",
+  "parityProof": "Asserted for every one of the 137 sealed candidates and for each named shape: single-key, dual-key, parent, child, EXCEPTION, BASKET, PROVISO, CONDITION. Byte-identical in every case.",
+  "measurementScriptsRepointed": {
+    "note": "Before/after measurement needs the superseded expression to compare against. It survives in exactly one place, scripts/p3-conmed-pilot/pre-change-span.ts, used only by the measurement scripts and the tests.",
+    "scripts": [
+      "span-contract-sim.ts",
+      "false-credit-span-probe.ts",
+      "span-census.ts",
+      "red-baseline.ts",
+      "span-implementation-evidence.ts"
+    ]
+  },
+  "harnessDedupConsequence": {
+    "populationUnderPreChangeSpan": 137,
+    "populationUnderNewSpan": 135,
+    "collapsed": [
+      {
+        "ref": "7.2(e)",
+        "role": "EXCEPTION"
+      },
+      {
+        "ref": "7.2(k)",
+        "role": "PROVISO"
+      }
+    ],
+    "whyThisIsCorrect": "The harness dedups on (section ref + sha256 of the exact operative bytes) and its stated rule is that duplicates are candidates for which 'compiling one is provably equivalent to compiling the other'. These two pairs share an anchor and differ only in discovered ROLE - and role never reaches SemanticCompilerInput (verified at the call site), so the compiler input differs only in candidateRef. Previously they looked distinct only because one member had its parent section appended. Nothing is silently lost: the dedup report records the kept/dropped mapping for both pairs.",
+    "productionIdentityUnaffected": "Discovery reconciliation keys on `${structuralNodeIds[0]}::${role}::${fingerprint}` and never on the source text, so no discoveryId changed and both readings survive in production discovery.",
+    "testsUpdated": [
+      "tests/phase-3-conmed-pilot/premium-lock.test.ts - the sealed-population invariant now asserts 163 / 137-before / 135-after and names the two collapsed pairs"
+    ]
+  }
+}

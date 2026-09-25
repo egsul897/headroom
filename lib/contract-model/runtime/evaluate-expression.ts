@@ -14,15 +14,27 @@ import { addAll, compareWith, divideValues, extreme, multiplyAll, subtractValues
 import { boolean, capacity, date, entitySet, isIsoDate, lineage, money, number, percent, ratio, serializeValue, withLineage } from "./values";
 import { CONTRACT_RUNTIME_VERSION } from "./version";
 import { resolutionToMetricInput } from "./input/snapshot-resolver";
+import type { RuntimeVerificationEnvelope, VerificationBlock, VerificationGatePolicy } from "./verification-envelope";
+import { assessUnit, blocksNodeIn, gateIsActive, incompleteDiagnostic, VERIFICATION_BLOCK_DIAGNOSTIC, type KnownRuntimeIdentity, type UnitAssessment } from "./verification-gate";
 import type { ResolutionResult } from "./input/types";
 
 export interface EvaluateExpressionArgs {
   expression: IRCapacityExpression;
   inputs: InputResolver;
   context?: EvaluationContext;
+  /** PHASE-4 VERIFICATION GATE: the envelope to gate against (overrides context.verification). Absent = legacy behaviour. */
+  verification?: RuntimeVerificationEnvelope;
+  /** PHASE-4 VERIFICATION GATE: ALLOW_MISSING (default) or REQUIRE (overrides context.policy). */
+  policy?: VerificationGatePolicy;
 }
 
-interface Env { asOf: string | null; period: string | null; depth: number }
+/**
+ * `unitId` is the stable id of the compiled unit that owns the node currently being evaluated, and
+ * it CHANGES as the evaluator expands into a referenced definition or rule - a verification finding
+ * is scoped to one unit, so the gate must ask about the owner, not the root. `gate` is that owner's
+ * assessment, computed once per unit entry; null when the gate is inactive. Env is never serialized.
+ */
+interface Env { asOf: string | null; period: string | null; depth: number; unitId: string | null; gate: UnitAssessment | null }
 
 interface NodeResult {
   status: RuntimeStatus;
@@ -58,7 +70,22 @@ class Evaluator {
   maxDepth = 0;
   referenceNodes = 0;
 
-  constructor(private readonly inputs: InputResolver, private readonly context: EvaluationContext) {}
+  /** PHASE-4 VERIFICATION GATE: active only when an envelope or a non-default policy was supplied. */
+  private readonly gateActive: boolean;
+  private readonly verification: RuntimeVerificationEnvelope | undefined;
+  private readonly policy: VerificationGatePolicy | undefined;
+
+  constructor(private readonly inputs: InputResolver, private readonly context: EvaluationContext, verification: RuntimeVerificationEnvelope | undefined, policy: VerificationGatePolicy | undefined) {
+    this.verification = verification;
+    this.policy = policy;
+    this.gateActive = gateIsActive(verification, policy);
+  }
+
+  /** The gate's view of one unit. Null when the gate is inactive, so the legacy path never consults it. */
+  assess(unitId: string | null, known: KnownRuntimeIdentity | null): UnitAssessment | null {
+    if (!this.gateActive) return null;
+    return assessUnit(unitId, this.verification, this.policy, known);
+  }
 
   // ---- helpers -------------------------------------------------------------
 
@@ -79,6 +106,12 @@ class Evaluator {
   private fail(expr: { exprId?: string; kind: string; provenance?: SourceProvenance }, status: RuntimeStatus, code: RuntimeDiagnosticCode, message: string, children: NodeResult[] = [], phase3Reason?: string, missing: MissingInput[] = []): NodeResult {
     const diag: RuntimeDiagnostic = { code, status, message, exprId: expr.exprId ?? null, provenance: expr.provenance ?? null, ...(phase3Reason !== undefined ? { phase3Reason } : {}) };
     return { status, value: null, missing: [...children.flatMap((c) => c.missing), ...missing], diagnostics: [...children.flatMap((c) => c.diagnostics), diag], bounds: null, trace: this.trace(expr, status, null, children.map((c) => c.trace), { note: message }) };
+  }
+
+  /** PHASE-4 VERIFICATION GATE: the refusal of a node. AMBIGUOUS, value null, and the structured block on the diagnostic. */
+  private refuse(expr: { exprId?: string; kind: string; provenance?: SourceProvenance }, b: VerificationBlock): NodeResult {
+    const diag: RuntimeDiagnostic = { code: VERIFICATION_BLOCK_DIAGNOSTIC, status: "AMBIGUOUS", message: b.message, exprId: expr.exprId ?? null, provenance: expr.provenance ?? null, verification: b };
+    return { status: "AMBIGUOUS", value: null, missing: [], diagnostics: [diag], bounds: null, trace: this.trace(expr, "AMBIGUOUS", null, [], { note: b.message }) };
   }
 
   /** Combine non-executable children by precedence; carries every missing input and diagnostic upward. */
@@ -145,8 +178,17 @@ class Evaluator {
   // ---- entry ---------------------------------------------------------------
 
   evaluate(expr: IRCapacityExpression, env: Env): NodeResult {
+    // PHASE-4 VERIFICATION GATE (§13 order): unit -> verification gate -> sufficiency -> dispatch.
+    // The check sits before the memo and before UNLIMITED_CAPACITY, so no path reaches arithmetic
+    // with a refused node. exprIds are content-derived, so the SAME literal in two units shares an
+    // exprId; when the gate is active the memo is therefore keyed by owner as well, because the gate
+    // answer depends on the owner. When it is inactive the key is unchanged (byte-identical legacy).
+    if (env.gate) {
+      const b = blocksNodeIn(env.gate, expr.kind === "UNLIMITED_CAPACITY" ? null : expr.exprId ?? null);
+      if (b) { this.nodesEvaluated++; this.maxDepth = Math.max(this.maxDepth, env.depth); return this.refuse(expr, b); }
+    }
     if (expr.kind === "UNLIMITED_CAPACITY") return this.evalUnlimited(expr, env);
-    const key = expr.exprId ? `${expr.exprId}|${env.asOf ?? ""}|${env.period ?? ""}` : null;
+    const key = expr.exprId ? `${this.gateActive ? `${env.unitId ?? ""}|` : ""}${expr.exprId}|${env.asOf ?? ""}|${env.period ?? ""}` : null;
     if (key) {
       const hit = this.memo.get(key);
       if (hit) { this.cacheHits++; return { ...hit, trace: { ...hit.trace, cacheHit: true } }; }
@@ -156,6 +198,12 @@ class Evaluator {
     const out = this.evalNode(expr, env);
     if (key) this.memo.set(key, out);
     return out;
+  }
+
+  /** PHASE-4 VERIFICATION GATE: the informational diagnostic on entering an incompletely verified unit, prepended once. */
+  withUnitEntry(inner: NodeResult, gate: UnitAssessment | null): NodeResult {
+    const d = gate ? incompleteDiagnostic(gate) : null;
+    return d ? { ...inner, diagnostics: [d, ...inner.diagnostics] } : inner;
   }
 
   private evalUnlimited(expr: Extract<IRCapacityExpression, { kind: "UNLIMITED_CAPACITY" }>, env: Env): NodeResult {
@@ -389,6 +437,10 @@ class Evaluator {
   }
 
   private evalDefinition(expr: Extract<IRExpression, { kind: "DEFINED_TERM_REFERENCE" }>, def: IRDefinition, env: Env): NodeResult {
+    // The owner changes here. The definition's OWN record is assessed against the definition's own
+    // identity, and a whole-unit refusal lands on the reference node before sufficiency is read.
+    const gate = this.assess(def.definitionId, knownIdentityOf(def));
+    if (gate?.block) return this.refuse(expr, gate.block);
     const blocked = this.blockedBySufficiency(expr, "DEFINITION", def.definitionId, def.sufficiency, def.sufficiencyReasons);
     if (blocked) return blocked;
     if (!def.calculationExpression) return this.needsInput(expr, "TERM", def.termName, env, expr.type, `definition ${def.definitionId} ("${def.termName}") carries no calculation expression; supply its value as an input`);
@@ -397,7 +449,8 @@ class Evaluator {
     if (cyc) return cyc;
     this.expansionStack.push(frame);
     this.expanded.push({ kind: "DEFINITION", id: def.definitionId });
-    const inner = this.evaluate(def.calculationExpression, env);
+    // everything inside a definition's calculation is owned by that definition
+    const inner = this.withUnitEntry(this.evaluate(def.calculationExpression, { ...env, unitId: def.definitionId, gate }), gate);
     this.expansionStack.pop();
     if (inner.status !== "EXECUTABLE") return this.propagate(expr, [inner], { note: `via definition ${def.definitionId}` });
     if (!valueMatchesType(inner.value!, expr.type)) return this.fail(expr, "ERROR", "TYPE_CONTRACT_VIOLATION", `definition "${def.termName}" evaluated to ${inner.value!.type} where the reference declares ${expr.type}`, [inner]);
@@ -405,6 +458,8 @@ class Evaluator {
   }
 
   private evalRuleCapacity(expr: Extract<IRExpression, { kind: "RULE_REFERENCE" }>, rule: IRRule, env: Env): NodeResult {
+    const gate = this.assess(rule.ruleId, knownIdentityOf(rule));
+    if (gate?.block) return this.refuse(expr, gate.block);
     const blocked = this.blockedBySufficiency(expr, "RULE", rule.ruleId, rule.sufficiency, rule.sufficiencyReasons);
     if (blocked) return blocked;
     if (!rule.capacityExpression) return this.fail(expr, "UNSUPPORTED", "UNSUPPORTED_NODE", `referenced rule ${rule.ruleId} carries no capacity expression to use as a value`);
@@ -413,7 +468,8 @@ class Evaluator {
     if (cyc) return cyc;
     this.expansionStack.push(frame);
     this.expanded.push({ kind: "RULE", id: rule.ruleId });
-    const inner = this.evaluate(rule.capacityExpression, env);
+    // everything inside a referenced rule's capacity is owned by that rule
+    const inner = this.withUnitEntry(this.evaluate(rule.capacityExpression, { ...env, unitId: rule.ruleId, gate }), gate);
     this.expansionStack.pop();
     if (inner.status !== "EXECUTABLE") return this.propagate(expr, [inner], { note: `via rule ${rule.ruleId}` });
     const v = inner.value!;
@@ -421,6 +477,11 @@ class Evaluator {
     if (!cap) return this.fail(expr, "ERROR", "TYPE_CONTRACT_VIOLATION", `rule ${rule.ruleId} capacity evaluated to ${v.type}, expected MONEY or CAPACITY`, [inner]);
     return this.done(expr, cap, [inner], { note: `via rule ${rule.ruleId}` });
   }
+}
+
+/** The identity the runtime can vouch for from an IR object it holds - the full trio, never guessed. */
+function knownIdentityOf(unit: { ruleId?: string; definitionId?: string; companyId: string; instrumentKey: string; irSchemaVersion: string; compilerVersion: string | null; sourceContentVersion: string | null }): KnownRuntimeIdentity {
+  return { ruleOrDefinitionId: unit.ruleId ?? unit.definitionId ?? "", companyId: unit.companyId, instrumentKey: unit.instrumentKey, irSchemaVersion: unit.irSchemaVersion, compilerVersion: unit.compilerVersion, sourceContentVersion: unit.sourceContentVersion };
 }
 
 function dedupeMissing(missing: MissingInput[]): MissingInput[] {
@@ -431,8 +492,14 @@ function dedupeMissing(missing: MissingInput[]): MissingInput[] {
 /** The public runtime entry point (mission §31). Total over valid serialized IR. */
 export function evaluateExpression(args: EvaluateExpressionArgs): EvaluationResult {
   const context = args.context ?? {};
-  const ev = new Evaluator(args.inputs, context);
-  const root = ev.evaluate(args.expression, { asOf: context.asOf ?? null, period: null, depth: 0 });
+  const verification = args.verification ?? context.verification;
+  const policy = args.policy ?? context.policy;
+  const ev = new Evaluator(args.inputs, context, verification, policy);
+  const unitId = context.unitId ?? context.ruleId ?? context.definitionId ?? null;
+  // The root unit's identity: what the caller stated, else the id plus whatever the context knows.
+  const known: KnownRuntimeIdentity | null = unitId === null ? null : { ruleOrDefinitionId: unitId, ...(context.companyId !== undefined ? { companyId: context.companyId } : {}), ...(context.instrumentKey !== undefined ? { instrumentKey: context.instrumentKey } : {}), ...(context.unitIdentity ?? {}) };
+  const gate = ev.assess(unitId, known);
+  const root = ev.withUnitEntry(ev.evaluate(args.expression, { asOf: context.asOf ?? null, period: null, depth: 0, unitId, gate }), gate);
   const missingInputs = dedupeMissing(root.missing);
   const serializeBounds = (b: NodeResult["bounds"]): EvaluationResult["bounds"] => b ? { ...(b.knownLowerBound ? { knownLowerBound: serializeValue(b.knownLowerBound) } : {}), ...(b.knownUpperBound ? { knownUpperBound: serializeValue(b.knownUpperBound) } : {}) } : null;
   const value: SerializedRuntimeValue | null = root.status === "EXECUTABLE" && root.value ? serializeValue(root.value) : null;

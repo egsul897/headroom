@@ -1,0 +1,64 @@
+{
+  "modelCalls": 0,
+  "question": "Can a child provision be understood safely when its own text is operative and its parent/chapeau is separately visible as typed context?",
+  "mechanismAvailableToday": "retrieveParentScope (context-retrieval/structural-context.ts:141) emits every non-ARTICLE ancestor's OWN text as a PARENT_SCOPE ContextItem with a PARENT_OF edge, and caller.ts:236 renders it in the prompt's 'Already-gathered context' block with its type and citation. Measured over the 137 CONMED candidates: 67/67 dual-key candidates already carry their linked parent as a typed PARENT_SCOPE item (mean 319 chars of chapeau, max 758). Zero context-loss cases.",
+  "cases": [
+    {
+      "case": "A",
+      "name": "Parent prohibition + child exception",
+      "sufficient": true,
+      "why": "The chapeau IS the parent's OWN text, which is exactly what PARENT_SCOPE carries (7.2's own text is 107 chars - the prohibition and its 'except:'). The child keeps the prohibition it excepts and loses only the other 18 exceptions, which were never part of its proposition.",
+      "additionalRepresentationRequired": null
+    },
+    {
+      "case": "B",
+      "name": "Parent permission + child condition",
+      "sufficient": true,
+      "why": "Same channel; the PARENT_OF edge records that the condition attaches to the parent's permission. Measured: 7.2(k)(i) (own text 54 chars) keeps parentScope ['7.2','7.2(k)'].",
+      "additionalRepresentationRequired": null
+    },
+    {
+      "case": "C",
+      "name": "Basket with parent-level condition",
+      "sufficient": true,
+      "why": "A parent-level condition sits in the parent's OWN text and arrives as PARENT_SCOPE. What disappears is the OTHER baskets' amounts - precisely the material that produces false credit today (mean 82 foreign economic items per dual CONMED candidate).",
+      "additionalRepresentationRequired": null
+    },
+    {
+      "case": "D",
+      "name": "Child incorporating chapeau scope",
+      "sufficient": true,
+      "why": "Incorporation by reference ('permitted under this Section') resolves through PARENT_SCOPE plus retrieveCrossReferencesFromNode, both anchored on the primary node and both unchanged by the proposal.",
+      "additionalRepresentationRequired": null
+    },
+    {
+      "case": "E",
+      "name": "Proviso applying to multiple sibling clauses",
+      "sufficient": false,
+      "why": "A proviso drafted as a flush paragraph at the END of a parent section is part of the PARENT's own text only when the parser attributes it to the parent as residue. When it is attributed to the LAST sibling instead, an anchor-only child cannot see it and PARENT_SCOPE will not carry it. Today the over-wide span hides this by accident, because the child sees everything.",
+      "additionalRepresentationRequired": "retrieveSiblingContext already exists and already emits PROVISO / EXCEPTION / CONDITION / SHARED_CAP-typed sibling items when it can establish real evidence of linkage (CLAUSE_BACKREFERENCE, SHARED_RESOURCE, ENCLOSING_SCOPE_LINKAGE, GRAMMATICAL_CONTINUATION), and UNVERIFIED_SIBLING_SIGNAL when it cannot. No new type is needed. This is the designated risk case for the paid validation - 7.2(k) is exactly this shape, which is why its discovered role is PROVISO."
+    },
+    {
+      "case": "F",
+      "name": "Anti-stacking / residual proviso",
+      "sufficient": false,
+      "why": "Structurally identical to E, and the residual language is precisely what a basket must not double-count.",
+      "additionalRepresentationRequired": "Same as E. Additionally the proposal must NOT ship alongside any narrowing of retrieveSiblingContext; it relies on that retriever staying as it is."
+    },
+    {
+      "case": "G",
+      "name": "Entity scope located only in parent",
+      "sufficient": true,
+      "why": "Entity scope ('the Parent Borrower shall not permit any Restricted Subsidiary to ...') is chapeau language, i.e. parent OWN text, i.e. PARENT_SCOPE. The IR additionally has a dedicated ENTITY_SCOPE ContextItemType and an entityScopeAudit whose safeToRely flag is computed against a named source witness, so a scope the compiler cannot ground is already downgraded rather than silently asserted.",
+      "additionalRepresentationRequired": null
+    },
+    {
+      "case": "H",
+      "name": "Defined term / cross-reference context",
+      "sufficient": true,
+      "why": "Definitions and cross-references are already retrieved from the PRIMARY node's text (pipeline.ts:171-173 uses getNodeText(primaryNodeId,'DESCENDANTS'), not the concatenation), so this channel is anchor-scoped today and is not changed at all.",
+      "additionalRepresentationRequired": null
+    }
+  ],
+  "verdict": "6 of 8 cases are fully preserved by the existing typed-context channel with no new representation. Cases E and F depend on retrieveSiblingContext, which already exists with the right types; they are the designated risk cases for the paid validation, not blockers to the design."
+}

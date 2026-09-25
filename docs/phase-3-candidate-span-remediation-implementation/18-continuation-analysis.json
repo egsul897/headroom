@@ -1,0 +1,141 @@
+{
+  "generatedBy": "post-run analysis of 17-validation-continuation-results.json",
+  "modelCalls": 0,
+  "headline": "Cohort B 4/4 and Cohort D 3/3. Every candidate whose span collapsed now completes; every candidate whose span did NOT change and is large still times out. That is the remediation's thesis, confirmed on real paid executions.",
+  "executionVsSpanSize": {
+    "completed": [
+      {
+        "slot": "7.2(k)(i)",
+        "operativeChars": 54,
+        "preChangeChars": 8899,
+        "sec": 251
+      },
+      {
+        "slot": "7.2(e) long",
+        "operativeChars": 200,
+        "preChangeChars": 9045,
+        "sec": 266
+      },
+      {
+        "slot": "7.2(d)",
+        "operativeChars": 250,
+        "preChangeChars": 9095,
+        "sec": 207
+      },
+      {
+        "slot": "7.2(g)",
+        "operativeChars": 312,
+        "preChangeChars": 9157,
+        "sec": 198
+      },
+      {
+        "slot": "7.2(k)(ii)",
+        "operativeChars": 455,
+        "preChangeChars": 9300,
+        "sec": 370
+      },
+      {
+        "slot": "7.2(h)",
+        "operativeChars": 467,
+        "preChangeChars": 9312,
+        "sec": 267
+      },
+      {
+        "slot": "7.2(k)",
+        "operativeChars": 776,
+        "preChangeChars": 9621,
+        "sec": 266
+      }
+    ],
+    "timedOut": [
+      {
+        "slot": "7.1(b)",
+        "operativeChars": 1886,
+        "preChangeChars": 1886,
+        "spanUnchanged": true
+      },
+      {
+        "slot": "7.1",
+        "operativeChars": 3275,
+        "preChangeChars": 3275,
+        "spanUnchanged": true
+      },
+      {
+        "slot": "7.9",
+        "operativeChars": 4339,
+        "preChangeChars": 4339,
+        "spanUnchanged": true
+      },
+      {
+        "slot": "7.5",
+        "operativeChars": 4658,
+        "preChangeChars": 4658,
+        "spanUnchanged": true
+      },
+      {
+        "slot": "7.8",
+        "operativeChars": 4667,
+        "preChangeChars": 4667,
+        "spanUnchanged": true
+      },
+      {
+        "slot": "7.4",
+        "operativeChars": 5980,
+        "preChangeChars": 5980,
+        "spanUnchanged": true
+      },
+      {
+        "slot": "7.3",
+        "operativeChars": 7053,
+        "preChangeChars": 7053,
+        "spanUnchanged": true
+      },
+      {
+        "slot": "7.2",
+        "operativeChars": 8843,
+        "preChangeChars": 8843,
+        "spanUnchanged": true
+      }
+    ],
+    "reading": "Completions span 54-776 operative chars; every timeout is 1,886-8,843 chars. The boundary is span size, not cohort. All 7 completions in B and D are candidates whose span collapsed from ~9k; all 8 failures are candidates whose span the remediation never touched."
+  },
+  "controlRecheck": {
+    "result": "0/2 - 7.1 and 7.1(b) both TIMEOUT_480 again",
+    "classification": "CONTROL_MODEL_RELIABILITY_LIMITATION",
+    "inputsByteIdentical": true,
+    "evidence": "operativeTextHash == preChangeTextHash for both; 7.1 3,275 chars and 7.1(b) 1,886 chars, unchanged by R1. Across the two attempts 7.1 has now gone COMPLETED(456s) -> FAILED(355s) -> TIMEOUT(480s) and 7.1(b) COMPLETED(393s) -> TIMEOUT(480s) -> TIMEOUT(480s) on identical bytes. The model, not the contract.",
+    "notARemediationFailure": "No input changed, no semantic behaviour changed, attribution and context checks are clean on both."
+  },
+  "attributionFinding": {
+    "candidate": "7.2(k)(i)",
+    "severity": "SUBSTANTIVE - the mission's true blocker class",
+    "whatHappened": "The compiled rule cites \u00a77.2(k)(i) and asserts $150,000,000 and 10.0%. Its anchor text is 54 characters - '(i) the requirements of Section 6.9 are satisfied and ' - and contains neither value. Both appear in the parent section 7.2.",
+    "rootCause": "NOT the operative span. operativeSourceText was correctly 54 chars. The values reached the model through the CONTEXT BUNDLE, where context-retrieval/pipeline.ts:163 still retrieves each linked node as a second OPERATIVE_SOURCE item carrying its full 8,843-char subtree. Measured on this candidate: items were OPERATIVE_SOURCE 7.2(k)(i) 54ch (no amounts), OPERATIVE_SOURCE 7.2 8,843ch (BOTH amounts), PARENT_SCOPE 7.2 107ch (no amounts), PARENT_SCOPE 7.2(k) 267ch (no amounts).",
+    "whichIsExactlyF1": "This is the F1 SAFETY_FOLLOWUP the design identified and deliberately deferred: 'After R1 this is the last place a linked parent's full subtree is still labelled OPERATIVE_SOURCE.' The run turns that predicted risk into a measured one.",
+    "implication": "R1 + R3 alone do NOT close the false-credit channel. R1 narrowed the compiler's operative window; the bundle still presents the parent as operative-labelled evidence, and the model used it as such. F1 is demonstrated-required, not optional.",
+    "isItARegression": "No. Before the remediation the same parent text was in operativeSourceText AND in the bundle, so this assertion was at least as available. The remediation strictly reduced exposure without eliminating it.",
+    "whyTheOtherThreeBCasesWereClean": "7.2(e) long, 7.2(k) and 7.2(k)(ii) asserted no economic term that exists only in parent material - the violation is possible through this channel, not guaranteed by it."
+  },
+  "cohortCInterpretation": {
+    "result": "0/6 completed - all six TIMEOUT_480",
+    "spansUnchanged": true,
+    "sizes": {
+      "7.2": 8843,
+      "7.3": 7053,
+      "7.4": 5980,
+      "7.5": 4658,
+      "7.8": 4667,
+      "7.9": 4339
+    },
+    "whatThisDoesAndDoesNotShow": "It does NOT show semantic disappearance, which is what Cohort C exists to rule out. The parents remain independently anchored candidates - 9/9 appended parents are candidate anchors, coverage hash unchanged at d95518f2c97732b06a81b7dba817d9fe, covered-unit set unchanged - all re-verified after this run. What it shows is that this model cannot compile 4,300-8,800-char provisions inside 480s, the same limit that fells the unchanged controls. Paid proof of parent compilability is therefore still outstanding and is blocked by model capability, not by the remediation.",
+    "honestCaveat": "Because no parent compiled, this run cannot positively demonstrate that a parent's chapeau semantics are emitted from its own candidate. The negative claim - that no child was needed to represent a parent - is supported deterministically, not by execution."
+  },
+  "budget": {
+    "totalCeilingUsd": 0.4,
+    "alreadySpentUsd": 0.065275,
+    "thisRunExactUsd": 0.060069,
+    "thisRunRetainedUnknownUsd": 0.1456,
+    "thisRunCommittedUsd": 0.205669,
+    "cumulativeCommittedUsd": 0.270944
+  }
+}

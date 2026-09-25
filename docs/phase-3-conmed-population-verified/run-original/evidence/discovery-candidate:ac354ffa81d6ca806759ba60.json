@@ -1,0 +1,1532 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:38:58.730Z",
+  "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.6(b)",
+    "operativeSourceText": "(b)\n(i) repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee\nor director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\n102\nand (ii) cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes\nof clauses (i) and (ii) not to exceed $25,000,000 per year;\n",
+    "operativeSourceTextSha256": "3b7c2ccafd6bf163c79bcc03947ece51e648111679b8302e79d37fe209488d0b",
+    "operativeSourceChars": 470,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:a84ed353027a3f3041315c1fb25f9ada5288f51cd99347e3bf0e321207488eeb",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 10,
+    "items": [
+      {
+        "itemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.6(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 470,
+        "excerptText": "(b)\n(i) repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee\nor director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\n102\nand (ii) cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes\nof clauses (i) and (ii) not to exceed $25,000,000 per year;\n"
+      },
+      {
+        "itemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.6",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 743,
+        "excerptText": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeasance,\nretirement or other acquisition of, any shares of any class of Capital Stock of the Parent Borrower or any Subsidiary or any warrants\nor options to purchase any such Capital Stock, whether now or hereafter outstanding, or make any other distribution in respect thereof,\neither directly or indirectly, whether in cash or property or in obligations of the Parent Borrower or any Subsidiary (collectively, \" Restricted\nPayments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:f1f809dd542810569248dcbffd99a9058a1b1df5368873a5d17c5926c48a4336",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.6(b)(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 280,
+        "excerptText": "(i) repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee\nor director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\n102\nand "
+      },
+      {
+        "itemId": "context-item:811e3653bb4233c5fa6c504ee358e72a82a8fc6729d67ac283171d7f439dfc84",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.6(b)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 186,
+        "excerptText": "(ii) cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes\nof clauses (i) and (ii) not to exceed $25,000,000 per year;\n"
+      },
+      {
+        "itemId": "context-item:f5d1cea372c5259addbfec608f69cad6cc2c6c8f091ebca708de1d8c32c1dadb",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.6(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 122,
+        "excerptText": "(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n"
+      },
+      {
+        "itemId": "context-item:abc6ac14a275ce166ef4b5f8ca5c433780611282cf199d512316b2e7e2b7026b",
+        "type": "PROVISO",
+        "normalizedRef": "7.6(e)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 15,
+        "excerptText": "(e)\nso long as "
+      },
+      {
+        "itemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "type": "DEFINITION",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "type": "DEFINITION",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "toItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "toItemId": "context-item:f1f809dd542810569248dcbffd99a9058a1b1df5368873a5d17c5926c48a4336",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "toItemId": "context-item:811e3653bb4233c5fa6c504ee358e72a82a8fc6729d67ac283171d7f439dfc84",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:f5d1cea372c5259addbfec608f69cad6cc2c6c8f091ebca708de1d8c32c1dadb",
+        "toItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:abc6ac14a275ce166ef4b5f8ca5c433780611282cf199d512316b2e7e2b7026b",
+        "toItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "toItemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:9d505f061b297f2214cb8bfea3358df8111e221951f1de046d718469735859a7",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "PARTIAL",
+    "failureReasons": [
+      "IR_VALIDATION_FAILURE",
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7_6b_i",
+          "sourceSectionRef": "7.6(b)(i)",
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "REPURCHASE_CAPITAL_STOCK",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiary"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "LEDGER_USAGE_REFERENCE",
+            "sharedCapRef": "sc_7_6b",
+            "citation": "§7.6(b)(i)"
+          },
+          "conditions": [
+            {
+              "conditionType": "PURPOSE_SATISFIED",
+              "description": "Repurchases must be made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary, as from time to time in effect",
+              "expression": {
+                "kind": "AND",
+                "operands": [
+                  {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "Purpose condition: repurchase made in order to fulfill the Parent Borrower's or any Subsidiary's obligations under an employee/director stock purchase plan",
+                    "reason": "expressed as natural-language purpose requirement, not a numeric/computable mechanic",
+                    "sourceEvidence": "\"made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee... stock purchase plan or similar plan covering employees\"",
+                    "inventoryItemIds": [
+                      "e061723f67b8873514501d2e",
+                      "3331494a976ae1a0e7178c0e"
+                    ]
+                  },
+                  {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "Plan-specification condition: the plan must be an employee or director stock purchase plan (or similar) covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+                    "reason": "natural-language qualification, not a computable numeric mechanic",
+                    "sourceEvidence": "\"employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\""
+                  }
+                ]
+              },
+              "citation": "§7.6(b)(i)",
+              "excerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan"
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "SHARES_CAPACITY_WITH",
+              "targetRef": "r7_6b_ii",
+              "description": "Repurchases under clause (i) share the $25,000,000 per year aggregate ceiling with cash payments under clause (ii)"
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.6(b)(i)",
+          "excerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+          "inventoryItemIds": [
+            "42fe835ccf14147d9f2ef317"
+          ]
+        },
+        {
+          "localRef": "r7_6b_ii",
+          "sourceSectionRef": "7.6(b)(ii)",
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_CASH_PAYMENT_IN_LIEU_OF_FRACTIONAL_SHARES",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "LEDGER_USAGE_REFERENCE",
+            "sharedCapRef": "sc_7_6b",
+            "citation": "§7.6(b)(ii)"
+          },
+          "conditions": [],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "SHARES_CAPACITY_WITH",
+              "targetRef": "r7_6b_i",
+              "description": "Cash payments in lieu of fractional shares under clause (ii) share the $25,000,000 per year aggregate ceiling with clause (i) repurchases"
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.6(b)(ii)",
+          "excerpt": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+          "inventoryItemIds": [
+            "f1764d1f09b38a6f26020dcd",
+            "4153f73cdc2a781733e03fca"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [
+        {
+          "localRef": "sc_7_6b",
+          "description": "Aggregate per-year ceiling shared by clause (i) repurchases of Capital Stock and clause (ii) cash payments in lieu of fractional shares of Borrower's Capital Stock, not to exceed $25,000,000 per year",
+          "capExpression": {
+            "kind": "DURING_PERIOD",
+            "operand": {
+              "kind": "MONEY",
+              "amount": 25000000,
+              "currency": "USD",
+              "citation": "§7.6(b)",
+              "inventoryItemIds": [
+                "fb0eeb28af02c15146217356"
+              ]
+            },
+            "periodDescription": "per fiscal year",
+            "citation": "§7.6(b)(i)-(ii)"
+          },
+          "memberRefs": [
+            "r7_6b_i",
+            "r7_6b_ii"
+          ],
+          "citation": "§7.6(b)",
+          "excerpt": "in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+          "inventoryItemIds": [
+            "fb0eeb28af02c15146217356",
+            "c1c2bc7f92b07fee79143744"
+          ]
+        }
+      ],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "597722c7cfa7d0322fd743d9",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "note": "The numeric token '102' is a stray page-number artifact in the source text (it appears between 'in effect' and 'and (ii)' with no grammatical or economic function); it is not a material cap or reference element."
+        }
+      ],
+      "overallNotes": [
+        "Section 7.6(b) is an exception/carve-out to the Section 7.6 chapeau restriction on Restricted Payments. It contains two independently operative permissions - clause (i) repurchases of Capital Stock and clause (ii) cash payments for fractional shares - that draw on ONE shared $25,000,000 per-year aggregate ceiling (WireSharedCapacity sc_7_6b).",
+        "The '102' numeric token in the source is treated as a non-computational page-number artifact (see inventoryDispositions); it carries no economic meaning.",
+        "The conditions on clause (i) are natural-language purpose/plan-qualification requirements, represented as conditions; they are not numeric mechanics and are captured via UNSUPPORTED condition expressions so the permission itself remains fully represented.",
+        "An unresolved LOW-level defined term (believed 'Borrower', used in clause (ii) 'Borrower's Capital Stock') is not declared in the available package evidence; it does not affect the economic capacity shape and is noted as a low-severity residual dependency."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:73c5929d27f194e844bc93bb",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.6(b)(i)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "LEDGER_USAGE_REFERENCE",
+          "type": "MONEY",
+          "sharedCapId": "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
+          "ruleId": null,
+          "exprId": "ir-expr:ea9687064237a39693f4639a"
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7_6b_i].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "AND",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:36a4af945d510bcbea0e45a6",
+              "operands": [
+                {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "\"made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee... stock purchase plan or similar plan covering employees\"",
+                  "semanticDescription": "Purpose condition: repurchase made in order to fulfill the Parent Borrower's or any Subsidiary's obligations under an employee/director stock purchase plan",
+                  "reason": "expressed as natural-language purpose requirement, not a numeric/computable mechanic",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.6(b)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:d68c5bc12988fc25cbb7ea3a",
+                  "inventoryItemIds": [
+                    "e061723f67b8873514501d2e",
+                    "3331494a976ae1a0e7178c0e"
+                  ]
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "\"employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\"",
+                  "semanticDescription": "Plan-specification condition: the plan must be an employee or director stock purchase plan (or similar) covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+                  "reason": "natural-language qualification, not a computable numeric mechanic",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.6(b)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:0125fa336f29e3b8fa6c0031"
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.6(b)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "Repurchases must be made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary, as from time to time in effect",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.6(b)(i)",
+              "excerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [
+          {
+            "relationshipType": "SHARES_CAPACITY_WITH",
+            "targetRuleId": "ir-rule:7850f7d8bc730ce6ebf96623",
+            "description": "Repurchases under clause (i) share the $25,000,000 per year aggregate ceiling with cash payments under clause (ii)"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "condition[0].conditionType \"PURPOSE_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+          "expressed as natural-language purpose requirement, not a numeric/computable mechanic",
+          "natural-language qualification, not a computable numeric mechanic",
+          "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.6(b)(i)",
+          "excerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiary"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiary",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 84,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 100,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 210,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 226,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "42fe835ccf14147d9f2ef317"
+        ]
+      },
+      {
+        "ruleId": "ir-rule:7850f7d8bc730ce6ebf96623",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.6(b)(ii)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "LEDGER_USAGE_REFERENCE",
+          "type": "MONEY",
+          "sharedCapId": "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
+          "ruleId": null,
+          "exprId": "ir-expr:ea9687064237a39693f4639a"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [
+          {
+            "relationshipType": "SHARES_CAPACITY_WITH",
+            "targetRuleId": "ir-rule:73c5929d27f194e844bc93bb",
+            "description": "Cash payments in lieu of fractional shares under clause (ii) share the $25,000,000 per year aggregate ceiling with clause (i) repurchases"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.6(b)(ii)",
+          "excerpt": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "f1764d1f09b38a6f26020dcd",
+          "4153f73cdc2a781733e03fca"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [
+      {
+        "sharedCapId": "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "description": "Aggregate per-year ceiling shared by clause (i) repurchases of Capital Stock and clause (ii) cash payments in lieu of fractional shares of Borrower's Capital Stock, not to exceed $25,000,000 per year",
+        "capExpression": {
+          "kind": "DURING_PERIOD",
+          "type": "MONEY",
+          "exprId": "ir-expr:4962da2b2ba2f83b337e57d4",
+          "value": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 25000000,
+            "currency": "USD",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.6(b)",
+              "excerpt": null
+            },
+            "exprId": "ir-expr:3a277783d5e6c6795f170b0f",
+            "inventoryItemIds": [
+              "fb0eeb28af02c15146217356"
+            ]
+          },
+          "periodDescription": "per fiscal year",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.6(b)(i)-(ii)",
+            "excerpt": null
+          }
+        },
+        "memberRuleIds": [
+          "ir-rule:73c5929d27f194e844bc93bb",
+          "ir-rule:7850f7d8bc730ce6ebf96623"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.6(b)",
+          "excerpt": "in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year"
+        },
+        "inventoryItemIds": [
+          "fb0eeb28af02c15146217356",
+          "c1c2bc7f92b07fee79143744"
+        ]
+      }
+    ],
+    "unresolvedIssues": [
+      "[FALSE_COMPLETENESS] (ir-rule:73c5929d27f194e844bc93bb) rule declares sufficiency COMPLETE but conditions[0].expression contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL",
+      "[rule[r7_6b_i]] condition[0].conditionType \"PURPOSE_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_6b_i].condition[0].expression.AND[0]] expressed as natural-language purpose requirement, not a numeric/computable mechanic",
+      "[rule[r7_6b_i].condition[0].expression.AND[1]] natural-language qualification, not a computable numeric mechanic",
+      "[rule[r7_6b_i].condition[0].expression] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "Section 7.6(b) is an exception/carve-out to the Section 7.6 chapeau restriction on Restricted Payments. It contains two independently operative permissions - clause (i) repurchases of Capital Stock and clause (ii) cash payments for fractional shares - that draw on ONE shared $25,000,000 per-year aggregate ceiling (WireSharedCapacity sc_7_6b).",
+      "The '102' numeric token in the source is treated as a non-computational page-number artifact (see inventoryDispositions); it carries no economic meaning.",
+      "The conditions on clause (i) are natural-language purpose/plan-qualification requirements, represented as conditions; they are not numeric mechanics and are captured via UNSUPPORTED condition expressions so the permission itself remains fully represented.",
+      "An unresolved LOW-level defined term (believed 'Borrower', used in clause (ii) 'Borrower's Capital Stock') is not declared in the available package evidence; it does not affect the economic capacity shape and is noted as a low-severity residual dependency.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 8 item(s) accepted (2 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:276-279) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:276-279: \"102\" - carries a number that no inventory item anchors, that the quantitative extractor did not recognise, and that no deterministic rule establishes as pagination - a bare number may be a basket, a threshold, a period or a page number, and its shape does not say which"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T03:38:46.117Z",
+      "inputTokens": 11817,
+      "outputTokens": 3121,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 11015,
+      "calculatedCostUsd": 0.054844000000000004
+    },
+    "compiledAt": "2026-09-25T03:38:46.117Z",
+    "outputHash": "cc2791da180f8fbb1a650ddc054e464fe7ca4de503f9557888b6848814283d26"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "6942d63ddaa03f5a2b61aa16c2e7291ddbc6def891d50f270eada99372c17dcd",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+        "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb, ir-rule:7850f7d8bc730ce6ebf96623",
+        "irPath": "rules[0].capacityExpression; rules[1].capacityExpression",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+        "sourceCitation": "§7.6(b)",
+        "proposedIrEvidence": "rules[0].capacityExpression = { kind: LEDGER_USAGE_REFERENCE, sharedCapId: ir-sharedcap:d2b4cbcee3b8fca7ba82e628 } ; rules[1].capacityExpression = { kind: LEDGER_USAGE_REFERENCE, sharedCapId: ir-sharedcap:d2b4cbcee3b8fca7ba82e628 } ; definitions: []",
+        "verifierReasoning": "The source imposes a hard monetary ceiling of $25,000,000 per year on the combined aggregate of the two carveouts in clauses (i) and (ii). The proposed IR represents this solely as a LEDGER_USAGE_REFERENCE to a sharedCapId (ir-sharedcap:d2b4cbcee3b8fca7ba82e628), but no shared-cap resource is defined anywhere in the IR (definitions is empty). Consequently, the actual numeric cap of $25,000,000 and the per-year periodicity are entirely absent from the compiled representation. A user consulting this IR cannot determine the permitted aggregate amount, so the capacity-limiting effect of the source is lost. This is an omission, not merely a formatting defect, and it directly affects the ability to compute compliance. Because the IR claims COMPLETE sufficiency for both rules, the omission is especially consequential.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T03:38:58.722Z"
+      },
+      {
+        "findingId": "9e0c9746d864ce35faa5c04a6ba87d2f71fc1c3be344888e6feb82a3c4749e2d",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$25,000,000",
+        "sourceCitation": "7.6(b)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 25000000 (from \"$25,000,000\") (canonical 25000000 USD) does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 25000000 (from \"$25,000,000\") (canonical 25000000 USD) does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T03:38:46.120Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+      "items": [
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "82d65a561cb1ac9a283513944bd0a1381223a26153b75e63fd6a1ed8790a20f9",
+            "kind": "AMOUNT",
+            "rawText": "$25,000,000",
+            "numericValue": 25000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(b)",
+            "structuralNodeKey": null,
+            "charStart": 448,
+            "charEnd": 459,
+            "parsedAmount": 25000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 25000000 (from \"$25,000,000\") (canonical 25000000 USD) does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "84db8450eeac27a1728e8315c86fab29a0b534fd77ca58e6cb2779f837497bae",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capital Stock",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(b)",
+            "structuralNodeKey": null,
+            "charStart": 23,
+            "charEnd": 36
+          },
+          "irItems": [],
+          "reason": "source mention \"Capital Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fa968b264311b4ebe1bf4f8eb777a5dc905fdb9792bbd4435e1b2acb82a3a10b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(b)",
+            "structuralNodeKey": null,
+            "charStart": 85,
+            "charEnd": 100
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fa48f1c342da07a0c6c069155ca815972eb983f22c1bfa465438e11b185f16f6",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(b)",
+            "structuralNodeKey": null,
+            "charStart": 211,
+            "charEnd": 226
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0de08ee3f37f645a924e5607f67279d66bf5a109d4ed031a91485ec3d77e4180",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capital Stock",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(b)",
+            "structuralNodeKey": null,
+            "charStart": 359,
+            "charEnd": 372
+          },
+          "irItems": [],
+          "reason": "source mention \"Capital Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].dependsOn[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 39,
+              "charEnd": 50,
+              "withheldReason": null,
+              "itemId": "07d06878e0a5e5a8e69bdd85f3b08e1c8adf467393d69a047ea9510a5faece8d",
+              "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+              "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+              "fieldPath": "rules[0].dependsOn[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "Repurchases under clause (i) share the $25,000,000 per year aggregate ceiling with cash payments under clause (ii)",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(b)(i)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.6(b)(i)",
+                "§7.6(b)(i)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[0].dependsOn[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 159,
+              "charEnd": 170,
+              "withheldReason": null,
+              "itemId": "41c1879143886703701720deac42e91e14e5181841f8a26400116b724b5322fa",
+              "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+              "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+              "fieldPath": "rules[1].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(b)(ii)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.6(b)(ii)",
+                "§7.6(b)(ii)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[1].dependsOn[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 71,
+              "charEnd": 82,
+              "withheldReason": null,
+              "itemId": "26f28252426aa4e98f05a37d6ea4395ac75cd4e7ba338c2ace86f2928f2009a6",
+              "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+              "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+              "fieldPath": "rules[1].dependsOn[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "Cash payments in lieu of fractional shares under clause (ii) share the $25,000,000 per year aggregate ceiling with clause (i) repurchases",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(b)(ii)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.6(b)(ii)",
+                "§7.6(b)(ii)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[1].dependsOn[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+      "items": [
+        {
+          "itemId": "82d65a561cb1ac9a283513944bd0a1381223a26153b75e63fd6a1ed8790a20f9",
+          "kind": "AMOUNT",
+          "rawText": "$25,000,000",
+          "numericValue": 25000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 448,
+          "charEnd": 459,
+          "parsedAmount": 25000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "25276e4b387faca4cb1f8515e96821e0d5ea07e58b81ee18438d08a4d132f22f",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 434,
+          "charEnd": 447,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "738bd17f4ad3fdfd9b9896c3fe2ca59ea6faceaab153f5271714b6818c0f66cd",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 92,
+          "charEnd": 100,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "da7f2f2e17dafa2e246794b432f25bc550bfff257cdc79b79e1755b1c783c3e9",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 218,
+          "charEnd": 226,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "d353d1e776f78fdb604325b75b764ddd128c0c3e26ba687a2b15050e5c604ce1",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 348,
+          "charEnd": 356,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "84db8450eeac27a1728e8315c86fab29a0b534fd77ca58e6cb2779f837497bae",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capital Stock",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 23,
+          "charEnd": 36
+        },
+        {
+          "itemId": "fa968b264311b4ebe1bf4f8eb777a5dc905fdb9792bbd4435e1b2acb82a3a10b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 85,
+          "charEnd": 100
+        },
+        {
+          "itemId": "fa48f1c342da07a0c6c069155ca815972eb983f22c1bfa465438e11b185f16f6",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 211,
+          "charEnd": 226
+        },
+        {
+          "itemId": "0de08ee3f37f645a924e5607f67279d66bf5a109d4ed031a91485ec3d77e4180",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capital Stock",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": 359,
+          "charEnd": 372
+        },
+        {
+          "itemId": "9a5306fb702ba8c0f9ba9e5853da59f356b9a36287d87af20d7b2ede11a03044",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "a89ca396878a988c98a43baa9170e7be6d2f70817dc21e0ebc087bac48965896",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 2,
+      "apparentIndependentUnitEvidence": [
+        "(i)",
+        "(ii)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+      "items": [
+        {
+          "itemId": "ecba3ba1cdbdd1cbae901b1ee1163312fda857c77c7f0c2d0114a1f4d0f85dd9",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)(i)",
+          "sourceExcerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "c368b54710961be3d23eb7bad9cc122c504d31ba5ebbb1075166050ba1987275",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)(i)",
+          "sourceExcerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "ae6439ed1384f073144ece752585c9246e24ace5db189351a7d0557f04079a22",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)(i)",
+          "sourceExcerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "959d7ed7f8627a24ecf2f55bc037ff9431230765aa5a8d4f99d750eaf62dac8e",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Repurchases must be made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary, as from time to time in effect",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)(i)",
+          "sourceExcerpt": "repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee or director stock purchase plan or similar plan",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "93113488070c3dcd06a6d7071461243e173cc6daf545ba8d2bf7d9ff02c0c5f9",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].conditions[0].expression.operands[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Purpose condition: repurchase made in order to fulfill the Parent Borrower's or any Subsidiary's obligations under an employee/director stock purchase plan",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "75df654aad56e262066ace36ffd5732a8442272ec1d30ddc8a5ba6bec4f05921",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].conditions[0].expression.operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Plan-specification condition: the plan must be an employee or director stock purchase plan (or similar) covering employees of the Parent Borrower or any Subsidiary as from time to time in effect",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d7ca5afe173af22e3a9dc06b56c3462bbb96982cbdb3cc8703a0611918b01bd2",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].dependsOn[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "SHARES_CAPACITY_WITH:ir-rule:7850f7d8bc730ce6ebf96623",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "49b5300290888236e94fe31b9e8cf963ba25e4ba585f00e9b7cbc107e028c304",
+          "kind": "SHARED_CAP_RELATIONSHIP",
+          "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "8aedaa77fb67c5100ef854e908b5abddc09ade0cb2f080ffc3ec12a50e620fce",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)(ii)",
+          "sourceExcerpt": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f6dc0ea1ad12e94639a4d29d514f7c6c96a16d782cef25d0f7eef512f690b87a",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(b)(ii)",
+          "sourceExcerpt": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f994a94eb6287ae5fb199320a81407afb12a621e71bce3c2b9554abc8f7e1065",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+          "irPath": "rules[1].dependsOn[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "SHARES_CAPACITY_WITH:ir-rule:73c5929d27f194e844bc93bb",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "080c13705f36f17b1623ced0cd713e9aa3a496bd7b3b01ac976665089b44018d",
+          "kind": "SHARED_CAP_RELATIONSHIP",
+          "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+          "irPath": "rules[1].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 2,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 39,
+            "charEnd": 50,
+            "withheldReason": null,
+            "itemId": "07d06878e0a5e5a8e69bdd85f3b08e1c8adf467393d69a047ea9510a5faece8d",
+            "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+            "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+            "fieldPath": "rules[0].dependsOn[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Repurchases under clause (i) share the $25,000,000 per year aggregate ceiling with cash payments under clause (ii)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(b)(i)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(b)(i)",
+              "§7.6(b)(i)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 159,
+            "charEnd": 170,
+            "withheldReason": null,
+            "itemId": "41c1879143886703701720deac42e91e14e5181841f8a26400116b724b5322fa",
+            "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+            "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+            "fieldPath": "rules[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(b)(ii)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(b)(ii)",
+              "§7.6(b)(ii)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 71,
+            "charEnd": 82,
+            "withheldReason": null,
+            "itemId": "26f28252426aa4e98f05a37d6ea4395ac75cd4e7ba338c2ace86f2928f2009a6",
+            "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+            "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+            "fieldPath": "rules[1].dependsOn[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Cash payments in lieu of fractional shares under clause (ii) share the $25,000,000 per year aggregate ceiling with clause (i) repurchases",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(b)(ii)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(b)(ii)",
+              "§7.6(b)(ii)"
+            ]
+          }
+        ],
+        "fieldsWalked": 13,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 39,
+            "charEnd": 50,
+            "withheldReason": null,
+            "itemId": "07d06878e0a5e5a8e69bdd85f3b08e1c8adf467393d69a047ea9510a5faece8d",
+            "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+            "ruleOrDefinitionId": "ir-rule:73c5929d27f194e844bc93bb",
+            "fieldPath": "rules[0].dependsOn[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Repurchases under clause (i) share the $25,000,000 per year aggregate ceiling with cash payments under clause (ii)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(b)(i)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(b)(i)",
+              "§7.6(b)(i)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].dependsOn[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 159,
+            "charEnd": 170,
+            "withheldReason": null,
+            "itemId": "41c1879143886703701720deac42e91e14e5181841f8a26400116b724b5322fa",
+            "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+            "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+            "fieldPath": "rules[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(b)(ii)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(b)(ii)",
+              "§7.6(b)(ii)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 71,
+            "charEnd": 82,
+            "withheldReason": null,
+            "itemId": "26f28252426aa4e98f05a37d6ea4395ac75cd4e7ba338c2ace86f2928f2009a6",
+            "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60",
+            "ruleOrDefinitionId": "ir-rule:7850f7d8bc730ce6ebf96623",
+            "fieldPath": "rules[1].dependsOn[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Cash payments in lieu of fractional shares under clause (ii) share the $25,000,000 per year aggregate ceiling with clause (i) repurchases",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(b)(ii)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(b)(ii)",
+              "§7.6(b)(ii)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[1].dependsOn[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "3b7c2ccafd6bf163c79bcc03947ece51e648111679b8302e79d37fe209488d0b",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "292947c7991ad3ee716fe1e99a485751ec7a4cae8ca38745073e5cceda1b4aaa",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 55807,
+    "inputTokens": 11817,
+    "outputTokens": 3121,
+    "costUsd": 0.00234767,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:ac354ffa81d6ca806759ba60.verified-units.json",
+    "packageHash": "e63d5d77efb61cfcc261505b10fae1762d4baebd59aec084d84cea64ac337162",
+    "complete": false,
+    "artifactsPersisted": 2,
+    "unitsMissingVerification": 0,
+    "problems": [
+      "VERIFICATION_WITHOUT_IR"
+    ]
+  }
+}

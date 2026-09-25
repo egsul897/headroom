@@ -1,0 +1,60 @@
+{
+  "artifact": "§11 — GO/NO-GO classification.",
+  "evidenceLabel": "LOW_COST_DIAGNOSTIC_PIPELINE",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "verdict": "CONMED_PILOT_BLOCKED_PROVIDER_CREDIT",
+  "why": "The gateway stopped serving mid-run with HTTP 402 insufficient_funds, affecting 118 of 137 candidates. Only 19 were actually served. The pilot therefore cannot answer the diagnostic question over the full population, and the per-candidate failure counts are NOT a measurement of the substituted model — they are the point at which the account ran dry.",
+  "notOneOfTheFourBecause": "CONMED_PILOT_MODEL_LIMITED would attribute an account-balance failure to the model; NO_ARCHITECTURAL_IMPROVEMENT requires the full population to have run; STRONG and MIXED both require a real coverage measurement. None applies.",
+  "whatTheServedSubsetShows": "Of the 19 candidates served before the cutoff, 12 completed and 7 failed for non-provider reasons. That subset is real evidence, reported separately below, but it is too small to carry a GO/NO-GO decision.",
+  "populationTruncated": false,
+  "productionFreeze": {
+    "startingSha": "bc96aeca396795e61e4bb509775e64b1a926ca8c",
+    "perSurface": [
+      {
+        "surface": "lib/contract-model/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "tests/fixtures/unseen-packages/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "docs/phase-3-v3.1-final-reconciliation/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "docs/phase-3-final-closure-resolution/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "docs/phase-3-remediation/",
+        "changed": false,
+        "diffStat": "(no change)"
+      },
+      {
+        "surface": "docs/phase-3-current-pipeline-regeneration/",
+        "changed": false,
+        "diffStat": "(no change)"
+      }
+    ],
+    "frozenSurfacesChanged": [],
+    "productionDiffIsEmpty": true,
+    "benchmarkFilesChanged": 0,
+    "filesChangedSinceStartingSha": [
+      "scripts/p3-conmed-pilot/build-artifacts.ts",
+      "scripts/p3-conmed-pilot/compile-run.ts",
+      "scripts/p3-conmed-pilot/dedup.ts",
+      "scripts/p3-conmed-pilot/pipeline.ts",
+      "scripts/p3-conmed-pilot/probe-models.ts",
+      "scripts/p3-conmed-pilot/rescore.ts",
+      "scripts/p3-conmed-pilot/run-pilot.ts",
+      "tests/phase-3-conmed-pilot/pilot-integrity.test.ts"
+    ],
+    "allChangesAreAdditive": true
+  },
+  "doNotConfuse": "§11: cheap-model weakness is not compiler-architecture weakness. This verdict separates the two explicitly."
+}

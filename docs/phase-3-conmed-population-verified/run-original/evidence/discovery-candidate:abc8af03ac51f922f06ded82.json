@@ -1,0 +1,579 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T19:48:33.576Z",
+  "candidateRef": "discovery-candidate:abc8af03ac51f922f06ded82",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.2(k)(i)",
+    "operativeSourceText": "(i) the requirements of Section 6.9 are satisfied and ",
+    "operativeSourceTextSha256": "38a51688f7d7d6680222a67e2a1591065f9ae2232166bc9fb9bbadfaeccf0197",
+    "operativeSourceChars": 54,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:9e62644f87eb3accbe80e0a3e9f076946361275910215ea3827149639c43fb5f",
+    "sufficiencyState": "INCOMPLETE",
+    "stopReasons": [],
+    "itemCount": 3,
+    "items": [
+      {
+        "itemId": "context-item:4bfc78ba93d206f947ff7af90acaf7ab23c2710763e4e9d230004cfb21758652",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.2(k)(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 54,
+        "excerptText": "(i) the requirements of Section 6.9 are satisfied and "
+      },
+      {
+        "itemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.2",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 8843,
+        "excerptText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n(a)\nIndebtedness of any Loan Party pursuant to any Loan Document;\n(b)\nIndebtedness of the Parent Borrower to any Subsidiary and of any Subsidiary Guarantor to the Parent Borrower or any other Subsidiary;\n(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n(d)\nFinance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;\n(e)\nIndebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions\nthereof (without any increase in the principal amount thereof);\n(f)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary\nGuarantor;\n(g)\nIndebtedness of the Parent Borrower or its Subsidiaries on account of industrial revenue bonds in an aggregate principal amount\nnot to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness)\nat anyone one time outstanding;\n95\n(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Indebtedness);\n(i)\nIndebtedness in respect of letters of credit (not otherwise permitted under this Section 7.2) outstanding in the ordinary course\nof business in an aggregate face amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured\non the date of incurrence of such Indebtedness);\n(j)\nIndebtedness of (i) any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party and (ii) any Subsidiary\nGuarantor to any Subsidiary that is not a Loan Party;\n(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat (i) the requirements of Section 6.9 are satisfied and (ii) the aggregate principal amount of such Indebtedness at any time outstanding\nshall not exceed the greater of (A) $150,000,000 and (B) 10.0% of Consolidated Total Tangible Assets (measured on the date of incurrence\nof such Indebtedness); provided , further , that any Indebtedness permitted by this Section 7.2(k) shall be evidenced by a\nnote or similar instrument and pledged in accordance with Section 6.9 and the Guarantee and Collateral Agreement;\n(l)\n(i) Permitted Unsecured Indebtedness; provided that (x) at the time of, and after giving effect to, the incurrence of such\nIndebtedness, no Default or Event of Default shall have occurred and be continuing and (y) the Parent Borrower shall be in compliance,\non a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section\n7.1(b), in each case recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries\nfor which financial statements are available as if such Indebtedness had been incurred on the first day of such period, and (ii) any guarantee\nby any Subsidiary in respect of any Permitted Unsecured Indebtedness; provided that (x) no Subsidiary that is not a Loan Party\nshall guarantee any Permitted Unsecured Indebtedness and (y) any such guarantee in respect of Permitted Unsecured Indebtedness shall be\nunsecured;\n(m)\nIndebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal\namount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of\nsuch Indebtedness);\n(n)\n(i) Permitted Subordinated Indebtedness; provided that the Parent Borrower shall be in compliance, on a pro forma basis\nafter giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section 7.1(b), recomputed on a pro\nforma basis as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of such period and (ii) any guarantee by any Subsidiary\nin respect of any Permitted Subordinated Indebtedness; provided that (x) no Subsidiary that is not a Loan Party shall guarantee\nany Permitted Subordinated Indebtedness and (y) any such guarantee shall be subordinated to the prior payment in full of the Obligations\non the same basis as the related Permitted Subordinated Indebtedness;\n96\n(o)\nunsecured Indebtedness not otherwise permitted by this Section 7.2 in an aggregate principal amount not to exceed the greater of\n(i) $60,000,000 and (ii) 3.25% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);\n(p)\n(i) Obligations under or in respect of interest rate Swap Agreements up to an aggregate notional principal amount not to exceed\nat any time an amount equal to the Commitments of all the Lenders in the aggregate at such time, (ii) Obligations owing under Swap Agreements\nentered into in order to manage existing or anticipated exchange rate or commodity price risks and not for speculative purposes, (iii)\nObligations in respect of Swap Agreements entered into in connection with any Permitted Bond Hedge Transaction and (iv) Obligations in\nrespect of Swap Agreements entered into in connection with any Permitted Warrant Transaction;\n(q)\n[reserved];\n(r)\nIndebtedness in respect of the Convertible Notes and any Permitted Refinancing thereof; and\n(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as (i) after giving effect to the assumption of such Indebtedness and such Permitted Business Acquisition on a pro\nforma basis as of the last day of the most recent period of four consecutive fiscal quarters have been delivered, the Parent Borrower\nshall be in compliance, on a pro forma basis with the financial covenants contained in Section 7.1(a) and (b), in each case recomputed\nas at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available as if such Indebtedness had been incurred on the first day of such period, (ii) before and after giving effect thereto,\nno Event of Default shall have occurred and be continuing and (iii) any such Indebtedness shall be unsecured or secured only by a mortgage,\npurchase money security interest, Finance Lease Obligation or similar arrangement on the Property acquired in connection with such Permitted\nBusiness Acquisition or similar Investment (and any accessions thereto or improvements thereon), and no Lien shall extend to cover any\nother Property of the Parent Borrower or any Subsidiary Guarantor.\nFor purposes of determining compliance with\nthis Section 7.2, (A) Indebtedness need not be permitted solely by reference to one category of permitted Indebtedness described in Section\n7.2(a) through (s) but may be permitted in part under any combination thereof and (B) in the event that an item of Indebtedness (or any\nportion thereof) meets the criteria of one or more of the categories of permitted Indebtedness described in Sections 7.2(a) through (s),\nthe Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness\n(or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of\nsuch item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having\nbeen incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:3d8ef920176d8af94c95ea78810445009b240145347f06c7ead163b880e246d2",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.2(k)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 267,
+        "excerptText": "(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat "
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "toItemId": "context-item:4bfc78ba93d206f947ff7af90acaf7ab23c2710763e4e9d230004cfb21758652",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:3d8ef920176d8af94c95ea78810445009b240145347f06c7ead163b880e246d2",
+        "toItemId": "context-item:4bfc78ba93d206f947ff7af90acaf7ab23c2710763e4e9d230004cfb21758652",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "MISSING_CONTEXT",
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.2(k)(i)",
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "CONDITION",
+          "posture": "PERMISSION",
+          "action": "INCUR_DEBT",
+          "entityScope": [
+            "Parent Borrower",
+            "Foreign Subsidiary",
+            "Foreign Subsidiary Holdco",
+            "Subsidiary"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": null,
+          "conditions": [
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "condition that the requirements of Section 6.9 are satisfied - Section 6.9's substantive requirements are unknown because the section cannot be located in this instrument",
+                "reason": "Section 6.9 did not resolve to any section in this instrument's documents (getReferencedProvision and getOperativeProvision both returned NOT_FOUND; getRelatedAmendments reports no history for it) and no other evidence supplies its content",
+                "sourceEvidence": "§7.2(k)(i)",
+                "citation": "§7.2(k)(i)",
+                "excerpt": "the requirements of Section 6.9 are satisfied",
+                "inventoryItemIds": [
+                  "inv-item:95e62e9ddf7dc3c5f9d1c549"
+                ]
+              },
+              "referencesDefinitionId": null,
+              "description": "the requirements of Section 6.9 are satisfied",
+              "citation": "§7.2(k)(i)",
+              "excerpt": "the requirements of Section 6.9 are satisfied",
+              "inventoryItemIds": [
+                "inv-item:78215ef53ec1cb1cbde30090"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 6.9",
+              "description": "the Section 7.2(k)(i) proviso requires that the requirements of Section 6.9 be satisfied; Section 6.9 could not be resolved to any region in this instrument's documents and its economics are unknown - preserved as an explicit unresolved cross-unit dependency",
+              "inventoryItemIds": [
+                "inv-item:95e62e9ddf7dc3c5f9d1c549"
+              ]
+            }
+          ],
+          "sufficiency": "MISSING_CONTEXT",
+          "sufficiencyReasons": [
+            "the condition's substance depends entirely on Section 6.9, which does not resolve to any section in this instrument's documents (getReferencedProvision, getOperativeProvision and getRelatedAmendments all attempted and failed)",
+            "the source context state is UNKNOWN_SOURCE_COMPLETENESS - the operative window's completeness against its own unit boundary cannot be established",
+            "the operative window is clause 7.2(k)(i) alone; the Section 7.2(k) permission's own chapeau no-Default condition, clause (ii) dollar cap and further proviso are outside this window (parent-scope text used only for entity scoping)",
+            "the entity class that must satisfy Section 6.9's requirements is itself unknown without that section's text"
+          ],
+          "citation": "§7.2(k)(i)",
+          "excerpt": "the requirements of Section 6.9 are satisfied",
+          "inventoryItemIds": []
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Operative window is §7.2(k)(i) alone: a single proviso condition on the Section 7.2(k) intercompany-Indebtedness basket. Compilation captures the condition faithfully as the window's whole content - the underlying permission's economics (chapeau 'no Default or Event of Default' condition, clause (ii) cap of the greater of $150,000,000 and 10.0% of Consolidated Total Tangible Assets, and the further proviso requiring a note pledged under Section 6.9 and the Guarantee and Collateral Agreement) sit in the parent-scope text outside this window and were NOT compiled here.",
+        "The Section 6.9 cross-reference is genuinely unresolvable: getReferencedProvision('Section 6.9') and getOperativeProvision('6.9') both returned NOT_FOUND across the instrument's documents (base credit agreement and 2026 First Omnibus Amendment), and getRelatedAmendments('6.9') reports no history. Every relevant retrieval tool was attempted before marking the condition MISSING_CONTEXT - no guess about Section 6.9's content was made.",
+        "Frozen inventory consumption: inv-item:78215ef53ec1cb1cbde30090 (the condition) is consumed by the rule's condition node; inv-item:95e62e9ddf7dc3c5f9d1c549 (the ambiguous Section 6.9 reference) is consumed by the UNSUPPORTED expression node and the REQUIRES dependency on 'Section 6.9'. Neither item is silently omitted."
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getReferencedProvision",
+        "input": {
+          "ref": "Section 6.9"
+        },
+        "outputSummary": "refused: reference \"Section 6.9\" did not resolve to any section (or any enclosing section) within this instrument's documents",
+        "charsReturned": 116,
+        "timestamp": "2026-09-24T19:46:21.575Z"
+      },
+      {
+        "toolName": "getInstrumentDocuments",
+        "input": {},
+        "outputSummary": "2 document(s) in this instrument",
+        "charsReturned": 32,
+        "timestamp": "2026-09-24T19:46:21.575Z"
+      },
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "6.9"
+        },
+        "outputSummary": "refused: no section \"6.9\" found in this instrument's documents, and it has no recorded amendment history",
+        "charsReturned": 95,
+        "timestamp": "2026-09-24T19:46:27.695Z"
+      },
+      {
+        "toolName": "getRelatedAmendments",
+        "input": {
+          "ref": "6.9"
+        },
+        "outputSummary": "refused: no recorded amendment history for \"6.9\" - it has not been amended (or is not a recognized section/definition in this instrument)",
+        "charsReturned": 128,
+        "timestamp": "2026-09-24T19:46:27.695Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:20078eb2ed8bbc8ab108c896",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2(k)(i)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§7.2(k)(i)",
+              "semanticDescription": "condition that the requirements of Section 6.9 are satisfied - Section 6.9's substantive requirements are unknown because the section cannot be located in this instrument",
+              "reason": "Section 6.9 did not resolve to any section in this instrument's documents (getReferencedProvision and getOperativeProvision both returned NOT_FOUND; getRelatedAmendments reports no history for it) and no other evidence supplies its content",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.2(k)(i)",
+                "excerpt": "the requirements of Section 6.9 are satisfied"
+              },
+              "exprId": "ir-expr:4c777f7f62cdc92c6e8026d0",
+              "inventoryItemIds": [
+                "inv-item:95e62e9ddf7dc3c5f9d1c549"
+              ]
+            },
+            "referencesDefinitionId": null,
+            "description": "the requirements of Section 6.9 are satisfied",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(k)(i)",
+              "excerpt": "the requirements of Section 6.9 are satisfied"
+            },
+            "inventoryItemIds": [
+              "inv-item:78215ef53ec1cb1cbde30090"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 6.9",
+            "description": "the Section 7.2(k)(i) proviso requires that the requirements of Section 6.9 be satisfied; Section 6.9 could not be resolved to any region in this instrument's documents and its economics are unknown - preserved as an explicit unresolved cross-unit dependency",
+            "reason": "dependsOn[0].targetRef \"Section 6.9\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "inv-item:95e62e9ddf7dc3c5f9d1c549"
+            ]
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "the condition's substance depends entirely on Section 6.9, which does not resolve to any section in this instrument's documents (getReferencedProvision, getOperativeProvision and getRelatedAmendments all attempted and failed)",
+          "the source context state is UNKNOWN_SOURCE_COMPLETENESS - the operative window's completeness against its own unit boundary cannot be established",
+          "the operative window is clause 7.2(k)(i) alone; the Section 7.2(k) permission's own chapeau no-Default condition, clause (ii) dollar cap and further proviso are outside this window (parent-scope text used only for entity scoping)",
+          "the entity class that must satisfy Section 6.9's requirements is itself unknown without that section's text",
+          "ruleType \"CONDITION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "Section 6.9 did not resolve to any section in this instrument's documents (getReferencedProvision and getOperativeProvision both returned NOT_FOUND; getRelatedAmendments reports no history for it) and no other evidence supplies its content",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Foreign Subsidiary\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Foreign Subsidiary Holdco\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+          "dependsOn[0].targetRef \"Section 6.9\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: wire entity tag(s) \"Foreign Subsidiary\" (entityScope), \"Foreign Subsidiary Holdco\" (entityScope) are not EntityClassTag values; the affected scope field is reset to unspecified and the tag is preserved verbatim in entityScopeAudit - its meaning is not guessed"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2(k)(i)",
+          "excerpt": "the requirements of Section 6.9 are satisfied"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNRECOGNIZED_TAG",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNRECOGNIZED_TAG"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Foreign Subsidiary",
+              "Foreign Subsidiary Holdco",
+              "Subsidiary"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Foreign Subsidiary",
+              "outcome": "UNRECOGNIZED_ENTITY_TAG",
+              "normalized": null,
+              "viaAlias": false
+            },
+            {
+              "field": "entityScope",
+              "raw": "Foreign Subsidiary Holdco",
+              "outcome": "UNRECOGNIZED_ENTITY_TAG",
+              "normalized": null,
+              "viaAlias": false
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiary",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "MISSING_CONTEXT"
+          },
+          "witness": {
+            "ownExcerpt": "the requirements of Section 6.9 are satisfied",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        }
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] ruleType \"CONDITION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r1].condition[0].expression] Section 6.9 did not resolve to any section in this instrument's documents (getReferencedProvision and getOperativeProvision both returned NOT_FOUND; getRelatedAmendments reports no history for it) and no other evidence supplies its content",
+      "[rule[r1]] ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Foreign Subsidiary\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+      "[rule[r1]] ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Foreign Subsidiary Holdco\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+      "[rule[r1]] dependsOn[0].targetRef \"Section 6.9\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Operative window is §7.2(k)(i) alone: a single proviso condition on the Section 7.2(k) intercompany-Indebtedness basket. Compilation captures the condition faithfully as the window's whole content - the underlying permission's economics (chapeau 'no Default or Event of Default' condition, clause (ii) cap of the greater of $150,000,000 and 10.0% of Consolidated Total Tangible Assets, and the further proviso requiring a note pledged under Section 6.9 and the Guarantee and Collateral Agreement) sit in the parent-scope text outside this window and were NOT compiled here.",
+      "The Section 6.9 cross-reference is genuinely unresolvable: getReferencedProvision('Section 6.9') and getOperativeProvision('6.9') both returned NOT_FOUND across the instrument's documents (base credit agreement and 2026 First Omnibus Amendment), and getRelatedAmendments('6.9') reports no history. Every relevant retrieval tool was attempted before marking the condition MISSING_CONTEXT - no guess about Section 6.9's content was made.",
+      "Frozen inventory consumption: inv-item:78215ef53ec1cb1cbde30090 (the condition) is consumed by the rule's condition node; inv-item:95e62e9ddf7dc3c5f9d1c549 (the ambiguous Section 6.9 reference) is consumed by the UNSUPPORTED expression node and the REQUIRES dependency on 'Section 6.9'. Neither item is silently omitted.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T19:47:04.770Z",
+      "inputTokens": 14938,
+      "outputTokens": 13500,
+      "cachedInputTokens": 48128,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 3,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 133359,
+      "calculatedCostUsd": 0.16487600000000002
+    },
+    "compiledAt": "2026-09-24T19:47:04.770Z",
+    "outputHash": "b14d33d74958a1092a882e1c6ce1006dae03e5d0a7ffa91d990083802ab75748"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "8ec72244b0670d06b7d2e3df4ef881618b5c5364ce3b5ea7d56fa96630b06e67",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:abc8af03ac51f922f06ded82",
+        "ruleOrDefinitionId": "ir-rule:20078eb2ed8bbc8ab108c896",
+        "irPath": "rules[0].conditions; rules[0].capacityExpression",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(k) Indebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as no Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided that (i) the requirements of Section 6.9 are satisfied and (ii) the aggregate principal amount of such Indebtedness at any time outstanding shall not exceed the greater of (A) $150,000,000 and (B) 10.0% of Consolidated Total Tangible Assets (measured on the date of incurrence of such Indebtedness); provided, further, that any Indebtedness permitted by this Section 7.2(k) shall be evidenced by a note or similar instrument and pledged in accordance with Section 6.9 and the Guarantee and Collateral Agreement;",
+        "sourceCitation": "§7.2(k) (parent scope context)",
+        "proposedIrEvidence": "rules[0].conditions contains only 'rule[r1].condition[0]' (OTHER_RULE_SATISFIED referencing §6.9); capacityExpression is null; sufficiency is MISSING_CONTEXT",
+        "verifierReasoning": "The proposed IR presents a self-contained PERMISSION to INCUR_DEBT conditioned solely on satisfaction of Section 6.9. In the source, clause 7.2(k)(i) is only one conjunctive requirement within the 7.2(k) exception. The permission is also conditioned on no Default or Event of Default being continuing at incurrence, on the aggregate principal cap in clause (ii) (the greater of $150,000,000 and 10.0% of Consolidated Total Tangible Assets), and on the 'provided, further' requirement that the debt be evidenced by a note or similar instrument and pledged in accordance with Section 6.9 and the Guarantee and Collateral Agreement. None of those conditions or the capacity expression is represented. Because the IR states an INCUR_DEBT permission with capacityExpression null, a competent reviewer using the IR alone could conclude that debt is permitted once Section 6.9 is satisfied, regardless of amount, existing default, or pledge/documentation requirements. The MISSING_CONTEXT label only discloses the unknown substance of Section 6.9; it does not disclose these known omissions, so it does not cure the materiality of the gap.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T19:48:33.573Z"
+      },
+      {
+        "findingId": "03623c6e43e31952442431e435b2c408e898836b29a714a3f357ea825e123170",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:abc8af03ac51f922f06ded82",
+        "ruleOrDefinitionId": "ir-rule:20078eb2ed8bbc8ab108c896",
+        "irPath": "rules[0].entityScope",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "Indebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as no Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness)",
+        "sourceCitation": "§7.2(k) (parent scope context)",
+        "proposedIrEvidence": "\"entityScope\": [] and no dependsOn entries on rules[0]",
+        "verifierReasoning": "The source carve-out is expressly limited to Indebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco owed to the Parent Borrower or any other Subsidiary. The proposed IR's INCUR_DEBT permission has an empty entityScope and no dependency or parent reference indicating that this scope is inherited from elsewhere. As proposed, the IR therefore does not represent the debtor/creditor scope of the permission. A reviewer could wrongly apply the permission to a different obligor or creditor relationship. This changes the scope of permitted activity and is material.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T19:48:33.574Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "items": [
+        {
+          "itemId": "598a2003c1fc04942a8349a69557da45a7d3329917190ec2672dd91948871ce1",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "are satisfied",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(k)(i)",
+          "structuralNodeKey": null,
+          "charStart": 36,
+          "charEnd": 49,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "b0ac091adc9e768bfe0b4630fc2b57389b04fbe903930e0efb37ad238ff726b8",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(k)(i)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(i)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:abc8af03ac51f922f06ded82",
+      "items": [
+        {
+          "itemId": "5f97aabe842065da6870a12d104bcd16c79b848ac073aa2fda18238dc0d80504",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:20078eb2ed8bbc8ab108c896",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(k)(i)",
+          "sourceExcerpt": "the requirements of Section 6.9 are satisfied",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "509d607497dc7c5f4b3dcb19e52e50cf3f38ce2ee248efbcf856d8f1a421b789",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:20078eb2ed8bbc8ab108c896",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(k)(i)",
+          "sourceExcerpt": "the requirements of Section 6.9 are satisfied",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "37bef651ded0b27f1931950d3a1a09156de6ec808bda382c6ecf122d7e6cacb8",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:20078eb2ed8bbc8ab108c896",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the requirements of Section 6.9 are satisfied",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(k)(i)",
+          "sourceExcerpt": "the requirements of Section 6.9 are satisfied",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "dda0a92803dda50670666dc849332b9a62d35037613389cc695fe6c6f7dce4af",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:20078eb2ed8bbc8ab108c896",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "condition that the requirements of Section 6.9 are satisfied - Section 6.9's substantive requirements are unknown because the section cannot be located in this instrument",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(k)(i)",
+          "sourceExcerpt": "the requirements of Section 6.9 are satisfied",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:abc8af03ac51f922f06ded82",
+        "items": [],
+        "fieldsWalked": 7,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "38a51688f7d7d6680222a67e2a1591065f9ae2232166bc9fb9bbadfaeccf0197",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "e1df8101a41ce434ae6d98cbc3bc7834cad419b4218192af5bbac4f741bf6913",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 159905,
+    "inputTokens": 14938,
+    "outputTokens": 13500,
+    "costUsd": 0.005451940000000001,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:abc8af03ac51f922f06ded82.verified-units.json",
+    "packageHash": "947eaeed38bd7ee9464c5bfbfac2a29ccf599ba69c4a07ae33711b4e2bfc87f3",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

@@ -1,0 +1,1340 @@
+{
+  "artifact": "§2 — evidence provenance for ALL 47 cases, not only the 20 the prior P3-DEFECT-1 investigation named.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "decisiveTest": "A case's evidence is current-pipeline evidence if and only if the pipeline identity recorded on the artifact that produced it equals the identity current production stamps. Recency, plausibility and 'it looks compiled' are not evidence of currency.",
+  "currentPipelineIdentity": {
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2"
+  },
+  "datasetGenerationFacts": {
+    "dsgr": {
+      "generatingHarness": "scripts/phase-3f-first-blind-run.ts",
+      "compilationStageRan": true,
+      "recordedPromptVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPromptVersion": "semantic-accountability-compiler-prompt.v5",
+      "promptVersionMatchesCurrent": false,
+      "discovered": 2847,
+      "eligible": 2687,
+      "compiled": 30,
+      "verified": 28,
+      "fullyVerified": 0,
+      "totalCostUsd": 9.344626,
+      "wallClockMs": 25419744,
+      "model": [
+        "anthropic/claude-sonnet-5"
+      ],
+      "provider": [
+        "vercel-ai-gateway"
+      ]
+    },
+    "conmed": {
+      "generatingHarness": "tests/fixtures/unseen-packages/phase-2f-freeze",
+      "stagesPresent": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "compilationStageRan": false,
+      "recordedPromptVersion": [],
+      "currentPromptVersion": "semantic-accountability-compiler-prompt.v5",
+      "promptVersionMatchesCurrent": false
+    },
+    "lsb": {
+      "generatingHarness": "legacy 11-stage Phase-C orchestrator (compiler-runs/run-1787767205274.json)",
+      "compilationStageRan": true,
+      "recordedPromptVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPromptVersion": "semantic-accountability-compiler-prompt.v5",
+      "promptVersionMatchesCurrent": false
+    },
+    "fwrg": {
+      "generatingHarness": "Phase-C0 analyzer (analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json)",
+      "compilationStageRan": false,
+      "recordedPromptVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPromptVersion": "semantic-accountability-compiler-prompt.v5",
+      "promptVersionMatchesCurrent": false
+    }
+  },
+  "totals": {
+    "cases": 47,
+    "regenerationRequired": 47,
+    "currentPipelineEquivalent": 0,
+    "byProvenanceState": {
+      "HISTORICAL_NO_COMPILATION_STAGE": 9,
+      "SUPERSEDED_ANALYZER": 9,
+      "HISTORICAL_VERIFICATION_ARTIFACT": 9,
+      "HISTORICAL_COMPILE_CAP": 20
+    },
+    "byDataset": {
+      "conmed": 9,
+      "fwrg": 9,
+      "lsb": 9,
+      "dsgr": 20
+    }
+  },
+  "findingThatWidensThePriorScope": "The prior investigation named 20 cases. The pipeline-identity test says all 47 are non-current: the 20 because the harness never compiled their address, the other 27 because their evidence was produced by a harness or prompt version that production no longer runs. §2 explicitly forbids assuming only the prior 20 are contaminated, and the audit confirms the wider scope.",
+  "cases": [
+    {
+      "caseId": "CASE-0c169f38c3",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.2(c)",
+      "currentBenchmarkClaim": "Indebtedness secured by Liens permitted under 7.3(g), conditioned on pro forma compliance with the 7.1 financial covenants.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 59,
+        "VERIFICATION_FINDING": 1
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-0f6ac984b3",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.04(a)(x)",
+      "currentBenchmarkClaim": "Restricted Payments up to the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA, conditioned on no continuing Event of Default. $21,000,000; 35% of Consolidated Adjusted EBITDA",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_RULE": 24,
+        "DISCOVERY_CANDIDATE": 35,
+        "ANALYZER_DEFINED_TERM": 1
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-1284ab8e71",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.08",
+      "currentBenchmarkClaim": "Section 6.08(a) prohibits payments in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes) except for six enumerated carve-outs: (i) payments in respect of the Secured Obligations; (ii) scheduled principal, interest and other required amounts on Indebtedness permitted under Section 6.01, other than Subordinated Indebtedness; (iii) payments resulting from a refinancing permitted by Section 6.01(d); (iv) payments of Subordinated Indebtedness to the extent its own subordination terms permit; (v) payments to the extent the Payment Conditions are satisfied; and (vi) payments not exceeding $500,000 in the aggregate in any fiscal year, available only where no other clause of Section 6.08(a) would permit the payment at the time. Section 6.08(b) separately prohibits amendments to Subordinated Indebtedness terms materially adverse to the Administrative Agent or the Lenders, as determined by the Administrative Agent in its Permitted Discretion.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 21,
+        "COMPILED_IR_RULE": 2
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-166617b06a",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "1.11",
+      "currentBenchmarkClaim": "This Agreement amends, supersedes and restates the October 11, 2019 Existing Credit Agreement in its entirety without novation: existing liens, guarantees and obligations continue and are re-evidenced hereunder; Existing Credit Agreement 'Commitments' continue as Revolving Commitments; the Administrative Agent may effect reallocations/assignments among Lenders without assignment fees; accrued interest and fees plus break costs under the Existing Credit Agreement are payable on the Effective Date; and each Loan Party ratifies and reaffirms its prior guarantees and Lien grants.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 38,
+        "COMPILED_IR_RULE": 13,
+        "VERIFICATION_FINDING": 3,
+        "DISCOVERY_CANDIDATE": 6
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 17,
+      "compiledAtClaimAddress": 8,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-16a7d152b6",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.02",
+      "currentBenchmarkClaim": "General Lien prohibition on all Loan Party assets, subject only to Permitted Liens (including replacement liens for refinanced Section 6.01(d) debt).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_RULE": 5,
+        "DISCOVERY_CANDIDATE": 19
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-2034884b7a",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.03",
+      "currentBenchmarkClaim": "Prohibition on merger/consolidation/reclassification of stock (a), liquidation/dissolution (b), and sale of all-or-substantially-all assets (c), with several intercompany/ordinary-course/good-faith carve-outs.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 23,
+        "COMPILED_IR_RULE": 4
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-2aa00d5566",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.01",
+      "currentBenchmarkClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except as permitted by clauses (a) through (q).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 56,
+        "VERIFICATION_FINDING": 1,
+        "DISCOVERY_CANDIDATE": 3
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 13,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "13 eligible candidates were discovered at this claim's own address and 0 were compiled, because the harness sliced the eligible set at COMPILE_CAP = 30",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-30db965277",
+      "documentId": "doc-d",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.04",
+      "currentBenchmarkClaim": "General prohibition on forming subsidiaries after the Effective Date, purchasing or holding Equity Interests, evidences of indebtedness or securities, making or permitting loans or advances, Guaranteeing obligations, making or permitting investments, or acquiring assets constituting a business unit, except as permitted by clauses (a) through (s).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 54,
+        "DISCOVERY_CANDIDATE": 6
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 7,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "7 eligible candidates were discovered at this claim's own address and 0 were compiled, because the harness sliced the eligible set at COMPILE_CAP = 30",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-32a8d38224",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.01(g)(i)",
+      "currentBenchmarkClaim": "Guaranties of supplier/customer/franchisee/licensee obligations in the ordinary course, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA. $2,500,000; 5% of Consolidated Adjusted EBITDA",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_RULE": 23,
+        "DISCOVERY_CANDIDATE": 32,
+        "ANALYZER_DEFINED_TERM": 5
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-393f8732d2",
+      "documentId": "doc-d",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.05",
+      "currentBenchmarkClaim": "No Loan Party or Restricted Subsidiary may Dispose of any asset, including Equity Interests it owns, and no Restricted Subsidiary may issue additional Equity Interests (other than to another Loan Party or Restricted Subsidiary in compliance with Section 6.04), except as permitted by clauses (a) through (k).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 60
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 20,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "20 eligible candidates were discovered at this claim's own address and 0 were compiled, because the harness sliced the eligible set at COMPILE_CAP = 30",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-3e2b123d74",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.05",
+      "currentBenchmarkClaim": "Flush prohibition: notwithstanding any other clause, no Loan Party or Restricted Subsidiary may consummate any transaction - whether by Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, in a single transaction or a series - resulting in the Disposition of intellectual property material to the business to any Unrestricted Subsidiary; non-exclusive ordinary-course licenses to Unrestricted Subsidiaries are permitted so long as the Company and Restricted Subsidiaries retain beneficial ownership and the same rights of use.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 46,
+        "DISCOVERY_CANDIDATE": 13,
+        "COMPILED_IR_RULE": 1
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 5,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-466dbaa257",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "Article 1 (ABL Priority Collateral / Notes Priority Collateral)",
+      "currentBenchmarkClaim": "Both 'ABL Priority Collateral' and 'Notes Priority Collateral' are defined ONLY by cross-reference to the Intercreditor Agreement ('shall have the meaning set forth in the Intercreditor Agreement') - this Credit Agreement's own text never states which specific assets fall into each category. The CORRECT extraction from THIS document alone is an UnresolvedContractItem (itemType UNRESOLVED_CROSS_REFERENCE, blocking=true, pointing at 'the Intercreditor Agreement' as a document this package does not contain) for both terms - not a guessed definition. This is the single clearest test in this package of whether a real extractor invents plausible-sounding collateral-scope content when the actual source is silent, which would be a textbook DANGEROUS_UNFLAGGED failure.",
+      "existingSystemOutputProvenance": [],
+      "representationTypeCounts": {},
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-4a1c6a48a0",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.04",
+      "currentBenchmarkClaim": "Flush valuation rules for Sections 5.15 and 6.04: designating a Subsidiary as Unrestricted is an 'investment' equal to the Company's proportionate share of the fair market value of that Subsidiary's net assets at designation; upon redesignation as Restricted, a permanent deemed investment remains equal to the original investment less the proportionate net asset fair market value at redesignation (if positive); and property transferred to or from an Unrestricted Subsidiary is valued at fair market value at transfer.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 45,
+        "COMPILED_IR_DEFINITION": 2,
+        "DISCOVERY_CANDIDATE": 6,
+        "COMPILED_IR_RULE": 2,
+        "VERIFICATION_FINDING": 5
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 28,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-55163b4198",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.16",
+      "currentBenchmarkClaim": "Use-of-proceeds restriction: no Anti-Corruption Law violations, no Sanctioned Person/Country activity, no Sanctions violations.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 4,
+        "VERIFICATION_FINDING": 56
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-57227cc234",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.01",
+      "currentBenchmarkClaim": "General (uncapped, no dollar ceiling) Indebtedness permission for the Loan Parties, unlocked ONLY if, as of the incurrence date, (i) Fixed Charge Coverage Ratio > 2.0:1.0 for the trailing four fiscal quarters AND (ii) Payment Conditions are satisfied - distinct from the enumerated (a)-(t) exceptions that follow it. 2.0:1.00 Fixed Charge Coverage Ratio This basket has NO dollar cap - the only gates are the ratio and Payment Conditions. thresholdValue/thresholdUnit are honestly null/unlimited-shaped for this rule (the ontology's own capacityUnlimited-style representation, not a missing field), and Payment Conditions itself is a compound MINIMUM_LIQUIDITY+NO_DEFAULT+certificate condition folded into one named defined term rather than being spelled out per-basket - representable as a single condition citing the defined term, but only if the extractor resists the temptation to inline the underlying sub-conditions redundantly on every basket that references it.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_RULE": 4,
+        "DISCOVERY_CANDIDATE": 21
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-579c5d3f33",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.10",
+      "currentBenchmarkClaim": "Fair-and-reasonable-terms requirement for affiliate transactions over $2,500,000, with ordinary-course/allocation/tax/receivables-program carve-outs. $2,500,000",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 33,
+        "VERIFICATION_FINDING": 1
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-5a537d2858",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.01(j)",
+      "currentBenchmarkClaim": "Debt of Restricted Subsidiaries that are not Loan Parties, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA. $30,000,000; 50% of Consolidated Adjusted EBITDA Entity-scope gate ('by a Restricted Subsidiary that is not a Loan Party') is representable via entityScope/entityScopeExcluded plus an ENTITY_TYPE condition; no gap, but two entity-scope fields must both be populated correctly for the rule not to silently overstate who the basket is available to.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_RULE": 28,
+        "DISCOVERY_CANDIDATE": 27,
+        "ANALYZER_DEFINED_TERM": 5
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-5a66cad386",
+      "documentId": "doc-b",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.05",
+      "currentBenchmarkClaim": "Asset sale covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue additional Equity Interests (other than to another Loan Party or Restricted Subsidiary in compliance with Section 6.04), except as permitted by clauses (a) through (k).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 60
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 22,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "22 eligible candidates were discovered at this claim's own address and 0 were compiled, because the harness sliced the eligible set at COMPILE_CAP = 30",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-5ac1cd56ef",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.10",
+      "currentBenchmarkClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, enter into, incur or permit to exist any agreement prohibiting, restricting or conditioning (a) the ability of a Loan Party or Restricted Subsidiary to create, incur or permit Liens on its property, or (b) the ability of any Restricted Subsidiary to pay dividends or distributions on Equity Interests, make or repay loans or advances to any Borrower or Restricted Subsidiary, or Guarantee Indebtedness of any Borrower or Restricted Subsidiary.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 32,
+        "DISCOVERY_CANDIDATE": 21,
+        "COMPILED_IR_RULE": 2,
+        "VERIFICATION_FINDING": 5
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 4,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-5c33066800",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "1.01",
+      "currentBenchmarkClaim": "'Applicable EBITDA' means EBITDA of the Company and Restricted Subsidiaries for the four consecutive fiscal quarters most recently ended for which financials have been delivered under Section 5.01(a)/(b) (or, pre-first delivery, the Section 3.04(a) financials).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_DEFINITION": 8,
+        "SEMANTIC_COVERAGE_UNIT": 35,
+        "VERIFICATION_FINDING": 10,
+        "COMPILED_IR_RULE": 1,
+        "DISCOVERY_CANDIDATE": 6
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 6,
+      "compiledAtClaimAddress": 5,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-641203d620",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.04",
+      "currentBenchmarkClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or acquire or hold Equity Interests, evidences of indebtedness or securities of, make or permit loans or advances to, Guarantee obligations of, or make or hold any investment in, any other Person, or acquire assets constituting a business unit, except as permitted by clauses (a) through (r).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 59,
+        "COMPILED_IR_DEFINITION": 1
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 28,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-768547a920",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "1.01",
+      "currentBenchmarkClaim": "'Interest Coverage Ratio' = EBITDA divided by Consolidated Interest Expense for a four-quarter period. For the 'Annualized Quarters' ending 3/31/2022, 6/30/2022, 9/30/2022 and 12/31/2022, Consolidated Interest Expense is annualized by multiplying post-Effective-Date interest expense by 4, 2, 4/3 and 1 respectively.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_DEFINITION": 2,
+        "COMPILED_IR_RULE": 8,
+        "VERIFICATION_FINDING": 8,
+        "SEMANTIC_COVERAGE_UNIT": 36,
+        "DISCOVERY_CANDIDATE": 6
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 6,
+      "compiledAtClaimAddress": 5,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-7b607feb5f",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
+      "currentBenchmarkClaim": "Consolidated Adjusted EBITDA: Consolidated Net Income plus a long, itemized stack of addbacks (interest expense, taxes, D&A, non-cash/impairment items, business-interruption insurance proceeds, and more). Clean for REPRESENTATION (a DEFINITION node with definitionExcerpt plus USES_TERM/USES_FINANCIAL_INPUT dependency edges to each addback concept it references) - not a claim of full line-item EXECUTABILITY, which Phase B never promised for any covenant-defined-EBITDA metric and which RuleEvaluationClass=JUDGMENT_REQUIRED already signals honestly. CALCULATION_RULE_KINDS has no dedicated 'itemized-addback-stack' kind; OTHER is the correct, non-misleading fallback for this specific shape.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_DEFINED_TERM": 9,
+        "ANALYZER_RULE": 24,
+        "DISCOVERY_CANDIDATE": 27
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-7fd6c57745",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.01(m)",
+      "currentBenchmarkClaim": "Unconditional carve-out for the Loan Parties' existing Indebtedness under the Secured Notes and guarantees thereof.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_RULE": 6,
+        "DISCOVERY_CANDIDATE": 28
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-88cfbb3bb8",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.05",
+      "currentBenchmarkClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue additional Equity Interests other than to a Loan Party or another Restricted Subsidiary in compliance with Section 6.04, except as permitted by clauses (a) through (k).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 44,
+        "DISCOVERY_CANDIDATE": 14,
+        "COMPILED_IR_RULE": 1,
+        "VERIFICATION_FINDING": 1
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 5,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-8c29f13dc0",
+      "documentId": "doc-d",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.01",
+      "currentBenchmarkClaim": "General prohibition on creating, incurring, assuming or suffering to exist any Indebtedness, subject to the exceptions in clauses (a) through (r).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 58,
+        "DISCOVERY_CANDIDATE": 1,
+        "VERIFICATION_FINDING": 1
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 26,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "26 eligible candidates were discovered at this claim's own address and 0 were compiled, because the harness sliced the eligible set at COMPILE_CAP = 30",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-8de9def8ca",
+      "documentId": "doc-d",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.08(b)",
+      "currentBenchmarkClaim": "General prohibition on making or agreeing to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, subject to clauses (i) through (iv).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 30,
+        "SEMANTIC_COVERAGE_UNIT": 24,
+        "COMPILED_IR_RULE": 4,
+        "VERIFICATION_FINDING": 2
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 10,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-9001417020",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.04(b)(iv)",
+      "currentBenchmarkClaim": "Restricted Debt Payments permitted so long as no Event of Default exists, in an aggregate amount not to exceed (A) the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period, plus (B) at the Borrower's election, the amount of Restricted Payments then permitted under Section 6.04(a)(x), with any amount so used reducing the amount available under Section 6.04(a)(x).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_RULE": 22,
+        "DISCOVERY_CANDIDATE": 38
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-90415d6765",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.08(b)",
+      "currentBenchmarkClaim": "No Loan Party will, nor permit any Restricted Subsidiary to, make or agree to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, except as permitted by clauses (i) through (iv).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 30,
+        "SEMANTIC_COVERAGE_UNIT": 22,
+        "COMPILED_IR_RULE": 4,
+        "VERIFICATION_FINDING": 4
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 8,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-963cc44044",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.14",
+      "currentBenchmarkClaim": "Prohibition on consensual restrictions on Subsidiary dividends/loans/asset-transfers to the Parent Borrower/other Subsidiaries, with Loan Document / Disposition-agreement / Receivables-Program carve-outs.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 60
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-9948558e99",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.11",
+      "currentBenchmarkClaim": "Sale-leaseback prohibition except assets with FMV under the greater of $75,000,000 and 3.5% of Consolidated Total Assets. $75,000,000; 3.5% of Consolidated Total Assets",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 57,
+        "VERIFICATION_FINDING": 3
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-99ee6598d1",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.04(a)(iii)(A)-(B)",
+      "currentBenchmarkClaim": "Restricted Payments up to the Available Amount plus the Available Excluded Contribution Amount - a builder-basket permission whose capacity is itself a separately defined, cumulative, multi-component, conditionally-gated amount (see fwrg-def-available-amount below). The permission rule itself is clean (a QUANTITATIVE_PERMISSION whose formulaRef points at a separate builder-basket definition via definedTermRefs, exactly how the ontology's dependency graph is meant to be used). The stretch is entirely inside the referenced Available Amount definition - see fwrg-def-available-amount.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_RULE": 9,
+        "DISCOVERY_CANDIDATE": 45,
+        "ANALYZER_DEFINED_TERM": 6
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-9a30560f37",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.17",
+      "currentBenchmarkClaim": "Outbound Investment Rules compliance covenant (a real, relatively novel 2024-era CFIUS-outbound-investment-regime covenant type - notable as a covenant family that likely did not appear in FWRG (2021) or LSB (2023) at all, since the U.S. outbound investment rules regime postdates both).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 25,
+        "VERIFICATION_FINDING": 7
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-a57ab21f38",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "1.04",
+      "currentBenchmarkClaim": "Accounting terms follow GAAP as in effect from time to time, but either the Borrower Representative or the Required Lenders may freeze a provision at pre-change GAAP by requesting an amendment to neutralize a GAAP change (frozen pending withdrawal or amendment). All computations must ignore fair-value elections under ASC 825-10-25 and must value convertible debt (ASC 470-20) at full stated principal.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 38,
+        "DISCOVERY_CANDIDATE": 4,
+        "COMPILED_IR_RULE": 9,
+        "VERIFICATION_FINDING": 9
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 4,
+      "compiledAtClaimAddress": 3,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-a898053843",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.04(a)",
+      "currentBenchmarkClaim": "A Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that (i) to the extent the disposition involves ABL Priority Collateral, the Borrowers shall have delivered, concurrently with or prior to the disposition, a new Borrowing Base Certificate demonstrating compliance with Section 2.01(a), (ii) the assets are sold for Fair Market Value, and (iii) the aggregate Fair Market Value of all assets sold in any fiscal year under Section 6.04(a) does not exceed the greater of $10,000,000 and 1.0% of the total consolidated assets of the Loan Parties and their Subsidiaries. The ABL Priority Collateral condition scopes the Borrowing Base Certificate requirement only; it does not scope the basket.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_RULE": 4,
+        "DISCOVERY_CANDIDATE": 24
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-b2658c02e7",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.1",
+      "currentBenchmarkClaim": "Four maintenance financial covenants: (a) Consolidated Senior Secured Leverage Ratio <= 3.75x (with a 0.50x Material-Acquisition step-up, max twice, 2-quarter gap); (b) Consolidated Total Leverage Ratio <= 5.50x (same step-up mechanic, capped at 6.00x); (c) Minimum Interest Coverage Ratio >= 2.75x; (d) a springing Liquidity covenant ($75M + Early Maturing Debt) that activates only within 91 days of Convertible Notes maturity and only if Early Maturing Debt exceeds $200M. 3.75 to 1.00; 0.50 to 1.00 step-up; 5.50 to 1.00; 6.00 to 1.00; 2.75 to 1.00; $75,000,000; $200,000,000",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 49,
+        "VERIFICATION_FINDING": 6
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-b38c3b48eb",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.2",
+      "currentBenchmarkClaim": "General prohibition on Indebtedness except 19 enumerated baskets (a)-(s), with a cross-basket reclassification right.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 37,
+        "VERIFICATION_FINDING": 23
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-b9ca777174",
+      "documentId": "doc-b",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.01",
+      "currentBenchmarkClaim": "Debt covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness except as permitted by clauses (a) through (q).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 58,
+        "DISCOVERY_CANDIDATE": 2
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 31,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "31 eligible candidates were discovered at this claim's own address and 0 were compiled, because the harness sliced the eligible set at COMPILE_CAP = 30",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-c8f9a9b5c0",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.04(b)",
+      "currentBenchmarkClaim": "Disposal of Notes Priority Collateral is permitted so long as permitted under the Secured Notes Documents or consented to by the requisite Secured Notes holders - a permission whose actual gating condition lives entirely OUTSIDE this Credit Agreement, in documents this package does not contain. The correct, honest extraction is a rule with evaluationClass JUDGMENT_REQUIRED and an UNSUPPORTED/cross-document condition explicitly naming 'Secured Notes Documents' (not filed in this package) as an unresolved dependency - a genuinely UNRESOLVABLE-from-this-document-alone reference (task §23), not a extractor failure if flagged honestly. A confident EXECUTABLE extraction here (inventing a dollar figure or ratio that does not exist in this text) would be exactly the DANGEROUS_UNFLAGGED failure mode this whole exercise measures.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_RULE": 3,
+        "DISCOVERY_CANDIDATE": 18
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-ca1109d4da",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.02(a)",
+      "currentBenchmarkClaim": "Liens securing the Secured Obligations are permitted without a dollar cap - an unconditional, non-quantitative permission scoped to a defined obligation pool rather than a basket amount. thresholdValue/thresholdUnit are optional on CandidateContractRuleSchema, so an uncapped permission scoped by definedTermRefs rather than a number is not blocked. Noted only because ContractRuleType's name ('QUANTITATIVE_PERMISSION') reads as if every instance must carry a number - it does not, but a naive extractor could wrongly infer a missing/zero threshold means 'not representable' rather than 'uncapped by definition'. Nomenclature risk, not a schema gap.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 31,
+        "ANALYZER_RULE": 5,
+        "ANALYZER_DEFINED_TERM": 24
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-d2514bfbe7",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "10.01(a)",
+      "currentBenchmarkClaim": "Each U.S. Loan Guarantor (other than those delivering a separate Guaranty) is jointly and severally liable as primary obligor and unconditionally guarantees to the Secured Parties the prompt payment when due of the Secured Obligations plus Section 9.03 collection costs (the 'U.S. Guaranteed Obligations'), excluding any guarantee of Excluded Swap Obligations; extensions and renewals do not release the guarantor, and the guaranty is enforceable by any branch or Affiliate of any Lender extending part of the obligations.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_RULE": 2,
+        "SEMANTIC_COVERAGE_UNIT": 34,
+        "DISCOVERY_CANDIDATE": 22,
+        "VERIFICATION_FINDING": 2
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 10,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-d32081582b",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "dataset": "conmed",
+      "claimSectionRef": "7.13",
+      "currentBenchmarkClaim": "Negative-pledge-clause prohibition (agreements that would prohibit/limit Lien creation securing the Obligations), with Loan Document / purchase-money / Receivables-Program carve-outs.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 43,
+        "VERIFICATION_FINDING": 8
+      },
+      "generationPipelineVersion": [],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_NO_COMPILATION_STAGE",
+      "reason": "the generating artifact has stages 1,2,3,4,5 and no compilation stage; zero COMPILED_IR candidates exist anywhere in this dataset",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-dd0a814e53",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.01(m)",
+      "currentBenchmarkClaim": "Capital Leases and purchase money Indebtedness, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA. $30,000,000; 50% of Consolidated Adjusted EBITDA",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_RULE": 25,
+        "DISCOVERY_CANDIDATE": 28,
+        "ANALYZER_DEFINED_TERM": 7
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-e008d4278a",
+      "documentId": "doc-b",
+      "dataset": "dsgr",
+      "claimSectionRef": "6.04",
+      "currentBenchmarkClaim": "Investment covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire Equity Interests, evidences of indebtedness or other securities of, make or permit loans or advances to, Guarantee obligations of, or make or permit any investment or other interest in, any other Person, or acquire assets of another Person constituting a business unit, except as permitted by clauses (a) through (r).",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "SEMANTIC_COVERAGE_UNIT": 52,
+        "DISCOVERY_CANDIDATE": 8
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 8,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "8 eligible candidates were discovered at this claim's own address and 0 were compiled, because the harness sliced the eligible set at COMPILE_CAP = 30",
+      "v311Result": "NO_CREDIT"
+    },
+    {
+      "caseId": "CASE-e3520246bd",
+      "documentId": "fwrg",
+      "dataset": "fwrg",
+      "claimSectionRef": "6.04(a)(xi)",
+      "currentBenchmarkClaim": "Unlimited (uncapped-dollar) Restricted Payments, permitted so long as no Event of Default exists and so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00 as of the last day of the most recently ended Test Period.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/analyzer-runs/VERCEL_AI_GATEWAY__anthropic-claude-sonnet-5.json",
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "ANALYZER_RULE": 15,
+        "DISCOVERY_CANDIDATE": 39,
+        "ANALYZER_DEFINED_TERM": 6
+      },
+      "generationPipelineVersion": [
+        "(Phase-C0 analyzer; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "SUPERSEDED_ANALYZER",
+      "reason": "every substantive candidate is an ANALYZER_RULE from the Phase-C0 analyzer, which predates the Phase-3B semantic compiler",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-e4e5c887fb",
+      "documentId": "lsb",
+      "dataset": "lsb",
+      "claimSectionRef": "6.01(i)",
+      "currentBenchmarkClaim": "Additional unconditional Indebtedness basket capped at the greater of a fixed dollar amount and a percentage of the Loan Parties' total consolidated assets (per GAAP balance sheet) - NOT a percentage of EBITDA. $70,000,000; 5.5% of total consolidated assets GREATER_OF_FLAT_OR_PCT_EBITDA is the closest existing CalculationRuleKind, but its own name says EBITDA and this basket's percentage component is of TOTAL CONSOLIDATED ASSETS, not EBITDA - the same real, previously-documented ontology-fit gap Matthews' own onboarding found for a percent-of-Total-Assets sub-cap (docs/matthews-international-onboarding.md), now independently re-confirmed by a second, unrelated real company via a completely different unseen-package methodology. lib/contract-model/types.ts's INPUT_REQUIREMENT_KEYS also has no TOTAL_ASSETS member (only COVENANT_EBITDA, NET_DEBT, SECURED_DEBT, etc.) - OTHER is the honest fallback, not a blocking gap, but a real, recurring, worth-fixing generalization candidate for Phase C+1.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-1787767205274.json",
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json"
+      ],
+      "representationTypeCounts": {
+        "DISCOVERY_CANDIDATE": 33,
+        "COMPILED_IR_RULE": 6
+      },
+      "generationPipelineVersion": [
+        "(legacy Phase-C rule-extraction stage; predates the Phase-3B semantic compiler)"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 0,
+      "compiledAtClaimAddress": 0,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_VERIFICATION_ARTIFACT",
+      "reason": "compiled by the legacy 11-stage Phase-C orchestrator, whose rule-extraction and verification stages are not the current Phase-3B compiler path",
+      "v311Result": "CREDIT"
+    },
+    {
+      "caseId": "CASE-e555117f4c",
+      "documentId": "doc-a",
+      "dataset": "dsgr",
+      "claimSectionRef": "1.01",
+      "currentBenchmarkClaim": "EBITDA means, for any period, Net Income plus the twenty add-backs enumerated in clause (a)(i)-(xx) and minus the six deductions enumerated in clause (b)(i)-(vi), all calculated for the Company and its Restricted Subsidiaries on a consolidated basis in accordance with GAAP; provided that the aggregate of all items added back under clauses (a)(vii), (a)(viii) and (a)(xviii)(b) may not exceed 20% of EBITDA calculated before those add-backs (the “Combined Cap”); and EBITDA for each of the four quarters of 2021 is a stipulated dollar amount that supersedes the formula for those quarters.",
+      "existingSystemOutputProvenance": [
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+        "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json"
+      ],
+      "representationTypeCounts": {
+        "COMPILED_IR_DEFINITION": 3,
+        "COMPILED_IR_RULE": 14,
+        "SEMANTIC_COVERAGE_UNIT": 17,
+        "VERIFICATION_FINDING": 9,
+        "DISCOVERY_CANDIDATE": 17
+      },
+      "generationPipelineVersion": [
+        "phase-3b1-semantic-compiler-prompt.v2"
+      ],
+      "currentPipelineVersion": "semantic-accountability-compiler-prompt.v5",
+      "currentPipelineEquivalent": false,
+      "discoveredAtClaimAddress": 6,
+      "compiledAtClaimAddress": 5,
+      "regenerationRequired": true,
+      "provenanceState": "HISTORICAL_COMPILE_CAP",
+      "reason": "this case's compiled evidence carries promptVersion [\"phase-3b1-semantic-compiler-prompt.v2\"], while current production stamps semantic-accountability-compiler-prompt.v5 - the output is real compilation, but not current-pipeline compilation",
+      "v311Result": "NO_CREDIT"
+    }
+  ]
+}

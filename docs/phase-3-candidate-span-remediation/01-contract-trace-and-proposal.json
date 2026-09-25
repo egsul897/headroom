@@ -1,0 +1,72 @@
+{
+  "modelCalls": 0,
+  "pipeline": [
+    {
+      "stage": 1,
+      "where": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts:145-166",
+      "what": "runPassCNeighborhoodExpansion. anchorId = the model's resolved relativeRef, or the section node when that ref does not uniquely resolve. structuralNodeIds = [anchorId]. Then, for role in {EXCEPTION, BASKET, PROVISO, CONDITION} and anchorId !== sectionNodeId, the containing SECTION node is pushed. The code's own comment calls this the 'neighborhood guarantee ... so a downstream consumer asking \"what does this exception modify\" never has to guess' - authored as a LINK, not a span extension."
+    },
+    {
+      "stage": 2,
+      "where": "lib/contract-model/compiler/discovery/pass-d-reconcile.ts:104-125",
+      "what": "mergeKey = `${structuralNodeIds[0]}::${role}::${contentFingerprint}` - identity is ANCHOR-ONLY plus role plus fingerprint; a linked node never participates in identity. length > 1 is recorded as discoveryMethod NEIGHBORHOOD_EXPANSION. A Pass D merge unions both candidates' node arrays."
+    },
+    {
+      "stage": 3,
+      "where": "lib/contract-model/compiler/discovery/types.ts:113-116",
+      "what": "DiscoveredCandidate.structuralNodeIds documented as 'One or more structural nodes this discovery's evidence spans - more than one only after Pass C neighborhood expansion LINKS a genuinely related node'. No doc comment anywhere states element [1..] is operative text."
+    },
+    {
+      "stage": 4,
+      "where": "lib/contract-model/analysis/orchestrator.ts:418",
+      "what": "THE DEFECT. operativeSourceText = candidate.structuralNodeIds.map((id) => index.getNodeText(id, 'DESCENDANTS')).join('\\n\\n'). Every linked node's FULL SUBTREE is concatenated into the operative span. The surrounding comment shows the line was last touched to fix a nodeKey-vs-nodeId lookup bug, never to decide that linked nodes are operative. scripts/p3-conmed-pilot/pipeline.ts:135-137 reproduces it byte-for-byte."
+    },
+    {
+      "stage": 5,
+      "where": "lib/contract-model/compiler/context-retrieval/pipeline.ts:142-173",
+      "what": "buildCovenantContextBundle, built from the SAME candidate and handed to the compiler beside operativeSourceText. primaryNodeId = structuralNodeIds[0]; retrieveOperativeSource(primary); then for every structuralNodeIds.slice(1): retrieveOperativeSource(extra) -> a SECOND OPERATIVE_SOURCE item carrying the linked node's DESCENDANTS text; then retrieveParentScope / retrieveChildRules / retrieveSiblingContext / definitions / cross-references off the PRIMARY node only."
+    },
+    {
+      "stage": 6,
+      "where": "lib/contract-model/compiler/context-retrieval/structural-context.ts:141-148",
+      "what": "retrieveParentScope already walks getAncestors(primaryNodeId), skips ARTICLE nodes, and emits each ancestor's OWN text (the chapeau, NOT the subtree) as a typed PARENT_SCOPE ContextItem with a PARENT_OF edge and the reason 'the operative prohibition/permission language a nested exception or basket depends on'. This is the typed channel the proposal needs - already implemented, already budget-bounded, already in the prompt."
+    },
+    {
+      "stage": 7,
+      "where": "lib/contract-model/compiler/semantic-accountability/source-context.ts",
+      "what": "resolveSourceContext presents the concatenation as ONE contiguous OPERATIVE region anchored at structuralNodeIds[0]: 7.2(k) is reported as abs 50,520-60,141 although the anchor node spans 50,520-51,296. Cross-references expand into separate CROSS_REFERENCE_EXPANSION regions."
+    },
+    {
+      "stage": 8,
+      "where": "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+      "what": "The frozen Pass A inventory and its sourceCoverage / unaccountedSource are computed over those regions, so a child candidate is held accountable for inventorying the WHOLE parent section. Measured in the frozen pilot: 7.2(k)(i) (own text 54 chars) carried 109 inventory items; 7.2(k) (776) carried 118."
+    },
+    {
+      "stage": 9,
+      "where": "lib/contract-model/compiler/semantic/shard-planner.ts deriveUnits/structuralUnits",
+      "what": "Only the anchor node's own subtree is recognised as structural units; the appended parent collapses into ONE atomic residue unit ('<ref>~2', 8,845 chars for 7.2(k)) that no shard threshold can split - which is why the preceding threshold mission found the threshold inert."
+    },
+    {
+      "stage": 10,
+      "where": "lib/contract-model/compiler/semantic/caller.ts:227-244 (summarizeContextBundle)",
+      "what": "The prompt ALREADY renders two separate blocks: 'Operative source text (<ref>): <operativeSourceText>' and 'Already-gathered context ...' listing every ContextItem as '- [id] (TYPE, citation) {evidenceStatus}: excerpt'. The operative/contextual distinction therefore already exists on the prompt surface; today the parent simply sits in the wrong block (and, via stage 5, in both)."
+    },
+    {
+      "stage": 11,
+      "where": "lib/contract-model/compiler/semantic-verification/verify.ts:319",
+      "what": "buildSourceInventory(candidateRef, compilerInput.operativeSourceText, ...) - the INDEPENDENT verifier builds the SOURCE side of its reconciliation from the same over-wide text."
+    },
+    {
+      "stage": 12,
+      "where": "lib/contract-model/ir/types.ts:99-106",
+      "what": "SourceProvenance { documentId, sourceNodeKey, sourceCitation, excerpt } - flat; a compiled rule's provenance carries no operative-vs-contextual discriminator."
+    }
+  ],
+  "structuralNodeIds0Semantics": "THE ANCHOR. Set by Pass C as the uniquely-resolved node for the discovered proposition (falling back to the containing section only when the model's relativeRef does not uniquely resolve). It is already the sole identity input at every identity site: pass-d-reconcile's mergeKey, context-retrieval's primaryNodeId, safe-failure/identity.ts's candidateRef convention, and semantic-accountability's anchorNodeId. Verified over the 163-candidate sealed CONMED population: every second key is a strict parent-prefix of the first, and no candidate carries more than two keys.",
+  "structuralNodeIdsRestSemantics": "INTENDED (from the call sites, not the naming): a structural LINK recording what the anchor modifies. It is consumed as a link by every consumer except one. ACTUAL at orchestrator.ts:418: a span extension whose full DESCENDANTS text is concatenated into operativeSourceText. In all four sealed datasets it is always the containing section, always emitted by NEIGHBORHOOD_EXPANSION, always for role in {EXCEPTION, BASKET, PROVISO, CONDITION}: CONMED 67/163, DSGR 234/777, LSB 45/82, FWRG 142/252 = 488 of the 1,248 eligible (39.1%).",
+  "proposedContract": {
+    "invariant": "operativeSourceText is the text of structuralNodeIds[0] alone. structuralNodeIds[1..] remain on the candidate and remain available to context resolution, but never extend the legal proposition the candidate claims to represent.",
+    "typedContextChannel": "The existing ContextItemType union already carries every class the mission names: PARENT_SCOPE (lead-in/chapeau), CHILD_RULE, SIBLING_CONTEXT, PROVISO, EXCEPTION, CONDITION, SHARED_CAP, DEFINITION, DEFINITION_DEPENDENCY, CALCULATION_PROVISION, ENTITY_SCOPE, CROSS_REFERENCE, CROSS_DOCUMENT_REFERENCE, RELATED_COVENANT, OTHER_REQUIRED_CONTEXT, UNVERIFIED_SIBLING_SIGNAL. No new abstraction is required and none is proposed.",
+    "mappingOfTheLinkedParent": "PARENT_SCOPE - already produced for it today by retrieveParentScope, carrying the ancestor's OWN text (the chapeau) rather than its subtree. Measured: present for 67/67 dual CONMED candidates, mean 319 chars, max 758."
+  }
+}

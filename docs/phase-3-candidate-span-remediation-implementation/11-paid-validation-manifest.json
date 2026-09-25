@@ -1,0 +1,77 @@
+{
+  "status": "PREPARED, NOT DISPATCHED. No paid model call was made in this mission.",
+  "blockedBy": [
+    "separate authorization",
+    "the standing GATEWAY_CREDIT_EXHAUSTED (HTTP 402) block"
+  ],
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "concurrency": "1, rising to 2 after 10 clean rows",
+  "candidateCount": 22,
+  "cohorts": [
+    {
+      "cohort": "A",
+      "name": "previously-successful single-key controls (negative control)",
+      "n": 9,
+      "refs": [
+        "7.1(a)",
+        "7.1",
+        "7.1(b)",
+        "7.1(c)",
+        "7.1(d)",
+        "7.2(a)",
+        "7.2(b)",
+        "7.2(e) short",
+        "7.2(f)"
+      ],
+      "spanChangeForThisCohort": "none - byte-identical operative text before and after",
+      "pass": "9/9 COMPLETED with comparable rule counts and output hashes"
+    },
+    {
+      "cohort": "B",
+      "name": "manufactured-long targets",
+      "n": 4,
+      "refs": [
+        "7.2(e) long 9,045->200",
+        "7.2(k) 9,621->776",
+        "7.2(k)(i) 8,899->54",
+        "7.2(k)(ii) 9,300->455"
+      ],
+      "pass": ">=3/4 COMPLETED within 480 s; every cited span inside the anchor span"
+    },
+    {
+      "cohort": "C",
+      "name": "false-credit safety - the parent sections that were the appended text",
+      "n": 6,
+      "refs": [
+        "7.2",
+        "7.3",
+        "7.4",
+        "7.5",
+        "7.8",
+        "7.9"
+      ],
+      "pass": "each still compiles its own chapeau rule; the 14 DSGR controls re-checked deterministically at zero cost"
+    },
+    {
+      "cohort": "D",
+      "name": "dual-key before/after",
+      "n": 3,
+      "refs": [
+        "7.2(d)",
+        "7.2(g)",
+        "7.2(h)"
+      ],
+      "before": "0/3 completed",
+      "pass": ">=2/3 COMPLETED"
+    }
+  ],
+  "estimatedCost": {
+    "expectedUsd": 0.114,
+    "basis": "22 x $0.00517, the measured mean of the halted population run's 9 completed rows",
+    "ceilingUsd": 0.4,
+    "note": "ceiling covers UNKNOWN_TIMEOUT_BILLED reservations under the standing timeout policy"
+  },
+  "noteOnCohortA": "Cohort A is now a stronger control than at design time: the implementation proves its operative text is byte-identical before and after, so any behavioural difference there would be attributable to the model, not the contract.",
+  "cacheConsequence": "Every affected candidate's semantic-compiler cache key changes because operativeSourceText is part of it. That is correct and is not worked around; no cache entry is preserved and the cache schema is untouched."
+}

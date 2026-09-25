@@ -1,0 +1,16 @@
+{
+  "artifact": "§6/§14 — cost, at the model's real gateway price.",
+  "evidenceLabel": "LOW_COST_DIAGNOSTIC_PIPELINE",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "tier1Model": "deepseek/deepseek-v4-flash-0731",
+  "tier2Model": "anthropic/claude-sonnet-5",
+  "candidatesRun": 137,
+  "inputTokens": 296710,
+  "outputTokens": 136378,
+  "actualCostUsd": 0.0434,
+  "costPerCandidateUsd": 0.00032,
+  "ceilingUsd": 75,
+  "ceilingExceeded": false,
+  "notRun": [],
+  "telemetryCaveat": "lib/contract-model/analyzer/telemetry.ts's rate card only knows Sonnet and Opus prices, so the cost each record's own telemetry would compute is wrong for a substituted model. Every figure here is recomputed from the gateway's published per-token price for the model that actually served the call. The production file was not changed to fix this."
+}

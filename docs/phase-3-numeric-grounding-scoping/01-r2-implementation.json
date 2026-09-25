@@ -1,0 +1,274 @@
+{
+  "mission": "HEADROOM PHASE-3 - FIX B FREE-TEXT NUMERIC EVIDENCE-SCOPING TIGHTENING (R2 only)",
+  "startingSha": "5ad4f0bccbc4a8000d6b4f2faf1abc09f83a8f9a",
+  "startingShaMatchedMissionExpectation": true,
+  "treeStateAtStart": "clean",
+  "paidModelCalls": 0,
+  "frozen": {
+    "fixB": "NUMERIC_GROUNDING_REMEDIATION_VALIDATED",
+    "candidateSpan": "CANDIDATE_SPAN_CONTEXT_OWNERSHIP_VALIDATED",
+    "benchmarkSha256_16": "5f0eb08834f2056f",
+    "phase4TreeHash": "8fa637768316a613524e821b913f56c86111a298",
+    "falseCreditControls": "14/14 green at start",
+    "unchangedByThisMission": [
+      "R1/R3/F1",
+      "the numeric extractor grammar (PERCENT_RE / RATIO_RE / AMOUNT_RE / QUANTITY_RE / SCALE words)",
+      "normalization and rendering-equivalence rules",
+      "source-inventory.ts (hash b021971544acc2d8 before and after)",
+      "prompts and model configuration (semantic/prompt.ts hash 7e79444ca88a3702 before and after)"
+    ]
+  },
+  "hashesBefore": {
+    "numeric-assertion.ts": "893805e3fae0c3e9",
+    "types.ts": "d30c62436274920d",
+    "verify.ts": "313e5e07413e9089",
+    "reconciliation.ts": "f661331d7034c276",
+    "findings.ts": "78ce41c143c9afca"
+  },
+  "redBaseline": {
+    "newTests": 7,
+    "failingBeforeR2": 6,
+    "passingBeforeR2": 1,
+    "theOnePassing": "\u00a79's 'figures that really derive from the Convertible Notes definition stay grounded' - correct before R2 and required to stay correct, so it is the non-regression sentinel of this mission",
+    "failingIdentitiesBeforeR2": [
+      "\u00a73A related assertion grounded THROUGH the definition, with a stated relation",
+      "\u00a73B the SAME figure and definition, asserted about something else, is NOT grounded by it",
+      "\u00a73 numeric equality alone is never sufficient",
+      "\u00a79 the same two figures asserted about an unrelated concept are NOT grounded",
+      "\u00a710 grounds through the RELEVANT source and records the unrelated ones",
+      "\u00a711 fails CLOSED when the figure sits in two unrelated authenticated sources"
+    ]
+  },
+  "structuredScopingReuse": {
+    "reusedFrom": "lib/contract-model/compiler/semantic-verification/retrieved-evidence.ts",
+    "helpers": [
+      "citationNamesDefinition",
+      "citationNamesSection",
+      "normalizeTermScopeKey",
+      "normalizeSectionScopeKey"
+    ],
+    "note": "The semantic relation was ported, not the signature. irItemScopedToEvidence takes an IrInventoryItem (ownerTermName + sourceCitation); the free-text analogue takes a NumericAssertionItem, which now carries the same two relation inputs plus the two that only prose has - the terms/sections the asserting unit references, and the assertion's own text. Both call the SAME scoping helpers, so the two paths cannot drift apart on what 'names this definition/section' means.",
+    "structuredPathBehaviour": "byte-identical - reconciliation.ts's structured reconcile functions were not touched"
+  },
+  "freeTextScopingRule": {
+    "DEFINITION_evidence": [
+      "the assertion belongs to the compiled IRDefinition of that term (ownerTermName)",
+      "the asserting unit's own provenance citation names that definition (citationNamesDefinition)",
+      "the asserting unit references that defined term structurally (DEFINED_TERM_REFERENCE / METRIC_REFERENCE / dependsOnTerms)",
+      "the assertion's own field text names the defined term, on whole-word boundaries"
+    ],
+    "PROVISION_evidence": [
+      "the asserting unit's own citation is that section or a sub-clause of it (citationNamesSection)",
+      "the asserting unit cites it (rule sourceSectionRef, element citations, unresolvedDependencies targetRef)",
+      "the assertion's own field text cites that section"
+    ],
+    "SIBLING_and_PARENT_SCOPE": "no special case - they reach the grounder only as authenticated PROVISION evidence and must satisfy the same relation. A sibling clause containing the same figure grounds nothing on its own; a parent clause grounds only where the child's own citation is a sub-clause of it, which is the candidate-span/F1 ownership distinction preserved rather than re-litigated.",
+    "CONTEXT_without_retrieval_identity": "can never establish a relation, so it can never fully ground - it can only ever contribute to AMBIGUOUS",
+    "OPERATIVE": "unchanged - the anchor is the candidate's own text and needs no scoping",
+    "numericEqualityAlone": "never sufficient, anywhere"
+  },
+  "results": {
+    "related_100_percent": {
+      "status": "GROUNDED_TOOL_EVIDENCE",
+      "groundedIn": "CONTEXT",
+      "relation": "the assertion's own text names the defined term \"Subsidiary Guarantor\"",
+      "findings": 0
+    },
+    "unrelated_100_percent": {
+      "status": "UNGROUNDED",
+      "groundedIn": null,
+      "findings": 1,
+      "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+      "verificationStatus": "not VERIFIED"
+    },
+    "related_800M_and_2_25_percent": {
+      "status": "GROUNDED_TOOL_EVIDENCE",
+      "groundedIn": "CONTEXT",
+      "findings": 0
+    },
+    "unrelated_800M_and_2_25_percent": {
+      "status": "UNGROUNDED",
+      "findings": ">0"
+    },
+    "sameValueMultipleEvidence": {
+      "status": "GROUNDED_TOOL_EVIDENCE",
+      "matchedEvidence": "the related definition",
+      "unrelatedEvidenceIds": ">=2 recorded separately",
+      "note": "the grounding names WHICH source supports it and lists the others as unrelated - never 'the number is found somewhere'"
+    },
+    "ambiguity": {
+      "status": "AMBIGUOUS",
+      "groundedIn": null,
+      "unrelatedEvidenceIds": ">=2",
+      "verificationStatus": "not VERIFIED",
+      "note": "two authenticated sources carry the figure, no relation to either - the system says it cannot decide instead of picking one"
+    }
+  },
+  "vocabulary": {
+    "added": [
+      "GROUNDED_TOOL_EVIDENCE"
+    ],
+    "notAdded": "groundedIn was left at OPERATIVE | CONTEXT - only one of the two options the mission offered was taken",
+    "preserved": [
+      "GROUNDED_OPERATIVE",
+      "GROUNDED_CONTEXT",
+      "NORMALIZED_EQUIVALENT",
+      "UNGROUNDED",
+      "AMBIGUOUS"
+    ],
+    "GROUNDED_CONTEXT_now_means": "context-scope evidence carrying no retrieval identity to scope against (the offline corpus replay's preserved excerpts) - still live, now narrower",
+    "artifactReadability": "additive only; every previously written status string still parses and still means what it meant",
+    "lineage": "each grounding records matchedEvidenceId, matchedText, the human-readable `relation` that admitted it, and `unrelatedEvidenceIds` - so tool-retrieved support is always identifiable as such and is never collapsed into anchor-owned operative grounding"
+  },
+  "corpusReplay": {
+    "beforeR2": {
+      "GROUNDED_OPERATIVE": 97,
+      "GROUNDED_CONTEXT": 0,
+      "NORMALIZED_EQUIVALENT": 14,
+      "UNGROUNDED": 1,
+      "AMBIGUOUS": 0,
+      "INSUFFICIENT_ARTIFACT": 588,
+      "assertionsFound": 700
+    },
+    "afterR2": {
+      "GROUNDED_OPERATIVE": 106,
+      "GROUNDED_CONTEXT": 0,
+      "NORMALIZED_EQUIVALENT": 14,
+      "UNGROUNDED": 1,
+      "AMBIGUOUS": 0,
+      "INSUFFICIENT_ARTIFACT": 588,
+      "assertionsFound": 709
+    },
+    "groundedPreserved": 111,
+    "groundedToUngrounded": 0,
+    "groundedToAmbiguous": 0,
+    "ungroundedToGrounded": 0,
+    "changedCases": [],
+    "theDelta": "+9 GROUNDED_OPERATIVE and +9 assertions are NOT reclassifications - they are the two paid-validation evidence records committed last mission entering the corpus (7.1(d)'s nine anchor-grounded figures). Set-diffing the ungrounded rows before and after returns empty in both directions.",
+    "honestLimit": "the preserved corpus contains ZERO context-grounded assertions (GROUNDED_CONTEXT was 0 before and after), and R2 only affects CONTEXT-scope grounding. The corpus therefore cannot exercise this change at all; the live 7.2(f) evidence and the synthetic matrix are what test it. Reporting 'no corpus change' as evidence of safety would be reporting the absence of a test as a pass."
+  },
+  "scopeDiscipline": {
+    "semanticAccountabilityProduction": "untouched",
+    "harnessAttributionCheck": "untouched - R1 deliberately deferred, as the mission requires, so the production grounding semantics it will later reuse settle first",
+    "structuredNumericSemantics": "unchanged",
+    "benchmarkScoring": "unchanged, and structurally cannot change - no scoring path consumes numeric grounding",
+    "phase4": "unchanged",
+    "noAttributionCreditCreated": "this is verification-only; nothing here grants representation credit from tool evidence"
+  },
+  "testMatrix": {
+    "r2ScopingTests": "tests/contract-model/numeric-grounding-scoping-r2.test.ts 7/7 (6 RED before, 1 pre-existing sentinel)",
+    "fixBBaseline": "tests/contract-model/numeric-grounding-fix-b.test.ts 39/39 - two expectations intentionally updated from GROUNDED_CONTEXT to GROUNDED_TOOL_EVIDENCE (\u00a711 and \u00a712); both cases remain GROUNDED and now also assert the relation is recorded. No case lost grounding.",
+    "structuredReconciliation": "semantic-verification-* and f3/f4 green; reconciliation.ts's structured functions untouched",
+    "candidateSpanF1": "contract 24/24, implementation 24/24, f1 7/7",
+    "semanticCompiler": "green",
+    "semanticAccountability": "green",
+    "v311Reconciliation": "17/17",
+    "evaluationV2": "green",
+    "benchmarkIntegrity": "11/11 after commit",
+    "falseCreditControls": "14/14",
+    "phase4AtoD": "tests/contract-model/runtime/* green, 0 Phase-4 files changed",
+    "targetedControlRun": "40 files, 1015 tests, 1 failure - the working-tree cleanliness gate only",
+    "fullSuiteBefore": "104 failed | 261 passed files; 148 failed | 4241 passed | 524 skipped (measured at 152dc0c, clean tree)",
+    "fullSuiteAfter": "106 failed | 260 passed files; 150 failed | 4246 passed | 524 skipped",
+    "newFailingIdentities": [
+      {
+        "identity": "V3.1 benchmark-integrity audit > 7. no production code was modified by this audit",
+        "cause": "asserts `git status --porcelain lib` === '' - a working-tree cleanliness gate, not a semantic one; clears on commit and was verified green afterwards"
+      },
+      {
+        "identity": "OPEN-3 independent probe 4 > measured multi-point scaling is consistent with O(n), not O(n^2)",
+        "cause": "a wall-clock scaling measurement that fails under concurrent full-suite load. 10/10 in isolation on three consecutive runs. The file imports only stage-structure, structural-index and semantic-coverage - it has ZERO references to numeric grounding, the verifier, or anything R2 touched, so it cannot be a regression from this change."
+      }
+    ],
+    "disappearedFailingIdentities": [],
+    "tsc": "clean - identical to the pre-existing baseline (6 errors in tests/foundation-audit/)",
+    "lint": "No ESLint warnings or errors",
+    "build": "succeeds"
+  },
+  "successGate": [
+    {
+      "n": 1,
+      "requirement": "related tool evidence can still ground a free-text numeric",
+      "met": true,
+      "evidence": "real 7.2(f) evidence: GROUNDED_TOOL_EVIDENCE, relation 'the assertion's own text names the defined term \"Subsidiary Guarantor\"'"
+    },
+    {
+      "n": 2,
+      "requirement": "unrelated tool evidence cannot",
+      "met": true,
+      "evidence": "same evidence, unrelated proposition: UNGROUNDED + 1 UNSUPPORTED_NUMERIC_ASSERTION finding, status not VERIFIED"
+    },
+    {
+      "n": 3,
+      "requirement": "numeric equality alone is insufficient",
+      "met": true,
+      "evidence": "the two differ only in what they are about, and now differ in status - asserted by its own test"
+    },
+    {
+      "n": 4,
+      "requirement": "same-value evidence from multiple sources preserves semantic relation",
+      "met": true,
+      "evidence": "grounded through the definition; the two unrelated retrieved provisions are recorded in unrelatedEvidenceIds and excluded from matchedEvidenceId"
+    },
+    {
+      "n": 5,
+      "requirement": "ambiguity fails closed",
+      "met": true,
+      "evidence": "two unrelated sources carrying the figure and no relation to either -> AMBIGUOUS, not VERIFIED"
+    },
+    {
+      "n": 6,
+      "requirement": "structured numeric behavior unchanged",
+      "met": true,
+      "evidence": "reconciliation.ts's structured functions untouched; the PERCENT=1 control still yields exactly one IR_ONLY / UNSUPPORTED_IR_ADDITION"
+    },
+    {
+      "n": 7,
+      "requirement": "rendering equivalence unchanged",
+      "met": true,
+      "evidence": "$50 million still grounds $50,000,000; the corpus NORMALIZED_EQUIVALENT count is 14 before and after"
+    },
+    {
+      "n": 8,
+      "requirement": "fabricated excerpts remain detected",
+      "met": true,
+      "evidence": "PROVENANCE_MISMATCH control green"
+    },
+    {
+      "n": 9,
+      "requirement": "14/14 false-credit controls",
+      "met": true,
+      "evidence": "10/10 + 4/4, no expectation changed"
+    },
+    {
+      "n": 10,
+      "requirement": "candidate-span/context ownership green",
+      "met": true,
+      "evidence": "55/55 across the three suites; R1/R3/F1 untouched"
+    },
+    {
+      "n": 11,
+      "requirement": "benchmark scoring unchanged",
+      "met": true,
+      "evidence": "no scoring path consumes numeric grounding; benchmark fixture byte-identical"
+    },
+    {
+      "n": 12,
+      "requirement": "Phase 4 unchanged",
+      "met": true,
+      "evidence": "tree hash 8fa637768316a613524e821b913f56c86111a298 at start and end"
+    },
+    {
+      "n": 13,
+      "requirement": "no new repository regression",
+      "met": true,
+      "evidence": "two new identities, both accounted for above; neither is a behavioural regression and neither can be caused by R2"
+    }
+  ],
+  "verdict": "FIX_B_EVIDENCE_SCOPING_TIGHTENING_VALIDATED",
+  "honestLimits": [
+    "Relation-by-text-mention is deliberate but it is a heuristic: an assertion that names a defined term is treated as related to that term's definition. It cannot tell a correct use of the term from an incorrect one - it establishes topical relation, not semantic correctness. That is the right scope for a grounding layer and it is not an attribution system.",
+    "The preserved corpus contains zero context-grounded assertions, so it could not exercise this change at all. The evidence that R2 works is the live 7.2(f) measurement and the synthetic matrix, not the corpus replay.",
+    "An assertion whose supporting definition the compiler never retrieved is still UNGROUNDED. That is correct on that compilation's own evidence, but it means grounding quality depends on the compiler's retrieval behaviour, which this mission did not touch."
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "recordedAt": "2026-09-25T12:42:31.620Z",
+  "harnessSha": "8748fa6abf905c679cbd32c85133368d24aa31ea",
+  "harnessSourceReadFrom": "git show 8748fa6abf905c679cbd32c85133368d24aa31ea:<file>",
+  "p6": {
+    "observedSignal": {
+      "httpStatusPrefix": "402",
+      "body": {
+        "error": {
+          "message": "A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.",
+          "type": "insufficient_funds"
+        }
+      },
+      "whereItSurfaces": "compilation.unresolvedIssues[0] as the string `402 {json}` (the SDK APIError message); compilation.errorDetail is null; telemetry inputTokens/outputTokens 0",
+      "sdkErrorFieldsDestroyedAt": "lib/contract-model/compiler/semantic/caller.ts:373-376 - `err.message` only; `.status` and `.error` of the APIError are dropped before the result reaches the harness"
+    },
+    "currentClassification": {
+      "classifyOutcome": "PROVIDER_FAILURE",
+      "costStatus": "ESTIMATED_FROM_STREAM",
+      "chargedUsd": 0
+    },
+    "loopContinued": {
+      "candidatesDispatchedAfterFirst402": 9,
+      "allUnserved402": true,
+      "refs": [
+        "7.9(a)(ii)",
+        "7.9(b)",
+        "7.9(b)(i)",
+        "7.9(b)(ii)",
+        "7.9(b)(iii)",
+        "7.9(b)(iv)",
+        "7.9(c)",
+        "7.9(c)(i)",
+        "7.9(d)"
+      ]
+    },
+    "runnerHasNoCreditStop": true,
+    "red": true
+  },
+  "p7": {
+    "historicalReservationUsd": 0.01942304,
+    "reservationInputs": {
+      "observedInputTokensPerCandidate": 29408,
+      "timeoutMs": 480000,
+      "outputTokensPerSecond": 125,
+      "reservedOutputTokens": 60000
+    },
+    "candidate78": {
+      "exactUsd": 0.2094469,
+      "inputTokens": 1510950,
+      "outputTokens": 50090,
+      "wallClockMs": 399743
+    },
+    "coverageRatio": 0.09273491276309175,
+    "underReservationFactor": 10.783425251659885,
+    "syntheticGuard": {
+      "ceilingUsd": 1,
+      "remainingBeforeUsd": 0.1,
+      "nextReservationUsd": 0.01942304,
+      "oldGuardWouldDispatch": true,
+      "committedAfterCandidate78Usd": 1.109447,
+      "ceilingExceededByUsd": 0.109447
+    },
+    "red": true
+  }
+}

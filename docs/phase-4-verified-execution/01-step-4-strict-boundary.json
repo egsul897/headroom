@@ -1,0 +1,81 @@
+{
+  "mission": "HEADROOM PHASE-4 - VERIFICATION-AWARE RUNTIME GATE, MIGRATION STEP 4: STRICT VERIFIED EXECUTION BOUNDARY (no UI, no Phase 4E)",
+  "startingSha": "5098bbba5d9619e3492a75de78c5dff3c5d9503d",
+  "treeStateAtStart": "clean",
+  "paidModelCalls": 0,
+  "treeHashesAtStart": {
+    "phase3Compiler": "1a3732c93fba0681687656f9a7679310bffeb8ba",
+    "phase4Runtime": "97219f24fb676e493af6f3b1f16b7d5904b0b51f",
+    "verificationEnvelopeAdapter": "295ce51009a94599dd4cf09a87c976fd732a23db"
+  },
+  "phase3CompilerTreeAtEnd": "1a3732c93fba0681687656f9a7679310bffeb8ba (unchanged)",
+  "phase4RuntimeTreeAtEnd": "unchanged - the boundary sits beside the runtime, not inside it",
+  "frozenClosed": ["candidate-span/context ownership", "Fix B numeric grounding", "Fix B evidence scoping (R2)", "forensic harness R1", "envelope + resolver (steps 1+2)", "matcher + dominance (step 3)"],
+
+  "boundary": {
+    "module": "lib/contract-model/verified-execution.ts",
+    "whyBesideNotInsideTheRuntime": "the runtime may not import the compiler (pinned by tests/contract-model/runtime/anti-enumeration.test.ts); the certified resolver is an adapter that imports compiler TYPES; the boundary needs the resolver, so it lives as a sibling of runtime/ and verification-envelope/, and imports the compiler type-only.",
+    "invariant": "Headroom executes legal capacity or transaction logic in product mode only from IR that has a corresponding verification artifact, under policy REQUIRE.",
+    "entryPoints": ["evaluateVerifiedCapacity(args: VerifiedCapacityArgs): VerifiedCapacityResult", "simulateVerifiedTransaction(args: VerifiedTransactionArgs): VerifiedTransactionResult"],
+    "policy": "VERIFIED_EXECUTION_POLICY = \"REQUIRE\" as const - a constant, not an argument. VerifiedCapacityArgs has no policy field (a @ts-expect-error test pins it); a smuggled field is ignored at runtime (pinned); the boundary source never names ALLOW_MISSING in code (pinned).",
+    "notAGenericWrapper": "the names say verified; the results say policy: REQUIRE; the only way to get a CapacityState or a TransactionSimulationResult out is through the package binding below."
+  },
+
+  "inputPackage": {
+    "type": "VerifiedExecutionPackage { companyId; instrumentKey; rules; definitions?; sharedCapacities?; verifications: VerifiedUnitArtifact[] }",
+    "artifact": "VerifiedUnitArtifact { ruleOrDefinitionId; kind: RULE|DEFINITION; verifiedIdentity: RuntimeVerificationIdentity; result: SemanticVerificationResult }",
+    "noPreLabelledBoolean": "there is no `verified: true` anywhere. Safety is derived from the artifacts: the result (verbatim, never mutated) plus the identity of the IR the verifier saw.",
+    "whyVerifiedIdentityIsInThePackage": "SemanticVerificationResult carries no IR version identity (no irSchemaVersion / compilerVersion / sourceContentVersion). The resolver derives identity from the IR unit in hand, which can only ever match itself. So the Phase-3 run that produced both must persist the identity of the IR it verified; that claim is what the gate checks against the IR actually executed, and a stale pairing fails closed. This is the small paired-persistence type §20 asked for - designed here, no storage migration attempted.",
+    "capacityArgs": "VerifiedCapacityArgs { package; inputs: InputResolver (Phase-4B snapshot resolver); ledger?; ledgerPolicy?; asOf? }",
+    "transactionArgs": "VerifiedTransactionArgs extends VerifiedCapacityArgs { transaction; selectedPath } - no state, no graph; the pre-state is produced inside by the verified capacity path from the same package (pinned by a source-shape test)."
+  },
+
+  "envelopeConstruction": {
+    "where": "inside evaluateVerifiedCapacity, immediately before buildCapacityGraph / evaluateCapacityState, through resolveRuntimeVerificationEnvelope over the exact IR units being executed",
+    "identityHandling": "the resolver resolves paths -> exprIds against the unit in hand (what it needs), then each record's identity is REPLACED by the artifact's verifiedIdentity (the verifier's claim) with strength recomputed. The gate then compares claim against the executed IR's identity and fails closed on any disagreement. No new comparison logic; the certified step-3 check does the work.",
+    "neverSynthesized": "zero artifacts -> REFUSED VERIFICATION_ARTIFACT_INCOMPLETE, not an empty envelope",
+    "preBuiltEnvelopesAccepted": "NO"
+  },
+
+  "refusalVocabulary": {
+    "VERIFICATION_ARTIFACT_INCOMPLETE": "no verification artifact supplied at all",
+    "VERIFICATION_IDENTITY_UNBOUND": "an artifact names a unit the package does not carry, names the wrong kind, contradicts its own identity claim, or two artifacts claim one unit",
+    "IR_PACKAGE_INCONSISTENT": "a unit belongs to another company/instrument than the package states, or a unit id appears twice",
+    "everythingElse": "flows through the step-3 gate inside the runtime: REQUIRED_VERIFICATION_MISSING / IDENTITY_MISMATCH / MATERIAL_UNIT_FINDING / MATERIAL_NODE_HIT / ATTEMPTED_INCOMPLETE, as limitations on the capacity entries and on the simulation",
+    "whenRefusedVsExecuted": "REFUSED only when the package is structurally unusable (the three codes above); nothing is evaluated then. Partial coverage EXECUTES: uncovered units fail closed inside the runtime under REQUIRE, verified units stay independently readable (§15), and the coverage report names every missing, refused and incompletely verified unit with complete=false."
+  },
+
+  "coverageReport": "VerificationCoverage { unitsInPackage; unitsWithVerification; unitsMissingVerification[]; unitsRefusedByGate[{unitId, reason, identityStrength}]; unitsIncompletelyVerified[]; identityStrength {STRONG, WEAK}; verificationStatuses; complete } - `complete` is coverage completeness (every executed unit has a matched, completed record), never a 'clean' claim; a WEAK match counts under WEAK and no 'verified-clean' field exists.",
+
+  "noReVerification": "imports the compiler type-only (pinned); no fetch, no getStageCaller, no verify import, no process.env, no filesystem, no prisma (pinned by comment-stripped scan); artifacts byte-identical after execution (pinned).",
+
+  "matrix": {
+    "A_CLEAN": "STRONG-identity rule MUL(PCT(0.2), FIGURE fig-1=1000) with artifact -> AVAILABLE, effectiveRemaining 200, no limitation; coverage complete; the CapacityState is BYTE-IDENTICAL (stateHash and JSON) to the raw ALLOW_MISSING evaluation with no envelope - REQUIRE degrades nothing clean",
+    "B_MISSING_VERIFICATION": "verifications [] -> REFUSED [VERIFICATION_ARTIFACT_INCOMPLETE], no state, packageHash still reported",
+    "C_MISSING_UNIT": "rules A,B with artifact for A -> EXECUTED; A AVAILABLE 200; B REVIEW_REQUIRED [REQUIRED_VERIFICATION_MISSING], gross NOT_DETERMINED; coverage.unitsMissingVerification [B], unitsRefusedByGate [B REQUIRED_VERIFICATION_MISSING], complete false",
+    "D_TRANSITIVE_MISSING": "A -> definition EBITDA with artifact for A only -> A REVIEW_REQUIRED with [REQUIRED_VERIFICATION_MISSING] naming d-ebitda; both artifacts -> AVAILABLE 200, complete true. Same for A -> RULE_REFERENCE C (REVIEW_REQUIRED naming p-c; both -> AVAILABLE 500)",
+    "E_MATERIAL_NODE": "finding on the PERCENT literal -> UNSUPPORTED [MATERIAL_NODE_HIT], gross NOT_DETERMINED, 200 absent; not a unit refusal",
+    "F_MATERIAL_UNIT": "prose path -> REVIEW_REQUIRED [MATERIAL_UNIT_FINDING]; coverage.unitsRefusedByGate [MATERIAL_UNIT_FINDING, STRONG]",
+    "G_IDENTITY_MISMATCH": "artifact claims compilerVersion c-old vs c1 -> REVIEW_REQUIRED [IDENTITY_MISMATCH … compilerVersion]; coverage refused IDENTITY_MISMATCH, complete false; a NODE finding on a stale (irSchemaVersion) record is not salvaged",
+    "H_INCOMPLETE": "VERIFICATION_INCOMPLETE / VERIFICATION_FAILED / NOT_VERIFIED with no finding -> REVIEW_REQUIRED under PHASE3_VERIFICATION_INCOMPLETE only, provisional 200, coverage.unitsIncompletelyVerified; incomplete + a NODE finding -> UNSUPPORTED with both codes (the finding still blocks by scope)",
+    "I_CLEAN_TRANSACTION": "consume 20 of 200 -> SATISFIED / SIMULATED / committable true; the simulation is BYTE-IDENTICAL to simulateTransaction over the raw world",
+    "J_BLOCKED_TRANSACTION": "capacity UNSUPPORTED by a NODE finding -> selectedPathResult REVIEW_REQUIRED, simulationStatus REVIEW_REQUIRED, PHASE3_VERIFICATION_MATERIAL_FINDING, committable false; package and ledger byte-identical afterwards; preTransactionState.stateHash equals the verified state's; 200 never surfaced",
+    "K_WRONG_COMPANY": "artifact claiming another companyId -> [IDENTITY_MISMATCH … companyId] fail closed; an IR unit for another company -> REFUSED [IR_PACKAGE_INCONSISTENT refs p-foreign]",
+    "L_WRONG_INSTRUMENT": "same for instrumentKey",
+    "M_WEAK_IDENTITY": "null/null source version -> executes AVAILABLE, identityStrength {STRONG 0, WEAK 1}, no verifiedClean/VERIFIED_CLEAN/verified:true anywhere; a claimed s1 the IR does not carry -> [IDENTITY_MISMATCH … sourceContentVersion]; a finding on the WEAK record -> UNSUPPORTED",
+    "N_BYPASS": "architecture test: every non-test .ts/.tsx under app/, components/, lib/ - except lib/contract-model/runtime/**, lib/contract-model/verification-envelope/** and the boundary itself - may not import any specifier matching contract-model/runtime(/|$). Offenders today: []. The rule is proven live (the boundary itself imports capacity/state, transaction/simulate and the resolver) and covers the bare barrel path (which re-exports the 4A primitives)."
+  },
+  "chainIntegrity": {
+    "10A_compilerVersion": "G",
+    "10B_ruleAvsRuleB": "artifact for A with package [B] -> REFUSED [VERIFICATION_IDENTITY_UNBOUND refs p-a]; an artifact whose verifiedIdentity names another unit, or the wrong kind, is unbound",
+    "10C_company": "K", "10D_instrument": "L", "10E_sourceVersion": "M",
+    "noObjectReferenceIdentity": "binding is by ruleOrDefinitionId + the version trio + company/instrument; the envelope's units are exactly the artifacts' units carrying the verifier's claim (pinned)",
+    "packageHash": "sha256 over company, instrument, rules, definitions, shared capacities and each artifact's (id, kind, identity, status, findings, verifierAlgorithmVersion, evidenceSetHash); deterministic; a changed verification is a different package (pinned)"
+  },
+
+  "productionRawRuntimeCallers": { "before": 0, "after": "0 outside the exempt runtime/adapter files; the boundary is the only importer of the protected primitives" },
+  "rawRuntime": { "defaultPolicy": "ALLOW_MISSING (asserted)", "inertnessProbeHash": "d0c8d91351e03b2bba1e5bb6d229d3bb2e642044c9184463e20a39476f1de031", "bytes": 68286, "runtimeFilesChanged": 0, "step3MatcherChanged": false },
+
+  "notChanged": ["Phase-3 compiler tree", "Phase-4 runtime tree (no file under runtime/ touched)", "resolver adapter", "DEFAULT_VERIFICATION_POLICY", "any fixture", "UI (no pages, routes, components, DB flows)", "Phase 4E (lib/solver is the pre-existing legacy solver, untouched and unrelated)", "PARENT_SCOPE, composed citations, provenance schema, CONMED"],
+  "phase4E": { "status": "REMAINS BLOCKED", "prerequisites": { "1_dominanceLive": "done (step 3)", "2_strictBoundary": "done (this mission)", "3_solverConsumesVerifiedCapacityState": "not started", "4_disputedCapacityCannotEnterOptimization": "not started" } }
+}

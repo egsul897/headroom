@@ -1,0 +1,122 @@
+{
+  "mission": "HEADROOM PHASE-3 - NUMERIC GROUNDING VERIFICATION REMEDIATION (Fix B)",
+  "section": "\u00a74/\u00a75/\u00a76/\u00a77/\u00a78 - what Fix B inventories, how it reads a figure, and what may ground one",
+  "paidModelCalls": 0,
+  "materialAssertionFields": [
+    "IRRule.conditions[].description",
+    "IRRule.exceptions[].description",
+    "IRRule.exceptions[].conditions[].description",
+    "IRRule.dependsOn[].description",
+    "IRRule.unresolvedDependencies[].description",
+    "IRExpression(UNSUPPORTED).semanticDescription",
+    "IRExpression(SCHEDULE).cases[].description",
+    "IRExpression(EVENT_ACTIVE).eventDescription",
+    "IRExpression(EVENT_ACTIVE).activeDuration",
+    "IRExpression(DURING_PERIOD).periodDescription"
+  ],
+  "sourceQuotationFields": [
+    "SourceProvenance.excerpt (on rules, conditions, exceptions, definitions and every expression node)",
+    "IRExpression(UNSUPPORTED).sourceEvidence"
+  ],
+  "notInventoried": {
+    "IDENTIFIER_OR_CITATION_FIELD": [
+      "SourceProvenance.sourceCitation",
+      "SourceProvenance.documentId / sourceNodeKey",
+      "IRDefinition.termName",
+      "IRDefinition.dependsOnTerms[]",
+      "IRMetricReference.metricName",
+      "IRDefinedTermReference.termName",
+      "IRUnresolvedDependency.targetRef"
+    ],
+    "DIAGNOSTIC_FIELD": [
+      "IRRule.sufficiencyReasons[]",
+      "IRDefinition.sufficiencyReasons[]",
+      "IRExpression(UNSUPPORTED).reason",
+      "IRUnresolvedDependency.reason",
+      "IRRule.entityScopeAudit.*"
+    ],
+    "NON_SEMANTIC_FIELD": [
+      "every closed enum (posture, ruleType, action, covenantFamily, conditionType, relationshipType, entityScope tags)",
+      "STRUCTURED numeric literals (already inventoried by ir-inventory.ts - re-reading them here would double-report)",
+      "dates (IRDateLiteral.isoDate, IRAsOf.asOfDate, IRScheduleCase.from/to)"
+    ]
+  },
+  "extractionTypes": {
+    "CURRENCY_AMOUNT": [
+      "$150,000,000",
+      "$150.0 million",
+      "USD 5,000,000",
+      "720 million dollars",
+      "150 million (no currency stated - comparable on magnitude, never against a DIFFERENT stated currency)"
+    ],
+    "PERCENTAGE": [
+      "10%",
+      "10.0%",
+      "10 percent",
+      "100%"
+    ],
+    "RATIO": [
+      "2.00x",
+      "2.00:1.00",
+      "4.50 to 1.00"
+    ],
+    "QUALIFIED_QUANTITY": [
+      "30 days",
+      "5 business days",
+      "ninety (90) days",
+      "2 Subsidiaries",
+      "4 consecutive fiscal quarters"
+    ]
+  },
+  "neverExtracted": [
+    "Section 7.2(f)",
+    "Article 10.1",
+    "clause (iii) of Section 6.01(b)",
+    "December 31, 2029",
+    "the 2029 Notes",
+    "any bare figure with no currency, percent, ratio or unit marker"
+  ],
+  "normalizedEquivalenceRules": [
+    "10% == 10.0% (both canonicalize to the fraction 0.1, matching IRPercentLiteral and the source inventory)",
+    "$150 million == $150,000,000 (exact integer scaling via amount-parser.ts - never 0.15 * 1e9 in binary floating point)",
+    "2.0x == 2.00x",
+    "30 days == thirty days == ninety (90)-style parenthetical numerals (EVIDENCE side only - a spelled number is never read as an assertion out of IR prose, so the table can ground a figure but can never manufacture a finding)"
+  ],
+  "equivalencesDeliberatelyRefused": [
+    "'all' is not 100%",
+    "'entire' is not 100%",
+    "'fully' is not 100%",
+    "a percentage never matches a ratio",
+    "'30 days' never matches '30 months'",
+    "a stated USD figure never matches the same magnitude stated in EUR or GBP"
+  ],
+  "authenticatedEvidenceUniverse": {
+    "admitted": [
+      "the candidate's own operative source window (PRIMARY_LOCAL)",
+      "every retrieved source retrieved-evidence.ts independently re-resolved, hash-checked and authenticated (authenticated definitions and authenticated provisions alike)"
+    ],
+    "refused": [
+      "few-shot examples",
+      "tool schema examples",
+      "the model's own prose",
+      "previously compiled rules",
+      "any context-bundle excerpt the verifier could not authenticate",
+      "any unauthenticated synthetic string"
+    ],
+    "note": "This is exactly the universe the STRUCTURED numeric path already uses. Fix B widened what is compared; it widened nothing about what counts as evidence."
+  },
+  "groundingOutcomes": {
+    "GROUNDED_OPERATIVE": "the figure appears verbatim in the candidate's own anchor",
+    "GROUNDED_CONTEXT": "the figure appears verbatim in authenticated retrieved evidence",
+    "NORMALIZED_EQUIVALENT": "same canonical value, different rendering - groundedIn still records OPERATIVE vs CONTEXT",
+    "UNGROUNDED": "no authenticated source figure supports it -> an IR_ONLY reconciliation item",
+    "AMBIGUOUS": "the assertion's own magnitude could not be read safely - review required, never guessed, never compared"
+  },
+  "findingMapping": {
+    "MATERIAL_ASSERTION_FIELD + UNGROUNDED": "UNSUPPORTED_NUMERIC_ASSERTION (new finding type)",
+    "SOURCE_QUOTATION_FIELD + UNGROUNDED": "PROVENANCE_MISMATCH (existing type - a fabricated excerpt is a provenance defect, not a meaning defect)",
+    "severity": "MATERIAL when any rule/definition in the candidate claims COMPLETE sufficiency, UNCERTAIN otherwise - so a COMPLETE rule cannot hide the defect; either way the status floor is REVIEW_REQUIRED",
+    "downgradeImmunity": "verify.ts's AMBIGUOUS-downgrade path was explicitly scoped to exclude numeric-grounding items, so an unread magnitude cannot be silently downgraded to NON_MATERIAL"
+  },
+  "noMutation": "reconciliation.ts's numeric-assertion items carry no sourceItem and never enter claimedIrItemIds, so a prose figure can never account for a source figure and a source figure can never claim a prose one. The IR value itself is never deleted, nulled or rewritten (mission \u00a78)."
+}

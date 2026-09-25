@@ -1,0 +1,24 @@
+{
+  "thresholds": [
+    12000,
+    10000,
+    9000,
+    8000,
+    7000,
+    6000,
+    5000,
+    4000
+  ],
+  "budgetDerivation": "maxPrimaryChars = 2 x targetPrimaryChars (production ratio 24,000/12,000); all other ShardBudget fields = DEFAULT_SHARD_BUDGET",
+  "tiers": {
+    "TIER_1_REAL_INVENTORY": 17,
+    "TIER_2_STRUCTURAL_ONLY": 120
+  },
+  "caveat": "Tier 2 runs the real planner with an EMPTY inventory: boundaries and sizes are real, must-link protection is absent, so composite risk from the planner is a lower bound; the text-marker composite check is applied to both tiers.",
+  "callModel": {
+    "inventoryBatchChars": 6000,
+    "inventoryPasses": 2,
+    "maxToolCalls": 8,
+    "maxTurnOverhead": 4
+  }
+}

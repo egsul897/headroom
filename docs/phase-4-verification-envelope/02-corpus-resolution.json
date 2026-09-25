@@ -1,0 +1,51 @@
+{
+  "mission": "HEADROOM PHASE-4 - verification envelope + resolver (migration steps 1+2)",
+  "section": "§22 real-corpus resolution report",
+  "paidModelCalls": 0,
+  "verificationResultsInspected": 166,
+  "materialFindingsIn": 87,
+  "materialFindingsEmitted": 87,
+  "droppedMaterialFindings": 0,
+  "nodeScoped": 53,
+  "unitScoped": 34,
+  "byResolution": {
+    "NODE_EXACT": 53,
+    "UNIT_NO_PATH": 0,
+    "UNIT_WILDCARD": 2,
+    "UNIT_PROSE": 17,
+    "UNIT_MALFORMED": 4,
+    "UNIT_NO_SUCH_NODE": 0,
+    "UNIT_NOT_AN_EXPRESSION": 11,
+    "UNIT_WRONG_ROOT_KIND": 0
+  },
+  "materialFindingsWhoseUnitCouldNotBeFound": 411,
+  "unitsResolved": 56,
+  "strongIdentityUnits": 0,
+  "weakIdentityUnits": 56,
+  "samples": {
+    "NODE_EXACT": [
+      "definitions[0].calculationExpression.condition.right",
+      "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right",
+      "definitions[0].calculationExpression.else"
+    ],
+    "UNIT_PROSE": [
+      "definitions[0].calculationExpression.condition.left (and duplicated at .then.operands[0].operands[1].operands[1].left)",
+      "definitions[2].calculationExpression...attemptedStructure.else.attemptedStructure.condition (OR of two EVENT_ACTIVE nodes)",
+      "definitions[0] (termName='Maintenance Liquidity').calculationExpression"
+    ],
+    "UNIT_NOT_AN_EXPRESSION": [
+      "definitions[0].sufficiency",
+      "rules[2].conditions[2]",
+      "rules[1].entityScope"
+    ],
+    "UNIT_WILDCARD": [
+      "rules[].ruleId=ir-rule:dd7509e5e2ee7355b5313a15 (sourceSectionRef 6.08(a))",
+      "rules[].capacityExpression.gatedBy (kind=COMPARE, exprId ir-expr:885da134ef4a211fa56eb18c); conditions[2]"
+    ],
+    "UNIT_MALFORMED": [
+      "rules[2].conditions[1] / rules[2].sufficiency",
+      "definitions[Second Deleveraging Trigger Period].calculationExpression",
+      "definitions[Deleveraging Trigger Period].calculationExpression"
+    ]
+  }
+}

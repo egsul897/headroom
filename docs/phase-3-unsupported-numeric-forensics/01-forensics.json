@@ -1,0 +1,153 @@
+{
+  "mission": "HEADROOM PHASE-3 - UNSUPPORTED NUMERIC ASSERTION FORENSICS, case 7.2(f) '100%'",
+  "startingSha": "77fabe62b44a545fd6785714b7a3b06dde072469",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeCleanAtStart": true,
+  "paidModelCalls": 0,
+  "productionFilesChanged": 0,
+  "candidateSpanStatusFrozen": "CANDIDATE_SPAN_CONTEXT_OWNERSHIP_VALIDATED (not reopened)",
+  "hashes": {
+    "normalize.ts": "f253e9364fc32819",
+    "wire-schema.ts": "e4779ec012559c4d",
+    "prompt.ts": "7e79444ca88a3702",
+    "verify.ts": "ba5e30777da76a6e",
+    "source-inventory.ts": "b021971544acc2d8",
+    "benchmark": "5f0eb08834f2056f",
+    "phase4Tree": "2b02e5be41ebf6e1",
+    "closureArtifact": "7cff60fff9fd0664"
+  },
+  "preservedArtifact": {
+    "found": "docs/phase-3-candidate-span-remediation-implementation/15-paid-validation-results.json (attempt-1 Cohort A row) and its scratch twin /tmp/claude-0/pilot/span-validation/rows.json",
+    "candidateIdentity": "7.2(f), discovery-candidate:1084b12277d101d1e3928d59, role PERMISSION, single-key",
+    "retained": [
+      "status REVIEW_REQUIRED",
+      "outcome COMPLETED",
+      "failureReasons [OPERATIVE_STATE_UNRESOLVED, SEMANTIC_ACCOUNTABILITY_INCOMPLETE]",
+      "rules 1",
+      "definitions 1",
+      "sufficiency {COMPLETE: 1}",
+      "citations ['\u00a77.2(f)']",
+      "toolCalls 2",
+      "tokens 14,759/6,102",
+      "cost $0.00350519 EXACT",
+      "wallClock 69,697 ms",
+      "attribution.assertedAmounts ['100%']"
+    ],
+    "MISSING_STAGES": [
+      "the full IR rule object and the emitted definition - only counts were persisted",
+      "the raw model response (SemanticCompilationResult.rawModelOutput existed at runtime but the validation runner did not write it to disk)",
+      "the tool call log and tool responses",
+      "any verifier result - the runner called compileCovenantToIR directly and never invoked verifyCompiledCandidate"
+    ],
+    "honestNote": "This is a gap in my own harness, not in production. The compiler result carries rawModelOutput and toolCallLog; scripts/p3-conmed-pilot/span-validation.ts recorded only summary fields. Nothing was reconstructed from memory below - every claim is re-derived deterministically from source, code, or the surviving row."
+  },
+  "sourceAbsenceProof": {
+    "anchorText": "(f)\\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary\\nGuarantor;\\n",
+    "anchorChars": 149,
+    "anchorCharacter": "A purely qualitative, uncapped permission. No amount, no percentage, no cap, no denominator.",
+    "contextItemCount": 9,
+    "contextTypesPresent": {
+      "OPERATIVE_SOURCE": 1,
+      "PARENT_SCOPE": 1,
+      "UNVERIFIED_SIBLING_SIGNAL": 4,
+      "DEFINITION": 2,
+      "DEFINITION_DEPENDENCY": 1
+    },
+    "formsSearched": [
+      "100%",
+      "100 %",
+      "100percent",
+      "100 percent",
+      "1.0",
+      "1.00",
+      "100.0",
+      "100"
+    ],
+    "result": "EVERY form ABSENT from the anchor AND from all 9 context items. The bare token '100' does not occur anywhere in the candidate's evidence, so this is not even string coincidence.",
+    "onlyPercentageAnywhereInTheBundle": "3.0%, in an UNVERIFIED_SIBLING_SIGNAL item for 7.2(h) - a different value in a sibling the retriever could not verify as linked",
+    "semanticJudgment": "There is no source-backed evidence for a 100% legal or economic proposition here. The provision grants an uncapped qualitative permission; 'wholly-owned'/'all obligations' notions could be glossed as 100% by a reader, but nothing in the retrieved evidence states it."
+  },
+  "deterministicPathAudit": {
+    "normalize.ts:250-252": "The PERCENT branch requires typeof wire.value === 'number' and passes it through VERBATIM (value: wire.value). No scaling, no default, no fallback. A missing value yields unsupportedNode(), not a number.",
+    "wire-schema.ts:89-97": "Every numeric wire field is z.number().optional() - the schema never forces numeric completion.",
+    "ir/types.ts:236-241": "IRPercentLiteral stores a FRACTION (0.125 for 12.5%), explicitly 'never as a bare 12.5'.",
+    "ir/pretty-print.ts:21": "The only place '100' style output is produced is display: `${expr.value * 100}%`. That is a renderer, not a compiler path.",
+    "UNLIMITED_CAPACITY": "lib/contract-model/ir - an UNLIMITED_CAPACITY expression kind exists precisely for an uncapped permission like this one, so the IR had a correct, non-numeric way to represent 7.2(f).",
+    "conclusion": "No deterministic production path can invent 100% - no fraction-to-percent transform on the compile path, no default ownership percentage, no 'all' -> 100% rule, no threshold fallback, no omitted-denominator inference. Searched normalize.ts, wire-schema.ts and lib/contract-model/ir/*."
+  },
+  "promptLeakageAudit": {
+    "literal100PercentInPromptFewShotsOrToolSchemas": "ABSENT",
+    "percentagesPresentInPrompt": {
+      "12%": 4,
+      "8%": 1,
+      "5%": 1,
+      "10%": 1
+    },
+    "schemaPressure": "None - numeric wire fields are optional and UNLIMITED_CAPACITY is available, so the schema does not encourage filling a threshold that is absent.",
+    "conclusion": "Few-shot leakage of a literal 100% is ruled out."
+  },
+  "whereTheStringMustHaveLived": {
+    "finding": "The detector that caught this required a literal '%' character in JSON.stringify({rules, definitions}). Because IR PERCENT literals store fractions, a populated PERCENT node serialises as \"value\":1 and contains no '%'. Therefore '100%' came from a FREE-TEXT field - description, reason, sourceCitation or excerpt - not from a populated numeric IR field.",
+    "whyThisMatters": "A prose mention is materially less dangerous than a populated legal term: it cannot be evaluated by the Phase-4 runtime. It is, however, invisible to the verifier's numeric reconciliation, which inventories structured expression nodes and not prose.",
+    "residualRisk": "If the string sat in provenance.excerpt, that would be a FABRICATED CITATION EXCERPT (the source contains no '100'), which is more serious than a description gloss. The surviving artifact cannot distinguish these, and I am not going to guess between them."
+  },
+  "verifierAudit": {
+    "method": "Deterministic probe against the real reconciliation, no model call. Built the true 7.2(f) source inventory from the 149-char anchor, then two synthetic IR shapes.",
+    "A_structuredPercentNode": {
+      "irInventory": "ACTION, POSTURE, PERCENT=1",
+      "reconciliation": "IR_ONLY - 'compiled IR PERCENT value 1 at rules[0].capacityExpression has no matching source-side figure'",
+      "materialUnresolvedCount": 2,
+      "forcesReview": true
+    },
+    "B_proseOnly": {
+      "irInventory": "ACTION, POSTURE, UNLIMITED_CAPACITY_MARKER",
+      "reconciliation": "no IR_ONLY finding - prose is never inventoried",
+      "materialUnresolvedCount": 1,
+      "forcesReview": true,
+      "butReason": "review is forced by the UNLIMITED_CAPACITY marker, NOT by the unsupported number"
+    },
+    "answers": {
+      "1_acceptRejectReview": "Review is forced in both shapes - but for the prose shape the number itself is never examined.",
+      "2_whichGateHandlesNumericGrounding": "reconciliation.ts findIrOnlyNumericItems (line 139), filtered to kinds AMOUNT | PERCENT | RATIO.",
+      "3_sourceWindowThatGateInspects": "buildSourceInventory over compilerInput.operativeSourceText, plus authenticated retrieved evidence via reconcileRetrievedEvidence.",
+      "4_isExactNumericEvidenceRequired": "For structured numerics, yes - an unmatched value becomes IR_ONLY. For prose numerics, no evidence is required because none is sought.",
+      "5_canANumberSurviveOnAValidCitation": "Yes for prose. A valid section citation plus a number in free text passes unexamined.",
+      "6_canREVIEW_REQUIREDRetainTheValue": "YES. Review forces human attention but nothing nulls, quarantines or flags the value; it stays in the IR verbatim.",
+      "7_failClosedPathThatShouldHaveFired": "For the actual run, none could have: verifyCompiledCandidate was never invoked. The compiler's own REVIEW_REQUIRED came from OPERATIVE_STATE_UNRESOLVED and SEMANTIC_ACCOUNTABILITY_INCOMPLETE - neither is 'this number is unsupported'. Meanwhile the rule's own sufficiency was COMPLETE."
+    }
+  },
+  "accountabilityAudit": {
+    "distinctionsTheSystemMakes": [
+      "rule exists",
+      "rule-level representationSufficiency (COMPLETE here)",
+      "unit-level status REVIEW_REQUIRED",
+      "source-coverage accounting over the operative region"
+    ],
+    "distinctionItDoesNotMake": "There is no per-NUMERIC-FIELD grounding signal. Sufficiency is declared at rule level and was COMPLETE for 7.2(f) while the unit was REVIEW_REQUIRED for unrelated reasons.",
+    "creditExposure": "A rule carrying an ungrounded number can still present as a populated legal term with COMPLETE sufficiency. Whether it earns benchmark credit depends on the scorer, which this mission does not touch or change."
+  },
+  "downstreamRisk": {
+    "method": "grep over lib/contract-model/runtime for representationSufficiency, verificationStatus, SemanticVerification, claimReview",
+    "result": "ZERO references. The Phase-4 runtime never reads rule sufficiency or any verification/review state.",
+    "howAPercentEvaluates": "evaluate-expression.ts:179 - case 'PERCENT': returns done(percent(...)) as a normal executable value.",
+    "runtimeStatusVocabulary": "EXECUTABLE | NEEDS_INPUT | UNSUPPORTED | AMBIGUOUS | ERROR, derived from expression shape (UNSUPPORTED nodes, missing capacity), never from review state.",
+    "answer": "A structured unsupported numeric WOULD become executable economic logic downstream - REVIEW_REQUIRED does not prevent it at the runtime layer. For 7.2(f) specifically the risk is lower, because the value was prose and prose is not evaluable. The general gap is real and is larger than this case."
+  },
+  "systemicScan": {
+    "preservedCompilerFixtures": "tests/fixtures/unseen-packages/*/compiler-runs/*.json and the first-blind stage6 results: 30 entries, 70 rules, 26 with a capacityExpression, but only ONE structured numeric leaf in total. This corpus cannot settle the question - it barely contains populated numerics.",
+    "paidRunEvidence": "Across the 30 paid candidates of this programme, 28 asserted values were measured against their evidence.",
+    "classification": {
+      "SUPPORTED_BY_CONTEXT_correctlyAttributed": 25,
+      "SUPPORTED_BY_CONTEXT_butMisattributed": 2,
+      "UNSUPPORTED_NUMERIC_ASSERTION": 1,
+      "NORMALIZED_EQUIVALENT": 0,
+      "UNCERTAIN": 0
+    },
+    "detail": {
+      "7.1(d) $800,000,000 and 2.25%": "initially flagged unsourced against anchor+parent, then traced to a retrieved DEFINITION item ('Convertible Notes') - SUPPORTED_BY_CONTEXT",
+      "7.2(k)(i) $150,000,000 and 10.0%": "supported by PARENT_SCOPE but wrongly attributed to the child - the candidate-span class, closed by F1",
+      "7.2(f) 100%": "the only value with no support in any channel"
+    },
+    "verdict": "ISOLATED in the available evidence - 1 of 28 asserted values, 1 of 30 candidates - but the sample is small and the preserved fixture corpus cannot extend it. This is a bounded observation, not a clean bill of health."
+  }
+}

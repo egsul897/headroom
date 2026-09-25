@@ -1,0 +1,64 @@
+{
+  "artifact": "§0 — starting state.",
+  "generatedAt": "2026-09-21T00:00:00.000Z",
+  "startingSha": "f2cd4982dea5495b7962f5020b23b8d3e39a51e9",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "workingTree": "clean apart from this mission's own additive files",
+  "expectedHandoffSha": "f2cd4982dea5495b7962f5020b23b8d3e39a51e9",
+  "matchesExpectedHandoff": true,
+  "v311BenchmarkVersion": "evaluation-contract-v3.1.1",
+  "v311BenchmarkContentHash": "fdba3cb2c1c226d4444f4af89a786efeb662677a8df17666ce8e2ffbcf0c1d59",
+  "v311Counts": {
+    "credit": {
+      "NO_CREDIT": 35,
+      "CREDIT": 12
+    },
+    "completeness": {
+      "FULL": 21,
+      "PARTIAL": 8,
+      "NONE": 18
+    },
+    "compositeSurfacing": {
+      "NOT_SPECIFICALLY_SURFACED": 13,
+      "NOT_APPLICABLE": 12,
+      "PARTIALLY_SURFACED": 9,
+      "FULLY_SURFACED": 13
+    },
+    "binarySurfacing": {
+      "NOT_SPECIFICALLY_SURFACED": 22,
+      "NOT_APPLICABLE": 12,
+      "SPECIFICALLY_SURFACED": 13
+    },
+    "surfacingDenominator": 35,
+    "dangerousSilentOmissions": 22,
+    "fullySurfacedNoCredit": 13,
+    "partiallySurfacedNoCredit": 9,
+    "notSpecificallySurfacedNoCredit": 13,
+    "readjudicated": 22,
+    "carriedForward": 25,
+    "creditDecisionsChanged": 1,
+    "surfacingDecisionsChanged": 9
+  },
+  "packetCaseCount": 47,
+  "packetHash": "0b0e69bcf7f18e5256a6de2086f3b5b0ffe0a152be8882cd1f3557e2ab24ef74",
+  "currentPipelineIdentity": {
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2"
+  },
+  "frozenDsgrPipelineIdentity": {
+    "promptVersions": [
+      "phase-3b1-semantic-compiler-prompt.v2"
+    ],
+    "models": [
+      "anthropic/claude-sonnet-5"
+    ],
+    "providers": [
+      "vercel-ai-gateway"
+    ]
+  },
+  "missionType": "EVIDENCE_REGENERATION",
+  "missionTypeNote": "§0 states this is an evidence-regeneration mission, not a production remediation mission. Production behaviour is changed only if this mission first proves current production itself fails, and it does not attempt that proof.",
+  "paidCallsMade": 0,
+  "paidCallCostUsd": 0
+}

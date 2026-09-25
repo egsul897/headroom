@@ -1,0 +1,115 @@
+{
+  "modelCalls": 0,
+  "newTargetedTests": {
+    "file": "tests/phase-3-conmed-pilot/candidate-span-implementation.test.ts",
+    "total": 24,
+    "redBeforeChange": 12,
+    "greenAfterChange": 24,
+    "redIdentities": [
+      "R1 a dual-key child no longer carries its linked parent's text",
+      "R1 collapses the manufactured focus spans to their true anchor spans",
+      "R1 narrows the sealed population in aggregate, exactly as the design simulated",
+      "R1 no candidate's operative text extends beyond its own anchor node's span",
+      "R1 production reads the anchor only, and still does not touch structuralNodeIds",
+      "R2 the harness delegates to the production rule rather than restating it",
+      "R3 a condition living only in the parent chapeau stays inside the Gate-2 window",
+      "R3 covers the real candidates whose condition language is parent-only",
+      "R3 does NOT widen the window to arbitrary sibling or other context material",
+      "R3 does not make parent economics part of the candidate's own operative source",
+      "R3 verify.ts routes Gate 2 through the builder rather than the raw operative text",
+      "\u00a79 child owns one amount, parent/sibling owns another: only the child's is operative"
+    ],
+    "coverage": [
+      "red/green candidate span",
+      "parent-context retention",
+      "verifier parent-condition safety",
+      "pilot/production parity",
+      "coverage invariance (F3)",
+      "false-credit foreign-economic-item isolation",
+      "determinism",
+      "downstream interface shapes"
+    ]
+  },
+  "requiredSuites": {
+    "tests/phase-3-conmed-pilot": {
+      "passed": 213,
+      "failed": 5,
+      "failuresArePreExisting": true,
+      "reason": "all 5 are premium-lock.test.ts reading /tmp/claude-0/pilot/* (bakeoff.ts default paths) destroyed by an earlier container reclaim; identical identities appear in the pre-change baseline"
+    },
+    "tests/benchmark-integrity": {
+      "passed": 11,
+      "failed": 0,
+      "note": "one test asserts `git status --porcelain lib` is empty; it fails only while production edits are uncommitted and passes once committed"
+    },
+    "tests/benchmark-v311": {
+      "passed": 17,
+      "failed": 0
+    },
+    "tests/evaluation-v2": {
+      "passed": 164,
+      "failed": 0,
+      "includesFalseCreditControls": true
+    },
+    "tests/contract-model/semantic-compiler": {
+      "passed": 164,
+      "failed": 0
+    },
+    "tests/contract-model/semantic-accountability": {
+      "passed": 380,
+      "failed": 0
+    },
+    "tests/contract-model/runtime (Phase 4A-4D)": {
+      "passed": 543,
+      "failed": 0
+    }
+  },
+  "falseCreditControlGates": {
+    "tests/evaluation-v2/dsgr-false-credit-gate.test.ts": "4 passed",
+    "tests/evaluation-v2/false-credit-prohibitions.test.ts": "10 passed",
+    "verdict": "14/14 controls remain protected; no expected result changed, none excluded"
+  },
+  "testsUpdatedBecauseTheContractChanged": [
+    {
+      "file": "tests/phase-3-conmed-pilot/candidate-span-contract.test.ts",
+      "tests": 3,
+      "what": "three sentinels that RECORDED the defect (concatenated span in orchestrator, the harness copy, Gate 2 reading the operative window alone) now record the fix and still fail loudly if the old shape returns."
+    },
+    {
+      "file": "tests/phase-3-conmed-pilot/shard-threshold-sim.test.ts",
+      "tests": 1,
+      "what": "the same premise sentinel from the threshold mission, inverted the same way."
+    },
+    {
+      "file": "tests/phase-3-conmed-pilot/premium-lock.test.ts",
+      "tests": 1,
+      "what": "the sealed-population invariant: 163 unchanged, exact dedup 137 before / 135 after, naming the two collapsed pairs and asserting the dedup report records them."
+    }
+  ],
+  "fullSuite": {
+    "before": {
+      "tests": 4836,
+      "passed": 4164,
+      "failed": 148
+    },
+    "after": {
+      "tests": 4861,
+      "passed": 4189,
+      "failed": 148
+    },
+    "newFailingIdentities": 0,
+    "noLongerFailing": 0,
+    "method": "vitest --reporter=json over the whole repository, before and after, compared by full test identity (file :: fullName) rather than by count.",
+    "preExistingFailuresUnchanged": "the 148 identities are byte-identical across the two runs - database-backed service/UI suites, the fix-3 adversarial certification set, solver and foundation-audit suites, and premium-lock's 5 scratch-path tests"
+  },
+  "gates": {
+    "tsc": "clean apart from 6 pre-existing tests/foundation-audit errors present before the change",
+    "eslint": "clean",
+    "build": "next build succeeded"
+  },
+  "independenceGuardUpdated": {
+    "file": "tests/contract-model/condition-suspicion-classifier-independence.test.ts",
+    "why": "the guard pinned Gate 2's first argument to the literal compilerInput.operativeSourceText. R3 replaces it with buildConditionSuspicionInput(compilerInput). The guard's intent - the classifier must never see compiled IR - is unchanged and now ALSO asserts that the builder's body reads no compilationResult/IRRule/inventory/reconciliation, and admits PARENT_SCOPE only (never SIBLING_CONTEXT, CHILD_RULE, DEFINITION, CROSS_REFERENCE or the linked OPERATIVE_SOURCE item). Net: one guard updated, one new guard added.",
+    "strengthened": true
+  }
+}

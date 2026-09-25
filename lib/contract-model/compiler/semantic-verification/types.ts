@@ -161,6 +161,8 @@ export type SemanticVerificationFindingType =
   | "WRONG_TRANSACTION_SCOPE"
   | "WRONG_DEPENDENCY"
   | "UNSUPPORTED_IR_ADDITION"
+  /** FIX B - a material numeric assertion carried in a FREE-TEXT IR field that no authenticated source figure supports. Distinct from UNSUPPORTED_IR_ADDITION, which concerns a STRUCTURED numeric node, because the two have different remediations: a structured addition is a wrong value in an executable expression, an unsupported free-text numeric is an assertion the IR makes in prose that the source never made. */
+  | "UNSUPPORTED_NUMERIC_ASSERTION"
   | "PROVENANCE_MISMATCH"
   | "POSSIBLE_DUPLICATE_RULE"
   | "POSSIBLE_RULE_MERGE_ERROR"
@@ -500,6 +502,8 @@ export interface ReconciliationItem {
   reason: string;
   /** F-4: set whenever authenticated retrieved evidence (not the local window) decided this item - the evidence's identity, so the match/mismatch is auditable to a document, node, span and content hash. */
   evidence?: { provenanceClass: "AUTHENTICATED_RETRIEVED"; evidenceId: string; requestKind: "DEFINITION" | "PROVISION"; requestKey: string; documentId: string; sourceNodeId: string | null; charStart: number | null; charEnd: number | null; contentHash: string };
+  /** FIX B: set on an item produced by the free-text numeric-assertion pass - the assertion, where in the IR it sits, and what (if anything) grounded it. Absent on every structured-numeric item, so the two paths stay separable in the record. */
+  numericGrounding?: NumericAssertionGrounding;
 }
 
 export interface ReconciliationResult {
@@ -540,8 +544,118 @@ export interface SemanticVerificationResult {
   admissibleEvidence?: AdmissibleEvidenceSet;
   /** F-4: AdmissibleEvidenceSet.evidenceSetHash, lifted for identity/freeze consumers. */
   evidenceSetHash?: string;
+  /** FIX B: the free-text numeric-assertion inventory and its grounding verdicts - the evidence behind every UNSUPPORTED_NUMERIC_ASSERTION finding, and the positive record that every other asserted figure WAS grounded. Absent on pre-Fix-B results. */
+  numericAssertions?: { inventory: NumericAssertionInventory; groundings: NumericAssertionGrounding[] };
   verifierAlgorithmVersion: string;
   verifiedAt: string;
+}
+
+// ---------------------------------------------------------------------------
+// FIX B - material numeric assertions in free-text IR fields
+// (docs/phase-3-numeric-grounding). The structured numeric path above is
+// unchanged; these types describe the SECOND, separate inventory that reads
+// the numbers a compiler stated in prose rather than in an expression node.
+// ---------------------------------------------------------------------------
+
+/** The semantically QUALIFIED numeric forms this layer recognizes. A bare figure with nothing to say what it means is deliberately not one of them. */
+export type NumericAssertionKind = "CURRENCY_AMOUNT" | "PERCENTAGE" | "RATIO" | "QUALIFIED_QUANTITY";
+
+/** Mission §4's field audit vocabulary. Only the first two classes are inventoried, and for different reasons - see numeric-assertion.ts's IR_FREE_TEXT_FIELD_AUDIT. */
+export type NumericAssertionFieldClass =
+  | "MATERIAL_ASSERTION_FIELD"
+  | "SOURCE_QUOTATION_FIELD"
+  | "IDENTIFIER_OR_CITATION_FIELD"
+  | "DIAGNOSTIC_FIELD"
+  | "NON_SEMANTIC_FIELD";
+
+export interface NumericAssertionFieldAuditEntry {
+  /** The IR field, by type and path shape (e.g. "IRRule.conditions[].description"). */
+  fieldPath: string;
+  fieldClass: NumericAssertionFieldClass;
+  inventoried: boolean;
+  rationale: string;
+}
+
+export interface ExtractedNumeric {
+  kind: NumericAssertionKind;
+  /** The figure exactly as written. */
+  rawText: string;
+  /** Canonical magnitude: whole currency units; a FRACTION for a percentage (0.1 for "10%", matching IRPercentLiteral and the source inventory); the ratio's own magnitude; a plain count for a qualified quantity. Null when the figure could not be read safely. */
+  normalizedValue: number | null;
+  currency: string | null;
+  /** "USD" / "%" / "x" / the normalized unit noun ("day", "business day", "subsidiary"), or null. */
+  unit: string | null;
+  charStart: number;
+  charEnd: number;
+  withheldReason: string | null;
+}
+
+export interface NumericAssertionItem extends ExtractedNumeric {
+  itemId: string;
+  candidateRef: string;
+  ruleOrDefinitionId: string;
+  /** R2 relation inputs - what the asserting unit itself says about where its meaning comes from.
+   *  These are the free-text analogue of the structured path's ownerTermName/sourceCitation, and
+   *  they are the ONLY basis on which retrieved evidence may be called related. */
+  ownerTermName: string | null;
+  /** The nearest provenance citation governing the field (the element's own, else its rule's). */
+  ownerCitation: string | null;
+  /** Defined terms/metrics the asserting unit references structurally (expression references, dependsOnTerms). */
+  referencedTerms: string[];
+  /** Section references the asserting unit cites (its own citation plus any dependency targets). */
+  referencedSections: string[];
+  /** Exact path from the compilation unit root, e.g. "rules[0].conditions[1].description". */
+  fieldPath: string;
+  fieldClass: "MATERIAL_ASSERTION_FIELD" | "SOURCE_QUOTATION_FIELD";
+  /** The whole field text the figure was read from - the local span (charStart/charEnd) indexes into this. */
+  fieldText: string;
+}
+
+/**
+ * R2: GROUNDED_TOOL_EVIDENCE is the one additive member. It marks support that came from
+ * AUTHENTICATED RETRIEVED evidence (a definition or provision the verifier independently
+ * re-resolved) whose relation to the asserting unit was actually established - never merely that
+ * the same figure occurred somewhere. GROUNDED_CONTEXT stays live and now means the narrower
+ * thing it always should have: context-scope evidence carrying no retrieval identity to scope
+ * against (the offline corpus replay's preserved excerpts). Anchor-owned grounding remains
+ * GROUNDED_OPERATIVE and is never reachable from retrieved evidence.
+ */
+export type NumericGroundingStatus = "GROUNDED_OPERATIVE" | "GROUNDED_CONTEXT" | "GROUNDED_TOOL_EVIDENCE" | "NORMALIZED_EQUIVALENT" | "UNGROUNDED" | "AMBIGUOUS";
+
+export interface NumericAssertionGrounding {
+  assertion: NumericAssertionItem;
+  status: NumericGroundingStatus;
+  /** R2: WHY the grounding evidence was admitted as related to this assertion - never just "the number is there". Null when nothing grounded it. */
+  relation: string | null;
+  /** R2: authenticated evidence that carries the same figure but whose relation to this assertion could NOT be established. Two or more of these, with no related match, is what makes an assertion AMBIGUOUS rather than silently grounded or silently unsupported. */
+  unrelatedEvidenceIds: string[];
+  /** Where the supporting figure was found. Kept separate from `status` so a NORMALIZED_EQUIVALENT still discloses whether the support was the candidate's own anchor or someone else's text. */
+  groundedIn: "OPERATIVE" | "CONTEXT" | null;
+  matchedEvidenceId: string | null;
+  matchedText: string | null;
+  reason: string;
+}
+
+export interface NumericAssertionInventory {
+  candidateRef: string;
+  items: NumericAssertionItem[];
+  /** How many free-text fields were actually walked - so "no assertions" is distinguishable from "nothing was read." */
+  fieldsWalked: number;
+  algorithmVersion: string;
+}
+
+/** One authenticated text the grounding pass may match against. OPERATIVE is the candidate's own window; CONTEXT is retrieved-evidence.ts's authenticated set. Nothing else is ever admitted (mission §7). */
+export interface NumericAssertionEvidenceText {
+  scope: "OPERATIVE" | "CONTEXT";
+  evidenceId: string;
+  label: string;
+  text: string;
+  /** R2: the retrieval identity this evidence carries, when it is authenticated retrieved source. Absent for the operative window and for preserved excerpts with no retrieval record - such evidence can never establish a relation and so can never fully ground an assertion. */
+  requestKind?: "DEFINITION" | "PROVISION";
+  /** Normalized scope identity (retrieved-evidence.ts's normalizeTermScopeKey / normalizeSectionScopeKey). */
+  scopeKey?: string;
+  /** The term or section as requested, for relation-by-mention and for the reason string. */
+  requestKey?: string;
 }
 
 export type { IRDefinition, IRRule, IRSharedCapacity };
