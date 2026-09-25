@@ -13,6 +13,8 @@ import { describe, expect, it } from "vitest";
 import { benchmarkCases, calibrate, denominator, historicalCostTable, LOCKED_MODEL as CAL_MODEL } from "../../scripts/p3-conmed-pilot/resume-calibration";
 import { PREMIUM_MODEL_BUDGET_USD } from "../../scripts/p3-conmed-pilot/premium-lock";
 import { DEFAULT_CANDIDATE_TIMEOUT_MS } from "../../scripts/p3-conmed-pilot/timeout-policy";
+import { compileReservationUsd } from "../../scripts/p3-conmed-pilot/reservation-policy";
+import { loadModel } from "../../scripts/p3-conmed-pilot/compile-run";
 // The runner fixes OUT at module load and static imports are hoisted above the env assignment.
 const { AUTO_RETRY, CONCURRENCY, FALLBACK_MODEL, FORBIDDEN_MODEL_SUFFIX, LOCKED_MODEL, main, OUT, SPEND_CEILING_USD, SPEND_STOP_AT_USD } = await import("../../scripts/p3-conmed-pilot/run-population-verified");
 
@@ -76,7 +78,13 @@ describe("the real denominator (offline, from the sealed population through the 
     expect(p!.skippedEmpty.map((s) => s.ref)).toEqual(["7.4(a)(iii)", "7.4(a)(iv)"]);
     expect(p!.ceilingUsd).toBe(SPEND_CEILING_USD);
     expect(p!.stopAtUsd).toBe(SPEND_STOP_AT_USD);
-    expect(p!.reservationPerCallUsd).toBeCloseTo(0.019423, 5);
+    // P-7: the reservation is now derived from the execution shape the runner permits at the population's
+    // largest operative span - it supersedes the historical $0.019423 (which 7.8 exceeded 10.8x) and covers it
+    const maxChars = Math.max(...p!.order.map((o) => o.operativeChars));
+    expect(p!.reservationPerCallUsd).toBeCloseTo(compileReservationUsd(loadModel(LOCKED_MODEL), maxChars), 8);
+    expect(p!.reservationPerCallUsd).toBeGreaterThan(0.2094469);
+    expect(p!.reservationPolicy.compileShapeAtMaxChars.conversations).toBe(5);
+    expect(p!.reservationPolicy.hardInvariant).toMatch(/committed \+ outstanding \+ next reservation <= ceiling/);
     const refs = p!.order.map((o) => o.ref);
     expect([...refs].sort()).toEqual(refs);
     expect(refs).toContain("7.2(k)");

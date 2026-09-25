@@ -1,0 +1,122 @@
+{
+  "candidate": "7.8",
+  "operativeChars": 4667,
+  "exactUsd": 0.2094469,
+  "inputTokens": 1510950,
+  "outputTokens": 50090,
+  "wallClockMs": 399743,
+  "shardLatencyMs": 181209,
+  "telemetry": {
+    "stage": "semantic_compile_sharded",
+    "conversations": 5,
+    "retries": 0,
+    "rateLimitFailures": 0,
+    "cachedInputTokens": null,
+    "toolCallLogTopLevel": 0,
+    "rawModelOutputTopLevel": null,
+    "unresolvedIssues": 133,
+    "shardStatusesFromIssues": [
+      "SHARD_SCHEMA_FAILURE"
+    ]
+  },
+  "perConversation": {
+    "inputTokens": 302190,
+    "outputTokens": 10018,
+    "impliedInputPerTurnAt12Turns": 25183
+  },
+  "driver": "REPEATED_FULL_CONTEXT_TURNS x SHARD_COUNT",
+  "finding": "Five bounded conversations (sharded compile; telemetry.attemptCount 5, retryCount 0 - no shard retries, no rate-limit retries). Each conversation is the caller tool loop of up to 12 turns (maxToolCalls 8 + MAX_TURN_OVERHEAD 4) and EVERY turn re-sends the whole conversation: system prompt + few-shot block + context bundle + all prior tool results and assistant turns; cachedInputTokens is null, so nothing is credited as cached. About 302k input per conversation is about 25k per turn x 12 turns, all five conversations ending SHARD_SCHEMA_FAILURE after exhausting their turns (133 unresolved stitch issues). The verifier never ran. Output (50,090, about 10k per conversation) is a minor term; wall clock (399.7 s, 181.2 s of it inside the shard run) bounds output only. The same multiplier produced the two 667k-token MONOLITHIC compiles of the original run (7.5(g) 67 chars, 7.5(h) 208 chars: one conversation, about 55.6k per turn x 12), so operative-span length does not predict it.",
+  "notPredictableFromWallClock": "7.8 ingested 1.51M input tokens in 181 s of shard time (about 8.3k tok/s); 7.5(h) ingested 667k in 35 s. Input scales with turns x context size, not with elapsed time; the old reservation priced a fixed typical input (29,408) and only output by rate.",
+  "otherObservedMaxima": {
+    "conversationsMax": 5,
+    "retriesMax": 1,
+    "inputMax": 1510950,
+    "outputMax": 50090,
+    "inputPerConversationMax": 667190,
+    "billedCompilesWithTelemetry": 72,
+    "top": [
+      {
+        "dir": "run-continuation-2",
+        "ref": "discovery-candidate:25a7ac71a68f0535fad268cd",
+        "stage": "semantic_compile_sharded",
+        "conversations": 5,
+        "retries": 0,
+        "input": 1510950,
+        "output": 50090,
+        "chars": 4667,
+        "wallClockMs": 399743,
+        "latencyMs": 181209
+      },
+      {
+        "dir": "run-original",
+        "ref": "discovery-candidate:184c41389f233b2c2de269a4",
+        "stage": "semantic_compilation",
+        "conversations": 1,
+        "retries": 0,
+        "input": 667190,
+        "output": 2996,
+        "chars": 208,
+        "wallClockMs": 58561,
+        "latencyMs": 35263
+      },
+      {
+        "dir": "run-original",
+        "ref": "discovery-candidate:8f16a2f1fc23309fec02928d",
+        "stage": "semantic_compilation",
+        "conversations": 1,
+        "retries": 0,
+        "input": 666860,
+        "output": 3583,
+        "chars": 67,
+        "wallClockMs": 159950,
+        "latencyMs": 39084
+      },
+      {
+        "dir": "run-continuation-2",
+        "ref": "discovery-candidate:248f4e6a15e5a2424e2a2397",
+        "stage": "semantic_compile_sharded",
+        "conversations": 2,
+        "retries": 0,
+        "input": 101823,
+        "output": 18250,
+        "chars": 4339,
+        "wallClockMs": 203070,
+        "latencyMs": 54197
+      },
+      {
+        "dir": "run-continuation-2",
+        "ref": "discovery-candidate:718510e2901771adb5a31722",
+        "stage": "semantic_compile_sharded",
+        "conversations": 2,
+        "retries": 0,
+        "input": 79431,
+        "output": 11789,
+        "chars": 971,
+        "wallClockMs": 128036,
+        "latencyMs": 39775
+      },
+      {
+        "dir": "run-continuation-2",
+        "ref": "discovery-candidate:b5296614bd927a8e4ea227bc",
+        "stage": "semantic_compile_sharded",
+        "conversations": 2,
+        "retries": 0,
+        "input": 62570,
+        "output": 22657,
+        "chars": 52,
+        "wallClockMs": 139069,
+        "latencyMs": 67964
+      }
+    ]
+  },
+  "oldReservation": {
+    "usd": 0.01942304,
+    "inputs": {
+      "observedInputTokensPerCandidate": 29408,
+      "outputTokens": 60000
+    },
+    "coverageRatio": 0.09273491276309175,
+    "underReservationFactor": 10.783425251659885
+  },
+  "unrecordedUsageGapClosed": "Pass A (semantic inventory) calls run through the compile option inventoryCaller, which defaulted to an env-driven getStageCaller() the runner did not observe: their usage was neither in compile telemetry (which sums shard telemetry only) nor in the runner side-call log. The runner now passes its own recorded stage caller as inventoryCaller (same locked model, same prompts) and bills that usage into the compile settlement. Wall clock minus shard latency across the population reached 250.7 s on one candidate: time spent in those unobserved calls plus deterministic passes."
+}

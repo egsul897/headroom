@@ -286,6 +286,31 @@ export class BudgetLedger {
     return this.committedUsd + nextReservationUsd >= this.stopAtUsd;
   }
 
+  /**
+   * P-7 HARD BUDGET INVARIANT, checked before every dispatch:
+   *
+   *     committed (exact + retained + outstanding reservations) + next reservation <= hard ceiling
+   *
+   * and the STOP_AT line is not crossed. A request never begins because the historical average cost
+   * is low: only the reservation for the maximum shape the runner permits counts here.
+   */
+  dispatchDecision(nextReservationUsd: number): { allowed: boolean; reason: "OK" | "HARD_CEILING" | "STOP_AT"; committedUsd: number; nextReservationUsd: number; wouldCommitUsd: number; ceilingUsd: number; stopAtUsd: number } {
+    // compared unrounded: a reservation that exceeds the ceiling by less than a micro-dollar is still over it
+    const wouldCommitRaw = this.committedUsd + nextReservationUsd;
+    const wouldCommitUsd = Number(wouldCommitRaw.toFixed(6));
+    const base = { committedUsd: this.committedUsd, nextReservationUsd, wouldCommitUsd, ceilingUsd: this.ceilingUsd, stopAtUsd: this.stopAtUsd };
+    if (wouldCommitRaw > this.ceilingUsd) return { allowed: false, reason: "HARD_CEILING", ...base };
+    if (this.mustStop(nextReservationUsd)) return { allowed: false, reason: "STOP_AT", ...base };
+    return { allowed: true, reason: "OK", ...base };
+  }
+
+  /** Reserve only through the invariant; throws rather than letting a request begin over the ceiling. */
+  reserveOrRefuse(id: string, usd: number): ReturnType<BudgetLedger["dispatchDecision"]> {
+    const d = this.dispatchDecision(usd);
+    if (d.allowed) this.reserve(id, usd);
+    return d;
+  }
+
   snapshot() {
     return {
       ceilingUsd: this.ceilingUsd,

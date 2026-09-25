@@ -78,17 +78,19 @@ describe("the continuation runner (same runner, harness durability only)", () =>
     const bogus = new Set([...set.skipDiscoveryIds, "discovery-candidate:not-in-population"]);
     await expect(main(["--dry-run"], { skipDiscoveryIds: bogus, flushEvery: 1 })).rejects.toThrow(/pre-flight: skip set names/);
   }, 120_000);
-  it("the runner refuses without authorization or credential, and the loop itself refuses a skipped id", () => {
+  it("the runner refuses a skipped id inside the loop, flushes after every candidate, and dispatches through the sentinel with recorded Pass A", () => {
     const src = stripped("scripts/p3-conmed-pilot/run-population-verified.ts");
+    const loop = stripped("scripts/p3-conmed-pilot/population-loop.ts");
     expect(src).toMatch(/refusing to dispatch previously attempted candidate/);
-    expect(src).toMatch(/if \(done % flushEvery === 0\) flush\(\);/);
     expect(src).toMatch(/const flushEvery = opts\.flushEvery \?\? 1;/);
     expect(src).not.toMatch(/done % 10 === 0/);
-    // compile / verify / persist call shapes are the original ones
-    expect(src).toMatch(/withTimeout\(compileCovenantToIR\(input, \{ caller: callerFor\(LOCKED_MODEL\) \}\), PER_CANDIDATE_TIMEOUT_MS\)/);
+    // durability: the loop flushes after EVERY recorded candidate and at every stop
+    expect(loop).toMatch(/state\.statuses\.push\(status\);[\s\S]{0,400}deps\.flush\(state\);/);
+    // compile / verify / persist call shapes: unchanged pipeline calls, plus the harness's own observation hooks
+    expect(src).toMatch(/withTimeout\(compileCovenantToIR\(input, \{ caller: callerFor\(LOCKED_MODEL, sentinel\.fetch\), inventoryCaller: stageCaller \}\), PER_CANDIDATE_TIMEOUT_MS\)/);
     expect(src).toMatch(/withTimeout\(verifyCompiledCandidate\(\{ compilerInput: input, compilationResult: result \}, \{ reviewCaller: stageCaller, conditionSuspicionCaller: stageCaller \}\), PER_CANDIDATE_TIMEOUT_MS\)/);
     expect(src).toMatch(/persistCandidate\(\{ dir: path\.join\(OUT, "evidence"\)/);
-    expect(src).not.toMatch(/\battempt\s*<|retries?\s*[:=]\s*[1-9]|maxRetries|\.retry\(|escalat|sonnet|opus/i);
+    for (const f of [src, loop]) expect(f).not.toMatch(/\battempt\s*<|retries?\s*[:=]\s*[1-9]|maxRetries: [3-9]|\.retry\(|escalat|sonnet|opus/i);
   });
   it("the continuation entry imports the runner only after fixing the output directory, and never names the original scratch directory as its output", () => {
     const src = fs.readFileSync("scripts/p3-conmed-pilot/run-population-continuation.ts", "utf8");

@@ -127,8 +127,9 @@ export function maxTokensFor(m: GatewayModel): number {
   return Math.min(m.max_tokens, 128000);
 }
 
-export function callerFor(model: string): RealSemanticCaller {
-  return new RealSemanticCaller("vercel-ai-gateway", model, new Anthropic({ apiKey: process.env.AI_GATEWAY_API_KEY, baseURL: AI_GATEWAY_BASE_URL, maxRetries: 2 }));
+/** `fetchImpl` lets the harness observe every HTTP response (gateway-credit.ts sentinel) before the SDK raises and the compiler reduces the error to text. */
+export function callerFor(model: string, fetchImpl?: typeof globalThis.fetch): RealSemanticCaller {
+  return new RealSemanticCaller("vercel-ai-gateway", model, new Anthropic({ apiKey: process.env.AI_GATEWAY_API_KEY, baseURL: AI_GATEWAY_BASE_URL, maxRetries: 2, ...(fetchImpl ? { fetch: fetchImpl } : {}) }));
 }
 
 export function buildInput(candidate: DiscoveredCandidate, bundle: unknown, stages: ReturnType<typeof buildDeterministicStages>, operativeState: unknown, amendmentEffects: unknown[]): SemanticCompilerInput {
