@@ -1,0 +1,197 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T08:06:33.358Z",
+  "candidateRef": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.9(b)(iv)",
+    "operativeSourceText": "(iv) which\notherwise adversely affects the interests of the Lenders as senior creditors or the interests of the Lenders under this Agreement or any\nother Loan Document in any respect.\n",
+    "operativeSourceTextSha256": "786234c94636d6fc2d169a440429c5817c945fd1c65ea110914fff9bfd63f343",
+    "operativeSourceChars": 184,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:a4588cfa3162ba8ab5f5f63103bf4072df2dc464487868cdbfd9534549c54eb3",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 6,
+    "items": [
+      {
+        "itemId": "context-item:a42554d66a8e0247840fe8a52450aa8e1065da6c0a60e8b92477e31000516716",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.9(b)(iv)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 184,
+        "excerptText": "(iv) which\notherwise adversely affects the interests of the Lenders as senior creditors or the interests of the Lenders under this Agreement or any\nother Loan Document in any respect.\n"
+      },
+      {
+        "itemId": "context-item:4dfa8d4aca079f7b78f6e7edd84cbeec298872cb4e417aed65a4cf24a362d30d",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.9",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 89,
+        "excerptText": "SECTION 7.9 Limitation on Optional\nPayments and Modifications of Debt Instruments, etc .\n"
+      },
+      {
+        "itemId": "context-item:925bb11746036b823f46a4f8dc66b079be1397cfe6488c41bd345284c9bfb63e",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.9(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 164,
+        "excerptText": "(b)\nAmend, modify, waive or otherwise change, or consent or agree to any amendment, modification, waiver or other change to any Permitted\nSubordinated Indebtedness "
+      },
+      {
+        "itemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "type": "DEFINITION",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:75983b0c33539747185bfa077d5a945dca290b9777ae644fda7ab51753806cce",
+        "type": "DEFINITION",
+        "normalizedRef": "Lenders",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 47,
+        "excerptText": "\"Lenders\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:d6bbbd094da78579abb29068661cfe172b6b257a85e1450be0b39733ebe60573",
+        "type": "DEFINITION",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:4dfa8d4aca079f7b78f6e7edd84cbeec298872cb4e417aed65a4cf24a362d30d",
+        "toItemId": "context-item:a42554d66a8e0247840fe8a52450aa8e1065da6c0a60e8b92477e31000516716",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:925bb11746036b823f46a4f8dc66b079be1397cfe6488c41bd345284c9bfb63e",
+        "toItemId": "context-item:a42554d66a8e0247840fe8a52450aa8e1065da6c0a60e8b92477e31000516716",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:a42554d66a8e0247840fe8a52450aa8e1065da6c0a60e8b92477e31000516716",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:a42554d66a8e0247840fe8a52450aa8e1065da6c0a60e8b92477e31000516716",
+        "toItemId": "context-item:75983b0c33539747185bfa077d5a945dca290b9777ae644fda7ab51753806cce",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:a42554d66a8e0247840fe8a52450aa8e1065da6c0a60e8b92477e31000516716",
+        "toItemId": "context-item:d6bbbd094da78579abb29068661cfe172b6b257a85e1450be0b39733ebe60573",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:d6bbbd094da78579abb29068661cfe172b6b257a85e1450be0b39733ebe60573",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": null,
+    "toolCallLog": [],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T08:06:33.358Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 227,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    },
+    "compiledAt": "2026-09-25T08:06:33.358Z",
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 429,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "costUsd": 0,
+    "costStatus": "ESTIMATED_FROM_STREAM",
+    "timedOut": false,
+    "notes": [
+      "compile PROVIDER_FAILURE",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

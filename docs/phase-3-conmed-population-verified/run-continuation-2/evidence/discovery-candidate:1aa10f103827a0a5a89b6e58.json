@@ -1,0 +1,134 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T08:06:31.761Z",
+  "candidateRef": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.9(b)(i)",
+    "operativeSourceText": "(i) which amends or modifies the subordination provisions contained therein; ",
+    "operativeSourceTextSha256": "90655cf457d1aa7485ca4936bd759340c7841ab5406f2169a00977fe4cd1c30c",
+    "operativeSourceChars": 77,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:e3fafe5b3338b50a49d79c860192682a881ec57597fa9f2db74eb6a7f8f9bd3f",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 3,
+    "items": [
+      {
+        "itemId": "context-item:c2e78ac793255f0a924278d9a3a0091d7cfb09541b5682f6058eeb76a1054155",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.9(b)(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 77,
+        "excerptText": "(i) which amends or modifies the subordination provisions contained therein; "
+      },
+      {
+        "itemId": "context-item:4dfa8d4aca079f7b78f6e7edd84cbeec298872cb4e417aed65a4cf24a362d30d",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.9",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 89,
+        "excerptText": "SECTION 7.9 Limitation on Optional\nPayments and Modifications of Debt Instruments, etc .\n"
+      },
+      {
+        "itemId": "context-item:925bb11746036b823f46a4f8dc66b079be1397cfe6488c41bd345284c9bfb63e",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.9(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 164,
+        "excerptText": "(b)\nAmend, modify, waive or otherwise change, or consent or agree to any amendment, modification, waiver or other change to any Permitted\nSubordinated Indebtedness "
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:4dfa8d4aca079f7b78f6e7edd84cbeec298872cb4e417aed65a4cf24a362d30d",
+        "toItemId": "context-item:c2e78ac793255f0a924278d9a3a0091d7cfb09541b5682f6058eeb76a1054155",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:925bb11746036b823f46a4f8dc66b079be1397cfe6488c41bd345284c9bfb63e",
+        "toItemId": "context-item:c2e78ac793255f0a924278d9a3a0091d7cfb09541b5682f6058eeb76a1054155",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": null,
+    "toolCallLog": [],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T08:06:31.760Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 291,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    },
+    "compiledAt": "2026-09-25T08:06:31.760Z",
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 472,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "costUsd": 0,
+    "costStatus": "ESTIMATED_FROM_STREAM",
+    "timedOut": false,
+    "notes": [
+      "compile PROVIDER_FAILURE",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

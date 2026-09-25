@@ -1,0 +1,393 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T07:54:35.374Z",
+  "candidateRef": "discovery-candidate:0c86f64e8580df76e45e16f0",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.8(k)",
+    "operativeSourceText": "(k)\nother Investments constituting Permitted Business Acquisitions;\n",
+    "operativeSourceTextSha256": "0c5b189a1624e327c381338026319fbc0f0c965c9629d5524a600957598c8a02",
+    "operativeSourceChars": 68,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:8c475617187760f33dc1d10fc603e3ab8ec66dbb235ac3b9635cc154f9df925d",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 7,
+    "items": [
+      {
+        "itemId": "context-item:243f61317ba68ab9e4cb05786539a425edc37f95bd76bc26245348585fd5dfaa",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.8(k)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 68,
+        "excerptText": "(k)\nother Investments constituting Permitted Business Acquisitions;\n"
+      },
+      {
+        "itemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 389,
+        "excerptText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n"
+      },
+      {
+        "itemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "type": "PROVISO",
+        "normalizedRef": "7.8(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 350,
+        "excerptText": "(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n"
+      },
+      {
+        "itemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 971,
+        "excerptText": "(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n"
+      },
+      {
+        "itemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 427,
+        "excerptText": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n"
+      },
+      {
+        "itemId": "context-item:f813576b34dbb6f5e1330aa312a385163a531ff267d2600e3575e1d222036d0c",
+        "type": "DEFINITION",
+        "normalizedRef": "Business",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 44,
+        "excerptText": "\"Business\": as defined\nin Section 4.17(b).\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "toItemId": "context-item:243f61317ba68ab9e4cb05786539a425edc37f95bd76bc26245348585fd5dfaa",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "toItemId": "context-item:243f61317ba68ab9e4cb05786539a425edc37f95bd76bc26245348585fd5dfaa",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "toItemId": "context-item:243f61317ba68ab9e4cb05786539a425edc37f95bd76bc26245348585fd5dfaa",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "toItemId": "context-item:243f61317ba68ab9e4cb05786539a425edc37f95bd76bc26245348585fd5dfaa",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "toItemId": "context-item:243f61317ba68ab9e4cb05786539a425edc37f95bd76bc26245348585fd5dfaa",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:243f61317ba68ab9e4cb05786539a425edc37f95bd76bc26245348585fd5dfaa",
+        "toItemId": "context-item:f813576b34dbb6f5e1330aa312a385163a531ff267d2600e3575e1d222036d0c",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "MODEL_SCHEMA_FAILURE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7-8k",
+          "sourceSectionRef": "7.8(k)",
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "termName": "Permitted Business Acquisition",
+              "valueType": "BOOLEAN",
+              "citation": "§7.8(k)",
+              "excerpt": "other Investments constituting Permitted Business Acquisitions"
+            },
+            "citation": "§7.8(k)",
+            "excerpt": "other Investments constituting Permitted Business Acquisitions"
+          },
+          "conditions": [
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "termName": "Permitted Business Acquisition",
+                "valueType": "BOOLEAN"
+              },
+              "referencesDefinitionId": "d-pba",
+              "description": "The Investment must constitute a Permitted Business Acquisition as defined in the definition of that term, which requires (inter alia) the pro forma Senior Secured Leverage Ratio no greater than 0.25x below the ratio in effect under Section 7.1(a), a $125M officers' certificate step-up, and other conditions",
+              "citation": "§7.8(k)"
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "d-pba",
+              "description": "permission is gated by satisfaction of the 'Permitted Business Acquisition' definition"
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.1(a)",
+              "description": "the definition's ratio test compares against the Consolidated Senior Secured Leverage Ratio in effect under Section 7.1(a)"
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 6.9",
+              "description": "the definition requires required actions under Section 6.9 for acquired/newly formed Subsidiaries"
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.2",
+              "description": "the definition requires any acquired/newly formed Subsidiary not be liable for Indebtedness except as permitted under Section 7.2"
+            }
+          ],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "The permission itself (make Investments constituting Permitted Business Acquisitions, no dollar ceiling) is faithfully represented as unlimited capacity gated by the definition; completeness of the operative gate depends on the PARTIAL representation of the 'Permitted Business Acquisition' definition's non-quantitative conditions (e.g. no Default/ED, compliance with laws, officers' certificate delivery).",
+            "SOURCE CONTEXT STATE was UNKNOWN_SOURCE_COMPLETENESS, so full completeness against the unit boundary cannot be established."
+          ],
+          "citation": "§7.8(k)",
+          "excerpt": "other Investments constituting Permitted Business Acquisitions;",
+          "inventoryItemIds": [
+            "inv-item:a01546fce3be5b7f8f4219d2"
+          ]
+        }
+      ],
+      "definitions": "[{\"localRef\": \"d-pba\", \"termName\": \"Permitted Business Acquisition\", \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\", \"calculationExpression\": {\"kind\": \"AND\", \"operands\": [{\"kind\": \"COMPARE\", \"left\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"Consolidated Senior Secured Leverage Ratio\", \"valueType\": \"RATIO\", \"excerpt\": \"computed on a pro forma basis as at the last day of the most recently ended fiscal quarter for which financial statements are available\"}, \"operator\": \"LTE\", \"right\": {\"kind\": \"SUBTRACT\", \"operands\": [{\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"Consolidated Senior Secured Leverage Ratio in effect under Section 7.1(a)\", \"valueType\": \"RATIO\"}, {\"kind\": \"RATIO\", \"value\": 0.25}]}}, {\"kind\": \"IF\", \"condition\": {\"kind\": \"COMPARE\", \"left\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"amount of such investment or series of related investments\", \"valueType\": \"MONEY\"}, \"operator\": \"GT\", \"right\": {\"kind\": \"MONEY\", \"amount\": 125000000, \"currency\": \"USD\"}}, \"then\": {\"kind\": \"UNSUPPORTED\", \"semanticDescription\": \"officers' certificate delivery requirement to the Administrative Agent together with relevant financial information\", \"reason\": \"evidentiary/administrative condition (delivery of a certificate and financial information) not representable as a measurable covenant mechanic\", \"sourceEvidence\": \"definition of Permitted Business Acquisition, condition (d)(i)\"}, \"else\": {\"kind\": \"BOOLEAN_LITERAL\", \"boolValue\": true}}, \"description\": \"officers' certificate required if investment exceeds $125,000,000\"}, {\"kind\": \"UNSUPPORTED\", \"semanticDescription\": \"remaining definitional conditions: (a) no Default or Event of Default shall have occurred and be continuing or would result; (b) transactions consummated in accordance with applicable laws; (c) acquired/newly formed entity becomes a Subsidiary and Section 6.9 actions taken; (d)(ii) acquired/newly formed Subsidiary not liable for Indebtedness except as permitted under Section 7.2\", \"reason\": \"non-quantitative, event/fact-based conditions not expressible as covenant mechanics in the node vocabulary\", \"sourceEvidence\": \"definition of 'Permitted Business Acquisition', conditions (a)-(d)\"}]}, \"dependsOnTerms\": [\"Business\", \"Default\", \"Event of Default\", \"Indebtedness\", \"Parent Borrower\", \"Person\", \"Subsidiary\"], \"sufficiency\": \"PARTIAL\", \"sufficiencyReasons\": [\"The core quantitative gate (pro forma Consolidated Senior Secured Leverage Ratio no greater than 0.25x below the Section 7.1(a) ratio) and the $125M officers'-certificate trigger are represented; the non-quantitative conditions (no Default/ED, compliance with laws, Subsidiary/liability requirements) are UNSUPPORTED fact-based conditions.\", \"Cross-references to Section 7.1(a), Section 6.9 and Section 7.2 are recorded as dependencies and not independently resolved here.\"], \"citation\": \"Definition of 'Permitted Business Acquisition'\", \"excerpt\": \"any acquisition of all or substantially all the assets... or intellectual property, distribution, co-marketing... if immediately after giving effect thereto: (a) no Default or Event of Default... (b) ... applicable laws in all material respects, (c) any acquired or newly formed ... shall be a Subsidiary ... Section 6.9 ... and (d)(i) the Consolidated Senior Secured Leverage Ratio ... no greater than ... 0.25x lower than ... under Section 7.1(a) and, if ... exceeds $125,000,000 ... officers' certificate ... and (ii) any acquired or newly formed Subsidiary shall not be liable for any Indebtedness (except ... Section 7.2)\"}, {\"localRef\": \"d-inv\", \"termName\": \"Investment\", \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\", \"calculationExpression\": {\"kind\": \"UNSUPPORTED\", \"semanticDescription\": \"'Investment' as defined in Section 7.8: making any advance, loan, extension of credit, capital contribution, or purchase of stock, bonds, notes, debentures or other securities, or of assets constituting all or a material part of a business unit, or any other investment in any Person\", \"reason\": \"a broad enumerated category-definition (list of investment actions) with no single computable value; retained as a descriptive definition\", \"sourceEvidence\": \"Section 7.8 chapeau\"}, \"dependsOnTerms\": [\"Person\", \"Business\"], \"sufficiency\": \"PARTIAL\", \"sufficiencyReasons\": [\"The term 'Investment' is defined by reference to the Section 7.8 chapeau, which this submission captures as a descriptive category; it has no single computable numeric value on its own.\"], \"citation\": \"Section 7.8 (definition of 'Investment'), and 'Investment: as defined in Section 7.8'\", \"excerpt\": \"Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase any stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or make any other investment in, any Person (collectively, 'Investments')\"}]",
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "Section 7.8(k) is one enumerated exception to the general Section 7.8 prohibition on Investments (as defined in the chapeau): the Parent Borrower and its Subsidiaries may make Investments that constitute Permitted Business Acquisitions, with no dollar ceiling of its own.",
+        "'Permitted Business Acquisitions' (plural) resolves to the defined term 'Permitted Business Acquisition' (singular); 'Investments' resolves to 'Investment' defined by reference to Section 7.8.",
+        "The provision has no recorded amendment history and the operative evidence is confirmed CURRENT; however the SOURCE CONTEXT STATE was UNKNOWN_SOURCE_COMPLETENESS, so rule sufficiency is held at PARTIAL.",
+        "Material non-quantitative conditions inside the definition (no Default/ED, compliance with laws, Subsidiary/Section 6.9 and Indebtedness-liability requirements) are represented as UNSUPPORTED because they are fact/event-based, not covenant mechanics; the quantitative pro forma leverage ratio gate and $125M officers'-certificate trigger are represented."
+      ],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "inv-item:a01546fce3be5b7f8f4219d2",
+          "disposition": "CONSUMED",
+          "note": "Represented by rule r7-8k (permission to make Investments constituting Permitted Business Acquisitions) consuming this item on the rule."
+        }
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Permitted Business Acquisitions"
+        },
+        "outputSummary": "refused: no defined term matching \"Permitted Business Acquisitions\" found in this instrument's documents; the instrument defines \"Permitted Business Acquisition\" (a grammatical-number variant of the requested term) - query that exact term to read it",
+        "charsReturned": 240,
+        "timestamp": "2026-09-25T07:54:11.601Z"
+      },
+      {
+        "toolName": "getDefinitionDependencies",
+        "input": {
+          "term": "Permitted Business Acquisitions"
+        },
+        "outputSummary": "refused: no defined term matching \"Permitted Business Acquisitions\" found - cannot inspect its dependencies",
+        "charsReturned": 98,
+        "timestamp": "2026-09-25T07:54:11.602Z"
+      },
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Permitted Business Acquisition"
+        },
+        "outputSummary": "definition \"Permitted Business Acquisition\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+        "charsReturned": 2084,
+        "timestamp": "2026-09-25T07:54:13.198Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "DEFINITION",
+          "requestKey": "Permitted Business Acquisition",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 30525,
+          "charEnd": 32609,
+          "rawText": "\"Permitted Business Acquisition\": any acquisition of all or substantially all the assets of, shares or other equity interests in, or intellectual property, distribution,\nco-marketing or other co-promotion or other similar rights with respect to, a Person or division or line of business of a Person (or any\nsubsequent investment made in a previously acquired Permitted Business Acquisition) if immediately after giving effect thereto: (a) no\nDefault or Event of Default shall have occurred and be continuing or would result therefrom, (b) all transactions related thereto\nshall be consummated in accordance with applicable laws in all material respects, (c) any acquired or newly formed corporation, partnership,\nassociation or other business entity shall be a Subsidiary and all actions required to be taken, if any, with respect to such acquired\nor newly formed Subsidiary under Section 6.9 shall have been taken and (d)(i) the Consolidated Senior Secured Leverage Ratio of the Parent\nBorrower and its Subsidiaries, computed on a pro forma basis as at the last day of the most recently ended fiscal quarter of the\nParent Borrower and its Subsidiaries for which financial statements are available as if such acquisition and related financings or other\ntransactions (without regard to the making of any earn-out payments) had occurred on the first day of the relevant period for testing\nsuch compliance, is no greater than the Consolidated Senior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured\nLeverage Ratio in effect for such fiscal quarter under Section 7.1(a) and, if the amount of such investment or series of related investments\nexceeds $125,000,000 (without regard to the making of any earn-out payments), then the Parent Borrower shall have delivered to the Administrative\nAgent an officers' certificate to such effect, together with all relevant financial information for such Subsidiary or assets, and\n(ii) any acquired or newly formed Subsidiary shall not be liable for any Indebtedness (except for Indebtedness permitted by Section\n7.2).\n\n",
+          "contentHash": "d2ad3e13e5bd88d17d4683de877b9d086cb0ee7559f3c034841dea8acd00a3fb",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT",
+          "isCurrentTruth": true
+        }
+      },
+      {
+        "toolName": "getDefinitionDependencies",
+        "input": {
+          "term": "Permitted Business Acquisition"
+        },
+        "outputSummary": "7 dependency term(s) found in \"Permitted Business Acquisition\"'s own text",
+        "charsReturned": 73,
+        "timestamp": "2026-09-25T07:54:13.199Z"
+      },
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Investments"
+        },
+        "outputSummary": "refused: no defined term matching \"Investments\" found in this instrument's documents; the instrument defines \"Investment\" (a grammatical-number variant of the requested term) - query that exact term to read it",
+        "charsReturned": 200,
+        "timestamp": "2026-09-25T07:54:21.990Z"
+      },
+      {
+        "toolName": "getSharedCapContext",
+        "input": {},
+        "outputSummary": "0 shared-cap context item(s)",
+        "charsReturned": 28,
+        "timestamp": "2026-09-25T07:54:21.991Z"
+      },
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Investment"
+        },
+        "outputSummary": "definition \"Investment\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+        "charsReturned": 42,
+        "timestamp": "2026-09-25T07:54:24.037Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "DEFINITION",
+          "requestKey": "Investment",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 21858,
+          "charEnd": 21900,
+          "rawText": "\"Investment\": as defined\nin Section 7.8.\n\n",
+          "contentHash": "2053a33a0925bcab565598018f16121b29d7de2d672e9a6abf97f7a2cc2c9e2a",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT",
+          "isCurrentTruth": true
+        }
+      }
+    ],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T07:54:35.373Z",
+      "inputTokens": 27021,
+      "outputTokens": 7148,
+      "cachedInputTokens": 3313408,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 5,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 27325,
+      "calculatedCostUsd": 0.125522
+    },
+    "compiledAt": "2026-09-25T07:54:35.373Z",
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 30309,
+    "inputTokens": 27021,
+    "outputTokens": 7148,
+    "costUsd": 0.0053712099999999995,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile SCHEMA_FAILURE",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

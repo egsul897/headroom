@@ -159,6 +159,17 @@ export function validateContinuation(segment: number, scratch = continuationScra
     for (const id of missing) if (!p1.some((x) => x.discoveryId === s.discoveryId && x.suppliedRuleOrDefinitionId === id)) problems.push(`P-1 ${s.ref}: package names missing unit ${id} but no finding carries it`);
   }
 
+  // gateway refusals: a PROVIDER_FAILURE with zero tokens in under 5 s never reached the model; the
+  // compiler records the provider's message under unresolvedIssues (e.g. "402 ... insufficient_funds")
+  const gatewayRefusals = statuses.filter((s) => s.compile.outcome === "PROVIDER_FAILURE" && (s.compile.inputTokens ?? 0) === 0 && (s.compile.wallClockMs ?? 0) < 5000).map((s) => {
+    const ev = JSON.parse(fs.readFileSync(s.evidenceFile!, "utf8"));
+    const issues = (ev.compilation.unresolvedIssues ?? []) as string[];
+    const msg = issues.find((x) => /^\d{3} /.test(x)) ?? issues[0] ?? null;
+    return { ref: s.ref, discoveryId: s.discoveryId, wallClockMs: s.compile.wallClockMs, httpStatus: msg ? Number(msg.slice(0, 3)) : null, creditExhaustion: msg ? /402|positive credit balance|insufficient_funds|insufficient.{0,20}(funds|credit)/i.test(msg) : false, message: msg ? msg.slice(0, 200) : null, capturedAt: ev.capturedAt as string };
+  });
+  const partiallyServedThenRefused = statuses.filter((s) => s.compile.failureReasons.includes("PROVIDER_FAILURE") && (s.compile.inputTokens ?? 0) > 0).map((s) => ({ ref: s.ref, discoveryId: s.discoveryId, compile: s.compile.outcome, inputTokens: s.compile.inputTokens, costUsd: s.compile.costUsd, capturedAt: (JSON.parse(fs.readFileSync(s.evidenceFile!, "utf8")).capturedAt as string) }));
+  const gateway = { refusalsNotServed: gatewayRefusals, partiallyServedThenRefused, creditExhaustionDetected: gatewayRefusals.some((r) => r.creditExhaustion), firstRefusalAt: gatewayRefusals[0]?.capturedAt ?? null, note: gatewayRefusals.length > 0 ? "these candidates received no served attempt: the gateway refused the request before any model work (zero tokens, sub-second); not a pipeline outcome and not retried (one attempt, no mid-run remediation)" : null };
+
   // bands, benchmark facts (no scoring)
   const count = (f: (s: Status) => boolean) => statuses.filter(f).length;
   const byBand: Record<string, Record<string, number>> = {};
@@ -179,7 +190,7 @@ export function validateContinuation(segment: number, scratch = continuationScra
     compile: { COMPLETED: count((s) => s.compile.outcome === "COMPLETED"), TIMEOUT: count((s) => s.compile.outcome === "TIMEOUT"), outcomes: statuses.reduce((a: Record<string, number>, s) => { a[s.compile.outcome] = (a[s.compile.outcome] ?? 0) + 1; return a; }, {}) },
     verification: { ran: count((s) => s.verify.outcome === "COMPLETED"), statusCounts: statuses.reduce((a: Record<string, number>, s) => { const k = s.verify.status ?? s.verify.outcome; a[k] = (a[k] ?? 0) + 1; return a; }, {}), findingsTotal: statuses.reduce((s, x) => s + (x.verify.findings ?? 0), 0), reviewInvoked: count((s) => s.verify.semanticReviewInvoked === true) },
     packages: { complete: count((s) => s.package?.complete === true), incomplete: count((s) => s.package !== null && s.package.complete === false), notWritten: count((s) => s.package === null), problemsByCode: statuses.flatMap((s) => s.package?.problems ?? []).reduce((a: Record<string, number>, c) => { a[c] = (a[c] ?? 0) + 1; return a; }, {}) },
-    byBand, benchmark, p1Occurrences: p1,
+    byBand, benchmark, p1Occurrences: p1, gateway,
     preflight: preflight === null ? null : { ok: preflight.ok, spendUsd: preflight.spendUsd, probes: preflight.probes.map((p: { tier: string; status: number; inputTokens: number; outputTokens: number; costUsd: number }) => ({ tier: p.tier, status: p.status, inputTokens: p.inputTokens, outputTokens: p.outputTokens, costUsd: p.costUsd })) },
     ledger, ledgerSnapshot: snap,
     paidCalls: { compile: costs.perRequest.filter((r) => r.stage === "compile").length, compileInFlightUnknown: inFlight ? 1 : 0, verify: costs.perRequest.filter((r) => r.stage === "verify").length, verifierSideCalls: costs.sideCalls.filter((c) => c.discoveryId !== null).length, amendment: costs.sideCalls.filter((c) => c.discoveryId === null).length, healthProbes: preflight ? preflight.probes.length : 0 },
@@ -190,7 +201,7 @@ export function validateContinuation(segment: number, scratch = continuationScra
 }
 
 /** One row per dedup candidate, exactly once. */
-export interface PopulationRow { discoveryId: string; ref: string; operativeChars: number; band: string; disposition: "TERMINAL_ATTEMPT" | "EMPTY_OPERATIVE_TEXT" | "IN_FLIGHT_UNKNOWN" | "NEVER_ATTEMPTED"; source: "original" | `continuation-${number}` | null; compile: string | null; verify: string | null; verificationStatus: string | null; packageComplete: boolean | null; recovered: boolean; evidenceFile: string | null }
+export interface PopulationRow { discoveryId: string; ref: string; operativeChars: number; band: string; disposition: "TERMINAL_ATTEMPT" | "EMPTY_OPERATIVE_TEXT" | "IN_FLIGHT_UNKNOWN" | "NEVER_ATTEMPTED"; source: "original" | `continuation-${number}` | null; compile: string | null; verify: string | null; verificationStatus: string | null; packageComplete: boolean | null; recovered: boolean; evidenceFile: string | null; /** false when the gateway refused the request before any model work (zero tokens); null when there was no attempt */ served: boolean | null; providerFailureKind: string | null }
 
 export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, segmentDirs = preservedContinuationSegments(), docsDir = DOCS_DIR) {
   const rd = (d: string, n: string) => JSON.parse(fs.readFileSync(path.join(d, n), "utf8"));
@@ -200,11 +211,13 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, segmentDir
   const oValidation = rd(path.dirname(originalDir), "01-run-validation.json");
   const chars = new Map<string, number>((oPlan.order as { discoveryId: string; operativeChars: number }[]).map((o) => [o.discoveryId, o.operativeChars]));
   const rows: PopulationRow[] = [];
+  const oById = new Map<string, Status>();
+  for (const s of rd(originalDir, "01-statuses.json") as Status[]) oById.set(s.discoveryId, s);
   for (const c of oManifest.candidateStatuses as { discoveryId: string; ref: string; compile: string; verify: string; verificationStatus: string | null; packageComplete: boolean | null; recovered: boolean }[]) {
-    rows.push({ discoveryId: c.discoveryId, ref: c.ref, operativeChars: chars.get(c.discoveryId)!, band: bandOf(chars.get(c.discoveryId)!), disposition: "TERMINAL_ATTEMPT", source: "original", compile: c.compile, verify: c.verify, verificationStatus: c.verificationStatus, packageComplete: c.packageComplete, recovered: c.recovered, evidenceFile: path.join(path.basename(originalDir), "evidence", `${c.discoveryId}.json`) });
+    rows.push({ discoveryId: c.discoveryId, ref: c.ref, operativeChars: chars.get(c.discoveryId)!, band: bandOf(chars.get(c.discoveryId)!), disposition: "TERMINAL_ATTEMPT", source: "original", compile: c.compile, verify: c.verify, verificationStatus: c.verificationStatus, packageComplete: c.packageComplete, recovered: c.recovered, evidenceFile: path.join(path.basename(originalDir), "evidence", `${c.discoveryId}.json`), served: (oById.get(c.discoveryId)?.compile.inputTokens ?? 1) > 0 || c.compile !== "PROVIDER_FAILURE", providerFailureKind: null });
   }
   const inFlight = oManifest.terminated.inFlightCandidate as { discoveryId: string; ref: string; operativeChars: number };
-  rows.push({ discoveryId: inFlight.discoveryId, ref: inFlight.ref, operativeChars: inFlight.operativeChars, band: bandOf(inFlight.operativeChars), disposition: "IN_FLIGHT_UNKNOWN", source: "original", compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null });
+  rows.push({ discoveryId: inFlight.discoveryId, ref: inFlight.ref, operativeChars: inFlight.operativeChars, band: bandOf(inFlight.operativeChars), disposition: "IN_FLIGHT_UNKNOWN", source: "original", compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null, served: null, providerFailureKind: null });
   // cost merge - labelled components, each counted once
   const oL = oValidation.ledger;
   const components: { component: string; usd: number; status: string; source: string }[] = [
@@ -223,8 +236,9 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, segmentDir
     const cStatuses = rd(dir, "01-statuses.json") as Status[];
     const cValidation = rd(docsDir, `03-continuation-${n}-validation.json`);
     if (cValidation.dest !== dir && path.resolve(cValidation.dest) !== path.resolve(dir)) problems.push(`${name}: validation report is for ${cValidation.dest}`);
-    for (const s of cStatuses) rows.push({ discoveryId: s.discoveryId, ref: s.ref, operativeChars: s.operativeChars, band: bandOf(s.operativeChars), disposition: "TERMINAL_ATTEMPT", source: `continuation-${n}`, compile: s.compile.outcome, verify: s.verify.outcome, verificationStatus: s.verify.status, packageComplete: s.package?.complete ?? null, recovered: false, evidenceFile: path.join(name, "evidence", `${s.discoveryId}.json`) });
-    if (cValidation.dispatch.inFlightAtTermination) { const f = cValidation.dispatch.inFlightAtTermination; rows.push({ discoveryId: f.discoveryId, ref: f.ref, operativeChars: f.operativeChars, band: bandOf(f.operativeChars), disposition: "IN_FLIGHT_UNKNOWN", source: `continuation-${n}`, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null }); }
+    const refusals = new Map<string, { creditExhaustion: boolean; httpStatus: number | null }>(((cValidation.gateway?.refusalsNotServed ?? []) as { discoveryId: string; creditExhaustion: boolean; httpStatus: number | null }[]).map((r) => [r.discoveryId, r]));
+    for (const s of cStatuses) { const rf = refusals.get(s.discoveryId); rows.push({ discoveryId: s.discoveryId, ref: s.ref, operativeChars: s.operativeChars, band: bandOf(s.operativeChars), disposition: "TERMINAL_ATTEMPT", source: `continuation-${n}`, compile: s.compile.outcome, verify: s.verify.outcome, verificationStatus: s.verify.status, packageComplete: s.package?.complete ?? null, recovered: false, evidenceFile: path.join(name, "evidence", `${s.discoveryId}.json`), served: !rf, providerFailureKind: rf ? (rf.creditExhaustion ? "GATEWAY_CREDIT_EXHAUSTED_402" : `GATEWAY_REFUSED_${rf.httpStatus ?? "UNKNOWN"}`) : (s.compile.failureReasons.includes("PROVIDER_FAILURE") ? "PROVIDER_FAILURE_AFTER_PARTIAL_SERVICE" : null) }); }
+    if (cValidation.dispatch.inFlightAtTermination) { const f = cValidation.dispatch.inFlightAtTermination; rows.push({ discoveryId: f.discoveryId, ref: f.ref, operativeChars: f.operativeChars, band: bandOf(f.operativeChars), disposition: "IN_FLIGHT_UNKNOWN", source: `continuation-${n}`, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null, served: null, providerFailureKind: null }); }
     const cL = cValidation.ledger;
     if (cL.thisRun.preflightProbesUsd > 0) components.push({ component: `${name}: health probes`, usd: cL.thisRun.preflightProbesUsd, status: "EXACT", source: `${name}/preflight-health.json` });
     components.push({ component: `${name}: exact (compile + verify + amendment), this segment only`, usd: cL.thisRun.exactUsd, status: "EXACT", source: `${name} ledger minus seeded prior` });
@@ -239,8 +253,8 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, segmentDir
     segments.push({ dir: name, runId: cPlan.runId, toDispatch: cPlan.toDispatch, attempted: cStatuses.length, terminatedNormally: cValidation.terminatedNormally, inFlightAtTermination: cValidation.dispatch.inFlightAtTermination?.ref ?? null, notAttempted: cValidation.dispatch.notAttempted.length, priorCandidatesReattempted: cValidation.dispatch.priorCandidatesReattempted, healthProbes: cValidation.paidCalls.healthProbes });
   }
   const covered = new Set(rows.map((r) => r.discoveryId));
-  for (const o of oPlan.order as { discoveryId: string; ref: string; operativeChars: number }[]) if (!covered.has(o.discoveryId)) rows.push({ discoveryId: o.discoveryId, ref: o.ref, operativeChars: o.operativeChars, band: bandOf(o.operativeChars), disposition: "NEVER_ATTEMPTED", source: null, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null });
-  for (const e of oPlan.skippedEmpty as { discoveryId: string; ref: string }[]) rows.push({ discoveryId: e.discoveryId, ref: e.ref, operativeChars: 0, band: "EMPTY", disposition: "EMPTY_OPERATIVE_TEXT", source: null, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null });
+  for (const o of oPlan.order as { discoveryId: string; ref: string; operativeChars: number }[]) if (!covered.has(o.discoveryId)) rows.push({ discoveryId: o.discoveryId, ref: o.ref, operativeChars: o.operativeChars, band: bandOf(o.operativeChars), disposition: "NEVER_ATTEMPTED", source: null, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null, served: null, providerFailureKind: null });
+  for (const e of oPlan.skippedEmpty as { discoveryId: string; ref: string }[]) rows.push({ discoveryId: e.discoveryId, ref: e.ref, operativeChars: 0, band: "EMPTY", disposition: "EMPTY_OPERATIVE_TEXT", source: null, compile: null, verify: null, verificationStatus: null, packageComplete: null, recovered: false, evidenceFile: null, served: null, providerFailureKind: null });
   rows.sort((a, b) => (a.ref < b.ref ? -1 : a.ref > b.ref ? 1 : a.discoveryId < b.discoveryId ? -1 : 1));
   // exactly once, and exactly the dedup population
   const idsAll = rows.map((r) => r.discoveryId);
@@ -260,7 +274,7 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, segmentDir
   const tally = (f: (r: PopulationRow) => string | null | undefined) => terminal.reduce((a: Record<string, number>, r) => { const k = f(r) ?? "null"; a[k] = (a[k] ?? 0) + 1; return a; }, {});
   const byBand: Record<string, Record<string, number>> = {};
   for (const r of rows) { byBand[r.band] = byBand[r.band] ?? {}; const k = r.disposition === "TERMINAL_ATTEMPT" ? r.compile! : r.disposition; byBand[r.band]![k] = (byBand[r.band]![k] ?? 0) + 1; }
-  const benchmark = BENCHMARK_REFS.map((ref) => { const r = rows.find((x) => x.ref === ref)!; return { ref, band: r.band, source: r.source, disposition: r.disposition, compile: r.compile, verify: r.verify, verificationStatus: r.verificationStatus, packageComplete: r.packageComplete, executionLimited: r.disposition !== "TERMINAL_ATTEMPT" || r.compile === "TIMEOUT" || r.verify === "TIMEOUT" }; });
+  const benchmark = BENCHMARK_REFS.map((ref) => { const r = rows.find((x) => x.ref === ref)!; return { ref, band: r.band, source: r.source, disposition: r.disposition, compile: r.compile, verify: r.verify, verificationStatus: r.verificationStatus, packageComplete: r.packageComplete, executionLimited: r.disposition !== "TERMINAL_ATTEMPT" || r.compile === "TIMEOUT" || r.verify === "TIMEOUT" || r.served === false, served: r.served }; });
   const manifest = {
     schema: "p3-conmed-population-manifest.v1",
     evidenceLabel: "CURRENT_PIPELINE_COMPILE_AND_VERIFY",
@@ -268,6 +282,7 @@ export function consolidatePopulation(originalDir = ORIGINAL_RUN_DIR, segmentDir
     model: oPlan.model, timeoutMs: oPlan.timeoutMs, concurrency: oPlan.concurrency, autoRetry: oPlan.autoRetry, fallbackModel: oPlan.fallbackModel, premiumModelBudgetUsd: oPlan.premiumModelBudgetUsd, attemptsPerCandidate: 1,
     denominator: { discovered: 163, dedup: oPlan.dedupDenominator, emptyOperativeText: (oPlan.skippedEmpty as unknown[]).length, attemptable: oPlan.attemptable },
     dispositions: rows.reduce((a: Record<string, number>, r) => { a[r.disposition] = (a[r.disposition] ?? 0) + 1; return a; }, {}),
+    served: { terminalAttemptsServed: rows.filter((r) => r.served === true).length, terminalAttemptsNotServed: rows.filter((r) => r.served === false).length, notServedRefs: rows.filter((r) => r.served === false).map((r) => r.ref), providerFailureKinds: rows.filter((r) => r.providerFailureKind).reduce((a: Record<string, number>, r) => { a[r.providerFailureKind!] = (a[r.providerFailureKind!] ?? 0) + 1; return a; }, {}) },
     bySource: rows.reduce((a: Record<string, number>, r) => { const k = `${r.source ?? "none"}:${r.disposition}`; a[k] = (a[k] ?? 0) + 1; return a; }, {}),
     compileOutcomes: tally((r) => r.compile), verifyOutcomes: tally((r) => r.verify), verificationStatuses: tally((r) => r.verificationStatus ?? r.verify),
     packages: { complete: terminal.filter((r) => r.packageComplete === true).length, incomplete: terminal.filter((r) => r.packageComplete === false).length, none: terminal.filter((r) => r.packageComplete === null).length },

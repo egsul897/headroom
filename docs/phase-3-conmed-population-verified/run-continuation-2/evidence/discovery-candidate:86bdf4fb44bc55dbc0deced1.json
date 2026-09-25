@@ -1,0 +1,857 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T07:50:36.815Z",
+  "candidateRef": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.8(h)",
+    "operativeSourceText": "(h)\nInvestments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with\nthe bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers\nand suppliers arising in the ordinary course of business;\n",
+    "operativeSourceTextSha256": "b0b67a378d8c68eddcf67c271e7b95fb73c1713da5b22987e05f48482639e20f",
+    "operativeSourceChars": 335,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:c2af2e35cca754b1f202235087027367034eb2248b416f0192fafdadfc347efa",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 8,
+    "items": [
+      {
+        "itemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.8(h)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 335,
+        "excerptText": "(h)\nInvestments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with\nthe bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers\nand suppliers arising in the ordinary course of business;\n"
+      },
+      {
+        "itemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 389,
+        "excerptText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n"
+      },
+      {
+        "itemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "type": "PROVISO",
+        "normalizedRef": "7.8(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 350,
+        "excerptText": "(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n"
+      },
+      {
+        "itemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 971,
+        "excerptText": "(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n"
+      },
+      {
+        "itemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 427,
+        "excerptText": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n"
+      },
+      {
+        "itemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "type": "DEFINITION",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "toItemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "toItemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "toItemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "toItemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "toItemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "toItemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:779eff0546145f43ae3593d58eb6f97d1762217f22ba5e6d9b81e8f4cb72d822",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7_8_h",
+          "sourceSectionRef": "7.8(h)",
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "CATEGORY_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": null,
+            "citation": "§7.8(h)",
+            "excerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;"
+          },
+          "conditions": [
+            {
+              "conditionType": "RECEIVED_IN_CONNECTION_WITH_BANKRUPTCY",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The covered Investment must be received in connection with the bankruptcy of suppliers and customers.",
+              "citation": "§7.8(h)",
+              "excerpt": "the bankruptcy ... of suppliers and customers",
+              "inventoryItemIds": [
+                "46adfd172ac296846c202ebe"
+              ]
+            },
+            {
+              "conditionType": "RECEIVED_IN_CONNECTION_WITH_REORGANIZATION",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "Alternative to bankruptcy - the covered Investment may instead be received in connection with the reorganization of suppliers and customers.",
+              "citation": "§7.8(h)",
+              "excerpt": "bankruptcy or reorganization of suppliers and customers",
+              "inventoryItemIds": [
+                "1d356cdd8d31ed850e0c320f"
+              ]
+            },
+            {
+              "conditionType": "RECEIVED_IN_SETTLEMENT_OF_DELINQUENT_OBLIGATIONS",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The covered Investment must be received in settlement of delinquent obligations of customers and suppliers (drafting ambiguous as to whether it also extends to suppliers).",
+              "citation": "§7.8(h)",
+              "excerpt": "in settlement of delinquent obligations of, ... customers and suppliers",
+              "inventoryItemIds": [
+                "7f0f7710c99581d51a3ec75d",
+                "bf6a2d9d34374fa25fc7fbb3"
+              ]
+            },
+            {
+              "conditionType": "RECEIVED_IN_SETTLEMENT_OF_OTHER_DISPUTES",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The covered Investment must be received in settlement of other disputes with customers and suppliers (drafting ambiguous as to whether the disputes also extend to suppliers).",
+              "citation": "§7.8(h)",
+              "excerpt": "and other disputes with, customers and suppliers",
+              "inventoryItemIds": [
+                "4992864b1ef3eba49498f90b",
+                "bf6a2d9d34374fa25fc7fbb3"
+              ]
+            },
+            {
+              "conditionType": "ARISING_IN_ORDINARY_COURSE",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The settlement of delinquent obligations and other disputes must arise in the ordinary course of business (drafting ambiguous as to the precise scope of what 'arising in the ordinary course' modifies).",
+              "citation": "§7.8(h)",
+              "excerpt": "arising in the ordinary course of business",
+              "inventoryItemIds": [
+                "55d5d41defa149b7f775a46d"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.8 (chapeau)",
+              "description": "Clause (h) is an exception to the general prohibition in the Section 7.8 chapeau against making Investments; the permission operates only within that exception list.",
+              "inventoryItemIds": [
+                "85714cf157e591b9d404f1ca"
+              ]
+            }
+          ],
+          "sufficiency": "AMBIGUOUS",
+          "sufficiencyReasons": [
+            "Source completeness against the unit boundary is UNKNOWN (UNKNOWN_SOURCE_COMPLETENESS reported for the operative window).",
+            "Three inventory items (settlement of delinquent obligations applying to suppliers; settlement of other disputes applying to suppliers; scope of 'arising in the ordinary course of business') are marked AMBIGUOUS_DRAFTING - the clause's own drafting does not unambiguously resolve whether these qualifiers extend to suppliers and precisely what the ordinary-course modifier attaches to."
+          ],
+          "citation": "§7.8(h)",
+          "excerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;",
+          "inventoryItemIds": [
+            "85714cf157e591b9d404f1ca",
+            "b7417ed96448e93dcb7b6b04",
+            "295259f337124fd867c60e5b"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Clause (h) is a qualitative/category-based exception to the Section 7.8 prohibition on making Investments: it permits the Parent Borrower or its Subsidiaries to make Investments of any amount, without a dollar ceiling, provided the Investment is received in connection with the bankruptcy or reorganization of suppliers and customers, and in settlement of delinquent obligations of, and other disputes with, customers (and, per the inventory's ambiguous-drafting flags, possibly suppliers), arising in the ordinary course of business. Because there is no numeric cap and the operative qualifiers are non-computable circumstances, the permission is represented as UNLIMITED_CAPACITY (no dollar ceiling) with the qualifying circumstances captured as structured conditions. The covered Investments include 'debt obligations and Capital Stock' (Capital Stock is a defined term supplied in context).",
+        "No separate prohibition rule is emitted: the prohibiting chapeau is the parent Section 7.8 (provided as context, not the operative window). The relationship to that prohibition is preserved as a dependsOn."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:ce7c1de972e3a12201e942fb",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.8(h)",
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.8(h)",
+            "excerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7_8_h].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The covered Investment must be received in connection with the bankruptcy of suppliers and customers.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(h)",
+              "excerpt": "the bankruptcy ... of suppliers and customers"
+            },
+            "inventoryItemIds": [
+              "46adfd172ac296846c202ebe"
+            ]
+          },
+          {
+            "conditionId": "rule[r7_8_h].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Alternative to bankruptcy - the covered Investment may instead be received in connection with the reorganization of suppliers and customers.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(h)",
+              "excerpt": "bankruptcy or reorganization of suppliers and customers"
+            },
+            "inventoryItemIds": [
+              "1d356cdd8d31ed850e0c320f"
+            ]
+          },
+          {
+            "conditionId": "rule[r7_8_h].condition[2]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The covered Investment must be received in settlement of delinquent obligations of customers and suppliers (drafting ambiguous as to whether it also extends to suppliers).",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(h)",
+              "excerpt": "in settlement of delinquent obligations of, ... customers and suppliers"
+            },
+            "inventoryItemIds": [
+              "7f0f7710c99581d51a3ec75d",
+              "bf6a2d9d34374fa25fc7fbb3"
+            ]
+          },
+          {
+            "conditionId": "rule[r7_8_h].condition[3]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The covered Investment must be received in settlement of other disputes with customers and suppliers (drafting ambiguous as to whether the disputes also extend to suppliers).",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(h)",
+              "excerpt": "and other disputes with, customers and suppliers"
+            },
+            "inventoryItemIds": [
+              "4992864b1ef3eba49498f90b",
+              "bf6a2d9d34374fa25fc7fbb3"
+            ]
+          },
+          {
+            "conditionId": "rule[r7_8_h].condition[4]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The settlement of delinquent obligations and other disputes must arise in the ordinary course of business (drafting ambiguous as to the precise scope of what 'arising in the ordinary course' modifies).",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(h)",
+              "excerpt": "arising in the ordinary course of business"
+            },
+            "inventoryItemIds": [
+              "55d5d41defa149b7f775a46d"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.8 (chapeau)",
+            "description": "Clause (h) is an exception to the general prohibition in the Section 7.8 chapeau against making Investments; the permission operates only within that exception list.",
+            "reason": "dependsOn[0].targetRef \"Section 7.8 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "85714cf157e591b9d404f1ca"
+            ]
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "AMBIGUOUS",
+        "sufficiencyReasons": [
+          "Source completeness against the unit boundary is UNKNOWN (UNKNOWN_SOURCE_COMPLETENESS reported for the operative window).",
+          "Three inventory items (settlement of delinquent obligations applying to suppliers; settlement of other disputes applying to suppliers; scope of 'arising in the ordinary course of business') are marked AMBIGUOUS_DRAFTING - the clause's own drafting does not unambiguously resolve whether these qualifiers extend to suppliers and precisely what the ordinary-course modifier attaches to.",
+          "ruleType \"CATEGORY_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"RECEIVED_IN_CONNECTION_WITH_BANKRUPTCY\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"RECEIVED_IN_CONNECTION_WITH_REORGANIZATION\" not recognized - normalized to UNSUPPORTED",
+          "condition[2].conditionType \"RECEIVED_IN_SETTLEMENT_OF_DELINQUENT_OBLIGATIONS\" not recognized - normalized to UNSUPPORTED",
+          "condition[3].conditionType \"RECEIVED_IN_SETTLEMENT_OF_OTHER_DISPUTES\" not recognized - normalized to UNSUPPORTED",
+          "condition[4].conditionType \"ARISING_IN_ORDINARY_COURSE\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Section 7.8 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.8(h)",
+          "excerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "AMBIGUOUS"
+          },
+          "witness": {
+            "ownExcerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 73,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 89,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "85714cf157e591b9d404f1ca",
+          "b7417ed96448e93dcb7b6b04",
+          "295259f337124fd867c60e5b"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r7_8_h]] ruleType \"CATEGORY_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r7_8_h]] condition[0].conditionType \"RECEIVED_IN_CONNECTION_WITH_BANKRUPTCY\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_8_h]] condition[1].conditionType \"RECEIVED_IN_CONNECTION_WITH_REORGANIZATION\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_8_h]] condition[2].conditionType \"RECEIVED_IN_SETTLEMENT_OF_DELINQUENT_OBLIGATIONS\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_8_h]] condition[3].conditionType \"RECEIVED_IN_SETTLEMENT_OF_OTHER_DISPUTES\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_8_h]] condition[4].conditionType \"ARISING_IN_ORDINARY_COURSE\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7_8_h]] dependsOn[0].targetRef \"Section 7.8 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Clause (h) is a qualitative/category-based exception to the Section 7.8 prohibition on making Investments: it permits the Parent Borrower or its Subsidiaries to make Investments of any amount, without a dollar ceiling, provided the Investment is received in connection with the bankruptcy or reorganization of suppliers and customers, and in settlement of delinquent obligations of, and other disputes with, customers (and, per the inventory's ambiguous-drafting flags, possibly suppliers), arising in the ordinary course of business. Because there is no numeric cap and the operative qualifiers are non-computable circumstances, the permission is represented as UNLIMITED_CAPACITY (no dollar ceiling) with the qualifying circumstances captured as structured conditions. The covered Investments include 'debt obligations and Capital Stock' (Capital Stock is a defined term supplied in context).",
+      "No separate prohibition rule is emitted: the prohibiting chapeau is the parent Section 7.8 (provided as context, not the operative window). The relationship to that prohibition is preserved as a dependsOn.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T07:50:19.413Z",
+      "inputTokens": 11526,
+      "outputTokens": 5347,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 16994,
+      "calculatedCostUsd": 0.076522
+    },
+    "compiledAt": "2026-09-25T07:50:19.413Z",
+    "outputHash": "9c3c8d58e851005f9e06893d667c7c888cc64fe1530d098f931feb9e1a158ac7"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "70a65aecb534c801f963e9f8a477c15acab9bb8c54ff13c1439e23a95200018e",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+        "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+        "irPath": "rules[0].definitions (empty) / dependsOn (empty)",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "Operative source §7.8(h): 'Investments (including debt obligations and Capital Stock) ...'; context definition: '\"Capital Stock\": any and all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent ownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing...'",
+        "sourceCitation": "§7.8(h); Definition of \"Capital Stock\"",
+        "proposedIrEvidence": "IR 'definitions' is an empty array and rule has 'dependsOn': [], with no reference to a definition for the defined term \"Capital Stock\" (or \"Parent Borrower\") even though the term appears in the operative carve-out and a full definition is available in the retrieved context.",
+        "verifierReasoning": "The operative provision uses at least one defined term ('Capital Stock') whose definition exists in the instrument and is supplied as retrieval context; the IR never attaches or resolves that definition. This is a genuine representational gap. However, it cannot change any capacity, permission, prohibition, or compliance conclusion: the meaning of 'Capital Stock' is clear and standard, and the IR's provenance excerpt itself quotes the term, so a competent reviewer is not misled. I therefore grade it NON_MATERIAL rather than MATERIAL, and it does not undermine confidence in the substantive representation.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T07:50:36.812Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3fcd30bc36c5859d7dbcf9a171cc701e9378876fad7753b0c742bda1f9332196",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capital Stock",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(h)",
+            "structuralNodeKey": null,
+            "charStart": 48,
+            "charEnd": 61
+          },
+          "irItems": [],
+          "reason": "source mention \"Capital Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7ec31023a4e97e0013190c102bbab28921582f629762aa3b087d3f1c4922e6ee",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(h)",
+            "structuralNodeKey": null,
+            "charStart": 70,
+            "charEnd": 85
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+      "items": [
+        {
+          "itemId": "6670f375ab7cb2c2323c6d5eefa1a1f2f2923d74a0ab52ada04faae68dcb390c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(h)",
+          "structuralNodeKey": null,
+          "charStart": 77,
+          "charEnd": 85,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "3fcd30bc36c5859d7dbcf9a171cc701e9378876fad7753b0c742bda1f9332196",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capital Stock",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(h)",
+          "structuralNodeKey": null,
+          "charStart": 48,
+          "charEnd": 61
+        },
+        {
+          "itemId": "7ec31023a4e97e0013190c102bbab28921582f629762aa3b087d3f1c4922e6ee",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(h)",
+          "structuralNodeKey": null,
+          "charStart": 70,
+          "charEnd": 85
+        },
+        {
+          "itemId": "ac94652c2317412b7ee08d4633fc311ae6f68b36fcd03b93388997182c7f83f8",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(h)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(h)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(h)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+      "items": [
+        {
+          "itemId": "39c89a929e733259e17908a37e6bb21ef69ac15e5ad88aa09b6e62326480a936",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "MAKE_INVESTMENT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "edc8dddb44191df39974bb42b05a36aee9ad9e11a52bc5efcb1cc111d45873fe",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "6fe348627920b7850406ad7d857d0f1714d19e06b69d23d3415cea23b878f072",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "052161b28fad1455f760aca60f7f126c8fca3979efd60aa17c7e248f4eaf0d2b",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The covered Investment must be received in connection with the bankruptcy of suppliers and customers.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "the bankruptcy ... of suppliers and customers",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "110d3938c015925205128ab6de397ee187a5094dd0bbe30dacbecc1c258f9702",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Alternative to bankruptcy - the covered Investment may instead be received in connection with the reorganization of suppliers and customers.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "bankruptcy or reorganization of suppliers and customers",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9a1f9619a32f8c5b83c86846045b07d89f24e5b5ceff628eec1c0c0d3f6a6b42",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].conditions[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The covered Investment must be received in settlement of delinquent obligations of customers and suppliers (drafting ambiguous as to whether it also extends to suppliers).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "in settlement of delinquent obligations of, ... customers and suppliers",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "344a94503b67f06dad8e46dea42e18256c2f7271dca7dc02110979b8368a688c",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].conditions[3]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The covered Investment must be received in settlement of other disputes with customers and suppliers (drafting ambiguous as to whether the disputes also extend to suppliers).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "and other disputes with, customers and suppliers",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "180ba2528c15279e5a3077ece682b0244bb9d58cf38f47ffd4006c3ed4549322",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].conditions[4]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The settlement of delinquent obligations and other disputes must arise in the ordinary course of business (drafting ambiguous as to the precise scope of what 'arising in the ordinary course' modifies).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "arising in the ordinary course of business",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f75f56b37d7aebc57cfb85625c86823c9c321d21ada262ce4da649e4c7836838",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:ce7c1de972e3a12201e942fb",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(h)",
+          "sourceExcerpt": "Investments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with the bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers and suppliers arising in the ordinary course of business;",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+        "items": [],
+        "fieldsWalked": 13,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "b0b67a378d8c68eddcf67c271e7b95fb73c1713da5b22987e05f48482639e20f",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "469cd9dde72baf994ab92f200648d4445e93ddab5658b5e3777e51ee0b44962b",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 42619,
+    "inputTokens": 11526,
+    "outputTokens": 5347,
+    "costUsd": 0.0028886,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:86bdf4fb44bc55dbc0deced1.verified-units.json",
+    "packageHash": "b74a64bb61cbfb62719845faa521488eda593970eb2723ad638889595271d790",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

@@ -1,0 +1,642 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T07:45:05.812Z",
+  "candidateRef": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.8(b)",
+    "operativeSourceText": "(b)\nInvestments in Cash Equivalents;\n",
+    "operativeSourceTextSha256": "c26f8bbfe177203824d6b2695cce4c4c51f7ae934329a71468439db454ef7130",
+    "operativeSourceChars": 37,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:c53165442c8ee101b51abbe5f764d41ed75efe76600393e5c7b631797ac089af",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 10,
+    "items": [
+      {
+        "itemId": "context-item:4626fbf4f980c70e0a4157973d64a0a31765b311b17ebc1b371fd6286b045626",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.8(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 37,
+        "excerptText": "(b)\nInvestments in Cash Equivalents;\n"
+      },
+      {
+        "itemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 389,
+        "excerptText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n"
+      },
+      {
+        "itemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "type": "PROVISO",
+        "normalizedRef": "7.8(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 350,
+        "excerptText": "(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n"
+      },
+      {
+        "itemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 971,
+        "excerptText": "(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n"
+      },
+      {
+        "itemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 427,
+        "excerptText": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n"
+      },
+      {
+        "itemId": "context-item:a67c9ef098e8853aa7dc92e407a240a5f7180032c11b10f9fb1bc767f62f7c50",
+        "type": "DEFINITION",
+        "normalizedRef": "Cash Equivalents",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 3500,
+        "excerptText": "\"Cash Equivalents\": (a) marketable direct obligations issued by, or unconditionally guaranteed by, the United States Government or issued by any agency thereof\nand backed by the full faith and credit of the United States, in each case maturing within one year from the date of acquisition; (b)\ncertificates of deposit, time deposits, eurocurrency time deposits or overnight bank deposits having maturities of six months or less\nfrom the date of acquisition issued by any Lender or by any commercial bank organized under the laws of the United States or any state\nthereof having combined capital and surplus of not less than $500,000,000; (c) commercial paper of an issuer rated at least A-1 by S&amp;P\nGlobal Ratings (\" S&amp;P \") or P-1 by Moody's Investors\n9\nService, Inc. (\" Moody's \"), or\ncarrying an equivalent rating by a nationally recognized rating agency, if both of the two named rating agencies cease publishing ratings\nof commercial paper issuers generally, and maturing within six months from the date of acquisition; (d) repurchase obligations of any\nLender or of any commercial bank satisfying the requirements of clause (b) of this definition, having a term of not more than 30 days\nwith respect to securities issued or fully guaranteed or insured by the United States government; (e) securities with maturities of one\nyear or less from the date of acquisition issued or fully guaranteed by any state, commonwealth or territory of the United States, by\nany political subdivision or taxing authority of any such state, commonwealth or territory or by any foreign government, the securities\nof which state, commonwealth, territory, political subdivision, taxing authority or foreign government (as the case may be) are rated\nat least A by S&amp;P or A by Moody's; (f) securities with maturities of six months or less from the date of acquisition backed\nby standby letters of credit issued by any Lender or any commercial bank satisfying the requirements of clause (b) of this definition;\n(g) shares of money market mutual or similar funds which invest exclusively in assets satisfying the requirements of clauses (a) through\n(f) of this definition; or (h) money market funds that (i) comply with the criteria set forth in SEC Rule 2a-7 under the Investment Company\nAct of 1940, as amended, (ii) are rated AAA by S&amp;P and Aaa by Moody's and (iii) have portfolio assets of at least $5,000,000,000.\nIn the case of any Investments made in a country outside the United States of\nAmerica, Cash Equivalents shall also include (i) Euro and Sterling, (ii) investments of the type and maturity described in clauses (a)\nthrough (h) above of foreign obligors, which investments are reasonably appropriate in connection with any business conducted by the Parent\nBorrower or its Subsidiaries (as determined by the Parent Borrower in good faith) and which investments or obligors (or the parent companies\nof such obligors) have the ratings described in such clauses or equivalent ratings from S&amp;P and Moody's and (iii) other short\nterm investments utilized by the Parent Borrower and its Subsidiaries in accordance with normal investment practices for cash management\nin such country in investments analogous to the investments described in the foregoing clauses (a) through (h) and in this paragraph and\nwhich are reasonably appropriate in connection with any business conducted by the Parent Borrower or its Subsidiaries in such country\n(as determined by the Parent Borrower in good faith).\n\n"
+      },
+      {
+        "itemId": "context-item:d7a0dcceb1749a0beaa935647de00ed0e43b81f53da18a46bed20f3e27f5bc0f",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Investment",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 42,
+        "excerptText": "\"Investment\": as defined\nin Section 7.8.\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:d115fde0ef71bf93743dd5e209e311af35ffa01e6930a8c569504235e1b6c35c",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "toItemId": "context-item:4626fbf4f980c70e0a4157973d64a0a31765b311b17ebc1b371fd6286b045626",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "toItemId": "context-item:4626fbf4f980c70e0a4157973d64a0a31765b311b17ebc1b371fd6286b045626",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "toItemId": "context-item:4626fbf4f980c70e0a4157973d64a0a31765b311b17ebc1b371fd6286b045626",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "toItemId": "context-item:4626fbf4f980c70e0a4157973d64a0a31765b311b17ebc1b371fd6286b045626",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "toItemId": "context-item:4626fbf4f980c70e0a4157973d64a0a31765b311b17ebc1b371fd6286b045626",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:4626fbf4f980c70e0a4157973d64a0a31765b311b17ebc1b371fd6286b045626",
+        "toItemId": "context-item:a67c9ef098e8853aa7dc92e407a240a5f7180032c11b10f9fb1bc767f62f7c50",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:a67c9ef098e8853aa7dc92e407a240a5f7180032c11b10f9fb1bc767f62f7c50",
+        "toItemId": "context-item:d7a0dcceb1749a0beaa935647de00ed0e43b81f53da18a46bed20f3e27f5bc0f",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:a67c9ef098e8853aa7dc92e407a240a5f7180032c11b10f9fb1bc767f62f7c50",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:d7a0dcceb1749a0beaa935647de00ed0e43b81f53da18a46bed20f3e27f5bc0f",
+        "toItemId": "context-item:d115fde0ef71bf93743dd5e209e311af35ffa01e6930a8c569504235e1b6c35c",
+        "edgeType": "REFERENCES",
+        "reason": "\"Section 7.8\" inside a definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.8(b)",
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "CATEGORICAL_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": null,
+            "citation": "§7.8(b)",
+            "excerpt": "Investments in Cash Equivalents;"
+          },
+          "conditions": [
+            {
+              "conditionType": "DEFINED_CATEGORY",
+              "expression": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "termName": "Cash Equivalents",
+                "citation": "§7.8(b)",
+                "excerpt": "Investments in Cash Equivalents"
+              },
+              "referencesDefinitionId": null,
+              "description": "The Investment must qualify as a Cash Equivalent (as defined in the Credit Agreement); no dollar ceiling applies to this permitted category",
+              "citation": "§7.8(b)",
+              "excerpt": "Investments in Cash Equivalents;",
+              "inventoryItemIds": [
+                "5cfed7adb8a6f2cf51ce8915"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Chapeau of Section 7.8 prohibits the Parent Borrower and its Subsidiaries from making Investments, and clause (b) carves out an expressly permitted category - Investments in Cash Equivalents - with no dollar cap or ratio gate. The full definition of 'Cash Equivalents' is confirmed current and available."
+          ],
+          "citation": "§7.8(b)",
+          "excerpt": "Investments in Cash Equivalents;",
+          "inventoryItemIds": [
+            "5cfed7adb8a6f2cf51ce8915"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "Section 7.8(b) is a categorical permitted-Investment carve-out with no dollar ceiling and no ratio/liquidity gate - the only constraint is that the investment must be a Cash Equivalent. Represented as UNLIMITED_CAPACITY with a DEFINED_CATEGORY condition referencing the defined term 'Cash Equivalents' rather than a fabricated dollar cap. Entity scope (Parent Borrower and its Subsidiaries) is taken from the Section 7.8 chapeau/related clauses.",
+        "The definition of 'Cash Equivalents' was supplied as confirmed-current context and is available; it is referenced as a defined term rather than re-modeled as a full WireDefinition since it is supporting definitional detail for this carve-out, not a separately operative covenant rule.",
+        "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node/document text supplied), but clause (b) is a self-contained carve-out whose operative economics (category permission, no cap) do not depend on omitted surrounding text, so sufficiency is COMPLETE for this clause."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.8(b)",
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.8(b)",
+            "excerpt": "Investments in Cash Equivalents;"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "BOOLEAN",
+              "termName": "Cash Equivalents",
+              "companyId": "conmed-pilot",
+              "instrumentKey": "conmed-eighth-ar-credit-agreement",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:e87b6b726458b90e2c82fb0b"
+            },
+            "referencesDefinitionId": null,
+            "description": "The Investment must qualify as a Cash Equivalent (as defined in the Credit Agreement); no dollar ceiling applies to this permitted category",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(b)",
+              "excerpt": "Investments in Cash Equivalents;"
+            },
+            "inventoryItemIds": [
+              "5cfed7adb8a6f2cf51ce8915"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Chapeau of Section 7.8 prohibits the Parent Borrower and its Subsidiaries from making Investments, and clause (b) carves out an expressly permitted category - Investments in Cash Equivalents - with no dollar cap or ratio gate. The full definition of 'Cash Equivalents' is confirmed current and available.",
+          "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"DEFINED_CATEGORY\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.8(b)",
+          "excerpt": "Investments in Cash Equivalents;"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNWITNESSED",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNWITNESSED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "Investments in Cash Equivalents;",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "5cfed7adb8a6f2cf51ce8915"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r1]] condition[0].conditionType \"DEFINED_CATEGORY\" not recognized - normalized to UNSUPPORTED",
+      "Section 7.8(b) is a categorical permitted-Investment carve-out with no dollar ceiling and no ratio/liquidity gate - the only constraint is that the investment must be a Cash Equivalent. Represented as UNLIMITED_CAPACITY with a DEFINED_CATEGORY condition referencing the defined term 'Cash Equivalents' rather than a fabricated dollar cap. Entity scope (Parent Borrower and its Subsidiaries) is taken from the Section 7.8 chapeau/related clauses.",
+      "The definition of 'Cash Equivalents' was supplied as confirmed-current context and is available; it is referenced as a defined term rather than re-modeled as a full WireDefinition since it is supporting definitional detail for this carve-out, not a separately operative covenant rule.",
+      "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node/document text supplied), but clause (b) is a self-contained carve-out whose operative economics (category permission, no cap) do not depend on omitted surrounding text, so sufficiency is COMPLETE for this clause.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T07:44:55.710Z",
+      "inputTokens": 11824,
+      "outputTokens": 2888,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 9728,
+      "calculatedCostUsd": 0.052528000000000005
+    },
+    "compiledAt": "2026-09-25T07:44:55.710Z",
+    "outputHash": "4ec85c571777b7318ca910155b07683d57fc4c290a14ff5261b505971b2b7f72"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "cf3c81c3cbe5210cd3009cb6832a35606f5cd8e04b9d50e1244161788863474d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Cash Equivalents",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(b)",
+            "structuralNodeKey": null,
+            "charStart": 19,
+            "charEnd": 35
+          },
+          "irItems": [
+            {
+              "itemId": "02259089ab9ff69afe14981065214007d8948be8d708dd2ab06ba421acb50b66",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+              "irPath": "rules[0].conditions[0].expression",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Cash Equivalents",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Cash Equivalents\" matches a compiled metric/defined-term reference"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+      "items": [
+        {
+          "itemId": "cf3c81c3cbe5210cd3009cb6832a35606f5cd8e04b9d50e1244161788863474d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Cash Equivalents",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(b)",
+          "structuralNodeKey": null,
+          "charStart": 19,
+          "charEnd": 35
+        },
+        {
+          "itemId": "b18bd46e4ff63ad1d77938ec250b46b1fe190b0ba10960c7f82fbf2cf9cd4a7d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(b)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+      "items": [
+        {
+          "itemId": "bf806097df5bd703677ad898db6ee706bcc24599f7ca5e77d6e1e0fe7ff182f7",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "MAKE_INVESTMENT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(b)",
+          "sourceExcerpt": "Investments in Cash Equivalents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "47ba7ec3f517af00bc18b2a3e7edecefffe3292aa75d2855b4054f3bde1e21b0",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(b)",
+          "sourceExcerpt": "Investments in Cash Equivalents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "0a78295054d7644912fec4cfdce5a8fc5ee3424cb95356d8278baa19e3e0279a",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(b)",
+          "sourceExcerpt": "Investments in Cash Equivalents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "b645584ba3e31766779ce1cc3a28a6f0e001a208c9e1e8bba89ae42713972cfe",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The Investment must qualify as a Cash Equivalent (as defined in the Credit Agreement); no dollar ceiling applies to this permitted category",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(b)",
+          "sourceExcerpt": "Investments in Cash Equivalents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "02259089ab9ff69afe14981065214007d8948be8d708dd2ab06ba421acb50b66",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Cash Equivalents",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "64a7d35e7f374a514ca19b257293134dcec3bf749dd6a14cac7bb9a759929d33",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:1fea4a7922d1f6962c0c2d93",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(b)",
+          "sourceExcerpt": "Investments in Cash Equivalents;",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+        "items": [],
+        "fieldsWalked": 4,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "c26f8bbfe177203824d6b2695cce4c4c51f7ae934329a71468439db454ef7130",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "941da7d45aa25eb6d277f21efcafbd56fa79116c114b7fb9f411a0ed0bc59445",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 12845,
+    "inputTokens": 11824,
+    "outputTokens": 2888,
+    "costUsd": 0.002288,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:ad1fed61ba3ae3f2f1d64728.verified-units.json",
+    "packageHash": "b960addbb411424bddd6c2b2e10674d917a919ad5986dc5b658cbd11a3f8a909",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

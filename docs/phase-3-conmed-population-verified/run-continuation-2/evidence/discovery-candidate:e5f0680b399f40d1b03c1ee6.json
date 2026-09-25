@@ -1,0 +1,993 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T07:48:46.961Z",
+  "candidateRef": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.8(e)",
+    "operativeSourceText": "(e)\nthe investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables\nTransfer Program into a Subsidiary;\n",
+    "operativeSourceTextSha256": "763053d9b94187d463922d95320a873b08f6a516043b64bdfabae74f84fc48e1",
+    "operativeSourceChars": 176,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:7fa475d26b4fccb6b565005297285cf3a320c58ee434cf1ad868edb20fbe4194",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 9,
+    "items": [
+      {
+        "itemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.8(e)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 176,
+        "excerptText": "(e)\nthe investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables\nTransfer Program into a Subsidiary;\n"
+      },
+      {
+        "itemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 389,
+        "excerptText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n"
+      },
+      {
+        "itemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "type": "PROVISO",
+        "normalizedRef": "7.8(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 350,
+        "excerptText": "(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n"
+      },
+      {
+        "itemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 971,
+        "excerptText": "(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n"
+      },
+      {
+        "itemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 427,
+        "excerptText": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "type": "DEFINITION",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "toItemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "toItemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "toItemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "toItemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "toItemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:83e8f7721ad6959b0d3cd8fc63136b14d80a59ea2bad2c0390ab2d9d7d2abafc",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.8(e)",
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": null,
+            "citation": "§7.8(e)",
+            "excerpt": "the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary"
+          },
+          "conditions": [
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "termName": "Receivables Transfer Program",
+                "citation": "§7.8(e)",
+                "excerpt": "pursuant to a Receivables Transfer Program"
+              },
+              "referencesDefinitionId": null,
+              "description": "The permitted investment must be made pursuant to a Receivables Transfer Program (a program under which the Parent Borrower or its Subsidiaries sell/transfer/encumber accounts receivable or related rights without recourse).",
+              "citation": "§7.8(e)",
+              "excerpt": "pursuant to a Receivables Transfer Program",
+              "inventoryItemIds": [
+                "inv-item:4c9070c5ec269576aab67fd8"
+              ]
+            },
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "ENTITY_SCOPE_REFERENCE",
+                "entityScopeExclude": [],
+                "entityScopeInclude": [
+                  "Subsidiary"
+                ],
+                "citation": "§7.8(e)",
+                "excerpt": "into a Subsidiary"
+              },
+              "referencesDefinitionId": null,
+              "description": "The permitted investment must be made into a Subsidiary, fixing the destination of the investment.",
+              "citation": "§7.8(e)",
+              "excerpt": "into a Subsidiary",
+              "inventoryItemIds": [
+                "inv-item:3673f95f6c91bb87ddaef6f8"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "EXCEPTION_TO",
+              "targetRef": "Section 7.8",
+              "description": "This clause is an excepted Investment listed in the Section 7.8 chapeau prohibition on Investments.",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Operative text confirmed current and self-contained; the gating defined term 'Receivables Transfer Program' was resolved via definition. No dollar cap applies to this exception type - it is an unconditioned structural permission subject only to the Receivables Transfer Program and Subsidiary-destination predicates."
+          ],
+          "citation": "§7.8(e)",
+          "excerpt": "(e) the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary;",
+          "inventoryItemIds": [
+            "inv-item:cd88e1292743e3f700a9d44f"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Section 7.8(e) is one excepted Investment type under the Section 7.8 Limitation on Investments chapeau. It grants the Parent Borrower and its Subsidiaries an uncapped structure-conditional permission to invest accounts receivable or related rights/assets pursuant to a Receivables Transfer Program into a Subsidiary. All three frozen-inventory items are consumed: the permission itself (cd88e...), the Receivables Transfer Program predicate (4c907...), and the Subsidiary destination (3673f...). The gating defined term 'Receivables Transfer Program' was resolved via getDefinition (CURRENT). 'Parent Borrower' and 'Subsidiary' definitions are confirmed current in the context bundle. Source completeness state for the operative window is UNKNOWN, but the clause text is fully present, confirmed current-operative, and self-contained, so COMPLETE sufficiency is honest."
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Receivables Transfer Program"
+        },
+        "outputSummary": "definition \"Receivables Transfer Program\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+        "charsReturned": 714,
+        "timestamp": "2026-09-25T07:48:22.505Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "DEFINITION",
+          "requestKey": "Receivables Transfer Program",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 37648,
+          "charEnd": 38362,
+          "rawText": "\"Receivables Transfer Program\": a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable\nor related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit\ndilution provisions) other than with respect to the Parent Borrower's or such Subsidiary's retained interest in such accounts\nreceivable or related ancillary rights or assets, such program to have substantially the terms and conditions provided to the Administrative\nAgent prior to the Closing Date, as such terms and conditions may be amended, supplemented or otherwise modified from time to time.\n34\n\n",
+          "contentHash": "808e2c13651a787e8a022f9fc3c0f7d475b8d028ea7835eeb9ae0ff4c7eb9868",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT",
+          "isCurrentTruth": true
+        }
+      },
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "7.8(e)"
+        },
+        "outputSummary": "base-document provision 7.8(e) (never individually amended, CURRENT_OPERATIVE)",
+        "charsReturned": 176,
+        "timestamp": "2026-09-25T07:48:22.505Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "PROVISION",
+          "requestKey": "7.8(e)",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:d4ff825e011d49a9264a74b1",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.8(e)",
+          "charStart": 78790,
+          "charEnd": 78966,
+          "rawText": "(e)\nthe investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables\nTransfer Program into a Subsidiary;\n",
+          "contentHash": "763053d9b94187d463922d95320a873b08f6a516043b64bdfabae74f84fc48e1",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT_OPERATIVE",
+          "isCurrentTruth": true
+        }
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:36dcc091d57ff11841c3af77",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.8(e)",
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.8(e)",
+            "excerpt": "the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "BOOLEAN",
+              "termName": "Receivables Transfer Program",
+              "companyId": "conmed-pilot",
+              "instrumentKey": "conmed-eighth-ar-credit-agreement",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:bf367c27cf7aa83a1de2a0c1"
+            },
+            "referencesDefinitionId": null,
+            "description": "The permitted investment must be made pursuant to a Receivables Transfer Program (a program under which the Parent Borrower or its Subsidiaries sell/transfer/encumber accounts receivable or related rights without recourse).",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(e)",
+              "excerpt": "pursuant to a Receivables Transfer Program"
+            },
+            "inventoryItemIds": [
+              "inv-item:4c9070c5ec269576aab67fd8"
+            ]
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": {
+              "kind": "ENTITY_SCOPE_REFERENCE",
+              "type": "ENTITY_SET",
+              "scope": {
+                "include": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "exclude": []
+              },
+              "exprId": "ir-expr:6816ecc5b58f317a67c74706"
+            },
+            "referencesDefinitionId": null,
+            "description": "The permitted investment must be made into a Subsidiary, fixing the destination of the investment.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(e)",
+              "excerpt": "into a Subsidiary"
+            },
+            "inventoryItemIds": [
+              "inv-item:3673f95f6c91bb87ddaef6f8"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.8",
+            "description": "This clause is an excepted Investment listed in the Section 7.8 chapeau prohibition on Investments.",
+            "reason": "dependsOn[0].targetRef \"Section 7.8\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Operative text confirmed current and self-contained; the gating defined term 'Receivables Transfer Program' was resolved via definition. No dollar cap applies to this exception type - it is an unconditioned structural permission subject only to the Receivables Transfer Program and Subsidiary-destination predicates.",
+          "ruleType \"PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"Section 7.8\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.8(e)",
+          "excerpt": "(e) the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary;"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "ENTITY_SCOPE_REFERENCE.include",
+              "raw": "Subsidiary",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "(e) the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary;",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 33,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 49,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 164,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:cd88e1292743e3f700a9d44f"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] ruleType \"PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r1]] dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES",
+      "[rule[r1]] dependsOn[0].targetRef \"Section 7.8\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Section 7.8(e) is one excepted Investment type under the Section 7.8 Limitation on Investments chapeau. It grants the Parent Borrower and its Subsidiaries an uncapped structure-conditional permission to invest accounts receivable or related rights/assets pursuant to a Receivables Transfer Program into a Subsidiary. All three frozen-inventory items are consumed: the permission itself (cd88e...), the Receivables Transfer Program predicate (4c907...), and the Subsidiary destination (3673f...). The gating defined term 'Receivables Transfer Program' was resolved via getDefinition (CURRENT). 'Parent Borrower' and 'Subsidiary' definitions are confirmed current in the context bundle. Source completeness state for the operative window is UNKNOWN, but the clause text is fully present, confirmed current-operative, and self-contained, so COMPLETE sufficiency is honest.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T07:48:32.823Z",
+      "inputTokens": 12258,
+      "outputTokens": 3713,
+      "cachedInputTokens": 1321984,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 13715,
+      "calculatedCostUsd": 0.061646000000000006
+    },
+    "compiledAt": "2026-09-25T07:48:32.823Z",
+    "outputHash": "d02b6c8418eb79198cc54f9e2e28c3e1102c5ce394c9bf5ec715c1ea21641df6"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "dcae25faac3c3b510f0fed6d73a505694c67d2350238b321be88db42366084be",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(e)",
+            "structuralNodeKey": null,
+            "charStart": 26,
+            "charEnd": 41
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9d5abc26ad75e525bfbdecbfd1d6cb137f1fa365182775a958520ede8bb1c630",
+            "kind": "METRIC_MENTION",
+            "rawText": "Receivables\nTransfer Program",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(e)",
+            "structuralNodeKey": null,
+            "charStart": 128,
+            "charEnd": 156
+          },
+          "irItems": [],
+          "reason": "source mention \"Receivables\nTransfer Program\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+      "items": [
+        {
+          "itemId": "9a7db1481ae9f47ea192f78968927cf209e2d5bc0313a3df42c651f1ccf73948",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(e)",
+          "structuralNodeKey": null,
+          "charStart": 33,
+          "charEnd": 41,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "dcae25faac3c3b510f0fed6d73a505694c67d2350238b321be88db42366084be",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(e)",
+          "structuralNodeKey": null,
+          "charStart": 26,
+          "charEnd": 41
+        },
+        {
+          "itemId": "9d5abc26ad75e525bfbdecbfd1d6cb137f1fa365182775a958520ede8bb1c630",
+          "kind": "METRIC_MENTION",
+          "rawText": "Receivables\nTransfer Program",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(e)",
+          "structuralNodeKey": null,
+          "charStart": 128,
+          "charEnd": 156
+        },
+        {
+          "itemId": "a3b83bc573a61f53b6f8fe223e09e11e07ff0c173f19d4835049c9e522f3f08f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(e)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(e)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(e)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+      "items": [
+        {
+          "itemId": "3bec511a7dcc5a7cfbb3152ca51553b86750379712f933e79768bc9b979a6705",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "MAKE_INVESTMENT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(e)",
+          "sourceExcerpt": "(e) the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "cf40c607e440accfd5feb51e748067db6a4203a10022bbdd80823fdf934bde7a",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(e)",
+          "sourceExcerpt": "(e) the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "bde050844b82cbbdcfe9d0b227d271a0d58d1535bb8dba53f77ec998b4032f9e",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(e)",
+          "sourceExcerpt": "(e) the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "5930686f73dfe8ca35e36a4d863c6cfe57665ec43dbe3531800ada3ddd5ae503",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The permitted investment must be made pursuant to a Receivables Transfer Program (a program under which the Parent Borrower or its Subsidiaries sell/transfer/encumber accounts receivable or related rights without recourse).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(e)",
+          "sourceExcerpt": "pursuant to a Receivables Transfer Program",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "03673e657f5eb24149e1e7dc2e1116d8e0ef94b2c6cd5be1e8593d668907d9dc",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Receivables Transfer Program",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "221a914868219d8428713bcf58886d5fef347317ba77ef612d22cb8bfde4efbf",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The permitted investment must be made into a Subsidiary, fixing the destination of the investment.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(e)",
+          "sourceExcerpt": "into a Subsidiary",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "b676755aeb67b5554e83a355417949473d3cd6ff8ebbb750eb63f79e37be5840",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].conditions[1].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "aabe75870cea3f89d78b215c6490c2ef808a79efc112f1b1fc265688fa94074b",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:36dcc091d57ff11841c3af77",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(e)",
+          "sourceExcerpt": "the investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables Transfer Program into a Subsidiary",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+        "items": [],
+        "fieldsWalked": 7,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "763053d9b94187d463922d95320a873b08f6a516043b64bdfabae74f84fc48e1",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "79cae7c3f6fa450194261fdd89f33c9f909341b684b5ab6a02051dee4d7a42fc",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Receivables Transfer Program",
+          "scopeKey": "receivables transfer program",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 37648,
+          "charEnd": 38362,
+          "rawText": "\"Receivables Transfer Program\": a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable\nor related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit\ndilution provisions) other than with respect to the Parent Borrower's or such Subsidiary's retained interest in such accounts\nreceivable or related ancillary rights or assets, such program to have substantially the terms and conditions provided to the Administrative\nAgent prior to the Closing Date, as such terms and conditions may be amended, supplemented or otherwise modified from time to time.\n34\n\n",
+          "contentHash": "808e2c13651a787e8a022f9fc3c0f7d475b8d028ea7835eeb9ae0ff4c7eb9868",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "definition \"Receivables Transfer Program\" consulted for candidate discovery-candidate:e5f0680b399f40d1b03c1ee6 (7.8(e)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              0
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[0] getDefinition {\"term\":\"Receivables Transfer Program\"}",
+              "compilerRecordedContentHash": "808e2c13651a787e8a022f9fc3c0f7d475b8d028ea7835eeb9ae0ff4c7eb9868"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Receivables Transfer Program\" resolved to node (none) span [37648, 38362)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [37648, 38362) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(37648, 38362)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash 808e2c13651a787e8a022f9fc3c0f7d475b8d028ea7835eeb9ae0ff4c7eb9868 and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / (none)) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        },
+        {
+          "evidenceId": "c18e73a8bc7726c086db79824d1895825c37db19ba940b6541b76f66219843ae",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "PROVISION",
+          "requestKey": "7.8(e)",
+          "scopeKey": "7.8(e)",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": "structural-node:d4ff825e011d49a9264a74b1",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.8(e)",
+          "charStart": 78790,
+          "charEnd": 78966,
+          "rawText": "(e)\nthe investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables\nTransfer Program into a Subsidiary;\n",
+          "contentHash": "763053d9b94187d463922d95320a873b08f6a516043b64bdfabae74f84fc48e1",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "section \"7.8(e)\" consulted for candidate discovery-candidate:e5f0680b399f40d1b03c1ee6 (7.8(e)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": true,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              1
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[1] getOperativeProvision {\"sectionRef\":\"7.8(e)\"}",
+              "compilerRecordedContentHash": "763053d9b94187d463922d95320a873b08f6a516043b64bdfabae74f84fc48e1"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "provision \"7.8(e)\" resolved to node structural-node:d4ff825e011d49a9264a74b1 span [78790, 78966)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [78790, 78966) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(78790, 78966)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash 763053d9b94187d463922d95320a873b08f6a516043b64bdfabae74f84fc48e1 and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:d4ff825e011d49a9264a74b1) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "084927268b3127ea98edc18bcda5e7d66d920491f4e0cf58b4057cc73f36f9bf",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 36357,
+    "inputTokens": 12258,
+    "outputTokens": 3713,
+    "costUsd": 0.00255892,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:e5f0680b399f40d1b03c1ee6.verified-units.json",
+    "packageHash": "408bf514130701bcd1b5bec748ffbf7eda8c172ebbb43fada79ef0c95c3d1874",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

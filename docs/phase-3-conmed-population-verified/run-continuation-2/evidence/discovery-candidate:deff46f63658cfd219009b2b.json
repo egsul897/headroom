@@ -1,0 +1,766 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T07:49:11.211Z",
+  "candidateRef": "discovery-candidate:deff46f63658cfd219009b2b",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.8(f)",
+    "operativeSourceText": "(f)\nInvestments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount;\n",
+    "operativeSourceTextSha256": "d9bac22312d205a2e092834eed1b2e94a61e2c820a0fc2a4441d6a7e36b210ff",
+    "operativeSourceChars": 126,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:234d955950461e39a6f9a5ae38ca95f17f9721ffea86a74ac59bd78020b34dd3",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 9,
+    "items": [
+      {
+        "itemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.8(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 126,
+        "excerptText": "(f)\nInvestments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount;\n"
+      },
+      {
+        "itemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 389,
+        "excerptText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n"
+      },
+      {
+        "itemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "type": "PROVISO",
+        "normalizedRef": "7.8(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 350,
+        "excerptText": "(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n"
+      },
+      {
+        "itemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 971,
+        "excerptText": "(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n"
+      },
+      {
+        "itemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 427,
+        "excerptText": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:83ff987277fe432c3ad373a1be8a1ca1c45127e7faf4a76007313c2a5bb2f059",
+        "type": "DEFINITION",
+        "normalizedRef": "Reinvestment Deferred Amount",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 316,
+        "excerptText": "\"Reinvestment Deferred Amount\": with respect to any Reinvestment Event, the aggregate Net Cash Proceeds received by the Parent Borrower or any of its Subsidiaries in\nconnection therewith that are not applied to prepay the Term Loans pursuant to Section 2.12(b) as a result of the delivery of a Reinvestment\nNotice.\n\n"
+      },
+      {
+        "itemId": "context-item:b2983cb1ce4d4a5003690a584787b56e8b71816874cf4b836e57b7e013880a85",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Term Loans",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 86,
+        "excerptText": "\"Term Loans\": collectively,\nthe Tranche A Term Loans and any Incremental Term Loans.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "toItemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:c282d15aba6ce6725d30bbb6bfe6ca952ed348f547885488224b9e9d0dc518f0",
+        "toItemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "toItemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "toItemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "toItemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:c912f54a9e516121d82816bee0b7a4c7d68821a5ad231751b258f67ede4111fb",
+        "toItemId": "context-item:83ff987277fe432c3ad373a1be8a1ca1c45127e7faf4a76007313c2a5bb2f059",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:83ff987277fe432c3ad373a1be8a1ca1c45127e7faf4a76007313c2a5bb2f059",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:83ff987277fe432c3ad373a1be8a1ca1c45127e7faf4a76007313c2a5bb2f059",
+        "toItemId": "context-item:b2983cb1ce4d4a5003690a584787b56e8b71816874cf4b836e57b7e013880a85",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.8(f)",
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "termName": "Reinvestment Deferred Amount",
+              "citation": "§7.8(f)"
+            },
+            "citation": "§7.8(f)"
+          },
+          "conditions": [
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "termName": "Reinvestment Deferred Amount",
+                "citation": "§7.8(f)"
+              },
+              "referencesDefinitionId": null,
+              "description": "Investments must be made with the proceeds of any Reinvestment Deferred Amount (i.e., reinvestment-source funding; no dollar ceiling is stated)",
+              "citation": "§7.8(f)",
+              "excerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount"
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.8 (chapeau)",
+              "description": "This is one permitted-investment exception branch to the Section 7.8 limitation on Investments; the chapeau prohibits Investments except as listed (a)-(l)",
+              "inventoryItemIds": [
+                "inv-item:a280bc79813d24676f830b62"
+              ]
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term 'Reinvestment Deferred Amount'",
+              "description": "Capacity/gate depends on the definition of Reinvestment Deferred Amount",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "The clause is a single permission branch permitting Investments funded with proceeds of any Reinvestment Deferred Amount, with no stated dollar ceiling; the governing term is confirmed current and defined."
+          ],
+          "citation": "§7.8(f)",
+          "excerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount",
+          "inventoryItemIds": [
+            "inv-item:a280bc79813d24676f830b62"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Section 7.8(f) is one of several independently operative permitted-Investment branches under the Section 7.8 chapeau prohibition. This submission compiles only clause (f).",
+        "No dollar ceiling is stated for 7.8(f); the permission is gated by the source of funding—proceeds of any Reinvestment Deferred Amount—so capacity is represented as UNLIMITED_CAPACITY (not a fabricated dollar amount).",
+        "The parent Section 7.8 chapeau prohibition and the sibling branches (d), (i), (j), (l) are separate operating rules and are preserved here only as an explicit parent-relationship dependsOn; they are not independently submitted.",
+        "Low-priority unresolved defined terms (e.g. 'Reinvestment Event', 'Net Cash Proceeds') and the AMBIGUOUS_RELATIVE_REFERENCE (Section 2.12(b) inside the Reinvestment Deferred Amount definition) sit inside the dependency definition and do not affect the economics of 7.8(f) itself, which references the confirmed-current term.",
+        "SOURCE_CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS; clause 7.8(f) itself is complete as supplied, but nothing about the remaining unshown lettered branches is asserted."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:6281d4899511bca07bb547c4",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.8(f)",
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "DEFINED_TERM_REFERENCE",
+            "type": "BOOLEAN",
+            "termName": "Reinvestment Deferred Amount",
+            "companyId": "conmed-pilot",
+            "instrumentKey": "conmed-eighth-ar-credit-agreement",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:196e9d12f1bd2baf12bf0938"
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.8(f)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "BOOLEAN",
+              "termName": "Reinvestment Deferred Amount",
+              "companyId": "conmed-pilot",
+              "instrumentKey": "conmed-eighth-ar-credit-agreement",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:196e9d12f1bd2baf12bf0938"
+            },
+            "referencesDefinitionId": null,
+            "description": "Investments must be made with the proceeds of any Reinvestment Deferred Amount (i.e., reinvestment-source funding; no dollar ceiling is stated)",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(f)",
+              "excerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.8 (chapeau)",
+            "description": "This is one permitted-investment exception branch to the Section 7.8 limitation on Investments; the chapeau prohibits Investments except as listed (a)-(l)",
+            "reason": "dependsOn[0].targetRef \"Section 7.8 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "inv-item:a280bc79813d24676f830b62"
+            ]
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term 'Reinvestment Deferred Amount'",
+            "description": "Capacity/gate depends on the definition of Reinvestment Deferred Amount",
+            "reason": "dependsOn[1].targetRef \"Defined term 'Reinvestment Deferred Amount'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The clause is a single permission branch permitting Investments funded with proceeds of any Reinvestment Deferred Amount, with no stated dollar ceiling; the governing term is confirmed current and defined.",
+          "dependsOn[0].targetRef \"Section 7.8 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[1].targetRef \"Defined term 'Reinvestment Deferred Amount'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.8(f)",
+          "excerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 31,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 54,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:a280bc79813d24676f830b62"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] dependsOn[0].targetRef \"Section 7.8 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[1].targetRef \"Defined term 'Reinvestment Deferred Amount'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Section 7.8(f) is one of several independently operative permitted-Investment branches under the Section 7.8 chapeau prohibition. This submission compiles only clause (f).",
+      "No dollar ceiling is stated for 7.8(f); the permission is gated by the source of funding—proceeds of any Reinvestment Deferred Amount—so capacity is represented as UNLIMITED_CAPACITY (not a fabricated dollar amount).",
+      "The parent Section 7.8 chapeau prohibition and the sibling branches (d), (i), (j), (l) are separate operating rules and are preserved here only as an explicit parent-relationship dependsOn; they are not independently submitted.",
+      "Low-priority unresolved defined terms (e.g. 'Reinvestment Event', 'Net Cash Proceeds') and the AMBIGUOUS_RELATIVE_REFERENCE (Section 2.12(b) inside the Reinvestment Deferred Amount definition) sit inside the dependency definition and do not affect the economics of 7.8(f) itself, which references the confirmed-current term.",
+      "SOURCE_CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS; clause 7.8(f) itself is complete as supplied, but nothing about the remaining unshown lettered branches is asserted.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T07:49:01.387Z",
+      "inputTokens": 11101,
+      "outputTokens": 3695,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 11589,
+      "calculatedCostUsd": 0.059152
+    },
+    "compiledAt": "2026-09-25T07:49:01.387Z",
+    "outputHash": "dfc832886bbdcbcbeb652c0fa70d16f1972fd352927e6594595f1324ef7bd88f"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:deff46f63658cfd219009b2b",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7bf3bd30f010e76bbd98ba7e3b2987868f1b7be04c75076f9c8e8c88e0d383bc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(f)",
+            "structuralNodeKey": null,
+            "charStart": 28,
+            "charEnd": 43
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "53cd349ad0d44255097ca898dcd7293f209fd43dbcedd0d4001f74b9238ea82f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Reinvestment Deferred Amount",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(f)",
+            "structuralNodeKey": null,
+            "charStart": 96,
+            "charEnd": 124
+          },
+          "irItems": [
+            {
+              "itemId": "d7e2507553acaef219cde02a7bec23e2efa129282af73ef4b9f190197359fde3",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+              "irPath": "rules[0].conditions[0].expression",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Reinvestment Deferred Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            },
+            {
+              "itemId": "f373d0c8adf91cbf96b3379bf2e1dfe8946cfafcd2a1fa00d0c4821a81f139f8",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+              "irPath": "rules[0].capacityExpression.gatedBy",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Reinvestment Deferred Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Reinvestment Deferred Amount\" matches a compiled metric/defined-term reference"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:deff46f63658cfd219009b2b",
+      "items": [
+        {
+          "itemId": "d7b1e4e73f45b18a155b4df564a4809de2d32fcb5cc7faf094c61270ef0ee27f",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(f)",
+          "structuralNodeKey": null,
+          "charStart": 35,
+          "charEnd": 43,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "7bf3bd30f010e76bbd98ba7e3b2987868f1b7be04c75076f9c8e8c88e0d383bc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(f)",
+          "structuralNodeKey": null,
+          "charStart": 28,
+          "charEnd": 43
+        },
+        {
+          "itemId": "53cd349ad0d44255097ca898dcd7293f209fd43dbcedd0d4001f74b9238ea82f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Reinvestment Deferred Amount",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(f)",
+          "structuralNodeKey": null,
+          "charStart": 96,
+          "charEnd": 124
+        },
+        {
+          "itemId": "533339b7bfabd16b18f4faa2c4c47e9ff3fca71bf28103874a4b656d6a25f723",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(f)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(f)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(f)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:deff46f63658cfd219009b2b",
+      "items": [
+        {
+          "itemId": "9e6b10d1995fea0ae7ec19f22d6307131d65c740a80dff62296d50e765b0aac7",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "MAKE_INVESTMENT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(f)",
+          "sourceExcerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "cd7c91717bc21745485e68f59b1fcb2c7a44be414813242f9323f6a6cac58e33",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(f)",
+          "sourceExcerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "530946b638f5a0ba7f11ad3f3ac96a32a23750631bc692962566b68b21cd72f1",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(f)",
+          "sourceExcerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "026a184bcde4f1150a4f60cb3833be9dad12c1e9f2fd46b618334fb262fe03c6",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Investments must be made with the proceeds of any Reinvestment Deferred Amount (i.e., reinvestment-source funding; no dollar ceiling is stated)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(f)",
+          "sourceExcerpt": "Investments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d7e2507553acaef219cde02a7bec23e2efa129282af73ef4b9f190197359fde3",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Reinvestment Deferred Amount",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "3f0b7a690548ecf23bc280101a9653dd546a4c1a3e298d324acc6a5d2c6150dd",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(f)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f373d0c8adf91cbf96b3379bf2e1dfe8946cfafcd2a1fa00d0c4821a81f139f8",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:6281d4899511bca07bb547c4",
+          "irPath": "rules[0].capacityExpression.gatedBy",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Reinvestment Deferred Amount",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:deff46f63658cfd219009b2b",
+        "items": [],
+        "fieldsWalked": 6,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "d9bac22312d205a2e092834eed1b2e94a61e2c820a0fc2a4441d6a7e36b210ff",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "639544912e421d12b3b93790d7f5cf4fc48bd9c9b17cc412d566cce70cc9ef75",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 14426,
+    "inputTokens": 11101,
+    "outputTokens": 3695,
+    "costUsd": 0.00240383,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:deff46f63658cfd219009b2b.verified-units.json",
+    "packageHash": "5d71e9b72d21cc16baa2610bcfa905ee884fdc99404878fe2a9e34e5869daded",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

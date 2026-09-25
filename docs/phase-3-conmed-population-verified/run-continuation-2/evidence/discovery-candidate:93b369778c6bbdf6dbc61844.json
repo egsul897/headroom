@@ -1,0 +1,178 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T08:06:34.677Z",
+  "candidateRef": "discovery-candidate:93b369778c6bbdf6dbc61844",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.9(d)",
+    "operativeSourceText": "(d)\nAmend its certificate of incorporation in any manner materially adverse to the Lenders without the prior written consent of the\nRequired Lenders.\n",
+    "operativeSourceTextSha256": "cfd06cee265bb823166a0ac16c07e3263520278615af213c2735b4f7a20af17e",
+    "operativeSourceChars": 150,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:cf6d625ee395fb4f1e79b79154c2f7c0d765cc10544a7aa00c67bc6e26a6b612",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 5,
+    "items": [
+      {
+        "itemId": "context-item:98436dc313cbcf1e2c82c4335ff7bf4cb4e36c4ad0c4ddbf1a01ff952ff1a807",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.9(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 150,
+        "excerptText": "(d)\nAmend its certificate of incorporation in any manner materially adverse to the Lenders without the prior written consent of the\nRequired Lenders.\n"
+      },
+      {
+        "itemId": "context-item:4dfa8d4aca079f7b78f6e7edd84cbeec298872cb4e417aed65a4cf24a362d30d",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.9",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 89,
+        "excerptText": "SECTION 7.9 Limitation on Optional\nPayments and Modifications of Debt Instruments, etc .\n"
+      },
+      {
+        "itemId": "context-item:75983b0c33539747185bfa077d5a945dca290b9777ae644fda7ab51753806cce",
+        "type": "DEFINITION",
+        "normalizedRef": "Lenders",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 47,
+        "excerptText": "\"Lenders\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:fadca811ceae0cc8d06079b94003ffe7575df4b4cab714b62739adef44683bec",
+        "type": "DEFINITION",
+        "normalizedRef": "Required Lenders",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 489,
+        "excerptText": "\"Required Lenders\": the holders of more than 50% of the sum of (a) the aggregate principal amount of the Term Loans then outstanding, (b) the Total Multicurrency\nRevolving Credit Commitments or, if the Multicurrency Revolving Credit Commitments have been terminated, the Total Multicurrency Revolving\nExtensions of Credit and (c) the Total USD\n36\nRevolving Credit Commitments or, if the USD Revolving Credit Commitments have been terminated,\nthe Total USD Revolving Extensions of Credit.\n\n"
+      },
+      {
+        "itemId": "context-item:b2983cb1ce4d4a5003690a584787b56e8b71816874cf4b836e57b7e013880a85",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Term Loans",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 86,
+        "excerptText": "\"Term Loans\": collectively,\nthe Tranche A Term Loans and any Incremental Term Loans.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:4dfa8d4aca079f7b78f6e7edd84cbeec298872cb4e417aed65a4cf24a362d30d",
+        "toItemId": "context-item:98436dc313cbcf1e2c82c4335ff7bf4cb4e36c4ad0c4ddbf1a01ff952ff1a807",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:98436dc313cbcf1e2c82c4335ff7bf4cb4e36c4ad0c4ddbf1a01ff952ff1a807",
+        "toItemId": "context-item:75983b0c33539747185bfa077d5a945dca290b9777ae644fda7ab51753806cce",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:98436dc313cbcf1e2c82c4335ff7bf4cb4e36c4ad0c4ddbf1a01ff952ff1a807",
+        "toItemId": "context-item:fadca811ceae0cc8d06079b94003ffe7575df4b4cab714b62739adef44683bec",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:fadca811ceae0cc8d06079b94003ffe7575df4b4cab714b62739adef44683bec",
+        "toItemId": "context-item:75983b0c33539747185bfa077d5a945dca290b9777ae644fda7ab51753806cce",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:fadca811ceae0cc8d06079b94003ffe7575df4b4cab714b62739adef44683bec",
+        "toItemId": "context-item:b2983cb1ce4d4a5003690a584787b56e8b71816874cf4b836e57b7e013880a85",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": null,
+    "toolCallLog": [],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T08:06:34.677Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 186,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    },
+    "compiledAt": "2026-09-25T08:06:34.677Z",
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 366,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "costUsd": 0,
+    "costStatus": "ESTIMATED_FROM_STREAM",
+    "timedOut": false,
+    "notes": [
+      "compile PROVIDER_FAILURE",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

@@ -1,0 +1,1210 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T07:47:56.465Z",
+  "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.8(d)",
+    "operativeSourceText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n",
+    "operativeSourceTextSha256": "4e5b6f9baa7708af8be1b7cda27ede79dfd2a501e69f82a8312c16fd6f95753b",
+    "operativeSourceChars": 389,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:a0eede903e3976bf39921d4bcfbc460d1937b62052d788d8dcbab0857d3dfd74",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 6,
+    "items": [
+      {
+        "itemId": "context-item:ba98e72c72c9c4a0e60d541cc97291aa1c116bfd7c42168f1e38ddfe9fea9ee8",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.8(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 389,
+        "excerptText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n"
+      },
+      {
+        "itemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 4667,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n(a)\nextensions of trade credit in the ordinary course of business;\n(b)\nInvestments in Cash Equivalents;\n(c)\nGuarantee Obligations permitted by Section 7.2;\n(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n(e)\nthe investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables\nTransfer Program into a Subsidiary;\n(f)\nInvestments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount;\n(g)\nInvestments by the Parent Borrower or any of its Subsidiaries in the Parent Borrower or any Subsidiary Guarantor in the ordinary\ncourse of business;\n(h)\nInvestments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with\nthe bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers\nand suppliers arising in the ordinary course of business;\n(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n(k)\nother Investments constituting Permitted Business Acquisitions;\n(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n(m)\nto the extent constituting Investments, any (i) interest rate Swap Agreements in the ordinary course of business up to an aggregate\nnotional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time,\n(ii) Swap Agreements in the ordinary course of business entered into in order to manage existing or anticipated exchange rate or\ncommodity price risks and not for speculative purposes or (iii) Permitted Bond Hedge Transaction or any Permitted Warrant Transaction.\nFor purposes of this Agreement, the amount of\nany Investment shall be the original cost of such Investment plus the cost of all additions thereto, without any adjustments for\nincreases or decreases in value, or write-ups, write-downs or write-offs with respect to such Investment, but giving effect to any repayments\nof principal in the case of Investments in the form of loans and any return of capital or return\n104\non Investment in the case of equity Investments\n(whether as a distribution, dividend, redemption or sale, but not in excess of the amount of the initial Investment).\n"
+      },
+      {
+        "itemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "type": "PROVISO",
+        "normalizedRef": "7.8(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 350,
+        "excerptText": "(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n"
+      },
+      {
+        "itemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 971,
+        "excerptText": "(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n"
+      },
+      {
+        "itemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.8(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 427,
+        "excerptText": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "toItemId": "context-item:ba98e72c72c9c4a0e60d541cc97291aa1c116bfd7c42168f1e38ddfe9fea9ee8",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:e6c50bc1b20b268b862aa7c1b657417acd464134a7c3dce99888156f113b2488",
+        "toItemId": "context-item:ba98e72c72c9c4a0e60d541cc97291aa1c116bfd7c42168f1e38ddfe9fea9ee8",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:0d4c15de7383beaa4fb8457e2a244e10a256a1794c939b5a23febc0d8ba4113b",
+        "toItemId": "context-item:ba98e72c72c9c4a0e60d541cc97291aa1c116bfd7c42168f1e38ddfe9fea9ee8",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:63a8f4c3ea5e2f031b5b218cd874a557dada9657b35561a616fd34a3fd92ede0",
+        "toItemId": "context-item:ba98e72c72c9c4a0e60d541cc97291aa1c116bfd7c42168f1e38ddfe9fea9ee8",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:ba98e72c72c9c4a0e60d541cc97291aa1c116bfd7c42168f1e38ddfe9fea9ee8",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "PARTIAL",
+    "failureReasons": [
+      "IR_VALIDATION_FAILURE",
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.8(d)",
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "MONEY",
+            "amount": 5000000,
+            "currency": "USD",
+            "citation": "§7.8(d)",
+            "excerpt": "in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000"
+          },
+          "conditions": [
+            {
+              "conditionType": "MEASUREMENT_TIMING",
+              "description": "The $5,000,000 cap is measured on the aggregate amount of such loans and advances outstanding at any one time (principal outstanding, not cumulative).",
+              "expression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Measurement basis - cap applies to the amount outstanding at any one time rather than an aggregate over a period",
+                "reason": "measurement timing is a semantic qualifier on the cap, represented as a textual condition rather than a numeric transform",
+                "sourceEvidence": "§7.8(d)"
+              },
+              "referencesDefinitionId": null,
+              "citation": "§7.8(d)",
+              "excerpt": "at any one time outstanding",
+              "inventoryItemIds": [
+                "464f327482ee20221bcd1a8e"
+              ]
+            }
+          ],
+          "exceptions": [
+            {
+              "description": "This provision shall not limit key man insurance",
+              "permissionRef": null,
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "description": "key man insurance is not limited by this provision",
+                  "expression": {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "Carve-out that key man insurance is not limited by this Section 7.8(d)",
+                    "reason": "carve-out expressed as an unquantified exclusion of an unqualified class of insurance; not representable as a numeric mechanic",
+                    "sourceEvidence": "§7.8(d)"
+                  },
+                  "referencesDefinitionId": null,
+                  "citation": "§7.8(d)",
+                  "excerpt": "provided, however that this provision shall not limit key man insurance",
+                  "inventoryItemIds": [
+                    "8c0355f5d1ca9e4e8d7598c8"
+                  ]
+                }
+              ],
+              "citation": "§7.8(d)",
+              "excerpt": "provided, however that this provision shall not limit key man insurance",
+              "inventoryItemIds": [
+                "8c0355f5d1ca9e4e8d7598c8"
+              ]
+            }
+          ],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.8(d)",
+          "excerpt": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+          "inventoryItemIds": [
+            "831002ba8cebc52da71613ba",
+            "8879617464741d75bc7a5ffe",
+            "8bd189cce78ef2af31552abc"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "11627bdf78954f2e649c0c15",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "note": "Trailing page-number artifact '103' - not covenant content, no computational significance."
+        },
+        {
+          "inventoryItemId": "4b40fd17fdb4315788b9b928",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "note": "Dangling numeric token '103' identified as an ambiguous/page-number artifact; it does not participate in any covenant economics and is excluded from the composition."
+        }
+      ],
+      "overallNotes": [
+        "Section 7.8(d) is a single independent quantitative permission basket within the Investments/loans-and-advances covenant: loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business, capped at $5,000,000 aggregated across Parent Borrower and its Subsidiaries, measured at any one time outstanding. The travel/entertainment/relocation clause is an express inclusion within the permitted purpose (not a separate basket). The key man insurance proviso is an exception carving out that class from the limitation. No shared cap, no amendment history. The two '103' tokens are page-number artifacts dispositioned as non-computational.",
+        "Entity scope derived from 'the Parent Borrower or its Subsidiaries'."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:f9512432cf06fb61f26f0746",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.8(d)",
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 5000000,
+          "currency": "USD",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.8(d)",
+            "excerpt": "in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000"
+          },
+          "exprId": "ir-expr:d81690a4bccee0029102e5a2"
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§7.8(d)",
+              "semanticDescription": "Measurement basis - cap applies to the amount outstanding at any one time rather than an aggregate over a period",
+              "reason": "measurement timing is a semantic qualifier on the cap, represented as a textual condition rather than a numeric transform",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.8(d)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:ed79b66d8857d8e4211aaa58"
+            },
+            "referencesDefinitionId": null,
+            "description": "The $5,000,000 cap is measured on the aggregate amount of such loans and advances outstanding at any one time (principal outstanding, not cumulative).",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(d)",
+              "excerpt": "at any one time outstanding"
+            },
+            "inventoryItemIds": [
+              "464f327482ee20221bcd1a8e"
+            ]
+          }
+        ],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r1].exception[0]",
+            "appliesToRuleId": "ir-rule:f9512432cf06fb61f26f0746",
+            "description": "This provision shall not limit key man insurance",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r1].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "§7.8(d)",
+                  "semanticDescription": "Carve-out that key man insurance is not limited by this Section 7.8(d)",
+                  "reason": "carve-out expressed as an unquantified exclusion of an unqualified class of insurance; not representable as a numeric mechanic",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.8(d)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:fade0f78965216e4aa038e26"
+                },
+                "referencesDefinitionId": null,
+                "description": "key man insurance is not limited by this provision",
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.8(d)",
+                  "excerpt": "provided, however that this provision shall not limit key man insurance"
+                },
+                "inventoryItemIds": [
+                  "8c0355f5d1ca9e4e8d7598c8"
+                ]
+              }
+            ],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(d)",
+              "excerpt": "provided, however that this provision shall not limit key man insurance"
+            },
+            "inventoryItemIds": [
+              "8c0355f5d1ca9e4e8d7598c8"
+            ]
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "condition[0].conditionType \"MEASUREMENT_TIMING\" not recognized - normalized to UNSUPPORTED",
+          "measurement timing is a semantic qualifier on the cap, represented as a textual condition rather than a numeric transform",
+          "carve-out expressed as an unquantified exclusion of an unqualified class of insurance; not representable as a numeric mechanic"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.8(d)",
+          "excerpt": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 59,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 75,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 223,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 240,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "831002ba8cebc52da71613ba",
+          "8879617464741d75bc7a5ffe",
+          "8bd189cce78ef2af31552abc"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[FALSE_COMPLETENESS] (ir-rule:f9512432cf06fb61f26f0746) rule declares sufficiency COMPLETE but conditions[0].expression contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL",
+      "[FALSE_COMPLETENESS] (ir-rule:f9512432cf06fb61f26f0746) rule declares sufficiency COMPLETE but exceptions[0].conditions[0].expression contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL",
+      "[rule[r1]] condition[0].conditionType \"MEASUREMENT_TIMING\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[0].expression] measurement timing is a semantic qualifier on the cap, represented as a textual condition rather than a numeric transform",
+      "[rule[r1].condition[0].expression] carve-out expressed as an unquantified exclusion of an unqualified class of insurance; not representable as a numeric mechanic",
+      "Section 7.8(d) is a single independent quantitative permission basket within the Investments/loans-and-advances covenant: loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business, capped at $5,000,000 aggregated across Parent Borrower and its Subsidiaries, measured at any one time outstanding. The travel/entertainment/relocation clause is an express inclusion within the permitted purpose (not a separate basket). The key man insurance proviso is an exception carving out that class from the limitation. No shared cap, no amendment history. The two '103' tokens are page-number artifacts dispositioned as non-computational.",
+      "Entity scope derived from 'the Parent Borrower or its Subsidiaries'.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 7 item(s) accepted (1 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:385-388) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:385-388: \"103\" - carries a number that no inventory item anchors, that the quantitative extractor did not recognise, and that no deterministic rule establishes as pagination - a bare number may be a basket, a threshold, a period or a page number, and its shape does not say which"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T07:47:49.269Z",
+      "inputTokens": 12360,
+      "outputTokens": 1694,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 6097,
+      "calculatedCostUsd": 0.04166
+    },
+    "compiledAt": "2026-09-25T07:47:49.269Z",
+    "outputHash": "e31d60f13b07a7f67097d145a01fe79f1eb1289e43cd23bde7fb17ddccc4d6db"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "bd1a072ad2f5f1f3ad68edfefcfd5b5197454f6d56740d652d630bc3c824979c",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+        "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+        "irPath": "rules[0].conditions; rules[0].permission posture",
+        "findingType": "MISSING_CONDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount ... not to exceed $5,000,000",
+        "sourceCitation": "§7.8(d)",
+        "proposedIrEvidence": "The rule's permission posture gives unlimited capacity to make employee/director loans/advances, subject only to a $5,000,000 outstanding cap; the only modeled conditions are the measurement-basis qualifier ('at any one time outstanding') and the key-man-insurance exception. The qualifier 'in the ordinary course of business' appears nowhere in the proposed IR.",
+        "verifierReasoning": "The source's qualifying phrase 'in the ordinary course of business' is an independent, operative condition on the permission. The proposed IR's postures and conditions contain not even an UNSUPPORTED/UNQUANTIFIED representation of this qualifier. Construct a counter-example: a loan/advance to a director of $1,000,000 made outside the ordinary course of business (e.g., a one-off non-ordinary financing). Real §7.8 prohibits that advance outright (it is not within except (d)); the proposed IR would report it as permitted so long as the basket stays under $5,000,000 because nothing in the proposed IR conditions permission on ordinary-course status. That is a directly observable difference in the permission/prohibition conclusion, so the omission is material. The defect is aggravated because the IR self-certifies sufficiency as COMPLETE.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T07:47:56.461Z"
+      },
+      {
+        "findingId": "c93a3ba93f6cc91606c3d68cdd4b462b76a10ed21bc29d27988afb0db7ae2b4c",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+        "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+        "irPath": "rules[0].exceptions[0]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "provided, however that this provision shall not limit key man insurance;",
+        "sourceCitation": "§7.8(d)",
+        "proposedIrEvidence": "The proposed IR models the key-man-insurance proviso as an exception (exceptionId rule[r1].exception[0]) nested under — and applicable only to — the §7.8(d) loan/advance permission rule, with description 'key man insurance is not limited by this provision'.",
+        "verifierReasoning": "'this provision' in the source text refers to Section 7.8, the operative clause governing all Investments (see §7.8's chapeau: 'Make any advance, loan, extension of credit ... or make any other investment in, any Person ..., except: (a)... (d)...; provided, however that this provision shall not limit key man insurance; ... (m)...'). The proviso is a standalone carve-out operating at the Section 7.8 level: it ensures key man insurance is not treated as a prohibited Investment at all, independent of whether the insurance would qualify as an employee/director loan or advance under except (d). The proposed IR instead makes it subordinate to the (d) basket, implying it only frees that basket from the cap. Construct a counter-example: key man insurance issued to a counterparty that is neither an employee nor a director of the Parent Borrower or a Subsidiary. Real §7.8 would still permit it (the proviso is a Section-level carve-out); the proposed IR would report it as prohibited because it would not fall within except (d) and the proposed IR has no exception at the Section level. That changes the permission conclusion, so this is a material logical-grouping error. (I also note the chapeau makes the operative posture under Section 7.8 a prohibition, whereas the proposed IR frames a permission exception without representing that the underlying Section-level prohibition is what gates these exceptions — but that framing is recoverable from the section citation, whereas the mis-attachment of the proviso is not.)",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T07:47:56.461Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0dab5e17b36ee9d6ce371b0a357ff7f503a75d477e72fb221c052cfbdc3b1238",
+            "kind": "AMOUNT",
+            "rawText": "$5,000,000",
+            "numericValue": 5000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(d)",
+            "structuralNodeKey": null,
+            "charStart": 271,
+            "charEnd": 281,
+            "parsedAmount": 5000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "892dd3cd0b1cc28782a3608199e65d00c78eecf1d932caad86ec8bf5e081524a",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+              "irPath": "rules[0].capacityExpression",
+              "numericValue": 5000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§7.8(d)",
+              "sourceExcerpt": "in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 5000000 (canonical 5000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0ef0a94feacdd065d0c3ef874a4ace2c2b8e881912f8653e2ed1bba79040754a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(d)",
+            "structuralNodeKey": null,
+            "charStart": 56,
+            "charEnd": 71
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "031ef599c95779fe479ab265492952866e07ada415ead67031b695c6ee45b2d4",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(d)",
+            "structuralNodeKey": null,
+            "charStart": 220,
+            "charEnd": 235
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$5,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$5,000,000",
+              "normalizedValue": 5000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 267,
+              "charEnd": 277,
+              "withheldReason": null,
+              "itemId": "0371307d02d0ad83498f7f713b6046bbc2a8e007f2779ec5e99b1d20072b9885",
+              "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+              "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+              "ownerTermName": null,
+              "ownerCitation": "§7.8(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.8(d)",
+                "§7.8(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$5,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$5,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$5,000,000\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$5,000,000",
+              "normalizedValue": 5000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 4,
+              "charEnd": 14,
+              "withheldReason": null,
+              "itemId": "b206c3642cbbef0bc4da49f5607dc5c85aea0b2782abed2fc79ac421c206a6b1",
+              "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+              "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+              "fieldPath": "rules[0].conditions[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The $5,000,000 cap is measured on the aggregate amount of such loans and advances outstanding at any one time (principal outstanding, not cumulative).",
+              "ownerTermName": null,
+              "ownerCitation": "§7.8(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.8(d)",
+                "§7.8(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$5,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$5,000,000\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$5,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$5,000,000",
+              "normalizedValue": 5000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 82,
+              "charEnd": 92,
+              "withheldReason": null,
+              "itemId": "50452f6aee825ad08c3c2f4be1e0338efedacbe122c4ae2204d8fc1f37b2b2f5",
+              "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+              "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000",
+              "ownerTermName": null,
+              "ownerCitation": "§7.8(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.8(d)",
+                "§7.8(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$5,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$5,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "items": [
+        {
+          "itemId": "0dab5e17b36ee9d6ce371b0a357ff7f503a75d477e72fb221c052cfbdc3b1238",
+          "kind": "AMOUNT",
+          "rawText": "$5,000,000",
+          "numericValue": 5000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": 271,
+          "charEnd": 281,
+          "parsedAmount": 5000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "f6c3a711f6cdcc08c61568a6dd9d96d5874bede533665d72ece280f8198fbd80",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": 257,
+          "charEnd": 270,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "cd39744db0a32339f7213aa5ac20b7b0dec0cae7dfe967ed48be60c433470d77",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": 311,
+          "charEnd": 319,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "bbae90335c4d59f1210319a71aab58de4f0721d684044de0b3427233f9f48253",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": 63,
+          "charEnd": 71,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "e0dc38c5037eef5de662beb1e18c7df17132886785b193b6cfe105b75162010c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": 227,
+          "charEnd": 235,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "0ef0a94feacdd065d0c3ef874a4ace2c2b8e881912f8653e2ed1bba79040754a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": 56,
+          "charEnd": 71
+        },
+        {
+          "itemId": "031ef599c95779fe479ab265492952866e07ada415ead67031b695c6ee45b2d4",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": 220,
+          "charEnd": 235
+        },
+        {
+          "itemId": "20f4b30bb77d7e4c26aa61ac84ab5cc476fd7c1ec3ddd251094636b31789ff1e",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(d)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "items": [
+        {
+          "itemId": "0838b008848c587303e3b2a0dd0dea318ecba1dace34ede859383d05f647dd9e",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "MAKE_INVESTMENT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "74cf597c1210523daf0780e072797af87babf7a72c6107d8538671241dff1f71",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "48e73f94f651e54c7f903fa299dd02ac20e17225f339ca8a7476c5dca630faa9",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "93979cfebcb9e5df8b8290af93b961b8786b6d82d947b6ab905ff019ed23b26d",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The $5,000,000 cap is measured on the aggregate amount of such loans and advances outstanding at any one time (principal outstanding, not cumulative).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": "at any one time outstanding",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9930cdfe2697376ec578ef98e3bab671be0d5ccd937d0ec1d5202e523aee8089",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Measurement basis - cap applies to the amount outstanding at any one time rather than an aggregate over a period",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "21ab6f7d1aece86da591261cc84a4563a895b875607e092d2c7fc16dae312094",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].exceptions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "This provision shall not limit key man insurance",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": "provided, however that this provision shall not limit key man insurance",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "82fa3a582678ea813d265818780f4332607bd4ae3c8698a89c58618ad5d0fd81",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].exceptions[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "key man insurance is not limited by this provision",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": "provided, however that this provision shall not limit key man insurance",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "db1a55f487801b35daceff660c0466aead91af77d9678d43b3bc492f584a0c77",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].exceptions[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Carve-out that key man insurance is not limited by this Section 7.8(d)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "892dd3cd0b1cc28782a3608199e65d00c78eecf1d932caad86ec8bf5e081524a",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": 5000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(d)",
+          "sourceExcerpt": "in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$5,000,000",
+            "normalizedValue": 5000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 267,
+            "charEnd": 277,
+            "withheldReason": null,
+            "itemId": "0371307d02d0ad83498f7f713b6046bbc2a8e007f2779ec5e99b1d20072b9885",
+            "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+            "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+            "ownerTermName": null,
+            "ownerCitation": "§7.8(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.8(d)",
+              "§7.8(d)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$5,000,000",
+            "normalizedValue": 5000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 14,
+            "withheldReason": null,
+            "itemId": "b206c3642cbbef0bc4da49f5607dc5c85aea0b2782abed2fc79ac421c206a6b1",
+            "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+            "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The $5,000,000 cap is measured on the aggregate amount of such loans and advances outstanding at any one time (principal outstanding, not cumulative).",
+            "ownerTermName": null,
+            "ownerCitation": "§7.8(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.8(d)",
+              "§7.8(d)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$5,000,000",
+            "normalizedValue": 5000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 82,
+            "charEnd": 92,
+            "withheldReason": null,
+            "itemId": "50452f6aee825ad08c3c2f4be1e0338efedacbe122c4ae2204d8fc1f37b2b2f5",
+            "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+            "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.8(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.8(d)",
+              "§7.8(d)"
+            ]
+          }
+        ],
+        "fieldsWalked": 14,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$5,000,000",
+            "normalizedValue": 5000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 267,
+            "charEnd": 277,
+            "withheldReason": null,
+            "itemId": "0371307d02d0ad83498f7f713b6046bbc2a8e007f2779ec5e99b1d20072b9885",
+            "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+            "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "loans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including for travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000 at any one time outstanding; provided, however that this provision shall not limit key man insurance",
+            "ownerTermName": null,
+            "ownerCitation": "§7.8(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.8(d)",
+              "§7.8(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$5,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$5,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$5,000,000",
+            "normalizedValue": 5000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 14,
+            "withheldReason": null,
+            "itemId": "b206c3642cbbef0bc4da49f5607dc5c85aea0b2782abed2fc79ac421c206a6b1",
+            "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+            "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The $5,000,000 cap is measured on the aggregate amount of such loans and advances outstanding at any one time (principal outstanding, not cumulative).",
+            "ownerTermName": null,
+            "ownerCitation": "§7.8(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.8(d)",
+              "§7.8(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$5,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$5,000,000\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$5,000,000",
+            "normalizedValue": 5000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 82,
+            "charEnd": 92,
+            "withheldReason": null,
+            "itemId": "50452f6aee825ad08c3c2f4be1e0338efedacbe122c4ae2204d8fc1f37b2b2f5",
+            "candidateRef": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+            "ruleOrDefinitionId": "ir-rule:f9512432cf06fb61f26f0746",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.8(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.8(d)",
+              "§7.8(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$5,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$5,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "4e5b6f9baa7708af8be1b7cda27ede79dfd2a501e69f82a8312c16fd6f95753b",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "adccc9662c957c694b819fa6f424d348241faf4cf12657cdd45cd2b3d2a0e421",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 24386,
+    "inputTokens": 12360,
+    "outputTokens": 1694,
+    "costUsd": 0.00204724,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:8aaa7b743717492d1a9fa0b2.verified-units.json",
+    "packageHash": "71370152d72de3ab8167d5799180fbd4d8dd72c5cec8a92d0389a30ab56807f1",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

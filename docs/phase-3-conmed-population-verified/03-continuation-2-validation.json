@@ -1,0 +1,454 @@
+{
+  "segment": 2,
+  "scratch": "/tmp/claude-0/pilot/population-continuation-2",
+  "dest": "docs/phase-3-conmed-population-verified/run-continuation-2",
+  "terminatedNormally": true,
+  "filesPreserved": 46,
+  "bytesPreserved": 1705847,
+  "secretHits": 0,
+  "packagesOnDisk": 13,
+  "packagesValidated": 13,
+  "packagesComplete": 9,
+  "dispatch": {
+    "toDispatch": 26,
+    "attempted": 26,
+    "inFlightAtTermination": null,
+    "notAttempted": [],
+    "skipSetSize": 107,
+    "priorCandidatesReattempted": 0
+  },
+  "flush": {
+    "flushEvery": 1,
+    "logRows": 26,
+    "statusRows": 26,
+    "checkpointAttempted": 26,
+    "rowsNeedingRecovery": 0
+  },
+  "compile": {
+    "COMPLETED": 9,
+    "TIMEOUT": 0,
+    "outcomes": {
+      "SCHEMA_FAILURE": 7,
+      "COMPLETED": 9,
+      "PROVIDER_FAILURE": 10
+    }
+  },
+  "verification": {
+    "ran": 9,
+    "statusCounts": {
+      "NOT_RUN_COMPILE_FAILED": 17,
+      "VERIFICATION_INCOMPLETE": 6,
+      "MATERIAL_DISCREPANCY": 3
+    },
+    "findingsTotal": 8,
+    "reviewInvoked": 9
+  },
+  "packages": {
+    "complete": 9,
+    "incomplete": 17,
+    "notWritten": 0,
+    "problemsByCode": {
+      "IR_WITHOUT_VERIFICATION": 4
+    }
+  },
+  "byBand": {
+    "LONG": {
+      "SCHEMA_FAILURE": 2
+    },
+    "SHORT": {
+      "COMPLETED": 9,
+      "SCHEMA_FAILURE": 3,
+      "PROVIDER_FAILURE": 7
+    },
+    "MID": {
+      "SCHEMA_FAILURE": 2,
+      "PROVIDER_FAILURE": 3
+    }
+  },
+  "benchmark": [],
+  "p1Occurrences": [],
+  "gateway": {
+    "refusalsNotServed": [
+      {
+        "ref": "7.9(a)(i)",
+        "discoveryId": "discovery-candidate:c95bfdcb359c0a4a81b5fd6b",
+        "wallClockMs": 730,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:28.081Z"
+      },
+      {
+        "ref": "7.9(a)(ii)",
+        "discoveryId": "discovery-candidate:635980cf26209b960a1e57d1",
+        "wallClockMs": 2439,
+        "httpStatus": null,
+        "creditExhaustion": true,
+        "message": "[accountability] inventory status INVENTORY_FAILED: inventory call failed on batch 1/1: 402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback pro",
+        "capturedAt": "2026-09-25T08:06:30.521Z"
+      },
+      {
+        "ref": "7.9(b)",
+        "discoveryId": "discovery-candidate:3675ce686bd277452c61595b",
+        "wallClockMs": 764,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:31.287Z"
+      },
+      {
+        "ref": "7.9(b)(i)",
+        "discoveryId": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+        "wallClockMs": 472,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:31.761Z"
+      },
+      {
+        "ref": "7.9(b)(ii)",
+        "discoveryId": "discovery-candidate:708135ded35624a61b97dcbd",
+        "wallClockMs": 498,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:32.261Z"
+      },
+      {
+        "ref": "7.9(b)(iii)",
+        "discoveryId": "discovery-candidate:d2d61a0f46f53960376211d3",
+        "wallClockMs": 665,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:32.927Z"
+      },
+      {
+        "ref": "7.9(b)(iv)",
+        "discoveryId": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+        "wallClockMs": 429,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:33.358Z"
+      },
+      {
+        "ref": "7.9(c)",
+        "discoveryId": "discovery-candidate:915a72b626950c21a3dee456",
+        "wallClockMs": 496,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:33.855Z"
+      },
+      {
+        "ref": "7.9(c)(i)",
+        "discoveryId": "discovery-candidate:523c83bba21c499f3344a3e7",
+        "wallClockMs": 451,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:34.309Z"
+      },
+      {
+        "ref": "7.9(d)",
+        "discoveryId": "discovery-candidate:93b369778c6bbdf6dbc61844",
+        "wallClockMs": 366,
+        "httpStatus": 402,
+        "creditExhaustion": true,
+        "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+        "capturedAt": "2026-09-25T08:06:34.677Z"
+      }
+    ],
+    "partiallyServedThenRefused": [
+      {
+        "ref": "7.9(a)",
+        "discoveryId": "discovery-candidate:1bf90deb6bd9041e04c8728a",
+        "compile": "SCHEMA_FAILURE",
+        "inputTokens": 29406,
+        "costUsd": 0.00550472,
+        "capturedAt": "2026-09-25T08:06:27.348Z"
+      }
+    ],
+    "creditExhaustionDetected": true,
+    "firstRefusalAt": "2026-09-25T08:06:28.081Z",
+    "note": "these candidates received no served attempt: the gateway refused the request before any model work (zero tokens, sub-second); not a pipeline outcome and not retried (one attempt, no mid-run remediation)"
+  },
+  "preflight": null,
+  "ledger": {
+    "source": "final ledger snapshot (flushed after the last candidate)",
+    "seededPrior": {
+      "exactUsd": 0.73365128,
+      "retainedUnknownUsd": 0.9909751199999999
+    },
+    "thisRun": {
+      "amendmentUsd": 0.000473,
+      "exactUsd": 0.31299,
+      "timeoutReservationsRetainedUsd": 0,
+      "committedUsd": 0.31299,
+      "inFlightReservationUsd": 0,
+      "committedIncludingInFlightUsd": 0.31299,
+      "preflightProbesUsd": 0
+    },
+    "cumulative": {
+      "exactUsd": 1.046641,
+      "timeoutReservationsRetainedUsd": 0.990975,
+      "committedUsd": 2.037616,
+      "committedIncludingInFlightUsd": 2.037616,
+      "ceilingUsd": 3.5,
+      "stopAtUsd": 3.450577
+    },
+    "inFlightAtTermination": null,
+    "budgetStopTriggered": false
+  },
+  "ledgerSnapshot": {
+    "ceilingUsd": 3.5,
+    "stopAtUsd": 3.450577,
+    "exactSpendUsd": 1.046641,
+    "retainedUnknownTimeoutUsd": 0.990975,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 2.037616,
+    "remainingUsd": 1.462384
+  },
+  "paidCalls": {
+    "compile": 26,
+    "compileInFlightUnknown": 0,
+    "verify": 9,
+    "verifierSideCalls": 10,
+    "amendment": 1,
+    "healthProbes": 0
+  },
+  "problems": [],
+  "inventory": [
+    {
+      "file": "00-plan.json",
+      "bytes": 22107,
+      "sha256": "77a91fb9ed984ad2574fe5dd9b448a76071fd94bdfc342ba15c4ee4335fe5569"
+    },
+    {
+      "file": "01-statuses.json",
+      "bytes": 32942,
+      "sha256": "ca3216fe32e0f2f518ea0c8f5e8e66c04ec5c636b4301d9105a8cbdf94c4d51d"
+    },
+    {
+      "file": "02-costs.json",
+      "bytes": 20103,
+      "sha256": "4fb1bc7c732864ca8a0d74a5f554f19e2be657a54425afda795d549d9a088c5d"
+    },
+    {
+      "file": "03-run-manifest.checkpoint.json",
+      "bytes": 159,
+      "sha256": "bef03b22dc84bd996397c2a8286e64f17ece1f3b65ac370285fb92893203a786"
+    },
+    {
+      "file": "03-run-manifest.json",
+      "bytes": 8493,
+      "sha256": "da4a51d572996b0653c759684e056b88b61176163574dcce952e21847827c8c6"
+    },
+    {
+      "file": "evidence/discovery-candidate:03a446b1ec89b4309b0572e9.json",
+      "bytes": 67156,
+      "sha256": "c5a5c8766a3bd6ecf3bae002bcf22bf4f99781b04d178ceac0f7cbfa2d2390e9"
+    },
+    {
+      "file": "evidence/discovery-candidate:0c86f64e8580df76e45e16f0.json",
+      "bytes": 27038,
+      "sha256": "0bc1b03daaca6e38d43a6a1a73df9dc85b166a493fbb52da0d568d59d582def2"
+    },
+    {
+      "file": "evidence/discovery-candidate:1aa10f103827a0a5a89b6e58.json",
+      "bytes": 5551,
+      "sha256": "ec8a391ff7f1496cd2cab3ef2742245d1b441e9c14708b7b3e7b1cda58737063"
+    },
+    {
+      "file": "evidence/discovery-candidate:1bf90deb6bd9041e04c8728a.json",
+      "bytes": 99385,
+      "sha256": "49377437e444b166e8d1289e686b91bfda6b68b1c7d4adc03b93c60415bbba1a"
+    },
+    {
+      "file": "evidence/discovery-candidate:248f4e6a15e5a2424e2a2397.json",
+      "bytes": 122843,
+      "sha256": "fc6636bd8c8bfe0fa9710fb189ff2e9a1a7b9ba765a7038713937a542bc9cf1c"
+    },
+    {
+      "file": "evidence/discovery-candidate:25a7ac71a68f0535fad268cd.json",
+      "bytes": 212081,
+      "sha256": "3eea6fbe7f9629173b0dddefee537991be4af0b29a0a7a5eec2ac032e7e59956"
+    },
+    {
+      "file": "evidence/discovery-candidate:3476b082d53dec709a3dca23.json",
+      "bytes": 95404,
+      "sha256": "ae3cecf3ec898a88d2c810de4adda7b8c72cbb8d72f81c09a7d6fb91ca3af0f1"
+    },
+    {
+      "file": "evidence/discovery-candidate:3675ce686bd277452c61595b.json",
+      "bytes": 30940,
+      "sha256": "26ccdadd4ab29a83dc85cefb52794e98fb930efb922e687cfaa250d668ee2649"
+    },
+    {
+      "file": "evidence/discovery-candidate:523c83bba21c499f3344a3e7.json",
+      "bytes": 68590,
+      "sha256": "9f5f9a2b8d2da55d0646fe763273ffa5f419e2bdb9aed1728eea85e066224c8f"
+    },
+    {
+      "file": "evidence/discovery-candidate:5c8863c9378ed219563334fb.json",
+      "bytes": 30911,
+      "sha256": "818113ddf8da7a93ea1215d0623e7abaff0a3d55efad34ca3210d66c7c0a657b"
+    },
+    {
+      "file": "evidence/discovery-candidate:635980cf26209b960a1e57d1.json",
+      "bytes": 42411,
+      "sha256": "90c0aeb26a74d976879f215c75d0cbeacf09462529a514724df108db26e9ed85"
+    },
+    {
+      "file": "evidence/discovery-candidate:708135ded35624a61b97dcbd.json",
+      "bytes": 24374,
+      "sha256": "44d659429e87f0967c9b9676592903f197dea6aa693c20a0b97f1061ea0999dd"
+    },
+    {
+      "file": "evidence/discovery-candidate:718510e2901771adb5a31722.json",
+      "bytes": 72659,
+      "sha256": "c2bbfb121244f2076dbdb317ce2c80588b288d15d5e96e7d1a49b0c521a105fb"
+    },
+    {
+      "file": "evidence/discovery-candidate:86bdf4fb44bc55dbc0deced1.json",
+      "bytes": 47275,
+      "sha256": "2912a9687f4355fb1f5113ab1b54d096557e949f73b06acd242b4e534ef44896"
+    },
+    {
+      "file": "evidence/discovery-candidate:8aaa7b743717492d1a9fa0b2.json",
+      "bytes": 67112,
+      "sha256": "c4f4454a3fd585687f2ae90ea418699188b684b314139ae575f6c071cfcd8340"
+    },
+    {
+      "file": "evidence/discovery-candidate:915a72b626950c21a3dee456.json",
+      "bytes": 72663,
+      "sha256": "da6a23708b757503200ec084b6380a94e9f23b5ff23157c366d97fbf4ea4994f"
+    },
+    {
+      "file": "evidence/discovery-candidate:93b369778c6bbdf6dbc61844.json",
+      "bytes": 8117,
+      "sha256": "cd3ed403cd03137d3b90e335c4d5e0f2ad71a5c8028e86db84cd0e7a7bd690b6"
+    },
+    {
+      "file": "evidence/discovery-candidate:ac28256f7476a6914247e7c9.json",
+      "bytes": 70701,
+      "sha256": "905202ef500e27fc9d918a415f6b5edfb2ca70983d4230c61217230a56cf0940"
+    },
+    {
+      "file": "evidence/discovery-candidate:ad1fed61ba3ae3f2f1d64728.json",
+      "bytes": 33801,
+      "sha256": "30438d3d6aabf1faaf995ae1b23d0e9e084a709362e9332ad3f61149dbd47414"
+    },
+    {
+      "file": "evidence/discovery-candidate:b5296614bd927a8e4ea227bc.json",
+      "bytes": 42925,
+      "sha256": "e81f07de1b3a9add6808df699ad1d58384574b46a8b1f9e9046e67113cdc2f8c"
+    },
+    {
+      "file": "evidence/discovery-candidate:b8eb584c79ec8bdebef032ad.json",
+      "bytes": 8639,
+      "sha256": "d2c49f1af1333a0938175113c8abdc687ac5d6e332704f7054b253b549013275"
+    },
+    {
+      "file": "evidence/discovery-candidate:c95bfdcb359c0a4a81b5fd6b.json",
+      "bytes": 15446,
+      "sha256": "6ddf552cb902f175903d361d9995bccd943f7c8ba75423ff7d4d270478d02ba4"
+    },
+    {
+      "file": "evidence/discovery-candidate:d2d61a0f46f53960376211d3.json",
+      "bytes": 24483,
+      "sha256": "2d1d44830d5558e1f70e863a5841c3426c8f649d5e1f0fcda72b7d70399d8dcc"
+    },
+    {
+      "file": "evidence/discovery-candidate:deff46f63658cfd219009b2b.json",
+      "bytes": 37044,
+      "sha256": "34aca1e671ed541533ec15982909c0f45a81c72385883d065286aee294f73472"
+    },
+    {
+      "file": "evidence/discovery-candidate:e5f0680b399f40d1b03c1ee6.json",
+      "bytes": 49452,
+      "sha256": "2bbd62b2db7a1e9caf18e861f17a3dd90ecc4620c8ebeb969e8e0deb6f639984"
+    },
+    {
+      "file": "evidence/discovery-candidate:e9616549c13c2debd957c533.json",
+      "bytes": 32219,
+      "sha256": "6b5abc3ff0a38c4271062f9cb18ccb52b4813d975c970e61cee7e27245854af6"
+    },
+    {
+      "file": "evidence/verified-units-manifest.json",
+      "bytes": 15609,
+      "sha256": "2127d238bd18cfb5fc3d0913fa75dd27564654ebe8d69e3d53e0e9b71995415e"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:03a446b1ec89b4309b0572e9.verified-units.json",
+      "bytes": 13481,
+      "sha256": "7065cef173020cf4cfdd576af6769eb8a4135020e1e55ca074caea6d087b4273"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:25a7ac71a68f0535fad268cd.verified-units.json",
+      "bytes": 1764,
+      "sha256": "6e732af5266a755b190ff165f095a52ba3b2480b3990192f00958dba843b4caf"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:3476b082d53dec709a3dca23.verified-units.json",
+      "bytes": 48988,
+      "sha256": "8a9c3805b897caa64fc3b4ae6df7512a2efc23ccb21c9088f74441f1d6fb41b3"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:5c8863c9378ed219563334fb.verified-units.json",
+      "bytes": 9670,
+      "sha256": "e27e4688aa41f41d1cebe8835ced9747e69aa4ee47c98bd71caaa34162a9e2fa"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:718510e2901771adb5a31722.verified-units.json",
+      "bytes": 1036,
+      "sha256": "38527924a683b2e2ef10725e17e7d33cf18c478587aa9ee383203c4afd20d97d"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:86bdf4fb44bc55dbc0deced1.verified-units.json",
+      "bytes": 20759,
+      "sha256": "11659b8d3ca33a8bdb229db4d8264fbd6b9c55578282df080e63c09a64f8a68c"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:8aaa7b743717492d1a9fa0b2.verified-units.json",
+      "bytes": 34565,
+      "sha256": "04f77b1924ba227ef7cdfe31132612f602d56e2341c049e78f9fa8658f52fa6c"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:ac28256f7476a6914247e7c9.verified-units.json",
+      "bytes": 894,
+      "sha256": "3da32ead5b1052c2706b3c384ef6fc567e68ee70f4b2f216d04cbf217855d061"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:ad1fed61ba3ae3f2f1d64728.verified-units.json",
+      "bytes": 9821,
+      "sha256": "212bc2de9db931ca388471f6a5f99023dfa25025e177e21f6881cb7ff3d83d55"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:b5296614bd927a8e4ea227bc.verified-units.json",
+      "bytes": 894,
+      "sha256": "2ad06c82613ad0fa1c37e99c6f44ce6311bc02ce03bbd35aab05806b33fd93f4"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:deff46f63658cfd219009b2b.verified-units.json",
+      "bytes": 14049,
+      "sha256": "9a1bd6d26e614e33e4bb8c3be8457a67631ac92902d9ad580337b494bfa61f7d"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:e5f0680b399f40d1b03c1ee6.verified-units.json",
+      "bytes": 20583,
+      "sha256": "56389bd6c6c1ab184d5a5be6b0a5946cd02b00eabb1a4f767077eae9fce58bc3"
+    },
+    {
+      "file": "evidence/verified-units/discovery-candidate:e9616549c13c2debd957c533.verified-units.json",
+      "bytes": 16553,
+      "sha256": "8296487e9aabd449acf7e1c9af81ac3954b02ac11f301de70c9f16d8a9833b54"
+    },
+    {
+      "file": "run.log",
+      "bytes": 4157,
+      "sha256": "478785ae483197606ba02c123c1944c71eaa3a334e539c4b6fa8c147a963cb4a"
+    }
+  ]
+}

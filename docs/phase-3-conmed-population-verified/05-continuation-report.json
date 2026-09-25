@@ -1,0 +1,532 @@
+{
+  "mission": "HEADROOM PHASE-3 - CONMED POPULATION CONTINUATION (remaining candidates only; same pipeline, same budget, one attempt each)",
+  "verdict": "CONMED_POPULATION_CONTINUATION_PARTIAL_EXECUTION",
+  "whyPartial": "Every one of the 133 attemptable candidates now has exactly one disposition, but ten of them (7.9(a)(i) through 7.9(d)) were never served: from 08:06:27Z the Vercel AI Gateway refused every request with HTTP 402 insufficient_funds (credit balance exhausted) before any model work, and 7.9(a) was refused mid-compile after 29,406 billed input tokens. Not retried (one attempt, no mid-run remediation, no credits to add from inside the mission). Two further candidates remain IN_FLIGHT_UNKNOWN (7.6(f)(i) from the original run, 7.6(g) from continuation segment 1), each killed by a container reclaim with no local trace of the request and therefore never rerun. The evidence itself validates completely: zero secret hits, every package hash re-checked, every ledger reconciled with no double counting, no prior candidate re-attempted.",
+  "startingSha": "e4218f6",
+  "commits": [
+    "ee0309a harness",
+    "028e356 rename run -> run-original",
+    "a79a5c2 segment 1 preserved + segment-aware derivation",
+    "(this commit) segment 2 preserved + consolidated manifest"
+  ],
+  "continuationSet": {
+    "derivedFrom": "run-original/00-plan.json + 03-run-manifest.reconstructed.json + evidence file set + 01-run-validation.json; then every preserved run-continuation-N segment",
+    "priorTerminalOriginal": 104,
+    "inFlightUnknownOriginal": "7.6(f)(i) (INDETERMINATE: no evidence file, package, log row, ledger entry or side call; provider completion unknowable; not rerun; one reservation carried)",
+    "neverAttempted": 28,
+    "skipSetSegment1": 105,
+    "skipSetSegment2": 107
+  },
+  "harnessChanges": {
+    "flushEvery": 1,
+    "skipSet": "explicit, derived from artifacts, asserted before dispatch and again inside the loop",
+    "seededLedger": "prior committed spend loaded through the same reserve/settle path so one ceiling and STOP_AT govern the whole population",
+    "outputDirectory": "CONMED_RUN_OUT override; the continuation entry imports the runner only after fixing it (ES imports are hoisted); refuses to run into the original scratch directory or an already-used segment directory",
+    "detachedLaunch": "nohup setsid, stdout/stderr redirected to run.log, stdin from /dev/null"
+  },
+  "sessionIndependence": {
+    "provenAgainstParentTermination": "runner PPID 1, its own session id (segment 1: sid 2406 vs shell sid 2461; segment 2: sid 993 vs shell sid 1045), log and output files written with the launching shell gone",
+    "notProvenAgainstContainerReclaim": "the cloud container is reclaimed after session inactivity; that kills every process regardless of nohup/setsid. It killed the original run at candidate 105 and continuation segment 1 at candidate 2 (last write 06:33:53Z; the session had been idle since 06:31Z; container uptime 0 min at 07:32Z). Segment 2 was therefore kept alive with bounded passive waits (one liveness check per ~9.5 min, no per-tick reporting) - a deliberate, disclosed deviation from 'no mid-run polling loop', whose purpose (not busy-polling the run) is preserved."
+  },
+  "segments": [
+    {
+      "dir": "run-continuation-1",
+      "runId": "conmed-continuation-2026-09-25T06:25:42.392Z",
+      "launchedAt": "2026-09-25T06:25:40Z",
+      "healthProbes": {
+        "ok": true,
+        "spendUsd": 0.00081003,
+        "probes": [
+          {
+            "tier": "A_TINY",
+            "status": 200,
+            "inputTokens": 90,
+            "outputTokens": 13,
+            "costUsd": 1.508e-05
+          },
+          {
+            "tier": "B_WORKLOAD",
+            "status": 200,
+            "inputTokens": 5431,
+            "outputTokens": 342,
+            "costUsd": 0.00079495
+          }
+        ]
+      },
+      "toDispatch": 28,
+      "attempted": 1,
+      "rows": [
+        {
+          "ref": "7.6(f)(ii)",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "package": "incomplete (no units)",
+          "chargedUsd": 0.01942304
+        }
+      ],
+      "inFlightAtTermination": "7.6(g) (633 chars, SHORT) - INDETERMINATE, not rerun, one reservation carried",
+      "terminated": "CONTAINER_RECLAIM_ON_SESSION_INACTIVITY",
+      "thisSegmentSpend": {
+        "amendmentUsd": 0.000357,
+        "exactUsd": 0.000357,
+        "timeoutReservationsRetainedUsd": 0.019423,
+        "committedUsd": 0.01978,
+        "inFlightReservationUsd": 0.01942304,
+        "committedIncludingInFlightUsd": 0.039203,
+        "preflightProbesUsd": 0.00081003
+      }
+    },
+    {
+      "dir": "run-continuation-2",
+      "runId": "conmed-continuation-2-2026-09-25T07:37:23.236Z",
+      "launchedAt": "2026-09-25T07:37:21Z",
+      "firstRowAt": "2026-09-25T07:44:15Z",
+      "lastRowAt": "2026-09-25T08:06:34Z",
+      "healthProbes": "none (the continuation's two probes were spent by segment 1; the gateway had answered 200 seventy minutes earlier)",
+      "toDispatch": 26,
+      "attempted": 26,
+      "terminatedNormally": true,
+      "compile": {
+        "SCHEMA_FAILURE": 7,
+        "COMPLETED": 9,
+        "PROVIDER_FAILURE": 10
+      },
+      "verification": {
+        "ran": 9,
+        "statusCounts": {
+          "NOT_RUN_COMPILE_FAILED": 17,
+          "VERIFICATION_INCOMPLETE": 6,
+          "MATERIAL_DISCREPANCY": 3
+        },
+        "findingsTotal": 8,
+        "reviewInvoked": 9
+      },
+      "packages": {
+        "complete": 9,
+        "incomplete": 17,
+        "notWritten": 0,
+        "problemsByCode": {
+          "IR_WITHOUT_VERIFICATION": 4
+        }
+      },
+      "byBand": {
+        "LONG": {
+          "SCHEMA_FAILURE": 2
+        },
+        "SHORT": {
+          "COMPLETED": 9,
+          "SCHEMA_FAILURE": 3,
+          "PROVIDER_FAILURE": 7
+        },
+        "MID": {
+          "SCHEMA_FAILURE": 2,
+          "PROVIDER_FAILURE": 3
+        }
+      },
+      "thisSegmentSpend": {
+        "amendmentUsd": 0.000473,
+        "exactUsd": 0.31299,
+        "timeoutReservationsRetainedUsd": 0,
+        "committedUsd": 0.31299,
+        "inFlightReservationUsd": 0,
+        "committedIncludingInFlightUsd": 0.31299,
+        "preflightProbesUsd": 0
+      },
+      "gateway": {
+        "refusalsNotServed": [
+          {
+            "ref": "7.9(a)(i)",
+            "discoveryId": "discovery-candidate:c95bfdcb359c0a4a81b5fd6b",
+            "wallClockMs": 730,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:28.081Z"
+          },
+          {
+            "ref": "7.9(a)(ii)",
+            "discoveryId": "discovery-candidate:635980cf26209b960a1e57d1",
+            "wallClockMs": 2439,
+            "httpStatus": null,
+            "creditExhaustion": true,
+            "message": "[accountability] inventory status INVENTORY_FAILED: inventory call failed on batch 1/1: 402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback pro",
+            "capturedAt": "2026-09-25T08:06:30.521Z"
+          },
+          {
+            "ref": "7.9(b)",
+            "discoveryId": "discovery-candidate:3675ce686bd277452c61595b",
+            "wallClockMs": 764,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:31.287Z"
+          },
+          {
+            "ref": "7.9(b)(i)",
+            "discoveryId": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+            "wallClockMs": 472,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:31.761Z"
+          },
+          {
+            "ref": "7.9(b)(ii)",
+            "discoveryId": "discovery-candidate:708135ded35624a61b97dcbd",
+            "wallClockMs": 498,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:32.261Z"
+          },
+          {
+            "ref": "7.9(b)(iii)",
+            "discoveryId": "discovery-candidate:d2d61a0f46f53960376211d3",
+            "wallClockMs": 665,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:32.927Z"
+          },
+          {
+            "ref": "7.9(b)(iv)",
+            "discoveryId": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+            "wallClockMs": 429,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:33.358Z"
+          },
+          {
+            "ref": "7.9(c)",
+            "discoveryId": "discovery-candidate:915a72b626950c21a3dee456",
+            "wallClockMs": 496,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:33.855Z"
+          },
+          {
+            "ref": "7.9(c)(i)",
+            "discoveryId": "discovery-candidate:523c83bba21c499f3344a3e7",
+            "wallClockMs": 451,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:34.309Z"
+          },
+          {
+            "ref": "7.9(d)",
+            "discoveryId": "discovery-candidate:93b369778c6bbdf6dbc61844",
+            "wallClockMs": 366,
+            "httpStatus": 402,
+            "creditExhaustion": true,
+            "message": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai",
+            "capturedAt": "2026-09-25T08:06:34.677Z"
+          }
+        ],
+        "partiallyServedThenRefused": [
+          {
+            "ref": "7.9(a)",
+            "discoveryId": "discovery-candidate:1bf90deb6bd9041e04c8728a",
+            "compile": "SCHEMA_FAILURE",
+            "inputTokens": 29406,
+            "costUsd": 0.00550472,
+            "capturedAt": "2026-09-25T08:06:27.348Z"
+          }
+        ],
+        "creditExhaustionDetected": true,
+        "firstRefusalAt": "2026-09-25T08:06:28.081Z",
+        "note": "these candidates received no served attempt: the gateway refused the request before any model work (zero tokens, sub-second); not a pipeline outcome and not retried (one attempt, no mid-run remediation)"
+      }
+    }
+  ],
+  "population": {
+    "dedup": 135,
+    "dispositions": {
+      "TERMINAL_ATTEMPT": 131,
+      "EMPTY_OPERATIVE_TEXT": 2,
+      "IN_FLIGHT_UNKNOWN": 2
+    },
+    "bySource": {
+      "original:TERMINAL_ATTEMPT": 104,
+      "none:EMPTY_OPERATIVE_TEXT": 2,
+      "original:IN_FLIGHT_UNKNOWN": 1,
+      "continuation-1:TERMINAL_ATTEMPT": 1,
+      "continuation-1:IN_FLIGHT_UNKNOWN": 1,
+      "continuation-2:TERMINAL_ATTEMPT": 26
+    },
+    "served": {
+      "terminalAttemptsServed": 121,
+      "terminalAttemptsNotServed": 10,
+      "notServedRefs": [
+        "7.9(a)(i)",
+        "7.9(a)(ii)",
+        "7.9(b)",
+        "7.9(b)(i)",
+        "7.9(b)(ii)",
+        "7.9(b)(iii)",
+        "7.9(b)(iv)",
+        "7.9(c)",
+        "7.9(c)(i)",
+        "7.9(d)"
+      ],
+      "providerFailureKinds": {
+        "PROVIDER_FAILURE_AFTER_PARTIAL_SERVICE": 1,
+        "GATEWAY_CREDIT_EXHAUSTED_402": 10
+      }
+    },
+    "compileOutcomes": {
+      "TIMEOUT": 49,
+      "COMPLETED": 60,
+      "OTHER_EXECUTION_FAILURE": 3,
+      "SCHEMA_FAILURE": 9,
+      "PROVIDER_FAILURE": 10
+    },
+    "verificationStatuses": {
+      "NOT_RUN_COMPILE_FAILED": 71,
+      "VERIFICATION_INCOMPLETE": 24,
+      "MATERIAL_DISCREPANCY": 34,
+      "REVIEW_REQUIRED": 1,
+      "VERIFICATION_FAILED": 1
+    },
+    "packages": {
+      "complete": 58,
+      "incomplete": 73,
+      "none": 0
+    },
+    "byBand": {
+      "LONG": {
+        "TIMEOUT": 10,
+        "SCHEMA_FAILURE": 3
+      },
+      "SHORT": {
+        "TIMEOUT": 26,
+        "COMPLETED": 59,
+        "OTHER_EXECUTION_FAILURE": 3,
+        "SCHEMA_FAILURE": 4,
+        "IN_FLIGHT_UNKNOWN": 2,
+        "PROVIDER_FAILURE": 7
+      },
+      "MID": {
+        "TIMEOUT": 13,
+        "COMPLETED": 1,
+        "SCHEMA_FAILURE": 2,
+        "PROVIDER_FAILURE": 3
+      },
+      "EMPTY": {
+        "EMPTY_OPERATIVE_TEXT": 2
+      }
+    },
+    "benchmarkExecutionFactsOnly": {
+      "7.1": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      },
+      "7.2": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      },
+      "7.10": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      },
+      "7.2(c)": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      },
+      "7.11": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "COMPLETED",
+        "verificationStatus": "MATERIAL_DISCREPANCY",
+        "packageComplete": true,
+        "executionLimited": false
+      },
+      "7.13": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      },
+      "7.14": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      },
+      "7.16": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      },
+      "7.17": {
+        "disposition": "TERMINAL_ATTEMPT",
+        "compile": "TIMEOUT",
+        "verificationStatus": null,
+        "packageComplete": false,
+        "executionLimited": true
+      }
+    },
+    "benchmarkExecutionLimited": 8,
+    "scored": false
+  },
+  "spend": {
+    "components": [
+      {
+        "component": "original run: exact (compile + verify + amendment)",
+        "usd": 0.73168763,
+        "status": "EXACT",
+        "source": "run-original ledger (01-run-validation.json)"
+      },
+      {
+        "component": "original run: timeout reservations retained",
+        "usd": 0.932306,
+        "status": "UNKNOWN_TIMEOUT_BILLED",
+        "source": "run-original ledger"
+      },
+      {
+        "component": "original run: interrupted request 7.6(f)(i), one reservation (counted here only)",
+        "usd": 0.01942304,
+        "status": "UNKNOWN_IN_FLIGHT",
+        "source": "run-original in-flight"
+      },
+      {
+        "component": "original run: health probes",
+        "usd": 0.00079651,
+        "status": "EXACT",
+        "source": "run-original/preflight-health.json"
+      },
+      {
+        "component": "original run: possible amendment call from the aborted first launch",
+        "usd": 0.0004,
+        "status": "UNKNOWN_POSSIBLE",
+        "source": "02-run-report.json (upper bound)"
+      },
+      {
+        "component": "run-continuation-1: health probes",
+        "usd": 0.00081003,
+        "status": "EXACT",
+        "source": "run-continuation-1/preflight-health.json"
+      },
+      {
+        "component": "run-continuation-1: exact (compile + verify + amendment), this segment only",
+        "usd": 0.000357,
+        "status": "EXACT",
+        "source": "run-continuation-1 ledger minus seeded prior"
+      },
+      {
+        "component": "run-continuation-1: timeout reservations retained, this segment only",
+        "usd": 0.019423,
+        "status": "UNKNOWN_TIMEOUT_BILLED",
+        "source": "run-continuation-1 ledger minus seeded prior"
+      },
+      {
+        "component": "run-continuation-1: interrupted request 7.6(g), one reservation (counted here only)",
+        "usd": 0.01942304,
+        "status": "UNKNOWN_IN_FLIGHT",
+        "source": "run-continuation-1 validation"
+      },
+      {
+        "component": "run-continuation-2: exact (compile + verify + amendment), this segment only",
+        "usd": 0.31299,
+        "status": "EXACT",
+        "source": "run-continuation-2 ledger minus seeded prior"
+      },
+      {
+        "component": "run-continuation-2: timeout reservations retained, this segment only",
+        "usd": 0,
+        "status": "UNKNOWN_TIMEOUT_BILLED",
+        "source": "run-continuation-2 ledger minus seeded prior"
+      }
+    ],
+    "totalUsd": 2.037616,
+    "exactUsd": 1.046641,
+    "unknownOrRetainedUsd": 0.990975,
+    "ceilingUsd": 3.5,
+    "stopAtUsd": 3.450577,
+    "ceilingExceeded": false,
+    "remainingUnderCeilingUsd": 1.462384,
+    "doubleCountingCheck": "each interrupted request appears once (its reservation); each segment's seeded prior equals the components merged before it and is excluded from that segment's own components; the merged total equals the last segment's cumulative ledger plus its probes"
+  },
+  "segment2Observations": {
+    "compileWallClockCompletedS": {
+      "n": 9,
+      "median": 24.386,
+      "max": 42.619
+    },
+    "compileCostCompletedUsd": {
+      "median": 0.00246194,
+      "max": 0.0028886
+    },
+    "verifyCostUsd": {
+      "median": 0.00170157,
+      "max": 0.0030919199999999997
+    },
+    "noTimeouts": "0 of 16 served compiles timed out (original run: 48 of 104); the served SHORT candidates completed in 13-43 s",
+    "costOutlier": "7.8 (4,667 chars, LONG): SCHEMA_FAILURE after 399.7 s with 1,510,950 input tokens and 50,090 output tokens = $0.209447, 10.8x the per-call reservation; shard-stitch left 133 unresolved issues. Largest single charge of the whole population.",
+    "schemaFailures": "7 (7.8, 7.8(c), 7.8(i), 7.8(j), 7.8(k), 7.9, 7.9(a)); 4 with partial rules persisted as IR_WITHOUT_VERIFICATION packages, 3 with none"
+  },
+  "newPipelineDefectsObserved_notRemediated": [
+    {
+      "id": "P-1",
+      "newOccurrencesInContinuation": 0,
+      "note": "all 9 continuation packages after a completed compile+verify are complete; no finding named a unit the candidate did not compile"
+    },
+    {
+      "id": "P-2",
+      "note": "timeout rate: 1 of 1 in segment 1, 0 of 16 served in segment 2; provider execution variance, not a semantic finding"
+    },
+    {
+      "id": "P-4",
+      "note": "MODEL_SCHEMA_FAILURE 7 more (population total 9)"
+    },
+    {
+      "id": "P-6 (new)",
+      "what": "gateway credit exhaustion (HTTP 402 insufficient_funds) is indistinguishable from PROVIDER_FAILURE in the runner's classification; the compiler keeps the provider message only under compilation.unresolvedIssues and errorDetail is null",
+      "instances": "7.9(a) partially served then refused; 7.9(a)(i)-7.9(d) refused in 366-2,439 ms with zero tokens",
+      "consequence": "ten candidates carry a terminal PROVIDER_FAILURE row that is not a model attempt; classified here as served=false / GATEWAY_CREDIT_EXHAUSTED_402 in the consolidated manifest. The runner has no credit-exhaustion stop (it would have continued through all remaining candidates at $0 each); a pre-existing gap the mission forbade fixing mid-run"
+    },
+    {
+      "id": "P-7 (new)",
+      "what": "per-call reservation ($0.019423) under-covers pathological shard loops by an order of magnitude (7.8: $0.2094)",
+      "consequence": "ceiling arithmetic still held (settlement is exact), but the STOP_AT guard would not protect against a single such call near the ceiling"
+    },
+    {
+      "id": "H-2 (new)",
+      "what": "harness: no process survives a container reclaim on session inactivity",
+      "consequence": "two interrupted requests (7.6(f)(i), 7.6(g)) are IN_FLIGHT_UNKNOWN forever under the one-attempt rule; a resumable run needs the session kept active or an external scheduler"
+    }
+  ],
+  "integrity": {
+    "secretLeakScan": "0 hits over 8 + 46 continuation files (and the runner's evidence scanner before every write)",
+    "packageHashesRevalidated": "13 of 13 (segment 2) + 0 of 0 (segment 1)",
+    "copyVerification": "sha256-identical file by file for both segments; run-original rename verified 163 of 163 identical to the scratch original",
+    "priorCandidatesReattempted": 0,
+    "consolidatedRows": 135,
+    "consolidationProblems": [],
+    "ledgerReconciliation": "segment ledgers reconcile to seeded prior + own charges; merged total $2.037616 equals the last segment's cumulative ledger",
+    "doubleCounting": "none: each interrupted request appears once as one reservation; each segment's seeded prior equals the components merged before it"
+  },
+  "gatewayCreditState": "EXHAUSTED at 2026-09-25T08:06:27Z per the provider's own 402 message; every further paid mission requires a top-up by the account owner. Our ledger shows $2.04 committed of the $3.50 ceiling; the gateway balance is not visible from here.",
+  "historicalArtifactsModified": 0,
+  "productionFilesChanged": 0,
+  "closedWorkReopened": false,
+  "benchmarkScored": false,
+  "phase4Touched": false
+}

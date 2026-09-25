@@ -126,3 +126,55 @@ describe("continuation segments: every preserved segment extends the skip set an
     }
   });
 });
+
+describe("preserved continuation artifacts: consolidation invariants", () => {
+  const docs = "docs/phase-3-conmed-population-verified";
+  const manifest = JSON.parse(fs.readFileSync(`${docs}/04-population-manifest.json`, "utf8"));
+  it("every one of the 135 dedup candidates appears exactly once, and every terminal row's evidence file exists", () => {
+    expect(manifest.rows).toHaveLength(135);
+    expect(new Set(manifest.rows.map((r: { discoveryId: string }) => r.discoveryId)).size).toBe(135);
+    expect(manifest.problems).toEqual([]);
+    const d = manifest.dispositions;
+    expect(d.TERMINAL_ATTEMPT + d.EMPTY_OPERATIVE_TEXT + d.IN_FLIGHT_UNKNOWN + (d.NEVER_ATTEMPTED ?? 0)).toBe(135);
+    expect(d.EMPTY_OPERATIVE_TEXT).toBe(2);
+    for (const r of manifest.rows as { evidenceFile: string | null; disposition: string }[]) { if (r.disposition === "TERMINAL_ATTEMPT") { expect(r.evidenceFile).not.toBeNull(); expect(fs.existsSync(`${docs}/${r.evidenceFile}`)).toBe(true); } else expect(r.evidenceFile).toBeNull(); }
+  });
+  it("no candidate was attempted in two runs, and the in-flight candidates are never terminal", () => {
+    const original = JSON.parse(fs.readFileSync(`${docs}/run-original/03-run-manifest.reconstructed.json`, "utf8"));
+    const terminal = new Set<string>(original.candidateStatuses.map((c: { discoveryId: string }) => c.discoveryId));
+    for (const seg of preservedContinuationSegments()) {
+      for (const s of JSON.parse(fs.readFileSync(`${seg}/01-statuses.json`, "utf8")) as { discoveryId: string }[]) { expect(terminal.has(s.discoveryId)).toBe(false); terminal.add(s.discoveryId); }
+      const plan = JSON.parse(fs.readFileSync(`${seg}/00-plan.json`, "utf8"));
+      for (const skipped of plan.skippedPriorAttempts as { discoveryId: string }[]) expect((plan.order as { discoveryId: string }[]).some((o) => o.discoveryId === skipped.discoveryId)).toBe(false);
+    }
+    for (const r of manifest.rows as { discoveryId: string; disposition: string }[]) if (r.disposition === "IN_FLIGHT_UNKNOWN") expect(terminal.has(r.discoveryId)).toBe(false);
+    expect(terminal.size).toBe(manifest.dispositions.TERMINAL_ATTEMPT);
+  });
+  it("the merged spend counts each component once and equals the last segment's cumulative ledger; under the ceiling", () => {
+    const sum = manifest.spend.components.reduce((s: number, c: { usd: number }) => s + c.usd, 0);
+    expect(sum).toBeCloseTo(manifest.spend.totalUsd, 5);
+    const segs = preservedContinuationSegments();
+    const last = JSON.parse(fs.readFileSync(`${docs}/03-continuation-${segs.length}-validation.json`, "utf8"));
+    expect(manifest.spend.totalUsd).toBeCloseTo(last.ledger.cumulative.committedIncludingInFlightUsd + last.ledger.thisRun.preflightProbesUsd, 5);
+    expect(manifest.spend.components.filter((c: { component: string }) => /interrupted request/.test(c.component))).toHaveLength(manifest.dispositions.IN_FLIGHT_UNKNOWN);
+    expect(manifest.spend.totalUsd).toBeLessThan(manifest.spend.ceilingUsd);
+    expect(manifest.spend.ceilingExceeded).toBe(false);
+  });
+  it("gateway refusals are terminal rows marked served=false, never counted as model attempts, and a refused row has zero tokens", () => {
+    const notServed = (manifest.rows as { served: boolean | null; compile: string | null; providerFailureKind: string | null; disposition: string }[]).filter((r) => r.served === false);
+    expect(notServed).toHaveLength(manifest.served.terminalAttemptsNotServed);
+    for (const r of notServed) { expect(r.disposition).toBe("TERMINAL_ATTEMPT"); expect(r.compile).toBe("PROVIDER_FAILURE"); expect(r.providerFailureKind).toMatch(/^GATEWAY_/); }
+    for (const seg of preservedContinuationSegments()) {
+      const v = JSON.parse(fs.readFileSync(`${docs}/03-continuation-${Number(seg.slice(-1))}-validation.json`, "utf8"));
+      for (const r of (v.gateway?.refusalsNotServed ?? []) as { discoveryId: string }[]) {
+        const s = (JSON.parse(fs.readFileSync(`${seg}/01-statuses.json`, "utf8")) as { discoveryId: string; compile: { inputTokens: number | null; costUsd: number } }[]).find((x) => x.discoveryId === r.discoveryId)!;
+        expect(s.compile.inputTokens ?? 0).toBe(0); expect(s.compile.costUsd).toBe(0);
+      }
+    }
+  });
+  it("the benchmark candidates are tracked by execution facts only - nothing here scores them", () => {
+    expect(manifest.scored).toBe(false);
+    expect(manifest.benchmarkExecutionFactsOnly).toHaveLength(9);
+    expect(JSON.stringify(manifest)).not.toMatch(/"(score|passed|correct|accuracy)"/i);
+  });
+});

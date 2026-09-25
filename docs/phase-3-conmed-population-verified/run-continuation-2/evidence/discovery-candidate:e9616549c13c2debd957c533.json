@@ -1,0 +1,624 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T07:56:27.154Z",
+  "candidateRef": "discovery-candidate:e9616549c13c2debd957c533",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.8(m)(i)",
+    "operativeSourceText": "(i) interest rate Swap Agreements in the ordinary course of business up to an aggregate\nnotional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time,\n",
+    "operativeSourceTextSha256": "eb08c518b4cc6f98258f3003dbfa22d5a434d9197a38b3c9931a293edfce6e83",
+    "operativeSourceChars": 225,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:9cdc3e2f5dc2618682b1cb407973e9575cd038880ebad1345baa7570724bd3dd",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 5,
+    "items": [
+      {
+        "itemId": "context-item:4b46f8243b35c97f982542f97365a7077acc4bc8e6ba105bbb89bef9d06a9b42",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.8(m)(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 225,
+        "excerptText": "(i) interest rate Swap Agreements in the ordinary course of business up to an aggregate\nnotional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time,\n"
+      },
+      {
+        "itemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:7a92e9c5502bb45f3073867c48d1cd65a1f8ddb2b99164560cf9d3d071a14e94",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.8(m)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 48,
+        "excerptText": "(m)\nto the extent constituting Investments, any "
+      },
+      {
+        "itemId": "context-item:75983b0c33539747185bfa077d5a945dca290b9777ae644fda7ab51753806cce",
+        "type": "DEFINITION",
+        "normalizedRef": "Lenders",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 47,
+        "excerptText": "\"Lenders\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:7a00ba4b44e6f2c3d542725f10f6e3eca0e8f380f18db914ce1913e245127f8b",
+        "type": "DEFINITION",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8bf99f675b237ec42f84e038bfc0ce35fa6b2e5b79636b80cec9f852a75239e4",
+        "toItemId": "context-item:4b46f8243b35c97f982542f97365a7077acc4bc8e6ba105bbb89bef9d06a9b42",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:7a92e9c5502bb45f3073867c48d1cd65a1f8ddb2b99164560cf9d3d071a14e94",
+        "toItemId": "context-item:4b46f8243b35c97f982542f97365a7077acc4bc8e6ba105bbb89bef9d06a9b42",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:4b46f8243b35c97f982542f97365a7077acc4bc8e6ba105bbb89bef9d06a9b42",
+        "toItemId": "context-item:75983b0c33539747185bfa077d5a945dca290b9777ae644fda7ab51753806cce",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:4b46f8243b35c97f982542f97365a7077acc4bc8e6ba105bbb89bef9d06a9b42",
+        "toItemId": "context-item:7a00ba4b44e6f2c3d542725f10f6e3eca0e8f380f18db914ce1913e245127f8b",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.8(m)(i)",
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "ENTER_SWAP_AGREEMENT",
+          "capacityExpression": {
+            "kind": "DEFINED_TERM_REFERENCE",
+            "termName": "Commitments",
+            "valueType": "MONEY",
+            "citation": "§7.8(m)(i)",
+            "excerpt": "an amount equal to the Commitments of all the Lenders in the aggregate at such time"
+          },
+          "conditions": [
+            {
+              "conditionType": "OTHER_CONDITION",
+              "description": "Swap Agreements must be entered into in the ordinary course of business",
+              "expression": {
+                "kind": "BOOLEAN_LITERAL",
+                "boolValue": true,
+                "citation": "§7.8(m)(i)",
+                "excerpt": "in the ordinary course of business"
+              },
+              "referencesDefinitionId": null,
+              "citation": "§7.8(m)(i)",
+              "excerpt": "in the ordinary course of business",
+              "inventoryItemIds": [
+                "inv-item:7b0954ebb2413fd0a9dc3882"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Definition of Commitments",
+              "description": "Cap benchmark is the defined term 'Commitments', whose definition is not declared in this instrument (LOW unresolved defined term); the reference is preserved and the aggregate-of-all-Lenders meaning comes from the clause text itself."
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Clause text and parent-scope context (Section 7.8 Limitation on Investments, Loans and Advances) are confirmed current operative text with no amendment conflict.",
+            "The cap is a floating benchmark set by the defined term 'Commitments', which is an unresolved (LOW) defined term in this instrument; the reference is preserved as DEFINED_TERM_REFERENCE rather than inventing a dollar figure."
+          ],
+          "citation": "§7.8(m)(i)",
+          "excerpt": "interest rate Swap Agreements in the ordinary course of business up to an aggregate notional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time",
+          "inventoryItemIds": [
+            "inv-item:b7d9b0bc9072119ebc77c2c5",
+            "inv-item:4f49fb54cdf926e39326bc1f",
+            "inv-item:01e9960d0158c7515df2a17a"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "§7.8(m)(i) is an enumerated carve-out/exception to the Section 7.8 'Limitation on Investments, Loans and Advances' prohibition; it is modeled as the permission it confers.",
+        "All four frozen inventory items are consumed: permission (b7d9) on the rule, ordinary-course condition (7b09) on the condition node, the notional cap threshold (4f49) and the Commitments benchmark formula component (01e9) on the capacityExpression.",
+        "The defined term 'Commitments' is a LOW unresolved dependency whose definition is not retrievable in this instrument; the reference is preserved rather than a fabricated figure, and the clause is otherwise complete."
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Commitments"
+        },
+        "outputSummary": "refused: no defined term matching \"Commitments\" found in this instrument's documents",
+        "charsReturned": 75,
+        "timestamp": "2026-09-25T07:55:46.191Z"
+      },
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Swap Agreement"
+        },
+        "outputSummary": "refused: no defined term matching \"Swap Agreement\" found in this instrument's documents",
+        "charsReturned": 78,
+        "timestamp": "2026-09-25T07:55:46.191Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:4b991e6fb846d0fd4009bfe8",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.8(m)(i)",
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "type": "MONEY",
+          "termName": "Commitments",
+          "companyId": "conmed-pilot",
+          "instrumentKey": "conmed-eighth-ar-credit-agreement",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:73d3883982aa2e3afa29f7b5"
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "BOOLEAN_LITERAL",
+              "type": "BOOLEAN",
+              "value": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.8(m)(i)",
+                "excerpt": "in the ordinary course of business"
+              },
+              "exprId": "ir-expr:3c5a07fc7e0f7ad3aa96b7fa"
+            },
+            "referencesDefinitionId": null,
+            "description": "Swap Agreements must be entered into in the ordinary course of business",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.8(m)(i)",
+              "excerpt": "in the ordinary course of business"
+            },
+            "inventoryItemIds": [
+              "inv-item:7b0954ebb2413fd0a9dc3882"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Definition of Commitments",
+            "description": "Cap benchmark is the defined term 'Commitments', whose definition is not declared in this instrument (LOW unresolved defined term); the reference is preserved and the aggregate-of-all-Lenders meaning comes from the clause text itself.",
+            "reason": "dependsOn[0].targetRef \"Definition of Commitments\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Clause text and parent-scope context (Section 7.8 Limitation on Investments, Loans and Advances) are confirmed current operative text with no amendment conflict.",
+          "The cap is a floating benchmark set by the defined term 'Commitments', which is an unresolved (LOW) defined term in this instrument; the reference is preserved as DEFINED_TERM_REFERENCE rather than inventing a dollar figure.",
+          "condition[0].conditionType \"OTHER_CONDITION\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Definition of Commitments\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.8(m)(i)",
+          "excerpt": "interest rate Swap Agreements in the ordinary course of business up to an aggregate notional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "interest rate Swap Agreements in the ordinary course of business up to an aggregate notional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:b7d9b0bc9072119ebc77c2c5",
+          "inv-item:4f49fb54cdf926e39326bc1f",
+          "inv-item:01e9960d0158c7515df2a17a"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] condition[0].conditionType \"OTHER_CONDITION\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] dependsOn[0].targetRef \"Definition of Commitments\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "§7.8(m)(i) is an enumerated carve-out/exception to the Section 7.8 'Limitation on Investments, Loans and Advances' prohibition; it is modeled as the permission it confers.",
+      "All four frozen inventory items are consumed: permission (b7d9) on the rule, ordinary-course condition (7b09) on the condition node, the notional cap threshold (4f49) and the Commitments benchmark formula component (01e9) on the capacityExpression.",
+      "The defined term 'Commitments' is a LOW unresolved dependency whose definition is not retrievable in this instrument; the reference is preserved rather than a fabricated figure, and the clause is otherwise complete.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 4 item(s) accepted (0 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:69-87) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:69-87: \"up to an aggregate\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T07:55:52.554Z",
+      "inputTokens": 12438,
+      "outputTokens": 3590,
+      "cachedInputTokens": 1321216,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 13346,
+      "calculatedCostUsd": 0.060776
+    },
+    "compiledAt": "2026-09-25T07:55:52.554Z",
+    "outputHash": "4f6d08659125f90f8e630f11e69fe7b13e2d6157f151a517999ba9ca2fb1f10c"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "7d334b03b7717f1d90cc63bca3c6e0e307ddc5bd264885c0b20a749b495a2be4",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:e9616549c13c2debd957c533",
+        "ruleOrDefinitionId": "ir-rule:4b991e6fb846d0fd4009bfe8",
+        "irPath": "/rules/0",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "§7.8(m)(i): \"(i) interest rate Swap Agreements in the ordinary course of business up to an aggregate notional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time,\"",
+        "sourceCitation": "§7.8(m)(i)",
+        "proposedIrEvidence": "The rule's action is \"OTHER\" with no operator or qualifier limiting it to interest rate swaps; the only captured condition is \"in the ordinary course of business,\" and the capacity expression is a plain reference to the \"Commitments\" term. Nothing in the rule carries the word \"interest rate.\"",
+        "verifierReasoning": "The source exception carves out only \"interest rate Swap Agreements.\" The instrument defines \"Swap\" broadly (any agreement constituting a swap under CEA §1a(47)), so absent the \"interest rate\" qualifier the proposed IR's permission is materially wider than the source: it would authorize a currency, commodity, or credit swap in the ordinary course within the cap, whereas §7.8(m)(i) authorizes only interest rate swaps. Constructed test: a commodity swap that constitutes an Investment. Under the source it is not within the (m)(i) exception (only interest rate swaps are carved out), so it is caught by §7.8's general prohibition on Investments (unless another exception applies). Under the proposed IR, that commodity swap would be treated as permitted (in ordinary course, within the Commitments cap). A downstream reviewer applying the proposed IR would therefore conclude broader swap capacity exists than the source actually grants. The proposed IR marks its own sufficiency as COMPLETE, and this broadening is precisely the kind of confident-but-wrong overstatement that warrants specific scrutiny.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T07:56:27.152Z"
+      },
+      {
+        "findingId": "780d09c36293a30acd6327f035bd89ad887721f3edbe4d037f9c56046736851d",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:e9616549c13c2debd957c533",
+        "ruleOrDefinitionId": "ir-rule:4b991e6fb846d0fd4009bfe8",
+        "irPath": "/rules/0",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "§7.8(m) header: \"(m) to the extent constituting Investments, any\"",
+        "sourceCitation": "§7.8(m)",
+        "proposedIrEvidence": "The proposed IR presents (m)(i) as a free-standing PERMISSION with no representation that the carve-out operates only \"to the extent constituting Investments,\" and no representation of the underlying §7.8 prohibition it is excepted from.",
+        "verifierReasoning": "The (m) header conditions the carve-out on the activity constituting an Investment, i.e., the exception operates within §7.8's prohibition on Investments. The proposed IR omits both that qualifier and the underlying prohibition. This does not change any real conclusion on its own: Swap Agreements that do not constitute Investments were never restricted by §7.8 and needed no carve-out, while Swap Agreements that do constitute Investments are covered by the exception in either reading. The omission is therefore non-material considered alone (it does not, for instance, cure or worsen the interest-rate overstatement captured in the first finding).",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T07:56:27.152Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:e9616549c13c2debd957c533",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "601034b0d535cf3655a74bbc499273d586e3c90a79396af2b64c81a1efe9306d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Swap Agreements",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.8(m)(i)",
+            "structuralNodeKey": null,
+            "charStart": 18,
+            "charEnd": 33
+          },
+          "irItems": [],
+          "reason": "source mention \"Swap Agreements\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:e9616549c13c2debd957c533",
+      "items": [
+        {
+          "itemId": "f8ebc2d73c3a62daa419cac695db8183fb15051445fe3c5b8014abd2730c4b67",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(m)(i)",
+          "structuralNodeKey": null,
+          "charStart": 114,
+          "charEnd": 127,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "601034b0d535cf3655a74bbc499273d586e3c90a79396af2b64c81a1efe9306d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Swap Agreements",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(m)(i)",
+          "structuralNodeKey": null,
+          "charStart": 18,
+          "charEnd": 33
+        },
+        {
+          "itemId": "a2d281c90f410b1072cb200f768570882812573d80e7009a4845b2e7376cb97b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.8(m)(i)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(i)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:e9616549c13c2debd957c533",
+      "items": [
+        {
+          "itemId": "69a35e06149a01ef05703d963c7d84958ad87ef5d66f9971cfacd042b5b78683",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:4b991e6fb846d0fd4009bfe8",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(m)(i)",
+          "sourceExcerpt": "interest rate Swap Agreements in the ordinary course of business up to an aggregate notional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "369e9e2d55da26a145bdd1a6b5809158057b2f1c087e92f19e3ce3a795d83ec3",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:4b991e6fb846d0fd4009bfe8",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(m)(i)",
+          "sourceExcerpt": "interest rate Swap Agreements in the ordinary course of business up to an aggregate notional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "574d42e1be16eacc588e171b58bc1bcf423e96d11001db4bab22782f58d70072",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:4b991e6fb846d0fd4009bfe8",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Swap Agreements must be entered into in the ordinary course of business",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.8(m)(i)",
+          "sourceExcerpt": "in the ordinary course of business",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "422a7323db4634e9baa9d8ada49471ae7851dddf10cba0d93c42c2abd3be84f0",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:4b991e6fb846d0fd4009bfe8",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Commitments",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:e9616549c13c2debd957c533",
+        "items": [],
+        "fieldsWalked": 5,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "eb08c518b4cc6f98258f3003dbfa22d5a434d9197a38b3c9931a293edfce6e83",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "925853d00f831cd543123d32d0bd862ad44196190ab907a901ce3d64c96a510b",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": {
+      "status": "MATERIAL_CONDITION_POSSIBLE",
+      "evidence": [
+        {
+          "sourceSpan": "in the ordinary course of business up to an aggregate notional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time",
+          "description": "The Swap Agreement permission is gated by both a qualitative requirement (ordinary course of business) and a quantitative cap (notional principal not exceeding the aggregate Commitments). Any downstream representation omitting these conditions would materially overstate what is permitted.",
+          "category": "ELIGIBILITY_REQUIREMENT"
+        },
+        {
+          "sourceSpan": "make any other investment in, any Person (collectively, \" Investments \"), except:",
+          "description": "The prohibition on Investments is expressly carved out by a list of exceptions. The operative restriction applies only except as listed, so a representation without the exceptions would materially misstate the scope of the prohibition.",
+          "category": "EXCEPTION_OR_PROVISO"
+        },
+        {
+          "sourceSpan": "to the extent constituting Investments, any",
+          "description": "Item (m) begins an exception conditioned on whether the item at issue constitutes Investments, introducing an additional qualifying dependency on the characterization itself. Note the excerpt is truncated mid-item, so further conditions may follow.",
+          "category": "OTHER_CONDITIONAL_DEPENDENCY"
+        }
+      ],
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+      "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+      "telemetry": {
+        "provider": "vercel-ai-gateway",
+        "model": "deepseek/deepseek-v4-flash",
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "stage": "condition_suspicion_classification",
+        "timestamp": "2026-09-25T07:55:52.556Z",
+        "inputTokens": 2036,
+        "outputTokens": 844,
+        "cachedInputTokens": null,
+        "cacheCreationInputTokens": null,
+        "attemptCount": 1,
+        "retryCount": 0,
+        "rateLimitFailures": 0,
+        "latencyMs": 10118,
+        "calculatedCostUsd": 0.012512000000000002
+      },
+      "failed": false,
+      "failureDetail": null,
+      "isSynthetic": false,
+      "fromCache": false
+    },
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 37764,
+    "inputTokens": 12438,
+    "outputTokens": 3590,
+    "costUsd": 0.00255034,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:e9616549c13c2debd957c533.verified-units.json",
+    "packageHash": "d26a4f72b0774d634752cdf4ee27a1eacc8ffab712713e4947085ed43ef0b6d0",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}
