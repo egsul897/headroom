@@ -26,7 +26,9 @@ import { prepare } from "./compile-run";
 import { dedupExact } from "./dedup";
 import { COMPANY_ID, INSTRUMENT_KEY, operativeTextFor } from "./pipeline";
 import { OBSERVED_INPUT_TOKENS_PER_CANDIDATE, PREMIUM_MODEL_BUDGET_USD } from "./premium-lock";
-import { DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED_OUTPUT_TOKENS_PER_SECOND } from "./timeout-policy";
+import { DEFAULT_CANDIDATE_TIMEOUT_MS } from "./timeout-policy";
+/** The output rate in force when this calibration was frozen (2026-09-24). timeout-policy.ts has since been recalibrated to 200 tok/s (benchmark recovery, 7.16); this document is a historical snapshot and keeps its own figure. */
+const OBSERVED_OUTPUT_TOKENS_PER_SECOND = 125;
 
 export const LOCKED_MODEL = "deepseek/deepseek-v4-flash";
 const PRICE = { input: 0.13e-6, output: 0.26e-6 }; // per token, from /tmp/claude-0/pilot/models.json (checked below)

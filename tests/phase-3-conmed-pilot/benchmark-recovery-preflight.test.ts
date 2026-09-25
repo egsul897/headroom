@@ -9,7 +9,7 @@ delete process.env.ANTHROPIC_API_KEY;
 
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
-import { accountForRequest, BudgetLedger, DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED_OUTPUT_TOKENS_PER_SECOND } from "../../scripts/p3-conmed-pilot/timeout-policy";
+import { accountForRequest, BudgetLedger, DEFAULT_CANDIDATE_TIMEOUT_MS, MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND, OBSERVED_OUTPUT_TOKENS_PER_SECOND } from "../../scripts/p3-conmed-pilot/timeout-policy";
 import { OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "../../scripts/p3-conmed-pilot/premium-lock";
 import { detectCreditExhaustionInError, detectCreditExhaustionInResult, GATEWAY_CREDIT_EXHAUSTED, GatewayResponseSentinel, parseProviderIssueText } from "../../scripts/p3-conmed-pilot/gateway-credit";
 import { candidateMaxReservationUsd, compileReservationUsd, compileShape, MAX_RESERVED_CONVERSATIONS, MAX_TURN_OVERHEAD_MIRROR, PASS_A_BATCH_CHARS_MIRROR, probeReservationUsd, shapeExceeded, TURNS_PER_CONVERSATION, verifyReservationUsd, verifyShape } from "../../scripts/p3-conmed-pilot/reservation-policy";
@@ -184,15 +184,22 @@ describe("P-7: reservations cover the execution shape the runner permits", () =>
     expect(shapeExceeded({ attemptCount: 6, inputTokens: 100, outputTokens: 1 }, shape)).toHaveLength(1);
     expect(shapeExceeded({ attemptCount: 1, inputTokens: shape.inputTokens + 1, outputTokens: 1 }, shape)).toHaveLength(1);
   });
-  it("derived figures for the locked model at the population's largest span", () => {
+  it("derived figures for the locked model at the population's largest span (output rate recalibrated to 200 tok/s after 7.16 measured >= 133.2)", () => {
+    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBe(200);
+    expect(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND).toBeCloseTo(133.215, 3);
+    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBeGreaterThan(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND * 1.25);
+    expect(compileShape(model, 4667).outputTokens).toBe(96_000);
+    expect(shapeExceeded({ attemptCount: 1, inputTokens: 1345, outputTokens: 63_943 }, compileShape(model, 1144))).toEqual([]);
     const r = compileReservationUsd(model, 4667);
-    expect(r).toBeCloseTo(1.3513292, 7);
-    expect(verifyReservationUsd(model)).toBeCloseTo(0.0416, 7);
-    expect(candidateMaxReservationUsd(model, 4667)).toBeCloseTo(1.3929292, 7);
+    expect(r).toBeCloseTo(1.6414892, 7);
+    expect(verifyReservationUsd(model)).toBeCloseTo(0.05096, 7);
+    expect(candidateMaxReservationUsd(model, 4667)).toBeCloseTo(1.6924492, 7);
+    // the figures the pre-flight mission derived at 125 tok/s, superseded by the recalibration
+    expect(r).toBeGreaterThan(1.3513292);
     expect(probeReservationUsd(model).both).toBeCloseTo(0.00130234, 8);
     expect(probeReservationUsd(model).tierA).toBeGreaterThan(0.00001508); expect(probeReservationUsd(model).tierB).toBeGreaterThan(0.00079495);
     // superseded: the old typical-cost reservation
-    expect(BudgetLedger.reservationFor(model, DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, OBSERVED_OUTPUT_TOKENS_PER_SECOND)).toBeCloseTo(0.01942304, 8);
+    expect(BudgetLedger.reservationFor(model, DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, 125)).toBeCloseTo(0.01942304, 8);
   });
   it("P7-B: an exact cheap completion releases the unused reserve", async () => {
     const h = harness({ a: () => compiled(12000, 3000) });

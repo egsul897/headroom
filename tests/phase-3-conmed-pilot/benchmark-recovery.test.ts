@@ -117,12 +117,14 @@ describe("resume after a harness abort (segment 1 preserved in docs)", () => {
     expect(r.priorAttempts.map((a: { ref: string; attempt: number; recovery: string; costStatus: string; costUsd: number }) => [a.ref, a.attempt, a.recovery, a.costStatus])).toEqual([["7.1", 1, "TIMEOUT", "UNKNOWN_TIMEOUT_BILLED"], ["7.10", 1, "OTHER_EXECUTION_FAILURE", "UNKNOWN_TIMEOUT_BILLED"]]);
     expect(r.accountingCorrections).toHaveLength(1);
     expect(r.accountingCorrections[0]).toMatchObject({ ref: "7.1", was: { costStatus: "EXACT" }, now: { costStatus: "UNKNOWN_TIMEOUT_BILLED" } });
-    expect(r.accountingCorrections[0].now.costUsd).toBeCloseTo(1.3513292, 7);
+    expect(r.accountingCorrections[0]!.now.costUsd).toBeCloseTo(1.3513292, 7);
     expect(r.inFlightAborted).toMatchObject({ ref: "7.10" });
     expect(r.pass1Remaining).toEqual(["7.13", "7.14", "7.16", "7.17", "7.2", "7.2(c)"]);
-    const b = r.seededPrior.breakdown;
-    expect(r.seededPrior.exactUsd).toBeCloseTo(b.preflightProbesUsd + b.segmentAmendmentUsd + b.segmentAttemptsExactUsd, 8);
-    expect(r.seededPrior.retainedUnknownUsd).toBeCloseTo(b.segmentAttemptsRetainedUsd + b.inFlightAbortedReservationUsd, 8);
+    const b = r.seededPrior.breakdown as Record<string, number>;
+    const earlier = JSON.parse(fs.readFileSync(`${seg}/02-costs.json`, "utf8")).snapshot;
+    expect(b.earlierSegmentExactUsd).toBeCloseTo(earlier.exactSpendUsd, 8);
+    expect(r.seededPrior.exactUsd).toBeCloseTo(earlier.exactSpendUsd - b.correctionReleasedExactUsd!, 8);
+    expect(r.seededPrior.retainedUnknownUsd).toBeCloseTo(earlier.retainedUnknownTimeoutUsd + b.correctionRetainedUsd! + b.inFlightAbortedReservationUsd!, 8);
     expect(r.seededPrior.retainedUnknownUsd).toBeCloseTo(2 * 1.3513292, 7);
     // the preserved segment's own row still shows the defective settlement; the correction is applied on resume, never by editing history
     const raw = JSON.parse(fs.readFileSync(`${seg}/01-attempts.json`, "utf8"));
@@ -137,5 +139,30 @@ describe("resume after a harness abort (segment 1 preserved in docs)", () => {
     expect(st.priorAttempts.find((a) => a.ref === "7.1")!.evidenceFile).toMatch(/^docs\/phase-3-conmed-benchmark-recovery\/run-segment-1\/evidence\/attempt-1\//);
     expect(fs.existsSync(st.priorAttempts.find((a) => a.ref === "7.1")!.evidenceFile!)).toBe(true);
     expect(() => R.deriveResumeState(seg, model, plan.targets.slice(1))).toThrow(/different targets/);
+  });
+});
+
+describe("resume after the shape guard stopped segment 2 (preserved in docs)", () => {
+  const seg = "docs/phase-3-conmed-benchmark-recovery/run-segment-2";
+  it("carries all five attempts, no in-flight, no corrections, seeds from the segment's cumulative snapshot, leaves three targets, and finds the probes through the parent chain", async () => {
+    const p = await R.main(["--dry-run", "--resume-from", seg]);
+    const r = p!.resume!;
+    expect(r.priorAttempts.map((a: { ref: string }) => a.ref)).toEqual(["7.1", "7.10", "7.13", "7.14", "7.16"]);
+    expect(r.inFlightAborted).toBeNull(); expect(r.accountingCorrections).toEqual([]);
+    const snap = JSON.parse(fs.readFileSync(`${seg}/02-costs.json`, "utf8")).snapshot;
+    expect(r.seededPrior.exactUsd).toBeCloseTo(snap.exactSpendUsd, 8); expect(r.seededPrior.retainedUnknownUsd).toBeCloseTo(snap.retainedUnknownTimeoutUsd, 8);
+    expect(r.pass1Remaining).toEqual(["7.17", "7.2", "7.2(c)"]);
+    expect(p!.preflight).toMatchObject({ ok: true, model: "deepseek/deepseek-v4-flash" });
+    expect(JSON.parse(fs.readFileSync(`${seg}/03-run-manifest.json`, "utf8")).stopReason).toBe("RESERVATION_SHAPE_EXCEEDED");
+    // the 7.16 shape that forced the recalibration is recorded on its row
+    const a716 = JSON.parse(fs.readFileSync(`${seg}/01-attempts.json`, "utf8")).find((a: { ref: string }) => a.ref === "7.16");
+    expect(a716.compile.shapeExceeded).toEqual(["output tokens 63943 > reserved 60000"]); expect(a716.compile.passAUsage.outputTokens).toBe(63943);
+  }, 120_000);
+  it("a segment that ended COMPLETED, BUDGET_STOP or GATEWAY_CREDIT_EXHAUSTED cannot be resumed", () => {
+    const model = { id: "deepseek/deepseek-v4-flash", pricing: { input: "0.00000013", output: "0.00000026" }, max_tokens: 384000 } as unknown as Parameters<typeof R.deriveResumeState>[1];
+    const tmp = "/tmp/claude-0/pilot/benchmark-recovery-test/fake-segment"; fs.mkdirSync(tmp, { recursive: true });
+    for (const f of ["00-plan.json", "01-attempts.json", "02-costs.json", "preflight-health.json"]) fs.copyFileSync(`docs/phase-3-conmed-benchmark-recovery/run-segment-1/${f}`, `${tmp}/${f}`);
+    const plan = JSON.parse(fs.readFileSync(`${tmp}/00-plan.json`, "utf8"));
+    for (const stopReason of ["COMPLETED", "BUDGET_STOP", "GATEWAY_CREDIT_EXHAUSTED"]) { fs.writeFileSync(`${tmp}/03-run-manifest.json`, JSON.stringify({ stopReason })); expect(() => R.deriveResumeState(tmp, model, plan.targets)).toThrow(/nothing to resume/); }
   });
 });

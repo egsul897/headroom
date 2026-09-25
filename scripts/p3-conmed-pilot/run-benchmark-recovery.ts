@@ -140,15 +140,19 @@ export interface ResumeState {
  */
 export function deriveResumeState(segmentDir: string, model: ReturnType<typeof loadModel>, targets: LoopCandidate[]): ResumeState {
   const rd = (n: string) => JSON.parse(fs.readFileSync(path.join(segmentDir, n), "utf8"));
-  const sPlan = rd("00-plan.json"); const sAttempts = rd("01-attempts.json") as RecoveryAttempt[]; const sCosts = rd("02-costs.json") as { sideCalls: { discoveryId: string | null; costUsd: number }[] }; const preflight = rd("preflight-health.json");
+  const sPlan = rd("00-plan.json"); const sAttempts = rd("01-attempts.json") as RecoveryAttempt[]; const sCosts = rd("02-costs.json") as { snapshot: Record<string, number>; sideCalls: { discoveryId: string | null; costUsd: number }[] };
+  // the probes were run once, before the first segment; a resumed segment finds them through its parent chain
+  let probeDir = segmentDir;
+  while (!fs.existsSync(path.join(probeDir, "preflight-health.json"))) { const parent = JSON.parse(fs.readFileSync(path.join(probeDir, "00-plan.json"), "utf8")).resume?.segmentDir as string | undefined; if (!parent) throw new Error(`resume: no preflight-health.json in ${segmentDir} or its parents`); probeDir = parent; }
+  const preflight = JSON.parse(fs.readFileSync(path.join(probeDir, "preflight-health.json"), "utf8"));
   if (JSON.stringify((sPlan.targets as { discoveryId: string }[]).map((t) => t.discoveryId)) !== JSON.stringify(targets.map((t) => t.discoveryId))) throw new Error("resume: the earlier segment planned different targets");
-  if (fs.existsSync(path.join(segmentDir, "03-run-manifest.json"))) throw new Error("resume: the earlier segment terminated normally; nothing to resume");
+  const manifest = fs.existsSync(path.join(segmentDir, "03-run-manifest.json")) ? rd("03-run-manifest.json") : null;
+  // a segment may be resumed after a harness death (no manifest) or after the shape guard stopped it
+  // (RESERVATION_SHAPE_EXCEEDED, recalibrated since); never after COMPLETED, a budget stop or a 402
+  if (manifest && manifest.stopReason !== "RESERVATION_SHAPE_EXCEEDED") throw new Error(`resume: the earlier segment ended ${manifest.stopReason}; nothing to resume`);
   const scratchPrefix = sPlan.scratchDir ?? "/tmp/claude-0/pilot/benchmark-recovery";
   const relocate = (f: string | null) => (f ? f.replace(scratchPrefix, segmentDir) : f);
   const accountingCorrections: ResumeState["accountingCorrections"] = [];
-  let exact = preflight.spendUsd as number; let retained = 0;
-  const breakdown: Record<string, number> = { preflightProbesUsd: preflight.spendUsd, segmentAmendmentUsd: sCosts.sideCalls.filter((c) => c.discoveryId === null).reduce((s, c) => s + c.costUsd, 0) };
-  exact += breakdown.segmentAmendmentUsd!;
   const priorAttempts = sAttempts.map((a) => {
     const row: RecoveryAttempt = { ...a, evidenceFile: relocate(a.evidenceFile), package: a.package ? { ...a.package, file: relocate(a.package.file) } : null };
     if (a.compile.outcome === "TIMEOUT" && a.compile.costStatus !== "UNKNOWN_TIMEOUT_BILLED") {
@@ -156,24 +160,30 @@ export function deriveResumeState(segmentDir: string, model: ReturnType<typeof l
       accountingCorrections.push({ ref: a.ref, attempt: a.attempt, was: { costUsd: a.compile.costUsd, costStatus: a.compile.costStatus }, now: { costUsd: reservation, costStatus: "UNKNOWN_TIMEOUT_BILLED" }, why: "the earlier loop settled a timed-out compile from the Pass A usage observed before the cut-off; a timeout's billing is unknown and the full reservation is retained (population-loop.ts fix)" });
       row.compile = { ...a.compile, costUsd: reservation, costStatus: "UNKNOWN_TIMEOUT_BILLED" };
     }
-    if (row.compile.costStatus === "UNKNOWN_TIMEOUT_BILLED") retained += row.compile.costUsd; else exact += row.compile.costUsd;
-    if (row.verify.costStatus === "UNKNOWN_TIMEOUT_BILLED") retained += row.verify.costUsd; else exact += row.verify.costUsd;
     return row;
   });
-  breakdown.segmentAttemptsExactUsd = priorAttempts.reduce((s, a) => s + (a.compile.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? 0 : a.compile.costUsd) + (a.verify.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? 0 : a.verify.costUsd), 0);
-  breakdown.segmentAttemptsRetainedUsd = priorAttempts.reduce((s, a) => s + (a.compile.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? a.compile.costUsd : 0) + (a.verify.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? a.verify.costUsd : 0), 0);
-  // the candidate in flight when the segment died: first target in plan order without an attempt row
-  const attempted = new Set(priorAttempts.map((a) => a.discoveryId));
-  const f = targets.find((t) => !attempted.has(t.discoveryId));
+  // seeded prior = the earlier segment's cumulative ledger (which already carries ITS seeded prior, probes and
+  // amendment), plus any correction delta, plus one reservation for a candidate in flight at a harness death
+  const snap = sCosts.snapshot;
+  const correctionDelta = accountingCorrections.reduce((s, c) => s + c.now.costUsd, 0);
+  const correctionRelease = accountingCorrections.reduce((s, c) => s + c.was.costUsd, 0);
+  let exact = (snap.exactSpendUsd ?? 0) - correctionRelease; let retained = (snap.retainedUnknownTimeoutUsd ?? 0) + correctionDelta;
+  const breakdown: Record<string, number> = { earlierSegmentExactUsd: snap.exactSpendUsd ?? 0, earlierSegmentRetainedUsd: snap.retainedUnknownTimeoutUsd ?? 0, correctionReleasedExactUsd: correctionRelease, correctionRetainedUsd: correctionDelta, preflightProbesUsd: preflight.spendUsd, earlierSegmentAmendmentUsd: sCosts.sideCalls.filter((c) => c.discoveryId === null).reduce((s, c) => s + c.costUsd, 0) };
   let inFlightAborted: ResumeState["inFlightAborted"] = null;
-  if (f) {
-    const chargedUsd = compileReservationUsd(model, f.operativeChars, PER_CANDIDATE_TIMEOUT_MS);
-    inFlightAborted = { ref: f.ref, discoveryId: f.discoveryId, operativeChars: f.operativeChars, chargedUsd };
-    priorAttempts.push({ discoveryId: f.discoveryId, ref: f.ref, operativeChars: f.operativeChars, attempt: 1, pass: 1, recovery: "OTHER_EXECUTION_FAILURE", retryEligible: true, retryIneligibleReason: null, p1Occurrence: false, packageHashValid: null,
-      compile: { outcome: "OTHER_EXECUTION_FAILURE", status: "FAILED", failureReasons: ["HARNESS_ABORTED_IN_FLIGHT"], wallClockMs: null, inputTokens: null, outputTokens: null, costUsd: chargedUsd, costStatus: "UNKNOWN_TIMEOUT_BILLED", passAUsage: null, reservationUsd: chargedUsd },
-      verify: { outcome: "NOT_RUN_COMPILE_FAILED", status: null, semanticReviewInvoked: null, findings: null, sideCalls: [], costUsd: 0, costStatus: null, wallClockMs: null },
-      package: null, evidenceFile: null, committedUsd: 0 });
-    retained += chargedUsd; breakdown.inFlightAbortedReservationUsd = chargedUsd;
+  if (!manifest) {
+    const attempted = new Set(priorAttempts.map((a) => a.discoveryId));
+    const f = targets.find((t) => !attempted.has(t.discoveryId));
+    if (f) {
+      // the reservation IN FORCE when that segment dispatched it (its recorded output cap), not today's
+      const segmentOutputCap = sPlan.reservationPolicy?.compileShapeAtMaxChars?.outputTokens as number | undefined;
+      const chargedUsd = compileReservationUsd(model, f.operativeChars, PER_CANDIDATE_TIMEOUT_MS, segmentOutputCap);
+      inFlightAborted = { ref: f.ref, discoveryId: f.discoveryId, operativeChars: f.operativeChars, chargedUsd };
+      priorAttempts.push({ discoveryId: f.discoveryId, ref: f.ref, operativeChars: f.operativeChars, attempt: 1, pass: 1, recovery: "OTHER_EXECUTION_FAILURE", retryEligible: true, retryIneligibleReason: null, p1Occurrence: false, packageHashValid: null,
+        compile: { outcome: "OTHER_EXECUTION_FAILURE", status: "FAILED", failureReasons: ["HARNESS_ABORTED_IN_FLIGHT"], wallClockMs: null, inputTokens: null, outputTokens: null, costUsd: chargedUsd, costStatus: "UNKNOWN_TIMEOUT_BILLED", passAUsage: null, reservationUsd: chargedUsd },
+        verify: { outcome: "NOT_RUN_COMPILE_FAILED", status: null, semanticReviewInvoked: null, findings: null, sideCalls: [], costUsd: 0, costStatus: null, wallClockMs: null },
+        package: null, evidenceFile: null, committedUsd: 0 });
+      retained += chargedUsd; breakdown.inFlightAbortedReservationUsd = chargedUsd;
+    }
   }
   return { segmentDir, priorAttempts, inFlightAborted, accountingCorrections, seededPrior: { exactUsd: Number(exact.toFixed(8)), retainedUnknownUsd: Number(retained.toFixed(8)), breakdown }, preflight: { ok: preflight.ok, spendUsd: preflight.spendUsd, model: preflight.model, creditExhaustion: preflight.creditExhaustion } };
 }
