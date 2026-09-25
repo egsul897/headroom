@@ -1,0 +1,81 @@
+{
+  "scratch": "/tmp/claude-0/pilot/benchmark-recovery-4",
+  "dest": "docs/phase-3-conmed-benchmark-recovery/run-segment-4",
+  "terminatedNormally": true,
+  "filesPreserved": 9,
+  "bytesPreserved": 62866,
+  "secretHits": 0,
+  "packagesOnDisk": 0,
+  "packagesValidated": 0,
+  "packagesComplete": 0,
+  "targets": 8,
+  "attempts": 9,
+  "nonTargetDispatches": 0,
+  "maxAttemptsPerCase": 2,
+  "ledger": {
+    "snapshot": {
+      "ceilingUsd": 15,
+      "stopAtUsd": 14.9,
+      "exactSpendUsd": 0.00234,
+      "retainedUnknownTimeoutUsd": 13.606523,
+      "outstandingReservedUsd": 0,
+      "committedUsd": 13.608863,
+      "remainingUsd": 1.391137
+    },
+    "probesUsd": 0.00082199,
+    "amendmentUsd": 0.00039559,
+    "perRequestExactUsd": 0,
+    "perRequestRetainedUsd": 1.8994092,
+    "ceilingUsd": 15,
+    "stopAtUsd": 14.9
+  },
+  "populationFilesChanged": 0,
+  "problems": [],
+  "inventory": [
+    {
+      "file": "00-plan.json",
+      "bytes": 5451,
+      "sha256": "ca958d09e0920f96bf6adc75bc8ab948e1e5f1804551ab3509f84597b91bda1e"
+    },
+    {
+      "file": "01-attempts.json",
+      "bytes": 12255,
+      "sha256": "2ec0a89a4bd22db8ee1cf439cb88dad76634dbd508b81170a6dd3061026ca6be"
+    },
+    {
+      "file": "02-costs.json",
+      "bytes": 1475,
+      "sha256": "e133dc69198141235ae2ebeec6d6766748f2d1a62914377481b073b61d7f9863"
+    },
+    {
+      "file": "02-pass2-plan.json",
+      "bytes": 409,
+      "sha256": "0d177817261099096b0a4de6a1998a74690f6df081a147d086fbdf2a71581852"
+    },
+    {
+      "file": "03-run-manifest.checkpoint.json",
+      "bytes": 617,
+      "sha256": "ab0fe52afcce9c2b045feb349d9584431f5579db3c47b79bed884b8ad222ad9a"
+    },
+    {
+      "file": "03-run-manifest.json",
+      "bytes": 12448,
+      "sha256": "fa6fc22e629aefc38e5ba61085374fd5e4d2d6a2e16b52a46ee4259dd2e63f51"
+    },
+    {
+      "file": "evidence/attempt-2/discovery-candidate:7a3f36589dacd05c41331a80.json",
+      "bytes": 28347,
+      "sha256": "4309560dd8c07c6debd798c8085f1101af35622a59ab392fe473f56787c69515"
+    },
+    {
+      "file": "evidence/attempt-2/verified-units-manifest.json",
+      "bytes": 1349,
+      "sha256": "9774629a8293e3e607af7dae9e633a899b231ad4dca2e129e44b8c85f419f35d"
+    },
+    {
+      "file": "run.log",
+      "bytes": 515,
+      "sha256": "2f1fa3c02e19b11be96e191c1dcea6f27687f93be0b27e6a15aee09be529bcbf"
+    }
+  ]
+}
