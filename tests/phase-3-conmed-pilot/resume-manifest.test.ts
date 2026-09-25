@@ -5,13 +5,16 @@
  */
 delete process.env.AI_GATEWAY_API_KEY;
 delete process.env.ANTHROPIC_API_KEY;
+// The offline plan is written to a test directory, never over a preserved run's scratch output.
+process.env.CONMED_RUN_OUT = "/tmp/claude-0/pilot/population-verified-test";
 
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { benchmarkCases, calibrate, denominator, historicalCostTable, LOCKED_MODEL as CAL_MODEL } from "../../scripts/p3-conmed-pilot/resume-calibration";
-import { AUTO_RETRY, CONCURRENCY, FALLBACK_MODEL, FORBIDDEN_MODEL_SUFFIX, LOCKED_MODEL, main, SPEND_CEILING_USD, SPEND_STOP_AT_USD } from "../../scripts/p3-conmed-pilot/run-population-verified";
 import { PREMIUM_MODEL_BUDGET_USD } from "../../scripts/p3-conmed-pilot/premium-lock";
 import { DEFAULT_CANDIDATE_TIMEOUT_MS } from "../../scripts/p3-conmed-pilot/timeout-policy";
+// The runner fixes OUT at module load and static imports are hoisted above the env assignment.
+const { AUTO_RETRY, CONCURRENCY, FALLBACK_MODEL, FORBIDDEN_MODEL_SUFFIX, LOCKED_MODEL, main, OUT, SPEND_CEILING_USD, SPEND_STOP_AT_USD } = await import("../../scripts/p3-conmed-pilot/run-population-verified");
 
 const manifest = JSON.parse(fs.readFileSync("docs/phase-3-conmed-resume/02-execution-manifest.json", "utf8"));
 const calibrationFile = JSON.parse(fs.readFileSync("docs/phase-3-conmed-resume/01-calibration.json", "utf8"));
@@ -26,6 +29,7 @@ describe("model lock and execution policy", () => {
     expect(AUTO_RETRY).toBe(false);
     expect(CONCURRENCY).toBe(1);
     expect(PREMIUM_MODEL_BUDGET_USD).toBe(0);
+    expect(OUT).toBe("/tmp/claude-0/pilot/population-verified-test");
     expect(DEFAULT_CANDIDATE_TIMEOUT_MS).toBe(480_000);
     expect(manifest.modelLock.model).toBe(LOCKED_MODEL);
     expect(manifest.execution).toMatchObject({ timeoutMs: 480000, concurrency: 1, attemptsPerCandidate: 1, autoRetry: false, timeoutRaisedForLongParents: false });

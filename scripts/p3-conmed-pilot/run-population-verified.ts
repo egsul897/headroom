@@ -37,7 +37,8 @@ import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest, typ
 import { persistCandidate, VerifiedUnitManifestWriter } from "./evidence";
 import { classifyOutcome, type Outcome } from "./run-population";
 
-export const OUT = "/tmp/claude-0/pilot/population-verified";
+/** Output directory. CONMED_RUN_OUT lets a continuation write beside, never over, the original run. */
+export const OUT = process.env.CONMED_RUN_OUT ?? "/tmp/claude-0/pilot/population-verified";
 export const LOCKED_MODEL = "deepseek/deepseek-v4-flash";
 export const FORBIDDEN_MODEL_SUFFIX = "-0731";
 /** From docs/phase-3-conmed-resume/01-calibration.json: HARD_WORST_AUTHORIZED $3.29 rounded up to the next $0.25. */
@@ -76,8 +77,24 @@ export async function plan() {
   return { stages, bundles, keep, attemptable, skippedEmpty, unresolved: unresolved.length, exactDuplicatesRemoved: report.exactDuplicatesRemoved, dedupDenominator: keep.length };
 }
 
-export async function main(argv: string[] = process.argv.slice(2)) {
+/**
+ * Continuation controls (harness durability only; model, compile, verify, persistence and status
+ * semantics are untouched):
+ *   skipDiscoveryIds  candidates that already received their one attempt - asserted never dispatched;
+ *   priorSpend        the earlier run's accounted spend, seeded into the ledger so the SAME ceiling governs;
+ *   flushEvery        rows between durable flushes (1 = after every terminal candidate, before advancing).
+ */
+export interface RunPopulationOptions {
+  skipDiscoveryIds?: ReadonlySet<string>;
+  priorSpend?: { exactUsd: number; retainedUnknownUsd: number; label: string };
+  flushEvery?: number;
+  runLabel?: string;
+}
+
+export async function main(argv: string[] = process.argv.slice(2), opts: RunPopulationOptions = {}) {
   const dryRun = argv.includes("--dry-run");
+  const skip = opts.skipDiscoveryIds ?? new Set<string>();
+  const flushEvery = opts.flushEvery ?? 1;
   if (dryRun) { delete process.env.AI_GATEWAY_API_KEY; delete process.env.ANTHROPIC_API_KEY; }
   else {
     if (process.env.CONMED_RESUME_AUTHORIZED !== "1") throw new Error("this runner is prepared but not authorized: set CONMED_RESUME_AUTHORIZED=1 in a mission that explicitly authorizes the CONMED resume and its budget");
@@ -97,13 +114,21 @@ export async function main(argv: string[] = process.argv.slice(2)) {
 
   const p = await plan();
   const reservation = BudgetLedger.reservationFor(raw, PER_CANDIDATE_TIMEOUT_MS, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, OBSERVED_OUTPUT_TOKENS_PER_SECOND);
-  const runId = `conmed-resume-${new Date().toISOString()}`;
+  const runId = `${opts.runLabel ?? "conmed-resume"}-${new Date().toISOString()}`;
+  // Continuation pre-flight: a previously attempted candidate can never be dispatched. Asserted on the
+  // dispatch list itself, before any provider contact, not left to the loop.
+  const dispatch = p.attemptable.filter((c) => !skip.has(c.discoveryId));
+  const skippedPrior = p.attemptable.filter((c) => skip.has(c.discoveryId)).map((c) => ({ discoveryId: c.discoveryId, ref: String(c.normalizedSourceRef), reason: "PRIOR_ATTEMPT_OR_IN_FLIGHT_UNKNOWN" }));
+  for (const c of dispatch) if (skip.has(c.discoveryId)) throw new Error(`pre-flight: previously attempted candidate ${c.discoveryId} is on the dispatch list`);
+  if (skip.size > 0 && skippedPrior.length !== skip.size) throw new Error(`pre-flight: skip set names ${skip.size} candidates but only ${skippedPrior.length} are in the attemptable population`);
   const planRecord = {
     runId, model: LOCKED_MODEL, price: { inputPerMtok: Number(raw.pricing.input) * 1e6, outputPerMtok: Number(raw.pricing.output) * 1e6 },
     timeoutMs: PER_CANDIDATE_TIMEOUT_MS, concurrency: CONCURRENCY, autoRetry: AUTO_RETRY, fallbackModel: FALLBACK_MODEL, premiumModelBudgetUsd: PREMIUM_MODEL_BUDGET_USD,
-    ceilingUsd: SPEND_CEILING_USD, stopAtUsd: SPEND_STOP_AT_USD, reservationPerCallUsd: reservation,
+    ceilingUsd: SPEND_CEILING_USD, stopAtUsd: SPEND_STOP_AT_USD, reservationPerCallUsd: reservation, flushEvery,
+    priorSpend: opts.priorSpend ?? null,
     dedupDenominator: p.dedupDenominator, exactDuplicatesRemoved: p.exactDuplicatesRemoved, attemptable: p.attemptable.length, skippedEmpty: p.skippedEmpty,
-    order: p.attemptable.map((c) => ({ discoveryId: c.discoveryId, ref: String(c.normalizedSourceRef), operativeChars: operativeTextFor(c, p.stages.index).length })),
+    skippedPriorAttempts: skippedPrior, toDispatch: dispatch.length,
+    order: dispatch.map((c) => ({ discoveryId: c.discoveryId, ref: String(c.normalizedSourceRef), operativeChars: operativeTextFor(c, p.stages.index).length })),
   };
   save("00-plan", planRecord);
   if (dryRun) { console.log(JSON.stringify({ dryRun: true, dispatched: 0, ...planRecord, order: `${planRecord.order.length} candidates` }, null, 1)); return planRecord; }
@@ -125,6 +150,15 @@ export async function main(argv: string[] = process.argv.slice(2)) {
   } as StageCaller;
 
   const ledger = new BudgetLedger(SPEND_CEILING_USD, SPEND_STOP_AT_USD);
+  if (opts.priorSpend) {
+    // The earlier run's accounted spend is committed into this ledger through the same reserve/settle
+    // path, so the SAME ceiling and STOP_AT govern the whole population: exact as EXACT, timeout and
+    // unknown-billing reservations as UNKNOWN_TIMEOUT_BILLED (retained, never released).
+    ledger.reserve("prior:exact", opts.priorSpend.exactUsd);
+    ledger.settle("prior:exact", { model: raw.id, elapsedWallClockMs: 0, streamedOutputTokensObserved: null, providerUsageObserved: null, locallyCalculatedCostUsd: opts.priorSpend.exactUsd, finalProviderBillingUnavailable: false, costAccountingStatus: "EXACT", chargedToBudgetUsd: opts.priorSpend.exactUsd });
+    ledger.reserve("prior:retained", opts.priorSpend.retainedUnknownUsd);
+    ledger.settle("prior:retained", { model: raw.id, elapsedWallClockMs: 0, streamedOutputTokensObserved: null, providerUsageObserved: null, locallyCalculatedCostUsd: 0, finalProviderBillingUnavailable: true, costAccountingStatus: "UNKNOWN_TIMEOUT_BILLED", chargedToBudgetUsd: opts.priorSpend.retainedUnknownUsd });
+  }
   const verifiedUnits = new VerifiedUnitManifestWriter(path.join(OUT, "evidence"), COMPANY_ID, INSTRUMENT_KEY, runId);
   const statuses: AttemptStatus[] = [];
   const costs: (CostRecord & { discoveryId: string; stage: "compile" | "verify" })[] = [];
@@ -136,9 +170,10 @@ export async function main(argv: string[] = process.argv.slice(2)) {
   ledger.settle("amendment", { model: raw.id, elapsedWallClockMs: 0, streamedOutputTokensObserved: null, providerUsageObserved: null, locallyCalculatedCostUsd: amendmentUsd, finalProviderBillingUnavailable: false, costAccountingStatus: "EXACT", chargedToBudgetUsd: amendmentUsd });
   const operativeState = computeOperativeContractState({ instrumentKey: INSTRUMENT_KEY, baseDocumentId: "conmed-doc-a-eighth-ar-credit-agreement", asOfDate: new Date().toISOString().slice(0, 10), index: p.stages.index, allEffects: amendment.effects });
 
-  const flush = () => { save("01-statuses", statuses); save("02-costs", { snapshot: ledger.snapshot(), perRequest: costs, sideCalls }); verifiedUnits.write(); };
+  const flush = () => { save("01-statuses", statuses); save("02-costs", { snapshot: ledger.snapshot(), perRequest: costs, sideCalls }); verifiedUnits.write(); save("03-run-manifest.checkpoint", { runId, attempted: statuses.length, toDispatch: dispatch.length, committedUsd: ledger.committedUsd, lastCandidate: statuses[statuses.length - 1]?.ref ?? null }); };
   let done = 0;
-  for (const candidate of p.attemptable) {
+  for (const candidate of dispatch) {
+    if (skip.has(candidate.discoveryId)) throw new Error(`refusing to dispatch previously attempted candidate ${candidate.discoveryId}`);
     const ref = String(candidate.normalizedSourceRef);
     if (ledger.mustStop(reservation)) { console.log(`budget guard: $${ledger.committedUsd.toFixed(4)} committed; stopping before STOP_AT $${SPEND_STOP_AT_USD}`); break; }
     currentCandidate = candidate.discoveryId;
@@ -213,8 +248,9 @@ export async function main(argv: string[] = process.argv.slice(2)) {
       committedUsd: ledger.committedUsd,
     });
     currentCandidate = null;
-    console.log(`  [${++done}/${p.attemptable.length}] ${ref.padEnd(14)} compile=${compileOutcome.padEnd(18)} verify=${verifyOutcome.padEnd(22)} pkg=${persisted ? (persisted.package.complete ? "complete" : "incomplete") : "NOT_WRITTEN"} committed=$${ledger.committedUsd.toFixed(4)}`);
-    if (done % 10 === 0) flush();
+    console.log(`  [${++done}/${dispatch.length}] ${ref.padEnd(14)} compile=${compileOutcome.padEnd(18)} verify=${verifyOutcome.padEnd(22)} pkg=${persisted ? (persisted.package.complete ? "complete" : "incomplete") : "NOT_WRITTEN"} committed=$${ledger.committedUsd.toFixed(4)}`);
+    // durable before advancing: the previous run lost four in-memory rows to a container restart
+    if (done % flushEvery === 0) flush();
   }
 
   flush();
@@ -223,7 +259,8 @@ export async function main(argv: string[] = process.argv.slice(2)) {
     schema: "p3-conmed-resume-run-manifest.v1",
     evidenceLabel: "CURRENT_PIPELINE_COMPILE_AND_VERIFY",
     runId, model: LOCKED_MODEL, timeoutMs: PER_CANDIDATE_TIMEOUT_MS, concurrencyUsed: CONCURRENCY, autoRetry: AUTO_RETRY, fallbackModel: FALLBACK_MODEL, premiumModelBudgetUsd: PREMIUM_MODEL_BUDGET_USD,
-    denominator: { dedup: p.dedupDenominator, attemptable: p.attemptable.length, skippedEmpty: p.skippedEmpty.length },
+    denominator: { dedup: p.dedupDenominator, attemptable: p.attemptable.length, skippedEmpty: p.skippedEmpty.length, skippedPriorAttempts: skippedPrior.length, toDispatch: dispatch.length },
+    priorSpend: opts.priorSpend ?? null,
     attempted: statuses.length,
     compileCompleted: count((s) => s.compile.outcome === "COMPLETED"),
     compileTimeout: count((s) => s.compile.outcome === "TIMEOUT"),
@@ -235,11 +272,11 @@ export async function main(argv: string[] = process.argv.slice(2)) {
     pairedPackagesComplete: count((s) => s.package?.complete === true),
     pairedPackagesIncomplete: count((s) => s.package !== null && s.package.complete === false),
     pairedPackagesNotWritten: count((s) => s.package === null),
-    spend: { exactUsd: ledger.exactSpendUsd, timeoutReservationsRetainedUsd: ledger.retainedUnknownUsd, committedUsd: ledger.committedUsd, ceilingUsd: SPEND_CEILING_USD, stopAtUsd: SPEND_STOP_AT_USD, amendmentPipelineUsd: amendmentUsd },
+    spend: { exactUsd: ledger.exactSpendUsd, timeoutReservationsRetainedUsd: ledger.retainedUnknownUsd, committedUsd: ledger.committedUsd, ceilingUsd: SPEND_CEILING_USD, stopAtUsd: SPEND_STOP_AT_USD, amendmentPipelineUsd: amendmentUsd, note: opts.priorSpend ? "cumulative: includes the seeded prior spend" : "this run only" },
     candidateStatuses: statuses.map((s) => ({ discoveryId: s.discoveryId, ref: s.ref, compile: s.compile.outcome, verify: s.verify.outcome, verificationStatus: s.verify.status, packageComplete: s.package?.complete ?? null })),
     verifiedUnitsManifest: "evidence/verified-units-manifest.json",
   });
-  console.log(`\nDONE ${statuses.length}/${p.attemptable.length}  committed $${ledger.committedUsd.toFixed(4)} (exact $${ledger.exactSpendUsd.toFixed(4)}, retained-unknown $${ledger.retainedUnknownUsd.toFixed(4)}) of $${SPEND_CEILING_USD}`);
+  console.log(`\nDONE ${statuses.length}/${dispatch.length}  committed $${ledger.committedUsd.toFixed(4)} (exact $${ledger.exactSpendUsd.toFixed(4)}, retained-unknown $${ledger.retainedUnknownUsd.toFixed(4)}) of $${SPEND_CEILING_USD}`);
 }
 
 if (process.argv[1]?.endsWith("run-population-verified.ts")) void main();
