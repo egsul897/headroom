@@ -26,7 +26,7 @@ const walk = (dir: string, out: string[] = []): string[] => { for (const e of fs
 const BENCHMARK_REFS = ["7.1", "7.2", "7.10", "7.2(c)", "7.11", "7.13", "7.14", "7.16", "7.17"];
 const bandOf = (n: number) => (n === 0 ? "EMPTY" : n <= 776 ? "SHORT" : n < 1886 ? "MID" : "LONG");
 
-export function validateAndPreserve(scratch = OUT, dest = "docs/phase-3-conmed-population-verified/run") {
+export function validateAndPreserve(scratch = OUT, dest = "docs/phase-3-conmed-population-verified/run-original") {
   const read = (n: string) => JSON.parse(fs.readFileSync(path.join(scratch, n), "utf8"));
   const problems: string[] = [];
   const files = walk(scratch).sort();

@@ -1,7 +1,7 @@
 /**
  * CONMED population CONTINUATION - remaining candidates only, same pipeline, same budget.
  *
- * The original run (docs/phase-3-conmed-population-verified/run) attempted 104 of 133 candidates
+ * The original run (docs/phase-3-conmed-population-verified/run-original) attempted 104 of 133 candidates
  * before a container restart killed it with one candidate in flight. This entry point derives the
  * skip set FROM THOSE ARTIFACTS - every candidate with a terminal record plus the in-flight one -
  * and runs the unchanged runner over what remains, with the original run's accounted spend seeded
@@ -20,7 +20,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export const ORIGINAL_RUN_DIR = "docs/phase-3-conmed-population-verified/run";
+export const ORIGINAL_RUN_DIR = "docs/phase-3-conmed-population-verified/run-original";
 export const ORIGINAL_SCRATCH_DIR = "/tmp/claude-0/pilot/population-verified";
 export const CONTINUATION_SCRATCH_DIR = "/tmp/claude-0/pilot/population-continuation";
 
