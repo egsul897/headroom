@@ -166,3 +166,24 @@ describe("resume after the shape guard stopped segment 2 (preserved in docs)", (
     for (const stopReason of ["COMPLETED", "BUDGET_STOP", "GATEWAY_CREDIT_EXHAUSTED"]) { fs.writeFileSync(`${tmp}/03-run-manifest.json`, JSON.stringify({ stopReason })); expect(() => R.deriveResumeState(tmp, model, plan.targets)).toThrow(/nothing to resume/); }
   });
 });
+
+describe("resume after segment 3 (pass 1 complete, guard fired on 7.2(c))", () => {
+  it("carries all eight pass-1 attempts, nothing left for pass 1, and the recalibrated reservation admits exactly one pass-2 retry under STOP_AT", async () => {
+    const seg = "docs/phase-3-conmed-benchmark-recovery/run-segment-3";
+    const p = await R.main(["--dry-run", "--resume-from", seg]);
+    const r = p!.resume!;
+    expect(r.priorAttempts).toHaveLength(8); expect(r.pass1Remaining).toEqual([]); expect(r.inFlightAborted).toBeNull();
+    expect(new Set(r.priorAttempts.map((a: { ref: string }) => a.ref)).size).toBe(8);
+    const committed = r.seededPrior.exactUsd + r.seededPrior.retainedUnknownUsd;
+    const compile = p!.reservationPolicy.compileReservationUsdAtMaxChars as number;
+    expect(committed).toBeCloseTo(11.709058, 6);
+    expect(p!.reservationPolicy.compileShapeAtMaxChars.outputTokens).toBe(128_000);
+    // one retry at the shortest case fits; a second cannot be reserved without crossing STOP_AT
+    const shortest = 1.8994092; // 7.2(c), 529 chars, at the 128k cap
+    expect(committed + shortest).toBeLessThan(14.9);
+    expect(committed + 2 * shortest).toBeGreaterThan(14.9);
+    expect(compile).toBeGreaterThan(shortest);
+    const a72c = JSON.parse(fs.readFileSync(`${seg}/01-attempts.json`, "utf8")).find((a: { ref: string }) => a.ref === "7.2(c)");
+    expect(a72c.compile.shapeExceeded).toEqual(["output tokens 116913 > reserved 96000"]);
+  }, 120_000);
+});

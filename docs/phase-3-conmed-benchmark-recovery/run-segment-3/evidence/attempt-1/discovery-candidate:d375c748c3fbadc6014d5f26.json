@@ -1,0 +1,301 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T14:32:40.122Z",
+  "candidateRef": "discovery-candidate:d375c748c3fbadc6014d5f26",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.17",
+    "operativeSourceText": "SECTION 7.17 Outbound Investment\nRules\n(a) Be or become a \"covered foreign person\",\nas that term is defined in the Outbound Investment Rules, or (b) engage, directly or indirectly, in (i) a \"covered activity\"\nor a \"covered transaction\", as each such term is defined in the Outbound Investment Rules, (ii) any activity or transaction\nthat would constitute a \"covered activity\" or a \"covered transaction\", as each such term is defined in the Outbound\nInvestment Rules, if the Borrower were an Outbound Investment U.S. Person or (iii) any other activity that would cause any Administrative\nAgent or Lender to be in violation of the Outbound Investment Rules or cause any Administrative Agent or Lender to be legally prohibited\nby the Outbound Investment Rules from performing under this Agreement.\n",
+    "operativeSourceTextSha256": "337ae6486aa763b631bfe9dae517deea4a2ff8f2614c384b413899c646bcfa44",
+    "operativeSourceChars": 795,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:55074add245d413013191f126adf2c380f3a510ec2906765aa7e27267ea1e5a6",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 12,
+    "items": [
+      {
+        "itemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.17",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 795,
+        "excerptText": "SECTION 7.17 Outbound Investment\nRules\n(a) Be or become a \"covered foreign person\",\nas that term is defined in the Outbound Investment Rules, or (b) engage, directly or indirectly, in (i) a \"covered activity\"\nor a \"covered transaction\", as each such term is defined in the Outbound Investment Rules, (ii) any activity or transaction\nthat would constitute a \"covered activity\" or a \"covered transaction\", as each such term is defined in the Outbound\nInvestment Rules, if the Borrower were an Outbound Investment U.S. Person or (iii) any other activity that would cause any Administrative\nAgent or Lender to be in violation of the Outbound Investment Rules or cause any Administrative Agent or Lender to be legally prohibited\nby the Outbound Investment Rules from performing under this Agreement.\n"
+      },
+      {
+        "itemId": "context-item:0d8579d2bc96483212a56730e1e58341f2e1b7570482db7b0a243837cf410145",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.17(a)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 106,
+        "excerptText": "(a) Be or become a \"covered foreign person\",\nas that term is defined in the Outbound Investment Rules, or "
+      },
+      {
+        "itemId": "context-item:4773008a71903811fa54e6ee7c941293b611b17729c2a394f89e0c50fbbf2750",
+        "type": "CHILD_RULE",
+        "normalizedRef": "7.17(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 39,
+        "excerptText": "(b) engage, directly or indirectly, in "
+      },
+      {
+        "itemId": "context-item:36bc3d271b47e433381804b8141a8a5f47d79be2c91e83b09825cb0f3fb1bcd8",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.6",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 743,
+        "excerptText": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeasance,\nretirement or other acquisition of, any shares of any class of Capital Stock of the Parent Borrower or any Subsidiary or any warrants\nor options to purchase any such Capital Stock, whether now or hereafter outstanding, or make any other distribution in respect thereof,\neither directly or indirectly, whether in cash or property or in obligations of the Parent Borrower or any Subsidiary (collectively, \" Restricted\nPayments \"), except:\n"
+      },
+      {
+        "itemId": "context-item:4612c6eda5482662dd8adf716d0e72f999d67ecf918188683d620cdbde9cfe2c",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.10",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 448,
+        "excerptText": "SECTION 7.10 Limitation on Transactions\nwith Affiliates . Enter into any transaction, including any purchase, sale, lease or exchange of Property, the rendering of any service\nor the payment of any management, advisory or similar fees, with any Affiliate (other than transactions between or among the Parent Borrower\nand the Subsidiary Guarantors) that involves consideration in excess of $2,500,000 for such transaction unless such transaction is "
+      },
+      {
+        "itemId": "context-item:7bd46cd7759fe99b6de4b69d7a2a8c466651dade25d6afaa2ffb951e669fca3c",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.13",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 481,
+        "excerptText": "SECTION 7.13 Limitation on Negative\nPledge Clauses . Enter into or suffer to exist or become effective any agreement which prohibits or limits the ability of the Parent\nBorrower or any of its Subsidiaries to create, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether\nnow owned or hereafter acquired, to secure the Obligations or, in the case of any Subsidiary Guarantor, its obligations under the Guarantee\nand Collateral Agreement, other than "
+      },
+      {
+        "itemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "type": "DEFINITION",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "type": "DEFINITION",
+        "normalizedRef": "Investment",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 42,
+        "excerptText": "\"Investment\": as defined\nin Section 7.8.\n\n"
+      },
+      {
+        "itemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "type": "DEFINITION",
+        "normalizedRef": "Outbound Investment Rules",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 344,
+        "excerptText": "\"Outbound Investment Rules\": the regulations administered and enforced, together with any related public guidance issued, by the United States Treasury Department\nunder U.S. Executive Order 14105 or any similar law or regulation; as of the date of this Agreement, the Outbound Investment Rules are\ncodified at 31 C.F.R. &sect; 850.101 et seq.\n\n"
+      },
+      {
+        "itemId": "context-item:b71426133679cbc212d700171c8d8c9c742ec3a72025f88b065b9b69966f827d",
+        "type": "DEFINITION",
+        "normalizedRef": "U.S. Person",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 254,
+        "excerptText": "\"U.S. Person\": any\nUnited States citizen, lawful permanent resident, entity organized under the laws of the United States or any jurisdiction within the\nUnited States, including any foreign branch of any such entity, or any person in the United States.\n\n"
+      },
+      {
+        "itemId": "context-item:82b7179bb3eb395c266a07a0250cbf8e762d19b55c18b85eb970f17af27d77c7",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "7.17",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 38,
+        "excerptText": "SECTION 7.17 Outbound Investment\nRules"
+      },
+      {
+        "itemId": "context-item:d115fde0ef71bf93743dd5e209e311af35ffa01e6930a8c569504235e1b6c35c",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "toItemId": "context-item:0d8579d2bc96483212a56730e1e58341f2e1b7570482db7b0a243837cf410145",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "toItemId": "context-item:4773008a71903811fa54e6ee7c941293b611b17729c2a394f89e0c50fbbf2750",
+        "edgeType": "CHILD_OF",
+        "reason": "Independently operative sub-rule of the discovered section."
+      },
+      {
+        "fromItemId": "context-item:36bc3d271b47e433381804b8141a8a5f47d79be2c91e83b09825cb0f3fb1bcd8",
+        "toItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:4612c6eda5482662dd8adf716d0e72f999d67ecf918188683d620cdbde9cfe2c",
+        "toItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:7bd46cd7759fe99b6de4b69d7a2a8c466651dade25d6afaa2ffb951e669fca3c",
+        "toItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "toItemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "toItemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "toItemId": "context-item:6a6511e0f405de0d1dd6ff5e43d4040b5cfecc4eb3c42919d24efa48c1b696ea",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "toItemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "toItemId": "context-item:b71426133679cbc212d700171c8d8c9c742ec3a72025f88b065b9b69966f827d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:f41fd386ded4efa098aea9413014c03db31f569ea2c0e66c51f56112871604ba",
+        "toItemId": "context-item:82b7179bb3eb395c266a07a0250cbf8e762d19b55c18b85eb970f17af27d77c7",
+        "edgeType": "REFERENCES",
+        "reason": "\"SECTION 7.17\""
+      },
+      {
+        "fromItemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "toItemId": "context-item:d115fde0ef71bf93743dd5e209e311af35ffa01e6930a8c569504235e1b6c35c",
+        "edgeType": "REFERENCES",
+        "reason": "\"Section 7.8\" inside a definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "WALL_CLOCK_TIMEOUT"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": null,
+    "toolCallLog": [],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": null,
+    "provider": null,
+    "model": null,
+    "telemetry": null,
+    "compiledAt": null,
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 480006,
+    "inputTokens": null,
+    "outputTokens": null,
+    "costUsd": 1.6414892,
+    "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+    "timedOut": true,
+    "notes": [
+      "BENCHMARK_RECOVERY",
+      "attempt 1",
+      "compile UNKNOWN_TIMEOUT_BILLED",
+      "verify NOT_RUN_COMPILE_FAILED",
+      "passA 1240/40605 tokens billed into compile"
+    ]
+  }
+}

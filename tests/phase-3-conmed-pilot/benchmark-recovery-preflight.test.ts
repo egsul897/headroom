@@ -39,7 +39,7 @@ const timeout = (): CompileExecution => ({ result: { status: "FAILED", failureRe
 const verified = (): VerifyExecution => ({ verification: { status: "VERIFICATION_INCOMPLETE", semanticReviewInvoked: true, findings: [] }, outcome: "COMPLETED", timedOut: false, usage: { inputTokens: 5000, outputTokens: 3000 }, sideCalls: [{ stage: "semantic_verification", inputTokens: 5000, outputTokens: 3000, costUsd: 0.00143 }], wallClockMs: 9000, signal: null });
 
 function harness(executions: Record<string, () => CompileExecution>, opts: { ceiling?: number; stopAt?: number; seed?: number; verify?: (ref: string) => VerifyExecution } = {}) {
-  const ledger = new BudgetLedger(opts.ceiling ?? 3.5, opts.stopAt ?? 3.450577);
+  const ledger = new BudgetLedger(opts.ceiling ?? 15, opts.stopAt ?? 14.9);
   if (opts.seed) { ledger.reserve("prior", opts.seed); ledger.settle("prior", accountForRequest({ model, elapsedWallClockMs: 0, timedOut: false, providerUsage: { inputTokens: Math.round(opts.seed / 0.00000013), outputTokens: 0 }, streamedOutputTokensObserved: null, reservationUsd: 0 })); }
   const dispatched: string[] = []; const verifiedRefs: string[] = []; const flushes: number[] = []; const persisted: string[] = [];
   const deps: LoopDeps = {
@@ -184,16 +184,17 @@ describe("P-7: reservations cover the execution shape the runner permits", () =>
     expect(shapeExceeded({ attemptCount: 6, inputTokens: 100, outputTokens: 1 }, shape)).toHaveLength(1);
     expect(shapeExceeded({ attemptCount: 1, inputTokens: shape.inputTokens + 1, outputTokens: 1 }, shape)).toHaveLength(1);
   });
-  it("derived figures for the locked model at the population's largest span (output rate recalibrated to 200 tok/s after 7.16 measured >= 133.2)", () => {
-    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBe(200);
-    expect(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND).toBeCloseTo(133.215, 3);
-    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBeGreaterThan(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND * 1.25);
-    expect(compileShape(model, 4667).outputTokens).toBe(96_000);
-    expect(shapeExceeded({ attemptCount: 1, inputTokens: 1345, outputTokens: 63_943 }, compileShape(model, 1144))).toEqual([]);
+  it("derived figures for the locked model at the population's largest span (output rate recalibrated to 300 tok/s after 7.16 >= 133.2 and 7.2(c) >= 243.6)", () => {
+    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBe(300);
+    expect(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND).toBeCloseTo(243.569, 3);
+    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBeGreaterThan(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND * 1.2);
+    // at 300 tok/s the wall-clock allowance (144,000) exceeds max_tokens, so the cap is the structural 128,000
+    expect(compileShape(model, 4667).outputTokens).toBe(128_000);
+    expect(shapeExceeded({ attemptCount: 1, inputTokens: 9888, outputTokens: 116_913 }, compileShape(model, 529))).toEqual([]);
     const r = compileReservationUsd(model, 4667);
-    expect(r).toBeCloseTo(1.6414892, 7);
-    expect(verifyReservationUsd(model)).toBeCloseTo(0.05096, 7);
-    expect(candidateMaxReservationUsd(model, 4667)).toBeCloseTo(1.6924492, 7);
+    expect(r).toBeCloseTo(1.8994092, 7);
+    expect(verifyReservationUsd(model)).toBeCloseTo(0.05928, 7);
+    expect(candidateMaxReservationUsd(model, 4667)).toBeCloseTo(1.9586892, 7);
     // the figures the pre-flight mission derived at 125 tok/s, superseded by the recalibration
     expect(r).toBeGreaterThan(1.3513292);
     expect(probeReservationUsd(model).both).toBeCloseTo(0.00130234, 8);

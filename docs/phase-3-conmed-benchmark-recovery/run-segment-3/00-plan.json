@@ -1,0 +1,177 @@
+{
+  "runId": "conmed-benchmark-recovery-2026-09-25T14:24:25.466Z",
+  "evidenceLabel": "BENCHMARK_RECOVERY",
+  "model": "deepseek/deepseek-v4-flash",
+  "price": {
+    "inputPerMtok": 0.13,
+    "outputPerMtok": 0.26
+  },
+  "timeoutMs": 480000,
+  "concurrency": 1,
+  "autoRetry": false,
+  "fallbackModel": null,
+  "premiumModelBudgetUsd": 0,
+  "ceilingUsd": 15,
+  "stopAtUsd": 14.9,
+  "maxAttemptsPerCase": 2,
+  "reservationPolicy": {
+    "policy": "reservation-policy.v1 (execution-shape derived; P-7), unchanged",
+    "compileReservationUsdAtMaxChars": 1.6674892,
+    "verifyReservationUsd": 0.05096,
+    "candidateMaxReservationUsd": 1.7184492,
+    "stageCallReservationUsd": 0.03796,
+    "compileShapeAtMaxChars": {
+      "conversations": 5,
+      "turnsPerConversation": 12,
+      "inputTokensPerTurn": 203914,
+      "passACalls": 4,
+      "passAInputTokensPerCall": 100000,
+      "outputTokens": 96000,
+      "inputTokens": 12634840,
+      "calls": 64
+    },
+    "verifyShape": {
+      "conversations": 0,
+      "turnsPerConversation": 0,
+      "inputTokensPerTurn": 100000,
+      "passACalls": 0,
+      "passAInputTokensPerCall": 0,
+      "outputTokens": 96000,
+      "inputTokens": 200000,
+      "calls": 2
+    }
+  },
+  "targetCount": 8,
+  "excluded": {
+    "ref": "7.11",
+    "reason": "already has complete current-pipeline evidence"
+  },
+  "scratchDir": "/tmp/claude-0/pilot/benchmark-recovery-3",
+  "resume": {
+    "segmentDir": "docs/phase-3-conmed-benchmark-recovery/run-segment-2",
+    "priorAttempts": [
+      {
+        "ref": "7.1",
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "costUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+      },
+      {
+        "ref": "7.10",
+        "attempt": 1,
+        "recovery": "OTHER_EXECUTION_FAILURE",
+        "compile": "OTHER_EXECUTION_FAILURE",
+        "costUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+      },
+      {
+        "ref": "7.13",
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "costUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+      },
+      {
+        "ref": "7.14",
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "costUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+      },
+      {
+        "ref": "7.16",
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "costUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+      }
+    ],
+    "inFlightAborted": null,
+    "accountingCorrections": [],
+    "seededPrior": {
+      "exactUsd": 0.001511,
+      "retainedUnknownUsd": 6.756646,
+      "breakdown": {
+        "earlierSegmentExactUsd": 0.001511,
+        "earlierSegmentRetainedUsd": 6.756646,
+        "correctionReleasedExactUsd": 0,
+        "correctionRetainedUsd": 0,
+        "preflightProbesUsd": 0.00082199,
+        "earlierSegmentAmendmentUsd": 0.00032331
+      }
+    },
+    "pass1Remaining": [
+      "7.17",
+      "7.2",
+      "7.2(c)"
+    ]
+  },
+  "targets": [
+    {
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "ref": "7.1",
+      "operativeChars": 3275,
+      "band": "LONG",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    },
+    {
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "ref": "7.10",
+      "operativeChars": 1995,
+      "band": "LONG",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "ref": "7.13",
+      "operativeChars": 1212,
+      "band": "MID",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "ref": "7.14",
+      "operativeChars": 1106,
+      "band": "MID",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "ref": "7.16",
+      "operativeChars": 1144,
+      "band": "MID",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    },
+    {
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "ref": "7.17",
+      "operativeChars": 795,
+      "band": "MID",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    },
+    {
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "ref": "7.2",
+      "operativeChars": 8843,
+      "band": "LONG",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    },
+    {
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "ref": "7.2(c)",
+      "operativeChars": 529,
+      "band": "SHORT",
+      "populationOutcome": "TIMEOUT (EXECUTION_LIMITED)"
+    }
+  ],
+  "preflight": {
+    "ok": true,
+    "spendUsd": 0.00082199,
+    "model": "deepseek/deepseek-v4-flash"
+  }
+}
