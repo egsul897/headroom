@@ -12,6 +12,9 @@
  *
  * Forensic tooling. Nothing in the production pipeline imports it.
  */
+import { assembleCompilerInput } from "../../lib/contract-model/covenant-map/candidate-input";
+import type { CovenantContextBundle } from "../../lib/contract-model/compiler/context-retrieval/types";
+import type { OperativeContractState, AmendmentEffectCandidate } from "../../lib/contract-model/compiler/amendment/types";
 import Anthropic from "@anthropic-ai/sdk";
 import fs from "node:fs";
 import path from "node:path";
@@ -133,21 +136,9 @@ export function callerFor(model: string, fetchImpl?: typeof globalThis.fetch): R
 }
 
 export function buildInput(candidate: DiscoveredCandidate, bundle: unknown, stages: ReturnType<typeof buildDeterministicStages>, operativeState: unknown, amendmentEffects: unknown[]): SemanticCompilerInput {
-  return {
-    companyId: COMPANY_ID,
-    instrumentKey: INSTRUMENT_KEY,
-    sourceDocumentId: candidate.documentId,
-    candidateRef: candidate.discoveryId,
-    sourceSectionRef: candidate.normalizedSourceRef,
-    operativeSourceText: operativeTextFor(candidate, stages.index),
-    contextBundle: bundle,
-    operativeLineage: null,
-    toolAccess: { structuralIndex: stages.index, operativeState, packageGraph: stages.packageGraph, amendmentEffects, contextBundle: bundle },
-    irSchemaVersion: IR_SCHEMA_VERSION,
-    compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION,
-    compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION,
-    toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION,
-  } as SemanticCompilerInput;
+  // Delegates to THE production builder (lib/contract-model/covenant-map/candidate-input.ts): one operative-source
+  // rule, one lineage resolution. The pilot never assembles a compiler input of its own.
+  return assembleCompilerInput(candidate, bundle as CovenantContextBundle, { companyId: COMPANY_ID, instrumentKey: INSTRUMENT_KEY, index: stages.index, packageGraph: stages.packageGraph, operativeState: (operativeState ?? null) as OperativeContractState | null, amendmentEffects: (amendmentEffects ?? null) as AmendmentEffectCandidate[] | null });
 }
 
 export function record(candidate: DiscoveredCandidate, input: SemanticCompilerInput, result: SemanticCompilationResult, m: GatewayModel, tier: 1 | 2, escalationReason: string | null): CandidateRecord {

@@ -29,6 +29,8 @@ export interface ResolveSourceContextInput {
   operativeSourceText: string;
   /** The real physical node the operative text is anchored to, when known. */
   anchorNodeId: string | null;
+  /** Canonical-map remediation: OPERATIVE_STATE_CURRENT_TEXT = the text is the operative state's RESOLVED current text (no base-document offset; complete by construction). Default STRUCTURAL_NODE. */
+  operativeSourceOrigin?: "STRUCTURAL_NODE" | "OPERATIVE_STATE_CURRENT_TEXT";
   /** Absolute char offset of operativeSourceText within the document, when known - required for truncation detection and unit extension. */
   operativeCharStart: number | null;
   /** The full document text, when available - enables definition-span unit boundaries (definitions live in prose) and unit extension. */
@@ -123,7 +125,8 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
   const anchor: StructuralNode | undefined = input.anchorNodeId ? index.getNodeById(input.anchorNodeId) : undefined;
   if (input.anchorNodeId && !anchor) reasons.push(`anchor node "${input.anchorNodeId}" does not exist in the structural index`);
 
-  const windowStart = input.operativeCharStart ?? anchor?.charStart ?? -1;
+  const currentTextOrigin = input.operativeSourceOrigin === "OPERATIVE_STATE_CURRENT_TEXT";
+  const windowStart = currentTextOrigin ? -1 : (input.operativeCharStart ?? anchor?.charStart ?? -1);
   const windowEnd = windowStart >= 0 ? windowStart + input.operativeSourceText.length : -1;
   const documentText = input.documentText ?? null;
   // Text the unit can be extended from: the document itself, else the anchoring node's own text (offset by its charStart).
@@ -142,8 +145,12 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
   let completenessKnown = false;
   let unitExtension: SourceContextRegion["unitExtension"] = null;
 
-  const boundary = input.operativeCharStart !== null ? resolveUnitBoundary(index, documentId, anchor, windowStart, windowEnd, documentText) : null;
-  if (anchor && input.operativeCharStart !== null && index.getNodeText(anchor.nodeId, "DESCENDANTS").trim().length === 0) {
+  const boundary = !currentTextOrigin && input.operativeCharStart !== null ? resolveUnitBoundary(index, documentId, anchor, windowStart, windowEnd, documentText) : null;
+  if (currentTextOrigin) {
+    // the operative state's RESOLVED provision view IS the unit: its current text is complete by construction
+    completenessKnown = true;
+    reasons.push(`operative text is the operative state's RESOLVED current text for this provision${anchor ? ` (base node ${anchor.sectionRef} is superseded)` : ""}; the unit boundary is the provision view itself`);
+  } else if (anchor && input.operativeCharStart !== null && index.getNodeText(anchor.nodeId, "DESCENDANTS").trim().length === 0) {
     structurallyIncomplete = true;
     completenessKnown = true;
     reasons.push(`anchor node ${anchor.sectionRef} has no text in the structural index`);

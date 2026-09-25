@@ -56,8 +56,12 @@ export function assertNoSecrets(serialized: string, where: string): void {
   if (hits.length > 0) throw new Error(`refusing to write ${where}: it matches ${hits.map((h) => h.pattern).join(", ")}`);
 }
 
+export const CANDIDATE_EVIDENCE_SCHEMA = "p3-candidate-evidence.v2" as const;
+/** v2 adds (additively) what the v1 record could not answer after the fact: execution mode / sharding, the resolved
+ * source context, the operative-source origin, the certified configuration and its per-candidate execution telemetry,
+ * the structured provider error and the qualitative-lineage audit. Every v1 field is unchanged; a v1 reader still reads a v2 record. */
 export interface CandidateEvidence {
-  schema: "p3-candidate-evidence.v1";
+  schema: typeof CANDIDATE_EVIDENCE_SCHEMA;
   capturedAt: string;
   candidateRef: string;
   /** The complete compiler input, minus the live tool-access handles (which are objects, not evidence). */
@@ -74,7 +78,15 @@ export interface CandidateEvidence {
     compilerPromptVersion: string;
     toolPolicyVersion: string;
     operativeLineage: unknown;
+    /** v2: STRUCTURAL_NODE | OPERATIVE_STATE_CURRENT_TEXT (candidate-span.ts). */
+    operativeSourceOrigin: string | null;
   };
+  /** v2: how the compile was executed - the v1 record could not distinguish MONOLITHIC from SHARDED. */
+  execution: { mode: string | null; reason: string | null; planHash: string | null; plannedShards: number | null; oversizedShards: number | null; sharded: { executed: number; reused: number; retries: number; providerCalls: number; statusCounts: Record<string, number> } | null } | null;
+  /** v2: the resolved source context Pass A / Pass B saw (state + one summary row per region). */
+  sourceContext: { state: string; reasons: string[]; regions: { regionId: string; kind: string; documentId: string; sectionRef: string | null; chars: number; charStart: number; truncatedAtBudget: boolean }[] } | null;
+  /** v2: the explicit certified configuration identity and the candidate's execution telemetry (conversations, transport attempts, shard attempts, cost separation). */
+  certified: { configIdentity: string; telemetry: unknown } | null;
   contextBundle: {
     bundleId: string;
     sufficiencyState: string;
@@ -87,6 +99,8 @@ export interface CandidateEvidence {
     status: string;
     failureReasons: string[];
     errorDetail: unknown;
+    /** v2: the structured provider error record when the failure was a classified provider failure. */
+    providerError: unknown;
     /** The model's own response, verbatim - the field whose absence made the 7.2(f) origin unprovable. */
     rawModelOutput: unknown;
     toolCallLog: unknown;
@@ -114,6 +128,8 @@ export interface CandidateEvidence {
     semanticReviewInvoked: boolean;
     conditionSuspicion: unknown;
     verifierAlgorithmVersion: string;
+    /** v2: deterministic qualitative-grounding audit. */
+    qualitativeLineage: unknown;
   } | null;
   run: {
     model: string;
@@ -139,10 +155,11 @@ export function buildCandidateEvidence(
   result: SemanticCompilationResult,
   verification: SemanticVerificationResult | null,
   run: CandidateEvidence["run"],
+  extras: { certified?: { configIdentity: string; telemetry: unknown } | null } = {},
 ): CandidateEvidence {
   const bundle = compilerInput.contextBundle as unknown as { bundleId?: string; sufficiencyState?: string; stopReasons?: unknown; edges?: unknown; items?: { itemId: string; type: string; normalizedRef: string | null; citation?: string | null; evidenceState?: string | null; excerptText: string }[] } | null;
   return {
-    schema: "p3-candidate-evidence.v1",
+    schema: CANDIDATE_EVIDENCE_SCHEMA,
     capturedAt: new Date().toISOString(),
     candidateRef: compilerInput.candidateRef,
     compilerInput: {
@@ -158,7 +175,15 @@ export function buildCandidateEvidence(
       compilerPromptVersion: compilerInput.compilerPromptVersion,
       toolPolicyVersion: compilerInput.toolPolicyVersion,
       operativeLineage: compilerInput.operativeLineage ?? null,
+      operativeSourceOrigin: compilerInput.operativeSourceOrigin ?? null,
     },
+    execution: result.execution
+      ? { mode: result.execution.mode, reason: result.execution.reason, planHash: result.execution.planHash, plannedShards: result.execution.plannedShards, oversizedShards: result.execution.oversizedShards, sharded: result.execution.sharded ? { executed: result.execution.sharded.executed, reused: result.execution.sharded.reused, retries: result.execution.sharded.retries, providerCalls: result.execution.sharded.providerCalls, statusCounts: result.execution.sharded.statusCounts } : null }
+      : null,
+    sourceContext: result.sourceContext
+      ? { state: result.sourceContext.state, reasons: result.sourceContext.reasons, regions: result.sourceContext.regions.map((r) => ({ regionId: r.regionId, kind: r.kind, documentId: r.documentId, sectionRef: r.sectionRef, chars: r.text.length, charStart: r.charStart, truncatedAtBudget: r.truncatedAtBudget })) }
+      : null,
+    certified: extras.certified ?? null,
     contextBundle: bundle
       ? {
           bundleId: bundle.bundleId ?? "(none)",
@@ -173,6 +198,7 @@ export function buildCandidateEvidence(
       status: result.status,
       failureReasons: result.failureReasons ?? [],
       errorDetail: result.errorDetail ?? null,
+      providerError: result.errorDetail?.providerError ?? null,
       rawModelOutput: result.rawModelOutput ?? null,
       toolCallLog: result.toolCallLog ?? [],
       rules: result.rules ?? [],
@@ -199,6 +225,7 @@ export function buildCandidateEvidence(
           semanticReviewInvoked: verification.semanticReviewInvoked,
           conditionSuspicion: verification.conditionSuspicion,
           verifierAlgorithmVersion: verification.verifierAlgorithmVersion,
+          qualitativeLineage: verification.qualitativeLineage ?? null,
         }
       : null,
     run,

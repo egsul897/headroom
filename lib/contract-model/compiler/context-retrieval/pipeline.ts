@@ -81,7 +81,10 @@ export interface PackageAccess {
 function computeSufficiencyState(state: RetrievalState): SufficiencyState {
   if (state.stopReasons.size > 0) return "BUDGET_EXCEEDED";
   if (state.unresolved.some((u) => u.severity === "HIGH")) return "INCOMPLETE";
-  if (state.unresolved.length > 0) return "REVIEW_REQUIRED";
+  // Canonical-map remediation: a LOW-severity DISCLOSURE (a bounded descendant selection, a capitalized phrase that is
+  // not a declared term) is recorded on the bundle but does not, by itself, make retrieval insufficient - only a
+  // MEDIUM or HIGH unresolved dependency does. Before this, 103 of 104 preserved CONMED bundles were non-SUFFICIENT.
+  if (state.unresolved.some((u) => u.severity === "MEDIUM")) return "REVIEW_REQUIRED";
   return "SUFFICIENT";
 }
 

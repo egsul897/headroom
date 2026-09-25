@@ -217,6 +217,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       operativeSourceText: input.operativeSourceText,
       anchorNodeId: input.contextBundle.originatingStructuralNodeIds?.[0] ?? null,
       operativeCharStart: input.operativeCharStart ?? null,
+      operativeSourceOrigin: input.operativeSourceOrigin ?? "STRUCTURAL_NODE",
       documentText: index.getDocumentText(input.sourceDocumentId) ?? null,
       ...(options.sourceContextBudget ?? {}),
     });
@@ -237,6 +238,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   // never be circular. Disabled only by an explicit options.accountability
   // === false (zero-cost previews / legacy callers), never silently.
   // F-7C: Pass A runs ONCE for the whole unit here - never per shard.
+  // Certified CONTEXT_ONLY policy: accountability (Pass A / Pass C) and planning see the unit's OWN operative region(s);
+  // expansion regions remain in `sourceContext` for Pass B as context. Pass B's input is never narrowed.
+  const accountabilityContext: SourceContextResult | null = sourceContext && options.certified?.expansionRegionPolicy === "CONTEXT_ONLY"
+    ? (() => { const regions = sourceContext.regions.filter((r) => r.kind === "OPERATIVE"); return { ...sourceContext, regions, totalChars: regions.reduce((n, r) => n + r.text.length, 0) }; })()
+    : sourceContext;
   let frozenInventory: FrozenSemanticInventory | null = null;
   let inventoryPasses: SemanticCompilationResult["inventoryPasses"] = null;
   let frozenInventoryResume: FrozenInventoryResumeRecord | null = null;
@@ -274,11 +280,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       // F-5.3B: two independent Pass A executions -> deterministic ensemble (STRICT compatibility). The second paid
       // call is made here, visibly, by the orchestration module - never inside ensemble.ts, never a third pass.
       const passCallers = options.inventoryPassCallers ?? (options.inventoryCaller ? ([options.inventoryCaller, options.inventoryCaller] as [StageCaller, StageCaller]) : undefined);
-      const dual = await runDualPassSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, structuralIndex: index, passCallers, signal: callOptions.signal, budget: callOptions.budget });
+      const dual = await runDualPassSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext: accountabilityContext!, structuralIndex: index, passCallers, signal: callOptions.signal, budget: callOptions.budget });
       frozenInventory = dual.inventory;
       inventoryPasses = dual.passes.map((p) => ({ passId: p.passId, frozenContentHash: p.inventory.frozenContentHash, inventoryStatus: p.inventory.inventoryStatus, items: p.inventory.items.length, telemetryCostUsd: p.inventory.telemetryCostUsd }));
     } else {
-      frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, caller: options.inventoryCaller, signal: callOptions.signal, budget: callOptions.budget });
+      frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext: accountabilityContext!, caller: options.inventoryCaller, signal: callOptions.signal, budget: callOptions.budget });
     }
     // The COMPILATION UNIT (mission §13) is the resolved operative region - when the
     // supplied window was extended to its real unit boundary (with provenance on
@@ -292,7 +298,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   // ---- F-7C: THE BRANCH POINT. Everything above is unchanged; the deterministic plan is built from already-resolved
   // facts (resolved source context, frozen inventory, structural index) and the mode chosen before any model call.
   const plan: ShardPlan | null = sourceContext && frozenInventory
-    ? planCompilationShards({ candidateRef: input.candidateRef, companyId: input.companyId, instrumentKey: input.instrumentKey, documentId: input.sourceDocumentId, sourceContext, frozenInventory, structuralIndex: input.toolAccess.structuralIndex, budget: options.shardBudget, generation: { algorithmVersion: input.compilerAlgorithmVersion, promptVersion: input.compilerPromptVersion } })
+    ? planCompilationShards({ candidateRef: input.candidateRef, companyId: input.companyId, instrumentKey: input.instrumentKey, documentId: input.sourceDocumentId, sourceContext: accountabilityContext!, frozenInventory, structuralIndex: input.toolAccess.structuralIndex, budget: options.shardBudget, generation: { algorithmVersion: input.compilerAlgorithmVersion, promptVersion: input.compilerPromptVersion } })
     : null;
   const decision: ExecutionModeDecision = selectCompilationExecutionMode(plan);
   const executionBase = { mode: decision.mode, reason: decision.reason, policyVersion: SEMANTIC_EXECUTION_POLICY_VERSION, plannerAlgorithmVersion: decision.plannerAlgorithmVersion, planHash: decision.planHash, plannedShards: decision.shardCount, oversizedShards: decision.oversizedShards, frozenInventoryResume };

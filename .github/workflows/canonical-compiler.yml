@@ -1,0 +1,82 @@
+name: canonical-compiler
+
+# The certified compiler path, the canonical covenant map and the transport layer are proven by provider-free tests.
+# No credential is available to this workflow and none is needed: every suite below runs with fake provider clients.
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "lib/contract-model/**"
+      - "scripts/p3-conmed-pilot/**"
+      - "tests/contract-model/**"
+      - "tests/phase-3-conmed-pilot/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/canonical-compiler.yml"
+  pull_request:
+    paths:
+      - "lib/contract-model/**"
+      - "scripts/p3-conmed-pilot/**"
+      - "tests/contract-model/**"
+      - "tests/phase-3-conmed-pilot/**"
+
+concurrency:
+  group: canonical-compiler-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  certified:
+    name: certified path (provider-free)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # deliberately unset: a paid call from CI is a defect, and the certified path never reads a credential from the environment
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+      SEMANTIC_INVENTORY_MODE: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: certified suites (transport, bounded execution, finding owner, golden map, architecture)
+        run: npx vitest run tests/contract-model/certified
+      - name: verifier and retrieval suites touched by the cleanse
+        run: >-
+          npx vitest run
+          tests/contract-model/semantic-verification-verify.test.ts
+          tests/contract-model/semantic-verification-fault-injection.test.ts
+          tests/contract-model/semantic-verification-condition-remediation.test.ts
+          tests/contract-model/semantic-verification-condition-remediation-rx.test.ts
+          tests/contract-model/condition-suspicion-classifier.test.ts
+          tests/contract-model/condition-suspicion-architecture.test.ts
+          tests/contract-model/adversarial-verification.test.ts
+          tests/contract-model/semantic-accountability-independence.test.ts
+          tests/contract-model/context-retrieval-pipeline.test.ts
+          tests/contract-model/f7c-production-activation.test.ts
+          tests/contract-model/f7c1-frozen-inventory-resume.test.ts
+          tests/contract-model/f7a-shard-planner-stitcher.test.ts
+          tests/contract-model/discovery-pipeline.test.ts
+          tests/contract-model/phase-2g-amendment-precedence.test.ts
+          tests/foundation-audit/legacy-phase-c-quarantine.test.ts
+      - name: pilot harness suites (evidence, persistence, integrity, recovery preflight)
+        run: >-
+          npx vitest run
+          tests/phase-3-conmed-pilot/evidence-preservation.test.ts
+          tests/phase-3-conmed-pilot/verified-unit-persistence.test.ts
+          tests/phase-3-conmed-pilot/pilot-integrity.test.ts
+          tests/phase-3-conmed-pilot/benchmark-recovery-preflight.test.ts
+      - name: secret scan of committed artifacts
+        run: |
+          set -euo pipefail
+          hits=$(grep -rnE 'vck_[A-Za-z0-9]|sk-ant-[A-Za-z0-9]' lib scripts tests docs --include='*.ts' --include='*.json' --include='*.md' \
+            | grep -v 'tests/phase-3-conmed-pilot/pilot-integrity.test.ts' \
+            | grep -v 'tests/extraction/get-provider.test.ts' \
+            | grep -v 'docs/phase-3-validation/10-resume-attempt-2026-09-03.json' || true)
+          if [ -n "$hits" ]; then echo "$hits"; echo "credential-shaped literal found"; exit 1; fi
+      - name: lint the certified path
+        run: npx eslint lib/contract-model/covenant-map lib/contract-model/compiler/certified-config.ts lib/contract-model/compiler/semantic/bounded-caller.ts lib/contract-model/analyzer scripts/p3-conmed-pilot/evidence.ts

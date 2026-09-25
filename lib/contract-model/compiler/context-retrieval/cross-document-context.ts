@@ -5,6 +5,7 @@
  * Phase 2C's own PackageGraphResult shape directly - no re-detection of
  * document relationships here.
  */
+import type { OperativeProvisionView } from "../amendment/types";
 import type { StructuralIndex } from "../structural-index";
 import type { InstrumentGroupingResult, ModificationCandidate, PackageGraphResult, RelationshipCandidate } from "../package-graph/types";
 import { addEdge, addItem, makeItemInput, withinBudget, type RetrievalState } from "./state";
@@ -67,12 +68,32 @@ export function retrieveAmendmentLeadsForDefinition(state: RetrievalState, packa
 /** Phase 3F.1 FIX-2 - already self-labeled by this item's own excerpt prefix ("[AMENDMENT_RESOLUTION_REQUIRED]") and reason text; explicitly disclosed as OPERATIVE_STATE_UNRESOLVED (never CURRENT) rather than left null, since a modification CANDIDATE targeting this provision - by definition - means this provision's own operative precedence is not yet determined (task §19). */
 const AMENDMENT_LEAD_EVIDENCE_STATE: ContextItemEvidenceState = { status: "OPERATIVE_STATE_UNRESOLVED", isCurrentTruth: false, reason: "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task §19)." };
 
+/** The RESOLVED operative provision view that applied THIS amendment document's effect to the lead's target, if any. */
+function resolvedProvisionFor(state: RetrievalState, mc: ModificationCandidate): OperativeProvisionView | null {
+  const st = state.operativeState;
+  if (!st || !mc.targetDocumentId) return null;
+  for (const p of st.provisions) {
+    if (p.status !== "OPERATIVE_STATE_RESOLVED" || p.documentId !== mc.targetDocumentId) continue;
+    const targetMatches = mc.targetSectionRef ? p.kind === "SECTION" && p.sectionRef === mc.targetSectionRef : mc.targetDefinedTermRef ? p.kind === "DEFINITION" && (p.definedTermRef ?? "").toLowerCase() === mc.targetDefinedTermRef.toLowerCase() : false;
+    if (!targetMatches) continue;
+    if (p.appliedChain.some((e) => e.amendmentDocumentId === mc.sourceDocumentId)) return p;
+  }
+  return null;
+}
+
 function addAmendmentLeadItem(state: RetrievalState, packageGraph: PackageGraphResult, mc: ModificationCandidate, parentItemId: string): void {
   const sourceRel = packageGraph.relationshipCandidates.find((r) => r.sourceDocumentId === mc.sourceDocumentId && r.targetDocumentId === mc.targetDocumentId);
   const itemType = sourceRel?.relationshipType === "SUPPLEMENTS" ? "SUPPLEMENT_LEAD" : "AMENDMENT_LEAD";
   const excerpt = `[AMENDMENT_RESOLUTION_REQUIRED] ${mc.sourceNodeCitation}: ${mc.sourceText}`;
   if (!withinBudget(state, excerpt.length)) return;
-  const item = addItem(state, makeItemInput(itemType, mc.sourceDocumentId, null, null, mc.targetSectionRef ?? mc.targetDefinedTermRef ?? "document-level", mc.sourceNodeCitation, excerpt, `A modification candidate from ${mc.sourceNodeCitation} appears to target this provision/definition - operative precedence is NOT determined here (task §19); flagged for the later amendment-precedence phase.`, 1, [parentItemId], "PACKAGE_GRAPH", mc.confidence, AMENDMENT_LEAD_EVIDENCE_STATE));
+  // Canonical-map remediation: a lead whose target the instrument's OWN computed OperativeContractState has already
+  // RESOLVED (this amendment document's effect applied to exactly this section/definition) is confirmed-current
+  // evidence, not an open question. Only a real, applied, RESOLVED provision view says so; anything else stays unresolved.
+  const resolvedBy = resolvedProvisionFor(state, mc);
+  const evidenceState: ContextItemEvidenceState = resolvedBy
+    ? { status: "CURRENT", isCurrentTruth: true, reason: `Amendment lead resolved by the operative state: provision ${resolvedBy.provisionKey} is OPERATIVE_STATE_RESOLVED with effect(s) ${resolvedBy.appliedChain.filter((e) => e.amendmentDocumentId === mc.sourceDocumentId).map((e) => e.effectId).join(", ")} from ${mc.sourceDocumentId} applied as of ${resolvedBy.asOfDate}.` }
+    : AMENDMENT_LEAD_EVIDENCE_STATE;
+  const item = addItem(state, makeItemInput(itemType, mc.sourceDocumentId, null, null, mc.targetSectionRef ?? mc.targetDefinedTermRef ?? "document-level", mc.sourceNodeCitation, resolvedBy ? excerpt.replace("[AMENDMENT_RESOLUTION_REQUIRED]", "[AMENDMENT_APPLIED_IN_OPERATIVE_STATE]") : excerpt, resolvedBy ? `A modification from ${mc.sourceNodeCitation} targets this provision/definition and the operative state has applied it (${resolvedBy.provisionKey}, OPERATIVE_STATE_RESOLVED).` : `A modification candidate from ${mc.sourceNodeCitation} appears to target this provision/definition - operative precedence is NOT determined here (task §19); flagged for the later amendment-precedence phase.`, 1, [parentItemId], "PACKAGE_GRAPH", mc.confidence, evidenceState));
   addEdge(state, item.itemId, parentItemId, "AMENDMENT_CANDIDATE", "Candidate amendment target - resolution required before treating as operative.");
   state.crossDocumentLeads++;
 }

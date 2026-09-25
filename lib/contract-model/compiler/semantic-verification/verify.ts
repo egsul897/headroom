@@ -357,6 +357,14 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const supersessionIndex = compilerInput.toolAccess.operativeState ? buildNodeSupersessionIndex([{ baseDocumentId: compilerInput.sourceDocumentId, state: compilerInput.toolAccess.operativeState }]) : EMPTY_SUPERSESSION_INDEX;
 
   const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null, structuralNodeId, supersessionIndex);
+  // Canonical-map remediation: when the compiled text IS the operative state's RESOLVED current text for this
+  // provision (candidate-span.ts OPERATIVE_STATE_CURRENT_TEXT), the base node's KNOWN_SUPERSEDED status describes the
+  // text that was NOT compiled. The compiled text is the governing text; say so, with the provision that proves it.
+  if (sourceInventory.supersessionStatus === "KNOWN_SUPERSEDED" && compilerInput.operativeSourceOrigin === "OPERATIVE_STATE_CURRENT_TEXT" && compilerInput.operativeLineage?.operativeStatus === "OPERATIVE_STATE_RESOLVED") {
+    const view = compilerInput.toolAccess.operativeState?.provisions.find((p) => p.provisionKey === compilerInput.operativeLineage!.provisionKey);
+    const same = !!view?.currentText && view.currentText.replace(/\s+/g, " ").trim() === compilerInput.operativeSourceText.replace(/\s+/g, " ").trim();
+    if (same) { sourceInventory.supersessionStatus = "CURRENT_OPERATIVE"; sourceInventory.supersessionReason = `compiled text is the operative state's RESOLVED current text for provision ${view!.provisionKey} (base node superseded by ${view!.appliedChain.map((e) => e.effectId).join(", ")})`; }
+  }
   const irInventory = buildIrInventory(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
   // F-4: the evidence set is PRIMARY_LOCAL (the window above) + every retrieved source this verifier could
   // independently re-resolve and authenticate (retrieved-evidence.ts). Compiler retrieval records are checked
@@ -388,7 +396,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   ];
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
   // qualitative accountability: material qualitative claims without source-backed lineage are MATERIAL findings
-  const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null });
+  const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null, sourceTexts: [compilerInput.operativeSourceText, ...((compilationResult.sourceContext ?? compilerInput.sourceContext)?.regions.map((r) => r.text) ?? []), ...compilerInput.contextBundle.items.map((i) => i.excerptText)] });
   const deterministicFindings = [...buildFindingsFromReconciliation(input, reconciliation), ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef })];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing

@@ -40,6 +40,15 @@ export interface CertifiedCompilerConfig {
   candidateDeadlineMs: number;
   transportRetry: TransportRetryPolicy;
   executionPolicyVersion: string;
+  /**
+   * How cross-reference / enclosing-node expansion regions take part in accountability and planning.
+   * CONTEXT_ONLY (certified): Pass A inventories and Pass C reconciles the unit's OWN operative region only; expansion
+   * regions are delivered to Pass B as context text and are compiled by their own candidates in the map. Before this,
+   * every expansion region became an owned EXPANSION_REGION unit in a shard of its own, so any candidate carrying a
+   * cross-reference expansion was executed SHARDED (53 of 161 CONMED candidates, measured offline). OWNED: the
+   * pre-remediation behaviour, selectable explicitly.
+   */
+  expansionRegionPolicy: "CONTEXT_ONLY" | "OWNED";
 }
 
 export function certifiedConfig(overrides: Pick<CertifiedCompilerConfig, "semanticModel" | "inventoryModel" | "verifierModel"> & Partial<Omit<CertifiedCompilerConfig, "configVersion" | "semanticModel" | "inventoryModel" | "verifierModel">>): CertifiedCompilerConfig {
@@ -54,6 +63,7 @@ export function certifiedConfig(overrides: Pick<CertifiedCompilerConfig, "semant
     candidateDeadlineMs: 480_000,
     transportRetry: CERTIFIED_TRANSPORT_RETRY_POLICY,
     executionPolicyVersion: "certified-execution.v1",
+    expansionRegionPolicy: "CONTEXT_ONLY",
     ...overrides,
   };
 }
@@ -70,10 +80,11 @@ export function validateCertifiedConfig(c: CertifiedCompilerConfig): string[] {
   if (!(c.candidateDeadlineMs > 0)) problems.push("candidateDeadlineMs");
   if (!(c.maxOutputTokens > 0)) problems.push("maxOutputTokens");
   if (c.transportRetry.maxAttempts < 1 || c.transportRetry.maxAttempts > 3) problems.push("transportRetry.maxAttempts must be 1..3");
+  if (c.expansionRegionPolicy !== "CONTEXT_ONLY" && c.expansionRegionPolicy !== "OWNED") problems.push("expansionRegionPolicy must be explicit");
   return problems;
 }
 
 /** Deterministic identity string entering cache keys and evidence. */
 export function certifiedConfigIdentity(c: CertifiedCompilerConfig): string {
-  return [c.configVersion, `inventory=${c.inventoryMode}`, `semantic=${c.semanticModel}`, `inventoryModel=${c.inventoryModel}`, `verifier=${c.verifierModel}`, `tools=${c.toolBudget.maxToolCalls}/${c.toolBudget.maxRecursionDepth}/${c.toolBudget.maxAdditionalSourceChars}`, `conv=${c.maxSemanticConversations}+${c.maxRefinementConversations}`, `shardAttempts=${c.shardMaxAttempts}`, `maxOut=${c.maxOutputTokens}`, `deadline=${c.candidateDeadlineMs}`, `retry=${c.transportRetry.maxAttempts}`, c.executionPolicyVersion].join("|");
+  return [c.configVersion, `inventory=${c.inventoryMode}`, `semantic=${c.semanticModel}`, `inventoryModel=${c.inventoryModel}`, `verifier=${c.verifierModel}`, `tools=${c.toolBudget.maxToolCalls}/${c.toolBudget.maxRecursionDepth}/${c.toolBudget.maxAdditionalSourceChars}`, `conv=${c.maxSemanticConversations}+${c.maxRefinementConversations}`, `shardAttempts=${c.shardMaxAttempts}`, `maxOut=${c.maxOutputTokens}`, `deadline=${c.candidateDeadlineMs}`, `retry=${c.transportRetry.maxAttempts}`, `expansions=${c.expansionRegionPolicy}`, c.executionPolicyVersion].join("|");
 }

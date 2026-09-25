@@ -3,6 +3,21 @@
   "extends": "next/core-web-vitals",
   "overrides": [
     {
+      "files": ["lib/contract-model/covenant-map/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              { "group": ["**/contract-model/compiler/orchestrator", "**/contract-model/compiler/orchestrator.ts"], "message": "The canonical map never reaches the quarantined legacy Phase C orchestrator." },
+              { "group": ["**/contract-model/compiler/semantic/caller", "**/contract-model/compiler/semantic/caller.ts"], "importNames": ["RealSemanticCaller", "getSemanticCaller"], "message": "The canonical map uses BoundedSemanticCaller (one structured call, no transcript replay), never the legacy tool loop or the env-driven caller factory." },
+              { "group": ["**/contract-model/compiler/llm-caller", "**/contract-model/compiler/llm-caller.ts"], "importNames": ["getStageCaller"], "message": "The canonical map takes explicit callers; it never reads AI_GATEWAY_API_KEY / ANALYZER_MODEL from the environment." }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "files": ["app/**/*.ts", "app/**/*.tsx"],
       "rules": {
         "no-restricted-imports": [

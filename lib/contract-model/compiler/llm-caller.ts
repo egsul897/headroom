@@ -53,6 +53,11 @@ class RealStageCaller implements StageCaller {
   }
 }
 
+/** Certified-path factory (covenant-map/callers.ts): a real stage caller over an analyzer the caller constructed with an explicit credential. */
+export function createRealStageCaller(providerName: string, model: string, analyzer: AnthropicContractAnalyzer | VercelAIGatewayContractAnalyzer): StageCaller {
+  return new RealStageCaller(providerName, model, analyzer);
+}
+
 class SyntheticStageCaller implements StageCaller {
   providerName = "synthetic";
   model = "synthetic-v1";

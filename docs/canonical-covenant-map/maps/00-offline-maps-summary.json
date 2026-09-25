@@ -1,0 +1,164 @@
+{
+  "builtAt": "2026-09-25T16:11:54.054Z",
+  "paidCalls": 0,
+  "maps": {
+    "conmed-2025-credit-facility": {
+      "built": true,
+      "mapHash": "cc390976f47a43ac248438dbb27af9919e72106dfea32a17f51316307c1791e0",
+      "validation": "ok",
+      "completeness": {
+        "candidatesDiscovered": 163,
+        "candidatesEligible": 163,
+        "candidatesAttempted": 106,
+        "candidatesMapped": 0,
+        "candidatesMappedWithReview": 51,
+        "candidatesFailed": 55,
+        "candidatesUnserved": 57,
+        "candidatesByOutcome": {
+          "COMPILE_FAILED": 53,
+          "UNSERVED": 57,
+          "MAPPED_WITH_REVIEW": 51,
+          "NO_STRUCTURAL_ANCHOR": 2
+        },
+        "nodesByKind": {
+          "RULE": 64,
+          "DEFINITION": 28,
+          "SHARED_CAPACITY": 3
+        },
+        "edgesByType": {
+          "RULE_DEPENDS_ON_RULE": 4,
+          "RULE_USES_DEFINITION": 6,
+          "DEFINITION_USES_DEFINITION": 35,
+          "RULE_USES_SHARED_CAPACITY": 5,
+          "RULE_MODIFIED_BY_EXCEPTION": 5,
+          "RULE_SUBJECT_TO_CONDITION": 0,
+          "RULE_SUBJECT_TO_PROVISO": 0,
+          "RULE_SUBJECT_TO_GENERAL_PROHIBITION": 5,
+          "CROSS_DOCUMENT_DEPENDENCY": 0,
+          "AMENDMENT_SUPERSEDES": 0
+        },
+        "unresolvedByKind": {
+          "CANDIDATE_COMPILE_FAILED": 53,
+          "CANDIDATE_UNSERVED": 57,
+          "CANDIDATE_COMPILE_REVIEW_REQUIRED": 51,
+          "CANDIDATE_VERIFICATION_NOT_PASSED": 51,
+          "UNIT_SUFFICIENCY_NOT_SUFFICIENT": 37,
+          "UNRESOLVED_DEFINED_TERM": 37,
+          "WEAK_IDENTITY": 14,
+          "CANDIDATE_NO_STRUCTURAL_ANCHOR": 2
+        },
+        "unresolvedBlocking": 112,
+        "unresolvedReview": 190,
+        "nodesVerifiedNoMaterialGap": 0,
+        "nodesUnderReview": 95,
+        "nodesStrongIdentity": 95,
+        "mappedFraction": 0,
+        "complete": false
+      },
+      "notes": [
+        "2 sealed node key(s) did not rehydrate uniquely",
+        "legacy run: telemetry conversations/transport counts are not distinguishable in v1 evidence and are recorded as 1/attemptCount; execution mode was not captured by v1 evidence"
+      ]
+    },
+    "lsb-2023-abl-credit-agreement": {
+      "built": true,
+      "mapHash": "a82053deab6b379a7f9a3a74ce79384854fd0723afde039220d5b73c6ce8fa4d",
+      "validation": "ok",
+      "completeness": {
+        "candidatesDiscovered": 82,
+        "candidatesEligible": 82,
+        "candidatesAttempted": 0,
+        "candidatesMapped": 0,
+        "candidatesMappedWithReview": 0,
+        "candidatesFailed": 0,
+        "candidatesUnserved": 82,
+        "candidatesByOutcome": {
+          "UNSERVED": 82
+        },
+        "nodesByKind": {
+          "RULE": 0,
+          "DEFINITION": 0,
+          "SHARED_CAPACITY": 0
+        },
+        "edgesByType": {
+          "RULE_DEPENDS_ON_RULE": 0,
+          "RULE_USES_DEFINITION": 0,
+          "DEFINITION_USES_DEFINITION": 0,
+          "RULE_USES_SHARED_CAPACITY": 0,
+          "RULE_MODIFIED_BY_EXCEPTION": 0,
+          "RULE_SUBJECT_TO_CONDITION": 0,
+          "RULE_SUBJECT_TO_PROVISO": 0,
+          "RULE_SUBJECT_TO_GENERAL_PROHIBITION": 0,
+          "CROSS_DOCUMENT_DEPENDENCY": 0,
+          "AMENDMENT_SUPERSEDES": 0
+        },
+        "unresolvedByKind": {
+          "CANDIDATE_UNSERVED": 82
+        },
+        "unresolvedBlocking": 82,
+        "unresolvedReview": 0,
+        "nodesVerifiedNoMaterialGap": 0,
+        "nodesUnderReview": 0,
+        "nodesStrongIdentity": 0,
+        "mappedFraction": 0,
+        "complete": false
+      },
+      "notes": [
+        "discovery population from tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json (82 candidates)"
+      ]
+    },
+    "fwrg-2021-credit-agreement": {
+      "built": true,
+      "mapHash": "67a9d6c2350fbe5482db425f67f4e5036c791af82db35d115138a84220bf346d",
+      "validation": "ok",
+      "completeness": {
+        "candidatesDiscovered": 252,
+        "candidatesEligible": 252,
+        "candidatesAttempted": 3,
+        "candidatesMapped": 0,
+        "candidatesMappedWithReview": 0,
+        "candidatesFailed": 3,
+        "candidatesUnserved": 249,
+        "candidatesByOutcome": {
+          "UNSERVED": 249,
+          "NO_STRUCTURAL_ANCHOR": 3
+        },
+        "nodesByKind": {
+          "RULE": 0,
+          "DEFINITION": 0,
+          "SHARED_CAPACITY": 0
+        },
+        "edgesByType": {
+          "RULE_DEPENDS_ON_RULE": 0,
+          "RULE_USES_DEFINITION": 0,
+          "DEFINITION_USES_DEFINITION": 0,
+          "RULE_USES_SHARED_CAPACITY": 0,
+          "RULE_MODIFIED_BY_EXCEPTION": 0,
+          "RULE_SUBJECT_TO_CONDITION": 0,
+          "RULE_SUBJECT_TO_PROVISO": 0,
+          "RULE_SUBJECT_TO_GENERAL_PROHIBITION": 0,
+          "CROSS_DOCUMENT_DEPENDENCY": 0,
+          "AMENDMENT_SUPERSEDES": 0
+        },
+        "unresolvedByKind": {
+          "CANDIDATE_UNSERVED": 249,
+          "CANDIDATE_NO_STRUCTURAL_ANCHOR": 3
+        },
+        "unresolvedBlocking": 252,
+        "unresolvedReview": 0,
+        "nodesVerifiedNoMaterialGap": 0,
+        "nodesUnderReview": 0,
+        "nodesStrongIdentity": 0,
+        "mappedFraction": 0,
+        "complete": false
+      },
+      "notes": [
+        "discovery population from tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json (252 candidates)"
+      ]
+    },
+    "dsgr-2022-2025-credit-facility": {
+      "built": false,
+      "reason": "no discovery run in the fixture; discovery is a paid call and was not run"
+    }
+  }
+}

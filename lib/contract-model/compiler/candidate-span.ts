@@ -1,34 +1,44 @@
 /**
- * THE CANDIDATE-SPAN CONTRACT.
+ * THE operative-source rule. Every path that compiles a discovered candidate obtains its operative text here and
+ * nowhere else (architecture test: tests/contract-model/certified/architecture.test.ts).
  *
- * A discovered candidate carries an ANCHOR node followed, for EXCEPTION / BASKET / PROVISO /
- * CONDITION roles, by the structural node it modifies (discovery/pass-c-neighborhood.ts's own
- * "neighborhood guarantee ... so a downstream consumer asking 'what does this exception modify'
- * never has to guess"). That trailing entry is a RELATIONSHIP, not an extension of the candidate's
- * own source span, and every consumer treats it as one - candidate identity
- * (discovery/pass-d-reconcile.ts's `${structuralNodeIds[0]}::${role}::${fingerprint}`), context
- * retrieval's primaryNodeId, coverage accounting, and supersession all read it as a link.
- *
- * Concatenating the linked node's text into the candidate's operative source therefore silently
- * widens the legal proposition the candidate claims to represent: the child inherits every sibling
- * clause under that parent, and the independent verifier - which builds the SOURCE side of its
- * reconciliation from this same text (semantic-verification/verify.ts) - then accepts those
- * siblings' economics as evidence the child owns. That is the false-credit channel this module
- * closes, by stating the rule once, in one place, for both production and the Phase-3 harness.
- *
- * The linked nodes are NOT dropped: they stay on the candidate (so coverage, provenance and
- * supersession are unchanged) and reach the compiler through the context bundle as typed
- * PARENT_SCOPE evidence, which context-retrieval already produces from the anchor's ancestors.
+ *   STRUCTURAL_NODE               the anchor node's own text with its descendants (the unit as drafted in the base
+ *                                 document);
+ *   OPERATIVE_STATE_CURRENT_TEXT  when the instrument's computed OperativeContractState has RESOLVED a provision view
+ *                                 for that node and carries the current (amended) text, that text governs - the base
+ *                                 node is KNOWN_SUPERSEDED and compiling it would compile history.
  */
 import type { StructuralIndex } from "./structural-index";
 import type { DiscoveredCandidate } from "./discovery/types";
+import type { OperativeContractState, OperativeProvisionView } from "./amendment/types";
 
-/**
- * The operative source text for one discovered candidate: its ANCHOR node's own subtree, and
- * nothing else. A candidate with no structural node at all yields "" - the same value the previous
- * join produced for an empty array, so callers keep their existing empty-source handling.
- */
-export function operativeSourceTextFor(candidate: Pick<DiscoveredCandidate, "structuralNodeIds">, index: StructuralIndex): string {
-  const anchorNodeId = candidate.structuralNodeIds[0];
-  return anchorNodeId ? index.getNodeText(anchorNodeId, "DESCENDANTS") : "";
+export type OperativeSourceOrigin = "STRUCTURAL_NODE" | "OPERATIVE_STATE_CURRENT_TEXT";
+
+export interface ResolvedOperativeSource {
+  text: string;
+  origin: OperativeSourceOrigin;
+  anchorNodeId: string | null;
+  provision: OperativeProvisionView | null;
+}
+
+/** The RESOLVED provision view governing this candidate's anchor node, if the operative state has one. */
+export function governingProvisionFor(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, operativeState: OperativeContractState | null | undefined): OperativeProvisionView | null {
+  if (!operativeState) return null;
+  const anchor = candidate.structuralNodeIds[0] ?? null;
+  const byNode = anchor ? operativeState.provisions.find((p) => p.currentSourceNodeId === anchor || p.candidateSourceNodeIds.includes(anchor) || p.supersededSourceNodeIds.includes(anchor)) : undefined;
+  if (byNode) return byNode;
+  return operativeState.provisions.find((p) => p.kind === "SECTION" && p.documentId === candidate.documentId && p.sectionRef === candidate.normalizedSourceRef) ?? null;
+}
+
+export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, index: StructuralIndex, operativeState?: OperativeContractState | null): ResolvedOperativeSource {
+  const anchorNodeId = candidate.structuralNodeIds[0] ?? null;
+  const provision = governingProvisionFor(candidate, operativeState);
+  if (provision && provision.status === "OPERATIVE_STATE_RESOLVED" && provision.currentText && provision.currentText.trim().length > 0 && provision.appliedChain.length > 0) {
+    return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision };
+  }
+  return { text: anchorNodeId ? index.getNodeText(anchorNodeId, "DESCENDANTS") : "", origin: "STRUCTURAL_NODE", anchorNodeId, provision };
+}
+
+export function operativeSourceTextFor(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, index: StructuralIndex, operativeState?: OperativeContractState | null): string {
+  return resolveOperativeSource(candidate, index, operativeState).text;
 }

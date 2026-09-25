@@ -1,0 +1,4100 @@
+{
+  "schemaVersion": "canonical-covenant-map.v1",
+  "companyId": "lsb-offline",
+  "packageKey": "lsb-2023-abl-credit-agreement",
+  "instrumentKey": "lsb-2023-abl-credit-agreement",
+  "asOfDate": null,
+  "documents": [
+    {
+      "documentId": "lsb-ca",
+      "label": "LSB 2023 ABL Credit Agreement (definitions + Article VI)",
+      "documentOrdinal": 0,
+      "textSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "role": "BASE"
+    },
+    {
+      "documentId": "lsb-ca-article-6",
+      "label": "LSB Article VI negative covenants",
+      "documentOrdinal": 1,
+      "textSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "role": "BASE"
+    },
+    {
+      "documentId": "lsb-intercreditor-joinder",
+      "label": "LSB intercreditor joinder",
+      "documentOrdinal": 2,
+      "textSha256": "399d7448d3f2736b58fd91fd9baf39cf9095506036e64f678955d6babfee056f",
+      "role": "ANCILLARY"
+    }
+  ],
+  "identity": {
+    "mapAlgorithmVersion": "covenant-map-assembly.v1",
+    "certifiedConfigIdentity": null,
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  "operativeState": null,
+  "nodes": [],
+  "edges": [],
+  "candidates": [
+    {
+      "candidateRef": "discovery-candidate:5702492d7dce2d5565e15fb6",
+      "discoveryId": "discovery-candidate:5702492d7dce2d5565e15fb6",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 399,
+        "structuralDepth": 1,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "PROVISO",
+      "operativeSourceSha256": "a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+      "operativeSourceChars": 4043,
+      "sourceContentVersion": "scv1:81b118e3e0868a1bf9da7ae489be64408bf8217162b95be7f5d82f1f15b48008",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:8a1f671c765eb6021a8afdc5",
+      "discoveryId": "discovery-candidate:8a1f671c765eb6021a8afdc5",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 399,
+        "structuralDepth": 1,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "FINANCIAL_COVENANTS"
+      ],
+      "role": "RATIO_BASED_PERMISSION",
+      "operativeSourceSha256": "a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+      "operativeSourceChars": 4043,
+      "sourceContentVersion": "scv1:81b118e3e0868a1bf9da7ae489be64408bf8217162b95be7f5d82f1f15b48008",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:c1aeff2cfc75b906c42530a5",
+      "discoveryId": "discovery-candidate:c1aeff2cfc75b906c42530a5",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 399,
+        "structuralDepth": 1,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+      "operativeSourceChars": 4043,
+      "sourceContentVersion": "scv1:81b118e3e0868a1bf9da7ae489be64408bf8217162b95be7f5d82f1f15b48008",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:8f90d6eac4202e65071bbcf5",
+      "discoveryId": "discovery-candidate:8f90d6eac4202e65071bbcf5",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1061,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:e1f45d1ada6947ca0be33523",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "cddd136893781aca3bc05a54a6acfa9d7a68a18adc72e76026b5e5e22fb22d0f",
+      "operativeSourceChars": 77,
+      "sourceContentVersion": "scv1:bc5e4abae494cb086a72c393a84c082c17f0d3c5deb7ecec9f9a68bfa719a6da",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:7f9dc68409870f67e127c945",
+      "discoveryId": "discovery-candidate:7f9dc68409870f67e127c945",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1138,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:72aa331bfa8cfa08762d02ad",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "17415ae1cdd02dd05ebe0ca62033b949bb00b4ed58c0c55f9f39650ce321c773",
+      "operativeSourceChars": 48,
+      "sourceContentVersion": "scv1:c0f443a6a2a254d93e3839eaf4799d2f484a2818be842e57313fca10a36d7bfd",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:7ff6fb1aa587e3fc24c0eda5",
+      "discoveryId": "discovery-candidate:7ff6fb1aa587e3fc24c0eda5",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1186,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:bc940f5813828d72adbb3f65",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "0ba64b33cd74857207ebfaf5c88ad15ff2796e8a7fafe66c212a5c6deea250ce",
+      "operativeSourceChars": 45,
+      "sourceContentVersion": "scv1:c4cb04ce8a82030f479f7c8f7f54b4d43fa83ca0a303f56efeb9649b7684eb53",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:9c15de699c4f69e1af7207e3",
+      "discoveryId": "discovery-candidate:9c15de699c4f69e1af7207e3",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1231,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:f8b4e7b2552a02305f3b8437"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "MFN_PRICING_PROTECTION"
+      ],
+      "role": "REFINANCING_PERMISSION",
+      "operativeSourceSha256": "b749efc0d0873ee11a084637c61806258f5472602d42b665c1fd2a8ada8a2c54",
+      "operativeSourceChars": 1284,
+      "sourceContentVersion": "scv1:c76973e3a2991e7749bc57cc357913b41c66568b95586fa96d92021f4fe1b235",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:718133550b5e5d106743178a",
+      "discoveryId": "discovery-candidate:718133550b5e5d106743178a",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(f)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2533,
+        "structuralDepth": 2,
+        "localOrdinal": 5
+      },
+      "structuralNodeIds": [
+        "structural-node:b18eb6887a8f9ffe1d009bbf",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "9899e99d485395d635df6ac34ec7d0176711c4d24a0cc9a39c190812e6d706bf",
+      "operativeSourceChars": 68,
+      "sourceContentVersion": "scv1:ab2140569878267a03df091ec0afcbe353d56a6c4cf932a83cbd810671c5b803",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:da8edb189792b07c9092cb84",
+      "discoveryId": "discovery-candidate:da8edb189792b07c9092cb84",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(g)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2601,
+        "structuralDepth": 2,
+        "localOrdinal": 6
+      },
+      "structuralNodeIds": [
+        "structural-node:653d1633ec8a121f73333605",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "34bf5d8c453e463e88b7ed371b520c10e03ab4602f1a0bb551e9b944a8eb5827",
+      "operativeSourceChars": 33,
+      "sourceContentVersion": "scv1:408376097c4cf51618f03746dca53bd7ed62db922a4c8a5e2a20f14b520d700f",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:954760957805bbc0e2cd589f",
+      "discoveryId": "discovery-candidate:954760957805bbc0e2cd589f",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2652,
+        "structuralDepth": 2,
+        "localOrdinal": 8
+      },
+      "structuralNodeIds": [
+        "structural-node:2c3adf0125cdfc7bc94ac796",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "e897a2a943c0fa742e240c2f0e0966176940b83d0129464014eca18b7d465d1e",
+      "operativeSourceChars": 269,
+      "sourceContentVersion": "scv1:8ac09eddd54654d2c034b1728e8532a085867f234bab31be5f0cbc9c8d2e281c",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:3dad23f4217974bef5909c01",
+      "discoveryId": "discovery-candidate:3dad23f4217974bef5909c01",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(j)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2921,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "structuralNodeIds": [
+        "structural-node:3d42b715101cb7f0f4f1371f",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "39f8271d3f74937078628a41d3bfae34dcc2d3454fdab07a2a626f29de1678d1",
+      "operativeSourceChars": 55,
+      "sourceContentVersion": "scv1:e567b9b2f3a9409ce281109416ccbbfdded371e60d75a2797cca22e050560330",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:e9344a11c4425a4b9df7ac7b",
+      "discoveryId": "discovery-candidate:e9344a11c4425a4b9df7ac7b",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(l)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2994,
+        "structuralDepth": 2,
+        "localOrdinal": 11
+      },
+      "structuralNodeIds": [
+        "structural-node:e802fb0f32be13d035db4073",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "058410a1794b526edbd68baf432817ab85cfd282abeda2a097ab18a17da204b0",
+      "operativeSourceChars": 149,
+      "sourceContentVersion": "scv1:9f37f2a51406d6da45ceeb0d0c7af52485fab68d4e99da5943f5f4b55cb7fad7",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:42a845d744056f42af74798a",
+      "discoveryId": "discovery-candidate:42a845d744056f42af74798a",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(m)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3143,
+        "structuralDepth": 2,
+        "localOrdinal": 12
+      },
+      "structuralNodeIds": [
+        "structural-node:82f445d7a271f77629f1cb33",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "f0892afbe5013d66ab985845ac567c5ef22598480b7beaf096b018d8c34dd7c8",
+      "operativeSourceChars": 108,
+      "sourceContentVersion": "scv1:3d1f79001d71a31a1f74f87fb49fd928502b220e91c4e8e51362b9625bb51a4c",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:4193a5cde69ba73393de4554",
+      "discoveryId": "discovery-candidate:4193a5cde69ba73393de4554",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(n)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3251,
+        "structuralDepth": 2,
+        "localOrdinal": 13
+      },
+      "structuralNodeIds": [
+        "structural-node:a84f3a70b885411e82ba7a7b",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "26cd177e9c5be09ff2f5ba7358d7988c02a708b420e414d28770d479b8687800",
+      "operativeSourceChars": 63,
+      "sourceContentVersion": "scv1:9e6e50326bd26c63ecc36b95cc6b2cf8acf29f179ea64a9f1025585cd8b864e6",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:1cefc285a22e433ff87508bc",
+      "discoveryId": "discovery-candidate:1cefc285a22e433ff87508bc",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(p)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3351,
+        "structuralDepth": 2,
+        "localOrdinal": 15
+      },
+      "structuralNodeIds": [
+        "structural-node:a0bd21e2dcd3d9f320678c5d",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "85a017b5fb67224dc63058a07c0add9c8d18ad0fee38354beabd597297e4493d",
+      "operativeSourceChars": 217,
+      "sourceContentVersion": "scv1:b3684fa197b9cf459ddbe9414e4aafbae4109464dbfd71f2710afbcfb1f4ce26",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:1252d8891aa44f63829bb11d",
+      "discoveryId": "discovery-candidate:1252d8891aa44f63829bb11d",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(q)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3568,
+        "structuralDepth": 2,
+        "localOrdinal": 16
+      },
+      "structuralNodeIds": [
+        "structural-node:a455023f439c7cda942eb773",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "DISPOSITIONS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "b55ada1b67788b84fdb1783cff87313e45af229aaa942a33df06d53da603c758",
+      "operativeSourceChars": 127,
+      "sourceContentVersion": "scv1:4a792e442b038bc372ea23d551fa2929584b8a446c63a4da9a1b53a3f5f0ebb2",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:eeaa34c907a1db1d81dff380",
+      "discoveryId": "discovery-candidate:eeaa34c907a1db1d81dff380",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(r)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3695,
+        "structuralDepth": 2,
+        "localOrdinal": 17
+      },
+      "structuralNodeIds": [
+        "structural-node:3002a7dac850a7f084ed7dae",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "59a8b4b12d8771ab5b8772b3e3fb95ba8406a3836730b73df6491e909895e872",
+      "operativeSourceChars": 464,
+      "sourceContentVersion": "scv1:5945ea57cc63e1757ccbc72ee74baf85980ffb09fb331acc396bda3943868fd9",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:dab328c64a3cab8ffe636c17",
+      "discoveryId": "discovery-candidate:dab328c64a3cab8ffe636c17",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(s)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4159,
+        "structuralDepth": 2,
+        "localOrdinal": 18
+      },
+      "structuralNodeIds": [
+        "structural-node:17b3acf891da3efc8372542f",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "1a8f1bd7d5d4ee90f57a67711cc17d0571d5edc945b2ca6fcb3e409fe4e75b8b",
+      "operativeSourceChars": 198,
+      "sourceContentVersion": "scv1:50f1ae3a4d61b87ff4ed6a0a15fd3a719e29abc9ad4947fd0628ff9c000d4003",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:e9d255ef708d7e228f8e3290",
+      "discoveryId": "discovery-candidate:e9d255ef708d7e228f8e3290",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(t)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4357,
+        "structuralDepth": 2,
+        "localOrdinal": 19
+      },
+      "structuralNodeIds": [
+        "structural-node:471e45224c1e75c6cd9f9901",
+        "structural-node:769567f377b07cbcb9409619"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "887f1c0e49e2245a7f12c98b7470e520dd0584f1d677dc1dd381017e2e4b7eb6",
+      "operativeSourceChars": 85,
+      "sourceContentVersion": "scv1:01b98257432a7215ec1e4c626bda0032ab9657fcdb344e1bbeb1205c26bfff4a",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:2a5195dda5a015bcfc2a4f30",
+      "discoveryId": "discovery-candidate:2a5195dda5a015bcfc2a4f30",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:fc6ced5b207751d3a2548425"
+      ],
+      "families": [
+        "LIENS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+      "operativeSourceChars": 560,
+      "sourceContentVersion": "scv1:0f1b9fda01a42b43c0447268244e517556f4840a0694dfdb05c52af0d817c4b6",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:3e087c2485fe1583c6971aa6",
+      "discoveryId": "discovery-candidate:3e087c2485fe1583c6971aa6",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:fc6ced5b207751d3a2548425"
+      ],
+      "families": [
+        "LIENS",
+        "INDEBTEDNESS"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+      "operativeSourceChars": 560,
+      "sourceContentVersion": "scv1:0f1b9fda01a42b43c0447268244e517556f4840a0694dfdb05c52af0d817c4b6",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:8a714910e3b3ec1b2fc2641b",
+      "discoveryId": "discovery-candidate:8a714910e3b3ec1b2fc2641b",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:fc6ced5b207751d3a2548425"
+      ],
+      "families": [
+        "LIENS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+      "operativeSourceChars": 560,
+      "sourceContentVersion": "scv1:0f1b9fda01a42b43c0447268244e517556f4840a0694dfdb05c52af0d817c4b6",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:f130bc96f8222445415cd933",
+      "discoveryId": "discovery-candidate:f130bc96f8222445415cd933",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:fc6ced5b207751d3a2548425"
+      ],
+      "families": [
+        "LIENS",
+        "INDEBTEDNESS"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+      "operativeSourceChars": 560,
+      "sourceContentVersion": "scv1:0f1b9fda01a42b43c0447268244e517556f4840a0694dfdb05c52af0d817c4b6",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:5d1d6536ab092281de95eeb4",
+      "discoveryId": "discovery-candidate:5d1d6536ab092281de95eeb4",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(c)(a)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:bc18f865cc6653111d62ba1e"
+      ],
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "f4877f442088f8cb328abf9d203476a648385f7112577e79123ff4b5665f8ffa",
+      "operativeSourceChars": 1710,
+      "sourceContentVersion": "scv1:6059145d0f6bb08790a5a6331dea73720ace006e3e498a48b5300578ca8978c1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:94b354aa0aa621e0de76a529",
+      "discoveryId": "discovery-candidate:94b354aa0aa621e0de76a529",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:bc18f865cc6653111d62ba1e"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES",
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "f4877f442088f8cb328abf9d203476a648385f7112577e79123ff4b5665f8ffa",
+      "operativeSourceChars": 1710,
+      "sourceContentVersion": "scv1:6059145d0f6bb08790a5a6331dea73720ace006e3e498a48b5300578ca8978c1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:9b17a56d58808b2c60885829",
+      "discoveryId": "discovery-candidate:9b17a56d58808b2c60885829",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:bc18f865cc6653111d62ba1e"
+      ],
+      "families": [
+        "FUNDAMENTAL_CHANGES",
+        "SUBSIDIARY_DESIGNATIONS"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "f4877f442088f8cb328abf9d203476a648385f7112577e79123ff4b5665f8ffa",
+      "operativeSourceChars": 1710,
+      "sourceContentVersion": "scv1:6059145d0f6bb08790a5a6331dea73720ace006e3e498a48b5300578ca8978c1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:bb85050ae392c2cbccbc82e0",
+      "discoveryId": "discovery-candidate:bb85050ae392c2cbccbc82e0",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(c)(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:bc18f865cc6653111d62ba1e"
+      ],
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "PROVISO",
+      "operativeSourceSha256": "f4877f442088f8cb328abf9d203476a648385f7112577e79123ff4b5665f8ffa",
+      "operativeSourceChars": 1710,
+      "sourceContentVersion": "scv1:6059145d0f6bb08790a5a6331dea73720ace006e3e498a48b5300578ca8978c1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:d26cc301b196e01d4e54e56e",
+      "discoveryId": "discovery-candidate:d26cc301b196e01d4e54e56e",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5056,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:f220c483741e67ef74fa71fb"
+      ],
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "2fe42e00010333fea9462df2f2a71ff14137c896b7687c435cf57d9eac54ce7b",
+      "operativeSourceChars": 112,
+      "sourceContentVersion": "scv1:cc51ab7a4a463c933ce141051f1a4eb217efa347583dc7156e43b35ec40bc20f",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:f7b1997c561b53c19da3cee2",
+      "discoveryId": "discovery-candidate:f7b1997c561b53c19da3cee2",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5168,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:f40576b4ec2822e9b9413b6d"
+      ],
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "9cbfef31ff9ca8e33385ec91b50b24e914b28ca8a08e86d90e35298557245429",
+      "operativeSourceChars": 92,
+      "sourceContentVersion": "scv1:d277b4121a73e85766c7b2e76135ba439fe32748ee4b39bc911475ce375b94a5",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:25c1acc8abab9f9f20a20fe0",
+      "discoveryId": "discovery-candidate:25c1acc8abab9f9f20a20fe0",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5260,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:69377a9ee9636bc590cb3fc9"
+      ],
+      "families": [
+        "FUNDAMENTAL_CHANGES",
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "faf890d70c4851bd01f46dee6f361cf98505080a8a85d0ba745407ca744b552f",
+      "operativeSourceChars": 1452,
+      "sourceContentVersion": "scv1:b08004e1b1851363b90869e3823440cade1ec3817751901dfefb4d10b76ad971",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:364b69267be61e3d548479f0",
+      "discoveryId": "discovery-candidate:364b69267be61e3d548479f0",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6712,
+        "structuralDepth": 1,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:c76592387103d08db81662f1"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "b3143a4ba22985d1e7b3f176c6923bece5590e09cab9d88439f61921def1eb3d",
+      "operativeSourceChars": 4287,
+      "sourceContentVersion": "scv1:fa7511fdce21ee39b0ce30a89abc0b7886feab40a2fee6fc3efbdaecdc4de519",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:8222c7bd158702d8bb3a4479",
+      "discoveryId": "discovery-candidate:8222c7bd158702d8bb3a4479",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6712,
+        "structuralDepth": 1,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:c76592387103d08db81662f1"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "b3143a4ba22985d1e7b3f176c6923bece5590e09cab9d88439f61921def1eb3d",
+      "operativeSourceChars": 4287,
+      "sourceContentVersion": "scv1:fa7511fdce21ee39b0ce30a89abc0b7886feab40a2fee6fc3efbdaecdc4de519",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:f542bd169beb17d6c99fdd46",
+      "discoveryId": "discovery-candidate:f542bd169beb17d6c99fdd46",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6712,
+        "structuralDepth": 1,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:c76592387103d08db81662f1"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "b3143a4ba22985d1e7b3f176c6923bece5590e09cab9d88439f61921def1eb3d",
+      "operativeSourceChars": 4287,
+      "sourceContentVersion": "scv1:fa7511fdce21ee39b0ce30a89abc0b7886feab40a2fee6fc3efbdaecdc4de519",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:e79fa4f952a500410c504b81",
+      "discoveryId": "discovery-candidate:e79fa4f952a500410c504b81",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6927,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:88c9ff7ee86b31d2ccfa9da4",
+        "structural-node:c76592387103d08db81662f1"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "b734291cb6c648601a12a2fc9791cac0403c802bf6905c660a6e3c420da374e5",
+      "operativeSourceChars": 1071,
+      "sourceContentVersion": "scv1:42c5f4b5c037d2d68a6e97da5935161f0caf47346adff7c69cf8cf45754adb00",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:8523d2aeab25a40630654f51",
+      "discoveryId": "discovery-candidate:8523d2aeab25a40630654f51",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(a)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 7051,
+        "structuralDepth": 3,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:3907158b4e0364d58f7bfae1",
+        "structural-node:c76592387103d08db81662f1"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "MANDATORY_PREPAYMENTS",
+        "REPORTING_INFORMATION"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "fc541d2a01930af102305825104e9881b366e6b8c8baab62f711c46fd15801ee",
+      "operativeSourceChars": 947,
+      "sourceContentVersion": "scv1:bea90f00437a5f7fc8340c6d2dd8173a22a63eb0fe7c321935a9f4217ef4a4c1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:95de51404f90a97bb78ca2ae",
+      "discoveryId": "discovery-candidate:95de51404f90a97bb78ca2ae",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 7998,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:84cc8416caca457b18b9c468"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "COLLATERAL_SECURITY",
+        "LIENS"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "03061753e3e5108fa67efbe64753d9216b4c8f37231a44f3c47ad5c6ccb68f8e",
+      "operativeSourceChars": 765,
+      "sourceContentVersion": "scv1:845fcba72ecbef6cf09896fb922e0b14692308ba9c88ead097c7a84824fd527a",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:004c832541427691c8d1f606",
+      "discoveryId": "discovery-candidate:004c832541427691c8d1f606",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 8763,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:0e52efdacd6096fe7ef4b1d5",
+        "structural-node:c76592387103d08db81662f1"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "64d41dfec3d2ab26cd3838b0b1fe827262e99add55dced4d69ef4d4761ccaa24",
+      "operativeSourceChars": 901,
+      "sourceContentVersion": "scv1:c3c281e3b1a78cd37ff07974c6a8a273adbfc6bbdc3147be51275c996c0f4ece",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:4bed333bbf12b038d55ece2b",
+      "discoveryId": "discovery-candidate:4bed333bbf12b038d55ece2b",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(c)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 8874,
+        "structuralDepth": 3,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:9c584d231d8738f933eca585",
+        "structural-node:c76592387103d08db81662f1"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "78677a9fd67a1696d21dd762ab98072e1c6e75dc44da8a213073037f242d974f",
+      "operativeSourceChars": 790,
+      "sourceContentVersion": "scv1:3bb447be7adfa57e177dc753cdc14ff859cc91e92f59633c00253606aec94123",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:26415415cdf63dcc6fcb006c",
+      "discoveryId": "discovery-candidate:26415415cdf63dcc6fcb006c",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 9664,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:c8c12d262fa46709171dc5fa"
+      ],
+      "families": [
+        "DISPOSITIONS"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "6f50ae2f6cb5b4ce51110601f69e744e7565f03485d6b4e229112a60918323fd",
+      "operativeSourceChars": 110,
+      "sourceContentVersion": "scv1:8c11c0ba3a4e7f35cd96eed6cf91afd84910da96c72081628133a437f85e2543",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:5940b7554eacca1da9f6a119",
+      "discoveryId": "discovery-candidate:5940b7554eacca1da9f6a119",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(e)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 9774,
+        "structuralDepth": 2,
+        "localOrdinal": 4
+      },
+      "structuralNodeIds": [
+        "structural-node:b7a9452e4e9ef9ba85534eed"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "50fc5c2575db7619908065103f0e52cb4381e424cab0eb2ba0c7961148f5b287",
+      "operativeSourceChars": 348,
+      "sourceContentVersion": "scv1:8ffd843e53e1ede824a6cd04d376de8bd1db7087496a6e08e00421e4178e25db",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:bc8bcebbcd40e61b935127ef",
+      "discoveryId": "discovery-candidate:bc8bcebbcd40e61b935127ef",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(f)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10122,
+        "structuralDepth": 2,
+        "localOrdinal": 5
+      },
+      "structuralNodeIds": [
+        "structural-node:d43925648ee01df45e322d9b"
+      ],
+      "families": [
+        "DISPOSITIONS"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "4889dab390b94ca04f070166e82f354d16482c0344e58b466b356c4b416e2d03",
+      "operativeSourceChars": 202,
+      "sourceContentVersion": "scv1:7f4a1c9284c104dab541ada24bb38b78d4f4e581bc56b80dfb9d9c5db6b85781",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:42c69e8089aabc67b1dd7eaa",
+      "discoveryId": "discovery-candidate:42c69e8089aabc67b1dd7eaa",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(g)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10324,
+        "structuralDepth": 2,
+        "localOrdinal": 6
+      },
+      "structuralNodeIds": [
+        "structural-node:3034f95aa613438e4b12fa30"
+      ],
+      "families": [
+        "DISPOSITIONS"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "f015a5eda3b69e547d1746b48cc22163b17637ef5d0c0114458ab993117862d6",
+      "operativeSourceChars": 254,
+      "sourceContentVersion": "scv1:ea4220082c9b8168b9a51657f395073626c636cc5d47445ce9b10e009938b4ee",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:a7577380bb8ff153a51c0930",
+      "discoveryId": "discovery-candidate:a7577380bb8ff153a51c0930",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(h)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10578,
+        "structuralDepth": 2,
+        "localOrdinal": 7
+      },
+      "structuralNodeIds": [
+        "structural-node:f1c0602e0480d94e8b1fadc3"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "GUARANTOR_REQUIREMENTS",
+        "ENTITY_SCOPE_RESTRICTIONS"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "de623ab21cec36a1c2dd78834e7f1fd8003db364e2757677e80f908cf016bf8d",
+      "operativeSourceChars": 286,
+      "sourceContentVersion": "scv1:fe54cc717c954e135ef0970d1693928927cb8dfcfd714d93c675d9f9a1a4f962",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:e38b7be1a9a9f07c719c4941",
+      "discoveryId": "discovery-candidate:e38b7be1a9a9f07c719c4941",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10864,
+        "structuralDepth": 2,
+        "localOrdinal": 8
+      },
+      "structuralNodeIds": [
+        "structural-node:3ca9b0380a28d5613bddfbe8"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "PERMISSION",
+      "operativeSourceSha256": "af13445db473c24f69bcac9b0d85eaba64c903d438d72e09404bd1659c141cc8",
+      "operativeSourceChars": 135,
+      "sourceContentVersion": "scv1:fe11c407324d63eb31ee0b354e901be1eca05fa08a4b508daf8076997b5a0c0c",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:1488910e7586a1716553df1e",
+      "discoveryId": "discovery-candidate:1488910e7586a1716553df1e",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.07",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11055,
+        "structuralDepth": 1,
+        "localOrdinal": 6
+      },
+      "structuralNodeIds": [
+        "structural-node:5133375121ec930efc756c2c"
+      ],
+      "families": [
+        "QUALITATIVE_NEGATIVE_COVENANTS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "704b3fd03f994cb98ec20f6435f93344ca05f9e535dd189162ff2d429f7e1ee9",
+      "operativeSourceChars": 373,
+      "sourceContentVersion": "scv1:008d48347a1781a912cac5caac60956bf17d601b2672b8e32675725e373030d7",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:f99793324e896be1d745cc77",
+      "discoveryId": "discovery-candidate:f99793324e896be1d745cc77",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.07",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11055,
+        "structuralDepth": 1,
+        "localOrdinal": 6
+      },
+      "structuralNodeIds": [
+        "structural-node:5133375121ec930efc756c2c"
+      ],
+      "families": [
+        "QUALITATIVE_NEGATIVE_COVENANTS",
+        "DISPOSITIONS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "704b3fd03f994cb98ec20f6435f93344ca05f9e535dd189162ff2d429f7e1ee9",
+      "operativeSourceChars": 373,
+      "sourceContentVersion": "scv1:008d48347a1781a912cac5caac60956bf17d601b2672b8e32675725e373030d7",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:cea37d84cffe6e2e218270d9",
+      "discoveryId": "discovery-candidate:cea37d84cffe6e2e218270d9",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11428,
+        "structuralDepth": 1,
+        "localOrdinal": 7
+      },
+      "structuralNodeIds": [
+        "structural-node:59ae477ceb3894002e88df3d"
+      ],
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "2be24f4390e587baf570611064ebcf9725406e9514dbf9b1f204fbd828855099",
+      "operativeSourceChars": 1872,
+      "sourceContentVersion": "scv1:984883491da1d8edf516a2fec327868ad3e775560a66c7e890aee47fa3426530",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:34feb9b92f58d02605eec0ff",
+      "discoveryId": "discovery-candidate:34feb9b92f58d02605eec0ff",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11514,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:d8fcb82a1a49471a17c56786"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "46be3aecff1332ad72a006726e32693d8dbf371508577d9c9a44f52304f9ff32",
+      "operativeSourceChars": 1289,
+      "sourceContentVersion": "scv1:3a9e2603e93564967db8a74f8482413f9a373b77b15f315940ebeb9fdab080ab",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:4c5592510ba6608e7aff01d5",
+      "discoveryId": "discovery-candidate:4c5592510ba6608e7aff01d5",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11687,
+        "structuralDepth": 3,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:75a4a53ccfd214048b47066c",
+        "structural-node:59ae477ceb3894002e88df3d"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "4258dbe3680ba665067d1272c30190d48b2dc1538b773b4ed41a3c6da2402956",
+      "operativeSourceChars": 54,
+      "sourceContentVersion": "scv1:e6fa160f45c60a9a0eb661794d75213e6fd12255581d486ff33ad04741c2859e",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:91c747fcce91f27db694ad81",
+      "discoveryId": "discovery-candidate:91c747fcce91f27db694ad81",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(ii)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11741,
+        "structuralDepth": 3,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:c0558f8c23c32c98bf894cb8",
+        "structural-node:59ae477ceb3894002e88df3d"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "0c51cce2a1f52e9486f11c08d3c0b14a84296c40070327198fb886a3a7b971e8",
+      "operativeSourceChars": 291,
+      "sourceContentVersion": "scv1:1b2ff641d9be2d6b701e44ea3f18b82cdc3b7d20bb7394ed1cf415f5962afbf6",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:76c62f3e3ebcc23f34e646e6",
+      "discoveryId": "discovery-candidate:76c62f3e3ebcc23f34e646e6",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(iii)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12032,
+        "structuralDepth": 3,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:3368bfefe3a8e25b16c72715"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "REFINANCING_PERMISSION",
+      "operativeSourceSha256": "de97734ed3a379389474ef001eca3f4af4be62ba62613f63ca532ec4de5c6d1e",
+      "operativeSourceChars": 111,
+      "sourceContentVersion": "scv1:74a96116602d16feb96bafb97f766091656c881ced3f884eb4dc04855ed280d0",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:44973b4c3442112ab5c9f68c",
+      "discoveryId": "discovery-candidate:44973b4c3442112ab5c9f68c",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(iv)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12143,
+        "structuralDepth": 3,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:545592785524831eebbf704f",
+        "structural-node:59ae477ceb3894002e88df3d"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "083f92fb06817b5ff14373018786d7388007a583d11e31901b7601955abb3f56",
+      "operativeSourceChars": 207,
+      "sourceContentVersion": "scv1:447f8147cc44691bbc30503b88a0e8bfbbf6e568f698dce431e16d0869339540",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:67064d13c52b6ff4d62fefa3",
+      "discoveryId": "discovery-candidate:67064d13c52b6ff4d62fefa3",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(v)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12350,
+        "structuralDepth": 3,
+        "localOrdinal": 4
+      },
+      "structuralNodeIds": [
+        "structural-node:de5a185af426b448b3a2d9c3",
+        "structural-node:59ae477ceb3894002e88df3d"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "6b0c110c489831ca1cec349ee92fd8cd662c8bbaa06ff017f6d7428cc7486b84",
+      "operativeSourceChars": 87,
+      "sourceContentVersion": "scv1:ed0401b21023599b739c20eb00eedbd54cd40767fecb45433b743e7c6c27eb18",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:7cf5d8bf8b51cb8a788e95e6",
+      "discoveryId": "discovery-candidate:7cf5d8bf8b51cb8a788e95e6",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(vi)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12437,
+        "structuralDepth": 3,
+        "localOrdinal": 5
+      },
+      "structuralNodeIds": [
+        "structural-node:de4bff113241bcb9c85f5c46",
+        "structural-node:59ae477ceb3894002e88df3d"
+      ],
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "1469f311a3edf7e0b45cc0598f04cceb05339d85e3b005c90a84556b697212bf",
+      "operativeSourceChars": 366,
+      "sourceContentVersion": "scv1:a97df1df3f1c00076a04b7e2f0455c3205905c39a8613bfeaca39eaf27ccdf6f",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:0aedf65770c4567350dba903",
+      "discoveryId": "discovery-candidate:0aedf65770c4567350dba903",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12803,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:1fa2b861da57d6937ac14d94"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "AMENDMENT_WAIVER_CONSENT"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "dcfeb784a68d4b305bada6430ed6804bac3e716ffb0b674c465821156ec58db6",
+      "operativeSourceChars": 497,
+      "sourceContentVersion": "scv1:3ddf36629d8864fee867cc579111fa33dc18b54b1c525794de459900b1944180",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:2a19cadc68de7d438449a40c",
+      "discoveryId": "discovery-candidate:2a19cadc68de7d438449a40c",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13300,
+        "structuralDepth": 1,
+        "localOrdinal": 8
+      },
+      "structuralNodeIds": [
+        "structural-node:be98168c074bfad0edc0db47"
+      ],
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "c80b16346a5910979e4430cb1f12ca7a8965c51ff134ecca909a5216c4054923",
+      "operativeSourceChars": 1000,
+      "sourceContentVersion": "scv1:d5a919ae3906f1e4d621dff2a2d85858d87ec49c1951778e44030b5a30d0f1be",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:cb5377328576a0c9174e8c36",
+      "discoveryId": "discovery-candidate:cb5377328576a0c9174e8c36",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13674,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:5b2ed2b82b0c0cf3e4d290e2",
+        "structural-node:be98168c074bfad0edc0db47"
+      ],
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "3bc61ebd1fbe649f9abd3d20e115732565d8dc4d12056196a79b1203e1115309",
+      "operativeSourceChars": 63,
+      "sourceContentVersion": "scv1:5f6ac9f6e42ee6d6f8b93f37b3b55e46d6e6e03451d645491ec49b9b1fda05d6",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:7ad342c04f0a60a764d9a41a",
+      "discoveryId": "discovery-candidate:7ad342c04f0a60a764d9a41a",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13737,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:c97d23446d35e7dac2568935",
+        "structural-node:be98168c074bfad0edc0db47"
+      ],
+      "families": [
+        "RESTRICTED_PAYMENTS",
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "c87c8f962c715722f5d4a18df4881824839da5e963e6dce5afcdc192e05f7664",
+      "operativeSourceChars": 51,
+      "sourceContentVersion": "scv1:9039758ef5959382d0a9c48eba9659f50fd0a17707acc7d4fb276a7bf570da7b",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:ee6fe6b75c4886ff38b7b0bc",
+      "discoveryId": "discovery-candidate:ee6fe6b75c4886ff38b7b0bc",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13788,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:c0a708442614b14bed85df35",
+        "structural-node:be98168c074bfad0edc0db47"
+      ],
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "e336b9b3535cf2103b966c4c195c529711f72c6a4146ca8cf3d8909047f9880c",
+      "operativeSourceChars": 124,
+      "sourceContentVersion": "scv1:2aafff25e56b8741147779b8ff5fff89bccdd47cdf1cd02609e72643211abdf5",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:7cafbe3a7a363d8993be5e7c",
+      "discoveryId": "discovery-candidate:7cafbe3a7a363d8993be5e7c",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13912,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:0a1fd05a15252e614cd30544",
+        "structural-node:be98168c074bfad0edc0db47"
+      ],
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "PROVISO",
+      "operativeSourceSha256": "1753c37da2bfc851ec66825dddb139f9bd8fe18085a3397efdafb440a90f592f",
+      "operativeSourceChars": 388,
+      "sourceContentVersion": "scv1:595d34ebc9910b8f6101c290038ee16b4b646c3c8e71a8601f1c03eb6113edbf",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:d0f42b104cf5ca9ee7408ea8",
+      "discoveryId": "discovery-candidate:d0f42b104cf5ca9ee7408ea8",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13912,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:0a1fd05a15252e614cd30544",
+        "structural-node:be98168c074bfad0edc0db47"
+      ],
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "1753c37da2bfc851ec66825dddb139f9bd8fe18085a3397efdafb440a90f592f",
+      "operativeSourceChars": 388,
+      "sourceContentVersion": "scv1:595d34ebc9910b8f6101c290038ee16b4b646c3c8e71a8601f1c03eb6113edbf",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:35a3d89a2af1d8c126b418cd",
+      "discoveryId": "discovery-candidate:35a3d89a2af1d8c126b418cd",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14300,
+        "structuralDepth": 1,
+        "localOrdinal": 9
+      },
+      "structuralNodeIds": [
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "cb4d1183da9a6a182c3976f974366b3134cf798c9f55aa8429f76ee4567de660",
+      "operativeSourceChars": 1468,
+      "sourceContentVersion": "scv1:f114bc0d836696171a49510a3b1f48fb0c895d82805b3bff393543fcfef9b9fa",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:83c14bd3d6e1656d0fc2d08d",
+      "discoveryId": "discovery-candidate:83c14bd3d6e1656d0fc2d08d",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14569,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:6d40d729937a30e7e9d3ffe3",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "922f002c7d91d2d472e54812dc11bba78dcd0b54bc5bfbda749801d0c92402eb",
+      "operativeSourceChars": 47,
+      "sourceContentVersion": "scv1:6a685c7ffb9858565004bb6660af710419d5ded3f2e35236860ff7803f5daaae",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:ba68f8dd721ae3cddd13fcea",
+      "discoveryId": "discovery-candidate:ba68f8dd721ae3cddd13fcea",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14616,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "structuralNodeIds": [
+        "structural-node:b982d2d8cf259cc1cd63df46",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "8cba9e43d3ede7271a380a78eabbfd73034587dac34c37b8c479fc2afd12d8f7",
+      "operativeSourceChars": 39,
+      "sourceContentVersion": "scv1:6cd0d6856f210a612f202787d97b71c6f3acfce97034c384ecaca253345ea776",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:3bbc7a549f2a7b19edec286c",
+      "discoveryId": "discovery-candidate:3bbc7a549f2a7b19edec286c",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14655,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:9707fcb57f77103f8c2a964e",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "45d26a8ff625f2be669a1b8e505c47f07d37ba7cd92d437ae32de7fc48cf3f6a",
+      "operativeSourceChars": 60,
+      "sourceContentVersion": "scv1:865878ea23669878cdb392e605250ccab7d5b051e0ea446a92438be1cfd6c09e",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:f563d6d8423e751c43ad3662",
+      "discoveryId": "discovery-candidate:f563d6d8423e751c43ad3662",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14715,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "structuralNodeIds": [
+        "structural-node:d81f61b3ddff0fd721a1e8ab",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "0304ac244f1a989c68735c8de66847caec96a46c228a643018a3eb1a00b221e6",
+      "operativeSourceChars": 106,
+      "sourceContentVersion": "scv1:2dfe5fb2a9dd653dd6449f94e43919e0264fc7bc9da22d136f587a86374fd0ba",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:97e2dc61aeed6644bdbb8a99",
+      "discoveryId": "discovery-candidate:97e2dc61aeed6644bdbb8a99",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(e)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14821,
+        "structuralDepth": 2,
+        "localOrdinal": 4
+      },
+      "structuralNodeIds": [
+        "structural-node:810f6b88d30e45d1adfa2471",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS",
+        "ENTITY_SCOPE_RESTRICTIONS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "5cb8dcdb3cb825cf557ce32a523c3a6a67c813900257007d23307abebc9fe8b9",
+      "operativeSourceChars": 122,
+      "sourceContentVersion": "scv1:910829072afd18007f27e0bd9b8679700ef20a5a22ad4432e39865a813240632",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:bc2c909cb08f05ab699bd764",
+      "discoveryId": "discovery-candidate:bc2c909cb08f05ab699bd764",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(f)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14943,
+        "structuralDepth": 2,
+        "localOrdinal": 5
+      },
+      "structuralNodeIds": [
+        "structural-node:c1a3bb53ddef2b33ebad01b2",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "1eac566ef14f089e5ceaf0a05993040bb8e3103ea952c12ab538d9a03dba2b46",
+      "operativeSourceChars": 49,
+      "sourceContentVersion": "scv1:4b5be9f3c4454fe2a3f61a014200c4b9845cbab2d0e2890c66a3f1c0fcef8c83",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:181a383ac2653e428c00a100",
+      "discoveryId": "discovery-candidate:181a383ac2653e428c00a100",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(g)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14992,
+        "structuralDepth": 2,
+        "localOrdinal": 6
+      },
+      "structuralNodeIds": [
+        "structural-node:66a7299d936c559cbf86e7af",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS",
+        "SUBSIDIARY_DESIGNATIONS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "13ede7f4ab79a1083cd998632e38a87e606864520d0c1662e286ae0e5c5ac685",
+      "operativeSourceChars": 150,
+      "sourceContentVersion": "scv1:24ccbe300cdcf840dcba0e95aa3d99f0fb80aa3e09b8794e06b5c32ee2e30e59",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:a5d4c9ee637ec7698370cda1",
+      "discoveryId": "discovery-candidate:a5d4c9ee637ec7698370cda1",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(h)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15142,
+        "structuralDepth": 2,
+        "localOrdinal": 7
+      },
+      "structuralNodeIds": [
+        "structural-node:dbc59fc9c897537055f95719",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "c0466ab3e6a2c733b61072c379b1f43ac51631cfd5dd0db93de7cc6371c8d18c",
+      "operativeSourceChars": 86,
+      "sourceContentVersion": "scv1:2c536194c69b558d5a3d634dd4c47d019c55bc4d0579f3c21f391504eb3b93c7",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:f488011afdf5072c0effe3c0",
+      "discoveryId": "discovery-candidate:f488011afdf5072c0effe3c0",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15228,
+        "structuralDepth": 2,
+        "localOrdinal": 8
+      },
+      "structuralNodeIds": [
+        "structural-node:29f79fa9228ce9946e3ea78e",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "4fcec8f9e5117032bd3f163854dfa64080f0db890fc13a5b2ece855b07f39982",
+      "operativeSourceChars": 83,
+      "sourceContentVersion": "scv1:03f2a8ea94023ba604c7e05398c629fd572524c8e33eb996cba6421ce631f539",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:6682a6b7aa54e7fbbeebf00b",
+      "discoveryId": "discovery-candidate:6682a6b7aa54e7fbbeebf00b",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(j)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15311,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "structuralNodeIds": [
+        "structural-node:e597c45ada6f36ce11abe95b",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "91611aef7f9c03d4ec0a16ff54a330af0d130c7ab0aedd13d24705de078b5261",
+      "operativeSourceChars": 37,
+      "sourceContentVersion": "scv1:97420b03917001777b8be1db10933edda12ae00f78fa69e5d6d93a3da0c9a7c7",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:50ee5d49e4a327b3f2b681a0",
+      "discoveryId": "discovery-candidate:50ee5d49e4a327b3f2b681a0",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(k)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15348,
+        "structuralDepth": 2,
+        "localOrdinal": 10
+      },
+      "structuralNodeIds": [
+        "structural-node:8254263b188eb003113b1c32",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "295a44363adda9d1479fe3deac5fcf69f70d6b529fbfad9f5e2433d237a6cd09",
+      "operativeSourceChars": 74,
+      "sourceContentVersion": "scv1:325f884becd2606e7531075b7dacdfe435f2cfdb9398b658797be57eb88bb2b8",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:54c1456f00169f5bc7f2b308",
+      "discoveryId": "discovery-candidate:54c1456f00169f5bc7f2b308",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(l)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15422,
+        "structuralDepth": 2,
+        "localOrdinal": 11
+      },
+      "structuralNodeIds": [
+        "structural-node:5678c1598d712653c82debf2",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "PROVISO",
+      "operativeSourceSha256": "1cf93d8b4743628d678d850abe02fe825b8f17775542d2915d24595073aede45",
+      "operativeSourceChars": 346,
+      "sourceContentVersion": "scv1:42bbc080ed5fa421c9dbcdabef3496235d2a9eeba3447b08e2fdf70faedb8144",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:8bcbc5e0af482939736cf162",
+      "discoveryId": "discovery-candidate:8bcbc5e0af482939736cf162",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(l)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15422,
+        "structuralDepth": 2,
+        "localOrdinal": 11
+      },
+      "structuralNodeIds": [
+        "structural-node:5678c1598d712653c82debf2",
+        "structural-node:57e1e646339dd91ec35b20dd"
+      ],
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "1cf93d8b4743628d678d850abe02fe825b8f17775542d2915d24595073aede45",
+      "operativeSourceChars": 346,
+      "sourceContentVersion": "scv1:42bbc080ed5fa421c9dbcdabef3496235d2a9eeba3447b08e2fdf70faedb8144",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:090a9613899d1a219ce292fa",
+      "discoveryId": "discovery-candidate:090a9613899d1a219ce292fa",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "structuralNodeIds": [
+        "structural-node:855e0b9b489232800b21adde"
+      ],
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "CONDITION",
+      "operativeSourceSha256": "ed301cb7c4aae8912f69d7c379c0b21a747efa3922ab64398aabfdbeb805ea14",
+      "operativeSourceChars": 599,
+      "sourceContentVersion": "scv1:bfc8c8d7c1d311802f4ca285dcf02826c6ccf31c77fad2268f89f41ae60e5bd1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:48fcef18edd9e49ca428cfaf",
+      "discoveryId": "discovery-candidate:48fcef18edd9e49ca428cfaf",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "structuralNodeIds": [
+        "structural-node:855e0b9b489232800b21adde"
+      ],
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "ed301cb7c4aae8912f69d7c379c0b21a747efa3922ab64398aabfdbeb805ea14",
+      "operativeSourceChars": 599,
+      "sourceContentVersion": "scv1:bfc8c8d7c1d311802f4ca285dcf02826c6ccf31c77fad2268f89f41ae60e5bd1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:cc87ac141ce66185965ea122",
+      "discoveryId": "discovery-candidate:cc87ac141ce66185965ea122",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "structuralNodeIds": [
+        "structural-node:855e0b9b489232800b21adde"
+      ],
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "ed301cb7c4aae8912f69d7c379c0b21a747efa3922ab64398aabfdbeb805ea14",
+      "operativeSourceChars": 599,
+      "sourceContentVersion": "scv1:bfc8c8d7c1d311802f4ca285dcf02826c6ccf31c77fad2268f89f41ae60e5bd1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:e1a2c06d81130c629b5c7825",
+      "discoveryId": "discovery-candidate:e1a2c06d81130c629b5c7825",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "structuralNodeIds": [
+        "structural-node:855e0b9b489232800b21adde"
+      ],
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "operativeSourceSha256": "ed301cb7c4aae8912f69d7c379c0b21a747efa3922ab64398aabfdbeb805ea14",
+      "operativeSourceChars": 599,
+      "sourceContentVersion": "scv1:bfc8c8d7c1d311802f4ca285dcf02826c6ccf31c77fad2268f89f41ae60e5bd1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:4e5bab2bdc14284f4d1bd1d9",
+      "discoveryId": "discovery-candidate:4e5bab2bdc14284f4d1bd1d9",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15837,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "structuralNodeIds": [
+        "structural-node:39f73ee6ddfb4570f0f1565b",
+        "structural-node:855e0b9b489232800b21adde"
+      ],
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "EXCEPTION",
+      "operativeSourceSha256": "285e8a4d3b2a3977b40bd2e7b90106b7362fcbb037e03d6f2c30a2d50f14e360",
+      "operativeSourceChars": 530,
+      "sourceContentVersion": "scv1:c99bc705f0796aaf6c7d1665b2c9e6e02299b63d38bbfe7b905675e33f2f45b1",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:cfcfb9f2d2486884df97dc1a",
+      "discoveryId": "discovery-candidate:cfcfb9f2d2486884df97dc1a",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.15",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 16367,
+        "structuralDepth": 1,
+        "localOrdinal": 11
+      },
+      "structuralNodeIds": [
+        "structural-node:2bb73c477d68f5206de746bb"
+      ],
+      "families": [
+        "SPRINGING_COVENANTS",
+        "REPORTING_INFORMATION"
+      ],
+      "role": "TRIGGER",
+      "operativeSourceSha256": "4532c2e819330a7c1012ebdc350f04e881842155cdf382f5ee863f07c49ee5e3",
+      "operativeSourceChars": 459,
+      "sourceContentVersion": "scv1:9ef4d92adaf08ef83d1af150f467968f71eef441701a663c9998a44f79060ef9",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    },
+    {
+      "candidateRef": "discovery-candidate:d6b410b5723bffaf35e7505a",
+      "discoveryId": "discovery-candidate:d6b410b5723bffaf35e7505a",
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.15",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 16367,
+        "structuralDepth": 1,
+        "localOrdinal": 11
+      },
+      "structuralNodeIds": [
+        "structural-node:2bb73c477d68f5206de746bb"
+      ],
+      "families": [
+        "FINANCIAL_COVENANTS",
+        "SPRINGING_COVENANTS"
+      ],
+      "role": "FINANCIAL_TEST",
+      "operativeSourceSha256": "4532c2e819330a7c1012ebdc350f04e881842155cdf382f5ee863f07c49ee5e3",
+      "operativeSourceChars": 459,
+      "sourceContentVersion": "scv1:9ef4d92adaf08ef83d1af150f467968f71eef441701a663c9998a44f79060ef9",
+      "outcome": "UNSERVED",
+      "compilationStatus": null,
+      "compilationFailureReasons": [],
+      "verificationStatus": null,
+      "nodeIds": [],
+      "failure": {
+        "kind": "UNSERVED",
+        "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+      },
+      "telemetry": null
+    }
+  ],
+  "unresolved": [
+    {
+      "unresolvedId": "6f35f8c5f1ed4a1b34ac88c3",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:8a1f671c765eb6021a8afdc5",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 399,
+        "structuralDepth": 1,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "abb5f14c34d8d471bd4af7c3",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:c1aeff2cfc75b906c42530a5",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 399,
+        "structuralDepth": 1,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "d198170e33d58783326a42af",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:5702492d7dce2d5565e15fb6",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 399,
+        "structuralDepth": 1,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "1875ad52285da7171de43aa4",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:8f90d6eac4202e65071bbcf5",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1061,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "b8c8d3b54d7dc935cf1c5f90",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:7f9dc68409870f67e127c945",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1138,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "23622dc910c4c0dc75407e65",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:7ff6fb1aa587e3fc24c0eda5",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1186,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "1ccab0aaa6825b5e0af7c604",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:9c15de699c4f69e1af7207e3",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 1231,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "6b4b89672ac9020e0905208e",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:718133550b5e5d106743178a",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(f)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2533,
+        "structuralDepth": 2,
+        "localOrdinal": 5
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "bf0bc2bcde0c50ee7f1abd96",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:da8edb189792b07c9092cb84",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(g)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2601,
+        "structuralDepth": 2,
+        "localOrdinal": 6
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "3a54c59e7c798b5ab0140b4c",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:954760957805bbc0e2cd589f",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2652,
+        "structuralDepth": 2,
+        "localOrdinal": 8
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "a7d339fd666ed371f82c383f",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:3dad23f4217974bef5909c01",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(j)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2921,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "4e87b62043ee4e249d8de814",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:e9344a11c4425a4b9df7ac7b",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(l)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 2994,
+        "structuralDepth": 2,
+        "localOrdinal": 11
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "0d436f0b6c673b30cc1eb56b",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:42a845d744056f42af74798a",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(m)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3143,
+        "structuralDepth": 2,
+        "localOrdinal": 12
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "fca7cb85515b27c39d42de58",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:4193a5cde69ba73393de4554",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(n)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3251,
+        "structuralDepth": 2,
+        "localOrdinal": 13
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "78c0b1427418084cea2d2346",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:1cefc285a22e433ff87508bc",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(p)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3351,
+        "structuralDepth": 2,
+        "localOrdinal": 15
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "9732da2986d00cb32765b11c",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:1252d8891aa44f63829bb11d",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(q)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3568,
+        "structuralDepth": 2,
+        "localOrdinal": 16
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "de5db3b76f989ee4399b93cb",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:eeaa34c907a1db1d81dff380",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(r)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 3695,
+        "structuralDepth": 2,
+        "localOrdinal": 17
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "fbfbbf0fce785e2a44316f3b",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:dab328c64a3cab8ffe636c17",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(s)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4159,
+        "structuralDepth": 2,
+        "localOrdinal": 18
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "59df43b727ca83a61c4426b1",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:e9d255ef708d7e228f8e3290",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.01(t)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4357,
+        "structuralDepth": 2,
+        "localOrdinal": 19
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "209260658ec58e3a6f338d48",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:2a5195dda5a015bcfc2a4f30",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "3a05d05ad21b9b275b57811f",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:3e087c2485fe1583c6971aa6",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "61070ade2c94b1b2003ce9bc",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:f130bc96f8222445415cd933",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "e7d0e18255175153ef84a3dc",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:8a714910e3b3ec1b2fc2641b",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.02",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 4442,
+        "structuralDepth": 1,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "12d187872fd7a21988107565",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:94b354aa0aa621e0de76a529",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "9ceebf2b0c9ccad40c3ef417",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:bb85050ae392c2cbccbc82e0",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(c)(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "f0e51902745b805810f157a8",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:5d1d6536ab092281de95eeb4",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(c)(a)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "f30da60d565c8e04544c8e43",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:9b17a56d58808b2c60885829",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5002,
+        "structuralDepth": 1,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "98d528256c37220f1aedef72",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:d26cc301b196e01d4e54e56e",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5056,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "429eb48de96243849b1fb854",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:f7b1997c561b53c19da3cee2",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5168,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "8c696e7ddddf158f540c0c24",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:25c1acc8abab9f9f20a20fe0",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.03(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 5260,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "188d29f362394c53ef6065ee",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:8222c7bd158702d8bb3a4479",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6712,
+        "structuralDepth": 1,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "a72f14c5921da57b1aa8a364",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:f542bd169beb17d6c99fdd46",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6712,
+        "structuralDepth": 1,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "eb3b1eb2d62c2b3b367f6500",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:364b69267be61e3d548479f0",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6712,
+        "structuralDepth": 1,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "4cc55ff615853d20aa470398",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:e79fa4f952a500410c504b81",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 6927,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "6d16c150c338d900560741a5",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:8523d2aeab25a40630654f51",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(a)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 7051,
+        "structuralDepth": 3,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "0242be8fdab8a01b1397be96",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:95de51404f90a97bb78ca2ae",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 7998,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "441767c5a9987572360a37ea",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:004c832541427691c8d1f606",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 8763,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "b8a470a3c5f320b2a171970c",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:4bed333bbf12b038d55ece2b",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(c)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 8874,
+        "structuralDepth": 3,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "c1137bf66d61a8c51f7014e0",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:26415415cdf63dcc6fcb006c",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 9664,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "05de346033239bb83461b7bd",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:5940b7554eacca1da9f6a119",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(e)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 9774,
+        "structuralDepth": 2,
+        "localOrdinal": 4
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "59e89a0f299f2cbcd8e08b01",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:bc8bcebbcd40e61b935127ef",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(f)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10122,
+        "structuralDepth": 2,
+        "localOrdinal": 5
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "f911559651cd561d067afdc7",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:42c69e8089aabc67b1dd7eaa",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(g)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10324,
+        "structuralDepth": 2,
+        "localOrdinal": 6
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "d01cc89d2b19ef97d99d5a42",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:a7577380bb8ff153a51c0930",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(h)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10578,
+        "structuralDepth": 2,
+        "localOrdinal": 7
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "db859e9cfdda360b18b4a6b8",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:e38b7be1a9a9f07c719c4941",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.04(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 10864,
+        "structuralDepth": 2,
+        "localOrdinal": 8
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "57ce828c5af450186f52b9ef",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:f99793324e896be1d745cc77",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.07",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11055,
+        "structuralDepth": 1,
+        "localOrdinal": 6
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "9cd6ac24716ed08533d4d3ee",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:1488910e7586a1716553df1e",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.07",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11055,
+        "structuralDepth": 1,
+        "localOrdinal": 6
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "33e2ee113f1e02db050c110b",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:cea37d84cffe6e2e218270d9",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11428,
+        "structuralDepth": 1,
+        "localOrdinal": 7
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "632c4b0b5ae943751e7e2834",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:34feb9b92f58d02605eec0ff",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11514,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "22742e485fe283e82dcc9cd8",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:4c5592510ba6608e7aff01d5",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11687,
+        "structuralDepth": 3,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "156556d518423f2bb8b78da3",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:91c747fcce91f27db694ad81",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(ii)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 11741,
+        "structuralDepth": 3,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "591758ebddfe684c13316ee6",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:76c62f3e3ebcc23f34e646e6",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(iii)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12032,
+        "structuralDepth": 3,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "84312dada36dc8533b99c0e0",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:44973b4c3442112ab5c9f68c",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(iv)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12143,
+        "structuralDepth": 3,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "c2c47b234ce6fa4916206965",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:67064d13c52b6ff4d62fefa3",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(v)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12350,
+        "structuralDepth": 3,
+        "localOrdinal": 4
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "f5129296c046349005627b51",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:7cf5d8bf8b51cb8a788e95e6",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(a)(vi)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12437,
+        "structuralDepth": 3,
+        "localOrdinal": 5
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "6ecd5cfe3554e279f6c33a6c",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:0aedf65770c4567350dba903",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.08(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 12803,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "ab19b1dc35afb4178b6ade64",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:2a19cadc68de7d438449a40c",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13300,
+        "structuralDepth": 1,
+        "localOrdinal": 8
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "72405f312594803fab043f32",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:cb5377328576a0c9174e8c36",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13674,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "eea5edd45365d6e2426e59e6",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:7ad342c04f0a60a764d9a41a",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13737,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "1a0965a226bc95296e8e607f",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:ee6fe6b75c4886ff38b7b0bc",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13788,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "749115256613d1c126f3f3c6",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:d0f42b104cf5ca9ee7408ea8",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13912,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "f3fe6446cd75962ee3172137",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:7cafbe3a7a363d8993be5e7c",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.11(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 13912,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "66d861b624bcd8f16178a1a2",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:35a3d89a2af1d8c126b418cd",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14300,
+        "structuralDepth": 1,
+        "localOrdinal": 9
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "051143fa25f410c693e6712e",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:83c14bd3d6e1656d0fc2d08d",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14569,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "aa37aa6bfdfbbe8b03c4c1c8",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:ba68f8dd721ae3cddd13fcea",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(b)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14616,
+        "structuralDepth": 2,
+        "localOrdinal": 1
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "8b6e3b77cc62ed18224255a5",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:3bbc7a549f2a7b19edec286c",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(c)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14655,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "5eae76de58edfb4e751ff600",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:f563d6d8423e751c43ad3662",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(d)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14715,
+        "structuralDepth": 2,
+        "localOrdinal": 3
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "10dd02a105467e8b550a0289",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:97e2dc61aeed6644bdbb8a99",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(e)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14821,
+        "structuralDepth": 2,
+        "localOrdinal": 4
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "053a3eded90b77bae56a621e",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:bc2c909cb08f05ab699bd764",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(f)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14943,
+        "structuralDepth": 2,
+        "localOrdinal": 5
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "847dbb4eea2209d4ebf44e1f",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:181a383ac2653e428c00a100",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(g)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 14992,
+        "structuralDepth": 2,
+        "localOrdinal": 6
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "81d540f5a47577786f6e1a3c",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:a5d4c9ee637ec7698370cda1",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(h)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15142,
+        "structuralDepth": 2,
+        "localOrdinal": 7
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "2732eb3fba3c7bba578a8afa",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:f488011afdf5072c0effe3c0",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(i)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15228,
+        "structuralDepth": 2,
+        "localOrdinal": 8
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "b7b9c0fe2c734ecb6c29b049",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:6682a6b7aa54e7fbbeebf00b",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(j)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15311,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "e6c669865bf388c9b75db133",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:50ee5d49e4a327b3f2b681a0",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(k)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15348,
+        "structuralDepth": 2,
+        "localOrdinal": 10
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "36c30d0610219435dd87047e",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:54c1456f00169f5bc7f2b308",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(l)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15422,
+        "structuralDepth": 2,
+        "localOrdinal": 11
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "fccac830a7977c03cc053791",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:8bcbc5e0af482939736cf162",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.13(l)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15422,
+        "structuralDepth": 2,
+        "localOrdinal": 11
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "4397877cd57aa40b91b4a3f6",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:090a9613899d1a219ce292fa",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "7977f2bed5bf8e5cc67e55f9",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:e1a2c06d81130c629b5c7825",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "9a6710ba278c311905875f82",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:cc87ac141ce66185965ea122",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "fc6fde3df4455c225307aa3f",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:48fcef18edd9e49ca428cfaf",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15768,
+        "structuralDepth": 1,
+        "localOrdinal": 10
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "c803270003ef6c49801615ca",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:4e5bab2bdc14284f4d1bd1d9",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.14(a)",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 15837,
+        "structuralDepth": 2,
+        "localOrdinal": 0
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "8835cd6cf48740a2c8eeaca2",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:cfcfb9f2d2486884df97dc1a",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.15",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 16367,
+        "structuralDepth": 1,
+        "localOrdinal": 11
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    },
+    {
+      "unresolvedId": "d584ae5d5471ae75aeeda29a",
+      "kind": "CANDIDATE_UNSERVED",
+      "severity": "BLOCKING",
+      "candidateRef": "discovery-candidate:d6b410b5723bffaf35e7505a",
+      "nodeId": null,
+      "documentId": "lsb-ca-article-6",
+      "sectionRef": "6.15",
+      "sourceOrder": {
+        "documentOrdinal": 1,
+        "charStart": 16367,
+        "structuralDepth": 1,
+        "localOrdinal": 11
+      },
+      "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
+    }
+  ],
+  "completeness": {
+    "candidatesDiscovered": 82,
+    "candidatesEligible": 82,
+    "candidatesAttempted": 0,
+    "candidatesMapped": 0,
+    "candidatesMappedWithReview": 0,
+    "candidatesFailed": 0,
+    "candidatesUnserved": 82,
+    "candidatesByOutcome": {
+      "UNSERVED": 82
+    },
+    "nodesByKind": {
+      "RULE": 0,
+      "DEFINITION": 0,
+      "SHARED_CAPACITY": 0
+    },
+    "edgesByType": {
+      "RULE_DEPENDS_ON_RULE": 0,
+      "RULE_USES_DEFINITION": 0,
+      "DEFINITION_USES_DEFINITION": 0,
+      "RULE_USES_SHARED_CAPACITY": 0,
+      "RULE_MODIFIED_BY_EXCEPTION": 0,
+      "RULE_SUBJECT_TO_CONDITION": 0,
+      "RULE_SUBJECT_TO_PROVISO": 0,
+      "RULE_SUBJECT_TO_GENERAL_PROHIBITION": 0,
+      "CROSS_DOCUMENT_DEPENDENCY": 0,
+      "AMENDMENT_SUPERSEDES": 0
+    },
+    "unresolvedByKind": {
+      "CANDIDATE_UNSERVED": 82
+    },
+    "unresolvedBlocking": 82,
+    "unresolvedReview": 0,
+    "nodesVerifiedNoMaterialGap": 0,
+    "nodesUnderReview": 0,
+    "nodesStrongIdentity": 0,
+    "mappedFraction": 0,
+    "complete": false
+  },
+  "mapHash": "a82053deab6b379a7f9a3a74ce79384854fd0723afde039220d5b73c6ce8fa4d"
+}

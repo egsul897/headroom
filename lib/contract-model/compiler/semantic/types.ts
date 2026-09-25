@@ -187,6 +187,8 @@ export interface SemanticCompilerInput {
    * unit or a truncation (mission §12). Null/undefined = unknown offset.
    */
   operativeCharStart?: number | null;
+  /** Canonical-map remediation: where operativeSourceText came from (candidate-span.ts). OPERATIVE_STATE_CURRENT_TEXT means the text is the operative state's RESOLVED current (amended) text, not the base node's text - it has no offset in the base document, and it is complete by construction (the provision view is the unit). */
+  operativeSourceOrigin?: import("../candidate-span").OperativeSourceOrigin;
   /** SEMANTIC ACCOUNTABILITY: populated by compileCovenantToIR before the model call - the resolved source-context (regions + state) handed to Pass A and Pass B. Never set by external callers. */
   sourceContext?: SourceContextResult | null;
   /** SEMANTIC ACCOUNTABILITY: the FROZEN Pass A inventory handed read-only to Pass B. Never set by external callers. */
@@ -247,6 +249,10 @@ export interface SemanticCompilerErrorDetail {
   retryCount: number | null;
   /** True when a partial submission had already been assembled (e.g. a partial tool-use transcript) before the exception interrupted compilation - distinct from OUTPUT_TRUNCATED, which is a completed-but-truncated response. */
   hadPartialOutput: boolean;
+  /** Certified transport layer (additive): the structured ProviderError record when the throw was a classified provider failure - kind, HTTP status, provider code, retryability, billing knowledge. Never text-derived. */
+  providerError?: import("../../analyzer/provider-error").ProviderErrorFields;
+  /** Certified transport layer (additive): present when the request was refused BEFORE dispatch by the hard budget - nothing was sent, nothing billed. */
+  budgetRefusal?: { reason: string; detail: string };
 }
 
 /** Overall attempt-level status - distinct from any one rule's own IR `sufficiency` (task §35's "proposed, never human-approved" distinction: this is about whether the ATTEMPT produced usable output at all, sufficiency is about how COMPLETE each individual rule's own representation is). */

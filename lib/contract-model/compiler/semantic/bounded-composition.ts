@@ -13,6 +13,8 @@
  * caller that disabled accountability) Pass C is simply not run and the whole-unit signals are not derived - the
  * certified F-7B/F-7B.3E per-shard run shape. Global Pass C for a sharded unit runs once, after stitching.
  */
+import { ProviderError } from "../../analyzer/provider-error";
+import { BudgetRefusedError } from "../../analyzer/dispatch-budget";
 import { validateCompilationUnit } from "../../ir/validate";
 import type { SemanticCaller } from "./caller";
 import { normalizeSubmission } from "./normalize";
@@ -92,6 +94,8 @@ export function buildTransportFailureResult(err: unknown, caller: SemanticCaller
     failureCategory: classifyFailureCategory(errorClass, rawMessage),
     retryCount,
     hadPartialOutput: false,
+    ...(err instanceof ProviderError ? { providerError: err.toRecord() } : {}),
+    ...(err instanceof BudgetRefusedError ? { budgetRefusal: { reason: err.reason, detail: err.detail } } : {}),
   };
   return {
     status: "FAILED",

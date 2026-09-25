@@ -118,6 +118,12 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     // "swallowing" descendant the structural parser never separated, or
     // spread across several real child clauses. Bounded, signal-driven
     // expansion (never blind full-document/full-article retrieval).
+    // Canonical-map remediation: a node's own section label ("SECTION 7.01 ...") or a reference to one of its own
+    // ancestors ("this Article VII") is not a dependency - that text is already the operative source / its parent
+    // scope. Expanding it duplicated the operative text as a CROSS_REFERENCE region (14 of 104 preserved CONMED
+    // bundles carried a self cross-reference) and made every such candidate look multi-region to the shard planner.
+    if (ref.targetNodeId === nodeId || index.getAncestors(nodeId).some((a) => a.nodeId === ref.targetNodeId)) continue;
+
     const expansion = expandReferencedRegion(index, ref.targetNodeId);
     const targetText = expansion.text;
     if (targetText.trim().length === 0) continue;
