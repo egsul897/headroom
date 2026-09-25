@@ -1,0 +1,51 @@
+[
+  {
+    "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+    "ref": "7.1",
+    "operativeChars": 3275,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480009,
+      "inputTokens": 4914,
+      "outputTokens": 42396,
+      "costUsd": 0.01166178,
+      "costStatus": "EXACT",
+      "passAUsage": {
+        "inputTokens": 4914,
+        "outputTokens": 42396
+      },
+      "reservationUsd": 1.3513292
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "c8d0328d20afe28aaf5a136f7d324704ddeeb4fd3dcca2dbd945072c35b0e413",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery/evidence/attempt-1/discovery-candidate:a26970121ceb558846ff8d1c.json",
+    "committedUsd": 0.012849,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  }
+]

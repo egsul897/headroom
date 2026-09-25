@@ -108,3 +108,34 @@ describe("§14 priority, §21 canonical selection, §22 variance", () => {
     expect(JSON.stringify(rows)).not.toMatch(/CREDIT|SURFACED|score/i);
   });
 });
+
+describe("resume after a harness abort (segment 1 preserved in docs)", () => {
+  const seg = "docs/phase-3-conmed-benchmark-recovery/run-segment-1";
+  it("carries 7.1 forward re-accounted at the full retained reservation, consumes 7.10 as HARNESS_ABORTED_IN_FLIGHT, leaves six targets for pass 1, and seeds the ledger", async () => {
+    const p = await R.main(["--dry-run", "--resume-from", seg]);
+    const r = p!.resume!;
+    expect(r.priorAttempts.map((a: { ref: string; attempt: number; recovery: string; costStatus: string; costUsd: number }) => [a.ref, a.attempt, a.recovery, a.costStatus])).toEqual([["7.1", 1, "TIMEOUT", "UNKNOWN_TIMEOUT_BILLED"], ["7.10", 1, "OTHER_EXECUTION_FAILURE", "UNKNOWN_TIMEOUT_BILLED"]]);
+    expect(r.accountingCorrections).toHaveLength(1);
+    expect(r.accountingCorrections[0]).toMatchObject({ ref: "7.1", was: { costStatus: "EXACT" }, now: { costStatus: "UNKNOWN_TIMEOUT_BILLED" } });
+    expect(r.accountingCorrections[0].now.costUsd).toBeCloseTo(1.3513292, 7);
+    expect(r.inFlightAborted).toMatchObject({ ref: "7.10" });
+    expect(r.pass1Remaining).toEqual(["7.13", "7.14", "7.16", "7.17", "7.2", "7.2(c)"]);
+    const b = r.seededPrior.breakdown;
+    expect(r.seededPrior.exactUsd).toBeCloseTo(b.preflightProbesUsd + b.segmentAmendmentUsd + b.segmentAttemptsExactUsd, 8);
+    expect(r.seededPrior.retainedUnknownUsd).toBeCloseTo(b.segmentAttemptsRetainedUsd + b.inFlightAbortedReservationUsd, 8);
+    expect(r.seededPrior.retainedUnknownUsd).toBeCloseTo(2 * 1.3513292, 7);
+    // the preserved segment's own row still shows the defective settlement; the correction is applied on resume, never by editing history
+    const raw = JSON.parse(fs.readFileSync(`${seg}/01-attempts.json`, "utf8"));
+    expect(raw[0].compile.costStatus).toBe("EXACT"); expect(raw[0].compile.passAUsage).toEqual({ inputTokens: 4914, outputTokens: 42396 });
+  }, 120_000);
+  it("the aborted attempt is retry-eligible as an execution failure and counts toward the two-attempt maximum; a normally terminated segment cannot be resumed", () => {
+    const model = { id: "deepseek/deepseek-v4-flash", pricing: { input: "0.00000013", output: "0.00000026" }, max_tokens: 384000 } as unknown as Parameters<typeof R.deriveResumeState>[1];
+    const plan = JSON.parse(fs.readFileSync(`${seg}/00-plan.json`, "utf8"));
+    const st = R.deriveResumeState(seg, model, plan.targets);
+    const aborted = st.priorAttempts.find((a) => a.ref === "7.10")!;
+    expect(aborted.retryEligible).toBe(true); expect(aborted.evidenceFile).toBeNull(); expect(aborted.compile.failureReasons).toEqual(["HARNESS_ABORTED_IN_FLIGHT"]);
+    expect(st.priorAttempts.find((a) => a.ref === "7.1")!.evidenceFile).toMatch(/^docs\/phase-3-conmed-benchmark-recovery\/run-segment-1\/evidence\/attempt-1\//);
+    expect(fs.existsSync(st.priorAttempts.find((a) => a.ref === "7.1")!.evidenceFile!)).toBe(true);
+    expect(() => R.deriveResumeState(seg, model, plan.targets.slice(1))).toThrow(/different targets/);
+  });
+});

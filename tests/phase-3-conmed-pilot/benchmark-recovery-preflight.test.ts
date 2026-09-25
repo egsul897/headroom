@@ -209,6 +209,20 @@ describe("P-7: reservations cover the execution shape the runner permits", () =>
     expect(h.ledger.retainedUnknownUsd).toBeCloseTo(compileReservationUsd(model, 300), 6);
     expect(h.ledger.outstandingReservedUsd).toBe(0);
   });
+  it("P7-C': a timeout with Pass A usage observed before the cut-off still retains the FULL reservation (the observed usage is a floor, not the bill)", async () => {
+    const withPassA = (): CompileExecution => ({ ...timeout(), passAUsage: { inputTokens: 4914, outputTokens: 42396 } });
+    const h = harness({ a: withPassA, b: () => compiled(12000, 3000) });
+    const state = await runCandidateLoop(h.deps);
+    expect(state.statuses[0]!.compile.costStatus).toBe("UNKNOWN_TIMEOUT_BILLED");
+    expect(state.statuses[0]!.compile.costUsd).toBeCloseTo(compileReservationUsd(model, 300), 8);
+    expect(h.ledger.retainedUnknownUsd).toBeCloseTo(compileReservationUsd(model, 300), 6);
+    expect(state.statuses[0]!.compile.passAUsage).toEqual({ inputTokens: 4914, outputTokens: 42396 });
+    // verify-stage timeout with partial side-call usage: same rule
+    const h2 = harness({ a: () => compiled(12000, 3000) }, { verify: () => ({ verification: null, outcome: "TIMEOUT", timedOut: true, usage: { inputTokens: 5000, outputTokens: 100 }, sideCalls: [], wallClockMs: 480_000, signal: null }) });
+    const s2 = await runCandidateLoop(h2.deps);
+    expect(s2.statuses[0]!.verify.costStatus).toBe("UNKNOWN_TIMEOUT_BILLED");
+    expect(s2.statuses[0]!.verify.costUsd).toBeCloseTo(verifyReservationUsd(model), 8);
+  });
   it("P7-D: a zero-token 402 settles at $0 exact (nothing served), releases its reservation, and stops", async () => {
     const h = harness({ a: refused402, b: () => compiled(1, 1) });
     const state = await runCandidateLoop(h.deps);
