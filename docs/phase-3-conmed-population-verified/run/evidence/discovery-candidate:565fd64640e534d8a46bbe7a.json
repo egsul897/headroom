@@ -1,0 +1,1017 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:44:54.260Z",
+  "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.6(c)",
+    "operativeSourceText": "(c)\nredemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate\namount equal to $25,000,000 since the Closing Date;\n",
+    "operativeSourceTextSha256": "d7a57ccba9daf8fa6b170e33a48c137053126a3dbfc67670e6855f3a76bbf552",
+    "operativeSourceChars": 191,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:88d8f61f9f2653e3a0adaf34cb03eea7e0f6b59f3e4a3121e40348303b78ddba",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 7,
+    "items": [
+      {
+        "itemId": "context-item:99a7c6a1398a0b7b211786bbd8474ef35533b09d50a1961995784404f89282f5",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.6(c)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 191,
+        "excerptText": "(c)\nredemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate\namount equal to $25,000,000 since the Closing Date;\n"
+      },
+      {
+        "itemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.6",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 3501,
+        "excerptText": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeasance,\nretirement or other acquisition of, any shares of any class of Capital Stock of the Parent Borrower or any Subsidiary or any warrants\nor options to purchase any such Capital Stock, whether now or hereafter outstanding, or make any other distribution in respect thereof,\neither directly or indirectly, whether in cash or property or in obligations of the Parent Borrower or any Subsidiary (collectively, \" Restricted\nPayments \"), except:\n(a)\nthat (i) any Subsidiary that is not a Loan Party may make Restricted Payments to the Parent Borrower or any Wholly-Owned Subsidiary\nand (ii) any Subsidiary Guarantor may make Restricted Payments to the Parent Borrower or any Subsidiary Guarantor;\n(b)\n(i) repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee\nor director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\n102\nand (ii) cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes\nof clauses (i) and (ii) not to exceed $25,000,000 per year;\n(c)\nredemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate\namount equal to $25,000,000 since the Closing Date;\n(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n(e)\nso long as (i) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro\nforma basis (giving effect to such Restricted Payment and any Indebtedness incurred in connection therewith) as at the last day of\nthe most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no\ngreater than 3.50 to 1.00 and (ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may\nmake Restricted Payments in an unlimited amount;\n(f)\nthe Parent Borrower may (i) pay any premium or other amount in respect of, and otherwise perform its obligations under, any Permitted\nBond Hedge Transaction or Permitted Warrant Transaction and (ii) make any Restricted Payments and/or payments or deliveries required by\nthe terms of, and otherwise perform its obligations under, any Permitted Bond Hedge Transaction or Permitted Warrant Transaction (including\nmaking payments and/or deliveries due upon exercise and settlement or termination thereof); and\n(g)\nthe Parent Borrower or any Subsidiary Borrower may make any Restricted Payments and/or payments or deliveries in shares of common\nstock (or other securities or property following a merger event or other change of the common stock of the Parent Borrower or any such\nSubsidiary Borrower) (and cash in lieu of fractional shares) and/or cash required by the terms of, and otherwise perform its obligations\nunder, any Permitted Unsecured Indebtedness (including making payments of interest and principal thereon, making payments due upon required\nrepurchase thereof and/or making payments and deliveries due upon conversion thereof).\n"
+      },
+      {
+        "itemId": "context-item:f5d1cea372c5259addbfec608f69cad6cc2c6c8f091ebca708de1d8c32c1dadb",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.6(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 122,
+        "excerptText": "(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n"
+      },
+      {
+        "itemId": "context-item:abc6ac14a275ce166ef4b5f8ca5c433780611282cf199d512316b2e7e2b7026b",
+        "type": "PROVISO",
+        "normalizedRef": "7.6(e)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 15,
+        "excerptText": "(e)\nso long as "
+      },
+      {
+        "itemId": "context-item:68c3de0049eed56cf989e9f0ebdc8b607b111a0866ca9ee098c4028a438c3cb5",
+        "type": "DEFINITION",
+        "normalizedRef": "Board",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 104,
+        "excerptText": "\"Board\": the Board\nof Governors of the Federal Reserve System of the United States (or any successor).\n\n"
+      },
+      {
+        "itemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "type": "DEFINITION",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:9d607d9a41418f264a8db178e0aeaa0875120f5b956e1a53928974593e745e18",
+        "toItemId": "context-item:99a7c6a1398a0b7b211786bbd8474ef35533b09d50a1961995784404f89282f5",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:f5d1cea372c5259addbfec608f69cad6cc2c6c8f091ebca708de1d8c32c1dadb",
+        "toItemId": "context-item:99a7c6a1398a0b7b211786bbd8474ef35533b09d50a1961995784404f89282f5",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:abc6ac14a275ce166ef4b5f8ca5c433780611282cf199d512316b2e7e2b7026b",
+        "toItemId": "context-item:99a7c6a1398a0b7b211786bbd8474ef35533b09d50a1961995784404f89282f5",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:99a7c6a1398a0b7b211786bbd8474ef35533b09d50a1961995784404f89282f5",
+        "toItemId": "context-item:68c3de0049eed56cf989e9f0ebdc8b607b111a0866ca9ee098c4028a438c3cb5",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:99a7c6a1398a0b7b211786bbd8474ef35533b09d50a1961995784404f89282f5",
+        "toItemId": "context-item:7fc814ffdc53ea5f6dda1f122b2f05768c3392914d2b037ae4cb9367edca13bc",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:99a7c6a1398a0b7b211786bbd8474ef35533b09d50a1961995784404f89282f5",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7_6c",
+          "sourceSectionRef": "7.6(c)",
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "REDEEM_CAPITAL_STOCK",
+          "entityScope": [
+            "Parent Borrower"
+          ],
+          "capacityExpression": {
+            "kind": "DURING_PERIOD",
+            "operand": {
+              "kind": "MONEY",
+              "amount": 25000000,
+              "currency": "USD",
+              "citation": "§7.6(c)",
+              "excerpt": "amount equal to $25,000,000",
+              "inventoryItemIds": [
+                "inv-item:67d3ad0e04145d15b9c46b31"
+              ]
+            },
+            "periodDescription": "cumulative since the Closing Date",
+            "citation": "§7.6(c)",
+            "excerpt": "in an aggregate amount equal to $25,000,000 since the Closing Date",
+            "inventoryItemIds": [
+              "inv-item:416ec026167cac696c280567"
+            ]
+          },
+          "conditions": [],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Clause (c) is a carve-out permission from the Section 7.6 Restricted Payments prohibition; the permitted redemptions are of Capital Stock in connection with a rights plan adopted by the Parent Borrower's Board of Directors, capped at $25,000,000 in the aggregate cumulatively since the Closing Date. Capital Stock and Parent Borrower are defined; all three inventory items consumed."
+          ],
+          "citation": "§7.6(c)",
+          "excerpt": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+          "inventoryItemIds": [
+            "inv-item:ed962b5a3cd9a289a3a93fb2",
+            "inv-item:67d3ad0e04145d15b9c46b31",
+            "inv-item:416ec026167cac696c280567"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Section 7.6(c) is one carve-out from the Section 7.6 'Limitation on Restricted Payments' prohibition. It independently permits redemptions of Capital Stock in connection with a rights plan adopted by the Parent Borrower's Board of Directors (a distinct concept from the defined 'Board', which refers to the Federal Reserve Board of Governors, so the source's 'Board of Directors of the Parent Borrower' is treated as an ordinary corporate body of the Parent Borrower). The 'aggregate amount equal to $25,000,000 since the Closing Date' is a cumulative, not per-transaction, cap measured from the Closing Date onward.",
+        "Note: the defined term 'Board' (Federal Reserve) does not apply to this 'Board of Directors' usage; no conflicting definition surfaced."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:5a7a19eb788c507d33121aff",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.6(c)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "DURING_PERIOD",
+          "type": "MONEY",
+          "exprId": "ir-expr:f0b1d0ac8750446b8fbfa7b8",
+          "value": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 25000000,
+            "currency": "USD",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.6(c)",
+              "excerpt": "amount equal to $25,000,000"
+            },
+            "exprId": "ir-expr:037749c5529d643d0a9a121b",
+            "inventoryItemIds": [
+              "inv-item:67d3ad0e04145d15b9c46b31"
+            ]
+          },
+          "periodDescription": "cumulative since the Closing Date",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.6(c)",
+            "excerpt": "in an aggregate amount equal to $25,000,000 since the Closing Date"
+          },
+          "inventoryItemIds": [
+            "inv-item:416ec026167cac696c280567"
+          ]
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Clause (c) is a carve-out permission from the Section 7.6 Restricted Payments prohibition; the permitted redemptions are of Capital Stock in connection with a rights plan adopted by the Parent Borrower's Board of Directors, capped at $25,000,000 in the aggregate cumulatively since the Closing Date. Capital Stock and Parent Borrower are defined; all three inventory items consumed."
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.6(c)",
+          "excerpt": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 110,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:ed962b5a3cd9a289a3a93fb2",
+          "inv-item:67d3ad0e04145d15b9c46b31",
+          "inv-item:416ec026167cac696c280567"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "Section 7.6(c) is one carve-out from the Section 7.6 'Limitation on Restricted Payments' prohibition. It independently permits redemptions of Capital Stock in connection with a rights plan adopted by the Parent Borrower's Board of Directors (a distinct concept from the defined 'Board', which refers to the Federal Reserve Board of Governors, so the source's 'Board of Directors of the Parent Borrower' is treated as an ordinary corporate body of the Parent Borrower). The 'aggregate amount equal to $25,000,000 since the Closing Date' is a cumulative, not per-transaction, cap measured from the Closing Date onward.",
+      "Note: the defined term 'Board' (Federal Reserve) does not apply to this 'Board of Directors' usage; no conflicting definition surfaced.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 3 item(s) accepted (0 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:123-138) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:123-138: \"in an aggregate\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T03:44:31.085Z",
+      "inputTokens": 11542,
+      "outputTokens": 1697,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 7146,
+      "calculatedCostUsd": 0.040054000000000006
+    },
+    "compiledAt": "2026-09-25T03:44:31.085Z",
+    "outputHash": "e3cc8039fd53001b2c1c54db5c2929582d52e94d9886bd21edb142edfa5723b1"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "79422ec462ee06b1e6a1a1917aa329a4391c048b4990eb8f9e740459f4535d26",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+        "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+        "irPath": "rules[0].conditions",
+        "findingType": "MISSING_CONDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(c) redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date;",
+        "sourceCitation": "§7.6(c)",
+        "proposedIrEvidence": "conditions: [] ; exceptions: [] ; capacityExpression only encodes 'in an aggregate amount equal to $25,000,000 since the Closing Date' (see provenance excerpts, which quote only the amount/duration language)",
+        "verifierReasoning": "The proposed IR represents clause (c) as a permission to make $25,000,000 of Capital Stock redemptions, cumulative since the Closing Date, with no qualifying condition at all. The source, however, makes the permission expressly conditional on the redemptions being 'in connection with a rights plan adopted by the Board of Directors of the Parent Borrower.' That phrase is an independently operative eligibility requirement defining the scope of the exception: it is not merely descriptive color, it is what ties the basket to a specific transaction type (a poison-pill/rights plan redemption). The proposed IR drops this requirement entirely (conditions empty, exceptions empty, and the capacity provenance excerpts quote only the amount and duration). The test for discrepancy: construct a transaction in which the Parent Borrower makes $25,000,000 of redemptions of its Capital Stock since the Closing Date that are NOT in connection with any board-adopted rights plan. Under the real source, clause (c) does not permit those redemptions (they would fall back to the general Restricted Payments prohibition, potentially failing to qualify under any other clause). Under the proposed IR as written, such a $25,000,000 redemption would appear fully permitted. The two readings yield different compliance conclusions, so this is a genuine discrepancy. A competent reviewer evaluating available capacity under (c) would alter their conclusion (a $25M unrestricted redemption capacity vs. a $25M capacity usable only for rights-plan-connected redemptions) — material. The claim of COMPLETE sufficiency is therefore over-broad.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T03:44:54.256Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a321ca387f3646430a8f77b48e2de0d0bd3f0adca0c4d460f1cee6d1273ab08e",
+            "kind": "AMOUNT",
+            "rawText": "$25,000,000",
+            "numericValue": 25000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(c)",
+            "structuralNodeKey": null,
+            "charStart": 155,
+            "charEnd": 166,
+            "parsedAmount": 25000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "d41dd7bd7d77693d4f2aeb8fecfa7b529f51f272001fa7c52fa2629b7123a666",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+              "irPath": "rules[0].capacityExpression.value",
+              "numericValue": 25000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§7.6(c)",
+              "sourceExcerpt": "amount equal to $25,000,000",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 25000000 (canonical 25000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "268579c7f7edd56bd3790905cf003879dd7a9eb81bed5b58fc6a11bdfa861030",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capital Stock",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(c)",
+            "structuralNodeKey": null,
+            "charStart": 19,
+            "charEnd": 32
+          },
+          "irItems": [],
+          "reason": "source mention \"Capital Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2d82f54961e2c3fcfdb875f9fb7647a4f057de5fb3f25255fa08c54de345e79f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(c)",
+            "structuralNodeKey": null,
+            "charStart": 107,
+            "charEnd": 122
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "867c3bedc54ecb500f5fc01ffb97aebcab802881c6073ced84d5314b7097f936",
+            "kind": "METRIC_MENTION",
+            "rawText": "Closing Date",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.6(c)",
+            "structuralNodeKey": null,
+            "charStart": 177,
+            "charEnd": 189
+          },
+          "irItems": [],
+          "reason": "source mention \"Closing Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 151,
+              "charEnd": 162,
+              "withheldReason": null,
+              "itemId": "93e59f7c1ed896e7108d63f97c53cd305be1bde9b71146e9abe1bfed814d37f7",
+              "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+              "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(c)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.6(c)",
+                "§7.6(c)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 32,
+              "charEnd": 43,
+              "withheldReason": null,
+              "itemId": "2f115fe7d4734e83c005adb7da1a1573899d70bcf7ae825faca11d0a686d988e",
+              "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+              "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "in an aggregate amount equal to $25,000,000 since the Closing Date",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(c)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.6(c)",
+                "§7.6(c)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.value.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 16,
+              "charEnd": 27,
+              "withheldReason": null,
+              "itemId": "dae2952091d5f7badb56d23d27a72b0e0a338bb441b8384697e15a727d33863c",
+              "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+              "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+              "fieldPath": "rules[0].capacityExpression.value.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "amount equal to $25,000,000",
+              "ownerTermName": null,
+              "ownerCitation": "§7.6(c)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.6(c)",
+                "§7.6(c)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.value.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+      "items": [
+        {
+          "itemId": "a321ca387f3646430a8f77b48e2de0d0bd3f0adca0c4d460f1cee6d1273ab08e",
+          "kind": "AMOUNT",
+          "rawText": "$25,000,000",
+          "numericValue": 25000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(c)",
+          "structuralNodeKey": null,
+          "charStart": 155,
+          "charEnd": 166,
+          "parsedAmount": 25000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "9ef25e9f17fe46461ffff86c2839d00f1354684433c856c4f1408403757c3d20",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(c)",
+          "structuralNodeKey": null,
+          "charStart": 114,
+          "charEnd": 122,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "268579c7f7edd56bd3790905cf003879dd7a9eb81bed5b58fc6a11bdfa861030",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capital Stock",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(c)",
+          "structuralNodeKey": null,
+          "charStart": 19,
+          "charEnd": 32
+        },
+        {
+          "itemId": "2d82f54961e2c3fcfdb875f9fb7647a4f057de5fb3f25255fa08c54de345e79f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(c)",
+          "structuralNodeKey": null,
+          "charStart": 107,
+          "charEnd": 122
+        },
+        {
+          "itemId": "867c3bedc54ecb500f5fc01ffb97aebcab802881c6073ced84d5314b7097f936",
+          "kind": "METRIC_MENTION",
+          "rawText": "Closing Date",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(c)",
+          "structuralNodeKey": null,
+          "charStart": 177,
+          "charEnd": 189
+        },
+        {
+          "itemId": "dac18f38a7f10438bb5fa4814093590381bf56c59924e433cb2c8dc1de62fd3f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.6(c)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(c)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+      "items": [
+        {
+          "itemId": "334c100f59b8588127d5877a1d9f1df46180bab97c13b75382e7b5fa9a598fc3",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(c)",
+          "sourceExcerpt": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "124909e6752307ae1bf0b9197fc785e2790eb689ec1306cd6e338ff90eaa7e84",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(c)",
+          "sourceExcerpt": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "e0ab811d44c050bed144fb97183abb1f18fdaab916319354a09b3501b6aa77df",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(c)",
+          "sourceExcerpt": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d41dd7bd7d77693d4f2aeb8fecfa7b529f51f272001fa7c52fa2629b7123a666",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+          "irPath": "rules[0].capacityExpression.value",
+          "numericValue": 25000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.6(c)",
+          "sourceExcerpt": "amount equal to $25,000,000",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 151,
+            "charEnd": 162,
+            "withheldReason": null,
+            "itemId": "93e59f7c1ed896e7108d63f97c53cd305be1bde9b71146e9abe1bfed814d37f7",
+            "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+            "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(c)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(c)",
+              "§7.6(c)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 32,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "2f115fe7d4734e83c005adb7da1a1573899d70bcf7ae825faca11d0a686d988e",
+            "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+            "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate amount equal to $25,000,000 since the Closing Date",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(c)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(c)",
+              "§7.6(c)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 16,
+            "charEnd": 27,
+            "withheldReason": null,
+            "itemId": "dae2952091d5f7badb56d23d27a72b0e0a338bb441b8384697e15a727d33863c",
+            "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+            "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+            "fieldPath": "rules[0].capacityExpression.value.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "amount equal to $25,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(c)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(c)",
+              "§7.6(c)"
+            ]
+          }
+        ],
+        "fieldsWalked": 4,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 151,
+            "charEnd": 162,
+            "withheldReason": null,
+            "itemId": "93e59f7c1ed896e7108d63f97c53cd305be1bde9b71146e9abe1bfed814d37f7",
+            "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+            "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(c)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(c)",
+              "§7.6(c)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 32,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "2f115fe7d4734e83c005adb7da1a1573899d70bcf7ae825faca11d0a686d988e",
+            "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+            "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate amount equal to $25,000,000 since the Closing Date",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(c)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(c)",
+              "§7.6(c)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 16,
+            "charEnd": 27,
+            "withheldReason": null,
+            "itemId": "dae2952091d5f7badb56d23d27a72b0e0a338bb441b8384697e15a727d33863c",
+            "candidateRef": "discovery-candidate:565fd64640e534d8a46bbe7a",
+            "ruleOrDefinitionId": "ir-rule:5a7a19eb788c507d33121aff",
+            "fieldPath": "rules[0].capacityExpression.value.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "amount equal to $25,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.6(c)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.6(c)",
+              "§7.6(c)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.value.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "d7a57ccba9daf8fa6b170e33a48c137053126a3dbfc67670e6855f3a76bbf552",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "f5db72eefd85f091fee11e455d050b08716586f5b56d6672e626edf778b96a8e",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": {
+      "status": "MATERIAL_CONDITION_POSSIBLE",
+      "evidence": [
+        {
+          "sourceSpan": "so long as (i) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis (giving effect to such Restricted Payment and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than 3.50 to 1.00 and (ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount;",
+          "description": "The permission to make unlimited Restricted Payments is conditioned on a leverage ratio and a no-default requirement.",
+          "category": "ELIGIBILITY_REQUIREMENT"
+        },
+        {
+          "sourceSpan": "any Permitted Bond Hedge Transaction or Permitted Warrant Transaction",
+          "description": "The scope of permitted payments is defined by reference to terms that carry their own conditions.",
+          "category": "CROSS_REFERENCE_CONDITION"
+        },
+        {
+          "sourceSpan": "any Permitted Unsecured Indebtedness",
+          "description": "The scope of permitted payments is defined by cross-reference to a term carrying its own conditions.",
+          "category": "CROSS_REFERENCE_CONDITION"
+        },
+        {
+          "sourceSpan": "redemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate amount equal to $25,000,000 since the Closing Date;",
+          "description": "This exception is itself limited to redemptions in connection with a board-adopted rights plan and a specific aggregate amount.",
+          "category": "EXCEPTION_OR_PROVISO"
+        },
+        {
+          "sourceSpan": "in an aggregate amount for purposes of clauses (i) and (ii) not to exceed $25,000,000 per year;",
+          "description": "The exception is capped by a monetary limit, qualifying the otherwise permitted repurchases and cash payments.",
+          "category": "EXCEPTION_OR_PROVISO"
+        }
+      ],
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+      "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+      "telemetry": {
+        "provider": "vercel-ai-gateway",
+        "model": "deepseek/deepseek-v4-flash",
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "stage": "condition_suspicion_classification",
+        "timestamp": "2026-09-25T03:44:31.087Z",
+        "inputTokens": 2655,
+        "outputTokens": 4198,
+        "cachedInputTokens": null,
+        "cacheCreationInputTokens": null,
+        "attemptCount": 1,
+        "retryCount": 0,
+        "rateLimitFailures": 0,
+        "latencyMs": 13241,
+        "calculatedCostUsd": 0.047290000000000006
+      },
+      "failed": false,
+      "failureDetail": null,
+      "isSynthetic": false,
+      "fromCache": false
+    },
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 19869,
+    "inputTokens": 11542,
+    "outputTokens": 1697,
+    "costUsd": 0.0019416799999999999,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:565fd64640e534d8a46bbe7a.verified-units.json",
+    "packageHash": "c3645d993885bac65cfc87d774fddaa03c55bf75a47061ebae8065fc372a749d",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

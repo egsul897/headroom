@@ -1,0 +1,2746 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T18:48:06.985Z",
+  "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.2(d)",
+    "operativeSourceText": "(d)\nFinance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;\n",
+    "operativeSourceTextSha256": "d8ca3fb8fd50449e8a086b18edf62a74936bc09baae497bcaacb99c60eb2cf40",
+    "operativeSourceChars": 250,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:e57be69d73bb040338350d0794bed05f2ece13396fa34e983e20f62ce586ccb4",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 11,
+    "items": [
+      {
+        "itemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.2(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 250,
+        "excerptText": "(d)\nFinance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;\n"
+      },
+      {
+        "itemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.2",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 8843,
+        "excerptText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n(a)\nIndebtedness of any Loan Party pursuant to any Loan Document;\n(b)\nIndebtedness of the Parent Borrower to any Subsidiary and of any Subsidiary Guarantor to the Parent Borrower or any other Subsidiary;\n(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n(d)\nFinance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;\n(e)\nIndebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions\nthereof (without any increase in the principal amount thereof);\n(f)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary\nGuarantor;\n(g)\nIndebtedness of the Parent Borrower or its Subsidiaries on account of industrial revenue bonds in an aggregate principal amount\nnot to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness)\nat anyone one time outstanding;\n95\n(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Indebtedness);\n(i)\nIndebtedness in respect of letters of credit (not otherwise permitted under this Section 7.2) outstanding in the ordinary course\nof business in an aggregate face amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured\non the date of incurrence of such Indebtedness);\n(j)\nIndebtedness of (i) any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party and (ii) any Subsidiary\nGuarantor to any Subsidiary that is not a Loan Party;\n(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat (i) the requirements of Section 6.9 are satisfied and (ii) the aggregate principal amount of such Indebtedness at any time outstanding\nshall not exceed the greater of (A) $150,000,000 and (B) 10.0% of Consolidated Total Tangible Assets (measured on the date of incurrence\nof such Indebtedness); provided , further , that any Indebtedness permitted by this Section 7.2(k) shall be evidenced by a\nnote or similar instrument and pledged in accordance with Section 6.9 and the Guarantee and Collateral Agreement;\n(l)\n(i) Permitted Unsecured Indebtedness; provided that (x) at the time of, and after giving effect to, the incurrence of such\nIndebtedness, no Default or Event of Default shall have occurred and be continuing and (y) the Parent Borrower shall be in compliance,\non a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section\n7.1(b), in each case recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries\nfor which financial statements are available as if such Indebtedness had been incurred on the first day of such period, and (ii) any guarantee\nby any Subsidiary in respect of any Permitted Unsecured Indebtedness; provided that (x) no Subsidiary that is not a Loan Party\nshall guarantee any Permitted Unsecured Indebtedness and (y) any such guarantee in respect of Permitted Unsecured Indebtedness shall be\nunsecured;\n(m)\nIndebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal\namount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of\nsuch Indebtedness);\n(n)\n(i) Permitted Subordinated Indebtedness; provided that the Parent Borrower shall be in compliance, on a pro forma basis\nafter giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section 7.1(b), recomputed on a pro\nforma basis as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of such period and (ii) any guarantee by any Subsidiary\nin respect of any Permitted Subordinated Indebtedness; provided that (x) no Subsidiary that is not a Loan Party shall guarantee\nany Permitted Subordinated Indebtedness and (y) any such guarantee shall be subordinated to the prior payment in full of the Obligations\non the same basis as the related Permitted Subordinated Indebtedness;\n96\n(o)\nunsecured Indebtedness not otherwise permitted by this Section 7.2 in an aggregate principal amount not to exceed the greater of\n(i) $60,000,000 and (ii) 3.25% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);\n(p)\n(i) Obligations under or in respect of interest rate Swap Agreements up to an aggregate notional principal amount not to exceed\nat any time an amount equal to the Commitments of all the Lenders in the aggregate at such time, (ii) Obligations owing under Swap Agreements\nentered into in order to manage existing or anticipated exchange rate or commodity price risks and not for speculative purposes, (iii)\nObligations in respect of Swap Agreements entered into in connection with any Permitted Bond Hedge Transaction and (iv) Obligations in\nrespect of Swap Agreements entered into in connection with any Permitted Warrant Transaction;\n(q)\n[reserved];\n(r)\nIndebtedness in respect of the Convertible Notes and any Permitted Refinancing thereof; and\n(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as (i) after giving effect to the assumption of such Indebtedness and such Permitted Business Acquisition on a pro\nforma basis as of the last day of the most recent period of four consecutive fiscal quarters have been delivered, the Parent Borrower\nshall be in compliance, on a pro forma basis with the financial covenants contained in Section 7.1(a) and (b), in each case recomputed\nas at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available as if such Indebtedness had been incurred on the first day of such period, (ii) before and after giving effect thereto,\nno Event of Default shall have occurred and be continuing and (iii) any such Indebtedness shall be unsecured or secured only by a mortgage,\npurchase money security interest, Finance Lease Obligation or similar arrangement on the Property acquired in connection with such Permitted\nBusiness Acquisition or similar Investment (and any accessions thereto or improvements thereon), and no Lien shall extend to cover any\nother Property of the Parent Borrower or any Subsidiary Guarantor.\nFor purposes of determining compliance with\nthis Section 7.2, (A) Indebtedness need not be permitted solely by reference to one category of permitted Indebtedness described in Section\n7.2(a) through (s) but may be permitted in part under any combination thereof and (B) in the event that an item of Indebtedness (or any\nportion thereof) meets the criteria of one or more of the categories of permitted Indebtedness described in Sections 7.2(a) through (s),\nthe Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness\n(or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of\nsuch item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having\nbeen incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(c)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 529,
+        "excerptText": "(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n"
+      },
+      {
+        "itemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(h)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 467,
+        "excerptText": "(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Indebtedness);\n"
+      },
+      {
+        "itemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(k)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 267,
+        "excerptText": "(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat "
+      },
+      {
+        "itemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(s)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 154,
+        "excerptText": "(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as "
+      },
+      {
+        "itemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "type": "DEFINITION",
+        "normalizedRef": "Finance Lease Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 973,
+        "excerptText": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right\nto use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance\nleases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time\nshall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein,\nany lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in\neffect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change\nin GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "toItemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "toItemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "toItemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "toItemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "toItemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "toItemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:027749536f6c364505602edfbb2fdbaa209943ac62dc0aa7431f1b29c07c2769",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r-7.2d",
+          "sourceSectionRef": "7.2(d)",
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "INCUR_DEBT",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "MAX",
+            "operands": [
+              {
+                "kind": "MONEY",
+                "amount": 50000000,
+                "currency": "USD",
+                "citation": "§7.2(d)",
+                "excerpt": "$50,000,000",
+                "inventoryItemIds": [
+                  "482658802a3255ded54b142e"
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "operands": [
+                  {
+                    "kind": "PERCENT",
+                    "value": 0.03,
+                    "citation": "§7.2(d)",
+                    "excerpt": "3.0%"
+                  },
+                  {
+                    "kind": "AS_OF",
+                    "operand": {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated Total Assets",
+                      "valueType": "MONEY",
+                      "citation": "§7.2(d)",
+                      "excerpt": "Consolidated Total Assets"
+                    },
+                    "asOfDate": "date of incurrence of such Finance Lease Obligations",
+                    "citation": "§7.2(d)",
+                    "excerpt": "Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations)",
+                    "inventoryItemIds": [
+                      "183bafe47fa3b322278bc3e7"
+                    ]
+                  }
+                ],
+                "citation": "§7.2(d)",
+                "excerpt": "3.0% of Consolidated Total Assets",
+                "inventoryItemIds": [
+                  "9ad99437fd01921a9f7e0271"
+                ]
+              }
+            ],
+            "citation": "§7.2(d)",
+            "excerpt": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets",
+            "inventoryItemIds": [
+              "80a8526fa923bdef25656aa3"
+            ]
+          },
+          "conditions": [
+            {
+              "conditionType": "MAXIMUM_OUTSTANDING_AT_ANY_TIME",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The aggregate principal amount of Finance Lease Obligations may not exceed the greater-of cap at any one time outstanding.",
+              "citation": "§7.2(d)",
+              "excerpt": "at any one time outstanding",
+              "inventoryItemIds": [
+                "4d2d9d1cfe28291935ceb487"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Cap economics fully represented: MAX($50,000,000, 3.0% x Consolidated Total Assets measured on the date of incurrence of such Finance Lease Obligations), subject to the at-any-one-time-outstanding limitation.",
+            "Operative text confirmed CURRENT_OPERATIVE with no amendment history; §7.2(d) reads complete within the parent listing even though the outer source window is UNKNOWN_SOURCE_COMPLETENESS.",
+            "No shared-capacity language ties (d) to sibling clauses; getSharedCapContext returned no shared-capacity signals, so an independent per-clause cap is correct.",
+            "Entity scope left empty: neither §7.2(d) nor the Section 7.2 chapeau (confirmed by direct retrieval of '7.2') names an explicit subject; the likely bound entities (Parent Borrower and its Subsidiaries) are only inferable from sibling clauses (f)/(s) and were not guessed."
+          ],
+          "citation": "§7.2(d)",
+          "excerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+          "inventoryItemIds": [
+            "3ba5d117f5f097a547b10664"
+          ]
+        },
+        {
+          "localRef": "r-7.2chapeau",
+          "sourceSectionRef": "7.2",
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "PROHIBITION",
+          "posture": "PROHIBITION",
+          "action": "INCUR_DEBT",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "capacityExpression": null,
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+              "permissionRef": "r-7.2d",
+              "conditions": [],
+              "citation": "§7.2(d)",
+              "excerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+              "inventoryItemIds": []
+            }
+          ],
+          "dependsOn": [],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "Prohibition chapeau of Section 7.2 represented with its operative structure, but only lettered exception (d) is compiled in this submission; exceptions (a)-(c) and (e)-(s) lie outside this submission's operative window and are not restated here.",
+            "Section 7.2's closing classification/anti-duplication paragraph (allowing classification of an item of Indebtedness under any one permitted category and reclassification) is a Section-wide mechanic noted in overallNotes rather than folded into this rule."
+          ],
+          "citation": "§7.2",
+          "excerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+          "inventoryItemIds": []
+        }
+      ],
+      "definitions": [
+        {
+          "localRef": "d-finlease",
+          "termName": "Finance Lease Obligations",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": {
+            "kind": "UNSUPPORTED",
+            "semanticDescription": "As to any Person, the obligations of such Person to pay rent or other amounts under any lease (or other arrangement conveying the right to use) of real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance leases on such Person's balance sheet under GAAP; the amount of such obligations at any time is the capitalized amount thereof determined in accordance with GAAP; subject to a grandfathering proviso that any lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended December 31, 2018 and that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times",
+            "reason": "The finance-lease classification criterion, the capitalized-amount measurement, and the GAAP-change grandfathering proviso are qualitative accounting determinations anchored to an external standard (GAAP, version-frozen as of FYE 12/31/2018) that the numeric/boolean IR primitives cannot faithfully compute; forcing a numeric expression would misrepresent the definition.",
+            "sourceEvidence": "Definition of 'Finance Lease Obligations' (context item b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98, evidenceStatus CURRENT)"
+          },
+          "dependsOnTerms": [
+            "GAAP"
+          ],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "Definitional essence (obligations required to be accounted for as finance leases under GAAP, amount = capitalized amount under GAAP) is captured, but the operative grandfathering proviso (version-frozen-GAAP operating-lease treatment despite later GAAP change) cannot be expressed with the available primitives and is carried as UNSUPPORTED within the definition.",
+            "Section number of the definitions article was not supplied in the evidence; citation is given to the definition itself rather than fabricated."
+          ],
+          "citation": "Definition of 'Finance Lease Obligations'",
+          "excerpt": "as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right to use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance leases on a balance sheet of such Person under GAAP ... the amount of such obligations at any time shall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein, any lease ... that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.",
+          "inventoryItemIds": []
+        }
+      ],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "Definition of 'Finance Lease Obligations': 'any lease ... that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.'",
+          "semanticRequirement": "A definitional/evaluative predicate anchored to a version-frozen external accounting standard (GAAP as in effect for FYE 12/31/2018), with a permanent override where reclassification results solely from a later change to that standard (current GAAP).",
+          "whyExistingPrimitivesFail": "IF/AND boolean structure can state the trigger, but its inputs (treatment under GAAP as in effect FYE 12/31/2018 vs current GAAP, and 'solely as a result of a change in GAAP') are external-standard evaluations with no computable primitive; AS_OF dates a metric measurement, not the governing accounting standard; UNSUPPORTED only describes instead of representing the frozen-standard mechanic.",
+          "candidateGeneralizedPrimitive": "EXTERNAL_STANDARD_EVALUATION (standardName, standardAsOfDate, overrideCases) returning a classification/evaluation predicate under a version-frozen external accounting standard, with explicit overrides for later changes to that standard."
+        }
+      ],
+      "overallNotes": [
+        "§7.2(d) is an independent per-clause basket: each of the lettered exceptions (a)-(s) carries its own cap and no aggregate/shared-capacity language connects (d) to any sibling; getSharedCapContext returned no shared-capacity signals, so no WireSharedCapacity is emitted.",
+        "Section 7.2's closing paragraph grants the Parent Borrower discretion to classify, reclassify, or split items of Indebtedness among categories and requires each item to be counted under only one clause. That is a Section-wide mechanic affecting how the (d) cap is applied in practice, not part of (d)'s own economics; it is noted here rather than compiled as part of this submission.",
+        "Entity scope: neither §7.2(d) nor the Section 7.2 chapeau (re-confirmed via getOperativeProvision('7.2'), status CURRENT_OPERATIVE) states an explicit subject ('Create, incur, assume or suffer to exist any Indebtedness, except:'). The bound entities are inferable from sibling clauses (f) and (s) (Parent Borrower and its Subsidiaries) but are not stated in this operative window, so entityScope is left empty rather than guessed.",
+        "Source context state is UNKNOWN_SOURCE_COMPLETENESS for the outer window, but the §7.2(d) text is itself confirmed CURRENT_OPERATIVE with no amendment history and reads complete within the parent listing; COMPLETE sufficiency on r-7.2d is confined to clause (d) as drafted.",
+        "All six frozen inventory items are CONSUMED on r-7.2d or its subexpressions/conditions; no inventoryDispositions were required.",
+        "Definitions supplied in the context bundle for 'Agreement', 'Obligations', 'Loan' and 'Swap' are definition-dependency noise with no material bearing on §7.2(d)'s economics and were not emitted as WireDefinitions."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "7.2"
+        },
+        "outputSummary": "base-document provision 7.2 (never individually amended, CURRENT_OPERATIVE)",
+        "charsReturned": 107,
+        "timestamp": "2026-09-24T18:43:55.812Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "PROVISION",
+          "requestKey": "7.2",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:a9b723686e58119d7cd922a5",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2",
+          "charStart": 47792,
+          "charEnd": 47899,
+          "rawText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+          "contentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT_OPERATIVE",
+          "isCurrentTruth": true
+        }
+      },
+      {
+        "toolName": "getSharedCapContext",
+        "input": {},
+        "outputSummary": "0 shared-cap context item(s)",
+        "charsReturned": 28,
+        "timestamp": "2026-09-24T18:43:55.812Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:817fb6fce7f8b666081509b5",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2(d)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MAX",
+          "type": "MONEY",
+          "exprId": "ir-expr:f3633b9c793e4268d84f2634",
+          "operands": [
+            {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 50000000,
+              "currency": "USD",
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.2(d)",
+                "excerpt": "$50,000,000"
+              },
+              "exprId": "ir-expr:f289b503cfe0f5ec9a263a32",
+              "inventoryItemIds": [
+                "482658802a3255ded54b142e"
+              ]
+            },
+            {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:d8c1416a8e4a645a6698423f",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "type": "PERCENT",
+                  "value": 0.03,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.2(d)",
+                    "excerpt": "3.0%"
+                  },
+                  "exprId": "ir-expr:ad73be9821bde75577a90eb6"
+                },
+                {
+                  "kind": "AS_OF",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:a5d526594ebc7c7d186d78f9",
+                  "value": {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Consolidated Total Assets",
+                    "companyId": "conmed-pilot",
+                    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:3212d45ff79088d43d515800"
+                  },
+                  "asOfDate": "date of incurrence of such Finance Lease Obligations",
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.2(d)",
+                    "excerpt": "Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations)"
+                  },
+                  "inventoryItemIds": [
+                    "183bafe47fa3b322278bc3e7"
+                  ]
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.2(d)",
+                "excerpt": "3.0% of Consolidated Total Assets"
+              },
+              "inventoryItemIds": [
+                "9ad99437fd01921a9f7e0271"
+              ]
+            }
+          ],
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(d)",
+            "excerpt": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets"
+          },
+          "inventoryItemIds": [
+            "80a8526fa923bdef25656aa3"
+          ]
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r-7.2d].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The aggregate principal amount of Finance Lease Obligations may not exceed the greater-of cap at any one time outstanding.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(d)",
+              "excerpt": "at any one time outstanding"
+            },
+            "inventoryItemIds": [
+              "4d2d9d1cfe28291935ceb487"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Cap economics fully represented: MAX($50,000,000, 3.0% x Consolidated Total Assets measured on the date of incurrence of such Finance Lease Obligations), subject to the at-any-one-time-outstanding limitation.",
+          "Operative text confirmed CURRENT_OPERATIVE with no amendment history; §7.2(d) reads complete within the parent listing even though the outer source window is UNKNOWN_SOURCE_COMPLETENESS.",
+          "No shared-capacity language ties (d) to sibling clauses; getSharedCapContext returned no shared-capacity signals, so an independent per-clause cap is correct.",
+          "Entity scope left empty: neither §7.2(d) nor the Section 7.2 chapeau (confirmed by direct retrieval of '7.2') names an explicit subject; the likely bound entities (Parent Borrower and its Subsidiaries) are only inferable from sibling clauses (f)/(s) and were not guessed.",
+          "condition[0].conditionType \"MAXIMUM_OUTSTANDING_AT_ANY_TIME\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2(d)",
+          "excerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "3ba5d117f5f097a547b10664"
+        ]
+      },
+      {
+        "ruleId": "ir-rule:883e87ed10e884645db7df59",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r-7.2chapeau].exception[0]",
+            "appliesToRuleId": "ir-rule:883e87ed10e884645db7df59",
+            "description": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+            "permissionRuleId": "ir-rule:817fb6fce7f8b666081509b5",
+            "conditions": [],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(d)",
+              "excerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding"
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Prohibition chapeau of Section 7.2 represented with its operative structure, but only lettered exception (d) is compiled in this submission; exceptions (a)-(c) and (e)-(s) lie outside this submission's operative window and are not restated here.",
+          "Section 7.2's closing classification/anti-duplication paragraph (allowing classification of an item of Indebtedness under any one permitted category and reclassification) is a Section-wide mechanic noted in overallNotes rather than folded into this rule."
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2",
+          "excerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "PARTIAL"
+          },
+          "witness": {
+            "ownExcerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        }
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:5d37be4c9e5ea7d59e07eea0",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "termName": "Finance Lease Obligations",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Definition of 'Finance Lease Obligations' (context item b148d63808d7a7bfc1e20b7fc360c398f364502cbe5f24252edb1c7750c13d98, evidenceStatus CURRENT)",
+          "semanticDescription": "As to any Person, the obligations of such Person to pay rent or other amounts under any lease (or other arrangement conveying the right to use) of real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance leases on such Person's balance sheet under GAAP; the amount of such obligations at any time is the capitalized amount thereof determined in accordance with GAAP; subject to a grandfathering proviso that any lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended December 31, 2018 and that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times",
+          "reason": "The finance-lease classification criterion, the capitalized-amount measurement, and the GAAP-change grandfathering proviso are qualitative accounting determinations anchored to an external standard (GAAP, version-frozen as of FYE 12/31/2018) that the numeric/boolean IR primitives cannot faithfully compute; forcing a numeric expression would misrepresent the definition.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(d)",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:a3f93a4ad0f0b01a5acad021"
+        },
+        "dependsOnTerms": [
+          "GAAP"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Definitional essence (obligations required to be accounted for as finance leases under GAAP, amount = capitalized amount under GAAP) is captured, but the operative grandfathering proviso (version-frozen-GAAP operating-lease treatment despite later GAAP change) cannot be expressed with the available primitives and is carried as UNSUPPORTED within the definition.",
+          "Section number of the definitions article was not supplied in the evidence; citation is given to the definition itself rather than fabricated.",
+          "The finance-lease classification criterion, the capitalized-amount measurement, and the GAAP-change grandfathering proviso are qualitative accounting determinations anchored to an external standard (GAAP, version-frozen as of FYE 12/31/2018) that the numeric/boolean IR primitives cannot faithfully compute; forcing a numeric expression would misrepresent the definition."
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definition of 'Finance Lease Obligations'",
+          "excerpt": "as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right to use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance leases on a balance sheet of such Person under GAAP ... the amount of such obligations at any time shall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein, any lease ... that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null
+      }
+    ],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r-7.2d]] condition[0].conditionType \"MAXIMUM_OUTSTANDING_AT_ANY_TIME\" not recognized - normalized to UNSUPPORTED",
+      "[definition[d-finlease]] The finance-lease classification criterion, the capitalized-amount measurement, and the GAAP-change grandfathering proviso are qualitative accounting determinations anchored to an external standard (GAAP, version-frozen as of FYE 12/31/2018) that the numeric/boolean IR primitives cannot faithfully compute; forcing a numeric expression would misrepresent the definition.",
+      "§7.2(d) is an independent per-clause basket: each of the lettered exceptions (a)-(s) carries its own cap and no aggregate/shared-capacity language connects (d) to any sibling; getSharedCapContext returned no shared-capacity signals, so no WireSharedCapacity is emitted.",
+      "Section 7.2's closing paragraph grants the Parent Borrower discretion to classify, reclassify, or split items of Indebtedness among categories and requires each item to be counted under only one clause. That is a Section-wide mechanic affecting how the (d) cap is applied in practice, not part of (d)'s own economics; it is noted here rather than compiled as part of this submission.",
+      "Entity scope: neither §7.2(d) nor the Section 7.2 chapeau (re-confirmed via getOperativeProvision('7.2'), status CURRENT_OPERATIVE) states an explicit subject ('Create, incur, assume or suffer to exist any Indebtedness, except:'). The bound entities are inferable from sibling clauses (f) and (s) (Parent Borrower and its Subsidiaries) but are not stated in this operative window, so entityScope is left empty rather than guessed.",
+      "Source context state is UNKNOWN_SOURCE_COMPLETENESS for the outer window, but the §7.2(d) text is itself confirmed CURRENT_OPERATIVE with no amendment history and reads complete within the parent listing; COMPLETE sufficiency on r-7.2d is confined to clause (d) as drafted.",
+      "All six frozen inventory items are CONSUMED on r-7.2d or its subexpressions/conditions; no inventoryDispositions were required.",
+      "Definitions supplied in the context bundle for 'Agreement', 'Obligations', 'Loan' and 'Swap' are definition-dependency noise with no material bearing on §7.2(d)'s economics and were not emitted as WireDefinitions.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "Definition of 'Finance Lease Obligations': 'any lease ... that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.'",
+        "semanticRequirement": "A definitional/evaluative predicate anchored to a version-frozen external accounting standard (GAAP as in effect for FYE 12/31/2018), with a permanent override where reclassification results solely from a later change to that standard (current GAAP).",
+        "whyExistingPrimitivesFail": "IF/AND boolean structure can state the trigger, but its inputs (treatment under GAAP as in effect FYE 12/31/2018 vs current GAAP, and 'solely as a result of a change in GAAP') are external-standard evaluations with no computable primitive; AS_OF dates a metric measurement, not the governing accounting standard; UNSUPPORTED only describes instead of representing the frozen-standard mechanic.",
+        "candidateGeneralizedPrimitive": "EXTERNAL_STANDARD_EVALUATION (standardName, standardAsOfDate, overrideCases) returning a classification/evaluation predicate under a version-frozen external accounting standard, with explicit overrides for later changes to that standard."
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T18:45:03.537Z",
+      "inputTokens": 18064,
+      "outputTokens": 18978,
+      "cachedInputTokens": 26624,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 183449,
+      "calculatedCostUsd": 0.225908
+    },
+    "compiledAt": "2026-09-24T18:45:03.537Z",
+    "outputHash": "fcff681f7478cb0fe926e9eb4cce2ce22926e04ce1c4fb2d8538a5880255d0a6"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "332ab0adb5489b8659b975c60970a8220724850457e1b2ee6556f868ab347762",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+        "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+        "irPath": "rules[0].capacityExpression.operands[1].operands[1].value",
+        "findingType": "MISSING_DEPENDENCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;",
+        "sourceCitation": "§7.2(d), conmed-doc-a-eighth-ar-credit-agreement",
+        "proposedIrEvidence": "capacityExpression.operands[1] is MULTIPLY(0.03, METRIC_REFERENCE 'Consolidated Total Assets') with resolvedDefinitionId: null; no definition entry for Consolidated Total Assets appears in the definitions array; the rule's sufficiency is COMPLETE.",
+        "verifierReasoning": "The percentage leg of the basket is tied to a capitalized defined term, 'Consolidated Total Assets.' The proposed IR captures the term only as an unresolved metric reference and does not provide or resolve its definition, while simultaneously labeling the rule COMPLETE. Phase 2 also reported multiple UNRESOLVED_DEFINED_TERM flags. Without the definition of Consolidated Total Assets, the 3.0% basket cannot actually be computed, so a reviewer relying on the COMPLETE label could reasonably be misled about the closure of the representation. If the definition is genuinely absent from the package, this is material to the capacity calculation; if it exists elsewhere, the IR still has an unresolved dependency it does not disclose. I mark this UNCERTAIN only because the evidence in front of me does not conclusively show whether the underlying agreement elsewhere contains the definition.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T18:48:06.970Z"
+      },
+      {
+        "findingId": "d48bcfa5adbf4e0676a2cfd5f6e623620a723c1b43567cbfc1d46e204aa5c1e0",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+        "ruleOrDefinitionId": "ir-definition:5d37be4c9e5ea7d59e07eea0",
+        "irPath": "definitions[0].provenance.sourceCitation",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right to use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance leases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time shall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein, any lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.",
+        "sourceCitation": "Definition of 'Finance Lease Obligations,' conmed-doc-a-eighth-ar-credit-agreement, chars [16737,17710)",
+        "proposedIrEvidence": "definitions[0].provenance contains sourceCitation \"§7.2(d)\" with excerpt null, even though the definition itself is located in the definitions section, not in §7.2(d).",
+        "verifierReasoning": "The definition's provenance cites §7.2(d), but the operative text of §7.2(d) does not contain this definition. The actual source is the Definition of 'Finance Lease Obligations' in the definitions section of the same agreement. This is a citation that does not support what it is cited for. It does not alter the substantive capacity formula, so it is non-material, but it is a genuine provenance defect that could impede a reviewer locating the controlling definition.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T18:48:06.970Z"
+      },
+      {
+        "findingId": "f8ffb442f3fd3683d0f50ade5f4749a0af61df94e1f4f99ee79ca2bb2bba8845",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.2(d)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 3 apparent independent enumerated unit(s) ((d), (x), (y)) but only 2 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 3 apparent independent enumerated unit(s) ((d), (x), (y)) but only 2 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T18:45:03.555Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6ccbb4f827cc4a649ac8dec5e83bfca43143b7ccd6418b4044cde6a619b147a7",
+            "kind": "AMOUNT",
+            "rawText": "$50,000,000",
+            "numericValue": 50000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(d)",
+            "structuralNodeKey": null,
+            "charStart": 96,
+            "charEnd": 107,
+            "parsedAmount": 50000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "13243a53d65b59e14af0620c1b704ad6bb012eb0d9197bcd6b5d23e09ab5d948",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "irPath": "rules[0].capacityExpression.operands[0]",
+              "numericValue": 50000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.2(d)",
+              "sourceExcerpt": "$50,000,000",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 50000000 (canonical 50000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ec99cf0cd850ee2cb481084ebff4fd9dc0456170c7357b510ce15c76567a41ad",
+            "kind": "PERCENT",
+            "rawText": "3.0%",
+            "numericValue": 0.03,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(d)",
+            "structuralNodeKey": null,
+            "charStart": 116,
+            "charEnd": 120,
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "877b451684679175cc5c0564567e5bfd2244d09bd6263298f05b58d253095d6b",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "irPath": "rules[0].capacityExpression.operands[1].operands[0]",
+              "numericValue": 0.03,
+              "currency": null,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.2(d)",
+              "sourceExcerpt": "3.0%",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source PERCENT 0.03 matches 1 compiled IR PERCENT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5e2baca065dd2b0cb6ddddcf4afb40a99c448236e345e760a66817cca265ebe6",
+            "kind": "METRIC_MENTION",
+            "rawText": "Finance Lease Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(d)",
+            "structuralNodeKey": null,
+            "charStart": 4,
+            "charEnd": 29
+          },
+          "irItems": [],
+          "reason": "source mention \"Finance Lease Obligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c32e537751e6406e1e3df4afeafc835e4af39fc83574ef0c5744551cb47faf49",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated\nTotal Assets",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(d)",
+            "structuralNodeKey": null,
+            "charStart": 124,
+            "charEnd": 149
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated\nTotal Assets\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a37bb865ae28f891d5ba7dbb3cf8a810f8d0c427bd941a4cf121e69e97b70773",
+            "kind": "METRIC_MENTION",
+            "rawText": "Finance Lease Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(d)",
+            "structuralNodeKey": null,
+            "charStart": 194,
+            "charEnd": 219
+          },
+          "irItems": [],
+          "reason": "source mention \"Finance Lease Obligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 3 apparent independent enumerated unit(s) ((d), (x), (y)) but only 2 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 92,
+              "charEnd": 103,
+              "withheldReason": null,
+              "itemId": "7ff9120716486fff39765c2e8f3976f66a6ede03424c81979de2c934a45f4445",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(d)",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 112,
+              "charEnd": 116,
+              "withheldReason": null,
+              "itemId": "446150006212159ac081f83dea78bb037c983f524ad855e53d4a214b063f53cb",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(d)",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "3.0%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"3.0%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 19,
+              "charEnd": 30,
+              "withheldReason": null,
+              "itemId": "046a37ffc171d372ee3b5d1b448abd41942c19632046cbc16a97d8df027e89e8",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(d)",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 39,
+              "charEnd": 43,
+              "withheldReason": null,
+              "itemId": "0fbb0734d7c088baea7a6f323628b9b1e06f1a3f86a6a00f5e766fefd5fe0000",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(d)",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "3.0%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 0,
+              "charEnd": 11,
+              "withheldReason": null,
+              "itemId": "e6ec9324b045b72366fcebae3ac8be97ee4ceff04278762770107b497b548a05",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "$50,000,000",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(d)",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.operands[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 0,
+              "charEnd": 4,
+              "withheldReason": null,
+              "itemId": "058d160668e33d55bde490428b70ebf7b8f7326ff5de33ac780aa1d970dce00c",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "fieldPath": "rules[0].capacityExpression.operands[1].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "3.0% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(d)",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "3.0%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.operands[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.operands[1].operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 0,
+              "charEnd": 4,
+              "withheldReason": null,
+              "itemId": "4da285d5d2d791effbcd56f3f5cb89082086a0c15f3edf39958cd22eaca196ee",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+              "fieldPath": "rules[0].capacityExpression.operands[1].operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "3.0%",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(d)",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "3.0%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.operands[1].operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 207,
+              "charEnd": 218,
+              "withheldReason": null,
+              "itemId": "f79ad59130640e0197d9d37e2b9515920fe5ce83c45987098f3dc4e8c6f907dd",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+              "fieldPath": "rules[1].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.2",
+                "§7.2",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"3.0%\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 227,
+              "charEnd": 231,
+              "withheldReason": null,
+              "itemId": "e954d0f1fe4615f63c8e760955442f8d209768cf372954f2752758fec1cdf9f6",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+              "fieldPath": "rules[1].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.2",
+                "§7.2",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "3.0%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"3.0%\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[1].exceptions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 103,
+              "charEnd": 114,
+              "withheldReason": null,
+              "itemId": "1c39ec38a42aa3241cd66f1a34f096f733d013b641870c026efe205242d3a951",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+              "fieldPath": "rules[1].exceptions[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.2",
+                "§7.2",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[1].exceptions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"3.0%\" at rules[1].exceptions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 119,
+              "charEnd": 123,
+              "withheldReason": null,
+              "itemId": "07cfe7d83ae4028cfb69ba27c87da48d2d267ee13ee34b6c4cfe28205eb0f92b",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+              "fieldPath": "rules[1].exceptions[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.2",
+                "§7.2",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "3.0%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"3.0%\" at rules[1].exceptions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[1].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 92,
+              "charEnd": 103,
+              "withheldReason": null,
+              "itemId": "56a24ae1e89df5ecb11cb30b0f8299a6fcd07cc0e16bb96e5e79dcc9f07f3f76",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+              "fieldPath": "rules[1].exceptions[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.2",
+                "§7.2",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[1].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"3.0%\" at rules[1].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 112,
+              "charEnd": 116,
+              "withheldReason": null,
+              "itemId": "4ec1dc075e234c8736af164cf58dd655fd6a9d0fc38d74839b831cb679e1aa7b",
+              "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+              "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+              "fieldPath": "rules[1].exceptions[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(d)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.2",
+                "§7.2",
+                "§7.2(d)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "3.0%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"3.0%\" at rules[1].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "items": [
+        {
+          "itemId": "6ccbb4f827cc4a649ac8dec5e83bfca43143b7ccd6418b4044cde6a619b147a7",
+          "kind": "AMOUNT",
+          "rawText": "$50,000,000",
+          "numericValue": 50000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 96,
+          "charEnd": 107,
+          "parsedAmount": 50000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "ec99cf0cd850ee2cb481084ebff4fd9dc0456170c7357b510ce15c76567a41ad",
+          "kind": "PERCENT",
+          "rawText": "3.0%",
+          "numericValue": 0.03,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 116,
+          "charEnd": 120,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "855c49f6cd07c89c711208b3b34172a20239a34eb933b58588876688770960e3",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 63,
+          "charEnd": 76,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "2ad345dec603819cc885752f4878c84de5c96c97a06e26e8ce6b7ebcf2b54022",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "greater of",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 81,
+          "charEnd": 91,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "67ccfecd6e81ca3bc6229746230f65b1e752b4d902d4742e8643d60d0cb16c4c",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "incurrence",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 175,
+          "charEnd": 185,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "5e2baca065dd2b0cb6ddddcf4afb40a99c448236e345e760a66817cca265ebe6",
+          "kind": "METRIC_MENTION",
+          "rawText": "Finance Lease Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 4,
+          "charEnd": 29
+        },
+        {
+          "itemId": "c32e537751e6406e1e3df4afeafc835e4af39fc83574ef0c5744551cb47faf49",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated\nTotal Assets",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 124,
+          "charEnd": 149
+        },
+        {
+          "itemId": "a37bb865ae28f891d5ba7dbb3cf8a810f8d0c427bd941a4cf121e69e97b70773",
+          "kind": "METRIC_MENTION",
+          "rawText": "Finance Lease Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": 194,
+          "charEnd": 219
+        },
+        {
+          "itemId": "1796163178f15eba18e929f3d16a53c5583866a2d36f91d4cbd342913caf53a2",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "d2206d2f78417788601760b658cfe0aefeddcd09c223a18cb5991d0f8b5e09fd",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "9c1fb59f345e0b32aa2f4d6f897eb317765dc12699ab97ebb41d0e997128ce1f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(d)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 3,
+      "apparentIndependentUnitEvidence": [
+        "(d)",
+        "(x)",
+        "(y)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+      "items": [
+        {
+          "itemId": "37e846ee63b190bac2e88299b6c8030c8a5f08f1f8ab22e42222a384146f82f6",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(d)",
+          "sourceExcerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "b2dc81d05237fb1dbcad384ebe1c1e25c25163944bc34ac90da07bbd2be289dc",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(d)",
+          "sourceExcerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "0bf4c8a19a526b259da413de8e4122746125b0a0f41dc04da1921efac549f9cf",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The aggregate principal amount of Finance Lease Obligations may not exceed the greater-of cap at any one time outstanding.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(d)",
+          "sourceExcerpt": "at any one time outstanding",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "13243a53d65b59e14af0620c1b704ad6bb012eb0d9197bcd6b5d23e09ab5d948",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+          "irPath": "rules[0].capacityExpression.operands[0]",
+          "numericValue": 50000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.2(d)",
+          "sourceExcerpt": "$50,000,000",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "877b451684679175cc5c0564567e5bfd2244d09bd6263298f05b58d253095d6b",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+          "irPath": "rules[0].capacityExpression.operands[1].operands[0]",
+          "numericValue": 0.03,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.2(d)",
+          "sourceExcerpt": "3.0%",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "1a80f816b161e0eb1d270f466e0ec2182fc045bf5550629f632b1de3bfade9d2",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+          "irPath": "rules[0].capacityExpression.operands[1].operands[1].value",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Consolidated Total Assets",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "3f7dc27b397809dc1225bdd63c3ac90e532684756bea75e3d5c524117caf5fb9",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2",
+          "sourceExcerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d958fae4f6e8b379eef19014527317f787e39dddf7deb5b8dd774e7e2ad06660",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2",
+          "sourceExcerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9879668ca24bee55d231813e2a8b1f0bcc1e52c4100522e0c4ff28ecb56ef963",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+          "irPath": "rules[1].exceptions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(d)",
+          "sourceExcerpt": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "17006ff38809e4fe528e442e2bf1f79e174a93dbd442c5b7a1b72289c1420eb9",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:5d37be4c9e5ea7d59e07eea0",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:GAAP",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Finance Lease Obligations"
+        },
+        {
+          "itemId": "7d534e65bdb0b2ffd75baf6056f93f70bb6c0f79d00ec6edc218fbb53009cf56",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:5d37be4c9e5ea7d59e07eea0",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "As to any Person, the obligations of such Person to pay rent or other amounts under any lease (or other arrangement conveying the right to use) of real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance leases on such Person's balance sheet under GAAP; the amount of such obligations at any time is the capitalized amount thereof determined in accordance with GAAP; subject to a grandfathering proviso that any lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in effect for the fiscal year ended December 31, 2018 and that would become or be treated as a finance lease solely as a result of a change in GAAP thereafter shall always be treated as an operating lease for all purposes and at all times",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(d)",
+          "sourceExcerpt": null,
+          "ownerTermName": "Finance Lease Obligations"
+        }
+      ],
+      "ruleCount": 2,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 92,
+            "charEnd": 103,
+            "withheldReason": null,
+            "itemId": "7ff9120716486fff39765c2e8f3976f66a6ede03424c81979de2c934a45f4445",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 112,
+            "charEnd": 116,
+            "withheldReason": null,
+            "itemId": "446150006212159ac081f83dea78bb037c983f524ad855e53d4a214b063f53cb",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 19,
+            "charEnd": 30,
+            "withheldReason": null,
+            "itemId": "046a37ffc171d372ee3b5d1b448abd41942c19632046cbc16a97d8df027e89e8",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 39,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "0fbb0734d7c088baea7a6f323628b9b1e06f1a3f86a6a00f5e766fefd5fe0000",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 0,
+            "charEnd": 11,
+            "withheldReason": null,
+            "itemId": "e6ec9324b045b72366fcebae3ac8be97ee4ceff04278762770107b497b548a05",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "$50,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "058d160668e33d55bde490428b70ebf7b8f7326ff5de33ac780aa1d970dce00c",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.operands[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "4da285d5d2d791effbcd56f3f5cb89082086a0c15f3edf39958cd22eaca196ee",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.operands[1].operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "3.0%",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 207,
+            "charEnd": 218,
+            "withheldReason": null,
+            "itemId": "f79ad59130640e0197d9d37e2b9515920fe5ce83c45987098f3dc4e8c6f907dd",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 227,
+            "charEnd": 231,
+            "withheldReason": null,
+            "itemId": "e954d0f1fe4615f63c8e760955442f8d209768cf372954f2752758fec1cdf9f6",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 103,
+            "charEnd": 114,
+            "withheldReason": null,
+            "itemId": "1c39ec38a42aa3241cd66f1a34f096f733d013b641870c026efe205242d3a951",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 119,
+            "charEnd": 123,
+            "withheldReason": null,
+            "itemId": "07cfe7d83ae4028cfb69ba27c87da48d2d267ee13ee34b6c4cfe28205eb0f92b",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 92,
+            "charEnd": 103,
+            "withheldReason": null,
+            "itemId": "56a24ae1e89df5ecb11cb30b0f8299a6fcd07cc0e16bb96e5e79dcc9f07f3f76",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 112,
+            "charEnd": 116,
+            "withheldReason": null,
+            "itemId": "4ec1dc075e234c8736af164cf58dd655fd6a9d0fc38d74839b831cb679e1aa7b",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          }
+        ],
+        "fieldsWalked": 15,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 92,
+            "charEnd": 103,
+            "withheldReason": null,
+            "itemId": "7ff9120716486fff39765c2e8f3976f66a6ede03424c81979de2c934a45f4445",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 112,
+            "charEnd": 116,
+            "withheldReason": null,
+            "itemId": "446150006212159ac081f83dea78bb037c983f524ad855e53d4a214b063f53cb",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "3.0%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 19,
+            "charEnd": 30,
+            "withheldReason": null,
+            "itemId": "046a37ffc171d372ee3b5d1b448abd41942c19632046cbc16a97d8df027e89e8",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 39,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "0fbb0734d7c088baea7a6f323628b9b1e06f1a3f86a6a00f5e766fefd5fe0000",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "3.0%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 0,
+            "charEnd": 11,
+            "withheldReason": null,
+            "itemId": "e6ec9324b045b72366fcebae3ac8be97ee4ceff04278762770107b497b548a05",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "$50,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "058d160668e33d55bde490428b70ebf7b8f7326ff5de33ac780aa1d970dce00c",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.operands[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "3.0%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.operands[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "4da285d5d2d791effbcd56f3f5cb89082086a0c15f3edf39958cd22eaca196ee",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:817fb6fce7f8b666081509b5",
+            "fieldPath": "rules[0].capacityExpression.operands[1].operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "3.0%",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(d)",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "3.0%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"3.0%\" at rules[0].capacityExpression.operands[1].operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 207,
+            "charEnd": 218,
+            "withheldReason": null,
+            "itemId": "f79ad59130640e0197d9d37e2b9515920fe5ce83c45987098f3dc4e8c6f907dd",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 227,
+            "charEnd": 231,
+            "withheldReason": null,
+            "itemId": "e954d0f1fe4615f63c8e760955442f8d209768cf372954f2752758fec1cdf9f6",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "3.0%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"3.0%\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 103,
+            "charEnd": 114,
+            "withheldReason": null,
+            "itemId": "1c39ec38a42aa3241cd66f1a34f096f733d013b641870c026efe205242d3a951",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[1].exceptions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 119,
+            "charEnd": 123,
+            "withheldReason": null,
+            "itemId": "07cfe7d83ae4028cfb69ba27c87da48d2d267ee13ee34b6c4cfe28205eb0f92b",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "3.0%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"3.0%\" at rules[1].exceptions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 92,
+            "charEnd": 103,
+            "withheldReason": null,
+            "itemId": "56a24ae1e89df5ecb11cb30b0f8299a6fcd07cc0e16bb96e5e79dcc9f07f3f76",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[1].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 112,
+            "charEnd": 116,
+            "withheldReason": null,
+            "itemId": "4ec1dc075e234c8736af164cf58dd655fd6a9d0fc38d74839b831cb679e1aa7b",
+            "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+            "ruleOrDefinitionId": "ir-rule:883e87ed10e884645db7df59",
+            "fieldPath": "rules[1].exceptions[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(d)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.2",
+              "§7.2",
+              "§7.2(d)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "3.0%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"3.0%\" at rules[1].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "d8ca3fb8fd50449e8a086b18edf62a74936bc09baae497bcaacb99c60eb2cf40",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "4c38aa40a37688b957533539f08b7910ffb2af3d5f3f826d07faa1099a32f30c",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "PROVISION",
+          "requestKey": "7.2",
+          "scopeKey": "7.2",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": "structural-node:a9b723686e58119d7cd922a5",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2",
+          "charStart": 47792,
+          "charEnd": 47899,
+          "rawText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+          "contentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "section \"7.2\" consulted for candidate discovery-candidate:19f36eb8514494897cd4a5b6 (7.2(d)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              0
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[0] getOperativeProvision {\"sectionRef\":\"7.2\"}",
+              "compilerRecordedContentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "provision \"7.2\" resolved to node structural-node:a9b723686e58119d7cd922a5 span [47792, 47899)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [47792, 47899) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(47792, 47899)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:a9b723686e58119d7cd922a5) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        },
+        {
+          "evidenceId": "9152ead5e33a5e2050677f879bdd86940ca46983f9951fccbd66dcad11744a73",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Finance Lease Obligations",
+          "scopeKey": "finance lease obligations",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 16737,
+          "charEnd": 17710,
+          "rawText": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right\nto use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance\nleases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time\nshall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein,\nany lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in\neffect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change\nin GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.\n\n",
+          "contentHash": "1bb5dc9364062917160ccf212a6880cf57f4cba71b0132e65afc62cdf887b8e1",
+          "retrievalReason": "the IR contains a definition of this term",
+          "relationshipToUnit": "definition of \"Finance Lease Obligations\" represented by IR ir-definition:5d37be4c9e5ea7d59e07eea0 of candidate discovery-candidate:19f36eb8514494897cd4a5b6",
+          "role": "REPRESENTED_DEFINITION",
+          "representedDefinitionIds": [
+            "ir-definition:5d37be4c9e5ea7d59e07eea0"
+          ],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": false,
+            "matched": null,
+            "toolCallIndexes": []
+          },
+          "linkage": [
+            {
+              "origin": "IR_DEFINITION_TERM",
+              "detail": "definitions[0].termName = \"Finance Lease Obligations\"",
+              "compilerRecordedContentHash": null
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Finance Lease Obligations\" resolved to node (none) span [16737, 17710)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [16737, 17710) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(16737, 17710)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 1bb5dc9364062917160ccf212a6880cf57f4cba71b0132e65afc62cdf887b8e1 computed independently from the resolved text"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "276505d58e306da87e5f05cf609391bfe9f86947754f29cfac100b15d6592a11",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 347533,
+    "inputTokens": 18064,
+    "outputTokens": 18978,
+    "costUsd": 0.0072826,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:19f36eb8514494897cd4a5b6.verified-units.json",
+    "packageHash": "abeba2872ec43e4db81ff402963b4078c59de61de55d57a859de7343cd565655",
+    "complete": true,
+    "artifactsPersisted": 3,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

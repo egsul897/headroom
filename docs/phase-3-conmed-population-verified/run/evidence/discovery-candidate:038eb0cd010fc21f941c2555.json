@@ -1,0 +1,1329 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T22:59:39.710Z",
+  "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.3(g)(ii)(B)",
+    "operativeSourceText": "(B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n",
+    "operativeSourceTextSha256": "ebd3e0d27dcdb87b0934be6df5e6fc8bee165714f5d8e6e517e31500b6e2a54c",
+    "operativeSourceChars": 261,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:87701e9fe5f6e88e0ed9fe10381078dfc2700019f7e6dcca69a8f4ddaf4c453d",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 19,
+    "items": [
+      {
+        "itemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.3(g)(ii)(B)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 261,
+        "excerptText": "(B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n"
+      },
+      {
+        "itemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 7053,
+        "excerptText": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n(a)\nLiens for taxes, assessments or charges not yet due or which are being contested in good faith by appropriate proceedings; provided\nthat adequate reserves with respect thereto are maintained on the books of the Parent Borrower or its Subsidiaries, as the case may be,\nin conformity with GAAP;\n97\n(b)\ncarriers', warehousemen's, mechanics', materialmen's, repairmen's, supplier's or other like\nLiens arising in the ordinary course of business which are not overdue for a period of more than 30 days or which are being contested\nin good faith by appropriate proceedings and Liens securing judgments to the extent not constituting an Event of Default pursuant to clause\n(h) of Article VIII;\n(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n(e)\neasements, rights-of-way, restrictions and other similar encumbrances incurred in the ordinary course of business which, in the\naggregate, are not substantial in amount and which do not in any case materially detract from the value of the Property subject thereto\nor materially interfere with the ordinary conduct of the business of the Parent Borrower or any of its Subsidiaries;\n(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secured thereby is not increased;\n(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n(h)\nLiens created pursuant to the Security Documents;\n(i)\nany interest or title of a lessor under any lease entered into by the Parent Borrower or any other Subsidiary in the ordinary course\nof its business and covering only the assets so leased;\n(j)\nLiens arising from precautionary UCC financing statement filings regarding operating leases or consignment arrangements entered\ninto by the Parent Borrower or its Subsidiaries in the ordinary course of business;\n(k)\nLiens in favor of banking institutions encumbering the deposits (including the right of setoff) held by such banking institutions\nin the ordinary course of business and which are within the general parameters customary in the banking industry;\n98\n(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary of the Parent Borrower; provided that (i) any Indebtedness that is secured by such Liens is permitted\nto exist under Section 7.2, (ii) such Liens are not created in anticipation of such Permitted Business Acquisition or similar Investment\nor such Person otherwise becoming a Subsidiary of the Parent Borrower and do not attach to any other asset of the Parent Borrower or any\nof its Subsidiaries other than any replacements of such property or assets and accessions thereto and proceeds thereof, or, in the case\nof any acquired Subsidiary, after-acquired property of such Person of the same type and consistent with that contemplated at the time\nsuch original Lien was created and (iii) such Liens secure no greater principal amount of Indebtedness than the aggregate principal amount\nof the Indebtedness, if any, secured by such Liens on the date of such Permitted Business Acquisition or similar Investment or date on\nwhich such Person otherwise becomes a Subsidiary;\n(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations\nsecured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Liens);\n(n)\nLiens securing Indebtedness permitted by Section 7.2(e) on the real property of the Parent Borrower or its Subsidiaries in Largo,\nFlorida;\n(o)\nLiens on accounts receivable or related ancillary rights and assets sold, transferred, encumbered or otherwise disposed of, or\npurported to have been sold, transferred, encumbered or otherwise disposed of pursuant to a Receivables Transfer Program in accordance\nwith Section 7.5(k); and\n(p)\nLiens in the nature of escrow arrangements for deferred payments to be made in connection with a Permitted Business Acquisition\nto the extent such payments constitute amounts permitted under Section 7.8(k) and the rights of any beneficiary thereunder.\nFor purposes of determining compliance with\nthis Section 7.3, (A) a Lien securing an item of Indebtedness need not be permitted solely by reference to one category of permitted Liens\ndescribed in Section 7.3(a) through (q) but may be permitted in part under any combination thereof and (B) in the event that a Lien securing\nan item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section\n7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify,\nsuch Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant and will only be\nrequired to include the amount and type of such Lien or such item of Indebtedness secured by such Lien in one of the above clauses and\nsuch Lien securing such item of Indebtedness will be treated as being incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:fe16511cbf12d4b69ea05fcf2ac4d9f51a9f3360d90423f9d25bce58b7c07b38",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3(g)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 205,
+        "excerptText": "(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either "
+      },
+      {
+        "itemId": "context-item:3351ad7af05a3f8fc8382061f8103167d2b105b8dcffcbda57b804ac32d3474f",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3(g)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 231,
+        "excerptText": "(ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat "
+      },
+      {
+        "itemId": "context-item:5962a87448f8a76a506ac29564892a516a9f7428671be20d83717c996d404097",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(g)(ii)(A)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 150,
+        "excerptText": "(A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and "
+      },
+      {
+        "itemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "type": "DEFINITION",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 2920,
+        "excerptText": "\"Indebtedness\": of\nany Person at any date, without duplication, (a) all indebtedness of such Person for borrowed money, (b) all obligations of\nsuch Person for the deferred purchase price of Property or services (other than current trade payables incurred in the ordinary course\nof such Person's business, and overdue trade payables incurred in the ordinary course of such Person's business to the extent\nthe amount or validity thereof is currently being contested in good faith by appropriate procedures and reserves in conformity with GAAP\nwith respect thereto have been provided on the books of the Parent Borrower or its Subsidiaries, as the case may be), (c) all obligations\nof such Person evidenced by notes, bonds, debentures or other similar instruments, (d) all indebtedness created or arising under\nany conditional sale or other title retention agreement with respect to Property acquired by such Person (even though the rights and remedies\nof the seller or lender under such agreement in the event of default are limited to repossession or sale of such Property), (e) all\nFinance Lease Obligations of such Person (the amount of which shall be calculated without regard to imputed interest), (f) all obligations\nof such Person, contingent or otherwise, as an account party under acceptance, letter of credit or similar facilities, (g) all obligations\nof such Person, contingent or otherwise, to purchase, redeem, retire or otherwise acquire for value any Capital Stock (other than common\nstock) of such Person, (h) all Guarantee Obligations of such Person in respect of obligations of the kind referred to in clauses\n(a) through (g) above to the extent quantified as liabilities, contingent obligations or like term in accordance with GAAP on the balance\nsheet (including notes thereto) of such Person; (i) all obligations of the kind referred to in clauses (a) through (h) above secured\nby (or for which the holder of such obligation has an existing right, contingent or otherwise, to be secured by) any Lien on Property\n(including accounts and contract rights) owned by such Person, whether or not such Person has assumed or become liable for the payment\nof such obligation (but only to the extent of the fair market value of such Property); (j) for purposes of clause (e) of Article\nVIII, all obligations of such Person in respect of Swap Agreements and (k) the liquidation value of any preferred Capital Stock of\nsuch Person or its Subsidiaries held by any Person other than such Person and its\n22\nWholly-Owned Subsidiaries; provided that no earn-out\nobligation arising in connection with any acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness\nunless and until such obligation is finally determined to be due and payable under the relevant acquisition agreement and solely if not\npaid within five days after the date it is finally determined to be due and payable.\n\n"
+      },
+      {
+        "itemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Finance Lease Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 973,
+        "excerptText": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right\nto use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance\nleases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time\nshall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein,\nany lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in\neffect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change\nin GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      },
+      {
+        "itemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:63671098934f3b00e12cddc721910e35950188d3137dc8446e8eeb15c606be54",
+        "type": "DEFINITION",
+        "normalizedRef": "Responsible Officer",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 376,
+        "excerptText": "\"Responsible Officer\": the chief executive officer, president, chief financial officer, treasurer, controller or general counsel (or other officer satisfactory\nto the Lenders) of the Parent Borrower, but in any event, with respect to financial matters, the chief financial officer, treasurer, controller\n(or other officer satisfactory to the Lenders) of the Parent Borrower.\n\n"
+      },
+      {
+        "itemId": "context-item:f16ef71d961ae597a8b9be76baec8e5a9ae416ce023d3d32493cf0c2ef1caa7d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lenders",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 47,
+        "excerptText": "\"Lenders\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "VIII",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 14,
+        "excerptText": "ARTICLE\nVIII. "
+      },
+      {
+        "itemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "type": "AMENDMENT_LEAD",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "OPERATIVE_STATE_UNRESOLVED",
+          "isCurrentTruth": false,
+          "reason": "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task §19)."
+        },
+        "excerptChars": 274,
+        "excerptText": "[AMENDMENT_RESOLUTION_REQUIRED] CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01): the dollar amount \"$100,000,000\". (iii) The definition of \" Indebtedness \" is hereby amended by inserting the following proviso at the end thereof: \"; provided, further, th"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "toItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:fe16511cbf12d4b69ea05fcf2ac4d9f51a9f3360d90423f9d25bce58b7c07b38",
+        "toItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:3351ad7af05a3f8fc8382061f8103167d2b105b8dcffcbda57b804ac32d3474f",
+        "toItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:5962a87448f8a76a506ac29564892a516a9f7428671be20d83717c996d404097",
+        "toItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "toItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:79a1c585c4507ca556792f2b7cad51f620fb2af8a4cd2500013b180d3932f54e",
+        "toItemId": "context-item:63671098934f3b00e12cddc721910e35950188d3137dc8446e8eeb15c606be54",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:63671098934f3b00e12cddc721910e35950188d3137dc8446e8eeb15c606be54",
+        "toItemId": "context-item:f16ef71d961ae597a8b9be76baec8e5a9ae416ce023d3d32493cf0c2ef1caa7d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:63671098934f3b00e12cddc721910e35950188d3137dc8446e8eeb15c606be54",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "edgeType": "REFERENCES",
+        "reason": "\"Article\nVIII\" inside a definition."
+      },
+      {
+        "fromItemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "toItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "edgeType": "AMENDMENT_CANDIDATE",
+        "reason": "Candidate amendment target - resolution required before treating as operative."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "PARTIAL",
+    "failureReasons": [
+      "IR_VALIDATION_FAILURE",
+      "OPERATIVE_STATE_UNRESOLVED",
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.3(g)(ii)(B)",
+          "covenantFamily": "LIENS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "INCUR_LIEN",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "MULTIPLY",
+            "operands": [
+              {
+                "kind": "PERCENT",
+                "value": 0.8,
+                "citation": "§7.3(g)(ii)(B)",
+                "excerpt": "shall at no time exceed 80% of the fair market value"
+              },
+              {
+                "kind": "AS_OF",
+                "operand": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Fair Market Value of such Property",
+                  "citation": "§7.3(g)(ii)(B)",
+                  "excerpt": "the fair market value (as determined in good faith by a Responsible Officer) of such Property"
+                },
+                "asOfDate": "the time such Property was acquired (per-Property acquisition date, a transaction input; acquisition by purchase, construction or otherwise)",
+                "citation": "§7.3(g)(ii)(B)",
+                "excerpt": "at the time it was acquired (by purchase, construction or otherwise)",
+                "inventoryItemIds": [
+                  "cfed7ca9c72b232aaddbae03",
+                  "9efba97d98b6efe567f7ee8a"
+                ]
+              }
+            ],
+            "citation": "§7.3(g)(ii)(B)",
+            "excerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+            "inventoryItemIds": [
+              "26f6c0813b8267cd3f9f30b0"
+            ]
+          },
+          "conditions": [
+            {
+              "conditionType": "GOOD_FAITH_VALUATION_REQUIRED",
+              "expression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "the fair market value of such Property is to be determined in good faith by a Responsible Officer",
+                "reason": "qualitative determination standard (good-faith judgment of a Responsible Officer) - not a computable mechanic expressible in IR arithmetic",
+                "sourceEvidence": "§7.3(g)(ii)(B)",
+                "inventoryItemIds": [
+                  "a4f54ab44380c3e7a595354f"
+                ]
+              },
+              "referencesDefinitionId": null,
+              "description": "The fair market value of such Property must be determined in good faith by a Responsible Officer (definition of 'Responsible Officer' confirmed current in context bundle).",
+              "citation": "§7.3(g)(ii)(B)",
+              "excerpt": "(as determined in good faith by a Responsible Officer)",
+              "inventoryItemIds": []
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.2",
+              "description": "Per the Section 7.3(g)(ii) chapeau (parent scope, confirmed current), the Indebtedness secured by any such Lien must be 'permitted by Section 7.2' for the (g) basket - and hence its (B) cap - to be available.",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Clause (B)'s supplied text is self-contained (complete lettered clause ending at the semicolon before (h)) and confirmed current operative text; the provision has no recorded amendment history.",
+            "All five frozen-semantic-inventory items (CRITICAL threshold condition, CRITICAL formula component, CRITICAL valuation-method condition, CRITICAL valuation-time rule, MATERIAL acquisition-methods rule) are consumed in the node tree.",
+            "SOURCE CONTEXT STATE of UNKNOWN_SOURCE_COMPLETENESS concerns verification of the operative window against its unit boundary (no anchoring node/document supplied); it does not bear on the completeness of the supplied clause text itself, whose operative economics are fully represented.",
+            "Definitions of 'Indebtedness', 'Lien', 'Property' and 'Responsible Officer' needed for the clause are present in the bundle and marked CURRENT; 'fair market value' is not a capitalized defined term."
+          ],
+          "citation": "§7.3(g)(ii)(B)",
+          "excerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+          "inventoryItemIds": [
+            "9da9be6d0899b22c6ada7637"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "§7.3(g)(ii)(B): 'the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value ... of such Property'",
+          "semanticRequirement": "Express that a quantitative cap applies PER-ITEM (unit-by-unit: each Lien against its own Property's capped value) and at any time outstanding, rather than as an aggregate ceiling summed across the basket.",
+          "whyExistingPrimitivesFail": "QUANTITATIVE_PERMISSION's capacityExpression expresses a maximum amount but carries no unit-of-application quantifier: nothing distinguishes a per-Lien/per-Property cap evaluated against each item from an aggregate cap evaluated against the sum of items (a distinction that changes the economics), other than by convention in the metric name or free text.",
+          "candidateGeneralizedPrimitive": "A PER_UNIT / per-item applicator node (e.g. CAP_APPLIES_PER_UNIT wrapping a capacity expression, possibly with an AT_ANY_TIME flag) so a verifier knows the cap binds each individual transaction unit rather than the aggregate."
+        }
+      ],
+      "overallNotes": [
+        "Scope of this compilation: the operative window is clause 7.3(g)(ii)(B) only - the second proviso of the Section 7.3(g) permitted-Lien basket. It is represented as its own QUANTITATIVE_PERMISSION rule: the maximum principal amount of Indebtedness that may be secured by any such Lien is 80% of the fair market value of the acquired Property, valued in good faith by a Responsible Officer as of that Property's acquisition date.",
+        "The (B) cap binds only Liens that already qualify under the (g) basket, whose other operative components sit outside this clause's window: the (g) chapeau's Property scope ('real and/or tangible personal Property acquired after the Closing Date'), the (g)(i)/(g)(ii) alternatives, the requirement that the secured Indebtedness be permitted by Section 7.2 (preserved here as a REQUIRES dependsOn), and sibling proviso (A) (Lien must not extend to Property other than the Property so acquired or financed, confirmed current). The full Section 7.3 text, including the classification/reclassification language in its final paragraph, is available in the parent-scope context item.",
+        "'Fair market value' appears lowercase in the source - it is a standard of value, not a capitalized defined term; no definition retrieval is required. 'Indebtedness', 'Lien', 'Property' and 'Responsible Officer' are defined terms whose bundle definitions are marked CURRENT and are relied on.",
+        "Inventory items are fully consumed: 9da9be6d (threshold condition) and 26f6c081 (80%-of-FMV formula) on the MULTIPLY capacity; cfed7ca9 (acquisition-time valuation) and 9efba97d (purchase/construction/otherwise acquisition methods) on the AS_OF node; a4f54ab4 (good-faith Responsible Officer determination) on the UNSUPPORTED node inside the condition.",
+        "The per-Lien/per-Property (unit-by-unit) and at-no-time-outstanding nature of this cap is preserved in the rule, excerpt and an irExtensionCandidate; it is NOT an aggregate ceiling and no shared capacity is created.",
+        "Flags on the broader instrument, not on this clause: (1) the bundle carries an unresolved AMENDMENT_LEAD (CONMED Second Amendment, 2022-08-01, OPERATIVE_STATE_UNRESOLVED) that amends the DEFINITION of 'Indebtedness'; if that lead ever becomes operative, the breadth of 'Indebtedness' as used in (B) would need re-review - it does not affect the 80%-of-FMV cap arithmetic itself; (2) SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS because no anchoring structural node/document text was supplied - the clause's own text is complete and confirmed current, so sufficiency is COMPLETE for the (B) cap itself."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:aa567c3508b42f6d54ab2277",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.3(g)(ii)(B)",
+        "covenantFamily": "LIENS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:5f1cbe2300cad70602041f1f",
+          "operands": [
+            {
+              "kind": "PERCENT",
+              "type": "PERCENT",
+              "value": 0.8,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.3(g)(ii)(B)",
+                "excerpt": "shall at no time exceed 80% of the fair market value"
+              },
+              "exprId": "ir-expr:31daf7c96bcf7e41ab620c1c"
+            },
+            {
+              "kind": "AS_OF",
+              "type": "MONEY",
+              "exprId": "ir-expr:3bcc5c36ffcb2826582564dd",
+              "value": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Fair Market Value of such Property",
+                "companyId": "conmed-pilot",
+                "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:2da8de4c7efd4bab4acfc506"
+              },
+              "asOfDate": "the time such Property was acquired (per-Property acquisition date, a transaction input; acquisition by purchase, construction or otherwise)",
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.3(g)(ii)(B)",
+                "excerpt": "at the time it was acquired (by purchase, construction or otherwise)"
+              },
+              "inventoryItemIds": [
+                "cfed7ca9c72b232aaddbae03",
+                "9efba97d98b6efe567f7ee8a"
+              ]
+            }
+          ],
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.3(g)(ii)(B)",
+            "excerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)"
+          },
+          "inventoryItemIds": [
+            "26f6c0813b8267cd3f9f30b0"
+          ]
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§7.3(g)(ii)(B)",
+              "semanticDescription": "the fair market value of such Property is to be determined in good faith by a Responsible Officer",
+              "reason": "qualitative determination standard (good-faith judgment of a Responsible Officer) - not a computable mechanic expressible in IR arithmetic",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.3(g)(ii)(B)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:0b33a1112650b6dc7d4caad3",
+              "inventoryItemIds": [
+                "a4f54ab44380c3e7a595354f"
+              ]
+            },
+            "referencesDefinitionId": null,
+            "description": "The fair market value of such Property must be determined in good faith by a Responsible Officer (definition of 'Responsible Officer' confirmed current in context bundle).",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(g)(ii)(B)",
+              "excerpt": "(as determined in good faith by a Responsible Officer)"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.2",
+            "description": "Per the Section 7.3(g)(ii) chapeau (parent scope, confirmed current), the Indebtedness secured by any such Lien must be 'permitted by Section 7.2' for the (g) basket - and hence its (B) cap - to be available.",
+            "reason": "dependsOn[0].targetRef \"Section 7.2\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Clause (B)'s supplied text is self-contained (complete lettered clause ending at the semicolon before (h)) and confirmed current operative text; the provision has no recorded amendment history.",
+          "All five frozen-semantic-inventory items (CRITICAL threshold condition, CRITICAL formula component, CRITICAL valuation-method condition, CRITICAL valuation-time rule, MATERIAL acquisition-methods rule) are consumed in the node tree.",
+          "SOURCE CONTEXT STATE of UNKNOWN_SOURCE_COMPLETENESS concerns verification of the operative window against its unit boundary (no anchoring node/document supplied); it does not bear on the completeness of the supplied clause text itself, whose operative economics are fully represented.",
+          "Definitions of 'Indebtedness', 'Lien', 'Property' and 'Responsible Officer' needed for the clause are present in the bundle and marked CURRENT; 'fair market value' is not a capitalized defined term.",
+          "condition[0].conditionType \"GOOD_FAITH_VALUATION_REQUIRED\" not recognized - normalized to UNSUPPORTED",
+          "qualitative determination standard (good-faith judgment of a Responsible Officer) - not a computable mechanic expressible in IR arithmetic",
+          "dependsOn[0].targetRef \"Section 7.2\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.3(g)(ii)(B)",
+          "excerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNWITNESSED",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNWITNESSED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "9da9be6d0899b22c6ada7637"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[FALSE_COMPLETENESS] (ir-rule:aa567c3508b42f6d54ab2277) rule declares sufficiency COMPLETE but conditions[0].expression contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL",
+      "[rule[r1]] condition[0].conditionType \"GOOD_FAITH_VALUATION_REQUIRED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[0].expression] qualitative determination standard (good-faith judgment of a Responsible Officer) - not a computable mechanic expressible in IR arithmetic",
+      "[rule[r1]] dependsOn[0].targetRef \"Section 7.2\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Scope of this compilation: the operative window is clause 7.3(g)(ii)(B) only - the second proviso of the Section 7.3(g) permitted-Lien basket. It is represented as its own QUANTITATIVE_PERMISSION rule: the maximum principal amount of Indebtedness that may be secured by any such Lien is 80% of the fair market value of the acquired Property, valued in good faith by a Responsible Officer as of that Property's acquisition date.",
+      "The (B) cap binds only Liens that already qualify under the (g) basket, whose other operative components sit outside this clause's window: the (g) chapeau's Property scope ('real and/or tangible personal Property acquired after the Closing Date'), the (g)(i)/(g)(ii) alternatives, the requirement that the secured Indebtedness be permitted by Section 7.2 (preserved here as a REQUIRES dependsOn), and sibling proviso (A) (Lien must not extend to Property other than the Property so acquired or financed, confirmed current). The full Section 7.3 text, including the classification/reclassification language in its final paragraph, is available in the parent-scope context item.",
+      "'Fair market value' appears lowercase in the source - it is a standard of value, not a capitalized defined term; no definition retrieval is required. 'Indebtedness', 'Lien', 'Property' and 'Responsible Officer' are defined terms whose bundle definitions are marked CURRENT and are relied on.",
+      "Inventory items are fully consumed: 9da9be6d (threshold condition) and 26f6c081 (80%-of-FMV formula) on the MULTIPLY capacity; cfed7ca9 (acquisition-time valuation) and 9efba97d (purchase/construction/otherwise acquisition methods) on the AS_OF node; a4f54ab4 (good-faith Responsible Officer determination) on the UNSUPPORTED node inside the condition.",
+      "The per-Lien/per-Property (unit-by-unit) and at-no-time-outstanding nature of this cap is preserved in the rule, excerpt and an irExtensionCandidate; it is NOT an aggregate ceiling and no shared capacity is created.",
+      "Flags on the broader instrument, not on this clause: (1) the bundle carries an unresolved AMENDMENT_LEAD (CONMED Second Amendment, 2022-08-01, OPERATIVE_STATE_UNRESOLVED) that amends the DEFINITION of 'Indebtedness'; if that lead ever becomes operative, the breadth of 'Indebtedness' as used in (B) would need re-review - it does not affect the 80%-of-FMV cap arithmetic itself; (2) SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS because no anchoring structural node/document text was supplied - the clause's own text is complete and confirmed current, so sufficiency is COMPLETE for the (B) cap itself.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "§7.3(g)(ii)(B): 'the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value ... of such Property'",
+        "semanticRequirement": "Express that a quantitative cap applies PER-ITEM (unit-by-unit: each Lien against its own Property's capped value) and at any time outstanding, rather than as an aggregate ceiling summed across the basket.",
+        "whyExistingPrimitivesFail": "QUANTITATIVE_PERMISSION's capacityExpression expresses a maximum amount but carries no unit-of-application quantifier: nothing distinguishes a per-Lien/per-Property cap evaluated against each item from an aggregate cap evaluated against the sum of items (a distinction that changes the economics), other than by convention in the metric name or free text.",
+        "candidateGeneralizedPrimitive": "A PER_UNIT / per-item applicator node (e.g. CAP_APPLIES_PER_UNIT wrapping a capacity expression, possibly with an AT_ANY_TIME flag) so a verifier knows the cap binds each individual transaction unit rather than the aggregate."
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T22:56:09.059Z",
+      "inputTokens": 6849,
+      "outputTokens": 19788,
+      "cachedInputTokens": 10240,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 222370,
+      "calculatedCostUsd": 0.21157800000000002
+    },
+    "compiledAt": "2026-09-24T22:56:09.059Z",
+    "outputHash": "b3a5af7a33abd52a5763a8ef29e25c6d7036c46d5cdb07a5fc9a863326538715"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "14ba97d742d16d7806b97dcd1f82c902e95f7bc58e3518000f0f2eb9c153791f",
+            "kind": "PERCENT",
+            "rawText": "80%",
+            "numericValue": 0.8,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.3(g)(ii)(B)",
+            "structuralNodeKey": null,
+            "charStart": 90,
+            "charEnd": 93,
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "ea45f44a4b8011d1454aedd63410fcdbc8b553c2e4dca4334282c33e804ddf82",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+              "irPath": "rules[0].capacityExpression.operands[0]",
+              "numericValue": 0.8,
+              "currency": null,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§7.3(g)(ii)(B)",
+              "sourceExcerpt": "shall at no time exceed 80% of the fair market value",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source PERCENT 0.8 matches 1 compiled IR PERCENT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4f89378104af34873a1119da7e9174751abd4bad1d33deac70aa50a4b908572c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Responsible Officer",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.3(g)(ii)(B)",
+            "structuralNodeKey": null,
+            "charStart": 153,
+            "charEnd": 172
+          },
+          "irItems": [],
+          "reason": "source mention \"Responsible Officer\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"80%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "80%",
+              "normalizedValue": 0.8,
+              "currency": null,
+              "unit": "%",
+              "charStart": 86,
+              "charEnd": 89,
+              "withheldReason": null,
+              "itemId": "e376e05499e35d38017447dec1c28fb7c739e6e2d5e4db17476b3a8b3d1bd331",
+              "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+              "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(g)(ii)(B)",
+              "referencedTerms": [
+                "Fair Market Value of such Property"
+              ],
+              "referencedSections": [
+                "7.3(g)(ii)(B)",
+                "§7.3(g)(ii)(B)",
+                "Section 7.2"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "80%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"80%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"80%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "80%",
+              "normalizedValue": 0.8,
+              "currency": null,
+              "unit": "%",
+              "charStart": 86,
+              "charEnd": 89,
+              "withheldReason": null,
+              "itemId": "7b99aa441220c58d54fbecc4bb6be11972f6ce2ba5992236d0ce79ee232469d5",
+              "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+              "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(g)(ii)(B)",
+              "referencedTerms": [
+                "Fair Market Value of such Property"
+              ],
+              "referencedSections": [
+                "7.3(g)(ii)(B)",
+                "§7.3(g)(ii)(B)",
+                "Section 7.2"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "80%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"80%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"80%\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "80%",
+              "normalizedValue": 0.8,
+              "currency": null,
+              "unit": "%",
+              "charStart": 24,
+              "charEnd": 27,
+              "withheldReason": null,
+              "itemId": "a8d64a38f1471881052ab17b6d66f5ab22dea93e7722bf28a560e9bf4714eeba",
+              "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+              "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+              "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "shall at no time exceed 80% of the fair market value",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(g)(ii)(B)",
+              "referencedTerms": [
+                "Fair Market Value of such Property"
+              ],
+              "referencedSections": [
+                "7.3(g)(ii)(B)",
+                "§7.3(g)(ii)(B)",
+                "Section 7.2"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "80%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"80%\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+      "items": [
+        {
+          "itemId": "14ba97d742d16d7806b97dcd1f82c902e95f7bc58e3518000f0f2eb9c153791f",
+          "kind": "PERCENT",
+          "rawText": "80%",
+          "numericValue": 0.8,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(g)(ii)(B)",
+          "structuralNodeKey": null,
+          "charStart": 90,
+          "charEnd": 93,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "4f89378104af34873a1119da7e9174751abd4bad1d33deac70aa50a4b908572c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Responsible Officer",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(g)(ii)(B)",
+          "structuralNodeKey": null,
+          "charStart": 153,
+          "charEnd": 172
+        },
+        {
+          "itemId": "5bade8d0c21fce132da8dd0b5ab38119b9d65a7d13906377a9f382050a10244c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(g)(ii)(B)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(b)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+      "items": [
+        {
+          "itemId": "d36e4e66b26473062a0987d2317c0285deaf4213797f3a51d1e9f80f23ee14bd",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(B)",
+          "sourceExcerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "ac7d7e1a94263431d428f1163b5194721cc346e070893615ea574f84dc22445d",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(B)",
+          "sourceExcerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d10a54547cc2fb4c2abf3e41339ee80c8638e20951d6223e1aaa133cc9da2492",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(B)",
+          "sourceExcerpt": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "558715964d78a80660f55890f085874376125b115891e45053d6e5e150a40463",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The fair market value of such Property must be determined in good faith by a Responsible Officer (definition of 'Responsible Officer' confirmed current in context bundle).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(B)",
+          "sourceExcerpt": "(as determined in good faith by a Responsible Officer)",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "cb3cf8761272d3fe8e8c33edac7c01c4dd7673721b0d165b1533309d60da950b",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "the fair market value of such Property is to be determined in good faith by a Responsible Officer",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(B)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "ea45f44a4b8011d1454aedd63410fcdbc8b553c2e4dca4334282c33e804ddf82",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+          "irPath": "rules[0].capacityExpression.operands[0]",
+          "numericValue": 0.8,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(g)(ii)(B)",
+          "sourceExcerpt": "shall at no time exceed 80% of the fair market value",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "dd5d9921edad167cf05779d8dbd285fc49e9b9e2ea83585a7d70a9fd2ed8ded3",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+          "irPath": "rules[0].capacityExpression.operands[1].value",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Fair Market Value of such Property",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+        "items": [
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "80%",
+            "normalizedValue": 0.8,
+            "currency": null,
+            "unit": "%",
+            "charStart": 86,
+            "charEnd": 89,
+            "withheldReason": null,
+            "itemId": "e376e05499e35d38017447dec1c28fb7c739e6e2d5e4db17476b3a8b3d1bd331",
+            "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+            "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(g)(ii)(B)",
+            "referencedTerms": [
+              "Fair Market Value of such Property"
+            ],
+            "referencedSections": [
+              "7.3(g)(ii)(B)",
+              "§7.3(g)(ii)(B)",
+              "Section 7.2"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "80%",
+            "normalizedValue": 0.8,
+            "currency": null,
+            "unit": "%",
+            "charStart": 86,
+            "charEnd": 89,
+            "withheldReason": null,
+            "itemId": "7b99aa441220c58d54fbecc4bb6be11972f6ce2ba5992236d0ce79ee232469d5",
+            "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+            "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(g)(ii)(B)",
+            "referencedTerms": [
+              "Fair Market Value of such Property"
+            ],
+            "referencedSections": [
+              "7.3(g)(ii)(B)",
+              "§7.3(g)(ii)(B)",
+              "Section 7.2"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "80%",
+            "normalizedValue": 0.8,
+            "currency": null,
+            "unit": "%",
+            "charStart": 24,
+            "charEnd": 27,
+            "withheldReason": null,
+            "itemId": "a8d64a38f1471881052ab17b6d66f5ab22dea93e7722bf28a560e9bf4714eeba",
+            "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+            "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "shall at no time exceed 80% of the fair market value",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(g)(ii)(B)",
+            "referencedTerms": [
+              "Fair Market Value of such Property"
+            ],
+            "referencedSections": [
+              "7.3(g)(ii)(B)",
+              "§7.3(g)(ii)(B)",
+              "Section 7.2"
+            ]
+          }
+        ],
+        "fieldsWalked": 10,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "80%",
+            "normalizedValue": 0.8,
+            "currency": null,
+            "unit": "%",
+            "charStart": 86,
+            "charEnd": 89,
+            "withheldReason": null,
+            "itemId": "e376e05499e35d38017447dec1c28fb7c739e6e2d5e4db17476b3a8b3d1bd331",
+            "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+            "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(g)(ii)(B)",
+            "referencedTerms": [
+              "Fair Market Value of such Property"
+            ],
+            "referencedSections": [
+              "7.3(g)(ii)(B)",
+              "§7.3(g)(ii)(B)",
+              "Section 7.2"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "80%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"80%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "80%",
+            "normalizedValue": 0.8,
+            "currency": null,
+            "unit": "%",
+            "charStart": 86,
+            "charEnd": 89,
+            "withheldReason": null,
+            "itemId": "7b99aa441220c58d54fbecc4bb6be11972f6ce2ba5992236d0ce79ee232469d5",
+            "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+            "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(g)(ii)(B)",
+            "referencedTerms": [
+              "Fair Market Value of such Property"
+            ],
+            "referencedSections": [
+              "7.3(g)(ii)(B)",
+              "§7.3(g)(ii)(B)",
+              "Section 7.2"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "80%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"80%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "80%",
+            "normalizedValue": 0.8,
+            "currency": null,
+            "unit": "%",
+            "charStart": 24,
+            "charEnd": 27,
+            "withheldReason": null,
+            "itemId": "a8d64a38f1471881052ab17b6d66f5ab22dea93e7722bf28a560e9bf4714eeba",
+            "candidateRef": "discovery-candidate:038eb0cd010fc21f941c2555",
+            "ruleOrDefinitionId": "ir-rule:aa567c3508b42f6d54ab2277",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "shall at no time exceed 80% of the fair market value",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(g)(ii)(B)",
+            "referencedTerms": [
+              "Fair Market Value of such Property"
+            ],
+            "referencedSections": [
+              "7.3(g)(ii)(B)",
+              "§7.3(g)(ii)(B)",
+              "Section 7.2"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "80%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"80%\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "ebd3e0d27dcdb87b0934be6df5e6fc8bee165714f5d8e6e517e31500b6e2a54c",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "8e3b9cbf6b0f14d34c0ce0bf9393b34c2371eb4ffae8c22c000969ea94ff81de",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 343482,
+    "inputTokens": 6849,
+    "outputTokens": 19788,
+    "costUsd": 0.00603525,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:038eb0cd010fc21f941c2555.verified-units.json",
+    "packageHash": "d4ba43666f009b1ec64fb1d3b768cc960c539859925d2e9f25773903f938136d",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

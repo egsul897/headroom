@@ -1,0 +1,197 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:16:54.814Z",
+  "candidateRef": "discovery-candidate:6be98acecf709257ad512776",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.5(f)(i)",
+    "operativeSourceText": "(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and ",
+    "operativeSourceTextSha256": "c86b9e4896f2de991b94af46a716d7e9c9d1e858bb3d3864c6fe3007b2feacac",
+    "operativeSourceChars": 648,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:ba623f827a4e33caca617a082e2e928620392eb7c483a30e16ecaf17a98da324",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 7,
+    "items": [
+      {
+        "itemId": "context-item:e697d89a350ddb143d85182f35a39bc2ce26c044ec8b29e0887f2e6716caef46",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.5(f)(i)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 648,
+        "excerptText": "(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and "
+      },
+      {
+        "itemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.5",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 4658,
+        "excerptText": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n(a)\nthe Disposition of obsolete or worn out property in the ordinary course of business;\n(b)\nthe sale or other Disposition of Inventory in the ordinary course of business;\n(c)\nDispositions permitted by Section 7.4(b);\n(d)\nthe sale or issuance of the Capital Stock of (i) any Subsidiary to the Parent Borrower or any Subsidiary Guarantor, (ii) any Subsidiary\n(other than a Subsidiary Guarantor) to any Subsidiary Guarantor and (iii) any Subsidiary that is not a Loan Party to any other Subsidiary;\n(e)\nthe sale or transfer of any Capital Stock of any Subsidiary that is not a Loan Party acquired pursuant to a Permitted Business\nAcquisition to any other Subsidiary;\n(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and (ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and its Subsidiaries for\nwhich audited financial statements are available) in any fiscal year and (y) 15% of Consolidated EBITDA (measured based on Consolidated\nEBITDA for the most recently ended period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries for which financial\nstatements are available, but tested only at incurrence) in the aggregate during any four-year rolling period; provided , further ,\nthat the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;\n(g)\nmonetary payments made in the ordinary course of business;\n101\n(h)\nthe sale or discount without recourse of accounts receivable arising in the ordinary course of business of the Parent Borrower\nor its Subsidiaries in connection with the compromise or collection thereof;\n(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n(l)\nthe sale, transfer, encumbrance or other disposition of securities or related ancillary rights and assets pursuant to sales, marketing\nand distribution arrangements;\n(m)\nDispositions of Property from the Parent Borrower or a Subsidiary Guarantor to the Parent Borrower or another Subsidiary Guarantor;\nand\n(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:df76485db07e26d8ef6e011bbd95b550c075fb6422adee1fe4f53a1f9c403206",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.5(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 126,
+        "excerptText": "(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n"
+      },
+      {
+        "itemId": "context-item:05858f98914ef806b7bcd18e6fd1f3add467a6cf4aea83b000162a170784cedb",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(f)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 844,
+        "excerptText": "(ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and its Subsidiaries for\nwhich audited financial statements are available) in any fiscal year and (y) 15% of Consolidated EBITDA (measured based on Consolidated\nEBITDA for the most recently ended period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries for which financial\nstatements are available, but tested only at incurrence) in the aggregate during any four-year rolling period; provided , further ,\nthat the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;\n"
+      },
+      {
+        "itemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "type": "DEFINITION",
+        "normalizedRef": "Consolidated Total Assets",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 283,
+        "excerptText": "\"Consolidated Total Assets\": as of any date of determination thereof, the amount that would appear opposite the caption \"total assets\" (or any like caption)\non a consolidated balance sheet of the Parent Borrower and its Subsidiaries prepared as of such date in accordance with GAAP.\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:6825cd8116369cec033ed7abccb18fcb77e232ab301528dd8eeff61fef1bc909",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "7.5(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1619,
+        "excerptText": "(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n (i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and  (ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and its Subsidiaries for\nwhich audited financial statements are available) in any fiscal year and (y) 15% of Consolidated EBITDA (measured based on Consolidated\nEBITDA for the most recently ended period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries for which financial\nstatements are available, but tested only at incurrence) in the aggregate during any four-year rolling period; provided , further ,\nthat the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "toItemId": "context-item:e697d89a350ddb143d85182f35a39bc2ce26c044ec8b29e0887f2e6716caef46",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:df76485db07e26d8ef6e011bbd95b550c075fb6422adee1fe4f53a1f9c403206",
+        "toItemId": "context-item:e697d89a350ddb143d85182f35a39bc2ce26c044ec8b29e0887f2e6716caef46",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:05858f98914ef806b7bcd18e6fd1f3add467a6cf4aea83b000162a170784cedb",
+        "toItemId": "context-item:e697d89a350ddb143d85182f35a39bc2ce26c044ec8b29e0887f2e6716caef46",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e697d89a350ddb143d85182f35a39bc2ce26c044ec8b29e0887f2e6716caef46",
+        "toItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:e697d89a350ddb143d85182f35a39bc2ce26c044ec8b29e0887f2e6716caef46",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:e697d89a350ddb143d85182f35a39bc2ce26c044ec8b29e0887f2e6716caef46",
+        "toItemId": "context-item:6825cd8116369cec033ed7abccb18fcb77e232ab301528dd8eeff61fef1bc909",
+        "edgeType": "REFERENCES",
+        "reason": "\"clause (f)\""
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "WALL_CLOCK_TIMEOUT"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": null,
+    "toolCallLog": [],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": null,
+    "provider": null,
+    "model": null,
+    "telemetry": null,
+    "compiledAt": null,
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 480002,
+    "inputTokens": null,
+    "outputTokens": null,
+    "costUsd": 0.01942304,
+    "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+    "timedOut": true,
+    "notes": [
+      "compile TIMEOUT",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

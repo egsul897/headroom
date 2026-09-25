@@ -1,0 +1,1121 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T15:58:51.544Z",
+  "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.1(c)",
+    "operativeSourceText": "(c)\nMinimum Interest Coverage Ratio . Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of\nthe Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.\n",
+    "operativeSourceTextSha256": "6caf027b1c9d4b750d05b26de025ebaee20a0ed031b2362c712878387762a19d",
+    "operativeSourceChars": 234,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:a11bded2ff37540544595b8d8a0cb5b3c98b5162929b39f54116aed9c04e6320",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 6,
+    "items": [
+      {
+        "itemId": "context-item:66cc97284bf2671bd44d84ca53e23b970d060a119a2f9682e6b9b5e1d4779914",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.1(c)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 234,
+        "excerptText": "(c)\nMinimum Interest Coverage Ratio . Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of\nthe Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.\n"
+      },
+      {
+        "itemId": "context-item:aebc42c1e845426a83a4a993fe546233a17030a20b6eb52dc48cf235006dc613",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.1",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 44,
+        "excerptText": "SECTION 7.1 Financial Condition\nCovenants .\n"
+      },
+      {
+        "itemId": "context-item:7e564ccdbefa3280067442308d490a09b32ac54b71aaf9e3a2f16d769565587d",
+        "type": "PROVISO",
+        "normalizedRef": "7.1(a)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 501,
+        "excerptText": "(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of "
+      },
+      {
+        "itemId": "context-item:afe29c51fc62f45058f1a091fec1c11d98ff1245f851a300241845ba570072cb",
+        "type": "PROVISO",
+        "normalizedRef": "7.1(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 980,
+        "excerptText": "(b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition\nis consummated; provided that (x) such step-up shall be permitted only twice during the term of this Agreement and (y) there shall\nbe at least two fiscal quarters in between any such step-ups.\n(b)\nConsolidated Total Leverage Ratio . Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed 5.50 to 1.00. Notwithstanding\nthe foregoing, if the Parent Borrower or any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent\n94\nBorrower\n(the notice of which election shall be given prior to the earlier of "
+      },
+      {
+        "itemId": "context-item:d37909c5837439365f2cba0f7320df1121d6fd8bf3d83cde22bbf45fa6b70650",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.1(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 302,
+        "excerptText": "(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes\nand so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity\nat any time to be less than the sum of "
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:aebc42c1e845426a83a4a993fe546233a17030a20b6eb52dc48cf235006dc613",
+        "toItemId": "context-item:66cc97284bf2671bd44d84ca53e23b970d060a119a2f9682e6b9b5e1d4779914",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:7e564ccdbefa3280067442308d490a09b32ac54b71aaf9e3a2f16d769565587d",
+        "toItemId": "context-item:66cc97284bf2671bd44d84ca53e23b970d060a119a2f9682e6b9b5e1d4779914",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:afe29c51fc62f45058f1a091fec1c11d98ff1245f851a300241845ba570072cb",
+        "toItemId": "context-item:66cc97284bf2671bd44d84ca53e23b970d060a119a2f9682e6b9b5e1d4779914",
+        "edgeType": "SIBLING_OF",
+        "reason": "Trailing/neighboring proviso language."
+      },
+      {
+        "fromItemId": "context-item:d37909c5837439365f2cba0f7320df1121d6fd8bf3d83cde22bbf45fa6b70650",
+        "toItemId": "context-item:66cc97284bf2671bd44d84ca53e23b970d060a119a2f9682e6b9b5e1d4779914",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:66cc97284bf2671bd44d84ca53e23b970d060a119a2f9682e6b9b5e1d4779914",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.1(c)",
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "posture": "OBLIGATION",
+          "action": "SATISFY_RATIO",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "COMPARE",
+              "left": {
+                "kind": "DURING_PERIOD",
+                "operand": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Interest Coverage Ratio",
+                  "valueType": "RATIO",
+                  "citation": "§7.1(c)",
+                  "excerpt": "the Interest Coverage Ratio",
+                  "inventoryItemIds": [
+                    "740e62891cc9592eafa0eff9"
+                  ]
+                },
+                "periodDescription": "any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date",
+                "citation": "§7.1(c)",
+                "excerpt": "for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date",
+                "inventoryItemIds": [
+                  "c9c714a6800f9a6e178e597a",
+                  "94d2b8880ba7027cc970ddbd"
+                ]
+              },
+              "operator": "GTE",
+              "right": {
+                "kind": "RATIO",
+                "value": 2.75,
+                "citation": "§7.1(c)",
+                "excerpt": "to be less than 2.75 to 1.00",
+                "inventoryItemIds": [
+                  "fce98f93dcdda17e05f3de96"
+                ]
+              },
+              "citation": "§7.1(c)",
+              "excerpt": "Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00"
+            }
+          },
+          "conditions": [],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Confirmed current operative text (evidenceStatus CURRENT); provision has no recorded amendment history.",
+            "The covenant's full operative economics are represented: the Interest Coverage Ratio (an arbitrary contractual ratio metric, valueType RATIO confirmed by the 'to 1.00' threshold phrasing) must be maintained at or above 2.75:1.00 for every period of four consecutive fiscal quarters ending on or after the Closing Date.",
+            "The defined term 'Interest Coverage Ratio' is not declared in this document/package (Phase 2's LOW unresolved dependency); per IR design this is carried as a METRIC_REFERENCE and does not block faithful representation of the covenant proposition."
+          ],
+          "citation": "§7.1(c)",
+          "excerpt": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+          "inventoryItemIds": [
+            "4332184b936aec89029b6a39",
+            "964b1a2cd697c320dabce669"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "Section 7.1(c) is a single, independently operative minimum-ratio maintenance covenant (part of the Section 7.1 'Financial Condition Covenants' group). It is represented as one RATIO_TEST rule: the Interest Coverage Ratio must not fall below 2.75:1.00 (i.e. COMPARE GTE 2.75), measured over any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date, encoded as a DURING_PERIOD-scoped METRIC_REFERENCE.",
+        "The prohibition semantics ('Permit ... to be less than 2.75 to 1.00') are captured by posture OBLIGATION and the GTE comparison inside the UNLIMITED_CAPACITY gate, following the IR's canonical ratio-test shape.",
+        "The defined terms 'Interest Coverage Ratio' and 'Parent Borrower' (the latter defined in the preamble) are not supplied in this package; both are carried as references and do not affect the covenant's own economic proposition, so the rule is COMPLETE.",
+        "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node), but the supplied excerpt of 7.1(c) itself is confirmed current and self-contained; nothing about the covenant's economics depends on absent sibling text."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:191b27a8d24d0818949064c9",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.1(c)",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "RATIO_TEST",
+        "posture": "OBLIGATION",
+        "action": "SATISFY_RATIO",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:724e3db290832f75ae292298",
+            "left": {
+              "kind": "DURING_PERIOD",
+              "type": "RATIO",
+              "exprId": "ir-expr:1cfb8a6334421e310baff065",
+              "value": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "Interest Coverage Ratio",
+                "companyId": "conmed-pilot",
+                "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:4e51b43fb8571d1696dfb66c",
+                "inventoryItemIds": [
+                  "740e62891cc9592eafa0eff9"
+                ]
+              },
+              "periodDescription": "any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date",
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.1(c)",
+                "excerpt": "for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date"
+              },
+              "inventoryItemIds": [
+                "c9c714a6800f9a6e178e597a",
+                "94d2b8880ba7027cc970ddbd"
+              ]
+            },
+            "operator": "GTE",
+            "right": {
+              "kind": "RATIO",
+              "type": "RATIO",
+              "value": 2.75,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.1(c)",
+                "excerpt": "to be less than 2.75 to 1.00"
+              },
+              "exprId": "ir-expr:ce8f0106f0d3b775de992c06",
+              "inventoryItemIds": [
+                "fce98f93dcdda17e05f3de96"
+              ]
+            },
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.1(c)",
+              "excerpt": "Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00"
+            }
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.1(c)",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Confirmed current operative text (evidenceStatus CURRENT); provision has no recorded amendment history.",
+          "The covenant's full operative economics are represented: the Interest Coverage Ratio (an arbitrary contractual ratio metric, valueType RATIO confirmed by the 'to 1.00' threshold phrasing) must be maintained at or above 2.75:1.00 for every period of four consecutive fiscal quarters ending on or after the Closing Date.",
+          "The defined term 'Interest Coverage Ratio' is not declared in this document/package (Phase 2's LOW unresolved dependency); per IR design this is carried as a METRIC_REFERENCE and does not block faithful representation of the covenant proposition."
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.1(c)",
+          "excerpt": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 137,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 154,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "4332184b936aec89029b6a39",
+          "964b1a2cd697c320dabce669"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "Section 7.1(c) is a single, independently operative minimum-ratio maintenance covenant (part of the Section 7.1 'Financial Condition Covenants' group). It is represented as one RATIO_TEST rule: the Interest Coverage Ratio must not fall below 2.75:1.00 (i.e. COMPARE GTE 2.75), measured over any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date, encoded as a DURING_PERIOD-scoped METRIC_REFERENCE.",
+      "The prohibition semantics ('Permit ... to be less than 2.75 to 1.00') are captured by posture OBLIGATION and the GTE comparison inside the UNLIMITED_CAPACITY gate, following the IR's canonical ratio-test shape.",
+      "The defined terms 'Interest Coverage Ratio' and 'Parent Borrower' (the latter defined in the preamble) are not supplied in this package; both are carried as references and do not affect the covenant's own economic proposition, so the rule is COMPLETE.",
+      "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node), but the supplied excerpt of 7.1(c) itself is confirmed current and self-contained; nothing about the covenant's economics depends on absent sibling text.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 6 item(s) accepted (0 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:4-37) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:4-37: \"Minimum Interest Coverage Ratio .\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T15:55:36.808Z",
+      "inputTokens": 2886,
+      "outputTokens": 8131,
+      "cachedInputTokens": 10240,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 80095,
+      "calculatedCostUsd": 0.087082
+    },
+    "compiledAt": "2026-09-24T15:55:36.808Z",
+    "outputHash": "e159efdbdabb3618e1b1b7db0279a3a8a35c421283b90e8403b405c78f6a1291"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ab5f0aec65f3d8211567f9a6a8fcec9cc906dd28cbae9e7d514a8091ab91380e",
+            "kind": "RATIO",
+            "rawText": "2.75 to 1.00",
+            "numericValue": 2.75,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(c)",
+            "structuralNodeKey": null,
+            "charStart": 220,
+            "charEnd": 232,
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "24e1bd103ea3425757b15ca80a25dd9548ca885d97843dca2b672340347f7689",
+              "kind": "RATIO",
+              "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+              "irPath": "rules[0].capacityExpression.gatedBy.right",
+              "numericValue": 2.75,
+              "currency": null,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§7.1(c)",
+              "sourceExcerpt": "to be less than 2.75 to 1.00",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source RATIO 2.75 matches 1 compiled IR RATIO node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "85ead3e3a03b147f692f4cfbdae8ac68485f3661a7d2d20f6e7aa4c4c54f03c5",
+            "kind": "METRIC_MENTION",
+            "rawText": "Minimum Interest Coverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(c)",
+            "structuralNodeKey": null,
+            "charStart": 4,
+            "charEnd": 35
+          },
+          "irItems": [
+            {
+              "itemId": "915dde668ee18a34384aad5a968289555bbc475ff6564118958608b1184fc984",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+              "irPath": "rules[0].capacityExpression.gatedBy.left.value",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Interest Coverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Minimum Interest Coverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8818399bb4893522a78a4024c403fba400e3f51867c18f100824fe259d0f97c7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Interest Coverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(c)",
+            "structuralNodeKey": null,
+            "charStart": 49,
+            "charEnd": 72
+          },
+          "irItems": [
+            {
+              "itemId": "915dde668ee18a34384aad5a968289555bbc475ff6564118958608b1184fc984",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+              "irPath": "rules[0].capacityExpression.gatedBy.left.value",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Interest Coverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Interest Coverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "eaa4a79384e5e746a126fb677a51f51f670ab98748fe34917cdd39b6aed91274",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(c)",
+            "structuralNodeKey": null,
+            "charStart": 131,
+            "charEnd": 146
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6ae064dd965b7773c50546e5f223625975db676788eff5fbcf7a0fd2c1b730b2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Closing Date",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.1(c)",
+            "structuralNodeKey": null,
+            "charStart": 191,
+            "charEnd": 203
+          },
+          "irItems": [],
+          "reason": "source mention \"Closing Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "RATIO",
+              "rawText": "2.75 to 1.00",
+              "normalizedValue": 2.75,
+              "currency": null,
+              "unit": "x",
+              "charStart": 219,
+              "charEnd": 231,
+              "withheldReason": null,
+              "itemId": "1386a0c0f8b7f3e0dc12fc2fdfabc93edc2ac69f1b28b7c8b75b95b5ac1614d6",
+              "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+              "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+              "ownerTermName": null,
+              "ownerCitation": "§7.1(c)",
+              "referencedTerms": [
+                "Interest Coverage Ratio"
+              ],
+              "referencedSections": [
+                "7.1(c)",
+                "§7.1(c)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "2.75 to 1.00",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].capacityExpression.gatedBy.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "RATIO",
+              "rawText": "2.75 to 1.00",
+              "normalizedValue": 2.75,
+              "currency": null,
+              "unit": "x",
+              "charStart": 182,
+              "charEnd": 194,
+              "withheldReason": null,
+              "itemId": "459065ca11983ad5438b0b695f17e8a26f307def234289459a2a3cc889ea5e58",
+              "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+              "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00",
+              "ownerTermName": null,
+              "ownerCitation": "§7.1(c)",
+              "referencedTerms": [
+                "Interest Coverage Ratio"
+              ],
+              "referencedSections": [
+                "7.1(c)",
+                "§7.1(c)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "2.75 to 1.00",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].capacityExpression.gatedBy.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "RATIO",
+              "rawText": "2.75 to 1.00",
+              "normalizedValue": 2.75,
+              "currency": null,
+              "unit": "x",
+              "charStart": 16,
+              "charEnd": 28,
+              "withheldReason": null,
+              "itemId": "bb1e52af05db32413049bcd6932bf77c23ba18a8e87b90f800ba1c8105ed8c45",
+              "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+              "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "to be less than 2.75 to 1.00",
+              "ownerTermName": null,
+              "ownerCitation": "§7.1(c)",
+              "referencedTerms": [
+                "Interest Coverage Ratio"
+              ],
+              "referencedSections": [
+                "7.1(c)",
+                "§7.1(c)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "2.75 to 1.00",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+      "items": [
+        {
+          "itemId": "ab5f0aec65f3d8211567f9a6a8fcec9cc906dd28cbae9e7d514a8091ab91380e",
+          "kind": "RATIO",
+          "rawText": "2.75 to 1.00",
+          "numericValue": 2.75,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": 220,
+          "charEnd": 232,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "0760497e38d1f74b340a5ac259f57dd536e8020de1214167d673dcddbf90a65f",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "after the Closing Date",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": 181,
+          "charEnd": 203,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "ad26a6dfb4e9fc9891ec92498250cb36056fb1e51e2f79dcbf74b2a13ea17daa",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": 138,
+          "charEnd": 146,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "85ead3e3a03b147f692f4cfbdae8ac68485f3661a7d2d20f6e7aa4c4c54f03c5",
+          "kind": "METRIC_MENTION",
+          "rawText": "Minimum Interest Coverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": 4,
+          "charEnd": 35
+        },
+        {
+          "itemId": "8818399bb4893522a78a4024c403fba400e3f51867c18f100824fe259d0f97c7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Interest Coverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": 49,
+          "charEnd": 72
+        },
+        {
+          "itemId": "eaa4a79384e5e746a126fb677a51f51f670ab98748fe34917cdd39b6aed91274",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": 131,
+          "charEnd": 146
+        },
+        {
+          "itemId": "6ae064dd965b7773c50546e5f223625975db676788eff5fbcf7a0fd2c1b730b2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Closing Date",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": 191,
+          "charEnd": 203
+        },
+        {
+          "itemId": "5e1f264589e5be7714e576fe4a079685c387842a7cc765b1f5e203ef5c9fe7a3",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.1(c)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(c)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+      "items": [
+        {
+          "itemId": "daa28fac6f2e8b46731819fbad99007b73fe0d115cf8359bd40e737f8cf157cb",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "SATISFY_RATIO",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(c)",
+          "sourceExcerpt": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "eee6c7ddbdb25e7132cc49e548aa9740407b9c5c4a978c72cc4aed16f6f3f5b0",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(c)",
+          "sourceExcerpt": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a3df8a022af73d76dcf84920558c3eb68ffb797bd9d1c6889eef35fe0c5480aa",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(c)",
+          "sourceExcerpt": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "6d2e75bcf293d6312dfd3838e59c2c0a4a08a77d2ab1b27fe2e285c5138f896d",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(c)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "2a858ac91780f0c0241c1e10060d019e59e3d6735ef57965d3fc1ea99108af79",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+          "irPath": "rules[0].capacityExpression.gatedBy",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "COMPARE:GTE",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(c)",
+          "sourceExcerpt": "Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "915dde668ee18a34384aad5a968289555bbc475ff6564118958608b1184fc984",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+          "irPath": "rules[0].capacityExpression.gatedBy.left.value",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Interest Coverage Ratio",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "24e1bd103ea3425757b15ca80a25dd9548ca885d97843dca2b672340347f7689",
+          "kind": "RATIO",
+          "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+          "irPath": "rules[0].capacityExpression.gatedBy.right",
+          "numericValue": 2.75,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.1(c)",
+          "sourceExcerpt": "to be less than 2.75 to 1.00",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+        "items": [
+          {
+            "kind": "RATIO",
+            "rawText": "2.75 to 1.00",
+            "normalizedValue": 2.75,
+            "currency": null,
+            "unit": "x",
+            "charStart": 219,
+            "charEnd": 231,
+            "withheldReason": null,
+            "itemId": "1386a0c0f8b7f3e0dc12fc2fdfabc93edc2ac69f1b28b7c8b75b95b5ac1614d6",
+            "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+            "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+            "ownerTermName": null,
+            "ownerCitation": "§7.1(c)",
+            "referencedTerms": [
+              "Interest Coverage Ratio"
+            ],
+            "referencedSections": [
+              "7.1(c)",
+              "§7.1(c)"
+            ]
+          },
+          {
+            "kind": "RATIO",
+            "rawText": "2.75 to 1.00",
+            "normalizedValue": 2.75,
+            "currency": null,
+            "unit": "x",
+            "charStart": 182,
+            "charEnd": 194,
+            "withheldReason": null,
+            "itemId": "459065ca11983ad5438b0b695f17e8a26f307def234289459a2a3cc889ea5e58",
+            "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+            "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00",
+            "ownerTermName": null,
+            "ownerCitation": "§7.1(c)",
+            "referencedTerms": [
+              "Interest Coverage Ratio"
+            ],
+            "referencedSections": [
+              "7.1(c)",
+              "§7.1(c)"
+            ]
+          },
+          {
+            "kind": "RATIO",
+            "rawText": "2.75 to 1.00",
+            "normalizedValue": 2.75,
+            "currency": null,
+            "unit": "x",
+            "charStart": 16,
+            "charEnd": 28,
+            "withheldReason": null,
+            "itemId": "bb1e52af05db32413049bcd6932bf77c23ba18a8e87b90f800ba1c8105ed8c45",
+            "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+            "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "to be less than 2.75 to 1.00",
+            "ownerTermName": null,
+            "ownerCitation": "§7.1(c)",
+            "referencedTerms": [
+              "Interest Coverage Ratio"
+            ],
+            "referencedSections": [
+              "7.1(c)",
+              "§7.1(c)"
+            ]
+          }
+        ],
+        "fieldsWalked": 6,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "RATIO",
+            "rawText": "2.75 to 1.00",
+            "normalizedValue": 2.75,
+            "currency": null,
+            "unit": "x",
+            "charStart": 219,
+            "charEnd": 231,
+            "withheldReason": null,
+            "itemId": "1386a0c0f8b7f3e0dc12fc2fdfabc93edc2ac69f1b28b7c8b75b95b5ac1614d6",
+            "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+            "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(c) Minimum Interest Coverage Ratio. Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.",
+            "ownerTermName": null,
+            "ownerCitation": "§7.1(c)",
+            "referencedTerms": [
+              "Interest Coverage Ratio"
+            ],
+            "referencedSections": [
+              "7.1(c)",
+              "§7.1(c)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "2.75 to 1.00",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "RATIO",
+            "rawText": "2.75 to 1.00",
+            "normalizedValue": 2.75,
+            "currency": null,
+            "unit": "x",
+            "charStart": 182,
+            "charEnd": 194,
+            "withheldReason": null,
+            "itemId": "459065ca11983ad5438b0b695f17e8a26f307def234289459a2a3cc889ea5e58",
+            "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+            "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00",
+            "ownerTermName": null,
+            "ownerCitation": "§7.1(c)",
+            "referencedTerms": [
+              "Interest Coverage Ratio"
+            ],
+            "referencedSections": [
+              "7.1(c)",
+              "§7.1(c)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "2.75 to 1.00",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].capacityExpression.gatedBy.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "RATIO",
+            "rawText": "2.75 to 1.00",
+            "normalizedValue": 2.75,
+            "currency": null,
+            "unit": "x",
+            "charStart": 16,
+            "charEnd": 28,
+            "withheldReason": null,
+            "itemId": "bb1e52af05db32413049bcd6932bf77c23ba18a8e87b90f800ba1c8105ed8c45",
+            "candidateRef": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+            "ruleOrDefinitionId": "ir-rule:191b27a8d24d0818949064c9",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "to be less than 2.75 to 1.00",
+            "ownerTermName": null,
+            "ownerCitation": "§7.1(c)",
+            "referencedTerms": [
+              "Interest Coverage Ratio"
+            ],
+            "referencedSections": [
+              "7.1(c)",
+              "§7.1(c)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "2.75 to 1.00",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"2.75 to 1.00\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "6caf027b1c9d4b750d05b26de025ebaee20a0ed031b2362c712878387762a19d",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "ec234cbbf16ba7c22879c00e18736f7832f10a6e7d19a7f77226a04474307530",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 272552,
+    "inputTokens": 2886,
+    "outputTokens": 8131,
+    "costUsd": 0.00248924,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:5f83b15ed6cd0ea8b06289a0.verified-units.json",
+    "packageHash": "df37f789bc9695918d4fb616d8d0b1e59e349f82b3301ec90dfac8e83553a1c4",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

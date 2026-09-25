@@ -1,0 +1,439 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:30:48.340Z",
+  "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.5(j)",
+    "operativeSourceText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n",
+    "operativeSourceTextSha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+    "operativeSourceChars": 508,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:3c941614303ecf0ce5b50d3e0e5c27e7e7bc73b117a56712573172d074c0c173",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 9,
+    "items": [
+      {
+        "itemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.5(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 508,
+        "excerptText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n"
+      },
+      {
+        "itemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.5",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 4658,
+        "excerptText": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n(a)\nthe Disposition of obsolete or worn out property in the ordinary course of business;\n(b)\nthe sale or other Disposition of Inventory in the ordinary course of business;\n(c)\nDispositions permitted by Section 7.4(b);\n(d)\nthe sale or issuance of the Capital Stock of (i) any Subsidiary to the Parent Borrower or any Subsidiary Guarantor, (ii) any Subsidiary\n(other than a Subsidiary Guarantor) to any Subsidiary Guarantor and (iii) any Subsidiary that is not a Loan Party to any other Subsidiary;\n(e)\nthe sale or transfer of any Capital Stock of any Subsidiary that is not a Loan Party acquired pursuant to a Permitted Business\nAcquisition to any other Subsidiary;\n(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and (ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and its Subsidiaries for\nwhich audited financial statements are available) in any fiscal year and (y) 15% of Consolidated EBITDA (measured based on Consolidated\nEBITDA for the most recently ended period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries for which financial\nstatements are available, but tested only at incurrence) in the aggregate during any four-year rolling period; provided , further ,\nthat the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;\n(g)\nmonetary payments made in the ordinary course of business;\n101\n(h)\nthe sale or discount without recourse of accounts receivable arising in the ordinary course of business of the Parent Borrower\nor its Subsidiaries in connection with the compromise or collection thereof;\n(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n(l)\nthe sale, transfer, encumbrance or other disposition of securities or related ancillary rights and assets pursuant to sales, marketing\nand distribution arrangements;\n(m)\nDispositions of Property from the Parent Borrower or a Subsidiary Guarantor to the Parent Borrower or another Subsidiary Guarantor;\nand\n(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 126,
+        "excerptText": "(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n"
+      },
+      {
+        "itemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(n)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 635,
+        "excerptText": "(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "type": "DEFINITION",
+        "normalizedRef": "Consolidated Total Assets",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 283,
+        "excerptText": "\"Consolidated Total Assets\": as of any date of determination thereof, the amount that would appear opposite the caption \"total assets\" (or any like caption)\non a consolidated balance sheet of the Parent Borrower and its Subsidiaries prepared as of such date in accordance with GAAP.\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "type": "DEFINITION",
+        "normalizedRef": "Disposition",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 276,
+        "excerptText": "\"Disposition\": with\nrespect to any Property, any sale, lease, sale and leaseback, assignment, conveyance, transfer or other disposition thereof (whether effected\npursuant to a Division or otherwise). The terms \" Dispose \" and \" Disposed of \" shall have correlative\nmeanings.\n\n"
+      },
+      {
+        "itemId": "context-item:122ab5079c14b57428d0d1f0a462f209135a4e2ee1c0a814e11f1bf3000e793d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Division",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 353,
+        "excerptText": "\"Division\": the division of the assets, liabilities and/or obligations of a Person that is a limited liability company (the \" Dividing Person \")\namong two or more Persons (whether pursuant to a \"plan of division\" or similar arrangement), which may or may not include\nthe Dividing Person and pursuant to which the Dividing Person may or may not survive.\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "toItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "toItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "toItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "toItemId": "context-item:122ab5079c14b57428d0d1f0a462f209135a4e2ee1c0a814e11f1bf3000e793d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "FAILED",
+    "failureReasons": [
+      "MODEL_SCHEMA_FAILURE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.5(j)",
+          "covenantFamily": "SALE_OF_ASSETS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "DISPOSE_OF_PROPERTY",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "COMPARE",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "net proceeds",
+                "citation": "§7.5(j)"
+              },
+              "operator": "LT",
+              "right": {
+                "kind": "MAX",
+                "operands": [
+                  {
+                    "kind": "MONEY",
+                    "amount": 25000000,
+                    "currency": "USD",
+                    "citation": "§7.5(j)",
+                    "excerpt": "$25,000,000",
+                    "inventoryItemIds": [
+                      "11c4228af80791c185501b55"
+                    ]
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "operands": [
+                      {
+                        "kind": "PERCENT",
+                        "value": 0.015,
+                        "citation": "§7.5(j)",
+                        "excerpt": "1.5%",
+                        "inventoryItemIds": [
+                          "60b1257a3b1306a941fc4735"
+                        ]
+                      },
+                      {
+                        "kind": "AS_OF",
+                        "operand": {
+                          "kind": "METRIC_REFERENCE",
+                          "metricName": "Consolidated Total Assets",
+                          "citation": "§7.5(j)"
+                        },
+                        "asOfDate": "date of such Disposition",
+                        "inventoryItemIds": [
+                          "3ecfd501c484234535408ccc"
+                        ]
+                      }
+                    ],
+                    "citation": "§7.5(y)",
+                    "excerpt": "1.5% of Consolidated Total Assets",
+                    "inventoryItemIds": [
+                      "60b1257a3b1306a941fc4735"
+                    ]
+                  }
+                ],
+                "citation": "§7.5(j)",
+                "excerpt": "the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+                "inventoryItemIds": [
+                  "f472f400b179ece8c37dfaca"
+                ]
+              },
+              "citation": "§7.5(j)",
+              "excerpt": "of less than the greater of",
+              "inventoryItemIds": [
+                "e9d4094d25f6ccce9e33f377"
+              ]
+            },
+            "citation": "§7.5(j)"
+          },
+          "conditions": [
+            {
+              "conditionType": "DISPOSITION_SCOPE",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "Applies to any Disposition of Property or business, or series of related Dispositions of Property or businesses",
+              "citation": "§7.5(j)",
+              "excerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses",
+              "inventoryItemIds": [
+                "7478d84ed51406361615ce74"
+              ]
+            },
+            {
+              "conditionType": "NET_PROCEEDS_REQUIRED",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The Disposition must yield net proceeds",
+              "citation": "§7.5(j)",
+              "excerpt": "which yields net proceeds to",
+              "inventoryItemIds": [
+                "3f025cb2c93fd3c100ce07c0"
+              ]
+            },
+            {
+              "conditionType": "ENTITY_SCOPE",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The net proceeds must be realized by the Parent Borrower or any of its Subsidiaries",
+              "citation": "§7.5(j)",
+              "excerpt": "to the Parent Borrower or any of its Subsidiaries",
+              "inventoryItemIds": [
+                "826fd2b6e9ca348fa63d7299"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.5(j)",
+          "excerpt": "(j) any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition)",
+          "inventoryItemIds": [
+            "7478d84ed51406361615ce74",
+            "3f025cb2c93fd3c100ce07c0",
+            "826fd2b6e9ca348fa63d7299",
+            "e9d4094d25f6ccce9e33f377",
+            "f472f400b179ece8c37dfaca",
+            "11c4228af80791c185501b55",
+            "60b1257a3b1306a941fc4735",
+            "3ecfd501c484234535408ccc"
+          ]
+        }
+      ],
+      "definitions": "[{\"localRef\": \"d1\", \"termName\": \"net proceeds\", \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\", \"calculationExpression\": {\"kind\": \"IF\", \"condition\": {\"kind\": \"UNSUPPORTED\", \"semanticDescription\": \"Classification condition: non-cash proceeds consisting of notes or other debt securities\", \"reason\": \"proceeds classification is descriptive; underlying 'notes'/'debt securities' defined terms are unresolved in the available evidence\", \"sourceEvidence\": \"§7.5(j)\", \"inventoryItemIds\": [\"9c21302e1e1b54b1dbcddfa0\"]}, \"then\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"initial principal amount\", \"citation\": \"§7.5(j)\", \"excerpt\": \"valued at the initial principal amount thereof\", \"inventoryItemIds\": [\"53ccdebd5a0352d2b09e8bf5\"]}, \"else\": {\"kind\": \"IF\", \"condition\": {\"kind\": \"UNSUPPORTED\", \"semanticDescription\": \"Classification condition: non-cash proceeds other than notes or debt securities\", \"reason\": \"proceeds classification is descriptive and the base definition of net proceeds is unresolved\", \"sourceEvidence\": \"§7.5(j)\", \"inventoryItemIds\": [\"702091c1baaf8083ad0f1b4f\"]}, \"then\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"fair market value\", \"citation\": \"§7.5(j)\", \"excerpt\": \"valued at fair market value\", \"inventoryItemIds\": [\"69b3d5404e951837a0d1e2c2\"]}, \"else\": {\"kind\": \"UNSUPPORTED\", \"semanticDescription\": \"Cash proceeds and the base derivation of net proceeds\", \"reason\": \"the definition of the 'net proceeds' term and its treatment of cash proceeds were not supplied and are unresolved\", \"sourceEvidence\": \"§7.5(j)\"}}}, \"citation\": \"§7.5(j)\"}, \"dependsOnTerms\": [\"notes\", \"debt securities\", \"fair market value\"], \"sufficiency\": \"PARTIAL\", \"sufficiencyReasons\": [\"Inline valuation of non-cash proceeds is represented; however the base 'net proceeds' defined term and 'fair market value'/'notes'/'debt securities' terms are unresolved in the available evidence\"], \"citation\": \"§7.5(j)\", \"excerpt\": \"valued at the initial principal amount thereof in the case of non-cash proceeds consisting of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds\", \"inventoryItemIds\": [\"53ccdebd5a0352d2b09e8bf5\", \"9c21302e1e1b54b1dbcddfa0\", \"69b3d5404e951837a0d1e2c2\", \"702091c1baaf8083ad0f1b4f\"]}]",
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "§7.5 is a negative covenant (limitation on sale of assets) whose chapeau prohibits Dispositions generally; clause (j) is one of the enumerated exceptions, modeled here as the independently operative permission rule. The de minimis size test (net proceeds below the greater-of threshold) is represented as UNLIMITED_CAPACITY gated by the comparison, preserving the exemption's nature (no aggregate dollar ceiling; only the per-disposition/net-proceeds condition). Entity scope (Parent Borrower and its Subsidiaries) is derived from the 'yields net proceeds to the Parent Borrower or any of its Subsidiaries' language.",
+        "The 'net proceeds' quantity is not a registered defined term in this instrument; its non-cash valuation treatment is described inline. Captured as a PARTIAL definition because the base derivation of net proceeds and the 'fair market value'/'notes'/'debt securities' terms are unresolved in the available evidence. The comparison in the rule references the net proceeds metric directly.",
+        "Consolidated Total Assets is measured on the date of the Disposition, captured via AS_OF on that metric in the (y) threshold."
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "net proceeds"
+        },
+        "outputSummary": "refused: no defined term matching \"net proceeds\" found in this instrument's documents",
+        "charsReturned": 76,
+        "timestamp": "2026-09-25T03:30:37.455Z"
+      },
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "7.5(j)"
+        },
+        "outputSummary": "base-document provision 7.5(j) (never individually amended, CURRENT_OPERATIVE)",
+        "charsReturned": 508,
+        "timestamp": "2026-09-25T03:30:37.455Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "PROVISION",
+          "requestKey": "7.5(j)",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.5(j)",
+          "charStart": 72710,
+          "charEnd": 73218,
+          "rawText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n",
+          "contentHash": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT_OPERATIVE",
+          "isCurrentTruth": true
+        }
+      }
+    ],
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T03:30:48.339Z",
+      "inputTokens": 30428,
+      "outputTokens": 7452,
+      "cachedInputTokens": 1310720,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 25359,
+      "calculatedCostUsd": 0.135376
+    },
+    "compiledAt": "2026-09-25T03:30:48.339Z",
+    "outputHash": "3e3777f9d53fcab725c987aeb01cc169f00715887e172af2e5eaf35841cb36af"
+  },
+  "verification": null,
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 66802,
+    "inputTokens": 30428,
+    "outputTokens": 7452,
+    "costUsd": 0.00589316,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile SCHEMA_FAILURE",
+      "verify NOT_RUN_COMPILE_FAILED"
+    ]
+  }
+}

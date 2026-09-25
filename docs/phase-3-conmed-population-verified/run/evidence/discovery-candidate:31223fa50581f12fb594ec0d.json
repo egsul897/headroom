@@ -1,0 +1,1186 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T18:55:28.376Z",
+  "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.2(e)",
+    "operativeSourceText": "(e)\nIndebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions\nthereof (without any increase in the principal amount thereof);\n",
+    "operativeSourceTextSha256": "222cc7114f3145fe161016b2275c0c29a43803a4d0c16879071b5b2b99965698",
+    "operativeSourceChars": 200,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:eca149ea7d61462f9870edbeaf01f0007ade5d32e225bdf74b6cf85bdfa784bd",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 18,
+    "items": [
+      {
+        "itemId": "context-item:0cb79af12fd0b9488baec0adf9f2a60630438ff7320dab18bb20a673ef0ba49a",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.2(e)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 200,
+        "excerptText": "(e)\nIndebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions\nthereof (without any increase in the principal amount thereof);\n"
+      },
+      {
+        "itemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.2",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 107,
+        "excerptText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n"
+      },
+      {
+        "itemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(c)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 529,
+        "excerptText": "(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n"
+      },
+      {
+        "itemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(h)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 467,
+        "excerptText": "(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Indebtedness);\n"
+      },
+      {
+        "itemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(k)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 267,
+        "excerptText": "(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat "
+      },
+      {
+        "itemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(s)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 154,
+        "excerptText": "(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as "
+      },
+      {
+        "itemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "type": "DEFINITION",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 2920,
+        "excerptText": "\"Indebtedness\": of\nany Person at any date, without duplication, (a) all indebtedness of such Person for borrowed money, (b) all obligations of\nsuch Person for the deferred purchase price of Property or services (other than current trade payables incurred in the ordinary course\nof such Person's business, and overdue trade payables incurred in the ordinary course of such Person's business to the extent\nthe amount or validity thereof is currently being contested in good faith by appropriate procedures and reserves in conformity with GAAP\nwith respect thereto have been provided on the books of the Parent Borrower or its Subsidiaries, as the case may be), (c) all obligations\nof such Person evidenced by notes, bonds, debentures or other similar instruments, (d) all indebtedness created or arising under\nany conditional sale or other title retention agreement with respect to Property acquired by such Person (even though the rights and remedies\nof the seller or lender under such agreement in the event of default are limited to repossession or sale of such Property), (e) all\nFinance Lease Obligations of such Person (the amount of which shall be calculated without regard to imputed interest), (f) all obligations\nof such Person, contingent or otherwise, as an account party under acceptance, letter of credit or similar facilities, (g) all obligations\nof such Person, contingent or otherwise, to purchase, redeem, retire or otherwise acquire for value any Capital Stock (other than common\nstock) of such Person, (h) all Guarantee Obligations of such Person in respect of obligations of the kind referred to in clauses\n(a) through (g) above to the extent quantified as liabilities, contingent obligations or like term in accordance with GAAP on the balance\nsheet (including notes thereto) of such Person; (i) all obligations of the kind referred to in clauses (a) through (h) above secured\nby (or for which the holder of such obligation has an existing right, contingent or otherwise, to be secured by) any Lien on Property\n(including accounts and contract rights) owned by such Person, whether or not such Person has assumed or become liable for the payment\nof such obligation (but only to the extent of the fair market value of such Property); (j) for purposes of clause (e) of Article\nVIII, all obligations of such Person in respect of Swap Agreements and (k) the liquidation value of any preferred Capital Stock of\nsuch Person or its Subsidiaries held by any Person other than such Person and its\n22\nWholly-Owned Subsidiaries; provided that no earn-out\nobligation arising in connection with any acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness\nunless and until such obligation is finally determined to be due and payable under the relevant acquisition agreement and solely if not\npaid within five days after the date it is finally determined to be due and payable.\n\n"
+      },
+      {
+        "itemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Finance Lease Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 973,
+        "excerptText": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right\nto use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance\nleases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time\nshall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein,\nany lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in\neffect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change\nin GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      },
+      {
+        "itemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "VIII",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 14,
+        "excerptText": "ARTICLE\nVIII. "
+      },
+      {
+        "itemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "type": "AMENDMENT_LEAD",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "OPERATIVE_STATE_UNRESOLVED",
+          "isCurrentTruth": false,
+          "reason": "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task §19)."
+        },
+        "excerptChars": 274,
+        "excerptText": "[AMENDMENT_RESOLUTION_REQUIRED] CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01): the dollar amount \"$100,000,000\". (iii) The definition of \" Indebtedness \" is hereby amended by inserting the following proviso at the end thereof: \"; provided, further, th"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "toItemId": "context-item:0cb79af12fd0b9488baec0adf9f2a60630438ff7320dab18bb20a673ef0ba49a",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "toItemId": "context-item:0cb79af12fd0b9488baec0adf9f2a60630438ff7320dab18bb20a673ef0ba49a",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "toItemId": "context-item:0cb79af12fd0b9488baec0adf9f2a60630438ff7320dab18bb20a673ef0ba49a",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "toItemId": "context-item:0cb79af12fd0b9488baec0adf9f2a60630438ff7320dab18bb20a673ef0ba49a",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "toItemId": "context-item:0cb79af12fd0b9488baec0adf9f2a60630438ff7320dab18bb20a673ef0ba49a",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:0cb79af12fd0b9488baec0adf9f2a60630438ff7320dab18bb20a673ef0ba49a",
+        "toItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "edgeType": "REFERENCES",
+        "reason": "\"Article\nVIII\" inside a definition."
+      },
+      {
+        "fromItemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "toItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "edgeType": "AMENDMENT_CANDIDATE",
+        "reason": "Candidate amendment target - resolution required before treating as operative."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED",
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.2(e)",
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "INCUR_DEBT",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNSUPPORTED",
+            "semanticDescription": "Aggregate principal amount of Indebtedness (i) outstanding on the Closing Date and listed on Schedule 7.2(e) and (ii) constituting refinancings, refundings, renewals or extensions of such Indebtedness without any increase in principal amount; the identity and amount of the permitted Indebtedness is fixed by enumeration on Schedule 7.2(e)",
+            "reason": "Schedule 7.2(e) is not part of this instrument's retrievable documents (getReferencedProvision did not resolve the reference; Phase 2 recorded MISSING_SCHEDULE, MEDIUM) and the operative text states no numeric or metric formula for the permitted amount, so the basket's amount cannot be enumerated from the available evidence",
+            "sourceEvidence": "§7.2(e)",
+            "citation": "§7.2(e)",
+            "excerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e)",
+            "inventoryItemIds": [
+              "a1742f4054c03a0db2b9fd5e"
+            ]
+          },
+          "conditions": [
+            {
+              "conditionType": "NO_PRINCIPAL_AMOUNT_INCREASE",
+              "expression": {
+                "kind": "COMPARE",
+                "left": {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "inputName": "principal amount of the refinancing, refunding, renewal or extension Indebtedness",
+                  "citation": "§7.2(e)",
+                  "excerpt": "without any increase in the principal amount thereof"
+                },
+                "operator": "LTE",
+                "right": {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "inputName": "principal amount of the Indebtedness being refinanced, refunded, renewed or extended (Indebtedness listed on Schedule 7.2(e) and outstanding on the Closing Date)",
+                  "citation": "§7.2(e)",
+                  "excerpt": "without any increase in the principal amount thereof"
+                },
+                "citation": "§7.2(e)",
+                "excerpt": "without any increase in the principal amount thereof",
+                "inventoryItemIds": [
+                  "016d3b6a4fa719788c66f602"
+                ]
+              },
+              "referencesDefinitionId": null,
+              "description": "The refinancing/refunding/renewal/extension limb of the basket is available only if the principal amount of the new Indebtedness does not exceed the principal amount of the Indebtedness being refinanced, refunded, renewed or extended (i.e. no increase in principal amount)",
+              "citation": "§7.2(e)",
+              "excerpt": "without any increase in the principal amount thereof",
+              "inventoryItemIds": [
+                "016d3b6a4fa719788c66f602"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Schedule 7.2(e)",
+              "description": "The identity and outstanding principal amount of the permitted Indebtedness are fixed by Schedule 7.2(e), which is not part of this instrument's retrievable documents; the amount of this basket cannot be enumerated without it",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "Schedule 7.2(e) is unavailable (getReferencedProvision did not resolve; Phase 2 MISSING_SCHEDULE MEDIUM), so the identity and amount of the permitted Indebtedness are represented as UNSUPPORTED",
+            "The permission structure (scheduled Closing Date debt plus refinancings/refundings/renewals/extensions) and the no-principal-increase condition are otherwise faithfully represented"
+          ],
+          "citation": "§7.2(e)",
+          "excerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);",
+          "inventoryItemIds": [
+            "83b204f238ef5cfb52319ccc",
+            "e95e58ccf1bcc9cfb6ffbc86"
+          ]
+        },
+        {
+          "localRef": "r2",
+          "sourceSectionRef": "7.2",
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "PROHIBITION",
+          "posture": "PROHIBITION",
+          "action": "INCUR_DEBT",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "capacityExpression": null,
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e), and any refinancings, refundings, renewals or extensions thereof without any increase in principal amount, as permitted by §7.2(e)",
+              "permissionRef": "r1",
+              "conditions": [],
+              "citation": "§7.2(e)",
+              "excerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);",
+              "inventoryItemIds": []
+            }
+          ],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Chapeau prohibition ('shall not create, incur, assume or suffer to exist any Indebtedness, except:') represented in full; only exception basket (e) is modeled here - other lettered baskets of Section 7.2 are outside this submission",
+            "Entity scope left empty because the operative chapeau names no entity class"
+          ],
+          "citation": "§7.2",
+          "excerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except:",
+          "inventoryItemIds": []
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "§7.2(e) ('Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e)')",
+          "semanticRequirement": "A carve-out whose permitted amount is fixed by an external, non-formulaic schedule or exhibit (a set enumeration defined outside the agreement's retrievable text, optionally with a temporal qualification such as 'outstanding on the Closing Date')",
+          "whyExistingPrimitivesFail": "METRIC_REFERENCE presumes a calculable metric; MONEY/PERCENT/RATIO presume numeric formulas; UNLIMITED_CAPACITY presumes genuinely no ceiling; the only faithful current option is an UNSUPPORTED node, which discards the otherwise-representable 'schedule-identified basket' semantics and prevents a downstream verifier from distinguishing an enumerable-but-missing-schedule basket from an unresolvable calculation",
+          "candidateGeneralizedPrimitive": "SCHEDULE_REFERENCE (ref: schedule/exhibit reference; optional asOfDate or other identification qualification; carries an explicit unresolved-dependency marker when the schedule is not part of the same document set)"
+        }
+      ],
+      "overallNotes": [
+        "SOURCE CONTEXT STATE: UNKNOWN_SOURCE_COMPLETENESS - the operative window's completeness against its own unit boundary could not be established; sufficiency judgments rest on the confirmed-current retrieved text of §7.2 (chapeau, CURRENT_OPERATIVE, not truncated) and §7.2(e) (CURRENT).",
+        "Entity scope: the operative window names no entity class - the §7.2 chapeau as stored reads as an unanchored imperative with no subject; sibling evidence (7.2(c)/(h)/(k)/(s)) suggests the covenant operates on the Parent Borrower and its Subsidiaries, but entityScope was left empty rather than importing words from sibling clauses.",
+        "Schedule 7.2(e) is unavailable: getReferencedProvision did not resolve it and Phase 2 recorded MISSING_SCHEDULE (MEDIUM); the basket's amount is therefore faithfully represented as UNSUPPORTED and r1 is PARTIAL - the working permission structure and the no-principal-increase condition are preserved.",
+        "No recorded amendment history for §7.2(e) (never amended). The bundle does carry an OPERATIVE_STATE_UNRESOLVED amendment lead (CONMED Second Amendment, 2022-08-01) that amends the DEFINITION of 'Indebtedness' (inserting a proviso, referencing a '$100,000,000' amount); it is not confirmed current, does not amend the text of §7.2(e) itself, but is an upstream dependency of the term 'Indebtedness' used here and should be reviewed if the definitional amendment is ever confirmed operative.",
+        "A LOW-severity unresolved defined term is flagged in the bundle context (identity not specified); it is not material to this clause's mechanics beyond the Schedule 7.2(e) reference and the 'Closing Date'/'Indebtedness' terms.",
+        "getSharedCapContext returned no shared-capacity signals for §7.2(e); the basket is modeled with independent economics."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "7.2"
+        },
+        "outputSummary": "base-document provision 7.2 (never individually amended, CURRENT_OPERATIVE)",
+        "charsReturned": 107,
+        "timestamp": "2026-09-24T18:51:49.514Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "PROVISION",
+          "requestKey": "7.2",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:a9b723686e58119d7cd922a5",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2",
+          "charStart": 47792,
+          "charEnd": 47899,
+          "rawText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+          "contentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT_OPERATIVE",
+          "isCurrentTruth": true
+        }
+      },
+      {
+        "toolName": "getReferencedProvision",
+        "input": {
+          "ref": "Schedule 7.2(e)"
+        },
+        "outputSummary": "refused: reference \"Schedule 7.2(e)\" did not resolve to any section (or any enclosing section) within this instrument's documents",
+        "charsReturned": 120,
+        "timestamp": "2026-09-24T18:51:49.514Z"
+      },
+      {
+        "toolName": "getSharedCapContext",
+        "input": {},
+        "outputSummary": "0 shared-cap context item(s)",
+        "charsReturned": 28,
+        "timestamp": "2026-09-24T18:51:49.514Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:9b2035a7dc05b821cf49e049",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2(e)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§7.2(e)",
+          "semanticDescription": "Aggregate principal amount of Indebtedness (i) outstanding on the Closing Date and listed on Schedule 7.2(e) and (ii) constituting refinancings, refundings, renewals or extensions of such Indebtedness without any increase in principal amount; the identity and amount of the permitted Indebtedness is fixed by enumeration on Schedule 7.2(e)",
+          "reason": "Schedule 7.2(e) is not part of this instrument's retrievable documents (getReferencedProvision did not resolve the reference; Phase 2 recorded MISSING_SCHEDULE, MEDIUM) and the operative text states no numeric or metric formula for the permitted amount, so the basket's amount cannot be enumerated from the available evidence",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(e)",
+            "excerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e)"
+          },
+          "exprId": "ir-expr:b771b6fa0f1fc314b371fabc",
+          "inventoryItemIds": [
+            "a1742f4054c03a0db2b9fd5e"
+          ]
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:62f183c2b4099a5889e6a959",
+              "left": {
+                "kind": "TRANSACTION_INPUT_REFERENCE",
+                "type": "MONEY",
+                "inputName": "principal amount of the refinancing, refunding, renewal or extension Indebtedness",
+                "exprId": "ir-expr:72fdec845976d6144b321ccb"
+              },
+              "operator": "LTE",
+              "right": {
+                "kind": "TRANSACTION_INPUT_REFERENCE",
+                "type": "MONEY",
+                "inputName": "principal amount of the Indebtedness being refinanced, refunded, renewed or extended (Indebtedness listed on Schedule 7.2(e) and outstanding on the Closing Date)",
+                "exprId": "ir-expr:530919b461d8bd080183f225"
+              },
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.2(e)",
+                "excerpt": "without any increase in the principal amount thereof"
+              },
+              "inventoryItemIds": [
+                "016d3b6a4fa719788c66f602"
+              ]
+            },
+            "referencesDefinitionId": null,
+            "description": "The refinancing/refunding/renewal/extension limb of the basket is available only if the principal amount of the new Indebtedness does not exceed the principal amount of the Indebtedness being refinanced, refunded, renewed or extended (i.e. no increase in principal amount)",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(e)",
+              "excerpt": "without any increase in the principal amount thereof"
+            },
+            "inventoryItemIds": [
+              "016d3b6a4fa719788c66f602"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Schedule 7.2(e)",
+            "description": "The identity and outstanding principal amount of the permitted Indebtedness are fixed by Schedule 7.2(e), which is not part of this instrument's retrievable documents; the amount of this basket cannot be enumerated without it",
+            "reason": "dependsOn[0].targetRef \"Schedule 7.2(e)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Schedule 7.2(e) is unavailable (getReferencedProvision did not resolve; Phase 2 MISSING_SCHEDULE MEDIUM), so the identity and amount of the permitted Indebtedness are represented as UNSUPPORTED",
+          "The permission structure (scheduled Closing Date debt plus refinancings/refundings/renewals/extensions) and the no-principal-increase condition are otherwise faithfully represented",
+          "Schedule 7.2(e) is not part of this instrument's retrievable documents (getReferencedProvision did not resolve the reference; Phase 2 recorded MISSING_SCHEDULE, MEDIUM) and the operative text states no numeric or metric formula for the permitted amount, so the basket's amount cannot be enumerated from the available evidence",
+          "condition[0].conditionType \"NO_PRINCIPAL_AMOUNT_INCREASE\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Schedule 7.2(e)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2(e)",
+          "excerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "PARTIAL"
+          },
+          "witness": {
+            "ownExcerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "83b204f238ef5cfb52319ccc",
+          "e95e58ccf1bcc9cfb6ffbc86"
+        ]
+      },
+      {
+        "ruleId": "ir-rule:0022b0493e3eadea7fb076b4",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r2].exception[0]",
+            "appliesToRuleId": "ir-rule:0022b0493e3eadea7fb076b4",
+            "description": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e), and any refinancings, refundings, renewals or extensions thereof without any increase in principal amount, as permitted by §7.2(e)",
+            "permissionRuleId": "ir-rule:9b2035a7dc05b821cf49e049",
+            "conditions": [],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(e)",
+              "excerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);"
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Chapeau prohibition ('shall not create, incur, assume or suffer to exist any Indebtedness, except:') represented in full; only exception basket (e) is modeled here - other lettered baskets of Section 7.2 are outside this submission",
+          "Entity scope left empty because the operative chapeau names no entity class"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2",
+          "excerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except:"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except:",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        }
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] Schedule 7.2(e) is not part of this instrument's retrievable documents (getReferencedProvision did not resolve the reference; Phase 2 recorded MISSING_SCHEDULE, MEDIUM) and the operative text states no numeric or metric formula for the permitted amount, so the basket's amount cannot be enumerated from the available evidence",
+      "[rule[r1]] condition[0].conditionType \"NO_PRINCIPAL_AMOUNT_INCREASE\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] dependsOn[0].targetRef \"Schedule 7.2(e)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "SOURCE CONTEXT STATE: UNKNOWN_SOURCE_COMPLETENESS - the operative window's completeness against its own unit boundary could not be established; sufficiency judgments rest on the confirmed-current retrieved text of §7.2 (chapeau, CURRENT_OPERATIVE, not truncated) and §7.2(e) (CURRENT).",
+      "Entity scope: the operative window names no entity class - the §7.2 chapeau as stored reads as an unanchored imperative with no subject; sibling evidence (7.2(c)/(h)/(k)/(s)) suggests the covenant operates on the Parent Borrower and its Subsidiaries, but entityScope was left empty rather than importing words from sibling clauses.",
+      "Schedule 7.2(e) is unavailable: getReferencedProvision did not resolve it and Phase 2 recorded MISSING_SCHEDULE (MEDIUM); the basket's amount is therefore faithfully represented as UNSUPPORTED and r1 is PARTIAL - the working permission structure and the no-principal-increase condition are preserved.",
+      "No recorded amendment history for §7.2(e) (never amended). The bundle does carry an OPERATIVE_STATE_UNRESOLVED amendment lead (CONMED Second Amendment, 2022-08-01) that amends the DEFINITION of 'Indebtedness' (inserting a proviso, referencing a '$100,000,000' amount); it is not confirmed current, does not amend the text of §7.2(e) itself, but is an upstream dependency of the term 'Indebtedness' used here and should be reviewed if the definitional amendment is ever confirmed operative.",
+      "A LOW-severity unresolved defined term is flagged in the bundle context (identity not specified); it is not material to this clause's mechanics beyond the Schedule 7.2(e) reference and the 'Closing Date'/'Indebtedness' terms.",
+      "getSharedCapContext returned no shared-capacity signals for §7.2(e); the basket is modeled with independent economics.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "§7.2(e) ('Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e)')",
+        "semanticRequirement": "A carve-out whose permitted amount is fixed by an external, non-formulaic schedule or exhibit (a set enumeration defined outside the agreement's retrievable text, optionally with a temporal qualification such as 'outstanding on the Closing Date')",
+        "whyExistingPrimitivesFail": "METRIC_REFERENCE presumes a calculable metric; MONEY/PERCENT/RATIO presume numeric formulas; UNLIMITED_CAPACITY presumes genuinely no ceiling; the only faithful current option is an UNSUPPORTED node, which discards the otherwise-representable 'schedule-identified basket' semantics and prevents a downstream verifier from distinguishing an enumerable-but-missing-schedule basket from an unresolvable calculation",
+        "candidateGeneralizedPrimitive": "SCHEDULE_REFERENCE (ref: schedule/exhibit reference; optional asOfDate or other identification qualification; carries an explicit unresolved-dependency marker when the schedule is not part of the same document set)"
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T18:52:41.754Z",
+      "inputTokens": 20266,
+      "outputTokens": 19825,
+      "cachedInputTokens": 24576,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 195019,
+      "calculatedCostUsd": 0.238782
+    },
+    "compiledAt": "2026-09-24T18:52:41.754Z",
+    "outputHash": "7f48392a2431fd91cfc45269509bbf9dfafc98754f24b0d2510260d4b177390c"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "3a533f53828c4011b623bb6c5d27614e9a4cdeeaf7b41606db141f26fb2ecc8a",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d",
+        "ruleOrDefinitionId": "ir-rule:0022b0493e3eadea7fb076b4",
+        "irPath": "rules[1].exceptions",
+        "findingType": "MISSING_EXCEPTION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except: ... (c) Indebtedness secured by Liens permitted by Section 7.3(g); ... (h) guarantees made in the ordinary course of business ... in an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets ...; (k) Indebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary ...; (s) Indebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar Investments so long as ...",
+        "sourceCitation": "Section 7.2 chapeau; Sections 7.2(c), (h), (k), (s) as retrieved in context items 33ce7447301dab18bb20a673ef0ba49a/487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558/7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510/2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "proposedIrEvidence": "rules[1] (ir-rule:0022b0493e3eadea7fb076b4) has sourceSectionRef \"7.2\", an exceptions array containing only rule[r2].exception[0] (the 7.2(e) category), and sufficiency \"COMPLETE\".",
+        "verifierReasoning": "The r2 rule purports to represent the entire Section 7.2 prohibition and marks itself COMPLETE, but the source chapeau introduces a list of exceptions of which 7.2(e) is only one. The retrieved context already shows at least 7.2(c), 7.2(h), 7.2(k), and 7.2(s) as additional independently operative exceptions. By representing only 7.2(e) and claiming completeness, the IR would lead a reviewer to believe that no other Indebtedness is permitted under Section 7.2, which would change compliance conclusions about permitted debt. This is a material omission regardless of whether r2 was intended as scaffolding, because the COMPLETE label is not supported.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T18:55:28.372Z"
+      },
+      {
+        "findingId": "21400826e89fbafaf3b617b95f95a7e593f09da65313e89767760c86e12f212c",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d",
+        "ruleOrDefinitionId": "ir-rule:0022b0493e3eadea7fb076b4",
+        "irPath": "rules[1].action",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "Create, incur, assume or suffer to exist any Indebtedness, except:",
+        "sourceCitation": "Section 7.2 chapeau",
+        "proposedIrEvidence": "\"action\": \"INCUR_DEBT\"",
+        "verifierReasoning": "The source chapeau prohibits four distinct modes of activity: create, incur, assume, and suffer to exist. The IR reduces the prohibition to the single action label INCUR_DEBT. 'Suffer to exist' is a separate and important prohibition for already-outstanding Indebtedness, which is precisely the category addressed by the 7.2(e) exception for Closing Date debt. As rendered, the prohibition rule's action label does not on its face cover the continued existence of unauthorized debt. If the IR schema intends INCUR_DEBT as a coarse hypernym covering all debt-related prohibited acts, this may be only a labeling issue; but as written the representation is narrower than the source chapeau and could affect how the prohibition is applied.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T18:55:28.372Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3153339962cd4f7bdb6c4511160c23d27cb94e9b637e85a4f7f64296d2b2074c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Closing Date",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(e)",
+            "structuralNodeKey": null,
+            "charStart": 36,
+            "charEnd": 48
+          },
+          "irItems": [],
+          "reason": "source mention \"Closing Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "items": [
+        {
+          "itemId": "3153339962cd4f7bdb6c4511160c23d27cb94e9b637e85a4f7f64296d2b2074c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Closing Date",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(e)",
+          "structuralNodeKey": null,
+          "charStart": 36,
+          "charEnd": 48
+        },
+        {
+          "itemId": "7fb2675321192a45d0361443ce4c6ac6493ff3ce32131b2b6adafcf7827338b7",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(e)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(e)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(e)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d",
+      "items": [
+        {
+          "itemId": "cf54f525436d791d4ed94980f47e40a20b2b1c92fc0092af4a352b1a8e489396",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:9b2035a7dc05b821cf49e049",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(e)",
+          "sourceExcerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d869d1ba15ffb771472298cab0fb34406d3b29e1a8e9705d482ffbb9c25048dd",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:9b2035a7dc05b821cf49e049",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(e)",
+          "sourceExcerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "03a2e65efad0a11314bfd27dab02b1622247b6e03a919c2c16822b2af4830f54",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:9b2035a7dc05b821cf49e049",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The refinancing/refunding/renewal/extension limb of the basket is available only if the principal amount of the new Indebtedness does not exceed the principal amount of the Indebtedness being refinanced, refunded, renewed or extended (i.e. no increase in principal amount)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(e)",
+          "sourceExcerpt": "without any increase in the principal amount thereof",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "2cdd87dce86efb591f070ce762cee87578d7bc7c0b4b87c47b9be02952e767a6",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:9b2035a7dc05b821cf49e049",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "COMPARE:LTE",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(e)",
+          "sourceExcerpt": "without any increase in the principal amount thereof",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "3af7a3138bae994e3967aa10780b7109e151729298fe0c43d504cc29bbf2b698",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:9b2035a7dc05b821cf49e049",
+          "irPath": "rules[0].conditions[0].expression.left",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "TRANSACTION_INPUT:principal amount of the refinancing, refunding, renewal or extension Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "3bf2bf0358d1177aec74aa96d595f58a2cdced4848521a4071fc96eec45160c5",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:9b2035a7dc05b821cf49e049",
+          "irPath": "rules[0].conditions[0].expression.right",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "TRANSACTION_INPUT:principal amount of the Indebtedness being refinanced, refunded, renewed or extended (Indebtedness listed on Schedule 7.2(e) and outstanding on the Closing Date)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "47f064e8a5dffe2135b1b12ddc5959fb69a651402279a88ba7709e7159ffe211",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:9b2035a7dc05b821cf49e049",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Aggregate principal amount of Indebtedness (i) outstanding on the Closing Date and listed on Schedule 7.2(e) and (ii) constituting refinancings, refundings, renewals or extensions of such Indebtedness without any increase in principal amount; the identity and amount of the permitted Indebtedness is fixed by enumeration on Schedule 7.2(e)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(e)",
+          "sourceExcerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e)",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "58c60e65981f7e366415ca53390e4aa513bb68984dbc0d477f3c478602fa7d9f",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:0022b0493e3eadea7fb076b4",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2",
+          "sourceExcerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except:",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "460ad66adfa8c1c4da1e60c81354dc759af2e665aaa6dfbf8a5b97f7eb2bef42",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:0022b0493e3eadea7fb076b4",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2",
+          "sourceExcerpt": "SECTION 7.2 Limitation on Indebtedness. Create, incur, assume or suffer to exist any Indebtedness, except:",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "172030bb9cb120f5f4ebb0e5e722308727b4048b06bb8d96726cc89819ba6aad",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:0022b0493e3eadea7fb076b4",
+          "irPath": "rules[1].exceptions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e), and any refinancings, refundings, renewals or extensions thereof without any increase in principal amount, as permitted by §7.2(e)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(e)",
+          "sourceExcerpt": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions thereof (without any increase in the principal amount thereof);",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 2,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d",
+        "items": [],
+        "fieldsWalked": 11,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "222cc7114f3145fe161016b2275c0c29a43803a4d0c16879071b5b2b99965698",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "4c38aa40a37688b957533539f08b7910ffb2af3d5f3f826d07faa1099a32f30c",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "PROVISION",
+          "requestKey": "7.2",
+          "scopeKey": "7.2",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": "structural-node:a9b723686e58119d7cd922a5",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2",
+          "charStart": 47792,
+          "charEnd": 47899,
+          "rawText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+          "contentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "section \"7.2\" consulted for candidate discovery-candidate:31223fa50581f12fb594ec0d (7.2(e)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              0
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[0] getOperativeProvision {\"sectionRef\":\"7.2\"}",
+              "compilerRecordedContentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "provision \"7.2\" resolved to node structural-node:a9b723686e58119d7cd922a5 span [47792, 47899)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [47792, 47899) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(47792, 47899)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:a9b723686e58119d7cd922a5) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "e1225eb7a397a6a1fdb522d67b9761ad8c75a7ec894379d4b4db1e8f598475ab",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 274768,
+    "inputTokens": 20266,
+    "outputTokens": 19825,
+    "costUsd": 0.00778908,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:31223fa50581f12fb594ec0d.verified-units.json",
+    "packageHash": "1d973cd76e5a123be2a306974ab804cf09f861c4ed6c72da002c5ae329cd91c8",
+    "complete": true,
+    "artifactsPersisted": 2,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

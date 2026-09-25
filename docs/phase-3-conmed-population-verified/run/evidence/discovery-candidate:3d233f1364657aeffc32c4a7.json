@@ -1,0 +1,1990 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T20:19:10.987Z",
+  "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.2(m)",
+    "operativeSourceText": "(m)\nIndebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal\namount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of\nsuch Indebtedness);\n",
+    "operativeSourceTextSha256": "d47359786d4a3246947cb80bb9b35753a32f92472d73e0997727b4cf0b082541",
+    "operativeSourceChars": 293,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:fd965f54c18a7c6313607ed2513cf7868cc0cf598c88400cbf88d8c79d5da786",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 21,
+    "items": [
+      {
+        "itemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.2(m)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 293,
+        "excerptText": "(m)\nIndebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal\namount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of\nsuch Indebtedness);\n"
+      },
+      {
+        "itemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.2",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 8843,
+        "excerptText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n(a)\nIndebtedness of any Loan Party pursuant to any Loan Document;\n(b)\nIndebtedness of the Parent Borrower to any Subsidiary and of any Subsidiary Guarantor to the Parent Borrower or any other Subsidiary;\n(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n(d)\nFinance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;\n(e)\nIndebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions\nthereof (without any increase in the principal amount thereof);\n(f)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary\nGuarantor;\n(g)\nIndebtedness of the Parent Borrower or its Subsidiaries on account of industrial revenue bonds in an aggregate principal amount\nnot to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness)\nat anyone one time outstanding;\n95\n(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Indebtedness);\n(i)\nIndebtedness in respect of letters of credit (not otherwise permitted under this Section 7.2) outstanding in the ordinary course\nof business in an aggregate face amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured\non the date of incurrence of such Indebtedness);\n(j)\nIndebtedness of (i) any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party and (ii) any Subsidiary\nGuarantor to any Subsidiary that is not a Loan Party;\n(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat (i) the requirements of Section 6.9 are satisfied and (ii) the aggregate principal amount of such Indebtedness at any time outstanding\nshall not exceed the greater of (A) $150,000,000 and (B) 10.0% of Consolidated Total Tangible Assets (measured on the date of incurrence\nof such Indebtedness); provided , further , that any Indebtedness permitted by this Section 7.2(k) shall be evidenced by a\nnote or similar instrument and pledged in accordance with Section 6.9 and the Guarantee and Collateral Agreement;\n(l)\n(i) Permitted Unsecured Indebtedness; provided that (x) at the time of, and after giving effect to, the incurrence of such\nIndebtedness, no Default or Event of Default shall have occurred and be continuing and (y) the Parent Borrower shall be in compliance,\non a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section\n7.1(b), in each case recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries\nfor which financial statements are available as if such Indebtedness had been incurred on the first day of such period, and (ii) any guarantee\nby any Subsidiary in respect of any Permitted Unsecured Indebtedness; provided that (x) no Subsidiary that is not a Loan Party\nshall guarantee any Permitted Unsecured Indebtedness and (y) any such guarantee in respect of Permitted Unsecured Indebtedness shall be\nunsecured;\n(m)\nIndebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal\namount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of\nsuch Indebtedness);\n(n)\n(i) Permitted Subordinated Indebtedness; provided that the Parent Borrower shall be in compliance, on a pro forma basis\nafter giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section 7.1(b), recomputed on a pro\nforma basis as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of such period and (ii) any guarantee by any Subsidiary\nin respect of any Permitted Subordinated Indebtedness; provided that (x) no Subsidiary that is not a Loan Party shall guarantee\nany Permitted Subordinated Indebtedness and (y) any such guarantee shall be subordinated to the prior payment in full of the Obligations\non the same basis as the related Permitted Subordinated Indebtedness;\n96\n(o)\nunsecured Indebtedness not otherwise permitted by this Section 7.2 in an aggregate principal amount not to exceed the greater of\n(i) $60,000,000 and (ii) 3.25% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);\n(p)\n(i) Obligations under or in respect of interest rate Swap Agreements up to an aggregate notional principal amount not to exceed\nat any time an amount equal to the Commitments of all the Lenders in the aggregate at such time, (ii) Obligations owing under Swap Agreements\nentered into in order to manage existing or anticipated exchange rate or commodity price risks and not for speculative purposes, (iii)\nObligations in respect of Swap Agreements entered into in connection with any Permitted Bond Hedge Transaction and (iv) Obligations in\nrespect of Swap Agreements entered into in connection with any Permitted Warrant Transaction;\n(q)\n[reserved];\n(r)\nIndebtedness in respect of the Convertible Notes and any Permitted Refinancing thereof; and\n(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as (i) after giving effect to the assumption of such Indebtedness and such Permitted Business Acquisition on a pro\nforma basis as of the last day of the most recent period of four consecutive fiscal quarters have been delivered, the Parent Borrower\nshall be in compliance, on a pro forma basis with the financial covenants contained in Section 7.1(a) and (b), in each case recomputed\nas at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available as if such Indebtedness had been incurred on the first day of such period, (ii) before and after giving effect thereto,\nno Event of Default shall have occurred and be continuing and (iii) any such Indebtedness shall be unsecured or secured only by a mortgage,\npurchase money security interest, Finance Lease Obligation or similar arrangement on the Property acquired in connection with such Permitted\nBusiness Acquisition or similar Investment (and any accessions thereto or improvements thereon), and no Lien shall extend to cover any\nother Property of the Parent Borrower or any Subsidiary Guarantor.\nFor purposes of determining compliance with\nthis Section 7.2, (A) Indebtedness need not be permitted solely by reference to one category of permitted Indebtedness described in Section\n7.2(a) through (s) but may be permitted in part under any combination thereof and (B) in the event that an item of Indebtedness (or any\nportion thereof) meets the criteria of one or more of the categories of permitted Indebtedness described in Sections 7.2(a) through (s),\nthe Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness\n(or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of\nsuch item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having\nbeen incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(c)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 529,
+        "excerptText": "(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n"
+      },
+      {
+        "itemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(h)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 467,
+        "excerptText": "(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount outstanding at any time not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Indebtedness);\n"
+      },
+      {
+        "itemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(k)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 267,
+        "excerptText": "(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat "
+      },
+      {
+        "itemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.2(s)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 154,
+        "excerptText": "(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as "
+      },
+      {
+        "itemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "type": "DEFINITION",
+        "normalizedRef": "Consolidated Total Assets",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 283,
+        "excerptText": "\"Consolidated Total Assets\": as of any date of determination thereof, the amount that would appear opposite the caption \"total assets\" (or any like caption)\non a consolidated balance sheet of the Parent Borrower and its Subsidiaries prepared as of such date in accordance with GAAP.\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "type": "DEFINITION",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 2920,
+        "excerptText": "\"Indebtedness\": of\nany Person at any date, without duplication, (a) all indebtedness of such Person for borrowed money, (b) all obligations of\nsuch Person for the deferred purchase price of Property or services (other than current trade payables incurred in the ordinary course\nof such Person's business, and overdue trade payables incurred in the ordinary course of such Person's business to the extent\nthe amount or validity thereof is currently being contested in good faith by appropriate procedures and reserves in conformity with GAAP\nwith respect thereto have been provided on the books of the Parent Borrower or its Subsidiaries, as the case may be), (c) all obligations\nof such Person evidenced by notes, bonds, debentures or other similar instruments, (d) all indebtedness created or arising under\nany conditional sale or other title retention agreement with respect to Property acquired by such Person (even though the rights and remedies\nof the seller or lender under such agreement in the event of default are limited to repossession or sale of such Property), (e) all\nFinance Lease Obligations of such Person (the amount of which shall be calculated without regard to imputed interest), (f) all obligations\nof such Person, contingent or otherwise, as an account party under acceptance, letter of credit or similar facilities, (g) all obligations\nof such Person, contingent or otherwise, to purchase, redeem, retire or otherwise acquire for value any Capital Stock (other than common\nstock) of such Person, (h) all Guarantee Obligations of such Person in respect of obligations of the kind referred to in clauses\n(a) through (g) above to the extent quantified as liabilities, contingent obligations or like term in accordance with GAAP on the balance\nsheet (including notes thereto) of such Person; (i) all obligations of the kind referred to in clauses (a) through (h) above secured\nby (or for which the holder of such obligation has an existing right, contingent or otherwise, to be secured by) any Lien on Property\n(including accounts and contract rights) owned by such Person, whether or not such Person has assumed or become liable for the payment\nof such obligation (but only to the extent of the fair market value of such Property); (j) for purposes of clause (e) of Article\nVIII, all obligations of such Person in respect of Swap Agreements and (k) the liquidation value of any preferred Capital Stock of\nsuch Person or its Subsidiaries held by any Person other than such Person and its\n22\nWholly-Owned Subsidiaries; provided that no earn-out\nobligation arising in connection with any acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness\nunless and until such obligation is finally determined to be due and payable under the relevant acquisition agreement and solely if not\npaid within five days after the date it is finally determined to be due and payable.\n\n"
+      },
+      {
+        "itemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Finance Lease Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 973,
+        "excerptText": "\"Finance Lease Obligations\": as to any Person, the obligations of such Person to pay rent or other amounts under any lease of (or other arrangement conveying the right\nto use) real or personal property, or a combination thereof, which obligations are required to be classified and accounted for as finance\nleases on a balance sheet of such Person under GAAP, and, for the purposes of this Agreement, the amount of such obligations at any time\nshall be the capitalized amount thereof at such time determined in accordance with GAAP. Notwithstanding anything else set forth herein,\nany lease (or other arrangement conveying the right to use) that was or would have been treated as an operating lease under GAAP as in\neffect for the fiscal year ended on December 31, 2018 that would become or be treated as a finance lease solely as a result of a change\nin GAAP thereafter shall always be treated as an operating lease for all purposes and at all times under this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      },
+      {
+        "itemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "type": "DEFINITION",
+        "normalizedRef": "Receivables Transfer Program",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 714,
+        "excerptText": "\"Receivables Transfer Program\": a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable\nor related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit\ndilution provisions) other than with respect to the Parent Borrower's or such Subsidiary's retained interest in such accounts\nreceivable or related ancillary rights or assets, such program to have substantially the terms and conditions provided to the Administrative\nAgent prior to the Closing Date, as such terms and conditions may be amended, supplemented or otherwise modified from time to time.\n34\n\n"
+      },
+      {
+        "itemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "VIII",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 14,
+        "excerptText": "ARTICLE\nVIII. "
+      },
+      {
+        "itemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "type": "AMENDMENT_LEAD",
+        "normalizedRef": "Indebtedness",
+        "citation": null,
+        "evidenceState": {
+          "status": "OPERATIVE_STATE_UNRESOLVED",
+          "isCurrentTruth": false,
+          "reason": "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task §19)."
+        },
+        "excerptChars": 274,
+        "excerptText": "[AMENDMENT_RESOLUTION_REQUIRED] CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01): the dollar amount \"$100,000,000\". (iii) The definition of \" Indebtedness \" is hereby amended by inserting the following proviso at the end thereof: \"; provided, further, th"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+        "toItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:33ce744731caffd90c084e55577fb565f10d14515c6d5c6cfa4a286e68147b67",
+        "toItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:487845a68e8b0a6e8a0bf8143d5b23f40df8618f0000eef6c6f21bbcc6348558",
+        "toItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible shared_cap language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:7d133fe780db23d6548e9cbf9be3464f850468ae47ca88816e9b2349ace80510",
+        "toItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:2f35870d8ba4aac1ac0cec348efbef5742e5cae0c08144de86945d36b499df79",
+        "toItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "toItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "toItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:3accde428aaa96a7215ddd042dc0438046391689d20cf6c781689b94e22d6b3d",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:0342646327936fc3d1b1cf42a2073a5bd4aca0ef2fc86f2095b73ceeb19ecf95",
+        "toItemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "toItemId": "context-item:1ebc53b388e98d5abc48f75bca19d2e1bdbb28fd6ed98b65b90dba9d0fb44650",
+        "edgeType": "REFERENCES",
+        "reason": "\"Article\nVIII\" inside a definition."
+      },
+      {
+        "fromItemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+        "toItemId": "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+        "edgeType": "AMENDMENT_CANDIDATE",
+        "reason": "Candidate amendment target - resolution required before treating as operative."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED",
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7_2_m",
+          "sourceSectionRef": "7.2(m)",
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "INCUR_DEBT",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "MAX",
+            "operands": [
+              {
+                "kind": "MONEY",
+                "amount": 125000000,
+                "currency": "USD",
+                "citation": "§7.2(m)",
+                "excerpt": "$125,000,000",
+                "inventoryItemIds": [
+                  "inv-item:d8731616819f85a7de8bba27"
+                ]
+              },
+              {
+                "kind": "AS_OF",
+                "operand": {
+                  "kind": "MULTIPLY",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "value": 0.075,
+                      "citation": "§7.2(m)",
+                      "excerpt": "7.5%"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated Total Assets",
+                      "citation": "§7.2(m)",
+                      "excerpt": "Consolidated Total Assets"
+                    }
+                  ],
+                  "citation": "§7.2(m)",
+                  "excerpt": "7.5% of Consolidated Total Assets",
+                  "inventoryItemIds": [
+                    "inv-item:6c835c422b383b61f296e733"
+                  ]
+                },
+                "asOfDate": "the date of incurrence of such Indebtedness",
+                "citation": "§7.2(m)",
+                "excerpt": "measured on the date of incurrence of such Indebtedness",
+                "inventoryItemIds": [
+                  "inv-item:c894a3528e3b6ff4e0b2d8f7",
+                  "inv-item:eba9a8f9fc4fea8861d37747"
+                ]
+              }
+            ],
+            "citation": "§7.2(m)",
+            "excerpt": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets",
+            "inventoryItemIds": [
+              "inv-item:a27cb934f1b865c0f66228bd",
+              "inv-item:cb2932669e4d5e29ab7b1e59"
+            ]
+          },
+          "conditions": [],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Clause 7.2(m) is confirmed CURRENT operative text with no recorded amendment history; the full clause reads as a complete unit (runs to its terminating semicolon)",
+            "Both material defined terms used by the rule ('Consolidated Total Assets', 'Receivables Transfer Program') are confirmed CURRENT in the context bundle",
+            "Phase 2D flags no shared-capacity signals and the clause contains no aggregate-sharing language, so the basket is independently capped",
+            "Source context state is UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node supplied); nothing in the supplied text indicates truncation, but completeness of the clause against its document boundary is not independently verifiable"
+          ],
+          "citation": "§7.2(m)",
+          "excerpt": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+          "inventoryItemIds": [
+            "inv-item:6ae2c24baf81a28477d00081"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "Entity scope: the §7.2 chapeau as supplied ('Create, incur, assume or suffer to exist any Indebtedness, except:') names no entity class, and clause (m) itself names none; entityScope left empty per the instruction to fill it only from the provision's own words. For awareness, the confirmed definition of 'Receivables Transfer Program' indicates the program operates through the Parent Borrower and its Subsidiaries, which is the natural read of who benefits from this permission.",
+        "No shared cap: Phase 2D's getSharedCapContext returned no signals, and clause (m) contains no aggregate-sharing language; each §7.2 basket carries its own independent cap, and no WireSharedCapacity is emitted.",
+        "Section-level mechanic not modeled: the trailing paragraph of §7.2 permits classification/reclassification of Indebtedness among Subclauses (a)-(s) (amounts counted under only one clause at a time). This affects how clause (m) interacts with sibling baskets but does not alter (m)'s own capacity expression.",
+        "Amendment lead awareness: the unresolved CONMED Second Amendment lead (2022-08-01) references a '$100,000,000' amount and a proviso to be inserted into the definition of 'Indebtedness'; it does not target 7.2(m) (which is confirmed never amended), and the amounts it mentions do not appear in clause (m). Flagged as an outside-window lead only.",
+        "SOURCE CONTEXT STATE was UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node or document text supplied). The supplied clause text is syntactically complete and confirmed CURRENT, so the rule's own economics are represented COMPLETE; the window-completeness caveat is recorded in sufficiencyReasons."
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "7.2"
+        },
+        "outputSummary": "base-document provision 7.2 (never individually amended, CURRENT_OPERATIVE)",
+        "charsReturned": 107,
+        "timestamp": "2026-09-24T20:17:23.455Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "PROVISION",
+          "requestKey": "7.2",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:a9b723686e58119d7cd922a5",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2",
+          "charStart": 47792,
+          "charEnd": 47899,
+          "rawText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+          "contentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT_OPERATIVE",
+          "isCurrentTruth": true
+        }
+      },
+      {
+        "toolName": "getSharedCapContext",
+        "input": {},
+        "outputSummary": "0 shared-cap context item(s)",
+        "charsReturned": 28,
+        "timestamp": "2026-09-24T20:17:23.455Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:07396450629da91c732614bb",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2(m)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MAX",
+          "type": "MONEY",
+          "exprId": "ir-expr:ec4a21db3781088140f3cc0c",
+          "operands": [
+            {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 125000000,
+              "currency": "USD",
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.2(m)",
+                "excerpt": "$125,000,000"
+              },
+              "exprId": "ir-expr:41b66cf2e0cd26eb5d3a6f74",
+              "inventoryItemIds": [
+                "inv-item:d8731616819f85a7de8bba27"
+              ]
+            },
+            {
+              "kind": "AS_OF",
+              "type": "MONEY",
+              "exprId": "ir-expr:4f4f912f0db0de8db61fab3b",
+              "value": {
+                "kind": "MULTIPLY",
+                "type": "MONEY",
+                "exprId": "ir-expr:0e121a67f11e09750e76fcf0",
+                "operands": [
+                  {
+                    "kind": "PERCENT",
+                    "type": "PERCENT",
+                    "value": 0.075,
+                    "provenance": {
+                      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§7.2(m)",
+                      "excerpt": "7.5%"
+                    },
+                    "exprId": "ir-expr:a235839977b07c9983c9119a"
+                  },
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Consolidated Total Assets",
+                    "companyId": "conmed-pilot",
+                    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:3212d45ff79088d43d515800"
+                  }
+                ],
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.2(m)",
+                  "excerpt": "7.5% of Consolidated Total Assets"
+                },
+                "inventoryItemIds": [
+                  "inv-item:6c835c422b383b61f296e733"
+                ]
+              },
+              "asOfDate": "the date of incurrence of such Indebtedness",
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.2(m)",
+                "excerpt": "measured on the date of incurrence of such Indebtedness"
+              },
+              "inventoryItemIds": [
+                "inv-item:c894a3528e3b6ff4e0b2d8f7",
+                "inv-item:eba9a8f9fc4fea8861d37747"
+              ]
+            }
+          ],
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(m)",
+            "excerpt": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets"
+          },
+          "inventoryItemIds": [
+            "inv-item:a27cb934f1b865c0f66228bd",
+            "inv-item:cb2932669e4d5e29ab7b1e59"
+          ]
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Clause 7.2(m) is confirmed CURRENT operative text with no recorded amendment history; the full clause reads as a complete unit (runs to its terminating semicolon)",
+          "Both material defined terms used by the rule ('Consolidated Total Assets', 'Receivables Transfer Program') are confirmed CURRENT in the context bundle",
+          "Phase 2D flags no shared-capacity signals and the clause contains no aggregate-sharing language, so the basket is independently capped",
+          "Source context state is UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node supplied); nothing in the supplied text indicates truncation, but completeness of the clause against its document boundary is not independently verifiable"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2(m)",
+          "excerpt": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:6ae2c24baf81a28477d00081"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "Entity scope: the §7.2 chapeau as supplied ('Create, incur, assume or suffer to exist any Indebtedness, except:') names no entity class, and clause (m) itself names none; entityScope left empty per the instruction to fill it only from the provision's own words. For awareness, the confirmed definition of 'Receivables Transfer Program' indicates the program operates through the Parent Borrower and its Subsidiaries, which is the natural read of who benefits from this permission.",
+      "No shared cap: Phase 2D's getSharedCapContext returned no signals, and clause (m) contains no aggregate-sharing language; each §7.2 basket carries its own independent cap, and no WireSharedCapacity is emitted.",
+      "Section-level mechanic not modeled: the trailing paragraph of §7.2 permits classification/reclassification of Indebtedness among Subclauses (a)-(s) (amounts counted under only one clause at a time). This affects how clause (m) interacts with sibling baskets but does not alter (m)'s own capacity expression.",
+      "Amendment lead awareness: the unresolved CONMED Second Amendment lead (2022-08-01) references a '$100,000,000' amount and a proviso to be inserted into the definition of 'Indebtedness'; it does not target 7.2(m) (which is confirmed never amended), and the amounts it mentions do not appear in clause (m). Flagged as an outside-window lead only.",
+      "SOURCE CONTEXT STATE was UNKNOWN_SOURCE_COMPLETENESS (no anchoring structural node or document text supplied). The supplied clause text is syntactically complete and confirmed CURRENT, so the rule's own economics are represented COMPLETE; the window-completeness caveat is recorded in sufficiencyReasons.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T20:18:12.061Z",
+      "inputTokens": 17197,
+      "outputTokens": 13026,
+      "cachedInputTokens": 28672,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 140807,
+      "calculatedCostUsd": 0.16465400000000002
+    },
+    "compiledAt": "2026-09-24T20:18:12.061Z",
+    "outputHash": "4fdc04b166123b58d835768b1a835328a3cfabe95a5221b34d4462183a71df0b"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "0a2a51f48ca61986101f316ec55bf222bf9d3ea0c05041b97695cb5077835ad6",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+        "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+        "irPath": "rules[0].conditions",
+        "findingType": "MISSING_CONDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+        "sourceCitation": "Section 7.2(m), Eighth A&R Credit Agreement (operative source)",
+        "proposedIrEvidence": "rules[0].action = \"INCUR_DEBT\"; rules[0].conditions = []; rules[0].exceptions = []; rules[0].entityScope = []; rules[0].sufficiency = \"COMPLETE\". The only represented limitation is the monetary MAX capacity; no representation of the Receivables Transfer Program connection or any qualifying transaction scope.",
+        "verifierReasoning": "The source clause does not permit general Indebtedness up to the cap. It permits only \"Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program\" up to the cap. That RTP-connection requirement is an independently operative condition defining which debt qualifies for the basket. The proposed IR omits it entirely and therefore would treat any Indebtedness up to the greater of $125,000,000 and 7.5% of Consolidated Total Assets as permitted, even if completely unrelated to a Receivables Transfer Program. A hypothetical transaction of $100,000,000 of ordinary unsecured debt unrelated to any RTP would be prohibited under the source (unless permitted under another clause) but would be permitted under the proposed IR. This is a material scope/condition discrepancy, and the COMPLETE sufficiency claim is therefore inaccurate.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T20:19:10.980Z"
+      },
+      {
+        "findingId": "a7453adb04827d398e9f40264d2011597a56ea074ce39b18ef31ed053325f21f",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.2(m)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 3 apparent independent enumerated unit(s) ((m), (x), (y)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 3 apparent independent enumerated unit(s) ((m), (x), (y)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T20:18:12.088Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "93de0cb699403afb46e83fd33af8a578a6fe2cdc01eff59f85bffeab3090ebed",
+            "kind": "AMOUNT",
+            "rawText": "$125,000,000",
+            "numericValue": 125000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(m)",
+            "structuralNodeKey": null,
+            "charStart": 179,
+            "charEnd": 191,
+            "parsedAmount": 125000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "3cd8187bdd4cc2a813eba0b0ea3d7432f5cd4fd4f94b3e0aa50649964ecd35d8",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "irPath": "rules[0].capacityExpression.operands[0]",
+              "numericValue": 125000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.2(m)",
+              "sourceExcerpt": "$125,000,000",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 125000000 (canonical 125000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e8885b0c27703e126d836aa04abc459f85c0567c61db879e6bf52d4fe09fe303",
+            "kind": "PERCENT",
+            "rawText": "7.5%",
+            "numericValue": 0.075,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(m)",
+            "structuralNodeKey": null,
+            "charStart": 200,
+            "charEnd": 204,
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "b56c6f931419f7adc369488270bab003a5abdce75c4e96856600cd1c0329b524",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "irPath": "rules[0].capacityExpression.operands[1].value.operands[0]",
+              "numericValue": 0.075,
+              "currency": null,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.2(m)",
+              "sourceExcerpt": "7.5%",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source PERCENT 0.075 matches 1 compiled IR PERCENT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1db7551eaca31769c8469fff71eeda3b66542452e68751fc1572b35e8e3b9852",
+            "kind": "METRIC_MENTION",
+            "rawText": "Receivables Transfer Program",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(m)",
+            "structuralNodeKey": null,
+            "charStart": 84,
+            "charEnd": 112
+          },
+          "irItems": [],
+          "reason": "source mention \"Receivables Transfer Program\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "65c483b74efd39cf50faa9d619926222dea3bd5f61f9ef30b1ab3b362416bbb0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Total Assets",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.2(m)",
+            "structuralNodeKey": null,
+            "charStart": 208,
+            "charEnd": 233
+          },
+          "irItems": [
+            {
+              "itemId": "05e10273200c115897df5c015ecd32dfd0cb654e7b729f12107073ea298c9c0a",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "irPath": "rules[0].capacityExpression.operands[1].value.operands[1]",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Consolidated Total Assets",
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Consolidated Total Assets\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 3 apparent independent enumerated unit(s) ((m), (x), (y)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$125,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$125,000,000",
+              "normalizedValue": 125000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 179,
+              "charEnd": 191,
+              "withheldReason": null,
+              "itemId": "81b3f373dfbf6106bd8754efc02e4edd9d6fecce6153a0d9fac3cc3b8ea7807e",
+              "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(m)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(m)",
+                "§7.2(m)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$125,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$125,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "7.5%",
+              "normalizedValue": 0.075,
+              "currency": null,
+              "unit": "%",
+              "charStart": 200,
+              "charEnd": 204,
+              "withheldReason": null,
+              "itemId": "535bc7c2fc784dc9fa7277ec09a6060c804a48bf0346f1e07b1b064e1e231ee3",
+              "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(m)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(m)",
+                "§7.2(m)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "7.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"7.5%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$125,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$125,000,000",
+              "normalizedValue": 125000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 66,
+              "charEnd": 78,
+              "withheldReason": null,
+              "itemId": "eec3bdf7c3af837f056d61457be414d1efe59f40ee82b1e80522722c401cd63a",
+              "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(m)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(m)",
+                "§7.2(m)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$125,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$125,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "7.5%",
+              "normalizedValue": 0.075,
+              "currency": null,
+              "unit": "%",
+              "charStart": 87,
+              "charEnd": 91,
+              "withheldReason": null,
+              "itemId": "0cd057ed5457fbf34a62094a045ccf5dbd879367d72063458b76558150ebb170",
+              "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(m)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(m)",
+                "§7.2(m)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "7.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$125,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$125,000,000",
+              "normalizedValue": 125000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 0,
+              "charEnd": 12,
+              "withheldReason": null,
+              "itemId": "77f0333ca7f64fd51d5acf61036103895fb6e1f41ea898c6a85529d3904e8b4b",
+              "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "$125,000,000",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(m)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(m)",
+                "§7.2(m)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$125,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$125,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.operands[1].value.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "7.5%",
+              "normalizedValue": 0.075,
+              "currency": null,
+              "unit": "%",
+              "charStart": 0,
+              "charEnd": 4,
+              "withheldReason": null,
+              "itemId": "d70b2c021520a2d93525738d68220213a5413217e013f82b1ea7635fca303714",
+              "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "fieldPath": "rules[0].capacityExpression.operands[1].value.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "7.5% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(m)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(m)",
+                "§7.2(m)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "7.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.operands[1].value.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.operands[1].value.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "7.5%",
+              "normalizedValue": 0.075,
+              "currency": null,
+              "unit": "%",
+              "charStart": 0,
+              "charEnd": 4,
+              "withheldReason": null,
+              "itemId": "e240c8a78850fd8b0baa8e5c7ed79d8f2efc5f13b5326ce935e2b751fc00d160",
+              "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+              "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+              "fieldPath": "rules[0].capacityExpression.operands[1].value.operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "7.5%",
+              "ownerTermName": null,
+              "ownerCitation": "§7.2(m)",
+              "referencedTerms": [
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.2(m)",
+                "§7.2(m)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "7.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.operands[1].value.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+      "items": [
+        {
+          "itemId": "93de0cb699403afb46e83fd33af8a578a6fe2cdc01eff59f85bffeab3090ebed",
+          "kind": "AMOUNT",
+          "rawText": "$125,000,000",
+          "numericValue": 125000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": 179,
+          "charEnd": 191,
+          "parsedAmount": 125000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "e8885b0c27703e126d836aa04abc459f85c0567c61db879e6bf52d4fe09fe303",
+          "kind": "PERCENT",
+          "rawText": "7.5%",
+          "numericValue": 0.075,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": 200,
+          "charEnd": 204,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "fbc61379bd1901bbae687f447b6da38245bc230ae4ec95e32b77535252b9d539",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": 146,
+          "charEnd": 159,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "b0ae42c09f1763eaec5f7e415e4d2d8f6d6a68f9a520f3b3790adb74545f5196",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "greater of",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": 164,
+          "charEnd": 174,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "307bcb10e52ea922ddafac4e9393ad4743b73f840ecec8b2416cfa6c7e0b88f6",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "incurrence",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": 259,
+          "charEnd": 269,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "1db7551eaca31769c8469fff71eeda3b66542452e68751fc1572b35e8e3b9852",
+          "kind": "METRIC_MENTION",
+          "rawText": "Receivables Transfer Program",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": 84,
+          "charEnd": 112
+        },
+        {
+          "itemId": "65c483b74efd39cf50faa9d619926222dea3bd5f61f9ef30b1ab3b362416bbb0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Total Assets",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": 208,
+          "charEnd": 233
+        },
+        {
+          "itemId": "b6aaf1aa78907ff6afe51cf2a60263bd2ef97cfd4a88636e86b975b92e489d2c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(m)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "2ff2a5dd26b390cd98a4241c2ca2a4e6830b0d71e38be84f8ec35e677b72591c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "5662c0848f8a893bf7c142980db0d0539b1562d9a028766ffe1e1ca5a9257d06",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(m)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 3,
+      "apparentIndependentUnitEvidence": [
+        "(m)",
+        "(x)",
+        "(y)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+      "items": [
+        {
+          "itemId": "fc6dcf05e517467e72f92653457d3caee193725cdebf10d337439b13563dd86c",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(m)",
+          "sourceExcerpt": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "80d9f4af09dff99c7ed84ab9c0691231e6f65b5c8b1a72c78187dfbac1392d28",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.2(m)",
+          "sourceExcerpt": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "3cd8187bdd4cc2a813eba0b0ea3d7432f5cd4fd4f94b3e0aa50649964ecd35d8",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+          "irPath": "rules[0].capacityExpression.operands[0]",
+          "numericValue": 125000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.2(m)",
+          "sourceExcerpt": "$125,000,000",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "b56c6f931419f7adc369488270bab003a5abdce75c4e96856600cd1c0329b524",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+          "irPath": "rules[0].capacityExpression.operands[1].value.operands[0]",
+          "numericValue": 0.075,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.2(m)",
+          "sourceExcerpt": "7.5%",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "05e10273200c115897df5c015ecd32dfd0cb654e7b729f12107073ea298c9c0a",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+          "irPath": "rules[0].capacityExpression.operands[1].value.operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Consolidated Total Assets",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$125,000,000",
+            "normalizedValue": 125000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 179,
+            "charEnd": 191,
+            "withheldReason": null,
+            "itemId": "81b3f373dfbf6106bd8754efc02e4edd9d6fecce6153a0d9fac3cc3b8ea7807e",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 200,
+            "charEnd": 204,
+            "withheldReason": null,
+            "itemId": "535bc7c2fc784dc9fa7277ec09a6060c804a48bf0346f1e07b1b064e1e231ee3",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$125,000,000",
+            "normalizedValue": 125000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 66,
+            "charEnd": 78,
+            "withheldReason": null,
+            "itemId": "eec3bdf7c3af837f056d61457be414d1efe59f40ee82b1e80522722c401cd63a",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 87,
+            "charEnd": 91,
+            "withheldReason": null,
+            "itemId": "0cd057ed5457fbf34a62094a045ccf5dbd879367d72063458b76558150ebb170",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$125,000,000",
+            "normalizedValue": 125000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 0,
+            "charEnd": 12,
+            "withheldReason": null,
+            "itemId": "77f0333ca7f64fd51d5acf61036103895fb6e1f41ea898c6a85529d3904e8b4b",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "$125,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "d70b2c021520a2d93525738d68220213a5413217e013f82b1ea7635fca303714",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.operands[1].value.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "7.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "e240c8a78850fd8b0baa8e5c7ed79d8f2efc5f13b5326ce935e2b751fc00d160",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.operands[1].value.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "7.5%",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          }
+        ],
+        "fieldsWalked": 6,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$125,000,000",
+            "normalizedValue": 125000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 179,
+            "charEnd": 191,
+            "withheldReason": null,
+            "itemId": "81b3f373dfbf6106bd8754efc02e4edd9d6fecce6153a0d9fac3cc3b8ea7807e",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$125,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$125,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 200,
+            "charEnd": 204,
+            "withheldReason": null,
+            "itemId": "535bc7c2fc784dc9fa7277ec09a6060c804a48bf0346f1e07b1b064e1e231ee3",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "7.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$125,000,000",
+            "normalizedValue": 125000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 66,
+            "charEnd": 78,
+            "withheldReason": null,
+            "itemId": "eec3bdf7c3af837f056d61457be414d1efe59f40ee82b1e80522722c401cd63a",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$125,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$125,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 87,
+            "charEnd": 91,
+            "withheldReason": null,
+            "itemId": "0cd057ed5457fbf34a62094a045ccf5dbd879367d72063458b76558150ebb170",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "7.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$125,000,000",
+            "normalizedValue": 125000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 0,
+            "charEnd": 12,
+            "withheldReason": null,
+            "itemId": "77f0333ca7f64fd51d5acf61036103895fb6e1f41ea898c6a85529d3904e8b4b",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "$125,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$125,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$125,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "d70b2c021520a2d93525738d68220213a5413217e013f82b1ea7635fca303714",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.operands[1].value.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "7.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "7.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.operands[1].value.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "7.5%",
+            "normalizedValue": 0.075,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "e240c8a78850fd8b0baa8e5c7ed79d8f2efc5f13b5326ce935e2b751fc00d160",
+            "candidateRef": "discovery-candidate:3d233f1364657aeffc32c4a7",
+            "ruleOrDefinitionId": "ir-rule:07396450629da91c732614bb",
+            "fieldPath": "rules[0].capacityExpression.operands[1].value.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "7.5%",
+            "ownerTermName": null,
+            "ownerCitation": "§7.2(m)",
+            "referencedTerms": [
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.2(m)",
+              "§7.2(m)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "7.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"7.5%\" at rules[0].capacityExpression.operands[1].value.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "d47359786d4a3246947cb80bb9b35753a32f92472d73e0997727b4cf0b082541",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "4c38aa40a37688b957533539f08b7910ffb2af3d5f3f826d07faa1099a32f30c",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "PROVISION",
+          "requestKey": "7.2",
+          "scopeKey": "7.2",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": "structural-node:a9b723686e58119d7cd922a5",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2",
+          "charStart": 47792,
+          "charEnd": 47899,
+          "rawText": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+          "contentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "section \"7.2\" consulted for candidate discovery-candidate:3d233f1364657aeffc32c4a7 (7.2(m)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              0
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[0] getOperativeProvision {\"sectionRef\":\"7.2\"}",
+              "compilerRecordedContentHash": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "provision \"7.2\" resolved to node structural-node:a9b723686e58119d7cd922a5 span [47792, 47899)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [47792, 47899) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(47792, 47899)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:a9b723686e58119d7cd922a5) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "84d56df6a0fd9586e62a5a78cf9a970f5c74df3d75afba353ec27fb12535fe83",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 338471,
+    "inputTokens": 17197,
+    "outputTokens": 13026,
+    "costUsd": 0.00562237,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:3d233f1364657aeffc32c4a7.verified-units.json",
+    "packageHash": "dc210991999701dc407ac4cbcadf3be87dc2805846d94bcacf9814d74e532595",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

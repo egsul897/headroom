@@ -1,0 +1,1650 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T01:43:21.847Z",
+  "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.4(b)(ii)",
+    "operativeSourceText": "(ii) any Subsidiary\nthat is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that\nis not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;\n100\n",
+    "operativeSourceTextSha256": "1f1dcc8946785c32bc684101feb67c75d64a60429d94feb367c069d5dcbf02a2",
+    "operativeSourceChars": 301,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:72ca831dbab7ec511b82b7ddcc27d58f4d6f0b547afa6901955268c5897b476b",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 20,
+    "items": [
+      {
+        "itemId": "context-item:f6a5fa7238a1be4d3c2be05efba746e6b845ee387caf2c1aa448868429d72fef",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.4(b)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 301,
+        "excerptText": "(ii) any Subsidiary\nthat is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that\nis not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;\n100\n"
+      },
+      {
+        "itemId": "context-item:8cf9dfccdcd3fcace98afe4a4602cfbe59d7e61982c9004150677eda79b03aa3",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.4",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 307,
+        "excerptText": "SECTION 7.4 Limitation on Fundamental\nChanges . Enter into any merger, consolidation or amalgamation, or liquidate, wind up or dissolve itself (or suffer any liquidation\nor dissolution), consummate a Division as the Dividing Person or Dispose of all or substantially all of its Property or business except:\n"
+      },
+      {
+        "itemId": "context-item:8666fa7a371f0bc212d767c772b1b193bf467e9f0fe2d0f15bca170a9d309f78",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.4(b)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 4,
+        "excerptText": "(b)\n"
+      },
+      {
+        "itemId": "context-item:d6bbbd094da78579abb29068661cfe172b6b257a85e1450be0b39733ebe60573",
+        "type": "DEFINITION",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "type": "DEFINITION",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "type": "DEFINITION",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:519462c108891858198c20fef52f03e469b7f0f04cd7f29100e3a873d9e78272",
+        "type": "DEFINITION",
+        "normalizedRef": "Subsidiary Guarantor",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 157,
+        "excerptText": "\"Subsidiary Guarantor\": (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%).\n\n"
+      },
+      {
+        "itemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Domestic Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 2471,
+        "excerptText": "\"Domestic Subsidiary\": any Subsidiary of the Parent Borrower organized under the laws of any jurisdiction within the United States; provided that, for\npurposes of this Agreement, none of the following shall be deemed to be a Domestic Subsidiary or a Foreign Subsidiary (i) CONMED\nReceivables Corporation, its successors and permitted transferees, or any other single purpose corporation formed and operating solely\nin connection with a Receivables Transfer Program permitted under this Agreement, so long as the grant of a security interest in the Capital\nStock of such Subsidiary is prohibited under such Receivables Transfer Program, (ii) GWH, Ltd., Largo Lakes &ndash; I Limited Partnership\nor their respective successors and permitted transferees, so long as the Capital Stock and all of the property of each such Subsidiary\nis held and is subject to a security interest granted in connection with the acquisition of the Largo, Florida facility, (iii) Largo\nRealty, LLC, so long as it holds only the property held by it on the Closing Date,\n16\n(iv) Palmerton Holdings, Inc., so long as it holds\nonly the property held by it on the Closing Date, (v) any Foreign Subsidiary Holdco, (vi) any Subsidiary that is not a Wholly-Owned\nSubsidiary, (vii) any Subsidiary that (A) is prohibited from guaranteeing the Obligations or granting Liens to secure the Obligations\nby any applicable Contractual Obligation existing on the Closing Date or at the time such Subsidiary becomes a Subsidiary, to the extent\nsuch restriction was not entered into in contemplation of such Subsidiary being excluded from constituting a Domestic Subsidiary, (B)\nis prohibited from guaranteeing the Obligations or granting Liens to secure the Obligations by any applicable Requirement of Law or (C)\nwould require a consent, approval, license or authorization from any Governmental Authority in order to provide any guarantee of the Obligations\nor grant any Lien to secure the Obligations, unless such consent, approval, license or authorization has been obtained, (viii) any not-for-profit\nSubsidiary, (ix) any captive insurance company, (x) any Subsidiary that is a special purpose entity or (xi) any other Subsidiary in respect\nof which the Parent Borrower and the Administrative Agent determine in good faith that the cost or burden of such Subsidiary providing\na guarantee of, or granting Liens to secure, the Obligations is excessive in relation to the value afforded to the Lenders thereby.\n\n"
+      },
+      {
+        "itemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Capital Stock",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 451,
+        "excerptText": "\"Capital Stock\": any\nand all shares, interests, participations or other equivalents (however designated) of capital stock of a corporation, any and all equivalent\nownership interests in a Person (other than a corporation) and any and all warrants, rights or options to purchase any of the foregoing,\nbut, for the avoidance of doubt, excluding any debt securities whether or not convertible into, exchangeable for or referencing any of\nthe foregoing.\n\n"
+      },
+      {
+        "itemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Foreign Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 157,
+        "excerptText": "\"Foreign Subsidiary\": except as provided in the definition of Domestic Subsidiary, any Subsidiary of the Parent Borrower that is not a Domestic Subsidiary.\n\n"
+      },
+      {
+        "itemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Foreign Subsidiary Holdco",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 275,
+        "excerptText": "\"Foreign Subsidiary Holdco\": any Subsidiary of the Parent Borrower organized under the laws of any jurisdiction within the United States (including CONMED Andover\nMedical, Inc.) substantially all of whose assets consist of Capital Stock of one or more Foreign Subsidiaries.\n\n"
+      },
+      {
+        "itemId": "context-item:f16ef71d961ae597a8b9be76baec8e5a9ae416ce023d3d32493cf0c2ef1caa7d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lenders",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 47,
+        "excerptText": "\"Lenders\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Obligations",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1272,
+        "excerptText": "\"Obligations\": the\nunpaid principal of and interest on (including interest accruing after the maturity of the Loans and Reimbursement Obligations and interest\naccruing after the filing of any petition in bankruptcy, or the commencement of any insolvency, reorganization or like proceeding, relating\nto any Borrower, whether or not a claim for post-filing or post-petition interest is allowed in such proceeding) the Loans and all other\nobligations and liabilities of each Borrower to the Administrative Agent or to any Lender (or, in the case of Swap Agreements, any affiliate\nof any Lender), whether direct or indirect, absolute or contingent, due or to become due, or now existing or hereafter incurred, which\nmay arise under, out of, or in connection with, this Agreement, any other Loan Document, the Letters of Credit, any Swap Agreement entered\ninto with any Lender or any affiliate of any Lender or any other document made, delivered or given in connection herewith or therewith,\nwhether on account of principal, interest, reimbursement obligations, fees, indemnities, costs, expenses (including all fees, charges\nand disbursements of counsel to the Administrative Agent or to any Lender that are required to be paid by any Borrower pursuant hereto)\nor otherwise.\n\n"
+      },
+      {
+        "itemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Swap",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 143,
+        "excerptText": "\"Swap\": any agreement,\ncontract, or transaction that constitutes a \"swap\" within the meaning of section 1a(47) of the Commodity Exchange Act.\n\n"
+      },
+      {
+        "itemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Receivables Transfer Program",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 714,
+        "excerptText": "\"Receivables Transfer Program\": a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable\nor related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit\ndilution provisions) other than with respect to the Parent Borrower's or such Subsidiary's retained interest in such accounts\nreceivable or related ancillary rights or assets, such program to have substantially the terms and conditions provided to the Administrative\nAgent prior to the Closing Date, as such terms and conditions may be amended, supplemented or otherwise modified from time to time.\n34\n\n"
+      },
+      {
+        "itemId": "context-item:faf9070d1c5fe65f2a33f3add7e238ac85d47327ab762bd6b9559e6eccee9c00",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Material Domestic Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1831,
+        "excerptText": "\"Material Domestic Subsidiary\": at any time, any Domestic Subsidiary (i) which is directly owned by the Parent Borrower or any Subsidiary and (ii) with respect to which\neither (A) its revenues for the most recently ended fiscal year for which audited financial statements are available exceed 2.5% of the\naggregate revenues of the Parent Borrower and its Subsidiaries on a consolidated basis for such period or (B) its total assets at the\nend of the most recently completed fiscal year for which audited financial statements are available exceed 2.5% of the aggregate total\nassets at such time of the Parent Borrower and its Subsidiaries on a consolidated basis; provided that if at any time (x) the aggregate\nrevenues of all Domestic Subsidiaries that are not Material Domestic Subsidiaries pursuant to this definition for the most recently ended\nfiscal year for which audited financial statements are available exceed 5% of the aggregate annual revenues of the Parent Borrower and\nits Subsidiaries on a consolidated basis for such period or (y) the aggregate total assets of all Domestic Subsidiaries that are not Material\nDomestic Subsidiaries pursuant to this definition at the end of the most recently completed fiscal year for which audited financial statements\nare available exceed 5% of the aggregate total assets of the Parent Borrower and its Subsidiaries at such time, then, in each case, the\nParent Borrower shall within 10 Business Days of the receipt of such audited financial statements designate sufficient Domestic Subsidiaries\nas \"Material Domestic Subsidiaries\" to eliminate such excess, and such designated Domestic Subsidiaries shall for all purposes\nof this Agreement constitute Material Domestic Subsidiaries until such time as such designation is no longer necessary for purposes of\napplying this proviso.\n\n"
+      },
+      {
+        "itemId": "context-item:61e26225250b1b402b12fc998b3133fb99b786c3cf64383f263eeaab7081c76b",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Business",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 44,
+        "excerptText": "\"Business\": as defined\nin Section 4.17(b).\n\n"
+      },
+      {
+        "itemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Material Foreign Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 1861,
+        "excerptText": "\"Material Foreign Subsidiary\": at any time, any Foreign Subsidiary or Foreign Subsidiary Holdco, in each case, other than any Excluded Foreign Subsidiary, (i) which\nis directly owned by the Parent Borrower or any Domestic Subsidiary and (ii) with respect to which either (A) its annual pre-tax\nincome exceeds $15,000,000 for the most recently ended fiscal year for which audited financial statements are available or (B) its\ntotal assets at the end of the most recently completed fiscal year for which audited financial statements are available are greater than\n$15,000,000; provided that (x) if the aggregate pre-tax income of all Foreign Subsidiaries\n26\nand Foreign Subsidiary Holdcos\nthat are not Material Foreign Subsidiaries (but excluding the Excluded Foreign Subsidiaries for purposes of this calculation) exceeds\n$30,000,000 for the most recently ended fiscal year for which audited financial statements are available or (y) the aggregate total\nassets of all Foreign Subsidiaries and Foreign Subsidiary Holdcos that are not Material Foreign Subsidiaries (but excluding the Excluded\nForeign Subsidiaries for purposes of this calculation) at the end of the most recently completed fiscal year for which audited financial\nstatements are available exceeds $50,000,000, then, in each case, the Parent Borrower shall within 10 Business Days of the receipt of\nsuch audited financial statements designate sufficient Foreign Subsidiaries and/or Foreign Subsidiary Holdcos, in each case, other than\nExcluded Foreign Subsidiaries, as \"Material Foreign Subsidiaries\" to eliminate such excess, and such designated Foreign Subsidiaries\nand/or Foreign Subsidiary Holdcos, as applicable, shall for all purposes of this Agreement constitute Material Foreign Subsidiaries until\nsuch time as such designation is no longer necessary for purposes of applying this proviso.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:8cf9dfccdcd3fcace98afe4a4602cfbe59d7e61982c9004150677eda79b03aa3",
+        "toItemId": "context-item:f6a5fa7238a1be4d3c2be05efba746e6b845ee387caf2c1aa448868429d72fef",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:8666fa7a371f0bc212d767c772b1b193bf467e9f0fe2d0f15bca170a9d309f78",
+        "toItemId": "context-item:f6a5fa7238a1be4d3c2be05efba746e6b845ee387caf2c1aa448868429d72fef",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:f6a5fa7238a1be4d3c2be05efba746e6b845ee387caf2c1aa448868429d72fef",
+        "toItemId": "context-item:d6bbbd094da78579abb29068661cfe172b6b257a85e1450be0b39733ebe60573",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:d6bbbd094da78579abb29068661cfe172b6b257a85e1450be0b39733ebe60573",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:f6a5fa7238a1be4d3c2be05efba746e6b845ee387caf2c1aa448868429d72fef",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:f6a5fa7238a1be4d3c2be05efba746e6b845ee387caf2c1aa448868429d72fef",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f6a5fa7238a1be4d3c2be05efba746e6b845ee387caf2c1aa448868429d72fef",
+        "toItemId": "context-item:519462c108891858198c20fef52f03e469b7f0f04cd7f29100e3a873d9e78272",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:519462c108891858198c20fef52f03e469b7f0f04cd7f29100e3a873d9e78272",
+        "toItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "toItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Cyclic dependency (subsidiary guarantor -> domestic subsidiary -> foreign subsidiary -> domestic subsidiary) - not re-expanded."
+      },
+      {
+        "fromItemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:c9afe0e1969f1d27cd67c424d8218bf5d7d6c98c082b48add15683d0b3e34363",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:f16ef71d961ae597a8b9be76baec8e5a9ae416ce023d3d32493cf0c2ef1caa7d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:d6bbbd094da78579abb29068661cfe172b6b257a85e1450be0b39733ebe60573",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:91c7c6ead8310264884681a66a1d0d4ab570e54fb2f9f58d79776d03cc8f689d",
+        "toItemId": "context-item:51bd4bd09b2bc908c1709bcc1a905ad4c7ee92dad13ee3e2b3a66a0171f0bbfe",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:de600a55f5154e50458cc0af81d8bb2b229edada9dcc8a203383ff49c3868ac7",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:519462c108891858198c20fef52f03e469b7f0f04cd7f29100e3a873d9e78272",
+        "toItemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:519462c108891858198c20fef52f03e469b7f0f04cd7f29100e3a873d9e78272",
+        "toItemId": "context-item:faf9070d1c5fe65f2a33f3add7e238ac85d47327ab762bd6b9559e6eccee9c00",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:faf9070d1c5fe65f2a33f3add7e238ac85d47327ab762bd6b9559e6eccee9c00",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:faf9070d1c5fe65f2a33f3add7e238ac85d47327ab762bd6b9559e6eccee9c00",
+        "toItemId": "context-item:61e26225250b1b402b12fc998b3133fb99b786c3cf64383f263eeaab7081c76b",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:faf9070d1c5fe65f2a33f3add7e238ac85d47327ab762bd6b9559e6eccee9c00",
+        "toItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:faf9070d1c5fe65f2a33f3add7e238ac85d47327ab762bd6b9559e6eccee9c00",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:faf9070d1c5fe65f2a33f3add7e238ac85d47327ab762bd6b9559e6eccee9c00",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:519462c108891858198c20fef52f03e469b7f0f04cd7f29100e3a873d9e78272",
+        "toItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "toItemId": "context-item:61e26225250b1b402b12fc998b3133fb99b786c3cf64383f263eeaab7081c76b",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "toItemId": "context-item:5425eb21fc10e8cd437544548d5f21ef4166560d52449a5bf908e608bf5a3259",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "toItemId": "context-item:b830501565950966c047f56555da997554131e0b3bc696fedf5e6b9f26140fee",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "toItemId": "context-item:da287395ee7833642b18b0bc6fcb9486d769888a58c276a0378f85192186cb12",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "toItemId": "context-item:bd43dc2dd04afb5e9c9a6506e64971a6bfc5c078ac5c79de5ad66b91c3bbf1f2",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:f9ed84cabfe0bfa418cf4a35f64c7d7b29065213ae7b9f323660171dab4cf028",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:519462c108891858198c20fef52f03e469b7f0f04cd7f29100e3a873d9e78272",
+        "toItemId": "context-item:0556f0ff914e4a403b72cb534ac92aa0fe17b4723376c0931ac3dcc91ff7f744",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.4(b)(ii)",
+          "covenantFamily": "FUNDAMENTAL_CHANGES",
+          "ruleType": "QUALITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "DISPOSE_OF_ASSETS",
+          "entityScope": [
+            "Subsidiary"
+          ],
+          "entityScopeExcluded": [
+            "Loan Party"
+          ],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "OR",
+              "operands": [
+                {
+                  "kind": "AND",
+                  "operands": [
+                    {
+                      "kind": "UNSUPPORTED",
+                      "semanticDescription": "Condition: the transferee must be 'any other Subsidiary' - i.e., a Subsidiary of the Parent Borrower other than the disposing Subsidiary itself (term 'Subsidiary' per its definition defaults to a Subsidiary of the Parent Borrower)",
+                      "reason": "entity-status predicate requiring facts about the specific transacting parties; no IR primitive can compute whether a given transferee satisfies this entity class",
+                      "sourceEvidence": "§7.4(b)(ii): 'to any other Subsidiary that'",
+                      "citation": "§7.4(b)(ii)",
+                      "inventoryItemIds": [
+                        "cc4a53109d9aa234c05659cb"
+                      ]
+                    },
+                    {
+                      "kind": "UNSUPPORTED",
+                      "semanticDescription": "Condition: the recipient Subsidiary must not be a Loan Party; term 'Loan Party' is not defined in any document of this instrument (getDefinition returned no match), so the exclusion's precise membership cannot be resolved from the evidence given",
+                      "reason": "defined term unresolvable in this instrument's documents and the predicate is an entity-status fact",
+                      "sourceEvidence": "§7.4(b)(ii): 'that is not a Loan Party'",
+                      "citation": "§7.4(b)(ii)",
+                      "inventoryItemIds": [
+                        "9dbed24a27402ad0edf538ec"
+                      ]
+                    },
+                    {
+                      "kind": "UNSUPPORTED",
+                      "semanticDescription": "Condition: the Parent Borrower must have an equal or higher direct or indirect ownership percentage in the recipient Subsidiary. AMBIGUOUS_DRAFTING: the text does not state the comparative benchmark (natural reading: relative to the Parent Borrower's ownership percentage in the disposing Subsidiary)",
+                      "reason": "non-computable fact about relative ownership percentages; benchmark not stated in the source text and no authoritative definition was available to resolve it",
+                      "sourceEvidence": "§7.4(b)(ii): 'in which the Parent Borrower has an equal or higher direct or indirect ownership percentage'",
+                      "citation": "§7.4(b)(ii)",
+                      "inventoryItemIds": [
+                        "e3d045713c147cc22f6664b2"
+                      ]
+                    }
+                  ],
+                  "citation": "§7.4(b)(ii)"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "semanticDescription": "Condition (alternative (b)): the transferee may be any Subsidiary Guarantor (term 'Subsidiary Guarantor' defined as (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%))",
+                  "reason": "entity-status predicate requiring a determination of the specific transferee's guarantor status; not computable from contract text",
+                  "sourceEvidence": "§7.4(b)(ii): 'or any Subsidiary Guarantor'",
+                  "citation": "§7.4(b)(ii)",
+                  "inventoryItemIds": [
+                    "f94e78627d8d7b5417e47813"
+                  ]
+                }
+              ],
+              "citation": "§7.4(b)(ii)",
+              "inventoryItemIds": [
+                "f556a685c6e8c87057276f29"
+              ]
+            },
+            "citation": "§7.4(b)(ii)",
+            "excerpt": "any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor",
+            "inventoryItemIds": [
+              "af6a4b07c181ab2c22d0f286"
+            ]
+          },
+          "conditions": [
+            {
+              "conditionType": "UNRESTRICTED_MANNER",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The Disposition may be effected upon voluntary liquidation of the disposing Subsidiary or in any other manner; the parenthetical operates as an expansion, not a restriction, on the manner of disposition",
+              "citation": "§7.4(b)(ii)",
+              "excerpt": "(upon voluntary liquidation or otherwise)",
+              "inventoryItemIds": [
+                "ca07e1aec4b66b0cd9ff589c"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "EXCEPTION_TO",
+              "targetRef": "7.4",
+              "description": "Carve-out from the Section 7.4 prohibition on fundamental changes, which prohibits, inter alia, disposing of all or substantially all of its Property or business; the binding subject of that prohibition is outside the supplied operative window",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "The permission's operative structure is fully represented: no dollar ceiling (any or all assets) gated by a transferee test preserved as a nested OR((AND(other Subsidiary, not a Loan Party, equal-or-higher Parent Borrower ownership)), Subsidiary Guarantor) tree",
+            "The entity-status predicates (Subsidiary status, Loan Party status, ownership comparison, Subsidiary Guarantor status) are non-computable transaction facts and are carried as UNSUPPORTED leaves within the tree rather than guessed",
+            "The ownership-percentage condition is AMBIGUOUS_DRAFTING: 'equal or higher' ownership in the recipient is required without stating the comparative benchmark in the text",
+            "Defined terms 'Loan Party' and 'Dispose' could not be resolved via getDefinition (no match in this instrument's documents); 'Dispose' scopes the action and 'Loan Party' scopes both parties, but neither change affects the represented structure",
+            "Trailing numeral '100' treated as a pagination artifact with no operative effect (see inventoryDispositions)"
+          ],
+          "citation": "§7.4(b)(ii)",
+          "excerpt": "(ii) any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;",
+          "inventoryItemIds": [
+            "6ded96790d768b4d8b884d4f",
+            "22ca81318bdb82ff9b320683"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "§7.4(b)(ii) (transferee qualification predicates: 'any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor')",
+          "semanticRequirement": "A boolean-valued primitive for testing whether a transaction party (e.g. the transferee) satisfies an entity class or combination of entity classes with negation, usable as a nested operand inside OR/AND trees - e.g., IS(transferee, Subsidiary & NOT Loan Party), IS(transferee, Subsidiary Guarantor).",
+          "whyExistingPrimitivesFail": "METRIC_REFERENCE/DEFINED_TERM_REFERENCE denote measurable values, COMPARE requires numeric/same-type operands, and ENTITY_SCOPE_REFERENCE scopes whole rules but carries no boolean semantics usable as a condition operand; there is no way to express 'the counterparty belongs to entity class X' inside an OR/AND permission tree without dropping the condition to text or marking it UNSUPPORTED.",
+          "candidateGeneralizedPrimitive": "ENTITY_PREDICATE { partyRole: 'transferor'|'transferee'|... , entityClasses: [classTags], negate: boolean, benchmarkParty/metric?: optional for comparative predicates like equal-or-higher ownership } evaluating to a boolean condition operand."
+        }
+      ],
+      "overallNotes": [
+        "§7.4(b)(ii) is an exception carve-out under the Section 7.4 'Limitation on Fundamental Changes' prohibition (which bars, inter alia, disposing of all or substantially all Property or business). The compiled rule is the carve-out permission itself; the chapeau's binding subject is not within the supplied operative window and is preserved only as an EXCEPTION_TO dependency.",
+        "getSharedCapContext returned no shared-capacity signals: this exception carries its own uncapped qualitative economics (no dollar ceiling, no aggregate language), so UNLIMITED_CAPACITY gated by the transferee test is used - never a fabricated dollar amount.",
+        "getDefinition('Loan Party') and getDefinition('Dispose') were attempted and returned no match in this instrument's documents, confirming Phase 2's UNRESOLVED_DEFINED_TERM flags; these affect predicate membership/action scope only, not the represented structure.",
+        "The trailing numeral '100' (frozen-inventory item 79e22e3d...) is dispositioned INTENTIONALLY_NON_COMPUTATIONAL as a pagination artifact with no operative effect.",
+        "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS for the operative window; the clause text itself is confirmed CURRENT operative (context-item f6a5fa72..., evidenceStatus CURRENT) and the rule's sufficiency reflects only the internal ambiguities/unresolvable terms noted, not a substitution problem."
+      ],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "79e22e3d23fde1aab5539259",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "note": "Trailing numeral '100' after the semicolon is a page-number artifact with no operative effect; deliberately not represented in the IR."
+        }
+      ]
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Loan Party"
+        },
+        "outputSummary": "refused: no defined term matching \"Loan Party\" found in this instrument's documents",
+        "charsReturned": 74,
+        "timestamp": "2026-09-25T01:36:56.359Z"
+      },
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Dispose"
+        },
+        "outputSummary": "refused: no defined term matching \"Dispose\" found in this instrument's documents",
+        "charsReturned": 71,
+        "timestamp": "2026-09-25T01:36:56.359Z"
+      },
+      {
+        "toolName": "getSharedCapContext",
+        "input": {},
+        "outputSummary": "0 shared-cap context item(s)",
+        "charsReturned": 28,
+        "timestamp": "2026-09-25T01:36:56.360Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:6198df50141ea2d29b2c6aaf",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.4(b)(ii)",
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [
+          "LOAN_PARTY"
+        ],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "OR",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:9d462b4f142db6e5c6abd1f6",
+            "operands": [
+              {
+                "kind": "AND",
+                "type": "BOOLEAN",
+                "exprId": "ir-expr:00dad9899b222236b65b0763",
+                "operands": [
+                  {
+                    "kind": "UNSUPPORTED",
+                    "type": null,
+                    "sourceEvidence": "§7.4(b)(ii): 'to any other Subsidiary that'",
+                    "semanticDescription": "Condition: the transferee must be 'any other Subsidiary' - i.e., a Subsidiary of the Parent Borrower other than the disposing Subsidiary itself (term 'Subsidiary' per its definition defaults to a Subsidiary of the Parent Borrower)",
+                    "reason": "entity-status predicate requiring facts about the specific transacting parties; no IR primitive can compute whether a given transferee satisfies this entity class",
+                    "requiredReview": true,
+                    "provenance": {
+                      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§7.4(b)(ii)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:28fda4827202cd78205baff9",
+                    "inventoryItemIds": [
+                      "cc4a53109d9aa234c05659cb"
+                    ]
+                  },
+                  {
+                    "kind": "UNSUPPORTED",
+                    "type": null,
+                    "sourceEvidence": "§7.4(b)(ii): 'that is not a Loan Party'",
+                    "semanticDescription": "Condition: the recipient Subsidiary must not be a Loan Party; term 'Loan Party' is not defined in any document of this instrument (getDefinition returned no match), so the exclusion's precise membership cannot be resolved from the evidence given",
+                    "reason": "defined term unresolvable in this instrument's documents and the predicate is an entity-status fact",
+                    "requiredReview": true,
+                    "provenance": {
+                      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§7.4(b)(ii)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:351cbfd5df05c524a1ae9c52",
+                    "inventoryItemIds": [
+                      "9dbed24a27402ad0edf538ec"
+                    ]
+                  },
+                  {
+                    "kind": "UNSUPPORTED",
+                    "type": null,
+                    "sourceEvidence": "§7.4(b)(ii): 'in which the Parent Borrower has an equal or higher direct or indirect ownership percentage'",
+                    "semanticDescription": "Condition: the Parent Borrower must have an equal or higher direct or indirect ownership percentage in the recipient Subsidiary. AMBIGUOUS_DRAFTING: the text does not state the comparative benchmark (natural reading: relative to the Parent Borrower's ownership percentage in the disposing Subsidiary)",
+                    "reason": "non-computable fact about relative ownership percentages; benchmark not stated in the source text and no authoritative definition was available to resolve it",
+                    "requiredReview": true,
+                    "provenance": {
+                      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§7.4(b)(ii)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:3f9880da34d2ddb02f3aefae",
+                    "inventoryItemIds": [
+                      "e3d045713c147cc22f6664b2"
+                    ]
+                  }
+                ],
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.4(b)(ii)",
+                  "excerpt": null
+                }
+              },
+              {
+                "kind": "UNSUPPORTED",
+                "type": null,
+                "sourceEvidence": "§7.4(b)(ii): 'or any Subsidiary Guarantor'",
+                "semanticDescription": "Condition (alternative (b)): the transferee may be any Subsidiary Guarantor (term 'Subsidiary Guarantor' defined as (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%))",
+                "reason": "entity-status predicate requiring a determination of the specific transferee's guarantor status; not computable from contract text",
+                "requiredReview": true,
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.4(b)(ii)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:1e94bc6f6334575329920ce9",
+                "inventoryItemIds": [
+                  "f94e78627d8d7b5417e47813"
+                ]
+              }
+            ],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.4(b)(ii)",
+              "excerpt": null
+            },
+            "inventoryItemIds": [
+              "f556a685c6e8c87057276f29"
+            ]
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.4(b)(ii)",
+            "excerpt": "any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor"
+          },
+          "inventoryItemIds": [
+            "af6a4b07c181ab2c22d0f286"
+          ]
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The Disposition may be effected upon voluntary liquidation of the disposing Subsidiary or in any other manner; the parenthetical operates as an expansion, not a restriction, on the manner of disposition",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.4(b)(ii)",
+              "excerpt": "(upon voluntary liquidation or otherwise)"
+            },
+            "inventoryItemIds": [
+              "ca07e1aec4b66b0cd9ff589c"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "7.4",
+            "description": "Carve-out from the Section 7.4 prohibition on fundamental changes, which prohibits, inter alia, disposing of all or substantially all of its Property or business; the binding subject of that prohibition is outside the supplied operative window",
+            "reason": "dependsOn[0].targetRef \"7.4\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The permission's operative structure is fully represented: no dollar ceiling (any or all assets) gated by a transferee test preserved as a nested OR((AND(other Subsidiary, not a Loan Party, equal-or-higher Parent Borrower ownership)), Subsidiary Guarantor) tree",
+          "The entity-status predicates (Subsidiary status, Loan Party status, ownership comparison, Subsidiary Guarantor status) are non-computable transaction facts and are carried as UNSUPPORTED leaves within the tree rather than guessed",
+          "The ownership-percentage condition is AMBIGUOUS_DRAFTING: 'equal or higher' ownership in the recipient is required without stating the comparative benchmark in the text",
+          "Defined terms 'Loan Party' and 'Dispose' could not be resolved via getDefinition (no match in this instrument's documents); 'Dispose' scopes the action and 'Loan Party' scopes both parties, but neither change affects the represented structure",
+          "Trailing numeral '100' treated as a pagination artifact with no operative effect (see inventoryDispositions)",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "entity-status predicate requiring facts about the specific transacting parties; no IR primitive can compute whether a given transferee satisfies this entity class",
+          "defined term unresolvable in this instrument's documents and the predicate is an entity-status fact",
+          "non-computable fact about relative ownership percentages; benchmark not stated in the source text and no authoritative definition was available to resolve it",
+          "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+          "entity-status predicate requiring a determination of the specific transferee's guarantor status; not computable from contract text",
+          "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+          "condition[0].conditionType \"UNRESTRICTED_MANNER\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"7.4\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.4(b)(ii)",
+          "excerpt": "(ii) any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Subsidiary"
+            ],
+            "entityScopeExcluded": [
+              "Loan Party"
+            ],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Subsidiary",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScopeExcluded",
+              "raw": "Loan Party",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "LOAN_PARTY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [
+              "LOAN_PARTY"
+            ],
+            "sufficiency": "PARTIAL"
+          },
+          "witness": {
+            "ownExcerpt": "(ii) any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 9,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Loan Party",
+                "index": 34,
+                "excludedContext": true,
+                "requiresAnyOf": [
+                  "BORROWER",
+                  "GUARANTOR_RS",
+                  "PARENT"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 140,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Loan Party",
+                "index": 165,
+                "excludedContext": true,
+                "requiresAnyOf": [
+                  "BORROWER",
+                  "GUARANTOR_RS",
+                  "PARENT"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 196,
+                "excludedContext": true,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": false,
+                "satisfiedBy": [],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiary",
+                "index": 275,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Guarantor",
+                "index": 286,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "PARENT"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        },
+        "inventoryItemIds": [
+          "6ded96790d768b4d8b884d4f",
+          "22ca81318bdb82ff9b320683"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r1].UNLIMITED_CAPACITY.gatedBy.OR[0].AND[0]] entity-status predicate requiring facts about the specific transacting parties; no IR primitive can compute whether a given transferee satisfies this entity class",
+      "[rule[r1].UNLIMITED_CAPACITY.gatedBy.OR[0].AND[1]] defined term unresolvable in this instrument's documents and the predicate is an entity-status fact",
+      "[rule[r1].UNLIMITED_CAPACITY.gatedBy.OR[0].AND[2]] non-computable fact about relative ownership percentages; benchmark not stated in the source text and no authoritative definition was available to resolve it",
+      "[rule[r1].UNLIMITED_CAPACITY.gatedBy.OR[0]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "[rule[r1].UNLIMITED_CAPACITY.gatedBy.OR[1]] entity-status predicate requiring a determination of the specific transferee's guarantor status; not computable from contract text",
+      "[rule[r1].UNLIMITED_CAPACITY.gatedBy] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "[rule[r1]] condition[0].conditionType \"UNRESTRICTED_MANNER\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES",
+      "[rule[r1]] dependsOn[0].targetRef \"7.4\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "§7.4(b)(ii) is an exception carve-out under the Section 7.4 'Limitation on Fundamental Changes' prohibition (which bars, inter alia, disposing of all or substantially all Property or business). The compiled rule is the carve-out permission itself; the chapeau's binding subject is not within the supplied operative window and is preserved only as an EXCEPTION_TO dependency.",
+      "getSharedCapContext returned no shared-capacity signals: this exception carries its own uncapped qualitative economics (no dollar ceiling, no aggregate language), so UNLIMITED_CAPACITY gated by the transferee test is used - never a fabricated dollar amount.",
+      "getDefinition('Loan Party') and getDefinition('Dispose') were attempted and returned no match in this instrument's documents, confirming Phase 2's UNRESOLVED_DEFINED_TERM flags; these affect predicate membership/action scope only, not the represented structure.",
+      "The trailing numeral '100' (frozen-inventory item 79e22e3d...) is dispositioned INTENTIONALLY_NON_COMPUTATIONAL as a pagination artifact with no operative effect.",
+      "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS for the operative window; the clause text itself is confirmed CURRENT operative (context-item f6a5fa72..., evidenceStatus CURRENT) and the rule's sufficiency reflects only the internal ambiguities/unresolvable terms noted, not a substitution problem.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 10 item(s) accepted (0 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:297-300) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:297-300: \"100\" - carries a number that no inventory item anchors, that the quantitative extractor did not recognise, and that no deterministic rule establishes as pagination - a bare number may be a basket, a threshold, a period or a page number, and its shape does not say which"
+    ],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "§7.4(b)(ii) (transferee qualification predicates: 'any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor')",
+        "semanticRequirement": "A boolean-valued primitive for testing whether a transaction party (e.g. the transferee) satisfies an entity class or combination of entity classes with negation, usable as a nested operand inside OR/AND trees - e.g., IS(transferee, Subsidiary & NOT Loan Party), IS(transferee, Subsidiary Guarantor).",
+        "whyExistingPrimitivesFail": "METRIC_REFERENCE/DEFINED_TERM_REFERENCE denote measurable values, COMPARE requires numeric/same-type operands, and ENTITY_SCOPE_REFERENCE scopes whole rules but carries no boolean semantics usable as a condition operand; there is no way to express 'the counterparty belongs to entity class X' inside an OR/AND permission tree without dropping the condition to text or marking it UNSUPPORTED.",
+        "candidateGeneralizedPrimitive": "ENTITY_PREDICATE { partyRole: 'transferor'|'transferee'|... , entityClasses: [classTags], negate: boolean, benchmarkParty/metric?: optional for comparative predicates like equal-or-higher ownership } evaluating to a boolean condition operand."
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T01:37:43.905Z",
+      "inputTokens": 21563,
+      "outputTokens": 20060,
+      "cachedInputTokens": 26624,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 212848,
+      "calculatedCostUsd": 0.24372600000000003
+    },
+    "compiledAt": "2026-09-25T01:37:43.905Z",
+    "outputHash": "4856ed8b6714b89006b63e2897f210ba7ead909d2e85f93ba93d20ff9096c6aa"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "88f88d7b1eb10ee5bd19cfa09ee11015e7b499572db2393458c50d98bc605aa3",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+        "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+        "irPath": "rules[0].capacityExpression.gatedBy.operands[1].semanticDescription",
+        "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)",
+        "sourceCitation": "7.4(b)(ii)",
+        "proposedIrEvidence": "rules[0].capacityExpression.gatedBy.operands[1].semanticDescription asserts \"100%\" (canonical 1 %) in: \"Condition (alternative (b)): the transferee may be any Subsidiary Guarantor (term 'Subsidiary Guarantor' defined as (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%))\"",
+        "verifierReasoning": "compiled IR asserts PERCENTAGE \"100%\" (canonical 1 %) in free text at rules[0].capacityExpression.gatedBy.operands[1].semanticDescription, and no authenticated source RELATED to the asserting unit supports it",
+        "deterministicSignals": [
+          "compiled IR asserts PERCENTAGE \"100%\" (canonical 1 %) in free text at rules[0].capacityExpression.gatedBy.operands[1].semanticDescription, and no authenticated source RELATED to the asserting unit supports it"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T01:37:43.917Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7e41c23033d89b4d9489470f9e65efcbb1faf8c53bb0e8a0b2627e42896ec5b4",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.4(b)(ii)",
+            "structuralNodeKey": null,
+            "charStart": 34,
+            "charEnd": 44
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4ac709e4f8265347e2be807bb8e6116f05112774e2555c8ce55a5b7ad5403b05",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.4(b)(ii)",
+            "structuralNodeKey": null,
+            "charStart": 165,
+            "charEnd": 175
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aeab6304974b92482c93001cd66fbda6f8b433add0f0b7d0688ce8d403a6716a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.4(b)(ii)",
+            "structuralNodeKey": null,
+            "charStart": 189,
+            "charEnd": 204
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a5961cd12ee5ea578f793b9053924a61498633d06b8939ad774ff668abc5246d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Subsidiary Guarantor",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.4(b)(ii)",
+            "structuralNodeKey": null,
+            "charStart": 275,
+            "charEnd": 295
+          },
+          "irItems": [],
+          "reason": "source mention \"Subsidiary Guarantor\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "compiled IR asserts PERCENTAGE \"100%\" (canonical 1 %) in free text at rules[0].capacityExpression.gatedBy.operands[1].semanticDescription, and no authenticated source RELATED to the asserting unit supports it",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "100%",
+              "normalizedValue": 1,
+              "currency": null,
+              "unit": "%",
+              "charStart": 241,
+              "charEnd": 245,
+              "withheldReason": null,
+              "itemId": "b72b9bba477f6beb5843abf83fb4337217570611dcfceb83671ba283d6d63868",
+              "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+              "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.operands[1].semanticDescription",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "Condition (alternative (b)): the transferee may be any Subsidiary Guarantor (term 'Subsidiary Guarantor' defined as (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%))",
+              "ownerTermName": null,
+              "ownerCitation": "§7.4(b)(ii)",
+              "referencedTerms": [],
+              "referencedSections": [
+                "7.4(b)(ii)",
+                "§7.4(b)(ii)",
+                "7.4"
+              ]
+            },
+            "status": "UNGROUNDED",
+            "groundedIn": null,
+            "matchedEvidenceId": null,
+            "matchedText": null,
+            "relation": null,
+            "unrelatedEvidenceIds": [],
+            "reason": "compiled IR asserts PERCENTAGE \"100%\" (canonical 1 %) in free text at rules[0].capacityExpression.gatedBy.operands[1].semanticDescription, and no authenticated source RELATED to the asserting unit supports it"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+      "items": [
+        {
+          "itemId": "6c4143fa65d231d28b4ef6dbab6f42f42b6f7901c68c3599d8fbb26b99b344f9",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 34,
+          "charEnd": 44,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "cf84da3fa6571a30c5e861ee4e5e0d97e29889c5b7c2b67fdc3fc3efcca63120",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 165,
+          "charEnd": 175,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "277384624eda3faef26a0872bf016f55b95f57f54d2d49852d5f6b31896eecff",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 196,
+          "charEnd": 204,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "b9dd237f6d2ab39084b06d5dad8b106d7128018adf848fca13ec9916aec81091",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Guarantor",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 286,
+          "charEnd": 295,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "08808784a617b7ca9627a0fb7ba74be99f254729ad2c5fe44477a048ce54e5cb",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Dispose",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 49,
+          "charEnd": 56,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "7e41c23033d89b4d9489470f9e65efcbb1faf8c53bb0e8a0b2627e42896ec5b4",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 34,
+          "charEnd": 44
+        },
+        {
+          "itemId": "4ac709e4f8265347e2be807bb8e6116f05112774e2555c8ce55a5b7ad5403b05",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 165,
+          "charEnd": 175
+        },
+        {
+          "itemId": "aeab6304974b92482c93001cd66fbda6f8b433add0f0b7d0688ce8d403a6716a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 189,
+          "charEnd": 204
+        },
+        {
+          "itemId": "a5961cd12ee5ea578f793b9053924a61498633d06b8939ad774ff668abc5246d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Subsidiary Guarantor",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": 275,
+          "charEnd": 295
+        },
+        {
+          "itemId": "9ce6ec1d33e297c402d05125daef28d881bf6b6f1372f41210711c2170842fbc",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.4(b)(ii)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(ii)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+      "items": [
+        {
+          "itemId": "089c020d36351623a4542653c918ac368957af28f65b5c92dbe19083dca324b3",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": "(ii) any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "e286ce1d467eaf8bb5dbefa5b43d7ab4f801ff03f73f786bb642da89d4f44b3f",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": "(ii) any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "7a89dc726dbf30d71c5c96c8def2c7e377564e5ad7dc9835805e0adea5122d75",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"ANY_SUBSIDIARY\"],\"exclude\":[\"LOAN_PARTY\"]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": "(ii) any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "46ec8eeb27a1d48c4ee28d5d5c266e188b22f144977e38ae7738676dac39606b",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The Disposition may be effected upon voluntary liquidation of the disposing Subsidiary or in any other manner; the parenthetical operates as an expansion, not a restriction, on the manner of disposition",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": "(upon voluntary liquidation or otherwise)",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "95a8d515e9ec36b67f0a1a4ec66484828f9ac066b2603383f5056f6e067a9d88",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": "any Subsidiary that is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that is not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "c12e454813b841618a52a69d4c57395888118cf7e435cadbcdf410f87ec82191",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].capacityExpression.gatedBy.operands[0].operands[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Condition: the transferee must be 'any other Subsidiary' - i.e., a Subsidiary of the Parent Borrower other than the disposing Subsidiary itself (term 'Subsidiary' per its definition defaults to a Subsidiary of the Parent Borrower)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "1629f97e62ac93e3e609110dbf0a0a8fd69ca71785df0862a3bb2080a57897f6",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].capacityExpression.gatedBy.operands[0].operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Condition: the recipient Subsidiary must not be a Loan Party; term 'Loan Party' is not defined in any document of this instrument (getDefinition returned no match), so the exclusion's precise membership cannot be resolved from the evidence given",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "667376d4f471a5c75fe5a574894b4b2f52e134b8cdfbb6c843b5567a8db9f02d",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].capacityExpression.gatedBy.operands[0].operands[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Condition: the Parent Borrower must have an equal or higher direct or indirect ownership percentage in the recipient Subsidiary. AMBIGUOUS_DRAFTING: the text does not state the comparative benchmark (natural reading: relative to the Parent Borrower's ownership percentage in the disposing Subsidiary)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "375b80c4be6c62aafa89a79ef08625bc4ca810fd8b11572412ad2b137e7db14b",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+          "irPath": "rules[0].capacityExpression.gatedBy.operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Condition (alternative (b)): the transferee may be any Subsidiary Guarantor (term 'Subsidiary Guarantor' defined as (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%))",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.4(b)(ii)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+        "items": [
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "100%",
+            "normalizedValue": 1,
+            "currency": null,
+            "unit": "%",
+            "charStart": 241,
+            "charEnd": 245,
+            "withheldReason": null,
+            "itemId": "b72b9bba477f6beb5843abf83fb4337217570611dcfceb83671ba283d6d63868",
+            "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+            "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.operands[1].semanticDescription",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Condition (alternative (b)): the transferee may be any Subsidiary Guarantor (term 'Subsidiary Guarantor' defined as (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%))",
+            "ownerTermName": null,
+            "ownerCitation": "§7.4(b)(ii)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.4(b)(ii)",
+              "§7.4(b)(ii)",
+              "7.4"
+            ]
+          }
+        ],
+        "fieldsWalked": 19,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "100%",
+            "normalizedValue": 1,
+            "currency": null,
+            "unit": "%",
+            "charStart": 241,
+            "charEnd": 245,
+            "withheldReason": null,
+            "itemId": "b72b9bba477f6beb5843abf83fb4337217570611dcfceb83671ba283d6d63868",
+            "candidateRef": "discovery-candidate:5bc35e5a4b020669b235c00a",
+            "ruleOrDefinitionId": "ir-rule:6198df50141ea2d29b2c6aaf",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.operands[1].semanticDescription",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "Condition (alternative (b)): the transferee may be any Subsidiary Guarantor (term 'Subsidiary Guarantor' defined as (a) each Material Domestic Subsidiary and (b) each Material Foreign Subsidiary that is a Pledge Eligible Foreign Subsidiary (100%))",
+            "ownerTermName": null,
+            "ownerCitation": "§7.4(b)(ii)",
+            "referencedTerms": [],
+            "referencedSections": [
+              "7.4(b)(ii)",
+              "§7.4(b)(ii)",
+              "7.4"
+            ]
+          },
+          "status": "UNGROUNDED",
+          "groundedIn": null,
+          "matchedEvidenceId": null,
+          "matchedText": null,
+          "relation": null,
+          "unrelatedEvidenceIds": [],
+          "reason": "compiled IR asserts PERCENTAGE \"100%\" (canonical 1 %) in free text at rules[0].capacityExpression.gatedBy.operands[1].semanticDescription, and no authenticated source RELATED to the asserting unit supports it"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "1f1dcc8946785c32bc684101feb67c75d64a60429d94feb367c069d5dcbf02a2",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "b78d360508f9031572bd61e2b31ef855fc25ff5b14a2d919c8867a1b0f214863",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 393667,
+    "inputTokens": 21563,
+    "outputTokens": 20060,
+    "costUsd": 0.00801879,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:5bc35e5a4b020669b235c00a.verified-units.json",
+    "packageHash": "4057eb02bb04b0e06e3dad000d2e1b170afa058f57ab8bc296a147a7fdbffe2a",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

@@ -1,0 +1,2073 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T00:25:18.615Z",
+  "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.3(m)(ii)(A)",
+    "operativeSourceText": "(A) $50,000,000 and ",
+    "operativeSourceTextSha256": "adada7299ac0dabdc0764e322d7ad4447298bc4e4a29c2317d0d88c46d844ed1",
+    "operativeSourceChars": 20,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:36e65b0aa7e9ed591681739ac962908ee46166d84ac52c28a068634dd9089e35",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 4,
+    "items": [
+      {
+        "itemId": "context-item:58a0dc2439b444978cfa7deac096e06e41faca15e699934bb1e86288768b4b66",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.3(m)(ii)(A)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 20,
+        "excerptText": "(A) $50,000,000 and "
+      },
+      {
+        "itemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 7053,
+        "excerptText": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n(a)\nLiens for taxes, assessments or charges not yet due or which are being contested in good faith by appropriate proceedings; provided\nthat adequate reserves with respect thereto are maintained on the books of the Parent Borrower or its Subsidiaries, as the case may be,\nin conformity with GAAP;\n97\n(b)\ncarriers', warehousemen's, mechanics', materialmen's, repairmen's, supplier's or other like\nLiens arising in the ordinary course of business which are not overdue for a period of more than 30 days or which are being contested\nin good faith by appropriate proceedings and Liens securing judgments to the extent not constituting an Event of Default pursuant to clause\n(h) of Article VIII;\n(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n(e)\neasements, rights-of-way, restrictions and other similar encumbrances incurred in the ordinary course of business which, in the\naggregate, are not substantial in amount and which do not in any case materially detract from the value of the Property subject thereto\nor materially interfere with the ordinary conduct of the business of the Parent Borrower or any of its Subsidiaries;\n(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secured thereby is not increased;\n(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n(h)\nLiens created pursuant to the Security Documents;\n(i)\nany interest or title of a lessor under any lease entered into by the Parent Borrower or any other Subsidiary in the ordinary course\nof its business and covering only the assets so leased;\n(j)\nLiens arising from precautionary UCC financing statement filings regarding operating leases or consignment arrangements entered\ninto by the Parent Borrower or its Subsidiaries in the ordinary course of business;\n(k)\nLiens in favor of banking institutions encumbering the deposits (including the right of setoff) held by such banking institutions\nin the ordinary course of business and which are within the general parameters customary in the banking industry;\n98\n(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary of the Parent Borrower; provided that (i) any Indebtedness that is secured by such Liens is permitted\nto exist under Section 7.2, (ii) such Liens are not created in anticipation of such Permitted Business Acquisition or similar Investment\nor such Person otherwise becoming a Subsidiary of the Parent Borrower and do not attach to any other asset of the Parent Borrower or any\nof its Subsidiaries other than any replacements of such property or assets and accessions thereto and proceeds thereof, or, in the case\nof any acquired Subsidiary, after-acquired property of such Person of the same type and consistent with that contemplated at the time\nsuch original Lien was created and (iii) such Liens secure no greater principal amount of Indebtedness than the aggregate principal amount\nof the Indebtedness, if any, secured by such Liens on the date of such Permitted Business Acquisition or similar Investment or date on\nwhich such Person otherwise becomes a Subsidiary;\n(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations\nsecured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Liens);\n(n)\nLiens securing Indebtedness permitted by Section 7.2(e) on the real property of the Parent Borrower or its Subsidiaries in Largo,\nFlorida;\n(o)\nLiens on accounts receivable or related ancillary rights and assets sold, transferred, encumbered or otherwise disposed of, or\npurported to have been sold, transferred, encumbered or otherwise disposed of pursuant to a Receivables Transfer Program in accordance\nwith Section 7.5(k); and\n(p)\nLiens in the nature of escrow arrangements for deferred payments to be made in connection with a Permitted Business Acquisition\nto the extent such payments constitute amounts permitted under Section 7.8(k) and the rights of any beneficiary thereunder.\nFor purposes of determining compliance with\nthis Section 7.3, (A) a Lien securing an item of Indebtedness need not be permitted solely by reference to one category of permitted Liens\ndescribed in Section 7.3(a) through (q) but may be permitted in part under any combination thereof and (B) in the event that a Lien securing\nan item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section\n7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify,\nsuch Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant and will only be\nrequired to include the amount and type of such Lien or such item of Indebtedness secured by such Lien in one of the above clauses and\nsuch Lien securing such item of Indebtedness will be treated as being incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:115ac81cc9b33dc4e9bb74f422729df645b59acc1b6c9174d39d7ac7dc72d05b",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3(m)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 73,
+        "excerptText": "(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither "
+      },
+      {
+        "itemId": "context-item:246a07975e8d3b87fa73c6cec3367b25a6a507bc8408efa432ef72529ecc1625",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3(m)(ii)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 189,
+        "excerptText": "(ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of "
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "toItemId": "context-item:58a0dc2439b444978cfa7deac096e06e41faca15e699934bb1e86288768b4b66",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:115ac81cc9b33dc4e9bb74f422729df645b59acc1b6c9174d39d7ac7dc72d05b",
+        "toItemId": "context-item:58a0dc2439b444978cfa7deac096e06e41faca15e699934bb1e86288768b4b66",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:246a07975e8d3b87fa73c6cec3367b25a6a507bc8408efa432ef72529ecc1625",
+        "toItemId": "context-item:58a0dc2439b444978cfa7deac096e06e41faca15e699934bb1e86288768b4b66",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "PARTIAL",
+    "failureReasons": [
+      "IR_VALIDATION_FAILURE",
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.3(m)",
+          "covenantFamily": "LIENS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "INCUR_LIEN",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "MAX",
+            "operands": [
+              {
+                "kind": "MONEY",
+                "amount": 50000000,
+                "currency": "USD",
+                "citation": "§7.3(m)(ii)(A)",
+                "excerpt": "(A) $50,000,000 and",
+                "inventoryItemIds": [
+                  "inv-item:5d86ecf594feffd7514dee56"
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "operands": [
+                  {
+                    "kind": "PERCENT",
+                    "value": 0.03,
+                    "citation": "§7.3(m)(ii)(B)"
+                  },
+                  {
+                    "kind": "AS_OF",
+                    "operand": {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated Total Assets",
+                      "citation": "§7.3(m)(ii)(B)"
+                    },
+                    "asOfDate": "date of incurrence of such Liens",
+                    "citation": "§7.3(m)(ii)(B)"
+                  }
+                ],
+                "citation": "§7.3(m)(ii)(B)"
+              }
+            ],
+            "citation": "§7.3(m)(ii)",
+            "excerpt": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)"
+          },
+          "conditions": [
+            {
+              "conditionType": "SIZE_LIMIT_SATISFIED",
+              "expression": {
+                "kind": "COMPARE",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens"
+                },
+                "operator": "LTE",
+                "right": {
+                  "kind": "RULE_REFERENCE",
+                  "ruleRef": "r1"
+                },
+                "citation": "§7.3(m)(i)",
+                "excerpt": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby"
+              },
+              "referencesDefinitionId": null,
+              "description": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+              "citation": "§7.3(m)(i)",
+              "excerpt": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby",
+              "inventoryItemIds": []
+            },
+            {
+              "conditionType": "SIZE_LIMIT_SATISFIED",
+              "expression": {
+                "kind": "COMPARE",
+                "left": {
+                  "kind": "AS_OF",
+                  "operand": {
+                    "kind": "METRIC_REFERENCE",
+                    "metricName": "Aggregate Fair Market Value of the Assets Subject to such Liens"
+                  },
+                  "asOfDate": "date such Lien is incurred"
+                },
+                "operator": "LTE",
+                "right": {
+                  "kind": "RULE_REFERENCE",
+                  "ruleRef": "r1"
+                },
+                "citation": "§7.3(m)(ii)",
+                "excerpt": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto"
+              },
+              "referencesDefinitionId": null,
+              "description": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+              "citation": "§7.3(m)(ii)",
+              "excerpt": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto",
+              "inventoryItemIds": []
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "LIMITED_BY",
+              "targetRef": "Section 7.3(a)-(l), (n)-(p)",
+              "description": "Clause (m) is a residual catch-all permitting only Liens not otherwise permitted by Section 7.3; the closing paragraph of Section 7.3 governs classification/reclassification of a Lien across categories (a) through (p)"
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Operative window supplied as the fragment '(A) $50,000,000 and'; full clause (m) economics (prongs (i)/(ii), greater-of cap (A)/(B)) reconstructed from parent-scope context items marked CURRENT (§7.3 full text, §7.3(m), §7.3(m)(ii)) and the provision's 'never amended' record",
+            "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS but the parent-scope evidence establishing the complete clause (m) unit is marked CURRENT, so the whole basket's operative economics are represented; inventory item's AMBIGUOUS_DRAFTING flag ('connected by and to a following component') is resolved by that CURRENT text showing the greater-of (A)/(B) structure"
+          ],
+          "citation": "§7.3(m)",
+          "excerpt": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+          "inventoryItemIds": []
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [],
+      "overallNotes": [
+        "The operative source was supplied only as the fragment '7.3(m)(ii)(A): (A) $50,000,000 and'. The full economics of clause (m) (both size prongs and the greater-of (A)/(B) ceiling) were compiled from the parent-scope context items, which are all marked CURRENT and the provision has never been amended; the rule therefore represents the entire (m) catch-all basket rather than only the fragment.",
+        "Counterpart (B) of the greater-of (3.0% of Consolidated Total Assets) is deterministically present in the parent-scope CURRENT text even though it was outside the frozen inventory window; it is represented (not omitted) as a material component, consistent with the requirement to represent detected values that participate in a material proposition.",
+        "No shared capacity was emitted: clause (m) is a self-contained basket with its own ceiling. The closing paragraph of Section 7.3 is a classification/routing mechanic (a Lien may be permitted in part under any combination of clauses and counted in only one), not an aggregate dollar ceiling shared across baskets, so it is carried as a LIMITEd_BY dependency rather than a WireSharedCapacity.",
+        "Metric definitions used here ('Consolidated Total Assets', and the measured 'aggregate outstanding principal amount...'/'aggregate fair market value...' quantities) are external defined terms represented via METRIC_REFERENCE; the bundle lists low-priority unresolved defined terms and no definitions section was supplied, so no WireDefinition outputs were warranted.",
+        "The chapeau prohibition of Section 7.3 and its other permitted-lien baskets (a)-(l), (n)-(p) exist outside this operative window and are not separately emitted; clause (m) is bound to them via its residual 'not otherwise permitted' dependency."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:7a71a064412fc1c515a1b9e1",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.3(m)",
+        "covenantFamily": "LIENS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MAX",
+          "type": "MONEY",
+          "exprId": "ir-expr:0ba3450f5c6fc03ea56d966c",
+          "operands": [
+            {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 50000000,
+              "currency": "USD",
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.3(m)(ii)(A)",
+                "excerpt": "(A) $50,000,000 and"
+              },
+              "exprId": "ir-expr:bec9b589cc879f78fa413c8c",
+              "inventoryItemIds": [
+                "inv-item:5d86ecf594feffd7514dee56"
+              ]
+            },
+            {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:b72ca30e303eb9173c1f6899",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "type": "PERCENT",
+                  "value": 0.03,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.3(m)(ii)(B)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:6f6b2e7624a9a6c11384928b"
+                },
+                {
+                  "kind": "AS_OF",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:8fef36b331810c9457b7b8dc",
+                  "value": {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Consolidated Total Assets",
+                    "companyId": "conmed-pilot",
+                    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:3212d45ff79088d43d515800"
+                  },
+                  "asOfDate": "date of incurrence of such Liens",
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.3(m)(ii)(B)",
+                    "excerpt": null
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.3(m)(ii)(B)",
+                "excerpt": null
+              }
+            }
+          ],
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.3(m)(ii)",
+            "excerpt": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby",
+              "semanticDescription": "unrecognized or malformed expression (kind=\"COMPARE\")",
+              "reason": "COMPARE operands are not the same type: COMPARE operands must be the same type",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.3(m)(i)",
+                "excerpt": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby"
+              },
+              "attemptedStructure": {
+                "kind": "COMPARE",
+                "type": "BOOLEAN",
+                "exprId": "ir-expr:d3a021e66b377d836fc3c83d",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "type": "MONEY",
+                  "metricName": "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                  "companyId": "conmed-pilot",
+                  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:582117b53ace202b382424f6"
+                },
+                "operator": "LTE",
+                "right": {
+                  "kind": "RULE_REFERENCE",
+                  "type": "CAPACITY",
+                  "ruleId": "ir-rule:7a71a064412fc1c515a1b9e1",
+                  "companyId": "conmed-pilot",
+                  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                  "exprId": "ir-expr:3470f5508bc74676831a3265"
+                },
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.3(m)(i)",
+                  "excerpt": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby"
+                }
+              },
+              "exprId": "ir-expr:0879c61431face077c90f256"
+            },
+            "referencesDefinitionId": null,
+            "description": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(m)(i)",
+              "excerpt": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby"
+            }
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto",
+              "semanticDescription": "unrecognized or malformed expression (kind=\"COMPARE\")",
+              "reason": "COMPARE operands are not the same type: COMPARE operands must be the same type",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.3(m)(ii)",
+                "excerpt": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto"
+              },
+              "attemptedStructure": {
+                "kind": "COMPARE",
+                "type": "BOOLEAN",
+                "exprId": "ir-expr:983a7d0fa87352ad50070ad9",
+                "left": {
+                  "kind": "AS_OF",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:d0a45066232ceb00e6fbd568",
+                  "value": {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                    "companyId": "conmed-pilot",
+                    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:855883db1131dd5449cf4de6"
+                  },
+                  "asOfDate": "date such Lien is incurred",
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.3(m)(ii)",
+                    "excerpt": null
+                  }
+                },
+                "operator": "LTE",
+                "right": {
+                  "kind": "RULE_REFERENCE",
+                  "type": "CAPACITY",
+                  "ruleId": "ir-rule:7a71a064412fc1c515a1b9e1",
+                  "companyId": "conmed-pilot",
+                  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                  "exprId": "ir-expr:3470f5508bc74676831a3265"
+                },
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.3(m)(ii)",
+                  "excerpt": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto"
+                }
+              },
+              "exprId": "ir-expr:2d4fd829d91ce793a6daf879"
+            },
+            "referencesDefinitionId": null,
+            "description": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(m)(ii)",
+              "excerpt": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "LIMITED_BY",
+            "targetRef": "Section 7.3(a)-(l), (n)-(p)",
+            "description": "Clause (m) is a residual catch-all permitting only Liens not otherwise permitted by Section 7.3; the closing paragraph of Section 7.3 governs classification/reclassification of a Lien across categories (a) through (p)",
+            "reason": "dependsOn[0].targetRef \"Section 7.3(a)-(l), (n)-(p)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Operative window supplied as the fragment '(A) $50,000,000 and'; full clause (m) economics (prongs (i)/(ii), greater-of cap (A)/(B)) reconstructed from parent-scope context items marked CURRENT (§7.3 full text, §7.3(m), §7.3(m)(ii)) and the provision's 'never amended' record",
+          "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS but the parent-scope evidence establishing the complete clause (m) unit is marked CURRENT, so the whole basket's operative economics are represented; inventory item's AMBIGUOUS_DRAFTING flag ('connected by and to a following component') is resolved by that CURRENT text showing the greater-of (A)/(B) structure",
+          "condition[0].conditionType \"SIZE_LIMIT_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+          "COMPARE operands are not the same type: COMPARE operands must be the same type",
+          "condition[1].conditionType \"SIZE_LIMIT_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+          "COMPARE operands are not the same type: COMPARE operands must be the same type",
+          "dependsOn[0].targetRef \"Section 7.3(a)-(l), (n)-(p)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.3(m)",
+          "excerpt": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+            "citedUnitLeadIn": null,
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 298,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 315,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[FALSE_COMPLETENESS] (ir-rule:7a71a064412fc1c515a1b9e1) rule declares sufficiency COMPLETE but conditions[0].expression contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL",
+      "[FALSE_COMPLETENESS] (ir-rule:7a71a064412fc1c515a1b9e1) rule declares sufficiency COMPLETE but conditions[1].expression contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL",
+      "[rule[r1]] condition[0].conditionType \"SIZE_LIMIT_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[0].expression] COMPARE operands are not the same type: COMPARE operands must be the same type",
+      "[rule[r1]] condition[1].conditionType \"SIZE_LIMIT_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[1].expression] COMPARE operands are not the same type: COMPARE operands must be the same type",
+      "[rule[r1]] dependsOn[0].targetRef \"Section 7.3(a)-(l), (n)-(p)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "The operative source was supplied only as the fragment '7.3(m)(ii)(A): (A) $50,000,000 and'. The full economics of clause (m) (both size prongs and the greater-of (A)/(B) ceiling) were compiled from the parent-scope context items, which are all marked CURRENT and the provision has never been amended; the rule therefore represents the entire (m) catch-all basket rather than only the fragment.",
+      "Counterpart (B) of the greater-of (3.0% of Consolidated Total Assets) is deterministically present in the parent-scope CURRENT text even though it was outside the frozen inventory window; it is represented (not omitted) as a material component, consistent with the requirement to represent detected values that participate in a material proposition.",
+      "No shared capacity was emitted: clause (m) is a self-contained basket with its own ceiling. The closing paragraph of Section 7.3 is a classification/routing mechanic (a Lien may be permitted in part under any combination of clauses and counted in only one), not an aggregate dollar ceiling shared across baskets, so it is carried as a LIMITEd_BY dependency rather than a WireSharedCapacity.",
+      "Metric definitions used here ('Consolidated Total Assets', and the measured 'aggregate outstanding principal amount...'/'aggregate fair market value...' quantities) are external defined terms represented via METRIC_REFERENCE; the bundle lists low-priority unresolved defined terms and no definitions section was supplied, so no WireDefinition outputs were warranted.",
+      "The chapeau prohibition of Section 7.3 and its other permitted-lien baskets (a)-(l), (n)-(p) exist outside this operative window and are not separately emitted; clause (m) is bound to them via its residual 'not otherwise permitted' dependency.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T00:21:04.319Z",
+      "inputTokens": 3539,
+      "outputTokens": 17730,
+      "cachedInputTokens": 10240,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 154514,
+      "calculatedCostUsd": 0.18437800000000001
+    },
+    "compiledAt": "2026-09-25T00:21:04.319Z",
+    "outputHash": "4e17e0b032d4c5fc9fe36ee3689e623e57d089e852c72f47e50d40a8847eef14"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "24eba59dce2021bb3c44ad4a6f4acbf40d49d78b4bc14e941c0466ce2cf8396c",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+        "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+        "irPath": "rules[0].conditions",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+        "sourceCitation": "Credit Agreement §7.3(m) (PARENT_SCOPE context item f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6; see also context item 115ac81cc9b33dc4e9bb74f422729df645b59acc1b6c9174d39d7ac7dc72d05b)",
+        "proposedIrEvidence": "IR rules[0].conditions only contains condition[0] and condition[1] for the (i) principal and (ii) FMV prongs, plus capacityExpression = MAX($50,000,000, 3.0% × Consolidated Total Assets); no condition represents the chapeau qualifier 'Liens not otherwise permitted by this Section 7.3'; dependsOn is []; sufficiency is 'COMPLETE'.",
+        "verifierReasoning": "The chapeau of §7.3(m) is an independently operative scope condition: the $50,000,000/3.0%-of-Consolidated-Total-Assets basket is a residual catch-all available only for Liens that are not already permitted by another clause of Section 7.3. The proposed IR starts directly at the two amount prongs, so a consumer would not know that Liens otherwise permitted under clauses (a)-(l) or (n)-(p) should not be measured against or consume this basket, and the IR records no dependency on the other Section 7.3 exceptions. Hypothetical: a Lien securing Indebtedness permitted by Section 7.2(e) and within Section 7.3(f) is not a §7.3(m) Lien; a system reading only the IR would treat it as eligible to be tested against and charged to the §7.3(m) cap, reducing apparent capacity and changing compliance conclusions. This is material to capacity, classification, and compliance.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T00:25:18.607Z"
+      },
+      {
+        "findingId": "869c4f4cfc204dce1fa61946ca1fcc62106425ded1ff3c21040cbc5ad66304c0",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+        "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+        "irPath": "rules[0].capacityExpression.operands[1].operands[0]",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.3(m)(ii)(A)",
+        "proposedIrEvidence": "rules[0].capacityExpression.operands[1].operands[0]=0.03",
+        "verifierReasoning": "compiled IR PERCENT value 0.03 at rules[0].capacityExpression.operands[1].operands[0] has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR PERCENT value 0.03 at rules[0].capacityExpression.operands[1].operands[0] has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T00:21:04.323Z"
+      },
+      {
+        "findingId": "9a49a88299e3f390b7a517993464c3fb719f3d78a52c30aa5965e8710633c550",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+        "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+        "irPath": "rules[0].provenance.excerpt",
+        "findingType": "PROVENANCE_MISMATCH",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)",
+        "sourceCitation": "7.3(m)(ii)(A)",
+        "proposedIrEvidence": "rules[0].provenance.excerpt asserts \"3.0%\" (canonical 0.03 %) in: \"Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);\"",
+        "verifierReasoning": "provenance excerpt at rules[0].provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance",
+        "deterministicSignals": [
+          "provenance excerpt at rules[0].provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T00:21:04.323Z"
+      },
+      {
+        "findingId": "f76b4521017b20d87cc9a515c9449309469dc733105d3c7533053f42840eeedb",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+        "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+        "irPath": "rules[0].conditions[0].description",
+        "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)",
+        "sourceCitation": "7.3(m)(ii)(A)",
+        "proposedIrEvidence": "rules[0].conditions[0].description asserts \"3.0%\" (canonical 0.03 %) in: \"The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\"",
+        "verifierReasoning": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[0].description, and no authenticated source RELATED to the asserting unit supports it",
+        "deterministicSignals": [
+          "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[0].description, and no authenticated source RELATED to the asserting unit supports it"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T00:21:04.323Z"
+      },
+      {
+        "findingId": "427289369c4754d841e0e32a5e6528176f8e5c5171bfdee17c219bec3283c77f",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+        "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+        "irPath": "rules[0].conditions[1].description",
+        "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)",
+        "sourceCitation": "7.3(m)(ii)(A)",
+        "proposedIrEvidence": "rules[0].conditions[1].description asserts \"3.0%\" (canonical 0.03 %) in: \"The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\"",
+        "verifierReasoning": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[1].description, and no authenticated source RELATED to the asserting unit supports it",
+        "deterministicSignals": [
+          "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[1].description, and no authenticated source RELATED to the asserting unit supports it"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T00:21:04.323Z"
+      },
+      {
+        "findingId": "f93fc28413d39124255fe759bb3f3db1aaab9919a348bc37ddaff24ff9ad0baf",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+        "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+        "irPath": "rules[0].capacityExpression.provenance.excerpt",
+        "findingType": "PROVENANCE_MISMATCH",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)",
+        "sourceCitation": "7.3(m)(ii)(A)",
+        "proposedIrEvidence": "rules[0].capacityExpression.provenance.excerpt asserts \"3.0%\" (canonical 0.03 %) in: \"the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)\"",
+        "verifierReasoning": "provenance excerpt at rules[0].capacityExpression.provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance",
+        "deterministicSignals": [
+          "provenance excerpt at rules[0].capacityExpression.provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-25T00:21:04.323Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "21bd189bba099edab898305b15d89499801c15f0b35db2779b8811bce4e5992b",
+            "kind": "AMOUNT",
+            "rawText": "$50,000,000",
+            "numericValue": 50000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.3(m)(ii)(A)",
+            "structuralNodeKey": null,
+            "charStart": 4,
+            "charEnd": 15,
+            "parsedAmount": 50000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "07f3b01d14a43a8daa040dc42e3bde9db3e908f534519c3c0aeb6731963e6f54",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "irPath": "rules[0].capacityExpression.operands[0]",
+              "numericValue": 50000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.3(m)(ii)(A)",
+              "sourceExcerpt": "(A) $50,000,000 and",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 50000000 (canonical 50000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "a5859d521fffa7ebd5ba9d03aab36e3f5b9eaf781c60c07591de0162f19b088c",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "irPath": "rules[0].capacityExpression.operands[1].operands[0]",
+              "numericValue": 0.03,
+              "currency": null,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.3(m)(ii)(B)",
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "compiled IR PERCENT value 0.03 at rules[0].capacityExpression.operands[1].operands[0] has no matching source-side figure"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 348,
+              "charEnd": 359,
+              "withheldReason": null,
+              "itemId": "9e8e1017e1d98af637c3df11383962c781cc88e7ff0c0bca9aee0a782167d81d",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "provenance excerpt at rules[0].provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 368,
+              "charEnd": 372,
+              "withheldReason": null,
+              "itemId": "c47322fab5eb707e00107dbba7024a1b3156900412e694f41db18aa5a1851eea",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "UNGROUNDED",
+            "groundedIn": null,
+            "matchedEvidenceId": null,
+            "matchedText": null,
+            "relation": null,
+            "unrelatedEvidenceIds": [],
+            "reason": "provenance excerpt at rules[0].provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 167,
+              "charEnd": 178,
+              "withheldReason": null,
+              "itemId": "5ab42f147c75bcfce5e97da79bb8aabdd34ee9c84bd13924ab6ff5183b1fdb35",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].conditions[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)(i)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[0].description, and no authenticated source RELATED to the asserting unit supports it",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 187,
+              "charEnd": 191,
+              "withheldReason": null,
+              "itemId": "4a13ebe98f63faed18fd7922a7f4479df32ad1396fe0772977ee1ebd6e2b6f09",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].conditions[0].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)(i)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "UNGROUNDED",
+            "groundedIn": null,
+            "matchedEvidenceId": null,
+            "matchedText": null,
+            "relation": null,
+            "unrelatedEvidenceIds": [],
+            "reason": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[0].description, and no authenticated source RELATED to the asserting unit supports it"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].conditions[1].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 201,
+              "charEnd": 212,
+              "withheldReason": null,
+              "itemId": "3bc99bdcd7c2117c338b8b4d08ee8cf5895c625c4c2929679557659bbf5ac857",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].conditions[1].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)(ii)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].conditions[1].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[1].description, and no authenticated source RELATED to the asserting unit supports it",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 221,
+              "charEnd": 225,
+              "withheldReason": null,
+              "itemId": "8296696901b70b5e238e7011961743976427251521c3404f48f11f6dcbe3beed",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].conditions[1].description",
+              "fieldClass": "MATERIAL_ASSERTION_FIELD",
+              "fieldText": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)(ii)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "UNGROUNDED",
+            "groundedIn": null,
+            "matchedEvidenceId": null,
+            "matchedText": null,
+            "relation": null,
+            "unrelatedEvidenceIds": [],
+            "reason": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[1].description, and no authenticated source RELATED to the asserting unit supports it"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 19,
+              "charEnd": 30,
+              "withheldReason": null,
+              "itemId": "cd500a051d0e6dbf87a44b190e65008ed98ff29d91b4623f94584b2e62502322",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)(ii)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "provenance excerpt at rules[0].capacityExpression.provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "3.0%",
+              "normalizedValue": 0.03,
+              "currency": null,
+              "unit": "%",
+              "charStart": 39,
+              "charEnd": 43,
+              "withheldReason": null,
+              "itemId": "791019196771133260620e2d76813871df6b8c9aad16ae933fe6c0b6d648dc83",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)(ii)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "UNGROUNDED",
+            "groundedIn": null,
+            "matchedEvidenceId": null,
+            "matchedText": null,
+            "relation": null,
+            "unrelatedEvidenceIds": [],
+            "reason": "provenance excerpt at rules[0].capacityExpression.provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$50,000,000",
+              "normalizedValue": 50000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 4,
+              "charEnd": 15,
+              "withheldReason": null,
+              "itemId": "f003bd8f642bbf26fad475a7c985e76d51366312b8b053d050a9470fa6d1b96a",
+              "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+              "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+              "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(A) $50,000,000 and",
+              "ownerTermName": null,
+              "ownerCitation": "§7.3(m)(ii)(A)",
+              "referencedTerms": [
+                "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+                "Aggregate Fair Market Value of the Assets Subject to such Liens",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "7.3(m)",
+                "§7.3(m)",
+                "§7.3(m)(i)",
+                "§7.3(m)(ii)",
+                "Section 7.3(a)-(l), (n)-(p)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$50,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 5
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+      "items": [
+        {
+          "itemId": "21bd189bba099edab898305b15d89499801c15f0b35db2779b8811bce4e5992b",
+          "kind": "AMOUNT",
+          "rawText": "$50,000,000",
+          "numericValue": 50000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(m)(ii)(A)",
+          "structuralNodeKey": null,
+          "charStart": 4,
+          "charEnd": 15,
+          "parsedAmount": 50000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "439aa22da7963ad5439797221cf1cba218c9cf1e3dacec1fea560c8e6ec349e3",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(m)(ii)(A)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(a)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+      "items": [
+        {
+          "itemId": "6e9325d6ddf9acefaa465fd93288733939d394575e700dddc0c7cb1de182e5e4",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(m)",
+          "sourceExcerpt": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "c4826c2229fd296c2c9992d9ca03e3d9dab5c1881b679692a0feaaa116e574cf",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(m)",
+          "sourceExcerpt": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "4fb52c5daa7ae54a0853cd2d099d0217d81bba146071ac52a79534db40fc9d2a",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(m)",
+          "sourceExcerpt": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "c2265b7a064ff92d4d008510244fb6ada9116a5939eddc769c86294f47004e9f",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(m)(i)",
+          "sourceExcerpt": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d81029b8f59603c04f7f936612973e4ec01710e5e4c050b6500e62b361e7741e",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "unrecognized or malformed expression (kind=\"COMPARE\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(m)(i)",
+          "sourceExcerpt": "neither (i) the aggregate outstanding principal amount of the obligations secured thereby",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "61f542dff3eee730163f0fb67b4794851d781d53a73ab0ddab39c10f5d7c4ff4",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(m)(ii)",
+          "sourceExcerpt": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f81cbbcfcb3771f16b5c5d87a333dfcd72c5d4ed99c2fe5385ec83791c83e0f5",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].conditions[1].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "unrecognized or malformed expression (kind=\"COMPARE\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(m)(ii)",
+          "sourceExcerpt": "nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "07f3b01d14a43a8daa040dc42e3bde9db3e908f534519c3c0aeb6731963e6f54",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].capacityExpression.operands[0]",
+          "numericValue": 50000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.3(m)(ii)(A)",
+          "sourceExcerpt": "(A) $50,000,000 and",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a5859d521fffa7ebd5ba9d03aab36e3f5b9eaf781c60c07591de0162f19b088c",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].capacityExpression.operands[1].operands[0]",
+          "numericValue": 0.03,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.3(m)(ii)(B)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "4ee5020768143b0af29832dccecdb2d1a16eebfea91f836150b5565290db7091",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+          "irPath": "rules[0].capacityExpression.operands[1].operands[1].value",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Consolidated Total Assets",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 348,
+            "charEnd": 359,
+            "withheldReason": null,
+            "itemId": "9e8e1017e1d98af637c3df11383962c781cc88e7ff0c0bca9aee0a782167d81d",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 368,
+            "charEnd": 372,
+            "withheldReason": null,
+            "itemId": "c47322fab5eb707e00107dbba7024a1b3156900412e694f41db18aa5a1851eea",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 167,
+            "charEnd": 178,
+            "withheldReason": null,
+            "itemId": "5ab42f147c75bcfce5e97da79bb8aabdd34ee9c84bd13924ab6ff5183b1fdb35",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(i)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 187,
+            "charEnd": 191,
+            "withheldReason": null,
+            "itemId": "4a13ebe98f63faed18fd7922a7f4479df32ad1396fe0772977ee1ebd6e2b6f09",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(i)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 201,
+            "charEnd": 212,
+            "withheldReason": null,
+            "itemId": "3bc99bdcd7c2117c338b8b4d08ee8cf5895c625c4c2929679557659bbf5ac857",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 221,
+            "charEnd": 225,
+            "withheldReason": null,
+            "itemId": "8296696901b70b5e238e7011961743976427251521c3404f48f11f6dcbe3beed",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 19,
+            "charEnd": 30,
+            "withheldReason": null,
+            "itemId": "cd500a051d0e6dbf87a44b190e65008ed98ff29d91b4623f94584b2e62502322",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 39,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "791019196771133260620e2d76813871df6b8c9aad16ae933fe6c0b6d648dc83",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 15,
+            "withheldReason": null,
+            "itemId": "f003bd8f642bbf26fad475a7c985e76d51366312b8b053d050a9470fa6d1b96a",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(A) $50,000,000 and",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)(A)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          }
+        ],
+        "fieldsWalked": 17,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 348,
+            "charEnd": 359,
+            "withheldReason": null,
+            "itemId": "9e8e1017e1d98af637c3df11383962c781cc88e7ff0c0bca9aee0a782167d81d",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 368,
+            "charEnd": 372,
+            "withheldReason": null,
+            "itemId": "c47322fab5eb707e00107dbba7024a1b3156900412e694f41db18aa5a1851eea",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "UNGROUNDED",
+          "groundedIn": null,
+          "matchedEvidenceId": null,
+          "matchedText": null,
+          "relation": null,
+          "unrelatedEvidenceIds": [],
+          "reason": "provenance excerpt at rules[0].provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 167,
+            "charEnd": 178,
+            "withheldReason": null,
+            "itemId": "5ab42f147c75bcfce5e97da79bb8aabdd34ee9c84bd13924ab6ff5183b1fdb35",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(i)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].conditions[0].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 187,
+            "charEnd": 191,
+            "withheldReason": null,
+            "itemId": "4a13ebe98f63faed18fd7922a7f4479df32ad1396fe0772977ee1ebd6e2b6f09",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[0].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate outstanding principal amount of the obligations secured by the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(i)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "UNGROUNDED",
+          "groundedIn": null,
+          "matchedEvidenceId": null,
+          "matchedText": null,
+          "relation": null,
+          "unrelatedEvidenceIds": [],
+          "reason": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[0].description, and no authenticated source RELATED to the asserting unit supports it"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 201,
+            "charEnd": 212,
+            "withheldReason": null,
+            "itemId": "3bc99bdcd7c2117c338b8b4d08ee8cf5895c625c4c2929679557659bbf5ac857",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].conditions[1].description appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 221,
+            "charEnd": 225,
+            "withheldReason": null,
+            "itemId": "8296696901b70b5e238e7011961743976427251521c3404f48f11f6dcbe3beed",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].conditions[1].description",
+            "fieldClass": "MATERIAL_ASSERTION_FIELD",
+            "fieldText": "The aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject to the Liens (as to the Parent Borrower and all Subsidiaries) must not exceed the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "UNGROUNDED",
+          "groundedIn": null,
+          "matchedEvidenceId": null,
+          "matchedText": null,
+          "relation": null,
+          "unrelatedEvidenceIds": [],
+          "reason": "compiled IR asserts PERCENTAGE \"3.0%\" (canonical 0.03 %) in free text at rules[0].conditions[1].description, and no authenticated source RELATED to the asserting unit supports it"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 19,
+            "charEnd": 30,
+            "withheldReason": null,
+            "itemId": "cd500a051d0e6dbf87a44b190e65008ed98ff29d91b4623f94584b2e62502322",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "3.0%",
+            "normalizedValue": 0.03,
+            "currency": null,
+            "unit": "%",
+            "charStart": 39,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "791019196771133260620e2d76813871df6b8c9aad16ae933fe6c0b6d648dc83",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].capacityExpression.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens)",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "UNGROUNDED",
+          "groundedIn": null,
+          "matchedEvidenceId": null,
+          "matchedText": null,
+          "relation": null,
+          "unrelatedEvidenceIds": [],
+          "reason": "provenance excerpt at rules[0].capacityExpression.provenance.excerpt quotes \"3.0%\" as source text, but no authenticated source related to this unit states that figure - a model-generated excerpt is not evidence merely because it sits inside provenance"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$50,000,000",
+            "normalizedValue": 50000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 15,
+            "withheldReason": null,
+            "itemId": "f003bd8f642bbf26fad475a7c985e76d51366312b8b053d050a9470fa6d1b96a",
+            "candidateRef": "discovery-candidate:998b06bfc970aee50608d465",
+            "ruleOrDefinitionId": "ir-rule:7a71a064412fc1c515a1b9e1",
+            "fieldPath": "rules[0].capacityExpression.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(A) $50,000,000 and",
+            "ownerTermName": null,
+            "ownerCitation": "§7.3(m)(ii)(A)",
+            "referencedTerms": [
+              "Aggregate Outstanding Principal Amount of the Obligations Secured by such Liens",
+              "Aggregate Fair Market Value of the Assets Subject to such Liens",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "7.3(m)",
+              "§7.3(m)",
+              "§7.3(m)(i)",
+              "§7.3(m)(ii)",
+              "Section 7.3(a)-(l), (n)-(p)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$50,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$50,000,000\" at rules[0].capacityExpression.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "adada7299ac0dabdc0764e322d7ad4447298bc4e4a29c2317d0d88c46d844ed1",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "fdb318de2fcb45babc8f96c655ddcdb85929be493f5db049d0088ca14127cc8c",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 197939,
+    "inputTokens": 3539,
+    "outputTokens": 17730,
+    "costUsd": 0.00506987,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:998b06bfc970aee50608d465.verified-units.json",
+    "packageHash": "974c9138e225dcef824ce26002375e0e20db67717a0a6d6a9b908f7546c43d76",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

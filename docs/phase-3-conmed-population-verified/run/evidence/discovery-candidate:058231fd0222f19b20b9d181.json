@@ -1,0 +1,1176 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T23:07:30.797Z",
+  "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.3(h)",
+    "operativeSourceText": "(h)\nLiens created pursuant to the Security Documents;\n",
+    "operativeSourceTextSha256": "d3a9041337917991f1e8607e6bd1cf3b94d884a8d6fd105cb74ee20985164929",
+    "operativeSourceChars": 54,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:979e33adea92453d9da6104381b9733b3a474afac5c01ed9e6407ce7ceac93a2",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 14,
+    "items": [
+      {
+        "itemId": "context-item:e382c1a2543e17ae37ecb631a01fd4d27727d3ef6de19a60d5193658aa826bce",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.3(h)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 54,
+        "excerptText": "(h)\nLiens created pursuant to the Security Documents;\n"
+      },
+      {
+        "itemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 7053,
+        "excerptText": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n(a)\nLiens for taxes, assessments or charges not yet due or which are being contested in good faith by appropriate proceedings; provided\nthat adequate reserves with respect thereto are maintained on the books of the Parent Borrower or its Subsidiaries, as the case may be,\nin conformity with GAAP;\n97\n(b)\ncarriers', warehousemen's, mechanics', materialmen's, repairmen's, supplier's or other like\nLiens arising in the ordinary course of business which are not overdue for a period of more than 30 days or which are being contested\nin good faith by appropriate proceedings and Liens securing judgments to the extent not constituting an Event of Default pursuant to clause\n(h) of Article VIII;\n(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n(e)\neasements, rights-of-way, restrictions and other similar encumbrances incurred in the ordinary course of business which, in the\naggregate, are not substantial in amount and which do not in any case materially detract from the value of the Property subject thereto\nor materially interfere with the ordinary conduct of the business of the Parent Borrower or any of its Subsidiaries;\n(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secured thereby is not increased;\n(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n(h)\nLiens created pursuant to the Security Documents;\n(i)\nany interest or title of a lessor under any lease entered into by the Parent Borrower or any other Subsidiary in the ordinary course\nof its business and covering only the assets so leased;\n(j)\nLiens arising from precautionary UCC financing statement filings regarding operating leases or consignment arrangements entered\ninto by the Parent Borrower or its Subsidiaries in the ordinary course of business;\n(k)\nLiens in favor of banking institutions encumbering the deposits (including the right of setoff) held by such banking institutions\nin the ordinary course of business and which are within the general parameters customary in the banking industry;\n98\n(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary of the Parent Borrower; provided that (i) any Indebtedness that is secured by such Liens is permitted\nto exist under Section 7.2, (ii) such Liens are not created in anticipation of such Permitted Business Acquisition or similar Investment\nor such Person otherwise becoming a Subsidiary of the Parent Borrower and do not attach to any other asset of the Parent Borrower or any\nof its Subsidiaries other than any replacements of such property or assets and accessions thereto and proceeds thereof, or, in the case\nof any acquired Subsidiary, after-acquired property of such Person of the same type and consistent with that contemplated at the time\nsuch original Lien was created and (iii) such Liens secure no greater principal amount of Indebtedness than the aggregate principal amount\nof the Indebtedness, if any, secured by such Liens on the date of such Permitted Business Acquisition or similar Investment or date on\nwhich such Person otherwise becomes a Subsidiary;\n(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations\nsecured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Liens);\n(n)\nLiens securing Indebtedness permitted by Section 7.2(e) on the real property of the Parent Borrower or its Subsidiaries in Largo,\nFlorida;\n(o)\nLiens on accounts receivable or related ancillary rights and assets sold, transferred, encumbered or otherwise disposed of, or\npurported to have been sold, transferred, encumbered or otherwise disposed of pursuant to a Receivables Transfer Program in accordance\nwith Section 7.5(k); and\n(p)\nLiens in the nature of escrow arrangements for deferred payments to be made in connection with a Permitted Business Acquisition\nto the extent such payments constitute amounts permitted under Section 7.8(k) and the rights of any beneficiary thereunder.\nFor purposes of determining compliance with\nthis Section 7.3, (A) a Lien securing an item of Indebtedness need not be permitted solely by reference to one category of permitted Liens\ndescribed in Section 7.3(a) through (q) but may be permitted in part under any combination thereof and (B) in the event that a Lien securing\nan item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section\n7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify,\nsuch Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant and will only be\nrequired to include the amount and type of such Lien or such item of Indebtedness secured by such Lien in one of the above clauses and\nsuch Lien securing such item of Indebtedness will be treated as being incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:11f2aca1117dde1d1316b4f94a0d7fb134667eaee43589236bb916b9504eea3f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 255,
+        "excerptText": "(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n"
+      },
+      {
+        "itemId": "context-item:cc55ce91b95a3624defa61446cd4da7b03d2b8d90363a651f8f08bdd27824a6f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 329,
+        "excerptText": "(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secured thereby is not increased;\n"
+      },
+      {
+        "itemId": "context-item:8769d9089483919532cdfec3e6776499f2b90014bd3c3ea065e397490414ad5b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 339,
+        "excerptText": "(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary of the Parent Borrower; provided that "
+      },
+      {
+        "itemId": "context-item:1264613f8f0332a56c4ecfb4252511a9da770564cd244f4c8fcd4743357fc8b5",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(m)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 73,
+        "excerptText": "(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither "
+      },
+      {
+        "itemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "type": "DEFINITION",
+        "normalizedRef": "Security Documents",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 302,
+        "excerptText": "\"Security Documents\": the collective reference to the Guarantee and Collateral Agreement and all other security documents hereafter delivered to the Administrative\nAgent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Collateral",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 153,
+        "excerptText": "\"Collateral\": all Property\nof the Loan Parties, now owned or hereafter acquired, upon which a Lien is purported to be created by any Security Document.\n\n"
+      },
+      {
+        "itemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Lien",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 431,
+        "excerptText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n"
+      },
+      {
+        "itemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Loan",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 65,
+        "excerptText": "\"Loan\": any loan made\nby any Lender pursuant to this Agreement.\n\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      },
+      {
+        "itemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Guarantee and Collateral Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 231,
+        "excerptText": "\"Guarantee and Collateral Agreement\": the Amended and Restated Guarantee and Collateral Agreement, dated as of the Closing Date, made by the Parent Borrower and its Subsidiaries\nparty thereto in favor of the Administrative Agent.\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "toItemId": "context-item:e382c1a2543e17ae37ecb631a01fd4d27727d3ef6de19a60d5193658aa826bce",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:11f2aca1117dde1d1316b4f94a0d7fb134667eaee43589236bb916b9504eea3f",
+        "toItemId": "context-item:e382c1a2543e17ae37ecb631a01fd4d27727d3ef6de19a60d5193658aa826bce",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:cc55ce91b95a3624defa61446cd4da7b03d2b8d90363a651f8f08bdd27824a6f",
+        "toItemId": "context-item:e382c1a2543e17ae37ecb631a01fd4d27727d3ef6de19a60d5193658aa826bce",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:8769d9089483919532cdfec3e6776499f2b90014bd3c3ea065e397490414ad5b",
+        "toItemId": "context-item:e382c1a2543e17ae37ecb631a01fd4d27727d3ef6de19a60d5193658aa826bce",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:1264613f8f0332a56c4ecfb4252511a9da770564cd244f4c8fcd4743357fc8b5",
+        "toItemId": "context-item:e382c1a2543e17ae37ecb631a01fd4d27727d3ef6de19a60d5193658aa826bce",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e382c1a2543e17ae37ecb631a01fd4d27727d3ef6de19a60d5193658aa826bce",
+        "toItemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "toItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "toItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "toItemId": "context-item:54550a42a73088b3631a183da7b2b68714cc5f5b0756c205e02e9687ce2eee7b",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:6b45a48516fdbfbcfba1c70d9f1964aac9c4e3e88faecb3f13734af0cf882218",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "toItemId": "context-item:8396b5a12496f5da0e5657943ae30bba65fdc65f75c13e1e1322099b1f74552d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "toItemId": "context-item:24214fe418c94e1a70bdfda0adff6e26df7e02d653649dbf0668e8e560612349",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:0ffdc56f7c07f61fadfb85d9263bd118eef3cc9014ee4d968cbacd902bf33b5e",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7.3h",
+          "sourceSectionRef": "7.3(h)",
+          "covenantFamily": "LIMITATION_ON_LIENS",
+          "ruleType": "EXCEPTION_TO_PROHIBITION",
+          "posture": "PERMISSION",
+          "action": "CREATE_LIEN",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "UNSUPPORTED",
+              "semanticDescription": "Categorical class gate: the Lien must be 'created pursuant to the Security Documents' - i.e. granted by the Guarantee and Collateral Agreement or another security document delivered to the Administrative Agent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document",
+              "reason": "The IR has no predicate primitive for categorical class membership over a transaction input ('is this Lien a Security Document Lien?'); the gate is a contract-defined class test, not a numeric comparison, and cannot be faithfully forced into COMPARE/AND/OR/NOT/IF without inventing a fabricated threshold",
+              "sourceEvidence": "§7.3(h): 'Liens created pursuant to the Security Documents;'"
+            },
+            "citation": "§7.3(h)"
+          },
+          "conditions": [
+            {
+              "conditionType": "CATEGORICAL_CLASS_SATISFIED",
+              "expression": null,
+              "referencesDefinitionId": "d-security-documents",
+              "description": "The Lien must be created pursuant to the Security Documents (as defined)",
+              "citation": "§7.3(h)",
+              "excerpt": "Liens created pursuant to the Security Documents;",
+              "inventoryItemIds": []
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "EXCEPTION_TO",
+              "targetRef": "Section 7.3",
+              "description": "Clause (h) is one of the permitted-Liens categories carved out of the Section 7.3 chapeau prohibition on creating, incurring, assuming or suffering to exist any Lien",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "d-security-documents",
+              "description": "The scope of the class gate depends on the defined term 'Security Documents'",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "The exception's categorical gate ('Lien created pursuant to the Security Documents') is preserved as an UNSUPPORTED node because the IR lacks a class-membership predicate; the unlimited/no-dollar-ceiling nature of the permission and the governing 'Security Documents'/'Liens' definitions are otherwise fully represented",
+            "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS, so fidelity of the operative window against its own unit boundary cannot be established; the clause text itself is confirmed current (evidenceStatus CURRENT, never amended)"
+          ],
+          "citation": "§7.3(h)",
+          "excerpt": "Liens created pursuant to the Security Documents;",
+          "inventoryItemIds": [
+            "11a5e7fc41c34b193bf575ad"
+          ]
+        }
+      ],
+      "definitions": [
+        {
+          "localRef": "d-security-documents",
+          "termName": "Security Documents",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": null,
+          "dependsOnTerms": [
+            "Guarantee and Collateral Agreement",
+            "Administrative Agent",
+            "Lien",
+            "Property",
+            "Loan Party",
+            "Loan Document"
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Definition text supplied in Phase 2 context with evidenceStatus CURRENT; collective-reference definition with no computable numeric expression, so calculationExpression is null and the operative text is carried as excerpt"
+          ],
+          "citation": null,
+          "excerpt": "\"Security Documents\": the collective reference to the Guarantee and Collateral Agreement and all other security documents hereafter delivered to the Administrative Agent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document.",
+          "inventoryItemIds": [
+            "b57754ec85a71809021e36c0"
+          ]
+        },
+        {
+          "localRef": "d-lien",
+          "termName": "Lien",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": null,
+          "dependsOnTerms": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Definition text supplied in Phase 2 context with evidenceStatus CURRENT; descriptive definition with no computable numeric expression, so calculationExpression is null and the operative text is carried as excerpt"
+          ],
+          "citation": null,
+          "excerpt": "\"Lien\": any mortgage, pledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any preference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional sale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).",
+          "inventoryItemIds": [
+            "b57754ec85a71809021e36c0"
+          ]
+        }
+      ],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "§7.3(h): 'Liens created pursuant to the Security Documents;' (permitted-Liens exception whose entire gate is a categorical class-membership test)",
+          "semanticRequirement": "A boolean predicate that tests whether a transaction input (e.g. the Lien being created) belongs to a contract-defined class (e.g. 'created pursuant to the Security Documents'), suitable as UNLIMITED_CAPACITY.gatedBy, a rule condition, or an IF condition",
+          "whyExistingPrimitivesFail": "COMPARE/AND/OR/NOT/IF accept only numeric/ratio operands; TRANSACTION_INPUT_REFERENCE supplies inputs but there is no membership operator and no string-literal node kind, so a defined-class test cannot be expressed without losing the operative meaning or fabricating a numeric threshold",
+          "candidateGeneralizedPrimitive": "CATEGORY_PREDICATE {input: TRANSACTION_INPUT_REFERENCE, categoryRef: DEFINED_TERM_REFERENCE, categoryDescription: string} -> BOOLEAN, usable anywhere a boolean expression is expected"
+        }
+      ],
+      "overallNotes": [
+        "SOURCE CONTEXT STATE UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node/document text was supplied; the compiled clause (7.3(h)) itself reads complete and is confirmed current operative text (never amended), but completeness of the operative window against its unit boundary cannot be established.",
+        "7.3(h) is one of ~16 permitted-Liens categories in Section 7.3; this compilation covers clause (h) only. The Section 7.3 chapeau prohibition and the other categories (a)-(p) are outside this unit and are carried as an unresolved EXCEPTION_TO dependency on 'Section 7.3' rather than re-compiled.",
+        "The Section 7.3 closing classification proviso (clauses (A)/(B)) permits a Lien securing an item of Indebtedness to be classified in part under any combination of categories (a)-(q) and does not limit clause (h) itself; it is a section-level mechanic noted here for cross-unit review rather than clause-level economics.",
+        "Eight LOW-severity unresolved defined terms exist in the broader dependency graph (none declared in this document or its package, e.g. Administrative Agent, Loan Party, Loan Document, Person); none carries numeric capacity for 7.3(h) and none affects the represented economics, so no tool retrieval was needed.",
+        "The definitions-article section numbers for 'Security Documents' and 'Lien' were not supplied, so their citation fields are left null with the full definition text carried as excerpt rather than fabricating a section reference.",
+        "No additional evidence was requested: the provision was never amended, its operative text is confirmed current, and both material defined terms ('Security Documents', 'Lien') were already resolved in the supplied context with CURRENT status."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:489a2fab246901c753467677",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.3(h)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "CREATE_LIEN",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§7.3(h): 'Liens created pursuant to the Security Documents;'",
+            "semanticDescription": "Categorical class gate: the Lien must be 'created pursuant to the Security Documents' - i.e. granted by the Guarantee and Collateral Agreement or another security document delivered to the Administrative Agent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document",
+            "reason": "The IR has no predicate primitive for categorical class membership over a transaction input ('is this Lien a Security Document Lien?'); the gate is a contract-defined class test, not a numeric comparison, and cannot be faithfully forced into COMPARE/AND/OR/NOT/IF without inventing a fabricated threshold",
+            "requiredReview": true,
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(h)",
+              "excerpt": null
+            },
+            "exprId": "ir-expr:bafbfa45d530697d046698cf"
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.3(h)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7.3h].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": "d-security-documents",
+            "description": "The Lien must be created pursuant to the Security Documents (as defined)",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(h)",
+              "excerpt": "Liens created pursuant to the Security Documents;"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.3",
+            "description": "Clause (h) is one of the permitted-Liens categories carved out of the Section 7.3 chapeau prohibition on creating, incurring, assuming or suffering to exist any Lien",
+            "reason": "dependsOn[0].targetRef \"Section 7.3\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "d-security-documents",
+            "description": "The scope of the class gate depends on the defined term 'Security Documents'",
+            "reason": "dependsOn[1].targetRef \"d-security-documents\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The exception's categorical gate ('Lien created pursuant to the Security Documents') is preserved as an UNSUPPORTED node because the IR lacks a class-membership predicate; the unlimited/no-dollar-ceiling nature of the permission and the governing 'Security Documents'/'Liens' definitions are otherwise fully represented",
+          "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS, so fidelity of the operative window against its own unit boundary cannot be established; the clause text itself is confirmed current (evidenceStatus CURRENT, never amended)",
+          "covenantFamily \"LIMITATION_ON_LIENS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"EXCEPTION_TO_PROHIBITION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "The IR has no predicate primitive for categorical class membership over a transaction input ('is this Lien a Security Document Lien?'); the gate is a contract-defined class test, not a numeric comparison, and cannot be faithfully forced into COMPARE/AND/OR/NOT/IF without inventing a fabricated threshold",
+          "condition[0].conditionType \"CATEGORICAL_CLASS_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"Section 7.3\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[1].targetRef \"d-security-documents\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.3(h)",
+          "excerpt": "Liens created pursuant to the Security Documents;"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNWITNESSED",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNWITNESSED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "PARTIAL"
+          },
+          "witness": {
+            "ownExcerpt": "Liens created pursuant to the Security Documents;",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "11a5e7fc41c34b193bf575ad"
+        ]
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:30644ba9baa5690aab0afe42",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "termName": "Security Documents",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Guarantee and Collateral Agreement",
+          "Administrative Agent",
+          "Lien",
+          "Property",
+          "Loan Party",
+          "Loan Document"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Definition text supplied in Phase 2 context with evidenceStatus CURRENT; collective-reference definition with no computable numeric expression, so calculationExpression is null and the operative text is carried as excerpt"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.3(h)",
+          "excerpt": "\"Security Documents\": the collective reference to the Guarantee and Collateral Agreement and all other security documents hereafter delivered to the Administrative Agent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "b57754ec85a71809021e36c0"
+        ]
+      },
+      {
+        "definitionId": "ir-definition:fb4c58c2677863606eddb535",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "termName": "Lien",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Definition text supplied in Phase 2 context with evidenceStatus CURRENT; descriptive definition with no computable numeric expression, so calculationExpression is null and the operative text is carried as excerpt"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.3(h)",
+          "excerpt": "\"Lien\": any mortgage, pledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any preference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional sale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing)."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "b57754ec85a71809021e36c0"
+        ]
+      }
+    ],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r7.3h]] covenantFamily \"LIMITATION_ON_LIENS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r7.3h]] ruleType \"EXCEPTION_TO_PROHIBITION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r7.3h].UNLIMITED_CAPACITY.gatedBy] The IR has no predicate primitive for categorical class membership over a transaction input ('is this Lien a Security Document Lien?'); the gate is a contract-defined class test, not a numeric comparison, and cannot be faithfully forced into COMPARE/AND/OR/NOT/IF without inventing a fabricated threshold",
+      "[rule[r7.3h]] condition[0].conditionType \"CATEGORICAL_CLASS_SATISFIED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7.3h]] dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES",
+      "[rule[r7.3h]] dependsOn[0].targetRef \"Section 7.3\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r7.3h]] dependsOn[1].targetRef \"d-security-documents\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "SOURCE CONTEXT STATE UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node/document text was supplied; the compiled clause (7.3(h)) itself reads complete and is confirmed current operative text (never amended), but completeness of the operative window against its unit boundary cannot be established.",
+      "7.3(h) is one of ~16 permitted-Liens categories in Section 7.3; this compilation covers clause (h) only. The Section 7.3 chapeau prohibition and the other categories (a)-(p) are outside this unit and are carried as an unresolved EXCEPTION_TO dependency on 'Section 7.3' rather than re-compiled.",
+      "The Section 7.3 closing classification proviso (clauses (A)/(B)) permits a Lien securing an item of Indebtedness to be classified in part under any combination of categories (a)-(q) and does not limit clause (h) itself; it is a section-level mechanic noted here for cross-unit review rather than clause-level economics.",
+      "Eight LOW-severity unresolved defined terms exist in the broader dependency graph (none declared in this document or its package, e.g. Administrative Agent, Loan Party, Loan Document, Person); none carries numeric capacity for 7.3(h) and none affects the represented economics, so no tool retrieval was needed.",
+      "The definitions-article section numbers for 'Security Documents' and 'Lien' were not supplied, so their citation fields are left null with the full definition text carried as excerpt rather than fabricating a section reference.",
+      "No additional evidence was requested: the provision was never amended, its operative text is confirmed current, and both material defined terms ('Security Documents', 'Lien') were already resolved in the supplied context with CURRENT status.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "§7.3(h): 'Liens created pursuant to the Security Documents;' (permitted-Liens exception whose entire gate is a categorical class-membership test)",
+        "semanticRequirement": "A boolean predicate that tests whether a transaction input (e.g. the Lien being created) belongs to a contract-defined class (e.g. 'created pursuant to the Security Documents'), suitable as UNLIMITED_CAPACITY.gatedBy, a rule condition, or an IF condition",
+        "whyExistingPrimitivesFail": "COMPARE/AND/OR/NOT/IF accept only numeric/ratio operands; TRANSACTION_INPUT_REFERENCE supplies inputs but there is no membership operator and no string-literal node kind, so a defined-class test cannot be expressed without losing the operative meaning or fabricating a numeric threshold",
+        "candidateGeneralizedPrimitive": "CATEGORY_PREDICATE {input: TRANSACTION_INPUT_REFERENCE, categoryRef: DEFINED_TERM_REFERENCE, categoryDescription: string} -> BOOLEAN, usable anywhere a boolean expression is expected"
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T23:03:35.170Z",
+      "inputTokens": 4852,
+      "outputTokens": 14784,
+      "cachedInputTokens": 10240,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 162447,
+      "calculatedCostUsd": 0.157544
+    },
+    "compiledAt": "2026-09-24T23:03:35.170Z",
+    "outputHash": "44c7bfdb9dc59086d894658ff05d6fd992bbae25847601df3d35f4d260351b46"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "e60dcb70fb16ebc2afbb01d4c1c19704330132ea596c0216bc5a60b6695e9cc1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181",
+        "ruleOrDefinitionId": "ir-definition:30644ba9baa5690aab0afe42",
+        "irPath": "definitions[0]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "\"Security Documents\": the collective reference to the Guarantee and Collateral Agreement and all other security documents hereafter delivered to the Administrative Agent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document.",
+        "sourceCitation": "Definition of \"Security Documents\", conmed-doc-a-eighth-ar-credit-agreement",
+        "proposedIrEvidence": "\"definitionId\": \"ir-definition:30644ba9baa5690aab0afe42\", \"termName\": \"Security Documents\", \"calculationExpression\": null, \"dependsOnTerms\": [\"Guarantee and Collateral Agreement\", \"Administrative Agent\", \"Lien\", \"Property\", \"Loan Party\", \"Loan Document\"], \"sufficiency\": \"COMPLETE\"",
+        "verifierReasoning": "The proposed IR marks the definition of \"Security Documents\" as COMPLETE, but the definition object contains no substantive definitional content whatsoever. The source definition is what makes a document a Security Document: it must be the Guarantee and Collateral Agreement or another security document delivered to the Administrative Agent granting a Lien on Property of any Person to secure Loan Party obligations under a Loan Document. The only textual paraphrase of this appears inside the rule's gatedBy semanticDescription, not in the referenced definition object, and even that paraphrase omits the temporal limitation \"hereafter\" and the collective \"all other security documents\" element. Because Section 7.3(h) permits only Liens created pursuant to the Security Documents, a downstream consumer resolving the condition's reference to d-security-documents would receive an empty definition and could misclassify a document (e.g., a pre-closing security document, or one not delivered to the Administrative Agent) as a Security Document. This is a real scope-changing discrepancy.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T23:07:30.792Z"
+      },
+      {
+        "findingId": "50a1125840b0d6b56fd6cfb26c0be674ffb9b055d5e14f9d9b899973e8288fd5",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181",
+        "ruleOrDefinitionId": "ir-definition:fb4c58c2677863606eddb535",
+        "irPath": "definitions[1]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "\"Lien\": any mortgage, pledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any preference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional sale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).",
+        "sourceCitation": "Definition of \"Lien\", conmed-doc-a-eighth-ar-credit-agreement",
+        "proposedIrEvidence": "\"definitionId\": \"ir-definition:fb4c58c2677863606eddb535\", \"termName\": \"Lien\", \"calculationExpression\": null, \"dependsOnTerms\": [], \"sufficiency\": \"COMPLETE\"",
+        "verifierReasoning": "The IR represents the definition of \"Lien\" as COMPLETE, but the definition object is an empty shell: it has only a term name, no dependencies, no calculation, and no semantic description. The source definition is broad and operative, determining what arrangements count as Liens within the Section 7.3 prohibition and the Section 7.3(h) permission. A consumer of the IR cannot tell from the definition whether, for example, a deposit arrangement, a title retention agreement, or a capital lease falls within the term. Since the entire rule turns on whether a \"Lien\" is created pursuant to the Security Documents, omitting the term's substantive definition can change the scope of what is permitted.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T23:07:30.792Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2d5e3251879a1664f7c1e03d8d64e9065a783978ed4d0d2cf19b1e53f683b3a6",
+            "kind": "METRIC_MENTION",
+            "rawText": "Security Documents",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.3(h)",
+            "structuralNodeKey": null,
+            "charStart": 34,
+            "charEnd": 52
+          },
+          "irItems": [],
+          "reason": "source mention \"Security Documents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181",
+      "items": [
+        {
+          "itemId": "2d5e3251879a1664f7c1e03d8d64e9065a783978ed4d0d2cf19b1e53f683b3a6",
+          "kind": "METRIC_MENTION",
+          "rawText": "Security Documents",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(h)",
+          "structuralNodeKey": null,
+          "charStart": 34,
+          "charEnd": 52
+        },
+        {
+          "itemId": "ae06d4f3baa541c7f8434c610003c283648c836f151d0f095d7bc1b8a2734cf3",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(h)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(h)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(h)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181",
+      "items": [
+        {
+          "itemId": "4f7bd3817ac463d87cb30583063df8914c96e47e9b99df06b037d7218075c825",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:489a2fab246901c753467677",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "CREATE_LIEN",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(h)",
+          "sourceExcerpt": "Liens created pursuant to the Security Documents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "2ae0c58c5e689cd54d679c0402923ffc9a5185192954f9ddaaa0dadbe4feb9b1",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:489a2fab246901c753467677",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(h)",
+          "sourceExcerpt": "Liens created pursuant to the Security Documents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "bff87a6dfdca98bb4777ac33a7b49e836ba089328319fe8c78247b0d3f13fe3d",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:489a2fab246901c753467677",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(h)",
+          "sourceExcerpt": "Liens created pursuant to the Security Documents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "adfd9ebe217ac355258f5b8abf7b1e3246d3dc643f0e083eb342153aefa44ba6",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:489a2fab246901c753467677",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The Lien must be created pursuant to the Security Documents (as defined)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(h)",
+          "sourceExcerpt": "Liens created pursuant to the Security Documents;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "ac24e1a891657b8942be8722281a3ba2428c30fab4c0b5789c1867ad8f2ed653",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:489a2fab246901c753467677",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(h)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a0d34a50182ecc8600ff632ef3efd33cf57894823ed4c1db768887fbc558838a",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:489a2fab246901c753467677",
+          "irPath": "rules[0].capacityExpression.gatedBy",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Categorical class gate: the Lien must be 'created pursuant to the Security Documents' - i.e. granted by the Guarantee and Collateral Agreement or another security document delivered to the Administrative Agent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(h)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "a4122066b02149ac553c9f7ebe3f7674961fb6cccedf76b85b3f5e81a10a3a8d",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:30644ba9baa5690aab0afe42",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Guarantee and Collateral Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Security Documents"
+        },
+        {
+          "itemId": "3d4fb07b8a61f3a1a77138343894c74032878cafcd6a0943daea2539f520bc7a",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:30644ba9baa5690aab0afe42",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Administrative Agent",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Security Documents"
+        },
+        {
+          "itemId": "bd26012f92712b8cf253be437e84ed9a010fee130ac3ca6dc776fd0515224b22",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:30644ba9baa5690aab0afe42",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Lien",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Security Documents"
+        },
+        {
+          "itemId": "7a9a268fa835e051001382a81b3dbbe6add435d0dd5e5078a8127e0b8dae81cd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:30644ba9baa5690aab0afe42",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Property",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Security Documents"
+        },
+        {
+          "itemId": "6375e1888aefc7f94c68753c00916857b8399ea88872bc43a9fc87132a8ea1e7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:30644ba9baa5690aab0afe42",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Loan Party",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Security Documents"
+        },
+        {
+          "itemId": "53ee05cfb5bdf54c778672368b45e40cc5b314c9ff69531edb0ce07588375888",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:30644ba9baa5690aab0afe42",
+          "irPath": "definitions[0].dependsOnTerms[5]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Loan Document",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Security Documents"
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 2,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181",
+        "items": [],
+        "fieldsWalked": 11,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "d3a9041337917991f1e8607e6bd1cf3b94d884a8d6fd105cb74ee20985164929",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "5005ad1b7aa2727d4399f418c3857f13c6c9352bac4055dab7586c205741408c",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Security Documents",
+          "scopeKey": "security documents",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 41207,
+          "charEnd": 41509,
+          "rawText": "\"Security Documents\": the collective reference to the Guarantee and Collateral Agreement and all other security documents hereafter delivered to the Administrative\nAgent granting a Lien on any Property of any Person to secure the obligations and liabilities of any Loan Party under any Loan Document.\n\n",
+          "contentHash": "7b1aa614737b6b73e6d933a8a04cff379fbfb832ed4714cc749a776fbc840a30",
+          "retrievalReason": "the IR contains a definition of this term",
+          "relationshipToUnit": "definition of \"Security Documents\" represented by IR ir-definition:30644ba9baa5690aab0afe42 of candidate discovery-candidate:058231fd0222f19b20b9d181",
+          "role": "REPRESENTED_DEFINITION",
+          "representedDefinitionIds": [
+            "ir-definition:30644ba9baa5690aab0afe42"
+          ],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": false,
+            "matched": null,
+            "toolCallIndexes": []
+          },
+          "linkage": [
+            {
+              "origin": "IR_DEFINITION_TERM",
+              "detail": "definitions[0].termName = \"Security Documents\"",
+              "compilerRecordedContentHash": null
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Security Documents\" resolved to node (none) span [41207, 41509)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [41207, 41509) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(41207, 41509)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 7b1aa614737b6b73e6d933a8a04cff379fbfb832ed4714cc749a776fbc840a30 computed independently from the resolved text"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        },
+        {
+          "evidenceId": "6e5095bf3297a0008cc7fdf462770d44ecfe8e3ceb6916d6575ca4b617973818",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Lien",
+          "scopeKey": "lien",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 21947,
+          "charEnd": 22378,
+          "rawText": "\"Lien\": any mortgage,\npledge, hypothecation, assignment, deposit arrangement, encumbrance, lien (statutory or other), charge or other security interest or any\npreference, priority or other security agreement or preferential arrangement of any kind or nature whatsoever (including any conditional\nsale or other title retention agreement and any capital lease having substantially the same economic effect as any of the foregoing).\n\n",
+          "contentHash": "843eec489b2194b1e3cc54b5be63ed5bd5a2ae0284263b5a5371e3cec74c594a",
+          "retrievalReason": "the IR contains a definition of this term",
+          "relationshipToUnit": "definition of \"Lien\" represented by IR ir-definition:fb4c58c2677863606eddb535 of candidate discovery-candidate:058231fd0222f19b20b9d181",
+          "role": "REPRESENTED_DEFINITION",
+          "representedDefinitionIds": [
+            "ir-definition:fb4c58c2677863606eddb535"
+          ],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": false,
+            "matched": null,
+            "toolCallIndexes": []
+          },
+          "linkage": [
+            {
+              "origin": "IR_DEFINITION_TERM",
+              "detail": "definitions[1].termName = \"Lien\"",
+              "compilerRecordedContentHash": null
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Lien\" resolved to node (none) span [21947, 22378)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [21947, 22378) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(21947, 22378)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 843eec489b2194b1e3cc54b5be63ed5bd5a2ae0284263b5a5371e3cec74c594a computed independently from the resolved text"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "1fe8dfdbd33f0ff355f751496f35d82d8b7654945a16566ad3a1340d82ed2c84",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 235460,
+    "inputTokens": 4852,
+    "outputTokens": 14784,
+    "costUsd": 0.0044746,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:058231fd0222f19b20b9d181.verified-units.json",
+    "packageHash": "5556101387e1f352ff5c7cd34ce2b69d9e84255cfe5f2d60d4332a6226aca619",
+    "complete": true,
+    "artifactsPersisted": 3,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

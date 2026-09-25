@@ -1,0 +1,772 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T17:57:52.305Z",
+  "candidateRef": "discovery-candidate:c84bd941081822735ab8bf70",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.17(a)",
+    "operativeSourceText": "(a) Be or become a \"covered foreign person\",\nas that term is defined in the Outbound Investment Rules, or ",
+    "operativeSourceTextSha256": "b7a224d356842c2bcc066a6273480a13357221d6745646bef5d9aabb6bb1ceb2",
+    "operativeSourceChars": 106,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:7c5cfb37fa3e7a36b10ea6a19a8fde765e09e85617408a90269f1d02069f4b43",
+    "sufficiencyState": "SUFFICIENT",
+    "stopReasons": [],
+    "itemCount": 6,
+    "items": [
+      {
+        "itemId": "context-item:c8f2857cf70c02f49b2759e56462c6e31c07037fa25cc10d7c9b7e987aa99139",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.17(a)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 106,
+        "excerptText": "(a) Be or become a \"covered foreign person\",\nas that term is defined in the Outbound Investment Rules, or "
+      },
+      {
+        "itemId": "context-item:9a7a17e41a311921525358ca7c705c868dcf6d363523ce4597d2f19969601a87",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.17",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 39,
+        "excerptText": "SECTION 7.17 Outbound Investment\nRules\n"
+      },
+      {
+        "itemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "type": "DEFINITION",
+        "normalizedRef": "Investment",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 42,
+        "excerptText": "\"Investment\": as defined\nin Section 7.8.\n\n"
+      },
+      {
+        "itemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "type": "DEFINITION",
+        "normalizedRef": "Outbound Investment Rules",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 344,
+        "excerptText": "\"Outbound Investment Rules\": the regulations administered and enforced, together with any related public guidance issued, by the United States Treasury Department\nunder U.S. Executive Order 14105 or any similar law or regulation; as of the date of this Agreement, the Outbound Investment Rules are\ncodified at 31 C.F.R. &sect; 850.101 et seq.\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:d115fde0ef71bf93743dd5e209e311af35ffa01e6930a8c569504235e1b6c35c",
+        "type": "CROSS_REFERENCE",
+        "normalizedRef": "7.8",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 395,
+        "excerptText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:9a7a17e41a311921525358ca7c705c868dcf6d363523ce4597d2f19969601a87",
+        "toItemId": "context-item:c8f2857cf70c02f49b2759e56462c6e31c07037fa25cc10d7c9b7e987aa99139",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:c8f2857cf70c02f49b2759e56462c6e31c07037fa25cc10d7c9b7e987aa99139",
+        "toItemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:c8f2857cf70c02f49b2759e56462c6e31c07037fa25cc10d7c9b7e987aa99139",
+        "toItemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:505667ae409c27a5c2b2ede3e1e880ea286253542717e1b0b1353c6bf4e818ba",
+        "toItemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:973d90e99e30b34d224bf95b646f01630b597cd6f6bf3b5bd2d118eefff657c0",
+        "toItemId": "context-item:d115fde0ef71bf93743dd5e209e311af35ffa01e6930a8c569504235e1b6c35c",
+        "edgeType": "REFERENCES",
+        "reason": "\"Section 7.8\" inside a definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.17(a)",
+          "covenantFamily": "OUTBOUND_INVESTMENTS",
+          "ruleType": "PROHIBITION",
+          "posture": "PROHIBITION",
+          "action": "BE_OR_BECOME_COVERED_FOREIGN_PERSON",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "capacityExpression": null,
+          "conditions": [
+            {
+              "conditionType": "FORBIDDEN_STATUS",
+              "expression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Determination of whether any person 'is' or 'becomes' a 'covered foreign person' is made under the Outbound Investment Rules - external U.S. regulations under U.S. Executive Order 14105, codified at 31 C.F.R. § 850.101 et seq., administered by the U.S. Treasury Department. The substantive regulatory definition lies outside the instrument and is not computable in IR.",
+                "reason": "The term 'covered foreign person' is defined only by reference to the Outbound Investment Rules; getDefinition('covered foreign person') confirmed no internal definition exists in this instrument, and the underlying regulatory definition is external to the agreement's evidence.",
+                "sourceEvidence": "§7.17(a): \"as that term is defined in the Outbound Investment Rules\"; definition of \"Outbound Investment Rules\" (U.S. Exec. Order 14105; 31 C.F.R. § 850.101 et seq.)",
+                "inventoryItemIds": [
+                  "inv-item:96205bfe466fe1c9b9d43763"
+                ]
+              },
+              "referencesDefinitionId": "d1",
+              "description": "The obligor must not be or become a 'covered foreign person' as defined in the Outbound Investment Rules; status is determined under the external regulatory regime (U.S. Exec. Order 14105; 31 C.F.R. § 850.101 et seq.).",
+              "citation": "§7.17(a)",
+              "excerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or",
+              "inventoryItemIds": []
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Outbound Investment Rules (31 C.F.R. § 850.101 et seq.; U.S. Exec. Order 14105)",
+              "description": "The prohibition's scope depends entirely on the external Outbound Investment Rules, which define 'covered foreign person'; these regulations are outside the instrument and not retrievable by the available tools.",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "The prohibition's structure is fully represented, but the determinative predicate - whether a person 'is' or 'becomes' a 'covered foreign person' - is defined only by reference to the external Outbound Investment Rules (U.S. Exec. Order 14105; 31 C.F.R. § 850.101 et seq.); getDefinition('covered foreign person') confirmed no internal definition exists, and the external regulatory text is not part of this instrument's evidence, so the status predicate is carried as an UNSUPPORTED node.",
+            "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node and no document text were supplied, so completeness of the operative window against its own unit boundary cannot be established; item (a) appears textually complete as one limb of Section 7.17's 'or'-joined list of prohibited acts, with sibling limbs outside this submission.",
+            "The prohibition inventory item is flagged AMBIGUOUS_DRAFTING: 'covered foreign person' is an externally-defined status whose scope depends on a dynamic regulatory regime (the Outbound Investment Rules definition itself contemplates 'any similar law or regulation' and notes codification 'as of the date of this Agreement'); this compilation does not adjudicate readings of that external scope."
+          ],
+          "citation": "§7.17(a)",
+          "excerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or",
+          "inventoryItemIds": [
+            "inv-item:e5a667f514509788fbed6ce6"
+          ]
+        }
+      ],
+      "definitions": [
+        {
+          "localRef": "d1",
+          "termName": "Outbound Investment Rules",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": null,
+          "dependsOnTerms": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Full definition text supplied and confirmed CURRENT; it is a descriptive pointer to an external regulatory regime (non-computational), so calculationExpression is null with the excerpt carrying the text.",
+            "The section where this term is defined was not supplied in the evidence, so no citation is asserted rather than fabricating one."
+          ],
+          "citation": null,
+          "excerpt": "\"Outbound Investment Rules\": the regulations administered and enforced, together with any related public guidance issued, by the United States Treasury Department under U.S. Executive Order 14105 or any similar law or regulation; as of the date of this Agreement, the Outbound Investment Rules are codified at 31 C.F.R. § 850.101 et seq.",
+          "inventoryItemIds": []
+        }
+      ],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "7.17(a) is one limb of Section 7.17's 'or'-joined list of prohibited acts (the supplied text ends with 'or'); sibling limbs were not part of this submission and are not compiled.",
+        "The parent chapeau naming the bound entity class could not be retrieved: getOperativeProvision('7.17') returned only the section heading and no structural nodeId was available for clause-level retrieval, so entityScope is left empty per the provision's own words (the item text itself names no entity class).",
+        "getDefinition('covered foreign person') was attempted and returned 'no defined term matching \"covered foreign person\" found in this instrument's documents', confirming the term is defined exclusively by external reference to the Outbound Investment Rules.",
+        "The definition of 'Outbound Investment Rules' (confirmed CURRENT) is emitted as a WireDefinition because 7.17(a) incorporates it directly; the bundle's other definition items ('Investment', 'Agreement') are supporting evidence for Section 7.17 generally but are not used by clause (a), so they are not emitted here."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "7.17"
+        },
+        "outputSummary": "base-document provision 7.17 (never individually amended, CURRENT_OPERATIVE)",
+        "charsReturned": 39,
+        "timestamp": "2026-09-24T17:54:14.043Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "PROVISION",
+          "requestKey": "7.17",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:e6676ae0068c053571cc1e5c",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.17",
+          "charStart": 93449,
+          "charEnd": 93488,
+          "rawText": "SECTION 7.17 Outbound Investment\nRules\n",
+          "contentHash": "839eaab4b6baae61e3af01c1803539f6ad9f9e3e3f288fce589fda0978959e3e",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT_OPERATIVE",
+          "isCurrentTruth": true
+        }
+      },
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "covered foreign person"
+        },
+        "outputSummary": "refused: no defined term matching \"covered foreign person\" found in this instrument's documents",
+        "charsReturned": 86,
+        "timestamp": "2026-09-24T17:54:14.043Z"
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:3753bd754ee7fc7f8a6622d1",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.17(a)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§7.17(a): \"as that term is defined in the Outbound Investment Rules\"; definition of \"Outbound Investment Rules\" (U.S. Exec. Order 14105; 31 C.F.R. § 850.101 et seq.)",
+              "semanticDescription": "Determination of whether any person 'is' or 'becomes' a 'covered foreign person' is made under the Outbound Investment Rules - external U.S. regulations under U.S. Executive Order 14105, codified at 31 C.F.R. § 850.101 et seq., administered by the U.S. Treasury Department. The substantive regulatory definition lies outside the instrument and is not computable in IR.",
+              "reason": "The term 'covered foreign person' is defined only by reference to the Outbound Investment Rules; getDefinition('covered foreign person') confirmed no internal definition exists in this instrument, and the underlying regulatory definition is external to the agreement's evidence.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.17(a)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:3c54ddf7cd990bbcce248b6c",
+              "inventoryItemIds": [
+                "inv-item:96205bfe466fe1c9b9d43763"
+              ]
+            },
+            "referencesDefinitionId": "d1",
+            "description": "The obligor must not be or become a 'covered foreign person' as defined in the Outbound Investment Rules; status is determined under the external regulatory regime (U.S. Exec. Order 14105; 31 C.F.R. § 850.101 et seq.).",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.17(a)",
+              "excerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Outbound Investment Rules (31 C.F.R. § 850.101 et seq.; U.S. Exec. Order 14105)",
+            "description": "The prohibition's scope depends entirely on the external Outbound Investment Rules, which define 'covered foreign person'; these regulations are outside the instrument and not retrievable by the available tools.",
+            "reason": "dependsOn[0].targetRef \"Outbound Investment Rules (31 C.F.R. § 850.101 et seq.; U.S. Exec. Order 14105)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The prohibition's structure is fully represented, but the determinative predicate - whether a person 'is' or 'becomes' a 'covered foreign person' - is defined only by reference to the external Outbound Investment Rules (U.S. Exec. Order 14105; 31 C.F.R. § 850.101 et seq.); getDefinition('covered foreign person') confirmed no internal definition exists, and the external regulatory text is not part of this instrument's evidence, so the status predicate is carried as an UNSUPPORTED node.",
+          "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node and no document text were supplied, so completeness of the operative window against its own unit boundary cannot be established; item (a) appears textually complete as one limb of Section 7.17's 'or'-joined list of prohibited acts, with sibling limbs outside this submission.",
+          "The prohibition inventory item is flagged AMBIGUOUS_DRAFTING: 'covered foreign person' is an externally-defined status whose scope depends on a dynamic regulatory regime (the Outbound Investment Rules definition itself contemplates 'any similar law or regulation' and notes codification 'as of the date of this Agreement'); this compilation does not adjudicate readings of that external scope.",
+          "covenantFamily \"OUTBOUND_INVESTMENTS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"FORBIDDEN_STATUS\" not recognized - normalized to UNSUPPORTED",
+          "The term 'covered foreign person' is defined only by reference to the Outbound Investment Rules; getDefinition('covered foreign person') confirmed no internal definition exists in this instrument, and the underlying regulatory definition is external to the agreement's evidence.",
+          "dependsOn[0].targetRef \"Outbound Investment Rules (31 C.F.R. § 850.101 et seq.; U.S. Exec. Order 14105)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.17(a)",
+          "excerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNSPECIFIED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNSPECIFIED"
+          ],
+          "rawEmitted": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "source": "EMPTY"
+          },
+          "tagNormalization": [],
+          "before": {
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "sufficiency": "PARTIAL"
+          },
+          "witness": {
+            "ownExcerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:e5a667f514509788fbed6ce6"
+        ]
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:e67fbf8efd8857b607ff36a0",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "termName": "Outbound Investment Rules",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full definition text supplied and confirmed CURRENT; it is a descriptive pointer to an external regulatory regime (non-computational), so calculationExpression is null with the excerpt carrying the text.",
+          "The section where this term is defined was not supplied in the evidence, so no citation is asserted rather than fabricating one."
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.17(a)",
+          "excerpt": "\"Outbound Investment Rules\": the regulations administered and enforced, together with any related public guidance issued, by the United States Treasury Department under U.S. Executive Order 14105 or any similar law or regulation; as of the date of this Agreement, the Outbound Investment Rules are codified at 31 C.F.R. § 850.101 et seq."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null
+      }
+    ],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] covenantFamily \"OUTBOUND_INVESTMENTS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r1]] condition[0].conditionType \"FORBIDDEN_STATUS\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[0].expression] The term 'covered foreign person' is defined only by reference to the Outbound Investment Rules; getDefinition('covered foreign person') confirmed no internal definition exists in this instrument, and the underlying regulatory definition is external to the agreement's evidence.",
+      "[rule[r1]] dependsOn[0].targetRef \"Outbound Investment Rules (31 C.F.R. § 850.101 et seq.; U.S. Exec. Order 14105)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "7.17(a) is one limb of Section 7.17's 'or'-joined list of prohibited acts (the supplied text ends with 'or'); sibling limbs were not part of this submission and are not compiled.",
+      "The parent chapeau naming the bound entity class could not be retrieved: getOperativeProvision('7.17') returned only the section heading and no structural nodeId was available for clause-level retrieval, so entityScope is left empty per the provision's own words (the item text itself names no entity class).",
+      "getDefinition('covered foreign person') was attempted and returned 'no defined term matching \"covered foreign person\" found in this instrument's documents', confirming the term is defined exclusively by external reference to the Outbound Investment Rules.",
+      "The definition of 'Outbound Investment Rules' (confirmed CURRENT) is emitted as a WireDefinition because 7.17(a) incorporates it directly; the bundle's other definition items ('Investment', 'Agreement') are supporting evidence for Section 7.17 generally but are not used by clause (a), so they are not emitted here.",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T17:54:59.455Z",
+      "inputTokens": 11760,
+      "outputTokens": 14197,
+      "cachedInputTokens": 22528,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 142369,
+      "calculatedCostUsd": 0.16549000000000003
+    },
+    "compiledAt": "2026-09-24T17:54:59.455Z",
+    "outputHash": "d02de72e6fa8559570ac4da51db7362e5816ec8bfef8bec8c88b0c1cc9cf4e38"
+  },
+  "verification": {
+    "status": "REVIEW_REQUIRED",
+    "findings": [
+      {
+        "findingId": "8c1cca795adadd930604b70a3a45609e326949810e0f495ded24e68221b33785",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:c84bd941081822735ab8bf70",
+        "ruleOrDefinitionId": "ir-rule:3753bd754ee7fc7f8a6622d1",
+        "irPath": "rules[0].description; rules[0].entityScope",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or",
+        "sourceCitation": "§7.17(a)",
+        "proposedIrEvidence": "entityScope is [] (empty) while the rule description states: \"The obligor must not be or become a 'covered foreign person' as defined in the Outbound Investment Rules; status is determined under the external regulatory regime...\"",
+        "verifierReasoning": "The operative source text is only a bare subpart beginning with \"(a)\"; it does not itself identify who is bound. The actual actor and entity scope would be supplied by the unretrieved preamble of Section 7.17 (the supplied parent-scope item is only the section heading). The proposed IR nevertheless introduces \"the obligor\" as the actor and leaves entityScope empty. If the real preamble binds e.g. the Company and its Restricted Subsidiaries, the IR under-specifies who is prohibited from being or becoming a covered foreign person; if the preamble binds only the Company, the singular/generic \"obligor\" may overstate or misstate the scope. Because entity scope is a core element of any covenant, a reviewer relying on this IR could reach a different compliance conclusion depending on which subject the unretrieved preamble actually imposes. This is an unresolved representation gap rather than a confirmed wrong scoping, hence UNCERTAIN.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T17:57:52.300Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:c84bd941081822735ab8bf70",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "198e670348a52f7a9349e5a7d2d7ff2823f6b6328c7e2f3676206a2f2db0b060",
+            "kind": "METRIC_MENTION",
+            "rawText": "Outbound Investment Rules",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.17(a)",
+            "structuralNodeKey": null,
+            "charStart": 76,
+            "charEnd": 101
+          },
+          "irItems": [],
+          "reason": "source mention \"Outbound Investment Rules\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:c84bd941081822735ab8bf70",
+      "items": [
+        {
+          "itemId": "198e670348a52f7a9349e5a7d2d7ff2823f6b6328c7e2f3676206a2f2db0b060",
+          "kind": "METRIC_MENTION",
+          "rawText": "Outbound Investment Rules",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.17(a)",
+          "structuralNodeKey": null,
+          "charStart": 76,
+          "charEnd": 101
+        },
+        {
+          "itemId": "028579b1b33275dcf325b0f3e09a50c63468adb56a15c5d4a49f658a6645ada7",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.17(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(a)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:c84bd941081822735ab8bf70",
+      "items": [
+        {
+          "itemId": "ffa968c29e8607c62cd4fe9f9c0d2a77cfe7875e51ede8a5d69b75dc02d762b5",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:3753bd754ee7fc7f8a6622d1",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.17(a)",
+          "sourceExcerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "af47475c8b7c1d26a2a2b2bf75d118c75afd5729968ed4347e7a18dddefd47fc",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:3753bd754ee7fc7f8a6622d1",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.17(a)",
+          "sourceExcerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "4766420e92ae458448107df9bd9b93a228c10bccccb022df78ab36a696be7929",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:3753bd754ee7fc7f8a6622d1",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The obligor must not be or become a 'covered foreign person' as defined in the Outbound Investment Rules; status is determined under the external regulatory regime (U.S. Exec. Order 14105; 31 C.F.R. § 850.101 et seq.).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.17(a)",
+          "sourceExcerpt": "(a) Be or become a \"covered foreign person\", as that term is defined in the Outbound Investment Rules, or",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "9319979f37f83dcf0ddb067ad634a8673767a3a45599cfb28ae9a3a5036a3a3b",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:3753bd754ee7fc7f8a6622d1",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Determination of whether any person 'is' or 'becomes' a 'covered foreign person' is made under the Outbound Investment Rules - external U.S. regulations under U.S. Executive Order 14105, codified at 31 C.F.R. § 850.101 et seq., administered by the U.S. Treasury Department. The substantive regulatory definition lies outside the instrument and is not computable in IR.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.17(a)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:c84bd941081822735ab8bf70",
+        "items": [],
+        "fieldsWalked": 8,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "b7a224d356842c2bcc066a6273480a13357221d6745646bef5d9aabb6bb1ceb2",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "94b825467c8198a6e42a80cf5067bfd406581a13202584a1e93b8921da606526",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "PROVISION",
+          "requestKey": "7.17",
+          "scopeKey": "7.17",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": "structural-node:e6676ae0068c053571cc1e5c",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.17",
+          "charStart": 93449,
+          "charEnd": 93488,
+          "rawText": "SECTION 7.17 Outbound Investment\nRules\n",
+          "contentHash": "839eaab4b6baae61e3af01c1803539f6ad9f9e3e3f288fce589fda0978959e3e",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "section \"7.17\" consulted for candidate discovery-candidate:c84bd941081822735ab8bf70 (7.17(a)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              0
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[0] getOperativeProvision {\"sectionRef\":\"7.17\"}",
+              "compilerRecordedContentHash": "839eaab4b6baae61e3af01c1803539f6ad9f9e3e3f288fce589fda0978959e3e"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "provision \"7.17\" resolved to node structural-node:e6676ae0068c053571cc1e5c span [93449, 93488)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [93449, 93488) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(93449, 93488)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash 839eaab4b6baae61e3af01c1803539f6ad9f9e3e3f288fce589fda0978959e3e and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:e6676ae0068c053571cc1e5c) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        },
+        {
+          "evidenceId": "b5ab8e410214fc386637150c54edcd2327e37db4f4e45b6f20c3fe69e7d202a8",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Outbound Investment Rules",
+          "scopeKey": "outbound investment rules",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 29052,
+          "charEnd": 29396,
+          "rawText": "\"Outbound Investment Rules\": the regulations administered and enforced, together with any related public guidance issued, by the United States Treasury Department\nunder U.S. Executive Order 14105 or any similar law or regulation; as of the date of this Agreement, the Outbound Investment Rules are\ncodified at 31 C.F.R. &sect; 850.101 et seq.\n\n",
+          "contentHash": "2eb0376757ee174ab7c2bb6471b103e29afc2d8cf1619cf4d02289cb9e42a76a",
+          "retrievalReason": "the IR contains a definition of this term",
+          "relationshipToUnit": "definition of \"Outbound Investment Rules\" represented by IR ir-definition:e67fbf8efd8857b607ff36a0 of candidate discovery-candidate:c84bd941081822735ab8bf70",
+          "role": "REPRESENTED_DEFINITION",
+          "representedDefinitionIds": [
+            "ir-definition:e67fbf8efd8857b607ff36a0"
+          ],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": false,
+            "matched": null,
+            "toolCallIndexes": []
+          },
+          "linkage": [
+            {
+              "origin": "IR_DEFINITION_TERM",
+              "detail": "definitions[0].termName = \"Outbound Investment Rules\"",
+              "compilerRecordedContentHash": null
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Outbound Investment Rules\" resolved to node (none) span [29052, 29396)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [29052, 29396) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(29052, 29396)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 2eb0376757ee174ab7c2bb6471b103e29afc2d8cf1619cf4d02289cb9e42a76a computed independently from the resolved text"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "7645bcc23b5a3e7c92fc50066daaeadaa46760cc2f461db5f834e20eb9b5b92f",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 221911,
+    "inputTokens": 11760,
+    "outputTokens": 14197,
+    "costUsd": 0.00522002,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:c84bd941081822735ab8bf70.verified-units.json",
+    "packageHash": "51112afc28eed37cee3be1baec3c046d5e38fac1fbeacc21c46051ac0fd94856",
+    "complete": true,
+    "artifactsPersisted": 2,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

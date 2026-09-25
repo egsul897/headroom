@@ -1,0 +1,1457 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T17:43:17.538Z",
+  "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.16(a)",
+    "operativeSourceText": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the\npayment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of\nfunding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country\nto the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction\ngoverned by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any\nof its Subsidiaries is organized from time to time, or (c) in any manner that would result in the violation of any Sanctions applicable\nto any party hereto.\n",
+    "operativeSourceTextSha256": "1c22c83519140e1758631bbb9504a9d23c428b58ff6a22ab0e426b0d958d3891",
+    "operativeSourceChars": 787,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:23531de25f3cefd53eb6070dbc9ed6bad41d4ee650da8770528711db59d67e4e",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 8,
+    "items": [
+      {
+        "itemId": "context-item:777dbd9ff484247fee8bad0c7b9592b21c1a839c4e611931331df26eba79dd98",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.16(a)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 787,
+        "excerptText": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the\npayment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of\nfunding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country\nto the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction\ngoverned by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any\nof its Subsidiaries is organized from time to time, or (c) in any manner that would result in the violation of any Sanctions applicable\nto any party hereto.\n"
+      },
+      {
+        "itemId": "context-item:f2353e59c5060cd20cee478856e3105b73f1176d62bba7199c3b80f26dd9a0d3",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.16",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 357,
+        "excerptText": "SECTION 7.16 Limitation on Use\nof Proceeds . Request any Loan or Letter of Credit, and the Parent Borrower shall not use, shall procure that its Subsidiaries shall\nnot use, and shall use its reasonable best efforts to procure that its or their respective directors, officers, employees and agents shall\nnot use, the proceeds of any Loan or Letter of Credit "
+      },
+      {
+        "itemId": "context-item:a59eef50bd0a1ec8c564266d2755980dda283ca9cb15b4b03bc21efe5776108f",
+        "type": "DEFINITION",
+        "normalizedRef": "Anti-Corruption Laws",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 209,
+        "excerptText": "\"Anti-Corruption Laws\": all published laws, rules and regulations of any jurisdiction applicable to the Parent Borrower and its Subsidiaries from time to time\nconcerning or relating to bribery or corruption.\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:b89e231fbbadc7a994802bbe78651831f0fca40fa1c2a191e66eead3beac51a4",
+        "type": "DEFINITION",
+        "normalizedRef": "Sanctioned Country",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 322,
+        "excerptText": "\"Sanctioned Country\": at any time, a country, region or territory that is itself the target of any Sanctions (at the time of this Agreement, Cuba, Iran, North\nKorea, Syria, the so - called Donetsk People's Republic, the so- called Luhansk People's Republic, and the Crimea, Kherson,\nand Zaporizhzhia regions of Ukraine).\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:5630f1cab8e1cd85d026b5d35ca218b01488d181b1c4686effd44264e411562d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Sanctions",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 430,
+        "excerptText": "\"Sanctions\": economic\nor financial sanctions or trade embargoes imposed, administered or enforced from time to time by (a) the U.S. government, including those\nadministered by the Office of Foreign Assets Control of the U.S. Department of the Treasury or the U.S. Department of State or (b) the\nUnited Nations Security Council, the European Union, any European Union member state or His Majesty's Treasury of the United Kingdom.\n\n"
+      },
+      {
+        "itemId": "context-item:045f5478df1a193fca2c2ecd45c618f8e2119faee49b961e566c99bad03f415c",
+        "type": "DEFINITION",
+        "normalizedRef": "Sanctioned Person",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 547,
+        "excerptText": "\"Sanctioned Person\": at any time, (a) any Person listed in any Sanctions-related list of designated Persons maintained by the United States, including the\nOffice of Foreign Assets Control of the U.S. Department of the Treasury or the U.S. Department of State, or by the United Nations Security\nCouncil, the European Union or any European Union member state or His Majesty's Treasury of the United Kingdom (b) any Person operating,\norganized or resident in a Sanctioned Country or (c) any Person owned or controlled by any such Person or Persons.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:f2353e59c5060cd20cee478856e3105b73f1176d62bba7199c3b80f26dd9a0d3",
+        "toItemId": "context-item:777dbd9ff484247fee8bad0c7b9592b21c1a839c4e611931331df26eba79dd98",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:777dbd9ff484247fee8bad0c7b9592b21c1a839c4e611931331df26eba79dd98",
+        "toItemId": "context-item:a59eef50bd0a1ec8c564266d2755980dda283ca9cb15b4b03bc21efe5776108f",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:a59eef50bd0a1ec8c564266d2755980dda283ca9cb15b4b03bc21efe5776108f",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:777dbd9ff484247fee8bad0c7b9592b21c1a839c4e611931331df26eba79dd98",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:777dbd9ff484247fee8bad0c7b9592b21c1a839c4e611931331df26eba79dd98",
+        "toItemId": "context-item:b89e231fbbadc7a994802bbe78651831f0fca40fa1c2a191e66eead3beac51a4",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:b89e231fbbadc7a994802bbe78651831f0fca40fa1c2a191e66eead3beac51a4",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:b89e231fbbadc7a994802bbe78651831f0fca40fa1c2a191e66eead3beac51a4",
+        "toItemId": "context-item:5630f1cab8e1cd85d026b5d35ca218b01488d181b1c4686effd44264e411562d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:777dbd9ff484247fee8bad0c7b9592b21c1a839c4e611931331df26eba79dd98",
+        "toItemId": "context-item:045f5478df1a193fca2c2ecd45c618f8e2119faee49b961e566c99bad03f415c",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:045f5478df1a193fca2c2ecd45c618f8e2119faee49b961e566c99bad03f415c",
+        "toItemId": "context-item:b89e231fbbadc7a994802bbe78651831f0fca40fa1c2a191e66eead3beac51a4",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:045f5478df1a193fca2c2ecd45c618f8e2119faee49b961e566c99bad03f415c",
+        "toItemId": "context-item:5630f1cab8e1cd85d026b5d35ca218b01488d181b1c4686effd44264e411562d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:777dbd9ff484247fee8bad0c7b9592b21c1a839c4e611931331df26eba79dd98",
+        "toItemId": "context-item:5630f1cab8e1cd85d026b5d35ca218b01488d181b1c4686effd44264e411562d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.16(a)",
+          "covenantFamily": "USE_OF_PROCEEDS",
+          "ruleType": "PROHIBITION",
+          "posture": "PROHIBITION",
+          "action": "USE_LOAN_OR_LC_PROCEEDS",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries of the Parent Borrower",
+            "directors, officers, employees and agents of the Parent Borrower and its Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": null,
+          "conditions": [
+            {
+              "conditionType": "PROHIBITED_USE",
+              "expression": {
+                "kind": "AND",
+                "operands": [
+                  {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "use of the proceeds of any Loan or Letter of Credit in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person",
+                    "reason": "qualitative purpose-based conduct predicate ('in furtherance of'); the IR has no numeric mechanic to represent this predicate",
+                    "sourceEvidence": "§7.16(a)",
+                    "citation": "§7.16(a)",
+                    "inventoryItemIds": [
+                      "inv-item:a6a916b0e8f67bcffd754168",
+                      "inv-item:8304ba004d7f4b2cf23a0b54"
+                    ]
+                  },
+                  {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "such payment or giving is in violation of any Anti-Corruption Laws (defined term 'Anti-Corruption Laws')",
+                    "reason": "qualitative legal predicate depending on the defined term 'Anti-Corruption Laws'; not computable with numeric IR primitives",
+                    "sourceEvidence": "§7.16(a)",
+                    "citation": "§7.16(a)",
+                    "inventoryItemIds": [
+                      "inv-item:2bedbc2cda9c068777f07b81"
+                    ]
+                  }
+                ],
+                "citation": "§7.16(a)"
+              },
+              "referencesDefinitionId": null,
+              "description": "Branch (a): prohibition on use of proceeds in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws.",
+              "citation": "§7.16(a)",
+              "excerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws",
+              "inventoryItemIds": []
+            },
+            {
+              "conditionType": "PROHIBITED_USE",
+              "expression": {
+                "kind": "AND",
+                "operands": [
+                  {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "use of the proceeds for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country (defined terms 'Sanctioned Person', 'Sanctioned Country')",
+                    "reason": "qualitative purpose-based conduct predicate; not computable with numeric IR primitives",
+                    "sourceEvidence": "§7.16(a)",
+                    "citation": "§7.16(a)",
+                    "inventoryItemIds": [
+                      "inv-item:58bf6e0ba83762b71e7117ed"
+                    ]
+                  },
+                  {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "to the extent such activities, business or transaction would be prohibited by Sanctions (defined term 'Sanctions'); source drafting is AMBIGUOUS whether this qualifier limits the whole of branch (b) or only the 'in any Sanctioned Country' limb - the compiler does not adjudicate between the readings",
+                    "reason": "qualitative legal predicate depending on the defined term 'Sanctions'; attachment of the 'to the extent' qualifier is flagged AMBIGUOUS_DRAFTING in the source",
+                    "sourceEvidence": "§7.16(a)",
+                    "citation": "§7.16(a)",
+                    "inventoryItemIds": [
+                      "inv-item:b3656180e203c73e8ff57183"
+                    ]
+                  },
+                  {
+                    "kind": "UNSUPPORTED",
+                    "semanticDescription": "if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time (defined terms 'Parent Borrower', 'Subsidiaries')",
+                    "reason": "qualitative jurisdictional test; not computable with numeric IR primitives",
+                    "sourceEvidence": "§7.16(a)",
+                    "citation": "§7.16(a)",
+                    "inventoryItemIds": [
+                      "inv-item:1287fbc9a162e67231d292e7",
+                      "inv-item:dcd4bd3f50612df197618541"
+                    ]
+                  }
+                ],
+                "citation": "§7.16(a)"
+              },
+              "referencesDefinitionId": null,
+              "description": "Branch (b): prohibition on use of proceeds for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country, to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in a US/UK/EU-member-state jurisdiction in which the Parent Borrower or any of its Subsidiaries is organized.",
+              "citation": "§7.16(a)",
+              "excerpt": "(b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction",
+              "inventoryItemIds": []
+            },
+            {
+              "conditionType": "PROHIBITED_USE",
+              "expression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "use of the proceeds in any manner that would result in the violation of any Sanctions applicable to any party hereto (defined term 'Sanctions')",
+                "reason": "qualitative legal predicate ('any manner that would result in the violation of any Sanctions' applicable to any party); not computable with numeric IR primitives",
+                "sourceEvidence": "§7.16(a)",
+                "citation": "§7.16(a)",
+                "inventoryItemIds": [
+                  "inv-item:01654ab302c1e20802f583bf",
+                  "inv-item:7d5ab72c9390775f732991fd"
+                ]
+              },
+              "referencesDefinitionId": null,
+              "description": "Branch (c): prohibition on use of proceeds in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+              "citation": "§7.16(a)",
+              "excerpt": "or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+              "inventoryItemIds": []
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.16 (chapeau)",
+              "description": "The prohibition verb ('shall not use') and entity scope (Parent Borrower; procure that its Subsidiaries shall not use; reasonable best efforts to procure that directors, officers, employees and agents shall not use) are stated in the chapeau, which §7.16(a) completes with the three prohibited purposes; chapeau confirmed CURRENT_OPERATIVE.",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term: 'Anti-Corruption Laws'",
+              "description": "Branch (a) violation predicate depends on the definition of 'Anti-Corruption Laws' (supplied in context, evidenceStatus CURRENT).",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term: 'Sanctioned Person'",
+              "description": "Branch (b) depends on the definition of 'Sanctioned Person' (supplied in context, evidenceStatus CURRENT).",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term: 'Sanctioned Country'",
+              "description": "Branch (b) depends on the definition of 'Sanctioned Country' (supplied in context, evidenceStatus CURRENT).",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term: 'Sanctions'",
+              "description": "Branches (b) and (c) depend on the definition of 'Sanctions' (supplied in context, evidenceStatus CURRENT).",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term: 'Parent Borrower'",
+              "description": "Branch (b) jurisdictional test depends on 'Parent Borrower' (supplied in context, evidenceStatus CURRENT).",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term: 'Subsidiaries'",
+              "description": "Branch (b) jurisdictional test and the chapeau entity scope depend on 'Subsidiaries'; Phase 2 reports this term UNRESOLVED (not declared in this document or any related document in the package), LOW severity.",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined term: 'Person'",
+              "description": "Branches (a) and (b) use 'Person'; Phase 2 reports this term UNRESOLVED (not declared in this document or any related document in the package), LOW severity.",
+              "inventoryItemIds": []
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Defined terms: 'Loan' and 'Letter of Credit'",
+              "description": "The prohibition applies to proceeds of any Loan or Letter of Credit; Phase 2 reports these terms UNRESOLVED (not declared in this document or any related document in the package), LOW severity.",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "AMBIGUOUS",
+          "sufficiencyReasons": [
+            "Branch (b)'s 'to the extent such activities, business or transaction would be prohibited by Sanctions...' qualifier is AMBIGUOUS_DRAFTING: the source supports both (i) limiting the entire branch (b) (both the Sanctioned Person and Sanctioned Country limbs) and (ii) limiting only the 'in any Sanctioned Country' limb; the compiler does not adjudicate (see inv-item:b3656180e203c73e8ff57183 and inv-item:1287fbc9a162e67231d292e7).",
+            "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node or document text was supplied, so the operative window's completeness against its own unit boundary cannot be established; COMPLETE sufficiency is not claimed.",
+            "The qualitative conduct predicates are represented as UNSUPPORTED descriptive nodes because the provision is a conduct prohibition with no numeric mechanic; each predicate's meaning, citation and defined-term dependency are preserved in the node.",
+            "The third entity tier (directors, officers, employees and agents of the Parent Borrower and its Subsidiaries) carries a 'reasonable best efforts to procure' standard rather than the absolute prohibition applied to the Parent Borrower and its Subsidiaries; the IR has no primitive for graded obligation standards, so the distinction is preserved textually (see irExtensionCandidate).",
+            "All nine frozen-inventory items are consumed within the rule's condition expression nodes (branch (a): 2 nodes; branch (b): 3 nodes; branch (c): 1 node)."
+          ],
+          "citation": "§7.16(a)",
+          "excerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time, or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+          "inventoryItemIds": []
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "§7.16 chapeau (as incorporated into §7.16(a)): 'the Parent Borrower shall not use, shall procure that its Subsidiaries shall not use, and shall use its reasonable best efforts to procure that its or their respective directors, officers, employees and agents shall not use, the proceeds of any Loan or Letter of Credit'",
+          "semanticRequirement": "Represent graded obligation standards on a single prohibition rule - an absolute prohibition for the Parent Borrower and its Subsidiaries versus a 'reasonable best efforts to procure' standard for third-tier actors (directors, officers, employees and agents) - without misstating the tier-3 duty as absolute.",
+          "whyExistingPrimitivesFail": "entityScope tags and conditions carry no field for the degree of diligence/obligation standard, and AND/OR/COMPARE trees cannot express 'best efforts to procure' as a distinct normative standard; a flat entityScope array would silently merge an absolute duty with a best-efforts duty on the same rule.",
+          "candidateGeneralizedPrimitive": "An OBLIGATION_STANDARD qualifier attachable per entity-scope tag (e.g. ABSOLUTE | REASONABLE_BEST_EFFORTS_TO_PROCURE | COMMERCIALLY_REASONABLE_EFFORTS), so one rule can carry heterogeneous duty standards by actor class."
+        }
+      ],
+      "overallNotes": [
+        "One WireRule (r1) is emitted for §7.16(a): the §7.16 chapeau states a single prohibition ('shall not use ... the proceeds of any Loan or Letter of Credit') that §7.16(a) completes with three enumerated prohibited purposes; the (a)/(b)/(c) branches are modelled as three conditions (PROHIBITED_USE) of that one prohibition, not as three independently operative rules - the branches share the chapeau verb and are not separately gated permissions.",
+        "All nine frozen-inventory items are CONSUMED on the expression nodes that carry their meaning: inv-item:a6a916b0e8f67bcffd754168 and inv-item:8304ba004d7f4b2cf23a0b54 on the branch (a) conduct predicate; inv-item:2bedbc2cda9c068777f07b81 on the branch (a) Anti-Corruption Laws predicate; inv-item:58bf6e0ba83762b71e7117ed on the branch (b) purpose predicate; inv-item:b3656180e203c73e8ff57183 on the branch (b) 'to the extent' qualifier; inv-item:1287fbc9a162e67231d292e7 and inv-item:dcd4bd3f50612df197618541 on the branch (b) jurisdiction predicate; inv-item:01654ab302c1e20802f583bf and inv-item:7d5ab72c9390775f732991fd on the branch (c) predicate. No inventory dispositions were required.",
+        "Resolved defined terms (Anti-Corruption Laws, Sanctioned Person, Sanctioned Country, Sanctions, Parent Borrower) are confirmed CURRENT in the context bundle and are carried as REQUIRES dependencies. The four Phase-2 UNRESOLVED_DEFINED_TERM (LOW) items (Person, Subsidiaries, Loan, Letter of Credit) were already reported unresolved after package-wide search; they are preserved as explicit REQUIRES dependencies rather than guessed, and do not change the rule's economics.",
+        "The branch (b) 'to the extent' clause is treated as a conjunct of the branch (b) condition (i.e., the qualifier limits the prohibition's reach), with the alternative reading (qualifier attaching only to the Sanctioned Country limb) preserved and flagged in sufficiencyReasons; the rule's overall sufficiency is AMBIGUOUS by design - no COMPLETE claim is made given the flagged drafting ambiguity and the UNKNOWN_SOURCE_COMPLETENESS source state.",
+        "No shared capacities exist in this provision (the covenant creates no dollar ceiling or aggregate usage pool), so no WireSharedCapacity is emitted; no definitions were emitted because the operative source is a single covenant provision, not a definitions article."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [
+      {
+        "toolName": "getOperativeProvision",
+        "input": {
+          "sectionRef": "7.16"
+        },
+        "outputSummary": "base-document provision 7.16 (never individually amended, CURRENT_OPERATIVE)",
+        "charsReturned": 357,
+        "timestamp": "2026-09-24T17:38:29.663Z",
+        "evidenceUnresolved": false,
+        "evidenceTruncated": false,
+        "retrievedSource": {
+          "requestKind": "PROVISION",
+          "requestKey": "7.16",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:87ff844ddfa6b21259459b8d",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.16",
+          "charStart": 92305,
+          "charEnd": 92662,
+          "rawText": "SECTION 7.16 Limitation on Use\nof Proceeds . Request any Loan or Letter of Credit, and the Parent Borrower shall not use, shall procure that its Subsidiaries shall\nnot use, and shall use its reasonable best efforts to procure that its or their respective directors, officers, employees and agents shall\nnot use, the proceeds of any Loan or Letter of Credit ",
+          "contentHash": "3f6994b28d6e1e06a4361c37fc6e7ad1b0be7dc1b04f5d4a815b3d32cfbd67fd",
+          "textOrigin": "BASE_DOCUMENT_TEXT",
+          "evidenceStatus": "CURRENT_OPERATIVE",
+          "isCurrentTruth": true
+        }
+      }
+    ],
+    "rules": [
+      {
+        "ruleId": "ir-rule:a405f15ff65be5cd92c63260",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.16(a)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "AND",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:834d05dcb3bb7d614bc3a362",
+              "operands": [
+                {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "§7.16(a)",
+                  "semanticDescription": "use of the proceeds of any Loan or Letter of Credit in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person",
+                  "reason": "qualitative purpose-based conduct predicate ('in furtherance of'); the IR has no numeric mechanic to represent this predicate",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.16(a)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:fd86602aba34797b3ce81620",
+                  "inventoryItemIds": [
+                    "inv-item:a6a916b0e8f67bcffd754168",
+                    "inv-item:8304ba004d7f4b2cf23a0b54"
+                  ]
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "§7.16(a)",
+                  "semanticDescription": "such payment or giving is in violation of any Anti-Corruption Laws (defined term 'Anti-Corruption Laws')",
+                  "reason": "qualitative legal predicate depending on the defined term 'Anti-Corruption Laws'; not computable with numeric IR primitives",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.16(a)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:6fd93ded77742c073ed9f101",
+                  "inventoryItemIds": [
+                    "inv-item:2bedbc2cda9c068777f07b81"
+                  ]
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.16(a)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "Branch (a): prohibition on use of proceeds in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.16(a)",
+              "excerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws"
+            }
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "AND",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:61ec085710c6c2c62ec08fe2",
+              "operands": [
+                {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "§7.16(a)",
+                  "semanticDescription": "use of the proceeds for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country (defined terms 'Sanctioned Person', 'Sanctioned Country')",
+                  "reason": "qualitative purpose-based conduct predicate; not computable with numeric IR primitives",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.16(a)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:66d277d2ecf0eb3efe5d0b52",
+                  "inventoryItemIds": [
+                    "inv-item:58bf6e0ba83762b71e7117ed"
+                  ]
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "§7.16(a)",
+                  "semanticDescription": "to the extent such activities, business or transaction would be prohibited by Sanctions (defined term 'Sanctions'); source drafting is AMBIGUOUS whether this qualifier limits the whole of branch (b) or only the 'in any Sanctioned Country' limb - the compiler does not adjudicate between the readings",
+                  "reason": "qualitative legal predicate depending on the defined term 'Sanctions'; attachment of the 'to the extent' qualifier is flagged AMBIGUOUS_DRAFTING in the source",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.16(a)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:7b1b95f09a2b089287dcd1c1",
+                  "inventoryItemIds": [
+                    "inv-item:b3656180e203c73e8ff57183"
+                  ]
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "§7.16(a)",
+                  "semanticDescription": "if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time (defined terms 'Parent Borrower', 'Subsidiaries')",
+                  "reason": "qualitative jurisdictional test; not computable with numeric IR primitives",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.16(a)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:9a3e12750480679260c4f9bc",
+                  "inventoryItemIds": [
+                    "inv-item:1287fbc9a162e67231d292e7",
+                    "inv-item:dcd4bd3f50612df197618541"
+                  ]
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.16(a)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "Branch (b): prohibition on use of proceeds for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country, to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in a US/UK/EU-member-state jurisdiction in which the Parent Borrower or any of its Subsidiaries is organized.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.16(a)",
+              "excerpt": "(b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction"
+            }
+          },
+          {
+            "conditionId": "rule[r1].condition[2]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§7.16(a)",
+              "semanticDescription": "use of the proceeds in any manner that would result in the violation of any Sanctions applicable to any party hereto (defined term 'Sanctions')",
+              "reason": "qualitative legal predicate ('any manner that would result in the violation of any Sanctions' applicable to any party); not computable with numeric IR primitives",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.16(a)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:d69d61bf057f852f55cddab7",
+              "inventoryItemIds": [
+                "inv-item:01654ab302c1e20802f583bf",
+                "inv-item:7d5ab72c9390775f732991fd"
+              ]
+            },
+            "referencesDefinitionId": null,
+            "description": "Branch (c): prohibition on use of proceeds in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.16(a)",
+              "excerpt": "or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto."
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.16 (chapeau)",
+            "description": "The prohibition verb ('shall not use') and entity scope (Parent Borrower; procure that its Subsidiaries shall not use; reasonable best efforts to procure that directors, officers, employees and agents shall not use) are stated in the chapeau, which §7.16(a) completes with the three prohibited purposes; chapeau confirmed CURRENT_OPERATIVE.",
+            "reason": "dependsOn[0].targetRef \"Section 7.16 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term: 'Anti-Corruption Laws'",
+            "description": "Branch (a) violation predicate depends on the definition of 'Anti-Corruption Laws' (supplied in context, evidenceStatus CURRENT).",
+            "reason": "dependsOn[1].targetRef \"Defined term: 'Anti-Corruption Laws'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term: 'Sanctioned Person'",
+            "description": "Branch (b) depends on the definition of 'Sanctioned Person' (supplied in context, evidenceStatus CURRENT).",
+            "reason": "dependsOn[2].targetRef \"Defined term: 'Sanctioned Person'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term: 'Sanctioned Country'",
+            "description": "Branch (b) depends on the definition of 'Sanctioned Country' (supplied in context, evidenceStatus CURRENT).",
+            "reason": "dependsOn[3].targetRef \"Defined term: 'Sanctioned Country'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term: 'Sanctions'",
+            "description": "Branches (b) and (c) depend on the definition of 'Sanctions' (supplied in context, evidenceStatus CURRENT).",
+            "reason": "dependsOn[4].targetRef \"Defined term: 'Sanctions'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term: 'Parent Borrower'",
+            "description": "Branch (b) jurisdictional test depends on 'Parent Borrower' (supplied in context, evidenceStatus CURRENT).",
+            "reason": "dependsOn[5].targetRef \"Defined term: 'Parent Borrower'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term: 'Subsidiaries'",
+            "description": "Branch (b) jurisdictional test and the chapeau entity scope depend on 'Subsidiaries'; Phase 2 reports this term UNRESOLVED (not declared in this document or any related document in the package), LOW severity.",
+            "reason": "dependsOn[6].targetRef \"Defined term: 'Subsidiaries'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined term: 'Person'",
+            "description": "Branches (a) and (b) use 'Person'; Phase 2 reports this term UNRESOLVED (not declared in this document or any related document in the package), LOW severity.",
+            "reason": "dependsOn[7].targetRef \"Defined term: 'Person'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Defined terms: 'Loan' and 'Letter of Credit'",
+            "description": "The prohibition applies to proceeds of any Loan or Letter of Credit; Phase 2 reports these terms UNRESOLVED (not declared in this document or any related document in the package), LOW severity.",
+            "reason": "dependsOn[8].targetRef \"Defined terms: 'Loan' and 'Letter of Credit'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "AMBIGUOUS",
+        "sufficiencyReasons": [
+          "Branch (b)'s 'to the extent such activities, business or transaction would be prohibited by Sanctions...' qualifier is AMBIGUOUS_DRAFTING: the source supports both (i) limiting the entire branch (b) (both the Sanctioned Person and Sanctioned Country limbs) and (ii) limiting only the 'in any Sanctioned Country' limb; the compiler does not adjudicate (see inv-item:b3656180e203c73e8ff57183 and inv-item:1287fbc9a162e67231d292e7).",
+          "SOURCE CONTEXT STATE is UNKNOWN_SOURCE_COMPLETENESS: no anchoring structural node or document text was supplied, so the operative window's completeness against its own unit boundary cannot be established; COMPLETE sufficiency is not claimed.",
+          "The qualitative conduct predicates are represented as UNSUPPORTED descriptive nodes because the provision is a conduct prohibition with no numeric mechanic; each predicate's meaning, citation and defined-term dependency are preserved in the node.",
+          "The third entity tier (directors, officers, employees and agents of the Parent Borrower and its Subsidiaries) carries a 'reasonable best efforts to procure' standard rather than the absolute prohibition applied to the Parent Borrower and its Subsidiaries; the IR has no primitive for graded obligation standards, so the distinction is preserved textually (see irExtensionCandidate).",
+          "All nine frozen-inventory items are consumed within the rule's condition expression nodes (branch (a): 2 nodes; branch (b): 3 nodes; branch (c): 1 node).",
+          "covenantFamily \"USE_OF_PROCEEDS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"PROHIBITED_USE\" not recognized - normalized to UNSUPPORTED",
+          "qualitative purpose-based conduct predicate ('in furtherance of'); the IR has no numeric mechanic to represent this predicate",
+          "qualitative legal predicate depending on the defined term 'Anti-Corruption Laws'; not computable with numeric IR primitives",
+          "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+          "condition[1].conditionType \"PROHIBITED_USE\" not recognized - normalized to UNSUPPORTED",
+          "qualitative purpose-based conduct predicate; not computable with numeric IR primitives",
+          "qualitative legal predicate depending on the defined term 'Sanctions'; attachment of the 'to the extent' qualifier is flagged AMBIGUOUS_DRAFTING in the source",
+          "qualitative jurisdictional test; not computable with numeric IR primitives",
+          "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+          "condition[2].conditionType \"PROHIBITED_USE\" not recognized - normalized to UNSUPPORTED",
+          "qualitative legal predicate ('any manner that would result in the violation of any Sanctions' applicable to any party); not computable with numeric IR primitives",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Subsidiaries of the Parent Borrower\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"directors, officers, employees and agents of the Parent Borrower and its Subsidiaries\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+          "dependsOn[0].targetRef \"Section 7.16 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[1].targetRef \"Defined term: 'Anti-Corruption Laws'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[2].targetRef \"Defined term: 'Sanctioned Person'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[3].targetRef \"Defined term: 'Sanctioned Country'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[4].targetRef \"Defined term: 'Sanctions'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[5].targetRef \"Defined term: 'Parent Borrower'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[6].targetRef \"Defined term: 'Subsidiaries'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[7].targetRef \"Defined term: 'Person'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[8].targetRef \"Defined terms: 'Loan' and 'Letter of Credit'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: wire entity tag(s) \"Subsidiaries of the Parent Borrower\" (entityScope), \"directors, officers, employees and agents of the Parent Borrower and its Subsidiaries\" (entityScope) are not EntityClassTag values; the affected scope field is reset to unspecified and the tag is preserved verbatim in entityScopeAudit - its meaning is not guessed"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.16(a)",
+          "excerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time, or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNRECOGNIZED_TAG",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNRECOGNIZED_TAG"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries of the Parent Borrower",
+              "directors, officers, employees and agents of the Parent Borrower and its Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries of the Parent Borrower",
+              "outcome": "UNRECOGNIZED_ENTITY_TAG",
+              "normalized": null,
+              "viaAlias": false
+            },
+            {
+              "field": "entityScope",
+              "raw": "directors, officers, employees and agents of the Parent Borrower and its Subsidiaries",
+              "outcome": "UNRECOGNIZED_ENTITY_TAG",
+              "normalized": null,
+              "viaAlias": false
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "AMBIGUOUS"
+          },
+          "witness": {
+            "ownExcerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time, or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        }
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] covenantFamily \"USE_OF_PROCEEDS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r1]] condition[0].conditionType \"PROHIBITED_USE\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[0].expression.AND[0]] qualitative purpose-based conduct predicate ('in furtherance of'); the IR has no numeric mechanic to represent this predicate",
+      "[rule[r1].condition[0].expression.AND[1]] qualitative legal predicate depending on the defined term 'Anti-Corruption Laws'; not computable with numeric IR primitives",
+      "[rule[r1].condition[0].expression] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "[rule[r1]] condition[1].conditionType \"PROHIBITED_USE\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[1].expression.AND[0]] qualitative purpose-based conduct predicate; not computable with numeric IR primitives",
+      "[rule[r1].condition[1].expression.AND[1]] qualitative legal predicate depending on the defined term 'Sanctions'; attachment of the 'to the extent' qualifier is flagged AMBIGUOUS_DRAFTING in the source",
+      "[rule[r1].condition[1].expression.AND[2]] qualitative jurisdictional test; not computable with numeric IR primitives",
+      "[rule[r1].condition[1].expression] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "[rule[r1]] condition[2].conditionType \"PROHIBITED_USE\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1].condition[2].expression] qualitative legal predicate ('any manner that would result in the violation of any Sanctions' applicable to any party); not computable with numeric IR primitives",
+      "[rule[r1]] ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Subsidiaries of the Parent Borrower\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+      "[rule[r1]] ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"directors, officers, employees and agents of the Parent Borrower and its Subsidiaries\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+      "[rule[r1]] dependsOn[0].targetRef \"Section 7.16 (chapeau)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[1].targetRef \"Defined term: 'Anti-Corruption Laws'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[2].targetRef \"Defined term: 'Sanctioned Person'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[3].targetRef \"Defined term: 'Sanctioned Country'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[4].targetRef \"Defined term: 'Sanctions'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[5].targetRef \"Defined term: 'Parent Borrower'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[6].targetRef \"Defined term: 'Subsidiaries'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[7].targetRef \"Defined term: 'Person'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[8].targetRef \"Defined terms: 'Loan' and 'Letter of Credit'\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "One WireRule (r1) is emitted for §7.16(a): the §7.16 chapeau states a single prohibition ('shall not use ... the proceeds of any Loan or Letter of Credit') that §7.16(a) completes with three enumerated prohibited purposes; the (a)/(b)/(c) branches are modelled as three conditions (PROHIBITED_USE) of that one prohibition, not as three independently operative rules - the branches share the chapeau verb and are not separately gated permissions.",
+      "All nine frozen-inventory items are CONSUMED on the expression nodes that carry their meaning: inv-item:a6a916b0e8f67bcffd754168 and inv-item:8304ba004d7f4b2cf23a0b54 on the branch (a) conduct predicate; inv-item:2bedbc2cda9c068777f07b81 on the branch (a) Anti-Corruption Laws predicate; inv-item:58bf6e0ba83762b71e7117ed on the branch (b) purpose predicate; inv-item:b3656180e203c73e8ff57183 on the branch (b) 'to the extent' qualifier; inv-item:1287fbc9a162e67231d292e7 and inv-item:dcd4bd3f50612df197618541 on the branch (b) jurisdiction predicate; inv-item:01654ab302c1e20802f583bf and inv-item:7d5ab72c9390775f732991fd on the branch (c) predicate. No inventory dispositions were required.",
+      "Resolved defined terms (Anti-Corruption Laws, Sanctioned Person, Sanctioned Country, Sanctions, Parent Borrower) are confirmed CURRENT in the context bundle and are carried as REQUIRES dependencies. The four Phase-2 UNRESOLVED_DEFINED_TERM (LOW) items (Person, Subsidiaries, Loan, Letter of Credit) were already reported unresolved after package-wide search; they are preserved as explicit REQUIRES dependencies rather than guessed, and do not change the rule's economics.",
+      "The branch (b) 'to the extent' clause is treated as a conjunct of the branch (b) condition (i.e., the qualifier limits the prohibition's reach), with the alternative reading (qualifier attaching only to the Sanctioned Country limb) preserved and flagged in sufficiencyReasons; the rule's overall sufficiency is AMBIGUOUS by design - no COMPLETE claim is made given the flagged drafting ambiguity and the UNKNOWN_SOURCE_COMPLETENESS source state.",
+      "No shared capacities exist in this provision (the covenant creates no dollar ceiling or aggregate usage pool), so no WireSharedCapacity is emitted; no definitions were emitted because the operative source is a single covenant provision, not a definitions article.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 9 item(s) accepted (0 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:192-214) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:192-214: \"(b) for the purpose of\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    ],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "§7.16 chapeau (as incorporated into §7.16(a)): 'the Parent Borrower shall not use, shall procure that its Subsidiaries shall not use, and shall use its reasonable best efforts to procure that its or their respective directors, officers, employees and agents shall not use, the proceeds of any Loan or Letter of Credit'",
+        "semanticRequirement": "Represent graded obligation standards on a single prohibition rule - an absolute prohibition for the Parent Borrower and its Subsidiaries versus a 'reasonable best efforts to procure' standard for third-tier actors (directors, officers, employees and agents) - without misstating the tier-3 duty as absolute.",
+        "whyExistingPrimitivesFail": "entityScope tags and conditions carry no field for the degree of diligence/obligation standard, and AND/OR/COMPARE trees cannot express 'best efforts to procure' as a distinct normative standard; a flat entityScope array would silently merge an absolute duty with a best-efforts duty on the same rule.",
+        "candidateGeneralizedPrimitive": "An OBLIGATION_STANDARD qualifier attachable per entity-scope tag (e.g. ABSOLUTE | REASONABLE_BEST_EFFORTS_TO_PROCURE | COMMERCIALLY_REASONABLE_EFFORTS), so one rule can carry heterogeneous duty standards by actor class."
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T17:39:06.504Z",
+      "inputTokens": 19907,
+      "outputTokens": 19967,
+      "cachedInputTokens": 23552,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 188004,
+      "calculatedCostUsd": 0.239484
+    },
+    "compiledAt": "2026-09-24T17:39:06.504Z",
+    "outputHash": "f60f7c42baac4ac9b326b352a691bae30591e4b45623f51f61c386be1240dd2d"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "9b85e6b41dbbf42c528ea773e239036bafcdcfff6bc0922f4abe07b40d10b629",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+        "ruleOrDefinitionId": "rule[r1].condition[1]",
+        "irPath": "rules[0].conditions[1].expression",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time",
+        "sourceCitation": "§7.16(a)(b)",
+        "proposedIrEvidence": "condition[1] represents branch (b) as an AND expression whose three operands are: (1) use for the purpose of funding/financing/facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country; (2) 'to the extent such activities, business or transaction would be prohibited by Sanctions'; and (3) 'if conducted by a Person organized in any jurisdiction...'. The compiler's own reason on operand (2) states that it 'does not adjudicate' whether the qualifier limits the whole of branch (b) or only the 'in any Sanctioned Country' limb.",
+        "verifierReasoning": "The IR's AND structure places the 'to the extent...' and 'if conducted by...' qualifiers inside the same conjunction as the whole 'Sanctioned Person, or in any Sanctioned Country' predicate, which necessarily applies those qualifiers to the Sanctioned-Person limb as well as the Sanctioned-Country limb. On the source's natural reading, the qualifier attaches only to the immediately preceding 'in any Sanctioned Country' limb, leaving the 'of or with any Sanctioned Person' limb unconditional. A hypothetical transaction with a Sanctioned Person that would not be prohibited by Sanctions under the hypothetical-organized-person test would therefore be outside the prohibition under the IR but within the source's Sanctioned-Person limb. The IR thus silently selects one reading of an ambiguous (or, on the natural reading, misgrouped) provision, and it does so despite claiming not to adjudicate the ambiguity. This can change a compliance conclusion and is material.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T17:43:17.533Z"
+      },
+      {
+        "findingId": "e179bafbd5f77a2e2eafebd3ddfb91f5473446a59489e47e31d9c7ba65ed8102",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+        "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+        "irPath": "rules[0]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "Request any Loan or Letter of Credit, and the Parent Borrower shall not use, shall procure that its Subsidiaries shall not use, and shall use its reasonable best efforts to procure that its or their respective directors, officers, employees and agents shall not use, the proceeds of any Loan or Letter of Credit",
+        "sourceCitation": "Section 7.16 parent scope (authenticated context item f2353e59c5060cd20cee478856e3105b73f1176d62bba7199c3b80f26dd9a0d3)",
+        "proposedIrEvidence": "The single rule has entityScope: [] and no condition or description representing the Parent Borrower's 'shall procure that its Subsidiaries shall not use' obligation, the 'reasonable best efforts to procure' standard as to directors, officers, employees and agents, or the restriction concerning 'Request any Loan or Letter of Credit'. All three conditions are phrased solely as a bare prohibition on 'use of the proceeds of any Loan or Letter of Credit'.",
+        "verifierReasoning": "The source does not impose a single undifferentiated use-of-proceeds prohibition. It imposes a direct prohibition on the Parent Borrower, a 'shall procure' duty as to its Subsidiaries, and a 'reasonable best efforts' duty as to directors, officers, employees and agents, and it also restricts the requesting of a Loan or Letter of Credit. These have different obliged persons and different breach standards. The IR's empty entity scope and blanket PROHIBITION representation would mislead a reviewer about who is bound and under what standard—for example, a subsidiary's prohibited use is a Parent Borrower covenant breach only through the 'shall procure' duty, while a director's use is governed by the best-efforts standard. This omission is material.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "deepseek/deepseek-v4-flash",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T17:43:17.533Z"
+      },
+      {
+        "findingId": "ff1c1b8311d03cd50e7f84dd2ff92f08c898181307455657b101542177826a29",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.16(a)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 3 apparent independent enumerated unit(s) ((a), (b), (c)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 3 apparent independent enumerated unit(s) ((a), (b), (c)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-24T17:39:06.512Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "25a4d7d258a5ffb858af4244321ac6ebe32142391c0eb4435bd6bdd3791ff79f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Corruption Laws",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.16(a)",
+            "structuralNodeKey": null,
+            "charStart": 175,
+            "charEnd": 190
+          },
+          "irItems": [],
+          "reason": "source mention \"Corruption Laws\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d2ac0e021ae450b4b0e01b7ebab3bdadad346df057e6a8aedb6517c7d1bf6d84",
+            "kind": "METRIC_MENTION",
+            "rawText": "Sanctioned Person",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.16(a)",
+            "structuralNodeKey": null,
+            "charStart": 305,
+            "charEnd": 322
+          },
+          "irItems": [],
+          "reason": "source mention \"Sanctioned Person\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c3a0f6c5c1990d824cdf76a521553409f76396328b59ae5e4c9885455af09359",
+            "kind": "METRIC_MENTION",
+            "rawText": "Sanctioned Country",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.16(a)",
+            "structuralNodeKey": null,
+            "charStart": 334,
+            "charEnd": 352
+          },
+          "irItems": [],
+          "reason": "source mention \"Sanctioned Country\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e39085d4a598ccbb203272b8ad68b0b0d713f437d6824f3d248a59f1730ee5b7",
+            "kind": "METRIC_MENTION",
+            "rawText": "United States",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.16(a)",
+            "structuralNodeKey": null,
+            "charStart": 524,
+            "charEnd": 537
+          },
+          "irItems": [],
+          "reason": "source mention \"United States\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bfc5434ad0490ec5e150a5ab148dd33a0a919836806bc66534fb013531962f7e",
+            "kind": "METRIC_MENTION",
+            "rawText": "United Kingdom",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.16(a)",
+            "structuralNodeKey": null,
+            "charStart": 543,
+            "charEnd": 557
+          },
+          "irItems": [],
+          "reason": "source mention \"United Kingdom\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8b84d44ebcb9152541abec7d0b6f481a3ddea49cd5065ad1eb3bd7782cc09af5",
+            "kind": "METRIC_MENTION",
+            "rawText": "European Union",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.16(a)",
+            "structuralNodeKey": null,
+            "charStart": 566,
+            "charEnd": 580
+          },
+          "irItems": [],
+          "reason": "source mention \"European Union\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3f6cecbd71c10fa3e51c372640ed678e733f4f147a6a373df884325b1057600a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.16(a)",
+            "structuralNodeKey": null,
+            "charStart": 607,
+            "charEnd": 622
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 3 apparent independent enumerated unit(s) ((a), (b), (c)) but only 1 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+      "items": [
+        {
+          "itemId": "bb2420fa8d6038063d5f43665d29f7251b408e7aa28d7085490d0e927e8944ae",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 614,
+          "charEnd": 622,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "25a4d7d258a5ffb858af4244321ac6ebe32142391c0eb4435bd6bdd3791ff79f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Corruption Laws",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 175,
+          "charEnd": 190
+        },
+        {
+          "itemId": "d2ac0e021ae450b4b0e01b7ebab3bdadad346df057e6a8aedb6517c7d1bf6d84",
+          "kind": "METRIC_MENTION",
+          "rawText": "Sanctioned Person",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 305,
+          "charEnd": 322
+        },
+        {
+          "itemId": "c3a0f6c5c1990d824cdf76a521553409f76396328b59ae5e4c9885455af09359",
+          "kind": "METRIC_MENTION",
+          "rawText": "Sanctioned Country",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 334,
+          "charEnd": 352
+        },
+        {
+          "itemId": "e39085d4a598ccbb203272b8ad68b0b0d713f437d6824f3d248a59f1730ee5b7",
+          "kind": "METRIC_MENTION",
+          "rawText": "United States",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 524,
+          "charEnd": 537
+        },
+        {
+          "itemId": "bfc5434ad0490ec5e150a5ab148dd33a0a919836806bc66534fb013531962f7e",
+          "kind": "METRIC_MENTION",
+          "rawText": "United Kingdom",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 543,
+          "charEnd": 557
+        },
+        {
+          "itemId": "8b84d44ebcb9152541abec7d0b6f481a3ddea49cd5065ad1eb3bd7782cc09af5",
+          "kind": "METRIC_MENTION",
+          "rawText": "European Union",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 566,
+          "charEnd": 580
+        },
+        {
+          "itemId": "3f6cecbd71c10fa3e51c372640ed678e733f4f147a6a373df884325b1057600a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": 607,
+          "charEnd": 622
+        },
+        {
+          "itemId": "81f92c4c3300df9057d6005524aa25aca63d709a59bb6ed9f750aa034890b605",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "e0e8dcce185e064aa2df2778de233e46d7adbd5584565a098f03b68e3fe742ab",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "9cf3fca7fb8ce64716c0ed7ef1e040633e72967f978c9fc5bc290904aacc6f2b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.16(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 3,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(b)",
+        "(c)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+      "items": [
+        {
+          "itemId": "79f3168834b400fd2853c7b427e0f38f13785ecc135677eb1576591c2c3b72dd",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time, or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "4920a3c8399126529270632b5bf9e062b823e1fb123d53b097b433bed358fe27",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time, or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "edfad2493a269e85fe659cce2662e3d14b45fe3d0da3e083e3e452ee6368e123",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Branch (a): prohibition on use of proceeds in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "16ec125b129da8823c669567eb50ee49a2121974ffe442b92086da4ed79d751f",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[0].expression.operands[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "use of the proceeds of any Loan or Letter of Credit in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "16e4b84ee3d5769d2af9e89074ca90f34f8cc174513c0137ef821800c5b45e3e",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[0].expression.operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "such payment or giving is in violation of any Anti-Corruption Laws (defined term 'Anti-Corruption Laws')",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "b6f4bc4cdb291b9c44230be0485b45e9b15831ac541066ede1ea6a20b7d5aa85",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Branch (b): prohibition on use of proceeds for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country, to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in a US/UK/EU-member-state jurisdiction in which the Parent Borrower or any of its Subsidiaries is organized.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": "(b) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country to the extent such activities, business or transaction would be prohibited by Sanctions if conducted by a Person organized in any jurisdiction",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "4fadaf9c5f63580774f431ef1ec7cb31471cd8df8f03ce5214cde7a060a7bfa1",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[1].expression.operands[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "use of the proceeds for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country (defined terms 'Sanctioned Person', 'Sanctioned Country')",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "72d589e281f24c738dce7f023a2840569bc6f27096c5097c854c9468a9557f63",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[1].expression.operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "to the extent such activities, business or transaction would be prohibited by Sanctions (defined term 'Sanctions'); source drafting is AMBIGUOUS whether this qualifier limits the whole of branch (b) or only the 'in any Sanctioned Country' limb - the compiler does not adjudicate between the readings",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "52d7f91c36f9b4435bdadf98bded4686a4ea7a69d922f777f17f331a4a4728aa",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[1].expression.operands[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "if conducted by a Person organized in any jurisdiction governed by the laws of the United States, the United Kingdom or in a European Union member state in which the Parent Borrower or any of its Subsidiaries is organized from time to time (defined terms 'Parent Borrower', 'Subsidiaries')",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "4a7e4f1dda56c583d0fc0f4cafd65495233677182ea4e27e17c782e914d0abbf",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Branch (c): prohibition on use of proceeds in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": "or (c) in any manner that would result in the violation of any Sanctions applicable to any party hereto.",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "109c6ea798a4a3f0a4f72fdfb09dcc88688a7622af251539d140eb652f188510",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:a405f15ff65be5cd92c63260",
+          "irPath": "rules[0].conditions[2].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "use of the proceeds in any manner that would result in the violation of any Sanctions applicable to any party hereto (defined term 'Sanctions')",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.16(a)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:f0466a27cbf457478a3eac0e",
+        "items": [],
+        "fieldsWalked": 36,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "1c22c83519140e1758631bbb9504a9d23c428b58ff6a22ab0e426b0d958d3891",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "6899be531144edadf0b6b6d905da7cae0da6e79d7388539a70df4bfa080d17bf",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "PROVISION",
+          "requestKey": "7.16",
+          "scopeKey": "7.16",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": "structural-node:87ff844ddfa6b21259459b8d",
+          "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.16",
+          "charStart": 92305,
+          "charEnd": 92662,
+          "rawText": "SECTION 7.16 Limitation on Use\nof Proceeds . Request any Loan or Letter of Credit, and the Parent Borrower shall not use, shall procure that its Subsidiaries shall\nnot use, and shall use its reasonable best efforts to procure that its or their respective directors, officers, employees and agents shall\nnot use, the proceeds of any Loan or Letter of Credit ",
+          "contentHash": "3f6994b28d6e1e06a4361c37fc6e7ad1b0be7dc1b04f5d4a815b3d32cfbd67fd",
+          "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+          "relationshipToUnit": "section \"7.16\" consulted for candidate discovery-candidate:f0466a27cbf457478a3eac0e (7.16(a)) - support only",
+          "role": "REFERENCED_ONLY",
+          "representedDefinitionIds": [],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": true,
+            "matched": true,
+            "toolCallIndexes": [
+              0
+            ]
+          },
+          "linkage": [
+            {
+              "origin": "COMPILER_TOOL_CALL",
+              "detail": "toolCallLog[0] getOperativeProvision {\"sectionRef\":\"7.16\"}",
+              "compilerRecordedContentHash": "3f6994b28d6e1e06a4361c37fc6e7ad1b0be7dc1b04f5d4a815b3d32cfbd67fd"
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "provision \"7.16\" resolved to node structural-node:87ff844ddfa6b21259459b8d span [92305, 92662)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [92305, 92662) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(92305, 92662)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "compiler-recorded content hash 3f6994b28d6e1e06a4361c37fc6e7ad1b0be7dc1b04f5d4a815b3d32cfbd67fd and raw text match the independently resolved text (1 record(s))"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:87ff844ddfa6b21259459b8d) is the same source this verifier resolved"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "3c7e0c8e2b69b244bbd7799a059c457abcdb64e27436c00a1d77e3efbe9386ab",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 390151,
+    "inputTokens": 19907,
+    "outputTokens": 19967,
+    "costUsd": 0.007779330000000001,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:f0466a27cbf457478a3eac0e.verified-units.json",
+    "packageHash": "c6f05d6de07e1f2838608927dd966bd1f92d22f09b39f93e7d0e13226d696b38",
+    "complete": false,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": [
+      "VERIFICATION_WITHOUT_IR"
+    ]
+  }
+}

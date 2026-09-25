@@ -1,0 +1,830 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-25T03:32:13.928Z",
+  "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.5(k)",
+    "operativeSourceText": "(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n",
+    "operativeSourceTextSha256": "4ee9d11098da9e681c458d092ee297e1b9cf6b8adc7a1afb9edda96938f97fe7",
+    "operativeSourceChars": 163,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:c7bb3dff41257faf58a3e1e3b6e26495a4fee27f587d6ae0aeb28888fa59806b",
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "itemCount": 8,
+    "items": [
+      {
+        "itemId": "context-item:e4e6b7f819d36516ecaf37c9e9fdd99a883f95970e58af8135e249f7f0d5b3d5",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.5(k)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 163,
+        "excerptText": "(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n"
+      },
+      {
+        "itemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.5",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 4658,
+        "excerptText": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n(a)\nthe Disposition of obsolete or worn out property in the ordinary course of business;\n(b)\nthe sale or other Disposition of Inventory in the ordinary course of business;\n(c)\nDispositions permitted by Section 7.4(b);\n(d)\nthe sale or issuance of the Capital Stock of (i) any Subsidiary to the Parent Borrower or any Subsidiary Guarantor, (ii) any Subsidiary\n(other than a Subsidiary Guarantor) to any Subsidiary Guarantor and (iii) any Subsidiary that is not a Loan Party to any other Subsidiary;\n(e)\nthe sale or transfer of any Capital Stock of any Subsidiary that is not a Loan Party acquired pursuant to a Permitted Business\nAcquisition to any other Subsidiary;\n(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and (ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and its Subsidiaries for\nwhich audited financial statements are available) in any fiscal year and (y) 15% of Consolidated EBITDA (measured based on Consolidated\nEBITDA for the most recently ended period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries for which financial\nstatements are available, but tested only at incurrence) in the aggregate during any four-year rolling period; provided , further ,\nthat the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;\n(g)\nmonetary payments made in the ordinary course of business;\n101\n(h)\nthe sale or discount without recourse of accounts receivable arising in the ordinary course of business of the Parent Borrower\nor its Subsidiaries in connection with the compromise or collection thereof;\n(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n(l)\nthe sale, transfer, encumbrance or other disposition of securities or related ancillary rights and assets pursuant to sales, marketing\nand distribution arrangements;\n(m)\nDispositions of Property from the Parent Borrower or a Subsidiary Guarantor to the Parent Borrower or another Subsidiary Guarantor;\nand\n(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 126,
+        "excerptText": "(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n"
+      },
+      {
+        "itemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(n)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 635,
+        "excerptText": "(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "type": "DEFINITION",
+        "normalizedRef": "Receivables Transfer Program",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 714,
+        "excerptText": "\"Receivables Transfer Program\": a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable\nor related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit\ndilution provisions) other than with respect to the Parent Borrower's or such Subsidiary's retained interest in such accounts\nreceivable or related ancillary rights or assets, such program to have substantially the terms and conditions provided to the Administrative\nAgent prior to the Closing Date, as such terms and conditions may be amended, supplemented or otherwise modified from time to time.\n34\n\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Subsidiary",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 749,
+        "excerptText": "\"Subsidiary\": as to\nany Person, a corporation, partnership, limited liability company or other entity of which shares of stock or other ownership interests\nhaving ordinary voting power (other than stock or such other ownership interests having such power only by reason of the happening of\na contingency) to elect a majority of the board of directors or other managers of such corporation, partnership or other entity are at\nthe time owned, or the management of which is otherwise controlled, directly or indirectly through one or more intermediaries, or both,\nby such Person. Unless otherwise qualified, all references to a \"Subsidiary\" or to \"Subsidiaries\" in this Agreement\nshall refer to a Subsidiary or Subsidiaries of the Parent Borrower.\n39\n\n"
+      },
+      {
+        "itemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Agreement",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 49,
+        "excerptText": "\"Agreement\": as defined\nin the preamble hereto.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "toItemId": "context-item:e4e6b7f819d36516ecaf37c9e9fdd99a883f95970e58af8135e249f7f0d5b3d5",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "toItemId": "context-item:e4e6b7f819d36516ecaf37c9e9fdd99a883f95970e58af8135e249f7f0d5b3d5",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "toItemId": "context-item:e4e6b7f819d36516ecaf37c9e9fdd99a883f95970e58af8135e249f7f0d5b3d5",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:e4e6b7f819d36516ecaf37c9e9fdd99a883f95970e58af8135e249f7f0d5b3d5",
+        "toItemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:f99268adef80671880c739d2437e017bbc842a636de81018c0b1605d4cd16448",
+        "toItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:55da813b959d68aa1447f0c3e8bb2e36ea385759447aee8e2384676f12aba646",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:06730cad2d39b09c79d9880eadb02676b6b648e9484f3eb68cebdf32699827c9",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "7.5(k)",
+          "covenantFamily": "SALE_OF_ASSETS",
+          "ruleType": "EXCEPTION_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "DISPOSE_OF_ACCOUNTS_RECEIVABLE",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiary"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": null,
+            "citation": "§7.5(k)",
+            "excerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program"
+          },
+          "conditions": [
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "expression": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "termName": "Receivables Transfer Program"
+              },
+              "referencesDefinitionId": "d1",
+              "description": "The carve-out applies only to dispositions made pursuant to a Receivables Transfer Program",
+              "citation": "§7.5(k)",
+              "excerpt": "pursuant to a Receivables Transfer Program",
+              "inventoryItemIds": [
+                "4c819573e6cb96814cb4d517",
+                "1d393aa04aff834b1e1c2d86"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "EXCEPTS_FROM",
+              "targetRef": "Section 7.5",
+              "description": "This clause is one of the permitted Dispositions carved out of the Section 7.5 limitation on sale of assets",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.5(k)",
+          "excerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program;",
+          "inventoryItemIds": [
+            "dc6fbe9ceb5126146e009788"
+          ]
+        }
+      ],
+      "definitions": [
+        {
+          "localRef": "d1",
+          "termName": "Receivables Transfer Program",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": null,
+          "dependsOnTerms": [
+            "Parent Borrower",
+            "Subsidiary",
+            "Agreement",
+            "Closing Date",
+            "Administrative Agent"
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "Definition of 'Receivables Transfer Program'",
+          "excerpt": "a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable or related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit dilution provisions) ..."
+        }
+      ],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "Section 7.5(k) is a carve-out/exception to the Section 7.5 chapeau prohibition on Disposition of Property. It is represented as an unconditional permission (no dollar ceiling - UNLIMITED_CAPACITY) to dispose of accounts receivable and related ancillary rights/assets, subject only to the condition that the disposition be made pursuant to a Receivables Transfer Program.",
+        "The 'pursuant to' reference (inventory item 4c819573...) and the Receivables Transfer Program dependency (item 1d393aa0...) are both consumed by the single condition node, since the operative meaning is: carve-out applies only to program dispositions.",
+        "No numeric quantity, ratio, percentage, day count or shared cap is present in this clause; the three inventory items are fully consumed.",
+        "The parent Section 7.5 prohibition (with its other carve-outs (a)-(n)) is outside the supplied operative window and is preserved only as a dependsOn relationship, not independently compiled."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:1dbb199355f8793966ea1c87",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.5(k)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.5(k)",
+            "excerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "BOOLEAN",
+              "termName": "Receivables Transfer Program",
+              "companyId": "conmed-pilot",
+              "instrumentKey": "conmed-eighth-ar-credit-agreement",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:bf367c27cf7aa83a1de2a0c1"
+            },
+            "referencesDefinitionId": "d1",
+            "description": "The carve-out applies only to dispositions made pursuant to a Receivables Transfer Program",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(k)",
+              "excerpt": "pursuant to a Receivables Transfer Program"
+            },
+            "inventoryItemIds": [
+              "4c819573e6cb96814cb4d517",
+              "1d393aa04aff834b1e1c2d86"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.5",
+            "description": "This clause is one of the permitted Dispositions carved out of the Section 7.5 limitation on sale of assets",
+            "reason": "dependsOn[0].targetRef \"Section 7.5\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "covenantFamily \"SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"EXCEPTION_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].relationshipType \"EXCEPTS_FROM\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"Section 7.5\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.5(k)",
+          "excerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program;"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNWITNESSED",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNWITNESSED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiary"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiary",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program;",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "dc6fbe9ceb5126146e009788"
+        ]
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:3f84f607f0d40378de9811d8",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "termName": "Receivables Transfer Program",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Parent Borrower",
+          "Subsidiary",
+          "Agreement",
+          "Closing Date",
+          "Administrative Agent"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definition of 'Receivables Transfer Program'",
+          "excerpt": "a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable or related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit dilution provisions) ..."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null
+      }
+    ],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r1]] covenantFamily \"SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r1]] ruleType \"EXCEPTION_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r1]] dependsOn[0].relationshipType \"EXCEPTS_FROM\" not recognized - defaulted to REQUIRES",
+      "[rule[r1]] dependsOn[0].targetRef \"Section 7.5\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Section 7.5(k) is a carve-out/exception to the Section 7.5 chapeau prohibition on Disposition of Property. It is represented as an unconditional permission (no dollar ceiling - UNLIMITED_CAPACITY) to dispose of accounts receivable and related ancillary rights/assets, subject only to the condition that the disposition be made pursuant to a Receivables Transfer Program.",
+      "The 'pursuant to' reference (inventory item 4c819573...) and the Receivables Transfer Program dependency (item 1d393aa0...) are both consumed by the single condition node, since the operative meaning is: carve-out applies only to program dispositions.",
+      "No numeric quantity, ratio, percentage, day count or shared cap is present in this clause; the three inventory items are fully consumed.",
+      "The parent Section 7.5 prohibition (with its other carve-outs (a)-(n)) is outside the supplied operative window and is preserved only as a dependsOn relationship, not independently compiled.",
+      "[inventory] INVENTORY_COVERAGE_GAP: 3 item(s) accepted (1 added by the targeted gap re-inventory), but 1 stretch(es) of source across 1 region(s) remain UNACCOUNTED_SOURCE (operative:4-118) - accountability for that text is not established; see unaccountedSource",
+      "[inventory] unaccounted source operative:4-118: \"the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-25T03:32:06.643Z",
+      "inputTokens": 12258,
+      "outputTokens": 3874,
+      "cachedInputTokens": 655360,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 19636,
+      "calculatedCostUsd": 0.063256
+    },
+    "compiledAt": "2026-09-25T03:32:06.643Z",
+    "outputHash": "dc8e4487b12f9866e91aeafabef251778fb6cce39446d395666ccf3bf3b3b9b6"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "894292e7ac51ad7cfe15b2dd6079302fd9dd3fd560be427d4607a7dbd12f4a9d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Receivables Transfer Program",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(k)",
+            "structuralNodeKey": null,
+            "charStart": 133,
+            "charEnd": 161
+          },
+          "irItems": [
+            {
+              "itemId": "864a9cfb9962277b07a3b7c93bb68d203acd95e010adc02cf00ee91229a74018",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:1dbb199355f8793966ea1c87",
+              "irPath": "rules[0].conditions[0].expression",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Receivables Transfer Program",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Receivables Transfer Program\" matches a compiled metric/defined-term reference"
+        }
+      ],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460",
+      "items": [
+        {
+          "itemId": "0fc1479daa69c7b798c81d51d07ae9f850f97c0ed519d76dedd2302c8e49a3c7",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(k)",
+          "structuralNodeKey": null,
+          "charStart": 45,
+          "charEnd": 56,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "894292e7ac51ad7cfe15b2dd6079302fd9dd3fd560be427d4607a7dbd12f4a9d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Receivables Transfer Program",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(k)",
+          "structuralNodeKey": null,
+          "charStart": 133,
+          "charEnd": 161
+        },
+        {
+          "itemId": "4fc916c92ab3a0691b3576bb200d1a3a43cdd7b8729720ed9aaf422707af3d3c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(k)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(k)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(k)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460",
+      "items": [
+        {
+          "itemId": "42909b1dcd4782ca385bfe6130e870ff2e639878e87e96c6a06fe4de99455488",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:1dbb199355f8793966ea1c87",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(k)",
+          "sourceExcerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "2942e507b36f801d21c3d60dd6ad7853984d944b4c006cbbd469a2abe4b209ef",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:1dbb199355f8793966ea1c87",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(k)",
+          "sourceExcerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "63caf24c66464aee51615b4c94f24f7ee656483b7c20061891b0eb264487e874",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:1dbb199355f8793966ea1c87",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(k)",
+          "sourceExcerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program;",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "79fc13a82b033eca10299468efe56c451cb5a1f424a0fb2d61480b666b80b0b0",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:1dbb199355f8793966ea1c87",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The carve-out applies only to dispositions made pursuant to a Receivables Transfer Program",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(k)",
+          "sourceExcerpt": "pursuant to a Receivables Transfer Program",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "864a9cfb9962277b07a3b7c93bb68d203acd95e010adc02cf00ee91229a74018",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:1dbb199355f8793966ea1c87",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Receivables Transfer Program",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "cf999116c4e506f1375647c6ee84487e2358f02a750b5c27bf78bc1d306a5d75",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:1dbb199355f8793966ea1c87",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(k)",
+          "sourceExcerpt": "the sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to a Receivables Transfer Program",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "84260fed5b5cd2406956f0da5cc0a6258d6b2f2016880f8cf37782b19cddd708",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:3f84f607f0d40378de9811d8",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Parent Borrower",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Receivables Transfer Program"
+        },
+        {
+          "itemId": "ce598b9662914f9d897b7f9813479b7446a509d60bf035a86f56364ecd2825fa",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:3f84f607f0d40378de9811d8",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Subsidiary",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Receivables Transfer Program"
+        },
+        {
+          "itemId": "b582ea938fa06d41ff27f02fb889a9afa3c7c680295d07194979831d3a79d571",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:3f84f607f0d40378de9811d8",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Receivables Transfer Program"
+        },
+        {
+          "itemId": "60447e8af825f1acb296ea237602ddccb8afdfd91bd015216b6241e84ac5d5fb",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:3f84f607f0d40378de9811d8",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Closing Date",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Receivables Transfer Program"
+        },
+        {
+          "itemId": "17527ec6df2cda3d8ce641509250f1e08b855506bd640001b9a80418d6d57e6e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:3f84f607f0d40378de9811d8",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "DEFINED_TERM:Administrative Agent",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": "Receivables Transfer Program"
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460",
+        "items": [],
+        "fieldsWalked": 6,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "4ee9d11098da9e681c458d092ee297e1b9cf6b8adc7a1afb9edda96938f97fe7",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [
+        {
+          "evidenceId": "79cae7c3f6fa450194261fdd89f33c9f909341b684b5ab6a02051dee4d7a42fc",
+          "provenanceClass": "AUTHENTICATED_RETRIEVED",
+          "requestKind": "DEFINITION",
+          "requestKey": "Receivables Transfer Program",
+          "scopeKey": "receivables transfer program",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "documentVersion": "BASE_DOCUMENT",
+          "operativeEvidenceStatus": "CURRENT",
+          "sourceNodeId": null,
+          "sourceNodeKey": null,
+          "charStart": 37648,
+          "charEnd": 38362,
+          "rawText": "\"Receivables Transfer Program\": a program under which the Parent Borrower or any of its Subsidiaries sell, transfer, encumber or otherwise dispose of accounts receivable\nor related ancillary rights or assets, or interests therein, without recourse (except for customary representations and customary non-credit\ndilution provisions) other than with respect to the Parent Borrower's or such Subsidiary's retained interest in such accounts\nreceivable or related ancillary rights or assets, such program to have substantially the terms and conditions provided to the Administrative\nAgent prior to the Closing Date, as such terms and conditions may be amended, supplemented or otherwise modified from time to time.\n34\n\n",
+          "contentHash": "808e2c13651a787e8a022f9fc3c0f7d475b8d028ea7835eeb9ae0ff4c7eb9868",
+          "retrievalReason": "the IR contains a definition of this term",
+          "relationshipToUnit": "definition of \"Receivables Transfer Program\" represented by IR ir-definition:3f84f607f0d40378de9811d8 of candidate discovery-candidate:7a871f5e26e8a48783882460",
+          "role": "REPRESENTED_DEFINITION",
+          "representedDefinitionIds": [
+            "ir-definition:3f84f607f0d40378de9811d8"
+          ],
+          "duplicatesLocalWindow": false,
+          "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+          "compilerRecord": {
+            "present": false,
+            "matched": null,
+            "toolCallIndexes": []
+          },
+          "linkage": [
+            {
+              "origin": "IR_DEFINITION_TERM",
+              "detail": "definitions[0].termName = \"Receivables Transfer Program\"",
+              "compilerRecordedContentHash": null
+            }
+          ],
+          "authenticationStatus": "AUTHENTICATED",
+          "checks": [
+            {
+              "code": "A_DOCUMENT_IN_PACKAGE",
+              "passed": true,
+              "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+            },
+            {
+              "code": "B_SPAN_RESOLVES",
+              "passed": true,
+              "detail": "definition \"Receivables Transfer Program\" resolved to node (none) span [37648, 38362)"
+            },
+            {
+              "code": "G_SPAN_IN_BOUNDS",
+              "passed": true,
+              "detail": "span [37648, 38362) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+            },
+            {
+              "code": "C_RAW_TEXT_MATCH",
+              "passed": true,
+              "detail": "resolved text is byte-identical to document.text.slice(37648, 38362)"
+            },
+            {
+              "code": "D_HASH_MATCH",
+              "passed": true,
+              "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 808e2c13651a787e8a022f9fc3c0f7d475b8d028ea7835eeb9ae0ff4c7eb9868 computed independently from the resolved text"
+            },
+            {
+              "code": "F_NOT_UNRELATED_DOCUMENT",
+              "passed": true,
+              "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+            },
+            {
+              "code": "E_OPERATIVE_VERSION",
+              "passed": true,
+              "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+            }
+          ]
+        }
+      ],
+      "rejected": [],
+      "evidenceSetHash": "1a6df80e88d45e51f4043924504c260404027245e557944c3f552000a6174232",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 78300,
+    "inputTokens": 12258,
+    "outputTokens": 3874,
+    "costUsd": 0.00260078,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:7a871f5e26e8a48783882460.verified-units.json",
+    "packageHash": "943309eb38d78ad7f7be9013fffc9568a505d31e179803d8fc3e638a6a047f4c",
+    "complete": true,
+    "artifactsPersisted": 2,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

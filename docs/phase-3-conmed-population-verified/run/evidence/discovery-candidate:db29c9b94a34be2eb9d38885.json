@@ -1,0 +1,526 @@
+{
+  "schema": "p3-candidate-evidence.v1",
+  "capturedAt": "2026-09-24T21:49:59.837Z",
+  "candidateRef": "discovery-candidate:db29c9b94a34be2eb9d38885",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.3(c)",
+    "operativeSourceText": "(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n",
+    "operativeSourceTextSha256": "7499b2c8af4be4c858177631521caec46af5b74fbd7bc8425ea52ce025c97a8e",
+    "operativeSourceChars": 128,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:fd241ce214e52bc2eeeb60802727767831d2ccb53d34e50e8c42851bb876acf9",
+    "sufficiencyState": "REVIEW_REQUIRED",
+    "stopReasons": [],
+    "itemCount": 6,
+    "items": [
+      {
+        "itemId": "context-item:a76c7e4e1def78d9804a7d980fb2ce9859ec0bae71a354c4eea2de9c16e2f197",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.3(c)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 128,
+        "excerptText": "(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n"
+      },
+      {
+        "itemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.3",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 7053,
+        "excerptText": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n(a)\nLiens for taxes, assessments or charges not yet due or which are being contested in good faith by appropriate proceedings; provided\nthat adequate reserves with respect thereto are maintained on the books of the Parent Borrower or its Subsidiaries, as the case may be,\nin conformity with GAAP;\n97\n(b)\ncarriers', warehousemen's, mechanics', materialmen's, repairmen's, supplier's or other like\nLiens arising in the ordinary course of business which are not overdue for a period of more than 30 days or which are being contested\nin good faith by appropriate proceedings and Liens securing judgments to the extent not constituting an Event of Default pursuant to clause\n(h) of Article VIII;\n(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n(e)\neasements, rights-of-way, restrictions and other similar encumbrances incurred in the ordinary course of business which, in the\naggregate, are not substantial in amount and which do not in any case materially detract from the value of the Property subject thereto\nor materially interfere with the ordinary conduct of the business of the Parent Borrower or any of its Subsidiaries;\n(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secured thereby is not increased;\n(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n(h)\nLiens created pursuant to the Security Documents;\n(i)\nany interest or title of a lessor under any lease entered into by the Parent Borrower or any other Subsidiary in the ordinary course\nof its business and covering only the assets so leased;\n(j)\nLiens arising from precautionary UCC financing statement filings regarding operating leases or consignment arrangements entered\ninto by the Parent Borrower or its Subsidiaries in the ordinary course of business;\n(k)\nLiens in favor of banking institutions encumbering the deposits (including the right of setoff) held by such banking institutions\nin the ordinary course of business and which are within the general parameters customary in the banking industry;\n98\n(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary of the Parent Borrower; provided that (i) any Indebtedness that is secured by such Liens is permitted\nto exist under Section 7.2, (ii) such Liens are not created in anticipation of such Permitted Business Acquisition or similar Investment\nor such Person otherwise becoming a Subsidiary of the Parent Borrower and do not attach to any other asset of the Parent Borrower or any\nof its Subsidiaries other than any replacements of such property or assets and accessions thereto and proceeds thereof, or, in the case\nof any acquired Subsidiary, after-acquired property of such Person of the same type and consistent with that contemplated at the time\nsuch original Lien was created and (iii) such Liens secure no greater principal amount of Indebtedness than the aggregate principal amount\nof the Indebtedness, if any, secured by such Liens on the date of such Permitted Business Acquisition or similar Investment or date on\nwhich such Person otherwise becomes a Subsidiary;\n(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations\nsecured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Liens);\n(n)\nLiens securing Indebtedness permitted by Section 7.2(e) on the real property of the Parent Borrower or its Subsidiaries in Largo,\nFlorida;\n(o)\nLiens on accounts receivable or related ancillary rights and assets sold, transferred, encumbered or otherwise disposed of, or\npurported to have been sold, transferred, encumbered or otherwise disposed of pursuant to a Receivables Transfer Program in accordance\nwith Section 7.5(k); and\n(p)\nLiens in the nature of escrow arrangements for deferred payments to be made in connection with a Permitted Business Acquisition\nto the extent such payments constitute amounts permitted under Section 7.8(k) and the rights of any beneficiary thereunder.\nFor purposes of determining compliance with\nthis Section 7.3, (A) a Lien securing an item of Indebtedness need not be permitted solely by reference to one category of permitted Liens\ndescribed in Section 7.3(a) through (q) but may be permitted in part under any combination thereof and (B) in the event that a Lien securing\nan item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section\n7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify,\nsuch Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant and will only be\nrequired to include the amount and type of such Lien or such item of Indebtedness secured by such Lien in one of the above clauses and\nsuch Lien securing such item of Indebtedness will be treated as being incurred or existing pursuant to only one of such clauses.\n"
+      },
+      {
+        "itemId": "context-item:11f2aca1117dde1d1316b4f94a0d7fb134667eaee43589236bb916b9504eea3f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(d)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 255,
+        "excerptText": "(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n"
+      },
+      {
+        "itemId": "context-item:cc55ce91b95a3624defa61446cd4da7b03d2b8d90363a651f8f08bdd27824a6f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 329,
+        "excerptText": "(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secured thereby is not increased;\n"
+      },
+      {
+        "itemId": "context-item:8769d9089483919532cdfec3e6776499f2b90014bd3c3ea065e397490414ad5b",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(l)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 339,
+        "excerptText": "(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary of the Parent Borrower; provided that "
+      },
+      {
+        "itemId": "context-item:1264613f8f0332a56c4ecfb4252511a9da770564cd244f4c8fcd4743357fc8b5",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.3(m)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 73,
+        "excerptText": "(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither "
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:f56f390946376587618e5ee1ecaf0329796420612469eac623d66de27ebbf0d6",
+        "toItemId": "context-item:a76c7e4e1def78d9804a7d980fb2ce9859ec0bae71a354c4eea2de9c16e2f197",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:11f2aca1117dde1d1316b4f94a0d7fb134667eaee43589236bb916b9504eea3f",
+        "toItemId": "context-item:a76c7e4e1def78d9804a7d980fb2ce9859ec0bae71a354c4eea2de9c16e2f197",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:cc55ce91b95a3624defa61446cd4da7b03d2b8d90363a651f8f08bdd27824a6f",
+        "toItemId": "context-item:a76c7e4e1def78d9804a7d980fb2ce9859ec0bae71a354c4eea2de9c16e2f197",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:8769d9089483919532cdfec3e6776499f2b90014bd3c3ea065e397490414ad5b",
+        "toItemId": "context-item:a76c7e4e1def78d9804a7d980fb2ce9859ec0bae71a354c4eea2de9c16e2f197",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:1264613f8f0332a56c4ecfb4252511a9da770564cd244f4c8fcd4743357fc8b5",
+        "toItemId": "context-item:a76c7e4e1def78d9804a7d980fb2ce9859ec0bae71a354c4eea2de9c16e2f197",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+    ],
+    "errorDetail": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7-3c",
+          "sourceSectionRef": "7.3(c)",
+          "covenantFamily": "LIENS",
+          "ruleType": "PERMITTED_LIEN",
+          "posture": "PERMISSION",
+          "action": "GRANT_LIEN",
+          "entityScope": [
+            "Parent Borrower",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": null,
+            "citation": "§7.3(c)",
+            "excerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation"
+          },
+          "conditions": [
+            {
+              "conditionType": "CATEGORICAL_ELIGIBILITY",
+              "expression": null,
+              "referencesDefinitionId": null,
+              "description": "The exception applies only if the pledge or deposit is made in connection with workers' compensation, unemployment insurance and other social security legislation",
+              "citation": "§7.3(c)",
+              "excerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+              "inventoryItemIds": [
+                "inv-item:d770234f5f3946a4bacb414c"
+              ]
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 7.3",
+              "description": "Clause (c) is a carve-out from, and qualifies, the Section 7.3 negative covenant prohibiting the creation, incurrence, assumption or existence of Liens, except for the listed categories; its operative effect is entirely as an exception to that prohibition",
+              "inventoryItemIds": []
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Clause text fully supplied and confirmed CURRENT operative text; no recorded amendment history",
+            "The exception is self-contained: unlimited in amount (no dollar ceiling is stated), with its only operative constraint being the categorical condition that the pledge or deposit be in connection with the listed social legislation - preserved as a first-class condition, not folded into notes",
+            "Source context state is UNKNOWN_SOURCE_COMPLETENESS (window boundary unverified), but clause (c) reads as a complete unit ending at the clause's semicolon and nothing in the supplied window suggests missing text affecting its economics",
+            "Entity scope (Parent Borrower and its Subsidiaries) is derived from the Section 7.3 chapeau, whose text is confirmed CURRENT and is supplied as parent-scope evidence; clause (c) itself names no entity class"
+          ],
+          "citation": "§7.3(c)",
+          "excerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+          "inventoryItemIds": [
+            "inv-item:c7a26051a2725657a4b030fb"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "overallNotes": [
+        "Operative window is clause 7.3(c) only; the Section 7.3 chapeau prohibition and sibling clauses (a)-(p) are parent-scope context and are not independently compiled as rules here (no extra rules invented).",
+        "The carve-out carries no dollar ceiling; it is modeled as UNLIMITED_CAPACITY gated by the categorical eligibility condition, never as an invented MONEY amount.",
+        "Both CRITICAL inventory items are consumed: the EXCEPTION item on the rule node and the CONDITION item on the condition node.",
+        "Source context state UNKNOWN_SOURCE_COMPLETENESS means the operative window's completeness against its own unit boundary could not be established; clause (c) is complete and self-contained on its face.",
+        "No recorded amendment history for this provision (never amended)."
+      ],
+      "inventoryDispositions": []
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:741802a95c5f3f631c2a0117",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.3(c)",
+        "covenantFamily": "LIENS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.3(c)",
+            "excerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7-3c].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The exception applies only if the pledge or deposit is made in connection with workers' compensation, unemployment insurance and other social security legislation",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.3(c)",
+              "excerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation"
+            },
+            "inventoryItemIds": [
+              "inv-item:d770234f5f3946a4bacb414c"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.3",
+            "description": "Clause (c) is a carve-out from, and qualifies, the Section 7.3 negative covenant prohibiting the creation, incurrence, assumption or existence of Liens, except for the listed categories; its operative effect is entirely as an exception to that prohibition",
+            "reason": "dependsOn[0].targetRef \"Section 7.3\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Clause text fully supplied and confirmed CURRENT operative text; no recorded amendment history",
+          "The exception is self-contained: unlimited in amount (no dollar ceiling is stated), with its only operative constraint being the categorical condition that the pledge or deposit be in connection with the listed social legislation - preserved as a first-class condition, not folded into notes",
+          "Source context state is UNKNOWN_SOURCE_COMPLETENESS (window boundary unverified), but clause (c) reads as a complete unit ending at the clause's semicolon and nothing in the supplied window suggests missing text affecting its economics",
+          "Entity scope (Parent Borrower and its Subsidiaries) is derived from the Section 7.3 chapeau, whose text is confirmed CURRENT and is supplied as parent-scope evidence; clause (c) itself names no entity class",
+          "ruleType \"PERMITTED_LIEN\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"CATEGORICAL_ELIGIBILITY\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Section 7.3\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.3(c)",
+          "excerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v1",
+          "status": "UNWITNESSED",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNWITNESSED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Subsidiaries"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Subsidiaries",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": true
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+            "citedUnitLeadIn": null,
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "inv-item:c7a26051a2725657a4b030fb"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r7-3c]] ruleType \"PERMITTED_LIEN\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r7-3c]] condition[0].conditionType \"CATEGORICAL_ELIGIBILITY\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r7-3c]] dependsOn[0].targetRef \"Section 7.3\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "Operative window is clause 7.3(c) only; the Section 7.3 chapeau prohibition and sibling clauses (a)-(p) are parent-scope context and are not independently compiled as rules here (no extra rules invented).",
+      "The carve-out carries no dollar ceiling; it is modeled as UNLIMITED_CAPACITY gated by the categorical eligibility condition, never as an invented MONEY amount.",
+      "Both CRITICAL inventory items are consumed: the EXCEPTION item on the rule node and the CONDITION item on the condition node.",
+      "Source context state UNKNOWN_SOURCE_COMPLETENESS means the operative window's completeness against its own unit boundary could not be established; clause (c) is complete and self-contained on its face.",
+      "No recorded amendment history for this provision (never amended).",
+      "[accountability] source context is UNKNOWN_SOURCE_COMPLETENESS - the unit's own boundary was not established as complete"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v5",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-24T21:49:13.342Z",
+      "inputTokens": 3938,
+      "outputTokens": 12125,
+      "cachedInputTokens": 10240,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 138448,
+      "calculatedCostUsd": 0.12912600000000002
+    },
+    "compiledAt": "2026-09-24T21:49:13.342Z",
+    "outputHash": "6082dfb74bea72fd6888d1a6852c17a41c98ea676fb6a0016e53f82221980f38"
+  },
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:db29c9b94a34be2eb9d38885",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:db29c9b94a34be2eb9d38885",
+      "items": [
+        {
+          "itemId": "4317f81ddcc5f727f94c6fa61cdbe3b43620aab8927fc8499a32b1dcc138b712",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.3(c)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 1,
+      "apparentIndependentUnitEvidence": [
+        "(c)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v2",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:db29c9b94a34be2eb9d38885",
+      "items": [
+        {
+          "itemId": "62957daa4ed8a9aa7dab2051d9ecc8e828e5f28cf3b45a4ec6fbd74aa322f5e1",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:741802a95c5f3f631c2a0117",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(c)",
+          "sourceExcerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "37c00764fd7095275361257e785bc7c55a118f7a8f433530406cb8bf148c0627",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:741802a95c5f3f631c2a0117",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(c)",
+          "sourceExcerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "faa50d008e8e43c7fab80552aabcc2eb77bf038506cbaccc7c4f499495bcdc47",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:741802a95c5f3f631c2a0117",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(c)",
+          "sourceExcerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "e07a2017c768d3eb056320912df333a8c30c84121f19d24d13dcb7aefdc62306",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:741802a95c5f3f631c2a0117",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "The exception applies only if the pledge or deposit is made in connection with workers' compensation, unemployment insurance and other social security legislation",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(c)",
+          "sourceExcerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "79dbc5bcefb60e65680e17084097ab0da04b548c1fcea932ae1336cfb09ad42e",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:741802a95c5f3f631c2a0117",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.3(c)",
+          "sourceExcerpt": "pledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation",
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:db29c9b94a34be2eb9d38885",
+        "items": [],
+        "fieldsWalked": 5,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "7499b2c8af4be4c858177631521caec46af5b74fbd7bc8425ea52ce025c97a8e",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "d06d889682373ffd5674c1a5fdd95fbf677cb5c8ad89cb8116168327bd49a753",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1"
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 195000,
+    "inputTokens": 3938,
+    "outputTokens": 12125,
+    "costUsd": 0.0036644399999999997,
+    "costStatus": "EXACT",
+    "timedOut": false,
+    "notes": [
+      "compile COMPLETED",
+      "verify COMPLETED"
+    ]
+  },
+  "verifiedUnits": {
+    "file": "verified-units/discovery-candidate:db29c9b94a34be2eb9d38885.verified-units.json",
+    "packageHash": "c5270597e48d56ea627a79e7243866b9a0f82eaff65dca3443fa7c4608ac55ed",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}
