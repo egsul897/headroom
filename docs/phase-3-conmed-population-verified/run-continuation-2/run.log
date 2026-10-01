@@ -1,0 +1,63 @@
+{
+ "out": "/tmp/claude-0/pilot/population-continuation-2",
+ "segment": 2,
+ "priorTerminal": 105,
+ "inFlightUnknown": [
+  {
+   "discoveryId": "discovery-candidate:e9236b1dc9d46e13db1b7678",
+   "ref": "7.6(f)(i)",
+   "source": "original"
+  },
+  {
+   "discoveryId": "discovery-candidate:fec9992df21d56e593ce440e",
+   "ref": "7.6(g)",
+   "source": "continuation1"
+  }
+ ],
+ "neverAttempted": 26,
+ "skip": 107,
+ "priorSpend": {
+  "exactUsd": 0.73365128,
+  "retainedUnknownUsd": 0.9909751199999999,
+  "label": "original run (validated ledger) + in-flight reservation + pre-flight probes + possible aborted-launch amendment call + 1 preserved continuation segment(s)",
+  "breakdown": {
+   "originalExactUsd": 0.73168763,
+   "originalTimeoutReservationsUsd": 0.932306,
+   "originalInFlightReservationUsd": 0.01942304,
+   "originalPreflightProbesUsd": 0.00079651,
+   "abortedFirstLaunchPossibleAmendmentUsd": 0.0004,
+   "continuation1ExactUsd": 0.00035711,
+   "continuation1TimeoutReservationsUsd": 0.01942304,
+   "continuation1InFlightReservationUsd": 0.01942304,
+   "continuation1PreflightProbesUsd": 0.00081003
+  }
+ }
+}
+  [1/26] 7.8            compile=SCHEMA_FAILURE     verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$1.9345
+  [2/26] 7.8(a)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$1.9386
+  [3/26] 7.8(b)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$1.9423
+  [4/26] 7.8(c)         compile=SCHEMA_FAILURE     verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$1.9564
+  [5/26] 7.8(d)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$1.9597
+  [6/26] 7.8(e)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$1.9640
+  [7/26] 7.8(f)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$1.9678
+  [8/26] 7.8(g)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$1.9717
+  [9/26] 7.8(h)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$1.9768
+  [10/26] 7.8(i)         compile=SCHEMA_FAILURE     verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$1.9852
+  [11/26] 7.8(j)         compile=SCHEMA_FAILURE     verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$1.9986
+  [12/26] 7.8(k)         compile=SCHEMA_FAILURE     verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0040
+  [13/26] 7.8(l)         compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$2.0085
+  [14/26] 7.8(m)(i)      compile=COMPLETED          verify=COMPLETED              pkg=complete committed=$2.0141
+  [15/26] 7.9            compile=SCHEMA_FAILURE     verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0321
+  [16/26] 7.9(a)         compile=SCHEMA_FAILURE     verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [17/26] 7.9(a)(i)      compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [18/26] 7.9(a)(ii)     compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [19/26] 7.9(b)         compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [20/26] 7.9(b)(i)      compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [21/26] 7.9(b)(ii)     compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [22/26] 7.9(b)(iii)    compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [23/26] 7.9(b)(iv)     compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [24/26] 7.9(c)         compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [25/26] 7.9(c)(i)      compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+  [26/26] 7.9(d)         compile=PROVIDER_FAILURE   verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$2.0376
+
+DONE 26/26  committed $2.0376 (exact $1.0466, retained-unknown $0.9910) of $3.5
