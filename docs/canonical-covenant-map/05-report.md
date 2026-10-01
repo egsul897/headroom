@@ -86,3 +86,11 @@ One paid, budget-capped validation of the certified path on ONE tiny CONMED cand
 certified config, recording evidence v2 (`passA.calls` with `thinkingTokens` / `rawUsage`) - to confirm on a real
 gateway response that `thinking: disabled` is honoured and that Pass A output stays under its derived ceiling
 (6,218 tokens). Requires explicit authorization; not run in this mission.
+
+## Addendum - certification closure
+
+See `08-certification-closure.md`. Certification (`phase3-certification/`) is now a separate dimension from the map
+outcome, the canonical path builds the paired verified-unit package (v2, shared capacities first-class) inside itself,
+the binding identity is the semantic source contract (sscv1), Phase 4 is reachable only through the certified adapter
+and the strict boundary, and package certification is claimed only over a sealed complete population.
+`npm run test:phase3-certification`: 17 files, 215 tests, green; global typecheck green.

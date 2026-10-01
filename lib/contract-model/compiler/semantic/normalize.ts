@@ -644,6 +644,9 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
         capExpression,
         memberRuleIds,
         provenance: provenanceFor(ctx, wireCap.citation, wireCap.excerpt) ?? null,
+        irSchemaVersion: input.irSchemaVersion,
+        compilerVersion: input.compilerAlgorithmVersion,
+        sourceContentVersion: null,
       },
       wireCap.inventoryItemIds
     );

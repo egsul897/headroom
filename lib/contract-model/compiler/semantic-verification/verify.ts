@@ -365,7 +365,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     const same = !!view?.currentText && view.currentText.replace(/\s+/g, " ").trim() === compilerInput.operativeSourceText.replace(/\s+/g, " ").trim();
     if (same) { sourceInventory.supersessionStatus = "CURRENT_OPERATIVE"; sourceInventory.supersessionReason = `compiled text is the operative state's RESOLVED current text for provision ${view!.provisionKey} (base node superseded by ${view!.appliedChain.map((e) => e.effectId).join(", ")})`; }
   }
-  const irInventory = buildIrInventory(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
+  const irInventory = buildIrInventory(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions, compilationResult.sharedCapacities ?? []);
   // F-4: the evidence set is PRIMARY_LOCAL (the window above) + every retrieved source this verifier could
   // independently re-resolve and authenticate (retrieved-evidence.ts). Compiler retrieval records are checked
   // against it, never read as evidence.
@@ -376,7 +376,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   // plus every retrieved source this verifier independently re-resolved and authenticated. A
   // context-bundle excerpt the verifier could not authenticate is not evidence here either, and a
   // few-shot, a tool schema or the model's own prose never was.
-  const numericAssertionInventory = collectNumericAssertions(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
+  const numericAssertionInventory = collectNumericAssertions(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions, compilationResult.sharedCapacities ?? []);
   const numericAssertionEvidence: NumericAssertionEvidenceText[] = [
     { scope: "OPERATIVE", evidenceId: "PRIMARY_LOCAL", label: "the candidate's own operative source window", text: compilerInput.operativeSourceText },
     ...admissibleEvidence.authenticated.map((e) => ({

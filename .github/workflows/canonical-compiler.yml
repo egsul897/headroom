@@ -43,8 +43,8 @@ jobs:
       - run: npm ci
       - name: typecheck
         run: npx tsc --noEmit -p .
-      - name: certified suites (transport, bounded execution, finding owner, golden map, architecture)
-        run: npx vitest run tests/contract-model/certified
+      - name: phase 3 certification command (certified suites, boundary, verifier, pilot persistence - provider-free)
+        run: npm run test:phase3-certification
       - name: verifier and retrieval suites touched by the cleanse
         run: >-
           npx vitest run
@@ -79,4 +79,4 @@ jobs:
             | grep -v 'docs/phase-3-validation/10-resume-attempt-2026-09-03.json' || true)
           if [ -n "$hits" ]; then echo "$hits"; echo "credential-shaped literal found"; exit 1; fi
       - name: lint the certified path
-        run: npx eslint lib/contract-model/covenant-map lib/contract-model/compiler/certified-config.ts lib/contract-model/compiler/semantic/bounded-caller.ts lib/contract-model/analyzer scripts/p3-conmed-pilot/evidence.ts
+        run: npx eslint lib/contract-model/covenant-map lib/contract-model/phase3-certification lib/contract-model/verified-units.ts lib/contract-model/verified-execution.ts lib/contract-model/compiler/certified-config.ts lib/contract-model/compiler/semantic/bounded-caller.ts lib/contract-model/analyzer scripts/p3-conmed-pilot/evidence.ts

@@ -1,10 +1,17 @@
 /**
- * THE canonical compiler path.
+ * THE canonical Phase 3 path: candidate population -> certified artifacts -> map.
  *
- *   compileCandidateToVerifiedIR  - ONE candidate: deterministic input -> certified compile (Pass A inventory,
- *                                   ONE bounded semantic conversation, deterministic reconciliation) -> independent
- *                                   verification, under ONE AbortSignal deadline and ONE hard dispatch budget.
- *   compileCovenantMap            - the whole package, in a bounded worker pool, then deterministic assembly.
+ *   compileCandidateToVerifiedIR      - ONE candidate: deterministic input -> certified compile (Pass A inventory,
+ *                                       ONE bounded semantic conversation, deterministic reconciliation) -> FINAL
+ *                                       SOURCE IDENTITY stamped on every unit -> pre-verification SNAPSHOT ->
+ *                                       independent verification -> paired verified-unit package -> certification,
+ *                                       under ONE AbortSignal deadline and ONE hard dispatch budget.
+ *   certifyDiscoveredCovenantPackage  - the whole sealed population, in a bounded worker pool, then deterministic
+ *                                       assembly, package certification and the canonical manifest.
+ *                                       (compileCovenantMap is the retained alias.)
+ *
+ * Phase boundary: Phase 2 owns documents -> index -> package graph -> discovery -> operative state -> candidate
+ * population. This module receives that population (sealed) and never discovers.
  *
  * Nothing here reads an environment variable to decide behaviour. Every provider request made below carries the
  * candidate's signal and reserves its cost first. A credit exhaustion, a deadline or a budget refusal is observed
@@ -27,10 +34,18 @@ import { BudgetRefusedError, type DispatchBudget } from "../analyzer/dispatch-bu
 import { ProviderError, isAbortError, normalizeProviderError } from "../analyzer/provider-error";
 import type { AnalyzerCallTelemetry } from "../analyzer/telemetry";
 import { assembleCovenantMap, type AssembleCovenantMapInput, type CandidateMapResult } from "./assemble";
-import { buildCandidateCompilerInput, type CandidateInputPackage } from "./candidate-input";
+import { buildCandidateCompilerInput, operativeLineageFor, type CandidateInputPackage } from "./candidate-input";
 import type { CandidateExecutionTelemetry, CanonicalCovenantMap, CovenantMapDocument } from "./types";
+import { buildVerifiedUnitPackage, snapshotUnitsForVerification, type VerifiableUnit } from "../verified-units";
+import { certifyCandidate } from "../phase3-certification/certify";
+import { computeSemanticSourceContract } from "../phase3-certification/semantic-source-contract";
+import { buildPackageCertificationManifest, certifyPackage } from "../phase3-certification/package-certification";
+import { unsealedPopulation } from "../phase3-certification/discovery-population";
+import type { CandidateCertification, DiscoveryPopulationIdentity, Phase3PackageCertification, Phase3PackageCertificationManifest } from "../phase3-certification/types";
 
-export const CANONICAL_COMPILER_PATH_VERSION = "canonical-compiler-path.v1";
+export const CANONICAL_COMPILER_PATH_VERSION = "canonical-compiler-path.v2";
+/** Package identity of the artifacts a canonical run persists; stable so the same content hashes the same across runs. */
+export const CANONICAL_RUN_ID = "canonical";
 export const MAX_MAP_CONCURRENCY = 4;
 
 export interface CovenantMapPackageInput extends CandidateInputPackage {
@@ -38,6 +53,10 @@ export interface CovenantMapPackageInput extends CandidateInputPackage {
   documents: { documentId: string; label: string; text: string; role?: CovenantMapDocument["role"] }[];
   candidates: DiscoveredCandidate[];
   discoveryRunVersion: string | null;
+  /** Phase 2's sealed statement of the population. Absent = an unsealed PARTIAL_TARGET_SET: certifiable per candidate, never as a package. */
+  discoveryPopulation?: DiscoveryPopulationIdentity | null;
+  /** Identifies the persisted artifact packages of this run; defaults to CANONICAL_RUN_ID. */
+  runId?: string;
 }
 
 export interface CertifiedExecutionDeps {
@@ -130,7 +149,9 @@ export async function compileCandidateToVerifiedIR(candidate: DiscoveredCandidat
   const startedAt = Date.now();
   const base = (outcome: CandidateMapResult["outcome"], failure: CandidateMapResult["failure"], partial: Partial<CandidateExecution> = {}): CandidateExecution => ({
     candidate, input: null, bundle: null, compilation: null, verification: null, operativeProvision: null, sourceContentVersion: null, identityStrength: "WEAK", outcome, failure,
-    telemetry: telemetryOf(observer, startedAt, deps.config.candidateDeadlineMs, null, false), observer, stop: null, ...partial,
+    telemetry: telemetryOf(observer, startedAt, deps.config.candidateDeadlineMs, null, false), observer, stop: null,
+    certification: certifyCandidate({ candidate, anchored: candidate.structuralNodeIds.length > 0 && !!pkg.index.getNodeById(candidate.structuralNodeIds[0] ?? ""), operativeSourceVersion: partial.sourceContentVersion ?? null, operativeIdentityStrength: partial.identityStrength ?? "WEAK", semanticSourceContract: null, bundle: partial.bundle ?? null, compilation: partial.compilation ?? null, verification: partial.verification ?? null, operativeProvision: partial.operativeProvision ?? null, operativeLineage: null, snapshot: null, verifiedPackage: null, currentUnits: [] }),
+    semanticSourceContract: null, snapshot: null, verifiedPackage: null, ...partial,
   });
   const eligibility = isEligibleForSemanticCompilation(candidate);
   if (!eligibility.eligible) return base("INELIGIBLE", { kind: "INELIGIBLE", detail: eligibility.reason ?? "ineligible" });
@@ -138,6 +159,17 @@ export async function compileCandidateToVerifiedIR(candidate: DiscoveredCandidat
 
   const built = buildCandidateCompilerInput(candidate, pkg);
   const common = { input: built.input, bundle: built.bundle, operativeProvision: built.operativeProvision, sourceContentVersion: built.sourceContentVersion, identityStrength: built.identityStrength } as const;
+  const runId = pkg.runId ?? CANONICAL_RUN_ID;
+  const certify = (compilation: CandidateMapResult["compilation"], verification: SemanticVerificationResult | null, snapshot: ReturnType<typeof snapshotUnitsForVerification> | null, contract: ReturnType<typeof computeSemanticSourceContract> | null) => {
+    const currentUnits: VerifiableUnit[] = compilation ? [...compilation.rules, ...compilation.definitions, ...compilation.sharedCapacities] : [];
+    const verifiedPackage = snapshot ? buildVerifiedUnitPackage({ companyId: pkg.companyId, instrumentKey: pkg.instrumentKey, candidateRef: candidate.discoveryId, runId, snapshot, verification, currentUnits }) : null;
+    const certification = certifyCandidate({
+      candidate, anchored: true, operativeSourceVersion: built.sourceContentVersion, operativeIdentityStrength: built.identityStrength, semanticSourceContract: contract,
+      bundle: built.bundle, compilation, verification, operativeProvision: built.operativeProvision, operativeLineage: operativeLineageFor(built.operativeProvision),
+      snapshot, verifiedPackage, currentUnits,
+    });
+    return { snapshot, verifiedPackage, certification, semanticSourceContract: contract };
+  };
   if (built.operativeSourceText.trim().length === 0) return base("EMPTY_OPERATIVE_TEXT", { kind: "EMPTY_OPERATIVE_TEXT", detail: "operativeSourceTextFor() returned empty text for the candidate's anchor node" }, common);
 
   const deadline = createDeadline(deps.config.candidateDeadlineMs, deps.parentSignal);
@@ -152,14 +184,28 @@ export async function compileCandidateToVerifiedIR(candidate: DiscoveredCandidat
       ...(deps.compileOptionsForTests ?? {}),
     };
     const compilation = await compileCovenantToIR(built.input, compileOptions);
-    // stamp the invalidation identity on every unit the certified path emits
-    for (const u of [...compilation.rules, ...compilation.definitions]) if (u.sourceContentVersion === null || u.sourceContentVersion === undefined) u.sourceContentVersion = built.sourceContentVersion;
+    // ---- STAMP THE FINAL SOURCE IDENTITY on every unit the certified path emits, BEFORE anything observes the units.
+    // The binding identity (sourceContentVersion) is the semantic source contract version: operative text + relied-upon
+    // context + retrieval records + lineage + as-of date. The operative version (scv1) is carried on the result.
+    const allUnits: VerifiableUnit[] = [...compilation.rules, ...compilation.definitions, ...compilation.sharedCapacities];
+    const semanticSourceContract = computeSemanticSourceContract({
+      operativeSourceVersion: built.sourceContentVersion, operativeIdentityStrength: built.identityStrength, candidateSectionRef: candidate.normalizedSourceRef,
+      bundle: built.bundle, units: compilation, toolCallLog: compilation.toolCallLog ?? [], operativeLineage: operativeLineageFor(built.operativeProvision),
+      appliedEffectIds: built.operativeProvision?.appliedChain.map((e) => e.effectId) ?? [], asOfDate: pkg.asOfDate,
+    });
+    for (const u of allUnits) {
+      if (!u.irSchemaVersion) u.irSchemaVersion = built.input.irSchemaVersion;
+      if (!u.compilerVersion) u.compilerVersion = built.input.compilerAlgorithmVersion;
+      u.sourceContentVersion = semanticSourceContract.version;
+    }
+    // ---- SNAPSHOT THE EXACT UNITS the verifier will see (deep-frozen copies). Nothing below may change them.
+    const snapshot = compilation.status === "FAILED" ? null : snapshotUnitsForVerification(compilation);
     const shardAttempts = compilation.execution?.sharded ? compilation.execution.sharded.executed + compilation.execution.sharded.retries : 0;
     const timedOut = deadline.signal.aborted && deadline.signal.reason instanceof DeadlineExceededError;
     const stop = stopFrom(observer, candidate.discoveryId, deps.parentSignal);
     if (compilation.status === "FAILED") {
       const detail = compilation.errorDetail ? `${compilation.errorDetail.errorClass}: ${compilation.errorDetail.sanitizedMessage}` : compilation.failureReasons.join(",");
-      return base(stop ? "UNSERVED" : "COMPILE_FAILED", { kind: observer.fatal?.kind ?? compilation.failureReasons[0] ?? "FAILED", detail: observer.fatal ? observer.fatal.error.message : detail }, { ...common, compilation, telemetry: telemetryOf(observer, startedAt, deps.config.candidateDeadlineMs, shardAttempts, timedOut), stop });
+      return base(stop ? "UNSERVED" : "COMPILE_FAILED", { kind: observer.fatal?.kind ?? compilation.failureReasons[0] ?? "FAILED", detail: observer.fatal ? observer.fatal.error.message : detail }, { ...common, compilation, telemetry: telemetryOf(observer, startedAt, deps.config.candidateDeadlineMs, shardAttempts, timedOut), stop, ...certify(compilation, null, snapshot, semanticSourceContract) });
     }
     let verification: SemanticVerificationResult | null = null;
     let verifyFailure: CandidateMapResult["failure"] = null;
@@ -175,9 +221,10 @@ export async function compileCandidateToVerifiedIR(candidate: DiscoveredCandidat
     const stop2 = stopFrom(observer, candidate.discoveryId, deps.parentSignal);
     const timedOut2 = deadline.signal.aborted && deadline.signal.reason instanceof DeadlineExceededError;
     const telemetry = telemetryOf(observer, startedAt, deps.config.candidateDeadlineMs, shardAttempts, timedOut2);
-    if (!verification) return base(stop2 ? "UNSERVED" : "VERIFICATION_FAILED", verifyFailure, { ...common, compilation, telemetry, stop: stop2 });
+    if (!verification) return base(stop2 ? "UNSERVED" : "VERIFICATION_FAILED", verifyFailure, { ...common, compilation, telemetry, stop: stop2, ...certify(compilation, null, snapshot, semanticSourceContract) });
     const ok = compilation.status === "COMPLETED" && (verification.status === "VERIFIED_NO_MATERIAL_GAP_FOUND" || verification.status === "VERIFIED_WITH_NON_MATERIAL_FINDINGS");
-    return base(ok ? "MAPPED" : "MAPPED_WITH_REVIEW", null, { ...common, compilation, verification, telemetry, stop: stop2 });
+    // ---- PAIRED PACKAGE + CERTIFICATION, from the snapshot the verifier saw and the units as they are now
+    return base(ok ? "MAPPED" : "MAPPED_WITH_REVIEW", null, { ...common, compilation, verification, telemetry, stop: stop2, ...certify(compilation, verification, snapshot, semanticSourceContract) });
   } finally {
     deadline.dispose();
   }
@@ -195,9 +242,18 @@ function telemetryOf(o: CandidateCallObserver, startedAt: number, deadlineMs: nu
   return { candidateAttempt: 1, semanticConversations: o.semanticConversations, refinementConversations: o.refinementConversations, transportAttempts: o.transportAttempts, shardAttempts: shardAttempts ?? 0, inventoryCalls: o.inventoryCalls, verifierCalls: o.verifierCalls, providerCalls: o.calls, inputTokens: o.inputTokens, outputTokens: o.outputTokens, costUsd: o.costUsd, pricingStatus: o.pricingStatus, wallClockMs: Date.now() - startedAt, deadlineMs, timedOut };
 }
 
-export interface CovenantMapRun { map: CanonicalCovenantMap; results: CandidateMapResult[]; stop: RunStop | null; budget: ReturnType<DispatchBudget["snapshot"]> }
+export interface CovenantMapRun {
+  map: CanonicalCovenantMap;
+  results: CandidateMapResult[];
+  stop: RunStop | null;
+  budget: ReturnType<DispatchBudget["snapshot"]>;
+  certifications: CandidateCertification[];
+  packageCertification: Phase3PackageCertification;
+  manifest: Phase3PackageCertificationManifest;
+}
 
-export async function compileCovenantMap(pkg: CovenantMapPackageInput, deps: CertifiedExecutionDeps): Promise<CovenantMapRun> {
+/** Phase 3 over a sealed candidate population: certified artifacts per candidate, the map, the package certification, the manifest. */
+export async function certifyDiscoveredCovenantPackage(pkg: CovenantMapPackageInput, deps: CertifiedExecutionDeps): Promise<CovenantMapRun> {
   const concurrency = Math.max(1, Math.min(MAX_MAP_CONCURRENCY, deps.concurrency ?? 1));
   const queue = [...pkg.candidates];
   const results: CandidateMapResult[] = [];
@@ -206,7 +262,7 @@ export async function compileCovenantMap(pkg: CovenantMapPackageInput, deps: Cer
     for (let next = queue.shift(); next !== undefined; next = queue.shift()) {
       if (stop || deps.parentSignal?.aborted) {
         const detail = stop ? `run stopped: ${stop.reason} at ${stop.atCandidateRef} (${stop.detail})` : "parent signal aborted before this candidate started";
-        const r: CandidateMapResult = { candidate: next, input: null, bundle: null, compilation: null, verification: null, operativeProvision: null, sourceContentVersion: null, identityStrength: "WEAK", outcome: "UNSERVED", failure: { kind: stop?.reason ?? "PARENT_ABORTED", detail }, telemetry: null };
+        const r: CandidateMapResult = { candidate: next, input: null, bundle: null, compilation: null, verification: null, operativeProvision: null, sourceContentVersion: null, identityStrength: "WEAK", outcome: "UNSERVED", failure: { kind: stop?.reason ?? "PARENT_ABORTED", detail }, telemetry: null, certification: null, semanticSourceContract: null, snapshot: null, verifiedPackage: null };
         results.push(r); await deps.onCandidateResult?.(r); continue;
       }
       const exec = await compileCandidateToVerifiedIR(next, pkg, deps);
@@ -217,9 +273,16 @@ export async function compileCovenantMap(pkg: CovenantMapPackageInput, deps: Cer
   };
   await Promise.all(Array.from({ length: Math.min(concurrency, queue.length) }, worker));
   const map = assembleCovenantMap(assemblyInput(pkg, deps.config, results));
-  return { map, results, stop, budget: deps.budget.snapshot() };
+  const certifications = results.map((r) => r.certification).filter((c): c is CandidateCertification => !!c);
+  const discoveryPopulation = pkg.discoveryPopulation ?? unsealedPopulation(pkg.candidates, pkg.discoveryRunVersion);
+  const packageCertification = certifyPackage({ map, certifications, discoveryPopulation });
+  const manifest = buildPackageCertificationManifest({ map, certifications, packageCertification });
+  return { map, results, stop, budget: deps.budget.snapshot(), certifications, packageCertification, manifest };
 }
 
+/** @deprecated retained alias of certifyDiscoveredCovenantPackage. */
+export const compileCovenantMap = certifyDiscoveredCovenantPackage;
+
 export function assemblyInput(pkg: Omit<CovenantMapPackageInput, "exactTermsByDocument" | "packageGraph" | "amendmentEffects" | "supersessionIndex" | "retrievalBudget">, config: CertifiedCompilerConfig | null, results: CandidateMapResult[]): AssembleCovenantMapInput {
-  return { companyId: pkg.companyId, packageKey: pkg.packageKey, instrumentKey: pkg.instrumentKey, asOfDate: pkg.asOfDate, documents: pkg.documents, index: pkg.index, operativeState: pkg.operativeState, certifiedConfigIdentity: config ? certifiedConfigIdentity(config) : null, discoveryRunVersion: pkg.discoveryRunVersion, candidates: pkg.candidates, results };
+  return { companyId: pkg.companyId, packageKey: pkg.packageKey, instrumentKey: pkg.instrumentKey, asOfDate: pkg.asOfDate, documents: pkg.documents, index: pkg.index, operativeState: pkg.operativeState, certifiedConfigIdentity: config ? certifiedConfigIdentity(config) : null, discoveryRunVersion: pkg.discoveryRunVersion, discoveryPopulation: pkg.discoveryPopulation ?? unsealedPopulation(pkg.candidates, pkg.discoveryRunVersion), candidates: pkg.candidates, results };
 }

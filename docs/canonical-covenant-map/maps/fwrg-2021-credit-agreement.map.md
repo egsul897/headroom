@@ -1,7 +1,7 @@
 # Canonical covenant map - fwrg-2021-credit-agreement
 
-mapHash: `67a9d6c2350fbe5482db425f67f4e5036c791af82db35d115138a84220bf346d`  
-schema: canonical-covenant-map.v1  
+mapHash: `cc880af32b6affb0f4eac89d125de5f3f7a29418d3441f4b61cb5cbe29bdff1b`  
+schema: canonical-covenant-map.v2  
 config: (none)
 
 ## Completeness

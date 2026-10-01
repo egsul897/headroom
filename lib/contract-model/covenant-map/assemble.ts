@@ -16,7 +16,10 @@ import { IR_SCHEMA_VERSION, type IRDefinition, type IRRule, type IRSharedCapacit
 import { normalizeDefinedTermRef } from "../compiler/amendment/chain";
 import { documentOrdinals, sortBySourceOrder, sourceOrderOf, STRUCTURAL_DEPTH } from "./order";
 import { canonicalJson, sha256Hex } from "./source-content-version";
-import { COVENANT_MAP_ALGORITHM_VERSION, COVENANT_MAP_EDGE_TYPES, COVENANT_MAP_SCHEMA_VERSION, type CandidateExecutionTelemetry, type CandidateOutcome, type CanonicalCovenantMap, type CovenantMapCandidateRecord, type CovenantMapCompleteness, type CovenantMapDocument, type CovenantMapEdge, type CovenantMapEdgeType, type CovenantMapNode, type CovenantMapNodeKind, type CovenantMapUnresolvedItem, type CovenantMapUnresolvedKind, type EdgeDerivation, type SourceOrder } from "./types";
+import type { CandidateCertification } from "../phase3-certification/types";
+import type { SemanticSourceContract } from "../phase3-certification/semantic-source-contract";
+import type { PersistedVerifiedUnitPackage, UnitSnapshot } from "../verified-units";
+import { COVENANT_MAP_ALGORITHM_VERSION, COVENANT_MAP_EDGE_TYPES, COVENANT_MAP_SCHEMA_VERSION, type CandidateExecutionTelemetry, type CandidateOutcome, type CanonicalCovenantMap, type CovenantMapCandidateRecord, type CovenantMapCompleteness, type CovenantMapDiscoveryPopulation, type CovenantMapDocument, type CovenantMapEdge, type CovenantMapEdgeType, type CovenantMapNode, type CovenantMapNodeCertification, type CovenantMapNodeKind, type CovenantMapUnresolvedItem, type CovenantMapUnresolvedKind, type EdgeAuthority, type EdgeDerivation, type SourceOrder } from "./types";
 
 /** What ONE candidate contributes to assembly. Produced by pipeline.ts (live) or reconstructed offline from preserved evidence. */
 export interface CandidateMapResult {
@@ -28,11 +31,20 @@ export interface CandidateMapResult {
   operativeProvision: OperativeProvisionView | null;
   /** The exact operative text compiled (offline reconstruction supplies it when `input` is not rebuilt). */
   operativeSourceText?: string | null;
+  /** The operative (scv1) identity of the candidate's source. */
   sourceContentVersion: string | null;
   identityStrength: "STRONG" | "WEAK";
   outcome: CandidateOutcome;
   failure: { kind: string; detail: string } | null;
   telemetry: CandidateExecutionTelemetry | null;
+  /** The certification decision for the candidate's artifacts; absent/null on reconstructed results (then NOT_CERTIFIED: CERTIFICATION_NOT_PERFORMED). */
+  certification?: CandidateCertification | null;
+  /** The semantic source contract stamped on the units before the snapshot. */
+  semanticSourceContract?: SemanticSourceContract | null;
+  /** The exact units the verifier saw, taken BEFORE verification. */
+  snapshot?: UnitSnapshot | null;
+  /** The paired artifact package built from that snapshot and the verification. */
+  verifiedPackage?: PersistedVerifiedUnitPackage | null;
 }
 
 export interface AssembleCovenantMapInput {
@@ -45,6 +57,7 @@ export interface AssembleCovenantMapInput {
   operativeState: OperativeContractState | null;
   certifiedConfigIdentity: string | null;
   discoveryRunVersion: string | null;
+  discoveryPopulation?: CovenantMapDiscoveryPopulation | null;
   /** Every discovered candidate, including ones that were never attempted (they become unresolved items). */
   candidates: DiscoveredCandidate[];
   results: CandidateMapResult[];
@@ -102,7 +115,15 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
   const addEdge = (edgeType: CovenantMapEdgeType, from: string, to: string, derivedFrom: EdgeDerivation, reason: string, candidateRef: string, relationshipType: string | null = null) => {
     if (from === to) return;
     const id = edgeId(edgeType, from, to);
-    if (!edges.some((e) => e.edgeId === id)) edges.push({ edgeId: id, edgeType, fromNodeId: from, toNodeId: to, relationshipType, derivedFrom, reason, candidateRef });
+    const existing = edges.find((e) => e.edgeId === id);
+    if (existing) { if (!existing.corroboratedBy.includes(derivedFrom)) existing.corroboratedBy.push(derivedFrom); return; }
+    edges.push({ edgeId: id, edgeType, fromNodeId: from, toNodeId: to, relationshipType, derivedFrom, corroboratedBy: [derivedFrom], edgeAuthority: "REVIEW_ONLY", reason, candidateRef });
+  };
+  const certificationOf = (r: CandidateMapResult | null, candidateRef: string): { status: CovenantMapNodeCertification["status"]; blockers: string[]; version: string | null; hashes: Record<string, string> } => {
+    const c = r?.certification ?? null;
+    if (!c) return { status: "NOT_CERTIFIED", blockers: ["CERTIFICATION_NOT_PERFORMED"], version: null, hashes: {} };
+    void candidateRef;
+    return { status: c.status, blockers: c.blockers.map((b) => b.code), version: c.semanticSourceContractVersion, hashes: c.unitArtifactHashes };
   };
   const candidateOrder = (c: DiscoveredCandidate): SourceOrder | null => { const n = c.structuralNodeIds[0] ? input.index.getNodeById(c.structuralNodeIds[0]) : undefined; return n ? sourceOrderOf(n, ordinalOf(n.documentId)) : null; };
 
@@ -111,11 +132,13 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
     const r = resultByRef.get(candidate.discoveryId) ?? null;
     const order = candidateOrder(candidate);
     const opText = r?.operativeSourceText ?? r?.input?.operativeSourceText ?? null;
+    const cert = certificationOf(r, candidate.discoveryId);
     const record: CovenantMapCandidateRecord = {
       candidateRef: candidate.discoveryId, discoveryId: candidate.discoveryId, documentId: candidate.documentId, sectionRef: candidate.normalizedSourceRef, sourceOrder: order,
       structuralNodeIds: [...candidate.structuralNodeIds], families: [...candidate.families], role: candidate.role,
       operativeSourceSha256: opText === null ? null : sha256Hex(opText), operativeSourceChars: opText?.length ?? 0, sourceContentVersion: r?.sourceContentVersion ?? null,
       outcome: r?.outcome ?? "UNSERVED", compilationStatus: r?.compilation?.status ?? null, compilationFailureReasons: [...(r?.compilation?.failureReasons ?? [])], verificationStatus: r?.verification?.status ?? null,
+      certificationStatus: cert.status, certificationBlockers: cert.blockers, semanticSourceContractVersion: cert.version,
       nodeIds: [], failure: r?.failure ?? null, telemetry: r?.telemetry ?? null,
     };
     candidates.push(record);
@@ -139,6 +162,7 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
       const findings = (ver?.findings ?? []).filter((f) => f.ruleOrDefinitionId === unitId);
       return { status: ver?.status ?? ("NOT_VERIFIED" as const), findingIds: findings.map((f) => f.findingId).sort(), materialFindings: findings.filter((f) => f.severity === "MATERIAL").length };
     };
+    const nodeCertification = (unitId: string): CovenantMapNodeCertification => ({ status: cert.status, artifactHash: cert.hashes[unitId] ?? null, semanticSourceContractVersion: cert.version, blockers: cert.blockers });
     const operativeOf = (): CovenantMapNode["operative"] => r.operativeProvision ? { provisionKey: r.operativeProvision.provisionKey, status: r.operativeProvision.status, currentSourceDocumentId: r.operativeProvision.currentSourceDocumentId, appliedEffectIds: r.operativeProvision.appliedChain.map((e) => e.effectId), supersededStructuralNodeIds: [...r.operativeProvision.supersededSourceNodeIds] } : null;
     const push = (node: CovenantMapNode) => {
       if (nodeById.has(node.nodeId)) { addUnresolved("WEAK_IDENTITY", "REVIEW", candidate.discoveryId, node.nodeId, node.documentId, node.sectionRef, node.sourceOrder, `unit id ${node.nodeId} emitted by more than one candidate; the first occurrence in source order is kept`); return; }
@@ -152,8 +176,8 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
         nodeId: rule.ruleId, kind: "RULE", candidateRef: candidate.discoveryId, documentId: rule.sourceDocumentId, sectionRef: rule.sourceSectionRef, structuralNodeId: anchor?.nodeId ?? null, structuralNodeKey: anchor?.nodeKey ?? null,
         sourceOrder: anchor ? sourceOrderOf(anchor, ordinalOf(anchor.documentId)) : { documentOrdinal: ordinalOf(rule.sourceDocumentId), charStart: Number.MAX_SAFE_INTEGER, structuralDepth: 9, localOrdinal: 0 },
         family: rule.covenantFamily, ruleType: rule.ruleType, posture: rule.posture, termName: null, sufficiency: rule.sufficiency,
-        sourceContentVersion: rule.sourceContentVersion ?? r.sourceContentVersion, identityStrength: anchor && (rule.sourceContentVersion ?? r.sourceContentVersion) ? r.identityStrength : "WEAK",
-        verification: verificationOf(rule.ruleId), operative: operativeOf(), unit: rule,
+        sourceContentVersion: rule.sourceContentVersion ?? r.sourceContentVersion, operativeSourceVersion: r.sourceContentVersion, identityStrength: anchor && (rule.sourceContentVersion ?? r.sourceContentVersion) ? r.identityStrength : "WEAK",
+        verification: verificationOf(rule.ruleId), certification: nodeCertification(rule.ruleId), operative: operativeOf(), unit: rule,
       };
       push(node);
       if (rule.sufficiency !== "COMPLETE") addUnresolved("UNIT_SUFFICIENCY_NOT_SUFFICIENT", "REVIEW", candidate.discoveryId, rule.ruleId, node.documentId, node.sectionRef, node.sourceOrder, `rule sufficiency ${rule.sufficiency}: ${rule.sufficiencyReasons.join("; ")}`);
@@ -168,8 +192,8 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
       const node: CovenantMapNode = {
         nodeId: def.definitionId, kind: "DEFINITION", candidateRef: candidate.discoveryId, documentId: def.sourceDocumentId, sectionRef: anchor?.sectionRef ?? null, structuralNodeId: anchor?.nodeId ?? null, structuralNodeKey: anchor?.nodeKey ?? null,
         sourceOrder: order, family: def.covenantFamily, ruleType: null, posture: null, termName: def.termName, sufficiency: def.sufficiency,
-        sourceContentVersion: def.sourceContentVersion ?? r.sourceContentVersion, identityStrength: anchor && (def.sourceContentVersion ?? r.sourceContentVersion) ? r.identityStrength : "WEAK",
-        verification: verificationOf(def.definitionId), operative: operativeOf(), unit: def,
+        sourceContentVersion: def.sourceContentVersion ?? r.sourceContentVersion, operativeSourceVersion: r.sourceContentVersion, identityStrength: anchor && (def.sourceContentVersion ?? r.sourceContentVersion) ? r.identityStrength : "WEAK",
+        verification: verificationOf(def.definitionId), certification: nodeCertification(def.definitionId), operative: operativeOf(), unit: def,
       };
       push(node);
       const key = normalizeDefinedTermRef(def.termName);
@@ -182,8 +206,8 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
         nodeId: cap.sharedCapId, kind: "SHARED_CAPACITY", candidateRef: candidate.discoveryId, documentId: candidate.documentId, sectionRef: candidate.normalizedSourceRef, structuralNodeId: anchor?.nodeId ?? null, structuralNodeKey: anchor?.nodeKey ?? null,
         sourceOrder: anchor ? sourceOrderOf(anchor, ordinalOf(anchor.documentId), 1) : { documentOrdinal: ordinalOf(candidate.documentId), charStart: Number.MAX_SAFE_INTEGER, structuralDepth: 9, localOrdinal: 0 },
         family: "SHARED_CAPACITY", ruleType: null, posture: null, termName: null, sufficiency: null,
-        sourceContentVersion: r.sourceContentVersion, identityStrength: anchor && r.sourceContentVersion ? r.identityStrength : "WEAK",
-        verification: verificationOf(cap.sharedCapId), operative: operativeOf(), unit: cap,
+        sourceContentVersion: cap.sourceContentVersion ?? r.sourceContentVersion, operativeSourceVersion: r.sourceContentVersion, identityStrength: anchor && (cap.sourceContentVersion ?? r.sourceContentVersion) ? r.identityStrength : "WEAK",
+        verification: verificationOf(cap.sharedCapId), certification: nodeCertification(cap.sharedCapId), operative: operativeOf(), unit: cap,
       });
     }
   }
@@ -265,6 +289,18 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
     }
   }
 
+  // ---- PASS 2b: edge authority ------------------------------------------------------------------------------------
+  // An edge is authoritative for Phase 4 only when the compiled IR established it AND both endpoints are CERTIFIED.
+  // Structural ancestry alone is a fact about the tree; a context-bundle classification alone is an inference.
+  const IR_DERIVATIONS: ReadonlySet<EdgeDerivation> = new Set<EdgeDerivation>(["IR_DEPENDS_ON", "IR_EXPRESSION_TERM_REFERENCE", "IR_CONDITION_REFERENCE", "IR_EXCEPTION_PERMISSION", "IR_DEFINITION_DEPENDS_ON_TERMS", "IR_SHARED_CAPACITY_MEMBERS"]);
+  for (const e of edges) {
+    const irBacked = e.corroboratedBy.some((d) => IR_DERIVATIONS.has(d));
+    const structural = e.corroboratedBy.some((d) => d === "STRUCTURAL_ANCESTRY" || d === "OPERATIVE_STATE");
+    const bothCertified = nodeById.get(e.fromNodeId)?.certification.status === "CERTIFIED" && nodeById.get(e.toNodeId)?.certification.status === "CERTIFIED";
+    const authority: EdgeAuthority = irBacked ? (bothCertified ? "CERTIFIED_SEMANTIC" : "REVIEW_ONLY") : structural ? "DETERMINISTIC_STRUCTURAL" : "CONTEXTUAL_INFERENCE";
+    e.edgeAuthority = authority;
+  }
+
   // ---- PASS 3: order everything ----------------------------------------------------------------------------------
   const orderedNodes = sortBySourceOrder(nodes, (n) => n.sourceOrder, (n) => `${n.kind}|${n.nodeId}`);
   const nodePos = new Map(orderedNodes.map((n, i) => [n.nodeId, i] as const));
@@ -284,6 +320,10 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
   for (const u of orderedUnresolved) unresolvedByKind[u.kind] = (unresolvedByKind[u.kind] ?? 0) + 1;
   const eligible = orderedCandidates.filter((c) => c.outcome !== "INELIGIBLE").length;
   const mapped = byOutcome.MAPPED ?? 0, mappedReview = byOutcome.MAPPED_WITH_REVIEW ?? 0;
+  const certifiedCandidates = orderedCandidates.filter((c) => c.outcome !== "INELIGIBLE" && c.certificationStatus === "CERTIFIED").length;
+  const reviewCandidates = orderedCandidates.filter((c) => c.outcome !== "INELIGIBLE" && c.certificationStatus === "REVIEW_REQUIRED").length;
+  const edgesByAuthority: Record<EdgeAuthority, number> = { CERTIFIED_SEMANTIC: 0, DETERMINISTIC_STRUCTURAL: 0, CONTEXTUAL_INFERENCE: 0, REVIEW_ONLY: 0 };
+  for (const e of orderedEdges) edgesByAuthority[e.edgeAuthority]++;
   const completeness: CovenantMapCompleteness = {
     candidatesDiscovered: orderedCandidates.length, candidatesEligible: eligible,
     candidatesAttempted: orderedCandidates.filter((c) => c.outcome !== "INELIGIBLE" && c.outcome !== "UNSERVED").length,
@@ -295,12 +335,18 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
     nodesStrongIdentity: orderedNodes.filter((n) => n.identityStrength === "STRONG").length,
     mappedFraction: eligible === 0 ? null : mapped / eligible,
     complete: eligible > 0 && mapped === eligible && orderedUnresolved.length === 0,
+    mapComplete: eligible > 0 && mapped === eligible && orderedUnresolved.length === 0,
+    certificationComplete: eligible > 0 && certifiedCandidates === eligible,
+    candidatesCertified: certifiedCandidates, candidatesReviewRequired: reviewCandidates, candidatesNotCertified: eligible - certifiedCandidates - reviewCandidates,
+    semanticUnits: orderedNodes.length, semanticUnitsCertified: orderedNodes.filter((n) => n.certification.status === "CERTIFIED").length,
+    edgesByAuthority,
   };
 
   const body: Omit<CanonicalCovenantMap, "mapHash"> = {
     schemaVersion: COVENANT_MAP_SCHEMA_VERSION, companyId: input.companyId, packageKey: input.packageKey, instrumentKey: input.instrumentKey, asOfDate: input.asOfDate, documents,
     identity: { mapAlgorithmVersion: COVENANT_MAP_ALGORITHM_VERSION, certifiedConfigIdentity: input.certifiedConfigIdentity, compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION, irSchemaVersion: IR_SCHEMA_VERSION, verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, discoveryRunVersion: input.discoveryRunVersion },
     operativeState: input.operativeState ? { status: input.operativeState.status, asOfDate: input.operativeState.asOfDate, provisions: input.operativeState.provisions.length, unattachedEffects: input.operativeState.unattachedEffects.length } : null,
+    discoveryPopulation: input.discoveryPopulation ?? null,
     nodes: orderedNodes, edges: orderedEdges, candidates: orderedCandidates, unresolved: orderedUnresolved, completeness,
   };
   return { ...body, mapHash: computeMapHash(body) };

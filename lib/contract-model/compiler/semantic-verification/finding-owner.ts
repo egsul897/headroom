@@ -14,7 +14,7 @@
  *
  * Never fabricated: a repair happens only when the IR PATH names one real unit of THIS compilation.
  */
-import type { IRDefinition, IRRule } from "../../ir/types";
+import type { IRDefinition, IRRule, IRSharedCapacity } from "../../ir/types";
 
 export type FindingOwnerRepair = "OWNER_EXACT" | "OWNER_NONE_CANDIDATE_LEVEL" | "VERIFIER_OWNER_REPAIRED_FROM_IR_PATH" | "VERIFIER_OWNER_AMBIGUOUS_MULTI_UNIT" | "VERIFIER_OWNER_UNRESOLVED";
 
@@ -29,10 +29,10 @@ export interface FindingOwnerNormalization {
   note: string | null;
 }
 
-export interface CompiledUnitsForOwnership { rules: readonly Pick<IRRule, "ruleId">[]; definitions: readonly Pick<IRDefinition, "definitionId">[] }
+export interface CompiledUnitsForOwnership { rules: readonly Pick<IRRule, "ruleId">[]; definitions: readonly Pick<IRDefinition, "definitionId">[]; sharedCapacities?: readonly Pick<IRSharedCapacity, "sharedCapId">[] }
 
-const ID_TOKEN = /ir-(?:rule|definition):[0-9a-f]{6,}/g;
-const PATH_INDEX = /^(rules|definitions)\[(\d+)\]/;
+const ID_TOKEN = /ir-(?:rule|definition|sharedcap):[0-9a-f]{6,}/g;
+const PATH_INDEX = /^(rules|definitions|sharedCapacities)\[(\d+)\]/;
 
 /** Each `rules[N]` / `definitions[N]` head in a (possibly multi-path) irPath, resolved against this compilation. */
 export function resolveIrPathOwners(irPath: string | null, units: CompiledUnitsForOwnership): string[] {
@@ -42,14 +42,14 @@ export function resolveIrPathOwners(irPath: string | null, units: CompiledUnitsF
     const m = PATH_INDEX.exec(segment);
     if (!m) continue;
     const idx = Number(m[2]);
-    const id = m[1] === "rules" ? units.rules[idx]?.ruleId : units.definitions[idx]?.definitionId;
+    const id = m[1] === "rules" ? units.rules[idx]?.ruleId : m[1] === "definitions" ? units.definitions[idx]?.definitionId : units.sharedCapacities?.[idx]?.sharedCapId;
     if (id && !out.includes(id)) out.push(id);
   }
   return out;
 }
 
 export function normalizeFindingOwner(wire: { ruleOrDefinitionId: string | null; irPath: string | null }, units: CompiledUnitsForOwnership): FindingOwnerNormalization {
-  const valid = new Set<string>([...units.rules.map((r) => r.ruleId), ...units.definitions.map((d) => d.definitionId)]);
+  const valid = new Set<string>([...units.rules.map((r) => r.ruleId), ...units.definitions.map((d) => d.definitionId), ...(units.sharedCapacities ?? []).map((c) => c.sharedCapId)]);
   const supplied = wire.ruleOrDefinitionId?.trim() || null;
   const base = { suppliedOwnerId: supplied, suppliedIrPath: wire.irPath ?? null };
   if (supplied === null) return { ...base, ownerId: null, scope: "CANDIDATE", repair: "OWNER_NONE_CANDIDATE_LEVEL", resolvedUnitIds: [], note: null };

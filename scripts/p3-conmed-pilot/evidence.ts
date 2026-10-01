@@ -22,6 +22,8 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../../lib/contract-model/compiler/semantic/types";
 import type { SemanticVerificationResult } from "../../lib/contract-model/compiler/semantic-verification/types";
+import { certifyCandidate } from "../../lib/contract-model/phase3-certification/certify";
+import type { SemanticSourceContract } from "../../lib/contract-model/phase3-certification/semantic-source-contract";
 import {
   buildVerifiedUnitPackage, buildVerifiedUnitRunManifest, serializeVerifiedUnitPackage, snapshotUnitsForVerification,
   type PersistedVerifiedUnitPackage, type UnitSnapshot, type VerifiedUnitRunManifest,
@@ -149,6 +151,8 @@ export interface CandidateEvidence {
    * the runtime/audit contract, produced from the same in-memory objects. Present whenever the
    * candidate compiled at least one unit; its `complete` is false when the run did not verify.
    */
+  /** v2 (certification closure): the production certification decision for this candidate, recorded verbatim. */
+  certification?: { status: "CERTIFIED" | "REVIEW_REQUIRED" | "NOT_CERTIFIED"; blockers: string[]; warnings: string[]; operativeSourceVersion: string | null; semanticSourceContractVersion: string | null; artifactPackageHash: string | null; snapshotHash: string | null };
   verifiedUnits?: { file: string; packageHash: string; complete: boolean; artifactsPersisted: number; unitsMissingVerification: number; problems: string[] };
 }
 
@@ -263,6 +267,8 @@ export interface PersistCandidateArgs {
    * which case the snapshot is taken now and the package records every unit as unverified.
    */
   snapshot?: UnitSnapshot;
+  /** The identities the canonical path stamps before the snapshot. A runner that did not stamp them omits this and its candidates are NOT_CERTIFIED. */
+  identity?: { structuralNodeIds: string[]; operativeSourceVersion: string | null; operativeIdentityStrength: "STRONG" | "WEAK"; semanticSourceContract: SemanticSourceContract | null };
 }
 
 /**
@@ -275,7 +281,16 @@ export function persistCandidate(a: PersistCandidateArgs): { evidencePath: strin
   const snapshot = a.snapshot ?? snapshotUnitsForVerification(a.result);
   const pkg = buildVerifiedUnitPackage({
     companyId: a.compilerInput.companyId, instrumentKey: a.compilerInput.instrumentKey, candidateRef: a.compilerInput.candidateRef, runId: a.runId,
-    snapshot, verification: a.verification, currentUnits: [...(a.result.rules ?? []), ...(a.result.definitions ?? [])],
+    snapshot, verification: a.verification, currentUnits: [...(a.result.rules ?? []), ...(a.result.definitions ?? []), ...(a.result.sharedCapacities ?? [])],
+  });
+  // The certification decision is production code (phase3-certification/certify.ts); this script only records it. A
+  // pilot runner that did not stamp the operative + semantic source identities on its units is honestly NOT_CERTIFIED.
+  const certification = certifyCandidate({
+    candidate: { discoveryId: a.compilerInput.candidateRef, structuralNodeIds: a.identity?.structuralNodeIds ?? [], normalizedSourceRef: a.compilerInput.sourceSectionRef ?? "" },
+    anchored: (a.identity?.structuralNodeIds.length ?? 0) > 0, operativeSourceVersion: a.identity?.operativeSourceVersion ?? null, operativeIdentityStrength: a.identity?.operativeIdentityStrength ?? "WEAK",
+    semanticSourceContract: a.identity?.semanticSourceContract ?? null, bundle: a.compilerInput.contextBundle, compilation: a.result, verification: a.verification,
+    operativeProvision: null, operativeLineage: a.compilerInput.operativeLineage, snapshot, verifiedPackage: pkg,
+    currentUnits: [...(a.result.rules ?? []), ...(a.result.definitions ?? []), ...(a.result.sharedCapacities ?? [])],
   });
   let verifiedUnitsPath: string | null = null;
   if (snapshot.units.length > 0) {
@@ -287,6 +302,7 @@ export function persistCandidate(a: PersistCandidateArgs): { evidencePath: strin
     fs.writeFileSync(verifiedUnitsPath, body);
   }
   const evidence = buildCandidateEvidence(a.compilerInput, a.result, a.verification, a.run);
+  evidence.certification = { status: certification.status, blockers: certification.blockers.map((b) => b.code), warnings: certification.warnings.map((w) => w.code), operativeSourceVersion: certification.operativeSourceVersion, semanticSourceContractVersion: certification.semanticSourceContractVersion, artifactPackageHash: certification.artifactPackageHash, snapshotHash: certification.snapshotHash };
   if (verifiedUnitsPath) evidence.verifiedUnits = { file: path.relative(a.dir, verifiedUnitsPath), packageHash: pkg.packageHash, complete: pkg.complete, artifactsPersisted: pkg.counts.artifactsPersisted, unitsMissingVerification: pkg.counts.unitsMissingVerification, problems: [...new Set(pkg.problems.map((p) => p.code))].sort() };
   const evidencePath = writeCandidateEvidence(a.dir, a.name, evidence);
   return { evidencePath, verifiedUnitsPath, package: pkg };

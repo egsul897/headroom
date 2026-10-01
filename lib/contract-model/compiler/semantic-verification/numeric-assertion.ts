@@ -47,7 +47,7 @@ import type {
   NumericAssertionInventory,
   NumericAssertionItem,
 } from "./types";
-import type { IRCondition, IRException, IRExpression } from "../../ir/types";
+import type { IRCondition, IRException, IRExpression, IRSharedCapacity } from "../../ir/types";
 
 export const NUMERIC_ASSERTION_ALGORITHM_VERSION = "fix-b-numeric-assertion.v1";
 
@@ -352,7 +352,16 @@ function definitionFields(definition: IRDefinition, path: string): { visits: Fie
 }
 
 /** Mission §5's preserved record for every assertion: original text, normalized value, unit/type, exact field path, rule id and local span. */
-export function collectNumericAssertions(candidateRef: string, rules: IRRule[], definitions: IRDefinition[]): NumericAssertionInventory {
+function sharedCapacityFields(cap: IRSharedCapacity, path: string): { visits: FieldVisit[]; relation: UnitRelation } {
+  const unitCitation = citationOf(cap.provenance);
+  const e = cap.capExpression;
+  const visits: FieldVisit[] = [...provenanceFields(path, cap.provenance, unitCitation), ...(e.kind === "UNLIMITED_CAPACITY" ? [...provenanceFields(`${path}.capExpression`, e.provenance, unitCitation), ...expressionFields(e.gatedBy, `${path}.capExpression.gatedBy`, citationOf(e.provenance) ?? unitCitation)] : expressionFields(e as IRExpression, `${path}.capExpression`, unitCitation))];
+  const referencedTerms: string[] = [];
+  collectReferencedTerms(e.kind === "UNLIMITED_CAPACITY" ? e.gatedBy : (e as IRExpression), referencedTerms);
+  return { visits, relation: { ownerTermName: null, referencedTerms, referencedSections: unitCitation ? [unitCitation] : [], unitCitation } };
+}
+
+export function collectNumericAssertions(candidateRef: string, rules: IRRule[], definitions: IRDefinition[], sharedCapacities: IRSharedCapacity[] = []): NumericAssertionInventory {
   const items: NumericAssertionItem[] = [];
   let fieldsWalked = 0;
 
@@ -380,6 +389,7 @@ export function collectNumericAssertions(candidateRef: string, rules: IRRule[], 
 
   rules.forEach((rule, i) => { const { visits, relation } = ruleFields(rule, `rules[${i}]`); visitAll(visits, rule.ruleId, relation); });
   definitions.forEach((def, i) => { const { visits, relation } = definitionFields(def, `definitions[${i}]`); visitAll(visits, def.definitionId, relation); });
+  sharedCapacities.forEach((cap, i) => { const { visits, relation } = sharedCapacityFields(cap, `sharedCapacities[${i}]`); visitAll(visits, cap.sharedCapId, relation); });
 
   return { candidateRef, items, fieldsWalked, algorithmVersion: NUMERIC_ASSERTION_ALGORITHM_VERSION };
 }

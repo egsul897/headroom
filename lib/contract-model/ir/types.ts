@@ -620,6 +620,14 @@ export interface IRSharedCapacity {
   provenance: SourceProvenance | null;
   /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - the SHARED_CAP inventory item(s) this resource represents. */
   inventoryItemIds?: string[];
+  /**
+   * Phase 3 certification closure (additive): a shared capacity is a FIRST-CLASS verified semantic unit (its cap
+   * expression is independent model-derived source semantics, not derivable from its member rules), so it carries the
+   * same identity fields rules and definitions carry. Optional only for pre-existing fixtures; the compiler always sets them.
+   */
+  irSchemaVersion?: string;
+  compilerVersion?: string | null;
+  sourceContentVersion?: string | null;
 }
 
 // ---------------------------------------------------------------------------

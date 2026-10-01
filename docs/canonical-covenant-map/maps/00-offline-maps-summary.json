@@ -1,10 +1,10 @@
 {
-  "builtAt": "2026-09-25T18:23:09.740Z",
+  "builtAt": "2026-10-01T14:15:41.937Z",
   "paidCalls": 0,
   "maps": {
     "conmed-2025-credit-facility": {
       "built": true,
-      "mapHash": "cc390976f47a43ac248438dbb27af9919e72106dfea32a17f51316307c1791e0",
+      "mapHash": "9c454e60b2c912b59f140109d1b0ef2fc4e17f2cc3f0758ca30e80d9e3dbc708",
       "validation": "ok",
       "completeness": {
         "candidatesDiscovered": 163,
@@ -53,7 +53,20 @@
         "nodesUnderReview": 95,
         "nodesStrongIdentity": 95,
         "mappedFraction": 0,
-        "complete": false
+        "complete": false,
+        "mapComplete": false,
+        "certificationComplete": false,
+        "candidatesCertified": 0,
+        "candidatesReviewRequired": 0,
+        "candidatesNotCertified": 163,
+        "semanticUnits": 95,
+        "semanticUnitsCertified": 0,
+        "edgesByAuthority": {
+          "CERTIFIED_SEMANTIC": 0,
+          "DETERMINISTIC_STRUCTURAL": 0,
+          "CONTEXTUAL_INFERENCE": 0,
+          "REVIEW_ONLY": 60
+        }
       },
       "notes": [
         "2 sealed node key(s) did not rehydrate uniquely",
@@ -62,7 +75,7 @@
     },
     "lsb-2023-abl-credit-agreement": {
       "built": true,
-      "mapHash": "a82053deab6b379a7f9a3a74ce79384854fd0723afde039220d5b73c6ce8fa4d",
+      "mapHash": "3b166f39e3c341f20454c5f46ed6debd490d8f9b1d06eb77571e46af14c0a32b",
       "validation": "ok",
       "completeness": {
         "candidatesDiscovered": 82,
@@ -101,7 +114,20 @@
         "nodesUnderReview": 0,
         "nodesStrongIdentity": 0,
         "mappedFraction": 0,
-        "complete": false
+        "complete": false,
+        "mapComplete": false,
+        "certificationComplete": false,
+        "candidatesCertified": 0,
+        "candidatesReviewRequired": 0,
+        "candidatesNotCertified": 82,
+        "semanticUnits": 0,
+        "semanticUnitsCertified": 0,
+        "edgesByAuthority": {
+          "CERTIFIED_SEMANTIC": 0,
+          "DETERMINISTIC_STRUCTURAL": 0,
+          "CONTEXTUAL_INFERENCE": 0,
+          "REVIEW_ONLY": 0
+        }
       },
       "notes": [
         "discovery population from tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json (82 candidates)"
@@ -109,7 +135,7 @@
     },
     "fwrg-2021-credit-agreement": {
       "built": true,
-      "mapHash": "67a9d6c2350fbe5482db425f67f4e5036c791af82db35d115138a84220bf346d",
+      "mapHash": "cc880af32b6affb0f4eac89d125de5f3f7a29418d3441f4b61cb5cbe29bdff1b",
       "validation": "ok",
       "completeness": {
         "candidatesDiscovered": 252,
@@ -150,7 +176,20 @@
         "nodesUnderReview": 0,
         "nodesStrongIdentity": 0,
         "mappedFraction": 0,
-        "complete": false
+        "complete": false,
+        "mapComplete": false,
+        "certificationComplete": false,
+        "candidatesCertified": 0,
+        "candidatesReviewRequired": 0,
+        "candidatesNotCertified": 252,
+        "semanticUnits": 0,
+        "semanticUnitsCertified": 0,
+        "edgesByAuthority": {
+          "CERTIFIED_SEMANTIC": 0,
+          "DETERMINISTIC_STRUCTURAL": 0,
+          "CONTEXTUAL_INFERENCE": 0,
+          "REVIEW_ONLY": 0
+        }
       },
       "notes": [
         "discovery population from tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json (252 candidates)"

@@ -134,6 +134,7 @@ describe("Foundation Audit Job 2 #6 - real concurrent-upsert race against Postgr
 
   function node(overrides: Partial<StructuralNode> & { sectionRef: string; charStart: number }): StructuralNode {
     return {
+      ...overrides,
       documentId: CONCURRENCY_DOC,
       nodeType: "SECTION",
       heading: overrides.heading ?? overrides.sectionRef,
@@ -145,7 +146,6 @@ describe("Foundation Audit Job 2 #6 - real concurrent-upsert race against Postgr
       ordinal: 0,
       parentSectionRef: null,
       parentNodeId: null,
-      ...overrides,
     };
   }
 

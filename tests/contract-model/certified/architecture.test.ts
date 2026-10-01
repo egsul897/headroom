@@ -9,7 +9,7 @@ import { buildTestIndex } from "../context-retrieval-test-utils";
 import { resolveSourceContext } from "../../../lib/contract-model/compiler/semantic-accountability/source-context";
 import { operativeSourceTextFor, resolveOperativeSource } from "../../../lib/contract-model/compiler/candidate-span";
 import { certifiedConfig, certifiedConfigIdentity } from "../../../lib/contract-model/compiler/certified-config";
-import { GOLDEN_AGREEMENT } from "./golden-map.test";
+import { GOLDEN_AGREEMENT } from "./golden-harness";
 
 const read = (p: string) => fs.readFileSync(p, "utf8");
 function walk(dir: string, out: string[] = []): string[] {
@@ -122,5 +122,61 @@ describe("source-context expansion regressions (what the operative unit contains
     expect(s).toMatch(/runDualPassSemanticInventory\(\{[^\n]*sourceContext: accountabilityContext!/);
     expect(s).toMatch(/planCompilationShards\(\{[^\n]*sourceContext: accountabilityContext!/);
     expect(s).toMatch(/callerInput = \{ \.\.\.input, operativeSourceText: operativeRegion\.text[^\n]*sourceContext, frozenInventory \}/); // Pass B keeps the full context
+  });
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// PHASE 3 CERTIFICATION CLOSURE - architecture guards (source-level, so a drift fails before it ships)
+// ---------------------------------------------------------------------------------------------------------------
+const CM_LIB = path.join(process.cwd(), "lib", "contract-model");
+const srcOf = (rel: string) => fs.readFileSync(path.join(CM_LIB, rel), "utf8");
+function walkTs(dir: string): string[] {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walkTs(path.join(dir, e.name)) : e.name.endsWith(".ts") ? [path.join(dir, e.name)] : []));
+}
+
+describe("certification closure: one decision, one adapter, no bypass", () => {
+  it("certifyCandidate is the only place a candidate certification status is assigned; the pipeline calls it, the map only reads it", () => {
+    const assigners = walkTs(CM_LIB).filter((f) => /\bstatus = blockers\.some\(/.test(fs.readFileSync(f, "utf8")) || /status:\s*"CERTIFIED"\s*[,}]/.test(fs.readFileSync(f, "utf8"))).map((f) => path.relative(CM_LIB, f)).sort();
+    expect(assigners).toEqual(["phase3-certification/certify.ts"]);
+    expect(srcOf("covenant-map/pipeline.ts")).toMatch(/certifyCandidate\(/);
+    expect(srcOf("covenant-map/assemble.ts")).not.toMatch(/certifyCandidate\(/);
+  });
+
+  it("the canonical candidate path is ordered: compile -> stamp semantic contract -> snapshot -> verify -> paired package -> certify; nothing mutates a unit after the snapshot", () => {
+    const p = srcOf("covenant-map/pipeline.ts");
+    const at = (needle: string) => { const i = p.indexOf(needle); expect(i, needle).toBeGreaterThan(-1); return i; };
+    const compile = at("await compileCovenantToIR("), stamp = at("computeSemanticSourceContract("), snapshot = at("snapshotUnitsForVerification(compilation)"), verify = at("await verifyCompiledCandidate("), pack = at("buildVerifiedUnitPackage("), certify = at("certifyCandidate({");
+    expect(compile).toBeLessThan(stamp); expect(stamp).toBeLessThan(snapshot); expect(snapshot).toBeLessThan(verify);
+    // the package builder and the decision are defined before the snapshot line only as closures; the CALLS that matter come after verification
+    expect(p.indexOf("...certify(compilation, verification, snapshot, semanticSourceContract)")).toBeGreaterThan(verify);
+    void pack; void certify;
+    // after the snapshot statement, no assignment to a unit field occurs in the candidate path
+    const afterSnapshot = p.slice(snapshot, p.indexOf("function stopFrom("));
+    expect(afterSnapshot).not.toMatch(/\bu\.(sourceContentVersion|compilerVersion|irSchemaVersion)\s*=/);
+  });
+
+  it("Phase 4 is reachable from Phase 3 only through the certified adapter and the strict boundary: no product module imports the raw runtime capacity/simulation primitives, and the map itself never imports the runtime", () => {
+    const runtimeImporters = walkTs(CM_LIB).filter((f) => !f.includes(`${path.sep}runtime${path.sep}`)).filter((f) => /from "[^"]*runtime\/(capacity\/graph|capacity\/state|transaction\/simulate)"/.test(fs.readFileSync(f, "utf8"))).map((f) => path.relative(CM_LIB, f)).sort();
+    expect(runtimeImporters).toEqual(["verified-execution.ts"]);
+    for (const f of walkTs(path.join(CM_LIB, "covenant-map"))) expect(fs.readFileSync(f, "utf8"), f).not.toMatch(/from "[^"]*\/runtime\//);
+    // the adapter consumes certification records + persisted packages only: never a map node, never raw compiler output
+    const adapter = srcOf("phase3-certification/phase4-adapter.ts");
+    expect(adapter).not.toMatch(/covenant-map|CanonicalCovenantMap|CovenantMapNode|SemanticCompilationResult/);
+    expect(adapter).toMatch(/cert\.status !== "CERTIFIED"/);
+    expect(adapter).toMatch(/toVerifiedExecutionPackage\(packages\)/);
+    // the execution package can only be DERIVED from persisted packages: no side channel for an unverified shared capacity
+    expect(srcOf("verified-units.ts")).toMatch(/export function toVerifiedExecutionPackage\(packages: readonly PersistedVerifiedUnitPackage\[\]\): VerifiedExecutionPackage/);
+  });
+
+  it("the runtime stays untouched by this closure: runtime/ imports nothing from phase3-certification, verified-units or covenant-map, and the boundary keeps REQUIRE as a constant", () => {
+    for (const f of walkTs(path.join(CM_LIB, "runtime"))) expect(fs.readFileSync(f, "utf8"), f).not.toMatch(/phase3-certification|verified-units|covenant-map/);
+    expect(srcOf("verified-execution.ts")).toMatch(/export const VERIFIED_EXECUTION_POLICY = "REQUIRE" as const;/);
+    expect(srcOf("verified-execution.ts")).toMatch(/shared capacity pool\(s\) are not cleanly verified/);
+  });
+
+  it("the semantic source contract binds no model output, verification result, cost or clock", () => {
+    const c = srcOf("phase3-certification/semantic-source-contract.ts");
+    expect(c).not.toMatch(/SemanticVerificationResult|telemetry|costUsd|Date\.now|new Date\(/);
+    expect(c).toMatch(/SEMANTIC_SOURCE_CONTRACT_PREFIX = "sscv1"/);
   });
 });

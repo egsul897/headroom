@@ -1,7 +1,7 @@
 # Canonical covenant map - conmed-eighth-ar-credit-agreement
 
-mapHash: `cc390976f47a43ac248438dbb27af9919e72106dfea32a17f51316307c1791e0`  
-schema: canonical-covenant-map.v1  
+mapHash: `9c454e60b2c912b59f140109d1b0ef2fc4e17f2cc3f0758ca30e80d9e3dbc708`  
+schema: canonical-covenant-map.v2  
 config: (none)
 
 ## Completeness

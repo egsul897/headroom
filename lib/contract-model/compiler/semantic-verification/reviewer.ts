@@ -189,7 +189,7 @@ function normalizeWireFinding(wire: WireVerificationFinding, input: Verification
   // real unit ids of THIS compilation (finding-owner.ts); a repaired owner comes from irPath,
   // an ambiguous multi-unit owner stays null, and the finding id is computed from the
   // normalized owner so a fabricated id can never mint a distinct finding.
-  const owner = normalizeFindingOwner({ ruleOrDefinitionId: wire.ruleOrDefinitionId, irPath: wire.irPath }, { rules: input.compilationResult.rules, definitions: input.compilationResult.definitions });
+  const owner = normalizeFindingOwner({ ruleOrDefinitionId: wire.ruleOrDefinitionId, irPath: wire.irPath }, { rules: input.compilationResult.rules, definitions: input.compilationResult.definitions, sharedCapacities: input.compilationResult.sharedCapacities ?? [] });
 
   return {
     findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, owner.ownerId, wire.irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION),

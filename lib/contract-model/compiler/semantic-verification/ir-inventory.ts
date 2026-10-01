@@ -7,7 +7,7 @@
  * Operates purely on the already-compiled IR objects - never re-derives or
  * re-interprets source text (that is source-inventory.ts's job).
  */
-import type { IRCondition, IRDefinition, IRException, IRExpression, IRRule } from "../../ir/types";
+import type { IRCondition, IRDefinition, IRException, IRExpression, IRRule, IRSharedCapacity } from "../../ir/types";
 import { hashParts } from "../hashing";
 import type { IrInventory, IrInventoryItem, IrInventoryItemKind } from "./types";
 
@@ -206,10 +206,22 @@ function walkDefinition(candidateRef: string, definition: IRDefinition, defPath:
   return ctx.items;
 }
 
-export function buildIrInventory(candidateRef: string, rules: IRRule[], definitions: IRDefinition[]): IrInventory {
+/** Phase 3 certification closure: a shared capacity's cap expression is verified exactly like a rule's capacity expression. */
+function walkSharedCapacity(candidateRef: string, cap: IRSharedCapacity, capPath: string): IrInventoryItem[] {
+  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: cap.sharedCapId, items: [], ownerTermName: null };
+  cap.memberRuleIds.forEach((m, i) => pushItem(ctx, "DEPENDENCY", `${capPath}.memberRuleIds[${i}]`, null, `SHARED_CAP_MEMBER:${m}`, false, null, null));
+  if (cap.capExpression.kind === "UNLIMITED_CAPACITY") {
+    pushItem(ctx, "UNLIMITED_CAPACITY_MARKER", `${capPath}.capExpression`, null, null, false, cap.capExpression.provenance?.sourceCitation ?? null, cap.capExpression.provenance?.excerpt ?? null);
+    if (cap.capExpression.gatedBy) walkExpression(ctx, cap.capExpression.gatedBy, `${capPath}.capExpression.gatedBy`, false);
+  } else walkExpression(ctx, cap.capExpression, `${capPath}.capExpression`, false);
+  return ctx.items;
+}
+
+export function buildIrInventory(candidateRef: string, rules: IRRule[], definitions: IRDefinition[], sharedCapacities: IRSharedCapacity[] = []): IrInventory {
   const items: IrInventoryItem[] = [];
   rules.forEach((rule, i) => items.push(...walkRule(candidateRef, rule, `rules[${i}]`)));
   definitions.forEach((def, i) => items.push(...walkDefinition(candidateRef, def, `definitions[${i}]`)));
+  sharedCapacities.forEach((cap, i) => items.push(...walkSharedCapacity(candidateRef, cap, `sharedCapacities[${i}]`)));
 
   return {
     candidateRef,

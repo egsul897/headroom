@@ -58,3 +58,9 @@ database suites need a database service and are not part of that job.
   (bounded prompt) are both ensemble-compatible; the STRICT gate still requires one ensemble's two passes to match.
 
 No test was skipped, disabled or quarantined by the cleanse.
+
+## Certification closure note
+
+The six TypeScript errors in `tests/foundation-audit/` (duplicate `...overrides` keys, a renamed `sectionRef`) were
+fixed; `npx tsc --noEmit -p .` is green. The known-red classes above are unchanged by the closure; none of them is in
+`npm run test:phase3-certification`.

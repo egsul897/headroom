@@ -11,8 +11,8 @@
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../ir/types";
 import type { SemanticVerificationStatus } from "../compiler/semantic-verification/types";
 
-export const COVENANT_MAP_SCHEMA_VERSION = "canonical-covenant-map.v1";
-export const COVENANT_MAP_ALGORITHM_VERSION = "covenant-map-assembly.v1";
+export const COVENANT_MAP_SCHEMA_VERSION = "canonical-covenant-map.v2";
+export const COVENANT_MAP_ALGORITHM_VERSION = "covenant-map-assembly.v2";
 
 /** Deterministic position of a node in the package: document, then character offset, then depth, then the structural ordinal. */
 export interface SourceOrder {
@@ -40,6 +40,15 @@ export interface CovenantMapNodeOperative {
   supersededStructuralNodeIds: string[];
 }
 
+/** Certification as the node exposes it: the decision, the persisted artifact's content hash, the binding identity, the blocker codes. */
+export interface CovenantMapNodeCertification {
+  status: "CERTIFIED" | "REVIEW_REQUIRED" | "NOT_CERTIFIED";
+  /** The persisted verified-unit artifact's content hash for THIS unit; null unless the candidate's package is complete and certifiable. */
+  artifactHash: string | null;
+  semanticSourceContractVersion: string | null;
+  blockers: string[];
+}
+
 export interface CovenantMapNode {
   /** The IR unit's own content-derived id (ruleId / definitionId / sharedCapId) - never a map-local counter. */
   nodeId: string;
@@ -55,9 +64,13 @@ export interface CovenantMapNode {
   posture: string | null;
   termName: string | null;
   sufficiency: string | null;
+  /** The BINDING identity the unit carries (the semantic source contract version sscv1 on the certified path; the operative scv1 on reconstructed maps). */
   sourceContentVersion: string | null;
+  /** The operative (scv1) identity: exact operative text, anchor, applied effects. */
+  operativeSourceVersion: string | null;
   identityStrength: IdentityStrength;
   verification: CovenantMapNodeVerification;
+  certification: CovenantMapNodeCertification;
   operative: CovenantMapNodeOperative | null;
   unit: IRRule | IRDefinition | IRSharedCapacity;
 }
@@ -87,6 +100,15 @@ export type EdgeDerivation =
   | "STRUCTURAL_ANCESTRY"
   | "OPERATIVE_STATE";
 
+/**
+ * What an edge is authoritative for.
+ *   CERTIFIED_SEMANTIC       established by the compiled IR (an IR_* derivation) AND both endpoints are CERTIFIED - the only authority Phase 4 acts on
+ *   REVIEW_ONLY              established by the IR, but an endpoint is not certified
+ *   DETERMINISTIC_STRUCTURAL established only by structural ancestry or operative state - a fact about the document tree, never a semantic relationship by itself
+ *   CONTEXTUAL_INFERENCE     established only by a context-bundle classification (PARENT_SCOPE / CONDITION / PROVISO / cross-document) - an inference
+ */
+export type EdgeAuthority = "CERTIFIED_SEMANTIC" | "DETERMINISTIC_STRUCTURAL" | "CONTEXTUAL_INFERENCE" | "REVIEW_ONLY";
+
 export interface CovenantMapEdge {
   /** Content-derived: sha256 of (type, from, to); one edge per relationship, its first derivation recorded. */
   edgeId: string;
@@ -96,6 +118,9 @@ export interface CovenantMapEdge {
   /** The IR relationship type (ContractRuleRelationshipType) for RULE_DEPENDS_ON_RULE, else null. */
   relationshipType: string | null;
   derivedFrom: EdgeDerivation;
+  /** Every derivation that independently established this same relationship (derivedFrom first). */
+  corroboratedBy: EdgeDerivation[];
+  edgeAuthority: EdgeAuthority;
   reason: string;
   candidateRef: string;
 }
@@ -178,6 +203,9 @@ export interface CovenantMapCandidateRecord {
   compilationStatus: string | null;
   compilationFailureReasons: string[];
   verificationStatus: string | null;
+  certificationStatus: "CERTIFIED" | "REVIEW_REQUIRED" | "NOT_CERTIFIED";
+  certificationBlockers: string[];
+  semanticSourceContractVersion: string | null;
   nodeIds: string[];
   failure: { kind: string; detail: string } | null;
   telemetry: CandidateExecutionTelemetry | null;
@@ -221,6 +249,24 @@ export interface CovenantMapCompleteness {
   /** candidatesMapped / candidatesEligible, 0..1, or null when nothing was eligible. */
   mappedFraction: number | null;
   complete: boolean;
+  /** Same as `complete`: every eligible candidate MAPPED and nothing unresolved. */
+  mapComplete: boolean;
+  /** Every eligible candidate CERTIFIED. Separate from mapComplete: a complete map can be entirely uncertified. */
+  certificationComplete: boolean;
+  candidatesCertified: number;
+  candidatesReviewRequired: number;
+  candidatesNotCertified: number;
+  semanticUnits: number;
+  semanticUnitsCertified: number;
+  edgesByAuthority: Record<EdgeAuthority, number>;
+}
+
+export interface CovenantMapDiscoveryPopulation {
+  scope: "COMPLETE" | "PARTIAL_TARGET_SET";
+  sealedDiscoveryIdentity: string | null;
+  candidatePopulationHash: string;
+  discoveryVersion: string | null;
+  candidatesDiscovered: number;
 }
 
 export interface CanonicalCovenantMap {
@@ -234,6 +280,8 @@ export interface CanonicalCovenantMap {
   documents: CovenantMapDocument[];
   identity: CovenantMapIdentity;
   operativeState: { status: string; asOfDate: string; provisions: number; unattachedEffects: number } | null;
+  /** The sealed Phase 2 population this map was assembled over; null when the caller supplied none (then never package-certifiable). */
+  discoveryPopulation: CovenantMapDiscoveryPopulation | null;
   nodes: CovenantMapNode[];
   edges: CovenantMapEdge[];
   candidates: CovenantMapCandidateRecord[];

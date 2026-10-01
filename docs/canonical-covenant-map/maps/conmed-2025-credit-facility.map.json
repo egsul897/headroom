@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "canonical-covenant-map.v1",
+  "schemaVersion": "canonical-covenant-map.v2",
   "companyId": "conmed-pilot",
   "packageKey": "conmed-2025-credit-facility",
   "instrumentKey": "conmed-eighth-ar-credit-agreement",
@@ -35,7 +35,7 @@
     }
   ],
   "identity": {
-    "mapAlgorithmVersion": "covenant-map-assembly.v1",
+    "mapAlgorithmVersion": "covenant-map-assembly.v2",
     "certifiedConfigIdentity": null,
     "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
     "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
@@ -44,6 +44,7 @@
     "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
   },
   "operativeState": null,
+  "discoveryPopulation": null,
   "nodes": [
     {
       "nodeId": "ir-rule:191b27a8d24d0818949064c9",
@@ -65,11 +66,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:865e3a799629ecd992d2dcec470fcf6f933e25e1f1de76ca722a6578ed3e4dfa",
+      "operativeSourceVersion": "scv1:865e3a799629ecd992d2dcec470fcf6f933e25e1f1de76ca722a6578ed3e4dfa",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -275,11 +285,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:09ee6412f71eed92bd4f17da092136dcb2854bac7b8ff6b41337260db5ec77ed",
+      "operativeSourceVersion": "scv1:09ee6412f71eed92bd4f17da092136dcb2854bac7b8ff6b41337260db5ec77ed",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -473,6 +492,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:05389a887ef99faccb4c9b96a6462d35c42d74ff1a9fff88f011fcd6b84ee13e",
+      "operativeSourceVersion": "scv1:05389a887ef99faccb4c9b96a6462d35c42d74ff1a9fff88f011fcd6b84ee13e",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
@@ -481,6 +501,14 @@
           "47c122cb03dbccd1c981191c45366d46237eb7aa2387bcaa31346f9d9b01c01b"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -915,6 +943,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:e174d146f21a66f9d6e4f1d8a62056b26bb2b99ca75876d58cfea855ed179fa3",
+      "operativeSourceVersion": "scv1:e174d146f21a66f9d6e4f1d8a62056b26bb2b99ca75876d58cfea855ed179fa3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
@@ -922,6 +951,14 @@
           "332ab0adb5489b8659b975c60970a8220724850457e1b2ee6556f868ab347762"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -1109,11 +1146,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:e174d146f21a66f9d6e4f1d8a62056b26bb2b99ca75876d58cfea855ed179fa3",
+      "operativeSourceVersion": "scv1:e174d146f21a66f9d6e4f1d8a62056b26bb2b99ca75876d58cfea855ed179fa3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -1209,6 +1255,7 @@
       "termName": "Finance Lease Obligations",
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:e174d146f21a66f9d6e4f1d8a62056b26bb2b99ca75876d58cfea855ed179fa3",
+      "operativeSourceVersion": "scv1:e174d146f21a66f9d6e4f1d8a62056b26bb2b99ca75876d58cfea855ed179fa3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
@@ -1216,6 +1263,14 @@
           "d48bcfa5adbf4e0676a2cfd5f6e623620a723c1b43567cbfc1d46e204aa5c1e0"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -1280,6 +1335,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:55df3e9900b526c2c1104edd81aed01c4429c369ed716146e3e7206f2ab18604",
+      "operativeSourceVersion": "scv1:55df3e9900b526c2c1104edd81aed01c4429c369ed716146e3e7206f2ab18604",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -1288,6 +1344,14 @@
           "3a533f53828c4011b623bb6c5d27614e9a4cdeeaf7b41606db141f26fb2ecc8a"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -1383,11 +1447,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:55df3e9900b526c2c1104edd81aed01c4429c369ed716146e3e7206f2ab18604",
+      "operativeSourceVersion": "scv1:55df3e9900b526c2c1104edd81aed01c4429c369ed716146e3e7206f2ab18604",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -1544,6 +1617,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:91a5b5c0f547378634a4e986f961ad107f683f83d38163e0a8d07764bc2e35b4",
+      "operativeSourceVersion": "scv1:91a5b5c0f547378634a4e986f961ad107f683f83d38163e0a8d07764bc2e35b4",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
@@ -1551,6 +1625,14 @@
           "0b63949937ecd072fb5e7ff02d923dcc356c8553986eed0fe3cd9011d982dac1"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -1810,6 +1892,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
+      "operativeSourceVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -1817,6 +1900,14 @@
           "8099e35eb6e6350569dfa838254219a3d79e2f176437ea269f709283d7651064"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2113,11 +2204,20 @@
       "termName": "Subsidiary",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
+      "operativeSourceVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2166,11 +2266,20 @@
       "termName": "Equipment",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
+      "operativeSourceVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2219,6 +2328,7 @@
       "termName": "Consolidated Total Assets",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
+      "operativeSourceVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -2226,6 +2336,14 @@
           "fa9d2f4078d3971737c55e9ecc30083af64229618e6ab209cd739822f2c3425c"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2275,11 +2393,20 @@
       "termName": "Parent Borrower",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
+      "operativeSourceVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2326,11 +2453,20 @@
       "termName": "Indebtedness",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
+      "operativeSourceVersion": "scv1:5ae592136969d47ad17e295014d7036800f508958cddb42ddc7e15882cf24458",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2388,6 +2524,7 @@
       "termName": null,
       "sufficiency": "MISSING_CONTEXT",
       "sourceContentVersion": "scv1:0b7ef0e786fd97334f1345a923f1caf2ec4fb39a29626f055ac34a229fe7b58f",
+      "operativeSourceVersion": "scv1:0b7ef0e786fd97334f1345a923f1caf2ec4fb39a29626f055ac34a229fe7b58f",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -2397,6 +2534,14 @@
           "e3b67e9d4c781525ace79a5dad346bcb52f6993147e62b0b359ff6439161c821"
         ],
         "materialFindings": 3
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2605,6 +2750,7 @@
       "termName": null,
       "sufficiency": "MISSING_CONTEXT",
       "sourceContentVersion": "scv1:7d16c61daf9a8e49f06342776b0178807ca546170fc5b5c3ac791daf7d2aa434",
+      "operativeSourceVersion": "scv1:7d16c61daf9a8e49f06342776b0178807ca546170fc5b5c3ac791daf7d2aa434",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -2613,6 +2759,14 @@
           "8ec72244b0670d06b7d2e3df4ef881618b5c5364ce3b5ea7d56fa96630b06e67"
         ],
         "materialFindings": 2
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2784,6 +2938,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:e3946f1b8cc608f8a9a6495d485b96c8190c35bfa6cc79fb272e74139e2cccec",
+      "operativeSourceVersion": "scv1:e3946f1b8cc608f8a9a6495d485b96c8190c35bfa6cc79fb272e74139e2cccec",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -2791,6 +2946,14 @@
           "0a2a51f48ca61986101f316ec55bf222bf9d3ea0c05041b97695cb5077835ad6"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -2962,11 +3125,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:f81ec8829b1b6d66a9c1d3435e5ead0f1f7689298b2fe0a50f0dd98e4ee94618",
+      "operativeSourceVersion": "scv1:f81ec8829b1b6d66a9c1d3435e5ead0f1f7689298b2fe0a50f0dd98e4ee94618",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3206,6 +3378,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -3214,6 +3387,14 @@
           "b962b7704445ca29de8ff3852f5d40c4fcaf80002b6f090f28a7f1b62487a2bd"
         ],
         "materialFindings": 2
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3320,11 +3501,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3466,11 +3656,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3595,11 +3794,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3723,11 +3931,20 @@
       "termName": "Swap",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3774,11 +3991,20 @@
       "termName": "Lenders",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3825,6 +4051,7 @@
       "termName": "Permitted Bond Hedge Transaction",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -3833,6 +4060,14 @@
           "ca15981ccaa8d152a1be937a5d62e1b9f76cb0d9c33981cf34c17435f4c36972"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3922,11 +4157,20 @@
       "termName": "Commitments",
       "sufficiency": "MISSING_CONTEXT",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -3990,6 +4234,7 @@
       "termName": "Permitted Warrant Transaction",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -3997,6 +4242,14 @@
           "8b6f927b0b866e4277c963c4530560a5cdae04083efa9dd20da406a979c56d91"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -4046,11 +4299,20 @@
       "termName": "Obligations",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -4106,11 +4368,20 @@
       "termName": "Swap Agreements",
       "sufficiency": "MISSING_CONTEXT",
       "sourceContentVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
+      "operativeSourceVersion": "scv1:579cf8e3d3a94dd08947bc6c3a59e872306acad204b5dd7acac7219650f40410",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -4174,6 +4445,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:5d35d6a81b2bb7673b185c9f879629c911bc08cd7dff292d4d02525d3aa636f5",
+      "operativeSourceVersion": "scv1:5d35d6a81b2bb7673b185c9f879629c911bc08cd7dff292d4d02525d3aa636f5",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -4182,6 +4454,14 @@
           "5ff1f24f84c87676719ba89bc0bf927dea0f4aad1b81e8405a351403b2cb9a7e"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -4453,11 +4733,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:26b7ac1179f9e97c3bd85833b899a7e70b43a23c0edebfe8512a6a7ddffecc87",
+      "operativeSourceVersion": "scv1:26b7ac1179f9e97c3bd85833b899a7e70b43a23c0edebfe8512a6a7ddffecc87",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -4606,6 +4895,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:3f8e91519b86a29d7e8383eb547b83fe6281bba86aed6b6c9521706c83948c0d",
+      "operativeSourceVersion": "scv1:3f8e91519b86a29d7e8383eb547b83fe6281bba86aed6b6c9521706c83948c0d",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
@@ -4613,6 +4903,14 @@
           "d01dd62f793fd338178b6d482f9099e5e07f4cae02724b1b7451409c13ea8afd"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -4921,11 +5219,20 @@
       "termName": "Property",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:3f8e91519b86a29d7e8383eb547b83fe6281bba86aed6b6c9521706c83948c0d",
+      "operativeSourceVersion": "scv1:3f8e91519b86a29d7e8383eb547b83fe6281bba86aed6b6c9521706c83948c0d",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -4975,6 +5282,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:c89be3e6cd778459d1a57a8729f1438c4ba9ed49cb83543abafc1dab3b52e63c",
+      "operativeSourceVersion": "scv1:c89be3e6cd778459d1a57a8729f1438c4ba9ed49cb83543abafc1dab3b52e63c",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -4987,6 +5295,14 @@
           "f98331fb5b022459755d1fa389270920a855b2f29bb115565c3560f58ede3966"
         ],
         "materialFindings": 6
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -5503,6 +5819,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:a453f1b45d1b145c1441f728f3ffaac58e828797b53cb605b14b5262a7eaaa29",
+      "operativeSourceVersion": "scv1:a453f1b45d1b145c1441f728f3ffaac58e828797b53cb605b14b5262a7eaaa29",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -5511,6 +5828,14 @@
           "a82a18bf899444f4a1d974c1bd255f20491bc088d3b077bc702cf3f1990bcd20"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -5701,11 +6026,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:1017e27645ee727765df970979d2537f449dee16503ea8bdf0d9d9dec7ec9955",
+      "operativeSourceVersion": "scv1:1017e27645ee727765df970979d2537f449dee16503ea8bdf0d9d9dec7ec9955",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -5910,11 +6244,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:9afaa1a1fce777fb5c0de42df61fc2cea6c26bb344983372a9e1cebc6e15300e",
+      "operativeSourceVersion": "scv1:9afaa1a1fce777fb5c0de42df61fc2cea6c26bb344983372a9e1cebc6e15300e",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -6082,6 +6425,7 @@
       "termName": "Security Documents",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:9afaa1a1fce777fb5c0de42df61fc2cea6c26bb344983372a9e1cebc6e15300e",
+      "operativeSourceVersion": "scv1:9afaa1a1fce777fb5c0de42df61fc2cea6c26bb344983372a9e1cebc6e15300e",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -6089,6 +6433,14 @@
           "e60dcb70fb16ebc2afbb01d4c1c19704330132ea596c0216bc5a60b6695e9cc1"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -6145,6 +6497,7 @@
       "termName": "Lien",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:9afaa1a1fce777fb5c0de42df61fc2cea6c26bb344983372a9e1cebc6e15300e",
+      "operativeSourceVersion": "scv1:9afaa1a1fce777fb5c0de42df61fc2cea6c26bb344983372a9e1cebc6e15300e",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -6152,6 +6505,14 @@
           "50a1125840b0d6b56fd6cfb26c0be674ffb9b055d5e14f9d9b899973e8288fd5"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -6201,6 +6562,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:224008d564a561f47d964d9a65a06c398883fd7eb5951be5e094c06e5f690540",
+      "operativeSourceVersion": "scv1:224008d564a561f47d964d9a65a06c398883fd7eb5951be5e094c06e5f690540",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -6208,6 +6570,14 @@
           "b50783d4f0e180ba8c2e7a0212fc7a15eb0821e7637d30e55a5869a2b19d12f9"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -6527,11 +6897,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:b3e54d1e291d7112950a13317d22a13c78ea04f702d686d01d727e35e74bff89",
+      "operativeSourceVersion": "scv1:b3e54d1e291d7112950a13317d22a13c78ea04f702d686d01d727e35e74bff89",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -6727,11 +7106,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:0fcd4172a0b5cd8505388b6fbe00dd1a763ee95a86a33abeceaa7a130cd3e7bd",
+      "operativeSourceVersion": "scv1:0fcd4172a0b5cd8505388b6fbe00dd1a763ee95a86a33abeceaa7a130cd3e7bd",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_FAILED",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -7004,6 +7392,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:e36de346844e455cba725b1c0fe683bcd216362b4b70aead7e6cb3a0d3695e8f",
+      "operativeSourceVersion": "scv1:e36de346844e455cba725b1c0fe683bcd216362b4b70aead7e6cb3a0d3695e8f",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -7031,6 +7420,14 @@
           "fa26a3abc38b88843c5cc474d51b8a4edbd232f4450f05d683737bf1ef170874"
         ],
         "materialFindings": 20
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -7464,6 +7861,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:3e4bf05bfbaa29c53479372801df75504fb20792557b8f54ef62a8f97e38f620",
+      "operativeSourceVersion": "scv1:3e4bf05bfbaa29c53479372801df75504fb20792557b8f54ef62a8f97e38f620",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -7471,6 +7869,14 @@
           "6990bf51ac821b08705764c4f6e8bb9fefbfc0ef992d72049574baea37ad023e"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -7830,6 +8236,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5aa857a84d4be6ac4a490ec9dd10cb8179941d78db845bc05ab0a033d6951d97",
+      "operativeSourceVersion": "scv1:5aa857a84d4be6ac4a490ec9dd10cb8179941d78db845bc05ab0a033d6951d97",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -7842,6 +8249,14 @@
           "f93fc28413d39124255fe759bb3f3db1aaab9919a348bc37ddaff24ff9ad0baf"
         ],
         "materialFindings": 6
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -8190,6 +8605,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:40a9b11a7628757428dc0b8c57e8312736a7790cb654a626b940f9a197649606",
+      "operativeSourceVersion": "scv1:40a9b11a7628757428dc0b8c57e8312736a7790cb654a626b940f9a197649606",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -8205,6 +8621,14 @@
           "eb94d908bdccc3644b33d20f2e798442011aac7ba3cecc5cf8b0fff77e8d09be"
         ],
         "materialFindings": 8
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -8654,6 +9078,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:2b65dd886ed548336f6fb158db168c74805267ab4b92b0faa543c40a01944af1",
+      "operativeSourceVersion": "scv1:2b65dd886ed548336f6fb158db168c74805267ab4b92b0faa543c40a01944af1",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
@@ -8661,6 +9086,14 @@
           "88f88d7b1eb10ee5bd19cfa09ee11015e7b499572db2393458c50d98bc605aa3"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9032,6 +9465,7 @@
       "termName": null,
       "sufficiency": "AMBIGUOUS",
       "sourceContentVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
+      "operativeSourceVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -9040,6 +9474,14 @@
           "dc0c1aea41f469d0f1733c85716ac75adee136d735ee1009547c725cd2e36e34"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9277,11 +9719,20 @@
       "termName": "Wholly-Owned Subsidiary",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
+      "operativeSourceVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9332,11 +9783,20 @@
       "termName": "Domestic Subsidiary",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
+      "operativeSourceVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9395,11 +9855,20 @@
       "termName": "Foreign Subsidiary",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
+      "operativeSourceVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9450,11 +9919,20 @@
       "termName": "Person",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
+      "operativeSourceVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9501,11 +9979,20 @@
       "termName": "Wholly-Owned Foreign Subsidiary",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
+      "operativeSourceVersion": "scv1:84da4503946ddc2fd01a7663561c7e6a79976c96d6a246825788dcd912281878",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9555,6 +10042,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:857876ca42c098af208085e0cf90ab108b1e101ad60f8101f3acb7ebab9c59e3",
+      "operativeSourceVersion": "scv1:857876ca42c098af208085e0cf90ab108b1e101ad60f8101f3acb7ebab9c59e3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -9563,6 +10051,14 @@
           "ca99bcbc49fce9df8ab2548f5a7dbdc7c66a7621122d35070f745d2f86030c5c"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9711,11 +10207,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
+      "operativeSourceVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9811,11 +10316,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
+      "operativeSourceVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -9997,6 +10511,7 @@
       "termName": "Disposition",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
+      "operativeSourceVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -10004,6 +10519,14 @@
           "050832a148bb2c5e3a62cfc181b3034fa72db151ef1e2ef98efa73e0a83707f0"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -10054,11 +10577,20 @@
       "termName": "Inventory",
       "sufficiency": "MISSING_CONTEXT",
       "sourceContentVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
+      "operativeSourceVersion": "scv1:8b89b1cab7ba462fba0d05cf93f9ec3a9fe7943c63b869b58727c67bb45654bc",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -10123,6 +10655,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:d963ff78e96a6de4345db1772e84218c670e00d5e6a7adc24d9a937182d0dfba",
+      "operativeSourceVersion": "scv1:d963ff78e96a6de4345db1772e84218c670e00d5e6a7adc24d9a937182d0dfba",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -10130,6 +10663,14 @@
           "47bf31f13c955f4801a1eeba44f8dfeeb1418e91a22f218583d94bf491bc6dd6"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -10484,6 +11025,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:d963ff78e96a6de4345db1772e84218c670e00d5e6a7adc24d9a937182d0dfba",
+      "operativeSourceVersion": "scv1:d963ff78e96a6de4345db1772e84218c670e00d5e6a7adc24d9a937182d0dfba",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -10491,6 +11033,14 @@
           "0240076d4fbb1775c0ffd75392e4a741fa0d2464de2135a71eba19dce46ce9b5"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -10816,6 +11366,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:d963ff78e96a6de4345db1772e84218c670e00d5e6a7adc24d9a937182d0dfba",
+      "operativeSourceVersion": "scv1:d963ff78e96a6de4345db1772e84218c670e00d5e6a7adc24d9a937182d0dfba",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -10824,6 +11375,14 @@
           "fd8a5594e7973e76c327fea039cfe85349e1d00e28fd3c4e22d8fbebad3a8e83"
         ],
         "materialFindings": 2
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -11124,11 +11683,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:fd3f8a8d2d78a94a0d41553fbd9f946d5648255f96e89d69e6a064a0f0775e27",
+      "operativeSourceVersion": "scv1:fd3f8a8d2d78a94a0d41553fbd9f946d5648255f96e89d69e6a064a0f0775e27",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -11290,6 +11858,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:69499fd112c4035c8d8ba0754669b0da5f70c2edfa07298f3f96bb242aef87f3",
+      "operativeSourceVersion": "scv1:69499fd112c4035c8d8ba0754669b0da5f70c2edfa07298f3f96bb242aef87f3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -11297,6 +11866,14 @@
           "112432b86a75b28217f9a96882a80503428bbdb4e6470a5b463357820f33c5e3"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -11593,11 +12170,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:ce72ff9480393a3dd258c6d882082b3c6da7b3c1af2edc089f042e3e62c28199",
+      "operativeSourceVersion": "scv1:ce72ff9480393a3dd258c6d882082b3c6da7b3c1af2edc089f042e3e62c28199",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -11774,11 +12360,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:be6b6a7a787eda5c807e6e9aaa92947421e01fbaf40a12326a963e6978d233a3",
+      "operativeSourceVersion": "scv1:be6b6a7a787eda5c807e6e9aaa92947421e01fbaf40a12326a963e6978d233a3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -11933,11 +12528,20 @@
       "termName": "Receivables Transfer Program",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:be6b6a7a787eda5c807e6e9aaa92947421e01fbaf40a12326a963e6978d233a3",
+      "operativeSourceVersion": "scv1:be6b6a7a787eda5c807e6e9aaa92947421e01fbaf40a12326a963e6978d233a3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -11988,11 +12592,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:c6ff3f1127af6f3648c489760785ad996b75930798357a4cfd4c4d9b124f7e9d",
+      "operativeSourceVersion": "scv1:c6ff3f1127af6f3648c489760785ad996b75930798357a4cfd4c4d9b124f7e9d",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -12234,11 +12847,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:f03e78fae7c031a6f3b9501bdd15e2004090dccddded5d1349234039d7fdfe3d",
+      "operativeSourceVersion": "scv1:f03e78fae7c031a6f3b9501bdd15e2004090dccddded5d1349234039d7fdfe3d",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -12762,6 +13384,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:0d6f20b2516ad506b2b6a1ead51925844e294ae864bcf1d29c0f65b07967e53b",
+      "operativeSourceVersion": "scv1:0d6f20b2516ad506b2b6a1ead51925844e294ae864bcf1d29c0f65b07967e53b",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -12769,6 +13392,14 @@
           "e19273d986079f7f37d2b6c839e60085985906a32658cbee70da4c98c1b6e36b"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -13115,6 +13746,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:0d6f20b2516ad506b2b6a1ead51925844e294ae864bcf1d29c0f65b07967e53b",
+      "operativeSourceVersion": "scv1:0d6f20b2516ad506b2b6a1ead51925844e294ae864bcf1d29c0f65b07967e53b",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -13122,6 +13754,14 @@
           "bd4cec7e32f5c807fea6deb6be5e9dfada135365ab9b5d008c0ad35caf9e89b1"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -13252,6 +13892,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:a88895a928be8539ec99a3a8368de9e7655cd1d8ddd06c9ce35896b97e8bc14a",
+      "operativeSourceVersion": "scv1:a88895a928be8539ec99a3a8368de9e7655cd1d8ddd06c9ce35896b97e8bc14a",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -13262,6 +13903,14 @@
           "fa71226ce1f70bc267c4d4be9e9b5f6ef29f27633b347a5a43aa7f14a941f249"
         ],
         "materialFindings": 3
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -13475,6 +14124,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:2a2c04b11f4d41dbd19cc6574ae26f24377b93110c073311e1f0f48ada5c96ee",
+      "operativeSourceVersion": "scv1:2a2c04b11f4d41dbd19cc6574ae26f24377b93110c073311e1f0f48ada5c96ee",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -13482,6 +14132,14 @@
           "5d4cee0e029310e91162847c0fb837b54c7fc6783677a53b04ef000d696ceca5"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -13743,11 +14401,20 @@
       "termName": null,
       "sufficiency": null,
       "sourceContentVersion": "scv1:be5d2d74b3cbc3b9619b8f8aecb6890de1db73227668494e7f5413dae28d57cd",
+      "operativeSourceVersion": "scv1:be5d2d74b3cbc3b9619b8f8aecb6890de1db73227668494e7f5413dae28d57cd",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -13819,6 +14486,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
+      "operativeSourceVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -13827,6 +14495,14 @@
           "7cd21a533498a56437ea3d9eb5fd1fd8265c91b0d2c74d6fc8408da852ea5c26"
         ],
         "materialFindings": 2
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14159,6 +14835,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
+      "operativeSourceVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -14167,6 +14844,14 @@
           "f472b239ca03db28c34366c5f4eab1e0239e588a18ac7f33fa3e1f13780da4cc"
         ],
         "materialFindings": 2
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14299,11 +14984,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:be5d2d74b3cbc3b9619b8f8aecb6890de1db73227668494e7f5413dae28d57cd",
+      "operativeSourceVersion": "scv1:be5d2d74b3cbc3b9619b8f8aecb6890de1db73227668494e7f5413dae28d57cd",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14547,11 +15241,20 @@
       "termName": "Agreement",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
+      "operativeSourceVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14598,11 +15301,20 @@
       "termName": "Capital Stock",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
+      "operativeSourceVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14651,11 +15363,20 @@
       "termName": null,
       "sufficiency": null,
       "sourceContentVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
+      "operativeSourceVersion": "scv1:9b03579a359eebcf3409097ba14b75e5964b82ff606d87e10e10d1db8d9143e5",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14720,11 +15441,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:be5d2d74b3cbc3b9619b8f8aecb6890de1db73227668494e7f5413dae28d57cd",
+      "operativeSourceVersion": "scv1:be5d2d74b3cbc3b9619b8f8aecb6890de1db73227668494e7f5413dae28d57cd",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14819,6 +15549,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:526e1bcc995730bf53429c80a753017b818997970705162b93c2ab3fe07e32ed",
+      "operativeSourceVersion": "scv1:526e1bcc995730bf53429c80a753017b818997970705162b93c2ab3fe07e32ed",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -14828,6 +15559,14 @@
           "c1c186e6a3258e496b16e7343493e23e08b0df11effe6f40186b67412db5c59e"
         ],
         "materialFindings": 2
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -14965,11 +15704,20 @@
       "termName": null,
       "sufficiency": null,
       "sourceContentVersion": "scv1:526e1bcc995730bf53429c80a753017b818997970705162b93c2ab3fe07e32ed",
+      "operativeSourceVersion": "scv1:526e1bcc995730bf53429c80a753017b818997970705162b93c2ab3fe07e32ed",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -15024,6 +15772,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:9d395c1847ae87fb02ad30a59bc934f0a85c979116f6101e3c18bef67d992108",
+      "operativeSourceVersion": "scv1:9d395c1847ae87fb02ad30a59bc934f0a85c979116f6101e3c18bef67d992108",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -15031,6 +15780,14 @@
           "79422ec462ee06b1e6a1a1917aa329a4391c048b4990eb8f9e740459f4535d26"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -15175,6 +15932,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:c5ac66cd0d0b9194919f88cfc8490eb1f4c925f1370478abea7dde268eec222f",
+      "operativeSourceVersion": "scv1:c5ac66cd0d0b9194919f88cfc8490eb1f4c925f1370478abea7dde268eec222f",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -15183,6 +15941,14 @@
           "ed49eeeefd7f2873cd7e2580cc5204ad1ecd68552bdfe0fb18140f0ce283995c"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -15317,11 +16083,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:eb254d997ebcc62542d9bf8c92d3a37dc2022b94bf809872f441700fc14b5ae3",
+      "operativeSourceVersion": "scv1:eb254d997ebcc62542d9bf8c92d3a37dc2022b94bf809872f441700fc14b5ae3",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -15672,6 +16447,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:5437c4f7ed1f86b6f2bbb6814aecd4c104105af9872209db4d10d6d0bbfbeb82",
+      "operativeSourceVersion": "scv1:5437c4f7ed1f86b6f2bbb6814aecd4c104105af9872209db4d10d6d0bbfbeb82",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -15680,6 +16456,14 @@
           "3fabe854501aced19e13d3e233d481f8c78e8bdc1af56932b66a18b511b9d85b"
         ],
         "materialFindings": 2
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -15936,11 +16720,20 @@
       "termName": "Event of Default",
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:5437c4f7ed1f86b6f2bbb6814aecd4c104105af9872209db4d10d6d0bbfbeb82",
+      "operativeSourceVersion": "scv1:5437c4f7ed1f86b6f2bbb6814aecd4c104105af9872209db4d10d6d0bbfbeb82",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -16003,6 +16796,7 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:6dd49648be34954d1e1be0bdd6060afac92e1413d1fbced233c91ba9869c9bfa",
+      "operativeSourceVersion": "scv1:6dd49648be34954d1e1be0bdd6060afac92e1413d1fbced233c91ba9869c9bfa",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -16012,6 +16806,14 @@
           "c21bb480a8c8b90ecf381c2522dae1f8e76e7214febc710745f9a4c249647d0e"
         ],
         "materialFindings": 3
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -16282,11 +17084,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:6dd49648be34954d1e1be0bdd6060afac92e1413d1fbced233c91ba9869c9bfa",
+      "operativeSourceVersion": "scv1:6dd49648be34954d1e1be0bdd6060afac92e1413d1fbced233c91ba9869c9bfa",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -16476,11 +17287,20 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:2769b3f16044a8c0d50d6d781929271178387f7e5851096bce71012e6a8b0d26",
+      "operativeSourceVersion": "scv1:2769b3f16044a8c0d50d6d781929271178387f7e5851096bce71012e6a8b0d26",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -16760,11 +17580,20 @@
       "termName": null,
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:2769b3f16044a8c0d50d6d781929271178387f7e5851096bce71012e6a8b0d26",
+      "operativeSourceVersion": "scv1:2769b3f16044a8c0d50d6d781929271178387f7e5851096bce71012e6a8b0d26",
       "identityStrength": "STRONG",
       "verification": {
         "status": "VERIFICATION_INCOMPLETE",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -16928,6 +17757,7 @@
       "termName": null,
       "sufficiency": "AMBIGUOUS",
       "sourceContentVersion": "scv1:ef6985a111a8d4e81a00839a07b33a18c194a6c57e223fa9fcdb1b33e8eb9ea1",
+      "operativeSourceVersion": "scv1:ef6985a111a8d4e81a00839a07b33a18c194a6c57e223fa9fcdb1b33e8eb9ea1",
       "identityStrength": "STRONG",
       "verification": {
         "status": "MATERIAL_DISCREPANCY",
@@ -16935,6 +17765,14 @@
           "e179bafbd5f77a2e2eafebd3ddfb91f5473446a59489e47e31d9c7ba65ed8102"
         ],
         "materialFindings": 1
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -17301,6 +18139,7 @@
       "termName": null,
       "sufficiency": "PARTIAL",
       "sourceContentVersion": "scv1:747570cfa8007ce65bf9d52c0b74cd96fd71c00a80eccf1c049fca76fda5c7eb",
+      "operativeSourceVersion": "scv1:747570cfa8007ce65bf9d52c0b74cd96fd71c00a80eccf1c049fca76fda5c7eb",
       "identityStrength": "STRONG",
       "verification": {
         "status": "REVIEW_REQUIRED",
@@ -17308,6 +18147,14 @@
           "8c1cca795adadd930604b70a3a45609e326949810e0f495ded24e68221b33785"
         ],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -17436,11 +18283,20 @@
       "termName": "Outbound Investment Rules",
       "sufficiency": "COMPLETE",
       "sourceContentVersion": "scv1:747570cfa8007ce65bf9d52c0b74cd96fd71c00a80eccf1c049fca76fda5c7eb",
+      "operativeSourceVersion": "scv1:747570cfa8007ce65bf9d52c0b74cd96fd71c00a80eccf1c049fca76fda5c7eb",
       "identityStrength": "STRONG",
       "verification": {
         "status": "REVIEW_REQUIRED",
         "findingIds": [],
         "materialFindings": 0
+      },
+      "certification": {
+        "status": "NOT_CERTIFIED",
+        "artifactHash": null,
+        "semanticSourceContractVersion": null,
+        "blockers": [
+          "CERTIFICATION_NOT_PERFORMED"
+        ]
       },
       "operative": null,
       "unit": {
@@ -17477,6 +18333,11 @@
       "toNodeId": "ir-rule:883e87ed10e884645db7df59",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION",
+        "STRUCTURAL_ANCESTRY"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "permission carved out of ir-rule:883e87ed10e884645db7df59 by exception rule[r-7.2chapeau].exception[0]",
       "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6"
     },
@@ -17487,6 +18348,10 @@
       "toNodeId": "ir-rule:817fb6fce7f8b666081509b5",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Exception (d): Finance Lease Obligations in an aggregate principal amount not to exceed the greater of $50,000,000 and 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding - compiled as rule r-7.2d.",
       "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6"
     },
@@ -17497,6 +18362,10 @@
       "toNodeId": "ir-rule:9b2035a7dc05b821cf49e049",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Indebtedness outstanding on the Closing Date and listed on Schedule 7.2(e), and any refinancings, refundings, renewals or extensions thereof without any increase in principal amount, as permitted by §7.2(e)",
       "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d"
     },
@@ -17507,6 +18376,11 @@
       "toNodeId": "ir-rule:0022b0493e3eadea7fb076b4",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION",
+        "STRUCTURAL_ANCESTRY"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "permission carved out of ir-rule:0022b0493e3eadea7fb076b4 by exception rule[r2].exception[0]",
       "candidateRef": "discovery-candidate:31223fa50581f12fb594ec0d"
     },
@@ -17517,6 +18391,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Subsidiary\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17527,6 +18405,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Consolidated Total Assets\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17537,6 +18419,10 @@
       "toNodeId": "ir-definition:5d37be4c9e5ea7d59e07eea0",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Indebtedness\" depends on \"Finance Lease Obligations\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17547,6 +18433,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Indebtedness\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17557,6 +18447,10 @@
       "toNodeId": "ir-definition:fc7f7f8fa97f4a0e51a5fb03",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Indebtedness\" depends on \"Swap Agreements\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17567,6 +18461,10 @@
       "toNodeId": "ir-definition:1c1ecf1e423c2faee919c7be",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Indebtedness\" depends on \"Property\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17577,6 +18475,10 @@
       "toNodeId": "ir-definition:fb4c58c2677863606eddb535",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Indebtedness\" depends on \"Lien\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17587,6 +18489,10 @@
       "toNodeId": "ir-definition:a2cbe1fdbbb7034bb4a05e34",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Indebtedness\" depends on \"Capital Stock\"",
       "candidateRef": "discovery-candidate:365e2c75cf8681ecfa480ad2"
     },
@@ -17597,6 +18503,10 @@
       "toNodeId": "ir-definition:76d57448332b667d015db193",
       "relationshipType": null,
       "derivedFrom": "IR_EXPRESSION_TERM_REFERENCE",
+      "corroboratedBy": [
+        "IR_EXPRESSION_TERM_REFERENCE"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "references defined term \"Commitments\" at .capacityExpression",
       "candidateRef": "discovery-candidate:cdccb3650edb9287f09fb2a9"
     },
@@ -17607,6 +18517,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Permitted Bond Hedge Transaction\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:cdccb3650edb9287f09fb2a9"
     },
@@ -17617,6 +18531,10 @@
       "toNodeId": "ir-definition:11685a6796f4bf99857d03ad",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Commitments\" depends on \"Lenders\"",
       "candidateRef": "discovery-candidate:cdccb3650edb9287f09fb2a9"
     },
@@ -17627,6 +18545,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Permitted Warrant Transaction\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:cdccb3650edb9287f09fb2a9"
     },
@@ -17637,6 +18559,10 @@
       "toNodeId": "ir-definition:3b0490cbdc830739f9ee53a6",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Permitted Warrant Transaction\" depends on \"Permitted Bond Hedge Transaction\"",
       "candidateRef": "discovery-candidate:cdccb3650edb9287f09fb2a9"
     },
@@ -17647,6 +18573,10 @@
       "toNodeId": "ir-definition:00796a19cbb4b033bd71f58d",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Swap Agreements\" depends on \"Swap\"",
       "candidateRef": "discovery-candidate:cdccb3650edb9287f09fb2a9"
     },
@@ -17657,6 +18587,10 @@
       "toNodeId": "ir-definition:a2cbe1fdbbb7034bb4a05e34",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Property\" depends on \"Capital Stock\"",
       "candidateRef": "discovery-candidate:c615523fa38fd789d31e9657"
     },
@@ -17667,6 +18601,10 @@
       "toNodeId": "ir-definition:1c1ecf1e423c2faee919c7be",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Security Documents\" depends on \"Property\"",
       "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181"
     },
@@ -17677,6 +18615,10 @@
       "toNodeId": "ir-definition:fb4c58c2677863606eddb535",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Security Documents\" depends on \"Lien\"",
       "candidateRef": "discovery-candidate:058231fd0222f19b20b9d181"
     },
@@ -17687,6 +18629,10 @@
       "toNodeId": "ir-definition:e64bd7538649f244fbf1adb5",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Wholly-Owned Subsidiary\" depends on \"Person\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17697,6 +18643,10 @@
       "toNodeId": "ir-definition:a2cbe1fdbbb7034bb4a05e34",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Wholly-Owned Subsidiary\" depends on \"Capital Stock\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17707,6 +18657,10 @@
       "toNodeId": "ir-definition:0f3b59f6d49bffb57752d596",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Domestic Subsidiary\" depends on \"Subsidiary\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17717,6 +18671,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Domestic Subsidiary\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17727,6 +18685,10 @@
       "toNodeId": "ir-definition:ca558eadab383a76e7216c7f",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Domestic Subsidiary\" depends on \"Obligations\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17737,6 +18699,10 @@
       "toNodeId": "ir-definition:fb4c58c2677863606eddb535",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Domestic Subsidiary\" depends on \"Lien\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17747,6 +18713,10 @@
       "toNodeId": "ir-definition:218fb00d7f47c938ee24e2f3",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Domestic Subsidiary\" depends on \"Wholly-Owned Subsidiary\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17757,6 +18727,10 @@
       "toNodeId": "ir-definition:3f84f607f0d40378de9811d8",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Domestic Subsidiary\" depends on \"Receivables Transfer Program\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17767,6 +18741,10 @@
       "toNodeId": "ir-definition:a2cbe1fdbbb7034bb4a05e34",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Domestic Subsidiary\" depends on \"Capital Stock\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17777,6 +18755,10 @@
       "toNodeId": "ir-definition:0f3b59f6d49bffb57752d596",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Foreign Subsidiary\" depends on \"Subsidiary\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17787,6 +18769,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Foreign Subsidiary\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17797,6 +18783,10 @@
       "toNodeId": "ir-definition:4aa65cea1aa126348553cf26",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Foreign Subsidiary\" depends on \"Domestic Subsidiary\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17807,6 +18797,10 @@
       "toNodeId": "ir-definition:218fb00d7f47c938ee24e2f3",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Wholly-Owned Foreign Subsidiary\" depends on \"Wholly-Owned Subsidiary\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17817,6 +18811,10 @@
       "toNodeId": "ir-definition:d10b8a5722ec307eb78efb68",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Wholly-Owned Foreign Subsidiary\" depends on \"Foreign Subsidiary\"",
       "candidateRef": "discovery-candidate:2935113412c51d5268d5b0ca"
     },
@@ -17827,6 +18825,10 @@
       "toNodeId": "ir-rule:f012a0ff52ed5ed1f69ab435",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "the sale or other Disposition of Inventory in the ordinary course of business (clause (b))",
       "candidateRef": "discovery-candidate:c71e3fc24ba69a95fb59dd41"
     },
@@ -17837,6 +18839,11 @@
       "toNodeId": "ir-rule:b708e87c81bb535e9c4e014f",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION",
+        "STRUCTURAL_ANCESTRY"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "permission carved out of ir-rule:b708e87c81bb535e9c4e014f by exception rule[r2].exception[0]",
       "candidateRef": "discovery-candidate:c71e3fc24ba69a95fb59dd41"
     },
@@ -17847,6 +18854,10 @@
       "toNodeId": "ir-definition:1c1ecf1e423c2faee919c7be",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Disposition\" depends on \"Property\"",
       "candidateRef": "discovery-candidate:c71e3fc24ba69a95fb59dd41"
     },
@@ -17857,6 +18868,10 @@
       "toNodeId": "ir-definition:3f84f607f0d40378de9811d8",
       "relationshipType": null,
       "derivedFrom": "IR_EXPRESSION_TERM_REFERENCE",
+      "corroboratedBy": [
+        "IR_EXPRESSION_TERM_REFERENCE"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "references defined term \"Receivables Transfer Program\" at .conditions[0]",
       "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460"
     },
@@ -17867,6 +18882,10 @@
       "toNodeId": "ir-definition:0f3b59f6d49bffb57752d596",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Receivables Transfer Program\" depends on \"Subsidiary\"",
       "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460"
     },
@@ -17877,6 +18896,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Receivables Transfer Program\" depends on \"Parent Borrower\"",
       "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460"
     },
@@ -17887,6 +18910,10 @@
       "toNodeId": "ir-definition:0302caf62220222ea9be23e2",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Receivables Transfer Program\" depends on \"Agreement\"",
       "candidateRef": "discovery-candidate:7a871f5e26e8a48783882460"
     },
@@ -17897,6 +18924,10 @@
       "toNodeId": "ir-definition:67d850749425dfb15cbedc96",
       "relationshipType": null,
       "derivedFrom": "IR_EXPRESSION_TERM_REFERENCE",
+      "corroboratedBy": [
+        "IR_EXPRESSION_TERM_REFERENCE"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "references defined term \"Parent Borrower\" at .conditions[5]",
       "candidateRef": "discovery-candidate:0578fe547dd42317ce0df107"
     },
@@ -17907,6 +18938,10 @@
       "toNodeId": "ir-definition:e64bd7538649f244fbf1adb5",
       "relationshipType": null,
       "derivedFrom": "IR_EXPRESSION_TERM_REFERENCE",
+      "corroboratedBy": [
+        "IR_EXPRESSION_TERM_REFERENCE"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "references defined term \"Person\" at .conditions[2].right",
       "candidateRef": "discovery-candidate:0578fe547dd42317ce0df107"
     },
@@ -17917,6 +18952,10 @@
       "toNodeId": "ir-definition:0302caf62220222ea9be23e2",
       "relationshipType": null,
       "derivedFrom": "IR_EXPRESSION_TERM_REFERENCE",
+      "corroboratedBy": [
+        "IR_EXPRESSION_TERM_REFERENCE"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "references defined term \"Agreement\" at .conditions[4].operands[0]",
       "candidateRef": "discovery-candidate:0578fe547dd42317ce0df107"
     },
@@ -17927,6 +18966,10 @@
       "toNodeId": "ir-rule:6a3800e22d2544c3924a45e4",
       "relationshipType": "SHARES_CAPACITY_WITH",
       "derivedFrom": "IR_DEPENDS_ON",
+      "corroboratedBy": [
+        "IR_DEPENDS_ON"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Repurchases under clause (b)(i) draw on the same $25,000,000 per year aggregate ceiling as cash payments under clause (b)(ii); the ceiling is stated once in clause (b)(ii) for purposes of clauses (i) and (ii)",
       "candidateRef": "discovery-candidate:488409a7f662ed7814693bc7"
     },
@@ -17937,6 +18980,10 @@
       "toNodeId": "ir-sharedcap:8ca88961e76f9a9f61862ad7",
       "relationshipType": null,
       "derivedFrom": "IR_SHARED_CAPACITY_MEMBERS",
+      "corroboratedBy": [
+        "IR_SHARED_CAPACITY_MEMBERS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Aggregate annual ceiling shared by (b)(i) repurchases of Capital Stock for employee/director/similar plan obligations and (b)(ii) cash payments in lieu of fractional shares; the ceiling is stated once in clause (b)(ii) 'for purposes of clauses (i) and (ii)'",
       "candidateRef": "discovery-candidate:488409a7f662ed7814693bc7"
     },
@@ -17947,6 +18994,10 @@
       "toNodeId": "ir-rule:36bf579606bf2033c573dea0",
       "relationshipType": "SHARES_CAPACITY_WITH",
       "derivedFrom": "IR_DEPENDS_ON",
+      "corroboratedBy": [
+        "IR_DEPENDS_ON"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Cash payments under clause (b)(ii) share the $25,000,000 per year aggregate ceiling with repurchases under clause (b)(i)",
       "candidateRef": "discovery-candidate:488409a7f662ed7814693bc7"
     },
@@ -17957,6 +19008,10 @@
       "toNodeId": "ir-sharedcap:8ca88961e76f9a9f61862ad7",
       "relationshipType": null,
       "derivedFrom": "IR_SHARED_CAPACITY_MEMBERS",
+      "corroboratedBy": [
+        "IR_SHARED_CAPACITY_MEMBERS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Aggregate annual ceiling shared by (b)(i) repurchases of Capital Stock for employee/director/similar plan obligations and (b)(ii) cash payments in lieu of fractional shares; the ceiling is stated once in clause (b)(ii) 'for purposes of clauses (i) and (ii)'",
       "candidateRef": "discovery-candidate:488409a7f662ed7814693bc7"
     },
@@ -17967,6 +19022,10 @@
       "toNodeId": "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
       "relationshipType": null,
       "derivedFrom": "IR_SHARED_CAPACITY_MEMBERS",
+      "corroboratedBy": [
+        "IR_SHARED_CAPACITY_MEMBERS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Aggregate per-year ceiling shared by clause (i) repurchases of Capital Stock and clause (ii) cash payments in lieu of fractional shares of Borrower's Capital Stock, not to exceed $25,000,000 per year",
       "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60"
     },
@@ -17977,6 +19036,10 @@
       "toNodeId": "ir-rule:7850f7d8bc730ce6ebf96623",
       "relationshipType": "SHARES_CAPACITY_WITH",
       "derivedFrom": "IR_DEPENDS_ON",
+      "corroboratedBy": [
+        "IR_DEPENDS_ON"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Repurchases under clause (i) share the $25,000,000 per year aggregate ceiling with cash payments under clause (ii)",
       "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60"
     },
@@ -17987,6 +19050,10 @@
       "toNodeId": "ir-definition:e64bd7538649f244fbf1adb5",
       "relationshipType": null,
       "derivedFrom": "IR_DEFINITION_DEPENDS_ON_TERMS",
+      "corroboratedBy": [
+        "IR_DEFINITION_DEPENDS_ON_TERMS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "\"Capital Stock\" depends on \"Person\"",
       "candidateRef": "discovery-candidate:488409a7f662ed7814693bc7"
     },
@@ -17997,6 +19064,10 @@
       "toNodeId": "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
       "relationshipType": null,
       "derivedFrom": "IR_SHARED_CAPACITY_MEMBERS",
+      "corroboratedBy": [
+        "IR_SHARED_CAPACITY_MEMBERS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Aggregate per-year ceiling shared by clause (i) repurchases of Capital Stock and clause (ii) cash payments in lieu of fractional shares of Borrower's Capital Stock, not to exceed $25,000,000 per year",
       "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60"
     },
@@ -18007,6 +19078,10 @@
       "toNodeId": "ir-rule:73c5929d27f194e844bc93bb",
       "relationshipType": "SHARES_CAPACITY_WITH",
       "derivedFrom": "IR_DEPENDS_ON",
+      "corroboratedBy": [
+        "IR_DEPENDS_ON"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Cash payments in lieu of fractional shares under clause (ii) share the $25,000,000 per year aggregate ceiling with clause (i) repurchases",
       "candidateRef": "discovery-candidate:ac354ffa81d6ca806759ba60"
     },
@@ -18017,6 +19092,10 @@
       "toNodeId": "ir-sharedcap:55e876268b16c3888d5dfede",
       "relationshipType": null,
       "derivedFrom": "IR_SHARED_CAPACITY_MEMBERS",
+      "corroboratedBy": [
+        "IR_SHARED_CAPACITY_MEMBERS"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Aggregate $25,000,000 per-year ceiling shared by Section 7.6(b)(i) (repurchases of Capital Stock for employee/director stock purchase plans) and Section 7.6(b)(ii) (cash payments in lieu of issuing fractional shares of Borrower's Capital Stock).",
       "candidateRef": "discovery-candidate:959f65d2872a027bcae3ddef"
     },
@@ -18027,6 +19106,10 @@
       "toNodeId": "ir-definition:15e70f5c3a3def1fae041906",
       "relationshipType": null,
       "derivedFrom": "IR_EXPRESSION_TERM_REFERENCE",
+      "corroboratedBy": [
+        "IR_EXPRESSION_TERM_REFERENCE"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "references defined term \"Event of Default\" at .capacityExpression.gatedBy.operands[0].operand",
       "candidateRef": "discovery-candidate:72e65025f7418737c58d95eb"
     },
@@ -18037,6 +19120,10 @@
       "toNodeId": "ir-rule:e01d1d1747d96aec733857d5",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "arrangements in respect of assets the aggregate fair market value of which does not exceed the greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of such sale and leaseback transaction)",
       "candidateRef": "discovery-candidate:766fe1bf868f87b1a702575c"
     },
@@ -18047,6 +19134,11 @@
       "toNodeId": "ir-rule:253390261ce52155990b32d2",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION",
+        "STRUCTURAL_ANCESTRY"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "permission carved out of ir-rule:253390261ce52155990b32d2 by exception rule[r2].exception[0]",
       "candidateRef": "discovery-candidate:766fe1bf868f87b1a702575c"
     },
@@ -18057,6 +19149,11 @@
       "toNodeId": "ir-rule:ebc9e3eb01bebcc85105ddaf",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION",
+        "STRUCTURAL_ANCESTRY"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "permission carved out of ir-rule:ebc9e3eb01bebcc85105ddaf by exception rule[r7b].exception[0]",
       "candidateRef": "discovery-candidate:3985f29e81fa30e1cfec25a0"
     },
@@ -18067,6 +19164,10 @@
       "toNodeId": "ir-rule:797746be387afa7195d502d5",
       "relationshipType": null,
       "derivedFrom": "IR_EXCEPTION_PERMISSION",
+      "corroboratedBy": [
+        "IR_EXCEPTION_PERMISSION"
+      ],
+      "edgeAuthority": "REVIEW_ONLY",
       "reason": "Businesses in which the Parent Borrower or any of its Subsidiaries is engaged on the date of this Agreement, and businesses reasonably related thereto, are excluded from the prohibition (modeled as permission rule r7a)",
       "candidateRef": "discovery-candidate:3985f29e81fa30e1cfec25a0"
     }
@@ -18100,6 +19201,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -18149,6 +19255,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -18183,6 +19294,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -18233,6 +19349,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -18283,6 +19404,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:191b27a8d24d0818949064c9"
       ],
@@ -18332,6 +19458,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -18382,6 +19513,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -18433,6 +19569,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -18465,6 +19606,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -18498,6 +19644,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -18532,6 +19683,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -18567,6 +19723,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:43c612682b88beb22e7aa0fd"
       ],
@@ -18617,6 +19778,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:aba31f878ac86ea69e6ad7f1"
       ],
@@ -18668,6 +19834,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -18719,6 +19890,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:817fb6fce7f8b666081509b5",
         "ir-rule:883e87ed10e884645db7df59",
@@ -18771,6 +19947,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:0022b0493e3eadea7fb076b4",
         "ir-rule:9b2035a7dc05b821cf49e049"
@@ -18820,6 +20001,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -18855,6 +20041,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -18907,6 +20098,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:46b49781dfd2737bf0c64848"
       ],
@@ -18959,6 +20155,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:45adf148ba3d2ff53a967021",
         "ir-definition:0f3b59f6d49bffb57752d596",
@@ -19014,6 +20215,11 @@
         "PROVIDER_FAILURE"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "PROVIDER_FAILURE",
@@ -19066,6 +20272,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:ceab95979aeaeaae9c1dd934"
       ],
@@ -19115,6 +20326,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19165,6 +20381,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -19202,6 +20423,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:20078eb2ed8bbc8ab108c896"
       ],
@@ -19252,6 +20478,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19303,6 +20534,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19354,6 +20590,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19406,6 +20647,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:07396450629da91c732614bb"
       ],
@@ -19456,6 +20702,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19507,6 +20758,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19559,6 +20815,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:9e432ec022539012f847f9bd"
       ],
@@ -19610,6 +20871,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:30502ed512efde4053c9b76e",
         "ir-rule:76bdc7cf7233ab9772a17b69",
@@ -19669,6 +20935,11 @@
         "PROVIDER_FAILURE"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "PROVIDER_FAILURE",
@@ -19717,6 +20988,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -19752,6 +21028,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19804,6 +21085,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19854,6 +21140,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -19902,6 +21193,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -19936,6 +21232,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -19972,6 +21273,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:1f18afd51e00d91d72e34e2d"
       ],
@@ -20022,6 +21328,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -20073,6 +21384,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:741802a95c5f3f631c2a0117"
       ],
@@ -20123,6 +21439,11 @@
         "PROVIDER_FAILURE"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "PROVIDER_FAILURE",
@@ -20174,6 +21495,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:e6c539f3f39c0ab75df937fc",
         "ir-definition:1c1ecf1e423c2faee919c7be"
@@ -20226,6 +21552,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -20278,6 +21609,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -20329,6 +21665,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:1db75410bb5a41178ab0d944"
       ],
@@ -20380,6 +21721,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -20431,6 +21777,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:0677fe69c1cf22b8383db893"
       ],
@@ -20483,6 +21834,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:aa567c3508b42f6d54ab2277"
       ],
@@ -20534,6 +21890,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:489a2fab246901c753467677",
         "ir-definition:30644ba9baa5690aab0afe42",
@@ -20586,6 +21947,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:cede86d2a65bc6808061823c"
       ],
@@ -20636,6 +22002,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:aed4df29c103b44223ac2178"
       ],
@@ -20686,6 +22057,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "VERIFICATION_FAILED",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:06705302f536c2cc7cb90512"
       ],
@@ -20738,6 +22114,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -20790,6 +22171,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -20841,6 +22227,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -20892,6 +22283,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:c0cf9da4b47350a1b5a0933d"
       ],
@@ -20942,6 +22338,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:888dded0b9bf82818855591e"
       ],
@@ -20993,6 +22394,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:7a71a064412fc1c515a1b9e1"
       ],
@@ -21044,6 +22450,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:fdbc7ea9c8d55cf4655f1f4a"
       ],
@@ -21095,6 +22506,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21148,6 +22564,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21200,6 +22621,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21251,6 +22677,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21299,6 +22730,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -21331,6 +22767,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -21364,6 +22805,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -21398,6 +22844,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21448,6 +22899,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21499,6 +22955,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21550,6 +23011,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:6198df50141ea2d29b2c6aaf"
       ],
@@ -21599,6 +23065,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21651,6 +23122,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:67679f74a14c28d7ebfcb9b3",
         "ir-definition:218fb00d7f47c938ee24e2f3",
@@ -21707,6 +23183,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21758,6 +23239,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -21807,6 +23293,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -21839,6 +23330,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -21872,6 +23368,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -21907,6 +23408,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:b752bbaf461e4c3b704300d2"
       ],
@@ -21958,6 +23464,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:b708e87c81bb535e9c4e014f",
         "ir-rule:f012a0ff52ed5ed1f69ab435",
@@ -22011,6 +23522,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -22063,6 +23579,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:947e3d423fd279b85d138f5e",
         "ir-rule:978536b98fb41372efc8905e",
@@ -22117,6 +23638,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -22170,6 +23696,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -22222,6 +23753,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -22274,6 +23810,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -22326,6 +23867,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:80dd72ff033b12a737f19325"
       ],
@@ -22377,6 +23923,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:aa31b144d76791b8376aa347"
       ],
@@ -22428,6 +23979,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:f00344fce693bb125915e096"
       ],
@@ -22479,6 +24035,11 @@
         "MODEL_SCHEMA_FAILURE"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "MODEL_SCHEMA_FAILURE",
@@ -22530,6 +24091,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:1dbb199355f8793966ea1c87",
         "ir-definition:3f84f607f0d40378de9811d8"
@@ -22581,6 +24147,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:332eb96d9f817987a64d1c1c"
       ],
@@ -22632,6 +24203,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:357753ff905e5d2a93e4c438"
       ],
@@ -22683,6 +24259,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:25697d8fa9b6ab2a85ee2268",
         "ir-rule:70f689ad18dc97c4d8eb7e21"
@@ -22733,6 +24314,11 @@
         "MODEL_SCHEMA_FAILURE"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "MODEL_SCHEMA_FAILURE",
@@ -22784,6 +24370,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:334e8f1d6022e7e8330a255d"
       ],
@@ -22833,6 +24424,11 @@
         "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:c1348b00b7a7edc46d984c00"
       ],
@@ -22883,6 +24479,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-sharedcap:d2b4cbcee3b8fca7ba82e628",
         "ir-rule:73c5929d27f194e844bc93bb",
@@ -22936,6 +24537,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:36bf579606bf2033c573dea0",
         "ir-rule:6a3800e22d2544c3924a45e4",
@@ -22990,6 +24596,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:d18f72fc8d2734bcaf00c5bc",
         "ir-sharedcap:55e876268b16c3888d5dfede"
@@ -23041,6 +24652,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:5a7a19eb788c507d33121aff"
       ],
@@ -23091,6 +24707,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:86694be8f316884445d7ce6e"
       ],
@@ -23142,6 +24763,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:66e5cbaf9e6d3a83e85ecad9"
       ],
@@ -23193,6 +24819,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:492602c271c73e124011dea2",
         "ir-definition:15e70f5c3a3def1fae041906"
@@ -23242,6 +24873,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23275,6 +24911,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23308,6 +24949,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23340,6 +24986,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23373,6 +25024,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23405,6 +25061,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23438,6 +25099,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23471,6 +25137,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23503,6 +25174,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23536,6 +25212,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23569,6 +25250,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23601,6 +25287,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23633,6 +25324,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23665,6 +25361,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23697,6 +25398,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23731,6 +25437,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23764,6 +25475,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23797,6 +25513,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23830,6 +25551,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23862,6 +25588,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23895,6 +25626,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23929,6 +25665,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23962,6 +25703,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -23996,6 +25742,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24030,6 +25781,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24063,6 +25819,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24096,6 +25857,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24129,6 +25895,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24163,6 +25934,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24196,6 +25972,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24229,6 +26010,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24262,6 +26048,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24294,6 +26085,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24329,6 +26125,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -24379,6 +26180,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24411,6 +26217,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24446,6 +26257,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -24497,6 +26313,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -24547,6 +26368,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:253390261ce52155990b32d2",
         "ir-rule:e01d1d1747d96aec733857d5"
@@ -24595,6 +26421,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24630,6 +26461,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -24678,6 +26514,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24710,6 +26551,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24745,6 +26591,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -24795,6 +26646,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -24847,6 +26703,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24881,6 +26742,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -24915,6 +26781,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -24966,6 +26837,11 @@
         "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
       ],
       "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:797746be387afa7195d502d5",
         "ir-rule:ebc9e3eb01bebcc85105ddaf"
@@ -25014,6 +26890,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "UNSERVED",
@@ -25048,6 +26929,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -25098,6 +26984,11 @@
         "SEMANTIC_INVENTORY_COVERAGE_GAP"
       ],
       "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:a405f15ff65be5cd92c63260"
       ],
@@ -25147,6 +27038,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -25197,6 +27093,11 @@
         "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
       ],
       "verificationStatus": "REVIEW_REQUIRED",
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [
         "ir-rule:3753bd754ee7fc7f8a6622d1",
         "ir-definition:e67fbf8efd8857b607ff36a0"
@@ -25247,6 +27148,11 @@
         "WALL_CLOCK_TIMEOUT"
       ],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "WALL_CLOCK_TIMEOUT",
@@ -25288,6 +27194,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "NO_STRUCTURAL_ANCHOR",
@@ -25314,6 +27225,11 @@
       "compilationStatus": null,
       "compilationFailureReasons": [],
       "verificationStatus": null,
+      "certificationStatus": "NOT_CERTIFIED",
+      "certificationBlockers": [
+        "CERTIFICATION_NOT_PERFORMED"
+      ],
+      "semanticSourceContractVersion": null,
       "nodeIds": [],
       "failure": {
         "kind": "NO_STRUCTURAL_ANCHOR",
@@ -30193,7 +32109,20 @@
     "nodesUnderReview": 95,
     "nodesStrongIdentity": 95,
     "mappedFraction": 0,
-    "complete": false
+    "complete": false,
+    "mapComplete": false,
+    "certificationComplete": false,
+    "candidatesCertified": 0,
+    "candidatesReviewRequired": 0,
+    "candidatesNotCertified": 163,
+    "semanticUnits": 95,
+    "semanticUnitsCertified": 0,
+    "edgesByAuthority": {
+      "CERTIFIED_SEMANTIC": 0,
+      "DETERMINISTIC_STRUCTURAL": 0,
+      "CONTEXTUAL_INFERENCE": 0,
+      "REVIEW_ONLY": 60
+    }
   },
-  "mapHash": "cc390976f47a43ac248438dbb27af9919e72106dfea32a17f51316307c1791e0"
+  "mapHash": "9c454e60b2c912b59f140109d1b0ef2fc4e17f2cc3f0758ca30e80d9e3dbc708"
 }

@@ -1,7 +1,7 @@
 # Canonical covenant map - lsb-2023-abl-credit-agreement
 
-mapHash: `a82053deab6b379a7f9a3a74ce79384854fd0723afde039220d5b73c6ce8fa4d`  
-schema: canonical-covenant-map.v1  
+mapHash: `3b166f39e3c341f20454c5f46ed6debd490d8f9b1d06eb77571e46af14c0a32b`  
+schema: canonical-covenant-map.v2  
 config: (none)
 
 ## Completeness
