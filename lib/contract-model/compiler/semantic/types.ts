@@ -57,8 +57,8 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // and inventoryDispositions, and Pass C reconciliation feeds failureReasons.
 // A v3-era cached compilation carries no accountability at all and must
 // never be served as-is.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v4";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v5";
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v5";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v6";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
@@ -193,6 +193,8 @@ export interface SemanticCompilerInput {
   sourceContext?: SourceContextResult | null;
   /** SEMANTIC ACCOUNTABILITY: the FROZEN Pass A inventory handed read-only to Pass B. Never set by external callers. */
   frozenInventory?: FrozenSemanticInventory | null;
+  /** SEMANTIC FIDELITY: the sealed candidate population (ids + anchor nodes) so cross-unit references can be attributed to their owning candidate at compile time. Optional; absent in hand-built fixtures. */
+  candidatePopulation?: readonly { discoveryId: string; structuralNodeIds: readonly string[] }[] | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -230,6 +232,8 @@ export type SemanticCompilerFailureReason =
   | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
   /** F-5.3B (dual-pass ensemble): at least one CRITICAL/MATERIAL frozen-inventory item is SINGLE_RUN (found by one independent Pass A execution only) or CONFLICTED (two passes made incompatible claims over one source stretch). The item is real, source-verified inventory with weaker support provenance: Pass B must still consume/disposition it, and the attempt can never be COMPLETED - RAW SOURCE COMPLETE + MATERIAL SINGLETON => REVIEW_REQUIRED. Resolved only by the independent verifier, human approval or another certified mechanism, never by Pass B or a third run. */
   | "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  /** SEMANTIC FIDELITY: the submission parsed but used an expression kind that is not an IR kind (an invented `kind`); the node is kept as UNSUPPORTED and the composition is never a successful representation. */
+  | "SEMANTIC_WIRE_KIND_INVALID"
   /** F-7A (bounded compilation shards): at least one shard of a sharded compilation did not end SHARD_COMPLETE (provider / schema / missing-context / partial) - the stitched candidate is PARTIAL at best and its owned material items are listed as unresolved; never COMPLETED. */
   | "SHARD_INCOMPLETE"
   /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
@@ -409,4 +413,10 @@ export interface SemanticCompilationResult {
   compiledAt: string;
   /** F-7C: which execution mode the deterministic policy selected and, for SHARDED, the bounded audit trail. Undefined on results built by pre-F-7C fixtures. */
   execution?: SemanticExecutionMetadata | null;
+  /** SEMANTIC FIDELITY: units the composition emitted for source this candidate does not own, quarantined with evidence (never in rules/definitions/sharedCapacities). */
+  contextOnlyEmissions?: import("./unit-ownership").ContextOnlyUnitEmission[];
+  /** SEMANTIC FIDELITY: the model's dependency prose with the target figures it tried to restate, kept beside the units. */
+  dependencyProseDiagnostics?: import("./normalize").DependencyProseDiagnostic[];
+  /** SEMANTIC FIDELITY: invented expression kinds found in the submission (SEMANTIC_WIRE_KIND_INVALID). */
+  invalidWireKinds?: { path: string; kind: string }[];
 }

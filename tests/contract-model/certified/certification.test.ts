@@ -14,7 +14,7 @@ import { computeCandidatePopulationHash, sealDiscoveryPopulation } from "../../.
 import { evaluateVerifiedCapacity, type VerifiedExecutionPackage } from "../../../lib/contract-model/verified-execution";
 import { operativeLineageFor } from "../../../lib/contract-model/covenant-map/candidate-input";
 import * as tx from "../runtime/transaction/helpers";
-import { buildPackage, buildPackageFrom, deps, DOCS, GOLDEN_AGREEMENT, CA } from "./golden-harness";
+import { buildPackage, buildPackageFrom, deps, DOCS, GOLDEN_AGREEMENT, CA, fakeClient, INVENTORY, type ScriptedInventory } from "./golden-harness";
 
 const FACTS = [tx.figure("fig-1", "1000")];
 const inputsFor = (p: VerifiedExecutionPackage) => tx.resolverFor(FACTS, [...(p.definitions ?? [])], [...p.rules]);
@@ -57,7 +57,7 @@ describe("candidate certification is a dimension separate from the map outcome",
     const map = assembleCovenantMap(assemblyInput(pkg, deps().config, run.results.map((x) => (x === r ? { ...x, certification: weak } : x))));
     expect(map.candidates.find((c) => c.sectionRef === "7.01")).toMatchObject({ outcome: "MAPPED", certificationStatus: "NOT_CERTIFIED" });
     for (const n of map.nodes.filter((n) => n.candidateRef === r.candidate.discoveryId)) expect(n.certification).toMatchObject({ status: "NOT_CERTIFIED", artifactHash: null, blockers: expect.arrayContaining(["SOURCE_IDENTITY_WEAK"]) });
-    expect(map.completeness).toMatchObject({ mapComplete: true, certificationComplete: false, candidatesMapped: 2, candidatesCertified: 1, candidatesNotCertified: 1 });
+    expect(map.completeness).toMatchObject({ mapComplete: true, certificationComplete: false, candidatesMapped: 3, candidatesCertified: 2, candidatesNotCertified: 1 });
     // a WEAK semantic contract is equally fatal
     const weakContract = certifyCandidate(inputOf(r, { semanticSourceContract: { ...r.semanticSourceContract!, strength: "WEAK" } }));
     expect(weakContract.status).toBe("NOT_CERTIFIED");
@@ -109,7 +109,7 @@ describe("exact identity: verified object == persisted object == executed object
     const executed = evaluateVerifiedCapacity({ package: derived.package, inputs: inputsFor(derived.package), asOf: tx.WHEN });
     expect(executed.outcome).toBe("EXECUTED");
     if (executed.outcome !== "EXECUTED") throw new Error("unreachable");
-    expect(executed.coverage).toMatchObject({ complete: true, unitsMissingVerification: [], unitsRefusedByGate: [], identityStrength: { STRONG: 8, WEAK: 0 } });
+    expect(executed.coverage).toMatchObject({ complete: true, unitsMissingVerification: [], unitsRefusedByGate: [], identityStrength: { STRONG: 11, WEAK: 0 } });
   });
 
   it("mutation after the snapshot is caught: the snapshot is frozen, the package refuses the drifted unit, the certification is NOT_CERTIFIED, the gate refuses the stale artifact", async () => {
@@ -146,7 +146,7 @@ describe("exact identity: verified object == persisted object == executed object
 
 describe("semantic source contract: relied-upon context invalidates, unrelated context does not", () => {
   const EBITDA_LINE = "\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus Interest Expense for such period.";
-  const SUBSIDIARY_LINE = "\"Subsidiary\" means any corporation or other entity of which more than 50% of the voting equity is owned by the Borrower.";
+  const LOAN_DOCUMENTS_LINE = "\"Loan Documents\" means this Agreement, the Notes and the Security Documents.";
   const INTEREST_LINE = "\"Interest Expense\" means, for any period, total interest expense of the Borrower and its Subsidiaries for such period.";
 
   it("two identities: scv1 binds the operative text; sscv1 binds it PLUS the relied-upon definitions, retrievals, lineage and as-of date; CERTIFIED requires sscv1 STRONG", async () => {
@@ -156,8 +156,10 @@ describe("semantic source contract: relied-upon context invalidates, unrelated c
     expect(r.semanticSourceContract!.version).toMatch(/^sscv1:[0-9a-f]{64}$/);
     expect(r.semanticSourceContract!.components.operativeSourceVersion).toBe(r.sourceContentVersion);
     expect(r.semanticSourceContract!.attributionMode).toBe("RELIED_UPON");
-    expect(r.semanticSourceContract!.reliedUpon.definedTerms).toEqual(["consolidated ebitda", "consolidated net income", "interest expense"]);
+    // 7.01 USES Consolidated EBITDA; the definition's own dependency chain (CNI, Interest Expense) is relied upon transitively through the bundle's DEPENDS_ON_DEFINITION edges
+    expect(r.semanticSourceContract!.reliedUpon.definedTerms).toEqual(["consolidated ebitda"]);
     expect(r.semanticSourceContract!.reliedUpon.contextItems.map((i) => `${i.type}:${i.normalizedRef}`).sort()).toEqual(["AMENDMENT_LEAD:7.02", "DEFINITION:Consolidated EBITDA", "DEFINITION_DEPENDENCY:Consolidated Net Income", "DEFINITION_DEPENDENCY:Interest Expense", "OPERATIVE_SOURCE:7.01"]);
+    expect(r.compilation!.definitions).toEqual([]); // definitions are owned by the 1.01 candidate
     for (const u of [...r.compilation!.rules, ...r.compilation!.definitions]) expect(u.sourceContentVersion).toBe(r.semanticSourceContract!.version);
     // the contract never binds model output, verification or cost: the same input yields the same version
     const again = await compileCovenantMap(buildPackage().pkg, deps());
@@ -192,26 +194,32 @@ describe("semantic source contract: relied-upon context invalidates, unrelated c
 
   it("DEPENDENCY CHANGE (direct): editing the Consolidated EBITDA definition itself changes sscv1 AND the verifier catches the scripted compile that still cites the old wording (stale IR is REVIEW_REQUIRED, never CERTIFIED)", async () => {
     const before = await compileCovenantMap(buildPackage().pkg, deps());
-    const edited = GOLDEN_AGREEMENT.replace(EBITDA_LINE, EBITDA_LINE.replace("plus Interest Expense", "less Interest Expense"));
+    const editedLine = EBITDA_LINE.replace("plus Interest Expense", "less Interest Expense");
+    const edited = GOLDEN_AGREEMENT.replace(EBITDA_LINE, editedLine);
     expect(edited.length).toBe(GOLDEN_AGREEMENT.length);
-    const after = await compileCovenantMap(buildPackageFrom({ docs: withDoc(edited) }).pkg, deps());
+    // Pass A reads the REAL (edited) text, so its inventory anchors the new wording; the scripted Pass B submission is the
+    // stale one that still cites "plus Interest Expense" - exactly the drift the verifier exists to catch
+    const freshInventory: ScriptedInventory = { ...INVENTORY, "1.01": INVENTORY["1.01"]!.map((i) => (i.excerpt === EBITDA_LINE ? { ...i, excerpt: editedLine } : i)) };
+    const after = await compileCovenantMap(buildPackageFrom({ docs: withDoc(edited) }).pkg, deps(fakeClient(), freshInventory));
     const a = byRef(before, "7.01"), b = byRef(after, "7.01");
     expect(b.sourceContentVersion).toBe(a.sourceContentVersion);
     expect(b.semanticSourceContract!.version).not.toBe(a.semanticSourceContract!.version);
-    expect(b.verification!.findings.some((f) => f.severity === "MATERIAL" && f.findingType === "QUALITATIVE_ASSERTION_UNGROUNDED" && f.ruleOrDefinitionId === b.compilation!.definitions.find((d) => d.termName === "Consolidated EBITDA")!.definitionId)).toBe(true);
-    expect(b.outcome).toBe("MAPPED_WITH_REVIEW");
-    expect(b.certification!.status).toBe("REVIEW_REQUIRED");
-    expect(b.certification!.blockers.map((x) => x.code)).toEqual(expect.arrayContaining(["VERIFICATION_NOT_CLEAN", "OPEN_MATERIAL_OR_UNCERTAIN_FINDING"]));
+    // the stale scripted DEFINITION is now the 1.01 candidate's unit: the verifier catches it there
+    const defs = byRef(after, "1.01");
+    expect(defs.verification!.findings.some((f) => f.severity === "MATERIAL" && f.findingType === "QUALITATIVE_ASSERTION_UNGROUNDED" && f.ruleOrDefinitionId === defs.compilation!.definitions.find((d) => d.termName === "Consolidated EBITDA")!.definitionId)).toBe(true);
+    expect(defs.outcome).toBe("MAPPED_WITH_REVIEW");
+    expect(defs.certification!.status).toBe("REVIEW_REQUIRED");
+    expect(defs.certification!.blockers.map((x) => x.code)).toEqual(expect.arrayContaining(["VERIFICATION_NOT_CLEAN", "OPEN_MATERIAL_OR_UNCERTAIN_FINDING"]));
   });
 
-  it("UNRELATED CHANGE: editing the 'Subsidiary' definition (retrieved into 7.01's bundle but referenced by no compiled unit) leaves sscv1, the artifact hashes and the certification unchanged", async () => {
+  it("UNRELATED CHANGE: editing the 'Loan Documents' definition (retrieved into 7.01's bundle but referenced by no compiled unit, directly or transitively) leaves sscv1, the artifact hashes and the certification unchanged", async () => {
     const before = await compileCovenantMap(buildPackage().pkg, deps());
-    const edited = GOLDEN_AGREEMENT.replace(SUBSIDIARY_LINE, SUBSIDIARY_LINE.replace("more than 50%", "more than 51%"));
+    const edited = GOLDEN_AGREEMENT.replace(LOAN_DOCUMENTS_LINE, LOAN_DOCUMENTS_LINE.replace("the Notes", "the Bonds"));
     expect(edited.length).toBe(GOLDEN_AGREEMENT.length);
     const after = await compileCovenantMap(buildPackageFrom({ docs: withDoc(edited) }).pkg, deps());
     for (const ref of ["7.01", "7.02"]) {
       const a = byRef(before, ref), b = byRef(after, ref);
-      if (ref === "7.01") expect(a.bundle!.items.some((i) => i.type === "DEFINITION" && i.normalizedRef === "Subsidiary")).toBe(true);
+      if (ref === "7.01") expect(a.bundle!.items.some((i) => i.type === "DEFINITION" && i.normalizedRef === "Loan Documents")).toBe(true);
       expect(b.semanticSourceContract!.attributionMode).toBe("RELIED_UPON");
       expect(b.semanticSourceContract!.version).toBe(a.semanticSourceContract!.version);
       expect(b.certification!.unitArtifactHashes).toEqual(a.certification!.unitArtifactHashes);
@@ -236,7 +244,7 @@ describe("package certification over a sealed population", () => {
     const fallback = await certifyDiscoveredCovenantPackage(noPopulation, deps());
     expect(fallback.packageCertification.status).toBe("PARTIAL");
     expect(fallback.packageCertification.blockers.map((b) => b.code)).toEqual(["DISCOVERY_POPULATION_UNSEALED", "PARTIAL_TARGET_SET"]);
-    expect(fallback.map.discoveryPopulation).toMatchObject({ scope: "PARTIAL_TARGET_SET", sealedDiscoveryIdentity: null, candidatesDiscovered: 2 });
+    expect(fallback.map.discoveryPopulation).toMatchObject({ scope: "PARTIAL_TARGET_SET", sealedDiscoveryIdentity: null, candidatesDiscovered: 3 });
   });
 
   it("a package certification cannot be claimed over a subset: a seal over the full population with only one candidate attempted is FAILED (POPULATION_HASH_MISMATCH)", async () => {
@@ -267,13 +275,13 @@ describe("package certification over a sealed population", () => {
     const review = { ...r.certification!, status: "REVIEW_REQUIRED" as const, blockers: [{ code: "UNIT_SUFFICIENCY_INCOMPLETE" as const, severity: "REVIEW" as const, detail: "t", refs: [] }] };
     const reviewed = certifyPackage({ map: run.map, certifications: run.results.map((x) => (x === r ? review : x.certification!)), discoveryPopulation: pkg.discoveryPopulation! });
     expect(reviewed.status).toBe("REVIEW_REQUIRED");
-    expect(reviewed.candidates).toEqual({ total: 2, eligible: 2, represented: 2, certified: 1, reviewRequired: 1, notCertified: 0 });
+    expect(reviewed.candidates).toEqual({ total: 3, eligible: 3, represented: 3, certified: 2, reviewRequired: 1, notCertified: 0 });
     const m = run.manifest;
     expect(m.schema).toBe("p3-package-certification-manifest.v1");
     expect(m.discoveryPopulation).toEqual(pkg.discoveryPopulation);
     expect(m.sourcePackage.documents.map((d) => d.documentId)).toEqual(DOCS.map((d) => d.documentId));
     expect(m.mapIdentity.mapHash).toBe(run.map.mapHash);
-    expect(m.candidateCertifications.map((c) => [c.sectionRef, c.status, c.artifactPackageHash !== null, c.semanticSourceContractVersion?.slice(0, 5)])).toEqual([["7.01", "CERTIFIED", true, "sscv1"], ["7.02", "CERTIFIED", true, "sscv1"]]);
+    expect(m.candidateCertifications.map((c) => [c.sectionRef, c.status, c.artifactPackageHash !== null, c.semanticSourceContractVersion?.slice(0, 5)])).toEqual([["1.01", "CERTIFIED", true, "sscv1"], ["7.01", "CERTIFIED", true, "sscv1"], ["7.02", "CERTIFIED", true, "sscv1"]]);
     expect(m.verifiedArtifactPackageHashes).toEqual(run.results.map((x) => x.verifiedPackage!.packageHash).sort());
     expect(m.packageCertification.status).toBe("CERTIFIED");
     expect(buildPackageCertificationManifest({ map: run.map, certifications: run.certifications, packageCertification: run.packageCertification }).manifestHash).toBe(m.manifestHash);

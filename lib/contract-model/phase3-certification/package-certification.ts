@@ -77,9 +77,20 @@ export function certifyPackage(input: CertifyPackageInput): Phase3PackageCertifi
     else if (e.edgeAuthority !== "CERTIFIED_SEMANTIC") warnings.push({ code: "NON_SEMANTIC_EXECUTABLE_EDGE", detail: `${e.edgeType} ${e.fromNodeId} -> ${e.toNodeId} is ${e.edgeAuthority}; Phase 4 does not act on it`, refs: [e.edgeId] });
   }
 
+  // package-level dependency bindings: a typed cross-reference is executable only when BOUND with both endpoints CERTIFIED
+  const pd = map.packageDependencies;
+  for (const b of pd?.bindings ?? []) {
+    const what = `${b.fromNodeId} ${b.path} ${b.relationshipType ?? "CONDITION_TARGET"} "${b.exactSourceTargetRef}"`;
+    if (b.status === "BOUND") { if (!b.executable) block("UNBOUND_EXECUTABLE_BINDING", "REVIEW", `${what} is bound to ${b.boundSemanticTargetIds.join(", ")} but an endpoint is not CERTIFIED`, [b.bindingId]); }
+    else if (b.status === "TARGET_CANDIDATE_NOT_IN_TARGET_SET") block("DEPENDENCY_TARGET_NOT_IN_TARGET_SET", "PARTIAL", `${what}: ${b.detail}`, [b.bindingId]);
+    else if (b.status === "DEPENDENCY_UNKNOWN") block("DEPENDENCY_UNKNOWN", "FAILED", `${what}: ${b.detail}`, [b.bindingId]);
+    else block("DEPENDENCY_TARGET_NOT_BOUND", "REVIEW", `${what} [${b.status}]: ${b.detail}`, [b.bindingId]);
+  }
+  const bindings = pd?.counts ?? { total: 0, bound: 0, executable: 0, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0 };
+
   blockers.sort((a, b) => (a.code < b.code ? -1 : a.code > b.code ? 1 : 0));
   const status: Phase3PackageCertification["status"] = blockers.some((b) => b.severity === "FAILED") ? "FAILED" : blockers.some((b) => b.severity === "PARTIAL") ? "PARTIAL" : blockers.length > 0 ? "REVIEW_REQUIRED" : "CERTIFIED";
-  return { version: PHASE3_PACKAGE_CERTIFICATION_VERSION, status, blockers, warnings, discoveryPopulation: pop, representedPopulationHash, candidates: { total: map.candidates.length, eligible: eligible.length, represented, certified, reviewRequired: review, notCertified }, edges };
+  return { version: PHASE3_PACKAGE_CERTIFICATION_VERSION, status, blockers, warnings, discoveryPopulation: pop, representedPopulationHash, candidates: { total: map.candidates.length, eligible: eligible.length, represented, certified, reviewRequired: review, notCertified }, edges, bindings };
 }
 
 export function buildPackageCertificationManifest(args: { map: CanonicalCovenantMap; certifications: readonly CandidateCertification[]; packageCertification: Phase3PackageCertification }): Phase3PackageCertificationManifest {

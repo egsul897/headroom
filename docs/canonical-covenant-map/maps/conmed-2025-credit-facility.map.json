@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "canonical-covenant-map.v2",
+  "schemaVersion": "canonical-covenant-map.v3",
   "companyId": "conmed-pilot",
   "packageKey": "conmed-2025-credit-facility",
   "instrumentKey": "conmed-eighth-ar-credit-agreement",
@@ -35,12 +35,12 @@
     }
   ],
   "identity": {
-    "mapAlgorithmVersion": "covenant-map-assembly.v2",
+    "mapAlgorithmVersion": "covenant-map-assembly.v3",
     "certifiedConfigIdentity": null,
-    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
-    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v5",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v6",
     "irSchemaVersion": "headroom-covenant-ir.v1",
-    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v2",
     "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
   },
   "operativeState": null,
@@ -32062,6 +32062,23 @@
       "detail": "sealed candidate has no resolvable structural node"
     }
   ],
+  "packageDependencies": {
+    "version": "p3-package-dependency-resolution.v1",
+    "bindings": [],
+    "graph": {
+      "nodeIds": [],
+      "edges": []
+    },
+    "counts": {
+      "total": 0,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 0,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0
+    }
+  },
   "completeness": {
     "candidatesDiscovered": 163,
     "candidatesEligible": 163,
@@ -32124,5 +32141,5 @@
       "REVIEW_ONLY": 60
     }
   },
-  "mapHash": "9c454e60b2c912b59f140109d1b0ef2fc4e17f2cc3f0758ca30e80d9e3dbc708"
+  "mapHash": "af8adf36e694ef5e002fa19b8bf194f6ace8fac47faeaadfb62d76adb62bb7a6"
 }

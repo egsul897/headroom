@@ -15,11 +15,27 @@
  * injection fixtures (tests/contract-model/semantic-compiler/security.test.ts).
  */
 
+/** SEMANTIC FIDELITY: the primitive list is GENERATED from the authoritative IR kind list, never maintained as prose. */
+import { IR_CAPACITY_ONLY_KINDS, IR_EXPRESSION_KINDS } from "../../ir/types";
+export function buildIrPrimitivesBlock(): string {
+  const kinds = [...IR_EXPRESSION_KINDS];
+  return [
+    `VALID EXPRESSION KINDS (exactly these ${kinds.length}, generated from the IR schema - any other \`kind\` is SEMANTIC_WIRE_KIND_INVALID and the submission is not a successful representation): ${kinds.join(", ")}. Capacity-only form: ${IR_CAPACITY_ONLY_KINDS.join(", ")}.`,
+    "CROSS-RULE CONDITIONS (the ONLY way to say 'another provision must be satisfied'): a condition whose legal meaning is 'the borrower complies with / satisfies Section X (or the named conditions in X)' carries `referencesRuleTargets: [{ targetRef: \"Section X\" }]` (one entry per referenced section/named condition; one reference may bind to SEVERAL separately-certified rules - never pick one), `targetCombination: ALL_SATISFIED` (default) or `ANY_SATISFIED`, and `conditionType: OTHER_RULE_SATISFIED`. Its `expression` is null or a BOOLEAN expression over the local facts - NEVER a METRIC_REFERENCE named 'compliance with ...' (compliance is BOOLEAN, not MONEY) and NEVER an invented kind such as REQUIRES. Never restate the referenced section's own thresholds, ratios or amounts anywhere in this rule.",
+    "EVALUATION BASIS of a cross-rule test: when the source says the test is made 'on a pro forma basis after giving effect to <transaction>', 'recomputed as at <relative date>', 'as if <transaction> had occurred on <point in period>' or 'for <testing period>', fill the condition's `evaluationBasis` { proForma, transactionEffect, asOfSelector, deemedEffectiveAt, testingPeriod } with the source's own words. A relative measurement date is a selector string (e.g. 'last day of the most recently ended fiscal quarter for which financial statements are available'), never an invented calendar date and never left blank.",
+    "CROSS-UNIT DEPENDENCIES: `dependsOn: [{ relationshipType, targetRef, description }]` where targetRef is the EXACT source reference ('Section 9.2(g)'); the relationship is REQUIRES (this permission requires the target's terms), LIMITED_BY, SHARES_CAPACITY_WITH, etc. The description states WHAT RELATIONSHIP the source creates (e.g. 'the Indebtedness must be secured by Liens permitted under the target') - NEVER the target's own figures, which belong to the target's own certified unit and are stripped if restated.",
+    "SOURCE OWNERSHIP: emit rules/definitions ONLY for propositions stated in the operative text you were given (the provision and its own sub-clauses). The parent section's umbrella prohibition, sibling clauses and referenced sections are CONTEXT: they inform scope and relationships but are owned by their own candidates - a rule emitted for them is quarantined as CONTEXT_ONLY_UNIT_EMISSION. A defined term you merely use stays a DEFINED_TERM_REFERENCE; emit a WireDefinition only when the defining text ('\"Term\" means ...') is inside your operative text.",
+    "ENTITY SCOPE ROLES: a mention like 'the fiscal quarter of the Borrower and its Subsidiaries for which financial statements are available' names the MEASUREMENT group of a test, not who may act; it never widens entityScope. entityScope names only the obligor/actor the provision binds or permits.",
+  ].join("\n");
+}
+
 export function buildSystemPrompt(opts: { irSchemaVersion: string; toolPolicyVersion: string }): string {
   return [
     "You are the Headroom AI Semantic Covenant Compiler. Your ONLY job is to translate the operative legal text of ONE covenant provision into the Headroom Covenant Intermediate Representation (IR) - a compositional, typed expression language. You are an interpretation layer, not the final verifier and not a calculator: you never determine whether a transaction is permitted, you never compute a dollar capacity, and you never infer a financial value that was not stated in your evidence.",
     "",
     `IR schema version: ${opts.irSchemaVersion}. Tool policy version: ${opts.toolPolicyVersion}.`,
+    "",
+    buildIrPrimitivesBlock(),
     "",
     "THE IR'S NODE TYPES (use ONLY these - never invent a new `kind`):",
     "Literals: MONEY (amount, currency), NUMBER (value), PERCENT (value, a fraction e.g. 0.05 for 5%), RATIO (value, e.g. 4.50 for '4.50x'), BOOLEAN_LITERAL (boolValue), DATE_LITERAL (isoDate).",

@@ -154,7 +154,13 @@ export interface SemanticInventoryItem {
 // F-5.3 dual-pass ensemble: support provenance (additive; single-pass inventories carry none of it).
 // ---------------------------------------------------------------------------
 
-export type SupportStatus = "CORROBORATED" | "SINGLE_RUN" | "CONFLICTED";
+/**
+ * CORROBORATED = EXACT corroboration (the normalizer merged byte-compatible members from more than one pass).
+ * COVERAGE_CORROBORATED (v2) = found by one pass only as an item, but the other pass independently recognized the same
+ * material SOURCE SEMANTIC REGION through an overlapping/containing item with compatible functions, values and references
+ * (a segmentation difference, not a disagreement). SINGLE_RUN = genuinely one pass only. CONFLICTED = incompatible claims.
+ */
+export type SupportStatus = "CORROBORATED" | "COVERAGE_CORROBORATED" | "SINGLE_RUN" | "CONFLICTED";
 
 export interface ItemSupport {
   /** Generic pass identifiers (never literal run labels baked into semantics), sorted. */
@@ -166,6 +172,10 @@ export interface ItemSupport {
   /** For CONFLICTED: the canonical ids this item conflicts with and why. */
   conflictWith?: string[];
   conflictReason?: string;
+  /** COVERAGE_CORROBORATED: the other pass's item(s) whose source span covers this proposition compatibly, and why. */
+  coverageBy?: { itemId: string; passId: string; overlapFraction: number; reason: string }[];
+  /** Identifier of the support group this item belongs to (items corroborating one source region share a group); distinct from the proposition id. */
+  supportGroupId?: string;
 }
 
 export interface EnsembleRecord {
@@ -174,7 +184,7 @@ export interface EnsembleRecord {
   passIds: string[];
   /** frozenContentHash of every input pass, keyed by passId. */
   passHashes: Record<string, string>;
-  counts: { canonicalItems: number; corroborated: number; singleRun: number; singleRunByPass: Record<string, number>; conflicted: number; materialSingleRun: number; informationalSingleRun: number; materialConflicted: number; rejectedUnverifiable: number };
+  counts: { canonicalItems: number; corroborated: number; coverageCorroborated?: number; singleRun: number; singleRunByPass: Record<string, number>; conflicted: number; materialSingleRun: number; informationalSingleRun: number; materialConflicted: number; rejectedUnverifiable: number; supportGroups?: number };
   /** True whenever any CRITICAL/MATERIAL item is SINGLE_RUN or CONFLICTED: support asymmetry forces REVIEW_REQUIRED unless independently resolved later (verifier, human approval, another certified mechanism). The union never claims semantic completeness by itself. */
   supportReviewRequired: boolean;
   supportReviewFraction: number;

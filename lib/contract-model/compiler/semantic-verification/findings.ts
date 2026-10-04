@@ -21,7 +21,7 @@
  * refinement made, arrived at independently here since this module may
  * never import that one).
  */
-import { computeSemanticVerificationFindingId } from "./identity";
+import { computeSemanticVerificationFindingId, numericAssertionKey } from "./identity";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
 import type { ReconciliationItem, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
 
@@ -98,7 +98,7 @@ export function buildFindingsFromReconciliation(input: VerificationInput, reconc
       : item.irItems.length > 0 ? item.irItems.map((i) => `${i.irPath}=${i.numericValue ?? i.textValue ?? "(non-value node)"}`).join("; ") : "(absent from compiled IR)";
 
     findings.push({
-      findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, ruleOrDefinitionId, irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION),
+      findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, ruleOrDefinitionId, irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION, assertion ? numericAssertionKey(assertion) : item.sourceItem ? `source:${item.sourceItem.itemId}` : item.irItems.length > 0 ? `ir:${item.irItems.map((i) => i.itemId).sort().join(",")}` : null),
       companyId: compilerInput.companyId,
       instrumentKey: compilerInput.instrumentKey,
       sourceDocumentId: compilerInput.sourceDocumentId,

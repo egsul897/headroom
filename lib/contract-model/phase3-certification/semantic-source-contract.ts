@@ -142,6 +142,24 @@ export function computeSemanticSourceContract(input: SemanticSourceContractInput
     if (ALWAYS_RELIED_UPON.has(it.type)) { relied.set(it.itemId, it); for (const x of refs) attributedRefs.add(x); continue; }
     if (refs.length > 0) { relied.set(it.itemId, it); for (const x of refs) attributedRefs.add(x); }
   }
+  // TRANSITIVE reliance: a referenced definition's own dependency chain (the DEFINITION_DEPENDENCY items the bundle retrieved
+  // through DEPENDS_ON_DEFINITION edges from a relied-upon definition item) was handed to the compiler as the meaning of that
+  // term; it is relied upon too. Closure over the bundle's own edges - deterministic, never inferred from text.
+  const byId = new Map(items.map((i) => [i.itemId, i] as const));
+  const edges = input.bundle?.edges ?? [];
+  // The closure starts ONLY from relied-upon DEFINITION items. The operative-source and amendment items also carry
+  // DEPENDS_ON_DEFINITION edges (every defined term the text mentions), but mention is retrieval, not reliance: a term the
+  // compiled units never reference stays unattributed, however often the operative text uses it.
+  const queue = [...relied.values()].filter((it) => DEFINITION_ITEM_TYPES.has(it.type)).map((it) => it.itemId);
+  while (queue.length > 0) {
+    const from = queue.shift()!;
+    for (const e of edges) {
+      if (e.fromItemId !== from || e.edgeType !== "DEPENDS_ON_DEFINITION" || relied.has(e.toItemId)) continue;
+      const to = byId.get(e.toItemId);
+      if (!to || !DEFINITION_ITEM_TYPES.has(to.type)) continue;
+      relied.set(to.itemId, to); queue.push(to.itemId);
+    }
+  }
   for (const d of input.units.definitions) attributedTerms.add(normalizeDefinedTermRef(d.termName));
   const retrievals: ReliedUponRetrieval[] = [];
   for (const e of input.toolCallLog) {

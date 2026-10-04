@@ -174,8 +174,10 @@ export interface IREntityTagNormalization {
 }
 
 export interface IREntityScopeSignal {
-  /** Which bound text the signal was found in. */
-  tier: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN";
+  /** Which bound text the signal was found in. PARENT_SCOPE: the governing provision's lead-in (inherited applicability, recorded as such). */
+  tier: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "PARENT_SCOPE";
+  /** OBLIGOR: the mention binds who may/may not act. MEASUREMENT_CONTEXT: the mention only names whose statements/metrics/periods a test is computed over - it never widens or contradicts applicability. */
+  role?: "OBLIGOR" | "MEASUREMENT_CONTEXT";
   phrase: string;
   index: number;
   excludedContext: boolean;
@@ -195,7 +197,7 @@ export interface IREntityScopeAudit {
   tagNormalization: IREntityTagNormalization[];
   before: { entityScope: EntityClassTag[]; entityScopeExcluded: EntityClassTag[]; sufficiency: RepresentationSufficiency };
   /** Both bound texts are evaluated together: the rule's own excerpt AND the lead-in of the structural unit it cites (which governs every fragment under it). `decidedBy` names the tier(s) whose signals decided the status. */
-  witness: { ownExcerpt: string | null; citedUnitLeadIn: string | null; decidedBy: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "BOTH" | "NONE"; signals: IREntityScopeSignal[] };
+  witness: { ownExcerpt: string | null; citedUnitLeadIn: string | null; parentScopeLeadIn?: string | null; decidedBy: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "BOTH" | "PARENT_SCOPE" | "NONE"; signals: IREntityScopeSignal[] };
 }
 
 // ---------------------------------------------------------------------------
@@ -515,6 +517,23 @@ export type IRExpression =
   | IREventActive
   | IRUnsupportedExpression;
 
+/**
+ * THE authoritative list of IR expression kinds. The wire layer's semantic-validity check, the normalizer's
+ * unknown-kind handling and the bounded compiler prompt's primitive list are all generated from this constant, so a
+ * kind cannot exist in prose without existing here (and vice versa).
+ */
+export const IR_EXPRESSION_KINDS = [
+  "MONEY", "NUMBER", "PERCENT", "RATIO", "BOOLEAN_LITERAL", "DATE_LITERAL",
+  "METRIC_REFERENCE", "DEFINED_TERM_REFERENCE", "RULE_REFERENCE", "LEDGER_USAGE_REFERENCE", "TRANSACTION_INPUT_REFERENCE", "ENTITY_SCOPE_REFERENCE",
+  "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "MAX", "MIN", "SUM",
+  "COMPARE", "AND", "OR", "NOT", "IF",
+  "AS_OF", "DURING_PERIOD", "SCHEDULE", "EVENT_ACTIVE",
+  "UNSUPPORTED",
+] as const satisfies readonly IRExpression["kind"][];
+export type IRExpressionKind = (typeof IR_EXPRESSION_KINDS)[number];
+/** The capacity-only form (a capacityExpression / capExpression may be this instead of an expression). */
+export const IR_CAPACITY_ONLY_KINDS = ["UNLIMITED_CAPACITY"] as const;
+
 /** An uncapped/unlimited capacity (task §7's real ground-truth cases - lsb-6.01/lsb-6.11's Payment-Conditions clauses) - a legitimate capacityExpression alternative to a MONEY-typed tree, never represented as "MONEY(Infinity)" or a missing/null threshold that could be confused with "not yet determined." */
 export interface UnlimitedCapacity {
   kind: "UNLIMITED_CAPACITY";
@@ -534,9 +553,71 @@ export type IRCapacityExpression = IRExpression | UnlimitedCapacity;
 // ContractConditionType enum exactly as CandidateContractRule already does.
 // ---------------------------------------------------------------------------
 
+/**
+ * SEMANTIC FIDELITY (Phase 3 closure) - a contractual reference to ANOTHER provision is first-class semantics, with two
+ * resolution stages that are never confused:
+ *   SOURCE_REFERENCE_RESOLVED  the reference text resolves to exactly one structural node of the package (and, when the
+ *                              sealed population is known, to the candidate(s) owning that node); its semantic unit is
+ *                              bound later, at package level, as a derived artifact - the verified unit is never mutated
+ *   SEMANTIC_TARGET_BOUND      package-level binding to certified semantic unit id(s) (derived artifacts only)
+ *   DEPENDENCY_UNKNOWN         the reference text resolves to no structural node - genuinely unknown
+ * The child never restates the target's economics: `description` is generated deterministically from the relationship
+ * type and the exact reference; model prose is kept out of the unit (diagnostics only).
+ */
+export type SourceDependencyResolution = "SOURCE_REFERENCE_RESOLVED" | "SEMANTIC_TARGET_BOUND" | "DEPENDENCY_UNKNOWN";
+
+export interface IRResolvedStructuralTarget { documentId: string; structuralNodeId: string; sectionRef: string }
+
+export interface IRSourceTargetRef {
+  /** The exact reference text as emitted ("Section 9.2(b)", "the Payment Conditions"). */
+  exactSourceTargetRef: string;
+  /** The normalized section ref the structural index was asked for, when the reference is section-shaped; null for a named-condition reference. */
+  normalizedTargetRef: string | null;
+  /** For a named-condition / defined-term reference ("the Payment Conditions"): the exact defined term the index resolved it to; null for section-shaped references. */
+  targetDefinedTerm?: string | null;
+  resolvedStructuralTarget: IRResolvedStructuralTarget | null;
+  /** Candidate(s) of the sealed population owning the resolved node (anchor or ancestor); [] when the population was not supplied. */
+  owningCandidateRefs: string[];
+  /** Always [] on a compiled unit; populated only on package-level derived artifacts. */
+  boundSemanticTargetIds: string[];
+  resolutionStatus: SourceDependencyResolution;
+}
+
+export interface IRSourceDependency extends IRSourceTargetRef {
+  relationshipType: ContractRuleRelationshipType;
+  /** Deterministic, generated from relationshipType + exactSourceTargetRef - never model prose, never the target's figures. */
+  description: string;
+  provenance: SourceProvenance | null;
+  inventoryItemIds?: string[];
+}
+
+/** How a cross-rule condition is evaluated, composed from general primitives (never a covenant-specific enum). */
+export interface IRConditionEvaluationBasis {
+  /** True when the source requires the test on a pro forma basis (giving effect to the transaction). */
+  proForma: boolean;
+  /** The transaction effect the pro forma test gives effect to, as the source states it ("the incurrence of such Indebtedness"); null when not stated. */
+  transactionEffect: string | null;
+  /** Source-grounded relative measurement date ("the last day of the most recently ended fiscal quarter for which financial statements are available"), or an ISO date. */
+  asOfSelector: string | null;
+  /** The source's deemed-effective assumption for the transaction ("as if incurred on the first day of each relevant period"); null when not stated. */
+  deemedEffectiveAt: string | null;
+  /** The testing period the source names, when any. */
+  testingPeriod: string | null;
+  provenance: SourceProvenance | null;
+}
+
 export interface IRCondition {
   conditionId: string;
   conditionType: ContractConditionType;
+  /**
+   * SEMANTIC FIDELITY: the rule(s)/covenant set(s) whose satisfaction this condition requires ("in compliance with the
+   * financial covenants contained in Section X", "subject to the Payment Conditions"). One source reference may bind to
+   * several certified rules; `targetCombination` carries the meaning the source establishes. Absent on conditions that
+   * are not cross-rule references. A cross-rule condition's own `expression` is BOOLEAN or null - never a MONEY metric.
+   */
+  referencesRuleTargets?: IRSourceTargetRef[];
+  targetCombination?: "ALL_SATISFIED" | "ANY_SATISFIED" | "UNSPECIFIED";
+  evaluationBasis?: IRConditionEvaluationBasis | null;
   /** Formalized boolean expression where the condition can be (e.g. RATIO_SATISFIED -> COMPARE(...)); null for a condition that is real and material but not yet reducible to a boolean expression (e.g. a compound named condition like "Payment Conditions" whose own sub-conditions are represented on ITS OWN rule/definition rather than restated here - task §10's real "reused named condition" lesson from lsb-def-payment-conditions). */
   expression: IRExpression | null;
   /** Set when this condition is itself a reference to a separately-modeled reused named condition (an IRDefinition or another IRRule) rather than an inline expression - the mechanism that prevents restating "Payment Conditions" four times across four citing rules. */
@@ -591,6 +672,14 @@ export interface IRRuleDependency {
  * (review) disposition, never a REPRESENTED one, and is never "guessed"
  * into a real IRRuleDependency (mission §15).
  */
+export interface IRInheritedAttribute {
+  attribute: "governingProhibition" | "entityScope" | "action" | "applicabilityScope";
+  sourceAuthority: "OWN_SOURCE" | "PARENT_SCOPE";
+  /** The governing provision's section ref when sourceAuthority is PARENT_SCOPE. */
+  sourceSectionRef: string | null;
+  evidence: string;
+}
+
 export interface IRUnresolvedDependency {
   relationshipType: ContractRuleRelationshipType;
   /** The exact reference text the composition emitted ("Section 6.01(b)(iii)", "clause (x) of this Section"). */
@@ -679,6 +768,10 @@ export interface IRRule {
   dependsOn: IRRuleDependency[];
   /** SEMANTIC ACCOUNTABILITY (additive, optional) - see IRUnresolvedDependency. Absent (not empty) on rules produced before this layer existed. */
   unresolvedDependencies?: IRUnresolvedDependency[];
+  /** SEMANTIC FIDELITY (additive, optional): every cross-unit source dependency as first-class semantics (resolved or unknown). `unresolvedDependencies` then carries only the DEPENDENCY_UNKNOWN ones. */
+  sourceDependencies?: IRSourceDependency[];
+  /** SEMANTIC FIDELITY (additive, optional): attributes this rule inherits from a governing provision rather than stating in its own source (e.g. the parent prohibition a basket is an exception to). Context informs; it never owns a unit. */
+  inheritedAttributes?: IRInheritedAttribute[];
 
   operativeLineage: OperativeLineageRef | null;
 

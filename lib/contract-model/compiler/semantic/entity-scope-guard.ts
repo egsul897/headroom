@@ -28,7 +28,7 @@ import type { EntityClassTag } from "@prisma/client";
 import type { EntityAtom, EntityScopeReasonCode, IREntityScopeAudit, IREntityScopeSignal, IREntityTagNormalization, IRRule } from "../../ir/types";
 import type { SourceContextRegion } from "../semantic-accountability/types";
 
-export const ENTITY_SCOPE_GUARD_VERSION = "entity-scope-consistency-guard.v1";
+export const ENTITY_SCOPE_GUARD_VERSION = "entity-scope-consistency-guard.v2";
 
 const ENUM_TAGS: readonly string[] = Object.values(EntityClassTagEnum);
 
@@ -138,15 +138,39 @@ const SIGNALS: readonly SignalSpec[] = [
 // A phrase in an exclusion window is a carve-out of that class, not a binding of it.
 const EXCLUSION_WINDOW = /(?:other than|excluding|except(?:ing)?(?: for)?|that (?:is|are) not|which (?:is|are) not|who (?:is|are) not|not (?:a|an|any)|neither)\s*(?:\(|an?\s+|any\s+|the\s+)?[\w\s,-]{0,40}$/;
 
-/** §5 - every explicit source-binding signal in `text`, with its exclusion context. Pure, deterministic, no interpretation beyond the fixed vocabulary above. */
-export function findEntityBindingSignals(text: string): Array<Pick<IREntityScopeSignal, "phrase" | "index" | "excludedContext" | "requiresAnyOf">> {
-  const out: Array<Pick<IREntityScopeSignal, "phrase" | "index" | "excludedContext" | "requiresAnyOf">> = [];
+// SEMANTIC FIDELITY (v2): an entity mention that only names whose statements / metrics / periods a test is computed
+// over is MEASUREMENT CONTEXT, not applicability. "fiscal quarter of the Parent Borrower and its Subsidiaries for which
+// financial statements are available" names a reporting group; it does not widen who may incur. Generic vocabulary only.
+const MEASUREMENT_LEAD = /(?:fiscal\s+(?:quarter|year|period)s?|(?:test|measurement|reporting|calculation)\s+periods?|financial\s+statements?|balance\s+sheet|consolidated\s+[A-Za-z\s]{0,40}?|EBITDA|net\s+income|total\s+assets|revenues?|indebtedness\s+to|leverage\s+ratio|coverage\s+ratio|cash\s+flow)\s+(?:of|for)\s+(?:the\s+)?(?:[A-Z][\w-]*\s+){0,3}$/;
+const MEASUREMENT_FOLLOW = /^(?:\s+and\s+(?:its|their)\s+(?:Restricted\s+|Unrestricted\s+)?(?:Subsidiar(?:y|ies)|[A-Z][\w-]*))*\s*(?:,\s*)?(?:for\s+which\s+financial\s+statements|on\s+a\s+consolidated\s+basis|determined\s+on\s+a\s+consolidated|taken\s+as\s+a\s+whole|for\s+the\s+(?:most\s+recently|period|fiscal))/;
+const GROUP_TAIL = /^\s+and\s+(?:its|their)\s+(?:Restricted\s+|Unrestricted\s+)?Subsidiar(?:y|ies)\b/;
+
+/** Classifies one mention by its immediate context: measurement context when it sits inside a metric/period/statements phrase, otherwise an obligor binding. */
+export function classifyEntityMentionRole(text: string, index: number, phraseLength: number): "OBLIGOR" | "MEASUREMENT_CONTEXT" {
+  const before = text.slice(Math.max(0, index - 90), index);
+  const after = text.slice(index + phraseLength, index + phraseLength + 120);
+  if (MEASUREMENT_LEAD.test(before)) return "MEASUREMENT_CONTEXT";
+  if (MEASUREMENT_FOLLOW.test(after)) return "MEASUREMENT_CONTEXT";
+  // "<Entity> and its Subsidiaries" immediately followed by a measurement tail: the group is the measurement group; the
+  // Subsidiaries mention inside that group is measurement context as well
+  const groupBefore = text.slice(Math.max(0, index - 40), index);
+  if (/\band\s+(?:its|their)\s+(?:Restricted\s+|Unrestricted\s+)?$/.test(groupBefore)) {
+    const head = text.slice(Math.max(0, index - 160), index);
+    if (MEASUREMENT_LEAD.test(head.replace(/\s+and\s+(?:its|their)\s+(?:Restricted\s+|Unrestricted\s+)?$/, "")) || MEASUREMENT_FOLLOW.test(after)) return "MEASUREMENT_CONTEXT";
+  }
+  void GROUP_TAIL;
+  return "OBLIGOR";
+}
+
+/** §5 - every explicit source-binding signal in `text`, with its exclusion context and its role. Pure, deterministic, no interpretation beyond the fixed vocabulary above. */
+export function findEntityBindingSignals(text: string): Array<Pick<IREntityScopeSignal, "phrase" | "index" | "excludedContext" | "requiresAnyOf" | "role">> {
+  const out: Array<Pick<IREntityScopeSignal, "phrase" | "index" | "excludedContext" | "requiresAnyOf" | "role">> = [];
   for (const spec of SIGNALS) {
     spec.re.lastIndex = 0;
     let m: RegExpExecArray | null;
     while ((m = spec.re.exec(text)) !== null) {
       const before = text.slice(Math.max(0, m.index - 60), m.index);
-      out.push({ phrase: m[0], index: m.index, excludedContext: EXCLUSION_WINDOW.test(before), requiresAnyOf: spec.requiresAnyOf });
+      out.push({ phrase: m[0], index: m.index, excludedContext: EXCLUSION_WINDOW.test(before), requiresAnyOf: spec.requiresAnyOf, role: classifyEntityMentionRole(text, m.index, m[0].length) });
     }
   }
   return out.sort((a, b) => a.index - b.index);
@@ -214,10 +238,11 @@ export function citedUnitLeadIn(regionText: string, regionSectionRef: string | n
   return text.length > 0 ? text : null;
 }
 
-export interface EntityScopeWitness { ownExcerpt: string | null; citedUnitLeadIn: string | null }
+export interface EntityScopeWitness { ownExcerpt: string | null; citedUnitLeadIn: string | null; parentScopeLeadIn?: string | null }
 
-/** Picks the source region bound to the rule by citation (longest matching sectionRef prefix, OPERATIVE preferred) and derives the cited-unit lead-in. */
-export function entityScopeWitnessFor(rule: Pick<IRRule, "sourceSectionRef" | "provenance">, regions: readonly SourceContextRegion[] | null | undefined): EntityScopeWitness {
+/** Picks the source region bound to the rule by citation (longest matching sectionRef prefix, OPERATIVE preferred) and derives the cited-unit lead-in. `parentScopeTexts` (PARENT_SCOPE context items) supply the governing provision's lead-in as an INHERITED witness. */
+export function entityScopeWitnessFor(rule: Pick<IRRule, "sourceSectionRef" | "provenance">, regions: readonly SourceContextRegion[] | null | undefined, parentScopeTexts?: readonly string[] | null): EntityScopeWitness {
+  const parentScopeLeadIn = (() => { const t = parentScopeTexts?.find((x) => x && x.trim().length > 0) ?? null; if (!t) return null; ENUM_MARKER.lastIndex = 0; const m = ENUM_MARKER.exec(t); return (m ? t.slice(0, m.index) : t.slice(0, 1500)).trim() || null; })();
   const ownExcerpt = rule.provenance?.excerpt?.trim() || null;
   let leadIn: string | null = null;
   if (regions && rule.sourceSectionRef) {
@@ -227,7 +252,7 @@ export function entityScopeWitnessFor(rule: Pick<IRRule, "sourceSectionRef" | "p
       .sort((a, b) => (b.kind === "OPERATIVE" ? 1 : 0) - (a.kind === "OPERATIVE" ? 1 : 0) || refTokens(b.sectionRef!).path.length - refTokens(a.sectionRef!).path.length);
     for (const r of candidates) { leadIn = citedUnitLeadIn(r.text, r.sectionRef, rule.sourceSectionRef); if (leadIn) break; }
   }
-  return { ownExcerpt, citedUnitLeadIn: leadIn };
+  return { ownExcerpt, citedUnitLeadIn: leadIn, parentScopeLeadIn };
 }
 
 // ---------------------------------------------------------------------------
@@ -246,7 +271,7 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
   let sufficiency = rule.sufficiency;
   let status: IREntityScopeAudit["status"];
   const clip = (t: string | null) => (t && t.length > 1500 ? `${t.slice(0, 1500)} ...` : t);
-  let witnessOut: IREntityScopeAudit["witness"] = { ownExcerpt: clip(witness.ownExcerpt), citedUnitLeadIn: clip(witness.citedUnitLeadIn), decidedBy: "NONE", signals: [] };
+  let witnessOut: IREntityScopeAudit["witness"] = { ownExcerpt: clip(witness.ownExcerpt), citedUnitLeadIn: clip(witness.citedUnitLeadIn), parentScopeLeadIn: clip(witness.parentScopeLeadIn ?? null), decidedBy: "NONE", signals: [] };
 
   const limit = (code: EntityScopeReasonCode, detail: string) => {
     codes.push(code);
@@ -273,11 +298,19 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
       ...(witness.ownExcerpt ? evaluateSignals("OWN_EXCERPT", witness.ownExcerpt, entityScope) : []),
       ...(witness.citedUnitLeadIn ? evaluateSignals("CITED_UNIT_LEAD_IN", witness.citedUnitLeadIn, entityScope) : []),
     ];
-    const binding = signals.filter((s) => !s.excludedContext);
+    // v2: only OBLIGOR mentions bind applicability; MEASUREMENT_CONTEXT mentions are recorded but never widen or contradict the scope.
+    const binding = signals.filter((s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT");
     const unmet = binding.filter((s) => !s.satisfied);
-    const tiersOf = (xs: IREntityScopeSignal[]): IREntityScopeAudit["witness"]["decidedBy"] => { const t = new Set(xs.map((x) => x.tier)); return t.size === 2 ? "BOTH" : t.has("OWN_EXCERPT") ? "OWN_EXCERPT" : t.has("CITED_UNIT_LEAD_IN") ? "CITED_UNIT_LEAD_IN" : "NONE"; };
-    witnessOut = { ...witnessOut, signals };
-    if (binding.length === 0) {
+    const tiersOf = (xs: IREntityScopeSignal[]): IREntityScopeAudit["witness"]["decidedBy"] => { const t = new Set(xs.map((x) => x.tier)); return t.size >= 2 ? "BOTH" : t.has("OWN_EXCERPT") ? "OWN_EXCERPT" : t.has("CITED_UNIT_LEAD_IN") ? "CITED_UNIT_LEAD_IN" : t.has("PARENT_SCOPE") ? "PARENT_SCOPE" : "NONE"; };
+    // §7 (inheritance): when the rule's OWN bound texts carry no obligor binding, the governing provision's lead-in may witness the inherited applicability - recorded as PARENT_SCOPE, never silently.
+    const parentSignals = witness.parentScopeLeadIn ? evaluateSignals("PARENT_SCOPE", witness.parentScopeLeadIn, entityScope).filter((s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT") : [];
+    witnessOut = { ...witnessOut, signals: [...signals, ...parentSignals] };
+    if (binding.length === 0 && parentSignals.length > 0 && parentSignals.every((s) => s.satisfied) && !parentSignals.some((s) => s.partialOnly)) {
+      status = "SOURCE_MATCH_CONFIRMED";
+      witnessOut.decidedBy = "PARENT_SCOPE";
+      codes.push("ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED");
+      reasons.push(reasonText("ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED", `applicability inherited from the governing provision's lead-in (PARENT_SCOPE witness) - the rule's own text binds no obligor class`));
+    } else if (binding.length === 0) {
       // §10 case F: no explicit entity-binding language in any bound source - no invented correction.
       status = "UNWITNESSED";
       codes.push("ENTITY_SCOPE_UNWITNESSED");

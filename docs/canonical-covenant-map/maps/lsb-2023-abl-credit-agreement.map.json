@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "canonical-covenant-map.v2",
+  "schemaVersion": "canonical-covenant-map.v3",
   "companyId": "lsb-offline",
   "packageKey": "lsb-2023-abl-credit-agreement",
   "instrumentKey": "lsb-2023-abl-credit-agreement",
@@ -28,12 +28,12 @@
     }
   ],
   "identity": {
-    "mapAlgorithmVersion": "covenant-map-assembly.v2",
+    "mapAlgorithmVersion": "covenant-map-assembly.v3",
     "certifiedConfigIdentity": null,
-    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
-    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v5",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v6",
     "irSchemaVersion": "headroom-covenant-ir.v1",
-    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v2",
     "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
   },
   "operativeState": null,
@@ -4468,6 +4468,23 @@
       "detail": "structure-only offline map: no certified compilation has been run for this fixture (paid)"
     }
   ],
+  "packageDependencies": {
+    "version": "p3-package-dependency-resolution.v1",
+    "bindings": [],
+    "graph": {
+      "nodeIds": [],
+      "edges": []
+    },
+    "counts": {
+      "total": 0,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 0,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0
+    }
+  },
   "completeness": {
     "candidatesDiscovered": 82,
     "candidatesEligible": 82,
@@ -4520,5 +4537,5 @@
       "REVIEW_ONLY": 0
     }
   },
-  "mapHash": "3b166f39e3c341f20454c5f46ed6debd490d8f9b1d06eb77571e46af14c0a32b"
+  "mapHash": "8e9191754e2ded22bf70656b7846b0f586ff024799a37a1b9e2739dd71179793"
 }

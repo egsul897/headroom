@@ -189,12 +189,15 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
   const out: ReconciliationItem[] = [];
 
   // Structural completeness (task §8) - the LSB §6.13-shaped signal, entirely generic.
-  if (source.apparentIndependentUnitCount > ir.ruleCount) {
+  // An enumerated unit is represented either by its own compiled rule or - when its permission is owned by a separate
+  // child candidate of the package - by an exception of this candidate's prohibition that cites it. Both count here.
+  const irExceptionCount = ir.items.filter((i) => i.kind === "EXCEPTION").length;
+  if (source.apparentIndependentUnitCount > ir.ruleCount + irExceptionCount) {
     out.push({
       classification: "AMBIGUOUS",
       sourceItem: null,
       irItems: [],
-      reason: `source text contains ${source.apparentIndependentUnitCount} apparent independent enumerated unit(s) (${source.apparentIndependentUnitEvidence.join(", ")}) but only ${ir.ruleCount} rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)`,
+      reason: `source text contains ${source.apparentIndependentUnitCount} apparent independent enumerated unit(s) (${source.apparentIndependentUnitEvidence.join(", ")}) but only ${ir.ruleCount} rule(s) and ${irExceptionCount} exception(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)`,
     });
   }
 
@@ -228,7 +231,10 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
   // no-package-knowledge counting layer (Architecture Invariants #29).
   const sourceConditionalSignalCount = source.items.filter((i) => i.kind === "CONDITIONAL_PHRASE" || i.kind === "EXCEPTION_MARKER" || i.kind === "PROVISO_MARKER").length;
   const irConditionOrExceptionCount = ir.items.filter((i) => i.kind === "CONDITION" || i.kind === "EXCEPTION").length;
-  if (sourceConditionalSignalCount >= 1 && irConditionOrExceptionCount === 0) {
+  // A definitions-only compilation (zero rules, one or more definitions) carries conditions inside the definitions' own
+  // meaning, not as rule conditions; the rule-condition signal does not apply to it.
+  const definitionsOnly = ir.ruleCount === 0 && ir.definitionCount > 0;
+  if (sourceConditionalSignalCount >= 1 && irConditionOrExceptionCount === 0 && !definitionsOnly) {
     out.push({
       classification: "AMBIGUOUS",
       sourceItem: null,

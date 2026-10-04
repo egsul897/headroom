@@ -6,8 +6,9 @@
  *
  *   GROUNDED     the unit (or the object itself) carries provenance whose excerpt is a real, locatable substring of
  *                the admissible source text (operative text, source-context regions, context-bundle excerpts), OR it
- *                cites a known frozen-inventory item.
- *   FABRICATED   the provenance excerpt cannot be located anywhere in the admissible source -> MATERIAL finding.
+ *                supplies no locatable excerpt but cites a known frozen-inventory item.
+ *   FABRICATED   the provenance excerpt cannot be located anywhere in the admissible source -> MATERIAL finding,
+ *                whether or not the unit also cites an inventory item (a quoted excerpt the source lacks is drift).
  *   UNCITED      no provenance at all and no inventory lineage -> MATERIAL when the compilation ran under the
  *                accountability layer (a frozen inventory exists: every certified unit must cite), NON_MATERIAL
  *                otherwise (a provenance-less legacy/fixture compilation is disclosed, not condemned).
@@ -21,7 +22,7 @@ import type { SemanticVerificationFinding } from "./types";
 import { computeSemanticVerificationFindingId } from "./identity";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
 
-export const QUALITATIVE_GROUNDING_VERSION = "qualitative-grounding.v2";
+export const QUALITATIVE_GROUNDING_VERSION = "qualitative-grounding.v3";
 
 export type QualitativeField = "posture" | "action" | "ruleType" | "transactionScope" | "entityScope" | "conditions" | "exceptions" | "dependsOn" | "covenantFamily" | "calculationExpression";
 export type GroundingVerdict = "GROUNDED" | "FABRICATED" | "UNCITED" | "LINEAGE_GAP";
@@ -69,14 +70,17 @@ export function auditQualitativeLineage(input: { rules: readonly IRRule[]; defin
   const verdictFor = (p: SourceProvenance | null | undefined, ids: string[]): GroundingVerdict => {
     const pv = provenanceOf(p);
     if (pv.located === true) return "GROUNDED";
-    if (pv.located === false) return cited(ids) ? "GROUNDED" : "FABRICATED";
+    // An excerpt that CANNOT be located is a claim about what the source says that the source does not say. Inventory
+    // lineage never rescues it: the cited item is real source text, so a unit quoting words the source lacks has drifted
+    // from (or fabricated) its provenance even when it points at the right item (v3; v2 forgave a cited mismatch).
+    if (pv.located === false) return "FABRICATED";
     // no locatable excerpt (none supplied, too short, or no source texts to check against)
     if (cited(ids)) return "GROUNDED";
     if (pv.has) return "LINEAGE_GAP";
     return "UNCITED";
   };
   const reasonFor = (v: GroundingVerdict, what: string): string =>
-    v === "FABRICATED" ? `${what}: the provenance excerpt is not a substring of any admissible source text and no inventory lineage backs it` :
+    v === "FABRICATED" ? `${what}: the provenance excerpt is not a substring of any admissible source text (inventory lineage does not rescue a quoted excerpt the source lacks)` :
     v === "UNCITED" ? `${what}: no source provenance (citation/excerpt) and no inventory lineage` :
     v === "LINEAGE_GAP" ? `${what}: cited to source but not tied to a frozen inventory item` : "";
 

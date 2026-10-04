@@ -55,6 +55,12 @@ export interface CovenantMapPackageInput extends CandidateInputPackage {
   discoveryRunVersion: string | null;
   /** Phase 2's sealed statement of the population. Absent = an unsealed PARTIAL_TARGET_SET: certifiable per candidate, never as a package. */
   discoveryPopulation?: DiscoveryPopulationIdentity | null;
+  /**
+   * The SEALED discovery population - every candidate discovery found, whether or not it is in this run's target set.
+   * Source-reference resolution and context-retrieval ownership boundaries use it to tell "known external candidate not
+   * compiled in this partial run" from "genuinely unknown". Defaults to `candidates` (a COMPLETE run compiles them all).
+   */
+  candidatePopulation?: readonly { discoveryId: string; structuralNodeIds: readonly string[] }[] | null;
   /** Identifies the persisted artifact packages of this run; defaults to CANONICAL_RUN_ID. */
   runId?: string;
 }
@@ -157,7 +163,7 @@ export async function compileCandidateToVerifiedIR(candidate: DiscoveredCandidat
   if (!eligibility.eligible) return base("INELIGIBLE", { kind: "INELIGIBLE", detail: eligibility.reason ?? "ineligible" });
   if (candidate.structuralNodeIds.length === 0 || !pkg.index.getNodeById(candidate.structuralNodeIds[0]!)) return base("NO_STRUCTURAL_ANCHOR", { kind: "NO_STRUCTURAL_ANCHOR", detail: `structuralNodeIds ${JSON.stringify(candidate.structuralNodeIds)} resolve to no node` });
 
-  const built = buildCandidateCompilerInput(candidate, pkg);
+  const built = buildCandidateCompilerInput(candidate, { ...pkg, candidatePopulation: pkg.candidatePopulation ?? pkg.candidates.map((c) => ({ discoveryId: c.discoveryId, structuralNodeIds: c.structuralNodeIds })) });
   const common = { input: built.input, bundle: built.bundle, operativeProvision: built.operativeProvision, sourceContentVersion: built.sourceContentVersion, identityStrength: built.identityStrength } as const;
   const runId = pkg.runId ?? CANONICAL_RUN_ID;
   const certify = (compilation: CandidateMapResult["compilation"], verification: SemanticVerificationResult | null, snapshot: ReturnType<typeof snapshotUnitsForVerification> | null, contract: ReturnType<typeof computeSemanticSourceContract> | null) => {

@@ -42,7 +42,7 @@ export const GOLDEN_AGREEMENT = [
   "",
   "\"Loan Documents\" means this Agreement, the Notes and the Security Documents.",
   "",
-  "\"Subsidiary\" means any corporation or other entity of which more than 50% of the voting equity is owned by the Borrower.",
+  "\"Subsidiary\" means any corporation or other entity that is controlled by the Borrower.",
   "",
   "SECTION 1.02 Terms Generally . The definitions of terms herein shall apply equally to the singular and plural forms of the terms defined.",
   "",
@@ -79,7 +79,20 @@ export function candidate(index: ReturnType<typeof buildTestIndex>, ref: string,
 
 // ---------------------------------------------------------------- scripted Pass A (inventory) - excerpts are verbatim source
 export type ScriptedInventory = Record<string, { excerpt: string; role: string; materiality: string; proposition: string }[]>;
+export const DEFINITION_SENTENCES: Record<string, string> = {
+  "Consolidated EBITDA": "\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus Interest Expense for such period.",
+  "Consolidated Net Income": "\"Consolidated Net Income\" means, for any period, the net income of the Borrower and its Subsidiaries for such period determined on a consolidated basis.",
+  "Indebtedness": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money.",
+  "Interest Expense": "\"Interest Expense\" means, for any period, total interest expense of the Borrower and its Subsidiaries for such period.",
+  "Loan Documents": "\"Loan Documents\" means this Agreement, the Notes and the Security Documents.",
+  "Subsidiary": "\"Subsidiary\" means any corporation or other entity that is controlled by the Borrower.",
+};
 export const INVENTORY: ScriptedInventory = {
+  // the definitions section is its OWN candidate: definitions are owned where they are defined, never by a covenant that merely uses them
+  "1.01": [
+    { excerpt: "As used in this Agreement, the following terms have the meanings specified below:", role: "OTHER", materiality: "MATERIAL", proposition: "definitions lead-in: the listed terms carry the stated meanings throughout the Agreement" },
+    ...Object.entries(DEFINITION_SENTENCES).map(([term, excerpt]) => ({ excerpt, role: "FORMULA_COMPONENT", materiality: term === "Consolidated EBITDA" ? "CRITICAL" : "MATERIAL", proposition: `definition of ${term}` })),
+  ],
   "7.01": [
     { excerpt: "The Borrower shall not create, incur or assume any Indebtedness, except:", role: "PROHIBITION", materiality: "CRITICAL", proposition: "general prohibition on Indebtedness" },
     { excerpt: "(a) Indebtedness under the Loan Documents;", role: "PERMISSION", materiality: "MATERIAL", proposition: "loan document debt permitted" },
@@ -115,24 +128,42 @@ export function frozenIds(user: string): string[] { return [...user.matchAll(/^-
 export function idsFor(user: string, needle: string): string[] { return [...user.matchAll(/^- (inv-item:[0-9a-f]+) [^\n]*"([^"]*)"\)$/gm)].filter((m) => m[2]!.includes(needle)).map((m) => m[1]!); }
 export const money = (amount: number, ids: string[], excerpt: string) => ({ kind: "MONEY", amount, currency: "USD", citation: "7.01", excerpt, inventoryItemIds: ids });
 export type ScriptedSubmission = (user: string) => unknown;
+/** Inventory item ids whose listed proposition contains `needle` (for excerpts that themselves contain quote characters). */
+export function idsForProposition(user: string, needle: string): string[] { return [...user.matchAll(/^- (inv-item:[0-9a-f]+) ([^\n]*)$/gm)].filter((m) => m[2]!.includes(needle)).map((m) => m[1]!); }
 export function submissionFor(user: string): unknown {
   const all = frozenIds(user);
+  if (idsForProposition(user, "definition of Consolidated EBITDA").length > 0) {
+    // the 1.01 definitions candidate: one WireDefinition per defined term, each consuming its own inventory item; the
+    // lead-in sentence ("the following terms have the meanings specified below") governs every definition, so every
+    // definition consumes it
+    const leadIn = idsForProposition(user, "definitions lead-in");
+    const defOf = (term: string, extra: Record<string, unknown>) => ({ localRef: `d-${term.replace(/\s+/g, "-").toLowerCase()}`, termName: term, covenantFamily: "DEFINITIONS_CALCULATION_RULES", sufficiency: "COMPLETE", citation: "1.01", excerpt: DEFINITION_SENTENCES[term], inventoryItemIds: [...idsForProposition(user, `definition of ${term}`), ...leadIn], ...extra });
+    return {
+      rules: [],
+      definitions: [
+        defOf("Consolidated EBITDA", { calculationExpression: { kind: "ADD", citation: "1.01", excerpt: "Consolidated Net Income for such period plus Interest Expense for such period", inventoryItemIds: idsForProposition(user, "definition of Consolidated EBITDA"), operands: [{ kind: "DEFINED_TERM_REFERENCE", termName: "Consolidated Net Income", valueType: "MONEY", citation: "1.01", excerpt: "Consolidated Net Income" }, { kind: "DEFINED_TERM_REFERENCE", termName: "Interest Expense", valueType: "MONEY", citation: "1.01", excerpt: "Interest Expense" }] }, dependsOnTerms: ["Consolidated Net Income", "Interest Expense"] }),
+        defOf("Consolidated Net Income", { calculationExpression: null, dependsOnTerms: [] }),
+        defOf("Indebtedness", { calculationExpression: null, dependsOnTerms: [] }),
+        defOf("Interest Expense", { calculationExpression: null, dependsOnTerms: [] }),
+        defOf("Loan Documents", { calculationExpression: null, dependsOnTerms: [] }),
+        defOf("Subsidiary", { calculationExpression: null, dependsOnTerms: [] }),
+      ],
+      sharedCapacities: [], irExtensionCandidates: [], overallNotes: [],
+    };
+  }
   if (idsFor(user, "shall not create, incur or assume").length === 0) {
     return { rules: [{ localRef: "r1", sourceSectionRef: "7.02", covenantFamily: "LIENS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "INCUR_LIEN", entityScope: ["BORROWER"], capacityExpression: null, conditions: [], exceptions: [{ description: "Liens securing Indebtedness permitted under Section 7.01(b) or Section 7.01(c)", permissionRef: null, conditions: [], citation: "7.02", excerpt: "except Liens securing Indebtedness permitted under Section 7.01(b) or Section 7.01(c)", inventoryItemIds: all }], dependsOn: [], sufficiency: "COMPLETE", citation: "7.02", excerpt: "The Borrower shall not create any Lien on any property", inventoryItemIds: all }], definitions: [], sharedCapacities: [], irExtensionCandidates: [], overallNotes: [] };
   }
   const prohibition = idsFor(user, "shall not create, incur or assume"), a = idsFor(user, "Loan Documents"), b = idsFor(user, "$25,000,000"), cond = idsFor(user, "no Default"), c = idsFor(user, "greater of $10,000,000");
   return {
     rules: [
-      { localRef: "r0", sourceSectionRef: "7.01", covenantFamily: "INDEBTEDNESS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "INCUR_DEBT", entityScope: ["BORROWER"], capacityExpression: null, conditions: [], exceptions: [{ description: "clause (a)", permissionRef: "r1", citation: "7.01(a)", excerpt: "(a) Indebtedness under the Loan Documents", inventoryItemIds: a }, { description: "clause (b)", permissionRef: "r2", citation: "7.01(b)", excerpt: "(b) other Indebtedness", inventoryItemIds: b }, { description: "clause (c)", permissionRef: "r3", citation: "7.01(c)", excerpt: "(c) Indebtedness of Subsidiaries", inventoryItemIds: c }], dependsOn: [], sufficiency: "COMPLETE", citation: "7.01", excerpt: "The Borrower shall not create, incur or assume any Indebtedness", inventoryItemIds: prohibition },
+      { localRef: "r0", sourceSectionRef: "7.01", covenantFamily: "INDEBTEDNESS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "INCUR_DEBT", entityScope: ["BORROWER"], capacityExpression: null, conditions: [], exceptions: [{ description: "clause (a)", permissionRef: "r1", citation: "7.01(a)", excerpt: "(a) Indebtedness under the Loan Documents", inventoryItemIds: a }, { description: "clause (b)", permissionRef: "r2", citation: "7.01(b)", excerpt: "(b) other Indebtedness", inventoryItemIds: b }, { description: "clause (c)", permissionRef: "r3", citation: "7.01(c)", excerpt: "(c) Indebtedness incurred by any Subsidiary", inventoryItemIds: c }], dependsOn: [], sufficiency: "COMPLETE", citation: "7.01", excerpt: "The Borrower shall not create, incur or assume any Indebtedness", inventoryItemIds: prohibition },
       { localRef: "r1", sourceSectionRef: "7.01(a)", covenantFamily: "INDEBTEDNESS", ruleType: "QUALITATIVE_OBLIGATION", posture: "PERMISSION", action: "INCUR_DEBT", entityScope: ["BORROWER"], capacityExpression: { kind: "UNLIMITED_CAPACITY", citation: "7.01(a)", excerpt: "Indebtedness under the Loan Documents", inventoryItemIds: a }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", citation: "7.01(a)", excerpt: "(a) Indebtedness under the Loan Documents", inventoryItemIds: a },
       { localRef: "r2", sourceSectionRef: "7.01(b)", covenantFamily: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "INCUR_DEBT", entityScope: ["BORROWER"], capacityExpression: money(25_000_000, b, "not to exceed $25,000,000 at any time outstanding"), conditions: [{ conditionType: "NO_DEFAULT", expression: null, description: "no Default has occurred and is continuing at the time of incurrence", citation: "7.01(b)", excerpt: "provided that no Default has occurred and is continuing", inventoryItemIds: cond }], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", citation: "7.01(b)", excerpt: "(b) other Indebtedness in an aggregate principal amount not to exceed $25,000,000", inventoryItemIds: b },
-      { localRef: "r3", sourceSectionRef: "7.01(c)", covenantFamily: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "INCUR_DEBT", entityScope: ["NON_GUARANTOR_RS"], capacityExpression: { kind: "MAX", citation: "7.01(c)", excerpt: "the greater of $10,000,000 and 5.0% of Consolidated EBITDA", inventoryItemIds: c, operands: [money(10_000_000, c, "$10,000,000"), { kind: "MULTIPLY", citation: "7.01(c)", excerpt: "5.0% of Consolidated EBITDA", inventoryItemIds: c, operands: [{ kind: "PERCENT", value: 0.05, citation: "7.01(c)", excerpt: "5.0%", inventoryItemIds: c }, { kind: "DEFINED_TERM_REFERENCE", termName: "Consolidated EBITDA", valueType: "MONEY", citation: "1.01", excerpt: "Consolidated EBITDA", inventoryItemIds: c }] }] }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", citation: "7.01(c)", excerpt: "(c) Indebtedness of Subsidiaries", inventoryItemIds: c },
+      { localRef: "r3", sourceSectionRef: "7.01(c)", covenantFamily: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "INCUR_DEBT", entityScope: ["NON_GUARANTOR_RS"], capacityExpression: { kind: "MAX", citation: "7.01(c)", excerpt: "the greater of $10,000,000 and 5.0% of Consolidated EBITDA", inventoryItemIds: c, operands: [money(10_000_000, c, "$10,000,000"), { kind: "MULTIPLY", citation: "7.01(c)", excerpt: "5.0% of Consolidated EBITDA", inventoryItemIds: c, operands: [{ kind: "PERCENT", value: 0.05, citation: "7.01(c)", excerpt: "5.0%", inventoryItemIds: c }, { kind: "DEFINED_TERM_REFERENCE", termName: "Consolidated EBITDA", valueType: "MONEY", citation: "1.01", excerpt: "Consolidated EBITDA", inventoryItemIds: c }] }] }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", citation: "7.01(c)", excerpt: "(c) Indebtedness incurred by any Subsidiary", inventoryItemIds: c },
     ],
-    definitions: [
-      { localRef: "d1", termName: "Consolidated EBITDA", calculationExpression: { kind: "ADD", citation: "1.01", excerpt: "Consolidated Net Income for such period plus Interest Expense for such period", operands: [{ kind: "DEFINED_TERM_REFERENCE", termName: "Consolidated Net Income", valueType: "MONEY", citation: "1.01", excerpt: "Consolidated Net Income" }, { kind: "DEFINED_TERM_REFERENCE", termName: "Interest Expense", valueType: "MONEY", citation: "1.01", excerpt: "Interest Expense" }] }, dependsOnTerms: ["Consolidated Net Income", "Interest Expense"], sufficiency: "COMPLETE", citation: "1.01", excerpt: "\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus Interest Expense for such period." },
-      { localRef: "d2", termName: "Consolidated Net Income", calculationExpression: null, dependsOnTerms: [], sufficiency: "COMPLETE", citation: "1.01", excerpt: "\"Consolidated Net Income\" means, for any period, the net income of the Borrower and its Subsidiaries" },
-      { localRef: "d3", termName: "Interest Expense", calculationExpression: null, dependsOnTerms: [], sufficiency: "COMPLETE", citation: "1.01", excerpt: "\"Interest Expense\" means, for any period, total interest expense" },
-    ],
+    // 7.01 USES Consolidated EBITDA (a DEFINED_TERM_REFERENCE inside 7.01(c)); the definition itself is owned by the 1.01 candidate
+    definitions: [],
     sharedCapacities: [], irExtensionCandidates: [], overallNotes: [],
   };
 }
@@ -175,7 +206,7 @@ export function buildPackageFrom(o: BuildPackageOptions = {}): { pkg: CovenantMa
   const packageGraph = buildPackageGraph(CO, PKG, docs.map((d) => ({ documentId: d.documentId, label: d.label, text: d.text })));
   const operativeState = computeOperativeContractState({ instrumentKey: INST, baseDocumentId: CA, asOfDate, index, allEffects: effects });
   const supersessionIndex = buildNodeSupersessionIndex([{ baseDocumentId: CA, state: operativeState }]);
-  const specs = o.candidateSpecs ?? [["7.01", ["INDEBTEDNESS"], "GENERAL_PROHIBITION", "debt covenant with baskets"], ["7.02", ["LIENS"], "GENERAL_PROHIBITION", "lien covenant"]];
+  const specs = o.candidateSpecs ?? [["1.01", ["DEFINITIONS_CALCULATION_RULES"], "DEFINITIONAL_DEPENDENCY_CANDIDATE", "defined terms"], ["7.01", ["INDEBTEDNESS"], "GENERAL_PROHIBITION", "debt covenant with baskets"], ["7.02", ["LIENS"], "GENERAL_PROHIBITION", "lien covenant"]];
   const candidates = specs.map(([ref, families, role, description, documentId]) => candidate(index, ref, families, role, description, documentId));
   const scope = o.scope ?? "COMPLETE";
   const discoveryPopulation = o.sealed === false ? unsealedPopulation(candidates, "golden-discovery.v1", scope) : sealDiscoveryPopulation({ documents: docs, discoveryVersion: "golden-discovery.v1", candidates, scope });

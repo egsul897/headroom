@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "canonical-covenant-map.v2",
+  "schemaVersion": "canonical-covenant-map.v3",
   "companyId": "fwrg-offline",
   "packageKey": "fwrg-2021-credit-agreement",
   "instrumentKey": "fwrg-2021-credit-agreement",
@@ -21,12 +21,12 @@
     }
   ],
   "identity": {
-    "mapAlgorithmVersion": "covenant-map-assembly.v2",
+    "mapAlgorithmVersion": "covenant-map-assembly.v3",
     "certifiedConfigIdentity": null,
-    "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
-    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v5",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v6",
     "irSchemaVersion": "headroom-covenant-ir.v1",
-    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v2",
     "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
   },
   "operativeState": null,
@@ -13615,6 +13615,23 @@
       "detail": "node keys [\"fwrg::6.09(b)(B)\"] do not resolve in the offline index"
     }
   ],
+  "packageDependencies": {
+    "version": "p3-package-dependency-resolution.v1",
+    "bindings": [],
+    "graph": {
+      "nodeIds": [],
+      "edges": []
+    },
+    "counts": {
+      "total": 0,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 0,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0
+    }
+  },
   "completeness": {
     "candidatesDiscovered": 252,
     "candidatesEligible": 252,
@@ -13669,5 +13686,5 @@
       "REVIEW_ONLY": 0
     }
   },
-  "mapHash": "cc880af32b6affb0f4eac89d125de5f3f7a29418d3441f4b61cb5cbe29bdff1b"
+  "mapHash": "b4f6f9261c5d4e9a6e8e38cbcea9f156dfbc9d20c1a85f24a83af2457f42fe1d"
 }

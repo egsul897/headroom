@@ -16,6 +16,7 @@ import { IR_SCHEMA_VERSION, type IRDefinition, type IRRule, type IRSharedCapacit
 import { normalizeDefinedTermRef } from "../compiler/amendment/chain";
 import { documentOrdinals, sortBySourceOrder, sourceOrderOf, STRUCTURAL_DEPTH } from "./order";
 import { canonicalJson, sha256Hex } from "./source-content-version";
+import { resolvePackageDependencies } from "./package-dependencies";
 import type { CandidateCertification } from "../phase3-certification/types";
 import type { SemanticSourceContract } from "../phase3-certification/semantic-source-contract";
 import type { PersistedVerifiedUnitPackage, UnitSnapshot } from "../verified-units";
@@ -259,6 +260,22 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
       }
     }
   }
+  // ---- PASS 2a: package-level binding of typed source dependencies and cross-rule condition targets -----------------
+  // Derived artifacts only: the units are never mutated. A BOUND binding becomes an IR-backed edge (the IR stated the
+  // dependency; the package resolved its target); anything else is an UNRESOLVED_SOURCE_DEPENDENCY the map discloses.
+  const packageDependencies = resolvePackageDependencies({ nodes, candidates: input.candidates.map((c) => ({ candidateRef: c.discoveryId, outcome: resultByRef.get(c.discoveryId)?.outcome ?? "UNSERVED" })), index: input.index });
+  for (const b of packageDependencies.bindings) {
+    const from = nodeById.get(b.fromNodeId)!;
+    if (b.status === "BOUND") {
+      for (const t of b.targets) {
+        const target = nodeById.get(t.nodeId)!;
+        if (b.kind === "CONDITION_TARGET") addEdge(target.kind === "DEFINITION" ? "RULE_USES_DEFINITION" : "RULE_SUBJECT_TO_CONDITION", b.fromNodeId, t.nodeId, "IR_CONDITION_REFERENCE", `${b.path} references ${b.exactSourceTargetRef} -> ${t.nodeId} (package binding ${b.bindingId})`, from.candidateRef);
+        else addEdge(target.kind === "DEFINITION" ? "RULE_USES_DEFINITION" : "RULE_DEPENDS_ON_RULE", b.fromNodeId, t.nodeId, "IR_SOURCE_DEPENDENCY", `${b.relationshipType} ${b.exactSourceTargetRef} -> ${t.nodeId} (package binding ${b.bindingId})`, from.candidateRef, b.relationshipType);
+      }
+    } else {
+      addUnresolved("UNRESOLVED_SOURCE_DEPENDENCY", "REVIEW", from.candidateRef, from.nodeId, from.documentId, from.sectionRef, from.sourceOrder, `${b.path} ${b.relationshipType ?? "CONDITION_TARGET"} "${b.exactSourceTargetRef}" [${b.status}]: ${b.detail}`);
+    }
+  }
   // structural + context-bundle + operative-state edges
   for (const node of nodes) {
     if (node.kind !== "RULE") continue;
@@ -292,7 +309,7 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
   // ---- PASS 2b: edge authority ------------------------------------------------------------------------------------
   // An edge is authoritative for Phase 4 only when the compiled IR established it AND both endpoints are CERTIFIED.
   // Structural ancestry alone is a fact about the tree; a context-bundle classification alone is an inference.
-  const IR_DERIVATIONS: ReadonlySet<EdgeDerivation> = new Set<EdgeDerivation>(["IR_DEPENDS_ON", "IR_EXPRESSION_TERM_REFERENCE", "IR_CONDITION_REFERENCE", "IR_EXCEPTION_PERMISSION", "IR_DEFINITION_DEPENDS_ON_TERMS", "IR_SHARED_CAPACITY_MEMBERS"]);
+  const IR_DERIVATIONS: ReadonlySet<EdgeDerivation> = new Set<EdgeDerivation>(["IR_DEPENDS_ON", "IR_EXPRESSION_TERM_REFERENCE", "IR_CONDITION_REFERENCE", "IR_EXCEPTION_PERMISSION", "IR_DEFINITION_DEPENDS_ON_TERMS", "IR_SHARED_CAPACITY_MEMBERS", "IR_SOURCE_DEPENDENCY"]);
   for (const e of edges) {
     const irBacked = e.corroboratedBy.some((d) => IR_DERIVATIONS.has(d));
     const structural = e.corroboratedBy.some((d) => d === "STRUCTURAL_ANCESTRY" || d === "OPERATIVE_STATE");
@@ -347,7 +364,7 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
     identity: { mapAlgorithmVersion: COVENANT_MAP_ALGORITHM_VERSION, certifiedConfigIdentity: input.certifiedConfigIdentity, compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION, irSchemaVersion: IR_SCHEMA_VERSION, verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, discoveryRunVersion: input.discoveryRunVersion },
     operativeState: input.operativeState ? { status: input.operativeState.status, asOfDate: input.operativeState.asOfDate, provisions: input.operativeState.provisions.length, unattachedEffects: input.operativeState.unattachedEffects.length } : null,
     discoveryPopulation: input.discoveryPopulation ?? null,
-    nodes: orderedNodes, edges: orderedEdges, candidates: orderedCandidates, unresolved: orderedUnresolved, completeness,
+    nodes: orderedNodes, edges: orderedEdges, candidates: orderedCandidates, unresolved: orderedUnresolved, packageDependencies, completeness,
   };
   return { ...body, mapHash: computeMapHash(body) };
 }

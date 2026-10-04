@@ -19,18 +19,21 @@ describe("golden canonical map", () => {
     if (!map.completeness.complete) console.log(JSON.stringify({ candidates: map.candidates.map((c) => ({ ref: c.sectionRef, outcome: c.outcome, compile: c.compilationStatus, reasons: c.compilationFailureReasons, verify: c.verificationStatus, failure: c.failure })), unresolved: map.unresolved.map((u) => `${u.kind}: ${u.detail}`), issues: run.results.map((r) => r.compilation?.unresolvedIssues) }, null, 2));
 
     // ---- execution shape: ONE semantic conversation per candidate, single-message requests, two independent Pass A executions
-    expect(d.client.requests.length).toBe(2);
+    expect(d.client.requests.length).toBe(3);
     for (const r of d.client.requests) expect(r.messages).toBe(1);
-    expect(d.inventory[0].calls.filter((c) => c.stage === "semantic_inventory").length).toBe(2);
-    expect(d.inventory[1].calls.filter((c) => c.stage === "semantic_inventory").length).toBe(2);
+    expect(d.inventory[0].calls.filter((c) => c.stage === "semantic_inventory").length).toBe(3);
+    expect(d.inventory[1].calls.filter((c) => c.stage === "semantic_inventory").length).toBe(3);
     expect(run.stop).toBeNull();
 
     // ---- the hand-authored expectation
-    expect(map.candidates.map((c) => [c.sectionRef, c.outcome])).toEqual([["7.01", "MAPPED"], ["7.02", "MAPPED"]]);
+    expect(map.candidates.map((c) => [c.sectionRef, c.outcome])).toEqual([["1.01", "MAPPED"], ["7.01", "MAPPED"], ["7.02", "MAPPED"]]);
+    // ownership: the definitions are owned by the 1.01 candidate; 7.01 USES Consolidated EBITDA and emits no definition of its own
+    expect(map.nodes.filter((n) => n.kind === "DEFINITION").every((n) => n.candidateRef === map.candidates[0]!.candidateRef)).toBe(true);
+    for (const r of run.results) expect(r.compilation?.contextOnlyEmissions ?? []).toEqual([]);
     expect(map.unresolved).toEqual([]);
-    expect(map.completeness).toMatchObject({ candidatesDiscovered: 2, candidatesEligible: 2, candidatesMapped: 2, candidatesFailed: 0, candidatesUnserved: 0, nodesByKind: { RULE: 5, DEFINITION: 3, SHARED_CAPACITY: 0 }, unresolvedBlocking: 0, unresolvedReview: 0, nodesStrongIdentity: 8, complete: true, mappedFraction: 1 });
+    expect(map.completeness).toMatchObject({ candidatesDiscovered: 3, candidatesEligible: 3, candidatesMapped: 3, candidatesFailed: 0, candidatesUnserved: 0, nodesByKind: { RULE: 5, DEFINITION: 6, SHARED_CAPACITY: 0 }, unresolvedBlocking: 0, unresolvedReview: 0, nodesStrongIdentity: 11, complete: true, mappedFraction: 1 });
     // source order: three definitions (1.01, document order), then 7.01 chapeau, (a), (b), (c), then 7.02
-    expect(map.nodes.map((n) => `${n.kind}:${n.termName ?? n.sectionRef}`)).toEqual(["DEFINITION:Consolidated EBITDA", "DEFINITION:Consolidated Net Income", "DEFINITION:Interest Expense", "RULE:7.01", "RULE:7.01(a)", "RULE:7.01(b)", "RULE:7.01(c)", "RULE:7.02"]);
+    expect(map.nodes.map((n) => `${n.kind}:${n.termName ?? n.sectionRef}`)).toEqual(["DEFINITION:Consolidated EBITDA", "DEFINITION:Consolidated Net Income", "DEFINITION:Indebtedness", "DEFINITION:Interest Expense", "DEFINITION:Loan Documents", "DEFINITION:Subsidiary", "RULE:7.01", "RULE:7.01(a)", "RULE:7.01(b)", "RULE:7.01(c)", "RULE:7.02"]);
     for (let i = 1; i < map.nodes.length; i++) expect(map.nodes[i]!.sourceOrder.charStart).toBeGreaterThanOrEqual(map.nodes[i - 1]!.sourceOrder.charStart);
     const byRef = (ref: string) => map.nodes.find((n) => n.kind === "RULE" && n.sectionRef === ref)!;
     const byTerm = (t: string) => map.nodes.find((n) => n.kind === "DEFINITION" && n.termName === t)!;
@@ -59,13 +62,13 @@ describe("golden canonical map", () => {
     // every node: STRONG identity, sourceContentVersion populated, verified
     // binding identity = semantic source contract (sscv1); operative identity (scv1) carried beside it; every node CERTIFIED with a persisted artifact hash
     for (const n of map.nodes) { expect(n.identityStrength).toBe("STRONG"); expect(n.sourceContentVersion).toMatch(/^sscv1:[0-9a-f]{64}$/); expect(n.operativeSourceVersion).toMatch(/^scv1:[0-9a-f]{64}$/); expect(n.verification.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND"); expect(n.certification).toMatchObject({ status: "CERTIFIED", blockers: [], semanticSourceContractVersion: n.sourceContentVersion }); expect(n.certification.artifactHash).toMatch(/^[0-9a-f]{64}$/); }
-    expect(new Set(map.nodes.map((n) => n.operativeSourceVersion)).size).toBe(2); // one operative version per candidate source
-    expect(new Set(map.nodes.map((n) => n.sourceContentVersion)).size).toBe(2);
-    expect(map.completeness).toMatchObject({ mapComplete: true, certificationComplete: true, candidatesCertified: 2, candidatesReviewRequired: 0, candidatesNotCertified: 0, semanticUnits: 8, semanticUnitsCertified: 8 });
+    expect(new Set(map.nodes.map((n) => n.operativeSourceVersion)).size).toBe(3); // one operative version per candidate source
+    expect(new Set(map.nodes.map((n) => n.sourceContentVersion)).size).toBe(3);
+    expect(map.completeness).toMatchObject({ mapComplete: true, certificationComplete: true, candidatesCertified: 3, candidatesReviewRequired: 0, candidatesNotCertified: 0, semanticUnits: 11, semanticUnitsCertified: 11 });
     for (const e of map.edges) expect(e.edgeAuthority).toBe("CERTIFIED_SEMANTIC"); // every golden edge is IR-established between certified units
     expect(run.packageCertification.status).toBe("CERTIFIED");
     expect(run.manifest).toMatchObject({ schema: "p3-package-certification-manifest.v1", discoveryPopulation: { scope: "COMPLETE" }, mapIdentity: { mapHash: map.mapHash } });
-    expect(run.manifest.verifiedArtifactPackageHashes.length).toBe(2);
+    expect(run.manifest.verifiedArtifactPackageHashes.length).toBe(3);
     // validation + hash
     const v = validateCovenantMap(map);
     expect(v.problems).toEqual([]); expect(v.ok).toBe(true);
@@ -77,6 +80,6 @@ describe("golden canonical map", () => {
     expect(run2.map.mapHash).toBe(map.mapHash);
     expect(JSON.stringify({ ...run2.map, candidates: run2.map.candidates.map((k) => ({ ...k, telemetry: null })) })).toBe(JSON.stringify({ ...map, candidates: map.candidates.map((k) => ({ ...k, telemetry: null })) }));
     // telemetry is honest and separated: 1 semantic conversation, 0 refinements, priced usage
-    for (const k of map.candidates) expect(k.telemetry).toMatchObject({ candidateAttempt: 1, semanticConversations: 1, refinementConversations: 0, transportAttempts: 1, shardAttempts: 0, inventoryCalls: 2, pricingStatus: "PRICED" });
+    for (const k of map.candidates) expect(k.telemetry).toMatchObject({ candidateAttempt: 1, semanticConversations: 1, refinementConversations: 0, transportAttempts: 1, shardAttempts: 0, pricingStatus: "PRICED" });
   });
 });

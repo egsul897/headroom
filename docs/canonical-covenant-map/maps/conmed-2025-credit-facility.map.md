@@ -1,7 +1,7 @@
 # Canonical covenant map - conmed-eighth-ar-credit-agreement
 
-mapHash: `9c454e60b2c912b59f140109d1b0ef2fc4e17f2cc3f0758ca30e80d9e3dbc708`  
-schema: canonical-covenant-map.v2  
+mapHash: `af8adf36e694ef5e002fa19b8bf194f6ace8fac47faeaadfb62d76adb62bb7a6`  
+schema: canonical-covenant-map.v3  
 config: (none)
 
 ## Completeness
@@ -174,6 +174,12 @@ config: (none)
 | RULE_SUBJECT_TO_GENERAL_PROHIBITION | `ir-rule:e01d1d1747d96aec733857d5` | `ir-rule:253390261ce52155990b32d2` |  | IR_EXCEPTION_PERMISSION | permission carved out of ir-rule:253390261ce52155990b32d2 by exception rule[r2].exception[0] |
 | RULE_SUBJECT_TO_GENERAL_PROHIBITION | `ir-rule:797746be387afa7195d502d5` | `ir-rule:ebc9e3eb01bebcc85105ddaf` |  | IR_EXCEPTION_PERMISSION | permission carved out of ir-rule:ebc9e3eb01bebcc85105ddaf by exception rule[r7b].exception[0] |
 | RULE_MODIFIED_BY_EXCEPTION | `ir-rule:ebc9e3eb01bebcc85105ddaf` | `ir-rule:797746be387afa7195d502d5` |  | IR_EXCEPTION_PERMISSION | Businesses in which the Parent Borrower or any of its Subsidiaries is engaged on the date of this Agreement, and businesses reasonably related thereto, are excluded from the prohibition (modeled as permission rule r7a) |
+
+## Package dependency bindings
+
+| total | bound | executable | not in target set | owner not compiled | unit not found | unknown |
+|---|---|---|---|---|---|---|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## Unresolved
 

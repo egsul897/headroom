@@ -22,6 +22,10 @@ export interface RetrievalState {
   itemsConsidered: number;
   maxDefinitionDepthReached: number;
   maxCrossReferenceDepthReached: number;
+  /** SEMANTIC FIDELITY (v4): deliberate traversal stops at separately-owned semantic units and recorded cycles. */
+  retrievalStops: import("./types").RetrievalStopRecord[];
+  /** Nodes owned by candidates of the sealed population (anchor node id -> candidate ids); null when the population was not supplied. */
+  semanticUnitOwnership: Map<string, string[]> | null;
   crossReferenceTraversals: number;
   crossDocumentLeads: number;
   duplicatePathsDeduplicated: number;
@@ -43,7 +47,7 @@ export interface RetrievalState {
   supersessionIndex: NodeSupersessionIndex;
 }
 
-export function createRetrievalState(budget: RetrievalBudget, operativeState?: OperativeContractState | null, supersessionIndex?: NodeSupersessionIndex): RetrievalState {
+export function createRetrievalState(budget: RetrievalBudget, operativeState?: OperativeContractState | null, supersessionIndex?: NodeSupersessionIndex, semanticUnitOwnership?: Map<string, string[]> | null): RetrievalState {
   return {
     budget,
     items: new Map(),
@@ -56,6 +60,8 @@ export function createRetrievalState(budget: RetrievalBudget, operativeState?: O
     itemsConsidered: 0,
     maxDefinitionDepthReached: 0,
     maxCrossReferenceDepthReached: 0,
+    retrievalStops: [],
+    semanticUnitOwnership: semanticUnitOwnership ?? null,
     crossReferenceTraversals: 0,
     crossDocumentLeads: 0,
     duplicatePathsDeduplicated: 0,

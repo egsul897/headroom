@@ -94,3 +94,13 @@ outcome, the canonical path builds the paired verified-unit package (v2, shared 
 the binding identity is the semantic source contract (sscv1), Phase 4 is reachable only through the certified adapter
 and the strict boundary, and package certification is claimed only over a sealed complete population.
 `npm run test:phase3-certification`: 17 files, 215 tests, green; global typecheck green.
+
+## Addendum - semantic fidelity closure
+
+See `09-semantic-fidelity-closure.md`. The first certified live run of CONMED §7.2(c) exposed foreign-unit emission from
+parent scope, free-text cross-references carrying the targets' own economics, an invented expression kind, a MONEY-typed
+compliance condition, an empty AS_OF selector, segmentation-driven support asymmetry, a finding-id collision, a
+preemptive context-budget stop and an unsupplied operative state. Each is now a deterministic, agreement-agnostic control
+(unit ownership, typed source dependencies with package-level binding, cross-rule conditions, wire semantic validity,
+ensemble coverage corroboration, assertion-bound finding ids, mention-aware depth stops with ownership boundaries, and a
+runner that supplies the real Phase-2 state), each frozen as an offline regression.

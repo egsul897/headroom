@@ -16,6 +16,8 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { buildDeterministicStages, rehydrateNodeIds, sealedPopulation, COMPANY_ID, INSTRUMENT_KEY, PACKAGE_KEY } from "../p3-conmed-pilot/pipeline";
+import { loadPreservedPhase2OperativeState } from "./operative-state";
+import { governingProvisionFor } from "../../lib/contract-model/compiler/candidate-span";
 import { resolveOperativeSource } from "../../lib/contract-model/compiler/candidate-span";
 import { resolveSourceContext } from "../../lib/contract-model/compiler/semantic-accountability/source-context";
 import { batchSlots, partitionSourceSlots } from "../../lib/contract-model/compiler/semantic-accountability/slots";
@@ -41,7 +43,12 @@ const EXPECTED_TEXT_SHA256 = "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247
 const EXPECTED_CHARS = 529;
 const MODEL = "deepseek/deepseek-v4-flash";
 const HARD_CEILING_USD = 0.25;
-const OUT = "docs/phase-3-live-validation/7.2c-first-certified";
+// The first certified run's evidence (7.2c-first-certified/) is immutable. Every later attempt writes to its own directory,
+// chosen with --out <dir>; the default names the operative-state rerun. Writing into the first run's directory is refused.
+const FIRST_CERTIFIED_EVIDENCE = "docs/phase-3-live-validation/7.2c-first-certified";
+const outArg = process.argv.find((a) => a.startsWith("--out="))?.slice("--out=".length) ?? (process.argv.includes("--out") ? process.argv[process.argv.indexOf("--out") + 1] : undefined);
+const OUT = outArg ?? "docs/phase-3-live-validation/7.2c-rerun-operative-state";
+if (path.resolve(OUT) === path.resolve(FIRST_CERTIFIED_EVIDENCE)) throw new Error(`refusing to write into immutable evidence ${FIRST_CERTIFIED_EVIDENCE}; pass --out <new directory>`);
 const LEGACY_MAX_TOKENS = 128_000;
 const sha256 = (s: string) => crypto.createHash("sha256").update(s).digest("hex");
 const mode = process.argv.includes("--live") ? "LIVE" : "DRY_RUN";
@@ -146,7 +153,11 @@ async function main(): Promise<void> {
   if (!target) throw new Error(`target ${TARGET_ID} not in the sealed population`);
   const sameRef = rehydrated.filter((c) => c.normalizedSourceRef === TARGET_REF && c.documentId === TARGET_DOC);
   const anchor = target.structuralNodeIds[0] ? stages.index.getNodeById(target.structuralNodeIds[0]) : undefined;
-  const src = resolveOperativeSource(target, stages.index, null);
+  // ---- 1b. the REAL preserved Phase-2 operative state for this instrument (semantic fidelity §32/§33): supplied to the
+  // canonical package input below; never faked, never used to overwrite what Phase 2 left unresolved
+  const phase2 = loadPreservedPhase2OperativeState({ instrumentKey: INSTRUMENT_KEY, baseDocumentId: TARGET_DOC });
+  const governing = governingProvisionFor(target, phase2.state);
+  const src = resolveOperativeSource(target, stages.index, phase2.state);
   const identity = {
     discoveryId: target.discoveryId, documentId: target.documentId, normalizedSourceRef: target.normalizedSourceRef, structuralNodeKeys: target.structuralNodeKeys, structuralNodeIds: target.structuralNodeIds,
     anchor: anchor ? { nodeId: anchor.nodeId, nodeKey: anchor.nodeKey, nodeType: anchor.nodeType, sectionRef: anchor.sectionRef, charStart: anchor.charStart, charEnd: anchor.charEnd } : null,
@@ -160,6 +171,11 @@ async function main(): Promise<void> {
     textSha256Matches: sha256(src.text) === EXPECTED_TEXT_SHA256, charsMatch: src.text.length === EXPECTED_CHARS,
   };
   write("01-target-identity.json", { identity, assertions });
+  write("01b-operative-state.json", {
+    adapter: phase2.adapterVersion, source: phase2.source,
+    instrumentState: { status: phase2.state.status, asOfDate: phase2.state.asOfDate, summary: phase2.state.summary, provisions: phase2.state.provisions.map((p) => ({ provisionKey: p.provisionKey, kind: p.kind, sectionRef: p.sectionRef, definedTermRef: p.definedTermRef, status: p.status, currentSourceDocumentId: p.currentSourceDocumentId, unresolvedIssues: p.unresolvedIssues })), unattachedEffects: phase2.state.unattachedEffects.length, effects: phase2.effects.length },
+    target: { governingProvision: governing ? { provisionKey: governing.provisionKey, status: governing.status, currentSourceDocumentId: governing.currentSourceDocumentId, appliedEffectIds: governing.appliedChain.map((c) => c.effectId), supersededSourceNodeIds: governing.supersededSourceNodeIds } : null, operativeSourceOrigin: src.origin, note: governing ? "a Phase-2 provision governs this candidate" : "no Phase-2 provision governs this candidate: the base structural node text is the operative source; relied-upon definitions carry their own operative state through the context bundle" },
+  });
   if (Object.values(assertions).some((v) => !v)) throw new Error(`target identity assertions failed: ${j(assertions)} - NO paid request`);
 
   // ---- 2. derived Pass A bounds from the current code (the expectation the live run is held to)
@@ -172,7 +188,7 @@ async function main(): Promise<void> {
   const derived = { policy: inventoryPolicyIdentity(policy), sourceContextState: sc.state, slots: partition.slots.length, batches: batches.length, maxLegitimateItems: bounds.reduce((n, b) => n + b.maxItems, 0), parseCeilings: bounds.map((b) => b.parseCeiling), maxSerializedChars: bounds.reduce((n, b) => n + b.maxSerializedChars, 0), requestedMaxOutputTokensByBatch: bounds.map((b) => b.maxOutputTokens), reasoning: policy.reasoning, callDeadlineMs: policy.callDeadlineMs };
 
   const config = certifiedConfig({ semanticModel: MODEL, inventoryModel: MODEL, verifierModel: MODEL });
-  const preflight = { mode, startedAt, headSha: fs.existsSync(".git") ? (() => { try { return fs.readFileSync(".git/" + fs.readFileSync(".git/HEAD", "utf8").trim().replace("ref: ", ""), "utf8").trim(); } catch { return null; } })() : null, target: TARGET_ID, model: MODEL, hardCeilingUsd: HARD_CEILING_USD, certifiedConfigIdentity: certifiedConfigIdentity(config), candidateDeadlineMs: config.candidateDeadlineMs, maxOutputTokensSemantic: config.maxOutputTokens, inventoryMode: config.inventoryMode, expansionRegionPolicy: config.expansionRegionPolicy, operativeState: "NONE (no paid amendment stage; preserved runs show 7.2(c) carried no operative lineage)", asOfDate: startedAt.slice(0, 10), derivedPassABounds: derived, inputs: { documents: stages.documents.map((d) => ({ documentId: d.documentId, chars: d.text.length, sha256: sha256(d.text) })), sealedPopulationCandidates: pop.all.length, rehydrationUnresolved: unresolved.length } };
+  const preflight = { mode, startedAt, headSha: fs.existsSync(".git") ? (() => { try { return fs.readFileSync(".git/" + fs.readFileSync(".git/HEAD", "utf8").trim().replace("ref: ", ""), "utf8").trim(); } catch { return null; } })() : null, target: TARGET_ID, model: MODEL, hardCeilingUsd: HARD_CEILING_USD, certifiedConfigIdentity: certifiedConfigIdentity(config), candidateDeadlineMs: config.candidateDeadlineMs, maxOutputTokensSemantic: config.maxOutputTokens, inventoryMode: config.inventoryMode, expansionRegionPolicy: config.expansionRegionPolicy, operativeState: { source: phase2.source.path, runId: phase2.source.runId, status: phase2.state.status, provisions: phase2.state.provisions.length, governingProvisionForTarget: governing?.provisionKey ?? null }, asOfDate: startedAt.slice(0, 10), derivedPassABounds: derived, inputs: { documents: stages.documents.map((d) => ({ documentId: d.documentId, chars: d.text.length, sha256: sha256(d.text) })), sealedPopulationCandidates: pop.all.length, rehydrationUnresolved: unresolved.length } };
   write("00-preflight.json", preflight);
   console.log(JSON.stringify({ mode, assertions, derived }, null, 1));
   if (mode === "DRY_RUN") { console.log("DRY_RUN complete: no credential loaded, no provider contacted"); return; }
@@ -183,12 +199,14 @@ async function main(): Promise<void> {
   const callers = createCertifiedCallers(config, { apiKey });
   const budget = new HardDispatchBudget({ ceilingUsd: HARD_CEILING_USD, maxCalls: 40 });
   const asOfDate = startedAt.slice(0, 10);
-  const runId = `live-7.2c-first-certified-${startedAt}`;
+  const runId = `live-7.2c-rerun-operative-state-${startedAt}`;
   const pkg: CovenantMapPackageInput = {
     companyId: COMPANY_ID, packageKey: PACKAGE_KEY, instrumentKey: INSTRUMENT_KEY, asOfDate,
     documents: stages.documents.map((d) => ({ documentId: d.documentId, label: d.label, text: d.text, role: d.documentId === TARGET_DOC ? ("BASE" as const) : d.documentId.includes("amendment") ? ("AMENDMENT" as const) : ("ANCILLARY" as const) })),
-    index: stages.index, packageGraph: stages.packageGraph, exactTermsByDocument: stages.access.exactTermsByDocument, operativeState: null, amendmentEffects: null,
+    index: stages.index, packageGraph: stages.packageGraph, exactTermsByDocument: stages.access.exactTermsByDocument, operativeState: phase2.state, amendmentEffects: phase2.effects,
     candidates: [target], discoveryRunVersion: target.discoveryRunVersion, discoveryPopulation: unsealedPopulation([target], target.discoveryRunVersion, "PARTIAL_TARGET_SET"), runId,
+    // the FULL sealed population (rehydrated), so references to separately-owned covenants resolve to known external candidates
+    candidatePopulation: rehydrated.map((c) => ({ discoveryId: c.discoveryId, structuralNodeIds: c.structuralNodeIds })),
   };
   const deps: CertifiedExecutionDeps = { config, ...callers, budget, cache: new InMemorySemanticCompilationCache(), concurrency: 1 };
   const t0 = Date.now();

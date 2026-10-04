@@ -28,7 +28,7 @@ import type { EnsembleCompatibilityMode, EnsembleCompatibilityRecord, EnsembleRe
 import type { WireInventoryItem } from "./wire-schema";
 import type { StructuralIndex } from "../structural-index";
 
-export const ENSEMBLE_ALGORITHM_VERSION = "semantic-ensemble.v1";
+export const ENSEMBLE_ALGORITHM_VERSION = "semantic-ensemble.v2";
 export type UnionPolicy = "INTERSECTION_ONLY" | "RAW_UNION" | "SUPPORT_AWARE_CANONICAL_UNION";
 /** The Pass A evidence generations this ensemble may combine under STRICT. Exactly the current generation: a new generation is a deliberate, versioned decision, never an implicit one. */
 export const ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS: readonly string[] = [SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION];
@@ -208,6 +208,67 @@ export function buildEnsembleInventory(input: EnsembleInput): EnsembleInventory 
     }
   }
 
+  // SEMANTIC FIDELITY (v2) - SOURCE-COVERAGE CORROBORATION. Two independent passes may recognize the same material source
+  // region while choosing different, overlapping spans (one broad proposition vs two narrower ones). A SINGLE_RUN item is
+  // COVERAGE_CORROBORATED when an item of ANOTHER pass covers it compatibly: same region, interval overlap of at least half
+  // of the narrower span (or containment), same primary role or compatible functions (no contradictory effect, logic sets
+  // not disjoint when both are non-empty), no conflicting stated values, no disjoint explicit section references, no
+  // contradictory posture/materiality class. Deterministic text/interval/function logic only - never paraphrase
+  // similarity, never embeddings. Propositions are NOT merged: distinct claims stay distinct items in distinct groups.
+  const MATERIAL_CLASS = (i: SemanticInventoryItem) => (MATERIAL.has(i.materiality) ? "MATERIAL" : "INFORMATIONAL");
+  const refsOf = (i: SemanticInventoryItem) => new Set(i.referencedSections.map((r) => r.replace(/^(?:section|§)\s*/i, "").replace(/\s+/g, "").toLowerCase()));
+  const logicOf = (i: SemanticInventoryItem) => new Set(functionsOf(i).logic);
+  const compatible = (x: SemanticInventoryItem, y: SemanticInventoryItem): string | null => {
+    if (x.sourceSpan.regionId !== y.sourceSpan.regionId) return null;
+    const lenX = x.sourceSpan.charEnd - x.sourceSpan.charStart, lenY = y.sourceSpan.charEnd - y.sourceSpan.charStart;
+    const ov = Math.max(0, Math.min(x.sourceSpan.charEnd, y.sourceSpan.charEnd) - Math.max(x.sourceSpan.charStart, y.sourceSpan.charStart));
+    const narrower = Math.max(1, Math.min(lenX, lenY));
+    const contained = (x.sourceSpan.charStart >= y.sourceSpan.charStart && x.sourceSpan.charEnd <= y.sourceSpan.charEnd) || (y.sourceSpan.charStart >= x.sourceSpan.charStart && y.sourceSpan.charEnd <= x.sourceSpan.charEnd);
+    if (!contained && ov / narrower < 0.5) return null;
+    // claim conservation: a component nested under a composite (parentItemId) is a DISTINCT sub-claim; the composite covering
+    // it is not corroboration of the component (F-5.3A scenario B), and a stated figure is corroborated only by an item that
+    // states the same figure (a span that merely contains the figure's words is not a second observation of the amount)
+    if (x.parentItemId === y.inventoryItemId || y.parentItemId === x.inventoryItemId) return null;
+    const ax = amountSet(x), ay = amountSet(y);
+    if (ax.size > 0 && !subset(ax, ay)) return null;
+    const fx = functionsOf(x), fy = functionsOf(y);
+    if (effectsContradict(fx.effect, fy.effect)) return null;
+    const lx = logicOf(x), ly = logicOf(y);
+    const sameRole = x.semanticRole === y.semanticRole;
+    const logicCompatible = lx.size === 0 || ly.size === 0 || [...lx].some((l) => ly.has(l));
+    if (!sameRole && !(fx.effect === fy.effect && logicCompatible)) return null;
+    if (!sameRole && (lx.size === 0) !== (ly.size === 0)) return null; // a bare permission does not cover a condition (or vice versa)
+    if (valuesConflict(x, y)) return null;
+    const rx = refsOf(x), ry = refsOf(y);
+    if (rx.size > 0 && ry.size > 0 && ![...rx].some((r) => ry.has(r))) return null;
+    if (MATERIAL_CLASS(x) !== MATERIAL_CLASS(y) && !contained) return null;
+    return `${contained ? "containment" : `overlap ${(ov / narrower).toFixed(2)} of the narrower span`}; ${sameRole ? `same role ${x.semanticRole}` : `compatible functions (${fx.effect}/${[...lx].join("+") || "-"} vs ${fy.effect}/${[...ly].join("+") || "-"})`}; values compatible; references compatible`;
+  };
+  for (const x of items) {
+    const sx = x.support!;
+    if (sx.supportStatus !== "SINGLE_RUN") continue;
+    const own = new Set(sx.supportingPasses);
+    const coverage: NonNullable<ItemSupport["coverageBy"]> = [];
+    for (const y of items) {
+      if (y === x || y.support!.supportStatus === "CONFLICTED") continue;
+      const otherPasses = y.support!.supportingPasses.filter((p) => !own.has(p));
+      if (otherPasses.length === 0) continue;
+      const reason = compatible(x, y);
+      if (!reason) continue;
+      const ov = Math.max(0, Math.min(x.sourceSpan.charEnd, y.sourceSpan.charEnd) - Math.max(x.sourceSpan.charStart, y.sourceSpan.charStart));
+      for (const p of otherPasses) coverage.push({ itemId: y.inventoryItemId, passId: p, overlapFraction: Number((ov / Math.max(1, x.sourceSpan.charEnd - x.sourceSpan.charStart)).toFixed(4)), reason });
+    }
+    if (coverage.length > 0) { sx.supportStatus = "COVERAGE_CORROBORATED"; sx.coverageBy = coverage.sort((a, b) => a.itemId.localeCompare(b.itemId) || a.passId.localeCompare(b.passId)); }
+  }
+  // Support groups: items connected by exact membership or coverage share one group id (distinct from proposition ids).
+  const groupOf = new Map<string, string>();
+  const find = (id: string): string => { let cur = id; while (groupOf.get(cur) && groupOf.get(cur) !== cur) cur = groupOf.get(cur)!; return cur; };
+  const union = (a: string, b: string) => { const ra = find(a), rb = find(b); if (ra !== rb) groupOf.set(ra < rb ? rb : ra, ra < rb ? ra : rb); };
+  for (const i of items) groupOf.set(i.inventoryItemId, i.inventoryItemId);
+  for (const i of items) for (const c of i.support!.coverageBy ?? []) union(i.inventoryItemId, c.itemId);
+  for (const i of items) i.support!.supportGroupId = `support-group:${find(i.inventoryItemId).replace(/^inv-item:/, "")}`;
+  const supportGroups = new Set(items.map((i) => i.support!.supportGroupId)).size;
+
   // Raw source coverage RECOMPUTED over the union (never OR-ed from the passes' statuses).
   const cov = computeSourceCoverage({ regions: input.sourceContext.regions, spans: items.map((i) => ({ regionId: i.sourceSpan.regionId, charStart: i.sourceSpan.charStart, charEnd: i.sourceSpan.charEnd, materiality: i.materiality })), externalAccountability: input.externalAccountability });
   const unaccounted = cov.unaccounted.map((s) => ({ regionId: s.regionId, charStart: s.charStart, charEnd: s.charEnd, excerpt: s.excerpt, reason: s.reason, values: s.values }));
@@ -215,17 +276,17 @@ export function buildEnsembleInventory(input: EnsembleInput): EnsembleInventory 
   const totalChars = Object.values(cov.charsByDisposition).reduce((a, b) => a + b, 0);
   const accountedChars = Object.entries(cov.charsByDisposition).filter(([d]) => isAccountedDisposition(d as never)).reduce((a, [, n]) => a + n, 0);
   const links = input.externalAccountability ?? [];
-
-  const counts: EnsembleRecord["counts"] = { canonicalItems: items.length, corroborated: 0, singleRun: 0, singleRunByPass: Object.fromEntries(passIds.map((p) => [p, 0])), conflicted: 0, materialSingleRun: 0, informationalSingleRun: 0, materialConflicted: 0, rejectedUnverifiable: r.rejectedUnverifiable };
+  const counts: EnsembleRecord["counts"] = { canonicalItems: items.length, corroborated: 0, coverageCorroborated: 0, singleRun: 0, singleRunByPass: Object.fromEntries(passIds.map((p) => [p, 0])), conflicted: 0, materialSingleRun: 0, informationalSingleRun: 0, materialConflicted: 0, rejectedUnverifiable: r.rejectedUnverifiable, supportGroups };
   for (const i of items) {
     const s = i.support!;
     if (s.supportStatus === "CONFLICTED") { counts.conflicted++; if (MATERIAL.has(i.materiality)) counts.materialConflicted++; }
     else if (s.supportStatus === "CORROBORATED") counts.corroborated++;
+    else if (s.supportStatus === "COVERAGE_CORROBORATED") counts.coverageCorroborated = (counts.coverageCorroborated ?? 0) + 1;
     else { counts.singleRun++; counts.singleRunByPass[s.supportingPasses[0]!] = (counts.singleRunByPass[s.supportingPasses[0]!] ?? 0) + 1; if (MATERIAL.has(i.materiality)) counts.materialSingleRun++; else counts.informationalSingleRun++; }
   }
   const reviewItems = counts.materialSingleRun + counts.materialConflicted;
   const status = unaccounted.length > 0 ? "INVENTORY_COVERAGE_GAP" : items.length === 0 ? "INVENTORY_EMPTY_SUSPECT" : "INVENTORY_OK";
-  const reasonParts = [`${items.length} canonical item(s) from ${passIds.length} independent passes: ${counts.corroborated} corroborated, ${counts.singleRun} single-run (${counts.materialSingleRun} CRITICAL/MATERIAL), ${counts.conflicted} conflicted`];
+  const reasonParts = [`${items.length} canonical item(s) from ${passIds.length} independent passes: ${counts.corroborated} exactly corroborated, ${counts.coverageCorroborated ?? 0} coverage-corroborated, ${counts.singleRun} single-run (${counts.materialSingleRun} CRITICAL/MATERIAL), ${counts.conflicted} conflicted; ${supportGroups} support group(s)`];
   if (unaccounted.length > 0) reasonParts.push(`${unaccounted.length} stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass`);
   if (reviewItems > 0) reasonParts.push(`${reviewItems} CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later`);
   const passHashes = Object.fromEntries(input.passes.map((p) => [p.passId, p.inventory.frozenContentHash] as [string, string]).sort(([a], [b]) => a.localeCompare(b)));

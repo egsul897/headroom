@@ -95,7 +95,9 @@ export type BoundaryRefusalCode =
   /** A verification artifact names a unit the package does not carry, names it twice, or contradicts itself about which unit it is for. */
   | "VERIFICATION_IDENTITY_UNBOUND"
   /** The IR package is not one instrument's consistent unit set (a unit for another company/instrument, or an id claimed twice). */
-  | "IR_PACKAGE_INCONSISTENT";
+  | "IR_PACKAGE_INCONSISTENT"
+  /** A rule's permission is gated on another rule's satisfaction (a cross-rule condition or a REQUIRES/LIMITED_BY source dependency). The runtime has no certified cross-rule satisfaction evaluator yet (PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE), so the package fails closed: the gate is never treated as satisfied and an UNLIMITED_CAPACITY behind it never executes. */
+  | "CROSS_RULE_GATE_NOT_EXECUTABLE";
 
 export interface BoundaryRefusal { code: BoundaryRefusalCode; message: string; refs: string[] }
 
@@ -198,6 +200,19 @@ function bind(pkg: VerifiedExecutionPackage): Bound {
     }
   }
   if (sharedProblems.length > 0) refusals.push({ code: "VERIFICATION_ARTIFACT_INCOMPLETE", message: "shared capacity pool(s) are not cleanly verified; under REQUIRE an unverified pool never shapes capacity", refs: sharedProblems.sort() });
+
+  // SEMANTIC FIDELITY: cross-rule gates fail closed. A rule whose availability depends on another rule being satisfied
+  // (referencesRuleTargets on a condition, or a REQUIRES / LIMITED_BY source dependency) cannot be executed by this runtime
+  // as "satisfied" - whether or not the package has bound the target - because no certified cross-rule satisfaction
+  // evaluator exists yet. Refusing here is what keeps an UNLIMITED_CAPACITY behind such a gate from reading as available.
+  const gated: string[] = [];
+  for (const r of pkg.rules) {
+    const conds = r.conditions.filter((c) => (c.referencesRuleTargets?.length ?? 0) > 0).map((c) => `${r.ruleId} ${c.conditionId} -> ${c.referencesRuleTargets!.map((t) => `${t.exactSourceTargetRef} [${t.boundSemanticTargetIds.length > 0 ? `bound:${t.boundSemanticTargetIds.join("+")}` : t.resolutionStatus}]`).join(", ")}`);
+    const deps = (r.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY").map((d) => `${r.ruleId} ${d.relationshipType} ${d.exactSourceTargetRef} [${d.boundSemanticTargetIds.length > 0 ? `bound:${d.boundSemanticTargetIds.join("+")}` : d.resolutionStatus}]`);
+    const unknown = (r.unresolvedDependencies ?? []).filter((d) => (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") && !(r.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef)).map((d) => `${r.ruleId} ${d.relationshipType} ${d.targetRef} [DEPENDENCY_UNKNOWN]`);
+    gated.push(...conds, ...deps, ...unknown);
+  }
+  if (gated.length > 0) refusals.push({ code: "CROSS_RULE_GATE_NOT_EXECUTABLE", message: "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed", refs: gated.sort() });
 
   if (refusals.length > 0) return { refusals, envelope: null, units };
 

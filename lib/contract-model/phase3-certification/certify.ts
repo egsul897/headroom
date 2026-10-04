@@ -77,7 +77,14 @@ export function certifyCandidate(input: CertifyCandidateInput): CandidateCertifi
     for (const r of comp.rules) {
       if (input.operativeLineage && r.operativeLineage && r.operativeLineage.provisionKey !== input.operativeLineage.provisionKey) block("LINEAGE_UNACCEPTABLE", "REVIEW", `rule ${r.ruleId} claims lineage ${r.operativeLineage.provisionKey}; the candidate's operative provision is ${input.operativeLineage.provisionKey}`, [r.ruleId]);
       if (input.operativeLineage && r.operativeLineage && r.operativeLineage.operativeStatus !== "OPERATIVE_STATE_RESOLVED") block("LINEAGE_UNACCEPTABLE", "REVIEW", `rule ${r.ruleId} lineage status ${r.operativeLineage.operativeStatus}`, [r.ruleId]);
-      if ((r.unresolvedDependencies ?? []).length > 0) block("DEPENDENCY_INVALID", "REVIEW", `rule ${r.ruleId} carries ${r.unresolvedDependencies!.length} unresolved dependenc${r.unresolvedDependencies!.length === 1 ? "y" : "ies"}`, [r.ruleId]);
+      // SEMANTIC FIDELITY: a structurally RESOLVED cross-unit reference is correct candidate semantics whose binding is a
+      // package-level step (warning SEMANTIC_BINDING_PENDING_PACKAGE); only a DEPENDENCY_UNKNOWN reference is a defect.
+      const unknownDeps = [...(r.sourceDependencies ?? []).filter((d) => d.resolutionStatus === "DEPENDENCY_UNKNOWN"), ...(r.unresolvedDependencies ?? []).filter((d) => !(r.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef)).map((d) => ({ exactSourceTargetRef: d.targetRef }))];
+      if (unknownDeps.length > 0) block("DEPENDENCY_INVALID", "REVIEW", `rule ${r.ruleId} references ${unknownDeps.map((d) => `"${d.exactSourceTargetRef}"`).join(", ")} which resolve to no structural node (DEPENDENCY_UNKNOWN)`, [r.ruleId]);
+      const pending = [...(r.sourceDependencies ?? []).filter((d) => d.resolutionStatus === "SOURCE_REFERENCE_RESOLVED"), ...r.conditions.flatMap((c) => (c.referencesRuleTargets ?? []).filter((t) => t.resolutionStatus === "SOURCE_REFERENCE_RESOLVED"))];
+      if (pending.length > 0) warn("SEMANTIC_BINDING_PENDING_PACKAGE", `rule ${r.ruleId} references ${[...new Set(pending.map((d) => d.exactSourceTargetRef))].join(", ")} - structurally resolved${pending.some((d) => d.owningCandidateRefs.length > 0) ? ` (owned by ${[...new Set(pending.flatMap((d) => d.owningCandidateRefs))].join(", ")})` : ""}; semantic target binding is a package-level step`, [r.ruleId]);
+      const unknownTargets = r.conditions.flatMap((c) => (c.referencesRuleTargets ?? []).filter((t) => t.resolutionStatus === "DEPENDENCY_UNKNOWN"));
+      if (unknownTargets.length > 0) block("DEPENDENCY_INVALID", "REVIEW", `rule ${r.ruleId} condition(s) reference ${unknownTargets.map((t) => `"${t.exactSourceTargetRef}"`).join(", ")} which resolve to no structural node (DEPENDENCY_UNKNOWN)`, [r.ruleId]);
       for (const d of r.dependsOn) if (!unitIdSet.has(d.targetRuleId)) warn("CROSS_CANDIDATE_DEPENDENCY", `rule ${r.ruleId} depends on ${d.targetRuleId}, which is not a unit of this candidate; resolved at package level`, [r.ruleId, d.targetRuleId]);
       for (const e of r.exceptions) if (e.permissionRuleId && !unitIdSet.has(e.permissionRuleId)) warn("CROSS_CANDIDATE_DEPENDENCY", `exception ${e.exceptionId} of ${r.ruleId} names permission ${e.permissionRuleId}, which is not a unit of this candidate; resolved at package level`, [r.ruleId, e.permissionRuleId]);
     }
@@ -87,6 +94,9 @@ export function certifyCandidate(input: CertifyCandidateInput): CandidateCertifi
       if (c.memberRuleIds.length === 0) block("DEPENDENCY_INVALID", "REVIEW", `shared capacity ${c.sharedCapId} has no member rules`, [c.sharedCapId]);
     }
   }
+
+  if (comp && (comp.contextOnlyEmissions?.length ?? 0) > 0) warn("CONTEXT_ONLY_UNIT_QUARANTINED", `${comp.contextOnlyEmissions!.length} unit(s) the composition emitted for source this candidate does not own were quarantined (never in the certified IR)`, comp.contextOnlyEmissions!.map((e) => e.unitId));
+  if (comp && (comp.dependencyProseDiagnostics ?? []).some((d) => d.targetEconomicsExcluded.length > 0)) warn("TARGET_ECONOMICS_EXCLUDED", "figures the model restated from referenced provisions were excluded from this unit's dependency semantics", comp.dependencyProseDiagnostics!.flatMap((d) => d.targetEconomicsExcluded));
 
   // 5. verification: completed, clean, owners canonical, no open material/uncertain finding, inventory/support
   const ver = input.verification;

@@ -18,6 +18,8 @@ import { BudgetRefusedError } from "../../analyzer/dispatch-budget";
 import { validateCompilationUnit } from "../../ir/validate";
 import type { SemanticCaller } from "./caller";
 import { normalizeSubmission } from "./normalize";
+import { findInvalidWireKinds } from "./wire-schema";
+import { IR_EXPRESSION_KINDS } from "../../ir/types";
 import { checkDefinitionCompleteness } from "./completeness-check";
 import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { IRDefinition } from "../../ir/types";
@@ -124,7 +126,7 @@ export function determineStatus(failureReasons: SemanticCompilerFailureReason[],
   // MODEL_SCHEMA_FAILURE here - a response cut off at the output-token ceiling is a
   // degraded attempt (PARTIAL when a validated prefix was recovered) even when every
   // recovered rule/definition itself validates cleanly, never a plain REVIEW_REQUIRED.
-  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE") || failureReasons.includes("OUTPUT_TRUNCATED")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
+  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE") || failureReasons.includes("OUTPUT_TRUNCATED") || failureReasons.includes("SEMANTIC_WIRE_KIND_INVALID")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
   if (failureReasons.length > 0 || hasReviewRequiredSufficiency || hasUnresolvedIssues) return "REVIEW_REQUIRED";
   return "COMPLETED";
 }
@@ -227,6 +229,10 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
     // returns a validated, truncated-but-usable submission alongside OUTPUT_TRUNCATED. That
     // must not be silently dropped just because normalization/validation otherwise succeeds.
     if (callResult.failureReason) failureReasons.push(callResult.failureReason);
+    // SEMANTIC FIDELITY: transport-valid is not semantic-valid. An invented expression kind is kept as UNSUPPORTED by the
+    // normalizer (tolerant transport) but is never a successful representation - bounded non-success, no retry, no guess.
+    const invalidWireKinds = findInvalidWireKinds(callResult.submission);
+    if (invalidWireKinds.length > 0) failureReasons.push("SEMANTIC_WIRE_KIND_INVALID");
     if (!validation.ok) failureReasons.push("IR_VALIDATION_FAILURE");
     if (normalized.rules.length === 0 && normalized.definitions.length === 0) failureReasons.push("PARTIAL_COMPILATION");
     if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
@@ -350,6 +356,7 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
       ...(callResult.failureDetail ? [callResult.failureDetail] : []),
       ...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`),
       ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`),
+      ...invalidWireKinds.map((k) => `[${k.path}] SEMANTIC_WIRE_KIND_INVALID: "${k.kind}" is not an IR expression kind (valid kinds: ${IR_EXPRESSION_KINDS.join(", ")}, UNLIMITED_CAPACITY for a capacity); kept as UNSUPPORTED, never a successful representation`),
       ...callResult.submission.overallNotes,
       ...accountabilityIssues,
     ];
@@ -369,6 +376,9 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
       ...accountabilityFields,
       accountability,
       rawModelOutput: callResult.rawSubmission,
+      contextOnlyEmissions: normalized.contextOnlyEmissions,
+      dependencyProseDiagnostics: normalized.dependencyProse,
+      invalidWireKinds,
       provider: caller.providerName,
       model: caller.model,
       telemetry: callResult.telemetry,

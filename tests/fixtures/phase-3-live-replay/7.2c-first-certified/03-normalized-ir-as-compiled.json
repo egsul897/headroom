@@ -1,0 +1,310 @@
+{
+ "definitions": [],
+ "failureReasons": [
+  "OPERATIVE_STATE_UNRESOLVED",
+  "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+ ],
+ "frozenFrom": "docs/phase-3-live-validation/7.2c-first-certified/06-compilation.json#{status,failureReasons,rules,definitions,sharedCapacities,unresolvedIssues}",
+ "rules": [
+  {
+   "action": "INCUR_DEBT",
+   "capacityExpression": {
+    "gatedBy": null,
+    "kind": "UNLIMITED_CAPACITY",
+    "provenance": {
+     "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+     "excerpt": null,
+     "sourceCitation": "\u00a77.2(c)",
+     "sourceNodeKey": null
+    },
+    "type": "CAPACITY"
+   },
+   "companyId": "conmed-pilot",
+   "compilerVersion": "semantic-accountability-compiler.v4",
+   "conditions": [
+    {
+     "conditionId": "rule[r1].condition[0]",
+     "conditionType": "RATIO_SATISFIED",
+     "description": "Parent Borrower must be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1",
+     "expression": {
+      "exprId": "ir-expr:83bd04c2756c69e74af8344c",
+      "kind": "AND",
+      "operands": [
+       {
+        "exprId": "ir-expr:df8cb487e5f63fb107abd78b",
+        "kind": "UNSUPPORTED",
+        "provenance": {
+         "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+         "excerpt": null,
+         "sourceCitation": "\u00a77.2(c)",
+         "sourceNodeKey": null
+        },
+        "reason": "unrecognized expression kind \"REQUIRES\" - not a real IR node type",
+        "requiredReview": true,
+        "semanticDescription": "unrecognized or malformed expression (kind=\"REQUIRES\")",
+        "sourceEvidence": "(no evidence captured)",
+        "type": null
+       }
+      ],
+      "provenance": {
+       "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+       "excerpt": null,
+       "sourceCitation": "\u00a77.2(c)",
+       "sourceNodeKey": null
+      },
+      "type": "BOOLEAN"
+     },
+     "inventoryItemIds": [
+      "ec8b311518c4ef230e54f0b3",
+      "b60379e8072fb862b3fe6002"
+     ],
+     "provenance": {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+      "sourceCitation": "\u00a77.2(c)",
+      "sourceNodeKey": null
+     },
+     "referencesDefinitionId": null
+    },
+    {
+     "conditionId": "rule[r1].condition[1]",
+     "conditionType": "OTHER_RULE_SATISFIED",
+     "description": "Financial covenants under Section 7.1 recomputed on a pro forma basis as at the last day of the most recently ended fiscal quarter for which financial statements are available, treating the Indebtedness as if incurred on the first day of each relevant period",
+     "expression": {
+      "asOfDate": "(unspecified)",
+      "exprId": "ir-expr:745028bea2099bf593de695a",
+      "kind": "AS_OF",
+      "provenance": {
+       "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+       "excerpt": null,
+       "sourceCitation": "\u00a77.2(c)",
+       "sourceNodeKey": null
+      },
+      "type": "MONEY",
+      "value": {
+       "companyId": "conmed-pilot",
+       "exprId": "ir-expr:ad3ee5b4b3aeaf416689f833",
+       "instrumentKey": "conmed-eighth-ar-credit-agreement",
+       "kind": "METRIC_REFERENCE",
+       "metricName": "financial covenants in Section 7.1, pro forma recomputed",
+       "resolvedDefinitionId": null,
+       "type": "MONEY"
+      }
+     },
+     "inventoryItemIds": [
+      "7a672ac0e614d7ffcae526b8",
+      "55c1c59cc23002bacf0f41f8",
+      "197d6a75e518b433abd00585",
+      "a898fe5b6cdf0d0ca5334548"
+     ],
+     "provenance": {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "excerpt": "recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+      "sourceCitation": "\u00a77.2(c)",
+      "sourceNodeKey": null
+     },
+     "referencesDefinitionId": null
+    }
+   ],
+   "covenantFamily": "INDEBTEDNESS",
+   "dependsOn": [],
+   "entityScope": [],
+   "entityScopeAudit": {
+    "before": {
+     "entityScope": [
+      "BORROWER"
+     ],
+     "entityScopeExcluded": [],
+     "sufficiency": "PARTIAL"
+    },
+    "guardVersion": "entity-scope-consistency-guard.v1",
+    "rawEmitted": {
+     "entityScope": [
+      "Parent Borrower"
+     ],
+     "entityScopeExcluded": [],
+     "source": "RULE_FIELD"
+    },
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+    ],
+    "safeToRely": false,
+    "status": "UNDERINCLUSIVE_VS_SOURCE",
+    "tagNormalization": [
+     {
+      "field": "entityScope",
+      "normalized": "BORROWER",
+      "outcome": "RECOGNIZED_ENTITY_TAG",
+      "raw": "Parent Borrower",
+      "viaAlias": true
+     }
+    ],
+    "witness": {
+     "citedUnitLeadIn": null,
+     "decidedBy": "OWN_EXCERPT",
+     "ownExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;",
+     "signals": [
+      {
+       "excludedContext": false,
+       "index": 84,
+       "partialOnly": false,
+       "phrase": "Borrower",
+       "requiresAnyOf": [
+        "BORROWER"
+       ],
+       "satisfied": true,
+       "satisfiedBy": [
+        "BORROWER"
+       ],
+       "tier": "OWN_EXCERPT"
+      },
+      {
+       "excludedContext": false,
+       "index": 338,
+       "partialOnly": false,
+       "phrase": "Borrower",
+       "requiresAnyOf": [
+        "BORROWER"
+       ],
+       "satisfied": true,
+       "satisfiedBy": [
+        "BORROWER"
+       ],
+       "tier": "OWN_EXCERPT"
+      },
+      {
+       "excludedContext": false,
+       "index": 355,
+       "partialOnly": false,
+       "phrase": "Subsidiaries",
+       "requiresAnyOf": [
+        "GUARANTOR_RS",
+        "NON_GUARANTOR_RS",
+        "UNRESTRICTED_SUB"
+       ],
+       "satisfied": false,
+       "satisfiedBy": [],
+       "tier": "OWN_EXCERPT"
+      }
+     ]
+    }
+   },
+   "entityScopeExcluded": [],
+   "exceptions": [],
+   "instrumentKey": "conmed-eighth-ar-credit-agreement",
+   "inventoryItemIds": [
+    "ac31a719a47d4995cf16b375"
+   ],
+   "irSchemaVersion": "headroom-covenant-ir.v1",
+   "operativeLineage": null,
+   "posture": "PERMISSION",
+   "provenance": {
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "excerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;",
+    "sourceCitation": "\u00a77.2(c)",
+    "sourceNodeKey": null
+   },
+   "ruleId": "ir-rule:11f0445de25e714a1a3cfe31",
+   "ruleType": "QUANTITATIVE_PERMISSION",
+   "sourceContentVersion": "sscv1:b30330eb18dcce911508e889e61a989dc9942742330ded31b1037768f72e52fb",
+   "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+   "sourceSectionRef": "7.2(c)",
+   "sufficiency": "PARTIAL",
+   "sufficiencyReasons": [
+    "The core permission (Indebtedness secured by Liens under 7.3(g)) and its pro forma compliance gate are faithfully represented as UNLIMITED_CAPACITY gated by a boolean pro forma compliance condition. However, the Section 7.1 financial covenant tests (Senior Secured Leverage <= 3.75:1, Total Leverage <= 5.50:1, Interest Coverage >= 2.75:1, Liquidity, each with Material Acquisition step-ups and Early Maturing Debt mechanics) are themselves separately operative covenants in another section; they are carried here only as an explicit REQUIRES dependency, not fully expanded into this rule.",
+    "The 'compliance with the financial covenants in Section 7.1' gate is real but is a composite of four separately-defined obligations in another section rather than a single deterministic dollar/ratio threshold determinable at this rule's granularity, which warrants PARTIAL rather than COMPLETE at the parent rule's level.",
+    "unrecognized expression kind \"REQUIRES\" - not a real IR node type",
+    "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "dependsOn[0].targetRef \"Section 7.3(g)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+    "dependsOn[1].targetRef \"Section 7.1\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+    "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE: entityScope [\"BORROWER\"] touches no class for source binding \"Subsidiaries\" (witness: the rule's own provenance excerpt); scope reset to unspecified, not widened by guess"
+   ],
+   "transactionScope": null,
+   "unresolvedDependencies": [
+    {
+     "description": "Indebtedness must be secured by Liens permitted by Section 7.3(g); the Section 7.3(g) Liens basket (real/tangible personal Property acquired after the Closing Date, secured principal <= 80% of fair market value, Lien not to extend beyond the acquired/financed Property) is itself an independently operative permission in another section and is modeled by reference, not restated",
+     "reason": "dependsOn[0].targetRef \"Section 7.3(g)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "relationshipType": "REQUIRES",
+     "targetRef": "Section 7.3(g)"
+    },
+    {
+     "description": "The compliance gate references the financial covenants in Section 7.1 (Consolidated Senior Secured Leverage Ratio <= 3.75:1, Consolidated Total Leverage Ratio <= 5.50:1, Minimum Interest Coverage Ratio >= 2.75:1, and a Liquidity test), each with its own Material Acquisition step-up and Early Maturing Debt mechanics, which are separately operative covenants in another section",
+     "reason": "dependsOn[1].targetRef \"Section 7.1\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "relationshipType": "REQUIRES",
+     "targetRef": "Section 7.1"
+    }
+   ]
+  },
+  {
+   "action": null,
+   "capacityExpression": null,
+   "companyId": "conmed-pilot",
+   "compilerVersion": "semantic-accountability-compiler.v4",
+   "conditions": [],
+   "covenantFamily": "INDEBTEDNESS",
+   "dependsOn": [],
+   "entityScope": [],
+   "entityScopeAudit": {
+    "before": {
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "sufficiency": "AMBIGUOUS"
+    },
+    "guardVersion": "entity-scope-consistency-guard.v1",
+    "rawEmitted": {
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "source": "EMPTY"
+    },
+    "reasonCodes": [
+     "ENTITY_SCOPE_UNSPECIFIED"
+    ],
+    "safeToRely": true,
+    "status": "UNSPECIFIED",
+    "tagNormalization": [],
+    "witness": {
+     "citedUnitLeadIn": null,
+     "decidedBy": "NONE",
+     "ownExcerpt": null,
+     "signals": []
+    }
+   },
+   "entityScopeExcluded": [],
+   "exceptions": [],
+   "instrumentKey": "conmed-eighth-ar-credit-agreement",
+   "irSchemaVersion": "headroom-covenant-ir.v1",
+   "operativeLineage": null,
+   "posture": "PROHIBITION",
+   "provenance": {
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "excerpt": null,
+    "sourceCitation": "\u00a77.2",
+    "sourceNodeKey": null
+   },
+   "ruleId": "ir-rule:c9757e8a02da1880d66214f2",
+   "ruleType": "PROHIBITION",
+   "sourceContentVersion": "sscv1:b30330eb18dcce911508e889e61a989dc9942742330ded31b1037768f72e52fb",
+   "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+   "sourceSectionRef": "7.2",
+   "sufficiency": "AMBIGUOUS",
+   "sufficiencyReasons": [
+    "The parent Section 7.2 is an umbrella prohibition ('Create, incur, assume or suffer to exist any Indebtedness, except:') whose exceptions (of which 7.2(c) is one) are each independently operative permissions. The implied prohibition itself adds no operative economics beyond its exceptions; it is emitted only to preserve the section's overall posture and is not a determinable quantitative test."
+   ],
+   "transactionScope": null
+  }
+ ],
+ "sharedCapacities": [],
+ "status": "REVIEW_REQUIRED",
+ "unresolvedIssues": [
+  "[rule[r1].condition[0].expression.AND[0]] unrecognized expression kind \"REQUIRES\" - not a real IR node type",
+  "[rule[r1].condition[0].expression] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+  "[rule[r1]] dependsOn[0].targetRef \"Section 7.3(g)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+  "[rule[r1]] dependsOn[1].targetRef \"Section 7.1\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+  "Executed in SINGLE STRUCTURED CALL mode: all definitions and cross-references supplied in context; no evidence tools available.",
+  "Section 7.2(c) permits Indebtedness secured by Liens permitted by Section 7.3(g), gated on the Parent Borrower's pro forma compliance with the financial covenants in Section 7.1. This is a REFERENCED permission: the underlying permission for the underlying Indebtedness and its Liens sits in Section 7.3(g) (an independently operative permission modeled by reference as a REQUIRES dependency), and the compliance gate depends on the Section 7.1 financial covenant tests (themselves separately operative obligations) \u2014 both carried as explicit dependsOn so they are preserved as cross-unit dependencies rather than guessed or dropped.",
+  "The capacity is UNLIMITED_CAPACITY gated by a boolean compliance condition: the provision imposes no dollar ceiling and only a pro forma compliance test, so representing it as a fabricated dollar amount would be dangerous; the UNLIMITED_CAPACITY form with a gatedBy boolean of pro forma compliance with Section 7.1 is the faithful shape.",
+  "Sufficiency is PARTIAL: the core permission and its pro forma compliance gate are faithfully represented, but the underlying Section 7.1 financial covenant tests (Senior Secured Leverage <= 3.75:1, Total Leverage <= 5.50:1, Interest Coverage >= 2.75:1, Liquidity test, each with Material Acquisition step-up and Early Maturing Debt mechanics) are themselves separately operative covenants in another section and are carried here only as an explicit REQUIRES dependency, not expanded into this rule.",
+  "The AMENDMENT_LEAD (CONMED Second Amendment 2022-08-01) references amending the 'Indebtedness' definition with a '$100,000,000' proviso, but its operative status is OPERATIVE_STATE_UNRESOLVED (NOT CONFIRMED CURRENT); per policy it must be treated as non-authoritative, and it does not affect the \u00a77.2(c) operative text which is confirmed CURRENT. The Section 7.3(g) and Section 7.1 nodes carry UNKNOWN_SUPERSESSION_STATUS in the deterministic harness retrieval but their in-context region excerpts are marked evidenceStatus CURRENT for the regions relevant to this rule.",
+  "[support] 3 CRITICAL/MATERIAL single-run and 0 conflicted item(s) across passes pass-1+pass-2 carry independent-pass support asymmetry - review required; never resolved by composition"
+ ]
+}

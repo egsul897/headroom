@@ -11,8 +11,8 @@
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../ir/types";
 import type { SemanticVerificationStatus } from "../compiler/semantic-verification/types";
 
-export const COVENANT_MAP_SCHEMA_VERSION = "canonical-covenant-map.v2";
-export const COVENANT_MAP_ALGORITHM_VERSION = "covenant-map-assembly.v2";
+export const COVENANT_MAP_SCHEMA_VERSION = "canonical-covenant-map.v3";
+export const COVENANT_MAP_ALGORITHM_VERSION = "covenant-map-assembly.v3";
 
 /** Deterministic position of a node in the package: document, then character offset, then depth, then the structural ordinal. */
 export interface SourceOrder {
@@ -96,6 +96,8 @@ export type EdgeDerivation =
   | "IR_EXCEPTION_PERMISSION"
   | "IR_DEFINITION_DEPENDS_ON_TERMS"
   | "IR_SHARED_CAPACITY_MEMBERS"
+  /** A typed IRSourceDependency on the compiled unit, bound at package level to the owning candidate's unit(s) at the referenced node. */
+  | "IR_SOURCE_DEPENDENCY"
   | "CONTEXT_BUNDLE_ITEM"
   | "STRUCTURAL_ANCESTRY"
   | "OPERATIVE_STATE";
@@ -139,6 +141,8 @@ export type CovenantMapUnresolvedKind =
   | "DANGLING_SHARED_CAPACITY_MEMBER"
   | "UNRESOLVED_DEFINED_TERM"
   | "UNRESOLVED_CONTEXT_DEPENDENCY"
+  /** A typed source dependency / cross-rule condition target that package-level binding could not bind to a unit of this map (the detail says why: not in target set, owner compiled nothing, no unit at the ref, or genuinely unknown). */
+  | "UNRESOLVED_SOURCE_DEPENDENCY"
   | "CROSS_DOCUMENT_UNRESOLVED"
   | "OPERATIVE_STATE_UNRESOLVED"
   | "UNIT_SUFFICIENCY_NOT_SUFFICIENT"
@@ -286,5 +290,7 @@ export interface CanonicalCovenantMap {
   edges: CovenantMapEdge[];
   candidates: CovenantMapCandidateRecord[];
   unresolved: CovenantMapUnresolvedItem[];
+  /** Package-level binding of every typed source dependency / cross-rule condition target to the owning candidates' units (derived artifact; units untouched). */
+  packageDependencies: import("./package-dependencies").PackageDependencyResolution;
   completeness: CovenantMapCompleteness;
 }

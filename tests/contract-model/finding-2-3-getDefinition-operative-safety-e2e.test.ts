@@ -193,12 +193,18 @@ describe("FINDING-2/3 end-to-end: getDefinition's operative-safety disclosure ha
     // to the final compiled result - never silently overwritten to COMPLETE
     // by any deterministic post-processing (there is none at the definition
     // level - see this file's own header comment).
-    expect(result.status).not.toBe("FAILED");
-    expect(result.definitions).toHaveLength(1);
-    expect(result.definitions[0]!.sufficiency).toBe("AMBIGUOUS");
+    // SEMANTIC FIDELITY (unit ownership): "Permitted Investments" is defined elsewhere in the document (the structural
+    // index knows its definition), so the candidate - whose operative text does not define it - may not OWN the
+    // definition: it is quarantined as a CONTEXT_ONLY_UNIT_EMISSION with its evidence, never part of the certified IR.
+    // The honest AMBIGUOUS sufficiency still survives, unchanged, on the quarantined unit (no deterministic upgrade).
+    expect(result.definitions).toHaveLength(0);
+    expect(result.contextOnlyEmissions).toHaveLength(1);
+    expect(result.contextOnlyEmissions![0]!.kind).toBe("DEFINITION");
+    expect(result.contextOnlyEmissions![0]!.decision.ownership).toBe("CONTEXT_ONLY_UNIT_EMISSION");
+    expect((result.contextOnlyEmissions![0]!.unit as { sufficiency: string }).sufficiency).toBe("AMBIGUOUS");
   });
 
-  it("test 2 (contrast/architectural proof): a model that IGNORES getDefinition's disclosure and dishonestly submits sufficiency COMPLETE for the SAME ambiguous term is NOT caught by any other deterministic downstream mechanism - proving getDefinition's own disclosure (fixed above) is the ONLY real control point, not a decorative label change", async () => {
+  it("test 2 (contrast/architectural proof): a model that IGNORES getDefinition's disclosure and dishonestly submits sufficiency COMPLETE for the SAME ambiguous term is caught only by source OWNERSHIP (the term is defined elsewhere), never by sufficiency machinery - getDefinition's own disclosure (fixed above) is the ONLY real control point, not a decorative label change", async () => {
     const access = buildAccessWithAmbiguousDefinition();
     const input: SemanticCompilerInput = testCompilerInput({ toolAccess: access, sourceSectionRef: "9.01" });
 
@@ -219,7 +225,12 @@ describe("FINDING-2/3 end-to-end: getDefinition's operative-safety disclosure ha
     // enforceSufficiencyConsistency (normalize.ts always passes
     // operativeLineage: null for definitions - an architectural fact, not
     // this fix's own defect, but the reason THIS fix is load-bearing).
-    expect(result.definitions[0]!.sufficiency).toBe("COMPLETE");
+    // The dishonest COMPLETE is NOT deterministically downgraded by sufficiency machinery (enforceSufficiencyConsistency
+    // passes operativeLineage: null for definitions). What DOES stop it now is ownership, which is independent of the
+    // claimed sufficiency: the unit is quarantined with COMPLETE still written on it - exactly as emitted, never upgraded
+    // or downgraded - so the record shows the model's claim while the certified IR carries none of it.
+    expect(result.definitions).toHaveLength(0);
+    expect((result.contextOnlyEmissions![0]!.unit as { sufficiency: string }).sufficiency).toBe("COMPLETE");
     const directCheck = enforceSufficiencyConsistency("COMPLETE", [], null, null);
     expect(directCheck.sufficiency).toBe("COMPLETE");
   });

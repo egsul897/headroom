@@ -198,6 +198,7 @@ function walkComposition(c: CompositionForReconciliation): Walk {
     walkCapacity(w, rule.capacityExpression, `${p}.capacityExpression`);
     rule.conditions.forEach((cond, j) => {
       pushLineage(w, `${p}.conditions[${j}]`, cond.inventoryItemIds, "REPRESENTED");
+      for (const t of cond.referencesRuleTargets ?? []) w.unresolvedTargetRefs.push(t.exactSourceTargetRef.replace(/\s+/g, "").toLowerCase());
       pushText(w, `${p}.conditions[${j}].description`, cond.description, false);
       walkExpression(w, cond.expression, `${p}.conditions[${j}].expression`, false, false);
     });
@@ -211,7 +212,14 @@ function walkComposition(c: CompositionForReconciliation): Walk {
       });
     });
     rule.dependsOn.forEach((dep, j) => pushLineage(w, `${p}.dependsOn[${j}]`, dep.inventoryItemIds, "REPRESENTED"));
+    // SEMANTIC FIDELITY: a structurally RESOLVED source dependency represents its reference (its semantic unit is bound at
+    // package level); only a DEPENDENCY_UNKNOWN reference stays an unresolved dependency.
+    (rule.sourceDependencies ?? []).forEach((dep, j) => {
+      pushLineage(w, `${p}.sourceDependencies[${j}]`, dep.inventoryItemIds, dep.resolutionStatus === "DEPENDENCY_UNKNOWN" ? "UNRESOLVED_DEPENDENCY" : "REPRESENTED");
+      w.unresolvedTargetRefs.push(dep.exactSourceTargetRef.replace(/\s+/g, "").toLowerCase());
+    });
     (rule.unresolvedDependencies ?? []).forEach((dep, j) => {
+      if ((rule.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === dep.targetRef)) return; // already walked above
       pushLineage(w, `${p}.unresolvedDependencies[${j}]`, dep.inventoryItemIds, "UNRESOLVED_DEPENDENCY");
       w.unresolvedTargetRefs.push(dep.targetRef.replace(/\s+/g, "").toLowerCase());
     });

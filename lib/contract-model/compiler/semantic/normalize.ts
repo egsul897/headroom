@@ -20,7 +20,10 @@ import { CovenantFamily, ContractRuleType, ContractRulePosture, ContractRuleRela
 import { CONTRACT_ACTIONS, CONTRACT_CONDITION_TYPES } from "../../types";
 import { withExpressionId, computeRuleId, computeDefinitionId, computeSharedCapId } from "../../ir/identity";
 import { analyzeType, inferType } from "../../ir/type-check";
-import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRDefinition, type IRException, type IRExpression, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
+import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRConditionEvaluationBasis, type IRDefinition, type IRException, type IRExpression, type IRInheritedAttribute, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRSourceDependency, type IRSourceTargetRef, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
+import { describeSourceDependency, figureStatedInText, numericFiguresInProse, resolveSourceTarget, type OwnershipIndexCandidate } from "./source-reference";
+import { classifyDefinitionOwnership, classifyUnitOwnership, type ContextOnlyUnitEmission, type OwnershipScope } from "./unit-ownership";
+import type { StructuralIndex } from "../structural-index";
 import type { SubmitCompilationInput, WireCondition, WireDefinition, WireException, WireExpression, WireRule, WireSharedCapacity } from "./wire-schema";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
 import { applyEntityScopeGuard, classifyEntityTag, entityScopeWitnessFor, normalizeEntityTags } from "./entity-scope-guard";
@@ -42,6 +45,17 @@ export interface NormalizationWarning {
   message: string;
 }
 
+/** SEMANTIC FIDELITY: what the model wrote about a dependency, kept beside (never inside) the unit. Figures it restates that the operative source does not state are flagged as target economics. */
+export interface DependencyProseDiagnostic {
+  scope: string;
+  /** The dependency's reference when the prose belongs to a dependency; null for other model prose (sufficiency reasons, descriptions). */
+  exactSourceTargetRef: string | null;
+  modelProse: string;
+  figuresInProse: string[];
+  /** Figures the prose asserts that the candidate's own operative text never states - the target's economics, excluded from the artifact. */
+  targetEconomicsExcluded: string[];
+}
+
 interface NormCtx {
   companyId: string;
   instrumentKey: string;
@@ -52,6 +66,13 @@ interface NormCtx {
   /** Resolves a wire localRef OR an already-real external ruleId string to a real, computed ruleId - null when neither resolves (an honest "dangling," never guessed). */
   resolveRuleRef: (ref: string) => string | null;
   resolveSharedCapRef: (ref: string) => string | null;
+  /** SEMANTIC FIDELITY: reference resolution access (null in hand-built fixtures without an index). */
+  referenceIndex: StructuralIndex | null;
+  population: readonly OwnershipIndexCandidate[] | null;
+  /** The candidate's operative text - the only text whose figures a dependency description may restate. */
+  operativeText: string;
+  /** Model prose stripped out of dependency descriptions, kept as non-authoritative diagnostics on the compilation (never on the unit). */
+  dependencyProse: DependencyProseDiagnostic[];
   /** ENTITY-SCOPE GUARD §4: every entity tag emitted anywhere under this rule (rule fields or ENTITY_SCOPE_REFERENCE nodes) with its RECOGNIZED/UNRECOGNIZED outcome - shared by reference across child contexts, fresh per rule. */
   entityTagAudit: IREntityTagNormalization[];
 }
@@ -367,7 +388,11 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
       const valueWire = wire.operand;
       if (!valueWire) return unsupportedNode(ctx, "AS_OF requires an operand (the value being dated)", wire, prov);
       const value = normalizeExpression(valueWire, childCtx(ctx, wire, "AS_OF.value"), expected);
-      const asOfDate = wire.asOfDate ?? "(unspecified)";
+      // SEMANTIC FIDELITY: a dated value needs its date. The source normally states a RELATIVE selector ("the last day of the
+      // most recently ended fiscal quarter for which financial statements are available"); that selector text IS the
+      // asOfDate (a string selector is a first-class IRAsOf.asOfDate). A missing selector is UNSUPPORTED, never "(unspecified)".
+      const asOfDate = typeof wire.asOfDate === "string" && wire.asOfDate.trim().length > 0 ? wire.asOfDate.trim() : null;
+      if (!asOfDate) return unsupportedNode(ctx, "AS_OF requires asOfDate: the source's own measurement-date selector (relative, e.g. 'last day of the most recently ended fiscal quarter', or an ISO date)", wire, prov, value);
       return buildComposite(ctx, "AS_OF", { value, asOfDate }, "RATIO", wire, prov, "AS_OF value type could not be determined");
     }
     case "DURING_PERIOD": {
@@ -408,16 +433,54 @@ export function normalizeCapacityExpression(wire: WireExpression | null | undefi
   return normalizeExpression(wire, ctx);
 }
 
+const COMPLIANCE_METRIC = /\b(?:compliance|complies|comply|satisfaction|satisfied|satisfies|in\s+compliance)\b/i;
+
+function normalizeEvaluationBasis(wire: WireCondition["evaluationBasis"], prov: SourceProvenance | null): IRConditionEvaluationBasis | null {
+  if (!wire) return null;
+  const clean = (v: string | null | undefined) => (typeof v === "string" && v.trim().length > 0 ? v.trim() : null);
+  const basis: IRConditionEvaluationBasis = { proForma: !!wire.proForma, transactionEffect: clean(wire.transactionEffect), asOfSelector: clean(wire.asOfSelector), deemedEffectiveAt: clean(wire.deemedEffectiveAt), testingPeriod: clean(wire.testingPeriod), provenance: prov };
+  return basis.proForma || basis.transactionEffect || basis.asOfSelector || basis.deemedEffectiveAt || basis.testingPeriod ? basis : null;
+}
+
+/** True when an expression tree carries a METRIC_REFERENCE whose name is a compliance/satisfaction claim typed as a quantity - "compliance with covenants" is BOOLEAN, never MONEY. */
+function misTypedComplianceMetric(expr: IRExpression | null): string | null {
+  let found: string | null = null;
+  const walk = (e: unknown): void => {
+    if (!e || typeof e !== "object" || found) return;
+    const r = e as Record<string, unknown>;
+    if (r.kind === "METRIC_REFERENCE" && typeof r.metricName === "string" && COMPLIANCE_METRIC.test(r.metricName) && r.type !== "BOOLEAN") { found = r.metricName; return; }
+    for (const v of Object.values(r)) if (v && typeof v === "object") walk(v);
+  };
+  walk(expr);
+  return found;
+}
+
 function normalizeCondition(wire: WireCondition, ctx: NormCtx, index: number): IRCondition {
   const conditionType = matchEnum(wire.conditionType, CONTRACT_CONDITION_TYPES) ?? "UNSUPPORTED";
   if (!matchEnum(wire.conditionType, CONTRACT_CONDITION_TYPES)) warn(ctx, `condition[${index}].conditionType "${wire.conditionType}" not recognized - normalized to UNSUPPORTED`);
   const prov = provenanceFor(ctx, wire.citation, wire.excerpt) ?? null;
+  const targets: IRSourceTargetRef[] = (wire.referencesRuleTargets ?? []).filter((t) => typeof t?.targetRef === "string" && t.targetRef.trim().length > 0).map((t) => resolveSourceTarget({ exactSourceTargetRef: t.targetRef, documentId: ctx.documentId, index: ctx.referenceIndex, population: ctx.population }));
+  for (const t of targets) if (t.resolutionStatus === "DEPENDENCY_UNKNOWN") warn(ctx, `condition[${index}] references "${t.exactSourceTargetRef}", which resolves to no structural node of this document - DEPENDENCY_UNKNOWN (review required), never guessed`);
+  let expression = wire.expression ? normalizeExpression(wire.expression, childCtx(ctx, wire.expression, `condition[${index}].expression`), "BOOLEAN") : null;
+  // SEMANTIC FIDELITY: a compliance / satisfaction test is BOOLEAN. A MONEY/RATIO metric standing in for "compliance with
+  // the covenants" is a representation error, not a quantity - replaced by UNSUPPORTED with the reason on record.
+  const misTyped = expression ? misTypedComplianceMetric(expression) : null;
+  if (expression && misTyped) {
+    const reason = `COMPLIANCE_CONDITION_MISTYPED: "${misTyped}" is a compliance/satisfaction claim represented as a quantity-typed metric; satisfaction of a rule set is BOOLEAN and must be expressed through referencesRuleTargets, never a MONEY/RATIO metric`;
+    warn(ctx, `condition[${index}].expression ${reason}`);
+    expression = unsupportedNode(childCtx(ctx, wire.expression!, `condition[${index}].expression`), reason, wire.expression!, prov ?? undefined, expression);
+  }
+  const combinationRaw = (wire.targetCombination ?? "").toUpperCase().replace(/[\s-]+/g, "_");
+  const targetCombination = targets.length === 0 ? undefined : combinationRaw === "ANY_SATISFIED" || combinationRaw === "ANY" ? "ANY_SATISFIED" : combinationRaw === "UNSPECIFIED" ? "UNSPECIFIED" : "ALL_SATISFIED";
+  const evaluationBasis = normalizeEvaluationBasis(wire.evaluationBasis, prov);
   return withLineage(
     {
       conditionId: `${ctx.scopePath}.condition[${index}]`,
       conditionType,
-      expression: wire.expression ? normalizeExpression(wire.expression, childCtx(ctx, wire.expression, `condition[${index}].expression`), "BOOLEAN") : null,
+      expression,
       referencesDefinitionId: wire.referencesDefinitionId,
+      ...(targets.length > 0 ? { referencesRuleTargets: targets, targetCombination } : {}),
+      ...(evaluationBasis ? { evaluationBasis } : {}),
       description: wire.description,
       provenance: prov,
     },
@@ -473,17 +536,22 @@ function normalizeException(wire: WireException, ctx: NormCtx, index: number, ap
  * the corresponding DEPENDENCY/REFERENCE inventory item AMBIGUOUS (review),
  * never REPRESENTED and never silently absent. The target is never guessed.
  */
-function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, index: number): { resolved: IRRuleDependency } | { unresolved: IRUnresolvedDependency } {
+function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, index: number): { resolved: IRRuleDependency } | { source: IRSourceDependency } {
   const relationshipType = matchEnum(wire.relationshipType, Object.values(ContractRuleRelationshipType));
   const finalType = relationshipType ?? "REQUIRES";
   if (!relationshipType) warn(ctx, `dependsOn[${index}].relationshipType "${wire.relationshipType}" not recognized - defaulted to REQUIRES`);
   const targetRuleId = ctx.resolveRuleRef(wire.targetRef);
-  if (!targetRuleId) {
-    const reason = `dependsOn[${index}].targetRef "${wire.targetRef}" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped`;
-    warn(ctx, reason);
-    return { unresolved: withLineage({ relationshipType: finalType, targetRef: wire.targetRef, description: wire.description, reason }, wire.inventoryItemIds) };
-  }
-  return { resolved: withLineage({ relationshipType: finalType, targetRuleId, description: wire.description }, wire.inventoryItemIds) };
+  if (targetRuleId) return { resolved: withLineage({ relationshipType: finalType, targetRuleId, description: wire.description }, wire.inventoryItemIds) };
+  // SEMANTIC FIDELITY: a cross-unit reference is first-class semantics. The reference is RESOLVED structurally when the
+  // index knows the node (its semantic unit is bound at package level, never by mutating this unit) and UNKNOWN otherwise.
+  // The description is deterministic; the model's prose is diagnostics - the target's own figures never enter the unit.
+  const target = resolveSourceTarget({ exactSourceTargetRef: wire.targetRef, documentId: ctx.documentId, index: ctx.referenceIndex, population: ctx.population });
+  const figures = numericFiguresInProse(wire.description ?? "");
+  const excluded = figures.filter((f) => !figureStatedInText(f, ctx.operativeText));
+  ctx.dependencyProse.push({ scope: `${ctx.scopePath}.dependsOn[${index}]`, exactSourceTargetRef: wire.targetRef, modelProse: wire.description ?? "", figuresInProse: figures, targetEconomicsExcluded: excluded });
+  if (excluded.length > 0) warn(ctx, `TARGET_ECONOMICS_IN_DEPENDENCY_PROSE: dependsOn[${index}] on "${wire.targetRef}" restated ${excluded.length} figure(s) that the candidate's operative source never states; they belong to the target's own certified unit, were excluded from this unit and are recorded in the dependency-prose diagnostics`);
+  if (target.resolutionStatus === "DEPENDENCY_UNKNOWN") warn(ctx, `dependsOn[${index}].targetRef "${wire.targetRef}" resolves to no structural node of this document - DEPENDENCY_UNKNOWN (review required), never guessed or dropped`);
+  return { source: withLineage({ ...target, relationshipType: finalType, description: describeSourceDependency(finalType, wire.targetRef), provenance: provenanceFor(ctx, null, null) ?? null }, wire.inventoryItemIds) };
 }
 
 /** Deterministic sufficiency-consistency enforcement (task §27) - applied to every rule/definition AFTER normalization, independent of what the model itself claimed. */
@@ -520,6 +588,10 @@ export interface NormalizedCompilation {
   /** SEMANTIC ACCOUNTABILITY: the composition's own explicit dispositions for inventory items it did not consume (passed through verbatim for Pass C; never interpreted here). */
   inventoryDispositions: NonNullable<SubmitCompilationInput["inventoryDispositions"]>;
   warnings: NormalizationWarning[];
+  /** SEMANTIC FIDELITY: units the composition emitted for source the candidate does not own - quarantined with evidence, never certified IR. */
+  contextOnlyEmissions: ContextOnlyUnitEmission[];
+  /** SEMANTIC FIDELITY: model prose about dependencies, kept beside the units. */
+  dependencyProse: DependencyProseDiagnostic[];
 }
 
 /**
@@ -544,7 +616,19 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
   const resolveRuleRef = (ref: string): string | null => ruleIdByLocalRef.get(ref) ?? (ref.startsWith("ir-rule:") ? ref : null);
   const resolveSharedCapRef = (ref: string): string | null => sharedCapIdByLocalRef.get(ref) ?? (ref.startsWith("ir-sharedcap:") ? ref : null);
 
-  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, entityTagAudit: [] });
+  const dependencyProse: DependencyProseDiagnostic[] = [];
+  const referenceIndex: StructuralIndex | null = input.toolAccess?.structuralIndex ?? null;
+  const population = input.candidatePopulation ?? null;
+  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, referenceIndex, population, operativeText: input.operativeSourceText, dependencyProse, entityTagAudit: [] });
+  const ownershipScope: OwnershipScope = {
+    documentId, candidateSectionRef: input.sourceSectionRef, anchorNodeId: input.contextBundle?.originatingStructuralNodeIds?.[0] ?? null,
+    operativeRegionRefs: (input.sourceContext?.regions ?? []).filter((r) => r.kind === "OPERATIVE" && r.sectionRef).map((r) => r.sectionRef!),
+    operativeText: input.operativeSourceText, index: referenceIndex,
+    contextDefinedTerms: new Set((input.contextBundle?.items ?? []).filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY").map((i) => i.normalizedRef.trim().toLowerCase().replace(/\s+/g, " "))),
+  };
+  const contextOnlyEmissions: ContextOnlyUnitEmission[] = [];
+  // SEMANTIC FIDELITY §7: parent scope informs (inherited attributes with PARENT_SCOPE authority); it never owns a unit.
+  const parentScopeItems = (input.contextBundle?.items ?? []).filter((i) => i.type === "PARENT_SCOPE");
 
   const rules: IRRule[] = submission.rules.map((wireRule) => {
     const ctx = baseCtx(`rule[${wireRule.localRef}]`);
@@ -569,7 +653,13 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const exceptions = wireRule.exceptions.map((e, i) => normalizeException(e, ctx, i, ruleId));
     const normalizedDependencies = wireRule.dependsOn.map((d, i) => normalizeDependency(d, ctx, i));
     const dependsOn = normalizedDependencies.flatMap((d) => ("resolved" in d ? [d.resolved] : []));
-    const unresolvedDependencies = normalizedDependencies.flatMap((d) => ("unresolved" in d ? [d.unresolved] : []));
+    const sourceDependencies = normalizedDependencies.flatMap((d) => ("source" in d ? [d.source] : []));
+    // legacy readers: only the genuinely UNKNOWN references remain "unresolved"; resolved ones are first-class source dependencies
+    const unresolvedDependencies: IRUnresolvedDependency[] = sourceDependencies.filter((d) => d.resolutionStatus === "DEPENDENCY_UNKNOWN").map((d) => ({ relationshipType: d.relationshipType, targetRef: d.exactSourceTargetRef, description: d.description, reason: `"${d.exactSourceTargetRef}" resolves to no structural node of this document - DEPENDENCY_UNKNOWN (review required), never guessed or dropped`, ...(d.inventoryItemIds ? { inventoryItemIds: d.inventoryItemIds } : {}) }));
+    const inheritedAttributes: IRInheritedAttribute[] = [];
+    if (posture === "PERMISSION" || ruleType === "QUANTITATIVE_PERMISSION") {
+      for (const item of parentScopeItems) if (/\b(?:shall not|will not|may not|shall not permit|not permit)\b/i.test(item.excerptText)) { inheritedAttributes.push({ attribute: "governingProhibition", sourceAuthority: "PARENT_SCOPE", sourceSectionRef: item.normalizedRef, evidence: item.excerptText.slice(0, 240) }); break; }
+    }
 
     const rawSufficiency = matchEnum(wireRule.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
     const consistent = enforceSufficiencyConsistency(rawSufficiency, wireRule.sufficiencyReasons, capacityExpression, input.operativeLineage);
@@ -593,6 +683,8 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       exceptions,
       dependsOn,
       ...(unresolvedDependencies.length > 0 ? { unresolvedDependencies } : {}),
+      ...(sourceDependencies.length > 0 ? { sourceDependencies } : {}),
+      ...(inheritedAttributes.length > 0 ? { inheritedAttributes } : {}),
       operativeLineage: input.operativeLineage,
       sufficiency: consistent.sufficiency,
       sufficiencyReasons: [...consistent.reasons, ...(warnings.filter((w) => w.scope.startsWith(ctx.scopePath)).map((w) => w.message))],
@@ -602,11 +694,39 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     };
     // ENTITY-SCOPE GUARD §5-§9: deterministic consistency check of the normalized scope against the rule's own bound
     // source (its excerpt, else the lead-in of the unit it cites). Removes false precision; never widens.
-    const guarded = applyEntityScopeGuard(rule, entityScopeWitnessFor(rule, input.sourceContext?.regions ?? null), tagNorm);
+    const guarded = applyEntityScopeGuard(rule, entityScopeWitnessFor(rule, input.sourceContext?.regions ?? null, parentScopeItems.map((i) => i.excerptText)), tagNorm);
+    if (guarded.entityScopeAudit?.witness.decidedBy === "PARENT_SCOPE") guarded.inheritedAttributes = [...(guarded.inheritedAttributes ?? []), { attribute: "entityScope", sourceAuthority: "PARENT_SCOPE", sourceSectionRef: parentScopeItems[0]?.normalizedRef ?? null, evidence: (parentScopeItems[0]?.excerptText ?? "").slice(0, 240) }];
     return withLineage(guarded, wireRule.inventoryItemIds);
   });
+  // SEMANTIC FIDELITY §10/§11: model prose carried ON the unit (sufficiency reasons, condition/exception descriptions) may
+  // not assert figures the candidate's own operative source never states - those are some target's economics. The figure
+  // is redacted in the artifact and the raw prose kept as a non-authoritative diagnostic. Provenance excerpts are not
+  // touched: a quoted excerpt the source lacks is the verifier's FABRICATED finding, not a redaction.
+  const redact = (text: string, scope: string): string => {
+    const figures = numericFiguresInProse(text);
+    const unstated = figures.filter((f) => !figureStatedInText(f, input.operativeSourceText));
+    if (unstated.length === 0) return text;
+    dependencyProse.push({ scope, exactSourceTargetRef: null, modelProse: text, figuresInProse: figures, targetEconomicsExcluded: unstated });
+    let out = text;
+    for (const f of [...unstated].sort((a, b) => b.length - a.length)) out = out.split(f).join("[figure not stated by this unit's operative source; see dependency-prose diagnostics]");
+    return out;
+  };
+  for (const rule of rules) {
+    rule.sufficiencyReasons = rule.sufficiencyReasons.map((t, k) => redact(t, `rule[${rule.ruleId}].sufficiencyReasons[${k}]`));
+    rule.conditions.forEach((c, k) => { c.description = redact(c.description, `rule[${rule.ruleId}].conditions[${k}].description`); });
+    rule.exceptions.forEach((e, k) => { e.description = redact(e.description, `rule[${rule.ruleId}].exceptions[${k}].description`); e.conditions.forEach((c, q) => { c.description = redact(c.description, `rule[${rule.ruleId}].exceptions[${k}].conditions[${q}].description`); }); });
+  }
+  // SEMANTIC FIDELITY §5: ownership validation - a unit whose cited source the candidate does not own is quarantined.
+  const ownedRules: IRRule[] = [];
+  submission.rules.forEach((wireRule, i) => {
+    const rule = rules[i]!;
+    const decision = classifyUnitOwnership(wireRule.sourceSectionRef, ownershipScope);
+    if (decision.ownership === "CONTEXT_ONLY_UNIT_EMISSION") {
+      contextOnlyEmissions.push({ kind: "RULE", localRef: wireRule.localRef, unitId: rule.ruleId, sourceSectionRef: wireRule.sourceSectionRef, decision, unit: rule });
+    } else ownedRules.push(rule);
+  });
 
-  const definitions: IRDefinition[] = submission.definitions.map((wireDef) => {
+  const allDefinitions: IRDefinition[] = submission.definitions.map((wireDef) => {
     const ctx = baseCtx(`definition[${wireDef.localRef}]`);
     const covenantFamily = matchEnum(wireDef.covenantFamily, Object.values(CovenantFamily)) ?? "DEFINITIONS_CALCULATION_RULES";
     const calculationExpression = wireDef.calculationExpression ? normalizeExpression(wireDef.calculationExpression, ctx) : null;
@@ -629,6 +749,15 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       sourceContentVersion: null,
     };
     return withLineage(definition, wireDef.inventoryItemIds);
+  });
+  // SEMANTIC FIDELITY §6: a definition is owned only when its defining text lies inside the candidate's operative source.
+  const definitions: IRDefinition[] = [];
+  submission.definitions.forEach((wireDef, i) => {
+    const def = allDefinitions[i]!;
+    const decision = classifyDefinitionOwnership(wireDef.termName, ownershipScope);
+    if (decision.ownership === "CONTEXT_ONLY_UNIT_EMISSION") {
+      contextOnlyEmissions.push({ kind: "DEFINITION", localRef: wireDef.localRef, unitId: def.definitionId, sourceSectionRef: null, decision, unit: def });
+    } else definitions.push(def);
   });
 
   const sharedCapacities: IRSharedCapacity[] = submission.sharedCapacities.map((wireCap) => {
@@ -653,5 +782,16 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
   });
 
   // `?? []` - a hand-built SubmitCompilationInput (pre-existing fixtures/tests) may predate the inventoryDispositions field; tolerated, never a crash.
-  return { rules, definitions, sharedCapacities, irExtensionCandidates: submission.irExtensionCandidates, inventoryDispositions: submission.inventoryDispositions ?? [], warnings };
+  // a shared capacity whose members were all quarantined is itself context-only
+  const ownedRuleIds = new Set(ownedRules.map((r) => r.ruleId));
+  const ownedCaps: IRSharedCapacity[] = [];
+  submission.sharedCapacities.forEach((wireCap, i) => {
+    const cap = sharedCapacities[i]!;
+    const decision = classifyUnitOwnership(wireCap.citation, { ...ownershipScope });
+    const membersOwned = cap.memberRuleIds.some((m) => ownedRuleIds.has(m));
+    if (decision.ownership === "CONTEXT_ONLY_UNIT_EMISSION" && !membersOwned) {
+      contextOnlyEmissions.push({ kind: "SHARED_CAPACITY", localRef: wireCap.localRef, unitId: cap.sharedCapId, sourceSectionRef: wireCap.citation ?? null, decision, unit: cap });
+    } else ownedCaps.push(cap);
+  });
+  return { rules: ownedRules, definitions, sharedCapacities: ownedCaps, irExtensionCandidates: submission.irExtensionCandidates, inventoryDispositions: submission.inventoryDispositions ?? [], warnings, contextOnlyEmissions, dependencyProse };
 }

@@ -114,7 +114,7 @@ import type { SemanticCompilationResult, SemanticCompilerInput } from "../semant
 import type { NodeSupersessionStatus } from "../amendment/types";
 import type { ConditionSuspicionResult } from "./condition-suspicion-classifier";
 
-export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v1";
+export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v2";
 export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v1";
 
 // ---------------------------------------------------------------------------

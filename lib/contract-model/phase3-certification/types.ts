@@ -9,7 +9,7 @@
 import type { IdentityStrength } from "../covenant-map/types";
 
 export const PHASE3_CERTIFICATION_DECISION_VERSION = "phase3-candidate-certification.v1" as const;
-export const PHASE3_PACKAGE_CERTIFICATION_VERSION = "phase3-package-certification.v1" as const;
+export const PHASE3_PACKAGE_CERTIFICATION_VERSION = "phase3-package-certification.v2" as const;
 export const PHASE3_PACKAGE_MANIFEST_SCHEMA = "p3-package-certification-manifest.v1" as const;
 
 export type Phase3CertificationStatus = "CERTIFIED" | "REVIEW_REQUIRED" | "NOT_CERTIFIED";
@@ -94,6 +94,14 @@ export type PackageCertificationBlockerCode =
   | "WEAK_IDENTITY"
   | "INCOMPLETE_ARTIFACT"
   | "DANGLING_EXECUTABLE_RELATIONSHIP"
+  /** A typed source dependency / cross-rule condition target bound to a unit that is not CERTIFIED (or whose source unit is not) - Phase 4 must not act on it. */
+  | "UNBOUND_EXECUTABLE_BINDING"
+  /** A typed source dependency whose owning candidate is outside this package's target set: the package is a partial view. */
+  | "DEPENDENCY_TARGET_NOT_IN_TARGET_SET"
+  /** A typed source dependency the package could not bind although its owner is in the target set (owner compiled nothing / no unit at the ref). */
+  | "DEPENDENCY_TARGET_NOT_BOUND"
+  /** A dependency the compiler could not resolve to any structural node. */
+  | "DEPENDENCY_UNKNOWN"
   | "NO_CANDIDATES";
 
 export interface PackageCertificationBlocker { code: PackageCertificationBlockerCode; severity: "FAILED" | "PARTIAL" | "REVIEW"; detail: string; refs: string[] }
@@ -120,6 +128,8 @@ export interface Phase3PackageCertification {
   representedPopulationHash: string;
   candidates: { total: number; eligible: number; represented: number; certified: number; reviewRequired: number; notCertified: number };
   edges: { executable: number; certifiedSemantic: number; reviewOnly: number; deterministicStructural: number; contextualInference: number };
+  /** Package-level dependency bindings (v2): total typed dependencies, bound, executable (both endpoints CERTIFIED), and the unbound breakdown. */
+  bindings: { total: number; bound: number; executable: number; notInTargetSet: number; notCompiled: number; unitNotFound: number; unknown: number };
 }
 
 export interface Phase3PackageManifestCandidate {

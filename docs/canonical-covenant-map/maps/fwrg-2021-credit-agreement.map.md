@@ -1,7 +1,7 @@
 # Canonical covenant map - fwrg-2021-credit-agreement
 
-mapHash: `cc880af32b6affb0f4eac89d125de5f3f7a29418d3441f4b61cb5cbe29bdff1b`  
-schema: canonical-covenant-map.v2  
+mapHash: `b4f6f9261c5d4e9a6e8e38cbcea9f156dfbc9d20c1a85f24a83af2457f42fe1d`  
+schema: canonical-covenant-map.v3  
 config: (none)
 
 ## Completeness
@@ -19,6 +19,12 @@ config: (none)
 
 | type | from | to | relationship | derived from | reason |
 |---|---|---|---|---|---|
+
+## Package dependency bindings
+
+| total | bound | executable | not in target set | owner not compiled | unit not found | unknown |
+|---|---|---|---|---|---|---|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## Unresolved
 

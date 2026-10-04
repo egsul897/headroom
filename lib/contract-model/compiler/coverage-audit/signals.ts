@@ -171,8 +171,12 @@ export function countInlineEnumerationMarkers(text: string): string[] {
   const occurrences: { marker: string; start: number; end: number }[] = [];
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
-    occurrences.push({ marker: m[0].toLowerCase(), start: m.index, end: m.index + m[0].length });
     if (m.index === re.lastIndex) re.lastIndex++;
+    // "(b)" in "Section 7.03(b)" is the tail of a cross-reference, not an enumerated unit of THIS text: a marker glued to a
+    // preceding digit or dot (a section number) is never counted. A genuine list marker follows a newline, a space or ";".
+    const before = m.index > 0 ? text[m.index - 1]! : "";
+    if (/[\d.]/.test(before)) continue;
+    occurrences.push({ marker: m[0].toLowerCase(), start: m.index, end: m.index + m[0].length });
   }
 
   const genuine = new Set<string>();

@@ -56,6 +56,8 @@ export interface PackageAccess {
   packageGraph: PackageGraphResult | null;
   /** documentId -> normalizedTerm -> exactTerm, for every document's own declared definitions - used only for the cross-document/cross-instrument fallback (task §21), never for same-document resolution (definition-graph.ts's own exact index handles that). */
   exactTermsByDocument: Map<string, Map<string, string>>;
+  /** SEMANTIC FIDELITY (v4): the sealed candidate population. A cross-reference whose target is owned by another candidate is retrieved as context and NOT recursed into (STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT). */
+  semanticUnitOwnership?: readonly { discoveryId: string; structuralNodeIds: readonly string[] }[] | null;
   /**
    * Phase 3F.1 FIX-2 ("trust metadata belongs to the evidence itself, not to
    * the retrieval mechanism") - this instrument's own already-computed
@@ -145,7 +147,9 @@ function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: 
 export function buildCovenantContextBundle(input: BuildContextBundleInput, access: PackageAccess): CovenantContextBundle {
   const start = Date.now();
   const budget = input.budget ?? DEFAULT_RETRIEVAL_BUDGET;
-  const state = createRetrievalState(budget, access.operativeState, access.supersessionIndex);
+  const ownership = access.semanticUnitOwnership ? new Map<string, string[]>() : null;
+  if (ownership && access.semanticUnitOwnership) for (const c of access.semanticUnitOwnership) { const anchor = c.structuralNodeIds[0]; if (anchor && c.discoveryId !== input.candidate.discoveryId) ownership.set(anchor, [...(ownership.get(anchor) ?? []), c.discoveryId].sort()); }
+  const state = createRetrievalState(budget, access.operativeState, access.supersessionIndex, ownership);
   const { candidate } = input;
   const documentId = candidate.documentId;
 
@@ -300,6 +304,7 @@ function finalize(input: BuildContextBundleInput, state: RetrievalState, documen
     contentIdentity,
     sufficiencyState,
     stopReasons: [...state.stopReasons],
+    retrievalStops: state.retrievalStops,
     hasUnresolvedOperativeEvidence: unresolvedEvidenceItemIds.length > 0,
     unresolvedEvidenceItemIds,
     performance: {

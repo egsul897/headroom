@@ -1,7 +1,7 @@
 # Canonical covenant map - lsb-2023-abl-credit-agreement
 
-mapHash: `3b166f39e3c341f20454c5f46ed6debd490d8f9b1d06eb77571e46af14c0a32b`  
-schema: canonical-covenant-map.v2  
+mapHash: `8e9191754e2ded22bf70656b7846b0f586ff024799a37a1b9e2739dd71179793`  
+schema: canonical-covenant-map.v3  
 config: (none)
 
 ## Completeness
@@ -19,6 +19,12 @@ config: (none)
 
 | type | from | to | relationship | derived from | reason |
 |---|---|---|---|---|---|
+
+## Package dependency bindings
+
+| total | bound | executable | not in target set | owner not compiled | unit not found | unknown |
+|---|---|---|---|---|---|---|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## Unresolved
 

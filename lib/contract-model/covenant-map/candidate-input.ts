@@ -28,6 +28,8 @@ export interface CandidateInputPackage {
   amendmentEffects: AmendmentEffectCandidate[] | null;
   supersessionIndex?: NodeSupersessionIndex;
   retrievalBudget?: RetrievalBudget;
+  /** SEMANTIC FIDELITY: the sealed population (Phase 2's), so references and retrieval know which nodes other candidates own. */
+  candidatePopulation?: readonly { discoveryId: string; structuralNodeIds: readonly string[] }[] | null;
 }
 
 export interface CandidateCompilerInputBuild {
@@ -70,13 +72,14 @@ export function assembleCompilerInput(candidate: DiscoveredCandidate, bundle: Co
     compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION,
     toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION,
     operativeCharStart: source.origin === "STRUCTURAL_NODE" && candidate.structuralNodeIds[0] ? pkg.index.getNodeById(candidate.structuralNodeIds[0])?.charStart ?? null : null,
+    ...((pkg as { candidatePopulation?: CandidateInputPackage["candidatePopulation"] }).candidatePopulation ? { candidatePopulation: (pkg as { candidatePopulation?: CandidateInputPackage["candidatePopulation"] }).candidatePopulation } : {}),
   };
 }
 
 export function buildCandidateCompilerInput(candidate: DiscoveredCandidate, pkg: CandidateInputPackage): CandidateCompilerInputBuild {
   const bundle = buildCovenantContextBundle(
     { candidate, packageKey: pkg.packageKey, companyId: pkg.companyId, instrumentKey: pkg.instrumentKey, budget: pkg.retrievalBudget },
-    { index: pkg.index, packageGraph: pkg.packageGraph, exactTermsByDocument: pkg.exactTermsByDocument, operativeState: pkg.operativeState, supersessionIndex: pkg.supersessionIndex },
+    { index: pkg.index, packageGraph: pkg.packageGraph, exactTermsByDocument: pkg.exactTermsByDocument, operativeState: pkg.operativeState, supersessionIndex: pkg.supersessionIndex, semanticUnitOwnership: pkg.candidatePopulation ?? null },
   );
   const input = assembleCompilerInput(candidate, bundle, pkg);
   const anchorId = candidate.structuralNodeIds[0] ?? null;

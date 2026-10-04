@@ -56,16 +56,32 @@ function targetKindToUnresolvedType(targetKind: string): "AMBIGUOUS_RELATIVE_REF
  * `depth > maxCrossReferenceDepth` bound above, which remains as-is as the
  * absolute backstop.
  */
+/** Candidate(s) of the sealed population owning a node: the nearest anchor on the node's ancestor chain (the node itself first). */
+function ownersOf(state: RetrievalState, index: StructuralIndex, nodeId: string): string[] {
+  if (!state.semanticUnitOwnership) return [];
+  for (const id of [nodeId, ...index.getAncestors(nodeId).map((a) => a.nodeId)]) { const o = state.semanticUnitOwnership.get(id); if (o && o.length > 0) return o; }
+  return [];
+}
+
 export function retrieveCrossReferencesFromNode(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, parentItemId: string, depth: number, includeDescendants: boolean, packageGraph: PackageGraphResult | null = null, visitedNodeIds: Set<string> = new Set()): void {
   if (depth > state.budget.maxCrossReferenceDepth) {
-    state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (${state.budget.maxCrossReferenceDepth}) reached`);
+    // SEMANTIC FIDELITY (v4) - a depth bound only "exceeds the budget" when it actually withholds something. Look at what this
+    // node would have contributed: resolved, non-self references. None -> nothing was withheld, no stop, no sufficiency effect.
+    const withheld = index.findReferencesFrom(nodeId, includeDescendants).filter((r) => r.resolved && r.targetNodeId && !r.targetAmbiguous && r.targetNodeId !== nodeId && !visitedNodeIds.has(r.targetNodeId));
+    if (withheld.length > 0) {
+      state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (${state.budget.maxCrossReferenceDepth}) reached`);
+      const n = index.getNodeById(nodeId);
+      state.retrievalStops.push({ reason: "DEPTH_LIMIT_WITH_UNRETRIEVED_DEPENDENCIES", fromNodeId: parentItemId, targetNodeId: nodeId, targetSectionRef: n?.sectionRef ?? null, owningCandidateRefs: [], depth, detail: `depth ${depth} > maxCrossReferenceDepth ${state.budget.maxCrossReferenceDepth}: ${withheld.length} resolved reference(s) from ${n?.sectionRef ?? nodeId} not retrieved (${withheld.map((r) => r.normalizedTarget).join(", ")})` });
+    }
     return;
   }
   if (visitedNodeIds.has(nodeId)) {
     // Reference cycle detected - this node's own outgoing references were
     // already expanded earlier in this same traversal chain. Stop here
     // rather than re-expanding forever; the item/amendment-lead check for
-    // this node already ran on first expansion.
+    // this node already ran on first expansion. The cycle is RECORDED (graph data), never re-traversed.
+    const n = index.getNodeById(nodeId);
+    state.retrievalStops.push({ reason: "REFERENCE_CYCLE", fromNodeId: parentItemId, targetNodeId: nodeId, targetSectionRef: n?.sectionRef ?? null, owningCandidateRefs: [], depth, detail: `reference cycle: ${n?.sectionRef ?? nodeId} was already expanded earlier in this traversal chain` });
     return;
   }
   const expandedFromHere = new Set(visitedNodeIds);
@@ -176,6 +192,17 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     // an earlier draft that flipped this to `expansion.includedNodeIds.length > 0`
     // caused real budget exhaustion and reintroduced material findings
     // elsewhere in the same bundle - reverted before this fix was accepted).
+    // SEMANTIC FIDELITY (v4) - OWNERSHIP BOUNDARY: when the referenced provision is owned by another candidate of the
+    // sealed population (its anchor is this node or an ancestor of it), the target has been identified and retrieved as
+    // context - enough to identify it, establish the relationship and verify the child's reference. Its own dependency
+    // tree is that candidate's job. Stop here, deterministically, without touching the budget or sufficiency: this is
+    // delegation to a separately-owned certified semantic unit, not missing context. Recorded for every owned target,
+    // whatever its classification, so the package graph can see the boundary.
+    const owners = ownersOf(state, index, ref.targetNodeId);
+    if (owners.length > 0) {
+      state.retrievalStops.push({ reason: "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT", fromNodeId: nodeId, targetNodeId: ref.targetNodeId, targetSectionRef: targetNode.sectionRef, owningCandidateRefs: owners, depth, detail: `${targetNode.sectionRef} is owned by candidate(s) ${owners.join(", ")}; its dependency tree is delegated to that unit` });
+      continue;
+    }
     if (itemType === "CALCULATION_PROVISION") {
       retrieveCrossReferencesFromNode(state, index, documentId, ref.targetNodeId, item.itemId, depth + 1, false, packageGraph, expandedFromHere);
     }
@@ -191,11 +218,16 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
  * every other cross-reference target, not just the primary candidate.
  */
 export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState, index: StructuralIndex, documentId: string, definitionText: string, parentItemId: string, depth: number, packageGraph: PackageGraphResult | null = null): void {
+  const mentions = detectAbsoluteReferenceMentions(definitionText);
   if (depth > state.budget.maxCrossReferenceDepth) {
-    state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (${state.budget.maxCrossReferenceDepth}) reached`);
+    // SEMANTIC FIDELITY (v4) - a definition at the depth bound whose text mentions no Section/Article withholds nothing:
+    // no stop, no sufficiency effect. Only a real unretrieved mention is a budget stop (and says exactly what was withheld).
+    if (mentions.length > 0) {
+      state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (${state.budget.maxCrossReferenceDepth}) reached`);
+      state.retrievalStops.push({ reason: "DEPTH_LIMIT_WITH_UNRETRIEVED_DEPENDENCIES", fromNodeId: parentItemId, targetNodeId: parentItemId, targetSectionRef: null, owningCandidateRefs: [], depth, detail: `depth ${depth} > maxCrossReferenceDepth ${state.budget.maxCrossReferenceDepth}: ${mentions.length} section/article mention(s) inside a definition's text not retrieved (${mentions.map((m) => m.normalizedTarget).join(", ")})` });
+    }
     return;
   }
-  const mentions = detectAbsoluteReferenceMentions(definitionText);
   for (const mention of mentions) {
     // Phase 3F.1.2: cardinality-aware resolution - a mention matching more
     // than one physical occurrence is reported as ambiguous, never guessed.
