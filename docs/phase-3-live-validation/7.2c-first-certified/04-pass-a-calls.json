@@ -1,0 +1,113 @@
+{
+  "inventoryMode": "DUAL_PASS_ENSEMBLE",
+  "inventoryPasses": [
+    {
+      "passId": "pass-1",
+      "frozenContentHash": "d5f4b0ee0da0d91a4fcf51fcf26d83b89287f711f9921591ac9ba6436b8c50d3",
+      "inventoryStatus": "INVENTORY_OK",
+      "items": 5,
+      "telemetryCostUsd": 0.00046228
+    },
+    {
+      "passId": "pass-2",
+      "frozenContentHash": "43e53b31c0a821d9db7fe18c8c1927b5c375c51075e304d4fcf7c0d4fbd2ffab",
+      "inventoryStatus": "INVENTORY_OK",
+      "items": 6,
+      "telemetryCostUsd": 0.000582804
+    }
+  ],
+  "calls": [
+    {
+      "passId": "pass-1",
+      "batchId": "b1",
+      "stage": "semantic_inventory",
+      "slotIds": [
+        "operative:region#1",
+        "operative:region#2",
+        "operative:region#3",
+        "operative:region#4",
+        "operative:region#5"
+      ],
+      "requestedMaxOutputTokens": 6218,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 13,
+      "inputTokens": 1638,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": 959,
+      "latencyMs": 10704,
+      "stopReason": "end_turn",
+      "schemaOk": true,
+      "error": null,
+      "itemsReturned": 5,
+      "itemsAccepted": 5,
+      "itemsRejectedOverBound": 0
+    },
+    {
+      "passId": "pass-2",
+      "batchId": "b1",
+      "stage": "semantic_inventory",
+      "slotIds": [
+        "operative:region#1",
+        "operative:region#2",
+        "operative:region#3",
+        "operative:region#4",
+        "operative:region#5"
+      ],
+      "requestedMaxOutputTokens": 6218,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 13,
+      "inputTokens": 614,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": 992,
+      "latencyMs": 9856,
+      "stopReason": "end_turn",
+      "schemaOk": true,
+      "error": null,
+      "itemsReturned": 5,
+      "itemsAccepted": 5,
+      "itemsRejectedOverBound": 0
+    },
+    {
+      "passId": "pass-2",
+      "batchId": "g1",
+      "stage": "semantic_inventory_gap",
+      "slotIds": [
+        "operative:region#3",
+        "operative:region#4"
+      ],
+      "requestedMaxOutputTokens": 3058,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 6,
+      "inputTokens": 586,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": 429,
+      "latencyMs": 6036,
+      "stopReason": "end_turn",
+      "schemaOk": true,
+      "error": null,
+      "itemsReturned": 2,
+      "itemsAccepted": 2,
+      "itemsRejectedOverBound": 0
+    }
+  ],
+  "executionPolicy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+  "derivedBounds": {
+    "policy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+    "slots": 5,
+    "batches": 1,
+    "maxLegitimateItems": 13,
+    "parseCeilings": [
+      34
+    ],
+    "maxSerializedChars": 14903,
+    "requestedMaxOutputTokensByBatch": [
+      6218
+    ],
+    "reasoning": "DISABLED",
+    "callDeadlineMs": 180000
+  }
+}
