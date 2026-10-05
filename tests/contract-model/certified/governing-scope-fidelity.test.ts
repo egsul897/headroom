@@ -184,7 +184,7 @@ describe("REF1-REF5 source references are source identity", () => {
     expect(eq.authoritativeRefs).toEqual(["§9.1", "Section 9.3(b)"]);
     const list = classifyEmittedReferences({ emitted: ["Section 9.1(a)", "Section 9.1(c)", "Section 9.1(d)"], operativeText: "subject to Sections 9.1(a), 9.1(c) and 9.1(d) hereof" });
     expect(list.classifications.every((c) => c.classification === "EXACT_SOURCE_REFERENCE")).toBe(true);
-    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v1");
+    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v2");
   });
   it("REF4 model descendant expansion is excluded and restored to the drafted whole reference; broadening is restored to the drafted sub-clause; an invented reference is excluded and limits the rule", () => {
     const n = normalize(idxA, "9.2(a)", [rule({ conditions: [condition92a(["Section 9.1(a)", "Section 9.1(b)"])], dependsOn: [{ relationshipType: "REQUIRES", targetRef: "Section 9.3", description: "" }] })]);
@@ -205,25 +205,31 @@ describe("REF1-REF5 source references are source identity", () => {
     expect(statedSectionReferencesInText("in compliance with clauses (a) through (b) of this Section 9.1", { index: idxA, documentId: TEST_DOCUMENT_ID }).map((s) => s.normalized)).toEqual(["9.1(a)", "9.1(b)"]);
     expect(statedSectionReferencesInText("in compliance with clauses (a) through (b) of this Section 9.1").map((s) => s.normalized)).toEqual(["9.1(a)..(b)"]);
   });
-  it("REF4 unverifiable: with no stated reference and no lineage the emitted target is kept but the rule is limited (never silently authoritative)", () => {
+  it("REF4 (SA-1 v2): a section reference the non-empty source never states is MODEL_INVENTED (excluded, rule limited) even when the source states no reference at all; only an absent operative text leaves a reference UNVERIFIABLE (kept, limited)", () => {
     const n = normalizeSubmission(submission([rule({ conditions: [condition92a(["Section 9.1"])] })]), testCompilerInput({ sourceSectionRef: "9.2(a)", operativeSourceText: "(a) other Indebtedness so long as the conditions are met;" }));
-    expect(n.rules[0]!.sourceReferenceAudit!.entries.map((e) => e.classification)).toEqual(["SOURCE_REFERENCE_UNVERIFIABLE"]);
-    expect(n.rules[0]!.sufficiency).toBe("PARTIAL");
+    expect(n.rules[0]!.sourceReferenceAudit!.entries.map((e) => [e.classification, e.authoritative])).toEqual([["MODEL_INVENTED_REFERENCE", false]]);
+    expect(n.rules[0]!.conditions[0]!.referencesRuleTargets ?? []).toEqual([]);
+    expect(n.rules[0]!.sufficiency).not.toBe("COMPLETE");
+    const blind = classifyEmittedReferences({ emitted: ["Section 9.1"], operativeText: "" });
+    expect([blind.classifications[0]!.classification, blind.authoritativeRefs, blind.unverifiable]).toEqual(["SOURCE_REFERENCE_UNVERIFIABLE", ["Section 9.1"], true]);
   });
   it("REF5 package binding owns the one-to-many expansion: 'Section 9.1' binds to the two certified rules under it as a DERIVED artifact (the candidate keeps boundSemanticTargetIds []); an unrepresented part of the referenced section makes the target set TARGET_SET_REVIEW_REQUIRED", () => {
     const r = normalize(idxA, "9.2(a)", [rule({ conditions: [condition92a(["Section 9.1"])] })]).rules[0]!;
     expect(r.conditions[0]!.referencesRuleTargets![0]!.boundSemanticTargetIds).toEqual([]);
-    const node = (nodeId: string, candidateRef: string, sectionRef: string, unit: IRRule): CovenantMapNode => ({ nodeId, kind: "RULE", candidateRef, documentId: TEST_DOCUMENT_ID, sectionRef, structuralNodeId: nodeAt(idxA, sectionRef).nodeId, structuralNodeKey: null, sourceOrder: { documentOrdinal: 0, charStart: 0, depth: 0 } as never, family: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", termName: null, sufficiency: "COMPLETE", sourceContentVersion: "sscv2:x", operativeSourceVersion: "scv1:x", identityStrength: "STRONG", verification: { status: "VERIFIED_NO_MATERIAL_GAP_FOUND", findingIds: [], materialFindings: 0 }, certification: { status: "CERTIFIED", artifactHash: "h", semanticSourceContractVersion: "sscv2:x", blockers: [] }, operative: null, unit });
+    const node = (nodeId: string, candidateRef: string, sectionRef: string, unit: IRRule, over: Partial<CovenantMapNode> = {}): CovenantMapNode => ({ nodeId, kind: "RULE", candidateRef, documentId: TEST_DOCUMENT_ID, sectionRef, structuralNodeId: nodeAt(idxA, sectionRef).nodeId, structuralNodeKey: null, sourceOrder: { documentOrdinal: 0, charStart: 0, depth: 0 } as never, family: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", termName: null, sufficiency: "COMPLETE", sourceContentVersion: "sscv2:x", operativeSourceVersion: "scv1:x", identityStrength: "STRONG", verification: { status: "VERIFIED_NO_MATERIAL_GAP_FOUND", findingIds: [], materialFindings: 0 }, certification: { status: "CERTIFIED", artifactHash: "h", semanticSourceContractVersion: "sscv2:x", blockers: [] }, operative: null, unit, ...over } as CovenantMapNode);
     const stub = (ref: string): IRRule => ({ ...r, ruleId: `ir-rule:${ref}`, sourceSectionRef: ref, conditions: [], sourceDependencies: [], sourceReferenceAudit: undefined, inheritedAttributes: [] });
     const from = node("ir-rule:9.2(a)", "cand:9.2(a)", "9.2(a)", r);
-    const a = node("ir-rule:9.1(a)", "cand:9.1", "9.1(a)", stub("9.1(a)")), b = node("ir-rule:9.1(b)", "cand:9.1", "9.1(b)", stub("9.1(b)"));
+    // the referenced units are the ratio tests of §9.1, independently compiled as FINANCIAL_COVENANTS / RATIO_TEST (v3: the source qualifier "financial covenants contained in" selects by that classification)
+    const fin = { family: "FINANCIAL_COVENANTS", ruleType: "RATIO_TEST" } as Partial<CovenantMapNode>;
+    const a = node("ir-rule:9.1(a)", "cand:9.1", "9.1(a)", stub("9.1(a)"), fin), b = node("ir-rule:9.1(b)", "cand:9.1", "9.1(b)", stub("9.1(b)"), fin);
     const candidates = [{ candidateRef: "cand:9.2(a)", outcome: "MAPPED", structuralNodeIds: [nodeAt(idxA, "9.2(a)").nodeId] }, { candidateRef: "cand:9.1", outcome: "MAPPED", structuralNodeIds: [nodeAt(idxA, "9.1").nodeId] }];
     const bound = resolvePackageDependencies({ nodes: [from, a, b], candidates, index: idxA });
-    expect(PACKAGE_DEPENDENCY_RESOLUTION_VERSION).toBe("p3-package-dependency-resolution.v2");
+    expect(PACKAGE_DEPENDENCY_RESOLUTION_VERSION).toBe("p3-package-dependency-resolution.v3");
     const binding = bound.bindings.find((x) => x.kind === "CONDITION_TARGET")!;
-    expect([binding.status, binding.bindingMode, binding.boundSemanticTargetIds, binding.executable]).toEqual(["BOUND", "ONE_TO_MANY_EXPANSION", ["ir-rule:9.1(a)", "ir-rule:9.1(b)"], true]);
+    expect([binding.status, binding.bindingMode, binding.boundSemanticTargetIds, binding.executable]).toEqual(["BOUND", "QUALIFIED_ONE_TO_MANY", ["ir-rule:9.1(a)", "ir-rule:9.1(b)"], true]);
+    expect(binding.selectorResolution).toMatchObject({ kind: "QUALIFIED_RULE_SET", qualifierText: "financial covenants contained in", selectedNodeIds: ["ir-rule:9.1(a)", "ir-rule:9.1(b)"], excludedNodeIds: [] });
     expect(from.unit).toBe(r); expect((from.unit as IRRule).conditions[0]!.referencesRuleTargets![0]!.boundSemanticTargetIds).toEqual([]); // the verified candidate is never mutated
-    expect(bound.counts).toMatchObject({ total: 1, bound: 1, oneToMany: 1, reviewRequired: 0 });
+    expect(bound.counts).toMatchObject({ total: 1, bound: 1, oneToMany: 0, qualifiedOneToMany: 1, selectorReview: 0, reviewRequired: 0 });
     // the referenced section's clause (b) is owned by a target-set candidate that produced no units: the set is not safely determinable
     const review = resolvePackageDependencies({ nodes: [from, a], candidates: [...candidates, { candidateRef: "cand:9.1(b)", outcome: "COMPILE_FAILED", structuralNodeIds: [nodeAt(idxA, "9.1(b)").nodeId] }], index: idxA });
     const rb = review.bindings.find((x) => x.kind === "CONDITION_TARGET")!;
@@ -240,7 +246,7 @@ describe("SAN1-SAN3 target economics: quarantined prose vs contaminated semantic
     const b = normalize(idxA, "9.2(a)", [rule({ dependsOn: [dep("Liens permitted under Section 9.3(b) - the 81% fair market value cap")] })]);
     expect(a.rules[0]!.sufficiency).toBe("COMPLETE");
     expect(JSON.stringify(a.rules)).not.toContain("80%");
-    expect(a.rules[0]!.sourceDependencies![0]!.description).toBe("requires that the terms of Section 9.3(b) are satisfied; the semantics of Section 9.3(b) are owned by its own certified unit");
+    expect(a.rules[0]!.sourceDependencies![0]!.description).toBe("requires that the terms of Section 9.3(b) are satisfied; the semantics of Section 9.3(b) are separately owned and resolved at package level");
     expect(a.dependencyProse.map((d) => d.targetEconomicsExcluded)).toEqual([["80%"]]);
     expect(a.diagnostics.map((d) => d.message.split(":")[0])).toEqual(["TARGET_ECONOMICS_IN_DEPENDENCY_PROSE"]);
     expect(a.rules[0]!.sufficiencyReasons.filter((x) => /TARGET_ECONOMICS|80%/.test(x))).toEqual([]);
@@ -304,7 +310,7 @@ describe("§7 identity, §40 testing period, §44 prompts, §51-§52 versions an
     expect(verifier).toMatch(/CANONICAL ACTION vs SOURCE ACT/); expect(verifier).toMatch(/GOVERNING-SCOPE INHERITANCE/); expect(verifier).toMatch(/EXACT SOURCE-REFERENCE FIDELITY/);
     expect(verifier).not.toMatch(/INCUR_DEBT is correct|is correct here|must remain whole here/);
     expect(compiler).toMatch(/SOURCE REFERENCES ARE SOURCE IDENTITY/); expect(compiler).toMatch(/GOVERNING SEMANTIC CONTEXT/); expect(compiler).toMatch(/ENTITY SCOPE VOCABULARY/);
-    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION, SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v6", "semantic-accountability-compiler-prompt.v7", "phase-3c-semantic-verifier.v4", "phase-3c-semantic-verifier-prompt.v3"]);
+    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION, SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v7", "semantic-accountability-compiler-prompt.v8", "phase-3c-semantic-verifier.v4", "phase-3c-semantic-verifier-prompt.v4"]);
   });
   const MODULES = ["lib/contract-model/compiler/semantic/governing-scope.ts", "lib/contract-model/compiler/semantic/action-ontology.ts", "lib/contract-model/compiler/semantic/source-reference-fidelity.ts", "lib/contract-model/compiler/semantic/entity-scope-guard.ts", "lib/contract-model/compiler/semantic/normalize.ts", "lib/contract-model/compiler/semantic/compile.ts", "lib/contract-model/compiler/semantic/caller.ts", "lib/contract-model/compiler/semantic/prompt.ts", "lib/contract-model/compiler/semantic/bounded-composition.ts", "lib/contract-model/compiler/semantic-verification/projection.ts", "lib/contract-model/compiler/semantic-verification/prompt.ts", "lib/contract-model/compiler/semantic-verification/reviewer.ts", "lib/contract-model/compiler/semantic-verification/ir-inventory.ts", "lib/contract-model/compiler/semantic-verification/source-inventory.ts", "lib/contract-model/compiler/semantic-verification/reconciliation.ts", "lib/contract-model/compiler/semantic-verification/findings.ts", "lib/contract-model/compiler/semantic-verification/verify.ts", "lib/contract-model/covenant-map/package-dependencies.ts", "lib/contract-model/phase3-certification/semantic-source-contract.ts", "lib/contract-model/phase3-certification/certify.ts", "lib/contract-model/phase3-certification/package-certification.ts", "lib/contract-model/ir/types.ts"];
   const stripComments = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'`])\/\/.*$/gm, "$1");

@@ -85,9 +85,10 @@ export function certifyPackage(input: CertifyPackageInput): Phase3PackageCertifi
     else if (b.status === "TARGET_CANDIDATE_NOT_IN_TARGET_SET") block("DEPENDENCY_TARGET_NOT_IN_TARGET_SET", "PARTIAL", `${what}: ${b.detail}`, [b.bindingId]);
     else if (b.status === "DEPENDENCY_UNKNOWN") block("DEPENDENCY_UNKNOWN", "FAILED", `${what}: ${b.detail}`, [b.bindingId]);
     else if (b.status === "TARGET_SET_REVIEW_REQUIRED") block("DEPENDENCY_TARGET_SET_REVIEW_REQUIRED", "REVIEW", `${what}: ${b.detail}`, [b.bindingId]);
+    else if (b.status === "TARGET_SELECTOR_REVIEW_REQUIRED") block("DEPENDENCY_TARGET_SELECTOR_REVIEW_REQUIRED", "REVIEW", `${what}: ${b.detail}`, [b.bindingId]);
     else block("DEPENDENCY_TARGET_NOT_BOUND", "REVIEW", `${what} [${b.status}]: ${b.detail}`, [b.bindingId]);
   }
-  const bindings = pd?.counts ?? { total: 0, bound: 0, executable: 0, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0, reviewRequired: 0, oneToMany: 0 };
+  const bindings = pd?.counts ?? { total: 0, bound: 0, executable: 0, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0, reviewRequired: 0, oneToMany: 0, selectorReview: 0, qualifiedOneToMany: 0 };
 
   blockers.sort((a, b) => (a.code < b.code ? -1 : a.code > b.code ? 1 : 0));
   const status: Phase3PackageCertification["status"] = blockers.some((b) => b.severity === "FAILED") ? "FAILED" : blockers.some((b) => b.severity === "PARTIAL") ? "PARTIAL" : blockers.length > 0 ? "REVIEW_REQUIRED" : "CERTIFIED";

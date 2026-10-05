@@ -127,7 +127,8 @@ import type { ConditionSuspicionResult } from "./condition-suspicion-classifier"
 // (reference-fidelity audit, governing-scope derivation) and is told the generic contracts (canonical action vs source
 // act evidence, governing-scope inheritance, exact reference fidelity, package-level one-to-many binding).
 export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v4";
-export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v3";
+// prompt v4 (source-authority closure): status-neutral wording about external targets; target selectors explained.
+export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v4";
 
 // ---------------------------------------------------------------------------
 // Verifier input/output contract (task §4's own allowed-inputs list,

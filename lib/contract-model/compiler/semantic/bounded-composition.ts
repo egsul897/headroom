@@ -17,7 +17,7 @@ import { ProviderError } from "../../analyzer/provider-error";
 import { BudgetRefusedError } from "../../analyzer/dispatch-budget";
 import { validateCompilationUnit } from "../../ir/validate";
 import type { SemanticCaller } from "./caller";
-import { normalizeSubmission } from "./normalize";
+import { diagnosticRecord, normalizeSubmission } from "./normalize";
 import { findInvalidWireKinds } from "./wire-schema";
 import { IR_EXPRESSION_KINDS } from "../../ir/types";
 import { checkDefinitionCompleteness } from "./completeness-check";
@@ -214,7 +214,12 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
   // partial submission was already assembled at this point, so
   // hadPartialOutput is true on this path).
   try {
-    const normalized = normalizeSubmission(callResult.submission, input);
+    // SA-3 PARITY: normalization judges the submission against exactly what the model was given - the resolved
+    // compilation unit's text, its source context (entity-scope witness regions), the frozen inventory (source-grounded
+    // reference lineage) and the governing scope. A shard's callerInput already carried all of these; the monolithic
+    // unit's `input` (the caller-supplied identity) carries none of them, so normalizing against it silently dropped the
+    // governing-scope precedence and the witness regions on the monolithic path only.
+    const normalized = normalizeSubmission(callResult.submission, callerInput);
 
     const validation = validateCompilationUnit({
       irSchemaVersion: input.irSchemaVersion,
@@ -357,7 +362,10 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
     const unresolvedIssues = [
       ...(callResult.failureDetail ? [callResult.failureDetail] : []),
       ...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`),
-      ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`),
+      // DIAGNOSTIC-class warnings (quarantined model output: target economics in prose, excluded reference expansions, an
+      // outranked unrecognized tag) are execution diagnostics carried in normalizationDiagnostics / certification warnings -
+      // never an unresolved issue that makes a semantically COMPLETE unit REVIEW_REQUIRED (the sharded path never did).
+      ...normalized.warnings.filter((w) => w.kind !== "DIAGNOSTIC").map((w) => `[${w.scope}] ${w.message}`),
       ...invalidWireKinds.map((k) => `[${k.path}] SEMANTIC_WIRE_KIND_INVALID: "${k.kind}" is not an IR expression kind (valid kinds: ${IR_EXPRESSION_KINDS.join(", ")}, UNLIMITED_CAPACITY for a capacity); kept as UNSUPPORTED, never a successful representation`),
       ...callResult.submission.overallNotes,
       ...accountabilityIssues,
@@ -380,7 +388,7 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
       rawModelOutput: callResult.rawSubmission,
       contextOnlyEmissions: normalized.contextOnlyEmissions,
       dependencyProseDiagnostics: normalized.dependencyProse,
-      normalizationDiagnostics: normalized.diagnostics.map((d) => ({ scope: d.scope, message: d.message })),
+      normalizationDiagnostics: normalized.diagnostics.map((d) => diagnosticRecord(input.candidateRef, null, d, normalized.scopeUnits)),
       invalidWireKinds,
       provider: caller.providerName,
       model: caller.model,

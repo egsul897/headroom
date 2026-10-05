@@ -536,7 +536,8 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
     else if (s.status === "SHARD_SCHEMA_FAILURE") { push("MODEL_SCHEMA_FAILURE"); push("SHARD_INCOMPLETE"); }
     else if (s.status === "SHARD_MISSING_CONTEXT") { push("MISSING_CONTEXT"); push("SHARD_INCOMPLETE"); }
     else if (s.status === "SHARD_PARTIAL") { push("PARTIAL_COMPILATION"); push("SHARD_INCOMPLETE"); }
-    for (const fr of s.failureReasons) if (s.status !== "SHARD_COMPLETE" || fr === "MISSING_CONTEXT" || fr === "UNSUPPORTED_SEMANTICS" || fr === "OPERATIVE_STATE_UNRESOLVED" || fr === "TRUNCATED_EVIDENCE_USED") push(fr);
+    // SA-3 parity: a shard that completed with an invalid wire kind still carries that reason to the whole unit, exactly as the monolithic path does.
+    for (const fr of s.failureReasons) if (s.status !== "SHARD_COMPLETE" || fr === "MISSING_CONTEXT" || fr === "UNSUPPORTED_SEMANTICS" || fr === "OPERATIVE_STATE_UNRESOLVED" || fr === "TRUNCATED_EVIDENCE_USED" || fr === "SEMANTIC_WIRE_KIND_INVALID") push(fr);
   }
   if (collisions.some((c) => c.requiresReview)) push("SHARD_CONFLICT");
   if (accountability.counts.materialMissingFromComposition > 0 || accountability.counts.materialQuantitativeValuesMissing > 0) push("INVENTORY_ITEM_MISSING_FROM_COMPOSITION");
@@ -588,5 +589,18 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
     });
   }
 
-  return { candidateRef, planHash: plan.planHash, status, failureReasons, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, definitionSourceAnchors, definitionAttribution, definitionConflicts, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues, crossShardLinks };
+  // SA-3 SHARD PARITY: a safety signal generated inside a shard never disappears because composition was sharded.
+  // Aggregated in plan order; diagnostics deduplicated by their deterministic identity only (never by string concatenation).
+  const normalization: StitchedCompilation["normalization"] = { diagnostics: [], dependencyProseDiagnostics: [], contextOnlyEmissions: [], invalidWireKinds: [] };
+  const seenDiagnostic = new Set<string>();
+  for (const shard of plan.shards) {
+    const r = input.results.find((x) => x.shardId === shard.shardId);
+    const n = r?.normalization;
+    if (!n) continue;
+    for (const d of n.diagnostics) if (!seenDiagnostic.has(d.diagnosticId)) { seenDiagnostic.add(d.diagnosticId); normalization.diagnostics.push(d); }
+    normalization.dependencyProseDiagnostics.push(...n.dependencyProseDiagnostics);
+    normalization.contextOnlyEmissions.push(...n.contextOnlyEmissions);
+    normalization.invalidWireKinds.push(...n.invalidWireKinds);
+  }
+  return { candidateRef, planHash: plan.planHash, status, failureReasons, normalization, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, definitionSourceAnchors, definitionAttribution, definitionConflicts, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues, crossShardLinks };
 }

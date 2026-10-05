@@ -285,7 +285,8 @@ export function citedUnitLeadIn(regionText: string, regionSectionRef: string | n
   let pos = 0;
   for (const token of relative) {
     const esc = token.replace(/[()]/g, "\\$&");
-    const lineStart = new RegExp(`(?<=\\n\\s*)${esc}(?=\\s)`, "g");
+    // the enumerator at a line start - or at the very start of the text (a sharded primary slice, or a region that begins at the cited unit)
+    const lineStart = new RegExp(`(?<=(?:^|\\n)\\s*)${esc}(?=\\s)`, "g");
     lineStart.lastIndex = pos;
     let m = lineStart.exec(regionText);
     if (!m) { const anywhere = new RegExp(`(?<=\\s)${esc}(?=\\s)`, "g"); anywhere.lastIndex = pos; m = anywhere.exec(regionText); }

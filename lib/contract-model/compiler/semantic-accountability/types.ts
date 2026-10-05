@@ -50,7 +50,12 @@
  * two propositions with contradictory deontic effects over one stretch stay two. semanticRole is retained as a
  * derived compatibility field. Ids are re-keyed relative to v4 evidence (cross-run comparison is semantic).
  */
-export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v5";
+// v6 (source-authority closure SA-1): an item's `referencedSections` are SOURCE-GROUNDED - the deterministic citation
+// scanner (compiler/source-reference-scan.ts) over the item's authenticated span (a reference straddling two spans
+// belongs to both). The model's own claims are kept beside them as `declaredReferencedSections` with a per-claim
+// `referenceAudit` (CORROBORATED / MODEL_INVENTED_REFERENCE / MODEL_NARROWED_REFERENCE / MODEL_BROADENED_REFERENCE /
+// MODEL_OMITTED_SOURCE_REFERENCE) and never create a reference. Item identity and the freeze hash follow this version.
+export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v6";
 export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v6";
 
 // ---------------------------------------------------------------------------
@@ -98,6 +103,14 @@ export interface QuantitativeValue {
 // Source spans / provenance (mission §1: "where did this proposition come from")
 // ---------------------------------------------------------------------------
 
+/** v6 (SA-1): model-versus-source reference accounting for one inventory item. Never source authority. */
+export interface InventoryReferenceAudit {
+  version: string;
+  claims: { declared: string; normalized: string | null; classification: "CORROBORATED" | "MODEL_INVENTED_REFERENCE" | "MODEL_NARROWED_REFERENCE" | "MODEL_BROADENED_REFERENCE"; sourceRef: string | null }[];
+  /** Source-grounded references of the span that no model claim named (MODEL_OMITTED_SOURCE_REFERENCE). */
+  omittedBySource: string[];
+}
+
 export interface InventorySourceSpan {
   /** Which source-context region this span lives in (see SourceContextRegion.regionId; "operative" for the unit's own operative text). */
   regionId: string;
@@ -133,8 +146,12 @@ export interface SemanticInventoryItem {
   proposition: string;
   quantitativeValues: QuantitativeValue[];
   referencedTerms: string[];
-  /** Explicit section/clause references the proposition depends on ("Section 6.01(b)", "clause (x)"). */
+  /** Explicit section/clause references the proposition depends on. v6: SOURCE-GROUNDED - normalized identities the deterministic scanner found inside the item's authenticated span (never a model claim). On v5-and-earlier evidence: the model's declared values. */
   referencedSections: string[];
+  /** v6: the model's own declared referencedSections, verbatim (trimmed) - non-authoritative evidence. */
+  declaredReferencedSections?: string[];
+  /** v6: every model claim classified against the source-grounded references of the item's span, plus the source references the model omitted. */
+  referenceAudit?: InventoryReferenceAudit;
   parentItemId: string | null;
   relatedItemIds: string[];
   materiality: InventoryMateriality;

@@ -46,6 +46,26 @@ import { computeSourceCoverage, isAccountedDisposition, type AccountingSpanInput
 import { batchSlots, coordinationIndex, partitionSourceSlots, slotForOffset, type SlotBatch, type SlotPartition, type SourceSlot } from "./slots";
 import { computePartitionHash, computeSourceContextHash } from "./source-identity";
 import type { StructuralIndex } from "../structural-index";
+import { normalizeSectionToken, referencesWithinSpan, scanSourceReferences, SOURCE_REFERENCE_SCAN_VERSION, type ScannedSourceReference } from "../source-reference-scan";
+import type { InventoryReferenceAudit } from "./types";
+
+/** SA-1: a model-declared reference classified against the source-grounded references of the item's own span. */
+function auditDeclaredReferences(declared: readonly string[], grounded: readonly ScannedSourceReference[]): InventoryReferenceAudit {
+  const normDeclared = (d: string): string | null => { const t = d.trim().replace(/^(?:Sections?|§§?)\s*/i, ""); return /^\d/.test(t) ? normalizeSectionToken(t) : null; };
+  const claims: InventoryReferenceAudit["claims"] = [];
+  const matched = new Set<string>();
+  for (const d of declared) {
+    const n = normDeclared(d);
+    const exact = n ? grounded.find((g) => g.normalized === n) : undefined;
+    if (exact) { matched.add(exact.normalized); claims.push({ declared: d, normalized: n, classification: "CORROBORATED", sourceRef: exact.raw }); continue; }
+    const parent = n ? grounded.find((g) => n.startsWith(`${g.normalized}(`) || n.startsWith(`${g.normalized}.`)) : undefined;
+    if (parent) { matched.add(parent.normalized); claims.push({ declared: d, normalized: n, classification: "MODEL_NARROWED_REFERENCE", sourceRef: parent.raw }); continue; }
+    const child = n ? grounded.find((g) => g.normalized.startsWith(`${n}(`) || g.normalized.startsWith(`${n}.`)) : undefined;
+    if (child) { matched.add(child.normalized); claims.push({ declared: d, normalized: n, classification: "MODEL_BROADENED_REFERENCE", sourceRef: child.raw }); continue; }
+    claims.push({ declared: d, normalized: n, classification: "MODEL_INVENTED_REFERENCE", sourceRef: null });
+  }
+  return { version: SOURCE_REFERENCE_SCAN_VERSION, claims, omittedBySource: grounded.filter((g) => !matched.has(g.normalized)).map((g) => g.normalized) };
+}
 
 export interface SemanticInventoryInput {
   candidateRef: string;
@@ -147,6 +167,13 @@ function mergeAccepted(target: SemanticInventoryItem, incoming: SemanticInventor
   for (const sec of incoming.referencedSections) if (!target.referencedSections.includes(sec)) target.referencedSections.push(sec);
   target.referencedTerms.sort();
   target.referencedSections.sort();
+  // v6: the model's declared claims and their audits are unioned too (evidence, never authority)
+  if (incoming.declaredReferencedSections || target.declaredReferencedSections) target.declaredReferencedSections = [...new Set([...(target.declaredReferencedSections ?? []), ...(incoming.declaredReferencedSections ?? [])])].sort();
+  if (incoming.referenceAudit || target.referenceAudit) {
+    const claims = [...(target.referenceAudit?.claims ?? [])];
+    for (const c of incoming.referenceAudit?.claims ?? []) if (!claims.some((x) => x.declared === c.declared)) claims.push(c);
+    target.referenceAudit = { version: SOURCE_REFERENCE_SCAN_VERSION, claims, omittedBySource: [...new Set([...(target.referenceAudit?.omittedBySource ?? []), ...(incoming.referenceAudit?.omittedBySource ?? [])])].filter((r) => !claims.some((c) => c.classification === "CORROBORATED" && c.normalized === r)).sort() };
+  }
   if (MATERIALITY_RANK[incoming.materiality] > MATERIALITY_RANK[target.materiality]) target.materiality = incoming.materiality;
   if (target.ambiguity === "NONE" && incoming.ambiguity !== "NONE") {
     target.ambiguity = incoming.ambiguity;
@@ -287,6 +314,7 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
   const slots = partition ?? partitionSourceSlots({ sourceContext: input.sourceContext, structuralIndex: input.structuralIndex ?? null });
   let rejectedUnverifiable = 0;
   let rejectedDuplicates = 0;
+  const scannedByRegion = new Map<string, ScannedSourceReference[]>();
 
   // Phase 1: verify every excerpt against the source and build the identity-free item.
   interface Located { wire: WireInventoryItem; order: number; item: SemanticInventoryItem; baseKey: string; regionId: string; regionText: string; charStart: number; charEnd: number; nStart: number }
@@ -329,7 +357,14 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
     const baseKey = [loc.region.regionId, slotId, String(slot ? coordinationIndex(slot, loc.charStart) : 0), valueSignature].join("\u0000");
     const operativeFlag = matchEnum(wire.operative, OPERATIVE_FLAGS, "UNKNOWN" as OperativeFlag);
     const precedingText = slot ? [...slot.context.map((c) => c.text), slot.text.slice(0, Math.max(0, loc.charStart - slot.charStart))].join("\n") : regionText.slice(Math.max(0, loc.charStart - 400), loc.charStart);
-    const derived = deriveSemanticFunctions({ declaredRoles, spanText: regionText.slice(loc.charStart, loc.charEnd), precedingText, values, referencedSections: wire.referencedSections.map((sec) => sec.trim()).filter(Boolean), operative: operativeFlag });
+    // SA-1: references are SOURCE-GROUNDED - the deterministic scanner over the authenticated region, claimed by the item's
+    // own span (a reference straddling two spans belongs to both). The model's declared values are audited, never trusted.
+    if (!scannedByRegion.has(loc.region.regionId)) scannedByRegion.set(loc.region.regionId, scanSourceReferences(regionText, { baseSectionRef: loc.region.sectionRef, index: input.structuralIndex ?? null, documentId: loc.region.documentId }));
+    const grounded = referencesWithinSpan(scannedByRegion.get(loc.region.regionId)!, loc.charStart, loc.charEnd);
+    const sourceReferencedSections = [...new Set(grounded.map((g) => g.normalized))].sort();
+    const declaredReferencedSections = wire.referencedSections.map((sec) => sec.trim()).filter(Boolean);
+    const referenceAudit = auditDeclaredReferences(declaredReferencedSections, grounded);
+    const derived = deriveSemanticFunctions({ declaredRoles, spanText: regionText.slice(loc.charStart, loc.charEnd), precedingText, values, referencedSections: sourceReferencedSections, operative: operativeFlag });
     const role = deriveLegacyRole(derived.functions, declaredRoles);
     const item: SemanticInventoryItem = {
       inventoryItemId: "",
@@ -350,7 +385,9 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
       proposition: wire.proposition.trim(),
       quantitativeValues: values,
       referencedTerms: wire.referencedTerms.map((t) => t.trim()).filter(Boolean),
-      referencedSections: wire.referencedSections.map((sec) => sec.trim()).filter(Boolean),
+      referencedSections: sourceReferencedSections,
+      declaredReferencedSections,
+      referenceAudit,
       parentItemId: null,
       relatedItemIds: [],
       materiality: matchEnum(wire.materiality, INVENTORY_MATERIALITIES, "REVIEW_UNCERTAIN" as InventoryMateriality),

@@ -67,12 +67,17 @@ export function resolveSourceTarget(args: ResolveSourceTargetArgs): IRSourceTarg
   return { exactSourceTargetRef: args.exactSourceTargetRef.trim(), normalizedTargetRef: normalized, ...(targetDefinedTerm ? { targetDefinedTerm } : {}), resolvedStructuralTarget: resolved, owningCandidateRefs, boundSemanticTargetIds: [], resolutionStatus };
 }
 
-/** Deterministic dependency wording from the relationship type and the exact reference. The target's own figures never appear here. */
+/**
+ * Deterministic dependency wording from the relationship type and the exact reference. The target's own figures never
+ * appear here, and neither does any STATUS of the target (SA-4): at candidate compile time the target may be
+ * uncompiled, review-required, not certified or outside a partial target set - the prose says only that the target's
+ * semantics are separately owned and resolved at package level.
+ */
 export function describeSourceDependency(relationshipType: string, exactSourceTargetRef: string): string {
   const ref = exactSourceTargetRef.trim();
   switch (relationshipType) {
-    case "REQUIRES": return `requires that the terms of ${ref} are satisfied; the semantics of ${ref} are owned by its own certified unit`;
-    case "LIMITED_BY": return `is limited by ${ref}; the limit's semantics are owned by its own certified unit`;
+    case "REQUIRES": return `requires that the terms of ${ref} are satisfied; the semantics of ${ref} are separately owned and resolved at package level`;
+    case "LIMITED_BY": return `is limited by ${ref}; the limit's semantics are separately owned and resolved at package level`;
     case "SHARES_CAPACITY_WITH": return `shares capacity with ${ref}`;
     case "ALTERNATIVE_TO": return `is an alternative to ${ref}`;
     case "CONCURRENT_COUNTED": return `is counted concurrently with ${ref}`;

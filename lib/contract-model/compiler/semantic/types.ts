@@ -62,8 +62,11 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // from it (entity-scope guard v3 precedence, canonical action ontology v1), holds every emitted cross-rule / dependency
 // reference to the drafted source reference (source-reference-fidelity.v1), and keeps safely quarantined model prose
 // out of sufficiency. A v5-era cached compilation carries none of these and must never be served as-is.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v6";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v7";
+// v7 / prompt v8 (source-authority closure): stated references come from source text only (no inventory-lineage
+// authority), every cross-rule / dependency target carries its source-derived selector, dependency prose is
+// status-neutral, and normalization diagnostics carry a deterministic identity on both execution paths.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v7";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v8";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
@@ -424,8 +427,8 @@ export interface SemanticCompilationResult {
   contextOnlyEmissions?: import("./unit-ownership").ContextOnlyUnitEmission[];
   /** GOVERNING SCOPE (additive, optional): the typed governing ancestor context the compilation was given (compile.ts resolves it; persisted beside the units, never inside them). */
   governingScope?: import("./governing-scope").GoverningSemanticContext | null;
-  /** Execution diagnostics from normalization (DIAGNOSTIC-class warnings: safely quarantined model prose, excluded model reference expansions, outranked unrecognized tags). Never source evidence, never sufficiency reasons. */
-  normalizationDiagnostics?: { scope: string; message: string }[];
+  /** Execution diagnostics from normalization (DIAGNOSTIC-class warnings: safely quarantined model prose, excluded model reference expansions, outranked unrecognized tags). Never source evidence, never sufficiency reasons. SA-3: identical shape on the monolithic and the sharded path (shardId set on the latter). */
+  normalizationDiagnostics?: import("./normalize").NormalizationDiagnosticRecord[];
   /** SEMANTIC FIDELITY: the model's dependency prose with the target figures it tried to restate, kept beside the units. */
   dependencyProseDiagnostics?: import("./normalize").DependencyProseDiagnostic[];
   /** SEMANTIC FIDELITY: invented expression kinds found in the submission (SEMANTIC_WIRE_KIND_INVALID). */

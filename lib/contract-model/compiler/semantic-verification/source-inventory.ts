@@ -20,7 +20,7 @@
  * construction, and every numeric value comes from parsing the real source
  * text, never a hardcoded expectation.
  */
-import { statedSectionReferencesInText } from "../semantic/source-reference-fidelity";
+import { scanSourceReferences } from "../source-reference-scan";
 import { countInlineEnumerationMarkers } from "../coverage-audit/signals";
 import { hashParts } from "../hashing";
 import type { SourceInventory, SourceInventoryItem, SourceInventoryItemKind } from "./types";
@@ -172,7 +172,7 @@ export function buildSourceInventory(candidateRef: string, operativeSourceText: 
   const own = sourceCitation.replace(/^[§\s]+/, "").replace(/^Section\s+/i, "").replace(/\s+/g, "").toLowerCase();
   const selfRef = (n: string | null) => !!n && !!own && /^\d/.test(own) && (n === own || n.startsWith(`${own}(`) || n.startsWith(`${own}.`));
   const inExcluded = (at: number | null) => at !== null && (options.excludedSpans ?? []).some(([a, b]) => at >= a && at < b);
-  for (const ref of statedSectionReferencesInText(operativeSourceText, { baseSectionRef: sourceCitation })) {
+  for (const ref of scanSourceReferences(operativeSourceText, { baseSectionRef: sourceCitation })) {
     if (selfRef(ref.normalized) || inExcluded(ref.charStart)) continue;
     items.push({
       itemId: hashParts([candidateRef, "SECTION_REFERENCE", ref.normalized ?? ref.raw, SOURCE_INVENTORY_ALGORITHM_VERSION]),
@@ -183,8 +183,8 @@ export function buildSourceInventory(candidateRef: string, operativeSourceText: 
       sourceDocumentId,
       sourceCitation,
       structuralNodeKey,
-      charStart: ref.charStart ?? -1,
-      charEnd: ref.charStart !== null ? ref.charStart + ref.raw.length : -1,
+      charStart: ref.charStart,
+      charEnd: ref.charEnd,
       provenanceClass: "PRIMARY_LOCAL",
     });
   }

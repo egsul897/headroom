@@ -19,15 +19,16 @@
 import { CovenantFamily, ContractRuleType, ContractRulePosture, ContractRuleRelationshipType, EntityClassTag } from "@prisma/client";
 import { CONTRACT_ACTIONS, CONTRACT_CONDITION_TYPES } from "../../types";
 import { withExpressionId, computeRuleId, computeDefinitionId, computeSharedCapId } from "../../ir/identity";
+import { hashParts } from "../hashing";
 import { analyzeType, inferType } from "../../ir/type-check";
 import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRConditionEvaluationBasis, type IRDefinition, type IRException, type IRExpression, type IRInheritedAttribute, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRSourceDependency, type IRSourceTargetRef, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
-import { describeSourceDependency, figureStatedInText, numericFiguresInProse, resolveSourceTarget, type OwnershipIndexCandidate } from "./source-reference";
+import { describeSourceDependency, figureStatedInText, normalizeReferenceText, numericFiguresInProse, resolveSourceTarget, type OwnershipIndexCandidate } from "./source-reference";
 import { classifyDefinitionOwnership, classifyUnitOwnership, type ContextOnlyUnitEmission, type OwnershipScope } from "./unit-ownership";
 import type { StructuralIndex } from "../structural-index";
 import type { SubmitCompilationInput, WireCondition, WireDefinition, WireException, WireExpression, WireRule, WireSharedCapacity } from "./wire-schema";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
 import { applyEntityScopeGuard, classifyEntityTag, entityScopeWitnessFor, normalizeEntityTags } from "./entity-scope-guard";
-import type { IREntityTagNormalization, IRSourceReferenceAudit, IRSourceReferenceAuditEntry } from "../../ir/types";
+import type { IREntityTagNormalization, IRSourceReferenceAudit, IRSourceReferenceAuditEntry, IRSourceTargetSelector } from "../../ir/types";
 import type { GoverningSemanticContext } from "./governing-scope";
 import { classifySourceAction, assessActionCompatibility } from "./action-ontology";
 import { classifyEmittedReferences, statedReferencesFor, SOURCE_REFERENCE_FIDELITY_VERSION } from "./source-reference-fidelity";
@@ -53,6 +54,39 @@ export interface NormalizationWarning {
    * outranked by source-derived scope). Recorded on the compilation, never in sufficiencyReasons, never source evidence.
    */
   kind?: "SUFFICIENCY" | "DIAGNOSTIC";
+}
+
+/** A DIAGNOSTIC-class event as persisted on the compilation (SA-3 shard parity): deterministic identity, the shard it arose in (null on the monolithic path), the scope path, the diagnostic code and the detail. */
+export interface NormalizationDiagnosticRecord {
+  /** sha256 over (candidateRef, shardId, sourceUnit, scope, code, message) - never a timestamp, never a counter. */
+  diagnosticId: string;
+  /** SA-3: the shard that raised it (null on the monolithic path). Execution metadata - the semantics below are identical either way. */
+  shardId: string | null;
+  /** SA-3: the source unit the diagnostic belongs to (a rule's sourceSectionRef / a definition's term), independent of the composition-relative index in `scope`; null when the scope names no unit. */
+  sourceUnit: string | null;
+  scope: string;
+  code: string;
+  message: string;
+}
+
+/** scope key ("rule[r-1]", "definition[d-2]") -> the source unit it names (a rule's sourceSectionRef, a definition's term); built by normalizeSubmission. */
+export type DiagnosticScopeUnits = Record<string, string>;
+
+export function diagnosticSourceUnit(scope: string, units: DiagnosticScopeUnits | string | null | undefined): string | null {
+  if (units === null || units === undefined) return null;
+  if (typeof units === "string") return units;
+  const m = /^((?:rule|definition|sharedCapacity)\[[^\]]*\])/.exec(scope);
+  return (m && units[m[1]!]) ?? null;
+}
+
+/**
+ * SA-3: the deterministic diagnostic record. `units` is the scope->unit map normalizeSubmission built (monolithic path),
+ * or the already-derived source unit when a shard result is re-keyed to the whole-unit candidate (the unit never changes).
+ */
+export function diagnosticRecord(candidateRef: string, shardId: string | null, w: Pick<NormalizationWarning, "scope" | "message">, units?: DiagnosticScopeUnits | string | null): NormalizationDiagnosticRecord {
+  const code = w.message.split(":")[0]!.trim();
+  const sourceUnit = diagnosticSourceUnit(w.scope, units);
+  return { diagnosticId: hashParts([candidateRef, shardId ?? "", sourceUnit ?? "", w.scope, code, w.message]), shardId, sourceUnit, scope: w.scope, code, message: w.message };
 }
 
 /** SEMANTIC FIDELITY: what the model wrote about a dependency, kept beside (never inside) the unit. Figures it restates that the operative source does not state are flagged as target economics. */
@@ -112,7 +146,7 @@ function diag(ctx: NormCtx, message: string): void { warn(ctx, message, "DIAGNOS
 function limitRule(ctx: NormCtx, message: string): void { warn(ctx, message, "SUFFICIENCY"); ctx.limits.push(message); }
 
 /** SOURCE-REFERENCE FIDELITY: the drafted references a field may target, and the audit of what the model emitted for it. */
-function fidelityFor(ctx: NormCtx, path: string, emitted: string[], lineageIds: string[] | undefined): string[] {
+function fidelityFor(ctx: NormCtx, path: string, emitted: string[], lineageIds: string[] | undefined): { refs: string[]; selectorOf: (ref: string) => IRSourceTargetSelector | undefined } {
   const lineageRefs = (lineageIds ?? []).flatMap((id) => ctx.inventoryRefs.get(id) ?? []);
   const outcome = classifyEmittedReferences({ emitted, operativeText: ctx.operativeText, lineageRefs, baseSectionRef: ctx.baseSectionRef, index: ctx.referenceIndex, documentId: ctx.documentId });
   for (const c of outcome.classifications) {
@@ -125,8 +159,8 @@ function fidelityFor(ctx: NormCtx, path: string, emitted: string[], lineageIds: 
   if (broadened.length > 0) diag(ctx, `MODEL_BROADENED_REFERENCE_EXCLUDED: ${path} emitted ${broadened.map((e) => `"${e.emitted}"`).join(", ")} wider than the drafted ${[...new Set(broadened.map((e) => `"${e.restoredTo}"`))].join(", ")}; restored to the drafted reference(s), the model's reference is retained in sourceReferenceAudit`);
   const invented = outcome.excluded.filter((e) => e.classification === "MODEL_INVENTED_REFERENCE");
   if (invented.length > 0) limitRule(ctx, `MODEL_INVENTED_REFERENCE_EXCLUDED: ${path} emitted ${invented.map((e) => `"${e.emitted}"`).join(", ")}, which the candidate's source never states; excluded from the unit's semantics (review required), retained in sourceReferenceAudit`);
-  if (outcome.unverifiable) limitRule(ctx, `SOURCE_REFERENCE_UNVERIFIABLE: ${path} emitted ${outcome.classifications.filter((c) => c.classification === "SOURCE_REFERENCE_UNVERIFIABLE").map((c) => `"${c.emitted}"`).join(", ")} but the candidate's source states no section-shaped reference and no inventory lineage names one; kept, not proven (review required)`);
-  return outcome.authoritativeRefs;
+  if (outcome.unverifiable) limitRule(ctx, `SOURCE_REFERENCE_UNVERIFIABLE: ${path} emitted ${outcome.classifications.filter((c) => c.classification === "SOURCE_REFERENCE_UNVERIFIABLE").map((c) => `"${c.emitted}"`).join(", ")} but the candidate's source states no section-shaped reference; a model inventory claim is not source authority; kept, not proven (review required)`);
+  return { refs: outcome.authoritativeRefs, selectorOf: (ref) => outcome.selectors[normalizeReferenceText(ref) ?? ref.replace(/\s+/g, "").toLowerCase()] };
 }
 
 function childCtx(ctx: NormCtx, wire: WireExpression, extraScope: string): NormCtx {
@@ -504,8 +538,8 @@ function normalizeCondition(wire: WireCondition, ctx: NormCtx, index: number): I
   // SOURCE-REFERENCE FIDELITY: the authoritative targets are the references AS DRAFTED; a model expansion / broadening is
   // restored to the drafted reference, an invented one is excluded (review). The raw emitted references stay in the audit.
   const emittedRefs = (wire.referencesRuleTargets ?? []).filter((t) => typeof t?.targetRef === "string" && t.targetRef.trim().length > 0).map((t) => t.targetRef.trim());
-  const authoritativeRefs = emittedRefs.length > 0 ? fidelityFor(ctx, `${ctx.scopePath}.condition[${index}].referencesRuleTargets`, emittedRefs, wire.inventoryItemIds) : [];
-  const targets: IRSourceTargetRef[] = authoritativeRefs.map((ref) => resolveSourceTarget({ exactSourceTargetRef: ref, documentId: ctx.documentId, index: ctx.referenceIndex, population: ctx.population }));
+  const fidelity = emittedRefs.length > 0 ? fidelityFor(ctx, `${ctx.scopePath}.condition[${index}].referencesRuleTargets`, emittedRefs, wire.inventoryItemIds) : null;
+  const targets: IRSourceTargetRef[] = (fidelity?.refs ?? []).map((ref) => { const t = resolveSourceTarget({ exactSourceTargetRef: ref, documentId: ctx.documentId, index: ctx.referenceIndex, population: ctx.population }); const selector = fidelity!.selectorOf(ref); return selector ? { ...t, selector } : t; });
   for (const t of targets) if (t.resolutionStatus === "DEPENDENCY_UNKNOWN") warn(ctx, `condition[${index}] references "${t.exactSourceTargetRef}", which resolves to no structural node of this document - DEPENDENCY_UNKNOWN (review required), never guessed`);
   let expression = wire.expression ? normalizeExpression(wire.expression, childCtx(ctx, wire.expression, `condition[${index}].expression`), "BOOLEAN") : null;
   // SEMANTIC FIDELITY: a compliance / satisfaction test is BOOLEAN. A MONEY/RATIO metric standing in for "compliance with
@@ -591,8 +625,8 @@ function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, 
   // SEMANTIC FIDELITY: a cross-unit reference is first-class semantics. The reference is RESOLVED structurally when the
   // index knows the node (its semantic unit is bound at package level, never by mutating this unit) and UNKNOWN otherwise.
   // The description is deterministic; the model's prose is diagnostics - the target's own figures never enter the unit.
-  const authoritativeRefs = fidelityFor(ctx, `${ctx.scopePath}.dependsOn[${index}]`, [wire.targetRef.trim()], wire.inventoryItemIds);
-  const targetRef = authoritativeRefs[0] ?? null;
+  const fidelity = fidelityFor(ctx, `${ctx.scopePath}.dependsOn[${index}]`, [wire.targetRef.trim()], wire.inventoryItemIds);
+  const targetRef = fidelity.refs[0] ?? null;
   const figures = numericFiguresInProse(wire.description ?? "");
   const excluded = figures.filter((f) => !figureStatedInText(f, ctx.operativeText));
   ctx.dependencyProse.push({ scope: `${ctx.scopePath}.dependsOn[${index}]`, exactSourceTargetRef: wire.targetRef, modelProse: wire.description ?? "", figuresInProse: figures, targetEconomicsExcluded: excluded });
@@ -600,9 +634,11 @@ function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, 
   // (the description below is generated deterministically), the raw prose is preserved as a diagnostic, and certification
   // carries the TARGET_ECONOMICS_EXCLUDED warning. Contamination that SURVIVES in an authoritative field fails elsewhere
   // (numeric reconciliation / grounding), never here.
-  if (excluded.length > 0) diag(ctx, `TARGET_ECONOMICS_IN_DEPENDENCY_PROSE: dependsOn[${index}] on "${wire.targetRef}" restated ${excluded.length} figure(s) that the candidate's operative source never states; they belong to the target's own certified unit, were excluded from this unit and are recorded in the dependency-prose diagnostics`);
+  if (excluded.length > 0) diag(ctx, `TARGET_ECONOMICS_IN_DEPENDENCY_PROSE: dependsOn[${index}] on "${wire.targetRef}" restated ${excluded.length} figure(s) that the candidate's operative source never states; they belong to the target's own separately owned unit (resolved at package level), were excluded from this unit and are recorded in the dependency-prose diagnostics`);
   if (!targetRef) return { excluded: true };
-  const target = resolveSourceTarget({ exactSourceTargetRef: targetRef, documentId: ctx.documentId, index: ctx.referenceIndex, population: ctx.population });
+  const resolved = resolveSourceTarget({ exactSourceTargetRef: targetRef, documentId: ctx.documentId, index: ctx.referenceIndex, population: ctx.population });
+  const selector = fidelity.selectorOf(targetRef);
+  const target: IRSourceTargetRef = selector ? { ...resolved, selector } : resolved;
   if (target.resolutionStatus === "DEPENDENCY_UNKNOWN") warn(ctx, `dependsOn[${index}].targetRef "${targetRef}" resolves to no structural node of this document - DEPENDENCY_UNKNOWN (review required), never guessed or dropped`);
   return { source: withLineage({ ...target, relationshipType: finalType, description: describeSourceDependency(finalType, targetRef), provenance: provenanceFor(ctx, null, null) ?? null }, wire.inventoryItemIds) };
 }
@@ -645,6 +681,8 @@ export interface NormalizedCompilation {
   contextOnlyEmissions: ContextOnlyUnitEmission[];
   /** SEMANTIC FIDELITY: model prose about dependencies, kept beside the units. */
   dependencyProse: DependencyProseDiagnostic[];
+  /** SA-3: scope key ("rule[<localRef>]", "definition[<localRef>]") -> the source unit (sourceSectionRef / termName) for diagnostic attribution. */
+  scopeUnits: DiagnosticScopeUnits;
   /** DIAGNOSTIC-class warnings (see NormalizationWarning.kind): execution events about quarantined model output, never sufficiency reasons. Also present in `warnings`. */
   diagnostics: NormalizationWarning[];
 }
@@ -658,6 +696,8 @@ export interface NormalizedCompilation {
  */
 export function normalizeSubmission(submission: SubmitCompilationInput, input: SemanticCompilerInput): NormalizedCompilation {
   const warnings: NormalizationWarning[] = [];
+  /** SA-3: scope key -> source unit, so a diagnostic can name its unit independently of any composition-relative index. */
+  const scopeUnits: DiagnosticScopeUnits = {};
   const { companyId, instrumentKey, sourceDocumentId: documentId } = input;
 
   const ruleIdByLocalRef = new Map<string, string>();
@@ -690,6 +730,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
 
   const rules: IRRule[] = submission.rules.map((wireRule) => {
     const ctx = baseCtx(`rule[${wireRule.localRef}]`);
+    scopeUnits[`rule[${wireRule.localRef}]`] = wireRule.sourceSectionRef;
     const ruleId = ruleIdByLocalRef.get(wireRule.localRef)!;
     const covenantFamily = matchEnum(wireRule.covenantFamily, Object.values(CovenantFamily)) ?? "QUALITATIVE_NEGATIVE_COVENANTS";
     if (!matchEnum(wireRule.covenantFamily, Object.values(CovenantFamily))) warn(ctx, `covenantFamily "${wireRule.covenantFamily}" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)`);
@@ -827,6 +868,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
 
   const allDefinitions: IRDefinition[] = submission.definitions.map((wireDef) => {
     const ctx = baseCtx(`definition[${wireDef.localRef}]`);
+    scopeUnits[`definition[${wireDef.localRef}]`] = wireDef.termName;
     const covenantFamily = matchEnum(wireDef.covenantFamily, Object.values(CovenantFamily)) ?? "DEFINITIONS_CALCULATION_RULES";
     const calculationExpression = wireDef.calculationExpression ? normalizeExpression(wireDef.calculationExpression, ctx) : null;
     const rawSufficiency = matchEnum(wireDef.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
@@ -892,5 +934,5 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       contextOnlyEmissions.push({ kind: "SHARED_CAPACITY", localRef: wireCap.localRef, unitId: cap.sharedCapId, sourceSectionRef: wireCap.citation ?? null, decision, unit: cap });
     } else ownedCaps.push(cap);
   });
-  return { rules: ownedRules, definitions, sharedCapacities: ownedCaps, irExtensionCandidates: submission.irExtensionCandidates, inventoryDispositions: submission.inventoryDispositions ?? [], warnings, contextOnlyEmissions, dependencyProse, diagnostics: warnings.filter((w) => w.kind === "DIAGNOSTIC") };
+  return { rules: ownedRules, definitions, sharedCapacities: ownedCaps, irExtensionCandidates: submission.irExtensionCandidates, inventoryDispositions: submission.inventoryDispositions ?? [], warnings, contextOnlyEmissions, dependencyProse, diagnostics: warnings.filter((w) => w.kind === "DIAGNOSTIC"), scopeUnits };
 }

@@ -17,12 +17,15 @@ import path from "node:path";
 import { buildDeterministicStages, rehydrateNodeIds, sealedPopulation, COMPANY_ID, INSTRUMENT_KEY, PACKAGE_KEY } from "../../../scripts/p3-conmed-pilot/pipeline";
 import { loadPreservedPhase2OperativeState } from "../../../scripts/phase-3-live-validation/operative-state";
 import { buildCandidateCompilerInput, operativeLineageFor } from "../../../lib/contract-model/covenant-map/candidate-input";
-import { normalizeSubmission } from "../../../lib/contract-model/compiler/semantic/normalize";
+import { diagnosticRecord, normalizeSubmission } from "../../../lib/contract-model/compiler/semantic/normalize";
 import { SubmitCompilationSchema } from "../../../lib/contract-model/compiler/semantic/wire-schema";
 import { determineStatus, contextBundleEvidenceFlags } from "../../../lib/contract-model/compiler/semantic/bounded-composition";
 import { resolveGoverningScope } from "../../../lib/contract-model/compiler/semantic/governing-scope";
 import { buildIrInventory, IR_INVENTORY_ALGORITHM_VERSION } from "../../../lib/contract-model/compiler/semantic-verification/ir-inventory";
 import { buildSourceInventory } from "../../../lib/contract-model/compiler/semantic-verification/source-inventory";
+import { normalizeInventorySubmission } from "../../../lib/contract-model/compiler/semantic-accountability/inventory";
+import type { SemanticInventoryItem } from "../../../lib/contract-model/compiler/semantic-accountability/types";
+import type { WireInventoryItem } from "../../../lib/contract-model/compiler/semantic-accountability/wire-schema";
 import { reconcileInventories } from "../../../lib/contract-model/compiler/semantic-verification/reconciliation";
 import { buildVerifierUserContent } from "../../../lib/contract-model/compiler/semantic-verification/reviewer";
 import { verifyCompiledCandidate } from "../../../lib/contract-model/compiler/semantic-verification/verify";
@@ -78,7 +81,7 @@ const after = (() => {
   const rule = normalized.rules[0]!;
   const failureReasons = contextBundleEvidenceFlags(built.input).inputHasUnresolvedOperativeEvidence ? (["OPERATIVE_STATE_UNRESOLVED"] as const) : ([] as const);
   const status = determineStatus([...failureReasons], normalized.rules.length, normalized.rules.some((r) => r.sufficiency !== "COMPLETE"), failureReasons.length > 0);
-  const compilation: SemanticCompilationResult = { ...frozen, status, failureReasons: [...failureReasons], rules: normalized.rules, definitions: normalized.definitions, sharedCapacities: normalized.sharedCapacities, contextOnlyEmissions: normalized.contextOnlyEmissions, dependencyProseDiagnostics: normalized.dependencyProse, normalizationDiagnostics: normalized.diagnostics.map((d) => ({ scope: d.scope, message: d.message })), governingScope: built.governingScope, sourceContext: built.input.sourceContext, frozenInventory: built.input.frozenInventory } as SemanticCompilationResult;
+  const compilation: SemanticCompilationResult = { ...frozen, status, failureReasons: [...failureReasons], rules: normalized.rules, definitions: normalized.definitions, sharedCapacities: normalized.sharedCapacities, contextOnlyEmissions: normalized.contextOnlyEmissions, dependencyProseDiagnostics: normalized.dependencyProse, normalizationDiagnostics: normalized.diagnostics.map((d) => diagnosticRecord(TARGET_ID, null, d, normalized.scopeUnits)), governingScope: built.governingScope, sourceContext: built.input.sourceContext, frozenInventory: built.input.frozenInventory } as SemanticCompilationResult;
   return { normalized, rule, compilation, status };
 })();
 
@@ -214,13 +217,21 @@ describe("§35-§42 the frozen live submission re-normalized with the governing 
     expect(c.targetCombination).toBe("ALL_SATISFIED");
     expect(c.evaluationBasis).toMatchObject({ proForma: true, transactionEffect: "after giving effect to the incurrence of such Indebtedness", asOfSelector: "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available", deemedEffectiveAt: "first day of each relevant period for testing such compliance", testingPeriod: null });
     const audit = r.sourceReferenceAudit!;
-    expect(audit.version).toBe("source-reference-fidelity.v1");
+    expect(audit.version).toBe("source-reference-fidelity.v2");
     expect(audit.statedReferences.map((s) => [s.raw, s.normalized, s.origin])).toEqual([["Section 7.3(g)", "7.3(g)", "OPERATIVE_TEXT"], ["Section 7.1", "7.1", "OPERATIVE_TEXT"]]);
     expect(audit.entries.filter((e) => e.path.includes("referencesRuleTargets")).map((e) => [e.emitted, e.classification, e.authoritative, e.restoredTo])).toEqual([["Section 7.1(a)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"], ["Section 7.1(b)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"], ["Section 7.1(c)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"], ["Section 7.1(d)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"]]);
     expect(audit.entries.filter((e) => e.path.includes("dependsOn")).map((e) => [e.emitted, e.classification, e.authoritative])).toEqual([["Section 7.3(g)", "EXACT_SOURCE_REFERENCE", true], ["Section 7.1", "EXACT_SOURCE_REFERENCE", true]]);
     expect(after.normalized.diagnostics.some((d) => d.message.startsWith("MODEL_EXPANDED_REFERENCE_EXCLUDED") && d.message.includes('"Section 7.1(d)"'))).toBe(true);
     expect(JSON.stringify(r.conditions)).not.toMatch(/7\.1\([a-d]\)/);
     expect((r.sourceDependencies ?? []).map((d) => [d.relationshipType, d.normalizedTargetRef, d.resolutionStatus, d.owningCandidateRefs.length])).toEqual([["REQUIRES", "7.3(g)", "SOURCE_REFERENCE_RESOLVED", 1], ["REQUIRES", "7.1", "SOURCE_REFERENCE_RESOLVED", 2]]);
+  });
+  it("SA §39 target selector: the §7.1 cross-rule target carries the source-qualified selector 'financial covenants contained in Section 7.1' (QUALIFIED_RULE_SET); the §7.3(g) dependency is a WHOLE_PROVISION reference; the candidate stays semantically clean", () => {
+    const target = r.conditions[0]!.referencesRuleTargets![0]!;
+    expect(target.selector).toEqual({ sourceText: "financial covenants contained in Section 7.1", kind: "QUALIFIED_RULE_SET", qualifierText: "financial covenants contained in" });
+    expect((r.sourceDependencies ?? []).map((d) => [d.normalizedTargetRef, d.selector?.kind, d.selector?.qualifierText])).toEqual([["7.3(g)", "WHOLE_PROVISION", null], ["7.1", "QUALIFIED_RULE_SET", "financial covenants contained in"]]);
+    expect((r.sourceDependencies ?? []).map((d) => d.description)).toEqual(["requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are separately owned and resolved at package level", "requires that the terms of Section 7.1 are satisfied; the semantics of Section 7.1 are separately owned and resolved at package level"]);
+    expect([r.action, r.entityScope, r.sufficiency]).toEqual(["INCUR_DEBT", ["BORROWER", "ANY_SUBSIDIARY"], "COMPLETE"]);
+    expect(r.conditions[0]!.evaluationBasis?.proForma).toBe(true);
   });
   it("§27-§30, §41 sufficiency: COMPLETE - the quarantined '80%' prose and the outranked model tag are diagnostics on the compilation, never sufficiency reasons; no target economics in the artifact", () => {
     expect(r.sufficiency).toBe("COMPLETE");
@@ -234,6 +245,34 @@ describe("§35-§42 the frozen live submission re-normalized with the governing 
     expect(after.status).toBe("REVIEW_REQUIRED");
     expect(after.compilation.failureReasons).toEqual(["OPERATIVE_STATE_UNRESOLVED"]);
     expect(after.compilation.rules.map((x) => x.sufficiency)).toEqual(["COMPLETE"]);
+  });
+});
+
+describe("SA §40 Pass A inventory replay: the §7.2(c) source references are recoverable from the source text alone; the model's referencedSections never create authority", () => {
+  const frozenItems = frozen.frozenInventory.items as SemanticInventoryItem[];
+  const toWire = (items: readonly SemanticInventoryItem[], mutate: (i: SemanticInventoryItem) => string[]): WireInventoryItem[] => items.map((i, k) => ({ localRef: `w${k}`, semanticRole: i.semanticRole, proposition: i.proposition, excerpt: i.sourceSpan.excerpt, regionId: i.sourceSpan.regionId, quantitativeValues: (i.quantitativeValues ?? []).map((v) => ({ kind: v.kind, rawText: v.rawText, normalizedValue: v.normalizedValue, unit: v.unit })), referencedTerms: i.referencedTerms ?? [], referencedSections: mutate(i), parentRef: null, relatedRefs: [], materiality: i.materiality, ambiguity: i.ambiguity, ambiguityReason: i.ambiguityReason, operative: i.operative }));
+  const replay = (mutate: (i: SemanticInventoryItem) => string[]) => normalizeInventorySubmission({ candidateRef: TARGET_ID, sourceContext: built.input.sourceContext as never, structuralIndex: stages.index }, toWire(frozenItems, mutate)).items;
+  const refsOf = (items: SemanticInventoryItem[]) => [...new Set(items.flatMap((i) => i.referencedSections))].sort();
+  it("as frozen: the model declared 7.3(g) and 7.1; the authoritative references are exactly 7.3(g) and 7.1, each grounded in the item's own source span", () => {
+    expect(refsOf(frozenItems)).toEqual(["7.1", "7.3(g)"]);
+    const items = replay((i) => i.referencedSections);
+    expect(refsOf(items)).toEqual(["7.1", "7.3(g)"]);
+    for (const i of items) for (const ref of i.referencedSections) expect(i.sourceSpan.excerpt.replace(/\s+/g, " ") + "|" + ref).toMatch(/Section\s*$|7\.1|7\.3\(g\)/);
+    expect(items.flatMap((i) => i.referenceAudit?.claims ?? []).map((c) => c.classification)).toEqual(items.flatMap((i) => i.referenceAudit?.claims ?? []).map(() => "CORROBORATED"));
+  });
+  it("model referencedSections removed entirely: the authoritative references are unchanged (recovered from the source text); the omissions are recorded", () => {
+    const items = replay(() => []);
+    expect(refsOf(items)).toEqual(["7.1", "7.3(g)"]);
+    expect(items.flatMap((i) => i.referenceAudit?.omittedBySource ?? []).sort()).toEqual(["7.1", "7.1", "7.3(g)"]);
+    expect(items.every((i) => (i.declaredReferencedSections ?? []).length === 0)).toBe(true);
+  });
+  it("'Section 99.99' injected into every model item: it never becomes authoritative; every injection is a MODEL_INVENTED_REFERENCE claim; the authoritative set is unchanged", () => {
+    const items = replay((i) => [...i.referencedSections, "Section 99.99"]);
+    expect(refsOf(items)).toEqual(["7.1", "7.3(g)"]);
+    const claims = items.flatMap((i) => i.referenceAudit?.claims ?? []).filter((c) => c.declared === "Section 99.99");
+    expect(claims.length).toBe(items.length);
+    expect(claims.every((c) => c.classification === "MODEL_INVENTED_REFERENCE" && c.sourceRef === null)).toBe(true);
+    expect(items.every((i) => i.declaredReferencedSections!.includes("Section 99.99"))).toBe(true);
   });
 });
 
@@ -279,7 +318,7 @@ describe("§43-§47 scripted Layer 2 over the BEFORE and AFTER artifacts; certif
     expect(after.compilation.inputHasUnresolvedOperativeEvidence).toBe(true);
     expect(result.reconciliation.materialUnresolvedCount).toBe(0);
     expect(result.verificationProjection).toMatchObject({ version: SEMANTIC_VERIFICATION_PROJECTION_VERSION, shownToReviewer: true });
-    expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v2");
+    expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v3");
     const content = seen.userContent[0]!;
     expect(content).toContain("GOVERNING SCOPE CONTEXT");
     expect(content).toContain("shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:");

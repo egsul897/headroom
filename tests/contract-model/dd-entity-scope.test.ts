@@ -32,6 +32,6 @@ describe("§17 entityScope", () => {
     const prompt = buildSystemPrompt({ irSchemaVersion: "headroom-covenant-ir.v1", toolPolicyVersion: "tool-policy.v1" });
     expect(prompt).toMatch(/ENTITY SCOPE/);
     expect(prompt).toMatch(/entityScopeExcluded/);
-    expect(SEMANTIC_COMPILER_PROMPT_VERSION).toBe("semantic-accountability-compiler-prompt.v7");
+    expect(SEMANTIC_COMPILER_PROMPT_VERSION).toBe("semantic-accountability-compiler-prompt.v8");
   });
 });

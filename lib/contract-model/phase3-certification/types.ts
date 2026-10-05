@@ -9,7 +9,7 @@
 import type { IdentityStrength } from "../covenant-map/types";
 
 export const PHASE3_CERTIFICATION_DECISION_VERSION = "phase3-candidate-certification.v1" as const;
-export const PHASE3_PACKAGE_CERTIFICATION_VERSION = "phase3-package-certification.v2" as const;
+export const PHASE3_PACKAGE_CERTIFICATION_VERSION = "phase3-package-certification.v3" as const;
 export const PHASE3_PACKAGE_MANIFEST_SCHEMA = "p3-package-certification-manifest.v1" as const;
 
 export type Phase3CertificationStatus = "CERTIFIED" | "REVIEW_REQUIRED" | "NOT_CERTIFIED";
@@ -102,6 +102,8 @@ export type PackageCertificationBlockerCode =
   | "DEPENDENCY_TARGET_NOT_BOUND"
   /** v2 resolver: a one-to-many expansion whose referenced provision is not completely represented by compiled units - the target set must be reviewed. */
   | "DEPENDENCY_TARGET_SET_REVIEW_REQUIRED"
+  /** v3 resolver: a qualified / unresolved target selector the package could not satisfy deterministically - the target set must be reviewed. */
+  | "DEPENDENCY_TARGET_SELECTOR_REVIEW_REQUIRED"
   /** A dependency the compiler could not resolve to any structural node. */
   | "DEPENDENCY_UNKNOWN"
   | "NO_CANDIDATES";

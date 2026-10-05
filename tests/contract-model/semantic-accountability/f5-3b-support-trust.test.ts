@@ -120,7 +120,9 @@ describe("F-5.3B section 3 - support trust propagation (reconciliation, rollup)"
     expect(acc.semanticallyComplete).toBe(false);
     expect(rollupAgreementSemanticStatus([unit(acc, { compileStatus: "REVIEW_REQUIRED" })]).status).not.toBe("SEMANTICALLY_COMPLETE");
     // dispositioning the non-lineage side AMBIGUOUS (the Pass B contract) is honoured, and the conflict still forces review
-    const other = conflicted.find((i) => i.lineageIrPaths.every((p) => p.includes("(inferred")) || i.lineageIrPaths.length === 0) ?? conflicted[1]!;
+    // the non-lineage side is the one credited only by value correspondence (its reason says so); never pick it by position - item ids carry the
+    // algorithm version, so the order of two same-span items changes whenever the version does
+    const other = conflicted.find((i) => /inferred by value correspondence/.test(i.reason) || i.lineageIrPaths.length === 0) ?? conflicted[1]!;
     const acc2 = reconcile(b, e, [{ inventoryItemId: other.inventoryItemId, disposition: "AMBIGUOUS", note: "conflicting reading of the same stretch" }]);
     expect(acc2.items.find((i) => i.inventoryItemId === other.inventoryItemId)!.disposition).toBe("AMBIGUOUS");
     expect(acc2.counts.materialMissingFromComposition).toBe(0);

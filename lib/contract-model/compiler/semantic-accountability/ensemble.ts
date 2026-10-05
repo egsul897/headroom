@@ -31,7 +31,8 @@ import type { StructuralIndex } from "../structural-index";
 export const ENSEMBLE_ALGORITHM_VERSION = "semantic-ensemble.v2";
 export type UnionPolicy = "INTERSECTION_ONLY" | "RAW_UNION" | "SUPPORT_AWARE_CANONICAL_UNION";
 /** The Pass A evidence generations this ensemble may combine under STRICT. Exactly the current generation: a new generation is a deliberate, versioned decision, never an implicit one. */
-export const ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS: readonly string[] = [SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION];
+/** The current contract, plus v5 so frozen v5 pass evidence can be replayed offline; the two passes of one ensemble must still share one version (checked below). */
+export const ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS: readonly string[] = [SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, "semantic-accountability.v5"];
 /** v5 (the preserved phase-3 runs) and v6 (the bounded slot-classification prompt) are both ensemble-compatible generations; the STRICT gate still requires both passes of ONE ensemble to share a version. */
 export const ENSEMBLE_SUPPORTED_PROMPT_VERSIONS: readonly string[] = ["semantic-inventory-prompt.v5", SEMANTIC_INVENTORY_PROMPT_VERSION];
 

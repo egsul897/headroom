@@ -28,7 +28,9 @@ import type { IRDefinition, IREntityScopeAudit, IRRule, IRSharedCapacity, IRSour
 // the entity-scope audit projects the governing-scope derivation and the recorded model discrepancy; the
 // source-reference audit (raw model references, their classification, what was excluded or restored) is projected as a
 // labelled NON-AUTHORITATIVE diagnostic under reviewContext, never beside the authoritative targets.
-export const SEMANTIC_VERIFICATION_PROJECTION_VERSION = "phase-3c-verification-projection.v2" as const;
+// v3 (source-authority closure): every cross-rule / dependency target carries its source-derived `selector`; dependency
+// descriptions are status-neutral (no "certified unit" wording reaches Layer 2).
+export const SEMANTIC_VERIFICATION_PROJECTION_VERSION = "phase-3c-verification-projection.v3" as const;
 
 export type ProjectionClass = "REVIEW_SEMANTIC" | "REVIEW_CONTEXTUAL" | "EXCLUDE_INTERNAL_METADATA";
 

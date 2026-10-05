@@ -16,7 +16,7 @@
  * (the compiler could not resolve the reference text to any structural node at all).
  */
 import type { StructuralIndex } from "../compiler/structural-index";
-import type { IRRule, IRResolvedStructuralTarget, IRSourceTargetRef } from "../ir/types";
+import type { IRRule, IRResolvedStructuralTarget, IRSourceTargetRef, IRSourceTargetSelector } from "../ir/types";
 import { normalizeReferenceText } from "../compiler/semantic/source-reference";
 import { sha256Hex } from "./source-content-version";
 import type { CovenantMapNode } from "./types";
@@ -26,7 +26,12 @@ import type { CovenantMapNode } from "./types";
 // reference as drafted. The expansion is admitted only when the referenced subtree is completely represented: every
 // target-set candidate anchored at or under the referenced node produced units. Otherwise the target set is not safely
 // determinable and the binding is TARGET_SET_REVIEW_REQUIRED (never a partial, silently incomplete ALL_SATISFIED set).
-export const PACKAGE_DEPENDENCY_RESOLUTION_VERSION = "p3-package-dependency-resolution.v2" as const;
+// v3 (source-authority closure SA-2): a one-to-many expansion honours the reference's SOURCE-DERIVED target selector.
+// A WHOLE_PROVISION / EXPLICIT_SUBCLAUSE_SET reference binds as before; a QUALIFIED_RULE_SET reference ("the financial
+// covenants contained in Section X") binds only the units whose independently compiled classification (covenant family /
+// rule type) deterministically satisfies the qualifier, and only when such a classification mapping exists -
+// otherwise TARGET_SELECTOR_REVIEW_REQUIRED (not executable). The child compiler never pre-selects target rules.
+export const PACKAGE_DEPENDENCY_RESOLUTION_VERSION = "p3-package-dependency-resolution.v3" as const;
 
 export type PackageDependencyBindingStatus =
   /** One or more certified-or-not units of the owning candidate sit at the referenced node; boundSemanticTargetIds names them. */
@@ -40,10 +45,23 @@ export type PackageDependencyBindingStatus =
   /** The compiler could not resolve the reference text to any structural node (DEPENDENCY_UNKNOWN on the unit). */
   | "DEPENDENCY_UNKNOWN"
   /** v2: units exist under the referenced node but the referenced subtree is not completely represented (a candidate anchored under it produced no units), so the one-to-many target set cannot be established safely. */
-  | "TARGET_SET_REVIEW_REQUIRED";
+  | "TARGET_SET_REVIEW_REQUIRED"
+  /** v3: the reference carries a qualified / unresolved target selector that the package cannot satisfy deterministically; the target set needs review. */
+  | "TARGET_SELECTOR_REVIEW_REQUIRED";
 
-/** v2: how a BOUND binding's target set was established. */
-export type PackageDependencyBindingMode = "EXACT_UNIT" | "ONE_TO_MANY_EXPANSION";
+/** v2: how a BOUND binding's target set was established. v3: QUALIFIED_ONE_TO_MANY when a qualified selector was satisfied deterministically. */
+export type PackageDependencyBindingMode = "EXACT_UNIT" | "ONE_TO_MANY_EXPANSION" | "QUALIFIED_ONE_TO_MANY";
+
+/** v3: how a qualified selector was (or was not) satisfied at package level. */
+export interface PackageSelectorResolution {
+  kind: IRSourceTargetSelector["kind"];
+  qualifierText: string | null;
+  /** The independently compiled classification the qualifier was mapped to (families / rule types), or null when no deterministic mapping exists. */
+  basis: { covenantFamilies: string[]; ruleTypes: string[] } | null;
+  selectedNodeIds: string[];
+  excludedNodeIds: string[];
+  detail: string;
+}
 
 export type PackageDependencyKind = "SOURCE_DEPENDENCY" | "CONDITION_TARGET";
 
@@ -77,6 +95,8 @@ export interface PackageDependencyBinding {
   status: PackageDependencyBindingStatus;
   /** v2: EXACT_UNIT when a unit sits at the referenced node itself and nothing else; ONE_TO_MANY_EXPANSION when the drafted reference is expanded onto the units under it (a derived package artifact). Null unless BOUND. */
   bindingMode: PackageDependencyBindingMode | null;
+  /** v3: present whenever the reference carried a selector and the binding was a one-to-many question. */
+  selectorResolution?: PackageSelectorResolution | null;
   /** True only when BOUND and the source unit and every target unit are CERTIFIED - the only binding Phase 4 may act on. */
   executable: boolean;
   detail: string;
@@ -94,7 +114,7 @@ export interface PackageDependencyResolution {
   version: typeof PACKAGE_DEPENDENCY_RESOLUTION_VERSION;
   bindings: PackageDependencyBinding[];
   graph: PackageSemanticGraph;
-  counts: { total: number; bound: number; executable: number; notInTargetSet: number; notCompiled: number; unitNotFound: number; unknown: number; reviewRequired: number; oneToMany: number };
+  counts: { total: number; bound: number; executable: number; notInTargetSet: number; notCompiled: number; unitNotFound: number; unknown: number; reviewRequired: number; oneToMany: number; selectorReview: number; qualifiedOneToMany: number };
 }
 
 export interface ResolvePackageDependenciesArgs {
@@ -105,6 +125,36 @@ export interface ResolvePackageDependenciesArgs {
 }
 
 const normRef = (ref: string | null | undefined): string | null => (ref ? normalizeReferenceText(ref) ?? ref.trim().toLowerCase() : null);
+
+/**
+ * v3: the generic qualifier vocabulary -> independently compiled classification. Each entry maps a target-selection
+ * noun ("financial covenants", "restrictions on Asset Sales", "baskets") to the covenant families / rule types a
+ * target unit must carry. Deliberately small and generic; a qualifier outside it is unsupported and fails closed.
+ */
+const QUALIFIER_CLASSIFICATIONS: readonly { re: RegExp; covenantFamilies: string[]; ruleTypes: string[] }[] = [
+  { re: /\bfinancial\s+covenants?\b|\bratio\s+covenants?\b|\bfinancial\s+(?:maintenance\s+)?tests?\b/i, covenantFamilies: ["FINANCIAL_COVENANTS"], ruleTypes: ["RATIO_TEST"] },
+  { re: /\basset\s+sales?\b|\bdispositions?\b/i, covenantFamilies: ["ASSET_SALES", "DISPOSITIONS"], ruleTypes: [] },
+  { re: /\brestricted\s+payments?\b|\bdividends?\b/i, covenantFamilies: ["RESTRICTED_PAYMENTS"], ruleTypes: [] },
+  { re: /\binvestments?\b/i, covenantFamilies: ["INVESTMENTS"], ruleTypes: [] },
+  { re: /\bliens?\b/i, covenantFamilies: ["LIENS"], ruleTypes: [] },
+  { re: /\bindebtedness\b|\bdebt\b/i, covenantFamilies: ["INDEBTEDNESS"], ruleTypes: [] },
+  { re: /\breporting\b|\bfinancial\s+statements?\b/i, covenantFamilies: ["REPORTING_INFORMATION"], ruleTypes: ["REPORTING_OBLIGATION"] },
+  { re: /\bnotices?\b|\bnotification/i, covenantFamilies: ["NOTICE_REQUIREMENTS"], ruleTypes: ["NOTICE_OBLIGATION"] },
+  { re: /\bbaskets?\b|\bpermissions?\b/i, covenantFamilies: [], ruleTypes: ["QUANTITATIVE_PERMISSION"] },
+];
+
+function classificationForQualifier(qualifier: string | null): { covenantFamilies: string[]; ruleTypes: string[] } | null {
+  if (!qualifier) return null;
+  const hits = QUALIFIER_CLASSIFICATIONS.filter((q) => q.re.test(qualifier));
+  if (hits.length !== 1) return null; // ambiguous or unsupported qualifier: fail closed
+  return { covenantFamilies: hits[0]!.covenantFamilies, ruleTypes: hits[0]!.ruleTypes };
+}
+
+/** Does this unit's independently compiled classification satisfy the qualifier's classification? */
+function unitSatisfies(node: CovenantMapNode, basis: { covenantFamilies: string[]; ruleTypes: string[] }): boolean {
+  if (node.kind !== "RULE") return false;
+  return basis.covenantFamilies.includes(node.family) || (node.ruleType !== null && basis.ruleTypes.includes(node.ruleType));
+}
 
 /** Does `node` sit at or under the referenced structural target / section ref? */
 function nodeSitsAt(node: CovenantMapNode, target: IRSourceTargetRef, index: StructuralIndex | null | undefined): boolean {
@@ -156,8 +206,26 @@ export function resolvePackageDependencies(args: ResolvePackageDependenciesArgs)
           return;
         }
       }
-      const executable = from.certification.status === "CERTIFIED" && targets.every((t) => t.certificationStatus === "CERTIFIED");
-      bindings.push({ ...base, boundSemanticTargetIds: targets.map((t) => t.nodeId), targets, status: "BOUND", bindingMode, executable, detail: `${targets.length} target unit(s) at ${target.normalizedTargetRef ?? target.exactSourceTargetRef} (${bindingMode === "EXACT_UNIT" ? "the unit at the referenced node" : "one-to-many expansion of the drafted reference onto the units under it - a derived package artifact"})${executable ? "; source and every target CERTIFIED" : "; not executable: an endpoint is not CERTIFIED"}` });
+      // v3 selector safety: a one-to-many expansion must satisfy the SOURCE-DERIVED selector. A qualified selector binds only
+      // the units whose independently compiled classification deterministically matches the qualifier; an unsupported or
+      // unresolved selector fails closed. The candidate's own unit is never consulted for the selection and never mutated.
+      const selector = target.selector ?? null;
+      let finalTargets = targets;
+      let finalMode: PackageDependencyBindingMode = bindingMode;
+      let selectorResolution: PackageSelectorResolution | null = null;
+      if (bindingMode === "ONE_TO_MANY_EXPANSION" && selector && selector.kind !== "WHOLE_PROVISION" && selector.kind !== "EXPLICIT_SUBCLAUSE_SET" && selector.kind !== "NAMED_CONDITION") {
+        const basis = selector.kind === "QUALIFIED_RULE_SET" ? classificationForQualifier(selector.qualifierText) : null;
+        const selected = basis ? matched.filter((n) => unitSatisfies(n, basis)) : [];
+        selectorResolution = { kind: selector.kind, qualifierText: selector.qualifierText, basis, selectedNodeIds: selected.map((n) => n.nodeId), excludedNodeIds: matched.filter((n) => !selected.includes(n)).map((n) => n.nodeId), detail: !basis ? `selector "${selector.sourceText}" (${selector.kind}) has no deterministic classification mapping; the target set is not established` : selected.length === 0 ? `selector "${selector.sourceText}" maps to ${[...basis.covenantFamilies, ...basis.ruleTypes].join(" / ")} but no unit under ${target.normalizedTargetRef ?? target.exactSourceTargetRef} carries that classification` : `selector "${selector.sourceText}" maps to ${[...basis.covenantFamilies, ...basis.ruleTypes].join(" / ")}: ${selected.length} of ${matched.length} unit(s) under the provision selected, ${matched.length - selected.length} excluded` };
+        if (!basis || selected.length === 0) {
+          bindings.push({ ...base, boundSemanticTargetIds: [], targets, status: "TARGET_SELECTOR_REVIEW_REQUIRED", bindingMode: null, selectorResolution, executable: false, detail: `${targets.length} unit(s) sit under ${target.normalizedTargetRef ?? target.exactSourceTargetRef} but ${selectorResolution.detail}; review required` });
+          return;
+        }
+        finalTargets = targets.filter((t) => selectorResolution!.selectedNodeIds.includes(t.nodeId));
+        finalMode = "QUALIFIED_ONE_TO_MANY";
+      }
+      const executable = from.certification.status === "CERTIFIED" && finalTargets.every((t) => t.certificationStatus === "CERTIFIED");
+      bindings.push({ ...base, boundSemanticTargetIds: finalTargets.map((t) => t.nodeId), targets: finalTargets, status: "BOUND", bindingMode: finalMode, ...(selectorResolution || (selector && bindingMode === "ONE_TO_MANY_EXPANSION") ? { selectorResolution: selectorResolution ?? { kind: selector!.kind, qualifierText: selector!.qualifierText, basis: null, selectedNodeIds: targets.map((t) => t.nodeId), excludedNodeIds: [], detail: `selector ${selector!.kind}: every unit under the provision is the stated target` } } : {}), executable, detail: `${finalTargets.length} target unit(s) at ${target.normalizedTargetRef ?? target.exactSourceTargetRef} (${finalMode === "EXACT_UNIT" ? "the unit at the referenced node" : finalMode === "QUALIFIED_ONE_TO_MANY" ? `qualified one-to-many expansion: ${selectorResolution!.detail}` : "one-to-many expansion of the drafted reference onto the units under it - a derived package artifact"})${executable ? "; source and every target CERTIFIED" : "; not executable: an endpoint is not CERTIFIED"}` });
       return;
     }
     if (owners.length > 0 && !owners.some((o) => inTargetSet.has(o))) {
@@ -198,6 +266,8 @@ export function resolvePackageDependencies(args: ResolvePackageDependenciesArgs)
     unknown: bindings.filter((b) => b.status === "DEPENDENCY_UNKNOWN").length,
     reviewRequired: bindings.filter((b) => b.status === "TARGET_SET_REVIEW_REQUIRED").length,
     oneToMany: bindings.filter((b) => b.bindingMode === "ONE_TO_MANY_EXPANSION").length,
+    selectorReview: bindings.filter((b) => b.status === "TARGET_SELECTOR_REVIEW_REQUIRED").length,
+    qualifiedOneToMany: bindings.filter((b) => b.bindingMode === "QUALIFIED_ONE_TO_MANY").length,
   };
   return { version: PACKAGE_DEPENDENCY_RESOLUTION_VERSION, bindings, graph: { nodeIds: [...graphNodes].sort(), edges }, counts };
 }

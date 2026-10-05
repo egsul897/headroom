@@ -391,6 +391,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     ...accountabilityFields,
     // §12 - global Pass C over the full frozen inventory and the stitched canonical IR, computed once by the stitcher.
     accountability: stitched.accountability,
+    // SA-3 SHARD PARITY: the same normalization safety signals the monolithic path carries, aggregated across shards.
+    normalizationDiagnostics: stitched.normalization?.diagnostics ?? [],
+    dependencyProseDiagnostics: (stitched.normalization?.dependencyProseDiagnostics ?? []).map(({ shardId: _s, ...d }) => d),
+    contextOnlyEmissions: (stitched.normalization?.contextOnlyEmissions ?? []).map(({ shardId: _s, ...e }) => e),
+    invalidWireKinds: (stitched.normalization?.invalidWireKinds ?? []).map(({ shardId: _s, ...k }) => k),
     rawModelOutput: null,
     provider: caller.providerName,
     model: caller.model,

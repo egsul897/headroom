@@ -190,7 +190,7 @@ describe("VP11 verifier independence", () => {
     for (const banned of ['"certification', '"CERTIFIED"', "NOT_CERTIFIED", "REVIEW_REQUIRED", "benchmark", "expectedAnswer", "MATERIAL_DISCREPANCY", "VERIFIED_NO_MATERIAL", '"executed"', '"confidence"']) expect(json).not.toContain(banned);
     expect(json).toContain(SUFFICIENCY_CLAIM_NOTE);
     const sys = buildVerifierSystemPrompt({ verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, verifierPromptVersion: SEMANTIC_VERIFIER_PROMPT_VERSION, projectionVersion: SEMANTIC_VERIFICATION_PROJECTION_VERSION });
-    expect(SEMANTIC_VERIFIER_PROMPT_VERSION).toBe("phase-3c-semantic-verifier-prompt.v3");
+    expect(SEMANTIC_VERIFIER_PROMPT_VERSION).toBe("phase-3c-semantic-verifier-prompt.v4");
     for (const s of ["sourceDependencies", "boundSemanticTargetIds", "inheritedAttributes", "sharedCapacities", "transactionScope", "Nothing in the presentation tells you that any particular representation is correct"]) expect(sys).toContain(s);
     expect(sys).toMatch(/need not also appear in conditions, dependsOn or the capacity expression/);
   });

@@ -584,6 +584,19 @@ export type SourceDependencyResolution = "SOURCE_REFERENCE_RESOLVED" | "SEMANTIC
 
 export interface IRResolvedStructuralTarget { documentId: string; structuralNodeId: string; sectionRef: string }
 
+/**
+ * SOURCE-DERIVED TARGET SELECTOR (SA-2): the target-selection language the source drafts around a reference.
+ * "the financial covenants contained in Section X" selects PART of Section X (QUALIFIED_RULE_SET, qualifierText
+ * "financial covenants contained in"); "subject to Section X" selects the whole provision; "Sections X(a) and X(c)"
+ * is an explicit set; a named condition is its own definition. Read from authenticated source text only, never from
+ * model prose. Package-level binding may expand a reference one-to-many only in a way that satisfies the selector.
+ */
+export interface IRSourceTargetSelector {
+  sourceText: string;
+  kind: "WHOLE_PROVISION" | "QUALIFIED_RULE_SET" | "EXPLICIT_SUBCLAUSE_SET" | "NAMED_CONDITION" | "UNRESOLVED_SELECTOR";
+  qualifierText: string | null;
+}
+
 export interface IRSourceTargetRef {
   /** The exact reference text as emitted ("Section 9.2(b)", "the Payment Conditions"). */
   exactSourceTargetRef: string;
@@ -597,6 +610,8 @@ export interface IRSourceTargetRef {
   /** Always [] on a compiled unit; populated only on package-level derived artifacts. */
   boundSemanticTargetIds: string[];
   resolutionStatus: SourceDependencyResolution;
+  /** SA-2 (additive, optional): the selector the source drafts for this reference. Absent on pre-v7 compiler artifacts. */
+  selector?: IRSourceTargetSelector;
 }
 
 export interface IRSourceDependency extends IRSourceTargetRef {

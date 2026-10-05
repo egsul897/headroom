@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { compileCovenantMap, type CandidateMapResult } from "../../../lib/contract-model/covenant-map";
 import { identityOfUnit, serializeVerifiedUnitPackage, stableContentJson } from "../../../lib/contract-model/verified-units";
 import { certifiedMapToVerifiedExecutionPackage } from "../../../lib/contract-model/phase3-certification/phase4-adapter";
+import { certifyPackage } from "../../../lib/contract-model/phase3-certification/package-certification";
 import { evaluateVerifiedCapacity } from "../../../lib/contract-model/verified-execution";
 import { buildCovenantContextBundle } from "../../../lib/contract-model/compiler/context-retrieval/pipeline";
 import { classifyEntityMentionRole, findEntityBindingSignals } from "../../../lib/contract-model/compiler/semantic/entity-scope-guard";
@@ -32,8 +33,30 @@ describe("§46/§53 the scripted good submission: every candidate of the full pa
     expect(run.r.results.map((c) => [c.candidate.normalizedSourceRef, c.outcome, c.certification?.status])).toEqual(XREF_CANDIDATES.map(([ref]) => [ref, "MAPPED", "CERTIFIED"]));
     for (const c of run.r.results) expect((c.verification?.findings ?? []).filter((f) => f.severity === "MATERIAL")).toEqual([]);
     expect(run.r.packageCertification.status).toBe("CERTIFIED");
-    expect(run.r.packageCertification.bindings).toEqual({ total: 12, bound: 12, executable: 12, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0, reviewRequired: 0, oneToMany: 2 }); // v2: the 7.05 <-> 7.06 exception conditions are bound too; the two whole-section references (7.01 and 7.03 wholes) bind one-to-many
+    expect(run.r.packageCertification.bindings).toEqual({ total: 12, bound: 12, executable: 12, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0, reviewRequired: 0, oneToMany: 0, selectorReview: 0, qualifiedOneToMany: 2 }); // v3: both whole-section references are drafted with a qualifier ("financial covenants contained in"), so the resolver binds the qualified rule set, not the whole subtree; // v2: the 7.05 <-> 7.06 exception conditions are bound too; the two whole-section references (7.01 and 7.03 wholes) bind one-to-many
     expect(run.r.map.completeness.complete).toBe(true);
+  });
+});
+
+describe("SA-2 §26 package certification: an unresolved qualified target set is a REVIEW blocker, never a silent binding", () => {
+  it("a TARGET_SELECTOR_REVIEW_REQUIRED binding yields DEPENDENCY_TARGET_SELECTOR_REVIEW_REQUIRED (severity REVIEW) and the package is not CERTIFIED; the existing dependency gates are untouched", () => {
+    const { pkg } = xrefPackage();
+    const map = run.r.map;
+    const victim = map.packageDependencies.bindings.find((b) => b.bindingMode === "QUALIFIED_ONE_TO_MANY")!;
+    expect(victim).toBeDefined();
+    const bindings = map.packageDependencies.bindings.map((b) => (b === victim ? { ...b, status: "TARGET_SELECTOR_REVIEW_REQUIRED" as const, bindingMode: null, boundSemanticTargetIds: [], targets: [], executable: false, selectorResolution: { ...b.selectorResolution!, basis: null, selectedNodeIds: [], excludedNodeIds: b.selectorResolution!.selectedNodeIds, detail: "synthetic: unsupported qualifier" }, detail: "synthetic: the qualifier has no deterministic classification mapping; review required" } : b));
+    const counts = { ...map.packageDependencies.counts, bound: map.packageDependencies.counts.bound - 1, executable: map.packageDependencies.counts.executable - 1, qualifiedOneToMany: map.packageDependencies.counts.qualifiedOneToMany - 1, selectorReview: 1 };
+    const patched = { ...map, packageDependencies: { ...map.packageDependencies, bindings, counts } };
+    const pc = certifyPackage({ map: patched as never, certifications: run.r.results.map((x) => x.certification!), discoveryPopulation: pkg.discoveryPopulation! });
+    expect(pc.status).not.toBe("CERTIFIED");
+    const blocker = pc.blockers.find((b) => b.code === "DEPENDENCY_TARGET_SELECTOR_REVIEW_REQUIRED")!;
+    expect(blocker).toMatchObject({ severity: "REVIEW", refs: [victim.bindingId] });
+    expect(blocker.detail).toContain("review required");
+    expect(pc.bindings).toMatchObject({ selectorReview: 1, qualifiedOneToMany: 1 });
+    expect(pc.blockers.map((b) => b.code)).not.toContain("DEPENDENCY_TARGET_SET_REVIEW_REQUIRED");
+    // the untouched package still certifies with both qualified bindings bound - the blocker is driven by the binding status alone
+    expect(run.r.packageCertification.status).toBe("CERTIFIED");
+    expect(run.r.map.packageDependencies.bindings.filter((b) => b.bindingMode === "QUALIFIED_ONE_TO_MANY").map((b) => [b.exactSourceTargetRef, b.selectorResolution?.qualifierText, b.boundSemanticTargetIds.length])).toEqual([["Section 7.01", "financial covenants contained in", 2], ["Section 7.01", "financial covenants contained in", 2]]);
   });
 });
 
@@ -53,7 +76,9 @@ describe("§41/§42 the expected general semantic shape of the live-equivalent c
     expect(rule.unresolvedDependencies ?? []).toEqual([]);
   });
   it("parent scope informs: the governing prohibition and the obligor scope are INHERITED attributes with sourceAuthority PARENT_SCOPE, never a candidate-owned parent rule", () => {
-    expect((rule.inheritedAttributes ?? []).map((a) => [a.attribute, a.sourceAuthority, a.sourceSectionRef])).toEqual([["governingProhibition", "PARENT_SCOPE", "7.02"], ["entityScope", "PARENT_SCOPE", "7.02"]]);
+    // SA-3 parity: the bounded monolithic path now normalizes against the caller input (governing scope included), so the §7.02 lead-in also contributes the COMPATIBLE source action evidence - exactly as a shard would
+    expect((rule.inheritedAttributes ?? []).map((a) => [a.attribute, a.sourceAuthority, a.sourceSectionRef])).toEqual([["governingProhibition", "PARENT_SCOPE", "7.02"], ["action", "PARENT_SCOPE", "7.02"], ["entityScope", "PARENT_SCOPE", "7.02"]]);
+    expect(rule.inheritedAttributes!.find((a) => a.attribute === "action")).toMatchObject({ canonicalValue: "INCUR_DEBT", compatibility: "COMPATIBLE" });
     expect(rule.entityScopeAudit?.witness?.decidedBy).toBe("PARENT_SCOPE");
   });
   it("§11 the child's certified artifact carries none of the referenced provisions' economics (A, B, D, E), while the targets' own units do", () => {
