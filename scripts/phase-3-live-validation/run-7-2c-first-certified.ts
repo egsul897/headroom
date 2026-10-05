@@ -16,7 +16,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { buildDeterministicStages, rehydrateNodeIds, sealedPopulation, COMPANY_ID, INSTRUMENT_KEY, PACKAGE_KEY } from "../p3-conmed-pilot/pipeline";
-import { loadPreservedPhase2OperativeState } from "./operative-state";
+import { loadPreservedPhase2OperativeState, checkOperativeStateAsOf } from "./operative-state";
 import { governingProvisionFor } from "../../lib/contract-model/compiler/candidate-span";
 import { resolveOperativeSource } from "../../lib/contract-model/compiler/candidate-span";
 import { resolveSourceContext } from "../../lib/contract-model/compiler/semantic-accountability/source-context";
@@ -49,6 +49,8 @@ const FIRST_CERTIFIED_EVIDENCE = "docs/phase-3-live-validation/7.2c-first-certif
 const outArg = process.argv.find((a) => a.startsWith("--out="))?.slice("--out=".length) ?? (process.argv.includes("--out") ? process.argv[process.argv.indexOf("--out") + 1] : undefined);
 const OUT = outArg ?? "docs/phase-3-live-validation/7.2c-rerun-operative-state";
 if (path.resolve(OUT) === path.resolve(FIRST_CERTIFIED_EVIDENCE)) throw new Error(`refusing to write into immutable evidence ${FIRST_CERTIFIED_EVIDENCE}; pass --out <new directory>`);
+// Additive persistence only: an attempt directory already holding evidence from another attempt is never overwritten.
+if (fs.existsSync(OUT) && fs.readdirSync(OUT).length > 0) throw new Error(`refusing to write into ${OUT}: already populated by another attempt; pass --out <new directory>`);
 const LEGACY_MAX_TOKENS = 128_000;
 const sha256 = (s: string) => crypto.createHash("sha256").update(s).digest("hex");
 const mode = process.argv.includes("--live") ? "LIVE" : "DRY_RUN";
@@ -158,6 +160,8 @@ async function main(): Promise<void> {
   const phase2 = loadPreservedPhase2OperativeState({ instrumentKey: INSTRUMENT_KEY, baseDocumentId: TARGET_DOC });
   const governing = governingProvisionFor(target, phase2.state);
   const src = resolveOperativeSource(target, stages.index, phase2.state);
+  const runAsOfDate = startedAt.slice(0, 10);
+  const asOf = checkOperativeStateAsOf(phase2, { asOfDate: runAsOfDate, documents: stages.documents.map((d) => ({ documentId: d.documentId, label: d.label })) });
   const identity = {
     discoveryId: target.discoveryId, documentId: target.documentId, normalizedSourceRef: target.normalizedSourceRef, structuralNodeKeys: target.structuralNodeKeys, structuralNodeIds: target.structuralNodeIds,
     anchor: anchor ? { nodeId: anchor.nodeId, nodeKey: anchor.nodeKey, nodeType: anchor.nodeType, sectionRef: anchor.sectionRef, charStart: anchor.charStart, charEnd: anchor.charEnd } : null,
@@ -172,7 +176,7 @@ async function main(): Promise<void> {
   };
   write("01-target-identity.json", { identity, assertions });
   write("01b-operative-state.json", {
-    adapter: phase2.adapterVersion, source: phase2.source,
+    adapter: phase2.adapterVersion, source: phase2.source, analyzedDocuments: phase2.analyzedDocuments, documentsProcessed: phase2.documentsProcessed, asOfConsistency: asOf,
     instrumentState: { status: phase2.state.status, asOfDate: phase2.state.asOfDate, summary: phase2.state.summary, provisions: phase2.state.provisions.map((p) => ({ provisionKey: p.provisionKey, kind: p.kind, sectionRef: p.sectionRef, definedTermRef: p.definedTermRef, status: p.status, currentSourceDocumentId: p.currentSourceDocumentId, unresolvedIssues: p.unresolvedIssues })), unattachedEffects: phase2.state.unattachedEffects.length, effects: phase2.effects.length },
     target: { governingProvision: governing ? { provisionKey: governing.provisionKey, status: governing.status, currentSourceDocumentId: governing.currentSourceDocumentId, appliedEffectIds: governing.appliedChain.map((c) => c.effectId), supersededSourceNodeIds: governing.supersededSourceNodeIds } : null, operativeSourceOrigin: src.origin, note: governing ? "a Phase-2 provision governs this candidate" : "no Phase-2 provision governs this candidate: the base structural node text is the operative source; relied-upon definitions carry their own operative state through the context bundle" },
   });
@@ -189,7 +193,8 @@ async function main(): Promise<void> {
 
   const config = certifiedConfig({ semanticModel: MODEL, inventoryModel: MODEL, verifierModel: MODEL });
   const preflight = { mode, startedAt, headSha: fs.existsSync(".git") ? (() => { try { return fs.readFileSync(".git/" + fs.readFileSync(".git/HEAD", "utf8").trim().replace("ref: ", ""), "utf8").trim(); } catch { return null; } })() : null, target: TARGET_ID, model: MODEL, hardCeilingUsd: HARD_CEILING_USD, certifiedConfigIdentity: certifiedConfigIdentity(config), candidateDeadlineMs: config.candidateDeadlineMs, maxOutputTokensSemantic: config.maxOutputTokens, inventoryMode: config.inventoryMode, expansionRegionPolicy: config.expansionRegionPolicy, operativeState: { source: phase2.source.path, runId: phase2.source.runId, status: phase2.state.status, provisions: phase2.state.provisions.length, governingProvisionForTarget: governing?.provisionKey ?? null }, asOfDate: startedAt.slice(0, 10), derivedPassABounds: derived, inputs: { documents: stages.documents.map((d) => ({ documentId: d.documentId, chars: d.text.length, sha256: sha256(d.text) })), sealedPopulationCandidates: pop.all.length, rehydrationUnresolved: unresolved.length } };
-  write("00-preflight.json", preflight);
+  write("00-preflight.json", { ...preflight, asOfConsistency: asOf });
+  if (!asOf.proven) { console.log(JSON.stringify({ stop: "OPERATIVE_STATE_AS_OF_NOT_PROVEN", asOf }, null, 1)); throw new Error("OPERATIVE_STATE_AS_OF_NOT_PROVEN: the preserved Phase-2 state cannot be shown current for this run's as-of; NO paid request"); }
   console.log(JSON.stringify({ mode, assertions, derived }, null, 1));
   if (mode === "DRY_RUN") { console.log("DRY_RUN complete: no credential loaded, no provider contacted"); return; }
 
@@ -198,7 +203,7 @@ async function main(): Promise<void> {
   const apiKey = loadKey();
   const callers = createCertifiedCallers(config, { apiKey });
   const budget = new HardDispatchBudget({ ceilingUsd: HARD_CEILING_USD, maxCalls: 40 });
-  const asOfDate = startedAt.slice(0, 10);
+  const asOfDate = runAsOfDate;
   const runId = `live-7.2c-rerun-operative-state-${startedAt}`;
   const pkg: CovenantMapPackageInput = {
     companyId: COMPANY_ID, packageKey: PACKAGE_KEY, instrumentKey: INSTRUMENT_KEY, asOfDate,
@@ -227,6 +232,13 @@ async function main(): Promise<void> {
   write("05-inventory-human-readable.md", renderInventory(inv));
   write("06-compilation.json", comp);
   write("07-ir-human-readable.md", comp ? renderIR(comp, { operativeSourceVersion: r.sourceContentVersion, semanticSourceContractVersion: r.semanticSourceContract?.version ?? null }) : "(no compilation)");
+  // semantic-fidelity artifacts (closure): support groups, retrieval state, context-only emissions, typed source dependencies
+  const invItems = (inv?.items ?? []) as { inventoryItemId: string; sourceSpan: { charStart: number; charEnd: number }; semanticRole: string; materiality: string; proposition: string; support?: unknown }[];
+  write("04b-support-groups.json", { ensemble: inv?.ensemble ?? null, items: invItems.map((it) => ({ inventoryItemId: it.inventoryItemId, span: [it.sourceSpan.charStart, it.sourceSpan.charEnd], semanticRole: it.semanticRole, materiality: it.materiality, proposition: it.proposition, support: it.support ?? null })) });
+  const b = r.bundle;
+  write("05b-context-retrieval.json", b ? { sufficiencyState: b.sufficiencyState, stopReasons: [...b.stopReasons], retrievalStops: b.retrievalStops ?? [], performance: b.performance, itemsRetained: b.items.length, items: b.items.map((i) => ({ type: i.type, normalizedRef: i.normalizedRef, retrievalDepth: i.retrievalDepth, excerptChars: i.excerptText.length, evidenceState: i.evidenceState })), unresolvedDependencies: b.unresolvedDependencies, hasUnresolvedOperativeEvidence: b.hasUnresolvedOperativeEvidence ?? null, unresolvedEvidenceItemIds: b.unresolvedEvidenceItemIds ?? [] } : null);
+  write("06b-context-only-emissions.json", { contextOnlyEmissions: comp?.contextOnlyEmissions ?? [], invalidWireKinds: comp?.invalidWireKinds ?? [], dependencyProseDiagnostics: comp?.dependencyProseDiagnostics ?? [] });
+  write("06c-source-dependencies.json", { rules: (comp?.rules ?? []).map((x) => ({ ruleId: x.ruleId, sourceSectionRef: x.sourceSectionRef, sourceDependencies: x.sourceDependencies ?? [], unresolvedDependencies: x.unresolvedDependencies ?? [], dependsOn: x.dependsOn, conditions: x.conditions.map((c) => ({ conditionId: c.conditionId, conditionType: c.conditionType, referencesRuleTargets: c.referencesRuleTargets ?? [], targetCombination: c.targetCombination ?? null, evaluationBasis: c.evaluationBasis ?? null, expressionKind: c.expression?.kind ?? null, description: c.description })), inheritedAttributes: x.inheritedAttributes ?? [], entityScope: x.entityScope, entityScopeExcluded: x.entityScopeExcluded, entityScopeAudit: x.entityScopeAudit ?? null })) });
   write("08-verification.json", r.verification);
   if (r.verifiedPackage) write("09-verified-units.json", serializeVerifiedUnitPackage(r.verifiedPackage));
   write("10-certification.json", { certification: r.certification, semanticSourceContract: r.semanticSourceContract, snapshotHash: r.snapshot?.snapshotHash ?? null, snapshotUnits: r.snapshot?.units.map((u) => ({ kind: u.kind, id: u.verifiedIdentity.ruleOrDefinitionId, identity: u.verifiedIdentity })) ?? [] });
@@ -234,6 +246,7 @@ async function main(): Promise<void> {
   write("12-map.json", run.map);
   write("12-map.md", renderCovenantMapMarkdown(run.map));
   write("13-map-validation.json", validateCovenantMap(run.map));
+  write("11b-package-dependencies.json", run.map.packageDependencies);
   // evidence v2 through the pilot's production-backed builder (file I/O only here)
   if (r.input && comp) {
     const ev = buildCandidateEvidence(r.input, comp, r.verification, { model: MODEL, tier: 1, wallClockMs: r.telemetry?.wallClockMs ?? null, inputTokens: r.telemetry?.inputTokens ?? null, outputTokens: r.telemetry?.outputTokens ?? null, costUsd: r.telemetry?.costUsd ?? null, costStatus: r.telemetry?.pricingStatus ?? null, timedOut: r.telemetry?.timedOut ?? false, notes: ["FIRST_CERTIFIED_LIVE_VALIDATION", "PARTIAL_TARGET_SET", `budget ceiling $${HARD_CEILING_USD}`] }, { certified: { configIdentity: certifiedConfigIdentity(config), telemetry: r.telemetry } });

@@ -1,0 +1,90 @@
+{
+  "inventoryMode": "DUAL_PASS_ENSEMBLE",
+  "inventoryPasses": [
+    {
+      "passId": "pass-1",
+      "frozenContentHash": "7285597a4c1dffd5c0fc057e2251916d71aa95cec12f65c2f6fb972602424e70",
+      "inventoryStatus": "INVENTORY_OK",
+      "items": 5,
+      "telemetryCostUsd": 0.00046696
+    },
+    {
+      "passId": "pass-2",
+      "frozenContentHash": "c7e051d1daeb26da6ebabf7d8923c93f4634e85b1ddf2f988fbbaed1bc17d67b",
+      "inventoryStatus": "INVENTORY_OK",
+      "items": 5,
+      "telemetryCostUsd": 0.000363552
+    }
+  ],
+  "calls": [
+    {
+      "passId": "pass-1",
+      "batchId": "b1",
+      "stage": "semantic_inventory",
+      "slotIds": [
+        "operative:region#1",
+        "operative:region#2",
+        "operative:region#3",
+        "operative:region#4",
+        "operative:region#5"
+      ],
+      "requestedMaxOutputTokens": 6218,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 13,
+      "inputTokens": 1638,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": 977,
+      "latencyMs": 8912,
+      "stopReason": "end_turn",
+      "schemaOk": true,
+      "error": null,
+      "itemsReturned": 5,
+      "itemsAccepted": 5,
+      "itemsRejectedOverBound": 0
+    },
+    {
+      "passId": "pass-2",
+      "batchId": "b1",
+      "stage": "semantic_inventory",
+      "slotIds": [
+        "operative:region#1",
+        "operative:region#2",
+        "operative:region#3",
+        "operative:region#4",
+        "operative:region#5"
+      ],
+      "requestedMaxOutputTokens": 6218,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 13,
+      "inputTokens": 614,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": 981,
+      "latencyMs": 9549,
+      "stopReason": "end_turn",
+      "schemaOk": true,
+      "error": null,
+      "itemsReturned": 5,
+      "itemsAccepted": 5,
+      "itemsRejectedOverBound": 0
+    }
+  ],
+  "executionPolicy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+  "derivedBounds": {
+    "policy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+    "slots": 5,
+    "batches": 1,
+    "maxLegitimateItems": 13,
+    "parseCeilings": [
+      34
+    ],
+    "maxSerializedChars": 14903,
+    "requestedMaxOutputTokensByBatch": [
+      6218
+    ],
+    "reasoning": "DISABLED",
+    "callDeadlineMs": 180000
+  }
+}
