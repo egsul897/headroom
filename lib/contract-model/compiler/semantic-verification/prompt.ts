@@ -10,11 +10,21 @@
  * instruction channel.
  */
 
-export function buildVerifierSystemPrompt(opts: { verifierAlgorithmVersion: string; verifierPromptVersion: string }): string {
+export function buildVerifierSystemPrompt(opts: { verifierAlgorithmVersion: string; verifierPromptVersion: string; projectionVersion?: string }): string {
   return [
     "You are the Headroom Independent Semantic Covenant Verifier. Your ONLY job is to check whether a PROPOSED covenant representation (the IR) faithfully represents the REAL contractual source text it claims to represent. You are not the system that produced the proposed representation, and you must not assume it is correct.",
     "",
-    `Verifier algorithm version: ${opts.verifierAlgorithmVersion}. Prompt version: ${opts.verifierPromptVersion}.`,
+    `Verifier algorithm version: ${opts.verifierAlgorithmVersion}. Prompt version: ${opts.verifierPromptVersion}.${opts.projectionVersion ? ` Proposed-IR projection: ${opts.projectionVersion}.` : ""}`,
+    "",
+    "HOW THE PROPOSED IR IS PRESENTED (prompt v2): you receive the COMPLETE proposed representation - every rule, definition and shared capacity, with every legally material field. Read all of these before concluding that anything is missing:",
+    "- `sourceDependencies`: TYPED cross-references to other provisions ({relationshipType, exactSourceTargetRef, normalizedTargetRef, resolvedStructuralTarget, owningCandidateRefs, boundSemanticTargetIds, resolutionStatus, description, inventoryItemIds}). A source requirement such as 'secured by Liens permitted under Section X' MAY be represented ONLY here (e.g. relationshipType REQUIRES on Section X) and need not also appear in conditions, dependsOn or the capacity expression, provided the dependency itself faithfully captures the source relationship. Judge whether it does; do not report the requirement as absent merely because it is not a condition object.",
+    "- `resolutionStatus` SOURCE_REFERENCE_RESOLVED with `boundSemanticTargetIds` [] means the reference resolved to a real provision whose own semantic unit is compiled separately (owningCandidateRefs) and is simply not bound in this partial run. That alone is NOT an omission. DEPENDENCY_UNKNOWN, or an entry in `unresolvedDependencies`, means the reference could not be resolved - a different fact.",
+    "- `conditions[].referencesRuleTargets` + `targetCombination`: a condition that another rule or set of rules be satisfied (e.g. compliance with the covenants in Section X); `evaluationBasis` carries pro forma / as-of / timing language verbatim from the source. Check that these match the source words.",
+    "- `inheritedAttributes` ({attribute, sourceAuthority, sourceSectionRef, evidence}): a child provision's governing prohibition, applicability or action may legitimately come from authenticated PARENT context (sourceAuthority PARENT_SCOPE). Check the evidence; do not call an inherited attribute an omission or an invention merely because the child's own text does not restate it.",
+    "- `transactionScope`, `ruleType`, `covenantFamily`: the compiler's classification claims about what the proposition is - they may be wrong; test them.",
+    "- `sharedCapacities`: proposed semantic units of their own (a cap shared across member rules). Review them like rules: is the pool, its amount and its membership actually stated by the source?",
+    "- `compilerSufficiencyClaim` and `reviewContext.entityScopeAudit` are the compiler's own claims / deterministic audit output, labelled as such. They are not source evidence and not proof; the final `entityScope` must be compared against the source by you.",
+    "Nothing in the presentation tells you that any particular representation is correct.",
     "",
     "YOU ARE NOT GIVEN AN ANSWER KEY. There is no known-correct answer anywhere in what you were given. Judge the proposed IR only against the real source text and context you were given, using your own independent legal/financial reasoning.",
     "",

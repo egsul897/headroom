@@ -32,6 +32,7 @@ import { unsealedPopulation } from "../../lib/contract-model/phase3-certificatio
 import { certifiedMapToVerifiedExecutionPackage } from "../../lib/contract-model/phase3-certification/phase4-adapter";
 import { evaluateVerifiedCapacity } from "../../lib/contract-model/verified-execution";
 import { serializeVerifiedUnitPackage } from "../../lib/contract-model/verified-units";
+import { buildSemanticVerificationProjection, renderSemanticVerificationProjectionMarkdown } from "../../lib/contract-model/compiler/semantic-verification/projection";
 import { buildCandidateEvidence, writeCandidateEvidence, scanForSecrets } from "../p3-conmed-pilot/evidence";
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../../lib/contract-model/ir/types";
 import type { InputResolver } from "../../lib/contract-model/runtime/types";
@@ -137,12 +138,8 @@ function renderInventory(inv: Record<string, unknown> | null | undefined): strin
   return lines.join("\n");
 }
 function renderIR(comp: { rules: IRRule[]; definitions: IRDefinition[]; sharedCapacities: IRSharedCapacity[] }, contract: { operativeSourceVersion: string | null; semanticSourceContractVersion: string | null }): string {
-  const lines = ["# Compiled IR (human-readable)", "", `operativeSourceVersion: ${contract.operativeSourceVersion}`, `semanticSourceContractVersion: ${contract.semanticSourceContractVersion}`, ""];
-  for (const r of comp.rules) lines.push(`## RULE ${r.ruleId}`, `- sourceSectionRef: ${r.sourceSectionRef}  ruleType: ${r.ruleType}  posture: ${r.posture}  action: ${r.action}`, `- covenantFamily: ${r.covenantFamily}  entityScope: ${j(r.entityScope)}  excluded: ${j(r.entityScopeExcluded)}  transactionScope: ${j(r.transactionScope)}`, `- capacityExpression: ${j(r.capacityExpression)}`, `- conditions: ${j(r.conditions)}`, `- exceptions: ${j(r.exceptions)}`, `- dependsOn: ${j(r.dependsOn)}  unresolvedDependencies: ${j(r.unresolvedDependencies ?? [])}`, `- inventoryItemIds: ${j(r.inventoryItemIds ?? [])}`, `- provenance: ${j(r.provenance)}`, `- operativeLineage: ${j(r.operativeLineage)}`, `- sufficiency: ${r.sufficiency}  reasons: ${j(r.sufficiencyReasons)}`, `- compilerVersion: ${r.compilerVersion}  irSchemaVersion: ${r.irSchemaVersion}  sourceContentVersion: ${r.sourceContentVersion}`, "");
-  for (const d of comp.definitions) lines.push(`## DEFINITION ${d.definitionId}  "${d.termName}"`, `- covenantFamily: ${d.covenantFamily}  dependsOnTerms: ${j(d.dependsOnTerms)}`, `- calculationExpression: ${j(d.calculationExpression)}`, `- inventoryItemIds: ${j(d.inventoryItemIds ?? [])}`, `- provenance: ${j(d.provenance)}`, `- sufficiency: ${d.sufficiency}  reasons: ${j(d.sufficiencyReasons)}`, `- compilerVersion: ${d.compilerVersion}  sourceContentVersion: ${d.sourceContentVersion}`, "");
-  for (const c of comp.sharedCapacities) lines.push(`## SHARED_CAPACITY ${c.sharedCapId}`, `- description: ${c.description}`, `- capExpression: ${j(c.capExpression)}`, `- memberRuleIds: ${j(c.memberRuleIds)}`, `- inventoryItemIds: ${j(c.inventoryItemIds ?? [])}  provenance: ${j(c.provenance)}`, `- compilerVersion: ${c.compilerVersion}  sourceContentVersion: ${c.sourceContentVersion}`, "");
-  if (comp.rules.length + comp.definitions.length + comp.sharedCapacities.length === 0) lines.push("(no units emitted)");
-  return lines.join("\n");
+  // Diagnostics only: the SAME production projection the Layer-2 reviewer is shown (projection.ts), never a runner-maintained field list.
+  return renderSemanticVerificationProjectionMarkdown(buildSemanticVerificationProjection(comp), contract);
 }
 
 async function main(): Promise<void> {

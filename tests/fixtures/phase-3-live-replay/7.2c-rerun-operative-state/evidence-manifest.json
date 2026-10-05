@@ -1,0 +1,31 @@
+{
+ "evidenceDirectory": "docs/phase-3-live-validation/7.2c-rerun-operative-state",
+ "files": {
+  "00-preflight.json": "17344b1460c415c7ab2fbb412b2cc9bdc5c4ef11ee66aed912149a7e34fbbdb0",
+  "01-target-identity.json": "9fc707a31abe6ec4fe7a5982cfa61ceac175b1971e94646a0bca0cc0e171dc3c",
+  "01b-operative-state.json": "fb8fa28da228e958bd0be7b59fe53cf55e2ec364dd09574878f9e32f76e0360a",
+  "02-run-summary.json": "081fc8a2d469c7ea961df73149ed26b44e115e4aa946a4d9e213673c468b9be4",
+  "03-transport-observations.json": "0b2936a8ca983735bd61c4b1f77d260947e63868a79be2be0d792267d7d44720",
+  "04-pass-a-calls.json": "2cff7db360b3006ce291949bb692eba53604b4b523441447a22ddd72c009fc8c",
+  "04b-support-groups.json": "0aa71aa2435b7887714d2ac3f5848f7dbae641b5255c39949441c3d9954ac5b2",
+  "05-inventory-human-readable.md": "dc76bb313810c420934a0a531f2aab5ae5a874c5669a80e3f6c72765e9150662",
+  "05b-context-retrieval.json": "a4c1c544e7e20a994dadea6dcb3f8471b10e2983b9784649afbc2b96e2fd6f36",
+  "06-compilation.json": "eec4841517849b97b4bf1ee4f7bc6ce56d2556cfb2a8a98b2509a0b74e6d760b",
+  "06b-context-only-emissions.json": "972c6144aaa4f4964a29193a077ed03b266e9dc7b602a9f42cf10d30726a89fd",
+  "06c-source-dependencies.json": "90bce4c2e995b31f417d49d568b3f6c0413e154e77ef56bf85ecbeb4deeb2f1b",
+  "07-ir-human-readable.md": "e6ccac0059ae1c756a4f5c39d791eb85f8379bc1ac7a2f4b429bc4d766a830c0",
+  "08-verification.json": "988f598cccd9cc247eae4dec26f082e82045821e2f7d520fa01266047a62c41a",
+  "09-verified-units.json": "82487e9c6ff11b1038ca3fa51bfff6f0137faff307661617977c7da612e4a91f",
+  "10-certification.json": "81c9d8a7fa860008c03f94c6b0748433d0933e8347f4fc110540842d760cbd99",
+  "11-package-manifest.json": "6c2ee9ef7ef153e56160a9aad3f41d65e28a5c4b3dd732325e21e031003f077c",
+  "11b-package-dependencies.json": "5d0b223885c514f950ba46e7f60320aa4c9b5d47fe6b88f1a44038bf6ebfd68d",
+  "12-map.json": "7584a506175b0be1382590835134660fccc43313aeb868cc3f1f325da896d809",
+  "12-map.md": "a97ce26198c4c861f71b73bc9d1f5cc579247b1578c39be5d972564028bd5fa5",
+  "13-map-validation.json": "f2d5ec415ba9f3359a8e3e7d27dd7367f2bb25739aab6fd880d0e9728b1a2f97",
+  "14-phase4-adapter.json": "07d6aa90a9e0e3515645c3f9b7b2365022c71922380573094b418ba074df44f1",
+  "15-report.md": "ef2a861aaa6cfaad82a8a1cef18262a91b6f4b3aa18d8d1ddf715ebd0215e294",
+  "16-semantic-assessment.json": "fb2344d97f757cd0480fb09dab91bfde428ad7e454c6e5879de059a3db53d1fd",
+  "evidence/discovery-candidate:7a3f36589dacd05c41331a80.json": "b83d7ab8fb381c7ccdb2de6326d446fe92a0bae4dca974c3ebdd022d96f2ccee"
+ },
+ "note": "sha256 of every file in the immutable second live run (operative-state rerun) evidence directory; the regression suite re-hashes and fails on any change"
+}

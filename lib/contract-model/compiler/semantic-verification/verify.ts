@@ -21,6 +21,7 @@ import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
 import { runAdversarialSemanticReview } from "./reviewer";
+import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "./projection";
 import type { SemanticReviewResult } from "./reviewer";
 import { classifyConditionSuspicion, type ConditionSuspicionCache, type ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
@@ -439,9 +440,14 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
       : `deterministic reconciliation found a single, fully-reconciled, non-alternating compiled unit with no unresolved numeric/structural signal, AND the source-only condition-suspicion classifier (${conditionSuspicion?.provider ?? "(unknown)"}/${conditionSuspicion?.model ?? "(unknown)"}) explicitly reported NO_MATERIAL_CONDITION_SUSPECTED with zero evidence spans - conservative two-gate V1 routing (task §32 + this phase's Architecture Decision) skipped adversarial semantic review`;
   }
 
+  // Proof of exactly what Layer 2 is shown of the compiled units (projection.ts) - computed from the same compilation
+  // state the snapshot is taken from, recorded whether or not the review runs.
+  const verificationProjection = { version: SEMANTIC_VERIFICATION_PROJECTION_VERSION, hash: computeSemanticVerificationProjectionHash(buildSemanticVerificationProjection(compilationResult)), shownToReviewer: false };
   if (needsSemanticReview) {
     semanticReviewInvoked = true;
     const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion, admissibleEvidence, { signal: options.signal, budget: options.budget });
+    verificationProjection.shownToReviewer = true;
+    if (review.projection.hash !== verificationProjection.hash) throw new Error("semantic verification projection mismatch: the reviewer was shown content whose hash differs from the compilation being verified");
     semanticReviewFailed = review.failed;
     allFindings = mergeFindings(deterministicFindings, review.findings);
     allFindings = downgradeUnconfirmedAmbiguousFindings(allFindings, reconciliation, review);
@@ -463,6 +469,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     // by construction the same ones the findings above were built from.
     numericAssertions: { inventory: numericAssertionInventory, groundings: reconciliation.items.flatMap((i) => (i.numericGrounding ? [i.numericGrounding] : [])) },
     qualitativeLineage: qualitativeAudit,
+    verificationProjection,
     verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION,
     verifiedAt: new Date().toISOString(),
   };

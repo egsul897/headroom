@@ -114,8 +114,15 @@ import type { SemanticCompilationResult, SemanticCompilerInput } from "../semant
 import type { NodeSupersessionStatus } from "../amendment/types";
 import type { ConditionSuspicionResult } from "./condition-suspicion-classifier";
 
-export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v2";
-export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v1";
+/**
+ * v3 (verifier projection integrity closure): Layer 2 now reviews the complete, exhaustively classified semantic
+ * projection of every compiled unit (projection.ts) - typed source dependencies, inherited attributes, unresolved
+ * dependencies, transaction scope, rule type / family, shared capacities. Identical source + IR could yield a materially
+ * different Layer-2 result under v2 (where those fields were hidden), so the algorithm identity changes; deterministic
+ * finding ids change with it. Historical evidence keeps its own ids.
+ */
+export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v3";
+export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v2";
 
 // ---------------------------------------------------------------------------
 // Verifier input/output contract (task §4's own allowed-inputs list,
@@ -557,6 +564,11 @@ export interface SemanticVerificationResult {
   numericAssertions?: { inventory: NumericAssertionInventory; groundings: NumericAssertionGrounding[] };
   /** Deterministic qualitative accountability audit (qualitative-grounding.ts). */
   qualitativeLineage?: import("./qualitative-grounding").QualitativeLineageAudit;
+  /**
+   * Exactly what Layer 2 was (or would have been) shown of the compiled units: the projection version and the sha256 of
+   * the canonical projection content (projection.ts). `shownToReviewer` is false when the adversarial review was skipped.
+   */
+  verificationProjection?: { version: string; hash: string; shownToReviewer: boolean };
   verifierAlgorithmVersion: string;
   verifiedAt: string;
 }
