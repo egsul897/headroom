@@ -32,7 +32,8 @@ import { unsealedPopulation } from "../../lib/contract-model/phase3-certificatio
 import { certifiedMapToVerifiedExecutionPackage } from "../../lib/contract-model/phase3-certification/phase4-adapter";
 import { evaluateVerifiedCapacity } from "../../lib/contract-model/verified-execution";
 import { serializeVerifiedUnitPackage } from "../../lib/contract-model/verified-units";
-import { buildSemanticVerificationProjection, renderSemanticVerificationProjectionMarkdown } from "../../lib/contract-model/compiler/semantic-verification/projection";
+import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, renderSemanticVerificationProjectionMarkdown, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "../../lib/contract-model/compiler/semantic-verification/projection";
+import { SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION } from "../../lib/contract-model/compiler/semantic-verification/types";
 import { buildCandidateEvidence, writeCandidateEvidence, scanForSecrets } from "../p3-conmed-pilot/evidence";
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../../lib/contract-model/ir/types";
 import type { InputResolver } from "../../lib/contract-model/runtime/types";
@@ -237,6 +238,14 @@ async function main(): Promise<void> {
   write("06b-context-only-emissions.json", { contextOnlyEmissions: comp?.contextOnlyEmissions ?? [], invalidWireKinds: comp?.invalidWireKinds ?? [], dependencyProseDiagnostics: comp?.dependencyProseDiagnostics ?? [] });
   write("06c-source-dependencies.json", { rules: (comp?.rules ?? []).map((x) => ({ ruleId: x.ruleId, sourceSectionRef: x.sourceSectionRef, sourceDependencies: x.sourceDependencies ?? [], unresolvedDependencies: x.unresolvedDependencies ?? [], dependsOn: x.dependsOn, conditions: x.conditions.map((c) => ({ conditionId: c.conditionId, conditionType: c.conditionType, referencesRuleTargets: c.referencesRuleTargets ?? [], targetCombination: c.targetCombination ?? null, evaluationBasis: c.evaluationBasis ?? null, expressionKind: c.expression?.kind ?? null, description: c.description })), inheritedAttributes: x.inheritedAttributes ?? [], entityScope: x.entityScope, entityScopeExcluded: x.entityScopeExcluded, entityScopeAudit: x.entityScopeAudit ?? null })) });
   write("08-verification.json", r.verification);
+  // the exact semantic projection Layer 2 is shown (projection.ts), with its hash over the compilation, the pre-verification
+  // snapshot and the persisted verified units - proof that the reviewer saw the same semantics that were later persisted
+  if (comp) {
+    const fromCompilation = buildSemanticVerificationProjection(comp);
+    const unitsOf = (units: readonly { kind: string; unit: unknown }[]) => ({ rules: units.filter((u) => u.kind === "RULE").map((u) => u.unit as IRRule), definitions: units.filter((u) => u.kind === "DEFINITION").map((u) => u.unit as IRDefinition), sharedCapacities: units.filter((u) => u.kind === "SHARED_CAPACITY").map((u) => u.unit as IRSharedCapacity) });
+    const hashes = { compilation: computeSemanticVerificationProjectionHash(fromCompilation), snapshot: r.snapshot ? computeSemanticVerificationProjectionHash(buildSemanticVerificationProjection(unitsOf(r.snapshot.units))) : null, verifiedPackage: r.verifiedPackage ? computeSemanticVerificationProjectionHash(buildSemanticVerificationProjection(unitsOf(r.verifiedPackage.units))) : null };
+    write("08b-verification-projection.json", { projectionVersion: SEMANTIC_VERIFICATION_PROJECTION_VERSION, verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, verifierPromptVersion: SEMANTIC_VERIFIER_PROMPT_VERSION, recordedOnVerification: r.verification?.verificationProjection ?? null, hashes, allHashesEqual: hashes.snapshot === hashes.compilation && hashes.verifiedPackage === hashes.compilation && (r.verification?.verificationProjection?.hash ?? null) === hashes.compilation, projection: fromCompilation });
+  }
   if (r.verifiedPackage) write("09-verified-units.json", serializeVerifiedUnitPackage(r.verifiedPackage));
   write("10-certification.json", { certification: r.certification, semanticSourceContract: r.semanticSourceContract, snapshotHash: r.snapshot?.snapshotHash ?? null, snapshotUnits: r.snapshot?.units.map((u) => ({ kind: u.kind, id: u.verifiedIdentity.ruleOrDefinitionId, identity: u.verifiedIdentity })) ?? [] });
   write("11-package-manifest.json", { packageCertification: run.packageCertification, manifest: run.manifest });
