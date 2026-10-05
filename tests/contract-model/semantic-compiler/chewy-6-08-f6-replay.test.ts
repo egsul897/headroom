@@ -27,7 +27,10 @@ function load() {
   const compile = unit.compile;
   const first = compile.rules[0];
   const submission = SubmitCompilationSchema.parse(compile.rawModelOutput);
-  const input = testCompilerInput({ companyId: first.companyId, instrumentKey: first.instrumentKey, sourceDocumentId: first.sourceDocumentId, candidateRef: unit.candidateRef, sourceSectionRef: unit.unit.sectionRef, operativeLineage: first.operativeLineage ?? null, irSchemaVersion: first.irSchemaVersion, compilerAlgorithmVersion: first.compilerVersion });
+  const input = testCompilerInput({ companyId: first.companyId, instrumentKey: first.instrumentKey, sourceDocumentId: first.sourceDocumentId, candidateRef: unit.candidateRef, sourceSectionRef: unit.unit.sectionRef, operativeLineage: first.operativeLineage ?? null, irSchemaVersion: first.irSchemaVersion, compilerAlgorithmVersion: first.compilerVersion,
+    // SA-1: normalization judges every emitted reference against the operative text the model was given; replay the RECORDED
+    // §6.08 operative region (a placeholder text states no reference, so every dependency would correctly be MODEL_INVENTED)
+    operativeSourceText: compile.sourceContext.regions.find((r: { kind: string }) => r.kind === "OPERATIVE").text });
   const normalized = normalizeSubmission(submission, input);
   return { unit, compile, normalized, input };
 }
