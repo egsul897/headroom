@@ -100,6 +100,8 @@ export type PackageCertificationBlockerCode =
   | "DEPENDENCY_TARGET_NOT_IN_TARGET_SET"
   /** A typed source dependency the package could not bind although its owner is in the target set (owner compiled nothing / no unit at the ref). */
   | "DEPENDENCY_TARGET_NOT_BOUND"
+  /** v2 resolver: a one-to-many expansion whose referenced provision is not completely represented by compiled units - the target set must be reviewed. */
+  | "DEPENDENCY_TARGET_SET_REVIEW_REQUIRED"
   /** A dependency the compiler could not resolve to any structural node. */
   | "DEPENDENCY_UNKNOWN"
   | "NO_CANDIDATES";

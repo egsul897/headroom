@@ -45,6 +45,7 @@ import { resolveSourceContext } from "../semantic-accountability/source-context"
 import { runSemanticInventory } from "../semantic-accountability/inventory";
 import { resolveSemanticInventoryMode, runDualPassSemanticInventory, type SemanticInventoryMode } from "../semantic-accountability/dual-pass";
 import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-accountability/types";
+import { resolveGoverningScope, type GoverningSemanticContext } from "./governing-scope";
 import type { SemanticCompileCallOptions } from "./caller";
 import { certifiedConfigIdentity, type CertifiedCompilerConfig } from "../certified-config";
 
@@ -222,10 +223,16 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       ...(options.sourceContextBudget ?? {}),
     });
   }
+  // GOVERNING SCOPE (governing-scope.ts): the candidate's typed governing ancestor context - resolved deterministically
+  // from the structural index before any model call (or taken as supplied by an offline replay). Typed context only: it
+  // never enters sourceContext (operative regions), Pass A inventory or unit ownership.
+  const governingScope: GoverningSemanticContext | null = input.governingScope !== undefined
+    ? input.governingScope
+    : (() => { const anchor = input.contextBundle.originatingStructuralNodeIds?.[0] ?? null; return anchor ? resolveGoverningScope({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, anchorNodeId: anchor, index: input.toolAccess.structuralIndex }) : null; })();
   // F-7C: how the unit is executed is part of its identity too (cache.ts explains why it must be in the key before
   // Pass A runs). A resumed frozen inventory contributes its own hash; the resolved source context contributes its
-  // identity.
-  const executionIdentity = `${executionPolicyIdentity(options.shardBudget)}${sourceContext ? `|source:${computeSourceContextHash(sourceContext)}` : ""}${options.frozenInventory ? `|frozen:${options.frozenInventory.frozenContentHash}` : ""}`;
+  // identity; the governing scope contributes its content hash (a changed applicability preamble is a different unit).
+  const executionIdentity = `${executionPolicyIdentity(options.shardBudget)}${sourceContext ? `|source:${computeSourceContextHash(sourceContext)}` : ""}${options.frozenInventory ? `|frozen:${options.frozenInventory.frozenContentHash}` : ""}${governingScope ? `|governing:${governingScope.contentHash}` : ""}`;
   const cacheKey = computeCacheKey(input, providerIdentity, executionIdentity);
 
   const cached = cache.get(cacheKey);
@@ -291,9 +298,10 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     // sourceContext.regions[0].unitExtension), Pass B composes against the same
     // unit Pass A inventoried, never against the narrower window.
     const operativeRegion = sourceContext.regions[0]!;
-    callerInput = { ...input, operativeSourceText: operativeRegion.text, operativeCharStart: operativeRegion.charStart >= 0 ? operativeRegion.charStart : input.operativeCharStart, sourceContext, frozenInventory };
+    callerInput = { ...input, operativeSourceText: operativeRegion.text, operativeCharStart: operativeRegion.charStart >= 0 ? operativeRegion.charStart : input.operativeCharStart, sourceContext, frozenInventory, governingScope };
   }
-  const accountabilityFields: AccountabilityFields = { sourceContext, frozenInventory, inventoryMode, inventoryPasses };
+  if (callerInput.governingScope === undefined) callerInput = { ...callerInput, governingScope };
+  const accountabilityFields: AccountabilityFields = { sourceContext, frozenInventory, inventoryMode, inventoryPasses, governingScope };
 
   // ---- F-7C: THE BRANCH POINT. Everything above is unchanged; the deterministic plan is built from already-resolved
   // facts (resolved source context, frozen inventory, structural index) and the mode chosen before any model call.

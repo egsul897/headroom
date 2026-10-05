@@ -61,7 +61,7 @@ describe("golden canonical map", () => {
     expect((lien.unit as { exceptions: { description: string }[] }).exceptions[0]!.description).toContain("7.01(c)");
     // every node: STRONG identity, sourceContentVersion populated, verified
     // binding identity = semantic source contract (sscv1); operative identity (scv1) carried beside it; every node CERTIFIED with a persisted artifact hash
-    for (const n of map.nodes) { expect(n.identityStrength).toBe("STRONG"); expect(n.sourceContentVersion).toMatch(/^sscv1:[0-9a-f]{64}$/); expect(n.operativeSourceVersion).toMatch(/^scv1:[0-9a-f]{64}$/); expect(n.verification.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND"); expect(n.certification).toMatchObject({ status: "CERTIFIED", blockers: [], semanticSourceContractVersion: n.sourceContentVersion }); expect(n.certification.artifactHash).toMatch(/^[0-9a-f]{64}$/); }
+    for (const n of map.nodes) { expect(n.identityStrength).toBe("STRONG"); expect(n.sourceContentVersion).toMatch(/^sscv2:[0-9a-f]{64}$/); expect(n.operativeSourceVersion).toMatch(/^scv1:[0-9a-f]{64}$/); expect(n.verification.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND"); expect(n.certification).toMatchObject({ status: "CERTIFIED", blockers: [], semanticSourceContractVersion: n.sourceContentVersion }); expect(n.certification.artifactHash).toMatch(/^[0-9a-f]{64}$/); }
     expect(new Set(map.nodes.map((n) => n.operativeSourceVersion)).size).toBe(3); // one operative version per candidate source
     expect(new Set(map.nodes.map((n) => n.sourceContentVersion)).size).toBe(3);
     expect(map.completeness).toMatchObject({ mapComplete: true, certificationComplete: true, candidatesCertified: 3, candidatesReviewRequired: 0, candidatesNotCertified: 0, semanticUnits: 11, semanticUnitsCertified: 11 });

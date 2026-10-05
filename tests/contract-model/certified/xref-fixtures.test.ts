@@ -32,7 +32,7 @@ describe("§46/§53 the scripted good submission: every candidate of the full pa
     expect(run.r.results.map((c) => [c.candidate.normalizedSourceRef, c.outcome, c.certification?.status])).toEqual(XREF_CANDIDATES.map(([ref]) => [ref, "MAPPED", "CERTIFIED"]));
     for (const c of run.r.results) expect((c.verification?.findings ?? []).filter((f) => f.severity === "MATERIAL")).toEqual([]);
     expect(run.r.packageCertification.status).toBe("CERTIFIED");
-    expect(run.r.packageCertification.bindings).toEqual({ total: 10, bound: 10, executable: 10, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0 });
+    expect(run.r.packageCertification.bindings).toEqual({ total: 12, bound: 12, executable: 12, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0, reviewRequired: 0, oneToMany: 2 }); // v2: the 7.05 <-> 7.06 exception conditions are bound too; the two whole-section references (7.01 and 7.03 wholes) bind one-to-many
     expect(run.r.map.completeness.complete).toBe(true);
   });
 });
@@ -158,7 +158,7 @@ describe("§50 entity scope: obligor applicability vs measurement/reporting ment
     const text = "the Borrower shall not incur any Debt; provided that the Borrower shall be in compliance with the covenants recomputed as at the last day of the most recently ended fiscal quarter of the Borrower and its Subsidiaries for which financial statements are available";
     const signals = findEntityBindingSignals(text);
     const roles = signals.map((s) => [s.phrase, s.index, s.role]);
-    expect(roles.filter(([p]) => p === "Borrower").map(([, , r]) => r)).toEqual(["OBLIGOR", "OBLIGOR", "MEASUREMENT_CONTEXT"]);
+    expect(roles.filter(([p]) => p === "Borrower").map(([, , r]) => r)).toEqual(["OBLIGOR", "CONDITION_SUBJECT", "MEASUREMENT_CONTEXT"]); // v3: the proviso's compliance subject is not the actor the provision binds
     expect(roles.find(([p]) => p === "Subsidiaries")?.[2]).toBe("MEASUREMENT_CONTEXT");
     expect(classifyEntityMentionRole("EBITDA of the Borrower and its Subsidiaries", "EBITDA of the ".length, "Borrower".length)).toBe("MEASUREMENT_CONTEXT");
   });

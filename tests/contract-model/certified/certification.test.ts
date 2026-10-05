@@ -153,7 +153,7 @@ describe("semantic source contract: relied-upon context invalidates, unrelated c
     const run = await compileCovenantMap(buildPackage().pkg, deps());
     const r = byRef(run, "7.01");
     expect(r.sourceContentVersion).toMatch(/^scv1:[0-9a-f]{64}$/);
-    expect(r.semanticSourceContract!.version).toMatch(/^sscv1:[0-9a-f]{64}$/);
+    expect(r.semanticSourceContract!.version).toMatch(/^sscv2:[0-9a-f]{64}$/);
     expect(r.semanticSourceContract!.components.operativeSourceVersion).toBe(r.sourceContentVersion);
     expect(r.semanticSourceContract!.attributionMode).toBe("RELIED_UPON");
     // 7.01 USES Consolidated EBITDA; the definition's own dependency chain (CNI, Interest Expense) is relied upon transitively through the bundle's DEPENDS_ON_DEFINITION edges
@@ -281,7 +281,7 @@ describe("package certification over a sealed population", () => {
     expect(m.discoveryPopulation).toEqual(pkg.discoveryPopulation);
     expect(m.sourcePackage.documents.map((d) => d.documentId)).toEqual(DOCS.map((d) => d.documentId));
     expect(m.mapIdentity.mapHash).toBe(run.map.mapHash);
-    expect(m.candidateCertifications.map((c) => [c.sectionRef, c.status, c.artifactPackageHash !== null, c.semanticSourceContractVersion?.slice(0, 5)])).toEqual([["1.01", "CERTIFIED", true, "sscv1"], ["7.01", "CERTIFIED", true, "sscv1"], ["7.02", "CERTIFIED", true, "sscv1"]]);
+    expect(m.candidateCertifications.map((c) => [c.sectionRef, c.status, c.artifactPackageHash !== null, c.semanticSourceContractVersion?.slice(0, 5)])).toEqual([["1.01", "CERTIFIED", true, "sscv2"], ["7.01", "CERTIFIED", true, "sscv2"], ["7.02", "CERTIFIED", true, "sscv2"]]);
     expect(m.verifiedArtifactPackageHashes).toEqual(run.results.map((x) => x.verifiedPackage!.packageHash).sort());
     expect(m.packageCertification.status).toBe("CERTIFIED");
     expect(buildPackageCertificationManifest({ map: run.map, certifications: run.certifications, packageCertification: run.packageCertification }).manifestHash).toBe(m.manifestHash);

@@ -121,8 +121,13 @@ import type { ConditionSuspicionResult } from "./condition-suspicion-classifier"
  * different Layer-2 result under v2 (where those fields were hidden), so the algorithm identity changes; deterministic
  * finding ids change with it. Historical evidence keeps its own ids.
  */
-export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v3";
-export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v2";
+// v4 / prompt v3 (governing scope, action semantics and source-reference fidelity closure): Layer 1 inventories typed
+// source dependencies, cross-rule targets, evaluation bases and inherited attributes (ir-inventory v2) and the source's
+// own section references (source-inventory v3); Layer 2 is shown the governing ancestor context and the projection v2
+// (reference-fidelity audit, governing-scope derivation) and is told the generic contracts (canonical action vs source
+// act evidence, governing-scope inheritance, exact reference fidelity, package-level one-to-many binding).
+export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v4";
+export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v3";
 
 // ---------------------------------------------------------------------------
 // Verifier input/output contract (task §4's own allowed-inputs list,
@@ -276,7 +281,9 @@ export type SourceInventoryItemKind =
   | "RECLASSIFICATION_SIGNAL"
   | "ENTITY_SCOPE_TERM"
   | "TRANSACTION_ACTION_SIGNAL"
-  | "INDEPENDENT_LIST_ITEM";
+  | "INDEPENDENT_LIST_ITEM"
+  /** source-inventory v3: an explicit section-shaped reference the operative text states ("Section 9.1", "clause (b) of this Section"); `normalizedRef` carries its identity. */
+  | "SECTION_REFERENCE";
 
 export interface SourceInventoryItem {
   itemId: string;
@@ -285,6 +292,8 @@ export interface SourceInventoryItem {
   rawText: string;
   /** Parsed numeric value for AMOUNT/PERCENT/RATIO kinds - null for non-numeric kinds. */
   numericValue: number | null;
+  /** source-inventory v3 (SECTION_REFERENCE items): the normalized section identity ("9.1", "9.1(b)"). */
+  normalizedRef?: string | null;
   sourceDocumentId: string;
   sourceCitation: string;
   structuralNodeKey: string | null;
@@ -475,7 +484,16 @@ export interface SourceInventory {
 // fact than an independent MONEY(50_000_000) basket.
 // ---------------------------------------------------------------------------
 
-export type IrInventoryItemKind = "AMOUNT" | "PERCENT" | "RATIO" | "METRIC_REFERENCE" | "DEFINED_TERM_REFERENCE" | "ACTION" | "POSTURE" | "CONDITION" | "EXCEPTION" | "ENTITY_SCOPE" | "DEPENDENCY" | "SHARED_CAP_RELATIONSHIP" | "UNLIMITED_CAPACITY_MARKER" | "UNSUPPORTED_MARKER";
+export type IrInventoryItemKind =
+  | "AMOUNT" | "PERCENT" | "RATIO" | "METRIC_REFERENCE" | "DEFINED_TERM_REFERENCE" | "ACTION" | "POSTURE" | "CONDITION" | "EXCEPTION" | "ENTITY_SCOPE" | "DEPENDENCY" | "SHARED_CAP_RELATIONSHIP" | "UNLIMITED_CAPACITY_MARKER" | "UNSUPPORTED_MARKER"
+  /** ir-inventory v2: a typed IRSourceDependency (relationship edge to another provision), textValue "<relationshipType>:<normalized ref>". */
+  | "SOURCE_DEPENDENCY"
+  /** ir-inventory v2: a cross-rule condition target (gating role), textValue "<normalized ref>" - related to, never the same claim as, a SOURCE_DEPENDENCY on the same reference. */
+  | "CROSS_RULE_TARGET"
+  /** ir-inventory v2: the presence/shape of a condition's evaluation basis (pro forma / as-of / deemed-effective / testing period). */
+  | "EVALUATION_BASIS"
+  /** ir-inventory v2: an inherited semantic attribute (governing prohibition / applicability / action) with its canonical value. */
+  | "INHERITED_ATTRIBUTE";
 
 export interface IrInventoryItem {
   itemId: string;

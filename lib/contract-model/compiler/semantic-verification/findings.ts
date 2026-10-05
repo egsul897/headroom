@@ -49,6 +49,8 @@ function mapClassificationToFindingType(item: ReconciliationItem): SemanticVerif
     if (item.reason.includes("missing shared cap")) return "MISSING_SHARED_CAP";
     if (item.reason.includes("missing reclassification")) return "MISSING_RECLASSIFICATION";
     if (item.reason.includes("entity scope")) return "WRONG_ENTITY_SCOPE";
+    if (item.reason.includes("missing dependency")) return "MISSING_DEPENDENCY";
+    if (item.reason.includes("unsupported reference")) return "WRONG_DEPENDENCY";
   }
   return "OTHER_MATERIAL_SEMANTIC_DISCREPANCY";
 }

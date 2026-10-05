@@ -121,7 +121,7 @@ describe("source-context expansion regressions (what the operative unit contains
     expect(s).toMatch(/expansionRegionPolicy === "CONTEXT_ONLY"/);
     expect(s).toMatch(/runDualPassSemanticInventory\(\{[^\n]*sourceContext: accountabilityContext!/);
     expect(s).toMatch(/planCompilationShards\(\{[^\n]*sourceContext: accountabilityContext!/);
-    expect(s).toMatch(/callerInput = \{ \.\.\.input, operativeSourceText: operativeRegion\.text[^\n]*sourceContext, frozenInventory \}/); // Pass B keeps the full context
+    expect(s).toMatch(/callerInput = \{ \.\.\.input, operativeSourceText: operativeRegion\.text[^\n]*sourceContext, frozenInventory, governingScope \}/); // Pass B keeps the full context
   });
 });
 
@@ -177,6 +177,6 @@ describe("certification closure: one decision, one adapter, no bypass", () => {
   it("the semantic source contract binds no model output, verification result, cost or clock", () => {
     const c = srcOf("phase3-certification/semantic-source-contract.ts");
     expect(c).not.toMatch(/SemanticVerificationResult|telemetry|costUsd|Date\.now|new Date\(/);
-    expect(c).toMatch(/SEMANTIC_SOURCE_CONTRACT_PREFIX = "sscv1"/);
+    expect(c).toMatch(/SEMANTIC_SOURCE_CONTRACT_PREFIX = "sscv2"/);
   });
 });

@@ -29,7 +29,7 @@ function falseAncestrySubmission(user: string): unknown {
   const prohibition = idsFor(user, "shall not declare or pay"), cert = idsFor(user, "certificate of a Financial Officer");
   return {
     rules: [
-      { localRef: "r0", sourceSectionRef: "7.03", covenantFamily: "RESTRICTED_PAYMENTS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "MAKE_RESTRICTED_PAYMENT", entityScope: ["BORROWER"], capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", citation: "7.03", excerpt: "The Borrower shall not declare or pay any dividend", inventoryItemIds: prohibition },
+      { localRef: "r0", sourceSectionRef: "7.03", covenantFamily: "RESTRICTED_PAYMENTS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "PAY_DIVIDEND", entityScope: ["BORROWER"], capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", citation: "7.03", excerpt: "The Borrower shall not declare or pay any dividend", inventoryItemIds: prohibition },
       { localRef: "r1", sourceSectionRef: "7.03(a)", covenantFamily: "REPORTING_INFORMATION", ruleType: "QUALITATIVE_OBLIGATION", posture: "OBLIGATION", action: null, entityScope: ["BORROWER"], capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", citation: "7.03(a)", excerpt: "(a) The Borrower shall deliver to the Administrative Agent a certificate", inventoryItemIds: cert },
     ],
     definitions: [], sharedCapacities: [], irExtensionCandidates: [], overallNotes: [],
@@ -94,7 +94,7 @@ describe("structural ancestry alone never certifies a general-prohibition relati
     const basketNode = run.map.nodes.find((n) => n.sectionRef === "7.01(b)")!;
     const chapeauNode = run.map.nodes.find((n) => n.sectionRef === "7.01")!;
     const inject = (type: ContextItem["type"], structuralNodeId: string, normalizedRef: string): ContextItem => ({ itemId: `context-item:test-${type}`, type, documentId: CA, structuralNodeKey: null, structuralNodeId, normalizedRef, sourceCitation: normalizedRef, excerptText: "x", reason: "test classification", retrievalDepth: 1, retrievalPath: [], retrievalMethod: "STRUCTURAL_TRAVERSAL", confidence: 0.5, evidenceState: null });
-    const bundle = { ...lien.bundle!, items: [...lien.bundle!.items, inject("PROVISO", basketNode.structuralNodeId!, "7.01(b)"), inject("CONDITION", basketNode.structuralNodeId!, "7.01(b)"), inject("PARENT_SCOPE", chapeauNode.structuralNodeId!, "7.01")] };
+    const bundle = { ...lien.bundle!, items: [...lien.bundle!.items, inject("PROVISO", basketNode.structuralNodeId!, "7.01(b)"), inject("CONDITION", chapeauNode.structuralNodeId!, "7.01"), inject("PARENT_SCOPE", chapeauNode.structuralNodeId!, "7.01")] };
     const results = run.results.map((x) => (x === lien ? { ...x, bundle } : x));
     const map = assembleCovenantMap(assemblyInput(pkg, deps().config, results));
     const lienNode = map.nodes.find((n) => n.sectionRef === "7.02")!;

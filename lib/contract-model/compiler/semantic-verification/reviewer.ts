@@ -23,6 +23,7 @@ import { SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION }
 import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION, type SemanticVerificationProjection } from "./projection";
 import type { AdmissibleEvidenceSet, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
 import type { ConditionSuspicionResult } from "./condition-suspicion-classifier";
+import { renderGoverningScopeForPrompt } from "../semantic/governing-scope";
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 
 const VALID_FINDING_TYPES: SemanticVerificationFindingType[] = [
@@ -145,6 +146,9 @@ function buildUserContent(input: VerificationInput, reconciliation: Reconciliati
     "",
     "Unresolved dependencies Phase 2 already flagged:",
     unresolvedSummary,
+    "",
+    "GOVERNING SCOPE CONTEXT (authenticated source text of the candidate's structural ancestors - own lead-in only, nearest first - read deterministically from the same instrument's structural index; it governs the applicability, posture and act of the operative provision above but is NOT candidate-owned rule text: never expect it to be represented as a rule of this candidate; DO check that any inherited applicability / action / prohibition the proposed IR claims is actually stated here):",
+    renderGoverningScopeForPrompt(compilationResult.governingScope ?? compilerInput.governingScope) || "(no governing ancestor context was resolved for this candidate)",
     "",
     "AUTHENTICATED RETRIEVED SOURCE (raw text outside the operative window that THIS verifier independently re-resolved from the same instrument's documents and authenticated by document, version, span and content hash - it is real source text, on the same footing as the operative text above; it is NOT anything the proposing system wrote or summarized). Compare the proposed IR against it directly:",
     summarizeAuthenticatedEvidenceForPrompt(evidence),

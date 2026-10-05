@@ -1,0 +1,985 @@
+{
+ "assessmentVersion": "7.2c-final-live-semantic-assessment.v1",
+ "runId": "live-7.2c-rerun-operative-state-2026-10-05T13:53:29.872Z",
+ "startedAt": "2026-10-05T13:53:29.872Z",
+ "startingSha": "6b9f81aed55a2b19a7cd09c735a46dbd7ff6d2ba",
+ "target": {
+  "id": "discovery-candidate:7a3f36589dacd05c41331a80",
+  "operativeSourceSha256": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+  "chars": 529,
+  "assertions": {
+   "candidateIdMatches": true,
+   "documentMatches": true,
+   "sectionRefMatches": true,
+   "structuralNodeResolved": true,
+   "singleOccurrence": true,
+   "textSha256Matches": true,
+   "charsMatch": true
+  }
+ },
+ "phase2State": {
+  "source": {
+   "path": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json",
+   "runId": "PHASE_2G_CONMED_AMENDMENT_REGRESSION",
+   "generatedAt": "2026-08-27T19:00:41.956Z",
+   "asOfDate": "2026-08-27",
+   "sha256": "e036ebac936d7120b2bcd298f380b95b4257910653f94e8fe5496d374126d4d6",
+   "instrumentKeyInReport": "instrument:conmed-doc-a-eighth-ar-credit-agreement"
+  },
+  "asOfConsistency": {
+   "phase2AsOfDate": "2026-08-27",
+   "phase3AsOfDate": "2026-10-05",
+   "phase3IsLater": true,
+   "checks": [
+    {
+     "code": "EVERY_PACKAGE_DOCUMENT_REPRESENTED",
+     "passed": true,
+     "detail": "all 4 package document(s) appear in the preserved Phase-2 analysis (as analyzed amendment or target)"
+    },
+    {
+     "code": "DOCUMENT_COUNT_MATCHES",
+     "passed": true,
+     "detail": "Phase-2 processed 4 document(s); the package supplies 4"
+    },
+    {
+     "code": "NO_PACKAGE_DOCUMENT_AFTER_PHASE2_AS_OF",
+     "passed": true,
+     "detail": "latest package document 2026-05-27 <= Phase-2 as-of 2026-08-27"
+    }
+   ],
+   "proven": true
+  },
+  "instrumentStatus": "OPERATIVE_STATE_REVIEW_REQUIRED",
+  "governingProvisionForTarget": null,
+  "reliedUponDefinitionStatuses": [
+   {
+    "term": "Indebtedness",
+    "type": "DEFINITION",
+    "status": "HISTORICAL_ONLY",
+    "reason": "An amendment effect targeting indebtedness has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.; 2b40d9cca669ae877e5c94d678904f41dd728b60f79ecd9da8eae6e300b4832c: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation; preserved Phase-2 report: amendment chain of length 1 not replayed by this adapter (summary view only)"
+   },
+   {
+    "term": "Indebtedness",
+    "type": "AMENDMENT_LEAD",
+    "status": "OPERATIVE_STATE_UNRESOLVED",
+    "reason": "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task \u00a719)."
+   }
+  ]
+ },
+ "spend": {
+  "ceilingUsd": 0.25,
+  "maxCalls": 40,
+  "calls": 5,
+  "exactUsd": 0.010315182,
+  "retainedUsd": 0,
+  "outstandingUsd": 0,
+  "committedUsd": 0.010315182,
+  "refusals": []
+ },
+ "telemetry": {
+  "candidateAttempt": 1,
+  "semanticConversations": 1,
+  "refinementConversations": 1,
+  "transportAttempts": 2,
+  "shardAttempts": 0,
+  "inventoryCalls": 2,
+  "verifierCalls": 1,
+  "providerCalls": 4,
+  "inputTokens": 29979,
+  "outputTokens": 22782,
+  "costUsd": 0.010315181999999999,
+  "pricingStatus": "PRICED",
+  "wallClockMs": 228253,
+  "deadlineMs": 480000,
+  "timedOut": false
+ },
+ "transport": [
+  {
+   "seq": 1,
+   "requestedModel": "deepseek/deepseek-v4-flash",
+   "responseModel": "deepseek/deepseek-v4-flash",
+   "maxTokens": 6218,
+   "thinking": {
+    "type": "disabled"
+   },
+   "status": 200,
+   "usage": {
+    "input_tokens": 1638,
+    "output_tokens": 925
+   }
+  },
+  {
+   "seq": 2,
+   "requestedModel": "deepseek/deepseek-v4-flash",
+   "responseModel": "deepseek/deepseek-v4-flash",
+   "maxTokens": 6218,
+   "thinking": {
+    "type": "disabled"
+   },
+   "status": 200,
+   "usage": {
+    "input_tokens": 614,
+    "output_tokens": 936,
+    "cache_read_input_tokens": 1024
+   }
+  },
+  {
+   "seq": 3,
+   "requestedModel": "deepseek/deepseek-v4-flash",
+   "responseModel": "deepseek/deepseek-v4-flash",
+   "maxTokens": 32000,
+   "thinking": null,
+   "status": 200,
+   "usage": {
+    "input_tokens": 16649,
+    "output_tokens": 1355
+   }
+  },
+  {
+   "seq": 4,
+   "requestedModel": "deepseek/deepseek-v4-flash",
+   "responseModel": "deepseek/deepseek-v4-flash",
+   "maxTokens": 32000,
+   "thinking": null,
+   "status": 200,
+   "usage": {
+    "input_tokens": 1658,
+    "output_tokens": 1411,
+    "cache_read_input_tokens": 16640
+   }
+  },
+  {
+   "seq": 5,
+   "requestedModel": "deepseek/deepseek-v4-flash",
+   "responseModel": "deepseek/deepseek-v4-flash",
+   "maxTokens": 32000,
+   "thinking": null,
+   "status": 200,
+   "usage": {
+    "input_tokens": 9420,
+    "output_tokens": 18155
+   }
+  }
+ ],
+ "passA": {
+  "calls": [
+   {
+    "passId": "pass-1",
+    "batchId": "b1",
+    "stage": "semantic_inventory",
+    "slotIds": [
+     "operative:region#1",
+     "operative:region#2",
+     "operative:region#3",
+     "operative:region#4",
+     "operative:region#5"
+    ],
+    "requestedMaxOutputTokens": 6218,
+    "reasoningPolicy": "DISABLED",
+    "maxItems": 13,
+    "inputTokens": 1638,
+    "visibleOutputTokens": null,
+    "reasoningTokens": null,
+    "totalOutputTokens": 925,
+    "latencyMs": 9491,
+    "stopReason": "end_turn",
+    "schemaOk": true,
+    "error": null,
+    "itemsReturned": 5,
+    "itemsAccepted": 5,
+    "itemsRejectedOverBound": 0
+   },
+   {
+    "passId": "pass-2",
+    "batchId": "b1",
+    "stage": "semantic_inventory",
+    "slotIds": [
+     "operative:region#1",
+     "operative:region#2",
+     "operative:region#3",
+     "operative:region#4",
+     "operative:region#5"
+    ],
+    "requestedMaxOutputTokens": 6218,
+    "reasoningPolicy": "DISABLED",
+    "maxItems": 13,
+    "inputTokens": 614,
+    "visibleOutputTokens": null,
+    "reasoningTokens": null,
+    "totalOutputTokens": 936,
+    "latencyMs": 7855,
+    "stopReason": "end_turn",
+    "schemaOk": true,
+    "error": null,
+    "itemsReturned": 5,
+    "itemsAccepted": 5,
+    "itemsRejectedOverBound": 0
+   }
+  ],
+  "ensembleCounts": {
+   "canonicalItems": 5,
+   "corroborated": 5,
+   "coverageCorroborated": 0,
+   "singleRun": 0,
+   "singleRunByPass": {
+    "pass-1": 0,
+    "pass-2": 0
+   },
+   "conflicted": 0,
+   "materialSingleRun": 0,
+   "informationalSingleRun": 0,
+   "materialConflicted": 0,
+   "rejectedUnverifiable": 0,
+   "supportGroups": 5
+  },
+  "supportReviewRequired": false,
+  "conflicts": [],
+  "items": [
+   {
+    "id": "inv-item:ac31a719a47d4995cf16b375",
+    "span": [
+     4,
+     62
+    ],
+    "role": "PERMISSION",
+    "materiality": "MATERIAL",
+    "support": "CORROBORATED",
+    "proposition": "Permits incurrence of Indebtedness secured by Liens under Section 7.3(g)"
+   },
+   {
+    "id": "inv-item:ec8b311518c4ef230e54f0b3",
+    "span": [
+     63,
+     123
+    ],
+    "role": "CONDITION",
+    "materiality": "CRITICAL",
+    "support": "CORROBORATED",
+    "proposition": "Condition: Parent Borrower must be in compliance on a pro forma basis"
+   },
+   {
+    "id": "inv-item:55c1c59cc23002bacf0f41f8",
+    "span": [
+     124,
+     251
+    ],
+    "role": "CONDITION",
+    "materiality": "CRITICAL",
+    "support": "CORROBORATED",
+    "proposition": "Condition: pro forma compliance with financial covenants in Section 7.1"
+   },
+   {
+    "id": "inv-item:197d6a75e518b433abd00585",
+    "span": [
+     252,
+     391
+    ],
+    "role": "REFERENCE",
+    "materiality": "MATERIAL",
+    "support": "CORROBORATED",
+    "proposition": "Calculation of compliance as at last day of most recently ended fiscal quarter"
+   },
+   {
+    "id": "inv-item:a898fe5b6cdf0d0ca5334548",
+    "span": [
+     392,
+     528
+    ],
+    "role": "CONDITION",
+    "materiality": "MATERIAL",
+    "support": "CORROBORATED",
+    "proposition": "Condition: treat Indebtedness as incurred on first day of each relevant period"
+   }
+  ]
+ },
+ "contextRetrieval": {
+  "sufficiencyState": "SUFFICIENT",
+  "stopReasons": [],
+  "itemsRetained": 19,
+  "performance": {
+   "itemsConsidered": 19,
+   "itemsRetained": 19,
+   "duplicatePathsDeduplicated": 5,
+   "maxDefinitionDepthReached": 5,
+   "maxCrossReferenceDepthReached": 1,
+   "crossReferenceTraversals": 1,
+   "crossDocumentLeads": 1,
+   "deterministicWallClockMs": 11,
+   "semanticWallClockMs": 0,
+   "semanticCalls": 0,
+   "inputTokens": 0,
+   "outputTokens": 0
+  },
+  "retrievalStops": [
+   {
+    "reason": "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT",
+    "fromNodeId": "structural-node:99cfe0463b0b851f644273fb",
+    "targetNodeId": "structural-node:31a18e83f13af616c76add29",
+    "targetSectionRef": "7.3(g)",
+    "owningCandidateRefs": [
+     "discovery-candidate:082c80836268c7277cc39c18"
+    ],
+    "depth": 1,
+    "detail": "7.3(g) is owned by candidate(s) discovery-candidate:082c80836268c7277cc39c18; its dependency tree is delegated to that unit"
+   },
+   {
+    "reason": "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT",
+    "fromNodeId": "structural-node:99cfe0463b0b851f644273fb",
+    "targetNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+    "targetSectionRef": "7.1",
+    "owningCandidateRefs": [
+     "discovery-candidate:a26970121ceb558846ff8d1c",
+     "discovery-candidate:e37352369564a1e784e0560b"
+    ],
+    "depth": 1,
+    "detail": "7.1 is owned by candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b; its dependency tree is delegated to that unit"
+   }
+  ],
+  "unresolvedDependencies": [
+   {
+    "originatingNodeKey": "structural-node:31a18e83f13af616c76add29",
+    "dependencyType": "OTHER",
+    "sourceText": "7.3(g)(i)",
+    "attemptedResolution": "7.3(g) has multiple child clauses; 7.3(g)(i)'s own text showed no operative/economic signal and was excluded from the retrieved region.",
+    "reason": "Bounded descendant selection excluded this clause - disclosed rather than silently retrieved or silently dropped.",
+    "candidateTargets": [
+     "7.3(g)(i)"
+    ],
+    "citation": "7.3(g)(i)",
+    "severity": "LOW"
+   },
+   {
+    "originatingNodeKey": null,
+    "dependencyType": "UNRESOLVED_DEFINED_TERM",
+    "sourceText": "Parent Borrower and",
+    "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+    "reason": "Not declared in this document, and no related document in the package declares it either.",
+    "candidateTargets": [],
+    "citation": "Parent Borrower and",
+    "severity": "LOW"
+   }
+  ]
+ },
+ "composition": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "failureReasonsByLayer": {
+   "UPSTREAM_PHASE2": [
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "PHASE3_SEMANTIC": []
+  },
+  "rules": 1,
+  "definitions": 0,
+  "sharedCapacities": 0,
+  "contextOnlyEmissions": [],
+  "invalidWireKinds": [],
+  "dependencyProseDiagnostics": [
+   {
+    "scope": "rule[r-c].dependsOn[0]",
+    "exactSourceTargetRef": "Section 7.3(g)",
+    "modelProse": "the incurrence permission is available only for Indebtedness secured by Liens permitted under Section 7.3(g); the Lien-permitting economics (80% FMV cap, acquisition-only scope) are set by that provision",
+    "figuresInProse": [
+     "80%"
+    ],
+    "targetEconomicsExcluded": [
+     "80%"
+    ]
+   },
+   {
+    "scope": "rule[r-c].dependsOn[1]",
+    "exactSourceTargetRef": "Section 7.1",
+    "modelProse": "the permission is gated on pro forma compliance with the financial covenants contained in Section 7.1",
+    "figuresInProse": [],
+    "targetEconomicsExcluded": []
+   }
+  ],
+  "accountabilityCounts": {
+   "inventoried": 5,
+   "material": 5,
+   "represented": 5,
+   "intentionallyNonComputational": 0,
+   "unsupported": 0,
+   "ambiguous": 0,
+   "missingFromComposition": 0,
+   "materialMissingFromComposition": 0,
+   "criticalMissingFromComposition": 0,
+   "materialQuantitativeValues": 0,
+   "materialQuantitativeValuesMissing": 0,
+   "uninventoriedValues": 0,
+   "unaccountedSource": 0,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 5
+  },
+  "unitSufficiency": "PARTIAL",
+  "sufficiencyReasons": [
+   "ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Restricted Subsidiary\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+   "TARGET_ECONOMICS_IN_DEPENDENCY_PROSE: dependsOn[0] on \"Section 7.3(g)\" restated 1 figure(s) that the candidate's operative source never states; they belong to the target's own certified unit, were excluded from this unit and are recorded in the dependency-prose diagnostics",
+   "ENTITY_SCOPE_UNRECOGNIZED_TAG: wire entity tag(s) \"Restricted Subsidiary\" (entityScope) are not EntityClassTag values; the affected scope field is reset to unspecified and the tag is preserved verbatim in entityScopeAudit - its meaning is not guessed"
+  ]
+ },
+ "childSemantics": {
+  "posture": "PERMISSION",
+  "action": "INCUR_DEBT",
+  "transactionScope": null,
+  "entityScope": [],
+  "entityScopeExcluded": [],
+  "entityScopeAudit": {
+   "status": "UNRECOGNIZED_TAG",
+   "rawEmitted": {
+    "entityScope": [
+     "Parent Borrower",
+     "Restricted Subsidiary"
+    ],
+    "entityScopeExcluded": [],
+    "source": "RULE_FIELD"
+   },
+   "tagNormalization": [
+    {
+     "field": "entityScope",
+     "raw": "Parent Borrower",
+     "outcome": "RECOGNIZED_ENTITY_TAG",
+     "normalized": "BORROWER",
+     "viaAlias": true
+    },
+    {
+     "field": "entityScope",
+     "raw": "Restricted Subsidiary",
+     "outcome": "UNRECOGNIZED_ENTITY_TAG",
+     "normalized": null,
+     "viaAlias": false
+    }
+   ]
+  },
+  "capacity": "UNLIMITED_CAPACITY",
+  "sourceDependencies": [
+   {
+    "exactSourceTargetRef": "Section 7.3(g)",
+    "normalizedTargetRef": "7.3(g)",
+    "resolvedStructuralTarget": {
+     "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+     "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+     "sectionRef": "7.3(g)"
+    },
+    "owningCandidateRefs": [
+     "discovery-candidate:082c80836268c7277cc39c18"
+    ],
+    "boundSemanticTargetIds": [],
+    "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+    "relationshipType": "REQUIRES",
+    "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are owned by its own certified unit",
+    "provenance": {
+     "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+     "sourceNodeKey": null,
+     "sourceCitation": "\u00a77.2(c)",
+     "excerpt": null
+    }
+   },
+   {
+    "exactSourceTargetRef": "Section 7.1",
+    "normalizedTargetRef": "7.1",
+    "resolvedStructuralTarget": {
+     "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+     "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+     "sectionRef": "7.1"
+    },
+    "owningCandidateRefs": [
+     "discovery-candidate:a26970121ceb558846ff8d1c",
+     "discovery-candidate:e37352369564a1e784e0560b"
+    ],
+    "boundSemanticTargetIds": [],
+    "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+    "relationshipType": "REQUIRES",
+    "description": "requires that the terms of Section 7.1 are satisfied; the semantics of Section 7.1 are owned by its own certified unit",
+    "provenance": {
+     "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+     "sourceNodeKey": null,
+     "sourceCitation": "\u00a77.2(c)",
+     "excerpt": null
+    }
+   }
+  ],
+  "conditions": [
+   {
+    "conditionId": "rule[r-c].condition[0]",
+    "conditionType": "OTHER_RULE_SATISFIED",
+    "referencesRuleTargets": [
+     {
+      "exactSourceTargetRef": "Section 7.1(a)",
+      "normalizedTargetRef": "7.1(a)",
+      "resolvedStructuralTarget": {
+       "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+       "structuralNodeId": "structural-node:726297b37ff47b14aabb7b12",
+       "sectionRef": "7.1(a)"
+      },
+      "owningCandidateRefs": [
+       "discovery-candidate:8fe38049fe62ea9e9e741511"
+      ],
+      "boundSemanticTargetIds": [],
+      "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+     },
+     {
+      "exactSourceTargetRef": "Section 7.1(b)",
+      "normalizedTargetRef": "7.1(b)",
+      "resolvedStructuralTarget": {
+       "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+       "structuralNodeId": "structural-node:c36729e59303f7ace761d8a1",
+       "sectionRef": "7.1(b)"
+      },
+      "owningCandidateRefs": [
+       "discovery-candidate:cf15af8f5fb1f77bd861a2ac"
+      ],
+      "boundSemanticTargetIds": [],
+      "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+     },
+     {
+      "exactSourceTargetRef": "Section 7.1(c)",
+      "normalizedTargetRef": "7.1(c)",
+      "resolvedStructuralTarget": {
+       "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+       "structuralNodeId": "structural-node:b442e3c45ba1c76217d77ee1",
+       "sectionRef": "7.1(c)"
+      },
+      "owningCandidateRefs": [
+       "discovery-candidate:5f83b15ed6cd0ea8b06289a0"
+      ],
+      "boundSemanticTargetIds": [],
+      "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+     },
+     {
+      "exactSourceTargetRef": "Section 7.1(d)",
+      "normalizedTargetRef": "7.1(d)",
+      "resolvedStructuralTarget": {
+       "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+       "structuralNodeId": "structural-node:b24e719c968f7098f4b6909c",
+       "sectionRef": "7.1(d)"
+      },
+      "owningCandidateRefs": [
+       "discovery-candidate:1b08da2e952127a1caebe77d"
+      ],
+      "boundSemanticTargetIds": [],
+      "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+     }
+    ],
+    "targetCombination": "ALL_SATISFIED",
+    "evaluationBasis": {
+     "proForma": true,
+     "transactionEffect": "after giving effect to the incurrence of such Indebtedness",
+     "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+     "deemedEffectiveAt": "first day of each relevant period for testing such compliance",
+     "testingPeriod": null,
+     "provenance": {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sourceNodeKey": null,
+      "sourceCitation": "\u00a77.2(c)",
+      "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+     }
+    },
+    "expressionKind": null,
+    "description": "Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance."
+   }
+  ],
+  "inheritedAttributes": [],
+  "targetEconomicsPresentInAuthoritativeIr": {
+   "80%": false,
+   "3.75": false,
+   "5.50": false,
+   "2.75": false
+  }
+ },
+ "verification": {
+  "status": "MATERIAL_DISCREPANCY",
+  "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v3",
+  "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v2",
+  "verificationProjection": {
+   "version": "phase-3c-verification-projection.v1",
+   "hash": "ea9738555c9ff41f4b13da93c0cb6ec82bea2734391333ca366e2c7e87d896b4",
+   "shownToReviewer": true
+  },
+  "projectionHashes": {
+   "compilation": "ea9738555c9ff41f4b13da93c0cb6ec82bea2734391333ca366e2c7e87d896b4",
+   "snapshot": "ea9738555c9ff41f4b13da93c0cb6ec82bea2734391333ca366e2c7e87d896b4",
+   "verifiedPackage": "ea9738555c9ff41f4b13da93c0cb6ec82bea2734391333ca366e2c7e87d896b4"
+  },
+  "projectionAllHashesEqual": true,
+  "projectionContains": {
+   "section_7_3_g_REQUIRES_RESOLVED_owner": true,
+   "section_7_1_source_dependency": true,
+   "section_7_1_condition_OTHER_RULE_SATISFIED_ALL_SATISFIED": true,
+   "evaluationBasis": true
+  },
+  "findings": [
+   {
+    "findingId": "c974fd9c4af40813fc98024f3afa4e38b5bf5da5c4e9fe7db2e8270dd9e3ba7d",
+    "severity": "MATERIAL",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "owner": "ir-rule:29309c463e06b77b4b243eda",
+    "irPath": "rules[0].action",
+    "sourceEvidence": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:",
+    "proposedIrEvidence": "\"action\": \"INCUR_DEBT\"",
+    "reasoning": "Section 7.2 prohibits four distinct activities: creating, incurring, assuming, and suffering to exist Indebtedness. Section 7.2(c) is an exception to that entire prohibition for Indebtedness secured by Liens permitted by Section 7.3(g), subject to the pro forma Section 7.1 condition. The proposed IR encodes only INCUR_DEBT. A downstream reader applying the representation would not know that assumption, creation, or suffering-to-exist of the excepted Indebtedness is also permitted. That narrows the source permission and could change a compliance conclusion, so the discrepancy is material.",
+    "verificationMethod": "SEMANTIC_ONLY",
+    "origin": "PHASE3_SEMANTIC",
+    "originDetail": "action-vocabulary granularity: the IR's ContractAction maps the debt-covenant verb cluster (create, incur, assume, suffer to exist) to INCUR_DEBT by convention; the reviewer, not told that convention, read INCUR_DEBT as narrower than the parent prohibition's four verbs. The premise ('encodes only INCUR_DEBT') is factually true, so this is a genuine Phase-3 finding (representation/verifier-calibration), not a projection-blindness false positive"
+   },
+   {
+    "findingId": "a202d614ba2c0233a695dd34ba2346470d0bffaf777e15ce736b580cc5cd11f8",
+    "severity": "UNCERTAIN",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "owner": "ir-rule:29309c463e06b77b4b243eda",
+    "irPath": "rules[0].entityScope",
+    "sourceEvidence": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available ...; and Section 7.3(g): Liens upon real and/or tangible personal Property acquired after the Closing Date ... by the Parent Borrower or any of its Subsidiaries",
+    "proposedIrEvidence": "\"entityScope\": [], \"entityScopeExcluded\": [], \"inheritedAttributes\": []; reviewContext.entityScopeAudit.status = \"UNRECOGNIZED_TAG\" with tag \"Restricted Subsidiary\" preserved but not mapped",
+    "reasoning": "The proposed IR leaves the entity scope empty, so it does not state which entities may take the \u00a77.2(c) permission. The source's own condition links the financial-covenant test to the Parent Borrower and its Subsidiaries, and the incorporated \u00a77.3(g) refers to the Parent Borrower or any of its Subsidiaries. The compiler's audit also encountered a \"Restricted Subsidiary\" tag that it did not resolve. Because the retrieved Section 7.2 text is truncated and does not show the full operative subject, I cannot definitively determine the correct entity scope, but the representation as rendered is not faithful on this material field.",
+    "verificationMethod": "SEMANTIC_ONLY",
+    "origin": "PHASE3_SEMANTIC",
+    "originDetail": "the model emitted entityScope ['Parent Borrower','Restricted Subsidiary']; 'Restricted Subsidiary' has no deterministic EntityClassTag mapping (the enum splits restricted subsidiaries into GUARANTOR_RS / NON_GUARANTOR_RS), so the guard reset the scope to [] (non-authoritative, tag preserved in the audit) and sufficiency became PARTIAL; the reviewer correctly observed the empty scope"
+   },
+   {
+    "findingId": "6b472ff50cc3f60505d7234e514582a9e11555e864532bd4ad45e77189d5ae82",
+    "severity": "UNCERTAIN",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "owner": "ir-rule:29309c463e06b77b4b243eda",
+    "irPath": "rules[0].conditions[0].referencesRuleTargets",
+    "sourceEvidence": "with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter ...",
+    "proposedIrEvidence": "referencesRuleTargets lists exactSourceTargetRef values \"Section 7.1(a)\", \"Section 7.1(b)\", \"Section 7.1(c)\", and \"Section 7.1(d)\"",
+    "reasoning": "The operative source cites only \"Section 7.1\" as a whole; it does not cite clauses (a) through (d). The proposed IR expands the reference into four specific subsection references without providing source text showing that those subsections exhaustively contain all financial covenants in Section 7.1. If Section 7.1 has additional financial-covenant clauses, the condition as encoded would be narrower than the source requires. The separate sourceDependency on Section 7.1 may mitigate this, but the condition itself is not supported by the cited source text and is therefore an unverified substitution.",
+    "verificationMethod": "SEMANTIC_ONLY",
+    "origin": "PHASE3_SEMANTIC",
+    "originDetail": "the model expanded the source's whole-section reference 'Section 7.1' into referencesRuleTargets 7.1(a)-(d) (each structurally resolved with an owner) while also keeping the whole-section REQUIRES source dependency; the reviewer flagged the sub-clause expansion as unverifiable from the child's own source (UNCERTAIN)"
+   }
+  ],
+  "findingIdsUnique": true,
+  "counts": {
+   "MATERIAL": 1,
+   "UNCERTAIN": 2,
+   "PHASE3_SEMANTIC": 3,
+   "UPSTREAM_PHASE2": 0,
+   "PARTIAL_TARGET_BINDING": 0,
+   "OTHER": 0
+  },
+  "deterministicLayers": {
+   "passCAccountability": {
+    "inventoried": 5,
+    "material": 5,
+    "represented": 5,
+    "intentionallyNonComputational": 0,
+    "unsupported": 0,
+    "ambiguous": 0,
+    "missingFromComposition": 0,
+    "materialMissingFromComposition": 0,
+    "criticalMissingFromComposition": 0,
+    "materialQuantitativeValues": 0,
+    "materialQuantitativeValuesMissing": 0,
+    "uninventoriedValues": 0,
+    "unaccountedSource": 0,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 5
+   },
+   "reconciliationMaterialUnresolved": 0,
+   "numericGroundings": [],
+   "qualitativeLineage": {
+    "version": "qualitative-grounding.v3",
+    "materialUngrounded": 0,
+    "nonMaterialLineageGaps": 0
+   },
+   "findingOwnerNormalization": [
+    {
+     "suppliedOwnerId": "ir-rule:29309c463e06b77b4b243eda",
+     "suppliedIrPath": "rules[0].action",
+     "ownerId": "ir-rule:29309c463e06b77b4b243eda",
+     "scope": "UNIT",
+     "repair": "OWNER_EXACT",
+     "resolvedUnitIds": [
+      "ir-rule:29309c463e06b77b4b243eda"
+     ],
+     "note": null
+    },
+    {
+     "suppliedOwnerId": "ir-rule:29309c463e06b77b4b243eda",
+     "suppliedIrPath": "rules[0].entityScope",
+     "ownerId": "ir-rule:29309c463e06b77b4b243eda",
+     "scope": "UNIT",
+     "repair": "OWNER_EXACT",
+     "resolvedUnitIds": [
+      "ir-rule:29309c463e06b77b4b243eda"
+     ],
+     "note": null
+    },
+    {
+     "suppliedOwnerId": "ir-rule:29309c463e06b77b4b243eda",
+     "suppliedIrPath": "rules[0].conditions[0].referencesRuleTargets",
+     "ownerId": "ir-rule:29309c463e06b77b4b243eda",
+     "scope": "UNIT",
+     "repair": "OWNER_EXACT",
+     "resolvedUnitIds": [
+      "ir-rule:29309c463e06b77b4b243eda"
+     ],
+     "note": null
+    }
+   ],
+   "invalidWireKinds": [],
+   "foreignOwnedUnits": 0
+  }
+ },
+ "oldFindings": {
+  "OLD_7_3_G_MISSING_FINDING": {
+   "result": "RESOLVED",
+   "evidence": "no finding asserts the Section 7.3(g) requirement is absent; the reviewer's own reasoning cites it as present ('an exception ... for Indebtedness secured by Liens permitted by Section 7.3(g)'); the projection shown (hash ea973855...) contains sourceDependencies[0] REQUIRES Section 7.3(g) SOURCE_REFERENCE_RESOLVED owner discovery-candidate:082c80836268c7277cc39c18. Three different findings appeared (see findings)"
+  },
+  "OLD_INVALID_REQUIRES": {
+   "result": "RESOLVED",
+   "evidence": "invalidWireKinds []; no UNSUPPORTED node; REQUIRES appears only as a source-dependency relationshipType"
+  },
+  "OLD_COPIED_80": {
+   "result": "RESOLVED",
+   "evidence": "the provider restated '80% FMV cap' in dependsOn[0] prose; the deterministic guard excluded it (TARGET_ECONOMICS_IN_DEPENDENCY_PROSE, targetEconomicsExcluded ['80%']); '80%' absent from authoritative rules and verified-unit IR, present only in dependencyProseDiagnostics"
+  },
+  "OLD_COPIED_3_75": {
+   "result": "RESOLVED",
+   "evidence": "absent from authoritative IR (the provider's overallNotes mention it only to say it was stripped)"
+  },
+  "OLD_COPIED_5_50": {
+   "result": "RESOLVED",
+   "evidence": "absent from authoritative IR"
+  },
+  "OLD_COPIED_2_75": {
+   "result": "RESOLVED",
+   "evidence": "absent from authoritative IR"
+  },
+  "OLD_AS_OF_MONEY": {
+   "result": "RESOLVED",
+   "evidence": "no AS_OF node, no '(unspecified)', no METRIC_REFERENCE; evaluationBasis carries the selectors verbatim"
+  },
+  "OLD_FOREIGN_PARENT": {
+   "result": "RESOLVED",
+   "evidence": "one owned 7.2(c) rule; contextOnlyEmissions []; snapshot / verified package / map hold exactly that unit"
+  },
+  "OLD_PASS_A_SUPPORT_ASYMMETRY": {
+   "result": "RESOLVED",
+   "evidence": "5/5 EXACT corroborated, 0 single-run, 0 conflicts, supportReviewRequired false"
+  },
+  "OLD_CONTEXT_BUDGET": {
+   "result": "RESOLVED",
+   "evidence": "SUFFICIENT, stopReasons [], max cross-reference depth 1, ownership stops at 7.3(g) and 7.1"
+  }
+ },
+ "snapshot": {
+  "snapshotHash": "254457720a95e109cd1fe92d6dc5ab606105a34e81e363fd816b1c98dda65e3f",
+  "units": [
+   {
+    "kind": "RULE",
+    "id": "ir-rule:29309c463e06b77b4b243eda",
+    "identity": {
+     "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+     "companyId": "conmed-pilot",
+     "instrumentKey": "conmed-eighth-ar-credit-agreement",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "compilerVersion": "semantic-accountability-compiler.v5",
+     "sourceContentVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77"
+    }
+   }
+  ]
+ },
+ "verifiedPackage": {
+  "schema": "p3-verified-unit-package.v2",
+  "packageHash": "8ec39557d3537ca0d99b45aa2c71f40a1ab24b55942441c299054959c4cc4314",
+  "complete": true,
+  "counts": {
+   "artifactsPersisted": 1,
+   "definitionsCompiled": 0,
+   "rulesCompiled": 1,
+   "sharedCapacitiesCompiled": 0,
+   "unitsMissingIr": 0,
+   "unitsMissingVerification": 0,
+   "unitsVerified": 1
+  },
+  "problems": []
+ },
+ "candidateCertification": {
+  "decisionVersion": "phase3-candidate-certification.v1",
+  "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+  "status": "REVIEW_REQUIRED",
+  "blockers": [
+   {
+    "code": "COMPILATION_NOT_COMPLETED",
+    "severity": "REVIEW",
+    "detail": "compilation REVIEW_REQUIRED: OPERATIVE_STATE_UNRESOLVED",
+    "refs": []
+   },
+   {
+    "code": "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+    "severity": "REVIEW",
+    "detail": "3 open MATERIAL/UNCERTAIN finding(s)",
+    "refs": [
+     "6b472ff50cc3f60505d7234e514582a9e11555e864532bd4ad45e77189d5ae82",
+     "a202d614ba2c0233a695dd34ba2346470d0bffaf777e15ce736b580cc5cd11f8",
+     "c974fd9c4af40813fc98024f3afa4e38b5bf5da5c4e9fe7db2e8270dd9e3ba7d"
+    ]
+   },
+   {
+    "code": "OPERATIVE_STATE_UNACCEPTABLE",
+    "severity": "REVIEW",
+    "detail": "the context bundle carries unresolved operative evidence (conflicted / ambiguous / partial amendment state)",
+    "refs": [
+     "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+     "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb"
+    ]
+   },
+   {
+    "code": "UNIT_SUFFICIENCY_INCOMPLETE",
+    "severity": "REVIEW",
+    "detail": "executable unit(s) are not COMPLETE",
+    "refs": [
+     "ir-rule:29309c463e06b77b4b243eda:PARTIAL"
+    ]
+   },
+   {
+    "code": "VERIFICATION_NOT_CLEAN",
+    "severity": "REVIEW",
+    "detail": "verification MATERIAL_DISCREPANCY: 1 material finding(s)",
+    "refs": []
+   }
+  ],
+  "warnings": [
+   {
+    "code": "SEMANTIC_BINDING_PENDING_PACKAGE",
+    "detail": "rule ir-rule:29309c463e06b77b4b243eda references Section 7.3(g), Section 7.1, Section 7.1(a), Section 7.1(b), Section 7.1(c), Section 7.1(d) - structurally resolved (owned by discovery-candidate:082c80836268c7277cc39c18, discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b, discovery-candidate:8fe38049fe62ea9e9e741511, discovery-candidate:cf15af8f5fb1f77bd861a2ac, discovery-candidate:5f83b15ed6cd0ea8b06289a0, discovery-candidate:1b08da2e952127a1caebe77d); semantic target binding is a package-level step",
+    "refs": [
+     "ir-rule:29309c463e06b77b4b243eda"
+    ]
+   },
+   {
+    "code": "TARGET_ECONOMICS_EXCLUDED",
+    "detail": "figures the model restated from referenced provisions were excluded from this unit's dependency semantics",
+    "refs": [
+     "80%"
+    ]
+   }
+  ],
+  "sourceIdentityStrength": "STRONG",
+  "semanticSourceIdentityStrength": "STRONG",
+  "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+  "semanticSourceContractVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+  "artifactPackageHash": "8ec39557d3537ca0d99b45aa2c71f40a1ab24b55942441c299054959c4cc4314",
+  "snapshotHash": "254457720a95e109cd1fe92d6dc5ab606105a34e81e363fd816b1c98dda65e3f",
+  "unitIds": [
+   "ir-rule:29309c463e06b77b4b243eda"
+  ],
+  "unitArtifactHashes": {
+   "ir-rule:29309c463e06b77b4b243eda": "ee10fe0c1a428d8dee2b19c82906f89025f0bcac479ddba8b6eae638d3c83563"
+  }
+ },
+ "certificationBlockersByLayer": {
+  "PHASE3_SEMANTIC": [
+   "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+   "UNIT_SUFFICIENCY_INCOMPLETE",
+   "VERIFICATION_NOT_CLEAN"
+  ],
+  "UPSTREAM_PHASE2": [
+   "COMPILATION_NOT_COMPLETED",
+   "OPERATIVE_STATE_UNACCEPTABLE"
+  ],
+  "PARTIAL_TARGET_BINDING": []
+ },
+ "counterfactualNoUpstreamBlocker": {
+  "phase3BlockersRemain": "YES",
+  "remaining": [
+   "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+   "UNIT_SUFFICIENCY_INCOMPLETE",
+   "VERIFICATION_NOT_CLEAN"
+  ],
+  "note": "diagnostic only; no state mutated; removing COMPILATION_NOT_COMPLETED and OPERATIVE_STATE_UNACCEPTABLE leaves OPEN_MATERIAL_OR_UNCERTAIN_FINDING, VERIFICATION_NOT_CLEAN and UNIT_SUFFICIENCY_INCOMPLETE"
+ },
+ "packageDependencies": {
+  "counts": {
+   "total": 6,
+   "bound": 0,
+   "executable": 0,
+   "notInTargetSet": 6,
+   "notCompiled": 0,
+   "unitNotFound": 0,
+   "unknown": 0
+  },
+  "bindings": [
+   {
+    "path": "conditions[0].referencesRuleTargets[0]",
+    "exactSourceTargetRef": "Section 7.1(a)",
+    "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+    "owningCandidateRefs": [
+     "discovery-candidate:8fe38049fe62ea9e9e741511"
+    ],
+    "boundSemanticTargetIds": []
+   },
+   {
+    "path": "conditions[0].referencesRuleTargets[1]",
+    "exactSourceTargetRef": "Section 7.1(b)",
+    "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+    "owningCandidateRefs": [
+     "discovery-candidate:cf15af8f5fb1f77bd861a2ac"
+    ],
+    "boundSemanticTargetIds": []
+   },
+   {
+    "path": "conditions[0].referencesRuleTargets[2]",
+    "exactSourceTargetRef": "Section 7.1(c)",
+    "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+    "owningCandidateRefs": [
+     "discovery-candidate:5f83b15ed6cd0ea8b06289a0"
+    ],
+    "boundSemanticTargetIds": []
+   },
+   {
+    "path": "conditions[0].referencesRuleTargets[3]",
+    "exactSourceTargetRef": "Section 7.1(d)",
+    "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+    "owningCandidateRefs": [
+     "discovery-candidate:1b08da2e952127a1caebe77d"
+    ],
+    "boundSemanticTargetIds": []
+   },
+   {
+    "path": "sourceDependencies[0]",
+    "exactSourceTargetRef": "Section 7.3(g)",
+    "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+    "owningCandidateRefs": [
+     "discovery-candidate:082c80836268c7277cc39c18"
+    ],
+    "boundSemanticTargetIds": []
+   },
+   {
+    "path": "sourceDependencies[1]",
+    "exactSourceTargetRef": "Section 7.1",
+    "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+    "owningCandidateRefs": [
+     "discovery-candidate:a26970121ceb558846ff8d1c",
+     "discovery-candidate:e37352369564a1e784e0560b"
+    ],
+    "boundSemanticTargetIds": []
+   }
+  ]
+ },
+ "packageCertification": {
+  "status": "PARTIAL",
+  "blockers": [
+   "CANDIDATE_REVIEW_REQUIRED",
+   "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+   "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+   "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+   "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+   "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+   "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+   "DISCOVERY_POPULATION_UNSEALED",
+   "PARTIAL_TARGET_SET",
+   "REVIEW_UNRESOLVED_ITEM"
+  ]
+ },
+ "phase4": {
+  "attempted": false,
+  "reason": "certification REVIEW_REQUIRED"
+ },
+ "verdict": "PHASE3_FINAL_LIVE_VALIDATION_SEMANTIC_FAILURE",
+ "verdictReasoning": "The projection defect is closed in reality: the real reviewer (v3 / prompt v2 / projection v1, hash equal across compilation, snapshot and verified package) saw the typed Section 7.3(g) REQUIRES dependency and no longer claims it is absent; every previously observed defect class is RESOLVED; deterministic layers are clean; context is SUFFICIENT; Pass A is 5/5 exact. But the independent reviewer returned one MATERIAL and two UNCERTAIN findings of Phase-3 origin that are not projection blindness: action-vocabulary granularity (INCUR_DEBT vs the parent's create/incur/assume/suffer-to-exist cluster), an empty entity scope after the provider emitted the unmapped tag 'Restricted Subsidiary' (guard fail-closed, sufficiency PARTIAL), and the provider's expansion of the whole-section 'Section 7.1' reference into clauses (a)-(d). None has a premise provable false by deterministic checks, so verdict D does not apply; with Phase-3 blockers remaining in the counterfactual, verdict A does not apply."
+}

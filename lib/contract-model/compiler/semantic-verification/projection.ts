@@ -22,9 +22,13 @@
  * infers, repairs and replaces nothing.
  */
 import crypto from "node:crypto";
-import type { IRDefinition, IREntityScopeAudit, IRRule, IRSharedCapacity } from "../../ir/types";
+import type { IRDefinition, IREntityScopeAudit, IRRule, IRSharedCapacity, IRSourceReferenceAudit } from "../../ir/types";
 
-export const SEMANTIC_VERIFICATION_PROJECTION_VERSION = "phase-3c-verification-projection.v1" as const;
+// v2 (governing scope / reference fidelity closure): inherited attributes carry canonicalValue / compatibility / span;
+// the entity-scope audit projects the governing-scope derivation and the recorded model discrepancy; the
+// source-reference audit (raw model references, their classification, what was excluded or restored) is projected as a
+// labelled NON-AUTHORITATIVE diagnostic under reviewContext, never beside the authoritative targets.
+export const SEMANTIC_VERIFICATION_PROJECTION_VERSION = "phase-3c-verification-projection.v2" as const;
 
 export type ProjectionClass = "REVIEW_SEMANTIC" | "REVIEW_CONTEXTUAL" | "EXCLUDE_INTERNAL_METADATA";
 
@@ -51,6 +55,7 @@ export const RULE_FIELD_CLASSIFICATION = {
   unresolvedDependencies: "REVIEW_SEMANTIC",
   sourceDependencies: "REVIEW_SEMANTIC",
   inheritedAttributes: "REVIEW_SEMANTIC",
+  sourceReferenceAudit: "REVIEW_CONTEXTUAL",
   operativeLineage: "REVIEW_CONTEXTUAL",
   sufficiency: "REVIEW_SEMANTIC",
   sufficiencyReasons: "REVIEW_SEMANTIC",
@@ -98,6 +103,8 @@ export const SHARED_CAPACITY_FIELD_CLASSIFICATION = {
 export const SUFFICIENCY_CLAIM_NOTE = "CLAIM MADE BY THE COMPILER - a self-assessment to test against the source, never evidence of correctness";
 /** The entity-scope guard is deterministic compiler-side machinery; its output is context, not source evidence. */
 export const ENTITY_SCOPE_AUDIT_NOTE = "DETERMINISTIC COMPILER-SIDE AUDIT - NOT SOURCE EVIDENCE; compare the final entityScope against the source yourself";
+/** The source-reference audit lists raw model references that were excluded or restored; it is never a semantic claim. */
+export const SOURCE_REFERENCE_AUDIT_NOTE = "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the source states; only the targets listed in conditions / sourceDependencies are the proposed semantics";
 
 /** Internal identity keys that may appear inside nested expressions / provenance machinery and carry no legal meaning. */
 const INTERNAL_NESTED_KEYS: ReadonlySet<string> = new Set(["exprId", "irSchemaVersion", "compilerVersion", "sourceContentVersion", "companyId", "instrumentKey"]);
@@ -114,7 +121,14 @@ export function sanitizeForReview<T>(value: T): T {
 }
 
 export interface ProjectedSufficiencyClaim { sufficiency: string; sufficiencyReasons: string[]; note: typeof SUFFICIENCY_CLAIM_NOTE }
-export interface ProjectedEntityScopeAudit { note: typeof ENTITY_SCOPE_AUDIT_NOTE; guardVersion: string; status: string; safeToRely: boolean; reasonCodes: string[]; decidedBy: string | null; signals: { phrase: string; index: number; role: string | null; tier: string; satisfied: boolean }[] }
+export interface ProjectedEntityScopeAudit {
+  note: typeof ENTITY_SCOPE_AUDIT_NOTE; guardVersion: string; status: string; safeToRely: boolean; reasonCodes: string[]; decidedBy: string | null;
+  precedence: string | null;
+  governingScope: { derivedScope: string[] | null; basisSectionRef: string | null; basisRole: string | null; ancestorDistance: number | null; phrases: string[]; evidence: string | null } | null;
+  modelDiscrepancy: { modelScope: string[]; rawEmitted: string[]; governingScope: string[]; relation: string } | null;
+  signals: { phrase: string; index: number; role: string | null; tier: string; satisfied: boolean }[];
+}
+export interface ProjectedSourceReferenceAudit { note: typeof SOURCE_REFERENCE_AUDIT_NOTE; version: string; statedReferences: { raw: string; normalized: string | null; origin: string }[]; entries: { path: string; emitted: string; classification: string; authoritative: boolean; restoredTo: string | null; statedRefs: string[]; detail: string }[] }
 
 export interface ProjectedRule {
   unitKind: "RULE";
@@ -122,7 +136,7 @@ export interface ProjectedRule {
   entityScope: string[]; entityScopeExcluded: string[]; transactionScope: string[] | null;
   capacityExpression: unknown; conditions: unknown[]; exceptions: unknown[]; dependsOn: unknown[]; unresolvedDependencies: unknown[]; sourceDependencies: unknown[]; inheritedAttributes: unknown[];
   compilerSufficiencyClaim: ProjectedSufficiencyClaim;
-  reviewContext: { sourceDocumentId: string; operativeLineage: unknown; provenance: unknown; inventoryItemIds: string[]; entityScopeAudit: ProjectedEntityScopeAudit | null };
+  reviewContext: { sourceDocumentId: string; operativeLineage: unknown; provenance: unknown; inventoryItemIds: string[]; entityScopeAudit: ProjectedEntityScopeAudit | null; sourceReferenceAudit: ProjectedSourceReferenceAudit | null };
 }
 export interface ProjectedDefinition {
   unitKind: "DEFINITION";
@@ -147,8 +161,18 @@ const INDEPENDENCE_STATEMENT = "This is the complete proposed representation. It
 
 function projectEntityScopeAudit(a: IREntityScopeAudit | undefined): ProjectedEntityScopeAudit | null {
   if (!a) return null;
-  const w = a.witness as { decidedBy?: string | null; signals?: { phrase: string; index: number; role?: string | null; tier: string; satisfied: boolean }[] } | undefined;
-  return { note: ENTITY_SCOPE_AUDIT_NOTE, guardVersion: a.guardVersion, status: a.status, safeToRely: a.safeToRely, reasonCodes: [...a.reasonCodes], decidedBy: w?.decidedBy ?? null, signals: (w?.signals ?? []).map((s) => ({ phrase: s.phrase, index: s.index, role: s.role ?? null, tier: s.tier, satisfied: s.satisfied })) };
+  const w = a.witness as { decidedBy?: string | null; signals?: { phrase: string; index: number; role?: string | null; tier: string; satisfied: boolean }[]; governingScope?: ProjectedEntityScopeAudit["governingScope"] } | undefined;
+  return {
+    note: ENTITY_SCOPE_AUDIT_NOTE, guardVersion: a.guardVersion, status: a.status, safeToRely: a.safeToRely, reasonCodes: [...a.reasonCodes], decidedBy: w?.decidedBy ?? null,
+    precedence: a.precedence ?? null,
+    governingScope: w?.governingScope ? { derivedScope: w.governingScope.derivedScope ? [...w.governingScope.derivedScope] : null, basisSectionRef: w.governingScope.basisSectionRef, basisRole: w.governingScope.basisRole, ancestorDistance: w.governingScope.ancestorDistance, phrases: [...w.governingScope.phrases], evidence: w.governingScope.evidence } : null,
+    modelDiscrepancy: a.modelDiscrepancy ? { modelScope: [...a.modelDiscrepancy.modelScope], rawEmitted: [...a.modelDiscrepancy.rawEmitted], governingScope: [...a.modelDiscrepancy.governingScope], relation: a.modelDiscrepancy.relation } : null,
+    signals: (w?.signals ?? []).map((s) => ({ phrase: s.phrase, index: s.index, role: s.role ?? null, tier: s.tier, satisfied: s.satisfied })),
+  };
+}
+function projectSourceReferenceAudit(a: IRSourceReferenceAudit | undefined): ProjectedSourceReferenceAudit | null {
+  if (!a) return null;
+  return { note: SOURCE_REFERENCE_AUDIT_NOTE, version: a.version, statedReferences: a.statedReferences.map((r) => ({ raw: r.raw, normalized: r.normalized, origin: r.origin })), entries: a.entries.map((e) => ({ path: e.path, emitted: e.emitted, classification: e.classification, authoritative: e.authoritative, restoredTo: e.restoredTo, statedRefs: [...e.statedRefs], detail: e.detail })) };
 }
 
 /** Runtime guard mirroring the compile-time `satisfies`: a unit carrying a key the classification does not know is a projection gap. */
@@ -166,7 +190,7 @@ export function projectRule(r: IRRule): ProjectedRule {
     capacityExpression: sanitizeForReview(r.capacityExpression), conditions: sanitizeForReview(r.conditions), exceptions: sanitizeForReview(r.exceptions),
     dependsOn: sanitizeForReview(r.dependsOn), unresolvedDependencies: sanitizeForReview(r.unresolvedDependencies ?? []), sourceDependencies: sanitizeForReview(r.sourceDependencies ?? []), inheritedAttributes: sanitizeForReview(r.inheritedAttributes ?? []),
     compilerSufficiencyClaim: { sufficiency: r.sufficiency, sufficiencyReasons: [...r.sufficiencyReasons], note: SUFFICIENCY_CLAIM_NOTE },
-    reviewContext: { sourceDocumentId: r.sourceDocumentId, operativeLineage: sanitizeForReview(r.operativeLineage), provenance: sanitizeForReview(r.provenance), inventoryItemIds: [...(r.inventoryItemIds ?? [])], entityScopeAudit: projectEntityScopeAudit(r.entityScopeAudit) },
+    reviewContext: { sourceDocumentId: r.sourceDocumentId, operativeLineage: sanitizeForReview(r.operativeLineage), provenance: sanitizeForReview(r.provenance), inventoryItemIds: [...(r.inventoryItemIds ?? [])], entityScopeAudit: projectEntityScopeAudit(r.entityScopeAudit), sourceReferenceAudit: projectSourceReferenceAudit(r.sourceReferenceAudit) },
   };
 }
 

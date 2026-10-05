@@ -24,6 +24,7 @@
  * evidence request that keeps the loop going (task §6/§7).
  */
 import Anthropic from "@anthropic-ai/sdk";
+import { renderGoverningScopeForPrompt } from "./governing-scope";
 import { z } from "zod";
 import { AI_GATEWAY_BASE_URL, DEFAULT_ANALYZER_MODEL, DEFAULT_GATEWAY_ANALYZER_MODEL } from "../../analyzer/anthropic-analyzer";
 import { calculateCostUsd, withRetry, type AnalyzerCallTelemetry } from "../../analyzer/telemetry";
@@ -194,6 +195,10 @@ export function renderAccountabilityContext(input: SemanticCompilerInput): strin
 
 function summarizeAccountability(input: SemanticCompilerInput): string {
   const parts: string[] = [];
+  // GOVERNING SCOPE (governing-scope.ts): a separately labelled block of authenticated ancestor lead-ins. Typed context
+  // for applicability / posture / action inheritance - never candidate inventory propositions, never operative source.
+  const governing = renderGoverningScopeForPrompt(input.governingScope);
+  if (governing) parts.push(governing);
   const sc = input.sourceContext;
   if (sc) {
     const expansions = sc.regions.filter((r) => r.kind !== "OPERATIVE");

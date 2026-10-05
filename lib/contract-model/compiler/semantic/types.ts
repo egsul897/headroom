@@ -57,8 +57,13 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // and inventoryDispositions, and Pass C reconciliation feeds failureReasons.
 // A v3-era cached compilation carries no accountability at all and must
 // never be served as-is.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v5";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v6";
+// v6 / prompt v7 (governing scope, action semantics and source-reference fidelity closure): the compiler resolves the
+// candidate's typed GOVERNING SCOPE context (governing-scope.ts), derives inherited applicability / action / prohibition
+// from it (entity-scope guard v3 precedence, canonical action ontology v1), holds every emitted cross-rule / dependency
+// reference to the drafted source reference (source-reference-fidelity.v1), and keeps safely quarantined model prose
+// out of sufficiency. A v5-era cached compilation carries none of these and must never be served as-is.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v6";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v7";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
@@ -195,6 +200,8 @@ export interface SemanticCompilerInput {
   frozenInventory?: FrozenSemanticInventory | null;
   /** SEMANTIC FIDELITY: the sealed candidate population (ids + anchor nodes) so cross-unit references can be attributed to their owning candidate at compile time. Optional; absent in hand-built fixtures. */
   candidatePopulation?: readonly { discoveryId: string; structuralNodeIds: readonly string[] }[] | null;
+  /** GOVERNING SCOPE: the candidate's typed governing ancestor context (governing-scope.ts) - populated by compileCovenantToIR before the model call (or supplied directly by an offline replay). Typed context: never operative source, never a candidate-owned proposition. */
+  governingScope?: import("./governing-scope").GoverningSemanticContext | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -415,6 +422,10 @@ export interface SemanticCompilationResult {
   execution?: SemanticExecutionMetadata | null;
   /** SEMANTIC FIDELITY: units the composition emitted for source this candidate does not own, quarantined with evidence (never in rules/definitions/sharedCapacities). */
   contextOnlyEmissions?: import("./unit-ownership").ContextOnlyUnitEmission[];
+  /** GOVERNING SCOPE (additive, optional): the typed governing ancestor context the compilation was given (compile.ts resolves it; persisted beside the units, never inside them). */
+  governingScope?: import("./governing-scope").GoverningSemanticContext | null;
+  /** Execution diagnostics from normalization (DIAGNOSTIC-class warnings: safely quarantined model prose, excluded model reference expansions, outranked unrecognized tags). Never source evidence, never sufficiency reasons. */
+  normalizationDiagnostics?: { scope: string; message: string }[];
   /** SEMANTIC FIDELITY: the model's dependency prose with the target figures it tried to restate, kept beside the units. */
   dependencyProseDiagnostics?: import("./normalize").DependencyProseDiagnostic[];
   /** SEMANTIC FIDELITY: invented expression kinds found in the submission (SEMANTIC_WIRE_KIND_INVALID). */

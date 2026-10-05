@@ -198,6 +198,7 @@ export async function compileCandidateToVerifiedIR(candidate: DiscoveredCandidat
       operativeSourceVersion: built.sourceContentVersion, operativeIdentityStrength: built.identityStrength, candidateSectionRef: candidate.normalizedSourceRef,
       bundle: built.bundle, units: compilation, toolCallLog: compilation.toolCallLog ?? [], operativeLineage: operativeLineageFor(built.operativeProvision),
       appliedEffectIds: built.operativeProvision?.appliedChain.map((e) => e.effectId) ?? [], asOfDate: pkg.asOfDate,
+      governingScope: compilation.governingScope ?? null,
     });
     for (const u of allUnits) {
       if (!u.irSchemaVersion) u.irSchemaVersion = built.input.irSchemaVersion;

@@ -135,6 +135,8 @@ export function determineStatus(failureReasons: SemanticCompilerFailureReason[],
 export interface AccountabilityFields {
   sourceContext: SourceContextResult | null;
   frozenInventory: FrozenSemanticInventory | null;
+  /** GOVERNING SCOPE: the typed governing ancestor context compile.ts resolved (null when no anchor / no index). */
+  governingScope?: import("./governing-scope").GoverningSemanticContext | null;
   inventoryMode: SemanticInventoryMode | null;
   inventoryPasses: SemanticCompilationResult["inventoryPasses"];
 }
@@ -378,6 +380,7 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
       rawModelOutput: callResult.rawSubmission,
       contextOnlyEmissions: normalized.contextOnlyEmissions,
       dependencyProseDiagnostics: normalized.dependencyProse,
+      normalizationDiagnostics: normalized.diagnostics.map((d) => ({ scope: d.scope, message: d.message })),
       invalidWireKinds,
       provider: caller.providerName,
       model: caller.model,

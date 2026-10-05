@@ -11,7 +11,11 @@ import type { IRCondition, IRDefinition, IRException, IRExpression, IRRule, IRSh
 import { hashParts } from "../hashing";
 import type { IrInventory, IrInventoryItem, IrInventoryItemKind } from "./types";
 
-export const IR_INVENTORY_ALGORITHM_VERSION = "phase-3c-ir-inventory.v1";
+// v2 (governing scope / reference fidelity closure): typed source dependencies, cross-rule condition targets, evaluation
+// bases and inherited attributes are inventoried as their own item kinds - a relationship edge (SOURCE_DEPENDENCY) and a
+// gating role (CROSS_RULE_TARGET) on the same reference are RELATED claims with distinct identities, never a duplicate
+// and never counted as a CONDITION/EXCEPTION, so the aggregate signals cannot double-count them.
+export const IR_INVENTORY_ALGORITHM_VERSION = "phase-3c-ir-inventory.v2";
 
 interface WalkCtx {
   candidateRef: string;
@@ -163,6 +167,9 @@ function walkExpression(ctx: WalkCtx, expr: IRExpression | null, path: string, i
 
 function walkCondition(ctx: WalkCtx, condition: IRCondition, path: string): void {
   pushItem(ctx, "CONDITION", path, null, condition.description || condition.conditionType, false, condition.provenance?.sourceCitation ?? null, condition.provenance?.excerpt ?? null);
+  (condition.referencesRuleTargets ?? []).forEach((t, k) => pushItem(ctx, "CROSS_RULE_TARGET", `${path}.referencesRuleTargets[${k}]`, null, `${t.normalizedTargetRef ?? t.exactSourceTargetRef}|${condition.targetCombination ?? "UNSPECIFIED"}|${t.resolutionStatus}`, false, condition.provenance?.sourceCitation ?? null, condition.provenance?.excerpt ?? null));
+  const b = condition.evaluationBasis;
+  if (b) pushItem(ctx, "EVALUATION_BASIS", `${path}.evaluationBasis`, null, `proForma:${b.proForma};transactionEffect:${!!b.transactionEffect};asOfSelector:${!!b.asOfSelector};deemedEffectiveAt:${!!b.deemedEffectiveAt};testingPeriod:${!!b.testingPeriod}`, false, b.provenance?.sourceCitation ?? condition.provenance?.sourceCitation ?? null, b.provenance?.excerpt ?? null);
   if (condition.expression) walkExpression(ctx, condition.expression, `${path}.expression`, false);
 }
 
@@ -186,6 +193,8 @@ function walkRule(candidateRef: string, rule: IRRule, rulePath: string): IrInven
   rule.conditions.forEach((c, i) => walkCondition(ctx, c, `${rulePath}.conditions[${i}]`));
   rule.exceptions.forEach((e, i) => walkException(ctx, e, `${rulePath}.exceptions[${i}]`));
   rule.dependsOn.forEach((d, i) => pushItem(ctx, "DEPENDENCY", `${rulePath}.dependsOn[${i}]`, null, `${d.relationshipType}:${d.targetRuleId}`, false, null, null));
+  (rule.sourceDependencies ?? []).forEach((d, i) => pushItem(ctx, "SOURCE_DEPENDENCY", `${rulePath}.sourceDependencies[${i}]`, null, `${d.relationshipType}:${d.normalizedTargetRef ?? d.exactSourceTargetRef}|${d.resolutionStatus}`, false, d.provenance?.sourceCitation ?? ruleCitation, null));
+  (rule.inheritedAttributes ?? []).forEach((a, i) => pushItem(ctx, "INHERITED_ATTRIBUTE", `${rulePath}.inheritedAttributes[${i}]`, null, `${a.attribute}:${a.canonicalValue ?? ""}@${a.sourceAuthority}:${a.sourceSectionRef ?? ""}`, false, a.sourceSectionRef, a.evidence));
 
   if (rule.capacityExpression) {
     if (rule.capacityExpression.kind === "UNLIMITED_CAPACITY") {

@@ -357,7 +357,23 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const structuralNodeId = nodeResolution?.status === "UNIQUE" ? nodeResolution.node.nodeId : null;
   const supersessionIndex = compilerInput.toolAccess.operativeState ? buildNodeSupersessionIndex([{ baseDocumentId: compilerInput.sourceDocumentId, state: compilerInput.toolAccess.operativeState }]) : EMPTY_SUPERSESSION_INDEX;
 
-  const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null, structuralNodeId, supersessionIndex);
+  // ir-inventory v2 / source-inventory v3: spans of the operative window owned by SEPARATE child candidates of the sealed
+  // population (anchored strictly under this candidate's anchor) are excluded from this candidate's section-reference
+  // inventory - a cross-reference drafted inside a child clause is the child's dependency (semantic-unit ownership).
+  const anchorNodeId = compilerInput.contextBundle?.originatingStructuralNodeIds?.[0] ?? structuralNodeId;
+  const anchorNode = anchorNodeId ? structuralIndex.getNodeById(anchorNodeId) : undefined;
+  const windowStart = compilerInput.operativeSourceOrigin === "OPERATIVE_STATE_CURRENT_TEXT" ? null : compilerInput.operativeCharStart ?? anchorNode?.charStart ?? null;
+  const excludedSpans: [number, number][] = [];
+  if (anchorNode && windowStart !== null) {
+    for (const c of compilerInput.candidatePopulation ?? []) {
+      if (c.discoveryId === compilerInput.candidateRef) continue;
+      const child = c.structuralNodeIds[0] ? structuralIndex.getNodeById(c.structuralNodeIds[0]) : undefined;
+      if (!child || child.documentId !== anchorNode.documentId || child.nodeId === anchorNode.nodeId) continue;
+      if (!structuralIndex.getAncestors(child.nodeId).some((a) => a.nodeId === anchorNode.nodeId)) continue;
+      excludedSpans.push([child.charStart - windowStart, child.charEnd - windowStart]);
+    }
+  }
+  const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null, structuralNodeId, supersessionIndex, { excludedSpans });
   // Canonical-map remediation: when the compiled text IS the operative state's RESOLVED current text for this
   // provision (candidate-span.ts OPERATIVE_STATE_CURRENT_TEXT), the base node's KNOWN_SUPERSEDED status describes the
   // text that was NOT compiled. The compiled text is the governing text; say so, with the provision that proves it.

@@ -263,7 +263,7 @@ export function assembleCovenantMap(input: AssembleCovenantMapInput): CanonicalC
   // ---- PASS 2a: package-level binding of typed source dependencies and cross-rule condition targets -----------------
   // Derived artifacts only: the units are never mutated. A BOUND binding becomes an IR-backed edge (the IR stated the
   // dependency; the package resolved its target); anything else is an UNRESOLVED_SOURCE_DEPENDENCY the map discloses.
-  const packageDependencies = resolvePackageDependencies({ nodes, candidates: input.candidates.map((c) => ({ candidateRef: c.discoveryId, outcome: resultByRef.get(c.discoveryId)?.outcome ?? "UNSERVED" })), index: input.index });
+  const packageDependencies = resolvePackageDependencies({ nodes, candidates: input.candidates.map((c) => ({ candidateRef: c.discoveryId, outcome: resultByRef.get(c.discoveryId)?.outcome ?? "UNSERVED", structuralNodeIds: c.structuralNodeIds })), index: input.index });
   for (const b of packageDependencies.bindings) {
     const from = nodeById.get(b.fromNodeId)!;
     if (b.status === "BOUND") {

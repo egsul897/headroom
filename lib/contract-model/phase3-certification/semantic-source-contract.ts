@@ -33,8 +33,15 @@ import { normalizeDefinedTermRef } from "../compiler/amendment/chain";
 import { collectDefinedTermReferences } from "../covenant-map/assemble";
 import { canonicalJson, sha256Hex } from "../covenant-map/source-content-version";
 import type { IdentityStrength } from "../covenant-map/types";
+import type { GoverningSemanticContext } from "../compiler/semantic/governing-scope";
 
-export const SEMANTIC_SOURCE_CONTRACT_PREFIX = "sscv1";
+/**
+ * sscv2 (governing scope closure): the contract additionally binds the candidate's typed GOVERNING SCOPE regions
+ * (governing-scope.ts) - every ancestor lead-in / article preamble the compiler read as applicability, posture or action
+ * authority - each as (document, ref, excerpt hash). Changing the Article-level applicability preamble invalidates the
+ * dependent child artifacts; changing an unrelated article does not.
+ */
+export const SEMANTIC_SOURCE_CONTRACT_PREFIX = "sscv2";
 export type ContextAttributionMode = "RELIED_UPON" | "BROAD_BUNDLE" | "NO_BUNDLE";
 
 /** Bundle item types that govern the reading of the operative text regardless of explicit citation. */
@@ -51,6 +58,8 @@ export interface SemanticSourceContractInput {
   operativeLineage: OperativeLineageRef | null;
   appliedEffectIds: readonly string[];
   asOfDate: string | null;
+  /** The typed governing ancestor context the compiler relied on (null when none was resolved). */
+  governingScope?: GoverningSemanticContext | null;
 }
 
 export interface ReliedUponContextItem { itemId: string; type: string; documentId: string; normalizedRef: string; excerptSha256: string; evidenceStatus: string | null }
@@ -71,6 +80,8 @@ export interface SemanticSourceContract {
   components: {
     operativeSourceVersion: string;
     contextDependencyHash: string;
+    /** sha256 over the relied-upon governing scope regions (empty-set hash when none). */
+    governingScopeHash: string;
     retrievalHash: string;
     lineageHash: string;
     asOfDate: string | null;
@@ -170,14 +181,22 @@ export function computeSemanticSourceContract(input: SemanticSourceContractInput
     else attributedRefs.add(normalizeSectionRef(r.requestKey));
   }
   retrievals.sort((a, b) => (canonicalJson(a) < canonicalJson(b) ? -1 : 1));
+  // GOVERNING SCOPE: every ancestor region the compiler read is relied upon and bound by its own excerpt hash; a unit's
+  // inherited attribute citing that region (its section ref or article-group label) is attributed to it exactly.
+  const governingItems: ReliedUponContextItem[] = (input.governingScope?.ancestorRegions ?? [])
+    .map((r) => ({ itemId: `governing-scope:${r.documentId}:${r.structuralNodeId ?? `${r.derivation}@${r.charStart}`}`, type: `GOVERNING_SCOPE:${r.role}`, documentId: r.documentId, normalizedRef: r.sectionRef, excerptSha256: r.sha256, evidenceStatus: null }))
+    .sort((a, b) => (a.itemId < b.itemId ? -1 : a.itemId > b.itemId ? 1 : 0));
+  for (const g of governingItems) attributedRefs.add(normalizeSectionRef(g.normalizedRef));
   const unattributedTerms = terms.filter((t) => !attributedTerms.has(t));
   const unattributedSectionRefs = sectionRefs.filter((r) => !attributedRefs.has(r));
 
   const attributionMode: ContextAttributionMode = !input.bundle ? "NO_BUNDLE" : unattributedTerms.length === 0 && unattributedSectionRefs.length === 0 ? "RELIED_UPON" : "BROAD_BUNDLE";
-  const contextItems: ReliedUponContextItem[] = [...relied.values()]
-    .map((it) => ({ itemId: it.itemId, type: it.type, documentId: it.documentId, normalizedRef: it.normalizedRef, excerptSha256: sha256Hex(it.excerptText), evidenceStatus: it.evidenceState?.status ?? null }))
+  const bundleItems: ReliedUponContextItem[] = [...relied.values()]
+    .map((it) => ({ itemId: it.itemId, type: it.type as string, documentId: it.documentId, normalizedRef: it.normalizedRef, excerptSha256: sha256Hex(it.excerptText), evidenceStatus: (it.evidenceState?.status as string | undefined) ?? null }))
     .sort((a, b) => (a.itemId < b.itemId ? -1 : a.itemId > b.itemId ? 1 : 0));
+  const contextItems: ReliedUponContextItem[] = [...bundleItems, ...governingItems];
   const contextDependencyHash = sha256Hex(canonicalJson(contextItems));
+  const governingScopeHash = sha256Hex(canonicalJson(governingItems));
   const retrievalHash = sha256Hex(canonicalJson(retrievals));
   const lineageHash = sha256Hex(canonicalJson({
     operativeLineage: input.operativeLineage ? { provisionKey: input.operativeLineage.provisionKey, operativeStatus: input.operativeLineage.operativeStatus, currentSourceDocumentId: input.operativeLineage.currentSourceDocumentId, asOfDate: input.operativeLineage.asOfDate } : null,
@@ -185,7 +204,7 @@ export function computeSemanticSourceContract(input: SemanticSourceContractInput
     supersessionStatus: input.bundle?.originatingSupersessionStatus ?? null,
   }));
   const bundleContentIdentity = attributionMode === "BROAD_BUNDLE" ? input.bundle!.contentIdentity : null;
-  const components = { operativeSourceVersion: input.operativeSourceVersion, contextDependencyHash, retrievalHash, lineageHash, asOfDate: input.asOfDate, bundleContentIdentity };
+  const components = { operativeSourceVersion: input.operativeSourceVersion, contextDependencyHash, governingScopeHash, retrievalHash, lineageHash, asOfDate: input.asOfDate, bundleContentIdentity };
   const version = `${SEMANTIC_SOURCE_CONTRACT_PREFIX}:${sha256Hex(canonicalJson({ ...components, attributionMode }))}`;
   const strength: IdentityStrength = input.operativeIdentityStrength === "STRONG" && attributionMode !== "NO_BUNDLE" ? "STRONG" : "WEAK";
   return { version, strength, attributionMode, reliedUpon: { definedTerms: terms, sectionRefs, contextItems, retrievals, unattributedTerms, unattributedSectionRefs }, components };
