@@ -196,6 +196,6 @@ implementation gate (07).
 **Phase 3 current state (after the §7.5(j) trust-boundary seal).** The live-exposed deterministic defects A/B (blank-line
 enumerator handoff; item-span-bound quantitative source authority) are SEALED at `semantic-accountability.v8` (offline
 frozen §7.5(j) replay only; genuine residuals remain; candidate stays `REVIEW_REQUIRED`). The broader Phase 3 reliability
-gate (composition contract for representable gaps, related-series aggregation IR decision, gap-call `localRef` reliability,
+gate (composition contract CLOSED_OFFLINE, related-series aggregation IR decision still open, gap-call `localRef` reliability CLOSED_OFFLINE,
 then stratified real-provision certification) remains **open** — see revised roadmap step 1. NS-4 is **not** implemented
 here; it stays the next persistence gate.

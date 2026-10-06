@@ -180,7 +180,7 @@ export async function replayFrozen75j() {
     },
     supportAsymmetry: { supportReviewRequired: inventoryAfter.ensemble?.supportReviewRequired ?? null, materialSingleRun: inventoryAfter.ensemble?.counts.materialSingleRun ?? null, accountabilitySupportReviewRequired: accountabilityAfter.supportReviewRequired },
     enumerationSignal: verification.findings.filter((f) => f.findingType === "MISSING_RULE").map((f) => ({ severity: f.severity, verificationMethod: f.verificationMethod, signals: f.deterministicSignals })),
-    gapReinventoryLocalRef: { status: "OBSERVED_BUT_NOT_REMEDIATED", detail: frozen.frozenInventory.gapReinventory?.error?.split("\n")[0] ?? null, note: "prompts and the wire schema are untouched in this closure; with defect A closed the frozen coverage gap is not reproduced over the same items, so a gap re-inventory would not have been triggered for it" },
+    gapReinventoryLocalRef: { status: "CLOSED_OFFLINE", detail: frozen.frozenInventory.gapReinventory?.error?.split("\n")[0] ?? null, artifact: "docs/phase-3-reliability-composition-gaps/03-gap-call-localref-reliability.md", note: "localRefChars 6→24 + prompt v7 + over-long coerce; live parse failure preserved in detail; with defect A closed the frozen coverage gap is not reproduced over the same items" },
   };
 
   return {

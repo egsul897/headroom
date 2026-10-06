@@ -64,7 +64,7 @@
 // OTHER/unknown is canonicalised only when rawText occurs inside THIS item's authenticated source span (outside-span
 // location is diagnostics only, zero semantic authority).
 export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v8";
-export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v6";
+export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v7";
 
 // ---------------------------------------------------------------------------
 // Semantic roles (mission §3) - compact semantic PRIMITIVES, never covenant

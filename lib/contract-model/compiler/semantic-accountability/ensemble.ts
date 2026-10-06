@@ -34,7 +34,7 @@ export type UnionPolicy = "INTERSECTION_ONLY" | "RAW_UNION" | "SUPPORT_AWARE_CAN
 /** The current contract, plus v5 so frozen v5 pass evidence can be replayed offline; the two passes of one ensemble must still share one version (checked below). */
 export const ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS: readonly string[] = [SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, "semantic-accountability.v7", "semantic-accountability.v6", "semantic-accountability.v5"];
 /** v5 (the preserved phase-3 runs) and v6 (the bounded slot-classification prompt) are both ensemble-compatible generations; the STRICT gate still requires both passes of ONE ensemble to share a version. */
-export const ENSEMBLE_SUPPORTED_PROMPT_VERSIONS: readonly string[] = ["semantic-inventory-prompt.v5", SEMANTIC_INVENTORY_PROMPT_VERSION];
+export const ENSEMBLE_SUPPORTED_PROMPT_VERSIONS: readonly string[] = ["semantic-inventory-prompt.v5", "semantic-inventory-prompt.v6", SEMANTIC_INVENTORY_PROMPT_VERSION];
 
 export interface EnsemblePass {
   /** Generic pass identifier (e.g. "pass-1"); never a semantic label. */
