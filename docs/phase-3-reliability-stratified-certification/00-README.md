@@ -71,3 +71,29 @@ Architect · Product · COO — PASS/FAIL the Chewy pin + thin matrix. Live/paid
 | `first-target/` | CONMED §7.6(c) baseline — **untouched** |
 
 Soft exclusions unchanged: no live/paid, no NS-4, no related-series A/C, no inventing sealed IDs.
+
+
+---
+
+## Offline ASSET_SALES pin (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` (identity) · `eligible:false` (fail-closed)  
+**Base SHA:** `59e1193a6cca2adeb463bbae5e8d46bc4d800105` (main after #71/#72)  
+**ADR-1:** append-only under `pins/chwy-2026-credit-agreement/`; `first-target/` + #68 hand pin untouched.
+
+| artifact | role |
+|---|---|
+| `pins/chwy-2026-credit-agreement/6.05(a)(2)(c)--b54ed7fe/v1/` | Emitter-produced Chewy ASSET_SALES Designated Non-cash Consideration BASKET |
+| `01-pin-matrix.json` | ASSET_SALES stratum → PINNED_OFFLINE; honest UNRESOLVED_OPERATIVE_EVIDENCE |
+
+### Why this pin
+
+- Highest-leverage next stratum after Chewy WITH_SHARED_CAPS (#71): fills deferred ASSET_SALES with sealed `discovery-candidate:b54ed7fe4f8f7bb7c224d99b`.
+- Modest 857-char window; single structural occurrence; all identity assertions true.
+- Not CONMED §7.5(j) (historically live-exhausted / series residuals).
+- Fail-closed `eligible:false` — offline bundle AMBIGUOUS_TARGET for Subsidiary / Uniform Commercial Code. Prefer honest blockers over inventing sealed IDs.
+- Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68 mutation.
+
+### Review owners
+
+Architect · Product · COO — PASS/FAIL the ASSET_SALES identity pin + matrix update. Live/paid **not** authorized hereby.
