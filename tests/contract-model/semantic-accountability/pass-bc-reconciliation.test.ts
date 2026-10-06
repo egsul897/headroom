@@ -237,13 +237,56 @@ describe("semantic accountability - injected omissions (I41-I44) derived from ev
     expect(acc.semanticallyComplete).toBe(false);
   });
 
-  it("self-declared REPRESENTED is never accepted as a disposition - only lineage/value correspondence earns it", async () => {
+  it("self-declared REPRESENTED is never accepted as a disposition - only lineage/value correspondence earns it; ADR-2 §2.B emits MODEL_CONTRACT_VIOLATION (not quiet)", async () => {
     const b = await get("I6");
     const bogus = submission({ rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])], inventoryDispositions: [{ inventoryItemId: b.idOf("b"), disposition: "REPRESENTED", note: "trust me" }] });
     const acc = reconcileScenario(b, normalizeScenarioComposition(b, bogus));
     const item = acc.items.find((i) => i.inventoryItemId === b.idOf("b"))!;
+    // Accountability disposition still falls through to correspondence (no lineage/values for b) → MISSING.
     expect(item.disposition).toBe("MISSING_FROM_COMPOSITION");
+    expect(item.disposition).not.toBe("REPRESENTED");
+    expect(item.disposition).not.toBe("UNSUPPORTED");
     expect(item.modelDisposition).toBe("REPRESENTED");
+    expect(item.reason).toMatch(/MODEL_CONTRACT_VIOLATION/);
+    expect(item.reason).toMatch(/SELF_DECLARED_REPRESENTED/);
+    expect(item.diagnostics).toEqual([
+      {
+        code: "MODEL_CONTRACT_VIOLATION",
+        reason: "SELF_DECLARED_REPRESENTED",
+        rawLabel: "REPRESENTED",
+        contractRef: expect.stringContaining("MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR"),
+        inventoryItemId: b.idOf("b"),
+      },
+    ]);
+    expect(acc.modelContractViolations).toEqual(item.diagnostics);
+
+    // Legal REPRESENTED via lineage with no self-declaration: unchanged, no diagnostic.
+    const legalLead = reconcileScenario(b, normalizeScenarioComposition(b, submission({
+      rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])],
+    })));
+    expect(legalLead.items.find((i) => i.inventoryItemId === b.idOf("lead"))!.disposition).toBe("REPRESENTED");
+    expect(legalLead.items.find((i) => i.inventoryItemId === b.idOf("lead"))!.diagnostics).toBeUndefined();
+    expect(legalLead.modelContractViolations).toBeUndefined();
+
+    // Self-declare on lead while lineage also names it: disposition stays REPRESENTED (lineage wins), diagnostic still emitted.
+    const selfOnLead = submission({
+      rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])],
+      inventoryDispositions: [{ inventoryItemId: b.idOf("lead"), disposition: "REPRESENTED", note: "self-declare abuse" }],
+    });
+    const selfAcc = reconcileScenario(b, normalizeScenarioComposition(b, selfOnLead));
+    const leadItem = selfAcc.items.find((i) => i.inventoryItemId === b.idOf("lead"))!;
+    expect(leadItem.disposition).toBe("REPRESENTED"); // legal path via lineage unchanged
+    expect(leadItem.modelDisposition).toBe("REPRESENTED");
+    expect(leadItem.diagnostics).toEqual([
+      {
+        code: "MODEL_CONTRACT_VIOLATION",
+        reason: "SELF_DECLARED_REPRESENTED",
+        rawLabel: "REPRESENTED",
+        contractRef: expect.stringContaining("MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR"),
+        inventoryItemId: b.idOf("lead"),
+      },
+    ]);
+    expect(selfAcc.modelContractViolations).toEqual(leadItem.diagnostics);
   });
 
   it("composition contract / ADR-2: non-vocabulary inventoryDisposition maps to UNSUPPORTED with MODEL_CONTRACT_VIOLATION diagnostic (not quiet ordinary UNSUPPORTED)", async () => {

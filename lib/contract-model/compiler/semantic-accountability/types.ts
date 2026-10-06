@@ -434,13 +434,17 @@ export type QuantitativeDisposition = "VALUE_PRESENT_IN_IR" | "VALUE_DISPOSITION
  */
 export const MODEL_CONTRACT_VIOLATION_CODE = "MODEL_CONTRACT_VIOLATION" as const;
 export const UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON = "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" as const;
+/** ADR-2 §2.B: Pass B / wire self-declared REPRESENTED (never legal — lineage/value correspondence only). */
+export const SELF_DECLARED_REPRESENTED_REASON = "SELF_DECLARED_REPRESENTED" as const;
 export const NON_VOCABULARY_DISPOSITION_CONTRACT_REF =
   "Pass B inventoryDisposition vocabulary: INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS; ADR: docs/architecture/MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR.md";
+export const SELF_DECLARED_REPRESENTED_CONTRACT_REF =
+  "Pass B inventoryDisposition: REPRESENTED is inferred only via lineage/value correspondence — never self-declared; ADR §2.B: docs/architecture/MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR.md";
 
 export interface ModelContractViolationDiagnostic {
   code: typeof MODEL_CONTRACT_VIOLATION_CODE;
   /** Distinct subtype / reason — not ordinary semantic UNSUPPORTED. */
-  reason: typeof UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON;
+  reason: typeof UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON | typeof SELF_DECLARED_REPRESENTED_REASON;
   /** Illegal inventoryDisposition string as emitted (raw label preserved). */
   rawLabel: string;
   contractRef: string;
@@ -461,7 +465,7 @@ export interface ReconciliationItem {
   reason: string;
   /**
    * ADR-2: claim-specific model-contract violation diagnostics (e.g. non-vocabulary
-   * inventoryDisposition). Additive; never used to dilute interim-B series residuals.
+   * inventoryDisposition, self-declared REPRESENTED). Additive; never used to dilute interim-B series residuals.
    */
   diagnostics?: ModelContractViolationDiagnostic[];
   /** F-5.3B: independent-pass support provenance copied from the ensemble inventory item (absent for single-pass evidence). Provenance only - it never changes the disposition and never excuses an omission. */
@@ -517,8 +521,8 @@ export interface SemanticAccountabilityResult {
   support?: AccountabilitySupportSummary;
   /**
    * ADR-2: aggregated MODEL_CONTRACT_VIOLATION diagnostics from Pass C disposition
-   * normalization (non-vocabulary inventoryDisposition, etc.). Emitter defects —
-   * not credit for semantic competence / ordinary source UNSUPPORTED.
+   * normalization (non-vocabulary inventoryDisposition, self-declared REPRESENTED, etc.).
+   * Emitter defects — not credit for semantic competence / ordinary source UNSUPPORTED.
    */
   modelContractViolations?: ModelContractViolationDiagnostic[];
   reasons: string[];
