@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:3476b082d53dec709a3dca23:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "8214c6c477c5a28369a855ebf1fb78a654c85763",
+  "identity": {
+    "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "packageKey": "conmed-2025-credit-facility",
+    "normalizedSourceRef": "7.8(l)",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(l)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "structuralNodeIds": [
+      "structural-node:21ebeccef5efe5facc504a59",
+      "structural-node:f0f31081de73c3bc3f45e490"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:21ebeccef5efe5facc504a59",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.8(l)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.8(l)",
+      "charStart": 80969,
+      "charEnd": 81396
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 427,
+    "operativeSourceSha256": "1243e346aba340bbb822dfa32d7e7a36fe69b15e51bbc50eec0b51752476e91a",
+    "operativeSourceText": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n",
+    "expected": {
+      "chars": 427,
+      "sha256": "1243e346aba340bbb822dfa32d7e7a36fe69b15e51bbc50eec0b51752476e91a"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "BASKET",
+    "stratum": "INVESTMENTS",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+    "discoveryReviewStatus": "AUTO_ACCEPTED",
+    "discoveryConfidence": 0.9,
+    "description": "Permits additional Investments up to the greater of $75,000,000 or 3.5% of Consolidated Total Assets outstanding at any time, subject to no Default/Event of Default."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}

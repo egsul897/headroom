@@ -124,3 +124,30 @@ Architect · Product · COO — PASS/FAIL the ASSET_SALES identity pin + matrix 
 ### Review owners
 
 Architect · Product · COO — PASS/FAIL the LIENS eligible:true pin + matrix update. Live/paid **not** authorized hereby.
+
+---
+
+## Offline INVESTMENTS pin (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` · `eligible:true` (soft gate — **not** CERTIFIED)  
+**Base SHA:** `8214c6c477c5a28369a855ebf1fb78a654c85763` (main after #76 LIENS and #77 clear() removal)  
+**ADR-1:** append-only under `pins/conmed-2025-credit-facility/`; `first-target/` + #68 hand pin + #73 ASSET_SALES + #76 LIENS packets untouched.
+
+| artifact | role |
+|---|---|
+| `pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/` | Emitter-produced CONMED INVESTMENTS general basket (`eligible:true`) |
+| `01-pin-matrix.json` | INVESTMENTS stratum → PINNED_OFFLINE; Chewy INVESTMENTS + unpinned §7.8(d) honesty |
+| `00-selection-contract.json` | `matrixRowsTbd` INVESTMENTS synced → PINNED_OFFLINE (pinAuthority `01-pin-matrix.json`; Chewy INVESTMENTS DEFERRED; §7.8(d) unpinned) |
+| `05-pin-pipeline-emitter-design.md` | Living-design **append** amendment (prior Status/priority/LIENS amendment retained verbatim) |
+
+### Why this pin
+
+- Both authorized CONMED scouts seal `eligible:true` UNIQUE offline. Primary pin is §7.8(l) `discovery-candidate:3476b082d53dec709a3dca23` (427 chars, single occurrence, all identity assertions true, interim-B clean, `multipleRulesLikely: false`, no page-footer artifact).
+- §7.8(d) `discovery-candidate:8aaa7b743717492d1a9fa0b2` stays **unpinned**: 389 chars is smaller, but the operative window embeds PDF page footer `103` and a key-man proviso. Eligible scout, not the cleaner span.
+- Chewy INVESTMENTS remains **DEFERRED** (1.01 AMBIGUOUS; modest spans `eligible:false`). Do not invent IDs.
+- Map honesty `UNSERVED` is **not** pre-credit. PINNED_OFFLINE ≠ CERTIFIED.
+- Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73/#76 mutation.
+
+### Review owners
+
+Architect · Product · COO — PASS/FAIL the INVESTMENTS eligible:true pin + matrix update. Live/paid **not** authorized hereby. Merge HOLD until Architect+Trust+COO+CI.

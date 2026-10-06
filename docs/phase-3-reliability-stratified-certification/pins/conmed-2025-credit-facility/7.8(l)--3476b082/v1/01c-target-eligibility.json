@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:3476b082d53dec709a3dca23:TARGET_ELIGIBILITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "8214c6c477c5a28369a855ebf1fb78a654c85763",
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::SECTION::1.1",
+      "kind": "SECTION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    }
+  ],
+  "operativeTextSectionReferences": [
+    {
+      "raw": "Section 7.8",
+      "normalized": "7.8",
+      "span": [
+        59,
+        70
+      ],
+      "selector": {
+        "sourceText": "Section 7.8",
+        "kind": "WHOLE_PROVISION",
+        "qualifierText": null
+      }
+    }
+  ],
+  "offlineBundle": {
+    "sufficiencyState": "SUFFICIENT",
+    "stopReasons": [],
+    "items": 12,
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "nonCurrentItems": [],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "7.8(l)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "7.8",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "7.8(d)",
+        1
+      ],
+      [
+        "PROVISO",
+        "7.8(i)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "7.8(j)",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Consolidated Total Assets",
+        1
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Parent Borrower",
+        2
+      ],
+      [
+        "DEFINITION",
+        "Default",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Event of Default",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Investment",
+        1
+      ],
+      [
+        "CROSS_REFERENCE",
+        "VIII",
+        2
+      ],
+      [
+        "CROSS_REFERENCE",
+        "7.8",
+        2
+      ]
+    ]
+  },
+  "sourceContentVersion": "scv1:7385f481349cfa78c1da891262caac894b00e922af376668479a6753eeaa79bb",
+  "identityStrength": "STRONG",
+  "eligible": true,
+  "eligibilityBlockers": [],
+  "crossCutClaims": {
+    "WITHOUT_SHARED_CAPS": {
+      "claimed": true,
+      "basis": "Sealed discovery role BASKET is not SHARED_CAP; treated as standalone for this pin."
+    },
+    "WITHOUT_BUILDERS": {
+      "claimed": true,
+      "basis": "No builder/grower formula detected in this operative window."
+    },
+    "WITHOUT_RECLASSIFICATION": {
+      "claimed": true,
+      "basis": "No classification/reclassification mechanic detected in this operative window."
+    }
+  },
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+    "mapTags": [],
+    "mapOutcome": "UNSERVED",
+    "compilationStatus": null,
+    "verificationStatus": null,
+    "note": "Canonical map currently tags discovery-candidate:3476b082d53dec709a3dca23 with historical (none) (outcome UNSERVED). Offline pin remains valid. Later live CERTIFIED must clear production blockers honestly — map REVIEW is not pre-credit."
+  },
+  "discoveryHonesty": {
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "documentDiscoveryHealth": null,
+    "note": "Sealed discovery recorded AUTO_ACCEPTED for this candidate. Offline pin remains valid."
+  }
+}

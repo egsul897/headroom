@@ -127,3 +127,37 @@ Item 2 above (“Chewy / CONMED LIENS or INVESTMENTS”) is **partially satisfie
 
 **Status addendum:** emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1 **+ CONMED LIENS §7.3(m) v1**. Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73 mutation.
 
+---
+
+## Amendment — CONMED INVESTMENTS §7.8(l) offline pin (append · 2026-10-06)
+
+**Living-design append** (not an ADR-1 evidence-packet mutate). Prior Status line, “Next pins to emit” list, and the LIENS amendment above are retained verbatim; this section records the completed pin and residual blockers.
+
+| Field | Value |
+|---|---|
+| **discoveryId** | `discovery-candidate:3476b082d53dec709a3dca23` |
+| **sectionRef** | `7.8(l)` general Investments BASKET |
+| **pin folder** | `pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/` |
+| **chars / eligible** | 427 / `eligible:true` (offline identity — **not** live CERTIFIED) |
+| **matrix** | `01-pin-matrix.json` INVESTMENTS → `PINNED_OFFLINE` |
+
+### Why §7.8(l) and not §7.8(d)
+
+Both CONMED BASKET scouts seal `eligible:true`, UNIQUE, single occurrence, interim-B clean, `WITHOUT_SHARED_CAPS` / `WITHOUT_BUILDERS` / `WITHOUT_RECLASSIFICATION`:
+
+- **§7.8(l)** `discovery-candidate:3476b082d53dec709a3dca23` — 427 chars, `multipleRulesLikely: false`, general greater-of basket, no page-footer artifact. **Pinned.**
+- **§7.8(d)** `discovery-candidate:8aaa7b743717492d1a9fa0b2` — 389 chars (smaller) but operative text embeds PDF page footer `103` and a key-man-insurance proviso (`multipleRulesLikely: true`). **Left unpinned.** Still an eligible:true scout; not rejected, not invented.
+
+Chewy INVESTMENTS remains **DEFERRED** (1.01 AMBIGUOUS; modest §1.08(i) `eligible:false`). Do not invent IDs. Map honesty for the pinned candidate is `UNSERVED` — not pre-credit.
+
+### Priority list — residual after this pin
+
+The LIENS amendment’s residual “INVESTMENTS — still open” line is **satisfied for the stratum** by CONMED §7.8(l):
+
+- ~~**CONMED INVESTMENTS**~~ — **DONE** (this amendment / pin packet) for the matrix stratum.
+- **CONMED §7.8(d)** — still **unpinned** (eligible:true scout; dirtier span). Optional follow-on, not required to hold INVESTMENTS at PINNED_OFFLINE.
+- **Chewy INVESTMENTS** — still **DEFERRED**.
+- Items 3–6 in the original priority list (WITH_BUILDERS, CONMED WITH_SHARED_CAPS, CONMED DEBT, FC/reclass) unchanged. FINANCIAL_COVENANTS remains deferred.
+
+**Status addendum:** emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1 + CONMED LIENS §7.3(m) v1 **+ CONMED INVESTMENTS §7.8(l) v1**. Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73/#76 mutation. PINNED_OFFLINE ≠ CERTIFIED.
+

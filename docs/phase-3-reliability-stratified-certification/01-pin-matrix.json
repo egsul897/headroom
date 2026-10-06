@@ -2,7 +2,7 @@
   "schemaVersion": "1.0",
   "artifactId": "STRATIFIED_OFFLINE_PIN_MATRIX_V1",
   "status": "OFFLINE_PIN_MATRIX_PARTIAL",
-  "baseSha": "7a06e70d5701147fb775061b81e924054a403e29",
+  "baseSha": "8214c6c477c5a28369a855ebf1fb78a654c85763",
   "adr1Cite": "docs/architecture/EVIDENCE-PACKET-VERSIONING-ADR.md",
   "supersedes": null,
   "priorArtifactId": "STRATIFIED_REAL_PROVISION_CERTIFICATION_SELECTION_CONTRACT",
@@ -143,6 +143,39 @@
       "note": "eligible:true offline identity — not a live CERTIFIED claim. Chewy LIENS remains DEFERRED pending narrower UNIQUE sealed spans."
     },
     {
+      "pinId": "conmed-7.8l-3476b082-v1",
+      "status": "PINNED_OFFLINE",
+      "producedBy": "scripts/stratified-cert/pin-candidate.ts",
+      "pinFolder": "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
+      "packageKey": "conmed-2025-credit-facility",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.8(l)",
+      "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+      "stratum": "INVESTMENTS",
+      "role": "BASKET",
+      "crossCuts": [
+        "WITHOUT_SHARED_CAPS",
+        "WITHOUT_BUILDERS",
+        "WITHOUT_RECLASSIFICATION"
+      ],
+      "operativeSourceSha256": "1243e346aba340bbb822dfa32d7e7a36fe69b15e51bbc50eec0b51752476e91a",
+      "operativeSourceChars": 427,
+      "eligible": true,
+      "why": "Certification-preference INVESTMENTS pin after #76 LIENS: Chewy sealed INVESTMENTS BASKET/SHARED_CAP paths lack eligible:true (1.01 AMBIGUOUS 353k-char defs; modest §1.08(i) BUILDER emits UNRESOLVED_OPERATIVE_EVIDENCE). Fail-closed: do not invent narrower Chewy IDs. Both CONMED §7.8(l) and §7.8(d) seal eligible:true offline; §7.8(l) is the cleaner modest UNIQUE span (427 chars, single occurrence, multipleRulesLikely false, no page-footer artifact, all identity assertions true, interim-B clean). §7.8(d) stays unpinned (389 chars but operative text embeds PDF page footer 103 and a key-man proviso). Map honesty UNSERVED is not pre-credit. first-target/, #68 hand pin, #73 ASSET_SALES, and #76 LIENS packets untouched.",
+      "artifacts": [
+        "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/00-pin-manifest.json",
+        "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/00-preflight.json",
+        "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/01-target-identity.json",
+        "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/01b-operative-state.json",
+        "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/01c-target-eligibility.json"
+      ],
+      "sealedBinding": {
+        "discovery": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "fixtureRoot": "tests/fixtures/unseen-packages/conmed-2025-credit-facility"
+      },
+      "note": "eligible:true offline identity — not a live CERTIFIED claim. Chewy INVESTMENTS remains DEFERRED. CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 remains unpinned (eligible:true scout, dirtier span)."
+    },
+    {
       "pinId": "chewy-2.18c-vii-incremental-shared-cap",
       "status": "HAND_AUTHORED_GOLDEN",
       "pinFolder": "pins/chewy-2.18c-vii-incremental-shared-cap/",
@@ -214,15 +247,30 @@
       },
       {
         "id": "INVESTMENTS",
-        "status": "DEFERRED",
-        "blocker": "Chewy sealed INVESTMENTS BASKET/SHARED_CAP candidates remain on 1.01 (AMBIGUOUS 353k) or large/ambiguous §6.08. Modest pure-INVESTMENTS §1.08(i) BUILDER seals identity but eligible:false (UNRESOLVED_OPERATIVE_EVIDENCE). CONMED §7.8(d)/§7.8(l) BASKET candidates seal eligible:true offline (scouted; not pinned this packet — LIENS filled first per Certification preference). Follow-on pin; do not invent IDs.",
-        "candidateHintsFromSealedTree": [
-          "discovery-candidate:f2b19e034a56ebe385680bf0 (Chewy 1.01 General Basket Amount SHARED_CAP — AMBIGUOUS)",
-          "discovery-candidate:aa1362ae24ac2a8b2971672c (Chewy 1.01 Similar Business — AMBIGUOUS)",
-          "discovery-candidate:f1296db754e8e58b2df1b98c (Chewy §1.08(i) BUILDER — eligible:false)",
-          "discovery-candidate:3476b082d53dec709a3dca23 (CONMED §7.8(l) BASKET — eligible:true scouted, unpinned)",
-          "discovery-candidate:8aaa7b743717492d1a9fa0b2 (CONMED §7.8(d) BASKET — eligible:true scouted, unpinned)"
-        ]
+        "status": "PINNED_OFFLINE",
+        "pinId": "conmed-7.8l-3476b082-v1",
+        "packageKey": "conmed-2025-credit-facility",
+        "sectionRef": "7.8(l)",
+        "note": "Emitter-produced CONMED general Investments BASKET — eligible:true offline. Chosen over CONMED §7.8(d) (also eligible:true) because §7.8(l) is the cleaner modest UNIQUE span. Chewy INVESTMENTS still lacks modest UNIQUE eligible:true sealed span.",
+        "pinFolder": "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
+        "eligible": true,
+        "chewyFollowOn": {
+          "status": "DEFERRED",
+          "blocker": "No Chewy INVESTMENTS BASKET/SHARED_CAP with modest UNIQUE structural window + eligible:true. Sealed 1.01 General Basket Amount / Similar Business AMBIGUOUS (353k chars); modest §1.08(i) BUILDER seals identity but eligible:false (UNRESOLVED_OPERATIVE_EVIDENCE). Do not invent IDs.",
+          "candidateHintsFromSealedTree": [
+            "discovery-candidate:f2b19e034a56ebe385680bf0 (Chewy 1.01 General Basket Amount SHARED_CAP — AMBIGUOUS)",
+            "discovery-candidate:aa1362ae24ac2a8b2971672c (Chewy 1.01 Similar Business — AMBIGUOUS)",
+            "discovery-candidate:f1296db754e8e58b2df1b98c (Chewy §1.08(i) BUILDER — eligible:false)"
+          ]
+        },
+        "unpinnedConmedScout": {
+          "status": "DEFERRED",
+          "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+          "sectionRef": "7.8(d)",
+          "eligible": true,
+          "operativeSourceChars": 389,
+          "whyUnpinned": "Also seals eligible:true UNIQUE offline, but operative text embeds PDF page footer 103 and a key-man-insurance proviso (discovery multipleRulesLikely true). Not the cleaner span. Do not invent a narrower ID; leave unpinned this packet."
+        }
       },
       {
         "id": "ASSET_SALES",
@@ -258,10 +306,11 @@
         "id": "WITHOUT_SHARED_CAPS",
         "status": "BASELINE_PINNED",
         "pinFolder": "first-target/",
-        "note": "CONMED §7.6(c) standalone RP basket (baseline) + Chewy §6.05(a)(2)(c) ASSET_SALES basket (eligible:false identity pin); CONMED §7.3(m) LIENS basket (eligible:true).",
+        "note": "CONMED §7.6(c) standalone RP basket (baseline) + Chewy §6.05(a)(2)(c) ASSET_SALES basket (eligible:false identity pin); CONMED §7.3(m) LIENS basket (eligible:true); CONMED §7.8(l) INVESTMENTS basket (eligible:true).",
         "also": [
           "pins/chwy-2026-credit-agreement/6.05(a)(2)(c)--b54ed7fe/v1/",
-          "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/"
+          "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/",
+          "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/"
         ]
       },
       {
@@ -280,9 +329,10 @@
         "also": [
           "first-target/",
           "pins/chwy-2026-credit-agreement/6.05(a)(2)(c)--b54ed7fe/v1/",
-          "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/"
+          "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/",
+          "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/"
         ],
-        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, and Chewy §6.05(a)(2)(c) all claim WITHOUT_BUILDERS."
+        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, Chewy §6.05(a)(2)(c), CONMED §7.3(m), and CONMED §7.8(l) all claim WITHOUT_BUILDERS."
       },
       {
         "id": "WITH_RECLASSIFICATION",
@@ -296,9 +346,10 @@
         "also": [
           "first-target/",
           "pins/chwy-2026-credit-agreement/6.05(a)(2)(c)--b54ed7fe/v1/",
-          "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/"
+          "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/",
+          "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/"
         ],
-        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, and Chewy §6.05(a)(2)(c) all claim WITHOUT_RECLASSIFICATION."
+        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, Chewy §6.05(a)(2)(c), CONMED §7.3(m), and CONMED §7.8(l) all claim WITHOUT_RECLASSIFICATION."
       }
     ]
   },
@@ -306,13 +357,13 @@
     "strataPinnedOffline": [
       "ASSET_SALES",
       "DEBT",
+      "INVESTMENTS",
       "LIENS"
     ],
     "strataBaselinePinned": [
       "RESTRICTED_PAYMENTS"
     ],
     "strataDeferred": [
-      "INVESTMENTS",
       "FINANCIAL_COVENANTS"
     ],
     "strataBlocked": [],
@@ -335,11 +386,16 @@
     "zeroProviderCalls": true,
     "assetSalesPinned": true,
     "assetSalesEligibleForCertifiedPath": false,
-    "note": "LIENS PINNED_OFFLINE via CONMED §7.3(m) eligible:true (Certification preference after Chewy LIENS/INVESTMENTS scout found no eligible:true sealed path). ASSET_SALES remains identity-only eligible:false. Remaining deferred: INVESTMENTS, FINANCIAL_COVENANTS, WITH_BUILDERS; WITH_RECLASSIFICATION still BLOCKED. Chewy LIENS/INVESTMENTS follow-on still needs narrower UNIQUE eligible:true spans.",
+    "note": "INVESTMENTS PINNED_OFFLINE via CONMED §7.8(l) eligible:true (cleaner modest UNIQUE span; §7.8(d) also eligible:true but unpinned — page-footer artifact + proviso). LIENS remains PINNED_OFFLINE via CONMED §7.3(m) eligible:true. ASSET_SALES remains identity-only eligible:false. Remaining deferred: FINANCIAL_COVENANTS, WITH_BUILDERS; WITH_RECLASSIFICATION still BLOCKED. Chewy INVESTMENTS/LIENS follow-on still needs narrower UNIQUE eligible:true spans. PINNED_OFFLINE is not CERTIFIED.",
     "liensPinned": true,
     "liensEligibleForCertifiedPath": true,
     "liensPackageKey": "conmed-2025-credit-facility",
-    "chewyLiensStillDeferred": true
+    "chewyLiensStillDeferred": true,
+    "investmentsPinned": true,
+    "investmentsEligibleForCertifiedPath": true,
+    "investmentsPackageKey": "conmed-2025-credit-facility",
+    "chewyInvestmentsStillDeferred": true,
+    "conmed78dStillUnpinned": true
   },
   "reviewAsk": {
     "owners": [
@@ -347,8 +403,8 @@
       "Product",
       "COO"
     ],
-    "ask": "PASS/FAIL this offline LIENS pin packet: (1) emitter-produced CONMED §7.3(m) general Lien BASKET under pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/ with eligible:true, (2) matrix LIENS → PINNED_OFFLINE, (3) Chewy LIENS/INVESTMENTS scout honesty (DEFERRED — no inventing IDs / no dressing ineligible as CERTIFIED), (4) golden test. Confirm soft exclusions: no live/paid, no related-series A/C, no NS-4, no first-target/#68/#73 mutation.",
-    "passUnlocks": "Docs+pin merge via usual gate; follow-on offline pins for INVESTMENTS (CONMED §7.8(l)/§7.8(d) scouted eligible:true) / FC / WITH_BUILDERS / Chewy LIENS before any live stratified cert chunk"
+    "ask": "PASS/FAIL this offline INVESTMENTS pin packet: (1) emitter-produced CONMED §7.8(l) general Investments BASKET under pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/ with eligible:true, (2) matrix INVESTMENTS → PINNED_OFFLINE, (3) honesty that CONMED §7.8(d) stays unpinned and Chewy INVESTMENTS stays DEFERRED (no inventing IDs / no dressing PINNED_OFFLINE or UNSERVED map as CERTIFIED), (4) golden test. Confirm soft exclusions: no live/paid, no related-series A/C, no NS-4, no first-target/#68/#73/#76 mutation.",
+    "passUnlocks": "Docs+pin merge via usual gate; follow-on offline pins for FC / WITH_BUILDERS / Chewy INVESTMENTS / Chewy LIENS / optional CONMED §7.8(d) before any live stratified cert chunk. This packet is a soft gate — not CERTIFIED."
   },
   "emitter": {
     "status": "IMPLEMENTED",
@@ -362,7 +418,8 @@
       "tests/stratified-cert/pin-candidate-determinism.test.ts",
       "tests/stratified-cert/pin-candidate-conmed-76c-replay.test.ts",
       "tests/stratified-cert/pin-candidate-chewy-asset-sales.test.ts",
-      "tests/stratified-cert/pin-candidate-conmed-liens.test.ts"
+      "tests/stratified-cert/pin-candidate-conmed-liens.test.ts",
+      "tests/stratified-cert/pin-candidate-conmed-investments.test.ts"
     ]
   }
 }
