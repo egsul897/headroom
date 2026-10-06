@@ -1,6 +1,10 @@
 # North Star reconciliation (2026-10-06, starting SHA `bbcfb54`)
 
 Controlling document: `docs/headroom-north-star-v2.md`. Docs-only reconciliation; no production, app, Prisma or runtime change.
+Accepted North Star decisions are preserved. After the Phase 3 §7.5(j) trust-boundary seal (A/B, `semantic-accountability.v8`),
+this folder's Stage B pass corrects supersession direction (successor→predecessor via `supersedesSnapshotId`), distinguishes
+4B runtime resolve-only policy from North Star persistence write policy, documents append-only approval mechanics and
+fact-level source-locator join, and updates Phase 3 current-state wording. NS-4 is not implemented here.
 
 | file | content |
 |---|---|

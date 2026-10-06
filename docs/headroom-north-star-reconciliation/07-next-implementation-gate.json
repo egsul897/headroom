@@ -1,7 +1,7 @@
 {
   "artifact": "07 - next implementation gate",
   "northStarStartingSha": "bbcfb54eb9a307b155e5d5d365fd97f09c3e278e",
-  "currentWork": "Phase 3 reliability gate (06 steps 1-3): composition-contract remediation for the representable gaps (non-vocabulary inventory dispositions -> UNSUPPORTED / explicit disposition), the bounded IR decision on related-series aggregation, the Pass-A gap-call localRef reliability item, then certification of a stratified real provision set",
+  "currentWork": "Phase 3 reliability gate (06 steps 1-3), AFTER the §7.5(j) trust-boundary A/B seal at semantic-accountability.v8 (blank-line enumerator handoff refused; quantitative authority item-span bound; offline frozen replay; genuine residuals remain REVIEW_REQUIRED). Remaining: composition-contract remediation for the representable gaps (non-vocabulary inventory dispositions -> UNSUPPORTED / explicit disposition), the bounded IR decision on related-series aggregation, the Pass-A gap-call localRef reliability item, then certification of a stratified real provision set. NS-4 is NOT implemented by the seal.",
   "nextGate": {
     "id": "NS-4",
     "name": "CERTIFICATE-TO-SNAPSHOT ADAPTER V1 (approved financial snapshot store + heterogeneous compliance-certificate proposal / approval path onto the frozen Phase 4B contract)",
@@ -12,7 +12,7 @@
     ],
     "parallelSafety": "touches no Phase 3 or Phase 4A-4D production file; may start in parallel with Phase 3 reliability work if capacity allows",
     "inScope": [
-      "a persisted, append-only store implementing the 4B FinancialSnapshot / FinancialInput identity one-to-one (snapshot, fact, source-location records), with DRAFT / REVIEW_REQUIRED / APPROVED / SUPERSEDED and explicit supersession enforced at write time (the nine unsafe-graph checks run before commit)",
+      "a persisted, append-only store implementing the 4B FinancialSnapshot / FinancialInput identity one-to-one (snapshot, fact, fact-level source-location join records), with DRAFT / REVIEW_REQUIRED / APPROVED / SUPERSEDED and explicit supersession enforced at write time (successor names predecessor via supersedesSnapshotId; the nine unsafe-graph checks run before commit; APPROVED only via attributable append-only approval transition)",
       "a loader from the store to the 4B snapshot types, byte-identical to hand-built fixtures, feeding snapshotInputResolver unchanged",
       "a certificate fact-proposal format: source document id + version hash, page / section / table / row locator, reporting period, as-of, scope, kind, key, value type, currency / unit, proposer (human or extractor) - for heterogeneous certificate layouts",
       "a separate, attributable approval transition (proposal -> APPROVED snapshot) and a restatement path (new snapshot superseding the old)",

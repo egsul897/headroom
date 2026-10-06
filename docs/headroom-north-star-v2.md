@@ -59,9 +59,24 @@ HEADROOM ANSWER: available legal paths · capacity · conditions · before/after
   in any field are different facts. One never stands in for another.
 - A snapshot is immutable once written. Status is one of DRAFT / REVIEW_REQUIRED / APPROVED / SUPERSEDED. Default runtime
   policy accepts APPROVED only with EXACT as-of. `LATEST_ON_OR_BEFORE` exists only as an explicit, recorded caller policy.
-- Supersession is explicit: a superseded snapshot names its successor. Nothing is superseded because it looks older.
+- Supersession is explicit and **successor → predecessor**: the successor snapshot names the predecessor via
+  `supersedesSnapshotId`. A superseded snapshot does **not** name its successor. Nothing is superseded because it looks
+  older, has a higher version, or a newer timestamp.
+- **4B runtime vs North Star persistence write policy.** The Phase 4B runtime (`lib/contract-model/runtime/input/**`,
+  `financial-input-contract.v1`) is a **resolve-only** contract over already-supplied immutable snapshots: it never writes,
+  never approves, never mutates status. North Star **persistence** (the future append-only approved-snapshot store, NS-4)
+  is the write surface: drafts and proposals may be appended; APPROVED is reached only by an attributable approval
+  transition; a restatement appends a new snapshot that supersedes the old one via `supersedesSnapshotId`; published rows
+  are never edited in place.
+- **Append-only approval mechanics.** Extraction / ingestion may append DRAFT or REVIEW_REQUIRED proposals. A separate,
+  attributable approval record (who / when / `approvalRef`) is what makes a snapshot APPROVED. Corrections are a new
+  snapshot that supersedes the prior one; there is no in-place edit of an APPROVED or SUPERSEDED row, and no silent
+  status flip without an approval or supersession record.
 - Every fact carries source document identity, source version/hash, page/section/table where available, reporting period,
   as-of, scope, value type, currency/unit, and review/approval state.
+- **Fact-level source-locator join.** Persistence stores facts and source-location rows as joinable records (snapshot →
+  fact → source locator: document id, version/hash, page / section / table / row). Resolution and provenance walk that
+  join; a fact without a locator is incomplete for an APPROVED customer answer.
 - **The contract owns time.** The semantic IR carries the period selector, as-of selector, measurement date, trailing period
   and fiscal period ("most recently ended fiscal quarter", "four consecutive fiscal quarters most recently ended", "date of
   such transaction", "most recently delivered financial statements"). These never collapse into LATEST_QUARTER.
@@ -77,8 +92,9 @@ HEADROOM ANSWER: available legal paths · capacity · conditions · before/after
 Historical contractual usage is separate from periodic financial state: basket consumption and restoration, debt incurrence
 and repayment, asset-sale, restricted-payment and investment usage, shared-cap usage, reclassifications, redesignations,
 elections and supersessions. Each record is immutable, attributed to a capacity path (rule or shared capacity), effective-dated,
-and superseded only by an explicit successor. An unattributed usage fails the capacities it could touch closed. Records are
-never deleted; a correction is a superseding record.
+and superseded only when an explicit successor names it (same successor→predecessor direction as 4B
+`supersedesSnapshotId` / 4C `supersededByUsageId`). An unattributed usage fails the capacities it could touch closed.
+Records are never deleted; a correction is a superseding record.
 
 ## 6. Transaction / pro-forma model (preserve Phase 4D)
 
@@ -176,3 +192,10 @@ Technical interest is never a priority reason on its own.
 See `docs/headroom-north-star-reconciliation/` — the audit (01), conflicts (02), the preserve / demote / defer matrix (03),
 the financial source-of-truth decision (04), the Ask Headroom boundary (05), the revised roadmap (06) and the next
 implementation gate (07).
+
+**Phase 3 current state (after the §7.5(j) trust-boundary seal).** The live-exposed deterministic defects A/B (blank-line
+enumerator handoff; item-span-bound quantitative source authority) are SEALED at `semantic-accountability.v8` (offline
+frozen §7.5(j) replay only; genuine residuals remain; candidate stays `REVIEW_REQUIRED`). The broader Phase 3 reliability
+gate (composition contract for representable gaps, related-series aggregation IR decision, gap-call `localRef` reliability,
+then stratified real-provision certification) remains **open** — see revised roadmap step 1. NS-4 is **not** implemented
+here; it stays the next persistence gate.

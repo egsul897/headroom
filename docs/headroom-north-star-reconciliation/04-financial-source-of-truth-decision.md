@@ -4,12 +4,17 @@
 
 1. **Runtime financial-input truth = the Phase 4B contract** (`lib/contract-model/runtime/input/**`,
    `financial-input-contract.v1`): immutable `FinancialSnapshot` (DRAFT / REVIEW_REQUIRED / APPROVED / SUPERSEDED), explicit
-   `supersedesSnapshotId`, full fact identity (company, scope, kind, key, period, as-of, value type, currency), default policy
+   `supersedesSnapshotId` (**successor → predecessor**: the successor names the predecessor; a superseded snapshot does not
+   name its successor), full fact identity (company, scope, kind, key, period, as-of, value type, currency), default policy
    APPROVED + EXACT, `LATEST_ON_OR_BEFORE` only as a recorded caller choice, provenance and dependency manifest. Preserved
-   unchanged. It becomes the only financial input any North-Star answer reads.
+   unchanged. It becomes the only financial input any North-Star answer reads. **Write policy:** the 4B runtime is
+   resolve-only — it never writes, approves, or mutates snapshot status.
 2. **It is not yet persisted.** The contract is a pure in-memory type system; no Prisma table backs it and no `app/` code
    reaches it. The migration target is a **new, append-only approved-snapshot store** implementing the 4B identity
-   one-to-one (snapshot rows + fact rows + source-location rows), not an extension of either existing table.
+   one-to-one (snapshot rows + fact rows + **source-location rows joined at fact level**), not an extension of either
+   existing table. **Persistence write policy (distinct from 4B runtime):** append DRAFT / REVIEW_REQUIRED proposals;
+   APPROVED only via an attributable approval transition; restatement = new snapshot superseding the old via
+   `supersedesSnapshotId`; never edit published rows in place.
 3. **Legacy Prisma `FinancialSnapshot`** (eight fixed `Decimal` columns, no status, no supersession, no currency, no
    provenance) = **legacy compatibility only** for the prototype engine (`lib/covenant-engine.ts`,
    `lib/dashboard-service.ts`, Simulate / Capacity / Dashboard / Feeds / onboarding). Do not extend. Retire once product reads
@@ -61,7 +66,12 @@ evidence does not determine one. It is never "the latest quarter".
 - Extraction **proposes** facts, each with source document identity, version/hash, page / section / table / row where
   available, reporting period, as-of, scope, value type, currency/unit. Proposals are DRAFT or REVIEW_REQUIRED.
 - A separate, attributable **approval** makes a snapshot APPROVED; approval is per snapshot with per-fact review state.
-- A restated certificate creates a new snapshot that **supersedes** the old one explicitly; nothing is edited in place.
+  Approval is append-only mechanics: the approval record is what the store commits; there is no silent in-place status
+  flip of an already-published row.
+- A restated certificate creates a new snapshot that **supersedes** the old one explicitly (successor names predecessor
+  via `supersedesSnapshotId`); nothing is edited in place.
+- Every APPROVED fact joins to a **source-locator** record (document id, version/hash, page / section / table / row where
+  available). The join is fact-level, not snapshot-level only.
 - Basket-usage schedules and elections a certificate reports become **ledger proposals** (4C), not snapshot facts.
 - A certificate-reported covenant result (e.g. "Consolidated Total Leverage Ratio: 3.10x") is a reported fact that can be
   compared with Headroom's own computation; it never replaces the computation silently.

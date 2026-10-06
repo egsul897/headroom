@@ -8,7 +8,7 @@ for product direction; that document's audit sections stay as history.
 | layer | state | evidence |
 |---|---|---|
 | document / package intelligence (Phase 2A–2G) | built | structural index, discovery, package graph, context retrieval, independent coverage audit, amendment precedence and operative state |
-| semantic rulebook (Phase 3) | built; **reliability gate open** | certified compile → verify → certify path; source authority; provenance binding v2 (strict); live §7.2(c) and §7.5(j) both `SEMANTIC_FAILURE` with deterministic defects since closed; pre-4E readiness condition 7 unmet |
+| semantic rulebook (Phase 3) | built; **reliability gate open** (composition / related-series / localRef / stratified certification); §7.5(j) trust-boundary defects A/B **SEALED** at `semantic-accountability.v8` | certified compile → verify → certify path; source authority; provenance binding v2 (strict); live §7.2(c) and §7.5(j) both historically `SEMANTIC_FAILURE`; §7.5(j) deterministic false failures closed offline (genuine residuals remain, candidate `REVIEW_REQUIRED`); pre-4E readiness condition 7 unmet |
 | provenance / source authority / certification | built | `docs/canonical-covenant-map/12–14`, candidate + package certification |
 | Phase 4A evaluation | built | exact arithmetic, verification gate |
 | Phase 4B snapshot / input identity | built (in-memory) | approved / superseded snapshots, exact identity, manifest |
@@ -21,10 +21,10 @@ for product direction; that document's audit sections stay as history.
 | step | work | depends on | N-gate |
 |---|---|---|---|
 | **R0** | bounded legacy-safety fix: remove carry-forward in Feeds approval and onboarding promotion; replace Ledger hard delete with supersession (C5, C6, C10 partial) | — (any time; before real customer data enters legacy paths) | N7 |
-| **1** | **Phase 3 reliability gate** (current): composition contract for representable gaps; IR decision on related-series aggregation; gap-call localRef reliability | — | N1 |
+| **1** | **Phase 3 reliability gate** (current after A/B seal): composition contract for representable gaps; IR decision on related-series aggregation; gap-call localRef reliability. (Enumerator blank-line handoff + item-span quantitative authority already SEALED at v8; do not reopen.) | — | N1 |
 | **2** | certify a **stratified real provision set** (debt, liens, RP, investments, asset sales, financial covenants; with and without shared caps / builders / reclassification) | 1 | N1 |
 | **3** | freeze the semantic foundation except true defects; unblocks Phase 4E readiness condition 7 | 2 | N1 |
-| **4** | **NS-4 certificate → 4B snapshot adapter + persisted approved-snapshot store** (next gate, `07`) | 4B contract only — parallel-safe with 1–3 | N2, N7 |
+| **4** | **NS-4 certificate → 4B snapshot adapter + persisted approved-snapshot store** (next gate, `07`; **not implemented in this seal** — docs-only precision here) | 4B contract only — parallel-safe with 1–3 | N2, N7 |
 | **5** | ingest **one real compliance certificate** into an APPROVED snapshot | 4; a customer-supplied certificate | N2, N8 |
 | **6** | **contractual selector → snapshot identity resolution** (fiscal calendar, delivery evidence, explicit policy) | 4 | N2 |
 | **7** | connect the certified rulebook to approved snapshots through 4A / 4B (real covenant test values, strict resolver only) | 3, 5, 6 | N1, N2, N4 |
