@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:5f83b15ed6cd0ea8b06289a0:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "8b48921c1f300bab2f0617c81fa6f7ab9446ae63",
+  "identity": {
+    "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "packageKey": "conmed-2025-credit-facility",
+    "normalizedSourceRef": "7.1(c)",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1(c)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1"
+    ],
+    "structuralNodeIds": [
+      "structural-node:b442e3c45ba1c76217d77ee1",
+      "structural-node:9f5e530c88ebe99dbd321f79"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:b442e3c45ba1c76217d77ee1",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.1(c)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.1(c)",
+      "charStart": 47159,
+      "charEnd": 47393
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 234,
+    "operativeSourceSha256": "6caf027b1c9d4b750d05b26de025ebaee20a0ed031b2362c712878387762a19d",
+    "operativeSourceText": "(c)\nMinimum Interest Coverage Ratio . Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of\nthe Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.\n",
+    "expected": {
+      "chars": 234,
+      "sha256": "6caf027b1c9d4b750d05b26de025ebaee20a0ed031b2362c712878387762a19d"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "FINANCIAL_TEST",
+    "stratum": "FINANCIAL_COVENANTS",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+    "discoveryReviewStatus": "AUTO_ACCEPTED",
+    "discoveryConfidence": 0.95,
+    "description": "Prohibits the Interest Coverage Ratio, tested quarterly on a trailing four-quarter basis, from falling below 2.75 to 1.00."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}

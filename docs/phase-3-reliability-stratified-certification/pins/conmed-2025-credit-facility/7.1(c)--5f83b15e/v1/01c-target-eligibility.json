@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:5f83b15ed6cd0ea8b06289a0:TARGET_ELIGIBILITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "8b48921c1f300bab2f0617c81fa6f7ab9446ae63",
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::SECTION::1.1",
+      "kind": "SECTION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    }
+  ],
+  "operativeTextSectionReferences": [],
+  "offlineBundle": {
+    "sufficiencyState": "SUFFICIENT",
+    "stopReasons": [],
+    "items": 6,
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "nonCurrentItems": [],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "7.1(c)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "7.1",
+        1
+      ],
+      [
+        "PROVISO",
+        "7.1(a)",
+        1
+      ],
+      [
+        "PROVISO",
+        "7.1(b)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "7.1(d)",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Parent Borrower",
+        1
+      ]
+    ]
+  },
+  "sourceContentVersion": "scv1:865e3a799629ecd992d2dcec470fcf6f933e25e1f1de76ca722a6578ed3e4dfa",
+  "identityStrength": "STRONG",
+  "eligible": true,
+  "eligibilityBlockers": [],
+  "crossCutClaims": {
+    "WITHOUT_SHARED_CAPS": {
+      "claimed": true,
+      "basis": "Sealed discovery role FINANCIAL_TEST is not SHARED_CAP; treated as standalone for this pin."
+    },
+    "WITHOUT_BUILDERS": {
+      "claimed": true,
+      "basis": "No builder/grower formula detected in this operative window."
+    },
+    "WITHOUT_RECLASSIFICATION": {
+      "claimed": true,
+      "basis": "No classification/reclassification mechanic detected in this operative window."
+    }
+  },
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+    "mapTags": [
+      "CANDIDATE_COMPILE_REVIEW_REQUIRED",
+      "VERIFICATION_INCOMPLETE"
+    ],
+    "mapOutcome": "MAPPED_WITH_REVIEW",
+    "compilationStatus": "REVIEW_REQUIRED",
+    "verificationStatus": "VERIFICATION_INCOMPLETE",
+    "note": "Canonical map currently tags discovery-candidate:5f83b15ed6cd0ea8b06289a0 with historical CANDIDATE_COMPILE_REVIEW_REQUIRED / VERIFICATION_INCOMPLETE (outcome MAPPED_WITH_REVIEW). Offline pin remains valid. Later live CERTIFIED must clear production blockers honestly — map REVIEW is not pre-credit."
+  },
+  "discoveryHonesty": {
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "documentDiscoveryHealth": null,
+    "note": "Sealed discovery recorded AUTO_ACCEPTED for this candidate. Offline pin remains valid."
+  }
+}

@@ -151,3 +151,30 @@ Architect · Product · COO — PASS/FAIL the LIENS eligible:true pin + matrix u
 ### Review owners
 
 Architect · Product · COO — PASS/FAIL the INVESTMENTS eligible:true pin + matrix update. Live/paid **not** authorized hereby. Merge HOLD until Architect+Trust+COO+CI.
+
+---
+
+## Offline FINANCIAL_COVENANTS pin (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` · `eligible:true` (soft gate — **not** CERTIFIED)  
+**Base SHA:** `8b48921c1f300bab2f0617c81fa6f7ab9446ae63` (main after #78 INVESTMENTS)  
+**ADR-1:** append-only under `pins/conmed-2025-credit-facility/`; `first-target/` + #68 hand pin + #73 ASSET_SALES + #76 LIENS + #78 INVESTMENTS packets untouched.
+
+| artifact | role |
+|---|---|
+| `pins/conmed-2025-credit-facility/7.1(c)--5f83b15e/v1/` | Emitter-produced CONMED Minimum Interest Coverage Ratio FINANCIAL_TEST (`eligible:true`) |
+| `01-pin-matrix.json` | FINANCIAL_COVENANTS stratum → PINNED_OFFLINE; leverage-sibling and Chewy scout honesty |
+| `00-selection-contract.json` | `matrixRowsTbd` FINANCIAL_COVENANTS synced → PINNED_OFFLINE (pinAuthority `01-pin-matrix.json`) |
+| `05-pin-pipeline-emitter-design.md` | Living-design **append** amendment (prior Status/priority/LIENS/INVESTMENTS amendments retained verbatim) |
+
+### Why this pin
+
+- Governing-definition check now run offline. CONMED §7.1(c) `discovery-candidate:5f83b15ed6cd0ea8b06289a0` (234 chars, single occurrence, all identity assertions true, interim-B clean, `multipleRulesLikely: false`) does not name Phase-2 `OPERATIVE_STATE_REVIEW_REQUIRED` leverage definitions and has no governing review provision. `eligible:true`.
+- §7.1(a) `discovery-candidate:8fe38049fe62ea9e9e741511` and §7.1(b) `discovery-candidate:cf15af8f5fb1f77bd861a2ac` stay **unpinned**: identity seals, `eligible:false` (`PHASE2_REVIEW_REQUIRED_MENTIONED_IN_OPERATIVE`).
+- Chewy hinted FINANCIAL_TEST §1.08(a)(i) and §1.04(b) stay **unpinned**: identity seals, `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`). Eligible:true Chewy calculation clauses are not `FINANCIAL_TEST` and stay unpinned.
+- Map honesty `MAPPED_WITH_REVIEW` / `CANDIDATE_COMPILE_REVIEW_REQUIRED` / `VERIFICATION_INCOMPLETE` is **not** pre-credit. Canonical map certification status remains `NOT_CERTIFIED`. PINNED_OFFLINE ≠ CERTIFIED.
+- Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73/#76/#78 mutation.
+
+### Review owners
+
+Architect · Product · COO — PASS/FAIL the FINANCIAL_COVENANTS eligible:true pin + matrix update. Live/paid **not** authorized hereby. Merge HOLD until Architect+Trust+COO+CI.
