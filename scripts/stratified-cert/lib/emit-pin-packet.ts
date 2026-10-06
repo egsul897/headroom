@@ -17,6 +17,31 @@ const INTERIM_B_RE = /\bseries\s+of\s+related\b/i;
 const MODEL = "deepseek/deepseek-v4-flash";
 const HARD_CEILING_USD = 0.25;
 const ADR1 = "docs/architecture/EVIDENCE-PACKET-VERSIONING-ADR.md";
+
+export type DirectMentionHit = {
+  directlyReferencedBySection: boolean;
+  definedTermMentionedInOperativeText: boolean;
+};
+
+/** Packet honesty: every eligible=false predicate must appear here. */
+export function computeEligibilityBlockers(args: {
+  identityOk: boolean;
+  interimBHit: boolean;
+  governingReview: boolean;
+  hasUnresolvedOperativeEvidence: boolean;
+  directMentions: readonly DirectMentionHit[];
+}): string[] {
+  return [
+    ...(args.identityOk ? [] : ["IDENTITY_ASSERTIONS_FAILED"]),
+    ...(args.interimBHit ? ["INTERIM_B_RELATED_SERIES_DETECTED"] : []),
+    ...(args.governingReview ? ["GOVERNING_PROVISION_REVIEW_REQUIRED"] : []),
+    ...(args.hasUnresolvedOperativeEvidence ? ["UNRESOLVED_OPERATIVE_EVIDENCE"] : []),
+    ...(args.directMentions.some((m) => m.directlyReferencedBySection || m.definedTermMentionedInOperativeText)
+      ? ["PHASE2_REVIEW_REQUIRED_MENTIONED_IN_OPERATIVE"]
+      : []),
+  ];
+}
+
 const FIRST_TARGET_ABS = path.resolve("docs/phase-3-reliability-stratified-certification/first-target");
 const HAND_PIN_ABS = path.resolve(
   "docs/phase-3-reliability-stratified-certification/pins/chewy-2.18c-vii-incremental-shared-cap",
@@ -198,12 +223,15 @@ export function pinCandidate(args: PinCandidateArgs): PinCandidateResult {
 
   const identityOk = Object.values(assertions).every(Boolean);
   const governingReview = !!governing && governing.status !== "OPERATIVE_STATE_RESOLVED";
-  const eligible =
-    identityOk &&
-    !interimBHit &&
-    !governingReview &&
-    !(ob.hasUnresolvedOperativeEvidence ?? false) &&
-    directMentions.every((m) => !m.directlyReferencedBySection && !m.definedTermMentionedInOperativeText);
+  const eligibilityBlockers = computeEligibilityBlockers({
+    identityOk,
+    interimBHit,
+    governingReview,
+    hasUnresolvedOperativeEvidence: ob.hasUnresolvedOperativeEvidence ?? false,
+    directMentions,
+  });
+  // After identity asserts succeed, eligible === (eligibilityBlockers.length === 0).
+  const eligible = eligibilityBlockers.length === 0;
 
   const mapHonesty = resolveMapHonesty(pkg, args.discoveryId);
   const outDir = args.outDir ?? defaultPinOutDir({ packageKey: pkg.packageKey, normalizedSourceRef: target.normalizedSourceRef, discoveryId: args.discoveryId });
@@ -366,15 +394,7 @@ export function pinCandidate(args: PinCandidateArgs): PinCandidateResult {
     sourceContentVersion: offline.sourceContentVersion,
     identityStrength: offline.identityStrength,
     eligible,
-    eligibilityBlockers: [
-      ...(identityOk ? [] : ["IDENTITY_ASSERTIONS_FAILED"]),
-      ...(interimBHit ? ["INTERIM_B_RELATED_SERIES_DETECTED"] : []),
-      ...(governingReview ? ["GOVERNING_PROVISION_REVIEW_REQUIRED"] : []),
-      ...(ob.hasUnresolvedOperativeEvidence ? ["UNRESOLVED_OPERATIVE_EVIDENCE"] : []),
-      ...(directMentions.some((m) => m.directlyReferencedBySection || m.definedTermMentionedInOperativeText)
-        ? ["PHASE2_REVIEW_REQUIRED_MENTIONED_IN_OPERATIVE"]
-        : []),
-    ],
+    eligibilityBlockers,
     crossCutClaims: crossCutClaims({
       crossCuts,
       role: target.role,
