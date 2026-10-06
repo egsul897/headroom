@@ -63,7 +63,7 @@ export interface Phase3InventoryExecutionPolicy {
 }
 
 export const CERTIFIED_INVENTORY_WIRE_BOUNDS: InventoryWireBounds = {
-  localRefChars: 6, slotIdChars: 96, roleChars: 20, maxAdditionalRoles: 3, propositionChars: 120, excerptChars: 400,
+  localRefChars: 24, slotIdChars: 96, roleChars: 20, maxAdditionalRoles: 3, propositionChars: 120, excerptChars: 400,
   maxQuantitativeValues: 8, valueRawTextChars: 48, valueUnitChars: 12, maxReferencedTerms: 6, referencedTermChars: 60,
   maxReferencedSections: 6, referencedSectionChars: 40, maxRelatedRefs: 4, ambiguityReasonChars: 120,
 };

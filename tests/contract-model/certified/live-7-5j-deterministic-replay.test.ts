@@ -115,7 +115,10 @@ describe("the replay does not overclaim: genuine frozen-output limitations remai
     expect(r.verification.after.projectionHash).not.toBe(r.verification.before.projectionHash);
     expect(r.verification.after.qualitativeGrounding.materialUngrounded).toBe(0);
   });
-  it("gap re-inventory localRef reliability is OBSERVED_BUT_NOT_REMEDIATED", () => {
-    expect(r.residual.gapReinventoryLocalRef.status).toBe("OBSERVED_BUT_NOT_REMEDIATED");
+  it("gap re-inventory localRef reliability is CLOSED_OFFLINE (bound + prompt + coerce)", () => {
+    expect(r.residual.gapReinventoryLocalRef.status).toBe("CLOSED_OFFLINE");
+    expect(r.residual.gapReinventoryLocalRef.artifact).toBe("docs/phase-3-reliability-composition-gaps/03-gap-call-localref-reliability.md");
+    // live error detail (first line) is preserved for audit; remediation is offline wire/prompt reliability
+    expect(r.residual.gapReinventoryLocalRef.detail).toContain("Failed to parse structured output");
   });
 });

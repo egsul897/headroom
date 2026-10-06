@@ -30,7 +30,7 @@ zero findings; only deterministic layers are exercised.
   UNIT_SUFFICIENCY_INCOMPLETE blocker disappeared
 - the replayed projection hash (07619a3e…) differs from the frozen one (88c138aa…) because the IR now carries AS_OF; it
   equals the hash recorded on the replayed verification
-- gap re-inventory localRef schema reliability: OBSERVED_BUT_NOT_REMEDIATED (prompts and wire schema untouched)
+- gap re-inventory localRef schema reliability: CLOSED_OFFLINE (`localRefChars` 6→24, prompt v7 states bound, over-long handles coerced; see `docs/phase-3-reliability-composition-gaps/03-gap-call-localref-reliability.md`)
 
 ## Files
 
