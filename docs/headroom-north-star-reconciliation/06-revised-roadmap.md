@@ -21,7 +21,7 @@ for product direction; that document's audit sections stay as history.
 | step | work | depends on | N-gate |
 |---|---|---|---|
 | **R0** | bounded legacy-safety fix: remove carry-forward in Feeds approval and onboarding promotion; replace Ledger hard delete with supersession (C5, C6, C10 partial) | — (any time; before real customer data enters legacy paths) | N7 |
-| **1** | **Phase 3 reliability gate** (current after A/B seal): composition contract for representable gaps; IR decision on related-series aggregation; gap-call localRef reliability. (Enumerator blank-line handoff + item-span quantitative authority already SEALED at v8; do not reopen.) | — | N1 |
+| **1** | **Phase 3 reliability gate** (current after A/B seal + non-vocab disposition contract): IR decision on related-series aggregation; gap-call localRef reliability; then stratified certification. (Enumerator blank-line handoff + item-span quantitative authority SEALED at v8; non-vocabulary inventoryDisposition → UNSUPPORTED closed offline; do not reopen sealed A/B.) | — | N1 |
 | **2** | certify a **stratified real provision set** (debt, liens, RP, investments, asset sales, financial covenants; with and without shared caps / builders / reclassification) | 1 | N1 |
 | **3** | freeze the semantic foundation except true defects; unblocks Phase 4E readiness condition 7 | 2 | N1 |
 | **4** | **NS-4 certificate → 4B snapshot adapter + persisted approved-snapshot store** (next gate, `07`; **not implemented in this seal** — docs-only precision here) | 4B contract only — parallel-safe with 1–3 | N2, N7 |

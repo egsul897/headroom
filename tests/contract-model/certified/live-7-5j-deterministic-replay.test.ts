@@ -44,7 +44,10 @@ describe("defect B - quantitative source authority", () => {
     for (const i of r.defectB.after) expect(i.values.some((v) => v[0] === "OTHER")).toBe(false);
     expect(r.defectB.after.map((i) => i.values.map((v) => [v[0], v[1], v[2]]))).toEqual([[["MONEY", "$25,000,000", 25000000]], [["MONEY", "$25,000,000", 25000000], ["PERCENT", "1.5%", 0.015]], [["PERCENT", "1.5%", 0.015]]]);
     expect(r.accountability.after.counts.materialQuantitativeValuesMissing).toBe(0);
-    expect(r.accountability.after.missing.map((m) => m[1])).toEqual(["FORMULA_COMPONENT", "FORMULA_COMPONENT", "FORMULA_COMPONENT"]);
+    // Composition-contract remediation: the three FORMULA_COMPONENT valuation items the model
+    // dispositioned CONSUMED_IN_EXPRESSION (non-vocabulary) are now UNSUPPORTED, not MISSING.
+    expect(r.accountability.after.missing).toEqual([]);
+    expect(r.accountability.after.counts.materialMissingFromComposition).toBe(0);
   });
 });
 
@@ -78,16 +81,20 @@ describe("defect D - the Consolidated Total Assets measurement date is structure
 });
 
 describe("the replay does not overclaim: genuine frozen-output limitations remain visible", () => {
-  it("compilation stays REVIEW_REQUIRED for the genuine reasons only (missing valuation structure; support asymmetry); the false coverage gap is gone", () => {
+  it("compilation stays REVIEW_REQUIRED for the genuine reasons only (support asymmetry); the false coverage gap and non-vocabulary MISSING are gone", () => {
     expect(r.accountability.before.failureReasons).toEqual(["SEMANTIC_INVENTORY_COVERAGE_GAP", "INVENTORY_ITEM_MISSING_FROM_COMPOSITION", "SEMANTIC_SUPPORT_REVIEW_REQUIRED"]);
-    expect(r.accountability.after.failureReasons).toEqual(["INVENTORY_ITEM_MISSING_FROM_COMPOSITION", "SEMANTIC_SUPPORT_REVIEW_REQUIRED"]);
+    expect(r.accountability.after.failureReasons).toEqual(["SEMANTIC_SUPPORT_REVIEW_REQUIRED"]);
     expect(r.accountability.after.status).toBe("REVIEW_REQUIRED");
     expect(r.accountability.after.semanticallyComplete).toBe(false);
   });
-  it("the two non-cash valuation mechanics remain MISSING_FROM_COMPOSITION (not structurally represented by the frozen composition)", () => {
-    expect(r.residual.notesDebtSecuritiesValuation.status).toBe("MISSING_FROM_COMPOSITION (unchanged)");
-    expect(r.residual.otherNonCashValuation.status).toBe("MISSING_FROM_COMPOSITION (unchanged)");
-    expect(r.accountability.after.counts.materialMissingFromComposition).toBe(3);
+  it("the two non-cash valuation mechanics are UNSUPPORTED via the model's non-vocabulary CONSUMED_IN_EXPRESSION dispositions (composition contract)", () => {
+    expect(r.residual.notesDebtSecuritiesValuation.status).toBe("UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION");
+    expect(r.residual.notesDebtSecuritiesValuation.modelDisposition).toBe("CONSUMED_IN_EXPRESSION");
+    expect(r.residual.notesDebtSecuritiesValuation.disposition).toBe("UNSUPPORTED");
+    expect(r.residual.otherNonCashValuation.status).toBe("UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION");
+    expect(r.residual.otherNonCashValuation.modelDispositions).toEqual(["CONSUMED_IN_EXPRESSION", "CONSUMED_IN_EXPRESSION"]);
+    expect(r.residual.otherNonCashValuation.dispositions).toEqual(["UNSUPPORTED", "UNSUPPORTED"]);
+    expect(r.accountability.after.counts.materialMissingFromComposition).toBe(0);
   });
   it("support asymmetry is not manufactured away", () => {
     expect(r.residual.supportAsymmetry).toMatchObject({ supportReviewRequired: true, materialSingleRun: 2, accountabilitySupportReviewRequired: true });
