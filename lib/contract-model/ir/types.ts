@@ -101,8 +101,12 @@ export interface SourceProvenance {
   /** Phase 2A structural-index node key, when the citation is a real structural node - null for a citation that is a definition/proviso span without its own StructuralNode. */
   sourceNodeKey: string | null;
   sourceCitation: string;
-  /** Bounded excerpt of the actual source text this element was derived from - never a synthesized paraphrase (mirrors context-retrieval's own ContextItem.excerptText discipline). */
+  /** Bounded excerpt of the actual source text this element was derived from - never a synthesized paraphrase (mirrors context-retrieval's own ContextItem.excerptText discipline). PROVENANCE SOURCE BINDING: the AUTHORITATIVE excerpt - the exact source substring a model excerpt was bound to, the verbatim model text when it is itself a real quotation, or null when the model excerpt could not be bound (then `rawModelExcerpt` holds the model's text and `excerptResolution.status` is UNRESOLVED). */
   excerpt: string | null;
+  /** The model's own excerpt, verbatim, kept for audit whenever it differs from `excerpt` or could not be bound. Never authoritative. */
+  rawModelExcerpt?: string | null;
+  /** How `excerpt` was established against the admissible source texts (provenance-source-binding.v1); absent on provenance without a model excerpt or on pre-binding artifacts. */
+  excerptResolution?: import("../compiler/semantic/provenance-binding").ProvenanceExcerptResolution;
 }
 
 // ---------------------------------------------------------------------------

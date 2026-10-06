@@ -323,7 +323,9 @@ async function compileBoth(attacks: boolean) {
   return { c, mono, sharded, shardedCaller };
 }
 /** Semantic view of a compilation: unit identity re-keyed by the stitcher and composition-relative indexes are execution metadata; everything else must match. */
-const VOLATILE = new Set(["ruleId", "expressionId", "targetRuleId", "permissionRuleId", "appliesToRuleId", "cacheKey", "compiledAt"]);
+// provenance binding offsets relative to the execution window (a shard slice vs the whole unit) are execution metadata; the
+// absolute document offsets, status, bound text hash and authoritative excerpt must agree
+const VOLATILE = new Set(["ruleId", "expressionId", "targetRuleId", "permissionRuleId", "appliesToRuleId", "cacheKey", "compiledAt", "charStart", "charEnd"]);
 function semantic(v: unknown): unknown {
   if (Array.isArray(v)) return v.map(semantic);
   if (v && typeof v === "object") return Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([k]) => !VOLATILE.has(k)).map(([k, x]) => [k, typeof x === "string" ? x.replace(/\b(rules|definitions)\[\d+\]/g, "$1[*]") : semantic(x)]).sort(([a], [b]) => String(a).localeCompare(String(b))));
@@ -442,8 +444,8 @@ describe("SA-4 §36-§37 status-neutral dependency prose; the reviewer is never 
     const system = buildVerifierSystemPrompt({ verifierAlgorithmVersion: "a", verifierPromptVersion: "b", projectionVersion: "c" });
     expect(system).toMatch(/never a statement that the target is certified, verified or correct/);
     expect(SEMANTIC_VERIFIER_PROMPT_VERSION).toBe("phase-3c-semantic-verifier-prompt.v4");
-    expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v3");
-    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v7", "semantic-accountability-compiler-prompt.v8"]);
+    expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v4");
+    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v8", "semantic-accountability-compiler-prompt.v8"]);
   });
 });
 

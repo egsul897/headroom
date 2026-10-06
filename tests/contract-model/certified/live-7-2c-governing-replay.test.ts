@@ -318,7 +318,7 @@ describe("§43-§47 scripted Layer 2 over the BEFORE and AFTER artifacts; certif
     expect(after.compilation.inputHasUnresolvedOperativeEvidence).toBe(true);
     expect(result.reconciliation.materialUnresolvedCount).toBe(0);
     expect(result.verificationProjection).toMatchObject({ version: SEMANTIC_VERIFICATION_PROJECTION_VERSION, shownToReviewer: true });
-    expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v3");
+    expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v4");
     const content = seen.userContent[0]!;
     expect(content).toContain("GOVERNING SCOPE CONTEXT");
     expect(content).toContain("shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:");

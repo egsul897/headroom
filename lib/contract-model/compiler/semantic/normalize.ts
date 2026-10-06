@@ -32,6 +32,7 @@ import type { IREntityTagNormalization, IRSourceReferenceAudit, IRSourceReferenc
 import type { GoverningSemanticContext } from "./governing-scope";
 import { classifySourceAction, assessActionCompatibility } from "./action-ontology";
 import { classifyEmittedReferences, statedReferencesFor, SOURCE_REFERENCE_FIDELITY_VERSION } from "./source-reference-fidelity";
+import { resolveProvenanceExcerpt, type AdmissibleSourceText } from "./provenance-binding";
 
 const IR_VALUE_TYPES: readonly IRValueType[] = ["MONEY", "NUMBER", "PERCENT", "RATIO", "BOOLEAN", "DATE", "DURATION", "PERIOD", "ENTITY_SET", "CAPACITY"];
 const SUFFICIENCY_VALUES: readonly RepresentationSufficiency[] = ["COMPLETE", "PARTIAL", "AMBIGUOUS", "UNSUPPORTED", "MISSING_CONTEXT", "CONFLICTED"];
@@ -129,12 +130,56 @@ interface NormCtx {
   referenceAudit: IRSourceReferenceAuditEntry[];
   /** Sufficiency limits raised deterministically under this rule (a COMPLETE claim is downgraded to PARTIAL when any exists). */
   limits: string[];
+  /** PROVENANCE SOURCE BINDING: the admissible source texts (deduplicated by content) a model excerpt may bind to. */
+  admissibleSources: readonly AdmissibleSourceText[];
 }
 
+/**
+ * PROVENANCE SOURCE BINDING (the one place model-authored excerpts enter authoritative IR): the model's excerpt is bound to
+ * the admissible source texts deterministically (provenance-binding.ts). A verbatim quotation stays as it is; an elided
+ * excerpt that proves one unique span is replaced by the exact source substring (diagnostic recorded, raw text kept);
+ * anything that cannot be proven is NOT authoritative - `excerpt` is null, the raw text is kept for audit, and the rule
+ * is limited (review) before verification ever sees it. The model's words are never quietly treated as source evidence.
+ */
 function provenanceFor(ctx: NormCtx, citation: string | null | undefined, excerpt: string | null | undefined): SourceProvenance | undefined {
   const cite = citation ?? ctx.inheritedCitation;
   if (!cite) return undefined;
-  return { documentId: ctx.documentId, sourceNodeKey: null, sourceCitation: cite, excerpt: excerpt ?? null };
+  const raw = excerpt ?? null;
+  if (raw === null || raw.trim().length === 0) return { documentId: ctx.documentId, sourceNodeKey: null, sourceCitation: cite, excerpt: null };
+  const outcome = resolveProvenanceExcerpt(raw, ctx.admissibleSources);
+  const r = outcome.resolution;
+  const head = raw.replace(/\s+/g, " ").slice(0, 60);
+  if (r.status === "SOURCE_BOUND_ELIDED") diag(ctx, `PROVENANCE_EXCERPT_SOURCE_BOUND: ${ctx.scopePath} the model's elided excerpt ("${head}…") was bound deterministically to the exact ${r.sourceKind} source span [${r.charStart},${r.charEnd}) of ${r.sourceKey}; the authoritative excerpt is that source substring, the model's text is retained only as rawModelExcerpt`);
+  if (r.status === "UNRESOLVED") limitRule(ctx, `PROVENANCE_EXCERPT_UNRESOLVED: ${ctx.scopePath} the model's excerpt ("${head}") does not bind to any admissible source span (${r.reason}: ${r.detail}); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)`);
+  const differs = outcome.authoritativeExcerpt !== raw;
+  return { documentId: ctx.documentId, sourceNodeKey: null, sourceCitation: cite, excerpt: outcome.authoritativeExcerpt, ...(differs ? { rawModelExcerpt: raw } : {}), excerptResolution: r };
+}
+
+/**
+ * The admissible source texts for provenance binding - exactly the texts the verifier's qualitative grounding consults
+ * (the candidate's operative text, every resolved source-context region, every context-bundle excerpt), each with its
+ * identity; the operative text additionally carries the spans owned by separate child candidates as inadmissible
+ * boundaries (semantic-unit ownership, mirroring the verifier's section-reference exclusion).
+ */
+export function admissibleSourcesFor(input: SemanticCompilerInput): AdmissibleSourceText[] {
+  const index = input.toolAccess?.structuralIndex ?? null;
+  const anchorNodeId = input.contextBundle?.originatingStructuralNodeIds?.[0] ?? null;
+  const anchorNode = index && anchorNodeId ? index.getNodeById(anchorNodeId) : undefined;
+  const windowStart = input.operativeSourceOrigin === "OPERATIVE_STATE_CURRENT_TEXT" ? null : input.operativeCharStart ?? anchorNode?.charStart ?? null;
+  const boundaries: [number, number][] = [];
+  if (index && anchorNode && windowStart !== null) {
+    for (const c of input.candidatePopulation ?? []) {
+      if (c.discoveryId === input.candidateRef) continue;
+      const child = c.structuralNodeIds[0] ? index.getNodeById(c.structuralNodeIds[0]) : undefined;
+      if (!child || child.documentId !== anchorNode.documentId || child.nodeId === anchorNode.nodeId) continue;
+      if (!index.getAncestors(child.nodeId).some((a) => a.nodeId === anchorNode.nodeId)) continue;
+      boundaries.push([child.charStart - windowStart, child.charEnd - windowStart]);
+    }
+  }
+  const out: AdmissibleSourceText[] = [{ sourceKey: "operative", kind: "OPERATIVE", documentId: input.sourceDocumentId, sectionRef: input.sourceSectionRef ?? null, text: input.operativeSourceText, absCharStart: windowStart !== null && windowStart >= 0 ? windowStart : null, boundaries }];
+  for (const r of input.sourceContext?.regions ?? []) out.push({ sourceKey: r.regionId, kind: "SOURCE_REGION", documentId: r.documentId, sectionRef: r.sectionRef, text: r.text, absCharStart: r.charStart >= 0 ? r.charStart : null });
+  for (const i of input.contextBundle?.items ?? []) out.push({ sourceKey: i.itemId, kind: "CONTEXT_ITEM", documentId: i.documentId ?? null, sectionRef: i.normalizedRef ?? null, text: i.excerptText, absCharStart: null });
+  return out;
 }
 
 function warn(ctx: NormCtx, message: string, kind: NormalizationWarning["kind"] = "SUFFICIENCY"): void {
@@ -534,7 +579,7 @@ function misTypedComplianceMetric(expr: IRExpression | null): string | null {
 function normalizeCondition(wire: WireCondition, ctx: NormCtx, index: number): IRCondition {
   const conditionType = matchEnum(wire.conditionType, CONTRACT_CONDITION_TYPES) ?? "UNSUPPORTED";
   if (!matchEnum(wire.conditionType, CONTRACT_CONDITION_TYPES)) warn(ctx, `condition[${index}].conditionType "${wire.conditionType}" not recognized - normalized to UNSUPPORTED`);
-  const prov = provenanceFor(ctx, wire.citation, wire.excerpt) ?? null;
+  const prov = provenanceFor({ ...ctx, scopePath: `${ctx.scopePath}.condition[${index}]` }, wire.citation, wire.excerpt) ?? null;
   // SOURCE-REFERENCE FIDELITY: the authoritative targets are the references AS DRAFTED; a model expansion / broadening is
   // restored to the drafted reference, an invented one is excluded (review). The raw emitted references stay in the audit.
   const emittedRefs = (wire.referencesRuleTargets ?? []).filter((t) => typeof t?.targetRef === "string" && t.targetRef.trim().length > 0).map((t) => t.targetRef.trim());
@@ -589,7 +634,7 @@ function collectEntityScopeNodes(roots: unknown[]): { include: string[]; exclude
 }
 
 function normalizeException(wire: WireException, ctx: NormCtx, index: number, appliesToRuleId: string): IRException {
-  const prov = provenanceFor(ctx, wire.citation, wire.excerpt) ?? null;
+  const prov = provenanceFor({ ...ctx, scopePath: `${ctx.scopePath}.exception[${index}]` }, wire.citation, wire.excerpt) ?? null;
   const permissionRuleId = wire.permissionRef ? ctx.resolveRuleRef(wire.permissionRef) : null;
   if (wire.permissionRef && !permissionRuleId) warn(ctx, `exception[${index}].permissionRef "${wire.permissionRef}" did not resolve to any rule in this compilation attempt`);
   return withLineage(
@@ -714,10 +759,11 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
   const dependencyProse: DependencyProseDiagnostic[] = [];
   const referenceIndex: StructuralIndex | null = input.toolAccess?.structuralIndex ?? null;
   const population = input.candidatePopulation ?? null;
+  const admissibleSources = admissibleSourcesFor(input);
   const governingScope: GoverningSemanticContext | null = input.governingScope ?? null;
   const inventoryRefs = new Map<string, string[]>();
   for (const it of input.frozenInventory?.items ?? []) inventoryRefs.set(it.inventoryItemId, [...(it.referencedSections ?? [])]);
-  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, referenceIndex, population, operativeText: input.operativeSourceText, dependencyProse, entityTagAudit: [], governingScope, inventoryRefs, baseSectionRef: input.sourceSectionRef ?? null, referenceAudit: [], limits: [] });
+  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, referenceIndex, population, operativeText: input.operativeSourceText, dependencyProse, entityTagAudit: [], governingScope, inventoryRefs, baseSectionRef: input.sourceSectionRef ?? null, referenceAudit: [], limits: [], admissibleSources });
   const ownershipScope: OwnershipScope = {
     documentId, candidateSectionRef: input.sourceSectionRef, anchorNodeId: input.contextBundle?.originatingStructuralNodeIds?.[0] ?? null,
     operativeRegionRefs: (input.sourceContext?.regions ?? []).filter((r) => r.kind === "OPERATIVE" && r.sectionRef).map((r) => r.sectionRef!),

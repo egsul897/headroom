@@ -134,7 +134,7 @@ describe("§49 finding identity binds the assertion", () => {
     // a different unit/type or a different owner is a different finding
     expect(base(numericAssertionKey({ kind: "MONEY", normalizedValue: 3.75, unit: null, currency: "USD", rawText: "3.75:1" }))).not.toBe(ids[0]);
     expect(computeSemanticVerificationFindingId(collided[0]!.companyId, collided[0]!.instrumentKey, collided[0]!.candidateRef, "UNSUPPORTED_NUMERIC_ASSERTION", "ir-rule:other", collided[0]!.irPath, collided[0]!.sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION, keys[0]!)).not.toBe(ids[0]);
-    expect(SEMANTIC_VERIFIER_ALGORITHM_VERSION).toBe("phase-3c-semantic-verifier.v4");
+    expect(SEMANTIC_VERIFIER_ALGORITHM_VERSION).toBe("phase-3c-semantic-verifier.v5");
   });
 });
 

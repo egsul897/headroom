@@ -65,7 +65,8 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // v7 / prompt v8 (source-authority closure): stated references come from source text only (no inventory-lineage
 // authority), every cross-rule / dependency target carries its source-derived selector, dependency prose is
 // status-neutral, and normalization diagnostics carry a deterministic identity on both execution paths.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v7";
+// v8 (provenance source binding): every model excerpt entering provenance is bound to an admissible source span or rejected.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v8";
 export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v8";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 

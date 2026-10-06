@@ -30,7 +30,9 @@ import type { IRDefinition, IREntityScopeAudit, IRRule, IRSharedCapacity, IRSour
 // labelled NON-AUTHORITATIVE diagnostic under reviewContext, never beside the authoritative targets.
 // v3 (source-authority closure): every cross-rule / dependency target carries its source-derived `selector`; dependency
 // descriptions are status-neutral (no "certified unit" wording reaches Layer 2).
-export const SEMANTIC_VERIFICATION_PROJECTION_VERSION = "phase-3c-verification-projection.v3" as const;
+// v4 (provenance source binding): provenance `excerpt` is the source-bound authoritative excerpt with its `excerptResolution`;
+// the model's raw excerpt (`rawModelExcerpt`) is audit data and is never projected to Layer 2.
+export const SEMANTIC_VERIFICATION_PROJECTION_VERSION = "phase-3c-verification-projection.v4" as const;
 
 export type ProjectionClass = "REVIEW_SEMANTIC" | "REVIEW_CONTEXTUAL" | "EXCLUDE_INTERNAL_METADATA";
 
@@ -109,7 +111,7 @@ export const ENTITY_SCOPE_AUDIT_NOTE = "DETERMINISTIC COMPILER-SIDE AUDIT - NOT 
 export const SOURCE_REFERENCE_AUDIT_NOTE = "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the source states; only the targets listed in conditions / sourceDependencies are the proposed semantics";
 
 /** Internal identity keys that may appear inside nested expressions / provenance machinery and carry no legal meaning. */
-const INTERNAL_NESTED_KEYS: ReadonlySet<string> = new Set(["exprId", "irSchemaVersion", "compilerVersion", "sourceContentVersion", "companyId", "instrumentKey"]);
+const INTERNAL_NESTED_KEYS: ReadonlySet<string> = new Set(["exprId", "irSchemaVersion", "compilerVersion", "sourceContentVersion", "companyId", "instrumentKey", "rawModelExcerpt"]);
 
 /** Deep copy that drops internal identity keys; values are never altered, only omitted when they are internal metadata. */
 export function sanitizeForReview<T>(value: T): T {

@@ -41,7 +41,10 @@ const guard = (r: IRRule, leadIn: string | null = null) => applyEntityScopeGuard
 
 function normalizeOne(wireRule: Record<string, unknown>, sourceSectionRef = "7.02") {
   const submission = SubmitCompilationSchema.parse({ rules: [{ localRef: "r1", sourceSectionRef, covenantFamily: "DEBT", ruleType: "PROHIBITION", posture: "PROHIBITION", sufficiency: "COMPLETE", ...wireRule }] });
-  const out = normalizeSubmission(submission, testCompilerInput({ sourceSectionRef }));
+  // provenance source binding: the fixture's excerpt is the rule's own operative source text (a model excerpt that the
+  // source does not contain is no longer a witness - it is rejected as unresolved provenance before the guard runs)
+  const excerpt = typeof wireRule.excerpt === "string" ? wireRule.excerpt : null;
+  const out = normalizeSubmission(submission, testCompilerInput({ sourceSectionRef, ...(excerpt ? { operativeSourceText: excerpt } : {}) }));
   return { rule: out.rules[0]!, warnings: out.warnings };
 }
 
@@ -53,7 +56,8 @@ describe("entity-scope guard - vocabulary is total over the enum", () => {
 
 describe("entity-scope guard - §4 unknown tag never silently dropped (test 1, 8)", () => {
   it("case E: an unknown model tag becomes a warning + unspecified scope + PARTIAL, and the raw tag survives in the audit", () => {
-    const { rule: r, warnings } = normalizeOne({ entityScope: ["RESTRICTED_SUBS"], excerpt: "No Restricted Subsidiary may incur any Indebtedness." });
+    // the source binds no actor class of its own (otherwise the v3 guard would derive the scope from it); only the model tag speaks
+    const { rule: r, warnings } = normalizeOne({ entityScope: ["RESTRICTED_SUBS"], excerpt: "Indebtedness in an aggregate principal amount not to exceed $1,000,000 at any time outstanding." });
     expect(r.entityScope).toEqual([]);
     expect(r.sufficiency).toBe("PARTIAL");
     expect(r.sufficiencyReasons.some((s) => s.startsWith("ENTITY_SCOPE_UNRECOGNIZED_TAG:"))).toBe(true);
@@ -66,7 +70,7 @@ describe("entity-scope guard - §4 unknown tag never silently dropped (test 1, 8
   });
 
   it("an unknown tag inside an ENTITY_SCOPE_REFERENCE node is audited too (never dropped without trace)", () => {
-    const { rule: r } = normalizeOne({ entityScope: [], excerpt: "No Subsidiary may incur Indebtedness.", conditions: [{ conditionType: "ENTITY_SCOPE", expression: { kind: "ENTITY_SCOPE_REFERENCE", entityScopeInclude: ["ANY_SUBSIDIARY", "SPV_ENTITY"] } }] });
+    const { rule: r } = normalizeOne({ entityScope: [], excerpt: "Indebtedness owing to any Person in respect of Capital Lease Obligations.", conditions: [{ conditionType: "ENTITY_SCOPE", expression: { kind: "ENTITY_SCOPE_REFERENCE", entityScopeInclude: ["ANY_SUBSIDIARY", "SPV_ENTITY"] } }] });
     const audit = r.entityScopeAudit!;
     expect(audit.tagNormalization.map((t) => [t.field, t.raw, t.outcome])).toEqual([
       ["ENTITY_SCOPE_REFERENCE.include", "ANY_SUBSIDIARY", "RECOGNIZED_ENTITY_TAG"],

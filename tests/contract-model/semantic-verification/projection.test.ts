@@ -128,7 +128,7 @@ describe("§21 the false-finding mechanism, replayed offline with a scripted rev
     expect(result.semanticReviewInvoked).toBe(true);
     expect(result.verificationProjection).toEqual({ version: SEMANTIC_VERIFICATION_PROJECTION_VERSION, hash: computeSemanticVerificationProjectionHash(buildSemanticVerificationProjection(live.comp)), shownToReviewer: true });
     expect(result.findings.filter((f) => f.verificationMethod === "SEMANTIC_ONLY")).toEqual([]);
-    expect(result.verifierAlgorithmVersion).toBe("phase-3c-semantic-verifier.v4");
+    expect(result.verifierAlgorithmVersion).toBe("phase-3c-semantic-verifier.v5");
   });
 });
 

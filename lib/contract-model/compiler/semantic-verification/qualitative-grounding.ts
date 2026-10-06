@@ -22,7 +22,10 @@ import type { SemanticVerificationFinding } from "./types";
 import { computeSemanticVerificationFindingId } from "./identity";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
 
-export const QUALITATIVE_GROUNDING_VERSION = "qualitative-grounding.v3";
+// v4 (provenance source binding): provenance whose model excerpt the compiler could not bind to an admissible source span
+// (excerptResolution.status UNRESOLVED) is FABRICATED lineage exactly as an unlocatable excerpt is - the raw model text
+// never substitutes for the missing authoritative excerpt. Nothing else relaxed.
+export const QUALITATIVE_GROUNDING_VERSION = "qualitative-grounding.v4";
 
 export type QualitativeField = "posture" | "action" | "ruleType" | "transactionScope" | "entityScope" | "conditions" | "exceptions" | "dependsOn" | "covenantFamily" | "calculationExpression";
 export type GroundingVerdict = "GROUNDED" | "FABRICATED" | "UNCITED" | "LINEAGE_GAP";
@@ -66,7 +69,7 @@ export function auditQualitativeLineage(input: { rules: readonly IRRule[]; defin
   const sources = (input.sourceTexts ?? []).map(norm).filter((s) => s.length > 0);
   const units: QualitativeUnitAudit[] = [];
   const cited = (ids: string[]) => ids.some((id) => known.has(id));
-  const provenanceOf = (p: SourceProvenance | null | undefined) => ({ has: !!p && (!!p.sourceCitation || !!p.excerpt), located: sources.length > 0 ? excerptLocatedIn(p?.excerpt, sources) : null });
+  const provenanceOf = (p: SourceProvenance | null | undefined) => ({ has: !!p && (!!p.sourceCitation || !!p.excerpt || !!p.rawModelExcerpt), located: p?.excerptResolution?.status === "UNRESOLVED" ? false : sources.length > 0 ? excerptLocatedIn(p?.excerpt, sources) : null });
   const verdictFor = (p: SourceProvenance | null | undefined, ids: string[]): GroundingVerdict => {
     const pv = provenanceOf(p);
     if (pv.located === true) return "GROUNDED";
@@ -79,8 +82,8 @@ export function auditQualitativeLineage(input: { rules: readonly IRRule[]; defin
     if (pv.has) return "LINEAGE_GAP";
     return "UNCITED";
   };
-  const reasonFor = (v: GroundingVerdict, what: string): string =>
-    v === "FABRICATED" ? `${what}: the provenance excerpt is not a substring of any admissible source text (inventory lineage does not rescue a quoted excerpt the source lacks)` :
+  const reasonFor = (v: GroundingVerdict, what: string, p?: SourceProvenance | null): string =>
+    v === "FABRICATED" ? `${what}: the provenance excerpt is not a substring of any admissible source text${p?.excerptResolution?.status === "UNRESOLVED" ? ` (the compiler could not bind the model's excerpt to a source span: ${p.excerptResolution.reason})` : ""} (inventory lineage does not rescue a quoted excerpt the source lacks)` :
     v === "UNCITED" ? `${what}: no source provenance (citation/excerpt) and no inventory lineage` :
     v === "LINEAGE_GAP" ? `${what}: cited to source but not tied to a frozen inventory item` : "";
 
@@ -89,15 +92,15 @@ export function auditQualitativeLineage(input: { rules: readonly IRRule[]; defin
     const pv = provenanceOf(r.provenance);
     const unitVerdict = verdictFor(r.provenance, ids);
     const grounded: string[] = []; const ungrounded: QualitativeUnitAudit["ungrounded"] = [];
-    const field = (name: string, present: boolean, v: GroundingVerdict) => { if (!present) return; if (v === "GROUNDED") grounded.push(name); else ungrounded.push({ field: name, verdict: v, reason: reasonFor(v, name) }); };
+    const field = (name: string, present: boolean, v: GroundingVerdict, p: SourceProvenance | null | undefined = r.provenance) => { if (!present) return; if (v === "GROUNDED") grounded.push(name); else ungrounded.push({ field: name, verdict: v, reason: reasonFor(v, name, p) }); };
     field("posture", r.posture !== "N_A", unitVerdict);
     field("action", r.action !== null, unitVerdict);
     field("ruleType", true, unitVerdict);
     field("covenantFamily", true, unitVerdict);
     field("transactionScope", (r.transactionScope ?? []).length > 0, unitVerdict);
     field("entityScope", r.entityScope.length + r.entityScopeExcluded.length > 0, unitVerdict);
-    r.conditions.forEach((c, i) => { const own = verdictFor(c.provenance, lineage(c)); const v = own === "GROUNDED" ? own : c.provenance ? own : unitVerdict; field(`conditions[${i}]`, true, v); });
-    r.exceptions.forEach((e, i) => { const own = verdictFor(e.provenance, lineage(e)); const v = own === "GROUNDED" ? own : e.provenance ? own : unitVerdict; field(`exceptions[${i}]`, true, v); });
+    r.conditions.forEach((c, i) => { const own = verdictFor(c.provenance, lineage(c)); const v = own === "GROUNDED" ? own : c.provenance ? own : unitVerdict; field(`conditions[${i}]`, true, v, c.provenance ?? r.provenance); });
+    r.exceptions.forEach((e, i) => { const own = verdictFor(e.provenance, lineage(e)); const v = own === "GROUNDED" ? own : e.provenance ? own : unitVerdict; field(`exceptions[${i}]`, true, v, e.provenance ?? r.provenance); });
     r.dependsOn.forEach((d, i) => { const v = cited(lineage(d)) ? "GROUNDED" : unitVerdict; field(`dependsOn[${i}]`, true, v === "GROUNDED" || v === "LINEAGE_GAP" ? "GROUNDED" : v); });
     const worst: GroundingVerdict = ungrounded.some((u) => u.verdict === "FABRICATED") ? "FABRICATED" : ungrounded.some((u) => u.verdict === "UNCITED") ? "UNCITED" : ungrounded.length > 0 ? "LINEAGE_GAP" : "GROUNDED";
     units.push({ unitId: r.ruleId, kind: "RULE", verdict: worst, grounded: [...new Set(grounded)], ungrounded, hasProvenance: pv.has, excerptLocated: pv.located, inventoryItemIds: ids, unknownInventoryItemIds: unknown });
@@ -107,7 +110,7 @@ export function auditQualitativeLineage(input: { rules: readonly IRRule[]; defin
     const pv = provenanceOf(d.provenance);
     const v = verdictFor(d.provenance, ids);
     const ungrounded: QualitativeUnitAudit["ungrounded"] = [];
-    if (v !== "GROUNDED") ungrounded.push({ field: d.calculationExpression ? "calculationExpression" : "definition", verdict: v, reason: reasonFor(v, `definition "${d.termName}"`) });
+    if (v !== "GROUNDED") ungrounded.push({ field: d.calculationExpression ? "calculationExpression" : "definition", verdict: v, reason: reasonFor(v, `definition "${d.termName}"`, d.provenance) });
     units.push({ unitId: d.definitionId, kind: "DEFINITION", verdict: v, grounded: v === "GROUNDED" ? [d.calculationExpression ? "calculationExpression" : "definition"] : [], ungrounded, hasProvenance: pv.has, excerptLocated: pv.located, inventoryItemIds: ids, unknownInventoryItemIds: unknown });
   }
   return { version: QUALITATIVE_GROUNDING_VERSION, units, materialUngrounded: units.filter((u) => u.verdict === "FABRICATED" || (u.verdict === "UNCITED" && inventoryAvailable)).length, nonMaterialLineageGaps: units.filter((u) => u.verdict === "LINEAGE_GAP").length, inventoryAvailable, sourceTextsConsulted: sources.length };
