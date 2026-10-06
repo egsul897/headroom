@@ -21,6 +21,11 @@
  *   MISSING_FROM_COMPOSITION         - none of the above: a first-class
  *                                      safety signal (mission §9).
  *
+ * COMPOSITION CONTRACT: a non-vocabulary inventoryDisposition string
+ * (e.g. CONSUMED_IN_EXPRESSION) is normalized to UNSUPPORTED, never dropped
+ * to null / silent MISSING - the composition named the item; the raw label
+ * is preserved on modelDisposition.
+ *
  * QUANTITATIVE RECONCILIATION (mission §10) is separate and stricter: a
  * lineage claim does not earn REPRESENTED for a valued item unless the value
  * itself is in the IR (a composition may not "link every item without
@@ -290,11 +295,30 @@ function findValue(v: QuantitativeValue, irValues: IrValue[]): { present: string
   return { present, attemptedOnly };
 }
 
-function normalizeDisposition(raw: string | undefined): InventoryDisposition | null {
-  if (!raw) return null;
+/**
+ * Explicit disposition vocabulary the composition may declare for an item it
+ * did NOT consume into lineage (wire-schema / prompt contract). REPRESENTED is
+ * never accepted as a self-declaration. MISSING_FROM_COMPOSITION is accepted
+ * as a raw label but does not count as an explicit non-MISSING disposition
+ * below (the item still falls through to deterministic correspondence).
+ *
+ * COMPOSITION CONTRACT (Phase 3 reliability gate): a non-empty disposition
+ * outside this vocabulary is still an explicit attempt to disposition the
+ * item (live §7.5(j) used CONSUMED_IN_EXPRESSION). Map it to UNSUPPORTED so
+ * the item is not silently MISSING_FROM_COMPOSITION - the composition named
+ * it; it just used a word outside the stated vocabulary. The raw string stays
+ * on modelDisposition for audit.
+ */
+const EXPLICIT_DISPOSITION_VOCABULARY = ["INTENTIONALLY_NON_COMPUTATIONAL", "UNSUPPORTED", "AMBIGUOUS"] as const;
+
+function normalizeDisposition(raw: string | undefined): { disposition: InventoryDisposition | null; nonVocabulary: boolean } {
+  if (!raw) return { disposition: null, nonVocabulary: false };
   const upper = raw.trim().toUpperCase().replace(/[\s-]+/g, "_");
-  if (upper === "REPRESENTED") return null; // self-declared representation is never accepted - lineage/value correspondence decides
-  return (INVENTORY_DISPOSITIONS as readonly string[]).includes(upper) ? (upper as InventoryDisposition) : null;
+  if (upper === "REPRESENTED") return { disposition: null, nonVocabulary: false }; // self-declared representation is never accepted - lineage/value correspondence decides
+  if (upper === "MISSING_FROM_COMPOSITION") return { disposition: "MISSING_FROM_COMPOSITION", nonVocabulary: false };
+  if ((EXPLICIT_DISPOSITION_VOCABULARY as readonly string[]).includes(upper)) return { disposition: upper as InventoryDisposition, nonVocabulary: false };
+  if (upper.length > 0) return { disposition: "UNSUPPORTED", nonVocabulary: true };
+  return { disposition: null, nonVocabulary: false };
 }
 
 function isMaterial(item: SemanticInventoryItem): boolean {
@@ -346,8 +370,11 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
     if (canonicalized) canonicalizedLineageReferences++;
     return { ...d, inventoryItemId: id };
   });
-  const dispositionById = new Map<string, { disposition: InventoryDisposition | null; raw: string; note: string }>();
-  for (const d of dispositions) dispositionById.set(d.inventoryItemId, { disposition: normalizeDisposition(d.disposition), raw: d.disposition, note: d.note });
+  const dispositionById = new Map<string, { disposition: InventoryDisposition | null; raw: string; note: string; nonVocabulary: boolean }>();
+  for (const d of dispositions) {
+    const norm = normalizeDisposition(d.disposition);
+    dispositionById.set(d.inventoryItemId, { disposition: norm.disposition, raw: d.disposition, note: d.note, nonVocabulary: norm.nonVocabulary });
+  }
 
   let danglingLineageReferences = 0;
   for (const entry of walk.lineage) for (const id of entry.inventoryItemIds) if (!knownIds.has(id)) danglingLineageReferences++;
@@ -398,7 +425,11 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       }
     } else if (explicit?.disposition && explicit.disposition !== "MISSING_FROM_COMPOSITION") {
       disposition = explicit.disposition;
-      reasons.push(`composition explicitly dispositioned it ${explicit.disposition}${explicit.note ? `: ${explicit.note}` : ""}`);
+      if (explicit.nonVocabulary) {
+        reasons.push(`composition used non-vocabulary disposition "${explicit.raw}" (outside INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS); treated as UNSUPPORTED under the composition contract${explicit.note ? `: ${explicit.note}` : ""}`);
+      } else {
+        reasons.push(`composition explicitly dispositioned it ${explicit.disposition}${explicit.note ? `: ${explicit.note}` : ""}`);
+      }
     } else {
       // v5 (F-5.1): dependency behaviour comes from the canonical functions (a v4 item maps its scalar role).
       const dep = functionsOf(item).dependency;

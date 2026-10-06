@@ -245,6 +245,29 @@ describe("semantic accountability - injected omissions (I41-I44) derived from ev
     expect(item.modelDisposition).toBe("REPRESENTED");
   });
 
+  it("composition contract: non-vocabulary inventoryDisposition (e.g. CONSUMED_IN_EXPRESSION) maps to UNSUPPORTED, never silent MISSING", async () => {
+    const b = await get("I6");
+    // Represent only the lead + money item via lineage; disposition the other material item with a live-observed non-vocab label.
+    const wire = submission({
+      rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])],
+      inventoryDispositions: [{ inventoryItemId: b.idOf("b"), disposition: "CONSUMED_IN_EXPRESSION", note: "valuation folded into net-proceeds metric" }],
+    });
+    const acc = reconcileScenario(b, normalizeScenarioComposition(b, wire));
+    const item = acc.items.find((i) => i.inventoryItemId === b.idOf("b"))!;
+    expect(item.disposition).toBe("UNSUPPORTED");
+    expect(item.modelDisposition).toBe("CONSUMED_IN_EXPRESSION");
+    expect(item.reason).toMatch(/non-vocabulary disposition "CONSUMED_IN_EXPRESSION"/);
+    expect(item.reason).toMatch(/treated as UNSUPPORTED/);
+    expect(acc.counts.materialMissingFromComposition).toBe(0);
+    // Vocabulary dispositions still pass through unchanged.
+    const vocab = submission({
+      rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])],
+      inventoryDispositions: [{ inventoryItemId: b.idOf("b"), disposition: "INTENTIONALLY_NON_COMPUTATIONAL", note: "descriptive only" }],
+    });
+    const vocabAcc = reconcileScenario(b, normalizeScenarioComposition(b, vocab));
+    expect(vocabAcc.items.find((i) => i.inventoryItemId === b.idOf("b"))!.disposition).toBe("INTENTIONALLY_NON_COMPUTATIONAL");
+  });
+
   it("I10/I29/I32/I40: an unresolvable cross-unit dependsOn is preserved as IRRule.unresolvedDependencies (never dropped) and the inventory item is AMBIGUOUS (never REPRESENTED, never MISSING)", async () => {
     for (const id of ["I10", "I29", "I32", "I40"]) {
       const b = await get(id);
