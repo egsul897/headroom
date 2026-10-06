@@ -111,6 +111,8 @@ Architect · Product · COO — PASS/FAIL the ASSET_SALES identity pin + matrix 
 |---|---|
 | `pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/` | Emitter-produced CONMED LIENS general Lien BASKET (`eligible:true`) |
 | `01-pin-matrix.json` | LIENS stratum → PINNED_OFFLINE; Chewy LIENS/INVESTMENTS scout honesty refresh |
+| `00-selection-contract.json` | `matrixRowsTbd` LIENS synced → PINNED_OFFLINE (pinAuthority `01-pin-matrix.json`; Chewy LIENS DEFERRED) |
+| `05-pin-pipeline-emitter-design.md` | Living-design **append** amendment (prior Status/priority list retained verbatim — not ADR-1 evidence mutate) |
 
 ### Why this pin
 
