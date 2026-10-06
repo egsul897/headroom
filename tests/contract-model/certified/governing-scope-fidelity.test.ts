@@ -1,6 +1,6 @@
 /**
  * GOVERNING SCOPE + ACTION SEMANTICS + SOURCE-REFERENCE FIDELITY - the general regression matrix (mission §53):
- * GS1-GS5, ACT1-ACT3, REF1-REF5, SAN1-SAN3, L1-1..L1-3, plus the identity and no-special-case guards. Synthetic
+ * GS1-GS5, ACT1-ACT4, REF1-REF5, SAN1-SAN3, L1-1..L1-3, plus the identity and no-special-case guards. Synthetic
  * agreements only (never real package text); the real structural parser builds the indexes; zero model calls.
  */
 import { describe, expect, it } from "vitest";
@@ -169,6 +169,52 @@ describe("ACT1-ACT3 canonical action vs source act breadth", () => {
     const r = normalize(idxA, "9.4", [rule({ sourceSectionRef: "9.4", excerpt: "Prepay, redeem or repurchase any Indebtedness", citation: "9.4", posture: "PROHIBITION", ruleType: "PROHIBITION", capacityExpression: null })]).rules[0]!;
     expect((r.inheritedAttributes ?? []).find((a) => a.attribute === "action")).toMatchObject({ canonicalValue: "PREPAY_DEBT", compatibility: "INCOMPATIBLE" });
     expect(r.sufficiency).toBe("PARTIAL");
+  });
+  it("ACT4 object-family matching is case-insensitive (v2): a capitalized defined-term object ('Property') is ASSET/SELL_ASSET; a lead-in that also later mentions selling shares still classifies the first covered act, never skips to the later equity cluster", () => {
+    expect(CANONICAL_ACTION_ONTOLOGY_VERSION).toBe("canonical-action-ontology.v2");
+    // Alone: drafting commonly capitalizes defined terms; v1 reconstructed object regexes without `i` and missed them.
+    const alone = classifySourceAction("Dispose of any of its Property");
+    expect(alone).toMatchObject({
+      version: CANONICAL_ACTION_ONTOLOGY_VERSION,
+      coverage: "COVERED",
+      canonicalAction: "SELL_ASSET",
+      objectFamily: "ASSET",
+      object: "Property",
+      verbs: ["Dispose of"],
+      phrase: "Dispose of any of its Property",
+    });
+    expect(assessActionCompatibility("SELL_ASSET", alone).compatibility).toBe("COMPATIBLE");
+    // Lowercase object (the offline replay that already passed under v1) still yields the same category.
+    expect(classifySourceAction("Dispose of any of its property")).toMatchObject({
+      coverage: "COVERED",
+      canonicalAction: "SELL_ASSET",
+      objectFamily: "ASSET",
+    });
+    // Lead-in shape: dispose of Property (or business), or for a Subsidiary issue/sell shares. The first covered
+    // act must win; skipping the capitalized ASSET object and classifying the later equity cluster as ONTOLOGY_GAP
+    // was the v1 false INCOMPATIBLE that downgraded sufficiency to PARTIAL on the live §7.5(j)-shaped path.
+    const lead =
+      "Dispose of any of its Property or business or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:";
+    const c = classifySourceAction(lead);
+    expect(c).toMatchObject({
+      coverage: "COVERED",
+      canonicalAction: "SELL_ASSET",
+      objectFamily: "ASSET",
+      object: "Property",
+      phrase: "Dispose of any of its Property",
+    });
+    expect(assessActionCompatibility("SELL_ASSET", c).compatibility).toBe("COMPATIBLE");
+    // Other capitalized defined-term objects (regression: already worked when the pattern itself used capitals).
+    expect(classifySourceAction("Create, incur, assume or suffer to exist any Indebtedness")).toMatchObject({
+      canonicalAction: "INCUR_DEBT",
+      coverage: "COVERED",
+      object: "Indebtedness",
+    });
+    expect(classifySourceAction("create, incur or suffer to exist any Liens")).toMatchObject({
+      canonicalAction: "CREATE_LIEN",
+      coverage: "COVERED",
+      objectFamily: "LIEN",
+    });
   });
 });
 

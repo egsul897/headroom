@@ -4,7 +4,7 @@
  * The live evidence under docs/phase-3-live-validation/7.5j-end-to-end-certification/ is immutable and sha256-pinned in
  * scripts/phase-3-live-validation/replay-7-5j-deterministic.ts; the recorded live verdict PHASE3_7_5_J_SEMANTIC_FAILURE
  * stays historical truth. BEFORE is read from the frozen artifacts; AFTER is recomputed from the same frozen inputs by the
- * corrected deterministic layers (semantic-accountability.v7, canonical-action-ontology.v2, compiler v10). The reviewer is
+ * corrected deterministic layers (semantic-accountability.v8, canonical-action-ontology.v2, compiler v10). The reviewer is
  * a scripted stand-in returning the live reviewer's recorded zero findings - deterministic layers only. The frozen model
  * output is NOT a desired-output fixture: its genuine gaps are asserted to REMAIN.
  */

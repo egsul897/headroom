@@ -1,14 +1,17 @@
 /**
- * DEFECT A of the §7.5(j) live-exposed deterministic closure - LEADING BARE ENUMERATOR HANDOFF (semantic-accountability.v7).
+ * DEFECT A of the §7.5(j) live-exposed deterministic closure - LEADING BARE ENUMERATOR HANDOFF (semantic-accountability.v8).
  *
  * Live defect: the frozen operative text begins "(j)\nany Disposition of Property or business ..." and a CRITICAL item
  * spans [0,132). `independentSegmentBounds` treats the line break after "(j)" as an independent-segment boundary and
  * `clipCreditToStartSegment` therefore spent the item's one credit segment on the enumerator, leaving the substantive text
  * the item anchors UNACCOUNTED ([4,43) and [104,132)) - a false coverage gap. The clipping rule itself (canary #3) stays:
  * one item never discharges several INDEPENDENT propositions. The exception is narrow and positively proven.
+ *
+ * v8 trust-boundary seal: handoff allows only a single LF/CRLF into the next substantive segment; blank-line and
+ * whitespace-only blank-line separations are refused (a blank line is a SEPARATION, not a formatting terminator).
  */
 import { describe, expect, it } from "vitest";
-import { computeSourceCoverage, isBareEnumeratorFormatting, type AccountingSpanInput } from "../../../lib/contract-model/compiler/semantic-accountability/source-coverage";
+import { computeSourceCoverage, isBareEnumeratorFormatting, isSingleLineBreakEnumeratorFormatting, type AccountingSpanInput } from "../../../lib/contract-model/compiler/semantic-accountability/source-coverage";
 import { SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION } from "../../../lib/contract-model/compiler/semantic-accountability/types";
 import type { SourceContextRegion } from "../../../lib/contract-model/compiler/semantic-accountability/types";
 
@@ -20,8 +23,8 @@ function cover(text: string, spans: [number, number][], materiality = "CRITICAL"
 const whole = (text: string): [number, number] => [0, text.length];
 
 describe("defect A - a bare enumerator on its own line does not consume an item's single credit segment", () => {
-  it("version: the accountability algorithm is v7", () => {
-    expect(SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION).toBe("semantic-accountability.v7");
+  it("version: the accountability algorithm is v8", () => {
+    expect(SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION).toBe("semantic-accountability.v8");
   });
 
   it("A1: '(j)\\nsubstantive covenant language' - one item from (j) covers both; the substantive segment is COVERED_BY_INVENTORY", () => {
@@ -106,9 +109,7 @@ describe("defect A - a bare enumerator on its own line does not consume an item'
     const cov2 = cover(enumerated, [whole(enumerated)]);
     expect(cov2.coveredText.join("")).toBe("(a)\nThe Borrower shall not incur Indebtedness exceeding $10,000,000. ");
     expect(cov2.unaccountedValues.map((v) => v.kind).sort()).toEqual(["DAYS", "RATIO"]);
-    // a blank line inside the formatting segment is whitespace, not a second hop; a second bare enumerator line is not a substantive target
-    const blank = "(a)\n\nthe Borrower may dispose of property";
-    expect(cover(blank, [whole(blank)]).unaccounted).toEqual([]);
+    // a second bare enumerator line is not a substantive target
     const twoEnumerators = "(a)\n(i)\nthe Borrower may dispose of property";
     expect(cover(twoEnumerators, [whole(twoEnumerators)]).coveredText.join("")).toBe("(a)\n");
     // only CRITICAL/MATERIAL items account for source; the handoff grants nothing to an INFORMATIONAL echo
@@ -118,6 +119,44 @@ describe("defect A - a bare enumerator on its own line does not consume an item'
     const spans: AccountingSpanInput[] = [{ regionId: "operative", charStart: 0, charEnd: t.length, materiality: "CRITICAL" }];
     computeSourceCoverage({ regions: [region(t)], spans });
     expect(spans).toEqual([{ regionId: "operative", charStart: 0, charEnd: t.length, materiality: "CRITICAL" }]);
+  });
+
+  it("A8: blank-line separation '(a)\\n\\nsubstantive' is REFUSED - handoff does not cross a blank line (v8 seal; reverses the prior 'blank line is harmless' treatment)", () => {
+    const blank = "(a)\n\nthe Borrower may dispose of property";
+    const cov = cover(blank, [whole(blank)]);
+    // formatting segment absorbs both newlines; isSingleLineBreakEnumeratorFormatting refuses; credit stays on "(a)\n\n"
+    expect(isBareEnumeratorFormatting("(a)\n\n")).toBe(true);
+    expect(isSingleLineBreakEnumeratorFormatting("(a)\n\n")).toBe(false);
+    expect(isSingleLineBreakEnumeratorFormatting("(a)\n")).toBe(true);
+    expect(cov.coveredText.join("")).toBe("(a)\n\n");
+    expect(cov.unaccountedText.join(" ")).toContain("the Borrower may dispose of property");
+    // independently anchoring the substantive segment still covers it - the refusal is about the handoff, not coverage itself
+    expect(cover(blank, [whole(blank), [blank.indexOf("the Borrower"), blank.length]]).unaccounted).toEqual([]);
+  });
+
+  it("A9: whitespace-only blank line '(a)\\n \\nsubstantive' and CRLF blank line are REFUSED", () => {
+    const wsBlank = "(a)\n \nthe Borrower may dispose of property";
+    const cov = cover(wsBlank, [whole(wsBlank)]);
+    expect(cov.unaccountedText.join(" ")).toContain("the Borrower may dispose of property");
+    // CRLF blank line
+    const crlfBlank = "(a)\r\n\r\nthe Borrower may dispose of property";
+    expect(isSingleLineBreakEnumeratorFormatting("(a)\r\n\r\n")).toBe(false);
+    expect(isSingleLineBreakEnumeratorFormatting("(a)\r\n")).toBe(true);
+    const cov2 = cover(crlfBlank, [whole(crlfBlank)]);
+    expect(cov2.unaccountedText.join(" ")).toContain("the Borrower may dispose of property");
+    // tab-only blank line
+    const tabBlank = "(a)\n\t\nthe Borrower may dispose of property";
+    expect(cover(tabBlank, [whole(tabBlank)]).unaccountedText.join(" ")).toContain("the Borrower may dispose of property");
+  });
+
+  it("A10: single CRLF handoff still allowed; single LF with trailing horizontal whitespace on the enumerator line still allowed", () => {
+    const crlf = "(j)\r\nthe Borrower may dispose of property or business";
+    expect(cover(crlf, [whole(crlf)]).unaccounted).toEqual([]);
+    expect(cover(crlf, [whole(crlf)]).coveredText.join("")).toBe(crlf);
+    // enumerator + spaces before the single newline (still one line ending)
+    expect(isSingleLineBreakEnumeratorFormatting("(j)  \n")).toBe(true);
+    const spaced = "(j)  \nthe Borrower may dispose of property";
+    expect(cover(spaced, [whole(spaced)]).unaccounted).toEqual([]);
   });
 
   it("determinism: identical inputs yield byte-identical coverage", () => {

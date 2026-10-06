@@ -112,7 +112,7 @@ export async function replayFrozen75j() {
   // ---- DEFECT B: the frozen values re-judged by the deterministic scanner (value-level, ids untouched)
   const canonicalizedItems = items.map((it) => {
     const out: QuantitativeValue[] = [];
-    for (const v of it.quantitativeValues) { const c = canonicalizeFrozenQuantitativeValue(v, operative); if (!out.some((x) => quantitativeValuesEquivalent(x, c))) out.push(c); }
+    for (const v of it.quantitativeValues) { const c = canonicalizeFrozenQuantitativeValue(v, operative, { charStart: it.sourceSpan.charStart, charEnd: it.sourceSpan.charEnd }); if (!out.some((x) => quantitativeValuesEquivalent(x, c))) out.push(c); }
     return { ...it, quantitativeValues: out.sort((a, b) => a.charStart - b.charStart) };
   });
   const defectB = {
