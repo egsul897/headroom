@@ -97,3 +97,28 @@ Soft exclusions unchanged: no live/paid, no NS-4, no related-series A/C, no inve
 ### Review owners
 
 Architect · Product · COO — PASS/FAIL the ASSET_SALES identity pin + matrix update. Live/paid **not** authorized hereby.
+
+
+---
+
+## Offline LIENS pin (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` · `eligible:true` (Certification preference)  
+**Base SHA:** `7a06e70d5701147fb775061b81e924054a403e29` (main after #73 ASSET_SALES)  
+**ADR-1:** append-only under `pins/conmed-2025-credit-facility/`; `first-target/` + #68 hand pin + #73 ASSET_SALES packet untouched.
+
+| artifact | role |
+|---|---|
+| `pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/` | Emitter-produced CONMED LIENS general Lien BASKET (`eligible:true`) |
+| `01-pin-matrix.json` | LIENS stratum → PINNED_OFFLINE; Chewy LIENS/INVESTMENTS scout honesty refresh |
+
+### Why this pin
+
+- Goal preferred **eligible:true** Chewy LIENS or INVESTMENTS. Sealed Chewy scout: 1.01 BASKET/SHARED_CAP AMBIGUOUS (353k chars); body §6.02 AMBIGUOUS; modest pure-LIENS/INVESTMENTS spans that seal identity emit `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`). Fail-closed: do not invent narrower Chewy IDs or dress ineligible as CERTIFIED.
+- CONMED §7.3(m) is selection-contract named; seals cleanly offline (458 chars, single occurrence, all identity assertions true, interim-B clean, `eligible:true`).
+- Map honesty `COMPILE_FAILED` is **not** pre-credit.
+- Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73 mutation.
+
+### Review owners
+
+Architect · Product · COO — PASS/FAIL the LIENS eligible:true pin + matrix update. Live/paid **not** authorized hereby.

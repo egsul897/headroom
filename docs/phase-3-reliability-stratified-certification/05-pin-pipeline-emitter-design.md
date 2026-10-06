@@ -1,6 +1,6 @@
 # Pin-pipeline emitter design (deterministic first-target packets)
 
-**Status:** IMPLEMENTED (emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1) · 2026-10-06 — design retained as authority; see `scripts/stratified-cert/` + `pins/chwy-2026-credit-agreement/2.18(c)(vii)--cf3d8d94/v1/`  
+**Status:** IMPLEMENTED (emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1 + CONMED LIENS §7.3(m) v1) · 2026-10-06 — design retained as authority; see `scripts/stratified-cert/` + versioned `pins/` folders  
 **Soft gate:** docs + offline tooling only. **No live/paid.** No NS-4. No related-series A/C. A/B seal untouched.  
 **Cite:** ADR-1 `EVIDENCE-PACKET-VERSIONING-ADR.md` (append-only); selection contract `00-selection-contract.json`
 
@@ -92,11 +92,12 @@ pnpm exec tsx scripts/stratified-cert/pin-candidate.ts \
 ## Next pins to emit (priority)
 
 1. ~~**Chewy ASSET_SALES**~~ — **DONE** `discovery-candidate:b54ed7fe4f8f7bb7c224d99b` §6.05(a)(2)(c) Designated Non-cash Consideration (857 chars; identity PINNED_OFFLINE; `eligible:false` UNRESOLVED_OPERATIVE_EVIDENCE).  
-2. **Chewy / CONMED LIENS or INVESTMENTS** — need narrower UNIQUE structural span than 1.01 definition nodes (353k chars blocked).  
-3. **WITH_BUILDERS** — §6.08 BUILDER AMBIGUOUS; §6.01(b)(4)(a)(i) role BUILDER but text heuristic → WITHOUT_BUILDERS + eligible:false; consider role-aware cross-cut derivation.  
-4. **CONMED WITH_SHARED_CAPS** — §7.6(b) `discovery-candidate:ac354ffa81d6ca806759ba60` (optional; Chewy already covers cross-cut; eligible:true offline).  
-5. **CONMED DEBT** — distinct from §7.2(c).  
-6. Financial covenants / reclass — TBD-with-blocker until bindable (FC sealed candidates currently eligible:false).
+2. ~~**CONMED LIENS**~~ — **DONE** `discovery-candidate:b5bb07b092f9863985f89812` §7.3(m) general Lien BASKET (458 chars; `eligible:true`). Chewy LIENS still DEFERRED (no modest UNIQUE eligible:true sealed span; do not invent IDs).  
+3. **INVESTMENTS** — CONMED §7.8(l)/§7.8(d) BASKET scouted `eligible:true` offline (unpinned); Chewy still needs narrower UNIQUE eligible:true span than 1.01 / ambiguous §6.08.  
+4. **WITH_BUILDERS** — Chewy §6.08 BUILDER AMBIGUOUS; §6.01(b)(4)(a)(i) role BUILDER but text heuristic → WITHOUT_BUILDERS + eligible:false; consider role-aware cross-cut derivation.  
+5. **CONMED WITH_SHARED_CAPS** — §7.6(b) `discovery-candidate:ac354ffa81d6ca806759ba60` (optional; Chewy already covers cross-cut; eligible:true offline).  
+6. **CONMED DEBT** — distinct from §7.2(c).  
+7. Financial covenants / reclass — TBD-with-blocker until bindable (FC sealed candidates currently eligible:false).
 
 ## Out of scope
 
