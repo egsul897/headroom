@@ -142,7 +142,7 @@ describe("proposeFromCertificate → approveCertificateProposal (happy path)", (
 describe("LedgerProposalRecorder public surface (append-only)", () => {
   it("exposes record/list/count/apply only — clear/reset/truncate absent on instance and prototype", () => {
     const recorder = new LedgerProposalRecorder();
-    const proto = LedgerProposalRecorder.prototype as Record<string, unknown>;
+    const proto = LedgerProposalRecorder.prototype as unknown as Record<string, unknown>;
     const instance = recorder as unknown as Record<string, unknown>;
 
     expect(typeof recorder.record).toBe("function");

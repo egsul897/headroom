@@ -255,7 +255,7 @@ describe("adversarial: LedgerProposalRecorder append-only public surface", () =>
 
   it("clear/reset/truncate/empty/wipe absent on instance and prototype", () => {
     const recorder = new LedgerProposalRecorder();
-    const proto = LedgerProposalRecorder.prototype as Record<string, unknown>;
+    const proto = LedgerProposalRecorder.prototype as unknown as Record<string, unknown>;
     const instance = recorder as unknown as Record<string, unknown>;
 
     for (const name of SHRINK_NAMES) {

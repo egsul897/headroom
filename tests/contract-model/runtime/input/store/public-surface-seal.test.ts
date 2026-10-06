@@ -30,7 +30,7 @@ describe("public surface seal", () => {
 
   it("clear/reset/truncate/empty/wipe absent on instance and prototype (append-only façade)", () => {
     const store = new InMemoryApprovedSnapshotStore();
-    const proto = InMemoryApprovedSnapshotStore.prototype as Record<string, unknown>;
+    const proto = InMemoryApprovedSnapshotStore.prototype as unknown as Record<string, unknown>;
     const instance = store as unknown as Record<string, unknown>;
     for (const name of ["clear", "reset", "truncate", "empty", "wipe"] as const) {
       expect(typeof instance[name]).toBe("undefined");
