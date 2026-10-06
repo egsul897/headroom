@@ -164,6 +164,13 @@ export async function replayFrozen75j() {
     const it = itemOf(id);
     return !!it && it.disposition === "UNSUPPORTED" && typeof it.modelDisposition === "string" && it.modelDisposition.length > 0 && !/^(INTENTIONALLY_NON_COMPUTATIONAL|UNSUPPORTED|AMBIGUOUS|REPRESENTED|MISSING_FROM_COMPOSITION)$/i.test(it.modelDisposition.trim().replace(/[\s-]+/g, "_"));
   };
+  /** ADR-2: explicit MODEL_CONTRACT_VIOLATION diagnostic must accompany OOV→UNSUPPORTED (not quiet ordinary UNSUPPORTED). */
+  const modelContractViolation = (id: string) => {
+    const it = itemOf(id);
+    const fromItem = (it?.diagnostics ?? []).find((d) => d.code === "MODEL_CONTRACT_VIOLATION" && d.reason === "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" && d.inventoryItemId === id);
+    const fromAgg = (accountabilityAfter.modelContractViolations ?? []).find((d) => d.code === "MODEL_CONTRACT_VIOLATION" && d.inventoryItemId === id);
+    return fromItem ?? fromAgg ?? null;
+  };
   const residual = {
     relatedSeries: (() => {
       // Residual honesty: list EVERY inventory item the detector matches (proposition ∪ excerpt),
@@ -180,16 +187,18 @@ export async function replayFrozen75j() {
       };
     })(),
     notesDebtSecuritiesValuation: {
-      status: nonVocabUnsupported("inv-item:da2ae7a8c96e1ad42210a94e") ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.some((i) => i.inventoryItemId === "inv-item:da2ae7a8c96e1ad42210a94e") ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
+      status: nonVocabUnsupported("inv-item:da2ae7a8c96e1ad42210a94e") && modelContractViolation("inv-item:da2ae7a8c96e1ad42210a94e") ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.some((i) => i.inventoryItemId === "inv-item:da2ae7a8c96e1ad42210a94e") ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
       item: "inv-item:da2ae7a8c96e1ad42210a94e",
       modelDisposition: itemOf("inv-item:da2ae7a8c96e1ad42210a94e")?.modelDisposition ?? null,
       disposition: itemOf("inv-item:da2ae7a8c96e1ad42210a94e")?.disposition ?? null,
+      modelContractViolation: modelContractViolation("inv-item:da2ae7a8c96e1ad42210a94e"),
     },
     otherNonCashValuation: {
-      status: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].every(nonVocabUnsupported) ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.filter((i) => i.inventoryItemId === "inv-item:cfa2c306e7039e94371d186b" || i.inventoryItemId === "inv-item:5e02c2d017c10fdbce5ccaf7").length === 2 ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
+      status: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].every((id) => nonVocabUnsupported(id) && modelContractViolation(id)) ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.filter((i) => i.inventoryItemId === "inv-item:cfa2c306e7039e94371d186b" || i.inventoryItemId === "inv-item:5e02c2d017c10fdbce5ccaf7").length === 2 ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
       items: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"],
       modelDispositions: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].map((id) => itemOf(id)?.modelDisposition ?? null),
       dispositions: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].map((id) => itemOf(id)?.disposition ?? null),
+      modelContractViolations: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].map((id) => modelContractViolation(id)),
     },
     supportAsymmetry: { supportReviewRequired: inventoryAfter.ensemble?.supportReviewRequired ?? null, materialSingleRun: inventoryAfter.ensemble?.counts.materialSingleRun ?? null, accountabilitySupportReviewRequired: accountabilityAfter.supportReviewRequired },
     enumerationSignal: verification.findings.filter((f) => f.findingType === "MISSING_RULE").map((f) => ({ severity: f.severity, verificationMethod: f.verificationMethod, signals: f.deterministicSignals })),

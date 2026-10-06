@@ -246,7 +246,7 @@ describe("semantic accountability - injected omissions (I41-I44) derived from ev
     expect(item.modelDisposition).toBe("REPRESENTED");
   });
 
-  it("composition contract: non-vocabulary inventoryDisposition (e.g. CONSUMED_IN_EXPRESSION) maps to UNSUPPORTED, never silent MISSING", async () => {
+  it("composition contract / ADR-2: non-vocabulary inventoryDisposition maps to UNSUPPORTED with MODEL_CONTRACT_VIOLATION diagnostic (not quiet ordinary UNSUPPORTED)", async () => {
     const b = await get("I6");
     // Represent only the lead + money item via lineage; disposition the other material item with a live-observed non-vocab label.
     const wire = submission({
@@ -258,15 +258,42 @@ describe("semantic accountability - injected omissions (I41-I44) derived from ev
     expect(item.disposition).toBe("UNSUPPORTED");
     expect(item.modelDisposition).toBe("CONSUMED_IN_EXPRESSION");
     expect(item.reason).toMatch(/non-vocabulary disposition "CONSUMED_IN_EXPRESSION"/);
+    expect(item.reason).toMatch(/MODEL_CONTRACT_VIOLATION/);
+    expect(item.reason).toMatch(/UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION/);
     expect(item.reason).toMatch(/treated as UNSUPPORTED/);
+    expect(item.diagnostics).toEqual([
+      {
+        code: "MODEL_CONTRACT_VIOLATION",
+        reason: "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
+        rawLabel: "CONSUMED_IN_EXPRESSION",
+        contractRef: expect.stringContaining("MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR"),
+        inventoryItemId: b.idOf("b"),
+      },
+    ]);
+    expect(acc.modelContractViolations).toEqual(item.diagnostics);
     expect(acc.counts.materialMissingFromComposition).toBe(0);
-    // Vocabulary dispositions still pass through unchanged.
+    // Vocabulary dispositions still pass through unchanged — no model-contract violation.
     const vocab = submission({
       rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])],
       inventoryDispositions: [{ inventoryItemId: b.idOf("b"), disposition: "INTENTIONALLY_NON_COMPUTATIONAL", note: "descriptive only" }],
     });
     const vocabAcc = reconcileScenario(b, normalizeScenarioComposition(b, vocab));
-    expect(vocabAcc.items.find((i) => i.inventoryItemId === b.idOf("b"))!.disposition).toBe("INTENTIONALLY_NON_COMPUTATIONAL");
+    const vocabItem = vocabAcc.items.find((i) => i.inventoryItemId === b.idOf("b"))!;
+    expect(vocabItem.disposition).toBe("INTENTIONALLY_NON_COMPUTATIONAL");
+    expect(vocabItem.diagnostics).toBeUndefined();
+    expect(vocabAcc.modelContractViolations).toBeUndefined();
+    // Legal semantic UNSUPPORTED is ordinary product meaning — no MODEL_CONTRACT_VIOLATION.
+    const legalUnsupported = submission({
+      rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])],
+      inventoryDispositions: [{ inventoryItemId: b.idOf("b"), disposition: "UNSUPPORTED", note: "honest IR gap" }],
+    });
+    const legalAcc = reconcileScenario(b, normalizeScenarioComposition(b, legalUnsupported));
+    const legalItem = legalAcc.items.find((i) => i.inventoryItemId === b.idOf("b"))!;
+    expect(legalItem.disposition).toBe("UNSUPPORTED");
+    expect(legalItem.modelDisposition).toBe("UNSUPPORTED");
+    expect(legalItem.diagnostics).toBeUndefined();
+    expect(legalItem.reason).not.toMatch(/MODEL_CONTRACT_VIOLATION/);
+    expect(legalAcc.modelContractViolations).toBeUndefined();
   });
 
   it("related-series interim B: lineage alone cannot REPRESENT a series-of-related claim (explicit UNSUPPORTED)", async () => {

@@ -426,6 +426,28 @@ export type InventoryDisposition = (typeof INVENTORY_DISPOSITIONS)[number];
 
 export type QuantitativeDisposition = "VALUE_PRESENT_IN_IR" | "VALUE_DISPOSITIONED" | "VALUE_MISSING_FROM_COMPOSITION";
 
+/**
+ * ADR-2 (MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED): Pass B / wire emitted a value
+ * outside the stated inventoryDisposition vocabulary. Disposition may still be
+ * fail-closed UNSUPPORTED, but the emitter defect must be a distinct diagnostic —
+ * never quiet ordinary semantic UNSUPPORTED.
+ */
+export const MODEL_CONTRACT_VIOLATION_CODE = "MODEL_CONTRACT_VIOLATION" as const;
+export const UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON = "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" as const;
+export const NON_VOCABULARY_DISPOSITION_CONTRACT_REF =
+  "Pass B inventoryDisposition vocabulary: INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS; ADR: docs/architecture/MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR.md";
+
+export interface ModelContractViolationDiagnostic {
+  code: typeof MODEL_CONTRACT_VIOLATION_CODE;
+  /** Distinct subtype / reason — not ordinary semantic UNSUPPORTED. */
+  reason: typeof UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON;
+  /** Illegal inventoryDisposition string as emitted (raw label preserved). */
+  rawLabel: string;
+  contractRef: string;
+  inventoryItemId: string;
+}
+
+
 export interface ReconciliationItem {
   inventoryItemId: string;
   semanticRole: SemanticRole;
@@ -437,6 +459,11 @@ export interface ReconciliationItem {
   modelDisposition: string | null;
   quantitative: { value: QuantitativeValue; disposition: QuantitativeDisposition; irPaths: string[] }[];
   reason: string;
+  /**
+   * ADR-2: claim-specific model-contract violation diagnostics (e.g. non-vocabulary
+   * inventoryDisposition). Additive; never used to dilute interim-B series residuals.
+   */
+  diagnostics?: ModelContractViolationDiagnostic[];
   /** F-5.3B: independent-pass support provenance copied from the ensemble inventory item (absent for single-pass evidence). Provenance only - it never changes the disposition and never excuses an omission. */
   support?: ItemSupport;
 }
@@ -488,6 +515,12 @@ export interface SemanticAccountabilityResult {
    */
   supportReviewRequired: boolean;
   support?: AccountabilitySupportSummary;
+  /**
+   * ADR-2: aggregated MODEL_CONTRACT_VIOLATION diagnostics from Pass C disposition
+   * normalization (non-vocabulary inventoryDisposition, etc.). Emitter defects —
+   * not credit for semantic competence / ordinary source UNSUPPORTED.
+   */
+  modelContractViolations?: ModelContractViolationDiagnostic[];
   reasons: string[];
   algorithmVersion: string;
 }

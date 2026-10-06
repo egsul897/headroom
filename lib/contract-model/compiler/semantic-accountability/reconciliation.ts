@@ -21,10 +21,12 @@
  *   MISSING_FROM_COMPOSITION         - none of the above: a first-class
  *                                      safety signal (mission §9).
  *
- * COMPOSITION CONTRACT: a non-vocabulary inventoryDisposition string
+ * COMPOSITION CONTRACT / ADR-2: a non-vocabulary inventoryDisposition string
  * (e.g. CONSUMED_IN_EXPRESSION) is normalized to UNSUPPORTED, never dropped
  * to null / silent MISSING - the composition named the item; the raw label
- * is preserved on modelDisposition.
+ * is preserved on modelDisposition. Additionally a distinct MODEL_CONTRACT_VIOLATION
+ * diagnostic (reason UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION) is recorded —
+ * never quiet ordinary semantic UNSUPPORTED.
  *
  * RELATED-SERIES INTERIM B: an inventory item whose source claim is a
  * "series of related …" aggregation, and that would otherwise earn
@@ -48,8 +50,25 @@
 import { functionsOf } from "./semantic-functions";
 import type { IRCapacityExpression, IRDefinition, IRExpression, IRRule, IRSharedCapacity } from "../../ir/types";
 import { numbersMatch } from "./quantitative";
-import { INVENTORY_DISPOSITIONS, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION } from "./types";
-import type { AccountabilitySupportSummary, FrozenSemanticInventory, InventoryDisposition, QuantitativeDisposition, QuantitativeValue, ReconciliationItem, SemanticAccountabilityResult, SemanticInventoryItem, SourceContextState } from "./types";
+import {
+  INVENTORY_DISPOSITIONS,
+  MODEL_CONTRACT_VIOLATION_CODE,
+  NON_VOCABULARY_DISPOSITION_CONTRACT_REF,
+  SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION,
+  UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON,
+} from "./types";
+import type {
+  AccountabilitySupportSummary,
+  FrozenSemanticInventory,
+  InventoryDisposition,
+  ModelContractViolationDiagnostic,
+  QuantitativeDisposition,
+  QuantitativeValue,
+  ReconciliationItem,
+  SemanticAccountabilityResult,
+  SemanticInventoryItem,
+  SourceContextState,
+} from "./types";
 
 export interface CompositionForReconciliation {
   rules: IRRule[];
@@ -309,12 +328,13 @@ function findValue(v: QuantitativeValue, irValues: IrValue[]): { present: string
  * as a raw label but does not count as an explicit non-MISSING disposition
  * below (the item still falls through to deterministic correspondence).
  *
- * COMPOSITION CONTRACT (Phase 3 reliability gate): a non-empty disposition
+ * COMPOSITION CONTRACT (Phase 3 reliability gate) + ADR-2: a non-empty disposition
  * outside this vocabulary is still an explicit attempt to disposition the
  * item (live §7.5(j) used CONSUMED_IN_EXPRESSION). Map it to UNSUPPORTED so
  * the item is not silently MISSING_FROM_COMPOSITION - the composition named
  * it; it just used a word outside the stated vocabulary. The raw string stays
- * on modelDisposition for audit.
+ * on modelDisposition for audit, and callers MUST also emit a distinct
+ * MODEL_CONTRACT_VIOLATION diagnostic (not quiet ordinary UNSUPPORTED).
  */
 const EXPLICIT_DISPOSITION_VOCABULARY = ["INTENTIONALLY_NON_COMPUTATIONAL", "UNSUPPORTED", "AMBIGUOUS"] as const;
 
@@ -326,6 +346,20 @@ function normalizeDisposition(raw: string | undefined): { disposition: Inventory
   if ((EXPLICIT_DISPOSITION_VOCABULARY as readonly string[]).includes(upper)) return { disposition: upper as InventoryDisposition, nonVocabulary: false };
   if (upper.length > 0) return { disposition: "UNSUPPORTED", nonVocabulary: true };
   return { disposition: null, nonVocabulary: false };
+}
+
+/** ADR-2: build the claim-specific model-contract violation diagnostic for a non-vocabulary disposition. */
+export function modelContractViolationForNonVocabularyDisposition(
+  inventoryItemId: string,
+  rawLabel: string,
+): ModelContractViolationDiagnostic {
+  return {
+    code: MODEL_CONTRACT_VIOLATION_CODE,
+    reason: UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON,
+    rawLabel,
+    contractRef: NON_VOCABULARY_DISPOSITION_CONTRACT_REF,
+    inventoryItemId,
+  };
 }
 
 /**
@@ -457,7 +491,7 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
     } else if (explicit?.disposition && explicit.disposition !== "MISSING_FROM_COMPOSITION") {
       disposition = explicit.disposition;
       if (explicit.nonVocabulary) {
-        reasons.push(`composition used non-vocabulary disposition "${explicit.raw}" (outside INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS); treated as UNSUPPORTED under the composition contract${explicit.note ? `: ${explicit.note}` : ""}`);
+        reasons.push(`composition used non-vocabulary disposition "${explicit.raw}" (outside INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS); ${MODEL_CONTRACT_VIOLATION_CODE} (${UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON}); treated as UNSUPPORTED under the composition contract${explicit.note ? `: ${explicit.note}` : ""}`);
       } else {
         reasons.push(`composition explicitly dispositioned it ${explicit.disposition}${explicit.note ? `: ${explicit.note}` : ""}`);
       }
@@ -492,6 +526,13 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       reasons.push(`related-series aggregation claim ("series of related …") is not structurally represented in the IR (Phase 3 reliability interim posture B); lineage/correspondence alone (${[...lineage.map((e) => e.irPath), ...inferredPaths].join(", ") || "none"}) does not establish an evaluable series aggregation`);
     }
 
+    const diagnostics: ModelContractViolationDiagnostic[] = [];
+    // ADR-2: illegal Pass B inventoryDisposition emit is always a MODEL_CONTRACT_VIOLATION,
+    // even if lineage independently sets the accountability disposition.
+    if (explicit?.nonVocabulary) {
+      diagnostics.push(modelContractViolationForNonVocabularyDisposition(item.inventoryItemId, explicit.raw));
+    }
+
     return {
       inventoryItemId: item.inventoryItemId,
       semanticRole: item.semanticRole,
@@ -501,6 +542,7 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       modelDisposition: explicit ? explicit.raw : null,
       quantitative,
       reason: reasons.join("; "),
+      ...(diagnostics.length > 0 ? { diagnostics } : {}),
       // F-5.3B: support provenance rides along untouched - it never changes the disposition above.
       ...(item.support ? { support: item.support } : {}),
     };
@@ -562,6 +604,8 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
   // source-coverage verdict and may legitimately read INVENTORY_OK while material singletons exist).
   const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.unaccountedSource.length === 0 && uninventoriedValues.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && reviewUncertainMissing.length === 0 && materialValuesMissing.length === 0 && danglingLineageReferences === 0 && !supportReviewRequired;
 
+  const modelContractViolations = items.flatMap((r) => r.diagnostics ?? []);
+
   return {
     candidateRef: inventory.candidateRef,
     inventoryStatus: inventory.inventoryStatus,
@@ -587,6 +631,7 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
     semanticallyComplete,
     supportReviewRequired,
     ...(support ? { support } : {}),
+    ...(modelContractViolations.length > 0 ? { modelContractViolations } : {}),
     reasons,
     algorithmVersion: SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION,
   };
