@@ -68,7 +68,11 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // v8 (provenance source binding): every model excerpt entering provenance is bound to an admissible source span or rejected.
 // v9 (strict source-addressability): a non-null authoritative excerpt exists only with a proven unique source span - a
 // duplicated or short exact model excerpt is rejected (binding v2), never kept verbatim.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v9";
+// v10 (§7.5(j) live-exposed deterministic closure): a METRIC_REFERENCE wire node carrying a non-empty asOfDate is lifted
+// into the first-class AS_OF shape (METRIC_REFERENCE_AS_OF_LIFTED, diagnostic class) instead of losing the selector
+// silently; the governing-scope action ontology is v2 (flag-preserving, case-insensitive object families), so a
+// capitalised object noun no longer yields a false ACTION_INCONSISTENT_WITH_SOURCE_ACT limit.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v10";
 export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v8";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 

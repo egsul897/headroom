@@ -210,11 +210,39 @@ function normalizeWireValue(v: WireInventoryItem["quantitativeValues"][number], 
       }
     }
   }
+  const scannedAll = raw ? scanQuantitativeValues(raw) : [];
+  // QUANTITATIVE SOURCE AUTHORITY (v7, defect B of the §7.5(j) live-exposed closure). The deterministic scanner is
+  // authoritative for the KIND of a source-locatable figure it recognises. A model kind outside QUANTITATIVE_KINDS (or a
+  // declared / defaulted OTHER) whose raw text is located in the source and scans to EXACTLY ONE recognised figure is
+  // canonicalised to that figure's kind/value/unit; the model's own kind string is kept as `declaredKind` for audit.
+  // Without this, the same source figure reached the frozen inventory twice - once typed by the scanner's deterministic
+  // completion, once as the model's OTHER - and Pass C, which matches OTHER only against TEXT nodes, reported the item
+  // MISSING although its literal sat in the IR. Fail-closed cases keep the existing OTHER behaviour: raw text absent or
+  // not locatable, nothing recognised, or several figures (no unique correspondence - never guessed).
+  const declaredKind = typeof v.kind === "string" && v.kind.trim().length > 0 ? v.kind.trim() : "OTHER";
+  if (kind === "OTHER" && raw && charStart >= 0 && scannedAll.length === 1 && scannedAll[0]!.kind !== "OTHER") {
+    const only = scannedAll[0]!;
+    return { kind: only.kind, declaredKind, rawText: only.rawText, normalizedValue: only.normalizedValue, unit: only.unit, charStart: charStart + only.charStart, charEnd: charStart + only.charEnd };
+  }
   // Prefer the deterministic normalization when the scanner recognizes the raw text; fall back to the model's own normalization.
-  const scanned = raw ? scanQuantitativeValues(raw)[0] : undefined;
+  const scanned = scannedAll[0];
   const normalizedValue = scanned && scanned.kind === kind && scanned.normalizedValue !== null ? scanned.normalizedValue : (v.normalizedValue ?? scanned?.normalizedValue ?? null);
   const unit = v.unit ?? scanned?.unit ?? null;
   return { kind, rawText: raw, normalizedValue, unit, charStart, charEnd };
+}
+
+/**
+ * The value-level canonicalisation above, exposed for offline replay of an already-frozen inventory (whose wire form is
+ * not persisted): a frozen OTHER-kind value is re-judged against the deterministic scanner exactly as normalizeWireValue
+ * would judge it, given the region text it was located in. Pure; never consults the model's text beyond `rawText`.
+ */
+export function canonicalizeFrozenQuantitativeValue(value: QuantitativeValue, regionText: string): QuantitativeValue {
+  if (value.kind !== "OTHER" || !value.rawText || value.charStart < 0) return value;
+  if (regionText.slice(value.charStart, value.charEnd) !== value.rawText) return value;
+  const scannedAll = scanQuantitativeValues(value.rawText);
+  if (scannedAll.length !== 1 || scannedAll[0]!.kind === "OTHER") return value;
+  const only = scannedAll[0]!;
+  return { kind: only.kind, declaredKind: value.declaredKind ?? "OTHER", rawText: only.rawText, normalizedValue: only.normalizedValue, unit: only.unit, charStart: value.charStart + only.charStart, charEnd: value.charStart + only.charEnd };
 }
 
 // ---------------------------------------------------------------------------

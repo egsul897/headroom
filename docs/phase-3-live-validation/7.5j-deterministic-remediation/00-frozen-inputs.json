@@ -1,0 +1,55 @@
+{
+  "frozenDirectory": "docs/phase-3-live-validation/7.5j-end-to-end-certification",
+  "hashes": [
+    {
+      "file": "01-target-identity.json",
+      "expected": "f99d45c78246c17ac278e514c3c227f0d9ce3df7707db2f3e1020a6e815ddb2d",
+      "actual": "f99d45c78246c17ac278e514c3c227f0d9ce3df7707db2f3e1020a6e815ddb2d",
+      "ok": true
+    },
+    {
+      "file": "05c-governing-scope.json",
+      "expected": "ca6b066d39345b1abf8ec54c9b25b908f0b6ae76cc4c1be28126910ca2a155a5",
+      "actual": "ca6b066d39345b1abf8ec54c9b25b908f0b6ae76cc4c1be28126910ca2a155a5",
+      "ok": true
+    },
+    {
+      "file": "06-compilation.json",
+      "expected": "869bd345d9d962374cc51d0d484ac793035778005a926270d3f5cb708fecc46f",
+      "actual": "869bd345d9d962374cc51d0d484ac793035778005a926270d3f5cb708fecc46f",
+      "ok": true
+    },
+    {
+      "file": "08-verification.json",
+      "expected": "cb21b598ce53041268dafd0c1cede6a9769c93eb69f24c877593ae47e265a564",
+      "actual": "cb21b598ce53041268dafd0c1cede6a9769c93eb69f24c877593ae47e265a564",
+      "ok": true
+    },
+    {
+      "file": "10-certification.json",
+      "expected": "4b64a9ad1c165b433f5ce10bcf3ab3e459fa3bcca93cbbbd9de0af755151b6d7",
+      "actual": "4b64a9ad1c165b433f5ce10bcf3ab3e459fa3bcca93cbbbd9de0af755151b6d7",
+      "ok": true
+    }
+  ],
+  "target": {
+    "id": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "document": "conmed-doc-a-eighth-ar-credit-agreement",
+    "operativeSourceSha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+    "chars": 508
+  },
+  "frozenRawModelOutputSha256": "ab441690f811abf1d99b707d0f5641e15828b9c73060262ecb82a61ba53a0a0f",
+  "frozenInventoryContentHash": "d22db8a9322dc386321dfe1d2528bc5a99f7ef692a36ba75ecd0c681fd67d0b8",
+  "versions": {
+    "accountability": "semantic-accountability.v7",
+    "ontology": "canonical-action-ontology.v2",
+    "compiler": "semantic-accountability-compiler.v10",
+    "verifier": "phase-3c-semantic-verifier.v5",
+    "verifierPrompt": "phase-3c-semantic-verifier-prompt.v4",
+    "projection": "phase-3c-verification-projection.v4",
+    "frozenCompiler": "semantic-accountability-compiler.v9",
+    "frozenInventoryAlgorithm": "semantic-accountability.v6+semantic-ensemble.v2"
+  },
+  "providerCalls": 0,
+  "reviewer": "scripted zero findings (the live reviewer's recorded result); deterministic layers only"
+}

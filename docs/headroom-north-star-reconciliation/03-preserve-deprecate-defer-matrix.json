@@ -1,0 +1,237 @@
+{
+  "artifact": "03 - preserve / demote / defer matrix",
+  "northStarStartingSha": "bbcfb54eb9a307b155e5d5d365fd97f09c3e278e",
+  "decisions": "PRESERVE (core, unchanged) | KEEP_CORE | KEEP_OPTIONAL_LATER | DEMOTE_FROM_ROADMAP | DEFER | MIGRATE | FUTURE_REMOVE | CONFLICTS_WITH_NORTH_STAR",
+  "rows": [
+    {
+      "component": "Phase 2 package intelligence",
+      "decision": "PRESERVE"
+    },
+    {
+      "component": "Phase 3 semantic compiler, verification, certification, provenance binding, source authority",
+      "decision": "PRESERVE",
+      "note": "finish the reliability gate; then freeze except true defects"
+    },
+    {
+      "component": "Phase 4A evaluator",
+      "decision": "PRESERVE",
+      "note": "strict resolver only on product paths (C16)"
+    },
+    {
+      "component": "Phase 4B financial-input contract",
+      "decision": "PRESERVE",
+      "note": "primary runtime financial-input contract; add persistence"
+    },
+    {
+      "component": "Phase 4C capacity graph, ledger, shared capacity, reclassification",
+      "decision": "PRESERVE",
+      "note": "add a persisted immutable ledger"
+    },
+    {
+      "component": "Phase 4D transaction / pro-forma overlay / simulation",
+      "decision": "PRESERVE",
+      "note": "tighten null-selector matching on wiring (C17)"
+    },
+    {
+      "component": "Phase 4E neutral path enumeration",
+      "decision": "KEEP_CORE",
+      "note": "not started; needed for 'available paths'"
+    },
+    {
+      "component": "Ask Headroom",
+      "decision": "KEEP_CORE",
+      "note": "orchestrator only (05)"
+    },
+    {
+      "component": "compliance-certificate confirmation (principle)",
+      "decision": "KEEP_CORE",
+      "note": "extraction proposes, human approves"
+    },
+    {
+      "component": "ExternalInputRecord as certificate store",
+      "decision": "MIGRATE",
+      "note": "into the 4B snapshot store"
+    },
+    {
+      "component": "legacy Prisma FinancialSnapshot + DebtTranche",
+      "decision": "FUTURE_REMOVE",
+      "note": "after product reads move to 4B; never extended meanwhile"
+    },
+    {
+      "component": "dual write of FinancialSnapshot + FinancialState",
+      "decision": "FUTURE_REMOVE"
+    },
+    {
+      "component": "FinancialState / Facility (dashboard position)",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "note": "analytics only; never a contractual input"
+    },
+    {
+      "component": "DebtEvent stream",
+      "decision": "MIGRATE",
+      "note": "incurrence / repayment / redesignation / reclassification events belong to the ledger and legal state; reconcile with 4C (invariant 35)"
+    },
+    {
+      "component": "LedgerEntry + Ledger page hard delete",
+      "decision": "MIGRATE",
+      "note": "to the persisted 4C ledger; corrections supersede"
+    },
+    {
+      "component": "legacy covenant engine + solver + dashboard-service",
+      "decision": "FUTURE_REMOVE",
+      "note": "from product paths once 4A-4E serve them; keep as regression reference until then"
+    },
+    {
+      "component": "financial-core liquidity engine",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "classification9A": "KEEP_OPTIONAL_LATER",
+      "note": "contract-required liquidity / availability / borrowing-base figures come from approved snapshots (e.g. borrowing-base certificates), not live computation"
+    },
+    {
+      "component": "financial-core interest / debt-service engine",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "classification9A": "KEEP_OPTIONAL_LATER",
+      "note": "may later SUGGEST a pro-forma interest adjustment that a user confirms; never applies one"
+    },
+    {
+      "component": "financial-core maturity analytics",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "classification9A": "KEEP_OPTIONAL_LATER"
+    },
+    {
+      "component": "financial-core generic CFO metrics",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "classification9A": "KEEP_OPTIONAL_LATER"
+    },
+    {
+      "component": "financial-core generalized scenario engine",
+      "decision": "DEMOTE_FROM_ROADMAP",
+      "classification9A": "CONFLICTS_WITH_NORTH_STAR as a capacity-answer path; KEEP_OPTIONAL_LATER as dashboard analytics",
+      "note": "transaction answers go only through 4D (C14)"
+    },
+    {
+      "component": "forecasting (ForecastSet, PeriodType.FORECAST)",
+      "decision": "DEMOTE_FROM_ROADMAP",
+      "classification9A": "DEMOTE_FROM_ROADMAP",
+      "note": "unbuilt; a forecast may never stand in for an approved snapshot"
+    },
+    {
+      "component": "liquidity forecasting / cash-flow forecasting",
+      "decision": "DEMOTE_FROM_ROADMAP",
+      "classification9A": "DEMOTE_FROM_ROADMAP"
+    },
+    {
+      "component": "live capital-structure analytics",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "classification9A": "KEEP_OPTIONAL_LATER",
+      "note": "debt amounts used in tests come from approved snapshots and ledger events"
+    },
+    {
+      "component": "ERP integration / bank feeds / continuous sync / real-time accounting",
+      "decision": "DEFER",
+      "classification9A": "CONFLICTS_WITH_NORTH_STAR as a core requirement; KEEP_OPTIONAL_LATER as an optional source adapter that still produces proposals for approval"
+    },
+    {
+      "component": "connector: DOCUMENT_UPLOAD",
+      "decision": "KEEP_CORE",
+      "connectorClass": [
+        "2 debt-document ingestion",
+        "1 periodic approved reporting (certificate upload)"
+      ]
+    },
+    {
+      "component": "connector: EDGAR",
+      "decision": "KEEP_CORE",
+      "connectorClass": [
+        "2 debt-document ingestion (credit agreements are filing exhibits)",
+        "1 public periodic reporting as REVIEW_REQUIRED proposals; PUBLIC_FILING_RECONSTRUCTION never approved for a customer"
+      ]
+    },
+    {
+      "component": "connector: CSV_FINANCIAL",
+      "decision": "KEEP_CORE",
+      "connectorClass": [
+        "1 periodic reporting import as proposals",
+        "3 ledger / history import (basket usage schedules) as proposals"
+      ]
+    },
+    {
+      "component": "ingestion pipeline (jobs, stages, dedup)",
+      "decision": "PRESERVE",
+      "connectorClass": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "component": "multi-source reconciliation + SourcePriorityRule",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "note": "a priority rule may order proposals for review; it never approves a fact or silently picks a winner for a contractual input"
+    },
+    {
+      "component": "ConnectorCapability TRANSACTIONS / CASH_BALANCES / RATES (live usage)",
+      "decision": "DEFER",
+      "connectorClass": [
+        "4 optional future integrations"
+      ]
+    },
+    {
+      "component": "Feeds UI copy and static 'Connected sources' card",
+      "decision": "CONFLICTS_WITH_NORTH_STAR",
+      "connectorClass": [
+        "5 obsolete live-feed assumption"
+      ],
+      "note": "rename to Sources / Reporting / Certificates (C4)"
+    },
+    {
+      "component": "Feeds approval carry-forward; onboarding seed-from-prior",
+      "decision": "CONFLICTS_WITH_NORTH_STAR",
+      "note": "bounded legacy-safety fix R0 (C5, C6)"
+    },
+    {
+      "component": "Simulate page",
+      "decision": "MIGRATE",
+      "note": "becomes the Ask Headroom / 4D surface"
+    },
+    {
+      "component": "canonical company state (read-time aggregation)",
+      "decision": "KEEP_OPTIONAL_LATER",
+      "note": "candidate home for the Headroom Answer read model"
+    },
+    {
+      "component": "dashboards beyond the Headroom Answer",
+      "decision": "KEEP_OPTIONAL_LATER"
+    }
+  ],
+  "summary": {
+    "PRESERVE": [
+      "Phase 2",
+      "Phase 3",
+      "Phase 4A",
+      "Phase 4B",
+      "Phase 4C",
+      "Phase 4D",
+      "ingestion pipeline"
+    ],
+    "DEMOTE": [
+      "generalized financial-analytics architecture as organizing architecture",
+      "financial-core scenario engine",
+      "forecasting",
+      "liquidity / cash-flow forecasting"
+    ],
+    "DEFER": [
+      "ERP / bank feeds / continuous sync / real-time accounting",
+      "live TRANSACTIONS / CASH_BALANCES / RATES connector capabilities"
+    ],
+    "FUTURE_REMOVE_OR_MIGRATE": [
+      "legacy FinancialSnapshot + DebtTranche (remove)",
+      "dual write (remove)",
+      "legacy engine on product paths (remove)",
+      "ExternalInputRecord certificate role (migrate to 4B store)",
+      "LedgerEntry + DebtEvent (migrate to persisted 4C ledger)",
+      "Simulate page (migrate to Ask Headroom / 4D)",
+      "Feeds UI (reframe as Sources / Reporting / Certificates)"
+    ]
+  }
+}

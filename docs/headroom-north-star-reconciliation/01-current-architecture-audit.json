@@ -1,0 +1,230 @@
+{
+  "artifact": "01 - current architecture audit against docs/headroom-north-star-v2.md",
+  "northStarStartingSha": "bbcfb54eb9a307b155e5d5d365fd97f09c3e278e",
+  "method": "direct inspection of code, schema, UI and phase evidence at the starting SHA; no provider call; nothing executed against a database",
+  "components": [
+    {
+      "id": "PHASE2_PACKAGE_INTELLIGENCE",
+      "paths": [
+        "lib/contract-model/compiler/structural-index*",
+        "lib/contract-model/compiler/discovery/",
+        "lib/contract-model/compiler/package-graph/",
+        "lib/contract-model/compiler/context-retrieval/",
+        "lib/contract-model/compiler/amendment/"
+      ],
+      "state": "BUILT",
+      "evidence": "Phase 2A-2G gates (docs/HEADROOM-ROADMAP.md §1); operative-state resolution with REVIEW_REQUIRED for unresolved amendment chains",
+      "northStar": "ALIGNED_CORE (debt documents -> operative text)"
+    },
+    {
+      "id": "PHASE3_SEMANTIC_RULEBOOK",
+      "paths": [
+        "lib/contract-model/compiler/semantic/",
+        "lib/contract-model/compiler/semantic-accountability/",
+        "lib/contract-model/compiler/semantic-verification/",
+        "lib/contract-model/phase3-certification/",
+        "lib/contract-model/covenant-map/"
+      ],
+      "state": "BUILT, RELIABILITY NOT YET CLOSED",
+      "evidence": "certified path, provenance binding v2 strict, source authority, verifier v5; live: 7.2(c) PHASE3_7_2_C_FINAL_VALIDATION_SEMANTIC_FAILURE, 7.5(j) PHASE3_7_5_J_SEMANTIC_FAILURE; deterministic remediation PHASE3_7_5J_DETERMINISTIC_REMEDIATION_READY (bbcfb54); docs/pre-phase-4e-readiness/01-readiness.json condition 7 unmet (PHASE3_SEMANTIC_CLOSURE_NOT_PROVEN)",
+      "northStar": "ALIGNED_CORE (certified contractual rulebook); IR already carries period/as-of selectors (AS_OF, DURING_PERIOD, evaluation basis) as the North Star requires"
+    },
+    {
+      "id": "PHASE4A_EVALUATION",
+      "paths": [
+        "lib/contract-model/runtime/evaluate-expression.ts",
+        "lib/contract-model/runtime/rule-evaluator.ts",
+        "lib/contract-model/runtime/verification-gate.ts"
+      ],
+      "state": "BUILT",
+      "evidence": "docs/phase-4a; exact rational arithmetic; verification gate",
+      "northStar": "ALIGNED_CORE",
+      "caveat": "the evaluator prefers a strict (4B) resolver but keeps the Phase-4A loose resolver as fallback when `strict` is absent (null period as wildcard, first match); any North-Star product path must supply the strict resolver only"
+    },
+    {
+      "id": "PHASE4B_FINANCIAL_INPUT_CONTRACT",
+      "paths": [
+        "lib/contract-model/runtime/input/"
+      ],
+      "state": "BUILT, IN-MEMORY ONLY",
+      "evidence": "SnapshotStatus DRAFT|REVIEW_REQUIRED|APPROVED|SUPERSEDED (types.ts:81); supersedesSnapshotId (types.ts:96); DEFAULT_RESOLUTION_POLICY APPROVED+EXACT (types.ts:188); asOfMode EXACT|LATEST_ON_OR_BEFORE with LATEST_ON_OR_BEFORE_AS_OF recorded as the selection method; nine unsafe-graph detections incl. SUPERSESSION_CYCLE, COMPETING_SUCCESSORS, SUPERSEDED_STATUS_WITHOUT_SUCCESSOR, MONEY_INPUT_WITHOUT_CURRENCY, DUPLICATE_IDENTITY_WITHIN_SNAPSHOT (snapshot.ts); dependency manifest (manifest.ts); Phase-5 handoff docs/phase-4b/12-phase5-handoff.json lists compliance-certificate parsing as out of scope and defines what a supplier must produce",
+      "northStar": "ALIGNED - PRESERVE as the primary runtime financial-input contract",
+      "gap": "no persistence, no ingestion, no product wiring (no app/ or components/ import of lib/contract-model/runtime)"
+    },
+    {
+      "id": "PHASE4C_CAPACITY_LEDGER",
+      "paths": [
+        "lib/contract-model/runtime/capacity/"
+      ],
+      "state": "BUILT, IN-MEMORY ONLY",
+      "evidence": "LedgerUsageRecord: usageId, instrumentKey, effectiveAsOf, capacityPath (RULE | SHARED_CAPACITY), status, explicit supersededByUsageId, provenance with approvalRef/approvalState (types.ts:206); ledger.ts header: 'Nothing here reads an ERP, a bank feed or a spreadsheet'; duplicate usage ids quarantined; unattributed usage fails capacities closed; shared capacities and reclassification as separate models; docs/phase-4c gate + recertification",
+      "northStar": "ALIGNED - PRESERVE; ledger stays distinct from periodic snapshots",
+      "gap": "no persistence; real-fixture evidence has 0 quantified shared-capacity resources and 0 executable reclassification edges (docs/pre-phase-4e-readiness condition 9)"
+    },
+    {
+      "id": "PHASE4D_TRANSACTION_SIMULATION",
+      "paths": [
+        "lib/contract-model/runtime/transaction/"
+      ],
+      "state": "BUILT, IN-MEMORY ONLY",
+      "evidence": "overlay.ts header: approved snapshot immutable; only explicitly adjusted inputs differ; adjustment refused when the base snapshot does not resolve the fact (BASE_MISSING / OVERLAY_BASE_INPUT_MISSING); no inference; caller-supplied path; FIXED_POINT_REQUIRED instead of iterating; post-remediation end-to-end trace docs/phase-4d/post-remediation-audit/02-end-to-end-trace.json",
+      "northStar": "ALIGNED - PRESERVE as the pro-forma engine",
+      "caveat": "overlay entries whose stated period/as-of is null match any queried period/as-of (overlay.ts selectorMatches, 'Phase-4A resolver convention'); the base lookup is strict so a missing base still refuses, but Ask Headroom must always state an adjustment's period and as-of identity, and the matcher should be tightened when 4D is wired to a product path"
+    },
+    {
+      "id": "PHASE4E_PATH_ENUMERATION",
+      "paths": [],
+      "state": "NOT STARTED",
+      "evidence": "docs/phase-4c/14-phase4e-handoff.json, docs/phase-4d/15-phase4e-handoff.json; blocked by docs/pre-phase-4e-readiness/01-readiness.json condition 7",
+      "northStar": "REQUIRED for 'available paths' - must stay neutral (no ranking unless asked)"
+    },
+    {
+      "id": "LEGACY_COVENANT_ENGINE_AND_SOLVER",
+      "paths": [
+        "lib/covenant-engine.ts",
+        "lib/solver/",
+        "lib/dashboard-service.ts",
+        "lib/scenario-runner.ts",
+        "lib/coherent.ts"
+      ],
+      "state": "LIVE - the only engine any product page uses",
+      "evidence": "loadCompanyCovenantData selects prisma.financialSnapshot.findFirst({asOfDate lte, orderBy desc}) (covenant-engine.ts:1580) - an implicit latest-on-or-before with no approval status; Capacity, Dashboard, Simulate, Ledger, Feeds, Docs pages import it",
+      "northStar": "LEGACY - to be replaced on product paths by the 4A-4D runtime"
+    },
+    {
+      "id": "PRISMA_LEGACY_FINANCIAL_SNAPSHOT",
+      "paths": [
+        "prisma/schema.prisma:420 FinancialSnapshot",
+        "DebtTranche"
+      ],
+      "state": "LIVE",
+      "evidence": "eight fixed Decimal columns (ebitda, cash, interestExpense, cumulativeNetIncome, equityProceedsSinceIssue, assumedNewDebtRatePct, totalDebt, securedDebt); no status, supersession, currency, period or per-fact provenance; consumers: lib/covenant-engine.ts, lib/coherent.ts, app/[companyId]/feeds/actions.ts, app/[companyId]/onboarding/financials/page.tsx, lib/onboarding/financial.ts, lib/onboarding/promotion.ts",
+      "northStar": "CONFLICTS (see 02: C7, C8, C9) - legacy compatibility only"
+    },
+    {
+      "id": "PRISMA_FINANCIAL_STATE_AND_FINANCIAL_CORE",
+      "paths": [
+        "prisma/schema.prisma:1353 FinancialState",
+        "Facility",
+        "DebtEvent",
+        "lib/financial-core/",
+        "lib/financial-core-db/adapter.ts"
+      ],
+      "state": "LIVE (dashboard analytics half)",
+      "evidence": "ProvencancedFact JSON groups; periodType ACTUAL|FORECAST|PRO_FORMA; capital-structure replay of DebtEvent; liquidity, interest, maturity, metrics, scenario engines; position-service read by the dashboard; DebtEvent.sourceLedgerEntryId never populated (invariant 35 FUTURE_ENFORCED)",
+      "northStar": "SUPPORTING ANALYTICS - not a contractual input source"
+    },
+    {
+      "id": "PARALLEL_FINANCIAL_MODELS",
+      "paths": [
+        "lib/onboarding/financial.ts"
+      ],
+      "state": "LIVE DUAL WRITE",
+      "evidence": "header comment: manual entry writes BOTH FinancialSnapshot (engine/capacity) and FinancialState (liquidity/maturity/leverage) 'rather than leaving one of the two dashboard halves silently broken'",
+      "northStar": "CONFLICTS - dual truth (02: C11); migration decided in 04"
+    },
+    {
+      "id": "COMPLIANCE_CERTIFICATE_CONCEPT",
+      "paths": [
+        "lib/onboarding/financial.ts certifyExternalInputRecord",
+        "prisma ExternalInputRecord",
+        "DocumentType.COMPLIANCE_CERTIFICATE",
+        "lib/contract-model/compiler/package-graph/document-classifier.ts:81"
+      ],
+      "state": "PARTIAL",
+      "evidence": "extraction creates a placeholder ExternalInputRecord (value null, UNVERIFIED); a human supplies the value and certifyExternalInputRecord sets reviewStatus VERIFIED by in-place update; maxAgeDays staleness; PUBLIC_FILING_RECONSTRUCTION may never satisfy a certified gate (schema comment); classifier recognises 'compliance certificate' / 'officer's certificate'; the fixtures contain certificate FORMS inside credit agreements (CONMED, Chewy) but no completed certificate",
+      "northStar": "PRINCIPLE ALIGNED (extraction proposes, human approves), SHAPE NOT ALIGNED (mutable single values, no snapshot, no period/currency/source location)"
+    },
+    {
+      "id": "LEDGER_ENTRY_AND_LEDGER_UI",
+      "paths": [
+        "prisma LedgerEntry",
+        "app/[companyId]/ledger/",
+        "lib/covenant-engine.ts simulateRestrictedPayment"
+      ],
+      "state": "LIVE",
+      "evidence": "LedgerBasket = EQUITY|DEBT_INCUR|DEBT_REPAY|ASSET_SALE|DIVIDEND|INVESTMENT; no capacity-path attribution, no supersession, no status; Ledger page offers deleteLedgerEntry; Simulate commits via commitRestrictedPayment",
+      "northStar": "CONFLICTS with the ledger principle (02: C10); migrate to a persisted 4C ledger"
+    },
+    {
+      "id": "FEEDS_UI_AND_QUEUE",
+      "paths": [
+        "app/[companyId]/feeds/page.tsx",
+        "app/[companyId]/feeds/actions.ts",
+        "prisma FeedQueueItem"
+      ],
+      "state": "LIVE",
+      "evidence": "page.tsx: 'In production this pulls from the company's own ERP, bank feeds, and agent notices'; 'Connected sources' card is static markup with green dots; approveFeedItem copies every field the payload omits from the latest snapshot into a new dated row",
+      "northStar": "CONFLICTS (02: C4, C5)"
+    },
+    {
+      "id": "CONNECTORS",
+      "paths": [
+        "lib/connectors/"
+      ],
+      "state": "BUILT, onboarding-wired only",
+      "evidence": "ConnectorType EDGAR|CSV_FINANCIAL|DOCUMENT_UPLOAD; ConnectorCapability DOCUMENTS|FINANCIAL_FACTS|DEBT_BALANCES|CASH_BALANCES|TRANSACTIONS|RATES|COMPLIANCE_INPUTS; staged ingestion jobs; reconciliation + SourcePriorityRule; FINANCIAL_FACT extraction candidates promoted through lib/onboarding/promotion.ts",
+      "northStar": "MOSTLY USEFUL - classified per connector in 03; no ERP or bank connector exists"
+    },
+    {
+      "id": "ONBOARDING_FINANCIALS",
+      "paths": [
+        "app/[companyId]/onboarding/financials/",
+        "lib/onboarding/financial.ts",
+        "lib/onboarding/promotion.ts"
+      ],
+      "state": "LIVE",
+      "evidence": "manual entry (REPORTED, UNVERIFIED); FINANCIAL_FACT promotion seeds missing required fields for a new as-of date from the prior snapshot (financial.ts:264-301) and fails closed only when no prior row exists",
+      "northStar": "PARTIAL - human-entered facts are fine; carry-forward conflicts (02: C6)"
+    },
+    {
+      "id": "SIMULATE_UI",
+      "paths": [
+        "app/[companyId]/simulate/"
+      ],
+      "state": "LIVE",
+      "evidence": "SimulateClient calls legacy simulateDebtIncurrence (invariant 27 holds for the legacy engine)",
+      "northStar": "RIGHT SURFACE, WRONG ENGINE - future Ask Headroom / 4D surface"
+    },
+    {
+      "id": "FORECASTING",
+      "paths": [
+        "docs/generalized-financial-analytics-architecture.md §J",
+        "PeriodType.FORECAST"
+      ],
+      "state": "DESIGNED, NOT BUILT",
+      "evidence": "ForecastSet not persisted (schema comment ~1286); no code references ForecastSet",
+      "northStar": "NOT REQUIRED"
+    },
+    {
+      "id": "CANONICAL_COMPANY_STATE",
+      "paths": [
+        "lib/company-state/canonical-state.ts"
+      ],
+      "state": "LIVE (read-time aggregation)",
+      "evidence": "computed, never persisted; re-runs reconciliation per call",
+      "northStar": "NEUTRAL - may host the Headroom Answer read model later"
+    },
+    {
+      "id": "ASK_HEADROOM",
+      "paths": [],
+      "state": "NOT STARTED",
+      "evidence": "docs/headroom-master-product-architecture.md §F 'Not started'",
+      "northStar": "CORE - the product's front door"
+    },
+    {
+      "id": "GOVERNING_DOCS",
+      "paths": [
+        "docs/HEADROOM-NORTH-STAR.md",
+        "docs/HEADROOM-ROADMAP.md",
+        "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md",
+        "docs/headroom-master-product-architecture.md",
+        "docs/generalized-financial-analytics-architecture.md",
+        "docs/CODEX-HANDOFF.md"
+      ],
+      "state": "PRE-EXISTING",
+      "evidence": "the 2026-08 North Star makes continuous ERP / treasury / bank synchronization the core and calls uploads secondary; the roadmap's Phase 5 includes '5C - ERP / Accounting Connections' and its current-phase marker still reads 'Phase 2 complete'",
+      "northStar": "SUPERSEDED for product direction (banners added; text untouched)"
+    }
+  ]
+}

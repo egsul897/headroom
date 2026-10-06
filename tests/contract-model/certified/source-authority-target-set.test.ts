@@ -125,8 +125,8 @@ describe("SA-1 §10-§13 a Pass A referencedSections claim never becomes source 
   });
 
   it("§13 identity: the inventory algorithm is v6 (source-grounded references are part of the frozen semantics); the ensemble still replays frozen v5 passes", () => {
-    expect(SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION).toBe("semantic-accountability.v6");
-    expect(ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS).toEqual(["semantic-accountability.v6", "semantic-accountability.v5"]);
+    expect(SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION).toBe("semantic-accountability.v7");
+    expect(ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS).toEqual(["semantic-accountability.v7", "semantic-accountability.v6", "semantic-accountability.v5"]);
   });
 });
 
@@ -445,7 +445,7 @@ describe("SA-4 §36-§37 status-neutral dependency prose; the reviewer is never 
     expect(system).toMatch(/never a statement that the target is certified, verified or correct/);
     expect(SEMANTIC_VERIFIER_PROMPT_VERSION).toBe("phase-3c-semantic-verifier-prompt.v4");
     expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v4");
-    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v9", "semantic-accountability-compiler-prompt.v8"]);
+    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v10", "semantic-accountability-compiler-prompt.v8"]);
   });
 });
 

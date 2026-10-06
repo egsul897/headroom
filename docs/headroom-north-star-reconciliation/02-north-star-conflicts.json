@@ -1,0 +1,162 @@
+{
+  "artifact": "02 - North Star conflicts",
+  "northStarStartingSha": "bbcfb54eb9a307b155e5d5d365fd97f09c3e278e",
+  "legend": {
+    "severity": "PRODUCT_DIRECTION | FAIL_CLOSED_VIOLATION | DUAL_TRUTH | BOUNDARY | CAVEAT",
+    "fixedHere": "true only for documentation banners; every code remediation is a later, separately gated task"
+  },
+  "conflicts": [
+    {
+      "id": "C1",
+      "severity": "PRODUCT_DIRECTION",
+      "component": "docs/HEADROOM-NORTH-STAR.md",
+      "statement": "defines Headroom as a continuously maintained system fed by persistent ERP / treasury / bank synchronization; uploads 'never as the primary ongoing mechanism'",
+      "remediation": "superseded for product direction by docs/headroom-north-star-v2.md; banner added",
+      "fixedHere": true
+    },
+    {
+      "id": "C2",
+      "severity": "PRODUCT_DIRECTION",
+      "component": "docs/HEADROOM-ROADMAP.md §2",
+      "statement": "Phase 5 'Financial Data & Monitoring Platform' incl. '5C - ERP / Accounting Connections'; Phase 6 'Living Headroom State'; current-phase marker stale (Phase 2)",
+      "remediation": "superseded by 06-revised-roadmap.md; banner added",
+      "fixedHere": true
+    },
+    {
+      "id": "C3",
+      "severity": "PRODUCT_DIRECTION",
+      "component": "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md anti-drift section",
+      "statement": "locks the phase sequence 'Phase 5 = Financial Data / Continuous Monitoring, Phase 6 = Living Headroom State'",
+      "remediation": "banner: the phase naming is superseded through the recorded ARCHITECTURE_CHANGE_PROPOSAL (00); all 37 invariants remain in force",
+      "fixedHere": true
+    },
+    {
+      "id": "C4",
+      "severity": "PRODUCT_DIRECTION",
+      "component": "app/[companyId]/feeds/page.tsx",
+      "statement": "copy 'In production this pulls from the company's own ERP, bank feeds, and agent notices'; static 'Connected sources' card with green status dots that reads no connection state",
+      "remediation": "LATER (customer-workflow step, 06 step 16, or earlier if Feeds is touched): rename to Sources / Reporting / Certificates; list real CompanySourceConnection rows; turn the queue into certificate-proposal review that writes DRAFT/REVIEW_REQUIRED snapshots and ledger proposals; remove ERP/bank copy",
+      "fixedHere": false
+    },
+    {
+      "id": "C5",
+      "severity": "FAIL_CLOSED_VIOLATION",
+      "component": "app/[companyId]/feeds/actions.ts approveFeedItem",
+      "statement": "a SNAPSHOT_UPDATE copies every field the payload omits from the latest snapshot into a new row dated payload.asOfDate (and copies tranches forward) - a prior period's values become facts for a new date",
+      "remediation": "LATER (bounded legacy-safety fix, 06 step R0): refuse a partial update or write only the supplied facts; never carry forward",
+      "fixedHere": false
+    },
+    {
+      "id": "C6",
+      "severity": "FAIL_CLOSED_VIOLATION",
+      "component": "lib/onboarding/financial.ts FINANCIAL_FACT promotion",
+      "statement": "when a new as-of date has no row, missing required fields are seeded from the prior snapshot (lines ~264-301)",
+      "remediation": "LATER (06 step R0): fail closed per field instead of seeding",
+      "fixedHere": false
+    },
+    {
+      "id": "C7",
+      "severity": "FAIL_CLOSED_VIOLATION",
+      "component": "lib/covenant-engine.ts loadCompanyCovenantData",
+      "statement": "selects the latest FinancialSnapshot on or before the date with no approval status - the implicit 'latest' the North Star forbids; it feeds every customer-facing capacity figure",
+      "remediation": "LATER: product reads move to 4A/4B over approved snapshots (06 step 7/16); until then legacy figures are prototype data",
+      "fixedHere": false
+    },
+    {
+      "id": "C8",
+      "severity": "BOUNDARY",
+      "component": "legacy FinancialSnapshot.assumedNewDebtRatePct",
+      "statement": "a transaction-specific pro-forma assumption stored inside periodic financial state",
+      "remediation": "LATER: becomes an explicit 4D transaction adjustment supplied per transaction",
+      "fixedHere": false
+    },
+    {
+      "id": "C9",
+      "severity": "BOUNDARY",
+      "component": "legacy FinancialSnapshot.cumulativeNetIncome / equityProceedsSinceIssue",
+      "statement": "builder-basket accumulations stored as if they were periodic facts",
+      "remediation": "LATER: per-period net income is a snapshot fact; the cumulative builder is a 4C BUILDER_COMPONENT over a series of approved snapshots; equity proceeds are ledger events",
+      "fixedHere": false
+    },
+    {
+      "id": "C10",
+      "severity": "BOUNDARY",
+      "component": "prisma LedgerEntry + app/[companyId]/ledger",
+      "statement": "flat six-value basket enum, no capacity-path attribution, no status or supersession, hard delete offered in the UI",
+      "remediation": "LATER (06 step 8): persisted immutable ledger implementing the 4C LedgerUsageRecord contract; corrections supersede",
+      "fixedHere": false
+    },
+    {
+      "id": "C11",
+      "severity": "DUAL_TRUTH",
+      "component": "legacy FinancialSnapshot + FinancialState",
+      "statement": "one manual entry writes both; the dashboard's covenant half and analytics half read different tables",
+      "remediation": "decided in 04; executed later in five steps",
+      "fixedHere": false
+    },
+    {
+      "id": "C12",
+      "severity": "BOUNDARY",
+      "component": "ExternalInputRecord / certifyExternalInputRecord",
+      "statement": "certificate confirmation is a mutable per-value update to VERIFIED with no period identity, currency, source location or snapshot",
+      "remediation": "next gate (07): certificate facts are proposed into, and approved within, an immutable 4B snapshot store",
+      "fixedHere": false
+    },
+    {
+      "id": "C13",
+      "severity": "PRODUCT_DIRECTION",
+      "component": "docs/generalized-financial-analytics-architecture.md",
+      "statement": "organizing pipeline places forecasts, liquidity analytics and a generalized scenario engine upstream of contract evaluation; S.2 anticipates ERP / bank-feed adapters",
+      "remediation": "banner: optional supporting analytics, not the core architecture",
+      "fixedHere": true
+    },
+    {
+      "id": "C14",
+      "severity": "BOUNDARY",
+      "component": "lib/financial-core/scenario.ts + scenario-service.ts",
+      "statement": "a second transaction-simulation path beside Phase 4D; invariants 27 and 33 forbid two simulation engines for the same question",
+      "remediation": "LATER: capacity / pro-forma answers go only through 4D; the financial-core scenario engine stays dashboard analytics or is retired",
+      "fixedHere": false
+    },
+    {
+      "id": "C15",
+      "severity": "PRODUCT_DIRECTION",
+      "component": "docs/headroom-master-product-architecture.md §A",
+      "statement": "position 'gathered autonomously from ERP/treasury/document/public sources'",
+      "remediation": "banner",
+      "fixedHere": true
+    },
+    {
+      "id": "C16",
+      "severity": "CAVEAT",
+      "component": "Phase 4A evaluator",
+      "statement": "legacy loose resolver fallback (null period wildcard, first match) is reachable when no strict resolver is supplied",
+      "remediation": "LATER: North-Star product paths construct the strict resolver only; add a guard when wiring",
+      "fixedHere": false
+    },
+    {
+      "id": "C17",
+      "severity": "CAVEAT",
+      "component": "Phase 4D overlay.ts selectorMatches",
+      "statement": "an adjustment with a null period/as-of matches any queried period/as-of",
+      "remediation": "LATER: Ask Headroom always states the identity; tighten the matcher when 4D is wired",
+      "fixedHere": false
+    },
+    {
+      "id": "C18",
+      "severity": "CAVEAT",
+      "component": "the North-Star runtime",
+      "statement": "Phase 4B/4C/4D have no persistence and no product wiring; every customer-facing number still comes from the legacy engine",
+      "remediation": "the revised roadmap's main work (06)",
+      "fixedHere": false
+    }
+  ],
+  "notConflicts": [
+    "invariants 2 and 4 cite 'a connector sync, an ERP export' only as example sources - compatible",
+    "CSV upload, document upload and EDGAR retrieval - compatible ingestion paths",
+    "certificate forms in credit agreements - useful structure, not a source of facts",
+    "Phase 2, Phase 3 and the Phase 4A-4D contracts - aligned"
+  ],
+  "silentlyControllingLiveFeedAssumptionRemaining": false,
+  "why": "every governing document that asserted continuous sync now carries a supersession banner pointing to the controlling North Star; the remaining live-feed assumptions are in code / UI and are listed above with their remediation step"
+}

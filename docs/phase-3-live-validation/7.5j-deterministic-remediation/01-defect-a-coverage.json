@@ -1,0 +1,66 @@
+{
+  "before": {
+    "unaccountedSource": [
+      {
+        "span": [
+          4,
+          43
+        ],
+        "excerpt": "any Disposition of Property or business"
+      },
+      {
+        "span": [
+          104,
+          132
+        ],
+        "excerpt": "which yields net proceeds to"
+      }
+    ],
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "criticalItemSpanningThem": [
+      [
+        "inv-item:0e5329437d345c7c5674b0b7",
+        0,
+        132,
+        "CRITICAL"
+      ]
+    ]
+  },
+  "after": {
+    "unaccountedSource": [],
+    "unaccountedValues": [],
+    "countsByDisposition": {
+      "COVERED_BY_INVENTORY": 4,
+      "COVERED_BY_CHILD_DESCENT": 0,
+      "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+      "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP": 0,
+      "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+      "STRUCTURAL_NOISE": 0,
+      "HEADING_OR_LABEL": 0,
+      "CITATION_ONLY": 0,
+      "DEFINED_TERM_LABEL": 0,
+      "PUNCTUATION_OR_DELIMITER": 4,
+      "NON_SEMANTIC_FORMATTING": 0,
+      "UNACCOUNTED_SOURCE": 0
+    },
+    "coveredSpans": [
+      [
+        0,
+        132
+      ],
+      [
+        133,
+        271
+      ],
+      [
+        272,
+        405
+      ],
+      [
+        406,
+        507
+      ]
+    ]
+  },
+  "version": "semantic-accountability.v7"
+}

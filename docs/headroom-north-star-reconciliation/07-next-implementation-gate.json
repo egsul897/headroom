@@ -1,0 +1,58 @@
+{
+  "artifact": "07 - next implementation gate",
+  "northStarStartingSha": "bbcfb54eb9a307b155e5d5d365fd97f09c3e278e",
+  "currentWork": "Phase 3 reliability gate (06 steps 1-3): composition-contract remediation for the representable gaps (non-vocabulary inventory dispositions -> UNSUPPORTED / explicit disposition), the bounded IR decision on related-series aggregation, the Pass-A gap-call localRef reliability item, then certification of a stratified real provision set",
+  "nextGate": {
+    "id": "NS-4",
+    "name": "CERTIFICATE-TO-SNAPSHOT ADAPTER V1 (approved financial snapshot store + heterogeneous compliance-certificate proposal / approval path onto the frozen Phase 4B contract)",
+    "whyThisOne": "every downstream North-Star step (selector resolution, rulebook-to-snapshot connection, capacity position, Ask Headroom, 4D over real state) needs approved, persisted, provenance-complete snapshots; none exists; it depends only on the frozen 4B contract, so it does not disturb Phase 3",
+    "prerequisites": [
+      "Phase 4B contract frozen (financial-input-contract.v1)",
+      "this reconciliation committed"
+    ],
+    "parallelSafety": "touches no Phase 3 or Phase 4A-4D production file; may start in parallel with Phase 3 reliability work if capacity allows",
+    "inScope": [
+      "a persisted, append-only store implementing the 4B FinancialSnapshot / FinancialInput identity one-to-one (snapshot, fact, source-location records), with DRAFT / REVIEW_REQUIRED / APPROVED / SUPERSEDED and explicit supersession enforced at write time (the nine unsafe-graph checks run before commit)",
+      "a loader from the store to the 4B snapshot types, byte-identical to hand-built fixtures, feeding snapshotInputResolver unchanged",
+      "a certificate fact-proposal format: source document id + version hash, page / section / table / row locator, reporting period, as-of, scope, kind, key, value type, currency / unit, proposer (human or extractor) - for heterogeneous certificate layouts",
+      "a separate, attributable approval transition (proposal -> APPROVED snapshot) and a restatement path (new snapshot superseding the old)",
+      "routing of certificate basket-usage schedules to 4C ledger PROPOSALS (recorded, not yet applied)",
+      "tests on synthetic heterogeneous certificates built from the certificate FORMS in the CONMED and Chewy fixtures and from invented layouts; adversarial cases: missing currency, duplicate identity, competing successors, carried-forward value, LLM-extracted value without approval, PUBLIC_FILING_RECONSTRUCTION marked for approval"
+    ],
+    "outOfScope": [
+      "any LLM extraction run or provider call (the proposal format is model-agnostic; extraction is a later step)",
+      "selector resolution (06 step 6)",
+      "UI changes (Feeds reframe is later)",
+      "migration of legacy FinancialSnapshot rows",
+      "ERP / bank / continuous sync",
+      "Phase 3 or Phase 4A-4D production changes",
+      "ingesting a real customer certificate (06 step 5)"
+    ],
+    "acceptanceCriteria": [
+      "a stored APPROVED snapshot resolves through the unchanged 4B resolver to the same results as the equivalent in-memory fixture",
+      "no fact becomes APPROVED without an explicit approval record; extracted proposals stay DRAFT / REVIEW_REQUIRED",
+      "every unsafe-graph condition the 4B contract defines is refused at write time",
+      "no write path fills a missing fact from another period",
+      "a restatement supersedes explicitly; the superseded snapshot stays queryable",
+      "basket-usage lines never become snapshot facts",
+      "zero provider calls; Phase 3 and Phase 4A-4D trees unchanged"
+    ],
+    "northStarGate": {
+      "N1": "no",
+      "N2": "YES - primary",
+      "N3": "partly (ledger proposals)",
+      "N4": "enables",
+      "N5": "enables (approved base for overlays)",
+      "N6": "enables",
+      "N7": "YES (fact-level source provenance)",
+      "N8": "YES (every customer answer needs it)",
+      "N9": "no - periodic certificates, not ERP",
+      "N10": "no - every later step depends on it"
+    }
+  },
+  "thenInOrder": [
+    "NS-5 ingest one real compliance certificate (requires customer-supplied data; the repository holds certificate forms only)",
+    "NS-6 contractual selector -> snapshot identity resolution",
+    "NS-7 certified rulebook + approved snapshot through 4A / 4B"
+  ]
+}

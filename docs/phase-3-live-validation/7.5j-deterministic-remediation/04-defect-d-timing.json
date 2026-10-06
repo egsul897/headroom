@@ -1,0 +1,74 @@
+{
+  "before": {
+    "compilerVersion": "semantic-accountability-compiler.v9",
+    "ctaNode": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Consolidated Total Assets",
+      "companyId": "conmed-pilot",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:3212d45ff79088d43d515800"
+    },
+    "wireAsOfDate": "date of such Disposition",
+    "diagnostics": [
+      "PROVENANCE_EXCERPT_SOURCE_BOUND",
+      "PROVENANCE_EXCERPT_SOURCE_BOUND"
+    ]
+  },
+  "after": {
+    "compilerVersion": "semantic-accountability-compiler.v10",
+    "ctaNode": {
+      "kind": "AS_OF",
+      "type": "MONEY",
+      "exprId": "ir-expr:a8e63defbef6a39547fc6f97",
+      "value": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Consolidated Total Assets",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:3212d45ff79088d43d515800"
+      },
+      "asOfDate": "date of such Disposition",
+      "provenance": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeKey": null,
+        "sourceCitation": "§7.5(j)",
+        "excerpt": "Consolidated Total Assets (measured on the date of such Disposition)",
+        "excerptResolution": {
+          "version": "provenance-source-binding.v2",
+          "status": "SOURCE_BOUND_EXACT",
+          "reason": null,
+          "detail": "exact excerpt located exactly once; bound to its source span",
+          "segments": 1,
+          "sourceKey": "operative",
+          "sourceKind": "OPERATIVE",
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceSectionRef": "7.5(j)",
+          "charStart": 438,
+          "charEnd": 506,
+          "absCharStart": 73148,
+          "absCharEnd": 73216,
+          "boundSha256": "8c8c297441d8df70c124376db54a097ace9bafd551024410b3b1496b7c813502"
+        }
+      }
+    },
+    "diagnostics": [
+      {
+        "scope": "rule[r7_5j].UNLIMITED_CAPACITY.gatedBy",
+        "code": "PROVENANCE_EXCERPT_SOURCE_BOUND"
+      },
+      {
+        "scope": "rule[r7_5j].UNLIMITED_CAPACITY.gatedBy.COMPARE.right.MAX[1].MULTIPLY[1]",
+        "code": "METRIC_REFERENCE_AS_OF_LIFTED"
+      },
+      {
+        "scope": "rule[r7_5j].condition[0]",
+        "code": "PROVENANCE_EXCERPT_SOURCE_BOUND"
+      }
+    ],
+    "liftDiagnostic": "METRIC_REFERENCE_AS_OF_LIFTED: rule[r7_5j].UNLIMITED_CAPACITY.gatedBy.COMPARE.right.MAX[1].MULTIPLY[1] METRIC_REFERENCE \"Consolidated Total Assets\" carried asOfDate \"date of such Disposition\" on the reference itself; lifted deterministically into AS_OF(metric, asOfDate) - the source's measurement-date selector is preserved verbatim as structure, not dropped"
+  }
+}

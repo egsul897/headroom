@@ -55,7 +55,11 @@
 // belongs to both). The model's own claims are kept beside them as `declaredReferencedSections` with a per-claim
 // `referenceAudit` (CORROBORATED / MODEL_INVENTED_REFERENCE / MODEL_NARROWED_REFERENCE / MODEL_BROADENED_REFERENCE /
 // MODEL_OMITTED_SOURCE_REFERENCE) and never create a reference. Item identity and the freeze hash follow this version.
-export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v6";
+// v7 (§7.5(j) live-exposed deterministic closure): source coverage advances an item's credit through a leading bare
+// enumerator formatting segment to the one substantive segment it introduces (defect A); a model-declared OTHER-kind
+// quantitative value whose raw text the deterministic scanner recognises as exactly one figure is canonicalised to the
+// scanner's kind/value/unit instead of surviving as an independent OTHER duplicate (defect B; declaredKind kept for audit).
+export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v7";
 export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v6";
 
 // ---------------------------------------------------------------------------
@@ -88,6 +92,8 @@ export type QuantitativeKind = (typeof QUANTITATIVE_KINDS)[number];
 
 export interface QuantitativeValue {
   kind: QuantitativeKind;
+  /** AUDIT ONLY (v7, defect B): the model's own kind string when it was not a canonical kind (or was OTHER) and the deterministic scanner's kind replaced it; absent otherwise. Never part of value identity or equivalence. */
+  declaredKind?: string;
   /** Exactly as written in the source ("$50,000,000", "15%", "4.50 to 1.00", "ninety (90) days"). */
   rawText: string;
   /** Safely normalized where possible (money as a plain number in stated currency units; percent as a fraction; ratio as x-to-one; days as a count); null when normalization is not safe. */

@@ -1,0 +1,108 @@
+{
+  "before": [
+    {
+      "inventoryItemId": "inv-item:8178744a0966f30b34bfd88d",
+      "role": "THRESHOLD",
+      "values": [
+        [
+          "OTHER",
+          "$25,000,000",
+          25000000
+        ],
+        [
+          "MONEY",
+          "$25,000,000",
+          25000000
+        ]
+      ],
+      "frozenDisposition": "MISSING_FROM_COMPOSITION",
+      "frozenReason": "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count"
+    },
+    {
+      "inventoryItemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+      "role": "THRESHOLD",
+      "values": [
+        [
+          "OTHER",
+          "$25,000,000",
+          25000000
+        ],
+        [
+          "MONEY",
+          "$25,000,000",
+          25000000
+        ],
+        [
+          "PERCENT",
+          "1.5%",
+          0.015
+        ]
+      ],
+      "frozenDisposition": "MISSING_FROM_COMPOSITION",
+      "frozenReason": "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count"
+    },
+    {
+      "inventoryItemId": "inv-item:83b1553ecb2a2291a82e3532",
+      "role": "THRESHOLD",
+      "values": [
+        [
+          "OTHER",
+          "1.5%",
+          1.5
+        ],
+        [
+          "PERCENT",
+          "1.5%",
+          0.015
+        ]
+      ],
+      "frozenDisposition": "MISSING_FROM_COMPOSITION",
+      "frozenReason": "composition lineage claims this item (rules[0]) but 1.5% appears nowhere in the composed IR - a lineage claim without value correspondence does not count"
+    }
+  ],
+  "after": [
+    {
+      "inventoryItemId": "inv-item:8178744a0966f30b34bfd88d",
+      "values": [
+        [
+          "MONEY",
+          "$25,000,000",
+          25000000,
+          "USD",
+          "OTHER"
+        ]
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+      "values": [
+        [
+          "MONEY",
+          "$25,000,000",
+          25000000,
+          "USD",
+          "OTHER"
+        ],
+        [
+          "PERCENT",
+          "1.5%",
+          0.015,
+          "%",
+          null
+        ]
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:83b1553ecb2a2291a82e3532",
+      "values": [
+        [
+          "PERCENT",
+          "1.5%",
+          0.015,
+          "%",
+          "OTHER"
+        ]
+      ]
+    }
+  ]
+}
