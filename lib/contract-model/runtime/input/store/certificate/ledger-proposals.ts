@@ -24,7 +24,9 @@ export interface RecordBasketUsageArgs {
 
 /**
  * In-memory append-only recorder for ledger proposals.
- * Public surface exposes only `record` / `list` / `clear` — no `apply`.
+ * Public surface exposes only `record` / `list` / `count` / `apply` (throws) —
+ * NOT `clear` / `reset` / `truncate` or any other shrink/empty helper.
+ * Isolation in tests is via a fresh `new LedgerProposalRecorder()` per case.
  */
 export class LedgerProposalRecorder {
   readonly #proposals: LedgerProposal[] = [];
@@ -53,11 +55,6 @@ export class LedgerProposalRecorder {
   /** Count of recorded proposals. */
   count(): number {
     return this.#proposals.length;
-  }
-
-  /** Test helper — empty the recorder. */
-  clear(): void {
-    this.#proposals.length = 0;
   }
 
   /**

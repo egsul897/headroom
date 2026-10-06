@@ -138,3 +138,23 @@ describe("proposeFromCertificate → approveCertificateProposal (happy path)", (
     }
   });
 });
+
+describe("LedgerProposalRecorder public surface (append-only)", () => {
+  it("exposes record/list/count/apply only — clear/reset/truncate absent on instance and prototype", () => {
+    const recorder = new LedgerProposalRecorder();
+    const proto = LedgerProposalRecorder.prototype as Record<string, unknown>;
+    const instance = recorder as unknown as Record<string, unknown>;
+
+    expect(typeof recorder.record).toBe("function");
+    expect(typeof recorder.list).toBe("function");
+    expect(typeof recorder.count).toBe("function");
+    expect(typeof recorder.apply).toBe("function");
+
+    for (const name of ["clear", "reset", "truncate", "empty", "wipe"] as const) {
+      expect(typeof instance[name]).toBe("undefined");
+      expect(typeof proto[name]).toBe("undefined");
+      expect(Object.prototype.hasOwnProperty.call(proto, name)).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(instance, name)).toBe(false);
+    }
+  });
+});

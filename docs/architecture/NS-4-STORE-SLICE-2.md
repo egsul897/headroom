@@ -79,3 +79,26 @@
 npx vitest run tests/contract-model/runtime/input/store
 npx vitest run tests/contract-model/runtime/input
 ```
+
+## Remediation — public `clear()` removed (append-only)
+
+**Auth:** COO CRITICAL coding auth — production public `LedgerProposalRecorder.clear()` remediation.
+
+- Removed production public `clear()` from `LedgerProposalRecorder` entirely.
+- Recorder is append-only: `#proposals` grows only via `record()`; no `clear` / `reset` / `truncate` / `empty` / `wipe` / `__testing` / env-gated / subclass backdoor that can empty or shrink the buffer exists in `lib/`.
+- Public surface: `record` / `list` / `count` / `apply` (throws) only.
+- Tests isolate state with a fresh `new LedgerProposalRecorder()` per case — not by resetting a shared instance.
+- Adversarial coverage: shrink-mutator names absent on instance+prototype; `apply` still throws; `list()` returns frozen clones.
+
+### Audit (same PR) — NS-4 store surfaces
+
+Scoped audit of `lib/.../store/certificate/*` and Slice 1 façade (`InMemoryApprovedSnapshotStore` / write API) for other production public mutators that shrink, wipe, or bypass append-only:
+
+| Surface | Finding |
+| --- | --- |
+| `LedgerProposalRecorder.clear()` | **Fixed** — same-class production public wipe; removed completely |
+| `InMemoryApprovedSnapshotStore` | **No same-class bug** — no `clear`/`reset`/`truncate`/`empty`/`wipe`; unvalidated `commit` remains on private `PrivateEventLog` only (façade seal from slice 1 / PR #72) |
+| `proposeFromCertificate` / `approveCertificateProposal` | **No same-class bug** — write only via sealed store append/approve paths |
+| `SnapshotStoreBackend.commit` | Append-only push on private backend; not exposed on public façade class |
+
+No additional production public shrink/wipe mutators found beyond `LedgerProposalRecorder.clear()`.
