@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:b54ed7fe4f8f7bb7c224d99b:TARGET_ELIGIBILITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "59e1193a6cca2adeb463bbae5e8d46bc4d800105",
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [],
+  "operativeTextSectionReferences": [
+    {
+      "raw": "Section 6.05(c)",
+      "normalized": "6.05(c)",
+      "span": [
+        449,
+        459
+      ],
+      "selector": {
+        "sourceText": "clause (c)",
+        "kind": "EXPLICIT_SUBCLAUSE_SET",
+        "qualifierText": null
+      }
+    },
+    {
+      "raw": "Section 6.05(a)(2)",
+      "normalized": "6.05(a)(2)",
+      "span": [
+        751,
+        769
+      ],
+      "selector": {
+        "sourceText": "Section 6.05(a)(2)",
+        "kind": "WHOLE_PROVISION",
+        "qualifierText": null
+      }
+    }
+  ],
+  "offlineBundle": {
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+      "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached",
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "items": 26,
+    "hasUnresolvedOperativeEvidence": true,
+    "unresolvedEvidenceItemIds": [
+      "context-item:cf103904c4db39198a1df5c96371e827e1e08e49a92a36434865653392f44440",
+      "context-item:8ecf1273c334183560e1c91bb3a048033dbd232877cf8e440f0b1d5e9ead3577"
+    ],
+    "nonCurrentItems": [
+      {
+        "itemId": "context-item:cf103904c4db39198a1df5c96371e827e1e08e49a92a36434865653392f44440",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Subsidiary",
+        "retrievalDepth": 4,
+        "evidenceState": {
+          "status": "AMBIGUOUS_TARGET",
+          "isCurrentTruth": false,
+          "reason": "term \"Subsidiary\" matches 2 distinct physical definitions in document \"doc-a\", and it has no recorded amendment history to disambiguate it"
+        }
+      },
+      {
+        "itemId": "context-item:8ecf1273c334183560e1c91bb3a048033dbd232877cf8e440f0b1d5e9ead3577",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Uniform Commercial Code",
+        "retrievalDepth": 5,
+        "evidenceState": {
+          "status": "AMBIGUOUS_TARGET",
+          "isCurrentTruth": false,
+          "reason": "term \"Uniform Commercial Code\" matches 2 distinct physical definitions in document \"doc-a\", and it has no recorded amendment history to disambiguate it"
+        }
+      }
+    ],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "6.05(a)(2)(c)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "6.05",
+        1
+      ],
+      [
+        "PARENT_SCOPE",
+        "6.05(a)",
+        1
+      ],
+      [
+        "PARENT_SCOPE",
+        "6.05(a)(2)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "6.05(a)(2)(b)",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Asset Sale",
+        1
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Agreement",
+        2
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Capital Stock",
+        2
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Cash Equivalents",
+        2
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Approved Bank",
+        3
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Foreign Subsidiary",
+        3
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Subsidiary",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Initial Borrower",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Restricted",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Restricted Subsidiary",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Indebtedness",
+        3
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Effective Date",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Lien",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Uniform Commercial Code",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Obligations",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Parent Entity",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Qualified Restricted Subsidiary",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Swap",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Commodity Exchange Act",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Exchange Act",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Investment Grade Rating",
+        3
+      ]
+    ]
+  },
+  "sourceContentVersion": "scv1:f924f1a12982b56fbc038580a630ca681f0506e0a45c1021b9bc557476d7dfd6",
+  "identityStrength": "STRONG",
+  "eligible": false,
+  "eligibilityBlockers": [
+    "UNRESOLVED_OPERATIVE_EVIDENCE"
+  ],
+  "crossCutClaims": {
+    "WITHOUT_SHARED_CAPS": {
+      "claimed": true,
+      "basis": "Sealed discovery role BASKET is not SHARED_CAP; treated as standalone for this pin."
+    },
+    "WITHOUT_BUILDERS": {
+      "claimed": true,
+      "basis": "No builder/grower formula detected in this operative window."
+    },
+    "WITHOUT_RECLASSIFICATION": {
+      "claimed": true,
+      "basis": "No classification/reclassification mechanic detected in this operative window."
+    }
+  },
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:b54ed7fe4f8f7bb7c224d99b",
+    "mapTags": [],
+    "mapOutcome": "NO_CHEWY_CANONICAL_MAP_YET",
+    "note": "Chewy is not yet present under docs/canonical-covenant-map/maps/. Offline pin binds sealed discovery+structural fixtures only. Absence of map REVIEW is not pre-credit for later live CERTIFIED."
+  },
+  "discoveryHonesty": {
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "documentDiscoveryHealth": "DISCOVERY_PARTIAL",
+    "note": "Sealed discovery recorded AUTO_ACCEPTED for this candidate and DISCOVERY_PARTIAL at document level. Offline pin remains valid; discovery NEEDS_REVIEW is not pre-credit."
+  }
+}

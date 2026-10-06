@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:b54ed7fe4f8f7bb7c224d99b:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "59e1193a6cca2adeb463bbae5e8d46bc4d800105",
+  "identity": {
+    "discoveryId": "discovery-candidate:b54ed7fe4f8f7bb7c224d99b",
+    "documentId": "doc-a",
+    "packageKey": "chwy-2026-credit-agreement",
+    "normalizedSourceRef": "6.05(a)(2)(c)",
+    "structuralNodeKeys": [
+      "doc-a::6.05(a)(2)(c)",
+      "doc-a::6.05(a)(2)",
+      "doc-a::6.05(a)",
+      "doc-a::6.05"
+    ],
+    "structuralNodeIds": [
+      "structural-node:6f58f1910232c29bd465a882",
+      "structural-node:561a0c54037a3ff01f78ea14",
+      "structural-node:c4decc66a71ebff1f364ec67",
+      "structural-node:9de80e5b6c397d9bd4eff3ef"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:6f58f1910232c29bd465a882",
+      "nodeKey": "doc-a::6.05(a)(2)(c)",
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.05(a)(2)(c)",
+      "charStart": 653595,
+      "charEnd": 654452
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 857,
+    "operativeSourceSha256": "5b742209df1a13fcbdfb970733faf520799766df102a8a9dabf254a26ce93feb",
+    "operativeSourceText": "(c) any Designated\nNon-cash Consideration received by the applicable Restricted Party in such Asset Sale having an aggregate Fair Market Value (with the Fair Market Value of such item of Designated\nNon-cash Consideration being measured at the time of contractually agreeing to the related Asset Sale and without giving effect to subsequent changes in value), taken together with all other Designated Non-cash Consideration received pursuant to this clause (c) that is at that time outstanding, not to exceed the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended\nTest Period, calculated on a Pro Forma Basis, at the time of contractually agreeing to such Asset Sale;\nshall, in each case, for purposes\nof this Section 6.05(a)(2), be deemed to be cash for purposes of this provision and for no other purpose.\n\n-140-\n\n",
+    "expected": {
+      "chars": 857,
+      "sha256": "5b742209df1a13fcbdfb970733faf520799766df102a8a9dabf254a26ce93feb"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "ASSET_SALES"
+    ],
+    "role": "BASKET",
+    "stratum": "ASSET_SALES",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "discoveryReviewStatus": "AUTO_ACCEPTED",
+    "discoveryConfidence": 0.9,
+    "description": "Permits Designated Non-cash Consideration up to the greater of $360.0 million and 50% of Consolidated EBITDA to be deemed cash for purposes of the Asset Sale cash-consideration test."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}
