@@ -1,0 +1,337 @@
+{
+  "rules": [
+    {
+      "ruleId": "ir-rule:11f0445de25e714a1a3cfe31",
+      "sourceSectionRef": "7.2(c)",
+      "sourceDependencies": [
+        {
+          "exactSourceTargetRef": "Section 7.3(g)",
+          "normalizedTargetRef": "7.3(g)",
+          "resolvedStructuralTarget": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+            "sectionRef": "7.3(g)"
+          },
+          "owningCandidateRefs": [
+            "discovery-candidate:082c80836268c7277cc39c18"
+          ],
+          "boundSemanticTargetIds": [],
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "selector": {
+            "sourceText": "Section 7.3(g)",
+            "kind": "WHOLE_PROVISION",
+            "qualifierText": null
+          },
+          "relationshipType": "REQUIRES",
+          "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are separately owned and resolved at package level",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          },
+          "inventoryItemIds": [
+            "5a0b860baa6791acdcb74808"
+          ]
+        }
+      ],
+      "unresolvedDependencies": [],
+      "dependsOn": [],
+      "conditions": [
+        {
+          "conditionId": "rule[r1].condition[0]",
+          "conditionType": "OTHER_RULE_SATISFIED",
+          "referencesRuleTargets": [
+            {
+              "exactSourceTargetRef": "Section 7.1",
+              "normalizedTargetRef": "7.1",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+                "sectionRef": "7.1"
+              },
+              "owningCandidateRefs": [
+                "discovery-candidate:a26970121ceb558846ff8d1c",
+                "discovery-candidate:e37352369564a1e784e0560b"
+              ],
+              "boundSemanticTargetIds": [],
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+              "selector": {
+                "sourceText": "financial covenants contained in Section 7.1",
+                "kind": "QUALIFIED_RULE_SET",
+                "qualifierText": "financial covenants contained in"
+              }
+            }
+          ],
+          "targetCombination": "ALL_SATISFIED",
+          "evaluationBasis": {
+            "proForma": true,
+            "transactionEffect": "the incurrence of such Indebtedness - deemed to have been incurred on the first day of each relevant period for testing such compliance",
+            "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+            "deemedEffectiveAt": null,
+            "testingPeriod": "each relevant period for testing such compliance",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(c)",
+              "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter... as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+            }
+          },
+          "expressionKind": null,
+          "description": "Parent Borrower must be in compliance, on a pro forma basis after giving effect to the incurrence of the Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, as if the Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+        }
+      ],
+      "inheritedAttributes": [
+        {
+          "attribute": "governingProhibition",
+          "sourceAuthority": "GOVERNING_SCOPE",
+          "sourceSectionRef": "article-group:7",
+          "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+          "sourceSpan": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": null,
+            "charStart": 44178,
+            "charEnd": 44516,
+            "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+          },
+          "ancestorDistance": 2
+        },
+        {
+          "attribute": "action",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.2",
+          "evidence": "Create, incur, assume or suffer to exist any Indebtedness",
+          "canonicalValue": "INCUR_DEBT",
+          "compatibility": "COMPATIBLE",
+          "sourceSpan": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:a9b723686e58119d7cd922a5",
+            "charStart": 47792,
+            "charEnd": 47898,
+            "sha256": "595db524693580f02b0aeaa4cfaeb6c877fa334075a82842b0fb88b348259128"
+          },
+          "ancestorDistance": 1
+        },
+        {
+          "attribute": "entityScope",
+          "sourceAuthority": "GOVERNING_SCOPE",
+          "sourceSectionRef": "article-group:7",
+          "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+          "canonicalValue": "BORROWER+ANY_SUBSIDIARY",
+          "compatibility": "INCOMPATIBLE",
+          "sourceSpan": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": null,
+            "charStart": 44178,
+            "charEnd": 44516,
+            "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+          },
+          "ancestorDistance": 2
+        }
+      ],
+      "sourceReferenceAudit": {
+        "version": "source-reference-fidelity.v2",
+        "note": "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the candidate's source states; only `authoritative` entries entered the unit's semantics",
+        "statedReferences": [
+          {
+            "raw": "Section 7.3(g)",
+            "normalized": "7.3(g)",
+            "origin": "OPERATIVE_TEXT"
+          },
+          {
+            "raw": "Section 7.1",
+            "normalized": "7.1",
+            "origin": "OPERATIVE_TEXT"
+          }
+        ],
+        "entries": [
+          {
+            "path": "rule[r1].condition[0].referencesRuleTargets",
+            "emitted": "Section 7.1",
+            "classification": "EXACT_SOURCE_REFERENCE",
+            "authoritative": true,
+            "restoredTo": null,
+            "statedRefs": [
+              "Section 7.1"
+            ],
+            "detail": "the reference as drafted"
+          },
+          {
+            "path": "rule[r1].dependsOn[0]",
+            "emitted": "Section 7.3(g)",
+            "classification": "EXACT_SOURCE_REFERENCE",
+            "authoritative": true,
+            "restoredTo": null,
+            "statedRefs": [
+              "Section 7.3(g)"
+            ],
+            "detail": "the reference as drafted"
+          }
+        ]
+      },
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "entityScopeExcluded": [],
+      "entityScopeAudit": {
+        "guardVersion": "entity-scope-consistency-guard.v3",
+        "status": "SOURCE_SCOPE_DERIVED",
+        "safeToRely": true,
+        "reasonCodes": [
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED"
+        ],
+        "rawEmitted": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "raw": "BORROWER",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "BORROWER",
+            "viaAlias": false
+          }
+        ],
+        "before": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "COMPLETE"
+        },
+        "witness": {
+          "ownExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+          "citedUnitLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:",
+          "decidedBy": "GOVERNING_SCOPE",
+          "signals": [
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 84,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "CONDITION_SUBJECT",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 338,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "MEASUREMENT_CONTEXT",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Subsidiaries",
+              "index": 355,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "MEASUREMENT_CONTEXT",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "partialOnly": false
+            },
+            {
+              "tier": "GOVERNING_SCOPE",
+              "phrase": "Borrower",
+              "index": 30,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "GOVERNING_SCOPE",
+              "phrase": "Borrower",
+              "index": 246,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "GOVERNING_SCOPE",
+              "phrase": "Subsidiaries",
+              "index": 298,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "partialOnly": false
+            }
+          ],
+          "governingScope": {
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "basisSectionRef": "article-group:7",
+            "basisRole": "GOVERNING_SCOPE",
+            "ancestorDistance": 2,
+            "phrases": [
+              "Borrower",
+              "Subsidiaries"
+            ],
+            "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P"
+          }
+        },
+        "precedence": "GOVERNING_SCOPE_SOURCE",
+        "modelDiscrepancy": {
+          "modelScope": [
+            "BORROWER"
+          ],
+          "rawEmitted": [
+            "BORROWER"
+          ],
+          "governingScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "relation": "MODEL_NARROWER"
+        }
+      }
+    }
+  ]
+}

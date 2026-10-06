@@ -1,0 +1,176 @@
+{
+  "note": "request/response observation at the fetch boundary; headers are never recorded",
+  "observations": [
+    {
+      "seq": 1,
+      "at": "2026-10-06T14:25:39.160Z",
+      "urlPath": "/v1/messages",
+      "method": "POST",
+      "request": {
+        "model": "deepseek/deepseek-v4-flash",
+        "maxTokens": 6218,
+        "thinking": {
+          "type": "disabled"
+        },
+        "stream": true,
+        "toolNames": [],
+        "toolChoice": null,
+        "systemHead": "Headroom Semantic Inventory (semantic-inventory-prompt.v6). Task: for each SLOT of contract text you are given, list the",
+        "messages": 1,
+        "bodyChars": 6200
+      },
+      "response": {
+        "status": 200,
+        "ok": true,
+        "responseModel": "deepseek/deepseek-v4-flash",
+        "messageId": "gen_01M48SP62NAS630EGVT98GGY42",
+        "stopReason": "end_turn",
+        "usage": {
+          "input_tokens": 1638,
+          "output_tokens": 939
+        },
+        "durationMs": 9098,
+        "bodyChars": 31531,
+        "error": null
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-06T14:25:48.291Z",
+      "urlPath": "/v1/messages",
+      "method": "POST",
+      "request": {
+        "model": "deepseek/deepseek-v4-flash",
+        "maxTokens": 6218,
+        "thinking": {
+          "type": "disabled"
+        },
+        "stream": true,
+        "toolNames": [],
+        "toolChoice": null,
+        "systemHead": "Headroom Semantic Inventory (semantic-inventory-prompt.v6). Task: for each SLOT of contract text you are given, list the",
+        "messages": 1,
+        "bodyChars": 6200
+      },
+      "response": {
+        "status": 200,
+        "ok": true,
+        "responseModel": "deepseek/deepseek-v4-flash",
+        "messageId": "gen_01M48SPEWCBCH9JAQZ183S4CGD",
+        "stopReason": "end_turn",
+        "usage": {
+          "input_tokens": 614,
+          "output_tokens": 928,
+          "cache_read_input_tokens": 1024
+        },
+        "durationMs": 7918,
+        "bodyChars": 31775,
+        "error": null
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-06T14:25:56.296Z",
+      "urlPath": "/v1/messages",
+      "method": "POST",
+      "request": {
+        "model": "deepseek/deepseek-v4-flash",
+        "maxTokens": 32000,
+        "thinking": null,
+        "stream": true,
+        "toolNames": [
+          "submit_compilation"
+        ],
+        "toolChoice": {
+          "type": "tool",
+          "name": "submit_compilation"
+        },
+        "systemHead": "You are the Headroom AI Semantic Covenant Compiler. Your ONLY job is to translate the operative legal text of ONE covena",
+        "messages": 1,
+        "bodyChars": 69429
+      },
+      "response": {
+        "status": 200,
+        "ok": true,
+        "responseModel": "deepseek/deepseek-v4-flash",
+        "messageId": "gen_01M48SPPRMCN0WNAAFEMBRBRWP",
+        "stopReason": "end_turn",
+        "usage": {
+          "input_tokens": 17793,
+          "output_tokens": 1306
+        },
+        "durationMs": 7951,
+        "bodyChars": 86729,
+        "error": null
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-06T14:26:04.258Z",
+      "urlPath": "/v1/messages",
+      "method": "POST",
+      "request": {
+        "model": "deepseek/deepseek-v4-flash",
+        "maxTokens": 32000,
+        "thinking": null,
+        "stream": true,
+        "toolNames": [
+          "submit_compilation"
+        ],
+        "toolChoice": {
+          "type": "tool",
+          "name": "submit_compilation"
+        },
+        "systemHead": "You are the Headroom AI Semantic Covenant Compiler. Your ONLY job is to translate the operative legal text of ONE covena",
+        "messages": 1,
+        "bodyChars": 75239
+      },
+      "response": {
+        "status": 200,
+        "ok": true,
+        "responseModel": "deepseek/deepseek-v4-flash",
+        "messageId": "gen_01M48SPYGZ3EA3XG1GWCS7D7ZE",
+        "stopReason": "end_turn",
+        "usage": {
+          "input_tokens": 1827,
+          "output_tokens": 1381,
+          "cache_read_input_tokens": 17408
+        },
+        "durationMs": 7325,
+        "bodyChars": 91211,
+        "error": null
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-06T14:26:11.636Z",
+      "urlPath": "/v1/messages",
+      "method": "POST",
+      "request": {
+        "model": "deepseek/deepseek-v4-flash",
+        "maxTokens": 32000,
+        "thinking": null,
+        "stream": true,
+        "toolNames": [],
+        "toolChoice": null,
+        "systemHead": "You are the Headroom Independent Semantic Covenant Verifier. Your ONLY job is to check whether a PROPOSED covenant repre",
+        "messages": 1,
+        "bodyChars": 48323
+      },
+      "response": {
+        "status": 200,
+        "ok": true,
+        "responseModel": "deepseek/deepseek-v4-flash",
+        "messageId": "gen_01M48SQ5TW8YT0X83193A9CAE0",
+        "stopReason": "end_turn",
+        "usage": {
+          "input_tokens": 11423,
+          "output_tokens": 18982
+        },
+        "durationMs": 217831,
+        "bodyChars": 587184,
+        "error": null
+      }
+    }
+  ]
+}

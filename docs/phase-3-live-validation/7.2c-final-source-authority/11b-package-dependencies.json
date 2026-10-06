@@ -1,0 +1,73 @@
+{
+  "version": "p3-package-dependency-resolution.v3",
+  "bindings": [
+    {
+      "bindingId": "c46f8fa738e6fbbb44e22c83",
+      "kind": "CONDITION_TARGET",
+      "fromNodeId": "ir-rule:11f0445de25e714a1a3cfe31",
+      "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "fromCertificationStatus": "REVIEW_REQUIRED",
+      "path": "conditions[0].referencesRuleTargets[0]",
+      "relationshipType": null,
+      "exactSourceTargetRef": "Section 7.1",
+      "normalizedTargetRef": "7.1",
+      "resolvedStructuralTarget": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+        "sectionRef": "7.1"
+      },
+      "owningCandidateRefs": [
+        "discovery-candidate:a26970121ceb558846ff8d1c",
+        "discovery-candidate:e37352369564a1e784e0560b"
+      ],
+      "boundSemanticTargetIds": [],
+      "targets": [],
+      "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+      "bindingMode": null,
+      "executable": false,
+      "detail": "owning candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b are known to the sealed population but not in this package's target set"
+    },
+    {
+      "bindingId": "f28d46e509ab1281c47095f2",
+      "kind": "SOURCE_DEPENDENCY",
+      "fromNodeId": "ir-rule:11f0445de25e714a1a3cfe31",
+      "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "fromCertificationStatus": "REVIEW_REQUIRED",
+      "path": "sourceDependencies[0]",
+      "relationshipType": "REQUIRES",
+      "exactSourceTargetRef": "Section 7.3(g)",
+      "normalizedTargetRef": "7.3(g)",
+      "resolvedStructuralTarget": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+        "sectionRef": "7.3(g)"
+      },
+      "owningCandidateRefs": [
+        "discovery-candidate:082c80836268c7277cc39c18"
+      ],
+      "boundSemanticTargetIds": [],
+      "targets": [],
+      "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+      "bindingMode": null,
+      "executable": false,
+      "detail": "owning candidate(s) discovery-candidate:082c80836268c7277cc39c18 are known to the sealed population but not in this package's target set"
+    }
+  ],
+  "graph": {
+    "nodeIds": [],
+    "edges": []
+  },
+  "counts": {
+    "total": 2,
+    "bound": 0,
+    "executable": 0,
+    "notInTargetSet": 2,
+    "notCompiled": 0,
+    "unitNotFound": 0,
+    "unknown": 0,
+    "reviewRequired": 0,
+    "oneToMany": 0,
+    "selectorReview": 0,
+    "qualifiedOneToMany": 0
+  }
+}

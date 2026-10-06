@@ -1,0 +1,47 @@
+{
+  "identity": {
+    "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "normalizedSourceRef": "7.2(c)",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(c)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:99cfe0463b0b851f644273fb"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:99cfe0463b0b851f644273fb",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2(c)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.2(c)",
+      "charStart": 48103,
+      "charEnd": 48632
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 529,
+    "operativeSourceSha256": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+    "operativeSourceText": "(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n",
+    "expected": {
+      "chars": 529,
+      "sha256": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "INDEBTEDNESS",
+      "LIENS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "RATIO_BASED_PERMISSION",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}
