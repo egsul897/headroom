@@ -36,8 +36,19 @@
         "noRelatedSeriesAC",
         "costCeilingUnchanged"
       ],
-      "decision": "PENDING",
-      "notes": ""
+      "decision": "PASS_WITH_NOTES",
+      "notes": "PASS_WITH_NOTES: identity verified vs sealed Chewy; soft gate + PINNED_OFFLINE; first-target untouched. Non-blocking: Trust preferred (already PASS); follow-on offline pins for LIENS/INVESTMENTS/ASSET_SALES/FC/WITH_BUILDERS before live; false-claim clean.",
+      "signedAt": "2026-10-06T23:03:00Z"
+    },
+    "Trust": {
+      "fields": [
+        "adr1",
+        "identity",
+        "failClosed"
+      ],
+      "decision": "PASS",
+      "signedAt": "2026-10-06T23:03:00Z",
+      "notes": "PASS @ b7ba590 (checklist tip c0281bc substance same): first-target untouched; discovery identity + sha verified; fail-closed honesty."
     }
   },
   "aggregate": {
