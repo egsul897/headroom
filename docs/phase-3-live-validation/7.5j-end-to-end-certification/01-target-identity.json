@@ -1,0 +1,48 @@
+{
+  "identity": {
+    "discoveryId": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "normalizedSourceRef": "7.5(j)",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(j)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "structuralNodeIds": [
+      "structural-node:8599a1bc2045c7ecda17f201",
+      "structural-node:2e794887bf69b231906465c8"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:8599a1bc2045c7ecda17f201",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.5(j)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.5(j)",
+      "charStart": 72710,
+      "charEnd": 73218
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 508,
+    "operativeSourceSha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+    "operativeSourceText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n",
+    "expected": {
+      "chars": 508,
+      "sha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "DISPOSITIONS",
+      "ASSET_SALES"
+    ],
+    "role": "BASKET",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}

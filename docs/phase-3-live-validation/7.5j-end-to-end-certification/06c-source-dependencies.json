@@ -1,0 +1,188 @@
+{
+  "rules": [
+    {
+      "ruleId": "ir-rule:813a03f3488f210788389510",
+      "sourceSectionRef": "Section 7.5(j)",
+      "sourceDependencies": [],
+      "unresolvedDependencies": [],
+      "dependsOn": [],
+      "conditions": [
+        {
+          "conditionId": "rule[r7_5j].condition[0]",
+          "conditionType": "OTHER_RULE_SATISFIED",
+          "referencesRuleTargets": [],
+          "targetCombination": null,
+          "evaluationBasis": null,
+          "expressionKind": null,
+          "description": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause."
+        }
+      ],
+      "inheritedAttributes": [
+        {
+          "attribute": "governingProhibition",
+          "sourceAuthority": "GOVERNING_SCOPE",
+          "sourceSectionRef": "article-group:7",
+          "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+          "sourceSpan": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": null,
+            "charStart": 44178,
+            "charEnd": 44516,
+            "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+          },
+          "ancestorDistance": 2
+        },
+        {
+          "attribute": "action",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.5",
+          "evidence": "issue or sell any shares",
+          "canonicalValue": null,
+          "compatibility": "INCOMPATIBLE",
+          "sourceSpan": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+            "charStart": 69668,
+            "charEnd": 69961,
+            "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+          },
+          "ancestorDistance": 1
+        }
+      ],
+      "sourceReferenceAudit": null,
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "entityScopeExcluded": [],
+      "entityScopeAudit": {
+        "guardVersion": "entity-scope-consistency-guard.v3",
+        "status": "SOURCE_MATCH_CONFIRMED",
+        "safeToRely": true,
+        "reasonCodes": [
+          "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+        ],
+        "rawEmitted": {
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "raw": "BORROWER",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "BORROWER",
+            "viaAlias": false
+          },
+          {
+            "field": "entityScope",
+            "raw": "ANY_SUBSIDIARY",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "ANY_SUBSIDIARY",
+            "viaAlias": false
+          }
+        ],
+        "before": {
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "PARTIAL"
+        },
+        "witness": {
+          "ownExcerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "citedUnitLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:",
+          "decidedBy": "OWN_EXCERPT",
+          "signals": [
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 144,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Subsidiaries",
+              "index": 167,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "ANY_SUBSIDIARY"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "PARENT_SCOPE",
+              "phrase": "Subsidiary",
+              "index": 199,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "ANY_SUBSIDIARY"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "PARENT_SCOPE",
+              "phrase": "Subsidiary",
+              "index": 244,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "ANY_SUBSIDIARY"
+              ],
+              "partialOnly": false
+            }
+          ],
+          "governingScope": {
+            "derivedScope": [
+              "ANY_SUBSIDIARY"
+            ],
+            "basisSectionRef": "7.5",
+            "basisRole": "PARENT_SCOPE",
+            "ancestorDistance": 1,
+            "phrases": [
+              "Subsidiary"
+            ],
+            "evidence": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of s"
+          }
+        },
+        "precedence": "OWN_OPERATIVE_LANGUAGE",
+        "modelDiscrepancy": null
+      }
+    }
+  ]
+}

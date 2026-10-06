@@ -1,0 +1,220 @@
+{
+  "packageCertification": {
+    "version": "phase3-package-certification.v3",
+    "status": "PARTIAL",
+    "blockers": [
+      {
+        "code": "CANDIDATE_REVIEW_REQUIRED",
+        "severity": "REVIEW",
+        "detail": "candidate 7.5(j): COMPILATION_NOT_COMPLETED, UNACCOUNTED_MATERIAL_SOURCE, UNIT_SUFFICIENCY_INCOMPLETE",
+        "refs": [
+          "discovery-candidate:5aeac47ab31feb23331e4f89"
+        ]
+      },
+      {
+        "code": "DISCOVERY_POPULATION_UNSEALED",
+        "severity": "PARTIAL",
+        "detail": "the candidate population was not sealed by discovery; its completeness cannot be asserted",
+        "refs": []
+      },
+      {
+        "code": "PARTIAL_TARGET_SET",
+        "severity": "PARTIAL",
+        "detail": "the population is a declared partial target set; a package certification is never claimed over a subset",
+        "refs": []
+      },
+      {
+        "code": "REVIEW_UNRESOLVED_ITEM",
+        "severity": "REVIEW",
+        "detail": "2 unresolved item(s) require review",
+        "refs": [
+          "ddb1af96c1ab1ac72dc793db",
+          "f3927933a8c16fd064402661"
+        ]
+      }
+    ],
+    "warnings": [],
+    "discoveryPopulation": {
+      "scope": "PARTIAL_TARGET_SET",
+      "sealedDiscoveryIdentity": null,
+      "candidatePopulationHash": "cph1:fbb354311f408e9ef43cf7cce35ef82d2e72dc10130d008eeabbeb40fb42c703",
+      "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+      "candidatesDiscovered": 1
+    },
+    "representedPopulationHash": "cph1:fbb354311f408e9ef43cf7cce35ef82d2e72dc10130d008eeabbeb40fb42c703",
+    "candidates": {
+      "total": 1,
+      "eligible": 1,
+      "represented": 1,
+      "certified": 0,
+      "reviewRequired": 1,
+      "notCertified": 0
+    },
+    "edges": {
+      "executable": 0,
+      "certifiedSemantic": 0,
+      "reviewOnly": 0,
+      "deterministicStructural": 0,
+      "contextualInference": 0
+    },
+    "bindings": {
+      "total": 0,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 0,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0,
+      "reviewRequired": 0,
+      "oneToMany": 0,
+      "selectorReview": 0,
+      "qualifiedOneToMany": 0
+    }
+  },
+  "manifest": {
+    "schema": "p3-package-certification-manifest.v1",
+    "sourcePackage": {
+      "companyId": "conmed-pilot",
+      "packageKey": "conmed-2025-credit-facility",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "asOfDate": "2026-10-06",
+      "documents": [
+        {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "role": "BASE",
+          "textSha256": "d4659601000fae07d5050167ecffb0d9da91708a57111c59dff0db40fb86540c"
+        },
+        {
+          "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+          "role": "ANCILLARY",
+          "textSha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36"
+        },
+        {
+          "documentId": "conmed-doc-c-second-amendment-2022",
+          "role": "AMENDMENT",
+          "textSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82"
+        },
+        {
+          "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+          "role": "AMENDMENT",
+          "textSha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401"
+        }
+      ]
+    },
+    "discoveryPopulation": {
+      "scope": "PARTIAL_TARGET_SET",
+      "sealedDiscoveryIdentity": null,
+      "candidatePopulationHash": "cph1:fbb354311f408e9ef43cf7cce35ef82d2e72dc10130d008eeabbeb40fb42c703",
+      "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+      "candidatesDiscovered": 1
+    },
+    "certifiedConfigIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+    "mapIdentity": {
+      "mapHash": "16f9462d1cde7c6d73e32270200eae7b0e76c5f599fda686775124194ddd4e1b",
+      "mapAlgorithmVersion": "covenant-map-assembly.v3",
+      "compilerAlgorithmVersion": "semantic-accountability-compiler.v9",
+      "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+      "irSchemaVersion": "headroom-covenant-ir.v1"
+    },
+    "candidateCertifications": [
+      {
+        "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+        "sectionRef": "7.5(j)",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "outcome": "MAPPED_WITH_REVIEW",
+        "status": "REVIEW_REQUIRED",
+        "blockers": [
+          "COMPILATION_NOT_COMPLETED",
+          "UNACCOUNTED_MATERIAL_SOURCE",
+          "UNIT_SUFFICIENCY_INCOMPLETE"
+        ],
+        "operativeSourceVersion": "scv1:cf9dd07239898f429fa442117960e9b942cc2a4278cab1c2b343cb179e548f1d",
+        "semanticSourceContractVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+        "artifactPackageHash": "5aae34763d623f72ca1d8e04006877840bbef79725afa7467ece149a54c1b91c",
+        "snapshotHash": "fb0a8192ac0e73c5f038e8604a33aa4f6b836a8471bfb6de4515376ef9de10ed",
+        "unitIds": [
+          "ir-rule:813a03f3488f210788389510"
+        ],
+        "unitArtifactHashes": {
+          "ir-rule:813a03f3488f210788389510": "d800f2400330fa9f92d97c93e2c5d75a6f4becda32d2aec8fd44bb94556b3b5d"
+        }
+      }
+    ],
+    "verifiedArtifactPackageHashes": [
+      "5aae34763d623f72ca1d8e04006877840bbef79725afa7467ece149a54c1b91c"
+    ],
+    "packageCertification": {
+      "version": "phase3-package-certification.v3",
+      "status": "PARTIAL",
+      "blockers": [
+        {
+          "code": "CANDIDATE_REVIEW_REQUIRED",
+          "severity": "REVIEW",
+          "detail": "candidate 7.5(j): COMPILATION_NOT_COMPLETED, UNACCOUNTED_MATERIAL_SOURCE, UNIT_SUFFICIENCY_INCOMPLETE",
+          "refs": [
+            "discovery-candidate:5aeac47ab31feb23331e4f89"
+          ]
+        },
+        {
+          "code": "DISCOVERY_POPULATION_UNSEALED",
+          "severity": "PARTIAL",
+          "detail": "the candidate population was not sealed by discovery; its completeness cannot be asserted",
+          "refs": []
+        },
+        {
+          "code": "PARTIAL_TARGET_SET",
+          "severity": "PARTIAL",
+          "detail": "the population is a declared partial target set; a package certification is never claimed over a subset",
+          "refs": []
+        },
+        {
+          "code": "REVIEW_UNRESOLVED_ITEM",
+          "severity": "REVIEW",
+          "detail": "2 unresolved item(s) require review",
+          "refs": [
+            "ddb1af96c1ab1ac72dc793db",
+            "f3927933a8c16fd064402661"
+          ]
+        }
+      ],
+      "warnings": [],
+      "discoveryPopulation": {
+        "scope": "PARTIAL_TARGET_SET",
+        "sealedDiscoveryIdentity": null,
+        "candidatePopulationHash": "cph1:fbb354311f408e9ef43cf7cce35ef82d2e72dc10130d008eeabbeb40fb42c703",
+        "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+        "candidatesDiscovered": 1
+      },
+      "representedPopulationHash": "cph1:fbb354311f408e9ef43cf7cce35ef82d2e72dc10130d008eeabbeb40fb42c703",
+      "candidates": {
+        "total": 1,
+        "eligible": 1,
+        "represented": 1,
+        "certified": 0,
+        "reviewRequired": 1,
+        "notCertified": 0
+      },
+      "edges": {
+        "executable": 0,
+        "certifiedSemantic": 0,
+        "reviewOnly": 0,
+        "deterministicStructural": 0,
+        "contextualInference": 0
+      },
+      "bindings": {
+        "total": 0,
+        "bound": 0,
+        "executable": 0,
+        "notInTargetSet": 0,
+        "notCompiled": 0,
+        "unitNotFound": 0,
+        "unknown": 0,
+        "reviewRequired": 0,
+        "oneToMany": 0,
+        "selectorReview": 0,
+        "qualifiedOneToMany": 0
+      }
+    },
+    "manifestHash": "412dacaac8f7d5a71c6cf10b4bc6ce73134c2ac42ce19986f6c89d3feab9e1fb"
+  }
+}

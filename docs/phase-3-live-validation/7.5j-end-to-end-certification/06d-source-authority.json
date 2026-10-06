@@ -1,0 +1,325 @@
+{
+  "derivedFrom": [
+    "01-target-identity.json",
+    "06-compilation.json"
+  ],
+  "versions": {
+    "scanner": "source-reference-scan.v1",
+    "inventory": "semantic-accountability.v6",
+    "fidelity": "source-reference-fidelity.v2",
+    "frozenInventoryAlgorithm": "semantic-accountability.v6+semantic-ensemble.v2"
+  },
+  "operativeTextScan": [],
+  "inventoryItems": [
+    {
+      "inventoryItemId": "inv-item:0e5329437d345c7c5674b0b7",
+      "span": [
+        0,
+        132
+      ],
+      "excerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "TRIGGER"
+        ],
+        "quantitative": [],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:c262463526204a96714cd8f6",
+      "span": [
+        44,
+        103
+      ],
+      "excerpt": "or series of related Dispositions of Property or businesses",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "ALTERNATIVE"
+        ],
+        "quantitative": [],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "SINGLE_RUN"
+    },
+    {
+      "inventoryItemId": "inv-item:2bb0c84da8ad713ef2667e0f",
+      "span": [
+        47,
+        103
+      ],
+      "excerpt": "series of related Dispositions of Property or businesses",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "TRIGGER"
+        ],
+        "quantitative": [],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "COVERAGE_CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:541d14cc3ca11673e0ef03da",
+      "span": [
+        133,
+        271
+      ],
+      "excerpt": "the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "TRIGGER"
+        ],
+        "quantitative": [
+          "VALUE"
+        ],
+        "dependency": [
+          "REFERENCE"
+        ]
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:da2ae7a8c96e1ad42210a94e",
+      "span": [
+        181,
+        271
+      ],
+      "excerpt": "valued at the initial principal amount thereof in the case of non-cash proceeds consisting",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "CONDITION"
+        ],
+        "quantitative": [
+          "FORMULA_COMPONENT"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:cfa2c306e7039e94371d186b",
+      "span": [
+        272,
+        405
+      ],
+      "excerpt": "of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "ALTERNATIVE"
+        ],
+        "quantitative": [
+          "FORMULA_COMPONENT"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "COVERAGE_CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+      "span": [
+        310,
+        405
+      ],
+      "excerpt": "valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "ALTERNATIVE"
+        ],
+        "quantitative": [
+          "FORMULA_COMPONENT"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "COVERAGE_CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:49cd4edb5551607ed5273395",
+      "span": [
+        378,
+        405
+      ],
+      "excerpt": "of less than the greater of",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [
+          "ALTERNATIVE"
+        ],
+        "quantitative": [
+          "THRESHOLD"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "COVERAGE_CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:8178744a0966f30b34bfd88d",
+      "span": [
+        406,
+        421
+      ],
+      "excerpt": "(x) $25,000,000",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [],
+        "quantitative": [
+          "VALUE",
+          "THRESHOLD"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "COVERAGE_CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+      "span": [
+        406,
+        507
+      ],
+      "excerpt": "(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [],
+        "quantitative": [
+          "THRESHOLD"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "SINGLE_RUN"
+    },
+    {
+      "inventoryItemId": "inv-item:83b1553ecb2a2291a82e3532",
+      "span": [
+        426,
+        506
+      ],
+      "excerpt": "(y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition)",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [],
+        "quantitative": [
+          "FORMULA_COMPONENT",
+          "THRESHOLD"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "CORROBORATED"
+    },
+    {
+      "inventoryItemId": "inv-item:d137a073dabf7eee99c1276a",
+      "span": [
+        465,
+        505
+      ],
+      "excerpt": "measured on the date of such Disposition",
+      "semanticFunctions": {
+        "effect": "NONE",
+        "logic": [],
+        "quantitative": [
+          "FORMULA_COMPONENT"
+        ],
+        "dependency": []
+      },
+      "declaredReferencedSections": [],
+      "sourceGroundedReferencedSections": [],
+      "referenceAudit": {
+        "version": "source-reference-scan.v1",
+        "claims": [],
+        "omittedBySource": []
+      },
+      "supportStatus": "COVERAGE_CORROBORATED"
+    }
+  ],
+  "rules": [
+    {
+      "ruleId": "ir-rule:813a03f3488f210788389510",
+      "sourceSectionRef": "Section 7.5(j)",
+      "sourceReferenceAudit": null,
+      "authoritativeTargets": []
+    }
+  ]
+}

@@ -1,0 +1,700 @@
+{
+  "schemaVersion": "canonical-covenant-map.v3",
+  "companyId": "conmed-pilot",
+  "packageKey": "conmed-2025-credit-facility",
+  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+  "asOfDate": "2026-10-06",
+  "documents": [
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "label": "CONMED Eighth Amended and Restated Credit Agreement (2025-06-10)",
+      "documentOrdinal": 0,
+      "textSha256": "d4659601000fae07d5050167ecffb0d9da91708a57111c59dff0db40fb86540c",
+      "role": "BASE"
+    },
+    {
+      "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "label": "CONMED Amended and Restated Guarantee and Collateral Agreement (2025-06-10)",
+      "documentOrdinal": 1,
+      "textSha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36",
+      "role": "ANCILLARY"
+    },
+    {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "label": "CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01)",
+      "documentOrdinal": 2,
+      "textSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+      "role": "AMENDMENT"
+    },
+    {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "label": "CONMED First Omnibus Amendment and Increased Facility Activation Notice (2026-05-27)",
+      "documentOrdinal": 3,
+      "textSha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+      "role": "AMENDMENT"
+    }
+  ],
+  "identity": {
+    "mapAlgorithmVersion": "covenant-map-assembly.v3",
+    "certifiedConfigIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v9",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  "operativeState": {
+    "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "asOfDate": "2026-08-27",
+    "provisions": 4,
+    "unattachedEffects": 4
+  },
+  "discoveryPopulation": {
+    "scope": "PARTIAL_TARGET_SET",
+    "sealedDiscoveryIdentity": null,
+    "candidatePopulationHash": "cph1:fbb354311f408e9ef43cf7cce35ef82d2e72dc10130d008eeabbeb40fb42c703",
+    "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+    "candidatesDiscovered": 1
+  },
+  "nodes": [
+    {
+      "nodeId": "ir-rule:813a03f3488f210788389510",
+      "kind": "RULE",
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "Section 7.5(j)",
+      "structuralNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+      "structuralNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.5(j)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 72710,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "family": "QUALITATIVE_NEGATIVE_COVENANTS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "posture": "PERMISSION",
+      "termName": null,
+      "sufficiency": "PARTIAL",
+      "sourceContentVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+      "operativeSourceVersion": "scv1:cf9dd07239898f429fa442117960e9b942cc2a4278cab1c2b343cb179e548f1d",
+      "identityStrength": "STRONG",
+      "verification": {
+        "status": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+        "findingIds": [],
+        "materialFindings": 0
+      },
+      "certification": {
+        "status": "REVIEW_REQUIRED",
+        "artifactHash": "d800f2400330fa9f92d97c93e2c5d75a6f4becda32d2aec8fd44bb94556b3b5d",
+        "semanticSourceContractVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+        "blockers": [
+          "COMPILATION_NOT_COMPLETED",
+          "UNACCOUNTED_MATERIAL_SOURCE",
+          "UNIT_SUFFICIENCY_INCOMPLETE"
+        ]
+      },
+      "operative": null,
+      "unit": {
+        "ruleId": "ir-rule:813a03f3488f210788389510",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "Section 7.5(j)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:050d68c62451c26de92315b6",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Net Proceeds of such Disposition",
+              "companyId": "conmed-pilot",
+              "instrumentKey": "conmed-eighth-ar-credit-agreement",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:b64c66f012c47a337b40e1bf"
+            },
+            "operator": "LT",
+            "right": {
+              "kind": "MAX",
+              "type": "MONEY",
+              "exprId": "ir-expr:749d8cbc78145ca1afedeec4",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 25000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.5(j)",
+                    "excerpt": "(x) $25,000,000",
+                    "excerptResolution": {
+                      "version": "provenance-source-binding.v2",
+                      "status": "SOURCE_BOUND_EXACT",
+                      "reason": null,
+                      "detail": "exact excerpt located exactly once; bound to its source span",
+                      "segments": 1,
+                      "sourceKey": "operative",
+                      "sourceKind": "OPERATIVE",
+                      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceSectionRef": "7.5(j)",
+                      "charStart": 406,
+                      "charEnd": 421,
+                      "absCharStart": 73116,
+                      "absCharEnd": 73131,
+                      "boundSha256": "dfe05203cf4a5f845ede4400b2c5c6466e16decece94426fc9cdaeda18c61782"
+                    }
+                  },
+                  "exprId": "ir-expr:4dfd7323f0bdfd2e9343cea9"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:8caf559443fbdeaa30ef19f6",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "type": "PERCENT",
+                      "value": 0.015,
+                      "provenance": {
+                        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "§7.5(j)",
+                        "excerpt": "1.5% of Consolidated Total Assets",
+                        "excerptResolution": {
+                          "version": "provenance-source-binding.v2",
+                          "status": "SOURCE_BOUND_EXACT",
+                          "reason": null,
+                          "detail": "exact excerpt located exactly once; bound to its source span",
+                          "segments": 1,
+                          "sourceKey": "operative",
+                          "sourceKind": "OPERATIVE",
+                          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                          "sourceSectionRef": "7.5(j)",
+                          "charStart": 430,
+                          "charEnd": 463,
+                          "absCharStart": 73140,
+                          "absCharEnd": 73173,
+                          "boundSha256": "60ff4be9239c86fd08299a75cc44319f924f76930854cbd5c40edbdf71e04932"
+                        }
+                      },
+                      "exprId": "ir-expr:6e944b4730cd8e72f2ede982"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Consolidated Total Assets",
+                      "companyId": "conmed-pilot",
+                      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:3212d45ff79088d43d515800"
+                    }
+                  ],
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.5(j)",
+                    "excerpt": "(y) 1.5% of Consolidated Total Assets",
+                    "excerptResolution": {
+                      "version": "provenance-source-binding.v2",
+                      "status": "SOURCE_BOUND_EXACT",
+                      "reason": null,
+                      "detail": "exact excerpt located exactly once; bound to its source span",
+                      "segments": 1,
+                      "sourceKey": "operative",
+                      "sourceKind": "OPERATIVE",
+                      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceSectionRef": "7.5(j)",
+                      "charStart": 426,
+                      "charEnd": 463,
+                      "absCharStart": 73136,
+                      "absCharEnd": 73173,
+                      "boundSha256": "34d217c06315aa1139a94186eb5ef876068f68493bb7f4411974ce17297c1471"
+                    }
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.5(j)",
+                "excerpt": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+                "rawModelExcerpt": "the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+                "excerptResolution": {
+                  "version": "provenance-source-binding.v2",
+                  "status": "SOURCE_BOUND_EXACT",
+                  "reason": null,
+                  "detail": "exact excerpt located exactly once; bound to its source span",
+                  "segments": 1,
+                  "sourceKey": "operative",
+                  "sourceKind": "OPERATIVE",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceSectionRef": "7.5(j)",
+                  "charStart": 391,
+                  "charEnd": 463,
+                  "absCharStart": 73101,
+                  "absCharEnd": 73173,
+                  "boundSha256": "368395912ac441ec3b25ede13da65c936c6e3b62053030f1ab17533fc81b1abf"
+                }
+              }
+            },
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(j)",
+              "excerpt": "which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+              "rawModelExcerpt": "which yields net proceeds ... of less than the greater of",
+              "excerptResolution": {
+                "version": "provenance-source-binding.v2",
+                "status": "SOURCE_BOUND_ELIDED",
+                "reason": null,
+                "detail": "elided model excerpt (2 segments) bound deterministically to the one contiguous source span satisfying every anchor in order",
+                "segments": 2,
+                "sourceKey": "operative",
+                "sourceKind": "OPERATIVE",
+                "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceSectionRef": "7.5(j)",
+                "charStart": 104,
+                "charEnd": 405,
+                "absCharStart": 72814,
+                "absCharEnd": 73115,
+                "boundSha256": "adb63290e3c18f8034c16f7b2eda7ef12941e68faed1613f363d89c7a8fe0815"
+              }
+            }
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.5(j)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7_5j].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(j)",
+              "excerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+              "rawModelExcerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds ... of less than the greater of",
+              "excerptResolution": {
+                "version": "provenance-source-binding.v2",
+                "status": "SOURCE_BOUND_ELIDED",
+                "reason": null,
+                "detail": "elided model excerpt (2 segments) bound deterministically to the one contiguous source span satisfying every anchor in order",
+                "segments": 2,
+                "sourceKey": "operative",
+                "sourceKind": "OPERATIVE",
+                "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceSectionRef": "7.5(j)",
+                "charStart": 4,
+                "charEnd": 405,
+                "absCharStart": 72714,
+                "absCharEnd": 73115,
+                "boundSha256": "7643c15b23b9c472f90bb04272d9faa1011b272ee68e80ff6a36e9b697eab34c"
+              }
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "inheritedAttributes": [
+          {
+            "attribute": "governingProhibition",
+            "sourceAuthority": "GOVERNING_SCOPE",
+            "sourceSectionRef": "article-group:7",
+            "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+            "sourceSpan": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "structuralNodeId": null,
+              "charStart": 44178,
+              "charEnd": 44516,
+              "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+            },
+            "ancestorDistance": 2
+          },
+          {
+            "attribute": "action",
+            "sourceAuthority": "PARENT_SCOPE",
+            "sourceSectionRef": "7.5",
+            "evidence": "issue or sell any shares",
+            "canonicalValue": null,
+            "compatibility": "INCOMPATIBLE",
+            "sourceSpan": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+              "charStart": 69668,
+              "charEnd": 69961,
+              "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+            },
+            "ancestorDistance": 1
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "deterministic post-processing: 1 limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL",
+          "covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "rawModelExcerpt": "(j) any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "excerptResolution": {
+            "version": "provenance-source-binding.v2",
+            "status": "SOURCE_BOUND_EXACT",
+            "reason": null,
+            "detail": "exact excerpt located exactly once; bound to its source span",
+            "segments": 1,
+            "sourceKey": "operative",
+            "sourceKind": "OPERATIVE",
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceSectionRef": "7.5(j)",
+            "charStart": 0,
+            "charEnd": 507,
+            "absCharStart": 72710,
+            "absCharEnd": 73217,
+            "boundSha256": "032e3e8f4aeb32f9c19cff1310d519a4fc14c0a8bfc80a55c71bb51cc2596550"
+          }
+        },
+        "compilerVersion": "semantic-accountability-compiler.v9",
+        "sourceContentVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v3",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "BORROWER",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": false
+            },
+            {
+              "field": "entityScope",
+              "raw": "ANY_SUBSIDIARY",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": false
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "PARTIAL"
+          },
+          "witness": {
+            "ownExcerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+            "citedUnitLeadIn": null,
+            "parentScopeLeadIn": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:",
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 144,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 167,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "PARENT_SCOPE",
+                "phrase": "Subsidiary",
+                "index": 199,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "PARENT_SCOPE",
+                "phrase": "Subsidiary",
+                "index": 244,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ],
+            "governingScope": {
+              "derivedScope": [
+                "ANY_SUBSIDIARY"
+              ],
+              "basisSectionRef": "7.5",
+              "basisRole": "PARENT_SCOPE",
+              "ancestorDistance": 1,
+              "phrases": [
+                "Subsidiary"
+              ],
+              "evidence": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of s"
+            }
+          },
+          "precedence": "OWN_OPERATIVE_LANGUAGE",
+          "modelDiscrepancy": null
+        },
+        "inventoryItemIds": [
+          "0e5329437d345c7c5674b0b7",
+          "c262463526204a96714cd8f6",
+          "2bb0c84da8ad713ef2667e0f",
+          "541d14cc3ca11673e0ef03da",
+          "49cd4edb5551607ed5273395",
+          "8178744a0966f30b34bfd88d",
+          "5ac2fef6fb6c8558c27ae9af",
+          "83b1553ecb2a2291a82e3532",
+          "d137a073dabf7eee99c1276a"
+        ]
+      }
+    }
+  ],
+  "edges": [],
+  "candidates": [
+    {
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "discoveryId": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.5(j)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 72710,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "structuralNodeIds": [
+        "structural-node:8599a1bc2045c7ecda17f201",
+        "structural-node:2e794887bf69b231906465c8"
+      ],
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "BASKET",
+      "operativeSourceSha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+      "operativeSourceChars": 508,
+      "sourceContentVersion": "scv1:cf9dd07239898f429fa442117960e9b942cc2a4278cab1c2b343cb179e548f1d",
+      "outcome": "MAPPED_WITH_REVIEW",
+      "compilationStatus": "REVIEW_REQUIRED",
+      "compilationFailureReasons": [
+        "SEMANTIC_INVENTORY_COVERAGE_GAP",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+        "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+      ],
+      "verificationStatus": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+      "certificationStatus": "REVIEW_REQUIRED",
+      "certificationBlockers": [
+        "COMPILATION_NOT_COMPLETED",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "UNIT_SUFFICIENCY_INCOMPLETE"
+      ],
+      "semanticSourceContractVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+      "nodeIds": [
+        "ir-rule:813a03f3488f210788389510"
+      ],
+      "failure": null,
+      "telemetry": {
+        "candidateAttempt": 1,
+        "semanticConversations": 1,
+        "refinementConversations": 0,
+        "transportAttempts": 1,
+        "shardAttempts": 0,
+        "inventoryCalls": 4,
+        "verifierCalls": 1,
+        "providerCalls": 6,
+        "inputTokens": 682527,
+        "outputTokens": 8864,
+        "costUsd": 0.091061822,
+        "pricingStatus": "PRICED",
+        "wallClockMs": 85880,
+        "deadlineMs": 480000,
+        "timedOut": false
+      }
+    }
+  ],
+  "unresolved": [
+    {
+      "unresolvedId": "f3927933a8c16fd064402661",
+      "kind": "CANDIDATE_COMPILE_REVIEW_REQUIRED",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "nodeId": null,
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.5(j)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 72710,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "detail": "compilation REVIEW_REQUIRED: SEMANTIC_INVENTORY_COVERAGE_GAP, INVENTORY_ITEM_MISSING_FROM_COMPOSITION, SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+    },
+    {
+      "unresolvedId": "ddb1af96c1ab1ac72dc793db",
+      "kind": "UNIT_SUFFICIENCY_NOT_SUFFICIENT",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "nodeId": "ir-rule:813a03f3488f210788389510",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "Section 7.5(j)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 72710,
+        "structuralDepth": 2,
+        "localOrdinal": 9
+      },
+      "detail": "rule sufficiency PARTIAL: deterministic post-processing: 1 limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL; covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually); ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess"
+    }
+  ],
+  "packageDependencies": {
+    "version": "p3-package-dependency-resolution.v3",
+    "bindings": [],
+    "graph": {
+      "nodeIds": [],
+      "edges": []
+    },
+    "counts": {
+      "total": 0,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 0,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0,
+      "reviewRequired": 0,
+      "oneToMany": 0,
+      "selectorReview": 0,
+      "qualifiedOneToMany": 0
+    }
+  },
+  "completeness": {
+    "candidatesDiscovered": 1,
+    "candidatesEligible": 1,
+    "candidatesAttempted": 1,
+    "candidatesMapped": 0,
+    "candidatesMappedWithReview": 1,
+    "candidatesFailed": 0,
+    "candidatesUnserved": 0,
+    "candidatesByOutcome": {
+      "MAPPED_WITH_REVIEW": 1
+    },
+    "nodesByKind": {
+      "RULE": 1,
+      "DEFINITION": 0,
+      "SHARED_CAPACITY": 0
+    },
+    "edgesByType": {
+      "RULE_DEPENDS_ON_RULE": 0,
+      "RULE_USES_DEFINITION": 0,
+      "DEFINITION_USES_DEFINITION": 0,
+      "RULE_USES_SHARED_CAPACITY": 0,
+      "RULE_MODIFIED_BY_EXCEPTION": 0,
+      "RULE_SUBJECT_TO_CONDITION": 0,
+      "RULE_SUBJECT_TO_PROVISO": 0,
+      "RULE_SUBJECT_TO_GENERAL_PROHIBITION": 0,
+      "CROSS_DOCUMENT_DEPENDENCY": 0,
+      "AMENDMENT_SUPERSEDES": 0
+    },
+    "unresolvedByKind": {
+      "CANDIDATE_COMPILE_REVIEW_REQUIRED": 1,
+      "UNIT_SUFFICIENCY_NOT_SUFFICIENT": 1
+    },
+    "unresolvedBlocking": 0,
+    "unresolvedReview": 2,
+    "nodesVerifiedNoMaterialGap": 1,
+    "nodesUnderReview": 0,
+    "nodesStrongIdentity": 1,
+    "mappedFraction": 0,
+    "complete": false,
+    "mapComplete": false,
+    "certificationComplete": false,
+    "candidatesCertified": 0,
+    "candidatesReviewRequired": 1,
+    "candidatesNotCertified": 0,
+    "semanticUnits": 1,
+    "semanticUnitsCertified": 0,
+    "edgesByAuthority": {
+      "CERTIFIED_SEMANTIC": 0,
+      "DETERMINISTIC_STRUCTURAL": 0,
+      "CONTEXTUAL_INFERENCE": 0,
+      "REVIEW_ONLY": 0
+    }
+  },
+  "mapHash": "16f9462d1cde7c6d73e32270200eae7b0e76c5f599fda686775124194ddd4e1b"
+}

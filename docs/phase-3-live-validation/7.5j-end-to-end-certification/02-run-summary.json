@@ -1,0 +1,57 @@
+{
+  "mode": "LIVE",
+  "runId": "live-7.5j-end-to-end-certification-2026-10-06T20:21:54.599Z",
+  "wallClockMs": 85902,
+  "outcome": "MAPPED_WITH_REVIEW",
+  "failure": null,
+  "stop": null,
+  "telemetry": {
+    "candidateAttempt": 1,
+    "semanticConversations": 1,
+    "refinementConversations": 0,
+    "transportAttempts": 1,
+    "shardAttempts": 0,
+    "inventoryCalls": 4,
+    "verifierCalls": 1,
+    "providerCalls": 6,
+    "inputTokens": 682527,
+    "outputTokens": 8864,
+    "costUsd": 0.091061822,
+    "pricingStatus": "PRICED",
+    "wallClockMs": 85880,
+    "deadlineMs": 480000,
+    "timedOut": false
+  },
+  "budget": {
+    "ceilingUsd": 0.25,
+    "maxCalls": 40,
+    "calls": 6,
+    "exactUsd": 0.091061822,
+    "retainedUsd": 0.00137579,
+    "outstandingUsd": 0,
+    "committedUsd": 0.092437612,
+    "refusals": []
+  },
+  "compilationStatus": "REVIEW_REQUIRED",
+  "failureReasons": [
+    "SEMANTIC_INVENTORY_COVERAGE_GAP",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+    "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  ],
+  "verificationStatus": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+  "certification": "REVIEW_REQUIRED",
+  "packageCertification": "PARTIAL",
+  "modelRequested": "deepseek/deepseek-v4-flash",
+  "modelsReported": [
+    "deepseek/deepseek-v4-flash"
+  ],
+  "requestMaxTokens": [
+    6397,
+    2226,
+    6397,
+    2023,
+    32000,
+    32000
+  ],
+  "legacy128kUsed": false
+}

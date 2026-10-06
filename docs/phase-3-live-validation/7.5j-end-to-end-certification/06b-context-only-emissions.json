@@ -1,0 +1,23 @@
+{
+  "contextOnlyEmissions": [],
+  "invalidWireKinds": [],
+  "dependencyProseDiagnostics": [],
+  "normalizationDiagnostics": [
+    {
+      "diagnosticId": "fabc44ae2bf50a814328b28a0f144095e51167e06ecf3ae6ae97bedb92a87549",
+      "shardId": null,
+      "sourceUnit": "Section 7.5(j)",
+      "scope": "rule[r7_5j].UNLIMITED_CAPACITY.gatedBy",
+      "code": "PROVENANCE_EXCERPT_SOURCE_BOUND",
+      "message": "PROVENANCE_EXCERPT_SOURCE_BOUND: rule[r7_5j].UNLIMITED_CAPACITY.gatedBy the model's elided excerpt (\"which yields net proceeds ... of less than the greater of…\") was bound deterministically to the exact OPERATIVE source span [104,405) of operative; the authoritative excerpt is that source substring, the model's text is retained only as rawModelExcerpt"
+    },
+    {
+      "diagnosticId": "6e3d69ff114964e7dd113be4c53e66d9d68353a112c8df60be13896156dea040",
+      "shardId": null,
+      "sourceUnit": "Section 7.5(j)",
+      "scope": "rule[r7_5j].condition[0]",
+      "code": "PROVENANCE_EXCERPT_SOURCE_BOUND",
+      "message": "PROVENANCE_EXCERPT_SOURCE_BOUND: rule[r7_5j].condition[0] the model's elided excerpt (\"any Disposition of Property or business or series of related…\") was bound deterministically to the exact OPERATIVE source span [4,405) of operative; the authoritative excerpt is that source substring, the model's text is retained only as rawModelExcerpt"
+    }
+  ]
+}

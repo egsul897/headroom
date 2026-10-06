@@ -1,0 +1,255 @@
+{
+  "sufficiencyState": "SUFFICIENT",
+  "stopReasons": [],
+  "retrievalStops": [],
+  "performance": {
+    "itemsConsidered": 10,
+    "itemsRetained": 9,
+    "duplicatePathsDeduplicated": 3,
+    "maxDefinitionDepthReached": 3,
+    "maxCrossReferenceDepthReached": 1,
+    "crossReferenceTraversals": 1,
+    "crossDocumentLeads": 0,
+    "deterministicWallClockMs": 3,
+    "semanticWallClockMs": 0,
+    "semanticCalls": 0,
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "itemsRetained": 9,
+  "items": [
+    {
+      "type": "OPERATIVE_SOURCE",
+      "normalizedRef": "7.5(j)",
+      "retrievalDepth": 0,
+      "excerptChars": 508,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "PARENT_SCOPE",
+      "normalizedRef": "7.5",
+      "retrievalDepth": 1,
+      "excerptChars": 4658,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "UNVERIFIED_SIBLING_SIGNAL",
+      "normalizedRef": "7.5(f)",
+      "retrievalDepth": 1,
+      "excerptChars": 126,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "UNVERIFIED_SIBLING_SIGNAL",
+      "normalizedRef": "7.5(n)",
+      "retrievalDepth": 1,
+      "excerptChars": 635,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION",
+      "normalizedRef": "Consolidated Total Assets",
+      "retrievalDepth": 1,
+      "excerptChars": 283,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Parent Borrower",
+      "retrievalDepth": 2,
+      "excerptChars": 55,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION",
+      "normalizedRef": "Disposition",
+      "retrievalDepth": 1,
+      "excerptChars": 276,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Division",
+      "retrievalDepth": 2,
+      "excerptChars": 353,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Property",
+      "retrievalDepth": 2,
+      "excerptChars": 170,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    }
+  ],
+  "unresolvedDependencies": [
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Disposition of Property",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Disposition of Property",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Dispositions of Property",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Dispositions of Property",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Sale of Assets",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Sale of Assets",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Dispose of",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Dispose of",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Disposition of",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Disposition of",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Disposition of Inventory",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Disposition of Inventory",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Capital Stock of",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Capital Stock of",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Subsidiary Guarantor and",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Subsidiary Guarantor and",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Loan Party",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Loan Party",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Asset Sales",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Asset Sales",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Parent Borrower and",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Parent Borrower and",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Agreement and",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Agreement and",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Security Documents and",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Security Documents and",
+      "severity": "LOW"
+    }
+  ],
+  "hasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": []
+}

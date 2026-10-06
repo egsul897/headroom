@@ -1,0 +1,2294 @@
+{
+  "schema": "p3-candidate-evidence.v2",
+  "capturedAt": "2026-10-06T20:23:22.147Z",
+  "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+  "compilerInput": {
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceSectionRef": "7.5(j)",
+    "operativeSourceText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n",
+    "operativeSourceTextSha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+    "operativeSourceChars": 508,
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v9",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v8",
+    "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "operativeLineage": null,
+    "operativeSourceOrigin": "STRUCTURAL_NODE"
+  },
+  "execution": {
+    "mode": "MONOLITHIC",
+    "reason": "SINGLE_BOUNDED_SHARD",
+    "planHash": "ae6f0d7fab6c5fb9cb692504204561fca25981104c1a2b65628ee70650ec82e5",
+    "plannedShards": 1,
+    "oversizedShards": 0,
+    "sharded": null
+  },
+  "sourceContext": {
+    "state": "COMPLETE_LOCAL_SOURCE",
+    "reasons": [],
+    "regions": [
+      {
+        "regionId": "operative",
+        "kind": "OPERATIVE",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sectionRef": "7.5(j)",
+        "chars": 508,
+        "charStart": 72710,
+        "truncatedAtBudget": false
+      }
+    ]
+  },
+  "certified": {
+    "configIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+    "telemetry": {
+      "candidateAttempt": 1,
+      "semanticConversations": 1,
+      "refinementConversations": 0,
+      "transportAttempts": 1,
+      "shardAttempts": 0,
+      "inventoryCalls": 4,
+      "verifierCalls": 1,
+      "providerCalls": 6,
+      "inputTokens": 682527,
+      "outputTokens": 8864,
+      "costUsd": 0.091061822,
+      "pricingStatus": "PRICED",
+      "wallClockMs": 85880,
+      "deadlineMs": 480000,
+      "timedOut": false
+    }
+  },
+  "passA": {
+    "executionPolicy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "calls": [
+      {
+        "passId": "pass-1",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "slotIds": [
+          "operative:region#1",
+          "operative:region#2",
+          "operative:region#3",
+          "operative:region#4"
+        ],
+        "requestedMaxOutputTokens": 6397,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 12,
+        "inputTokens": 1595,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": 1756,
+        "latencyMs": 13259,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "error": null,
+        "itemsReturned": 9,
+        "itemsAccepted": 9,
+        "itemsRejectedOverBound": 0
+      },
+      {
+        "passId": "pass-1",
+        "batchId": "g1",
+        "stage": "semantic_inventory_gap",
+        "slotIds": [
+          "operative:region#1"
+        ],
+        "requestedMaxOutputTokens": 2226,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 4,
+        "inputTokens": null,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": null,
+        "latencyMs": 3540,
+        "stopReason": null,
+        "schemaOk": false,
+        "error": "Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"parentRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters\n  - items.1.localRef: Too big: expected string to have <=6 characters\n  - items.1.parentRef: Too big: expected string to have <=6 characters",
+        "itemsReturned": 0,
+        "itemsAccepted": 0,
+        "itemsRejectedOverBound": 0
+      },
+      {
+        "passId": "pass-2",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "slotIds": [
+          "operative:region#1",
+          "operative:region#2",
+          "operative:region#3",
+          "operative:region#4"
+        ],
+        "requestedMaxOutputTokens": 6397,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 12,
+        "inputTokens": 571,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": 1538,
+        "latencyMs": 12448,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "error": null,
+        "itemsReturned": 8,
+        "itemsAccepted": 8,
+        "itemsRejectedOverBound": 0
+      },
+      {
+        "passId": "pass-2",
+        "batchId": "g1",
+        "stage": "semantic_inventory_gap",
+        "slotIds": [
+          "operative:region#3"
+        ],
+        "requestedMaxOutputTokens": 2023,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 4,
+        "inputTokens": null,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": null,
+        "latencyMs": 4560,
+        "stopReason": null,
+        "schemaOk": false,
+        "error": "Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters",
+        "itemsReturned": 0,
+        "itemsAccepted": 0,
+        "itemsRejectedOverBound": 0
+      }
+    ],
+    "passes": [
+      {
+        "passId": "pass-1",
+        "frozenContentHash": "da6c482d1d8087974b30e43aa186d9e4d6e8face5798e8f0d92dd682e36bd612",
+        "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+        "items": 9,
+        "telemetryCostUsd": 0.00066391
+      },
+      {
+        "passId": "pass-2",
+        "frozenContentHash": "1be1d4b03e801ea847370cf6f4a5313db1bedb6bfb235a234c184d62654fef63",
+        "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+        "items": 7,
+        "telemetryCostUsd": 0.000502782
+      }
+    ]
+  },
+  "contextBundle": {
+    "bundleId": "context-bundle:3c941614303ecf0ce5b50d3e0e5c27e7e7bc73b117a56712573172d074c0c173",
+    "sufficiencyState": "SUFFICIENT",
+    "stopReasons": [],
+    "itemCount": 9,
+    "items": [
+      {
+        "itemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.5(j)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 508,
+        "excerptText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n"
+      },
+      {
+        "itemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.5",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 4658,
+        "excerptText": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n(a)\nthe Disposition of obsolete or worn out property in the ordinary course of business;\n(b)\nthe sale or other Disposition of Inventory in the ordinary course of business;\n(c)\nDispositions permitted by Section 7.4(b);\n(d)\nthe sale or issuance of the Capital Stock of (i) any Subsidiary to the Parent Borrower or any Subsidiary Guarantor, (ii) any Subsidiary\n(other than a Subsidiary Guarantor) to any Subsidiary Guarantor and (iii) any Subsidiary that is not a Loan Party to any other Subsidiary;\n(e)\nthe sale or transfer of any Capital Stock of any Subsidiary that is not a Loan Party acquired pursuant to a Permitted Business\nAcquisition to any other Subsidiary;\n(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audited financial statements are available) in any fiscal year and (y) 20% of Consolidated Total Assets (measured\nas of the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements\nare available, but tested only at incurrence) in the aggregate during any four-year rolling period and (ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and its Subsidiaries for\nwhich audited financial statements are available) in any fiscal year and (y) 15% of Consolidated EBITDA (measured based on Consolidated\nEBITDA for the most recently ended period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries for which financial\nstatements are available, but tested only at incurrence) in the aggregate during any four-year rolling period; provided , further ,\nthat the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;\n(g)\nmonetary payments made in the ordinary course of business;\n101\n(h)\nthe sale or discount without recourse of accounts receivable arising in the ordinary course of business of the Parent Borrower\nor its Subsidiaries in connection with the compromise or collection thereof;\n(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n(l)\nthe sale, transfer, encumbrance or other disposition of securities or related ancillary rights and assets pursuant to sales, marketing\nand distribution arrangements;\n(m)\nDispositions of Property from the Parent Borrower or a Subsidiary Guarantor to the Parent Borrower or another Subsidiary Guarantor;\nand\n(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(f)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 126,
+        "excerptText": "(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n"
+      },
+      {
+        "itemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(n)",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 635,
+        "excerptText": "(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the consummation of such sale\nin accordance with the terms of this Agreement and the other Loan Documents, be released from the Liens granted pursuant to the Security\nDocuments and each Lender hereby authorizes and instructs the Administrative Agent to take such action as the Parent Borrower reasonably\nmay request to evidence such release.\n"
+      },
+      {
+        "itemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "type": "DEFINITION",
+        "normalizedRef": "Consolidated Total Assets",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 283,
+        "excerptText": "\"Consolidated Total Assets\": as of any date of determination thereof, the amount that would appear opposite the caption \"total assets\" (or any like caption)\non a consolidated balance sheet of the Parent Borrower and its Subsidiaries prepared as of such date in accordance with GAAP.\n"
+      },
+      {
+        "itemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 55,
+        "excerptText": "\"Parent Borrower\": as defined in the preamble hereto.\n\n"
+      },
+      {
+        "itemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "type": "DEFINITION",
+        "normalizedRef": "Disposition",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 276,
+        "excerptText": "\"Disposition\": with\nrespect to any Property, any sale, lease, sale and leaseback, assignment, conveyance, transfer or other disposition thereof (whether effected\npursuant to a Division or otherwise). The terms \" Dispose \" and \" Disposed of \" shall have correlative\nmeanings.\n\n"
+      },
+      {
+        "itemId": "context-item:122ab5079c14b57428d0d1f0a462f209135a4e2ee1c0a814e11f1bf3000e793d",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Division",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 353,
+        "excerptText": "\"Division\": the division of the assets, liabilities and/or obligations of a Person that is a limited liability company (the \" Dividing Person \")\namong two or more Persons (whether pursuant to a \"plan of division\" or similar arrangement), which may or may not include\nthe Dividing Person and pursuant to which the Dividing Person may or may not survive.\n"
+      },
+      {
+        "itemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "citation": null,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        },
+        "excerptChars": 170,
+        "excerptText": "\"Property\": any right\nor interest in or to property of any kind whatsoever, whether real, personal or mixed and whether tangible or intangible, including Capital\nStock.\n\n"
+      }
+    ],
+    "edges": [
+      {
+        "fromItemId": "context-item:27e820b80aefcc6a50f9236cbad08b63d75c1f5b45ffbc63c2507b409b95fb70",
+        "toItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "edgeType": "PARENT_OF",
+        "reason": "Encloses the operative provision."
+      },
+      {
+        "fromItemId": "context-item:4371fcf0682a6fd8a36a7fc3e131ea9d1b7462edf6a56fc441a247574409504f",
+        "toItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible proviso language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:d4ccf285b21a2c60a52358db517df065505d3d81fb3c64dc93fe1e83d564cceb",
+        "toItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "edgeType": "SIBLING_OF",
+        "reason": "Unverified/possible exception language - relevance not established."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:cf7b337d4d3142e2f76f7c56c0504099e6cb34951293836aa416f24fd968386a",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Directly used defined term."
+      },
+      {
+        "fromItemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "toItemId": "context-item:122ab5079c14b57428d0d1f0a462f209135a4e2ee1c0a814e11f1bf3000e793d",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:a7077cef86a33faa8f702c1f81ed72e74842cf618a56338802b726175126bc02",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Transitive definition dependency."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:c42aaa772f0a531c5bda2e894245f9bee9dfa89fabe1880390bf335b2bab7bcb",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      },
+      {
+        "fromItemId": "context-item:6ffff28f0dc92c1440442e2593229909938e35d4167793b3f4191f0eae11079f",
+        "toItemId": "context-item:bc32415d4e122b6cc3a556cddbf3c67b5254d8b222ab82b0518abfa59ff4cf62",
+        "edgeType": "DEPENDS_ON_DEFINITION",
+        "reason": "Additional dependency path to an already-retrieved definition."
+      }
+    ]
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP",
+      "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+      "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+    ],
+    "errorDetail": null,
+    "providerError": null,
+    "rawModelOutput": {
+      "rules": [
+        {
+          "localRef": "r7_5j",
+          "sourceSectionRef": "Section 7.5(j)",
+          "covenantFamily": "LIMITATIONS_ON_SALE_OF_ASSETS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "posture": "PERMISSION",
+          "action": "SELL_ASSET",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "entityScopeExcluded": [],
+          "capacityExpression": {
+            "kind": "UNLIMITED_CAPACITY",
+            "gatedBy": {
+              "kind": "COMPARE",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Net Proceeds of such Disposition",
+                "citation": "§7.5(j)",
+                "excerpt": "net proceeds to the Parent Borrower or any of its Subsidiaries"
+              },
+              "operator": "LT",
+              "right": {
+                "kind": "MAX",
+                "operands": [
+                  {
+                    "kind": "MONEY",
+                    "amount": 25000000,
+                    "currency": "USD",
+                    "citation": "§7.5(j)",
+                    "excerpt": "(x) $25,000,000"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "operands": [
+                      {
+                        "kind": "PERCENT",
+                        "value": 0.015,
+                        "citation": "§7.5(j)",
+                        "excerpt": "1.5% of Consolidated Total Assets"
+                      },
+                      {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Consolidated Total Assets",
+                        "asOfDate": "date of such Disposition",
+                        "citation": "§7.5(j)",
+                        "excerpt": "Consolidated Total Assets (measured on the date of such Disposition)"
+                      }
+                    ],
+                    "citation": "§7.5(j)",
+                    "excerpt": "(y) 1.5% of Consolidated Total Assets"
+                  }
+                ],
+                "citation": "§7.5(j)",
+                "excerpt": "the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets"
+              },
+              "citation": "§7.5(j)",
+              "excerpt": "which yields net proceeds ... of less than the greater of"
+            }
+          },
+          "conditions": [
+            {
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "description": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause.",
+              "expression": null,
+              "referencesRuleTargets": [],
+              "targetCombination": "ALL_SATISFIED",
+              "referencesDefinitionId": null,
+              "citation": "§7.5(j)",
+              "excerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds ... of less than the greater of"
+            }
+          ],
+          "exceptions": [],
+          "dependsOn": [],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [],
+          "citation": "§7.5(j)",
+          "excerpt": "(j) any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "inventoryItemIds": [
+            "0e5329437d345c7c5674b0b7",
+            "c262463526204a96714cd8f6",
+            "2bb0c84da8ad713ef2667e0f",
+            "541d14cc3ca11673e0ef03da",
+            "49cd4edb5551607ed5273395",
+            "8178744a0966f30b34bfd88d",
+            "5ac2fef6fb6c8558c27ae9af",
+            "83b1553ecb2a2291a82e3532",
+            "d137a073dabf7eee99c1276a"
+          ]
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "da2ae7a8c96e1ad42210a94e",
+          "disposition": "CONSUMED_IN_EXPRESSION",
+          "note": "Non-cash proceeds consisting of notes or other debt securities are valued at their initial principal amount; this is a valuation rule for computing net proceeds that participates in the net-proceeds metric and is captured at the metric level."
+        },
+        {
+          "inventoryItemId": "cfa2c306e7039e94371d186b",
+          "disposition": "CONSUMED_IN_EXPRESSION",
+          "note": "Other non-cash proceeds are valued at fair market value; this is a valuation rule for computing net proceeds and participates in the net-proceeds metric."
+        },
+        {
+          "inventoryItemId": "5e02c2d017c10fdbce5ccaf7",
+          "disposition": "CONSUMED_IN_EXPRESSION",
+          "note": "Valuation of other non-cash proceeds at fair market value, part of the net-proceeds computation."
+        }
+      ],
+      "overallNotes": [
+        "Relying on §7.5's governing lead-in, the parent Article preamble binds the Parent Borrower and its Subsidiaries; the disposition in §7.5(j) is an excepted (permitted) disposition under the Section 7.5 'Limitation on Sale of Assets' basket, so posture is PERMISSION and action SELL_ASSET.",
+        "Net proceeds is expressed via a METRIC_REFERENCE (with the two non-cash valuation modes reflected in the excerpt/notes) rather than a separate wire definition because the valuation language is a computation method, not a separately declared defined term in the operative text.",
+        "§7.5(j) creates no shared capacity with any other clause; the 'less than the greater of' comparison is inherent to this single basket, so no WireSharedCapacity is emitted.",
+        "The 'series of related Dispositions' treatment is folded into the single disposition trigger (inv items c262463526204a96714cd8f6 and 2bb0c84da8ad713ef2667e0f consumed on the rule)."
+      ]
+    },
+    "toolCallLog": [],
+    "rules": [
+      {
+        "ruleId": "ir-rule:813a03f3488f210788389510",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "Section 7.5(j)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:050d68c62451c26de92315b6",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Net Proceeds of such Disposition",
+              "companyId": "conmed-pilot",
+              "instrumentKey": "conmed-eighth-ar-credit-agreement",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:b64c66f012c47a337b40e1bf"
+            },
+            "operator": "LT",
+            "right": {
+              "kind": "MAX",
+              "type": "MONEY",
+              "exprId": "ir-expr:749d8cbc78145ca1afedeec4",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 25000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.5(j)",
+                    "excerpt": "(x) $25,000,000",
+                    "excerptResolution": {
+                      "version": "provenance-source-binding.v2",
+                      "status": "SOURCE_BOUND_EXACT",
+                      "reason": null,
+                      "detail": "exact excerpt located exactly once; bound to its source span",
+                      "segments": 1,
+                      "sourceKey": "operative",
+                      "sourceKind": "OPERATIVE",
+                      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceSectionRef": "7.5(j)",
+                      "charStart": 406,
+                      "charEnd": 421,
+                      "absCharStart": 73116,
+                      "absCharEnd": 73131,
+                      "boundSha256": "dfe05203cf4a5f845ede4400b2c5c6466e16decece94426fc9cdaeda18c61782"
+                    }
+                  },
+                  "exprId": "ir-expr:4dfd7323f0bdfd2e9343cea9"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:8caf559443fbdeaa30ef19f6",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "type": "PERCENT",
+                      "value": 0.015,
+                      "provenance": {
+                        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "§7.5(j)",
+                        "excerpt": "1.5% of Consolidated Total Assets",
+                        "excerptResolution": {
+                          "version": "provenance-source-binding.v2",
+                          "status": "SOURCE_BOUND_EXACT",
+                          "reason": null,
+                          "detail": "exact excerpt located exactly once; bound to its source span",
+                          "segments": 1,
+                          "sourceKey": "operative",
+                          "sourceKind": "OPERATIVE",
+                          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                          "sourceSectionRef": "7.5(j)",
+                          "charStart": 430,
+                          "charEnd": 463,
+                          "absCharStart": 73140,
+                          "absCharEnd": 73173,
+                          "boundSha256": "60ff4be9239c86fd08299a75cc44319f924f76930854cbd5c40edbdf71e04932"
+                        }
+                      },
+                      "exprId": "ir-expr:6e944b4730cd8e72f2ede982"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Consolidated Total Assets",
+                      "companyId": "conmed-pilot",
+                      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:3212d45ff79088d43d515800"
+                    }
+                  ],
+                  "provenance": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§7.5(j)",
+                    "excerpt": "(y) 1.5% of Consolidated Total Assets",
+                    "excerptResolution": {
+                      "version": "provenance-source-binding.v2",
+                      "status": "SOURCE_BOUND_EXACT",
+                      "reason": null,
+                      "detail": "exact excerpt located exactly once; bound to its source span",
+                      "segments": 1,
+                      "sourceKey": "operative",
+                      "sourceKind": "OPERATIVE",
+                      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceSectionRef": "7.5(j)",
+                      "charStart": 426,
+                      "charEnd": 463,
+                      "absCharStart": 73136,
+                      "absCharEnd": 73173,
+                      "boundSha256": "34d217c06315aa1139a94186eb5ef876068f68493bb7f4411974ce17297c1471"
+                    }
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.5(j)",
+                "excerpt": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+                "rawModelExcerpt": "the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+                "excerptResolution": {
+                  "version": "provenance-source-binding.v2",
+                  "status": "SOURCE_BOUND_EXACT",
+                  "reason": null,
+                  "detail": "exact excerpt located exactly once; bound to its source span",
+                  "segments": 1,
+                  "sourceKey": "operative",
+                  "sourceKind": "OPERATIVE",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceSectionRef": "7.5(j)",
+                  "charStart": 391,
+                  "charEnd": 463,
+                  "absCharStart": 73101,
+                  "absCharEnd": 73173,
+                  "boundSha256": "368395912ac441ec3b25ede13da65c936c6e3b62053030f1ab17533fc81b1abf"
+                }
+              }
+            },
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(j)",
+              "excerpt": "which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+              "rawModelExcerpt": "which yields net proceeds ... of less than the greater of",
+              "excerptResolution": {
+                "version": "provenance-source-binding.v2",
+                "status": "SOURCE_BOUND_ELIDED",
+                "reason": null,
+                "detail": "elided model excerpt (2 segments) bound deterministically to the one contiguous source span satisfying every anchor in order",
+                "segments": 2,
+                "sourceKey": "operative",
+                "sourceKind": "OPERATIVE",
+                "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceSectionRef": "7.5(j)",
+                "charStart": 104,
+                "charEnd": 405,
+                "absCharStart": 72814,
+                "absCharEnd": 73115,
+                "boundSha256": "adb63290e3c18f8034c16f7b2eda7ef12941e68faed1613f363d89c7a8fe0815"
+              }
+            }
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.5(j)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7_5j].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(j)",
+              "excerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+              "rawModelExcerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds ... of less than the greater of",
+              "excerptResolution": {
+                "version": "provenance-source-binding.v2",
+                "status": "SOURCE_BOUND_ELIDED",
+                "reason": null,
+                "detail": "elided model excerpt (2 segments) bound deterministically to the one contiguous source span satisfying every anchor in order",
+                "segments": 2,
+                "sourceKey": "operative",
+                "sourceKind": "OPERATIVE",
+                "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceSectionRef": "7.5(j)",
+                "charStart": 4,
+                "charEnd": 405,
+                "absCharStart": 72714,
+                "absCharEnd": 73115,
+                "boundSha256": "7643c15b23b9c472f90bb04272d9faa1011b272ee68e80ff6a36e9b697eab34c"
+              }
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "inheritedAttributes": [
+          {
+            "attribute": "governingProhibition",
+            "sourceAuthority": "GOVERNING_SCOPE",
+            "sourceSectionRef": "article-group:7",
+            "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+            "sourceSpan": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "structuralNodeId": null,
+              "charStart": 44178,
+              "charEnd": 44516,
+              "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+            },
+            "ancestorDistance": 2
+          },
+          {
+            "attribute": "action",
+            "sourceAuthority": "PARENT_SCOPE",
+            "sourceSectionRef": "7.5",
+            "evidence": "issue or sell any shares",
+            "canonicalValue": null,
+            "compatibility": "INCOMPATIBLE",
+            "sourceSpan": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+              "charStart": 69668,
+              "charEnd": 69961,
+              "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+            },
+            "ancestorDistance": 1
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "deterministic post-processing: 1 limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL",
+          "covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "rawModelExcerpt": "(j) any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "excerptResolution": {
+            "version": "provenance-source-binding.v2",
+            "status": "SOURCE_BOUND_EXACT",
+            "reason": null,
+            "detail": "exact excerpt located exactly once; bound to its source span",
+            "segments": 1,
+            "sourceKey": "operative",
+            "sourceKind": "OPERATIVE",
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceSectionRef": "7.5(j)",
+            "charStart": 0,
+            "charEnd": 507,
+            "absCharStart": 72710,
+            "absCharEnd": 73217,
+            "boundSha256": "032e3e8f4aeb32f9c19cff1310d519a4fc14c0a8bfc80a55c71bb51cc2596550"
+          }
+        },
+        "compilerVersion": "semantic-accountability-compiler.v9",
+        "sourceContentVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v3",
+          "status": "SOURCE_MATCH_CONFIRMED",
+          "safeToRely": true,
+          "reasonCodes": [
+            "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "BORROWER",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": false
+            },
+            {
+              "field": "entityScope",
+              "raw": "ANY_SUBSIDIARY",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "ANY_SUBSIDIARY",
+              "viaAlias": false
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "PARTIAL"
+          },
+          "witness": {
+            "ownExcerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+            "citedUnitLeadIn": null,
+            "parentScopeLeadIn": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:",
+            "decidedBy": "OWN_EXCERPT",
+            "signals": [
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Borrower",
+                "index": 144,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "BORROWER"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "BORROWER"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "OWN_EXCERPT",
+                "phrase": "Subsidiaries",
+                "index": 167,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "PARENT_SCOPE",
+                "phrase": "Subsidiary",
+                "index": 199,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              },
+              {
+                "tier": "PARENT_SCOPE",
+                "phrase": "Subsidiary",
+                "index": 244,
+                "excludedContext": false,
+                "requiresAnyOf": [
+                  "GUARANTOR_RS",
+                  "NON_GUARANTOR_RS",
+                  "UNRESTRICTED_SUB"
+                ],
+                "role": "OBLIGOR",
+                "satisfied": true,
+                "satisfiedBy": [
+                  "ANY_SUBSIDIARY"
+                ],
+                "partialOnly": false
+              }
+            ],
+            "governingScope": {
+              "derivedScope": [
+                "ANY_SUBSIDIARY"
+              ],
+              "basisSectionRef": "7.5",
+              "basisRole": "PARENT_SCOPE",
+              "ancestorDistance": 1,
+              "phrases": [
+                "Subsidiary"
+              ],
+              "evidence": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of s"
+            }
+          },
+          "precedence": "OWN_OPERATIVE_LANGUAGE",
+          "modelDiscrepancy": null
+        },
+        "inventoryItemIds": [
+          "0e5329437d345c7c5674b0b7",
+          "c262463526204a96714cd8f6",
+          "2bb0c84da8ad713ef2667e0f",
+          "541d14cc3ca11673e0ef03da",
+          "49cd4edb5551607ed5273395",
+          "8178744a0966f30b34bfd88d",
+          "5ac2fef6fb6c8558c27ae9af",
+          "83b1553ecb2a2291a82e3532",
+          "d137a073dabf7eee99c1276a"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "unresolvedIssues": [
+      "[rule[r7_5j]] covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r7_5j]] ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess",
+      "Relying on §7.5's governing lead-in, the parent Article preamble binds the Parent Borrower and its Subsidiaries; the disposition in §7.5(j) is an excepted (permitted) disposition under the Section 7.5 'Limitation on Sale of Assets' basket, so posture is PERMISSION and action SELL_ASSET.",
+      "Net proceeds is expressed via a METRIC_REFERENCE (with the two non-cash valuation modes reflected in the excerpt/notes) rather than a separate wire definition because the valuation language is a computation method, not a separately declared defined term in the operative text.",
+      "§7.5(j) creates no shared capacity with any other clause; the 'less than the greater of' comparison is inherent to this single basket, so no WireSharedCapacity is emitted.",
+      "The 'series of related Dispositions' treatment is folded into the single disposition trigger (inv items c262463526204a96714cd8f6 and 2bb0c84da8ad713ef2667e0f consumed on the rule).",
+      "[inventory] INVENTORY_COVERAGE_GAP: 12 canonical item(s) from 2 independent passes: 4 exactly corroborated, 6 coverage-corroborated, 2 single-run (2 CRITICAL/MATERIAL), 0 conflicted; 6 support group(s); 2 stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass; 2 CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later",
+      "[inventory] unaccounted source operative:4-43: \"any Disposition of Property or business\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+      "[inventory] unaccounted source operative:104-132: \"which yields net proceeds to\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+      "[accountability] 6 material inventory item(s) MISSING_FROM_COMPOSITION (5 CRITICAL): inv-item:da2ae7a8c96e1ad42210a94e [FORMULA_COMPONENT], inv-item:cfa2c306e7039e94371d186b [FORMULA_COMPONENT], inv-item:5e02c2d017c10fdbce5ccaf7 [FORMULA_COMPONENT], inv-item:8178744a0966f30b34bfd88d [THRESHOLD], inv-item:5ac2fef6fb6c8558c27ae9af [THRESHOLD], inv-item:83b1553ecb2a2291a82e3532 [THRESHOLD]",
+      "[accountability] 3 material quantitative value(s) absent from the composed IR: $25,000,000, $25,000,000, 1.5%",
+      "[support] 2 CRITICAL/MATERIAL single-run and 0 conflicted item(s) across passes pass-1+pass-2 carry independent-pass support asymmetry - review required; never resolved by composition"
+    ],
+    "irExtensionCandidates": [],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "deepseek/deepseek-v4-flash",
+      "promptVersion": "semantic-accountability-compiler-prompt.v8",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation_bounded",
+      "timestamp": "2026-10-06T20:22:56.143Z",
+      "inputTokens": 669566,
+      "outputTokens": 1459,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 27424,
+      "calculatedCostUsd": 0.08742292,
+      "pricing": {
+        "pricingVersion": "headroom-pricing.v1 (2026-09)",
+        "pricingStatus": "PRICED"
+      },
+      "transport": {
+        "attempts": 1,
+        "retries": 0,
+        "policyVersion": "headroom-transport-retry.v1"
+      },
+      "semanticConversations": 1,
+      "refinementConversations": 0,
+      "transportAttempts": 1,
+      "promptChars": {
+        "pass1": 50980,
+        "pass2": null
+      },
+      "deterministicRetrievals": 0
+    },
+    "compiledAt": "2026-10-06T20:22:56.143Z",
+    "outputHash": "bf3dbacb6ea92f0a4ef3654d84f44b14969ac92d523f931757d20a3dc061949d"
+  },
+  "verification": {
+    "status": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+    "findings": [
+      {
+        "findingId": "59343ac5c23bf9325e89d959694b2c6cf1eda34b35fe83c93321a1ca93fe0d17",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.5(j)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 3 apparent independent enumerated unit(s) ((j), (x), (y)) but only 1 rule(s) and 0 exception(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 3 apparent independent enumerated unit(s) ((j), (x), (y)) but only 1 rule(s) and 0 exception(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-10-06T20:22:56.197Z"
+      }
+    ],
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ee60d7f4f30f77b21a45aa3a145798cec31d1399b78a419a7148b35845fdf4e3",
+            "kind": "AMOUNT",
+            "rawText": "$25,000,000",
+            "numericValue": 25000000,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(j)",
+            "structuralNodeKey": null,
+            "charStart": 410,
+            "charEnd": 421,
+            "parsedAmount": 25000000,
+            "scaleToken": null,
+            "scaleMultiplier": null,
+            "scaleStatus": "NONE",
+            "currency": "USD",
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "6f4bcc53480088a5ec4fcc65631f9cc23c4bcebe4e5a1b3e8a34eaa0946d8b38",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "irPath": "rules[0].capacityExpression.gatedBy.right.operands[0]",
+              "numericValue": 25000000,
+              "currency": "USD",
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.5(j)",
+              "sourceExcerpt": "(x) $25,000,000",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source AMOUNT 25000000 (canonical 25000000 USD) matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6d43bbf022299c71900364ab69fae1d5bb1ed34083d514a121822915524bf128",
+            "kind": "PERCENT",
+            "rawText": "1.5%",
+            "numericValue": 0.015,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(j)",
+            "structuralNodeKey": null,
+            "charStart": 430,
+            "charEnd": 434,
+            "provenanceClass": "PRIMARY_LOCAL"
+          },
+          "irItems": [
+            {
+              "itemId": "cfd72955d941ad930394ec9a3ae8458406dcf82d1d4b2da462ffaa3f1ab4611f",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "irPath": "rules[0].capacityExpression.gatedBy.right.operands[1].operands[0]",
+              "numericValue": 0.015,
+              "currency": null,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§7.5(j)",
+              "sourceExcerpt": "1.5% of Consolidated Total Assets",
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source PERCENT 0.015 matches 1 compiled IR PERCENT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "19debdb76a0b18df2c428855c0ca2e95b356dce3bd07aff0203cf1c68d7468e8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Parent Borrower",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(j)",
+            "structuralNodeKey": null,
+            "charStart": 137,
+            "charEnd": 152
+          },
+          "irItems": [],
+          "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7b6d086c6f3cbc9fdfb29ecacaaa1867605357654dcfe0c3922536f35193590c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Total Assets",
+            "numericValue": null,
+            "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceCitation": "7.5(j)",
+            "structuralNodeKey": null,
+            "charStart": 438,
+            "charEnd": 463
+          },
+          "irItems": [
+            {
+              "itemId": "d0bf5593f3a8e7531bca503f1ac3b1df83e14cb0d98a591d598fda9133da552f",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "irPath": "rules[0].capacityExpression.gatedBy.right.operands[1].operands[1]",
+              "numericValue": null,
+              "currency": null,
+              "textValue": "Consolidated Total Assets",
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "ownerTermName": null
+            }
+          ],
+          "reason": "source mention \"Consolidated Total Assets\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 3 apparent independent enumerated unit(s) ((j), (x), (y)) but only 1 rule(s) and 0 exception(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 410,
+              "charEnd": 421,
+              "withheldReason": null,
+              "itemId": "17577c3fcebc80376febead7593dcbf1cb45fa3fa6b6c644becdf75ff4c423b6",
+              "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+              "ownerTermName": null,
+              "ownerCitation": "§7.5(j)",
+              "referencedTerms": [
+                "Net Proceeds of such Disposition",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "Section 7.5(j)",
+                "§7.5(j)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "1.5%",
+              "normalizedValue": 0.015,
+              "currency": null,
+              "unit": "%",
+              "charStart": 430,
+              "charEnd": 434,
+              "withheldReason": null,
+              "itemId": "b4133a81593a4f810e651ef9fdf465c137e6a205a8e503bd50dceef384a76b0f",
+              "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "fieldPath": "rules[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+              "ownerTermName": null,
+              "ownerCitation": "§7.5(j)",
+              "referencedTerms": [
+                "Net Proceeds of such Disposition",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "Section 7.5(j)",
+                "§7.5(j)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "1.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"1.5%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 19,
+              "charEnd": 30,
+              "withheldReason": null,
+              "itemId": "e5fefcbe2dab2e5afd968b2bb5985693abeed4cb571458e3280ed9dedfa87d35",
+              "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.5(j)",
+              "referencedTerms": [
+                "Net Proceeds of such Disposition",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "Section 7.5(j)",
+                "§7.5(j)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "1.5%",
+              "normalizedValue": 0.015,
+              "currency": null,
+              "unit": "%",
+              "charStart": 39,
+              "charEnd": 43,
+              "withheldReason": null,
+              "itemId": "46c60312857de2dc789c39241791227c95056f05c629296994246316c2d31dec",
+              "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.5(j)",
+              "referencedTerms": [
+                "Net Proceeds of such Disposition",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "Section 7.5(j)",
+                "§7.5(j)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "1.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.gatedBy.right.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "CURRENCY_AMOUNT",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "currency": "USD",
+              "unit": "USD",
+              "charStart": 4,
+              "charEnd": 15,
+              "withheldReason": null,
+              "itemId": "4d8fadc14b3ab7199edfcaea962a99f0f8c1a41addbb1020efb575eb4ec3e9fc",
+              "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(x) $25,000,000",
+              "ownerTermName": null,
+              "ownerCitation": "§7.5(j)",
+              "referencedTerms": [
+                "Net Proceeds of such Disposition",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "Section 7.5(j)",
+                "§7.5(j)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "$25,000,000",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.gatedBy.right.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.operands[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "1.5%",
+              "normalizedValue": 0.015,
+              "currency": null,
+              "unit": "%",
+              "charStart": 4,
+              "charEnd": 8,
+              "withheldReason": null,
+              "itemId": "a8ed7c446896160a1100d70cf8f1b3a370358eabf9731d7d5819fc433acc46c8",
+              "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[1].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "(y) 1.5% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.5(j)",
+              "referencedTerms": [
+                "Net Proceeds of such Disposition",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "Section 7.5(j)",
+                "§7.5(j)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "1.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.operands[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.operands[1].operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+          "numericGrounding": {
+            "assertion": {
+              "kind": "PERCENTAGE",
+              "rawText": "1.5%",
+              "normalizedValue": 0.015,
+              "currency": null,
+              "unit": "%",
+              "charStart": 0,
+              "charEnd": 4,
+              "withheldReason": null,
+              "itemId": "ba0f7c196b1cb4a8fd01c51fc5346fed906d9698aaff985c96eab3dfe2e23a29",
+              "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+              "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+              "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[1].operands[0].provenance.excerpt",
+              "fieldClass": "SOURCE_QUOTATION_FIELD",
+              "fieldText": "1.5% of Consolidated Total Assets",
+              "ownerTermName": null,
+              "ownerCitation": "§7.5(j)",
+              "referencedTerms": [
+                "Net Proceeds of such Disposition",
+                "Consolidated Total Assets"
+              ],
+              "referencedSections": [
+                "Section 7.5(j)",
+                "§7.5(j)"
+              ]
+            },
+            "status": "GROUNDED_OPERATIVE",
+            "groundedIn": "OPERATIVE",
+            "matchedEvidenceId": "PRIMARY_LOCAL",
+            "matchedText": "1.5%",
+            "relation": "the candidate's own operative source window",
+            "unrelatedEvidenceIds": [],
+            "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.operands[1].operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+          }
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "items": [
+        {
+          "itemId": "ee60d7f4f30f77b21a45aa3a145798cec31d1399b78a419a7148b35845fdf4e3",
+          "kind": "AMOUNT",
+          "rawText": "$25,000,000",
+          "numericValue": 25000000,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 410,
+          "charEnd": 421,
+          "parsedAmount": 25000000,
+          "scaleToken": null,
+          "scaleMultiplier": null,
+          "scaleStatus": "NONE",
+          "currency": "USD",
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "6d43bbf022299c71900364ab69fae1d5bb1ed34083d514a121822915524bf128",
+          "kind": "PERCENT",
+          "rawText": "1.5%",
+          "numericValue": 0.015,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 430,
+          "charEnd": 434,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "8cf97a9b4233dc32e68d5a90df33b6988b1c6cb389edc42af2d12f2ddc5153ed",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "greater of",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 395,
+          "charEnd": 405,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "c0099fd9086604a740aa147bd20e130b18336ea0c7a03aed3949cddee7fd06cd",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "in the case of",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 228,
+          "charEnd": 242,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "16415fc178a1a4d4e35a568a87dacc014d4e637ba97e68695022a71af88aebb7",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "in the case of",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 338,
+          "charEnd": 352,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "16b737f18271891b4e192513f55aefd0ed03c287d3b67ef2aa4c15803801412b",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 144,
+          "charEnd": 152,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "c481db161a47e1d02aed5705a47dd0b79bc797dc30c8137b9affce4ed1b32a17",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Disposition",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 8,
+          "charEnd": 19,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "035476baa756fd40ed3580a124c7025f2ed7a2a742f6814fa7a8fc329c455f41",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Disposition",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 494,
+          "charEnd": 505,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        {
+          "itemId": "19debdb76a0b18df2c428855c0ca2e95b356dce3bd07aff0203cf1c68d7468e8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 137,
+          "charEnd": 152
+        },
+        {
+          "itemId": "7b6d086c6f3cbc9fdfb29ecacaaa1867605357654dcfe0c3922536f35193590c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Total Assets",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": 438,
+          "charEnd": 463
+        },
+        {
+          "itemId": "e525c58b1e6a4c00b0c5a4811b10105449953c7daef5ba1c6eed5e051c5c8d44",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(j)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "72b9fa955eb9ae88602f12e561dca105a74a98d3e4b5dbd0a33fd8f7138bd700",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7bc45626c491f7b7a5159405fdf1ec3fb87da80d9b4320484ed06b5bf30204ef",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.5(j)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 3,
+      "apparentIndependentUnitEvidence": [
+        "(j)",
+        "(x)",
+        "(y)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v3",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "items": [
+        {
+          "itemId": "dacda8f8141f797b53e21debcce1d42e2a1c427075ce6b9b5fe337413da1d0e0",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "SELL_ASSET",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "36ad062887e79c3a6a241d62842dda1a26d1afd5f6d56bc5038825aaff9edfd1",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "abb0d503401989132af09bfc57311954764a153f63c719d07b5fccaa3a8904f9",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "5e8683003bfc5e0a3a7d40b8af953fec81356c7d5f67f3b487313b2a9b2c8fdd",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f777654e19c59d6301f1346e4530544d4d6d47c7d8f752d6d4e68a681ae6a23e",
+          "kind": "INHERITED_ATTRIBUTE",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].inheritedAttributes[0]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "governingProhibition:@GOVERNING_SCOPE:article-group:7",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "article-group:7",
+          "sourceExcerpt": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "8b4ca4076cba25160c1c112ceed33ab11b523dde7c1070f577bd338573c4ea05",
+          "kind": "INHERITED_ATTRIBUTE",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].inheritedAttributes[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "action:@PARENT_SCOPE:7.5",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "7.5",
+          "sourceExcerpt": "issue or sell any shares",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "4e9127b144f91423962d4b9e12baa536c423a708ef0db548f0a04f8088a81237",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "fbeb9c6d0272703eb88ad44fc51900c3dca2ebccc042023a4b8ced9f68b5cc3d",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].capacityExpression.gatedBy",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "COMPARE:LT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": "which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "f2cfd9f7dedcac7a8450dfff5797593400952de3e2fa5912ea8c57758be88f94",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].capacityExpression.gatedBy.left",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Net Proceeds of such Disposition",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        },
+        {
+          "itemId": "6f4bcc53480088a5ec4fcc65631f9cc23c4bcebe4e5a1b3e8a34eaa0946d8b38",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].capacityExpression.gatedBy.right.operands[0]",
+          "numericValue": 25000000,
+          "currency": "USD",
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": "(x) $25,000,000",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "cfd72955d941ad930394ec9a3ae8458406dcf82d1d4b2da462ffaa3f1ab4611f",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].capacityExpression.gatedBy.right.operands[1].operands[0]",
+          "numericValue": 0.015,
+          "currency": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§7.5(j)",
+          "sourceExcerpt": "1.5% of Consolidated Total Assets",
+          "ownerTermName": null
+        },
+        {
+          "itemId": "d0bf5593f3a8e7531bca503f1ac3b1df83e14cb0d98a591d598fda9133da552f",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+          "irPath": "rules[0].capacityExpression.gatedBy.right.operands[1].operands[1]",
+          "numericValue": null,
+          "currency": null,
+          "textValue": "Consolidated Total Assets",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null,
+          "ownerTermName": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v2"
+    },
+    "numericAssertions": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+        "items": [
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 410,
+            "charEnd": 421,
+            "withheldReason": null,
+            "itemId": "17577c3fcebc80376febead7593dcbf1cb45fa3fa6b6c644becdf75ff4c423b6",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 430,
+            "charEnd": 434,
+            "withheldReason": null,
+            "itemId": "b4133a81593a4f810e651ef9fdf465c137e6a205a8e503bd50dceef384a76b0f",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 19,
+            "charEnd": 30,
+            "withheldReason": null,
+            "itemId": "e5fefcbe2dab2e5afd968b2bb5985693abeed4cb571458e3280ed9dedfa87d35",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 39,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "46c60312857de2dc789c39241791227c95056f05c629296994246316c2d31dec",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 15,
+            "withheldReason": null,
+            "itemId": "4d8fadc14b3ab7199edfcaea962a99f0f8c1a41addbb1020efb575eb4ec3e9fc",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(x) $25,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 4,
+            "charEnd": 8,
+            "withheldReason": null,
+            "itemId": "a8ed7c446896160a1100d70cf8f1b3a370358eabf9731d7d5819fc433acc46c8",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(y) 1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "ba0f7c196b1cb4a8fd01c51fc5346fed906d9698aaff985c96eab3dfe2e23a29",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[1].operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          }
+        ],
+        "fieldsWalked": 9,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": [
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 410,
+            "charEnd": 421,
+            "withheldReason": null,
+            "itemId": "17577c3fcebc80376febead7593dcbf1cb45fa3fa6b6c644becdf75ff4c423b6",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 430,
+            "charEnd": 434,
+            "withheldReason": null,
+            "itemId": "b4133a81593a4f810e651ef9fdf465c137e6a205a8e503bd50dceef384a76b0f",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "1.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 19,
+            "charEnd": 30,
+            "withheldReason": null,
+            "itemId": "e5fefcbe2dab2e5afd968b2bb5985693abeed4cb571458e3280ed9dedfa87d35",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 39,
+            "charEnd": 43,
+            "withheldReason": null,
+            "itemId": "46c60312857de2dc789c39241791227c95056f05c629296994246316c2d31dec",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "1.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "CURRENCY_AMOUNT",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "currency": "USD",
+            "unit": "USD",
+            "charStart": 4,
+            "charEnd": 15,
+            "withheldReason": null,
+            "itemId": "4d8fadc14b3ab7199edfcaea962a99f0f8c1a41addbb1020efb575eb4ec3e9fc",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(x) $25,000,000",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "$25,000,000",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"$25,000,000\" at rules[0].capacityExpression.gatedBy.right.operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 4,
+            "charEnd": 8,
+            "withheldReason": null,
+            "itemId": "a8ed7c446896160a1100d70cf8f1b3a370358eabf9731d7d5819fc433acc46c8",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[1].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "(y) 1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "1.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.operands[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        },
+        {
+          "assertion": {
+            "kind": "PERCENTAGE",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "currency": null,
+            "unit": "%",
+            "charStart": 0,
+            "charEnd": 4,
+            "withheldReason": null,
+            "itemId": "ba0f7c196b1cb4a8fd01c51fc5346fed906d9698aaff985c96eab3dfe2e23a29",
+            "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+            "ruleOrDefinitionId": "ir-rule:813a03f3488f210788389510",
+            "fieldPath": "rules[0].capacityExpression.gatedBy.right.operands[1].operands[0].provenance.excerpt",
+            "fieldClass": "SOURCE_QUOTATION_FIELD",
+            "fieldText": "1.5% of Consolidated Total Assets",
+            "ownerTermName": null,
+            "ownerCitation": "§7.5(j)",
+            "referencedTerms": [
+              "Net Proceeds of such Disposition",
+              "Consolidated Total Assets"
+            ],
+            "referencedSections": [
+              "Section 7.5(j)",
+              "§7.5(j)"
+            ]
+          },
+          "status": "GROUNDED_OPERATIVE",
+          "groundedIn": "OPERATIVE",
+          "matchedEvidenceId": "PRIMARY_LOCAL",
+          "matchedText": "1.5%",
+          "relation": "the candidate's own operative source window",
+          "unrelatedEvidenceIds": [],
+          "reason": "numeric assertion \"1.5%\" at rules[0].capacityExpression.gatedBy.right.operands[1].operands[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window"
+        }
+      ]
+    },
+    "admissibleEvidence": {
+      "localSourceHash": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+      "packageDocumentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "authenticated": [],
+      "rejected": [],
+      "evidenceSetHash": "632281c78da0ff1df67e7586e1eb259f2a21c94c3660eb8c79db0bbcf1a99ae5",
+      "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+    },
+    "semanticReviewInvoked": true,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "qualitativeLineage": {
+      "version": "qualitative-grounding.v4",
+      "units": [
+        {
+          "unitId": "ir-rule:813a03f3488f210788389510",
+          "kind": "RULE",
+          "verdict": "GROUNDED",
+          "grounded": [
+            "posture",
+            "action",
+            "ruleType",
+            "covenantFamily",
+            "entityScope",
+            "conditions[0]"
+          ],
+          "ungrounded": [],
+          "hasProvenance": true,
+          "excerptLocated": true,
+          "inventoryItemIds": [
+            "0e5329437d345c7c5674b0b7",
+            "c262463526204a96714cd8f6",
+            "2bb0c84da8ad713ef2667e0f",
+            "541d14cc3ca11673e0ef03da",
+            "49cd4edb5551607ed5273395",
+            "8178744a0966f30b34bfd88d",
+            "5ac2fef6fb6c8558c27ae9af",
+            "83b1553ecb2a2291a82e3532",
+            "d137a073dabf7eee99c1276a"
+          ],
+          "unknownInventoryItemIds": [
+            "0e5329437d345c7c5674b0b7",
+            "c262463526204a96714cd8f6",
+            "2bb0c84da8ad713ef2667e0f",
+            "541d14cc3ca11673e0ef03da",
+            "49cd4edb5551607ed5273395",
+            "8178744a0966f30b34bfd88d",
+            "5ac2fef6fb6c8558c27ae9af",
+            "83b1553ecb2a2291a82e3532",
+            "d137a073dabf7eee99c1276a"
+          ]
+        }
+      ],
+      "materialUngrounded": 0,
+      "nonMaterialLineageGaps": 0,
+      "inventoryAvailable": true,
+      "sourceTextsConsulted": 11
+    }
+  },
+  "run": {
+    "model": "deepseek/deepseek-v4-flash",
+    "tier": 1,
+    "wallClockMs": 85880,
+    "inputTokens": 682527,
+    "outputTokens": 8864,
+    "costUsd": 0.091061822,
+    "costStatus": "PRICED",
+    "timedOut": false,
+    "notes": [
+      "7_5J_END_TO_END_LIVE_CERTIFICATION",
+      "PARTIAL_TARGET_SET",
+      "budget ceiling $0.25"
+    ]
+  },
+  "certification": {
+    "status": "REVIEW_REQUIRED",
+    "blockers": [
+      "COMPILATION_NOT_COMPLETED",
+      "UNACCOUNTED_MATERIAL_SOURCE",
+      "UNIT_SUFFICIENCY_INCOMPLETE"
+    ],
+    "warnings": [],
+    "operativeSourceVersion": "scv1:cf9dd07239898f429fa442117960e9b942cc2a4278cab1c2b343cb179e548f1d",
+    "semanticSourceContractVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+    "artifactPackageHash": "5aae34763d623f72ca1d8e04006877840bbef79725afa7467ece149a54c1b91c",
+    "snapshotHash": "fb0a8192ac0e73c5f038e8604a33aa4f6b836a8471bfb6de4515376ef9de10ed"
+  },
+  "verifiedUnits": {
+    "file": "09-verified-units.json",
+    "packageHash": "5aae34763d623f72ca1d8e04006877840bbef79725afa7467ece149a54c1b91c",
+    "complete": true,
+    "artifactsPersisted": 1,
+    "unitsMissingVerification": 0,
+    "problems": []
+  }
+}

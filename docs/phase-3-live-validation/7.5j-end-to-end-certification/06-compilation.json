@@ -1,0 +1,2705 @@
+{
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+    "SEMANTIC_INVENTORY_COVERAGE_GAP",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+    "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  ],
+  "errorDetail": null,
+  "rules": [
+    {
+      "ruleId": "ir-rule:813a03f3488f210788389510",
+      "irSchemaVersion": "headroom-covenant-ir.v1",
+      "companyId": "conmed-pilot",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sourceSectionRef": "Section 7.5(j)",
+      "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "posture": "PERMISSION",
+      "action": "SELL_ASSET",
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "entityScopeExcluded": [],
+      "transactionScope": null,
+      "capacityExpression": {
+        "kind": "UNLIMITED_CAPACITY",
+        "type": "CAPACITY",
+        "gatedBy": {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:050d68c62451c26de92315b6",
+          "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Net Proceeds of such Disposition",
+            "companyId": "conmed-pilot",
+            "instrumentKey": "conmed-eighth-ar-credit-agreement",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:b64c66f012c47a337b40e1bf"
+          },
+          "operator": "LT",
+          "right": {
+            "kind": "MAX",
+            "type": "MONEY",
+            "exprId": "ir-expr:749d8cbc78145ca1afedeec4",
+            "operands": [
+              {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 25000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.5(j)",
+                  "excerpt": "(x) $25,000,000",
+                  "excerptResolution": {
+                    "version": "provenance-source-binding.v2",
+                    "status": "SOURCE_BOUND_EXACT",
+                    "reason": null,
+                    "detail": "exact excerpt located exactly once; bound to its source span",
+                    "segments": 1,
+                    "sourceKey": "operative",
+                    "sourceKind": "OPERATIVE",
+                    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceSectionRef": "7.5(j)",
+                    "charStart": 406,
+                    "charEnd": 421,
+                    "absCharStart": 73116,
+                    "absCharEnd": 73131,
+                    "boundSha256": "dfe05203cf4a5f845ede4400b2c5c6466e16decece94426fc9cdaeda18c61782"
+                  }
+                },
+                "exprId": "ir-expr:4dfd7323f0bdfd2e9343cea9"
+              },
+              {
+                "kind": "MULTIPLY",
+                "type": "MONEY",
+                "exprId": "ir-expr:8caf559443fbdeaa30ef19f6",
+                "operands": [
+                  {
+                    "kind": "PERCENT",
+                    "type": "PERCENT",
+                    "value": 0.015,
+                    "provenance": {
+                      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§7.5(j)",
+                      "excerpt": "1.5% of Consolidated Total Assets",
+                      "excerptResolution": {
+                        "version": "provenance-source-binding.v2",
+                        "status": "SOURCE_BOUND_EXACT",
+                        "reason": null,
+                        "detail": "exact excerpt located exactly once; bound to its source span",
+                        "segments": 1,
+                        "sourceKey": "operative",
+                        "sourceKind": "OPERATIVE",
+                        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                        "sourceSectionRef": "7.5(j)",
+                        "charStart": 430,
+                        "charEnd": 463,
+                        "absCharStart": 73140,
+                        "absCharEnd": 73173,
+                        "boundSha256": "60ff4be9239c86fd08299a75cc44319f924f76930854cbd5c40edbdf71e04932"
+                      }
+                    },
+                    "exprId": "ir-expr:6e944b4730cd8e72f2ede982"
+                  },
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Consolidated Total Assets",
+                    "companyId": "conmed-pilot",
+                    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:3212d45ff79088d43d515800"
+                  }
+                ],
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.5(j)",
+                  "excerpt": "(y) 1.5% of Consolidated Total Assets",
+                  "excerptResolution": {
+                    "version": "provenance-source-binding.v2",
+                    "status": "SOURCE_BOUND_EXACT",
+                    "reason": null,
+                    "detail": "exact excerpt located exactly once; bound to its source span",
+                    "segments": 1,
+                    "sourceKey": "operative",
+                    "sourceKind": "OPERATIVE",
+                    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceSectionRef": "7.5(j)",
+                    "charStart": 426,
+                    "charEnd": 463,
+                    "absCharStart": 73136,
+                    "absCharEnd": 73173,
+                    "boundSha256": "34d217c06315aa1139a94186eb5ef876068f68493bb7f4411974ce17297c1471"
+                  }
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.5(j)",
+              "excerpt": "the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+              "rawModelExcerpt": "the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets",
+              "excerptResolution": {
+                "version": "provenance-source-binding.v2",
+                "status": "SOURCE_BOUND_EXACT",
+                "reason": null,
+                "detail": "exact excerpt located exactly once; bound to its source span",
+                "segments": 1,
+                "sourceKey": "operative",
+                "sourceKind": "OPERATIVE",
+                "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceSectionRef": "7.5(j)",
+                "charStart": 391,
+                "charEnd": 463,
+                "absCharStart": 73101,
+                "absCharEnd": 73173,
+                "boundSha256": "368395912ac441ec3b25ede13da65c936c6e3b62053030f1ab17533fc81b1abf"
+              }
+            }
+          },
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.5(j)",
+            "excerpt": "which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+            "rawModelExcerpt": "which yields net proceeds ... of less than the greater of",
+            "excerptResolution": {
+              "version": "provenance-source-binding.v2",
+              "status": "SOURCE_BOUND_ELIDED",
+              "reason": null,
+              "detail": "elided model excerpt (2 segments) bound deterministically to the one contiguous source span satisfying every anchor in order",
+              "segments": 2,
+              "sourceKey": "operative",
+              "sourceKind": "OPERATIVE",
+              "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceSectionRef": "7.5(j)",
+              "charStart": 104,
+              "charEnd": 405,
+              "absCharStart": 72814,
+              "absCharEnd": 73115,
+              "boundSha256": "adb63290e3c18f8034c16f7b2eda7ef12941e68faed1613f363d89c7a8fe0815"
+            }
+          }
+        },
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": null
+        }
+      },
+      "conditions": [
+        {
+          "conditionId": "rule[r7_5j].condition[0]",
+          "conditionType": "OTHER_RULE_SATISFIED",
+          "expression": null,
+          "referencesDefinitionId": null,
+          "description": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause.",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.5(j)",
+            "excerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of",
+            "rawModelExcerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds ... of less than the greater of",
+            "excerptResolution": {
+              "version": "provenance-source-binding.v2",
+              "status": "SOURCE_BOUND_ELIDED",
+              "reason": null,
+              "detail": "elided model excerpt (2 segments) bound deterministically to the one contiguous source span satisfying every anchor in order",
+              "segments": 2,
+              "sourceKey": "operative",
+              "sourceKind": "OPERATIVE",
+              "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceSectionRef": "7.5(j)",
+              "charStart": 4,
+              "charEnd": 405,
+              "absCharStart": 72714,
+              "absCharEnd": 73115,
+              "boundSha256": "7643c15b23b9c472f90bb04272d9faa1011b272ee68e80ff6a36e9b697eab34c"
+            }
+          }
+        }
+      ],
+      "exceptions": [],
+      "dependsOn": [],
+      "inheritedAttributes": [
+        {
+          "attribute": "governingProhibition",
+          "sourceAuthority": "GOVERNING_SCOPE",
+          "sourceSectionRef": "article-group:7",
+          "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+          "sourceSpan": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": null,
+            "charStart": 44178,
+            "charEnd": 44516,
+            "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+          },
+          "ancestorDistance": 2
+        },
+        {
+          "attribute": "action",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.5",
+          "evidence": "issue or sell any shares",
+          "canonicalValue": null,
+          "compatibility": "INCOMPATIBLE",
+          "sourceSpan": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+            "charStart": 69668,
+            "charEnd": 69961,
+            "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+          },
+          "ancestorDistance": 1
+        }
+      ],
+      "operativeLineage": null,
+      "sufficiency": "PARTIAL",
+      "sufficiencyReasons": [
+        "deterministic post-processing: 1 limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL",
+        "covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+        "ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess"
+      ],
+      "provenance": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeKey": null,
+        "sourceCitation": "§7.5(j)",
+        "excerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+        "rawModelExcerpt": "(j) any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+        "excerptResolution": {
+          "version": "provenance-source-binding.v2",
+          "status": "SOURCE_BOUND_EXACT",
+          "reason": null,
+          "detail": "exact excerpt located exactly once; bound to its source span",
+          "segments": 1,
+          "sourceKey": "operative",
+          "sourceKind": "OPERATIVE",
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceSectionRef": "7.5(j)",
+          "charStart": 0,
+          "charEnd": 507,
+          "absCharStart": 72710,
+          "absCharEnd": 73217,
+          "boundSha256": "032e3e8f4aeb32f9c19cff1310d519a4fc14c0a8bfc80a55c71bb51cc2596550"
+        }
+      },
+      "compilerVersion": "semantic-accountability-compiler.v9",
+      "sourceContentVersion": "sscv2:1dcde556951d25a771dc0950cd30ca1b0de9d787b83e8720827f884f83b38229",
+      "entityScopeAudit": {
+        "guardVersion": "entity-scope-consistency-guard.v3",
+        "status": "SOURCE_MATCH_CONFIRMED",
+        "safeToRely": true,
+        "reasonCodes": [
+          "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+        ],
+        "rawEmitted": {
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "raw": "BORROWER",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "BORROWER",
+            "viaAlias": false
+          },
+          {
+            "field": "entityScope",
+            "raw": "ANY_SUBSIDIARY",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "ANY_SUBSIDIARY",
+            "viaAlias": false
+          }
+        ],
+        "before": {
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "PARTIAL"
+        },
+        "witness": {
+          "ownExcerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+          "citedUnitLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:",
+          "decidedBy": "OWN_EXCERPT",
+          "signals": [
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 144,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Subsidiaries",
+              "index": 167,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "ANY_SUBSIDIARY"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "PARENT_SCOPE",
+              "phrase": "Subsidiary",
+              "index": 199,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "ANY_SUBSIDIARY"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "PARENT_SCOPE",
+              "phrase": "Subsidiary",
+              "index": 244,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "ANY_SUBSIDIARY"
+              ],
+              "partialOnly": false
+            }
+          ],
+          "governingScope": {
+            "derivedScope": [
+              "ANY_SUBSIDIARY"
+            ],
+            "basisSectionRef": "7.5",
+            "basisRole": "PARENT_SCOPE",
+            "ancestorDistance": 1,
+            "phrases": [
+              "Subsidiary"
+            ],
+            "evidence": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of s"
+          }
+        },
+        "precedence": "OWN_OPERATIVE_LANGUAGE",
+        "modelDiscrepancy": null
+      },
+      "inventoryItemIds": [
+        "0e5329437d345c7c5674b0b7",
+        "c262463526204a96714cd8f6",
+        "2bb0c84da8ad713ef2667e0f",
+        "541d14cc3ca11673e0ef03da",
+        "49cd4edb5551607ed5273395",
+        "8178744a0966f30b34bfd88d",
+        "5ac2fef6fb6c8558c27ae9af",
+        "83b1553ecb2a2291a82e3532",
+        "d137a073dabf7eee99c1276a"
+      ]
+    }
+  ],
+  "definitions": [],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+    "[rule[r7_5j]] covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+    "[rule[r7_5j]] ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess",
+    "Relying on §7.5's governing lead-in, the parent Article preamble binds the Parent Borrower and its Subsidiaries; the disposition in §7.5(j) is an excepted (permitted) disposition under the Section 7.5 'Limitation on Sale of Assets' basket, so posture is PERMISSION and action SELL_ASSET.",
+    "Net proceeds is expressed via a METRIC_REFERENCE (with the two non-cash valuation modes reflected in the excerpt/notes) rather than a separate wire definition because the valuation language is a computation method, not a separately declared defined term in the operative text.",
+    "§7.5(j) creates no shared capacity with any other clause; the 'less than the greater of' comparison is inherent to this single basket, so no WireSharedCapacity is emitted.",
+    "The 'series of related Dispositions' treatment is folded into the single disposition trigger (inv items c262463526204a96714cd8f6 and 2bb0c84da8ad713ef2667e0f consumed on the rule).",
+    "[inventory] INVENTORY_COVERAGE_GAP: 12 canonical item(s) from 2 independent passes: 4 exactly corroborated, 6 coverage-corroborated, 2 single-run (2 CRITICAL/MATERIAL), 0 conflicted; 6 support group(s); 2 stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass; 2 CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later",
+    "[inventory] unaccounted source operative:4-43: \"any Disposition of Property or business\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+    "[inventory] unaccounted source operative:104-132: \"which yields net proceeds to\" - no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+    "[accountability] 6 material inventory item(s) MISSING_FROM_COMPOSITION (5 CRITICAL): inv-item:da2ae7a8c96e1ad42210a94e [FORMULA_COMPONENT], inv-item:cfa2c306e7039e94371d186b [FORMULA_COMPONENT], inv-item:5e02c2d017c10fdbce5ccaf7 [FORMULA_COMPONENT], inv-item:8178744a0966f30b34bfd88d [THRESHOLD], inv-item:5ac2fef6fb6c8558c27ae9af [THRESHOLD], inv-item:83b1553ecb2a2291a82e3532 [THRESHOLD]",
+    "[accountability] 3 material quantitative value(s) absent from the composed IR: $25,000,000, $25,000,000, 1.5%",
+    "[support] 2 CRITICAL/MATERIAL single-run and 0 conflicted item(s) across passes pass-1+pass-2 carry independent-pass support asymmetry - review required; never resolved by composition"
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "sourceContext": {
+    "state": "COMPLETE_LOCAL_SOURCE",
+    "regions": [
+      {
+        "regionId": "operative",
+        "kind": "OPERATIVE",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+        "sectionRef": "7.5(j)",
+        "charStart": 72710,
+        "charEnd": 73218,
+        "text": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of\n(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);\n",
+        "expandedFor": null,
+        "truncatedAtBudget": false,
+        "unitExtension": null
+      }
+    ],
+    "unresolvedReferences": [],
+    "reasons": [],
+    "totalChars": 508,
+    "budgetChars": 24000
+  },
+  "frozenInventory": {
+    "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "items": [
+      {
+        "inventoryItemId": "inv-item:0e5329437d345c7c5674b0b7",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 0,
+          "charEnd": 132,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to"
+        },
+        "semanticRole": "TRIGGER",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "TRIGGER"
+          ],
+          "quantitative": [],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "TRIGGER"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "logic:TRIGGER"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Applies to any Disposition of Property or business",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Disposition",
+          "Property"
+        ],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#1",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:0e5329437d345c7c5674b0b7"
+            ],
+            "pass-2": [
+              "inv-item:0e5329437d345c7c5674b0b7"
+            ]
+          },
+          "supportGroupId": "support-group:0e5329437d345c7c5674b0b7"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:c262463526204a96714cd8f6",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 44,
+          "charEnd": 103,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "or series of related Dispositions of Property or businesses"
+        },
+        "semanticRole": "ALTERNATIVE",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "ALTERNATIVE"
+          ],
+          "quantitative": [],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "ALTERNATIVE"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "logic:ALTERNATIVE"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Includes series of related Dispositions",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Disposition"
+        ],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "MATERIAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#1",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "SINGLE_RUN",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:c262463526204a96714cd8f6"
+            ]
+          },
+          "supportGroupId": "support-group:c262463526204a96714cd8f6"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:2bb0c84da8ad713ef2667e0f",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 47,
+          "charEnd": 103,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "series of related Dispositions of Property or businesses"
+        },
+        "semanticRole": "TRIGGER",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "TRIGGER"
+          ],
+          "quantitative": [],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "TRIGGER"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "logic:TRIGGER"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Series of related dispositions treated as one",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Disposition",
+          "Property"
+        ],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#1",
+        "support": {
+          "supportingPasses": [
+            "pass-2"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-2": [
+              "inv-item:2bb0c84da8ad713ef2667e0f"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:0e5329437d345c7c5674b0b7",
+              "passId": "pass-1",
+              "overlapFraction": 1,
+              "reason": "containment; same role TRIGGER; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:0e5329437d345c7c5674b0b7"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:541d14cc3ca11673e0ef03da",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 133,
+          "charEnd": 271,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting"
+        },
+        "semanticRole": "TRIGGER",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "TRIGGER"
+          ],
+          "quantitative": [
+            "VALUE"
+          ],
+          "dependency": [
+            "REFERENCE"
+          ]
+        },
+        "declaredRoles": [
+          "TRIGGER",
+          "REFERENCE",
+          "VALUE"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "logic:TRIGGER",
+            "quantitative:VALUE",
+            "dependency:REFERENCE"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Net proceeds to Parent Borrower or its Subsidiaries",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#2",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:541d14cc3ca11673e0ef03da"
+            ],
+            "pass-2": [
+              "inv-item:541d14cc3ca11673e0ef03da"
+            ]
+          },
+          "supportGroupId": "support-group:541d14cc3ca11673e0ef03da"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:da2ae7a8c96e1ad42210a94e",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 181,
+          "charEnd": 271,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "valued at the initial principal amount thereof in the case of non-cash proceeds consisting"
+        },
+        "semanticRole": "FORMULA_COMPONENT",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "CONDITION"
+          ],
+          "quantitative": [
+            "FORMULA_COMPONENT"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "FORMULA_COMPONENT",
+          "CONDITION"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "logic:CONDITION",
+            "quantitative:FORMULA_COMPONENT"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Valuation of non-cash proceeds",
+        "quantitativeValues": [],
+        "referencedTerms": [],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#2",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:da2ae7a8c96e1ad42210a94e"
+            ],
+            "pass-2": [
+              "inv-item:da2ae7a8c96e1ad42210a94e"
+            ]
+          },
+          "supportGroupId": "support-group:da2ae7a8c96e1ad42210a94e"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:cfa2c306e7039e94371d186b",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 272,
+          "charEnd": 405,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of"
+        },
+        "semanticRole": "FORMULA_COMPONENT",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "ALTERNATIVE"
+          ],
+          "quantitative": [
+            "FORMULA_COMPONENT"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "FORMULA_COMPONENT"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "quantitative:FORMULA_COMPONENT"
+          ],
+          "deterministic": [
+            "logic:ALTERNATIVE"
+          ]
+        },
+        "proposition": "Valuation of other non-cash proceeds at fair market value",
+        "quantitativeValues": [],
+        "referencedTerms": [],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "MATERIAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#3",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:cfa2c306e7039e94371d186b"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+              "passId": "pass-2",
+              "overlapFraction": 0.7143,
+              "reason": "containment; same role FORMULA_COMPONENT; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:49cd4edb5551607ed5273395"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 310,
+          "charEnd": 405,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "valued at fair market value in the case of other non-cash proceeds) of less than the greater of"
+        },
+        "semanticRole": "FORMULA_COMPONENT",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "ALTERNATIVE"
+          ],
+          "quantitative": [
+            "FORMULA_COMPONENT"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "FORMULA_COMPONENT"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "quantitative:FORMULA_COMPONENT"
+          ],
+          "deterministic": [
+            "logic:ALTERNATIVE"
+          ]
+        },
+        "proposition": "Valuation of other non-cash proceeds",
+        "quantitativeValues": [],
+        "referencedTerms": [],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#3",
+        "support": {
+          "supportingPasses": [
+            "pass-2"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-2": [
+              "inv-item:5e02c2d017c10fdbce5ccaf7"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:49cd4edb5551607ed5273395",
+              "passId": "pass-1",
+              "overlapFraction": 0.2842,
+              "reason": "containment; compatible functions (NONE/ALTERNATIVE vs NONE/ALTERNATIVE); values compatible; references compatible"
+            },
+            {
+              "itemId": "inv-item:cfa2c306e7039e94371d186b",
+              "passId": "pass-1",
+              "overlapFraction": 1,
+              "reason": "containment; same role FORMULA_COMPONENT; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:49cd4edb5551607ed5273395"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:49cd4edb5551607ed5273395",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 378,
+          "charEnd": 405,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "of less than the greater of"
+        },
+        "semanticRole": "THRESHOLD",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "ALTERNATIVE"
+          ],
+          "quantitative": [
+            "THRESHOLD"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "THRESHOLD"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "quantitative:THRESHOLD"
+          ],
+          "deterministic": [
+            "logic:ALTERNATIVE"
+          ]
+        },
+        "proposition": "Proceeds less than the greater of specified amounts",
+        "quantitativeValues": [],
+        "referencedTerms": [],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#3",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:5e02c2d017c10fdbce5ccaf7"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; compatible functions (NONE/ALTERNATIVE vs NONE/ALTERNATIVE); values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:49cd4edb5551607ed5273395"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:8178744a0966f30b34bfd88d",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 406,
+          "charEnd": 421,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "(x) $25,000,000"
+        },
+        "semanticRole": "THRESHOLD",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [],
+          "quantitative": [
+            "VALUE",
+            "THRESHOLD"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "THRESHOLD"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "quantitative:THRESHOLD"
+          ],
+          "deterministic": [
+            "quantitative:VALUE"
+          ]
+        },
+        "proposition": "$25,000,000 threshold",
+        "quantitativeValues": [
+          {
+            "kind": "OTHER",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "unit": "USD",
+            "charStart": 410,
+            "charEnd": 421
+          },
+          {
+            "kind": "MONEY",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "unit": "USD",
+            "charStart": 410,
+            "charEnd": 421
+          }
+        ],
+        "referencedTerms": [],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#4",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:8178744a0966f30b34bfd88d"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; same role THRESHOLD; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 406,
+          "charEnd": 507,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "(x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);"
+        },
+        "semanticRole": "THRESHOLD",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [],
+          "quantitative": [
+            "THRESHOLD"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "THRESHOLD"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "quantitative:THRESHOLD"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Threshold amount $25,000,000",
+        "quantitativeValues": [
+          {
+            "kind": "OTHER",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "unit": "USD",
+            "charStart": 410,
+            "charEnd": 421
+          },
+          {
+            "kind": "MONEY",
+            "rawText": "$25,000,000",
+            "normalizedValue": 25000000,
+            "unit": "USD",
+            "charStart": 410,
+            "charEnd": 421
+          },
+          {
+            "kind": "PERCENT",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "unit": "%",
+            "charStart": 430,
+            "charEnd": 434
+          }
+        ],
+        "referencedTerms": [
+          "Consolidated Total Assets",
+          "Disposition"
+        ],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#4",
+        "support": {
+          "supportingPasses": [
+            "pass-2"
+          ],
+          "supportStatus": "SINGLE_RUN",
+          "memberItemIds": {
+            "pass-2": [
+              "inv-item:5ac2fef6fb6c8558c27ae9af"
+            ]
+          },
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:83b1553ecb2a2291a82e3532",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 426,
+          "charEnd": 506,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "(y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition)"
+        },
+        "semanticRole": "THRESHOLD",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [],
+          "quantitative": [
+            "FORMULA_COMPONENT",
+            "THRESHOLD"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "THRESHOLD",
+          "FORMULA_COMPONENT"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "quantitative:FORMULA_COMPONENT",
+            "quantitative:THRESHOLD"
+          ],
+          "deterministic": []
+        },
+        "proposition": "1.5% of Consolidated Total Assets threshold",
+        "quantitativeValues": [
+          {
+            "kind": "OTHER",
+            "rawText": "1.5%",
+            "normalizedValue": 1.5,
+            "unit": "PERCENT",
+            "charStart": 430,
+            "charEnd": 434
+          },
+          {
+            "kind": "PERCENT",
+            "rawText": "1.5%",
+            "normalizedValue": 0.015,
+            "unit": "%",
+            "charStart": 430,
+            "charEnd": 434
+          }
+        ],
+        "referencedTerms": [
+          "Consolidated Total Assets"
+        ],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#4",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:83b1553ecb2a2291a82e3532"
+            ],
+            "pass-2": [
+              "inv-item:83b1553ecb2a2291a82e3532"
+            ]
+          },
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:d137a073dabf7eee99c1276a",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+          "sectionRef": "7.5(j)",
+          "charStart": 465,
+          "charEnd": 505,
+          "sourceCitation": "§7.5(j)",
+          "excerpt": "measured on the date of such Disposition"
+        },
+        "semanticRole": "FORMULA_COMPONENT",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [],
+          "quantitative": [
+            "FORMULA_COMPONENT"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "FORMULA_COMPONENT"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "quantitative:FORMULA_COMPONENT"
+          ],
+          "deterministic": []
+        },
+        "proposition": "measurement date of Consolidated Total Assets",
+        "quantitativeValues": [],
+        "referencedTerms": [],
+        "referencedSections": [],
+        "declaredReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "parentItemId": null,
+        "relatedItemIds": [],
+        "materiality": "MATERIAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#4",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:d137a073dabf7eee99c1276a"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; compatible functions (NONE/- vs NONE/-); values compatible; references compatible"
+            },
+            {
+              "itemId": "inv-item:83b1553ecb2a2291a82e3532",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; compatible functions (NONE/- vs NONE/-); values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      }
+    ],
+    "uninventoriedValues": [],
+    "unaccountedSource": [
+      {
+        "regionId": "operative",
+        "charStart": 4,
+        "charEnd": 43,
+        "excerpt": "any Disposition of Property or business",
+        "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+        "values": []
+      },
+      {
+        "regionId": "operative",
+        "charStart": 104,
+        "charEnd": 132,
+        "excerpt": "which yields net proceeds to",
+        "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+        "values": []
+      }
+    ],
+    "sourceCoverage": {
+      "regionsConsidered": [
+        "operative"
+      ],
+      "countsByDisposition": {
+        "COVERED_BY_INVENTORY": 5,
+        "COVERED_BY_CHILD_DESCENT": 0,
+        "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+        "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP": 0,
+        "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+        "STRUCTURAL_NOISE": 0,
+        "HEADING_OR_LABEL": 0,
+        "CITATION_ONLY": 0,
+        "DEFINED_TERM_LABEL": 0,
+        "PUNCTUATION_OR_DELIMITER": 3,
+        "NON_SEMANTIC_FORMATTING": 0,
+        "UNACCOUNTED_SOURCE": 2
+      },
+      "charsByDisposition": {
+        "COVERED_BY_INVENTORY": 366,
+        "COVERED_BY_CHILD_DESCENT": 0,
+        "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+        "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP": 0,
+        "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+        "STRUCTURAL_NOISE": 0,
+        "HEADING_OR_LABEL": 0,
+        "CITATION_ONLY": 0,
+        "DEFINED_TERM_LABEL": 0,
+        "PUNCTUATION_OR_DELIMITER": 0,
+        "NON_SEMANTIC_FORMATTING": 0,
+        "UNACCOUNTED_SOURCE": 58
+      },
+      "accountedCharFraction": 0.8632,
+      "externallyAccountedRegions": []
+    },
+    "gapReinventory": {
+      "attempted": true,
+      "segmentsBefore": 3,
+      "itemsAdded": 0,
+      "duplicatesDropped": 0,
+      "unverifiableDropped": 0,
+      "segmentsAfter": 2,
+      "costUsd": null,
+      "error": "gap re-inventory call failed on gap batch 1/1: Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"parentRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters\n  - items.1.localRef: Too big: expected string to have <=6 characters\n  - items.1.parentRef: Too big: expected string to have <=6 characters; gap re-inventory call failed on gap batch 1/1: Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters"
+    },
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "inventoryStatusReason": "12 canonical item(s) from 2 independent passes: 4 exactly corroborated, 6 coverage-corroborated, 2 single-run (2 CRITICAL/MATERIAL), 0 conflicted; 6 support group(s); 2 stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass; 2 CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later",
+    "rejectedUnverifiableItems": 0,
+    "rejectedDuplicateItems": 4,
+    "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+    "frozenContentHash": "d22db8a9322dc386321dfe1d2528bc5a99f7ef692a36ba75ecd0c681fd67d0b8",
+    "frozenAt": "2026-10-06T20:22:28.667Z",
+    "algorithmVersion": "semantic-accountability.v6+semantic-ensemble.v2",
+    "promptVersion": "semantic-inventory-prompt.v6",
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetryCostUsd": 0.001166692,
+    "partition": {
+      "methods": {
+        "operative": "INDEPENDENT_SEGMENTS"
+      },
+      "slots": [
+        {
+          "slotId": "operative:region#1",
+          "regionId": "operative",
+          "sectionRef": "7.5(j)",
+          "charStart": 0,
+          "charEnd": 133
+        },
+        {
+          "slotId": "operative:region#2",
+          "regionId": "operative",
+          "sectionRef": "7.5(j)",
+          "charStart": 133,
+          "charEnd": 272
+        },
+        {
+          "slotId": "operative:region#3",
+          "regionId": "operative",
+          "sectionRef": "7.5(j)",
+          "charStart": 272,
+          "charEnd": 406
+        },
+        {
+          "slotId": "operative:region#4",
+          "regionId": "operative",
+          "sectionRef": "7.5(j)",
+          "charStart": 406,
+          "charEnd": 508
+        }
+      ],
+      "batches": 2,
+      "batchChars": 6000,
+      "gapBatches": 2,
+      "firstPassCalls": 2,
+      "gapCalls": 0
+    },
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceContextHash": "b8a2c799feb20e5de1c93e53e24c391dd003a44ca70522a240eec5fbb7233179",
+    "sourceIdentity": {
+      "method": "RECORDED_AT_FREEZE",
+      "sourceContextHash": "b8a2c799feb20e5de1c93e53e24c391dd003a44ca70522a240eec5fbb7233179",
+      "partitionHash": "b7c8a2f4ccb04e28be8d0ba33fcaf59f85f68cf3daafa246c26f1cc8a7f0a29b"
+    },
+    "ensemble": {
+      "algorithmVersion": "semantic-ensemble.v2",
+      "policy": "SUPPORT_AWARE_CANONICAL_UNION",
+      "passIds": [
+        "pass-1",
+        "pass-2"
+      ],
+      "passHashes": {
+        "pass-1": "da6c482d1d8087974b30e43aa186d9e4d6e8face5798e8f0d92dd682e36bd612",
+        "pass-2": "1be1d4b03e801ea847370cf6f4a5313db1bedb6bfb235a234c184d62654fef63"
+      },
+      "counts": {
+        "canonicalItems": 12,
+        "corroborated": 4,
+        "coverageCorroborated": 6,
+        "singleRun": 2,
+        "singleRunByPass": {
+          "pass-1": 1,
+          "pass-2": 1
+        },
+        "conflicted": 0,
+        "materialSingleRun": 2,
+        "informationalSingleRun": 0,
+        "materialConflicted": 0,
+        "rejectedUnverifiable": 0,
+        "supportGroups": 6
+      },
+      "supportReviewRequired": true,
+      "supportReviewFraction": 0.1667,
+      "conflicts": [],
+      "compatibility": {
+        "mode": "STRICT",
+        "sourceContextHash": "b8a2c799feb20e5de1c93e53e24c391dd003a44ca70522a240eec5fbb7233179",
+        "partitionHash": "b7c8a2f4ccb04e28be8d0ba33fcaf59f85f68cf3daafa246c26f1cc8a7f0a29b",
+        "documentIds": [
+          "conmed-doc-a-eighth-ar-credit-agreement"
+        ],
+        "passes": {
+          "pass-1": {
+            "algorithmVersion": "semantic-accountability.v6",
+            "promptVersion": "semantic-inventory-prompt.v6",
+            "provider": "vercel-ai-gateway",
+            "model": "deepseek/deepseek-v4-flash",
+            "sourceContextHash": "b8a2c799feb20e5de1c93e53e24c391dd003a44ca70522a240eec5fbb7233179",
+            "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+            "partitionHash": "b7c8a2f4ccb04e28be8d0ba33fcaf59f85f68cf3daafa246c26f1cc8a7f0a29b",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement"
+          },
+          "pass-2": {
+            "algorithmVersion": "semantic-accountability.v6",
+            "promptVersion": "semantic-inventory-prompt.v6",
+            "provider": "vercel-ai-gateway",
+            "model": "deepseek/deepseek-v4-flash",
+            "sourceContextHash": "b8a2c799feb20e5de1c93e53e24c391dd003a44ca70522a240eec5fbb7233179",
+            "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+            "partitionHash": "b7c8a2f4ccb04e28be8d0ba33fcaf59f85f68cf3daafa246c26f1cc8a7f0a29b",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement"
+          }
+        },
+        "checks": [
+          {
+            "check": "candidate-ref",
+            "pass": true,
+            "detail": "pass-1: candidateRef discovery-candidate:5aeac47ab31feb23331e4f89 matches"
+          },
+          {
+            "check": "source-identity-recorded",
+            "pass": true,
+            "detail": "pass-1: source identity RECORDED_AT_FREEZE"
+          },
+          {
+            "check": "source-context-hash",
+            "pass": true,
+            "detail": "pass-1: source-context hash b8a2c799feb20e5d vs ensemble b8a2c799feb20e5d"
+          },
+          {
+            "check": "partition",
+            "pass": true,
+            "detail": "pass-1: slot partition b7c8a2f4ccb04e28 vs ensemble b7c8a2f4ccb04e28"
+          },
+          {
+            "check": "document",
+            "pass": true,
+            "detail": "pass-1: document conmed-doc-a-eighth-ar-credit-agreement vs ensemble conmed-doc-a-eighth-ar-credit-agreement"
+          },
+          {
+            "check": "algorithm-generation",
+            "pass": true,
+            "detail": "pass-1: algorithm semantic-accountability.v6 supported"
+          },
+          {
+            "check": "prompt-generation",
+            "pass": true,
+            "detail": "pass-1: prompt semantic-inventory-prompt.v6 supported"
+          },
+          {
+            "check": "pass-status",
+            "pass": true,
+            "detail": "pass-1: INVENTORY_COVERAGE_GAP"
+          },
+          {
+            "check": "candidate-ref",
+            "pass": true,
+            "detail": "pass-2: candidateRef discovery-candidate:5aeac47ab31feb23331e4f89 matches"
+          },
+          {
+            "check": "source-identity-recorded",
+            "pass": true,
+            "detail": "pass-2: source identity RECORDED_AT_FREEZE"
+          },
+          {
+            "check": "source-context-hash",
+            "pass": true,
+            "detail": "pass-2: source-context hash b8a2c799feb20e5d vs ensemble b8a2c799feb20e5d"
+          },
+          {
+            "check": "partition",
+            "pass": true,
+            "detail": "pass-2: slot partition b7c8a2f4ccb04e28 vs ensemble b7c8a2f4ccb04e28"
+          },
+          {
+            "check": "document",
+            "pass": true,
+            "detail": "pass-2: document conmed-doc-a-eighth-ar-credit-agreement vs ensemble conmed-doc-a-eighth-ar-credit-agreement"
+          },
+          {
+            "check": "algorithm-generation",
+            "pass": true,
+            "detail": "pass-2: algorithm semantic-accountability.v6 supported"
+          },
+          {
+            "check": "prompt-generation",
+            "pass": true,
+            "detail": "pass-2: prompt semantic-inventory-prompt.v6 supported"
+          },
+          {
+            "check": "pass-status",
+            "pass": true,
+            "detail": "pass-2: INVENTORY_COVERAGE_GAP"
+          },
+          {
+            "check": "algorithm-generation",
+            "pass": true,
+            "detail": "pass-2 vs pass-1: algorithm semantic-accountability.v6 vs semantic-accountability.v6"
+          },
+          {
+            "check": "prompt-generation",
+            "pass": true,
+            "detail": "pass-2 vs pass-1: prompt semantic-inventory-prompt.v6 vs semantic-inventory-prompt.v6"
+          },
+          {
+            "check": "provider-model",
+            "pass": true,
+            "detail": "pass-2 vs pass-1: vercel-ai-gateway/deepseek/deepseek-v4-flash vs vercel-ai-gateway/deepseek/deepseek-v4-flash"
+          }
+        ],
+        "declaredExceptions": []
+      }
+    },
+    "calls": [
+      {
+        "passId": "pass-1",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "slotIds": [
+          "operative:region#1",
+          "operative:region#2",
+          "operative:region#3",
+          "operative:region#4"
+        ],
+        "requestedMaxOutputTokens": 6397,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 12,
+        "inputTokens": 1595,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": 1756,
+        "latencyMs": 13259,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "error": null,
+        "itemsReturned": 9,
+        "itemsAccepted": 9,
+        "itemsRejectedOverBound": 0
+      },
+      {
+        "passId": "pass-1",
+        "batchId": "g1",
+        "stage": "semantic_inventory_gap",
+        "slotIds": [
+          "operative:region#1"
+        ],
+        "requestedMaxOutputTokens": 2226,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 4,
+        "inputTokens": null,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": null,
+        "latencyMs": 3540,
+        "stopReason": null,
+        "schemaOk": false,
+        "error": "Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"parentRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters\n  - items.1.localRef: Too big: expected string to have <=6 characters\n  - items.1.parentRef: Too big: expected string to have <=6 characters",
+        "itemsReturned": 0,
+        "itemsAccepted": 0,
+        "itemsRejectedOverBound": 0
+      },
+      {
+        "passId": "pass-2",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "slotIds": [
+          "operative:region#1",
+          "operative:region#2",
+          "operative:region#3",
+          "operative:region#4"
+        ],
+        "requestedMaxOutputTokens": 6397,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 12,
+        "inputTokens": 571,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": 1538,
+        "latencyMs": 12448,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "error": null,
+        "itemsReturned": 8,
+        "itemsAccepted": 8,
+        "itemsRejectedOverBound": 0
+      },
+      {
+        "passId": "pass-2",
+        "batchId": "g1",
+        "stage": "semantic_inventory_gap",
+        "slotIds": [
+          "operative:region#3"
+        ],
+        "requestedMaxOutputTokens": 2023,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 4,
+        "inputTokens": null,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": null,
+        "latencyMs": 4560,
+        "stopReason": null,
+        "schemaOk": false,
+        "error": "Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters",
+        "itemsReturned": 0,
+        "itemsAccepted": 0,
+        "itemsRejectedOverBound": 0
+      }
+    ],
+    "executionPolicy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "rejectedOverBoundItems": 0
+  },
+  "inventoryMode": "DUAL_PASS_ENSEMBLE",
+  "inventoryPasses": [
+    {
+      "passId": "pass-1",
+      "frozenContentHash": "da6c482d1d8087974b30e43aa186d9e4d6e8face5798e8f0d92dd682e36bd612",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "items": 9,
+      "telemetryCostUsd": 0.00066391
+    },
+    {
+      "passId": "pass-2",
+      "frozenContentHash": "1be1d4b03e801ea847370cf6f4a5313db1bedb6bfb235a234c184d62654fef63",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "items": 7,
+      "telemetryCostUsd": 0.000502782
+    }
+  ],
+  "governingScope": {
+    "version": "governing-scope-context.v1",
+    "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "anchorNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+    "anchorSectionRef": "7.5(j)",
+    "ancestorRegions": [
+      {
+        "regionId": "governing-1",
+        "role": "PARENT_SCOPE",
+        "derivation": "STRUCTURAL_ANCESTOR_LEAD_IN",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+        "nodeType": "SECTION",
+        "sectionRef": "7.5",
+        "ancestorDistance": 1,
+        "charStart": 69668,
+        "charEnd": 69961,
+        "text": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:",
+        "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147",
+        "truncatedAtCap": false,
+        "note": "own lead-in of structural ancestor SECTION 7.5 (distance 1); descendants excluded"
+      },
+      {
+        "regionId": "governing-2",
+        "role": "GOVERNING_SCOPE",
+        "derivation": "UNPARSED_ARTICLE_PREAMBLE",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "structuralNodeId": null,
+        "nodeType": "UNPARSED_ARTICLE_PREAMBLE",
+        "sectionRef": "article-group:7",
+        "ancestorDistance": 2,
+        "charStart": 44178,
+        "charEnd": 44516,
+        "text": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+        "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9",
+        "truncatedAtCap": false,
+        "note": "governing lead-in recovered from the document text immediately preceding the first section 7.1 of article group 7 (no ARTICLE node carrying governing material was parsed above 7.5); trailing lead-in paragraph only"
+      }
+    ],
+    "postureEvidence": [
+      {
+        "regionId": "governing-2",
+        "sectionRef": "article-group:7",
+        "role": "GOVERNING_SCOPE",
+        "kind": "POSTURE",
+        "phrase": "shall not, and shall not permit",
+        "index": 255,
+        "detail": "PROHIBITION"
+      }
+    ],
+    "actionEvidence": [
+      {
+        "regionId": "governing-1",
+        "sectionRef": "7.5",
+        "role": "PARENT_SCOPE",
+        "classification": {
+          "version": "canonical-action-ontology.v1",
+          "phrase": "issue or sell any shares",
+          "verbs": [
+            "issue",
+            "sell"
+          ],
+          "object": "shares",
+          "objectFamily": "EQUITY_REPURCHASE",
+          "canonicalAction": null,
+          "categories": [],
+          "coverage": "ONTOLOGY_GAP",
+          "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+        }
+      }
+    ],
+    "entityScopeEvidence": [
+      {
+        "regionId": "governing-1",
+        "sectionRef": "7.5",
+        "role": "PARENT_SCOPE",
+        "kind": "ENTITY_SCOPE",
+        "phrase": "Subsidiary",
+        "index": 199,
+        "mentionRole": "OBLIGOR",
+        "excludedContext": false,
+        "mappedTags": [
+          "ANY_SUBSIDIARY"
+        ],
+        "detail": "obligor binding"
+      },
+      {
+        "regionId": "governing-1",
+        "sectionRef": "7.5",
+        "role": "PARENT_SCOPE",
+        "kind": "ENTITY_SCOPE",
+        "phrase": "Subsidiary",
+        "index": 244,
+        "mentionRole": "OBLIGOR",
+        "excludedContext": false,
+        "mappedTags": [
+          "ANY_SUBSIDIARY"
+        ],
+        "detail": "obligor binding"
+      },
+      {
+        "regionId": "governing-2",
+        "sectionRef": "article-group:7",
+        "role": "GOVERNING_SCOPE",
+        "kind": "ENTITY_SCOPE",
+        "phrase": "Borrower",
+        "index": 30,
+        "mentionRole": "OBLIGOR",
+        "excludedContext": false,
+        "mappedTags": [
+          "BORROWER"
+        ],
+        "detail": "obligor binding"
+      },
+      {
+        "regionId": "governing-2",
+        "sectionRef": "article-group:7",
+        "role": "GOVERNING_SCOPE",
+        "kind": "ENTITY_SCOPE",
+        "phrase": "Borrower",
+        "index": 246,
+        "mentionRole": "OBLIGOR",
+        "excludedContext": false,
+        "mappedTags": [
+          "BORROWER"
+        ],
+        "detail": "obligor binding"
+      },
+      {
+        "regionId": "governing-2",
+        "sectionRef": "article-group:7",
+        "role": "GOVERNING_SCOPE",
+        "kind": "ENTITY_SCOPE",
+        "phrase": "Subsidiaries",
+        "index": 298,
+        "mentionRole": "OBLIGOR",
+        "excludedContext": false,
+        "mappedTags": [
+          "ANY_SUBSIDIARY"
+        ],
+        "detail": "obligor binding"
+      }
+    ],
+    "inheritedEntityScope": [
+      "ANY_SUBSIDIARY"
+    ],
+    "inheritedEntityScopeBasis": {
+      "regionId": "governing-1",
+      "sectionRef": "7.5",
+      "role": "PARENT_SCOPE",
+      "phrases": [
+        "Subsidiary"
+      ],
+      "evidence": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of s"
+    },
+    "inheritedAction": null,
+    "inheritedActionBasis": {
+      "regionId": "governing-1",
+      "sectionRef": "7.5",
+      "role": "PARENT_SCOPE",
+      "evidence": "issue or sell any shares",
+      "classification": {
+        "version": "canonical-action-ontology.v1",
+        "phrase": "issue or sell any shares",
+        "verbs": [
+          "issue",
+          "sell"
+        ],
+        "object": "shares",
+        "objectFamily": "EQUITY_REPURCHASE",
+        "canonicalAction": null,
+        "categories": [],
+        "coverage": "ONTOLOGY_GAP",
+        "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+      }
+    },
+    "governingProhibition": {
+      "regionId": "governing-2",
+      "sectionRef": "article-group:7",
+      "role": "GOVERNING_SCOPE",
+      "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P"
+    },
+    "notes": [
+      "governing region governing-1 (7.5) states an act \"issue or sell any shares\" the canonical action ontology does not cover as one category (ONTOLOGY_GAP); inherited action not established"
+    ],
+    "contentHash": "16caeb74ccb6a0390167b4199d1ebbafa2406489bf717e59a1d2e75d10d29e0e"
+  },
+  "accountability": {
+    "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+    "items": [
+      {
+        "inventoryItemId": "inv-item:0e5329437d345c7c5674b0b7",
+        "semanticRole": "TRIGGER",
+        "materiality": "CRITICAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:0e5329437d345c7c5674b0b7"
+            ],
+            "pass-2": [
+              "inv-item:0e5329437d345c7c5674b0b7"
+            ]
+          },
+          "supportGroupId": "support-group:0e5329437d345c7c5674b0b7"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:c262463526204a96714cd8f6",
+        "semanticRole": "ALTERNATIVE",
+        "materiality": "MATERIAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "SINGLE_RUN",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:c262463526204a96714cd8f6"
+            ]
+          },
+          "supportGroupId": "support-group:c262463526204a96714cd8f6"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:2bb0c84da8ad713ef2667e0f",
+        "semanticRole": "TRIGGER",
+        "materiality": "CRITICAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-2"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-2": [
+              "inv-item:2bb0c84da8ad713ef2667e0f"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:0e5329437d345c7c5674b0b7",
+              "passId": "pass-1",
+              "overlapFraction": 1,
+              "reason": "containment; same role TRIGGER; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:0e5329437d345c7c5674b0b7"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:541d14cc3ca11673e0ef03da",
+        "semanticRole": "TRIGGER",
+        "materiality": "CRITICAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:541d14cc3ca11673e0ef03da"
+            ],
+            "pass-2": [
+              "inv-item:541d14cc3ca11673e0ef03da"
+            ]
+          },
+          "supportGroupId": "support-group:541d14cc3ca11673e0ef03da"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:da2ae7a8c96e1ad42210a94e",
+        "semanticRole": "FORMULA_COMPONENT",
+        "materiality": "CRITICAL",
+        "disposition": "MISSING_FROM_COMPOSITION",
+        "lineageIrPaths": [],
+        "modelDisposition": "CONSUMED_IN_EXPRESSION",
+        "quantitative": [],
+        "reason": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:da2ae7a8c96e1ad42210a94e"
+            ],
+            "pass-2": [
+              "inv-item:da2ae7a8c96e1ad42210a94e"
+            ]
+          },
+          "supportGroupId": "support-group:da2ae7a8c96e1ad42210a94e"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:cfa2c306e7039e94371d186b",
+        "semanticRole": "FORMULA_COMPONENT",
+        "materiality": "MATERIAL",
+        "disposition": "MISSING_FROM_COMPOSITION",
+        "lineageIrPaths": [],
+        "modelDisposition": "CONSUMED_IN_EXPRESSION",
+        "quantitative": [],
+        "reason": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:cfa2c306e7039e94371d186b"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+              "passId": "pass-2",
+              "overlapFraction": 0.7143,
+              "reason": "containment; same role FORMULA_COMPONENT; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:49cd4edb5551607ed5273395"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+        "semanticRole": "FORMULA_COMPONENT",
+        "materiality": "CRITICAL",
+        "disposition": "MISSING_FROM_COMPOSITION",
+        "lineageIrPaths": [],
+        "modelDisposition": "CONSUMED_IN_EXPRESSION",
+        "quantitative": [],
+        "reason": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR",
+        "support": {
+          "supportingPasses": [
+            "pass-2"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-2": [
+              "inv-item:5e02c2d017c10fdbce5ccaf7"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:49cd4edb5551607ed5273395",
+              "passId": "pass-1",
+              "overlapFraction": 0.2842,
+              "reason": "containment; compatible functions (NONE/ALTERNATIVE vs NONE/ALTERNATIVE); values compatible; references compatible"
+            },
+            {
+              "itemId": "inv-item:cfa2c306e7039e94371d186b",
+              "passId": "pass-1",
+              "overlapFraction": 1,
+              "reason": "containment; same role FORMULA_COMPONENT; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:49cd4edb5551607ed5273395"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:49cd4edb5551607ed5273395",
+        "semanticRole": "THRESHOLD",
+        "materiality": "CRITICAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:5e02c2d017c10fdbce5ccaf7"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; compatible functions (NONE/ALTERNATIVE vs NONE/ALTERNATIVE); values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:49cd4edb5551607ed5273395"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:8178744a0966f30b34bfd88d",
+        "semanticRole": "THRESHOLD",
+        "materiality": "CRITICAL",
+        "disposition": "MISSING_FROM_COMPOSITION",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [
+          {
+            "value": {
+              "kind": "OTHER",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "unit": "USD",
+              "charStart": 410,
+              "charEnd": 421
+            },
+            "disposition": "VALUE_MISSING_FROM_COMPOSITION",
+            "irPaths": []
+          },
+          {
+            "value": {
+              "kind": "MONEY",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "unit": "USD",
+              "charStart": 410,
+              "charEnd": 421
+            },
+            "disposition": "VALUE_PRESENT_IN_IR",
+            "irPaths": [
+              "rules[0].capacityExpression.gatedBy.right.operands[0]"
+            ]
+          }
+        ],
+        "reason": "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:8178744a0966f30b34bfd88d"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; same role THRESHOLD; values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+        "semanticRole": "THRESHOLD",
+        "materiality": "CRITICAL",
+        "disposition": "MISSING_FROM_COMPOSITION",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [
+          {
+            "value": {
+              "kind": "OTHER",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "unit": "USD",
+              "charStart": 410,
+              "charEnd": 421
+            },
+            "disposition": "VALUE_MISSING_FROM_COMPOSITION",
+            "irPaths": []
+          },
+          {
+            "value": {
+              "kind": "MONEY",
+              "rawText": "$25,000,000",
+              "normalizedValue": 25000000,
+              "unit": "USD",
+              "charStart": 410,
+              "charEnd": 421
+            },
+            "disposition": "VALUE_PRESENT_IN_IR",
+            "irPaths": [
+              "rules[0].capacityExpression.gatedBy.right.operands[0]"
+            ]
+          },
+          {
+            "value": {
+              "kind": "PERCENT",
+              "rawText": "1.5%",
+              "normalizedValue": 0.015,
+              "unit": "%",
+              "charStart": 430,
+              "charEnd": 434
+            },
+            "disposition": "VALUE_PRESENT_IN_IR",
+            "irPaths": [
+              "rules[0].capacityExpression.gatedBy.right.operands[1].operands[0]"
+            ]
+          }
+        ],
+        "reason": "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count",
+        "support": {
+          "supportingPasses": [
+            "pass-2"
+          ],
+          "supportStatus": "SINGLE_RUN",
+          "memberItemIds": {
+            "pass-2": [
+              "inv-item:5ac2fef6fb6c8558c27ae9af"
+            ]
+          },
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:83b1553ecb2a2291a82e3532",
+        "semanticRole": "THRESHOLD",
+        "materiality": "CRITICAL",
+        "disposition": "MISSING_FROM_COMPOSITION",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [
+          {
+            "value": {
+              "kind": "OTHER",
+              "rawText": "1.5%",
+              "normalizedValue": 1.5,
+              "unit": "PERCENT",
+              "charStart": 430,
+              "charEnd": 434
+            },
+            "disposition": "VALUE_MISSING_FROM_COMPOSITION",
+            "irPaths": []
+          },
+          {
+            "value": {
+              "kind": "PERCENT",
+              "rawText": "1.5%",
+              "normalizedValue": 0.015,
+              "unit": "%",
+              "charStart": 430,
+              "charEnd": 434
+            },
+            "disposition": "VALUE_PRESENT_IN_IR",
+            "irPaths": [
+              "rules[0].capacityExpression.gatedBy.right.operands[1].operands[0]"
+            ]
+          }
+        ],
+        "reason": "composition lineage claims this item (rules[0]) but 1.5% appears nowhere in the composed IR - a lineage claim without value correspondence does not count",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:83b1553ecb2a2291a82e3532"
+            ],
+            "pass-2": [
+              "inv-item:83b1553ecb2a2291a82e3532"
+            ]
+          },
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:d137a073dabf7eee99c1276a",
+        "semanticRole": "FORMULA_COMPONENT",
+        "materiality": "MATERIAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1"
+          ],
+          "supportStatus": "COVERAGE_CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:d137a073dabf7eee99c1276a"
+            ]
+          },
+          "coverageBy": [
+            {
+              "itemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; compatible functions (NONE/- vs NONE/-); values compatible; references compatible"
+            },
+            {
+              "itemId": "inv-item:83b1553ecb2a2291a82e3532",
+              "passId": "pass-2",
+              "overlapFraction": 1,
+              "reason": "containment; compatible functions (NONE/- vs NONE/-); values compatible; references compatible"
+            }
+          ],
+          "supportGroupId": "support-group:5ac2fef6fb6c8558c27ae9af"
+        }
+      }
+    ],
+    "counts": {
+      "inventoried": 12,
+      "material": 12,
+      "represented": 6,
+      "intentionallyNonComputational": 0,
+      "unsupported": 0,
+      "ambiguous": 0,
+      "missingFromComposition": 6,
+      "materialMissingFromComposition": 6,
+      "criticalMissingFromComposition": 5,
+      "materialQuantitativeValues": 7,
+      "materialQuantitativeValuesMissing": 3,
+      "uninventoriedValues": 0,
+      "unaccountedSource": 2,
+      "danglingLineageReferences": 0,
+      "canonicalizedLineageReferences": 12
+    },
+    "semanticallyComplete": false,
+    "supportReviewRequired": true,
+    "support": {
+      "passIds": [
+        "pass-1",
+        "pass-2"
+      ],
+      "corroborated": 4,
+      "singleRun": 2,
+      "materialSingleRun": 2,
+      "conflicted": 6,
+      "materialConflicted": 6,
+      "byDisposition": {
+        "REPRESENTED": {
+          "corroborated": 2,
+          "singleRun": 1,
+          "conflicted": 3
+        },
+        "INTENTIONALLY_NON_COMPUTATIONAL": {
+          "corroborated": 0,
+          "singleRun": 0,
+          "conflicted": 0
+        },
+        "UNSUPPORTED": {
+          "corroborated": 0,
+          "singleRun": 0,
+          "conflicted": 0
+        },
+        "AMBIGUOUS": {
+          "corroborated": 0,
+          "singleRun": 0,
+          "conflicted": 0
+        },
+        "MISSING_FROM_COMPOSITION": {
+          "corroborated": 2,
+          "singleRun": 1,
+          "conflicted": 3
+        }
+      }
+    },
+    "reasons": [
+      "inventory status INVENTORY_COVERAGE_GAP: 12 canonical item(s) from 2 independent passes: 4 exactly corroborated, 6 coverage-corroborated, 2 single-run (2 CRITICAL/MATERIAL), 0 conflicted; 6 support group(s); 2 stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass; 2 CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later",
+      "2 stretch(es) of source Pass A could not account for: operative:4-43, operative:104-132 - materiality undetermined, review required",
+      "6 material inventory item(s) MISSING_FROM_COMPOSITION (5 CRITICAL): inv-item:da2ae7a8c96e1ad42210a94e [FORMULA_COMPONENT], inv-item:cfa2c306e7039e94371d186b [FORMULA_COMPONENT], inv-item:5e02c2d017c10fdbce5ccaf7 [FORMULA_COMPONENT], inv-item:8178744a0966f30b34bfd88d [THRESHOLD], inv-item:5ac2fef6fb6c8558c27ae9af [THRESHOLD], inv-item:83b1553ecb2a2291a82e3532 [THRESHOLD]",
+      "3 material quantitative value(s) absent from the composed IR: $25,000,000, $25,000,000, 1.5%",
+      "independent-pass support asymmetry: 2 CRITICAL/MATERIAL item(s) SINGLE_RUN and 6 CONFLICTED across passes pass-1+pass-2 - valid discovered source semantics with weaker support provenance; REVIEW_REQUIRED until independently resolved (verifier, human approval, another certified mechanism), never resolved by Pass B consuming them"
+    ],
+    "algorithmVersion": "semantic-accountability.v6"
+  },
+  "rawModelOutput": {
+    "rules": [
+      {
+        "localRef": "r7_5j",
+        "sourceSectionRef": "Section 7.5(j)",
+        "covenantFamily": "LIMITATIONS_ON_SALE_OF_ASSETS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "entityScopeExcluded": [],
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "gatedBy": {
+            "kind": "COMPARE",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "metricName": "Net Proceeds of such Disposition",
+              "citation": "§7.5(j)",
+              "excerpt": "net proceeds to the Parent Borrower or any of its Subsidiaries"
+            },
+            "operator": "LT",
+            "right": {
+              "kind": "MAX",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "amount": 25000000,
+                  "currency": "USD",
+                  "citation": "§7.5(j)",
+                  "excerpt": "(x) $25,000,000"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "value": 0.015,
+                      "citation": "§7.5(j)",
+                      "excerpt": "1.5% of Consolidated Total Assets"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated Total Assets",
+                      "asOfDate": "date of such Disposition",
+                      "citation": "§7.5(j)",
+                      "excerpt": "Consolidated Total Assets (measured on the date of such Disposition)"
+                    }
+                  ],
+                  "citation": "§7.5(j)",
+                  "excerpt": "(y) 1.5% of Consolidated Total Assets"
+                }
+              ],
+              "citation": "§7.5(j)",
+              "excerpt": "the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets"
+            },
+            "citation": "§7.5(j)",
+            "excerpt": "which yields net proceeds ... of less than the greater of"
+          }
+        },
+        "conditions": [
+          {
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "description": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause.",
+            "expression": null,
+            "referencesRuleTargets": [],
+            "targetCombination": "ALL_SATISFIED",
+            "referencesDefinitionId": null,
+            "citation": "§7.5(j)",
+            "excerpt": "any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds ... of less than the greater of"
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "citation": "§7.5(j)",
+        "excerpt": "(j) any Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to the Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting of notes or other debt securities and valued at fair market value in the case of other non-cash proceeds) of less than the greater of (x) $25,000,000 and (y) 1.5% of Consolidated Total Assets (measured on the date of such Disposition);",
+        "inventoryItemIds": [
+          "0e5329437d345c7c5674b0b7",
+          "c262463526204a96714cd8f6",
+          "2bb0c84da8ad713ef2667e0f",
+          "541d14cc3ca11673e0ef03da",
+          "49cd4edb5551607ed5273395",
+          "8178744a0966f30b34bfd88d",
+          "5ac2fef6fb6c8558c27ae9af",
+          "83b1553ecb2a2291a82e3532",
+          "d137a073dabf7eee99c1276a"
+        ]
+      }
+    ],
+    "definitions": [],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [],
+    "inventoryDispositions": [
+      {
+        "inventoryItemId": "da2ae7a8c96e1ad42210a94e",
+        "disposition": "CONSUMED_IN_EXPRESSION",
+        "note": "Non-cash proceeds consisting of notes or other debt securities are valued at their initial principal amount; this is a valuation rule for computing net proceeds that participates in the net-proceeds metric and is captured at the metric level."
+      },
+      {
+        "inventoryItemId": "cfa2c306e7039e94371d186b",
+        "disposition": "CONSUMED_IN_EXPRESSION",
+        "note": "Other non-cash proceeds are valued at fair market value; this is a valuation rule for computing net proceeds and participates in the net-proceeds metric."
+      },
+      {
+        "inventoryItemId": "5e02c2d017c10fdbce5ccaf7",
+        "disposition": "CONSUMED_IN_EXPRESSION",
+        "note": "Valuation of other non-cash proceeds at fair market value, part of the net-proceeds computation."
+      }
+    ],
+    "overallNotes": [
+      "Relying on §7.5's governing lead-in, the parent Article preamble binds the Parent Borrower and its Subsidiaries; the disposition in §7.5(j) is an excepted (permitted) disposition under the Section 7.5 'Limitation on Sale of Assets' basket, so posture is PERMISSION and action SELL_ASSET.",
+      "Net proceeds is expressed via a METRIC_REFERENCE (with the two non-cash valuation modes reflected in the excerpt/notes) rather than a separate wire definition because the valuation language is a computation method, not a separately declared defined term in the operative text.",
+      "§7.5(j) creates no shared capacity with any other clause; the 'less than the greater of' comparison is inherent to this single basket, so no WireSharedCapacity is emitted.",
+      "The 'series of related Dispositions' treatment is folded into the single disposition trigger (inv items c262463526204a96714cd8f6 and 2bb0c84da8ad713ef2667e0f consumed on the rule)."
+    ]
+  },
+  "contextOnlyEmissions": [],
+  "dependencyProseDiagnostics": [],
+  "normalizationDiagnostics": [
+    {
+      "diagnosticId": "fabc44ae2bf50a814328b28a0f144095e51167e06ecf3ae6ae97bedb92a87549",
+      "shardId": null,
+      "sourceUnit": "Section 7.5(j)",
+      "scope": "rule[r7_5j].UNLIMITED_CAPACITY.gatedBy",
+      "code": "PROVENANCE_EXCERPT_SOURCE_BOUND",
+      "message": "PROVENANCE_EXCERPT_SOURCE_BOUND: rule[r7_5j].UNLIMITED_CAPACITY.gatedBy the model's elided excerpt (\"which yields net proceeds ... of less than the greater of…\") was bound deterministically to the exact OPERATIVE source span [104,405) of operative; the authoritative excerpt is that source substring, the model's text is retained only as rawModelExcerpt"
+    },
+    {
+      "diagnosticId": "6e3d69ff114964e7dd113be4c53e66d9d68353a112c8df60be13896156dea040",
+      "shardId": null,
+      "sourceUnit": "Section 7.5(j)",
+      "scope": "rule[r7_5j].condition[0]",
+      "code": "PROVENANCE_EXCERPT_SOURCE_BOUND",
+      "message": "PROVENANCE_EXCERPT_SOURCE_BOUND: rule[r7_5j].condition[0] the model's elided excerpt (\"any Disposition of Property or business or series of related…\") was bound deterministically to the exact OPERATIVE source span [4,405) of operative; the authoritative excerpt is that source substring, the model's text is retained only as rawModelExcerpt"
+    }
+  ],
+  "invalidWireKinds": [],
+  "provider": "vercel-ai-gateway",
+  "model": "deepseek/deepseek-v4-flash",
+  "telemetry": {
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "promptVersion": "semantic-accountability-compiler-prompt.v8",
+    "schemaVersion": "headroom-covenant-ir.v1",
+    "stage": "semantic_compilation_bounded",
+    "timestamp": "2026-10-06T20:22:56.143Z",
+    "inputTokens": 669566,
+    "outputTokens": 1459,
+    "cachedInputTokens": 0,
+    "cacheCreationInputTokens": 0,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0,
+    "latencyMs": 27424,
+    "calculatedCostUsd": 0.08742292,
+    "pricing": {
+      "pricingVersion": "headroom-pricing.v1 (2026-09)",
+      "pricingStatus": "PRICED"
+    },
+    "transport": {
+      "attempts": 1,
+      "retries": 0,
+      "policyVersion": "headroom-transport-retry.v1"
+    },
+    "semanticConversations": 1,
+    "refinementConversations": 0,
+    "transportAttempts": 1,
+    "promptChars": {
+      "pass1": 50980,
+      "pass2": null
+    },
+    "deterministicRetrievals": 0
+  },
+  "cacheKey": "ba784028868e26cfda07bb7fd867d61354ef5eceba26ea76fa15b0e337a25908",
+  "compiledAt": "2026-10-06T20:22:56.143Z",
+  "execution": {
+    "mode": "MONOLITHIC",
+    "reason": "SINGLE_BOUNDED_SHARD",
+    "policyVersion": "semantic-execution-mode.v1",
+    "plannerAlgorithmVersion": "semantic-compilation-shards.v4-required-dependency-precision",
+    "planHash": "ae6f0d7fab6c5fb9cb692504204561fca25981104c1a2b65628ee70650ec82e5",
+    "plannedShards": 1,
+    "oversizedShards": 0,
+    "frozenInventoryResume": null,
+    "sharded": null
+  }
+}
