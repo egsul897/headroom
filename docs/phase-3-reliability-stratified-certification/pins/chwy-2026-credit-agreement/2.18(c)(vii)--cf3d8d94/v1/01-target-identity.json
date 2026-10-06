@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:cf3d8d9492aeca04392b5172:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "5cc2378c9f544001617e6ce0b3bce9dbf1e9bef6",
+  "identity": {
+    "discoveryId": "discovery-candidate:cf3d8d9492aeca04392b5172",
+    "documentId": "doc-a",
+    "packageKey": "chwy-2026-credit-agreement",
+    "normalizedSourceRef": "2.18(c)(vii)",
+    "structuralNodeKeys": [
+      "doc-a::2.18(c)(vii)",
+      "doc-a::2.18(c)",
+      "doc-a::2.18"
+    ],
+    "structuralNodeIds": [
+      "structural-node:fbbb0a99422be6cb753039be",
+      "structural-node:c7ec46168845bb8f3d2cf148",
+      "structural-node:222fc4644c331e99b9038761"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:fbbb0a99422be6cb753039be",
+      "nodeKey": "doc-a::2.18(c)(vii)",
+      "nodeType": "CLAUSE",
+      "sectionRef": "2.18(c)(vii)",
+      "charStart": 500380,
+      "charEnd": 501222
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 842,
+    "operativeSourceSha256": "651afe4b14a01820c98be250741f968a1f0f20eec8a12bcd0c457ca92efb8f4f",
+    "operativeSourceText": "(vii) at the time of incurrence, and after giving\neffect thereto, the aggregate par principal amount of the sum of (A) the aggregate outstanding principal amount of all Incremental Term Loans, Incremental Revolving Increases and Incremental Revolving Facilities and (B) the aggregate\noutstanding principal amount of Incremental Equivalent Debt incurred after the Effective Date shall not at the time of incurrence of any such Incremental Facility (which, in the case of any Incremental Revolving Increase or Incremental Revolving\nFacility, shall be the time of effectiveness of the commitments therefor) or Incremental Equivalent Debt (and after giving effect to such incurrence) exceed the amount which may be incurred within the Incremental Cap at such time after giving pro\nforma effect to such incurrence and use of proceeds thereof; and\n",
+    "expected": {
+      "chars": 842,
+      "sha256": "651afe4b14a01820c98be250741f968a1f0f20eec8a12bcd0c457ca92efb8f4f"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "SHARED_CAP",
+    "stratum": "DEBT",
+    "crossCuts": [
+      "WITH_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "discoveryReviewStatus": "NEEDS_REVIEW",
+    "discoveryConfidence": 0.75,
+    "description": "Caps the aggregate principal amount of all Incremental Facilities and Incremental Equivalent Debt at the amount available under the Incremental Cap, tested at incurrence on a pro forma basis."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}
