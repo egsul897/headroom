@@ -27,3 +27,28 @@ Headroom Answer = paths / capacity / conditions / provenance.
 ## Canonical map honesty (first-target)
 
 Canonical map currently tags `discovery-candidate:565fd64640e534d8a46bbe7a` with historical `CANDIDATE_COMPILE_REVIEW_REQUIRED` / `MATERIAL_DISCREPANCY`. Offline pin remains valid. Later live `CERTIFIED` must clear production blockers honestly — map REVIEW is **not** pre-credit.
+
+---
+
+## Offline pin-matrix packet (append — ADR-1)
+
+**Status:** `OFFLINE_PIN_MATRIX_PARTIAL`  
+**Base SHA:** `d5ac8beebc9e02117cbf9344ac7d13929e54e217` (main after #66 ADR-1 ACCEPTED + #64 stratified design)  
+**ADR-1:** `docs/architecture/EVIDENCE-PACKET-VERSIONING-ADR.md` — append-only; `first-target/` identity frozen (BASELINE_PINNED).  
+**Soft gate:** offline pins ONLY. No live/paid. No NS-4. No related-series A/C. No A/B seal reopen.
+
+| artifact | role |
+|---|---|
+| `01-pin-matrix.json` | Thin strata × cross-cuts matrix: PINNED_OFFLINE / BASELINE_PINNED / DEFERRED / BLOCKED |
+| `pins/chewy-2.18c-vii-incremental-shared-cap/` | First **Chewy** offline pin + **WITH_SHARED_CAPS** (DEBT Incremental Cap) |
+| `first-target/` | Unchanged CONMED §7.6(c) RP baseline (WITHOUT_SHARED_CAPS) |
+
+### Why this Chewy pin
+
+- Prefer Chewy + WITH_SHARED_CAPS before more CONMED-only heroes.
+- Sealed discovery `discovery-candidate:cf3d8d9492aeca04392b5172` role `SHARED_CAP` on `doc-a::2.18(c)(vii)` (842 chars, single occurrence).
+- Remaining strata rows are DEFERRED/BLOCKED stubs with sealed-tree hints — follow-on pin folders, not invented IDs.
+
+### Review owners
+
+Architect · Product · COO — PASS/FAIL the Chewy pin + thin matrix. Live/paid **not** authorized hereby.

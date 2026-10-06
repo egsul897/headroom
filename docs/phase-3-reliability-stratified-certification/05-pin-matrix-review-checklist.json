@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN_MATRIX_REVIEW_CHECKLIST",
+  "status": "AWAITING_REVIEW",
+  "baseSha": "d5ac8beebc9e02117cbf9344ac7d13929e54e217",
+  "priorChecklist": "04-review-checklist.json",
+  "priorChecklistNote": "04-review-checklist.json remains the #64 DESIGN_DRAFT sign-off (PASS). This checklist is append-only for the offline pin-matrix packet \u2014 do not mutate 04-.",
+  "owners": {
+    "Architect": {
+      "fields": [
+        "chewyPinIdentityAcceptable",
+        "withSharedCapsCrossCutAcceptable",
+        "adr1AppendOnlyRespected",
+        "firstTargetUntouched",
+        "noInventedDiscoveryIds",
+        "deferredBlockedReasonsHonest"
+      ],
+      "decision": "PENDING",
+      "notes": ""
+    },
+    "Product": {
+      "fields": [
+        "chewyPreferredBeforeMoreConmedHeroes",
+        "baselineConmed76cNotDuplicatedAsHero",
+        "interimBPostureUntouched"
+      ],
+      "decision": "PENDING",
+      "notes": ""
+    },
+    "COO": {
+      "fields": [
+        "docsOnlyNoLivePaid",
+        "noNS4",
+        "noPaid75j",
+        "noRelatedSeriesAC",
+        "costCeilingUnchanged"
+      ],
+      "decision": "PENDING",
+      "notes": ""
+    }
+  },
+  "aggregate": {
+    "allPassRequiredForDocsMerge": true,
+    "livePaidAuthorization": "NOT_IN_THIS_PACKET"
+  }
+}
