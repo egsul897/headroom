@@ -59,7 +59,11 @@
 // enumerator formatting segment to the one substantive segment it introduces (defect A); a model-declared OTHER-kind
 // quantitative value whose raw text the deterministic scanner recognises as exactly one figure is canonicalised to the
 // scanner's kind/value/unit instead of surviving as an independent OTHER duplicate (defect B; declaredKind kept for audit).
-export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v7";
+// v8 (trust-boundary seal): (A) enumerator handoff allows only a single LF/CRLF into the next substantive segment -
+// blank-line / whitespace-only blank-line separations are refused; (B) quantitative source authority is item-span bound -
+// OTHER/unknown is canonicalised only when rawText occurs inside THIS item's authenticated source span (outside-span
+// location is diagnostics only, zero semantic authority).
+export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v8";
 export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v6";
 
 // ---------------------------------------------------------------------------

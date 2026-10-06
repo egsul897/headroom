@@ -112,7 +112,7 @@ export async function replayFrozen75j() {
   // ---- DEFECT B: the frozen values re-judged by the deterministic scanner (value-level, ids untouched)
   const canonicalizedItems = items.map((it) => {
     const out: QuantitativeValue[] = [];
-    for (const v of it.quantitativeValues) { const c = canonicalizeFrozenQuantitativeValue(v, operative); if (!out.some((x) => quantitativeValuesEquivalent(x, c))) out.push(c); }
+    for (const v of it.quantitativeValues) { const c = canonicalizeFrozenQuantitativeValue(v, operative, { charStart: it.sourceSpan.charStart, charEnd: it.sourceSpan.charEnd }); if (!out.some((x) => quantitativeValuesEquivalent(x, c))) out.push(c); }
     return { ...it, quantitativeValues: out.sort((a, b) => a.charStart - b.charStart) };
   });
   const defectB = {
@@ -159,10 +159,25 @@ export async function replayFrozen75j() {
   const projectionJson = JSON.stringify(projection);
 
   const missingAfter = accountabilityAfter.items.filter((i) => i.disposition === "MISSING_FROM_COMPOSITION");
+  const itemOf = (id: string) => accountabilityAfter.items.find((i) => i.inventoryItemId === id);
+  const nonVocabUnsupported = (id: string) => {
+    const it = itemOf(id);
+    return !!it && it.disposition === "UNSUPPORTED" && typeof it.modelDisposition === "string" && it.modelDisposition.length > 0 && !/^(INTENTIONALLY_NON_COMPUTATIONAL|UNSUPPORTED|AMBIGUOUS|REPRESENTED|MISSING_FROM_COMPOSITION)$/i.test(it.modelDisposition.trim().replace(/[\s-]+/g, "_"));
+  };
   const residual = {
     relatedSeries: { status: "NOT_STRUCTURALLY_REPRESENTED", evidence: "the related-series alternative lives in inventory items c262463526204a96714cd8f6 / 2bb0c84da8ad713ef2667e0f (consumed on the rule) and in the bound condition/gate excerpts; the IR carries no structural element aggregating a related series for the threshold test" },
-    notesDebtSecuritiesValuation: { status: missingAfter.some((i) => i.inventoryItemId === "inv-item:da2ae7a8c96e1ad42210a94e") ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate", item: "inv-item:da2ae7a8c96e1ad42210a94e" },
-    otherNonCashValuation: { status: missingAfter.filter((i) => i.inventoryItemId === "inv-item:cfa2c306e7039e94371d186b" || i.inventoryItemId === "inv-item:5e02c2d017c10fdbce5ccaf7").length === 2 ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate", items: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"] },
+    notesDebtSecuritiesValuation: {
+      status: nonVocabUnsupported("inv-item:da2ae7a8c96e1ad42210a94e") ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.some((i) => i.inventoryItemId === "inv-item:da2ae7a8c96e1ad42210a94e") ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
+      item: "inv-item:da2ae7a8c96e1ad42210a94e",
+      modelDisposition: itemOf("inv-item:da2ae7a8c96e1ad42210a94e")?.modelDisposition ?? null,
+      disposition: itemOf("inv-item:da2ae7a8c96e1ad42210a94e")?.disposition ?? null,
+    },
+    otherNonCashValuation: {
+      status: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].every(nonVocabUnsupported) ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.filter((i) => i.inventoryItemId === "inv-item:cfa2c306e7039e94371d186b" || i.inventoryItemId === "inv-item:5e02c2d017c10fdbce5ccaf7").length === 2 ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
+      items: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"],
+      modelDispositions: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].map((id) => itemOf(id)?.modelDisposition ?? null),
+      dispositions: ["inv-item:cfa2c306e7039e94371d186b", "inv-item:5e02c2d017c10fdbce5ccaf7"].map((id) => itemOf(id)?.disposition ?? null),
+    },
     supportAsymmetry: { supportReviewRequired: inventoryAfter.ensemble?.supportReviewRequired ?? null, materialSingleRun: inventoryAfter.ensemble?.counts.materialSingleRun ?? null, accountabilitySupportReviewRequired: accountabilityAfter.supportReviewRequired },
     enumerationSignal: verification.findings.filter((f) => f.findingType === "MISSING_RULE").map((f) => ({ severity: f.severity, verificationMethod: f.verificationMethod, signals: f.deterministicSignals })),
     gapReinventoryLocalRef: { status: "OBSERVED_BUT_NOT_REMEDIATED", detail: frozen.frozenInventory.gapReinventory?.error?.split("\n")[0] ?? null, note: "prompts and the wire schema are untouched in this closure; with defect A closed the frozen coverage gap is not reproduced over the same items, so a gap re-inventory would not have been triggered for it" },

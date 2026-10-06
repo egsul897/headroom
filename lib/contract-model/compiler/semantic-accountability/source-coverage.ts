@@ -38,13 +38,13 @@
  * spans. It imports no IR, no composition, no verifier (enforced by
  * tests/contract-model/semantic-accountability-independence.test.ts).
  *
- * LEADING BARE ENUMERATOR HANDOFF (semantic-accountability.v7, defect A of
- * the §7.5(j) live-exposed closure): an item's coverage credit is still
- * clipped to the independent segment its span starts in (canary #3), with
- * one positively-proven exception - when that first segment is nothing but
- * a recognised enumerator on its own line, the credit advances to the ONE
- * substantive segment that immediately follows it. See
- * clipCreditToStartSegment.
+ * LEADING BARE ENUMERATOR HANDOFF (semantic-accountability.v8, defect A of
+ * the §7.5(j) live-exposed closure, trust-boundary seal): an item's coverage
+ * credit is still clipped to the independent segment its span starts in
+ * (canary #3), with one positively-proven exception - when that first segment
+ * is nothing but a recognised enumerator terminated by a SINGLE LF/CRLF (no
+ * blank line, no whitespace-only blank line), the credit advances to the ONE
+ * substantive segment that immediately follows it. See clipCreditToStartSegment.
  */
 import { scanQuantitativeValues } from "./quantitative";
 import type { QuantitativeValue, SourceContextRegion } from "./types";
@@ -681,16 +681,17 @@ function clipCreditToStartSegment(charStart: number, charEnd: number, bounds: nu
       break;
     }
   }
-  // LEADING BARE ENUMERATOR HANDOFF (§7.5(j) live-exposed closure, defect A). A line break is an independent-segment
-  // boundary, so an item whose span starts on an enumerator that sits alone on its line ("(j)\n") used to spend its one
-  // credit segment on the enumerator and never reach the proposition it anchors. The exception is narrow and
-  // positively proven: the first segment is NOTHING but one recognised enumerator plus whitespace/punctuation (no
-  // letter, no digit, hence no value and no content word), the span continues directly into the immediately
-  // following segment, and that segment is substantive. Credit then advances through the formatting segment to that
-  // ONE substantive segment and stops at the next genuine boundary exactly as before. Nothing else hops: a bare
-  // number that is not an enumerator (a page number), a heading, a blank line followed by another formatting
-  // segment, or an enumerator carrying words of its own all keep the ordinary clip. The provenance span is untouched.
-  if (charEnd > segEnd && isBareEnumeratorFormatting(text.slice(charStart, segEnd)) && isSubstantiveSegment(text.slice(segEnd, nextEnd))) {
+  // LEADING BARE ENUMERATOR HANDOFF (§7.5(j) live-exposed closure, defect A; v8 trust-boundary seal). A line break is an
+  // independent-segment boundary, so an item whose span starts on an enumerator that sits alone on its line ("(j)\n")
+  // used to spend its one credit segment on the enumerator and never reach the proposition it anchors. The exception is
+  // narrow and positively proven: the first segment is NOTHING but one recognised enumerator plus whitespace/punctuation
+  // (no letter, no digit), terminated by at most ONE LF or CRLF (blank lines and whitespace-only blank lines REFUSED),
+  // the span continues directly into the immediately following segment, and that segment is substantive. Credit then
+  // advances through the formatting segment to that ONE substantive segment and stops at the next genuine boundary.
+  // Nothing else hops: a bare number that is not an enumerator, a heading, a blank-line separation, a second formatting
+  // segment, or an enumerator carrying words of its own all keep the ordinary clip. Provenance spans are untouched.
+  const formatting = text.slice(charStart, segEnd);
+  if (charEnd > segEnd && isSingleLineBreakEnumeratorFormatting(formatting) && isSubstantiveSegment(text.slice(segEnd, nextEnd))) {
     return { from: charStart, to: Math.min(charEnd, nextEnd), enumeratorHandoff: true };
   }
   return { from: charStart, to: Math.min(charEnd, segEnd), enumeratorHandoff: false };
@@ -701,6 +702,18 @@ export function isBareEnumeratorFormatting(segment: string): boolean {
   const m = ENUMERATOR_AT_START.exec(segment);
   if (!m) return false;
   return !/[\p{L}\p{N}]/u.test(segment.slice(m[0].length));
+}
+
+/**
+ * v8 trust-boundary seal: the leading-enumerator handoff may cross at most ONE LF or CRLF into the next substantive
+ * segment. A blank line (two or more line endings) or a whitespace-only blank line inside the formatting segment is a
+ * SEPARATION, not a formatting terminator - handoff refused. isBareEnumeratorFormatting alone still answers "no letter
+ * or digit survives"; this predicate answers "and the line structure is a single-line-break handoff, not a blank line".
+ */
+export function isSingleLineBreakEnumeratorFormatting(segment: string): boolean {
+  if (!isBareEnumeratorFormatting(segment)) return false;
+  const normalized = segment.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  return (normalized.match(/\n/g) ?? []).length <= 1;
 }
 
 /**

@@ -4,15 +4,19 @@
     "evidence": "the related-series alternative lives in inventory items c262463526204a96714cd8f6 / 2bb0c84da8ad713ef2667e0f (consumed on the rule) and in the bound condition/gate excerpts; the IR carries no structural element aggregating a related series for the threshold test"
   },
   "notesDebtSecuritiesValuation": {
-    "status": "MISSING_FROM_COMPOSITION (unchanged)",
-    "item": "inv-item:da2ae7a8c96e1ad42210a94e"
+    "status": "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
+    "item": "inv-item:da2ae7a8c96e1ad42210a94e",
+    "modelDisposition": "CONSUMED_IN_EXPRESSION",
+    "note": "Pass C composition contract maps non-vocabulary CONSUMED_IN_EXPRESSION \u2192 UNSUPPORTED; valuation still not structural IR (provenance only) \u2014 see docs/phase-3-reliability-composition-gaps/01-non-vocabulary-disposition-contract.md"
   },
   "otherNonCashValuation": {
-    "status": "MISSING_FROM_COMPOSITION (unchanged)",
+    "status": "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
     "items": [
       "inv-item:cfa2c306e7039e94371d186b",
       "inv-item:5e02c2d017c10fdbce5ccaf7"
-    ]
+    ],
+    "modelDisposition": "CONSUMED_IN_EXPRESSION",
+    "note": "same composition-contract remediation as notesDebtSecuritiesValuation"
   },
   "supportAsymmetry": {
     "supportReviewRequired": true,
@@ -32,5 +36,9 @@
     "status": "OBSERVED_BUT_NOT_REMEDIATED",
     "detail": "gap re-inventory call failed on gap batch 1/1: Failed to parse structured output: Error: Failed to parse structured output: [",
     "note": "prompts and the wire schema are untouched in this closure; with defect A closed the frozen coverage gap is not reproduced over the same items, so a gap re-inventory would not have been triggered for it"
+  },
+  "compositionContractRemediation": {
+    "status": "CLOSED_OFFLINE",
+    "artifact": "docs/phase-3-reliability-composition-gaps/01-non-vocabulary-disposition-contract.md"
   }
 }

@@ -125,8 +125,8 @@ describe("SA-1 §10-§13 a Pass A referencedSections claim never becomes source 
   });
 
   it("§13 identity: the inventory algorithm is v6 (source-grounded references are part of the frozen semantics); the ensemble still replays frozen v5 passes", () => {
-    expect(SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION).toBe("semantic-accountability.v7");
-    expect(ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS).toEqual(["semantic-accountability.v7", "semantic-accountability.v6", "semantic-accountability.v5"]);
+    expect(SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION).toBe("semantic-accountability.v8");
+    expect(ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS).toEqual(["semantic-accountability.v8", "semantic-accountability.v7", "semantic-accountability.v6", "semantic-accountability.v5"]);
   });
 });
 

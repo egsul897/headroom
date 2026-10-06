@@ -1,5 +1,8 @@
 /**
- * DEFECT B of the §7.5(j) live-exposed deterministic closure - QUANTITATIVE SOURCE AUTHORITY (semantic-accountability.v7).
+ * DEFECT B of the §7.5(j) live-exposed deterministic closure - QUANTITATIVE SOURCE AUTHORITY (semantic-accountability.v8).
+ *
+ * v8 trust-boundary seal: canonicalize OTHER/unknown only when rawText occurs inside THIS item's authenticated source
+ * span. Outside-span location is diagnostics only (char offsets may still be recorded) with zero semantic authority.
  *
  * Live defect: the model declared its threshold figures with an out-of-vocabulary kind; normalizeWireValue defaulted them
  * to OTHER while the deterministic completion added the scanner's MONEY / PERCENT twin of the same figure. Pass C matches
@@ -89,6 +92,55 @@ describe("defect B - the deterministic scanner is authoritative for the kind of 
     expect(canonicalizeFrozenQuantitativeValue({ ...frozenOther, charStart: -1, charEnd: -1 }, OP)).toEqual({ ...frozenOther, charStart: -1, charEnd: -1 });
     expect(canonicalizeFrozenQuantitativeValue({ kind: "OTHER", rawText: "net proceeds", normalizedValue: null, unit: null, charStart: OP.indexOf("net proceeds"), charEnd: OP.indexOf("net proceeds") + 12 }, OP).kind).toBe("OTHER");
     expect(canonicalizeFrozenQuantitativeValue({ kind: "MONEY", rawText: "$25,000,000", normalizedValue: 25000000, unit: "USD", charStart: 0, charEnd: 11 }, OP).declaredKind).toBeUndefined();
+  });
+
+  it("B9: OTHER rawText that appears ONLY outside this item's authenticated span is NOT canonicalised (diagnostics only, zero semantic authority)", async () => {
+    // Item excerpt is the fee clause; model declares $25,000,000 which lives earlier in the region, outside this item's span.
+    const inv = await inventoryOf([wire("f", "the fee is $500,000", [{ kind: "THRESHOLD", rawText: "$25,000,000" }])]);
+    const values = valuesOf(inv, "the fee is $500,000");
+    // The out-of-span OTHER stays OTHER (no kind lift); the in-span scanner completion still adds the fee's MONEY.
+    expect(values.find((v) => v.rawText === "$25,000,000")).toMatchObject({ kind: "OTHER", rawText: "$25,000,000", declaredKind: null });
+    expect(values.find((v) => v.rawText === "$500,000")).toMatchObject({ kind: "MONEY", rawText: "$500,000", normalizedValue: 500000 });
+  });
+
+  it("B10: the same OTHER rawText IS canonicalised when it occurs inside THIS item's authenticated span", async () => {
+    const inv = await inventoryOf([wire("t", "(x) $25,000,000", [{ kind: "THRESHOLD", rawText: "$25,000,000" }])]);
+    expect(valuesOf(inv, "(x) $25,000,000")).toEqual([{ kind: "MONEY", rawText: "$25,000,000", normalizedValue: 25000000, unit: "USD", declaredKind: "THRESHOLD" }]);
+  });
+
+  it("B11: canonicalizeFrozenQuantitativeValue refuses an outside-span location when itemSpan is supplied", () => {
+    const moneyAt = OP.indexOf("$25,000,000");
+    const feeAt = OP.indexOf("$500,000");
+    const frozenOutside: QuantitativeValue = { kind: "OTHER", rawText: "$25,000,000", normalizedValue: 25000000, unit: "USD", charStart: moneyAt, charEnd: moneyAt + "$25,000,000".length };
+    const feeSpan = { charStart: feeAt, charEnd: feeAt + "$500,000".length };
+    // Outside the fee item's span: no lift
+    expect(canonicalizeFrozenQuantitativeValue(frozenOutside, OP, feeSpan)).toEqual(frozenOutside);
+    // Inside the money item's own span: lift
+    const moneySpan = { charStart: moneyAt, charEnd: moneyAt + "$25,000,000".length };
+    expect(canonicalizeFrozenQuantitativeValue(frozenOutside, OP, moneySpan)).toMatchObject({ kind: "MONEY", declaredKind: "OTHER", normalizedValue: 25000000 });
+    // Without itemSpan (legacy replay of an already-authenticated in-span location): still lifts when char offsets match rawText
+    expect(canonicalizeFrozenQuantitativeValue(frozenOutside, OP)).toMatchObject({ kind: "MONEY", declaredKind: "OTHER" });
+  });
+
+  it("B12: two items - figure in item A's span only - item B's OTHER declaration of that figure stays OTHER; item A canonicalises", async () => {
+    const inv = await inventoryOf([
+      wire("a", "(x) $25,000,000", [{ kind: "THRESHOLD", rawText: "$25,000,000" }]),
+      wire("b", "the fee is $500,000", [{ kind: "THRESHOLD", rawText: "$25,000,000" }]),
+    ]);
+    expect(valuesOf(inv, "(x) $25,000,000").find((v) => v.rawText === "$25,000,000")).toMatchObject({ kind: "MONEY", declaredKind: "THRESHOLD" });
+    expect(valuesOf(inv, "the fee is $500,000").find((v) => v.rawText === "$25,000,000")).toMatchObject({ kind: "OTHER", rawText: "$25,000,000" });
+  });
+
+  it("B13: outside-span location still records diagnostic char offsets (non-negative) but confers no kind authority", async () => {
+    const inv = await inventoryOf([wire("f", "the fee is $500,000", [{ kind: "THRESHOLD", rawText: "$25,000,000" }])]);
+    const item = inv.items.find((i) => i.sourceSpan.excerpt === "the fee is $500,000")!;
+    const other = item.quantitativeValues.find((v) => v.rawText === "$25,000,000")!;
+    expect(other.kind).toBe("OTHER");
+    expect(other.charStart).toBeGreaterThanOrEqual(0);
+    expect(other.charEnd).toBeGreaterThan(other.charStart);
+    // Diagnostic location points at the figure elsewhere in the region, outside the item span
+    expect(other.charStart).toBe(OP.indexOf("$25,000,000"));
+    expect(other.charStart < item.sourceSpan.charStart || other.charEnd > item.sourceSpan.charEnd).toBe(true);
   });
 
   it("determinism and identity: canonicalisation is value-level; declaredKind never enters value equivalence", async () => {

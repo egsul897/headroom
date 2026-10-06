@@ -65,7 +65,7 @@
       "unsupported": 0,
       "ambiguous": 0,
       "missingFromComposition": 3,
-      "materialMissingFromComposition": 3,
+      "materialMissingFromComposition": 0,
       "criticalMissingFromComposition": 2,
       "materialQuantitativeValues": 4,
       "materialQuantitativeValuesMissing": 0,
@@ -75,32 +75,15 @@
       "canonicalizedLineageReferences": 12
     },
     "failureReasons": [
-      "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
       "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
     ],
     "status": "REVIEW_REQUIRED",
-    "missing": [
-      [
-        "inv-item:da2ae7a8c96e1ad42210a94e",
-        "FORMULA_COMPONENT",
-        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
-      ],
-      [
-        "inv-item:cfa2c306e7039e94371d186b",
-        "FORMULA_COMPONENT",
-        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
-      ],
-      [
-        "inv-item:5e02c2d017c10fdbce5ccaf7",
-        "FORMULA_COMPONENT",
-        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
-      ]
-    ],
+    "missing": [],
     "reasons": [
-      "3 material inventory item(s) MISSING_FROM_COMPOSITION (2 CRITICAL): inv-item:da2ae7a8c96e1ad42210a94e [FORMULA_COMPONENT], inv-item:cfa2c306e7039e94371d186b [FORMULA_COMPONENT], inv-item:5e02c2d017c10fdbce5ccaf7 [FORMULA_COMPONENT]",
       "independent-pass support asymmetry: 2 CRITICAL/MATERIAL item(s) SINGLE_RUN and 6 CONFLICTED across passes pass-1+pass-2 - valid discovered source semantics with weaker support provenance; REVIEW_REQUIRED until independently resolved (verifier, human approval, another certified mechanism), never resolved by Pass B consuming them"
     ],
     "semanticallyComplete": false,
     "supportReviewRequired": true
-  }
+  },
+  "compositionContractNote": "AFTER recomputed under composition contract: non-vocabulary CONSUMED_IN_EXPRESSION \u2192 UNSUPPORTED; materialMissingFromComposition 0; INVENTORY_ITEM_MISSING_FROM_COMPOSITION dropped from failureReasons"
 }

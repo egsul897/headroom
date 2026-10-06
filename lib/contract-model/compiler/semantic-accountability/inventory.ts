@@ -197,11 +197,15 @@ function normalizeWireValue(v: WireInventoryItem["quantitativeValues"][number], 
   const raw = v.rawText.trim();
   let charStart = -1;
   let charEnd = -1;
+  // v8 trust-boundary seal: in-span location alone confers semantic authority. An outside-span hit is recorded for
+  // diagnostics (char offsets) but never authorises canonicalisation.
+  let locatedInAuthenticatedSpan = false;
   if (raw) {
     const inSpan = regionText.slice(spanStart, spanEnd).indexOf(raw);
     if (inSpan >= 0) {
       charStart = spanStart + inSpan;
       charEnd = charStart + raw.length;
+      locatedInAuthenticatedSpan = true;
     } else {
       const anywhere = regionText.indexOf(raw);
       if (anywhere >= 0) {
@@ -211,16 +215,14 @@ function normalizeWireValue(v: WireInventoryItem["quantitativeValues"][number], 
     }
   }
   const scannedAll = raw ? scanQuantitativeValues(raw) : [];
-  // QUANTITATIVE SOURCE AUTHORITY (v7, defect B of the §7.5(j) live-exposed closure). The deterministic scanner is
-  // authoritative for the KIND of a source-locatable figure it recognises. A model kind outside QUANTITATIVE_KINDS (or a
-  // declared / defaulted OTHER) whose raw text is located in the source and scans to EXACTLY ONE recognised figure is
-  // canonicalised to that figure's kind/value/unit; the model's own kind string is kept as `declaredKind` for audit.
-  // Without this, the same source figure reached the frozen inventory twice - once typed by the scanner's deterministic
-  // completion, once as the model's OTHER - and Pass C, which matches OTHER only against TEXT nodes, reported the item
-  // MISSING although its literal sat in the IR. Fail-closed cases keep the existing OTHER behaviour: raw text absent or
-  // not locatable, nothing recognised, or several figures (no unique correspondence - never guessed).
+  // QUANTITATIVE SOURCE AUTHORITY (v7 defect B; v8 item-span bound). The deterministic scanner is authoritative for the
+  // KIND of a source-locatable figure it recognises, BUT only when the raw text occurs inside THIS item's authenticated
+  // source span. A model kind outside QUANTITATIVE_KINDS (or a declared / defaulted OTHER) whose raw text is located
+  // IN-SPAN and scans to EXACTLY ONE recognised figure is canonicalised to that figure's kind/value/unit; the model's
+  // own kind string is kept as `declaredKind` for audit. Outside-span location is diagnostics only - zero semantic
+  // authority (no kind lift). Fail-closed otherwise: raw absent/unlocatable, nothing recognised, several figures.
   const declaredKind = typeof v.kind === "string" && v.kind.trim().length > 0 ? v.kind.trim() : "OTHER";
-  if (kind === "OTHER" && raw && charStart >= 0 && scannedAll.length === 1 && scannedAll[0]!.kind !== "OTHER") {
+  if (kind === "OTHER" && raw && locatedInAuthenticatedSpan && scannedAll.length === 1 && scannedAll[0]!.kind !== "OTHER") {
     const only = scannedAll[0]!;
     return { kind: only.kind, declaredKind, rawText: only.rawText, normalizedValue: only.normalizedValue, unit: only.unit, charStart: charStart + only.charStart, charEnd: charStart + only.charEnd };
   }
@@ -234,11 +236,15 @@ function normalizeWireValue(v: WireInventoryItem["quantitativeValues"][number], 
 /**
  * The value-level canonicalisation above, exposed for offline replay of an already-frozen inventory (whose wire form is
  * not persisted): a frozen OTHER-kind value is re-judged against the deterministic scanner exactly as normalizeWireValue
- * would judge it, given the region text it was located in. Pure; never consults the model's text beyond `rawText`.
+ * would judge it. Pure; never consults the model's text beyond `rawText`.
+ *
+ * `itemSpan` (v8): when supplied, canonicalisation is refused unless the located raw text sits inside the item's
+ * authenticated source span - outside-span location has zero semantic authority (diagnostics only).
  */
-export function canonicalizeFrozenQuantitativeValue(value: QuantitativeValue, regionText: string): QuantitativeValue {
+export function canonicalizeFrozenQuantitativeValue(value: QuantitativeValue, regionText: string, itemSpan?: { charStart: number; charEnd: number }): QuantitativeValue {
   if (value.kind !== "OTHER" || !value.rawText || value.charStart < 0) return value;
   if (regionText.slice(value.charStart, value.charEnd) !== value.rawText) return value;
+  if (itemSpan && (value.charStart < itemSpan.charStart || value.charEnd > itemSpan.charEnd)) return value;
   const scannedAll = scanQuantitativeValues(value.rawText);
   if (scannedAll.length !== 1 || scannedAll[0]!.kind === "OTHER") return value;
   const only = scannedAll[0]!;
