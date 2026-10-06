@@ -13,9 +13,9 @@
         "noRelatedSeriesAC",
         "noNS4"
       ],
-      "decision": "PASS_WITH_NOTES",
-      "signedAt": "2026-10-06T22:50:00Z",
-      "notes": "PASS_WITH_NOTES: (1) cite RELATED-SERIES-INTERIM-B-ADR.md (ACCEPTED) in relatedSeriesInterimB.evidence; (2) OOV nonVocabularyUnsupported must require model-contract violation diagnostic when Pass B emits non-vocab inventoryDisposition; (3) stratified-cert evidence packets append/versioned — never mutate-in-place; (4) honesty: map tags first-target with historical CANDIDATE_COMPILE_REVIEW_REQUIRED / MATERIAL_DISCREPANCY — offline pin valid; map REVIEW is not pre-credit. Amendments applied in this docs revision."
+      "decision": "PASS",
+      "signedAt": "2026-10-06T22:53:00Z",
+      "notes": "PASS (re-stamp @ 7a0a306): all four prior notes landed \u2014 ADR cite, OOV model-contract diagnostic, versioned packets, canonicalMapHonesty. Docs-only; live/paid NOT authorized."
     },
     "Product": {
       "fields": [
@@ -33,9 +33,9 @@
         "noLivePaidAuthInThisPacket",
         "docsOnlyMergeOk"
       ],
-      "decision": "PASS_WITH_NOTES",
-      "signedAt": "2026-10-06T22:50:00Z",
-      "notes": "PASS_WITH_NOTES (blocking until amendments): (1) versioned packets — softGate.forbiddenNow + acceptance: future remediation/replay evidence = new versioned packets; do not mutate 7.5j-deterministic-remediation/ in place; paid live 7.2c/7.5j-end-to-end immutable; (2) related-series #63 detector temporary CONMED-shaped (\\bseries\\s+of\\s+related\\b) fail-closed only — not general semantics solved; (3) OOV must require explicit model-contract violation diagnostic (raw label + distinct reason/code), not ordinary quiet UNSUPPORTED. Amendments applied in this docs revision."
+      "decision": "PASS",
+      "signedAt": "2026-10-06T22:53:00Z",
+      "notes": "PASS (post-amendment re-review @ 7a0a306): costCeiling YES; noLivePaidAuth YES; docsOnlyMergeOk YES. Blocking standing-scrutiny amendments verified landed: (1) versioned packets / no mutate-in-place of 7.5j-deterministic-remediation/; (2) relatedSeriesInterimB TEMPORARY_CONMED_SHAPED \u2014 not generally solved; (3) nonVocabularyUnsupported requires explicit model-contract violation diagnostic. Still NOT authorizing live/paid stratified runs, NS-4, paid \u00a77.5(j), or related-series A/C."
     }
   },
   "aggregate": {
