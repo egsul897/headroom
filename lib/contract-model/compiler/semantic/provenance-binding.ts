@@ -1,5 +1,5 @@
 /**
- * PROVENANCE EXCERPT SOURCE BINDING (provenance-source-binding.v1)
+ * PROVENANCE EXCERPT SOURCE BINDING (provenance-source-binding.v2)
  *
  * Invariant: AUTHORITATIVE PROVENANCE IS ALWAYS SOURCE-ADDRESSABLE. A model may emit an abbreviated or elided excerpt
  * ("LEFT … RIGHT"); model-authored prose becomes authoritative source evidence only when it resolves deterministically to
@@ -10,10 +10,18 @@
  * to one space, case-insensitive); every returned excerpt is the ORIGINAL source substring (original whitespace and line
  * wraps) at ORIGINAL offsets. No fuzzy matching, no edit distance, no punctuation changes, no provider calls, no time.
  *
+ * STRICT INVARIANT (v2): a non-null authoritative excerpt exists ONLY with a proven, recorded source span. The only
+ * successful statuses are SOURCE_BOUND_EXACT and SOURCE_BOUND_ELIDED; every other outcome is UNRESOLVED (excerpt null,
+ * model text kept as audit). Model text never becomes authoritative because it is short, because it occurs somewhere,
+ * because it occurs several times, or because the unit cites a real inventory item.
+ *
  * Policy (frozen):
- *   - exact excerpt, one occurrence in one source            -> VERBATIM_UNIQUE (bound span)
- *   - exact excerpt, several occurrences                     -> VERBATIM_NON_UNIQUE (the quotation is real; no span claimed)
- *   - exact excerpt shorter than the locating minimum        -> VERBATIM_SHORT (not locating evidence; unchanged)
+ *   - exact excerpt, exactly one VALID span in the tier      -> SOURCE_BOUND_EXACT (bound span). Length is not a proof
+ *     and not a waiver: a short excerpt (a figure such as "$10,000,000" on a numeric literal node) is bound only by the
+ *     same unique-span proof as a long one and is never retained verbatim; the grounding layer's 12-char locating floor
+ *     (existence semantics) stays untouched because binding uses uniqueness semantics with a recorded span.
+ *   - exact excerpt, several valid spans in the tier         -> UNRESOLVED / AMBIGUOUS_EXACT_SPAN (no span chosen)
+ *   - exact excerpt whose only occurrences cross a boundary  -> UNRESOLVED / CROSSES_INADMISSIBLE_BOUNDARY
  *   - exact excerpt occurring nowhere                        -> UNRESOLVED / NOT_IN_SOURCE
  *   - elided excerpt (one or more ellipses): every segment must locate, in order, inside ONE admissible source, and
  *     exactly one ordered chain may exist across all sources; the bound span may not cross an inadmissible boundary;
@@ -25,15 +33,14 @@
  *     a sibling / referenced copy of the same words in read-only context never makes that quotation ambiguous). The
  *     other admissible sources (resolved source-context regions, context-bundle excerpts) are consulted only when the
  *     excerpt - or one of its anchors - occurs nowhere in the operative text. An ambiguous, reversed or boundary-crossing
- *     operative match is final (it never falls through). Anchors split across the tiers are CROSS_SOURCE.
+ *     operative match is final (it never falls through); several valid spans inside the controlling tier, or across the
+ *     fallback tier's sources, are ambiguous. Anchors split across the tiers are CROSS_SOURCE.
  */
 import { hashParts } from "../hashing";
 
-export const PROVENANCE_SOURCE_BINDING_VERSION = "provenance-source-binding.v1" as const;
+export const PROVENANCE_SOURCE_BINDING_VERSION = "provenance-source-binding.v2" as const;
 /** An elided excerpt's segments must each carry at least this many normalized characters to act as anchors. */
 export const MIN_ANCHOR_CHARS = 8;
-/** Mirrors qualitative grounding: an exact excerpt shorter than this is not locating evidence. */
-export const MIN_LOCATING_CHARS = 12;
 /** Chains enumerated beyond this bound are treated as ambiguous (deterministic fail-closed, never a heuristic choice). */
 const MAX_CHAINS = 10_000;
 
@@ -52,10 +59,12 @@ export interface AdmissibleSourceText {
   boundaries?: readonly [number, number][];
 }
 
-export type ProvenanceResolutionStatus = "VERBATIM_UNIQUE" | "VERBATIM_NON_UNIQUE" | "VERBATIM_SHORT" | "SOURCE_BOUND_ELIDED" | "UNRESOLVED";
+/** v2: the only successful statuses are SOURCE_BOUND_*; each carries a complete source span. */
+export type ProvenanceResolutionStatus = "SOURCE_BOUND_EXACT" | "SOURCE_BOUND_ELIDED" | "UNRESOLVED";
+export const SOURCE_BOUND_STATUSES: ReadonlySet<ProvenanceResolutionStatus> = new Set(["SOURCE_BOUND_EXACT", "SOURCE_BOUND_ELIDED"]);
 export type ProvenanceResolutionReason =
   | "NOT_IN_SOURCE" | "NO_ADMISSIBLE_SOURCE" | "DEGENERATE_ELLIPSIS" | "ANCHOR_TOO_SHORT" | "LEFT_ANCHOR_MISSING" | "RIGHT_ANCHOR_MISSING" | "SEGMENT_MISSING"
-  | "CROSS_SOURCE" | "REVERSED_ANCHORS" | "AMBIGUOUS_SPAN" | "CROSSES_INADMISSIBLE_BOUNDARY";
+  | "CROSS_SOURCE" | "REVERSED_ANCHORS" | "AMBIGUOUS_SPAN" | "AMBIGUOUS_EXACT_SPAN" | "CROSSES_INADMISSIBLE_BOUNDARY";
 
 export interface ProvenanceExcerptResolution {
   version: typeof PROVENANCE_SOURCE_BINDING_VERSION;
@@ -79,7 +88,7 @@ export interface ProvenanceExcerptResolution {
 
 export interface ProvenanceResolutionOutcome {
   resolution: ProvenanceExcerptResolution;
-  /** The authoritative excerpt: the exact source substring when bound, the verbatim model text when VERBATIM_*, null when UNRESOLVED. */
+  /** The authoritative excerpt: the exact source substring when SOURCE_BOUND_*, null when UNRESOLVED. Never the model's own text. */
   authoritativeExcerpt: string | null;
 }
 
@@ -157,7 +166,7 @@ function unresolved(reason: ProvenanceResolutionReason, detail: string, segments
   return { authoritativeExcerpt: null, resolution: { version: PROVENANCE_SOURCE_BINDING_VERSION, status: "UNRESOLVED", reason, detail, segments, sourceKey: null, sourceKind: null, sourceDocumentId: null, sourceSectionRef: null, charStart: null, charEnd: null, absCharStart: null, absCharEnd: null, boundSha256: null } };
 }
 
-function bound(status: "VERBATIM_UNIQUE" | "SOURCE_BOUND_ELIDED", chain: Chain, nt: NormalizedText, segments: number, detail: string): ProvenanceResolutionOutcome {
+function bound(status: "SOURCE_BOUND_EXACT" | "SOURCE_BOUND_ELIDED", chain: Chain, nt: NormalizedText, segments: number, detail: string): ProvenanceResolutionOutcome {
   const charStart = nt.map[chain.normStart]!;
   const charEnd = nt.map[chain.normEnd - 1]! + 1;
   const excerpt = chain.source.text.slice(charStart, charEnd);
@@ -194,22 +203,21 @@ function resolveAgainst(excerpt: string, sources: readonly AdmissibleSourceText[
   const deduped = dedupeSources(sources);
   if (deduped.length === 0) return unresolved("NO_ADMISSIBLE_SOURCE", "no admissible source text was supplied", segments.length);
 
-  // ---- exact (single-segment) excerpt
+  // ---- exact (single-segment) excerpt: count VALID spans (boundary-filtered), never lexical occurrences
   if (!hadEllipsis || segments.length === 1) {
     const needle = segments[0]!;
-    if (needle.length < MIN_LOCATING_CHARS) {
-      return { authoritativeExcerpt: excerpt, resolution: { version: PROVENANCE_SOURCE_BINDING_VERSION, status: "VERBATIM_SHORT", reason: null, detail: `exact excerpt shorter than ${MIN_LOCATING_CHARS} normalized chars is not locating evidence; kept verbatim`, segments: 1, sourceKey: null, sourceKind: null, sourceDocumentId: null, sourceSectionRef: null, charStart: null, charEnd: null, absCharStart: null, absCharEnd: null, boundSha256: null } };
+    const valid: { chain: Chain; nt: NormalizedText }[] = [];
+    let crossing = 0;
+    for (const { source, nt } of deduped) {
+      for (const pos of occurrences(nt.norm, needle)) {
+        const chain: Chain = { source, normStart: pos, normEnd: pos + needle.length };
+        if (crossesBoundary(nt.map[chain.normStart]!, nt.map[chain.normEnd - 1]! + 1, source.boundaries)) crossing++; else valid.push({ chain, nt });
+      }
     }
-    const hits: Chain[] = [];
-    for (const { source, nt } of deduped) for (const pos of occurrences(nt.norm, needle)) hits.push({ source, normStart: pos, normEnd: pos + needle.length });
-    if (hits.length === 0) return unresolved("NOT_IN_SOURCE", "the exact excerpt occurs in no admissible source text", 1);
-    if (hits.length === 1) {
-      const h = hits[0]!;
-      const nt = deduped.find((d) => d.source === h.source)!.nt;
-      if (crossesBoundary(nt.map[h.normStart]!, nt.map[h.normEnd - 1]! + 1, h.source.boundaries)) return unresolved("CROSSES_INADMISSIBLE_BOUNDARY", "the only occurrence straddles an inadmissible source boundary", 1);
-      return bound("VERBATIM_UNIQUE", h, nt, 1, "exact excerpt located once; bound to its source span");
-    }
-    return { authoritativeExcerpt: excerpt, resolution: { version: PROVENANCE_SOURCE_BINDING_VERSION, status: "VERBATIM_NON_UNIQUE", reason: null, detail: "exact excerpt occurs more than once in the admissible source; the quotation is verbatim but no single span is claimed", segments: 1, sourceKey: null, sourceKind: null, sourceDocumentId: null, sourceSectionRef: null, charStart: null, charEnd: null, absCharStart: null, absCharEnd: null, boundSha256: null } };
+    if (valid.length === 1) return bound("SOURCE_BOUND_EXACT", valid[0]!.chain, valid[0]!.nt, 1, "exact excerpt located exactly once; bound to its source span");
+    if (valid.length > 1) return unresolved("AMBIGUOUS_EXACT_SPAN", `the exact excerpt occurs at ${valid.length} admissible source spans; no span is chosen`, 1);
+    if (crossing > 0) return unresolved("CROSSES_INADMISSIBLE_BOUNDARY", "every occurrence of the exact excerpt straddles an inadmissible source boundary", 1);
+    return unresolved("NOT_IN_SOURCE", "the exact excerpt occurs in no admissible source text", 1);
   }
 
   // ---- elided excerpt: every segment is an anchor

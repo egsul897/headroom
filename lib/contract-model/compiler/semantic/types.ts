@@ -66,7 +66,9 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // authority), every cross-rule / dependency target carries its source-derived selector, dependency prose is
 // status-neutral, and normalization diagnostics carry a deterministic identity on both execution paths.
 // v8 (provenance source binding): every model excerpt entering provenance is bound to an admissible source span or rejected.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v8";
+// v9 (strict source-addressability): a non-null authoritative excerpt exists only with a proven unique source span - a
+// duplicated or short exact model excerpt is rejected (binding v2), never kept verbatim.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v9";
 export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v8";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 

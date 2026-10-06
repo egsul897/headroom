@@ -919,6 +919,8 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const calculationExpression = wireDef.calculationExpression ? normalizeExpression(wireDef.calculationExpression, ctx) : null;
     const rawSufficiency = matchEnum(wireDef.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
     const consistent = enforceSufficiencyConsistency(rawSufficiency, wireDef.sufficiencyReasons, calculationExpression, null);
+    // deterministic limits raised under this definition (an unbound provenance excerpt, an invented reference) downgrade a COMPLETE claim - exactly as for a rule
+    if (ctx.limits.length > 0 && consistent.sufficiency === "COMPLETE") { consistent.sufficiency = "PARTIAL"; consistent.reasons.push(`deterministic post-processing: ${ctx.limits.length} limit(s) raised under this definition, so COMPLETE was downgraded to PARTIAL`); }
     const definition: IRDefinition = {
       definitionId: computeDefinitionId(companyId, instrumentKey, wireDef.termName),
       irSchemaVersion: input.irSchemaVersion,

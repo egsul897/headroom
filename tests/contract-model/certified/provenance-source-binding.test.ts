@@ -9,7 +9,7 @@
 import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import crypto from "node:crypto";
-import { MIN_ANCHOR_CHARS, PROVENANCE_SOURCE_BINDING_VERSION, normalizeWithMap, resolveProvenanceExcerpt, splitExcerptSegments, type AdmissibleSourceText } from "../../../lib/contract-model/compiler/semantic/provenance-binding";
+import { MIN_ANCHOR_CHARS, PROVENANCE_SOURCE_BINDING_VERSION, SOURCE_BOUND_STATUSES, normalizeWithMap, resolveProvenanceExcerpt, splitExcerptSegments, type AdmissibleSourceText, type ProvenanceExcerptResolution } from "../../../lib/contract-model/compiler/semantic/provenance-binding";
 import { admissibleSourcesFor, normalizeSubmission } from "../../../lib/contract-model/compiler/semantic/normalize";
 import { SubmitCompilationSchema } from "../../../lib/contract-model/compiler/semantic/wire-schema";
 import { SEMANTIC_COMPILER_ALGORITHM_VERSION } from "../../../lib/contract-model/compiler/semantic/types";
@@ -23,11 +23,11 @@ const src = (sourceKey: string, text: string, over: Partial<AdmissibleSourceText
 const T1 = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau";
 const sha = (s: string) => crypto.createHash("sha256").update(s).digest("hex");
 
-describe("provenance-source-binding.v1 - the pure resolver (matrix A-M)", () => {
+describe("provenance-source-binding.v2 - the pure resolver (matrix A-M)", () => {
   it("A EXACT UNIQUE MATCH: an exact substring resolves unchanged with exact offsets and source identity", () => {
     const r = resolveProvenanceExcerpt("gamma delta epsilon", [src("operative", T1)]);
     expect(r.authoritativeExcerpt).toBe("gamma delta epsilon");
-    expect(r.resolution).toMatchObject({ version: PROVENANCE_SOURCE_BINDING_VERSION, status: "VERBATIM_UNIQUE", reason: null, segments: 1, sourceKey: "operative", sourceKind: "OPERATIVE", sourceDocumentId: "doc-a", sourceSectionRef: "9.1", charStart: T1.indexOf("gamma"), charEnd: T1.indexOf("epsilon") + "epsilon".length, absCharStart: 1000 + T1.indexOf("gamma"), boundSha256: sha("gamma delta epsilon") });
+    expect(r.resolution).toMatchObject({ version: PROVENANCE_SOURCE_BINDING_VERSION, status: "SOURCE_BOUND_EXACT", reason: null, segments: 1, sourceKey: "operative", sourceKind: "OPERATIVE", sourceDocumentId: "doc-a", sourceSectionRef: "9.1", charStart: T1.indexOf("gamma"), charEnd: T1.indexOf("epsilon") + "epsilon".length, absCharStart: 1000 + T1.indexOf("gamma"), boundSha256: sha("gamma delta epsilon") });
   });
   it("B ELIDED UNIQUE MATCH: 'alpha beta … theta iota' binds to the full exact source substring; the raw text is not the authoritative excerpt", () => {
     const r = resolveProvenanceExcerpt("alpha beta gamma … theta iota kappa", [src("operative", T1)]);
@@ -82,7 +82,7 @@ describe("provenance-source-binding.v1 - the pure resolver (matrix A-M)", () => 
     expect(resolveProvenanceExcerpt("…", [src("operative", T1)]).resolution).toMatchObject({ status: "UNRESOLVED", reason: "DEGENERATE_ELLIPSIS", segments: 0 });
     expect(resolveProvenanceExcerpt("... ...", [src("operative", T1)]).resolution.reason).toBe("DEGENERATE_ELLIPSIS");
     expect(splitExcerptSegments("… gamma delta epsilon …")).toEqual({ segments: ["gamma delta epsilon"], hadEllipsis: true });
-    expect(resolveProvenanceExcerpt("… gamma delta epsilon …", [src("operative", T1)]).resolution.status).toBe("VERBATIM_UNIQUE");
+    expect(resolveProvenanceExcerpt("… gamma delta epsilon …", [src("operative", T1)]).resolution.status).toBe("SOURCE_BOUND_EXACT");
     const short = resolveProvenanceExcerpt("alpha beta gamma … iota", [src("operative", T1)]);
     expect([short.resolution.status, short.resolution.reason]).toEqual(["UNRESOLVED", "ANCHOR_TOO_SHORT"]);
     expect(MIN_ANCHOR_CHARS).toBe(8);
@@ -105,15 +105,15 @@ describe("provenance-source-binding.v1 - the pure resolver (matrix A-M)", () => 
     expect(normalizeWithMap(" a  b\n c ").norm).toBe("a b c");
     // no lexical repair: a changed word never matches
     expect(resolveProvenanceExcerpt("the Borrower shall be in compliance … contained in Section 7.2", [src("operative", wrapped)]).resolution.reason).toBe("RIGHT_ANCHOR_MISSING");
-    // an exact excerpt occurring twice is a verbatim quotation but claims no span
+    // an exact excerpt occurring twice is a real quotation but has no unique address: never authoritative (v2)
     const twice = resolveProvenanceExcerpt("financial covenants contained", [src("operative", "financial covenants contained in A; financial covenants contained in B")]);
-    expect([twice.resolution.status, twice.authoritativeExcerpt, twice.resolution.charStart]).toEqual(["VERBATIM_NON_UNIQUE", "financial covenants contained", null]);
+    expect([twice.resolution.status, twice.resolution.reason, twice.authoritativeExcerpt, twice.resolution.charStart]).toEqual(["UNRESOLVED", "AMBIGUOUS_EXACT_SPAN", null, null]);
     const none = resolveProvenanceExcerpt("words the source never says", [src("operative", wrapped)]);
     expect([none.resolution.status, none.resolution.reason, none.authoritativeExcerpt]).toEqual(["UNRESOLVED", "NOT_IN_SOURCE", null]);
   });
   it("identical texts supplied under several identities count once (the operative region duplicates the operative text)", () => {
     const r = resolveProvenanceExcerpt("gamma delta epsilon", [src("operative", T1), src("operative-region", T1, { kind: "SOURCE_REGION" }), src("ctx-1", T1, { kind: "CONTEXT_ITEM" })]);
-    expect(r.resolution.status).toBe("VERBATIM_UNIQUE");
+    expect(r.resolution.status).toBe("SOURCE_BOUND_EXACT");
     expect(r.resolution.sourceKey).toBe("operative");
   });
 });
@@ -140,12 +140,12 @@ describe("normalizer integration: raw model provenance vs authoritative source p
     expect(srcs.map((s) => [s.sourceKey, s.kind, s.sectionRef, s.absCharStart])).toEqual([["operative", "OPERATIVE", "9.2(a)", node.charStart], ["operative", "SOURCE_REGION", "9.2(a)", node.charStart], ["xref-1", "SOURCE_REGION", "9.3(b)", 10]]);
     expect(srcs[0]!.boundaries).toEqual([]); // 9.2 is the parent, not a child inside the window
   });
-  it("exact excerpt: provenance unchanged, VERBATIM_UNIQUE resolution with offsets, no raw copy, no diagnostic", () => {
+  it("exact excerpt: provenance unchanged, SOURCE_BOUND_EXACT resolution with offsets, no raw copy, no diagnostic", () => {
     const n = normalize(rule(FULL));
     const p = n.rules[0]!.conditions[0]!.provenance!;
     expect(p.excerpt).toBe(FULL);
     expect(p.rawModelExcerpt).toBeUndefined();
-    expect(p.excerptResolution).toMatchObject({ status: "VERBATIM_UNIQUE", sourceKey: "operative", charStart: OP.indexOf(FULL), charEnd: OP.indexOf(FULL) + FULL.length, absCharStart: node.charStart + OP.indexOf(FULL) });
+    expect(p.excerptResolution).toMatchObject({ status: "SOURCE_BOUND_EXACT", sourceKey: "operative", charStart: OP.indexOf(FULL), charEnd: OP.indexOf(FULL) + FULL.length, absCharStart: node.charStart + OP.indexOf(FULL), boundSha256: sha(FULL) });
     expect(n.diagnostics.filter((d) => d.message.startsWith("PROVENANCE"))).toEqual([]);
     expect(n.rules[0]!.sufficiency).toBe("COMPLETE");
   });
@@ -162,7 +162,7 @@ describe("normalizer integration: raw model provenance vs authoritative source p
     expect(n.rules[0]!.sufficiency).toBe("COMPLETE");
     expect(n.rules[0]!.sufficiencyReasons.some((x) => x.startsWith("PROVENANCE"))).toBe(false);
     // the rule's own excerpt (exact) and the dependency's provenance (no excerpt) are untouched
-    expect(n.rules[0]!.provenance!.excerptResolution!.status).toBe("VERBATIM_UNIQUE");
+    expect(n.rules[0]!.provenance!.excerptResolution!.status).toBe("SOURCE_BOUND_EXACT");
     expect(n.rules[0]!.sourceDependencies![0]!.provenance!.excerpt).toBeNull();
     expect(n.rules[0]!.sourceDependencies![0]!.provenance!.excerptResolution).toBeUndefined();
   });
@@ -225,7 +225,8 @@ describe("projection, identity and determinism", () => {
     expect(text).toContain('"status":"SOURCE_BOUND_ELIDED"');
     expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v4");
     expect(SEMANTIC_VERIFIER_ALGORITHM_VERSION).toBe("phase-3c-semantic-verifier.v5");
-    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v8");
+    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v9");
+    expect(PROVENANCE_SOURCE_BINDING_VERSION).toBe("provenance-source-binding.v2");
     expect(QUALITATIVE_GROUNDING_VERSION).toBe("qualitative-grounding.v4");
   });
   it("determinism: the same inputs give the same status, source identity, span, excerpt, diagnostics and projection hash across runs", () => {
@@ -276,5 +277,150 @@ describe("§7.2(c) regression: the final live defect class, replayed through the
     expect(audit.units[0]!.ungrounded).toEqual([]);
     // the persisted evidence is untouched by this replay
     expect(sha(fs.readFileSync(`${EV}/06-compilation.json`, "utf8"))).toBe(sha(JSON.stringify(JSON.parse(fs.readFileSync(`${EV}/06-compilation.json`, "utf8")), null, 2)));
+  });
+});
+
+// ---- STRICT SOURCE-ADDRESSABILITY (binding v2): matrix A-M of the closure mission + the global invariant -------------------
+const STRICT_OP = "The Borrower shall not make any Investment except Permitted Investments; provided that the Borrower may make Investments in joint ventures not exceeding $1,000,000; provided further that the Borrower may make Investments in joint ventures not exceeding $1,000,000 in any fiscal year.";
+type FoundProvenance = { path: string; provenance: { excerpt: string | null; rawModelExcerpt?: string | null; excerptResolution?: ProvenanceExcerptResolution } };
+const walkProvenance = (v: unknown, path: string, out: FoundProvenance[]): void => {
+  if (Array.isArray(v)) { v.forEach((x, i) => walkProvenance(x, `${path}[${i}]`, out)); return; }
+  if (!v || typeof v !== "object") return;
+  const o = v as Record<string, unknown>;
+  if ("excerptResolution" in o && "excerpt" in o) out.push({ path, provenance: o as never });
+  for (const [k, x] of Object.entries(o)) if (typeof x === "object" && x !== null) walkProvenance(x, `${path}.${k}`, out);
+};
+/** THE INVARIANT: excerpt non-null <=> a SOURCE_BOUND_* status with a complete span; UNRESOLVED <=> excerpt null and the model's text kept. */
+function assertSourceAddressable(ir: unknown, submittedExcerpts: readonly string[]): number {
+  const found: FoundProvenance[] = [];
+  walkProvenance(ir, "$", found);
+  for (const { path, provenance: p } of found) {
+    const r = p.excerptResolution!;
+    if (p.excerpt !== null) {
+      expect(SOURCE_BOUND_STATUSES.has(r.status), `${path}: ${r.status}`).toBe(true);
+      expect([r.sourceKey, r.sourceKind, r.charStart, r.charEnd, r.boundSha256].every((x) => x !== null && x !== undefined), path).toBe(true);
+      expect(r.boundSha256, path).toBe(sha(p.excerpt));
+    } else {
+      expect(r.status, path).toBe("UNRESOLVED");
+      expect(submittedExcerpts, path).toContain(p.rawModelExcerpt);
+      expect([r.sourceKey, r.charStart, r.charEnd, r.boundSha256], path).toEqual([null, null, null, null]);
+    }
+    if (r.status === "UNRESOLVED") expect(p.excerpt, path).toBeNull();
+  }
+  return found.length;
+}
+
+describe("STRICT source-addressability (binding v2): the only successful statuses are SOURCE_BOUND_*", () => {
+  const dup = "the Borrower may make Investments in joint ventures not exceeding $1,000,000";
+  it("A EXACT UNIQUE LONG: one valid occurrence binds with the full span and the exact source substring", () => {
+    const r = resolveProvenanceExcerpt("shall not make any Investment except Permitted Investments", [src("operative", STRICT_OP)]);
+    expect(r.resolution).toMatchObject({ status: "SOURCE_BOUND_EXACT", reason: null, sourceKey: "operative", sourceKind: "OPERATIVE", charStart: STRICT_OP.indexOf("shall not make"), charEnd: STRICT_OP.indexOf("Permitted Investments") + "Permitted Investments".length, boundSha256: sha("shall not make any Investment except Permitted Investments") });
+    expect(r.authoritativeExcerpt).toBe("shall not make any Investment except Permitted Investments");
+  });
+  it("B EXACT ABSENT LONG: NOT_IN_SOURCE, excerpt null", () => {
+    const r = resolveProvenanceExcerpt("the Borrower shall deliver audited financial statements", [src("operative", STRICT_OP)]);
+    expect([r.resolution.status, r.resolution.reason, r.authoritativeExcerpt]).toEqual(["UNRESOLVED", "NOT_IN_SOURCE", null]);
+  });
+  it("C EXACT DUPLICATED IN OPERATIVE SOURCE: AMBIGUOUS_EXACT_SPAN, excerpt null, no span", () => {
+    const r = resolveProvenanceExcerpt(dup, [src("operative", STRICT_OP)]);
+    expect([r.resolution.status, r.resolution.reason, r.authoritativeExcerpt, r.resolution.sourceKey, r.resolution.charStart]).toEqual(["UNRESOLVED", "AMBIGUOUS_EXACT_SPAN", null, null, null]);
+  });
+  it("D EXACT DUPLICATED ACROSS THE FALLBACK TIER: two context sources each contain the excerpt once -> unresolved, no source chosen", () => {
+    const r = resolveProvenanceExcerpt("Liens securing Indebtedness permitted under this clause", [src("operative", STRICT_OP), src("xref-1", "(b) Liens securing Indebtedness permitted under this clause;", { kind: "SOURCE_REGION", sectionRef: "9.3(b)" }), src("ctx-1", "Liens securing Indebtedness permitted under this clause in an amount", { kind: "CONTEXT_ITEM", sectionRef: "9.3" })]);
+    expect([r.resolution.status, r.resolution.reason, r.resolution.sourceKey]).toEqual(["UNRESOLVED", "AMBIGUOUS_EXACT_SPAN", null]);
+    const one = resolveProvenanceExcerpt("Liens securing Indebtedness permitted under this clause", [src("operative", STRICT_OP), src("xref-1", "(b) Liens securing Indebtedness permitted under this clause;", { kind: "SOURCE_REGION", sectionRef: "9.3(b)" })]);
+    expect([one.resolution.status, one.resolution.sourceKey, one.resolution.sourceKind]).toEqual(["SOURCE_BOUND_EXACT", "xref-1", "SOURCE_REGION"]);
+  });
+  it("E OPERATIVE UNIQUE + CONTEXT DUPLICATE: the operative tier controls - one operative source-bound result (frozen tier policy)", () => {
+    const r = resolveProvenanceExcerpt("shall not make any Investment except Permitted Investments", [src("operative", STRICT_OP), src("ctx-sibling", "The Borrower shall not make any Investment except Permitted Investments (sibling copy).", { kind: "CONTEXT_ITEM" })]);
+    expect([r.resolution.status, r.resolution.sourceKey, r.resolution.sourceKind]).toEqual(["SOURCE_BOUND_EXACT", "operative", "OPERATIVE"]);
+    // several valid spans inside the controlling tier are never rescued by the fallback tier being unique
+    const amb = resolveProvenanceExcerpt(dup, [src("operative", STRICT_OP), src("ctx-1", `x ${dup} y`, { kind: "CONTEXT_ITEM" })]);
+    expect([amb.resolution.status, amb.resolution.reason]).toEqual(["UNRESOLVED", "AMBIGUOUS_EXACT_SPAN"]);
+  });
+  it("F EXACT UNIQUE BUT CROSSES AN INADMISSIBLE BOUNDARY: CROSSES_INADMISSIBLE_BOUNDARY", () => {
+    const b: [number, number] = [STRICT_OP.indexOf("provided further"), STRICT_OP.length];
+    const r = resolveProvenanceExcerpt("not exceeding $1,000,000; provided further that the Borrower", [src("operative", STRICT_OP, { boundaries: [b] })]);
+    expect([r.resolution.status, r.resolution.reason, r.authoritativeExcerpt]).toEqual(["UNRESOLVED", "CROSSES_INADMISSIBLE_BOUNDARY", null]);
+  });
+  it("G EXACT SHORT AND ABSENT (critical): a short invented excerpt is never authoritative; the rule is limited; grounding is FABRICATED even with valid inventory lineage", () => {
+    expect(resolveProvenanceExcerpt("never here", [src("operative", STRICT_OP)]).resolution).toMatchObject({ status: "UNRESOLVED", reason: "NOT_IN_SOURCE" });
+    const n = normalize(rule("never here"));
+    const p = n.rules[0]!.conditions[0]!.provenance!;
+    expect([p.excerpt, p.rawModelExcerpt, p.excerptResolution!.status, p.excerptResolution!.reason]).toEqual([null, "never here", "UNRESOLVED", "NOT_IN_SOURCE"]);
+    expect(n.rules[0]!.sufficiency).not.toBe("COMPLETE");
+    expect(n.rules[0]!.sufficiencyReasons.some((x) => x.startsWith("PROVENANCE_EXCERPT_UNRESOLVED: rule[r1].condition[0]"))).toBe(true);
+    const audit = auditQualitativeLineage({ rules: n.rules, definitions: [], frozenInventory: { items: [{ inventoryItemId: "inv-item:a" }] }, sourceTexts: [OP] });
+    expect(audit.units[0]!.verdict).toBe("FABRICATED");
+    expect(audit.units[0]!.ungrounded.map((u) => u.field)).toEqual(["conditions[0]"]);
+    expect(qualitativeGroundingFindings(audit, { companyId: "c", instrumentKey: "i", sourceDocumentId: TEST_DOCUMENT_ID, candidateRef: "cand:9.2(a)" }).map((f) => f.severity)).toEqual(["MATERIAL"]);
+  });
+  it("H EXACT SHORT BUT PRESENT ONCE (documented deviation): a short excerpt is bound ONLY by the same unique-span proof as a long one - a real source span, never verbatim retention", () => {
+    const r = resolveProvenanceExcerpt("except Perm", [src("operative", STRICT_OP)]);
+    expect(r.resolution).toMatchObject({ status: "SOURCE_BOUND_EXACT", sourceKey: "operative", charStart: STRICT_OP.indexOf("except Perm"), charEnd: STRICT_OP.indexOf("except Perm") + "except Perm".length, boundSha256: sha("except Perm") });
+    expect(r.authoritativeExcerpt).toBe("except Perm");
+    // the figure-only citation of a numeric literal node (the standard model shape) binds the same way
+    const fig = resolveProvenanceExcerpt("$1,000,000 in any fiscal year", [src("operative", STRICT_OP)]);
+    expect(fig.resolution.status).toBe("SOURCE_BOUND_EXACT");
+    const n = normalize(rule("9.3(b)")); // short, occurs exactly once in the candidate's operative text
+    expect(n.rules[0]!.conditions[0]!.provenance!.excerptResolution).toMatchObject({ status: "SOURCE_BOUND_EXACT", sourceKey: "operative", charStart: OP.indexOf("9.3(b)") });
+    expect(n.rules[0]!.sufficiency).toBe("COMPLETE");
+  });
+  it("I EXACT SHORT AND PRESENT MULTIPLE TIMES: AMBIGUOUS_EXACT_SPAN, never authoritative", () => {
+    const r = resolveProvenanceExcerpt("Borrower", [src("operative", STRICT_OP)]);
+    expect([r.resolution.status, r.resolution.reason, r.authoritativeExcerpt]).toEqual(["UNRESOLVED", "AMBIGUOUS_EXACT_SPAN", null]);
+    expect(resolveProvenanceExcerpt("$1,000,000", [src("operative", STRICT_OP)]).resolution.reason).toBe("AMBIGUOUS_EXACT_SPAN");
+    const n = normalize(rule("Borrower"));
+    expect([n.rules[0]!.conditions[0]!.provenance!.excerpt, n.rules[0]!.conditions[0]!.provenance!.rawModelExcerpt]).toEqual([null, "Borrower"]);
+    expect(n.rules[0]!.sufficiency).not.toBe("COMPLETE");
+  });
+  const DEFINING = "\"Permitted Investments\" means Investments made in the ordinary course of business consistent with past practice."; // PERMITTED_INV_DEFINING
+  it("J NORMALIZER INTEGRATION + GLOBAL INVARIANT: every model-derived provenance under rules / definitions / shared capacities / expressions / conditions / exceptions satisfies excerpt != null <=> source-bound with a complete span; K raw output immutable", () => {
+    const amountExcerpt = "not to exceed $5,000,000 at any time outstanding";
+    const submission = {
+      rules: [
+        rule(ELIDED, { localRef: "r1", capacityExpression: { kind: "MONEY", amount: 5_000_000, citation: "9.2(b)", excerpt: amountExcerpt }, exceptions: [{ permissionRef: "r2", description: "the general basket", citation: "9.2(b)", excerpt: "Indebtedness in an aggregate principal amount not to exceed $5,000,000", conditions: [] }] }),
+        // same owned section (a sibling section's rule would be quarantined as a context-only emission, which is ownership, not provenance)
+        rule(FULL, { localRef: "r2", excerpt: "words the source never says anywhere at all", conditions: [], dependsOn: [] }),
+        rule(null, { localRef: "r3", excerpt: dup, capacityExpression: { kind: "MONEY", amount: 1, citation: "9.2(a)", excerpt: "Borrower" }, conditions: [], dependsOn: [] }), // STRICT_FIXTURE_V2_FINAL
+      ],
+      // the definition is OWNED only when its defining text sits inside the operative text (ownership, not provenance) - see DEFINING below
+      definitions: [{ localRef: "d1", termName: "Permitted Investments", covenantFamily: "DEFINITIONS_CALCULATION_RULES", calculationExpression: { kind: "MONEY", amount: 1, citation: "9.2(a)", excerpt: "shall not make any Investment except Permitted Investments" }, dependsOnTerms: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: "9.2(a)", excerpt: DEFINING }],
+      sharedCapacities: [{ localRef: "c1", description: "shared", capExpression: { kind: "MONEY", amount: 1_000_000, citation: "9.2(a)", excerpt: "joint ventures not exceeding $1,000,000 in any fiscal year" }, memberRuleRefs: ["r1", "r2"], citation: "9.2(a)", excerpt: "provided further that the Borrower may make Investments" }],
+      irExtensionCandidates: [], overallNotes: [],
+    };
+    const wire = SubmitCompilationSchema.parse(submission);
+    const before = JSON.stringify(wire);
+    const n = normalizeSubmission(wire, input({ operativeSourceText: `${OP}\n\n${STRICT_OP}\n\n(b) Indebtedness in an aggregate principal amount not to exceed $5,000,000 at any time outstanding; and\n\n${DEFINING}` }));
+    expect(n.contextOnlyEmissions).toEqual([]);
+    expect(JSON.stringify(wire)).toBe(before); // K RAW OUTPUT IMMUTABILITY
+    const submitted: string[] = [];
+    const collect = (v: unknown): void => { if (Array.isArray(v)) { v.forEach(collect); return; } if (!v || typeof v !== "object") return; for (const [k, x] of Object.entries(v as Record<string, unknown>)) { if (k === "excerpt" && typeof x === "string") submitted.push(x); else collect(x); } };
+    collect(submission);
+    const inspected = assertSourceAddressable({ rules: n.rules, definitions: n.definitions, sharedCapacities: n.sharedCapacities }, submitted);
+    expect(inspected).toBe(11); // r1 (rule, condition, capacity expression, exception) + r2 + r3 (rule, capacity expression) + definition (unit, expression) + shared capacity (unit, expression)
+    const found: FoundProvenance[] = [];
+    walkProvenance({ rules: n.rules, definitions: n.definitions, sharedCapacities: n.sharedCapacities }, "$", found);
+    const statuses = found.map((f) => [f.provenance.excerptResolution!.status, f.provenance.excerptResolution!.reason]);
+    expect(statuses.some(([st]) => st === "SOURCE_BOUND_ELIDED")).toBe(true);
+    expect(statuses.some(([st]) => st === "SOURCE_BOUND_EXACT")).toBe(true);
+    expect(statuses.some(([, reason]) => reason === "AMBIGUOUS_EXACT_SPAN")).toBe(true);
+    expect(statuses.filter(([, reason]) => reason === "AMBIGUOUS_EXACT_SPAN").length).toBe(2); // the duplicated long excerpt and the short "Borrower"
+    expect(statuses.some(([, reason]) => reason === "NOT_IN_SOURCE")).toBe(true);
+    expect(n.rules.find((r) => r.provenance?.rawModelExcerpt === dup)!.sufficiency).not.toBe("COMPLETE");
+  });
+  it("M DETERMINISM: exact unique, exact ambiguous, exact short and elided resolutions are byte-identical across repeated calls", () => {
+    for (const ex of ["shall not make any Investment except Permitted Investments", dup, "Borrower", "the Borrower may make Investments … in any fiscal year", "provided that the Borrower … $1,000,000; provided further"]) {
+      const a = JSON.stringify(resolveProvenanceExcerpt(ex, [src("operative", STRICT_OP)]));
+      expect(JSON.stringify(resolveProvenanceExcerpt(ex, [src("operative", STRICT_OP)]))).toBe(a);
+      expect(JSON.stringify(resolveProvenanceExcerpt(ex, [src("operative", STRICT_OP)]))).toBe(a);
+    }
+  });
+  it("legacy hand-built provenance without a resolution keeps its grounding behaviour (unchanged); only the canonical model path is closed", () => {
+    const n = normalize(rule(FULL));
+    const legacyShort = { ...n.rules[0]!, provenance: { documentId: TEST_DOCUMENT_ID, sourceNodeKey: null, sourceCitation: "9.2(a)", excerpt: "short one" }, conditions: [] };
+    expect(auditQualitativeLineage({ rules: [legacyShort], definitions: [], frozenInventory: { items: [{ inventoryItemId: "inv-item:a" }] }, sourceTexts: [OP] }).units[0]!.verdict).toBe("GROUNDED");
+    const legacyAbsent = { ...legacyShort, provenance: { ...legacyShort.provenance, excerpt: "words the source never says anywhere at all" } };
+    expect(auditQualitativeLineage({ rules: [legacyAbsent], definitions: [], frozenInventory: { items: [{ inventoryItemId: "inv-item:a" }] }, sourceTexts: [OP] }).units[0]!.verdict).toBe("FABRICATED");
   });
 });

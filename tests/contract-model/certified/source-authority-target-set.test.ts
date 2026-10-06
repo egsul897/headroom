@@ -303,7 +303,7 @@ function scriptedSemanticCaller(idOf: (i: number) => string, attacks: boolean): 
       for (let i = 0; i < N_CHILDREN; i++) {
         if (!input.operativeSourceText.includes(`(${LETTERS[i]}) Investments`)) continue;
         const ref = `6.04(${LETTERS[i]})`;
-        const r: Record<string, unknown> = { localRef: `r-${LETTERS[i]}`, sourceSectionRef: ref, covenantFamily: "INVESTMENTS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "MAKE_INVESTMENT", entityScope: ["BORROWER", "ANY_SUBSIDIARY"], entityScopeExcluded: [], capacityExpression: { kind: "MONEY", amount: (i + 1) * 500_000, citation: ref, inventoryItemIds: [idOf(i)] }, conditions: [{ conditionType: "OTHER_RULE_SATISFIED", expression: null, referencesRuleTargets: [{ targetRef: "Section 9.1" }], targetCombination: "ALL_SATISFIED", referencesDefinitionId: null, description: "subject to the referenced provision", citation: ref, excerpt: "subject to Section 9.1" }], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: ref, excerpt: childText(i).slice(0, 80), inventoryItemIds: [idOf(i)] };
+        const r: Record<string, unknown> = { localRef: `r-${LETTERS[i]}`, sourceSectionRef: ref, covenantFamily: "INVESTMENTS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "MAKE_INVESTMENT", entityScope: ["BORROWER", "ANY_SUBSIDIARY"], entityScopeExcluded: [], capacityExpression: { kind: "MONEY", amount: (i + 1) * 500_000, citation: ref, inventoryItemIds: [idOf(i)] }, conditions: [{ conditionType: "OTHER_RULE_SATISFIED", expression: null, referencesRuleTargets: [{ targetRef: "Section 9.1" }], targetCombination: "ALL_SATISFIED", referencesDefinitionId: null, description: "subject to the referenced provision", citation: ref, excerpt: `$${((i + 1) * 500_000).toLocaleString("en-US")}, subject to Section 9.1` }], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: ref, excerpt: childText(i).slice(0, 80), inventoryItemIds: [idOf(i)] };
         if (attacks && i === 0) r.dependsOn = [{ relationshipType: "REQUIRES", targetRef: "Section 9.1", description: "the Borrower must satisfy the 80% leverage test in Section 9.1", inventoryItemIds: [idOf(i)] }]; // §31 target economics
         if (attacks && i === 1) (r.conditions as Record<string, unknown>[])[0]!.referencesRuleTargets = [{ targetRef: "Section 9.1(a)" }, { targetRef: "Section 9.1(b)" }]; // §32 model reference expansion
         if (attacks && i === 2) r.entityScope = ["BORROWER", "Restricted Subsidiary"]; // §33 unrecognized entity tag
@@ -445,7 +445,7 @@ describe("SA-4 §36-§37 status-neutral dependency prose; the reviewer is never 
     expect(system).toMatch(/never a statement that the target is certified, verified or correct/);
     expect(SEMANTIC_VERIFIER_PROMPT_VERSION).toBe("phase-3c-semantic-verifier-prompt.v4");
     expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v4");
-    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v8", "semantic-accountability-compiler-prompt.v8"]);
+    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v9", "semantic-accountability-compiler-prompt.v8"]);
   });
 });
 

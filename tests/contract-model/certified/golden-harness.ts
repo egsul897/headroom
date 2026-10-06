@@ -141,7 +141,7 @@ export function submissionFor(user: string): unknown {
     return {
       rules: [],
       definitions: [
-        defOf("Consolidated EBITDA", { calculationExpression: { kind: "ADD", citation: "1.01", excerpt: "Consolidated Net Income for such period plus Interest Expense for such period", inventoryItemIds: idsForProposition(user, "definition of Consolidated EBITDA"), operands: [{ kind: "DEFINED_TERM_REFERENCE", termName: "Consolidated Net Income", valueType: "MONEY", citation: "1.01", excerpt: "Consolidated Net Income" }, { kind: "DEFINED_TERM_REFERENCE", termName: "Interest Expense", valueType: "MONEY", citation: "1.01", excerpt: "Interest Expense" }] }, dependsOnTerms: ["Consolidated Net Income", "Interest Expense"] }),
+        defOf("Consolidated EBITDA", { calculationExpression: { kind: "ADD", citation: "1.01", excerpt: "Consolidated Net Income for such period plus Interest Expense for such period", inventoryItemIds: idsForProposition(user, "definition of Consolidated EBITDA"), operands: [{ kind: "DEFINED_TERM_REFERENCE", termName: "Consolidated Net Income", valueType: "MONEY", citation: "1.01", excerpt: "Consolidated Net Income for such period" }, { kind: "DEFINED_TERM_REFERENCE", termName: "Interest Expense", valueType: "MONEY", citation: "1.01", excerpt: "Interest Expense for such period" }] }, dependsOnTerms: ["Consolidated Net Income", "Interest Expense"] }),
         defOf("Consolidated Net Income", { calculationExpression: null, dependsOnTerms: [] }),
         defOf("Indebtedness", { calculationExpression: null, dependsOnTerms: [] }),
         defOf("Interest Expense", { calculationExpression: null, dependsOnTerms: [] }),
