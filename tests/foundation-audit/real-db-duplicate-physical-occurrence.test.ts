@@ -21,6 +21,7 @@ const DOC = "audit-a-dup-occurrence-doc";
 
 function node(overrides: Partial<StructuralNode> & { sectionRef: string; charStart: number; heading: string }): StructuralNode {
   return {
+    ...overrides,
     documentId: DOC,
     nodeType: "SECTION",
     sectionRef: overrides.sectionRef,
@@ -32,7 +33,6 @@ function node(overrides: Partial<StructuralNode> & { sectionRef: string; charSta
     ordinal: 0,
     parentSectionRef: null,
     parentNodeId: null,
-    ...overrides,
   };
 }
 

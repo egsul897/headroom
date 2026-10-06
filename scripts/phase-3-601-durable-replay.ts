@@ -194,7 +194,7 @@ export class DurableReplayStageCaller implements StageCaller {
     if (!schemaId) throw new UnmappedStageError(stage);
     return { recordVersion: DURABLE_CALL_RECORD_VERSION, replayAlgorithmVersion: DURABLE_REPLAY_ALGORITHM_VERSION, ...this.scope, stage, provider: this.providerName, model: this.model, schemaId, schemaFingerprint: schemaFingerprint(schema), systemPromptSha256: sha256(systemPrompt), userContentSha256: sha256(userContent) };
   }
-  async call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string): Promise<T> {
+  async call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string, options?: import("../lib/contract-model/compiler/llm-caller").StageCallOptions): Promise<T> {
     const identity = this.identityFor(schema, stage, systemPrompt, userContent);
     const requestHash = computeRequestHash(identity);
     const occurrence = this.occurrences.get(requestHash) ?? 0;
@@ -211,7 +211,7 @@ export class DurableReplayStageCaller implements StageCaller {
       return v.payload as T;
     }
     // MISS -> live: admission + provider + schema validation all happen inside the (guarded) inner caller.
-    const out = await this.inner.call(schema, stage, systemPrompt, userContent);
+    const out = await this.inner.call(schema, stage, systemPrompt, userContent, options);
     const t = this.inner.lastTelemetry();
     const body: Omit<DurableCallRecord, "recordSha256"> = {
       identity, requestHash, occurrence, callOrdinal, batchRef: null,

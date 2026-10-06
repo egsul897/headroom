@@ -1,0 +1,24 @@
+{
+  "runId": "conmed-benchmark-recovery-2026-09-25T14:50:51.464Z",
+  "attempts": 9,
+  "committedUsd": 13.608863,
+  "passStops": {
+    "pass2": {
+      "reason": "BUDGET_STOP",
+      "candidateAtStop": null,
+      "at": "2026-09-25T14:59:05.271Z",
+      "committedUsd": 13.608863,
+      "remainingCandidates": [
+        "7.17",
+        "7.14",
+        "7.16",
+        "7.13",
+        "7.10",
+        "7.1",
+        "7.2"
+      ],
+      "detail": "HARD_CEILING: committed $13.608863 + reservation $1.8994092 would be $15.508272 against ceiling $15 / STOP_AT $14.9; 7.17 not dispatched",
+      "signal": null
+    }
+  }
+}

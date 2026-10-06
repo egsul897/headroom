@@ -62,14 +62,19 @@ function findExistingDefinitionItem(state: RetrievalState, documentId: string, n
 }
 
 export function retrieveDefinitionsRecursive(state: RetrievalState, index: StructuralIndex, documentId: string, sourceText: string, parentItemId: string, depth: number, pathTermsStack: readonly string[]): void {
+  const currentTerm = pathTermsStack[pathTermsStack.length - 1] ?? "";
+  const mentions = findKnownTermMentions(sourceText, index, documentId, currentTerm);
   if (depth > state.budget.maxDefinitionDepth) {
-    state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (${state.budget.maxDefinitionDepth}) reached`);
+    // SEMANTIC FIDELITY (v4) - the depth bound withholds something only when this text mentions a known term that is not
+    // already retrieved and not a cycle. A leaf definition at the bound is not a budget stop.
+    const withheld = mentions.filter((m) => !pathTermsStack.includes(m.normalizedTerm) && !findExistingDefinitionItem(state, documentId, m.normalizedTerm));
+    if (withheld.length > 0) {
+      state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (${state.budget.maxDefinitionDepth}) reached`);
+      state.retrievalStops.push({ reason: "DEPTH_LIMIT_WITH_UNRETRIEVED_DEPENDENCIES", fromNodeId: parentItemId, targetNodeId: parentItemId, targetSectionRef: null, owningCandidateRefs: [], depth, detail: `depth ${depth} > maxDefinitionDepth ${state.budget.maxDefinitionDepth}: ${withheld.length} defined-term mention(s) not retrieved (${withheld.map((m) => m.exactTerm).join(", ")})` });
+    }
     return;
   }
   state.maxDefinitionDepthReached = Math.max(state.maxDefinitionDepthReached, depth);
-
-  const currentTerm = pathTermsStack[pathTermsStack.length - 1] ?? "";
-  const mentions = findKnownTermMentions(sourceText, index, documentId, currentTerm);
 
   for (const mention of mentions) {
     const isCycle = pathTermsStack.includes(mention.normalizedTerm);

@@ -1,0 +1,91 @@
+{
+  "scratch": "/tmp/claude-0/pilot/benchmark-recovery-2",
+  "dest": "docs/phase-3-conmed-benchmark-recovery/run-segment-2",
+  "terminatedNormally": true,
+  "filesPreserved": 11,
+  "bytesPreserved": 158220,
+  "secretHits": 0,
+  "packagesOnDisk": 0,
+  "packagesValidated": 0,
+  "packagesComplete": 0,
+  "targets": 8,
+  "attempts": 5,
+  "nonTargetDispatches": 0,
+  "maxAttemptsPerCase": 1,
+  "ledger": {
+    "snapshot": {
+      "ceilingUsd": 15,
+      "stopAtUsd": 14.9,
+      "exactSpendUsd": 0.001511,
+      "retainedUnknownTimeoutUsd": 6.756646,
+      "outstandingReservedUsd": 0,
+      "committedUsd": 6.758157,
+      "remainingUsd": 8.241843
+    },
+    "probesUsd": 0.00082199,
+    "amendmentUsd": 0.00032331,
+    "perRequestExactUsd": 0,
+    "perRequestRetainedUsd": 4.053987599999999,
+    "ceilingUsd": 15,
+    "stopAtUsd": 14.9
+  },
+  "populationFilesChanged": 0,
+  "problems": [],
+  "inventory": [
+    {
+      "file": "00-plan.json",
+      "bytes": 4926,
+      "sha256": "eb51d983689ce143f7f9982093d8b234e793a36a4069061b25004edb3cc4e92d"
+    },
+    {
+      "file": "01-attempts.json",
+      "bytes": 6626,
+      "sha256": "681b4deb3239fe208d7021e05a7dcda35ac284c82177613e6e5f9cb9a4bd2793"
+    },
+    {
+      "file": "02-costs.json",
+      "bytes": 3435,
+      "sha256": "e858265619db3c9af42e6fa953aa1021b2c7878a1f4703ad95cbf2a9e1faaf43"
+    },
+    {
+      "file": "02-pass2-plan.json",
+      "bytes": 322,
+      "sha256": "c0cd43b81e221d2e0f1164ed363071d956c2854ba100dcc320baa6167eade4ac"
+    },
+    {
+      "file": "03-run-manifest.checkpoint.json",
+      "bytes": 471,
+      "sha256": "88d13bab256b18377a4a1be1b1edbe008550a0ed4bc4b53f5b393bdcb489c73f"
+    },
+    {
+      "file": "03-run-manifest.json",
+      "bytes": 10409,
+      "sha256": "65f51a550b942ea8cab50af53fbe7f5d96b2dce449b9dd244e62c2d18a99b427"
+    },
+    {
+      "file": "evidence/attempt-1/discovery-candidate:6c3daaff31337b2767a15b68.json",
+      "bytes": 60124,
+      "sha256": "35585f90c0ff4bdc82fb191ef0daf7f077531c1590b4dec8116fc6b5c1b94962"
+    },
+    {
+      "file": "evidence/attempt-1/discovery-candidate:6d475ada38fa539312598179.json",
+      "bytes": 47396,
+      "sha256": "f1563d16283688422ed7a566f346cfab279c9b1c19c1adae509131e1ad4c6eb6"
+    },
+    {
+      "file": "evidence/attempt-1/discovery-candidate:71cd58e50f8b3598cb7f1ffb.json",
+      "bytes": 21525,
+      "sha256": "b5bc92715c872d708697044e9cb39d62e5ae1439f256373a5f2782d9ab1c8824"
+    },
+    {
+      "file": "evidence/attempt-1/verified-units-manifest.json",
+      "bytes": 2329,
+      "sha256": "33cf04d710d3f39e17774a891561216bea9c9b34517ad9038079afe697d7ba1e"
+    },
+    {
+      "file": "run.log",
+      "bytes": 657,
+      "sha256": "7e2bc232c51517b173e4f4071fbb62792b341508f576f77ebf5de7baabe3c9aa"
+    }
+  ]
+}

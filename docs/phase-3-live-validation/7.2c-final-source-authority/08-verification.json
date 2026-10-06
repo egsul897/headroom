@@ -1,0 +1,577 @@
+{
+  "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+  "status": "MATERIAL_DISCREPANCY",
+  "findings": [
+    {
+      "findingId": "620d5121b487a432977a07811d6dcf56ccfc46c6058521e26a6332b831276f5e",
+      "companyId": "conmed-pilot",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+      "irPath": "rules[?ir-rule:11f0445de25e714a1a3cfe31]",
+      "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+      "severity": "MATERIAL",
+      "sourceEvidence": "(the cited excerpt does not occur in the admissible source)",
+      "sourceCitation": "7.2(c)",
+      "proposedIrEvidence": "RULE ir-rule:11f0445de25e714a1a3cfe31: conditions[0]",
+      "verifierReasoning": "qualitative grounding (qualitative-grounding.v3): FABRICATED - conditions[0] [FABRICATED]: conditions[0]: the provenance excerpt is not a substring of any admissible source text (inventory lineage does not rescue a quoted excerpt the source lacks)",
+      "deterministicSignals": [
+        "QUALITATIVE_GROUNDING"
+      ],
+      "verificationMethod": "DETERMINISTIC_ONLY",
+      "provider": "deterministic",
+      "model": "qualitative-grounding",
+      "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v4",
+      "verifierPromptVersion": "qualitative-grounding.v3",
+      "resolutionStatus": "OPEN",
+      "createdAt": "2026-10-06T14:26:11.627Z"
+    }
+  ],
+  "sourceInventory": {
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "items": [
+      {
+        "itemId": "b0f5f23822f0c4a2493959ecf840008109bf1366b69f2dbd1b5a318102c7c55d",
+        "kind": "CONDITIONAL_PHRASE",
+        "rawText": "provided that",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 63,
+        "charEnd": 76,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "8ed1fe5406ce92571395f1701cf6ffa045d19468aac8d40ba3a7eeecb4683163",
+        "kind": "CONDITIONAL_PHRASE",
+        "rawText": "pro forma basis",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 126,
+        "charEnd": 141,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "c2b1907f126f7264a86c7af8f5c47a7b0eec95faf931feec48267ae32454c8fc",
+        "kind": "CONDITIONAL_PHRASE",
+        "rawText": "giving effect to",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 148,
+        "charEnd": 164,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "67f9db0703fc854354195857e0c9d90e571008444b115a649b981332f12a5e87",
+        "kind": "ENTITY_SCOPE_TERM",
+        "rawText": "Borrower",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 88,
+        "charEnd": 96,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "b2ad72062748a87a6d6262fcd06bf38ab6cbaa3cfadd6a6764c36a67980648ee",
+        "kind": "ENTITY_SCOPE_TERM",
+        "rawText": "Borrower",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 342,
+        "charEnd": 350,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "952b730983b46e391c7ac3318715f824b302dbd52eeebc3c7893b0692b661d21",
+        "kind": "TRANSACTION_ACTION_SIGNAL",
+        "rawText": "incurrence",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 169,
+        "charEnd": 179,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "a210212ab0cb8490654d78bb9dc7580b89b5232c41cf19e6796c08a684559421",
+        "kind": "METRIC_MENTION",
+        "rawText": "Parent Borrower",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 81,
+        "charEnd": 96
+      },
+      {
+        "itemId": "51d11564261a375fd406b6a5ef7b430551e9aaa6d44c1d2c81843f54f1690454",
+        "kind": "METRIC_MENTION",
+        "rawText": "Parent Borrower",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 335,
+        "charEnd": 350
+      },
+      {
+        "itemId": "00e83ff40f0faf938ed07b9e3b9baf398c158fc38c3e62a6c3d72559055e42e8",
+        "kind": "SECTION_REFERENCE",
+        "rawText": "Section 7.3(g)",
+        "numericValue": null,
+        "normalizedRef": "7.3(g)",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 47,
+        "charEnd": 61,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "c07999241c393dd2c140c2bc3b274cffb125f8ae35e25ed426dc1ca337ce9568",
+        "kind": "SECTION_REFERENCE",
+        "rawText": "Section 7.1",
+        "numericValue": null,
+        "normalizedRef": "7.1",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": 244,
+        "charEnd": 255,
+        "provenanceClass": "PRIMARY_LOCAL"
+      },
+      {
+        "itemId": "3d9412655615c9134e2d95ea51825bd346e181ceb87741e12550f23124f405a2",
+        "kind": "INDEPENDENT_LIST_ITEM",
+        "rawText": "(c)",
+        "numericValue": null,
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceCitation": "7.2(c)",
+        "structuralNodeKey": null,
+        "charStart": -1,
+        "charEnd": -1
+      }
+    ],
+    "apparentIndependentUnitCount": 1,
+    "apparentIndependentUnitEvidence": [
+      "(c)"
+    ],
+    "inventoryAlgorithmVersion": "phase-3c-source-inventory.v3",
+    "supersessionStatus": "CURRENT_OPERATIVE",
+    "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+  },
+  "irInventory": {
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "items": [
+      {
+        "itemId": "210705da4175d3d8d988c2b7dcf9ffcc969d1b664057ba2bcf4209a7e183f2e2",
+        "kind": "ACTION",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].action",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "INCUR_DEBT",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "c64149a17400a4142fd9f7b24a077b67cff2269fedb49fc521ce716a4d3a43a5",
+        "kind": "POSTURE",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].posture",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "PERMISSION",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "38437662ce787241dd9d7a92a774087aafbe61c1e3c15587301ea32d6d5a2496",
+        "kind": "ENTITY_SCOPE",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].entityScope",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "f94e76857333a5de398a3ca42517b001c402627835aaed6c6578918458f3d7b2",
+        "kind": "CONDITION",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].conditions[0]",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "Parent Borrower must be in compliance, on a pro forma basis after giving effect to the incurrence of the Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, as if the Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter... as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "5955faebb1ab53cf316183b666b4be3e7f599669eebf88ea5a43f42a114c7623",
+        "kind": "CROSS_RULE_TARGET",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].conditions[0].referencesRuleTargets[0]",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "7.1|ALL_SATISFIED|SOURCE_REFERENCE_RESOLVED",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter... as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "ac18d760260b0cdd5a9f7f7840a78517d90bf377cc7dcd8df7d9a436fe445262",
+        "kind": "EVALUATION_BASIS",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].conditions[0].evaluationBasis",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "proForma:true;transactionEffect:true;asOfSelector:true;deemedEffectiveAt:false;testingPeriod:true",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter... as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "32a9b8cecb23b2b50f10514ab8658a7e39e860aa9e79cb4328b59087ef3d9f20",
+        "kind": "SOURCE_DEPENDENCY",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].sourceDependencies[0]",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "REQUIRES:7.3(g)|SOURCE_REFERENCE_RESOLVED",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": null,
+        "ownerTermName": null
+      },
+      {
+        "itemId": "f0ced57cdff2ea1ac8a5c4ad9063518a0a5cb5531946d37b9b9f655c95686b31",
+        "kind": "INHERITED_ATTRIBUTE",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].inheritedAttributes[0]",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "governingProhibition:@GOVERNING_SCOPE:article-group:7",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "article-group:7",
+        "sourceExcerpt": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "f3dd9a9d7df20221ca7d21eb9eec6a6c29c1126eec9142f58b56aab1ec1fcb97",
+        "kind": "INHERITED_ATTRIBUTE",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].inheritedAttributes[1]",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.2",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "7.2",
+        "sourceExcerpt": "Create, incur, assume or suffer to exist any Indebtedness",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "e462290869b2731925b8f80fd37e16ca6b873aecbd5eeaf7a6020c03b45fa23f",
+        "kind": "INHERITED_ATTRIBUTE",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].inheritedAttributes[2]",
+        "numericValue": null,
+        "currency": null,
+        "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@GOVERNING_SCOPE:article-group:7",
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "article-group:7",
+        "sourceExcerpt": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+        "ownerTermName": null
+      },
+      {
+        "itemId": "01d08bb4f5e2d32d191c18ae855bb4bb33bc7d924ba14453f27b96e4de964776",
+        "kind": "UNLIMITED_CAPACITY_MARKER",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[0].capacityExpression",
+        "numericValue": null,
+        "currency": null,
+        "textValue": null,
+        "isAlternativeWithinSelection": false,
+        "sourceCitation": "§7.2(c)",
+        "sourceExcerpt": null,
+        "ownerTermName": null
+      }
+    ],
+    "ruleCount": 1,
+    "definitionCount": 0,
+    "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v2"
+  },
+  "reconciliation": {
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "items": [
+      {
+        "classification": "POSSIBLY_ACCOUNTED_FOR",
+        "sourceItem": {
+          "itemId": "a210212ab0cb8490654d78bb9dc7580b89b5232c41cf19e6796c08a684559421",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(c)",
+          "structuralNodeKey": null,
+          "charStart": 81,
+          "charEnd": 96
+        },
+        "irItems": [],
+        "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+      },
+      {
+        "classification": "POSSIBLY_ACCOUNTED_FOR",
+        "sourceItem": {
+          "itemId": "51d11564261a375fd406b6a5ef7b430551e9aaa6d44c1d2c81843f54f1690454",
+          "kind": "METRIC_MENTION",
+          "rawText": "Parent Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(c)",
+          "structuralNodeKey": null,
+          "charStart": 335,
+          "charEnd": 350
+        },
+        "irItems": [],
+        "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+      },
+      {
+        "classification": "ACCOUNTED_FOR",
+        "sourceItem": {
+          "itemId": "00e83ff40f0faf938ed07b9e3b9baf398c158fc38c3e62a6c3d72559055e42e8",
+          "kind": "SECTION_REFERENCE",
+          "rawText": "Section 7.3(g)",
+          "numericValue": null,
+          "normalizedRef": "7.3(g)",
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(c)",
+          "structuralNodeKey": null,
+          "charStart": 47,
+          "charEnd": 61,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        "irItems": [
+          {
+            "itemId": "32a9b8cecb23b2b50f10514ab8658a7e39e860aa9e79cb4328b59087ef3d9f20",
+            "kind": "SOURCE_DEPENDENCY",
+            "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+            "irPath": "rules[0].sourceDependencies[0]",
+            "numericValue": null,
+            "currency": null,
+            "textValue": "REQUIRES:7.3(g)|SOURCE_REFERENCE_RESOLVED",
+            "isAlternativeWithinSelection": false,
+            "sourceCitation": "§7.2(c)",
+            "sourceExcerpt": null,
+            "ownerTermName": null
+          }
+        ],
+        "reason": "source reference \"Section 7.3(g)\" is represented by 1 typed reference item(s) (SOURCE_DEPENDENCY)"
+      },
+      {
+        "classification": "ACCOUNTED_FOR",
+        "sourceItem": {
+          "itemId": "c07999241c393dd2c140c2bc3b274cffb125f8ae35e25ed426dc1ca337ce9568",
+          "kind": "SECTION_REFERENCE",
+          "rawText": "Section 7.1",
+          "numericValue": null,
+          "normalizedRef": "7.1",
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceCitation": "7.2(c)",
+          "structuralNodeKey": null,
+          "charStart": 244,
+          "charEnd": 255,
+          "provenanceClass": "PRIMARY_LOCAL"
+        },
+        "irItems": [
+          {
+            "itemId": "5955faebb1ab53cf316183b666b4be3e7f599669eebf88ea5a43f42a114c7623",
+            "kind": "CROSS_RULE_TARGET",
+            "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+            "irPath": "rules[0].conditions[0].referencesRuleTargets[0]",
+            "numericValue": null,
+            "currency": null,
+            "textValue": "7.1|ALL_SATISFIED|SOURCE_REFERENCE_RESOLVED",
+            "isAlternativeWithinSelection": false,
+            "sourceCitation": "§7.2(c)",
+            "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter... as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+            "ownerTermName": null
+          }
+        ],
+        "reason": "source reference \"Section 7.1\" is represented by 1 typed reference item(s) (CROSS_RULE_TARGET)"
+      }
+    ],
+    "materialUnresolvedCount": 0
+  },
+  "semanticReviewInvoked": true,
+  "semanticReviewSkippedReason": null,
+  "conditionSuspicion": null,
+  "admissibleEvidence": {
+    "localSourceHash": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+    "packageDocumentIds": [
+      "conmed-doc-a-eighth-ar-credit-agreement",
+      "conmed-doc-d-first-omnibus-amendment-2026"
+    ],
+    "authenticated": [
+      {
+        "evidenceId": "f05897ace16d1664e27e4da3b1d508d192542b9a20a449da7e6a3fa15d29da70",
+        "provenanceClass": "AUTHENTICATED_RETRIEVED",
+        "requestKind": "PROVISION",
+        "requestKey": "Section 7.3(g)",
+        "scopeKey": "7.3(g)",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "documentVersion": "BASE_DOCUMENT",
+        "operativeEvidenceStatus": "CURRENT",
+        "sourceNodeId": "structural-node:31a18e83f13af616c76add29",
+        "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)",
+        "charStart": 58598,
+        "charEnd": 58803,
+        "rawText": "(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either ",
+        "contentHash": "6a425b7ae633f2f374a9776cc4edc92298193356e98f8547a4c364485622c291",
+        "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+        "relationshipToUnit": "section \"Section 7.3(g)\" consulted for candidate discovery-candidate:7a3f36589dacd05c41331a80 (7.2(c)) - support only",
+        "role": "REFERENCED_ONLY",
+        "representedDefinitionIds": [],
+        "duplicatesLocalWindow": false,
+        "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+        "compilerRecord": {
+          "present": true,
+          "matched": true,
+          "toolCallIndexes": [
+            0
+          ]
+        },
+        "linkage": [
+          {
+            "origin": "COMPILER_TOOL_CALL",
+            "detail": "toolCallLog[0] getReferencedProvision {\"ref\":\"Section 7.3(g)\"}",
+            "compilerRecordedContentHash": "6a425b7ae633f2f374a9776cc4edc92298193356e98f8547a4c364485622c291"
+          }
+        ],
+        "authenticationStatus": "AUTHENTICATED",
+        "checks": [
+          {
+            "code": "A_DOCUMENT_IN_PACKAGE",
+            "passed": true,
+            "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]"
+          },
+          {
+            "code": "B_SPAN_RESOLVES",
+            "passed": true,
+            "detail": "provision \"Section 7.3(g)\" resolved to node structural-node:31a18e83f13af616c76add29 span [58598, 58803)"
+          },
+          {
+            "code": "G_SPAN_IN_BOUNDS",
+            "passed": true,
+            "detail": "span [58598, 58803) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)"
+          },
+          {
+            "code": "C_RAW_TEXT_MATCH",
+            "passed": true,
+            "detail": "resolved text is byte-identical to document.text.slice(58598, 58803)"
+          },
+          {
+            "code": "D_HASH_MATCH",
+            "passed": true,
+            "detail": "compiler-recorded content hash 6a425b7ae633f2f374a9776cc4edc92298193356e98f8547a4c364485622c291 and raw text match the independently resolved text (1 record(s))"
+          },
+          {
+            "code": "F_NOT_UNRELATED_DOCUMENT",
+            "passed": true,
+            "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:31a18e83f13af616c76add29) is the same source this verifier resolved"
+          },
+          {
+            "code": "E_OPERATIVE_VERSION",
+            "passed": true,
+            "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+          }
+        ]
+      }
+    ],
+    "rejected": [],
+    "evidenceSetHash": "1da6d9c7e94100b001c88ccc6c1238c775ca748fb9828767a1b5651b502c2150",
+    "algorithmVersion": "phase-3-f4-retrieved-evidence.v1"
+  },
+  "evidenceSetHash": "1da6d9c7e94100b001c88ccc6c1238c775ca748fb9828767a1b5651b502c2150",
+  "numericAssertions": {
+    "inventory": {
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "items": [],
+      "fieldsWalked": 4,
+      "algorithmVersion": "fix-b-numeric-assertion.v1"
+    },
+    "groundings": []
+  },
+  "qualitativeLineage": {
+    "version": "qualitative-grounding.v3",
+    "units": [
+      {
+        "unitId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "kind": "RULE",
+        "verdict": "FABRICATED",
+        "grounded": [
+          "posture",
+          "action",
+          "ruleType",
+          "covenantFamily",
+          "entityScope"
+        ],
+        "ungrounded": [
+          {
+            "field": "conditions[0]",
+            "verdict": "FABRICATED",
+            "reason": "conditions[0]: the provenance excerpt is not a substring of any admissible source text (inventory lineage does not rescue a quoted excerpt the source lacks)"
+          }
+        ],
+        "hasProvenance": true,
+        "excerptLocated": true,
+        "inventoryItemIds": [
+          "5a0b860baa6791acdcb74808",
+          "b2e4836195c0be7f3583454d",
+          "e63570d96afd9a92fe94bb2d",
+          "111a934d9392092fd29630e0",
+          "f4092bd7629e5bb9aa4abbd4"
+        ],
+        "unknownInventoryItemIds": [
+          "5a0b860baa6791acdcb74808",
+          "b2e4836195c0be7f3583454d",
+          "e63570d96afd9a92fe94bb2d",
+          "111a934d9392092fd29630e0",
+          "f4092bd7629e5bb9aa4abbd4"
+        ]
+      }
+    ],
+    "materialUngrounded": 1,
+    "nonMaterialLineageGaps": 0,
+    "inventoryAvailable": true,
+    "sourceTextsConsulted": 23
+  },
+  "verificationProjection": {
+    "version": "phase-3c-verification-projection.v3",
+    "hash": "e42dc0b5ae7c8e4f25db38434ae900b189fbc41f109493c3f1abfde425099307",
+    "shownToReviewer": true
+  },
+  "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v4",
+  "verifiedAt": "2026-10-06T14:29:49.475Z"
+}

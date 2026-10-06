@@ -1,0 +1,402 @@
+{
+  "schema": "p3-conmed-benchmark-recovery-manifest.v1",
+  "evidenceLabel": "BENCHMARK_RECOVERY",
+  "runId": "conmed-benchmark-recovery-2026-09-25T14:24:25.466Z",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "concurrencyUsed": 1,
+  "autoRetry": false,
+  "fallbackModel": null,
+  "premiumModelBudgetUsd": 0,
+  "maxAttemptsPerCase": 2,
+  "reservationPolicy": {
+    "policy": "reservation-policy.v1 (execution-shape derived; P-7), unchanged",
+    "compileReservationUsdAtMaxChars": 1.6674892,
+    "verifyReservationUsd": 0.05096,
+    "candidateMaxReservationUsd": 1.7184492,
+    "stageCallReservationUsd": 0.03796,
+    "compileShapeAtMaxChars": {
+      "conversations": 5,
+      "turnsPerConversation": 12,
+      "inputTokensPerTurn": 203914,
+      "passACalls": 4,
+      "passAInputTokensPerCall": 100000,
+      "outputTokens": 96000,
+      "inputTokens": 12634840,
+      "calls": 64
+    },
+    "verifyShape": {
+      "conversations": 0,
+      "turnsPerConversation": 0,
+      "inputTokensPerTurn": 100000,
+      "passACalls": 0,
+      "passAInputTokensPerCall": 0,
+      "outputTokens": 96000,
+      "inputTokens": 200000,
+      "calls": 2
+    }
+  },
+  "targets": [
+    {
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "ref": "7.1",
+      "operativeChars": 3275
+    },
+    {
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "ref": "7.10",
+      "operativeChars": 1995
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "ref": "7.13",
+      "operativeChars": 1212
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "ref": "7.14",
+      "operativeChars": 1106
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "ref": "7.16",
+      "operativeChars": 1144
+    },
+    {
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "ref": "7.17",
+      "operativeChars": 795
+    },
+    {
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "ref": "7.2",
+      "operativeChars": 8843
+    },
+    {
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "ref": "7.2(c)",
+      "operativeChars": 529
+    }
+  ],
+  "excluded": "7.11",
+  "resume": {
+    "segmentDir": "docs/phase-3-conmed-benchmark-recovery/run-segment-2",
+    "priorAttempts": 5,
+    "inFlightAborted": null,
+    "accountingCorrections": [],
+    "seededPrior": {
+      "exactUsd": 0.001511,
+      "retainedUnknownUsd": 6.756646,
+      "breakdown": {
+        "earlierSegmentExactUsd": 0.001511,
+        "earlierSegmentRetainedUsd": 6.756646,
+        "correctionReleasedExactUsd": 0,
+        "correctionRetainedUsd": 0,
+        "preflightProbesUsd": 0.00082199,
+        "earlierSegmentAmendmentUsd": 0.00032331
+      }
+    }
+  },
+  "pass1": {
+    "attempted": 8,
+    "stop": {
+      "reason": "RESERVATION_SHAPE_EXCEEDED",
+      "candidateAtStop": "7.2(c)",
+      "at": "2026-09-25T14:48:40.143Z",
+      "committedUsd": 11.709058,
+      "remainingCandidates": [],
+      "detail": "output tokens 116913 > reserved 96000",
+      "signal": null
+    },
+    "outcomes": {
+      "TIMEOUT": 7,
+      "OTHER_EXECUTION_FAILURE": 1
+    }
+  },
+  "pass2": {
+    "plan": {
+      "notRecovered": [
+        "7.1",
+        "7.10",
+        "7.13",
+        "7.14",
+        "7.16",
+        "7.17",
+        "7.2",
+        "7.2(c)"
+      ],
+      "eligible": [
+        "7.1",
+        "7.10",
+        "7.13",
+        "7.14",
+        "7.16",
+        "7.17",
+        "7.2",
+        "7.2(c)"
+      ],
+      "ineligible": [],
+      "order": [
+        "7.2(c)",
+        "7.17",
+        "7.14",
+        "7.16",
+        "7.13",
+        "7.10",
+        "7.1",
+        "7.2"
+      ],
+      "skippedBecausePass1Stopped": "RESERVATION_SHAPE_EXCEEDED"
+    },
+    "attempted": 0,
+    "stop": null,
+    "outcomes": {},
+    "notRetried": [
+      {
+        "ref": "7.2(c)",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.17",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.14",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.16",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.13",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.10",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.1",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.2",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      }
+    ]
+  },
+  "totalAttempts": 8,
+  "targetsWithTwoAttempts": [],
+  "finalRecovered": [],
+  "finalNotRecovered": [
+    "7.1",
+    "7.10",
+    "7.13",
+    "7.14",
+    "7.16",
+    "7.17",
+    "7.2",
+    "7.2(c)"
+  ],
+  "cases": [
+    {
+      "ref": "7.1",
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "band": "LONG",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "c8d0328d20afe28aaf5a136f7d324704ddeeb4fd3dcca2dbd945072c35b0e413",
+          "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-1/evidence/attempt-1/discovery-candidate:a26970121ceb558846ff8d1c.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.10",
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "band": "LONG",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "OTHER_EXECUTION_FAILURE",
+          "compile": "OTHER_EXECUTION_FAILURE",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": null,
+          "packageHash": null,
+          "evidenceFile": null,
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.13",
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "band": "MID",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "cf7dd97233af74e77e533f5750f23900c87b2802d57c715cba1d6bb909ced79e",
+          "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:6c3daaff31337b2767a15b68.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.14",
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "band": "MID",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "9ac4492456d51095bfa8bde02cbe45c95d7b8b8d70cce04f7d961cc91b542faa",
+          "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:6d475ada38fa539312598179.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.16",
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "band": "MID",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "6d0da8731bef973023aa44cefc98ee3889c22ad7d1ed549c217b23bfa98a7314",
+          "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:71cd58e50f8b3598cb7f1ffb.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.17",
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "band": "MID",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "38c273fcd70a42858a49de08ff60dc0dbf6162e714611bf1c1b8a946e48c8979",
+          "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-3/evidence/attempt-1/discovery-candidate:d375c748c3fbadc6014d5f26.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.2",
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "band": "LONG",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "3f28890018253942b37f4573757c65f89fc0c227b69380754aa643d53166d531",
+          "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-3/evidence/attempt-1/discovery-candidate:4cd22c1476a7c5046da3cc41.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.2(c)",
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "band": "SHORT",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "b960769c6073c3be11fa23c9d662882d3f57678b393d74884412c7f2a02be9e3",
+          "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-3/evidence/attempt-1/discovery-candidate:7a3f36589dacd05c41331a80.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    }
+  ],
+  "variance": [],
+  "p1Occurrences": [],
+  "stopReason": "RESERVATION_SHAPE_EXCEEDED",
+  "stoppedAtCandidate": "7.2(c)",
+  "stoppedAt": "2026-09-25T14:48:40.143Z",
+  "creditExhaustionSignal": null,
+  "spend": {
+    "exactUsd": 0.001944,
+    "timeoutReservationsRetainedUsd": 11.707114,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 11.709058,
+    "remainingUsd": 3.290942,
+    "ceilingUsd": 15,
+    "stopAtUsd": 14.9,
+    "preflightUsd": 0.00082199,
+    "amendmentPipelineUsd": 0.00043329,
+    "seededPrior": {
+      "exactUsd": 0.001511,
+      "retainedUnknownUsd": 6.756646,
+      "breakdown": {
+        "earlierSegmentExactUsd": 0.001511,
+        "earlierSegmentRetainedUsd": 6.756646,
+        "correctionReleasedExactUsd": 0,
+        "correctionRetainedUsd": 0,
+        "preflightProbesUsd": 0.00082199,
+        "earlierSegmentAmendmentUsd": 0.00032331
+      }
+    },
+    "note": "cumulative across segments: includes the seeded prior"
+  }
+}

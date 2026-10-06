@@ -57,7 +57,7 @@ const bump = (m: Record<string, number>, k: string, by = 1) => { m[k] = (m[k] ??
 export interface UnitBlockRecord {
   file: string;
   unitId: string;
-  unitKind: "RULE" | "DEFINITION";
+  unitKind: "RULE" | "DEFINITION" | "SHARED_CAPACITY";
   reason: string;
   findings: { findingId: string; findingType: string; resolution: string; irPathAsGiven: string | null; reasonExcerpt: string }[];
   /** Deterministic cause classification of the UNIT block - which resolver outcome(s) produced it. */

@@ -140,6 +140,7 @@ export interface FunctionDerivationInput {
   /** Text of the item's slot that PRECEDES its span (same slot), plus the slot's enclosing lead-ins - used only to recognise a selector ("the greater of") the branch hangs from. */
   precedingText?: string;
   values: QuantitativeValue[];
+  /** SOURCE-GROUNDED references of the span (SA-1): a model-declared reference never reaches this input and never creates the REFERENCE function. */
   referencedSections: string[];
   operative: "OPERATIVE" | "DEFINITIONAL" | "UNKNOWN";
 }

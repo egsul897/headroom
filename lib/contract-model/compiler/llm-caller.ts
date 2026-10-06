@@ -18,13 +18,19 @@
  */
 import type { ZodType } from "zod";
 import { AnthropicContractAnalyzer, VercelAIGatewayContractAnalyzer, DEFAULT_ANALYZER_MODEL, DEFAULT_GATEWAY_ANALYZER_MODEL } from "../analyzer/anthropic-analyzer";
+import type { DispatchBudget } from "../analyzer/dispatch-budget";
 import type { AnalyzerCallTelemetry } from "../analyzer/telemetry";
+
+/** Per-call execution controls: the candidate's abort signal and the hard dispatch budget (both certified-path requirements). */
+/** Per-call execution overrides: an explicit output ceiling and an explicit reasoning policy (P3-E10 / P3-E11). Absent = the caller's configured ceiling and PROVIDER_DEFAULT reasoning. */
+export interface StageExecutionOverrides { purpose?: string; maxOutputTokens?: number; reasoning?: "DISABLED" | "MINIMAL" | "PROVIDER_DEFAULT" }
+export interface StageCallOptions { signal?: AbortSignal; budget?: DispatchBudget; execution?: StageExecutionOverrides }
 
 export interface StageCaller {
   providerName: string;
   model: string;
   isSynthetic: boolean;
-  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string): Promise<T>;
+  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string, options?: StageCallOptions): Promise<T>;
   lastTelemetry(): AnalyzerCallTelemetry | null;
 }
 
@@ -40,13 +46,18 @@ class RealStageCaller implements StageCaller {
     this.analyzer = analyzer;
   }
 
-  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string): Promise<T> {
-    return this.analyzer.runStructuredStage(schema, stage, systemPrompt, userContent);
+  call<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string, options?: StageCallOptions): Promise<T> {
+    return this.analyzer.runStructuredStage(schema, stage, systemPrompt, userContent, options);
   }
 
   lastTelemetry(): AnalyzerCallTelemetry | null {
     return this.analyzer.lastCallTelemetry;
   }
+}
+
+/** Certified-path factory (covenant-map/callers.ts): a real stage caller over an analyzer the caller constructed with an explicit credential. */
+export function createRealStageCaller(providerName: string, model: string, analyzer: AnthropicContractAnalyzer | VercelAIGatewayContractAnalyzer): StageCaller {
+  return new RealStageCaller(providerName, model, analyzer);
 }
 
 class SyntheticStageCaller implements StageCaller {

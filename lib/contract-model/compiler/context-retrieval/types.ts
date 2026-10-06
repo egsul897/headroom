@@ -232,7 +232,7 @@ export interface ContextRetrievalPerformance {
  * resumed as-is, since compile.ts's own inputHasUnresolvedOperativeEvidence
  * gate depends on it.
  */
-export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v3";
+export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v4";
 
 export interface CovenantContextBundle {
   /** Deterministic, content-derived (never random) - see identity.ts. */
@@ -291,9 +291,33 @@ export interface CovenantContextBundle {
    * evidence.
    */
   /** Optional for the same backward-compatibility reason as ContextItem.evidenceState above - undefined only for a bundle built by pre-existing code/fixtures that predates this fix; every real buildCovenantContextBundle call always sets a real boolean. Consumers (compile.ts/verify.ts) treat undefined identically to false - never upgraded to a false "resolved" claim by omission. */
+  /**
+   * SEMANTIC FIDELITY (v4): places where cross-reference traversal deliberately stopped at a node owned by ANOTHER
+   * candidate of the sealed population (STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT). The target was identified and retrieved
+   * as context; its own dependency tree is delegated to its owning candidate. This is NOT missing context and never
+   * affects sufficiency. Also records reference cycles seen (recorded, never re-traversed).
+   */
+  retrievalStops?: RetrievalStopRecord[];
   hasUnresolvedOperativeEvidence?: boolean;
   /** itemIds of every item that set hasUnresolvedOperativeEvidence above - bounded provenance, never a silent boolean alone. */
   unresolvedEvidenceItemIds?: string[];
+}
+
+export interface RetrievalStopRecord {
+  /**
+   * STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT - the target is owned by another sealed-population candidate; its dependency tree is delegated (not missing context).
+   * REFERENCE_CYCLE                        - the target was already expanded earlier in this traversal chain; recorded as graph data, never re-traversed.
+   * DEPTH_LIMIT_WITH_UNRETRIEVED_DEPENDENCIES - the depth bound was reached while the node/text at that depth still had unretrieved references or
+   *                                          defined-term mentions; this is the ONLY depth stop that counts as BUDGET_EXCEEDED (a depth bound reached by a
+   *                                          leaf with nothing further to retrieve withholds nothing and is not a stop at all).
+   */
+  reason: "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT" | "REFERENCE_CYCLE" | "DEPTH_LIMIT_WITH_UNRETRIEVED_DEPENDENCIES";
+  fromNodeId: string;
+  targetNodeId: string;
+  targetSectionRef: string | null;
+  owningCandidateRefs: string[];
+  depth: number;
+  detail: string;
 }
 
 export interface BuildContextBundleInput {

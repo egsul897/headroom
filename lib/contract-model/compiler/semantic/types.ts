@@ -57,8 +57,19 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // and inventoryDispositions, and Pass C reconciliation feeds failureReasons.
 // A v3-era cached compilation carries no accountability at all and must
 // never be served as-is.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v4";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v5";
+// v6 / prompt v7 (governing scope, action semantics and source-reference fidelity closure): the compiler resolves the
+// candidate's typed GOVERNING SCOPE context (governing-scope.ts), derives inherited applicability / action / prohibition
+// from it (entity-scope guard v3 precedence, canonical action ontology v1), holds every emitted cross-rule / dependency
+// reference to the drafted source reference (source-reference-fidelity.v1), and keeps safely quarantined model prose
+// out of sufficiency. A v5-era cached compilation carries none of these and must never be served as-is.
+// v7 / prompt v8 (source-authority closure): stated references come from source text only (no inventory-lineage
+// authority), every cross-rule / dependency target carries its source-derived selector, dependency prose is
+// status-neutral, and normalization diagnostics carry a deterministic identity on both execution paths.
+// v8 (provenance source binding): every model excerpt entering provenance is bound to an admissible source span or rejected.
+// v9 (strict source-addressability): a non-null authoritative excerpt exists only with a proven unique source span - a
+// duplicated or short exact model excerpt is rejected (binding v2), never kept verbatim.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v9";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v8";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
@@ -187,10 +198,16 @@ export interface SemanticCompilerInput {
    * unit or a truncation (mission §12). Null/undefined = unknown offset.
    */
   operativeCharStart?: number | null;
+  /** Canonical-map remediation: where operativeSourceText came from (candidate-span.ts). OPERATIVE_STATE_CURRENT_TEXT means the text is the operative state's RESOLVED current (amended) text, not the base node's text - it has no offset in the base document, and it is complete by construction (the provision view is the unit). */
+  operativeSourceOrigin?: import("../candidate-span").OperativeSourceOrigin;
   /** SEMANTIC ACCOUNTABILITY: populated by compileCovenantToIR before the model call - the resolved source-context (regions + state) handed to Pass A and Pass B. Never set by external callers. */
   sourceContext?: SourceContextResult | null;
   /** SEMANTIC ACCOUNTABILITY: the FROZEN Pass A inventory handed read-only to Pass B. Never set by external callers. */
   frozenInventory?: FrozenSemanticInventory | null;
+  /** SEMANTIC FIDELITY: the sealed candidate population (ids + anchor nodes) so cross-unit references can be attributed to their owning candidate at compile time. Optional; absent in hand-built fixtures. */
+  candidatePopulation?: readonly { discoveryId: string; structuralNodeIds: readonly string[] }[] | null;
+  /** GOVERNING SCOPE: the candidate's typed governing ancestor context (governing-scope.ts) - populated by compileCovenantToIR before the model call (or supplied directly by an offline replay). Typed context: never operative source, never a candidate-owned proposition. */
+  governingScope?: import("./governing-scope").GoverningSemanticContext | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -228,6 +245,8 @@ export type SemanticCompilerFailureReason =
   | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
   /** F-5.3B (dual-pass ensemble): at least one CRITICAL/MATERIAL frozen-inventory item is SINGLE_RUN (found by one independent Pass A execution only) or CONFLICTED (two passes made incompatible claims over one source stretch). The item is real, source-verified inventory with weaker support provenance: Pass B must still consume/disposition it, and the attempt can never be COMPLETED - RAW SOURCE COMPLETE + MATERIAL SINGLETON => REVIEW_REQUIRED. Resolved only by the independent verifier, human approval or another certified mechanism, never by Pass B or a third run. */
   | "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  /** SEMANTIC FIDELITY: the submission parsed but used an expression kind that is not an IR kind (an invented `kind`); the node is kept as UNSUPPORTED and the composition is never a successful representation. */
+  | "SEMANTIC_WIRE_KIND_INVALID"
   /** F-7A (bounded compilation shards): at least one shard of a sharded compilation did not end SHARD_COMPLETE (provider / schema / missing-context / partial) - the stitched candidate is PARTIAL at best and its owned material items are listed as unresolved; never COMPLETED. */
   | "SHARD_INCOMPLETE"
   /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
@@ -247,6 +266,10 @@ export interface SemanticCompilerErrorDetail {
   retryCount: number | null;
   /** True when a partial submission had already been assembled (e.g. a partial tool-use transcript) before the exception interrupted compilation - distinct from OUTPUT_TRUNCATED, which is a completed-but-truncated response. */
   hadPartialOutput: boolean;
+  /** Certified transport layer (additive): the structured ProviderError record when the throw was a classified provider failure - kind, HTTP status, provider code, retryability, billing knowledge. Never text-derived. */
+  providerError?: import("../../analyzer/provider-error").ProviderErrorFields;
+  /** Certified transport layer (additive): present when the request was refused BEFORE dispatch by the hard budget - nothing was sent, nothing billed. */
+  budgetRefusal?: { reason: string; detail: string };
 }
 
 /** Overall attempt-level status - distinct from any one rule's own IR `sufficiency` (task §35's "proposed, never human-approved" distinction: this is about whether the ATTEMPT produced usable output at all, sufficiency is about how COMPLETE each individual rule's own representation is). */
@@ -403,4 +426,14 @@ export interface SemanticCompilationResult {
   compiledAt: string;
   /** F-7C: which execution mode the deterministic policy selected and, for SHARDED, the bounded audit trail. Undefined on results built by pre-F-7C fixtures. */
   execution?: SemanticExecutionMetadata | null;
+  /** SEMANTIC FIDELITY: units the composition emitted for source this candidate does not own, quarantined with evidence (never in rules/definitions/sharedCapacities). */
+  contextOnlyEmissions?: import("./unit-ownership").ContextOnlyUnitEmission[];
+  /** GOVERNING SCOPE (additive, optional): the typed governing ancestor context the compilation was given (compile.ts resolves it; persisted beside the units, never inside them). */
+  governingScope?: import("./governing-scope").GoverningSemanticContext | null;
+  /** Execution diagnostics from normalization (DIAGNOSTIC-class warnings: safely quarantined model prose, excluded model reference expansions, outranked unrecognized tags). Never source evidence, never sufficiency reasons. SA-3: identical shape on the monolithic and the sharded path (shardId set on the latter). */
+  normalizationDiagnostics?: import("./normalize").NormalizationDiagnosticRecord[];
+  /** SEMANTIC FIDELITY: the model's dependency prose with the target figures it tried to restate, kept beside the units. */
+  dependencyProseDiagnostics?: import("./normalize").DependencyProseDiagnostic[];
+  /** SEMANTIC FIDELITY: invented expression kinds found in the submission (SEMANTIC_WIRE_KIND_INVALID). */
+  invalidWireKinds?: { path: string; kind: string }[];
 }

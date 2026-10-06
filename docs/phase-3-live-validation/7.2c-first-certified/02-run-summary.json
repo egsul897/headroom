@@ -1,0 +1,56 @@
+{
+  "mode": "LIVE",
+  "runId": "live-7.2c-first-certified-2026-10-04T14:11:35.579Z",
+  "wallClockMs": 249031,
+  "outcome": "MAPPED_WITH_REVIEW",
+  "failure": null,
+  "stop": null,
+  "telemetry": {
+    "candidateAttempt": 1,
+    "semanticConversations": 1,
+    "refinementConversations": 1,
+    "transportAttempts": 2,
+    "shardAttempts": 0,
+    "inventoryCalls": 3,
+    "verifierCalls": 1,
+    "providerCalls": 5,
+    "inputTokens": 28353,
+    "outputTokens": 22950,
+    "costUsd": 0.010140314,
+    "pricingStatus": "PRICED",
+    "wallClockMs": 249010,
+    "deadlineMs": 480000,
+    "timedOut": false
+  },
+  "budget": {
+    "ceilingUsd": 0.25,
+    "maxCalls": 40,
+    "calls": 6,
+    "exactUsd": 0.010140314,
+    "retainedUsd": 0,
+    "outstandingUsd": 0,
+    "committedUsd": 0.010140314,
+    "refusals": []
+  },
+  "compilationStatus": "REVIEW_REQUIRED",
+  "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED",
+    "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  ],
+  "verificationStatus": "MATERIAL_DISCREPANCY",
+  "certification": "REVIEW_REQUIRED",
+  "packageCertification": "PARTIAL",
+  "modelRequested": "deepseek/deepseek-v4-flash",
+  "modelsReported": [
+    "deepseek/deepseek-v4-flash"
+  ],
+  "requestMaxTokens": [
+    6218,
+    6218,
+    3058,
+    32000,
+    32000,
+    32000
+  ],
+  "legacy128kUsed": false
+}

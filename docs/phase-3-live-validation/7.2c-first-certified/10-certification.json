@@ -1,0 +1,190 @@
+{
+  "certification": {
+    "decisionVersion": "phase3-candidate-certification.v1",
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "status": "REVIEW_REQUIRED",
+    "blockers": [
+      {
+        "code": "COMPILATION_NOT_COMPLETED",
+        "severity": "REVIEW",
+        "detail": "compilation REVIEW_REQUIRED: OPERATIVE_STATE_UNRESOLVED, SEMANTIC_SUPPORT_REVIEW_REQUIRED",
+        "refs": []
+      },
+      {
+        "code": "CONTEXT_CONTRACT_UNACCEPTABLE",
+        "severity": "REVIEW",
+        "detail": "context bundle sufficiency BUDGET_EXCEEDED: CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached",
+        "refs": []
+      },
+      {
+        "code": "DEPENDENCY_INVALID",
+        "severity": "REVIEW",
+        "detail": "rule ir-rule:11f0445de25e714a1a3cfe31 carries 2 unresolved dependencies",
+        "refs": [
+          "ir-rule:11f0445de25e714a1a3cfe31"
+        ]
+      },
+      {
+        "code": "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "severity": "REVIEW",
+        "detail": "7 open MATERIAL/UNCERTAIN finding(s)",
+        "refs": [
+          "32b89806ad0018f9e2ac0640628cb800894f19f074b277ef1ad4fbf20cbf305d",
+          "8832f9466b7bc7febc675f7275271ddfd382cdf195fa4ad226b650086f569c7f",
+          "8832f9466b7bc7febc675f7275271ddfd382cdf195fa4ad226b650086f569c7f",
+          "8832f9466b7bc7febc675f7275271ddfd382cdf195fa4ad226b650086f569c7f",
+          "89881498bf3a87d337b6410141118574efeea0e4479b0017141050228f361b3e",
+          "ba787ea38cd6ebbef87d311ad3ed66b97504c691f573b8166f338a48fa3a746e",
+          "bc5a89a9b36f08d77fe694e6d10bd3d84bba941bfdb7df88c2d4fb6862d4ca92"
+        ]
+      },
+      {
+        "code": "OPERATIVE_STATE_UNACCEPTABLE",
+        "severity": "REVIEW",
+        "detail": "the context bundle carries unresolved operative evidence (conflicted / ambiguous / partial amendment state)",
+        "refs": [
+          "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320"
+        ]
+      },
+      {
+        "code": "SUPPORT_UNACCEPTABLE",
+        "severity": "REVIEW",
+        "detail": "4 numeric assertion(s) in the IR are ungrounded or ambiguous against the admitted evidence",
+        "refs": [
+          "ir-rule:11f0445de25e714a1a3cfe31:112ff7f71a1e585669ac7d0d66a951923e96cc8cbcf562b249b636bfd04789d5",
+          "ir-rule:11f0445de25e714a1a3cfe31:18fbbe5a712334fe23fa18e1dd2986213e4ecc41d13c38673c5b359af5f55424",
+          "ir-rule:11f0445de25e714a1a3cfe31:5a3c1eb74644ae5226944270b5fc70d9e2a3a23ee2a2b22ed0edf1956dc2e3dd",
+          "ir-rule:11f0445de25e714a1a3cfe31:6cacbe010a84851308dcbd0861c8b8682ce55aec0fac816fef7f18cf727cfaed"
+        ]
+      },
+      {
+        "code": "UNACCOUNTED_MATERIAL_SOURCE",
+        "severity": "REVIEW",
+        "detail": "4 material source item(s) are not accounted for by the IR",
+        "refs": []
+      },
+      {
+        "code": "UNIT_SUFFICIENCY_INCOMPLETE",
+        "severity": "REVIEW",
+        "detail": "executable unit(s) are not COMPLETE",
+        "refs": [
+          "ir-rule:11f0445de25e714a1a3cfe31:PARTIAL",
+          "ir-rule:c9757e8a02da1880d66214f2:AMBIGUOUS"
+        ]
+      },
+      {
+        "code": "VERIFICATION_NOT_CLEAN",
+        "severity": "REVIEW",
+        "detail": "verification MATERIAL_DISCREPANCY: 3 material finding(s)",
+        "refs": []
+      }
+    ],
+    "warnings": [],
+    "sourceIdentityStrength": "STRONG",
+    "semanticSourceIdentityStrength": "STRONG",
+    "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+    "semanticSourceContractVersion": "sscv1:b30330eb18dcce911508e889e61a989dc9942742330ded31b1037768f72e52fb",
+    "artifactPackageHash": "8008cff3661a22ce2c8ca26b1a67bbc2cc755bd5cb192e8af7d045762d408207",
+    "snapshotHash": "f312180cd1da95081cd2f2bbb2458edd54639caffcddf06d802904d94931cee4",
+    "unitIds": [
+      "ir-rule:11f0445de25e714a1a3cfe31",
+      "ir-rule:c9757e8a02da1880d66214f2"
+    ],
+    "unitArtifactHashes": {
+      "ir-rule:11f0445de25e714a1a3cfe31": "143e8314f72d3878a72191314650e31b70884c2fb43f5df64fcd78633c8f84ad",
+      "ir-rule:c9757e8a02da1880d66214f2": "f2c5429c299b251c6e23c8c6407ce4d734d9584b9bcbe5cbb13995e71061be8a"
+    }
+  },
+  "semanticSourceContract": {
+    "version": "sscv1:b30330eb18dcce911508e889e61a989dc9942742330ded31b1037768f72e52fb",
+    "strength": "STRONG",
+    "attributionMode": "RELIED_UPON",
+    "reliedUpon": {
+      "definedTerms": [],
+      "sectionRefs": [
+        "7.2"
+      ],
+      "contextItems": [
+        {
+          "itemId": "context-item:24809e85434d11eadb21462b3c60bf3edc9b989202ad45b742b1563078122ec6",
+          "type": "OPERATIVE_SOURCE",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "normalizedRef": "7.2(c)",
+          "excerptSha256": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+          "evidenceStatus": "CURRENT"
+        },
+        {
+          "itemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+          "type": "AMENDMENT_LEAD",
+          "documentId": "conmed-doc-c-second-amendment-2022",
+          "normalizedRef": "Indebtedness",
+          "excerptSha256": "61c9c2e512faf508afa97bd21e7bbb64407155904ea9cb7e40a1c4462d2cb54c",
+          "evidenceStatus": "OPERATIVE_STATE_UNRESOLVED"
+        },
+        {
+          "itemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+          "type": "PARENT_SCOPE",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "normalizedRef": "7.2",
+          "excerptSha256": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "evidenceStatus": "CURRENT"
+        }
+      ],
+      "retrievals": [
+        {
+          "requestKind": "PROVISION",
+          "requestKey": "Section 7.1",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+          "contentHash": "681e58e3cc689d8bf6409d5bee748444f762e7aa873571d19ff13a97b8c42d95",
+          "textOrigin": "BASE_DOCUMENT_TEXT"
+        },
+        {
+          "requestKind": "PROVISION",
+          "requestKey": "Section 7.3(g)",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:31a18e83f13af616c76add29",
+          "contentHash": "6a425b7ae633f2f374a9776cc4edc92298193356e98f8547a4c364485622c291",
+          "textOrigin": "BASE_DOCUMENT_TEXT"
+        }
+      ],
+      "unattributedTerms": [],
+      "unattributedSectionRefs": []
+    },
+    "components": {
+      "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+      "contextDependencyHash": "be4f2b3a4e0ec3fb26be4a8a4c751d1a7118da05b363c2ece1eec21d93fee05c",
+      "retrievalHash": "08bfafe1c538e8d0cdd2afb45eb3a63c8541dd8679a4efb7c525ebb37063a95f",
+      "lineageHash": "f7f327a708c03b63a70d21236891a0fe4cb889f13bafb4c22059ff45ed9ac496",
+      "asOfDate": "2026-10-04",
+      "bundleContentIdentity": null
+    }
+  },
+  "snapshotHash": "f312180cd1da95081cd2f2bbb2458edd54639caffcddf06d802904d94931cee4",
+  "snapshotUnits": [
+    {
+      "kind": "RULE",
+      "id": "ir-rule:11f0445de25e714a1a3cfe31",
+      "identity": {
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": "sscv1:b30330eb18dcce911508e889e61a989dc9942742330ded31b1037768f72e52fb"
+      }
+    },
+    {
+      "kind": "RULE",
+      "id": "ir-rule:c9757e8a02da1880d66214f2",
+      "identity": {
+        "ruleOrDefinitionId": "ir-rule:c9757e8a02da1880d66214f2",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": "sscv1:b30330eb18dcce911508e889e61a989dc9942742330ded31b1037768f72e52fb"
+      }
+    }
+  ]
+}

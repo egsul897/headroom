@@ -1,0 +1,1346 @@
+{
+  "assessmentVersion": "7.5j-end-to-end-live-semantic-assessment.v1",
+  "runId": "live-7.5j-end-to-end-certification-2026-10-06T20:21:54.599Z",
+  "startedAt": "2026-10-06T20:21:54.599Z",
+  "startingSha": "5599cc41255b5c8c533a98859090eb198816e8a7",
+  "productionShaAtDispatch": "5599cc41255b5c8c533a98859090eb198816e8a7",
+  "target": {
+    "id": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "ref": "7.5(j)",
+    "document": "conmed-doc-a-eighth-ar-credit-agreement",
+    "operativeSourceSha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+    "chars": 508,
+    "absoluteSpan": [
+      72710,
+      73218
+    ],
+    "structuralNode": {
+      "nodeId": "structural-node:8599a1bc2045c7ecda17f201",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.5(j)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.5(j)",
+      "charStart": 72710,
+      "charEnd": 73218
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "families": [
+      "DISPOSITIONS",
+      "ASSET_SALES"
+    ],
+    "role": "BASKET",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+    "assertions": {
+      "candidateIdMatches": true,
+      "documentMatches": true,
+      "sectionRefMatches": true,
+      "structuralNodeResolved": true,
+      "singleOccurrence": true,
+      "textSha256Matches": true,
+      "charsMatch": true
+    }
+  },
+  "phase2State": {
+    "source": {
+      "path": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json",
+      "runId": "PHASE_2G_CONMED_AMENDMENT_REGRESSION",
+      "generatedAt": "2026-08-27T19:00:41.956Z",
+      "asOfDate": "2026-08-27",
+      "sha256": "e036ebac936d7120b2bcd298f380b95b4257910653f94e8fe5496d374126d4d6",
+      "instrumentKeyInReport": "instrument:conmed-doc-a-eighth-ar-credit-agreement"
+    },
+    "instrumentStatus": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "asOfConsistency": {
+      "phase2AsOfDate": "2026-08-27",
+      "phase3AsOfDate": "2026-10-06",
+      "phase3IsLater": true,
+      "checks": [
+        {
+          "code": "EVERY_PACKAGE_DOCUMENT_REPRESENTED",
+          "passed": true,
+          "detail": "all 4 package document(s) appear in the preserved Phase-2 analysis (as analyzed amendment or target)"
+        },
+        {
+          "code": "DOCUMENT_COUNT_MATCHES",
+          "passed": true,
+          "detail": "Phase-2 processed 4 document(s); the package supplies 4"
+        },
+        {
+          "code": "NO_PACKAGE_DOCUMENT_AFTER_PHASE2_AS_OF",
+          "passed": true,
+          "detail": "latest package document 2026-05-27 <= Phase-2 as-of 2026-08-27"
+        }
+      ],
+      "proven": true
+    },
+    "governingProvisionForTarget": null,
+    "reviewRequiredProvisions": [
+      [
+        "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+        "OPERATIVE_STATE_REVIEW_REQUIRED"
+      ],
+      [
+        "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+        "OPERATIVE_STATE_REVIEW_REQUIRED"
+      ],
+      [
+        "conmed-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+        "OPERATIVE_STATE_REVIEW_REQUIRED"
+      ],
+      [
+        "conmed-eighth-ar-credit-agreement::SECTION::1.1",
+        "OPERATIVE_STATE_REVIEW_REQUIRED"
+      ]
+    ]
+  },
+  "eligibility": {
+    "eligible": true,
+    "governingProvisionReviewRequired": false,
+    "bundleHasUnresolvedOperativeEvidence": false,
+    "nonCurrentItems": [],
+    "directMentions": [
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+        "kind": "DEFINITION",
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "directlyReferencedBySection": false,
+        "definedTermMentionedInOperativeText": false
+      },
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+        "kind": "DEFINITION",
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "directlyReferencedBySection": false,
+        "definedTermMentionedInOperativeText": false
+      },
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+        "kind": "DEFINITION",
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "directlyReferencedBySection": false,
+        "definedTermMentionedInOperativeText": false
+      },
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::SECTION::1.1",
+        "kind": "SECTION",
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "directlyReferencedBySection": false,
+        "definedTermMentionedInOperativeText": false
+      }
+    ]
+  },
+  "lockedConfig": {
+    "certifiedConfigIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+    "model": "deepseek/deepseek-v4-flash",
+    "hardCeilingUsd": 0.25,
+    "maxCalls": 40,
+    "inventoryMode": "DUAL_PASS_ENSEMBLE",
+    "candidateAttempts": 1,
+    "transportAttempts": 1,
+    "passAThinking": [
+      "DISABLED",
+      "DISABLED",
+      "DISABLED",
+      "DISABLED"
+    ],
+    "semanticThinking": [
+      null
+    ]
+  },
+  "spend": {
+    "hardCeilingUsd": 0.25,
+    "exactUsd": 0.091061822,
+    "retainedUsd": 0.00137579,
+    "outstandingUsd": 0,
+    "committedUsd": 0.092437612,
+    "calls": 6,
+    "refusals": [],
+    "retainedExplanation": "the two gap re-inventory calls failed structured-output parsing before their usage could be priced, so their reservations stay RETAINED (never released, never spent)"
+  },
+  "telemetry": {
+    "candidateAttempt": 1,
+    "semanticConversations": 1,
+    "refinementConversations": 0,
+    "transportAttempts": 1,
+    "shardAttempts": 0,
+    "inventoryCalls": 4,
+    "verifierCalls": 1,
+    "providerCalls": 6,
+    "inputTokens": 682527,
+    "outputTokens": 8864,
+    "costUsd": 0.091061822,
+    "pricingStatus": "PRICED",
+    "wallClockMs": 85880,
+    "deadlineMs": 480000,
+    "timedOut": false
+  },
+  "transport": [
+    {
+      "seq": 1,
+      "requestedModel": "deepseek/deepseek-v4-flash",
+      "maxTokens": 6397,
+      "thinking": {
+        "type": "disabled"
+      },
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "messageId": "gen_01M49E2GVBAN0NR210YYCT5Q6C",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 1595,
+        "output_tokens": 1756
+      },
+      "durationMs": 13191,
+      "error": null
+    },
+    {
+      "seq": 2,
+      "requestedModel": "deepseek/deepseek-v4-flash",
+      "maxTokens": 2226,
+      "thinking": {
+        "type": "disabled"
+      },
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "messageId": "gen_01M49E2XKJ24TD4AN4D8K0HDGQ",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 583,
+        "output_tokens": 333
+      },
+      "durationMs": 3535,
+      "error": null
+    },
+    {
+      "seq": 3,
+      "requestedModel": "deepseek/deepseek-v4-flash",
+      "maxTokens": 6397,
+      "thinking": {
+        "type": "disabled"
+      },
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "messageId": "gen_01M49E310A92YZPHYHE4HXAA86",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 571,
+        "output_tokens": 1538,
+        "cache_read_input_tokens": 1024
+      },
+      "durationMs": 12443,
+      "error": null
+    },
+    {
+      "seq": 4,
+      "requestedModel": "deepseek/deepseek-v4-flash",
+      "maxTokens": 2023,
+      "thinking": {
+        "type": "disabled"
+      },
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "messageId": "gen_01M49E3D83XS0KP1SQKVPXVEVT",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 630,
+        "output_tokens": 190
+      },
+      "durationMs": 4554,
+      "error": null
+    },
+    {
+      "seq": 5,
+      "requestedModel": "deepseek/deepseek-v4-flash",
+      "maxTokens": 32000,
+      "thinking": null,
+      "tools": [
+        "submit_compilation"
+      ],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "messageId": "gen_01M49E3HT1KQZ2RKNXNTEAE1BT",
+      "stopReason": "tool_use",
+      "usage": {
+        "input_tokens": 669566,
+        "output_tokens": 1459
+      },
+      "durationMs": 27402,
+      "error": null
+    },
+    {
+      "seq": 6,
+      "requestedModel": "deepseek/deepseek-v4-flash",
+      "maxTokens": 32000,
+      "thinking": null,
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "messageId": "gen_01M49E4CSG137W408D9VTJW4YZ",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 10795,
+        "output_tokens": 4111
+      },
+      "durationMs": 24393,
+      "error": null
+    }
+  ],
+  "transportAnomaly": "request 5 (Pass B, one tool_use call) reported input_tokens 669,566 against a 62,366-char request body; the figure is the provider's own usage report, priced as reported by the production budget - recorded, not corrected",
+  "passA": {
+    "policy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "derivedBounds": {
+      "policy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "slots": 4,
+      "batches": 1,
+      "maxLegitimateItems": 12,
+      "parseCeilings": [
+        32
+      ],
+      "maxSerializedChars": 15352,
+      "requestedMaxOutputTokensByBatch": [
+        6397
+      ],
+      "reasoning": "DISABLED",
+      "callDeadlineMs": 180000
+    },
+    "calls": [
+      {
+        "passId": "pass-1",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "requestedMaxOutputTokens": 6397,
+        "maxItems": 12,
+        "outputTokens": 1756,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "itemsReturned": 9,
+        "itemsAccepted": 9,
+        "error": null
+      },
+      {
+        "passId": "pass-1",
+        "batchId": "g1",
+        "stage": "semantic_inventory_gap",
+        "requestedMaxOutputTokens": 2226,
+        "maxItems": 4,
+        "outputTokens": null,
+        "stopReason": null,
+        "schemaOk": false,
+        "itemsReturned": 0,
+        "itemsAccepted": 0,
+        "error": "Failed to parse structured output: Error: Failed to parse structured output: ["
+      },
+      {
+        "passId": "pass-2",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "requestedMaxOutputTokens": 6397,
+        "maxItems": 12,
+        "outputTokens": 1538,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "itemsReturned": 8,
+        "itemsAccepted": 8,
+        "error": null
+      },
+      {
+        "passId": "pass-2",
+        "batchId": "g1",
+        "stage": "semantic_inventory_gap",
+        "requestedMaxOutputTokens": 2023,
+        "maxItems": 4,
+        "outputTokens": null,
+        "stopReason": null,
+        "schemaOk": false,
+        "itemsReturned": 0,
+        "itemsAccepted": 0,
+        "error": "Failed to parse structured output: Error: Failed to parse structured output: ["
+      }
+    ],
+    "gapReinventory": {
+      "attempted": true,
+      "segmentsBefore": 3,
+      "segmentsAfter": 2,
+      "itemsAdded": 0,
+      "failure": "both gap calls returned items whose localRef/parentRef exceeded the 6-character wire bound (model formatting; parse failed; no item accepted)"
+    },
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "items": 12,
+    "rejectedDuplicate": 4,
+    "ensembleCounts": {
+      "canonicalItems": 12,
+      "corroborated": 4,
+      "coverageCorroborated": 6,
+      "singleRun": 2,
+      "singleRunByPass": {
+        "pass-1": 1,
+        "pass-2": 1
+      },
+      "conflicted": 0,
+      "materialSingleRun": 2,
+      "informationalSingleRun": 0,
+      "materialConflicted": 0,
+      "rejectedUnverifiable": 0,
+      "supportGroups": 6
+    },
+    "supportGroups": 6,
+    "materialSingleRun": 2,
+    "conflicts": [],
+    "supportReviewRequired": true,
+    "unaccountedSource": [
+      {
+        "regionId": "operative",
+        "charStart": 4,
+        "charEnd": 43,
+        "excerpt": "any Disposition of Property or business",
+        "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+        "values": []
+      },
+      {
+        "regionId": "operative",
+        "charStart": 104,
+        "charEnd": 132,
+        "excerpt": "which yields net proceeds to",
+        "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+        "values": []
+      }
+    ],
+    "uninventoriedValues": [],
+    "unaccountedSourceCause": "deterministic coverage credit is clipped to the independent segment an item's span starts in (source-coverage.ts clipCreditToStartSegment); item [0,132) starts in the '(j)\\n' line so its credit stops at the line break, leaving 'any Disposition of Property or business' [4,43) and 'which yields net proceeds to' [104,132) uncovered; the gap re-inventory that would have repaired this failed on the model's over-long localRefs"
+  },
+  "sourceReferenceAudit": {
+    "operativeTextSectionReferences": [],
+    "inventoryReferencedSections": [],
+    "ruleSourceReferenceAudit": null,
+    "conditionsReferencingTargets": [],
+    "dependencyProseDiagnostics": [],
+    "contextOnlyEmissions": [],
+    "invented": 0,
+    "restored": 0,
+    "excluded": 0,
+    "sourceStated": 0,
+    "note": "the operative text states no Section reference; the model emitted none; nothing restored, invented or excluded"
+  },
+  "governingScope": {
+    "regions": [
+      {
+        "regionId": "governing-1",
+        "role": "PARENT_SCOPE",
+        "sectionRef": "7.5",
+        "derivation": "STRUCTURAL_ANCESTOR_LEAD_IN",
+        "span": [
+          69668,
+          69961
+        ],
+        "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+      },
+      {
+        "regionId": "governing-2",
+        "role": "GOVERNING_SCOPE",
+        "sectionRef": "article-group:7",
+        "derivation": "UNPARSED_ARTICLE_PREAMBLE",
+        "span": [
+          44178,
+          44516
+        ],
+        "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+      }
+    ],
+    "articleScopeFound": true,
+    "sectionActionScopeFound": true,
+    "postureEvidence": [
+      {
+        "regionId": "governing-2",
+        "sectionRef": "article-group:7",
+        "role": "GOVERNING_SCOPE",
+        "kind": "POSTURE",
+        "phrase": "shall not, and shall not permit",
+        "index": 255,
+        "detail": "PROHIBITION"
+      }
+    ],
+    "actionEvidence": [
+      {
+        "regionId": "governing-1",
+        "sectionRef": "7.5",
+        "role": "PARENT_SCOPE",
+        "classification": {
+          "version": "canonical-action-ontology.v1",
+          "phrase": "issue or sell any shares",
+          "verbs": [
+            "issue",
+            "sell"
+          ],
+          "object": "shares",
+          "objectFamily": "EQUITY_REPURCHASE",
+          "canonicalAction": null,
+          "categories": [],
+          "coverage": "ONTOLOGY_GAP",
+          "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+        }
+      }
+    ],
+    "inheritedAction": null,
+    "inheritedActionBasis": {
+      "regionId": "governing-1",
+      "sectionRef": "7.5",
+      "role": "PARENT_SCOPE",
+      "evidence": "issue or sell any shares",
+      "classification": {
+        "version": "canonical-action-ontology.v1",
+        "phrase": "issue or sell any shares",
+        "verbs": [
+          "issue",
+          "sell"
+        ],
+        "object": "shares",
+        "objectFamily": "EQUITY_REPURCHASE",
+        "canonicalAction": null,
+        "categories": [],
+        "coverage": "ONTOLOGY_GAP",
+        "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+      }
+    },
+    "inheritedEntityScope": [
+      "ANY_SUBSIDIARY"
+    ],
+    "notes": [
+      "governing region governing-1 (7.5) states an act \"issue or sell any shares\" the canonical action ontology does not cover as one category (ONTOLOGY_GAP); inherited action not established"
+    ],
+    "contentHash": "16caeb74ccb6a0390167b4199d1ebbafa2406489bf717e59a1d2e75d10d29e0e"
+  },
+  "action": {
+    "authoritative": "SELL_ASSET",
+    "modelEmitted": "SELL_ASSET",
+    "inheritedAttribute": {
+      "attribute": "action",
+      "sourceAuthority": "PARENT_SCOPE",
+      "sourceSectionRef": "7.5",
+      "evidence": "issue or sell any shares",
+      "canonicalValue": null,
+      "compatibility": "INCOMPATIBLE",
+      "sourceSpan": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+        "charStart": 69668,
+        "charEnd": 69961,
+        "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+      },
+      "ancestorDistance": 1
+    },
+    "sufficiencyReason": "ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess",
+    "sourceBreadth": "the §7.5 lead-in states two acts: 'Dispose of any of its Property or business ...' and, for a Subsidiary, 'issue or sell any shares of such Subsidiary's Capital Stock'",
+    "compatibilityRecorded": "INCOMPATIBLE (deterministic)",
+    "ontologyReplayOffline": {
+      "asRecorded": {
+        "version": "canonical-action-ontology.v1",
+        "phrase": "issue or sell any shares",
+        "verbs": [
+          "issue",
+          "sell"
+        ],
+        "object": "shares",
+        "objectFamily": "EQUITY_REPURCHASE",
+        "canonicalAction": null,
+        "categories": [],
+        "coverage": "ONTOLOGY_GAP",
+        "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+      },
+      "withLowercaseObject": {
+        "version": "canonical-action-ontology.v1",
+        "phrase": "Dispose of any of its property",
+        "verbs": [
+          "Dispose of"
+        ],
+        "object": "property",
+        "objectFamily": "ASSET",
+        "canonicalAction": "SELL_ASSET",
+        "categories": [
+          "SELL_ASSET"
+        ],
+        "coverage": "COVERED",
+        "detail": "1 source verb(s) on ASSET fall in the canonical category SELL_ASSET"
+      }
+    },
+    "defect": "canonical-action-ontology.v1 OBJECT_FAMILIES regexes are compiled without the i flag, so 'Property' (capital P, as drafted) does not match the ASSET family; the scan skips 'Dispose of any of its Property' and classifies the next verb cluster 'issue or sell any shares' (EQUITY family, ONTOLOGY_GAP). The replay with a lowercase object yields SELL_ASSET COVERED. Deterministic production defect; preserved, not patched"
+  },
+  "entityScope": {
+    "rawModel": {
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "entityScopeExcluded": [],
+      "source": "RULE_FIELD"
+    },
+    "authoritative": [
+      "BORROWER",
+      "ANY_SUBSIDIARY"
+    ],
+    "excluded": [],
+    "guard": "entity-scope-consistency-guard.v3",
+    "status": "SOURCE_MATCH_CONFIRMED",
+    "precedence": "OWN_OPERATIVE_LANGUAGE",
+    "safeToRely": true,
+    "discrepancy": null,
+    "governingDerived": [
+      "ANY_SUBSIDIARY"
+    ],
+    "articlePreambleBinds": [
+      "BORROWER",
+      "ANY_SUBSIDIARY"
+    ]
+  },
+  "context": {
+    "sufficiency": "SUFFICIENT",
+    "stopReasons": [],
+    "retrievalStops": [],
+    "items": [
+      {
+        "type": "OPERATIVE_SOURCE",
+        "normalizedRef": "7.5(j)",
+        "retrievalDepth": 0,
+        "excerptChars": 508,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "PARENT_SCOPE",
+        "normalizedRef": "7.5",
+        "retrievalDepth": 1,
+        "excerptChars": 4658,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(f)",
+        "retrievalDepth": 1,
+        "excerptChars": 126,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "UNVERIFIED_SIBLING_SIGNAL",
+        "normalizedRef": "7.5(n)",
+        "retrievalDepth": 1,
+        "excerptChars": 635,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "DEFINITION",
+        "normalizedRef": "Consolidated Total Assets",
+        "retrievalDepth": 1,
+        "excerptChars": 283,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Parent Borrower",
+        "retrievalDepth": 2,
+        "excerptChars": 55,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "DEFINITION",
+        "normalizedRef": "Disposition",
+        "retrievalDepth": 1,
+        "excerptChars": 276,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Division",
+        "retrievalDepth": 2,
+        "excerptChars": 353,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      },
+      {
+        "type": "DEFINITION_DEPENDENCY",
+        "normalizedRef": "Property",
+        "retrievalDepth": 2,
+        "excerptChars": 170,
+        "evidenceState": {
+          "status": "CURRENT",
+          "isCurrentTruth": true,
+          "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+        }
+      }
+    ],
+    "unresolvedDependencies": [
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Disposition of Property",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Dispositions of Property",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Sale of Assets",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Dispose of",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Disposition of",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Disposition of Inventory",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Capital Stock of",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Subsidiary Guarantor and",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Loan Party",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Asset Sales",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Parent Borrower and",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Agreement and",
+        "LOW"
+      ],
+      [
+        "UNRESOLVED_DEFINED_TERM",
+        "Security Documents and",
+        "LOW"
+      ]
+    ],
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "performance": {
+      "itemsConsidered": 10,
+      "itemsRetained": 9,
+      "duplicatePathsDeduplicated": 3,
+      "maxDefinitionDepthReached": 3,
+      "maxCrossReferenceDepthReached": 1,
+      "crossReferenceTraversals": 1,
+      "crossDocumentLeads": 0,
+      "deterministicWallClockMs": 3,
+      "semanticWallClockMs": 0,
+      "semanticCalls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0
+    }
+  },
+  "compilation": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP",
+      "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+      "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+    ],
+    "execution": {
+      "mode": "MONOLITHIC",
+      "reason": "SINGLE_BOUNDED_SHARD",
+      "policyVersion": "semantic-execution-mode.v1",
+      "plannerAlgorithmVersion": "semantic-compilation-shards.v4-required-dependency-precision",
+      "planHash": "ae6f0d7fab6c5fb9cb692504204561fca25981104c1a2b65628ee70650ec82e5",
+      "plannedShards": 1,
+      "oversizedShards": 0,
+      "frozenInventoryResume": null,
+      "sharded": null
+    },
+    "rules": 1,
+    "definitions": 0,
+    "sharedCapacities": 0,
+    "foreignUnits": 0,
+    "invalidWireKinds": [],
+    "contextOnlyEmissions": [],
+    "normalizationDiagnostics": [
+      [
+        "PROVENANCE_EXCERPT_SOURCE_BOUND",
+        "rule[r7_5j].UNLIMITED_CAPACITY.gatedBy"
+      ],
+      [
+        "PROVENANCE_EXCERPT_SOURCE_BOUND",
+        "rule[r7_5j].condition[0]"
+      ]
+    ],
+    "dependencyProseDiagnostics": [],
+    "rawDefinitionsType": "array",
+    "rawDefinitionsLength": 0,
+    "rawSharedCapacities": 0,
+    "modelSufficiencyClaim": "COMPLETE",
+    "authoritativeSufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+      "deterministic post-processing: 1 limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL",
+      "covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess"
+    ],
+    "covenantFamily": {
+      "model": "LIMITATIONS_ON_SALE_OF_ASSETS",
+      "authoritative": "QUALITATIVE_NEGATIVE_COVENANTS"
+    },
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "conditions": [
+      {
+        "conditionId": "rule[r7_5j].condition[0]",
+        "conditionType": "OTHER_RULE_SATISFIED",
+        "expression": null,
+        "referencesRuleTargets": [],
+        "description": "This is an excepted/permitted Disposition under the Section 7.5 disposition-permission basket; the underlying Disposition is otherwise permitted by the governing clause."
+      }
+    ],
+    "evaluationBasis": null,
+    "capacityExpressionShape": "UNLIMITED_CAPACITY gatedBy COMPARE(METRIC_REFERENCE 'Net Proceeds of such Disposition' LT MAX(MONEY 25,000,000 USD, MULTIPLY(PERCENT 0.015, METRIC_REFERENCE 'Consolidated Total Assets')))",
+    "numericLiteralsInIR": [
+      25000000,
+      0.015
+    ],
+    "metricReferences": [
+      "Net Proceeds of such Disposition",
+      "Consolidated Total Assets"
+    ],
+    "wireAsOfDateOnCtaReference": "date of such Disposition",
+    "irAsOfDateOnCtaReference": null
+  },
+  "passC": {
+    "counts": {
+      "inventoried": 12,
+      "material": 12,
+      "represented": 6,
+      "intentionallyNonComputational": 0,
+      "unsupported": 0,
+      "ambiguous": 0,
+      "missingFromComposition": 6,
+      "materialMissingFromComposition": 6,
+      "criticalMissingFromComposition": 5,
+      "materialQuantitativeValues": 7,
+      "materialQuantitativeValuesMissing": 3,
+      "uninventoriedValues": 0,
+      "unaccountedSource": 2,
+      "danglingLineageReferences": 0,
+      "canonicalizedLineageReferences": 12
+    },
+    "semanticallyComplete": false,
+    "supportReviewRequired": true,
+    "missing": [
+      {
+        "inventoryItemId": "inv-item:da2ae7a8c96e1ad42210a94e",
+        "role": "FORMULA_COMPONENT",
+        "materiality": "CRITICAL",
+        "modelDisposition": "CONSUMED_IN_EXPRESSION",
+        "reason": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR",
+        "quantitative": []
+      },
+      {
+        "inventoryItemId": "inv-item:cfa2c306e7039e94371d186b",
+        "role": "FORMULA_COMPONENT",
+        "materiality": "MATERIAL",
+        "modelDisposition": "CONSUMED_IN_EXPRESSION",
+        "reason": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR",
+        "quantitative": []
+      },
+      {
+        "inventoryItemId": "inv-item:5e02c2d017c10fdbce5ccaf7",
+        "role": "FORMULA_COMPONENT",
+        "materiality": "CRITICAL",
+        "modelDisposition": "CONSUMED_IN_EXPRESSION",
+        "reason": "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR",
+        "quantitative": []
+      },
+      {
+        "inventoryItemId": "inv-item:8178744a0966f30b34bfd88d",
+        "role": "THRESHOLD",
+        "materiality": "CRITICAL",
+        "modelDisposition": null,
+        "reason": "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count",
+        "quantitative": [
+          [
+            "OTHER",
+            "$25,000,000",
+            "VALUE_MISSING_FROM_COMPOSITION"
+          ],
+          [
+            "MONEY",
+            "$25,000,000",
+            "VALUE_PRESENT_IN_IR"
+          ]
+        ]
+      },
+      {
+        "inventoryItemId": "inv-item:5ac2fef6fb6c8558c27ae9af",
+        "role": "THRESHOLD",
+        "materiality": "CRITICAL",
+        "modelDisposition": null,
+        "reason": "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count",
+        "quantitative": [
+          [
+            "OTHER",
+            "$25,000,000",
+            "VALUE_MISSING_FROM_COMPOSITION"
+          ],
+          [
+            "MONEY",
+            "$25,000,000",
+            "VALUE_PRESENT_IN_IR"
+          ],
+          [
+            "PERCENT",
+            "1.5%",
+            "VALUE_PRESENT_IN_IR"
+          ]
+        ]
+      },
+      {
+        "inventoryItemId": "inv-item:83b1553ecb2a2291a82e3532",
+        "role": "THRESHOLD",
+        "materiality": "CRITICAL",
+        "modelDisposition": null,
+        "reason": "composition lineage claims this item (rules[0]) but 1.5% appears nowhere in the composed IR - a lineage claim without value correspondence does not count",
+        "quantitative": [
+          [
+            "OTHER",
+            "1.5%",
+            "VALUE_MISSING_FROM_COMPOSITION"
+          ],
+          [
+            "PERCENT",
+            "1.5%",
+            "VALUE_PRESENT_IN_IR"
+          ]
+        ]
+      }
+    ],
+    "causes": [
+      "THRESHOLD items 8178744a…, 5ac2fef6…, 83b1553e…: each carries, beside the deterministic MONEY/PERCENT value (found in the IR at the literal nodes), a second value of kind OTHER with the same rawText (the model's own declared kind was not in QUANTITATIVE_KINDS and was defaulted to OTHER in inventory.ts); reconciliation.ts matches an OTHER-kind value only against TEXT nodes, none exist, so the item is MISSING_FROM_COMPOSITION although its figure is present (the verifier's own reconciliation finds both figures ACCOUNTED_FOR) - deterministic false negative, preserved",
+      "FORMULA_COMPONENT items da2ae7a8…, cfa2c306…, 5e02c2d0… (the two non-cash valuation rules): the model dispositioned them 'CONSUMED_IN_EXPRESSION', a word outside the stated vocabulary (INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS) and listed no lineage, so the deterministic check correctly reports them MISSING; the IR carries the valuation mechanics only inside the bound provenance excerpt of the gate, not as structure - a true representational gap the model should have marked UNSUPPORTED"
+    ]
+  },
+  "provenanceContract": {
+    "counts": {
+      "provenanceObjects": 8,
+      "modelDerivedExcerpts": 7,
+      "SOURCE_BOUND_EXACT": 5,
+      "SOURCE_BOUND_ELIDED": 2,
+      "UNRESOLVED": 0,
+      "ambiguousExactSpans": 0,
+      "ambiguousElidedSpans": 0,
+      "rawModelExcerptOccurrences": 4,
+      "authoritativeExcerptsWithoutSpan": 0,
+      "nullExcerptNoResolution": 1
+    },
+    "objects": [
+      {
+        "path": "ir.rules[0].capacityExpression.gatedBy.right.operands[0].provenance",
+        "status": "SOURCE_BOUND_EXACT",
+        "hasExcerpt": true,
+        "hasRaw": false,
+        "spanComplete": true
+      },
+      {
+        "path": "ir.rules[0].capacityExpression.gatedBy.right.operands[1].operands[0].provenance",
+        "status": "SOURCE_BOUND_EXACT",
+        "hasExcerpt": true,
+        "hasRaw": false,
+        "spanComplete": true
+      },
+      {
+        "path": "ir.rules[0].capacityExpression.gatedBy.right.operands[1].provenance",
+        "status": "SOURCE_BOUND_EXACT",
+        "hasExcerpt": true,
+        "hasRaw": false,
+        "spanComplete": true
+      },
+      {
+        "path": "ir.rules[0].capacityExpression.gatedBy.right.provenance",
+        "status": "SOURCE_BOUND_EXACT",
+        "hasExcerpt": true,
+        "hasRaw": true,
+        "spanComplete": true
+      },
+      {
+        "path": "ir.rules[0].capacityExpression.gatedBy.provenance",
+        "status": "SOURCE_BOUND_ELIDED",
+        "hasExcerpt": true,
+        "hasRaw": true,
+        "spanComplete": true
+      },
+      {
+        "path": "ir.rules[0].capacityExpression.provenance",
+        "status": null,
+        "hasExcerpt": false,
+        "hasRaw": false,
+        "spanComplete": false
+      },
+      {
+        "path": "ir.rules[0].conditions[0].provenance",
+        "status": "SOURCE_BOUND_ELIDED",
+        "hasExcerpt": true,
+        "hasRaw": true,
+        "spanComplete": true
+      },
+      {
+        "path": "ir.rules[0].provenance",
+        "status": "SOURCE_BOUND_EXACT",
+        "hasExcerpt": true,
+        "hasRaw": true,
+        "spanComplete": true
+      }
+    ]
+  },
+  "verification": {
+    "status": "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "projectionVersion": "phase-3c-verification-projection.v4",
+    "projectionHash": "88c138aa282f3943f756d1e3759563e1a7113b71900456fa079eebf1388bfb70",
+    "hashes": {
+      "compilation": "88c138aa282f3943f756d1e3759563e1a7113b71900456fa079eebf1388bfb70",
+      "snapshot": "88c138aa282f3943f756d1e3759563e1a7113b71900456fa079eebf1388bfb70",
+      "verifiedPackage": "88c138aa282f3943f756d1e3759563e1a7113b71900456fa079eebf1388bfb70"
+    },
+    "recordedOnVerification": {
+      "version": "phase-3c-verification-projection.v4",
+      "hash": "88c138aa282f3943f756d1e3759563e1a7113b71900456fa079eebf1388bfb70",
+      "shownToReviewer": true
+    },
+    "allHashesEqual": true,
+    "shownToReviewer": true,
+    "semanticReviewInvoked": true,
+    "findingCount": 1,
+    "material": 0,
+    "uncertain": 0,
+    "nonMaterial": 1,
+    "deterministic": 1,
+    "semanticReviewer": 0,
+    "reviewerInconsistency": 0,
+    "findings": [
+      [
+        "NON_MATERIAL",
+        "MISSING_RULE",
+        "DETERMINISTIC_ONLY",
+        null
+      ]
+    ],
+    "numericGrounding": {
+      "materialUnresolved": 1,
+      "items": [
+        [
+          "ACCOUNTED_FOR",
+          "AMOUNT",
+          "$25,000,000"
+        ],
+        [
+          "ACCOUNTED_FOR",
+          "PERCENT",
+          "1.5%"
+        ],
+        [
+          "POSSIBLY_ACCOUNTED_FOR",
+          "METRIC_MENTION",
+          "Parent Borrower"
+        ],
+        [
+          "ACCOUNTED_FOR",
+          "METRIC_MENTION",
+          "Consolidated Total Assets"
+        ],
+        [
+          "AMBIGUOUS",
+          null,
+          null
+        ],
+        [
+          "ACCOUNTED_FOR",
+          null,
+          null
+        ],
+        [
+          "ACCOUNTED_FOR",
+          null,
+          null
+        ],
+        [
+          "ACCOUNTED_FOR",
+          null,
+          null
+        ],
+        [
+          "ACCOUNTED_FOR",
+          null,
+          null
+        ],
+        [
+          "ACCOUNTED_FOR",
+          null,
+          null
+        ],
+        [
+          "ACCOUNTED_FOR",
+          null,
+          null
+        ],
+        [
+          "ACCOUNTED_FOR",
+          null,
+          null
+        ]
+      ]
+    },
+    "qualitativeGrounding": {
+      "version": "qualitative-grounding.v4",
+      "materialUngrounded": 0,
+      "units": [
+        [
+          "ir-rule:813a03f3488f210788389510",
+          "GROUNDED",
+          [
+            "posture",
+            "action",
+            "ruleType",
+            "covenantFamily",
+            "entityScope",
+            "conditions[0]"
+          ],
+          []
+        ]
+      ]
+    },
+    "reviewerOutputTokens": 4111
+  },
+  "certification": {
+    "candidate": "REVIEW_REQUIRED",
+    "blockers": [
+      {
+        "code": "COMPILATION_NOT_COMPLETED",
+        "severity": "REVIEW",
+        "detail": "compilation REVIEW_REQUIRED: SEMANTIC_INVENTORY_COVERAGE_GAP, INVENTORY_ITEM_MISSING_FROM_COMPOSITION, SEMANTIC_SUPPORT_REVIEW_REQUIRED",
+        "refs": []
+      },
+      {
+        "code": "UNACCOUNTED_MATERIAL_SOURCE",
+        "severity": "REVIEW",
+        "detail": "1 material source item(s) are not accounted for by the IR",
+        "refs": []
+      },
+      {
+        "code": "UNIT_SUFFICIENCY_INCOMPLETE",
+        "severity": "REVIEW",
+        "detail": "executable unit(s) are not COMPLETE",
+        "refs": [
+          "ir-rule:813a03f3488f210788389510:PARTIAL"
+        ]
+      }
+    ],
+    "warnings": [],
+    "blockersByLayer": {
+      "PHASE3_PASS_A_INVENTORY": [
+        "COMPILATION_NOT_COMPLETED: SEMANTIC_INVENTORY_COVERAGE_GAP",
+        "COMPILATION_NOT_COMPLETED: SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+      ],
+      "PHASE3_PASS_C_ACCOUNTABILITY": [
+        "COMPILATION_NOT_COMPLETED: INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+        "UNACCOUNTED_MATERIAL_SOURCE"
+      ],
+      "PHASE3_NORMALIZATION": [
+        "UNIT_SUFFICIENCY_INCOMPLETE (PARTIAL: ACTION_INCONSISTENT_WITH_SOURCE_ACT from the governing-scope ontology; covenantFamily default)"
+      ],
+      "UPSTREAM_PHASE2": [],
+      "VERIFIER": []
+    },
+    "snapshotHash": "fb0a8192ac0e73c5f038e8604a33aa4f6b836a8471bfb6de4515376ef9de10ed",
+    "artifactPackageHash": "5aae34763d623f72ca1d8e04006877840bbef79725afa7467ece149a54c1b91c",
+    "package": {
+      "status": "PARTIAL",
+      "blockers": [
+        [
+          "CANDIDATE_REVIEW_REQUIRED",
+          "REVIEW"
+        ],
+        [
+          "DISCOVERY_POPULATION_UNSEALED",
+          "PARTIAL"
+        ],
+        [
+          "PARTIAL_TARGET_SET",
+          "PARTIAL"
+        ],
+        [
+          "REVIEW_UNRESOLVED_ITEM",
+          "REVIEW"
+        ]
+      ],
+      "partialReasonsOnly": [
+        "DISCOVERY_POPULATION_UNSEALED",
+        "PARTIAL_TARGET_SET"
+      ]
+    },
+    "phase4Adapter": {
+      "attempted": false,
+      "reason": "certification REVIEW_REQUIRED"
+    }
+  },
+  "hypotheses": {
+    "H1_OWNERSHIP": {
+      "result": "PASS",
+      "detail": "1 rule, sourceSectionRef Section 7.5(j); 0 definitions, 0 shared capacities, 0 foreign units, contextOnlyEmissions []"
+    },
+    "H2_POSTURE": {
+      "result": "PASS",
+      "detail": "posture PERMISSION, ruleType QUANTITATIVE_PERMISSION; governingProhibition inherited from the Article VII preamble as an attribute, not emitted as a rule"
+    },
+    "H3_ACTION": {
+      "result": "PASS_WITH_DETERMINISTIC_DEFECT",
+      "detail": "canonical action SELL_ASSET (compatible with disposing Property or business); the deterministic inherited-action check recorded INCOMPATIBLE against 'issue or sell any shares' because the ASSET object regex is case-sensitive and skipped 'Dispose of any of its Property' - a false incompatibility that downgraded sufficiency to PARTIAL"
+    },
+    "H4_GOVERNING_ENTITY_SCOPE": {
+      "result": "PASS",
+      "detail": "raw model [BORROWER, ANY_SUBSIDIARY] == authoritative; guard v3 SOURCE_MATCH_CONFIRMED, decidedBy OWN_EXCERPT, governing scope derived ANY_SUBSIDIARY from §7.5 and BORROWER/ANY_SUBSIDIARY from the Article preamble; the net-proceeds phrase did not narrow or widen applicability"
+    },
+    "H5_DISPOSITION_SCOPE": {
+      "result": "PARTIAL",
+      "detail": "the single-vs-series alternative is carried only in the bound condition/gate excerpts and the inventory lineage (items c262…, 2bb0… consumed on the rule); the IR has no structural element distinguishing a related series from a single Disposition, and the threshold test is not aggregated structurally - preserved in provenance, not in semantics"
+    },
+    "H6_THRESHOLD_COMPARATOR": {
+      "result": "PASS",
+      "detail": "COMPARE operator LT (strict less than), not LTE, not capacity-remaining, not an annual basket"
+    },
+    "H7_GREATER_OF_FORMULA": {
+      "result": "PASS",
+      "detail": "MAX(MONEY 25,000,000 USD, MULTIPLY(PERCENT 0.015, METRIC_REFERENCE Consolidated Total Assets)); no sibling economics"
+    },
+    "H8_CTA_TIMING": {
+      "result": "FAIL",
+      "detail": "the model emitted asOfDate 'date of such Disposition' on the Consolidated Total Assets METRIC_REFERENCE (a field the generic wire schema accepts) instead of an AS_OF composite; normalize.ts builds METRIC_REFERENCE without asOfDate and emits no diagnostic, so the measurement-date qualifier survives only in the bound provenance excerpts and the inventory item d137a073…; no quarter-end timing was invented"
+    },
+    "H9_NET_PROCEEDS_TEST": {
+      "result": "PASS",
+      "detail": "left operand METRIC_REFERENCE 'Net Proceeds of such Disposition' (resolvedDefinitionId null); not FMV of assets, not gross proceeds, not EBITDA"
+    },
+    "H10_NOTES_DEBT_SECURITIES_VALUATION": {
+      "result": "PARTIAL",
+      "detail": "'valued at the initial principal amount thereof' is inside the gate's SOURCE_BOUND_ELIDED excerpt [104,405) and inventoried (item da2ae7a8…), but not structurally encoded; the model dispositioned the item with a non-vocabulary word and Pass C reports it MISSING"
+    },
+    "H11_OTHER_NONCASH_VALUATION": {
+      "result": "PARTIAL",
+      "detail": "'valued at fair market value' likewise present only in the bound excerpt; items cfa2c306…/5e02c2d0… MISSING_FROM_COMPOSITION"
+    },
+    "H12_NO_INVENTED_DEFINITION": {
+      "result": "PASS",
+      "detail": "0 definitions emitted; net proceeds left as an unresolved metric reference; the model's note says the valuation language is a computation method, not a declared term; nothing fabricated"
+    },
+    "H13_NO_SHARED_CAP": {
+      "result": "PASS",
+      "detail": "0 shared capacities; model note: no shared capacity with any other clause"
+    },
+    "H14_NO_LEDGER_CONSUMPTION": {
+      "result": "PASS",
+      "detail": "capacity is UNLIMITED_CAPACITY gated by a per-transaction comparison; no cumulative usage, no LEDGER reference"
+    },
+    "H15_SOURCE_REFERENCES": {
+      "result": "PASS",
+      "detail": "operative text states no Section reference; sourceDependencies [], referencesRuleTargets [], dependsOn [], sourceReferenceAudit null (nothing to audit); no invented reference"
+    },
+    "H16_PROVENANCE_V2": {
+      "result": "PASS",
+      "detail": "5 SOURCE_BOUND_EXACT, 2 SOURCE_BOUND_ELIDED, 0 UNRESOLVED, 0 authoritative excerpts without a complete span; 1 container provenance with null excerpt and no model excerpt (the capacity wrapper, nothing to bind)"
+    },
+    "H17_NUMERIC_GROUNDING": {
+      "result": "PASS",
+      "detail": "numeric literals in the authoritative IR: [25000000,0.015] (25,000,000 USD and 0.015); verifier reconciliation ACCOUNTED_FOR both; no 10%/20%/7.5%/15%/75,000,000/3.5%"
+    },
+    "H18_SIBLING_CONTAMINATION": {
+      "result": "PASS",
+      "detail": "context carried §7.5(f) and §7.5(n) as UNVERIFIED_SIBLING_SIGNAL; targetEconomicsExcluded [], contextOnlyEmissions [], dependencyProseDiagnostics []; no sibling figure in the IR"
+    },
+    "H19_RULE_SUFFICIENCY": {
+      "result": "PARTIAL_AS_RECORDED",
+      "detail": "model claimed COMPLETE; deterministic post-processing downgraded to PARTIAL (action inconsistency + family default); Pass C semanticallyComplete false"
+    },
+    "H20_REVIEWER_INDEPENDENCE": {
+      "result": "PASS",
+      "detail": "reviewer saw projection 88c138aa… only (shownToReviewer true); no hypotheses, outcomes or expectations were supplied; 0 reviewer findings; the one deterministic MISSING_RULE signal was downgraded to NON_MATERIAL because the independent review did not confirm it"
+    }
+  },
+  "historicalComparison": {
+    "candidate": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "oldRun": "docs/phase-3-conmed-population-verified/run-original (2026-09-25): compile FAILED MODEL_SCHEMA_FAILURE - submit_compilation input failed schema validation: definitions expected array, received string",
+    "currentRun": "definitions emitted as an array (length 0); submit_compilation validated; compilation reached REVIEW_REQUIRED",
+    "oldDefectStatus": "RESOLVED",
+    "note": "the old output was not fed to the model, the prompt or the result"
+  },
+  "limitationsObserved": [
+    "source-coverage credit clipping (clipCreditToStartSegment) plus a failed gap re-inventory left two stretches UNACCOUNTED although a CRITICAL item anchors the whole clause [0,132) - deterministic Pass A layer, preserved",
+    "both gap re-inventory calls were rejected for localRef/parentRef longer than the 6-char wire bound - model formatting under the gap prompt, preserved",
+    "Pass C treats a model-declared OTHER-kind duplicate of a figure as unmatched even though the figure is a literal node in the IR - deterministic accountability layer, preserved",
+    "canonical-action-ontology object regexes are case-sensitive; 'Property' as drafted is not an ASSET object - deterministic governing-scope layer, preserved",
+    "normalize.ts drops asOfDate on METRIC_REFERENCE silently - deterministic normalization layer, preserved",
+    "the model used a non-vocabulary disposition (CONSUMED_IN_EXPRESSION) for the valuation items and did not use UNSUPPORTED nodes - model behaviour, preserved",
+    "the model emitted covenantFamily LIMITATIONS_ON_SALE_OF_ASSETS (not an enum value); defaulted to QUALITATIVE_NEGATIVE_COVENANTS with a warning",
+    "the condition OTHER_RULE_SATISFIED with no referencesRuleTargets and no expression is a vacuous structural element (the §7.5 permission posture restated); accepted by normalization, not flagged by the verifier",
+    "provider usage for the Pass B call reported 669,566 input tokens for a 62k-char body; priced as reported",
+    "the verifier result does not persist the reviewer's overallNotes (runner limitation carried over from §7.2(c))"
+  ],
+  "verdict": {
+    "final": "PHASE3_7_5_J_SEMANTIC_FAILURE",
+    "firstUnresolvedBlocker": "SEMANTIC_INVENTORY_COVERAGE_GAP (compilation failureReasons[0]; certification COMPILATION_NOT_COMPLETED) - operative:4-43 'any Disposition of Property or business' and operative:104-132 'which yields net proceeds to' unaccounted after the ensemble union",
+    "owningLayer": "Phase-3 Pass A semantic-accountability inventory (deterministic source-coverage credit clipping; gap re-inventory failed on model localRef formatting)",
+    "whyNotReviewRequired": "besides honest support asymmetry, material Phase-3 defects remain in deterministic layers: a false INCOMPATIBLE action attribution written onto the authoritative IR, Pass C false negatives on both source figures, silent loss of the Consolidated Total Assets measurement-date qualifier, and a coverage gap on text a CRITICAL item anchors; the verifier (0 MATERIAL, 0 UNCERTAIN) did not surface the timing loss",
+    "whyNotArchitectureFailure": "no production mutation after dispatch, no authoritative excerpt without a span, projection hashes identical across compilation/snapshot/verified package/recorded reviewer projection, no historical evidence mutated, no retry, no finding suppressed",
+    "whyNotExecutionFailure": "all 6 provider responses HTTP 200, requested model == reported model, schema accepted the compilation, no timeout, no budget refusal"
+  }
+}

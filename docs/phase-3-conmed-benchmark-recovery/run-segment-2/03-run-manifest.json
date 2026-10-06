@@ -1,0 +1,366 @@
+{
+  "schema": "p3-conmed-benchmark-recovery-manifest.v1",
+  "evidenceLabel": "BENCHMARK_RECOVERY",
+  "runId": "conmed-benchmark-recovery-2026-09-25T13:52:59.139Z",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "concurrencyUsed": 1,
+  "autoRetry": false,
+  "fallbackModel": null,
+  "premiumModelBudgetUsd": 0,
+  "maxAttemptsPerCase": 2,
+  "reservationPolicy": {
+    "policy": "reservation-policy.v1 (execution-shape derived; P-7), unchanged",
+    "compileReservationUsdAtMaxChars": 1.3773292,
+    "verifyReservationUsd": 0.0416,
+    "candidateMaxReservationUsd": 1.4189292,
+    "stageCallReservationUsd": 0.0286,
+    "compileShapeAtMaxChars": {
+      "conversations": 5,
+      "turnsPerConversation": 12,
+      "inputTokensPerTurn": 167914,
+      "passACalls": 4,
+      "passAInputTokensPerCall": 100000,
+      "outputTokens": 60000,
+      "inputTokens": 10474840,
+      "calls": 64
+    },
+    "verifyShape": {
+      "conversations": 0,
+      "turnsPerConversation": 0,
+      "inputTokensPerTurn": 100000,
+      "passACalls": 0,
+      "passAInputTokensPerCall": 0,
+      "outputTokens": 60000,
+      "inputTokens": 200000,
+      "calls": 2
+    }
+  },
+  "targets": [
+    {
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "ref": "7.1",
+      "operativeChars": 3275
+    },
+    {
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "ref": "7.10",
+      "operativeChars": 1995
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "ref": "7.13",
+      "operativeChars": 1212
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "ref": "7.14",
+      "operativeChars": 1106
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "ref": "7.16",
+      "operativeChars": 1144
+    },
+    {
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "ref": "7.17",
+      "operativeChars": 795
+    },
+    {
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "ref": "7.2",
+      "operativeChars": 8843
+    },
+    {
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "ref": "7.2(c)",
+      "operativeChars": 529
+    }
+  ],
+  "excluded": "7.11",
+  "resume": {
+    "segmentDir": "docs/phase-3-conmed-benchmark-recovery/run-segment-1",
+    "priorAttempts": 2,
+    "inFlightAborted": {
+      "ref": "7.10",
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "operativeChars": 1995,
+      "chargedUsd": 1.3513292
+    },
+    "accountingCorrections": [
+      {
+        "ref": "7.1",
+        "attempt": 1,
+        "was": {
+          "costUsd": 0.01166178,
+          "costStatus": "EXACT"
+        },
+        "now": {
+          "costUsd": 1.3513292,
+          "costStatus": "UNKNOWN_TIMEOUT_BILLED"
+        },
+        "why": "the earlier loop settled a timed-out compile from the Pass A usage observed before the cut-off; a timeout's billing is unknown and the full reservation is retained (population-loop.ts fix)"
+      }
+    ],
+    "seededPrior": {
+      "exactUsd": 0.00118768,
+      "retainedUnknownUsd": 2.7026584,
+      "breakdown": {
+        "preflightProbesUsd": 0.00082199,
+        "segmentAmendmentUsd": 0.00036569,
+        "segmentAttemptsExactUsd": 0,
+        "segmentAttemptsRetainedUsd": 1.3513292,
+        "inFlightAbortedReservationUsd": 1.3513292
+      }
+    }
+  },
+  "pass1": {
+    "attempted": 5,
+    "stop": {
+      "reason": "RESERVATION_SHAPE_EXCEEDED",
+      "candidateAtStop": "7.16",
+      "at": "2026-09-25T14:17:09.482Z",
+      "committedUsd": 6.758157,
+      "remainingCandidates": [
+        "7.17",
+        "7.2",
+        "7.2(c)"
+      ],
+      "detail": "output tokens 63943 > reserved 60000",
+      "signal": null
+    },
+    "outcomes": {
+      "TIMEOUT": 4,
+      "OTHER_EXECUTION_FAILURE": 1
+    }
+  },
+  "pass2": {
+    "plan": {
+      "notRecovered": [
+        "7.1",
+        "7.10",
+        "7.13",
+        "7.14",
+        "7.16"
+      ],
+      "eligible": [
+        "7.1",
+        "7.10",
+        "7.13",
+        "7.14",
+        "7.16"
+      ],
+      "ineligible": [],
+      "order": [
+        "7.14",
+        "7.16",
+        "7.13",
+        "7.10",
+        "7.1"
+      ],
+      "skippedBecausePass1Stopped": "RESERVATION_SHAPE_EXCEEDED"
+    },
+    "attempted": 0,
+    "stop": null,
+    "outcomes": {},
+    "notRetried": [
+      {
+        "ref": "7.14",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.16",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.13",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.10",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      },
+      {
+        "ref": "7.1",
+        "reason": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+      }
+    ]
+  },
+  "totalAttempts": 5,
+  "targetsWithTwoAttempts": [],
+  "finalRecovered": [],
+  "finalNotRecovered": [
+    "7.1",
+    "7.10",
+    "7.13",
+    "7.14",
+    "7.16",
+    "7.17",
+    "7.2",
+    "7.2(c)"
+  ],
+  "cases": [
+    {
+      "ref": "7.1",
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "band": "LONG",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "c8d0328d20afe28aaf5a136f7d324704ddeeb4fd3dcca2dbd945072c35b0e413",
+          "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-1/evidence/attempt-1/discovery-candidate:a26970121ceb558846ff8d1c.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.10",
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "band": "LONG",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "OTHER_EXECUTION_FAILURE",
+          "compile": "OTHER_EXECUTION_FAILURE",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": null,
+          "packageHash": null,
+          "evidenceFile": null,
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.13",
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "band": "MID",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "cf7dd97233af74e77e533f5750f23900c87b2802d57c715cba1d6bb909ced79e",
+          "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-2/evidence/attempt-1/discovery-candidate:6c3daaff31337b2767a15b68.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.14",
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "band": "MID",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "9ac4492456d51095bfa8bde02cbe45c95d7b8b8d70cce04f7d961cc91b542faa",
+          "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-2/evidence/attempt-1/discovery-candidate:6d475ada38fa539312598179.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.16",
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "band": "MID",
+      "attempts": [
+        {
+          "attempt": 1,
+          "recovery": "TIMEOUT",
+          "compile": "TIMEOUT",
+          "verify": "NOT_RUN_COMPILE_FAILED",
+          "verificationStatus": null,
+          "packageComplete": false,
+          "packageHash": "6d0da8731bef973023aa44cefc98ee3889c22ad7d1ed549c217b23bfa98a7314",
+          "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-2/evidence/attempt-1/discovery-candidate:71cd58e50f8b3598cb7f1ffb.json",
+          "p1Occurrence": false
+        }
+      ],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": "NOT_RETRIED_RESERVATION_SHAPE_EXCEEDED"
+    },
+    {
+      "ref": "7.17",
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "band": "MID",
+      "attempts": [],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": null
+    },
+    {
+      "ref": "7.2",
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "band": "LONG",
+      "attempts": [],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": null
+    },
+    {
+      "ref": "7.2(c)",
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "band": "SHORT",
+      "attempts": [],
+      "finalRecovered": false,
+      "canonical": null,
+      "notRetried": null
+    }
+  ],
+  "variance": [],
+  "p1Occurrences": [],
+  "stopReason": "RESERVATION_SHAPE_EXCEEDED",
+  "stoppedAtCandidate": "7.16",
+  "stoppedAt": "2026-09-25T14:17:09.482Z",
+  "creditExhaustionSignal": null,
+  "spend": {
+    "exactUsd": 0.001511,
+    "timeoutReservationsRetainedUsd": 6.756646,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 6.758157,
+    "remainingUsd": 8.241843,
+    "ceilingUsd": 15,
+    "stopAtUsd": 14.9,
+    "preflightUsd": 0.00082199,
+    "amendmentPipelineUsd": 0.00032331,
+    "seededPrior": {
+      "exactUsd": 0.00118768,
+      "retainedUnknownUsd": 2.7026584,
+      "breakdown": {
+        "preflightProbesUsd": 0.00082199,
+        "segmentAmendmentUsd": 0.00036569,
+        "segmentAttemptsExactUsd": 0,
+        "segmentAttemptsRetainedUsd": 1.3513292,
+        "inFlightAbortedReservationUsd": 1.3513292
+      }
+    },
+    "note": "cumulative across segments: includes the seeded prior"
+  }
+}

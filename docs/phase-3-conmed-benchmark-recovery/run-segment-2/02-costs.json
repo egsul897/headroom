@@ -1,0 +1,110 @@
+{
+  "snapshot": {
+    "ceilingUsd": 15,
+    "stopAtUsd": 14.9,
+    "exactSpendUsd": 0.001511,
+    "retainedUnknownTimeoutUsd": 6.756646,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 6.758157,
+    "remainingUsd": 8.241843
+  },
+  "perRequest": [
+    {
+      "model": "deepseek/deepseek-v4-flash",
+      "elapsedWallClockMs": 480006,
+      "streamedOutputTokensObserved": 43846,
+      "providerUsageObserved": null,
+      "locallyCalculatedCostUsd": 0.01139996,
+      "finalProviderBillingUnavailable": true,
+      "costAccountingStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "chargedToBudgetUsd": 1.3513292,
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "stage": "compile",
+      "attempt": 1
+    },
+    {
+      "model": "deepseek/deepseek-v4-flash",
+      "elapsedWallClockMs": 480003,
+      "streamedOutputTokensObserved": 45028,
+      "providerUsageObserved": null,
+      "locallyCalculatedCostUsd": 0.01170728,
+      "finalProviderBillingUnavailable": true,
+      "costAccountingStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "chargedToBudgetUsd": 1.3513292,
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "stage": "compile",
+      "attempt": 1
+    },
+    {
+      "model": "deepseek/deepseek-v4-flash",
+      "elapsedWallClockMs": 480003,
+      "streamedOutputTokensObserved": 63943,
+      "providerUsageObserved": null,
+      "locallyCalculatedCostUsd": 0.01662518,
+      "finalProviderBillingUnavailable": true,
+      "costAccountingStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "chargedToBudgetUsd": 1.3513292,
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "stage": "compile",
+      "attempt": 1
+    }
+  ],
+  "sideCalls": [
+    {
+      "discoveryId": null,
+      "stage": "amendment_interpretation",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 871,
+      "outputTokens": 808,
+      "costUsd": 0.00032331
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "stage": "semantic_inventory",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 843,
+      "outputTokens": 30721,
+      "costUsd": 0.00809705
+    },
+    {
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "stage": "semantic_inventory_gap",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 625,
+      "outputTokens": 13125,
+      "costUsd": 0.0034937500000000003
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "stage": "semantic_inventory_gap",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 1201,
+      "outputTokens": 14255,
+      "costUsd": 0.00386243
+    },
+    {
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "stage": "semantic_inventory",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 686,
+      "outputTokens": 30773,
+      "costUsd": 0.008090159999999999
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "stage": "semantic_inventory_gap",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 647,
+      "outputTokens": 20287,
+      "costUsd": 0.00535873
+    },
+    {
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "stage": "semantic_inventory",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 698,
+      "outputTokens": 43656,
+      "costUsd": 0.0114413
+    }
+  ]
+}

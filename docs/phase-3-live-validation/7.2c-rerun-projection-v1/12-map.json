@@ -1,0 +1,766 @@
+{
+  "schemaVersion": "canonical-covenant-map.v3",
+  "companyId": "conmed-pilot",
+  "packageKey": "conmed-2025-credit-facility",
+  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+  "asOfDate": "2026-10-05",
+  "documents": [
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "label": "CONMED Eighth Amended and Restated Credit Agreement (2025-06-10)",
+      "documentOrdinal": 0,
+      "textSha256": "d4659601000fae07d5050167ecffb0d9da91708a57111c59dff0db40fb86540c",
+      "role": "BASE"
+    },
+    {
+      "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "label": "CONMED Amended and Restated Guarantee and Collateral Agreement (2025-06-10)",
+      "documentOrdinal": 1,
+      "textSha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36",
+      "role": "ANCILLARY"
+    },
+    {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "label": "CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01)",
+      "documentOrdinal": 2,
+      "textSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+      "role": "AMENDMENT"
+    },
+    {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "label": "CONMED First Omnibus Amendment and Increased Facility Activation Notice (2026-05-27)",
+      "documentOrdinal": 3,
+      "textSha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+      "role": "AMENDMENT"
+    }
+  ],
+  "identity": {
+    "mapAlgorithmVersion": "covenant-map-assembly.v3",
+    "certifiedConfigIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+    "compilerAlgorithmVersion": "semantic-accountability-compiler.v5",
+    "compilerPromptVersion": "semantic-accountability-compiler-prompt.v6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v3",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  "operativeState": {
+    "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "asOfDate": "2026-08-27",
+    "provisions": 4,
+    "unattachedEffects": 4
+  },
+  "discoveryPopulation": {
+    "scope": "PARTIAL_TARGET_SET",
+    "sealedDiscoveryIdentity": null,
+    "candidatePopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+    "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+    "candidatesDiscovered": 1
+  },
+  "nodes": [
+    {
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "kind": "RULE",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "structuralNodeId": "structural-node:99cfe0463b0b851f644273fb",
+      "structuralNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "family": "INDEBTEDNESS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "posture": "PERMISSION",
+      "termName": null,
+      "sufficiency": "PARTIAL",
+      "sourceContentVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+      "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+      "identityStrength": "STRONG",
+      "verification": {
+        "status": "MATERIAL_DISCREPANCY",
+        "findingIds": [
+          "6b472ff50cc3f60505d7234e514582a9e11555e864532bd4ad45e77189d5ae82",
+          "a202d614ba2c0233a695dd34ba2346470d0bffaf777e15ce736b580cc5cd11f8",
+          "c974fd9c4af40813fc98024f3afa4e38b5bf5da5c4e9fe7db2e8270dd9e3ba7d"
+        ],
+        "materialFindings": 1
+      },
+      "certification": {
+        "status": "REVIEW_REQUIRED",
+        "artifactHash": "ee10fe0c1a428d8dee2b19c82906f89025f0bcac479ddba8b6eae638d3c83563",
+        "semanticSourceContractVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+        "blockers": [
+          "COMPILATION_NOT_COMPLETED",
+          "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+          "OPERATIVE_STATE_UNACCEPTABLE",
+          "UNIT_SUFFICIENCY_INCOMPLETE",
+          "VERIFICATION_NOT_CLEAN"
+        ]
+      },
+      "operative": null,
+      "unit": {
+        "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceSectionRef": "7.2(c)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r-c].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "referencesRuleTargets": [
+              {
+                "exactSourceTargetRef": "Section 7.1(a)",
+                "normalizedTargetRef": "7.1(a)",
+                "resolvedStructuralTarget": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeId": "structural-node:726297b37ff47b14aabb7b12",
+                  "sectionRef": "7.1(a)"
+                },
+                "owningCandidateRefs": [
+                  "discovery-candidate:8fe38049fe62ea9e9e741511"
+                ],
+                "boundSemanticTargetIds": [],
+                "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+              },
+              {
+                "exactSourceTargetRef": "Section 7.1(b)",
+                "normalizedTargetRef": "7.1(b)",
+                "resolvedStructuralTarget": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeId": "structural-node:c36729e59303f7ace761d8a1",
+                  "sectionRef": "7.1(b)"
+                },
+                "owningCandidateRefs": [
+                  "discovery-candidate:cf15af8f5fb1f77bd861a2ac"
+                ],
+                "boundSemanticTargetIds": [],
+                "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+              },
+              {
+                "exactSourceTargetRef": "Section 7.1(c)",
+                "normalizedTargetRef": "7.1(c)",
+                "resolvedStructuralTarget": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeId": "structural-node:b442e3c45ba1c76217d77ee1",
+                  "sectionRef": "7.1(c)"
+                },
+                "owningCandidateRefs": [
+                  "discovery-candidate:5f83b15ed6cd0ea8b06289a0"
+                ],
+                "boundSemanticTargetIds": [],
+                "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+              },
+              {
+                "exactSourceTargetRef": "Section 7.1(d)",
+                "normalizedTargetRef": "7.1(d)",
+                "resolvedStructuralTarget": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeId": "structural-node:b24e719c968f7098f4b6909c",
+                  "sectionRef": "7.1(d)"
+                },
+                "owningCandidateRefs": [
+                  "discovery-candidate:1b08da2e952127a1caebe77d"
+                ],
+                "boundSemanticTargetIds": [],
+                "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+              }
+            ],
+            "targetCombination": "ALL_SATISFIED",
+            "evaluationBasis": {
+              "proForma": true,
+              "transactionEffect": "after giving effect to the incurrence of such Indebtedness",
+              "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+              "deemedEffectiveAt": "first day of each relevant period for testing such compliance",
+              "testingPeriod": null,
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.2(c)",
+                "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+              }
+            },
+            "description": "Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance.",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(c)",
+              "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+            },
+            "inventoryItemIds": [
+              "ec8b311518c4ef230e54f0b3",
+              "55c1c59cc23002bacf0f41f8",
+              "197d6a75e518b433abd00585",
+              "a898fe5b6cdf0d0ca5334548"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "sourceDependencies": [
+          {
+            "exactSourceTargetRef": "Section 7.3(g)",
+            "normalizedTargetRef": "7.3(g)",
+            "resolvedStructuralTarget": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+              "sectionRef": "7.3(g)"
+            },
+            "owningCandidateRefs": [
+              "discovery-candidate:082c80836268c7277cc39c18"
+            ],
+            "boundSemanticTargetIds": [],
+            "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+            "relationshipType": "REQUIRES",
+            "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are owned by its own certified unit",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(c)",
+              "excerpt": null
+            }
+          },
+          {
+            "exactSourceTargetRef": "Section 7.1",
+            "normalizedTargetRef": "7.1",
+            "resolvedStructuralTarget": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+              "sectionRef": "7.1"
+            },
+            "owningCandidateRefs": [
+              "discovery-candidate:a26970121ceb558846ff8d1c",
+              "discovery-candidate:e37352369564a1e784e0560b"
+            ],
+            "boundSemanticTargetIds": [],
+            "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+            "relationshipType": "REQUIRES",
+            "description": "requires that the terms of Section 7.1 are satisfied; the semantics of Section 7.1 are owned by its own certified unit",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(c)",
+              "excerpt": null
+            }
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Restricted Subsidiary\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed",
+          "TARGET_ECONOMICS_IN_DEPENDENCY_PROSE: dependsOn[0] on \"Section 7.3(g)\" restated 1 figure(s) that the candidate's operative source never states; they belong to the target's own certified unit, were excluded from this unit and are recorded in the dependency-prose diagnostics",
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG: wire entity tag(s) \"Restricted Subsidiary\" (entityScope) are not EntityClassTag values; the affected scope field is reset to unspecified and the tag is preserved verbatim in entityScopeAudit - its meaning is not guessed"
+        ],
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2(c)",
+          "excerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v5",
+        "sourceContentVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+        "entityScopeAudit": {
+          "guardVersion": "entity-scope-consistency-guard.v2",
+          "status": "UNRECOGNIZED_TAG",
+          "safeToRely": false,
+          "reasonCodes": [
+            "ENTITY_SCOPE_UNRECOGNIZED_TAG"
+          ],
+          "rawEmitted": {
+            "entityScope": [
+              "Parent Borrower",
+              "Restricted Subsidiary"
+            ],
+            "entityScopeExcluded": [],
+            "source": "RULE_FIELD"
+          },
+          "tagNormalization": [
+            {
+              "field": "entityScope",
+              "raw": "Parent Borrower",
+              "outcome": "RECOGNIZED_ENTITY_TAG",
+              "normalized": "BORROWER",
+              "viaAlias": true
+            },
+            {
+              "field": "entityScope",
+              "raw": "Restricted Subsidiary",
+              "outcome": "UNRECOGNIZED_ENTITY_TAG",
+              "normalized": null,
+              "viaAlias": false
+            }
+          ],
+          "before": {
+            "entityScope": [
+              "BORROWER"
+            ],
+            "entityScopeExcluded": [],
+            "sufficiency": "COMPLETE"
+          },
+          "witness": {
+            "ownExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+            "citedUnitLeadIn": null,
+            "parentScopeLeadIn": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:",
+            "decidedBy": "NONE",
+            "signals": []
+          }
+        },
+        "inventoryItemIds": [
+          "ac31a719a47d4995cf16b375"
+        ]
+      }
+    }
+  ],
+  "edges": [],
+  "candidates": [
+    {
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "structuralNodeIds": [
+        "structural-node:99cfe0463b0b851f644273fb"
+      ],
+      "families": [
+        "INDEBTEDNESS",
+        "LIENS",
+        "FINANCIAL_COVENANTS"
+      ],
+      "role": "RATIO_BASED_PERMISSION",
+      "operativeSourceSha256": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+      "operativeSourceChars": 529,
+      "sourceContentVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+      "outcome": "MAPPED_WITH_REVIEW",
+      "compilationStatus": "REVIEW_REQUIRED",
+      "compilationFailureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "verificationStatus": "MATERIAL_DISCREPANCY",
+      "certificationStatus": "REVIEW_REQUIRED",
+      "certificationBlockers": [
+        "COMPILATION_NOT_COMPLETED",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "OPERATIVE_STATE_UNACCEPTABLE",
+        "UNIT_SUFFICIENCY_INCOMPLETE",
+        "VERIFICATION_NOT_CLEAN"
+      ],
+      "semanticSourceContractVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+      "nodeIds": [
+        "ir-rule:29309c463e06b77b4b243eda"
+      ],
+      "failure": null,
+      "telemetry": {
+        "candidateAttempt": 1,
+        "semanticConversations": 1,
+        "refinementConversations": 1,
+        "transportAttempts": 2,
+        "shardAttempts": 0,
+        "inventoryCalls": 2,
+        "verifierCalls": 1,
+        "providerCalls": 4,
+        "inputTokens": 29979,
+        "outputTokens": 22782,
+        "costUsd": 0.010315181999999999,
+        "pricingStatus": "PRICED",
+        "wallClockMs": 228253,
+        "deadlineMs": 480000,
+        "timedOut": false
+      }
+    }
+  ],
+  "unresolved": [
+    {
+      "unresolvedId": "78e3f63aaca2de7c3fbdc66e",
+      "kind": "CANDIDATE_COMPILE_REVIEW_REQUIRED",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": null,
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "compilation REVIEW_REQUIRED: OPERATIVE_STATE_UNRESOLVED"
+    },
+    {
+      "unresolvedId": "a8a833b20fb9bdc79268ceb2",
+      "kind": "CANDIDATE_VERIFICATION_NOT_PASSED",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": null,
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "verification MATERIAL_DISCREPANCY: 1 material finding(s)"
+    },
+    {
+      "unresolvedId": "9ea288662e62b0df77b129bd",
+      "kind": "UNIT_SUFFICIENCY_NOT_SUFFICIENT",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "rule sufficiency PARTIAL: ENTITY_SCOPE_UNRECOGNIZED_TAG: entityScope tag \"Restricted Subsidiary\" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed; TARGET_ECONOMICS_IN_DEPENDENCY_PROSE: dependsOn[0] on \"Section 7.3(g)\" restated 1 figure(s) that the candidate's operative source never states; they belong to the target's own certified unit, were excluded from this unit and are recorded in the dependency-prose diagnostics; ENTITY_SCOPE_UNRECOGNIZED_TAG: wire entity tag(s) \"Restricted Subsidiary\" (entityScope) are not EntityClassTag values; the affected scope field is reset to unspecified and the tag is preserved verbatim in entityScopeAudit - its meaning is not guessed"
+    },
+    {
+      "unresolvedId": "339e86921250ca94ce1b9838",
+      "kind": "UNRESOLVED_SOURCE_DEPENDENCY",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "conditions[0].referencesRuleTargets[0] CONDITION_TARGET \"Section 7.1(a)\" [TARGET_CANDIDATE_NOT_IN_TARGET_SET]: owning candidate(s) discovery-candidate:8fe38049fe62ea9e9e741511 are known to the sealed population but not in this package's target set"
+    },
+    {
+      "unresolvedId": "49fb0dd0d79baae1b889c735",
+      "kind": "UNRESOLVED_SOURCE_DEPENDENCY",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "conditions[0].referencesRuleTargets[3] CONDITION_TARGET \"Section 7.1(d)\" [TARGET_CANDIDATE_NOT_IN_TARGET_SET]: owning candidate(s) discovery-candidate:1b08da2e952127a1caebe77d are known to the sealed population but not in this package's target set"
+    },
+    {
+      "unresolvedId": "966309b79b8be60cd46302db",
+      "kind": "UNRESOLVED_SOURCE_DEPENDENCY",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "sourceDependencies[1] REQUIRES \"Section 7.1\" [TARGET_CANDIDATE_NOT_IN_TARGET_SET]: owning candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b are known to the sealed population but not in this package's target set"
+    },
+    {
+      "unresolvedId": "aaaf7371864469b30fb12989",
+      "kind": "UNRESOLVED_SOURCE_DEPENDENCY",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "conditions[0].referencesRuleTargets[2] CONDITION_TARGET \"Section 7.1(c)\" [TARGET_CANDIDATE_NOT_IN_TARGET_SET]: owning candidate(s) discovery-candidate:5f83b15ed6cd0ea8b06289a0 are known to the sealed population but not in this package's target set"
+    },
+    {
+      "unresolvedId": "b29473a5cf9fe0d1c3468b6b",
+      "kind": "UNRESOLVED_SOURCE_DEPENDENCY",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "conditions[0].referencesRuleTargets[1] CONDITION_TARGET \"Section 7.1(b)\" [TARGET_CANDIDATE_NOT_IN_TARGET_SET]: owning candidate(s) discovery-candidate:cf15af8f5fb1f77bd861a2ac are known to the sealed population but not in this package's target set"
+    },
+    {
+      "unresolvedId": "d749a018b105106c104d1b0f",
+      "kind": "UNRESOLVED_SOURCE_DEPENDENCY",
+      "severity": "REVIEW",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "nodeId": "ir-rule:29309c463e06b77b4b243eda",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.2(c)",
+      "sourceOrder": {
+        "documentOrdinal": 0,
+        "charStart": 48103,
+        "structuralDepth": 2,
+        "localOrdinal": 2
+      },
+      "detail": "sourceDependencies[0] REQUIRES \"Section 7.3(g)\" [TARGET_CANDIDATE_NOT_IN_TARGET_SET]: owning candidate(s) discovery-candidate:082c80836268c7277cc39c18 are known to the sealed population but not in this package's target set"
+    }
+  ],
+  "packageDependencies": {
+    "version": "p3-package-dependency-resolution.v1",
+    "bindings": [
+      {
+        "bindingId": "a116a885630c182132ff3992",
+        "kind": "CONDITION_TARGET",
+        "fromNodeId": "ir-rule:29309c463e06b77b4b243eda",
+        "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "fromCertificationStatus": "REVIEW_REQUIRED",
+        "path": "conditions[0].referencesRuleTargets[0]",
+        "relationshipType": null,
+        "exactSourceTargetRef": "Section 7.1(a)",
+        "normalizedTargetRef": "7.1(a)",
+        "resolvedStructuralTarget": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "structuralNodeId": "structural-node:726297b37ff47b14aabb7b12",
+          "sectionRef": "7.1(a)"
+        },
+        "owningCandidateRefs": [
+          "discovery-candidate:8fe38049fe62ea9e9e741511"
+        ],
+        "boundSemanticTargetIds": [],
+        "targets": [],
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "executable": false,
+        "detail": "owning candidate(s) discovery-candidate:8fe38049fe62ea9e9e741511 are known to the sealed population but not in this package's target set"
+      },
+      {
+        "bindingId": "c1848ef17fdfb1c3da1c8ee8",
+        "kind": "CONDITION_TARGET",
+        "fromNodeId": "ir-rule:29309c463e06b77b4b243eda",
+        "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "fromCertificationStatus": "REVIEW_REQUIRED",
+        "path": "conditions[0].referencesRuleTargets[1]",
+        "relationshipType": null,
+        "exactSourceTargetRef": "Section 7.1(b)",
+        "normalizedTargetRef": "7.1(b)",
+        "resolvedStructuralTarget": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "structuralNodeId": "structural-node:c36729e59303f7ace761d8a1",
+          "sectionRef": "7.1(b)"
+        },
+        "owningCandidateRefs": [
+          "discovery-candidate:cf15af8f5fb1f77bd861a2ac"
+        ],
+        "boundSemanticTargetIds": [],
+        "targets": [],
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "executable": false,
+        "detail": "owning candidate(s) discovery-candidate:cf15af8f5fb1f77bd861a2ac are known to the sealed population but not in this package's target set"
+      },
+      {
+        "bindingId": "b095bcd1641caab68fc50dc8",
+        "kind": "CONDITION_TARGET",
+        "fromNodeId": "ir-rule:29309c463e06b77b4b243eda",
+        "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "fromCertificationStatus": "REVIEW_REQUIRED",
+        "path": "conditions[0].referencesRuleTargets[2]",
+        "relationshipType": null,
+        "exactSourceTargetRef": "Section 7.1(c)",
+        "normalizedTargetRef": "7.1(c)",
+        "resolvedStructuralTarget": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "structuralNodeId": "structural-node:b442e3c45ba1c76217d77ee1",
+          "sectionRef": "7.1(c)"
+        },
+        "owningCandidateRefs": [
+          "discovery-candidate:5f83b15ed6cd0ea8b06289a0"
+        ],
+        "boundSemanticTargetIds": [],
+        "targets": [],
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "executable": false,
+        "detail": "owning candidate(s) discovery-candidate:5f83b15ed6cd0ea8b06289a0 are known to the sealed population but not in this package's target set"
+      },
+      {
+        "bindingId": "a3bc525ac38e6831be4efd4b",
+        "kind": "CONDITION_TARGET",
+        "fromNodeId": "ir-rule:29309c463e06b77b4b243eda",
+        "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "fromCertificationStatus": "REVIEW_REQUIRED",
+        "path": "conditions[0].referencesRuleTargets[3]",
+        "relationshipType": null,
+        "exactSourceTargetRef": "Section 7.1(d)",
+        "normalizedTargetRef": "7.1(d)",
+        "resolvedStructuralTarget": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "structuralNodeId": "structural-node:b24e719c968f7098f4b6909c",
+          "sectionRef": "7.1(d)"
+        },
+        "owningCandidateRefs": [
+          "discovery-candidate:1b08da2e952127a1caebe77d"
+        ],
+        "boundSemanticTargetIds": [],
+        "targets": [],
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "executable": false,
+        "detail": "owning candidate(s) discovery-candidate:1b08da2e952127a1caebe77d are known to the sealed population but not in this package's target set"
+      },
+      {
+        "bindingId": "9e5ca127545514a18a58c15c",
+        "kind": "SOURCE_DEPENDENCY",
+        "fromNodeId": "ir-rule:29309c463e06b77b4b243eda",
+        "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "fromCertificationStatus": "REVIEW_REQUIRED",
+        "path": "sourceDependencies[0]",
+        "relationshipType": "REQUIRES",
+        "exactSourceTargetRef": "Section 7.3(g)",
+        "normalizedTargetRef": "7.3(g)",
+        "resolvedStructuralTarget": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+          "sectionRef": "7.3(g)"
+        },
+        "owningCandidateRefs": [
+          "discovery-candidate:082c80836268c7277cc39c18"
+        ],
+        "boundSemanticTargetIds": [],
+        "targets": [],
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "executable": false,
+        "detail": "owning candidate(s) discovery-candidate:082c80836268c7277cc39c18 are known to the sealed population but not in this package's target set"
+      },
+      {
+        "bindingId": "147f97e848a42bf85f8e901c",
+        "kind": "SOURCE_DEPENDENCY",
+        "fromNodeId": "ir-rule:29309c463e06b77b4b243eda",
+        "fromCandidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "fromCertificationStatus": "REVIEW_REQUIRED",
+        "path": "sourceDependencies[1]",
+        "relationshipType": "REQUIRES",
+        "exactSourceTargetRef": "Section 7.1",
+        "normalizedTargetRef": "7.1",
+        "resolvedStructuralTarget": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+          "sectionRef": "7.1"
+        },
+        "owningCandidateRefs": [
+          "discovery-candidate:a26970121ceb558846ff8d1c",
+          "discovery-candidate:e37352369564a1e784e0560b"
+        ],
+        "boundSemanticTargetIds": [],
+        "targets": [],
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "executable": false,
+        "detail": "owning candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b are known to the sealed population but not in this package's target set"
+      }
+    ],
+    "graph": {
+      "nodeIds": [],
+      "edges": []
+    },
+    "counts": {
+      "total": 6,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 6,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0
+    }
+  },
+  "completeness": {
+    "candidatesDiscovered": 1,
+    "candidatesEligible": 1,
+    "candidatesAttempted": 1,
+    "candidatesMapped": 0,
+    "candidatesMappedWithReview": 1,
+    "candidatesFailed": 0,
+    "candidatesUnserved": 0,
+    "candidatesByOutcome": {
+      "MAPPED_WITH_REVIEW": 1
+    },
+    "nodesByKind": {
+      "RULE": 1,
+      "DEFINITION": 0,
+      "SHARED_CAPACITY": 0
+    },
+    "edgesByType": {
+      "RULE_DEPENDS_ON_RULE": 0,
+      "RULE_USES_DEFINITION": 0,
+      "DEFINITION_USES_DEFINITION": 0,
+      "RULE_USES_SHARED_CAPACITY": 0,
+      "RULE_MODIFIED_BY_EXCEPTION": 0,
+      "RULE_SUBJECT_TO_CONDITION": 0,
+      "RULE_SUBJECT_TO_PROVISO": 0,
+      "RULE_SUBJECT_TO_GENERAL_PROHIBITION": 0,
+      "CROSS_DOCUMENT_DEPENDENCY": 0,
+      "AMENDMENT_SUPERSEDES": 0
+    },
+    "unresolvedByKind": {
+      "CANDIDATE_COMPILE_REVIEW_REQUIRED": 1,
+      "CANDIDATE_VERIFICATION_NOT_PASSED": 1,
+      "UNIT_SUFFICIENCY_NOT_SUFFICIENT": 1,
+      "UNRESOLVED_SOURCE_DEPENDENCY": 6
+    },
+    "unresolvedBlocking": 0,
+    "unresolvedReview": 9,
+    "nodesVerifiedNoMaterialGap": 0,
+    "nodesUnderReview": 1,
+    "nodesStrongIdentity": 1,
+    "mappedFraction": 0,
+    "complete": false,
+    "mapComplete": false,
+    "certificationComplete": false,
+    "candidatesCertified": 0,
+    "candidatesReviewRequired": 1,
+    "candidatesNotCertified": 0,
+    "semanticUnits": 1,
+    "semanticUnitsCertified": 0,
+    "edgesByAuthority": {
+      "CERTIFIED_SEMANTIC": 0,
+      "DETERMINISTIC_STRUCTURAL": 0,
+      "CONTEXTUAL_INFERENCE": 0,
+      "REVIEW_ONLY": 0
+    }
+  },
+  "mapHash": "961e188cfeb1d2a258aa777efc15cbb82a2d491183e9dad0cf4fcc72530aaa77"
+}

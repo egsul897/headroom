@@ -118,8 +118,11 @@ export async function runCandidateLoop(deps: LoopDeps): Promise<LoopState> {
     const usage = shardUsage || ce.passAUsage ? { inputTokens: (shardUsage?.inputTokens ?? 0) + (ce.passAUsage?.inputTokens ?? 0), outputTokens: (shardUsage?.outputTokens ?? 0) + (ce.passAUsage?.outputTokens ?? 0) } : null;
     const signal = ce.signal ?? detectCreditExhaustionInError(ce.thrown) ?? detectCreditExhaustionInResult(ce.result);
     const providerFailed = ce.threw || (ce.rec.failureReasons ?? []).includes("PROVIDER_FAILURE") || (ce.rec.failureReasons ?? []).includes("TRANSPORT_OR_INTERNAL_ERROR");
-    // zero tokens after a provider failure (thrown OR reported by the compiler) is a refusal: nothing served, nothing billed
-    const compileCost = accountForRequest({ model, elapsedWallClockMs: ce.rec.wallClockMs ?? 0, timedOut: ce.timedOut, providerUsage: usage, streamedOutputTokensObserved: ce.rec.outputTokens, reservationUsd: compileReservation, providerRefused: !ce.timedOut && !usage && providerFailed });
+    // A timeout's provider billing is UNKNOWN even when some usage was observed before the cut-off (Pass A
+    // calls that completed, a partial stream): that usage is a known FLOOR, never the bill. The full
+    // reservation is retained. Zero tokens after a provider failure (thrown OR reported by the compiler) is a
+    // refusal: nothing served, nothing billed.
+    const compileCost = accountForRequest({ model, elapsedWallClockMs: ce.rec.wallClockMs ?? 0, timedOut: ce.timedOut, providerUsage: ce.timedOut ? null : usage, streamedOutputTokensObserved: ce.timedOut ? (usage?.outputTokens ?? ce.rec.outputTokens) : ce.rec.outputTokens, reservationUsd: compileReservation, providerRefused: !ce.timedOut && !usage && providerFailed });
     ledger.settle(`${candidate.discoveryId}:compile`, compileCost);
     state.costs.push({ ...compileCost, discoveryId: candidate.discoveryId, stage: "compile" });
     const compileOutcome = classifyOutcome({ ...ce.rec, inputTokens: usage?.inputTokens ?? ce.rec.inputTokens, outputTokens: usage?.outputTokens ?? ce.rec.outputTokens } as CandidateRecord, ce.timedOut);
@@ -136,7 +139,7 @@ export async function runCandidateLoop(deps: LoopDeps): Promise<LoopState> {
       if (!vd.allowed) verifyBudgetStop = `${vd.reason}: verify reservation $${verifyReservation} would commit $${vd.wouldCommitUsd} against ceiling $${vd.ceilingUsd} / STOP_AT $${vd.stopAtUsd}; ${candidate.ref} compiled but NOT verified`;
       else {
         ve = await deps.verify(candidate, ce);
-        verifyCost = accountForRequest({ model, elapsedWallClockMs: ve.wallClockMs, timedOut: ve.timedOut, providerUsage: ve.usage, streamedOutputTokensObserved: ve.usage?.outputTokens ?? null, reservationUsd: verifyReservation, providerRefused: !ve.timedOut && !ve.usage && ve.outcome !== "COMPLETED" });
+        verifyCost = accountForRequest({ model, elapsedWallClockMs: ve.wallClockMs, timedOut: ve.timedOut, providerUsage: ve.timedOut ? null : ve.usage, streamedOutputTokensObserved: ve.usage?.outputTokens ?? null, reservationUsd: verifyReservation, providerRefused: !ve.timedOut && !ve.usage && ve.outcome !== "COMPLETED" });
         ledger.settle(`${candidate.discoveryId}:verify`, verifyCost);
         state.costs.push({ ...verifyCost, discoveryId: candidate.discoveryId, stage: "verify" });
       }

@@ -1,0 +1,267 @@
+{
+  "packageCertification": {
+    "version": "phase3-package-certification.v2",
+    "status": "PARTIAL",
+    "blockers": [
+      {
+        "code": "CANDIDATE_REVIEW_REQUIRED",
+        "severity": "REVIEW",
+        "detail": "candidate 7.2(c): COMPILATION_NOT_COMPLETED, OPEN_MATERIAL_OR_UNCERTAIN_FINDING, OPERATIVE_STATE_UNACCEPTABLE, VERIFICATION_NOT_CLEAN",
+        "refs": [
+          "discovery-candidate:7a3f36589dacd05c41331a80"
+        ]
+      },
+      {
+        "code": "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+        "severity": "PARTIAL",
+        "detail": "ir-rule:316fa105093456e00580e9bb conditions[0].referencesRuleTargets[0] CONDITION_TARGET \"Section 7.1\": owning candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b are known to the sealed population but not in this package's target set",
+        "refs": [
+          "7fbfb690a89cff2fadf16512"
+        ]
+      },
+      {
+        "code": "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+        "severity": "PARTIAL",
+        "detail": "ir-rule:316fa105093456e00580e9bb sourceDependencies[0] REQUIRES \"Section 7.3(g)\": owning candidate(s) discovery-candidate:082c80836268c7277cc39c18 are known to the sealed population but not in this package's target set",
+        "refs": [
+          "b0ab63953d75a5ded7163dad"
+        ]
+      },
+      {
+        "code": "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+        "severity": "PARTIAL",
+        "detail": "ir-rule:316fa105093456e00580e9bb sourceDependencies[1] REQUIRES \"Section 7.1\": owning candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b are known to the sealed population but not in this package's target set",
+        "refs": [
+          "adde6041cc3ec50f5f54b5b7"
+        ]
+      },
+      {
+        "code": "DISCOVERY_POPULATION_UNSEALED",
+        "severity": "PARTIAL",
+        "detail": "the candidate population was not sealed by discovery; its completeness cannot be asserted",
+        "refs": []
+      },
+      {
+        "code": "PARTIAL_TARGET_SET",
+        "severity": "PARTIAL",
+        "detail": "the population is a declared partial target set; a package certification is never claimed over a subset",
+        "refs": []
+      },
+      {
+        "code": "REVIEW_UNRESOLVED_ITEM",
+        "severity": "REVIEW",
+        "detail": "5 unresolved item(s) require review",
+        "refs": [
+          "044ae87849511e5b6c8391a8",
+          "1cf4f80bfd8b1cced7ecad01",
+          "78e3f63aaca2de7c3fbdc66e",
+          "a8a833b20fb9bdc79268ceb2",
+          "b6f27dfaaa72ff0fea388b4b"
+        ]
+      }
+    ],
+    "warnings": [],
+    "discoveryPopulation": {
+      "scope": "PARTIAL_TARGET_SET",
+      "sealedDiscoveryIdentity": null,
+      "candidatePopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+      "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+      "candidatesDiscovered": 1
+    },
+    "representedPopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+    "candidates": {
+      "total": 1,
+      "eligible": 1,
+      "represented": 1,
+      "certified": 0,
+      "reviewRequired": 1,
+      "notCertified": 0
+    },
+    "edges": {
+      "executable": 0,
+      "certifiedSemantic": 0,
+      "reviewOnly": 0,
+      "deterministicStructural": 0,
+      "contextualInference": 0
+    },
+    "bindings": {
+      "total": 3,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 3,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0
+    }
+  },
+  "manifest": {
+    "schema": "p3-package-certification-manifest.v1",
+    "sourcePackage": {
+      "companyId": "conmed-pilot",
+      "packageKey": "conmed-2025-credit-facility",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "asOfDate": "2026-10-05",
+      "documents": [
+        {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "role": "BASE",
+          "textSha256": "d4659601000fae07d5050167ecffb0d9da91708a57111c59dff0db40fb86540c"
+        },
+        {
+          "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+          "role": "ANCILLARY",
+          "textSha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36"
+        },
+        {
+          "documentId": "conmed-doc-c-second-amendment-2022",
+          "role": "AMENDMENT",
+          "textSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82"
+        },
+        {
+          "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+          "role": "AMENDMENT",
+          "textSha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401"
+        }
+      ]
+    },
+    "discoveryPopulation": {
+      "scope": "PARTIAL_TARGET_SET",
+      "sealedDiscoveryIdentity": null,
+      "candidatePopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+      "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+      "candidatesDiscovered": 1
+    },
+    "certifiedConfigIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+    "mapIdentity": {
+      "mapHash": "9429fc7326122f4eb9f0c795988d14872e169b651e177654097a860282571e16",
+      "mapAlgorithmVersion": "covenant-map-assembly.v3",
+      "compilerAlgorithmVersion": "semantic-accountability-compiler.v5",
+      "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v2",
+      "irSchemaVersion": "headroom-covenant-ir.v1"
+    },
+    "candidateCertifications": [
+      {
+        "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "sectionRef": "7.2(c)",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "outcome": "MAPPED_WITH_REVIEW",
+        "status": "REVIEW_REQUIRED",
+        "blockers": [
+          "COMPILATION_NOT_COMPLETED",
+          "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+          "OPERATIVE_STATE_UNACCEPTABLE",
+          "VERIFICATION_NOT_CLEAN"
+        ],
+        "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+        "semanticSourceContractVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+        "artifactPackageHash": "75d27156f6577f7205b45104dc2acb881173d7d31478436dd351e95e07a165f5",
+        "snapshotHash": "30e73e658a64593a9b0498c0ff3d7b7288548387cdbe589b780be66571473f7c",
+        "unitIds": [
+          "ir-rule:316fa105093456e00580e9bb"
+        ],
+        "unitArtifactHashes": {
+          "ir-rule:316fa105093456e00580e9bb": "72aef5064b8a97a8baac6b003f39188e84106f61e806187b4ba51cfded19c9ea"
+        }
+      }
+    ],
+    "verifiedArtifactPackageHashes": [
+      "75d27156f6577f7205b45104dc2acb881173d7d31478436dd351e95e07a165f5"
+    ],
+    "packageCertification": {
+      "version": "phase3-package-certification.v2",
+      "status": "PARTIAL",
+      "blockers": [
+        {
+          "code": "CANDIDATE_REVIEW_REQUIRED",
+          "severity": "REVIEW",
+          "detail": "candidate 7.2(c): COMPILATION_NOT_COMPLETED, OPEN_MATERIAL_OR_UNCERTAIN_FINDING, OPERATIVE_STATE_UNACCEPTABLE, VERIFICATION_NOT_CLEAN",
+          "refs": [
+            "discovery-candidate:7a3f36589dacd05c41331a80"
+          ]
+        },
+        {
+          "code": "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+          "severity": "PARTIAL",
+          "detail": "ir-rule:316fa105093456e00580e9bb conditions[0].referencesRuleTargets[0] CONDITION_TARGET \"Section 7.1\": owning candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b are known to the sealed population but not in this package's target set",
+          "refs": [
+            "7fbfb690a89cff2fadf16512"
+          ]
+        },
+        {
+          "code": "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+          "severity": "PARTIAL",
+          "detail": "ir-rule:316fa105093456e00580e9bb sourceDependencies[0] REQUIRES \"Section 7.3(g)\": owning candidate(s) discovery-candidate:082c80836268c7277cc39c18 are known to the sealed population but not in this package's target set",
+          "refs": [
+            "b0ab63953d75a5ded7163dad"
+          ]
+        },
+        {
+          "code": "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+          "severity": "PARTIAL",
+          "detail": "ir-rule:316fa105093456e00580e9bb sourceDependencies[1] REQUIRES \"Section 7.1\": owning candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b are known to the sealed population but not in this package's target set",
+          "refs": [
+            "adde6041cc3ec50f5f54b5b7"
+          ]
+        },
+        {
+          "code": "DISCOVERY_POPULATION_UNSEALED",
+          "severity": "PARTIAL",
+          "detail": "the candidate population was not sealed by discovery; its completeness cannot be asserted",
+          "refs": []
+        },
+        {
+          "code": "PARTIAL_TARGET_SET",
+          "severity": "PARTIAL",
+          "detail": "the population is a declared partial target set; a package certification is never claimed over a subset",
+          "refs": []
+        },
+        {
+          "code": "REVIEW_UNRESOLVED_ITEM",
+          "severity": "REVIEW",
+          "detail": "5 unresolved item(s) require review",
+          "refs": [
+            "044ae87849511e5b6c8391a8",
+            "1cf4f80bfd8b1cced7ecad01",
+            "78e3f63aaca2de7c3fbdc66e",
+            "a8a833b20fb9bdc79268ceb2",
+            "b6f27dfaaa72ff0fea388b4b"
+          ]
+        }
+      ],
+      "warnings": [],
+      "discoveryPopulation": {
+        "scope": "PARTIAL_TARGET_SET",
+        "sealedDiscoveryIdentity": null,
+        "candidatePopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+        "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+        "candidatesDiscovered": 1
+      },
+      "representedPopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+      "candidates": {
+        "total": 1,
+        "eligible": 1,
+        "represented": 1,
+        "certified": 0,
+        "reviewRequired": 1,
+        "notCertified": 0
+      },
+      "edges": {
+        "executable": 0,
+        "certifiedSemantic": 0,
+        "reviewOnly": 0,
+        "deterministicStructural": 0,
+        "contextualInference": 0
+      },
+      "bindings": {
+        "total": 3,
+        "bound": 0,
+        "executable": 0,
+        "notInTargetSet": 3,
+        "notCompiled": 0,
+        "unitNotFound": 0,
+        "unknown": 0
+      }
+    },
+    "manifestHash": "a1443985ede8b2a45ad9e54626c8a8bb23a07c224a8917d05f193677c90e6986"
+  }
+}

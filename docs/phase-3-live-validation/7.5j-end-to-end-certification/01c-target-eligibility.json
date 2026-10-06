@@ -1,0 +1,93 @@
+{
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::SECTION::1.1",
+      "kind": "SECTION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    }
+  ],
+  "operativeTextSectionReferences": [],
+  "offlineBundle": {
+    "sufficiencyState": "SUFFICIENT",
+    "stopReasons": [],
+    "items": 9,
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "nonCurrentItems": [],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "7.5(j)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "7.5",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "7.5(f)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "7.5(n)",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Consolidated Total Assets",
+        1
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Parent Borrower",
+        2
+      ],
+      [
+        "DEFINITION",
+        "Disposition",
+        1
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Division",
+        2
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Property",
+        2
+      ]
+    ]
+  },
+  "sourceContentVersion": "scv1:cf9dd07239898f429fa442117960e9b942cc2a4278cab1c2b343cb179e548f1d",
+  "identityStrength": "STRONG",
+  "eligible": true
+}

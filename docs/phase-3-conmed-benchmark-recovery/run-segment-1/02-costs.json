@@ -1,0 +1,47 @@
+{
+  "snapshot": {
+    "ceilingUsd": 15,
+    "stopAtUsd": 14.9,
+    "exactSpendUsd": 0.012849,
+    "retainedUnknownTimeoutUsd": 0,
+    "outstandingReservedUsd": 0,
+    "committedUsd": 0.012849,
+    "remainingUsd": 14.987151
+  },
+  "perRequest": [
+    {
+      "model": "deepseek/deepseek-v4-flash",
+      "elapsedWallClockMs": 480009,
+      "streamedOutputTokensObserved": null,
+      "providerUsageObserved": {
+        "inputTokens": 4914,
+        "outputTokens": 42396
+      },
+      "locallyCalculatedCostUsd": 0.01166178,
+      "finalProviderBillingUnavailable": false,
+      "costAccountingStatus": "EXACT",
+      "chargedToBudgetUsd": 0.01166178,
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "stage": "compile",
+      "attempt": 1
+    }
+  ],
+  "sideCalls": [
+    {
+      "discoveryId": null,
+      "stage": "amendment_interpretation",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 871,
+      "outputTokens": 971,
+      "costUsd": 0.00036569
+    },
+    {
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "stage": "semantic_inventory",
+      "model": "deepseek/deepseek-v4-flash",
+      "inputTokens": 4914,
+      "outputTokens": 42396,
+      "costUsd": 0.01166178
+    }
+  ]
+}

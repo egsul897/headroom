@@ -1,3 +1,4 @@
+import { auditQualitativeLineage, qualitativeGroundingFindings } from "./qualitative-grounding";
 /**
  * Phase 3C - the verifier's own public API: verifyCompiledCandidate.
  * Orchestrates Layer 1 (deterministic source/IR inventory + reconciliation
@@ -20,6 +21,7 @@ import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
 import { runAdversarialSemanticReview } from "./reviewer";
+import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "./projection";
 import type { SemanticReviewResult } from "./reviewer";
 import { classifyConditionSuspicion, type ConditionSuspicionCache, type ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
@@ -28,6 +30,9 @@ import type { StageCaller } from "../llm-caller";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
 
 export interface VerifyOptions {
+  /** Certified path: the candidate abort signal and hard dispatch budget for every verifier call. */
+  signal?: AbortSignal;
+  budget?: import("../../analyzer/dispatch-budget").DispatchBudget;
   /** Injectable for testing - defaults to the real getStageCaller() env-var-driven selection inside reviewer.ts when omitted. */
   reviewCaller?: StageCaller;
   /** Injectable for testing - defaults to the real getStageCaller() env-var-driven selection inside condition-suspicion-classifier.ts when omitted. Deliberately a SEPARATE injection point from reviewCaller (they are two independent calls with two independent schemas/prompts), even though both typically resolve to the same provider/model in production. */
@@ -352,8 +357,32 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const structuralNodeId = nodeResolution?.status === "UNIQUE" ? nodeResolution.node.nodeId : null;
   const supersessionIndex = compilerInput.toolAccess.operativeState ? buildNodeSupersessionIndex([{ baseDocumentId: compilerInput.sourceDocumentId, state: compilerInput.toolAccess.operativeState }]) : EMPTY_SUPERSESSION_INDEX;
 
-  const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null, structuralNodeId, supersessionIndex);
-  const irInventory = buildIrInventory(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
+  // ir-inventory v2 / source-inventory v3: spans of the operative window owned by SEPARATE child candidates of the sealed
+  // population (anchored strictly under this candidate's anchor) are excluded from this candidate's section-reference
+  // inventory - a cross-reference drafted inside a child clause is the child's dependency (semantic-unit ownership).
+  const anchorNodeId = compilerInput.contextBundle?.originatingStructuralNodeIds?.[0] ?? structuralNodeId;
+  const anchorNode = anchorNodeId ? structuralIndex.getNodeById(anchorNodeId) : undefined;
+  const windowStart = compilerInput.operativeSourceOrigin === "OPERATIVE_STATE_CURRENT_TEXT" ? null : compilerInput.operativeCharStart ?? anchorNode?.charStart ?? null;
+  const excludedSpans: [number, number][] = [];
+  if (anchorNode && windowStart !== null) {
+    for (const c of compilerInput.candidatePopulation ?? []) {
+      if (c.discoveryId === compilerInput.candidateRef) continue;
+      const child = c.structuralNodeIds[0] ? structuralIndex.getNodeById(c.structuralNodeIds[0]) : undefined;
+      if (!child || child.documentId !== anchorNode.documentId || child.nodeId === anchorNode.nodeId) continue;
+      if (!structuralIndex.getAncestors(child.nodeId).some((a) => a.nodeId === anchorNode.nodeId)) continue;
+      excludedSpans.push([child.charStart - windowStart, child.charEnd - windowStart]);
+    }
+  }
+  const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null, structuralNodeId, supersessionIndex, { excludedSpans });
+  // Canonical-map remediation: when the compiled text IS the operative state's RESOLVED current text for this
+  // provision (candidate-span.ts OPERATIVE_STATE_CURRENT_TEXT), the base node's KNOWN_SUPERSEDED status describes the
+  // text that was NOT compiled. The compiled text is the governing text; say so, with the provision that proves it.
+  if (sourceInventory.supersessionStatus === "KNOWN_SUPERSEDED" && compilerInput.operativeSourceOrigin === "OPERATIVE_STATE_CURRENT_TEXT" && compilerInput.operativeLineage?.operativeStatus === "OPERATIVE_STATE_RESOLVED") {
+    const view = compilerInput.toolAccess.operativeState?.provisions.find((p) => p.provisionKey === compilerInput.operativeLineage!.provisionKey);
+    const same = !!view?.currentText && view.currentText.replace(/\s+/g, " ").trim() === compilerInput.operativeSourceText.replace(/\s+/g, " ").trim();
+    if (same) { sourceInventory.supersessionStatus = "CURRENT_OPERATIVE"; sourceInventory.supersessionReason = `compiled text is the operative state's RESOLVED current text for provision ${view!.provisionKey} (base node superseded by ${view!.appliedChain.map((e) => e.effectId).join(", ")})`; }
+  }
+  const irInventory = buildIrInventory(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions, compilationResult.sharedCapacities ?? []);
   // F-4: the evidence set is PRIMARY_LOCAL (the window above) + every retrieved source this verifier could
   // independently re-resolve and authenticate (retrieved-evidence.ts). Compiler retrieval records are checked
   // against it, never read as evidence.
@@ -364,7 +393,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   // plus every retrieved source this verifier independently re-resolved and authenticated. A
   // context-bundle excerpt the verifier could not authenticate is not evidence here either, and a
   // few-shot, a tool schema or the model's own prose never was.
-  const numericAssertionInventory = collectNumericAssertions(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
+  const numericAssertionInventory = collectNumericAssertions(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions, compilationResult.sharedCapacities ?? []);
   const numericAssertionEvidence: NumericAssertionEvidenceText[] = [
     { scope: "OPERATIVE", evidenceId: "PRIMARY_LOCAL", label: "the candidate's own operative source window", text: compilerInput.operativeSourceText },
     ...admissibleEvidence.authenticated.map((e) => ({
@@ -383,7 +412,9 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     })),
   ];
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
-  const deterministicFindings = buildFindingsFromReconciliation(input, reconciliation);
+  // qualitative accountability: material qualitative claims without source-backed lineage are MATERIAL findings
+  const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null, sourceTexts: [compilerInput.operativeSourceText, ...((compilationResult.sourceContext ?? compilerInput.sourceContext)?.regions.map((r) => r.text) ?? []), ...compilerInput.contextBundle.items.map((i) => i.excerptText)] });
+  const deterministicFindings = [...buildFindingsFromReconciliation(input, reconciliation), ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef })];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
   // (see docs/phase-3f1-terminal-architecture-decision/02-architecture-
@@ -411,7 +442,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   } else if (deterministicForcesReview) {
     needsSemanticReview = true;
   } else {
-    conditionSuspicion = await classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput), { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache);
+    conditionSuspicion = await classifyConditionSuspicion(buildConditionSuspicionInput(compilerInput), { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache, { signal: options.signal, budget: options.budget });
     needsSemanticReview = conditionSuspicion.status !== "NO_MATERIAL_CONDITION_SUSPECTED";
   }
 
@@ -425,9 +456,14 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
       : `deterministic reconciliation found a single, fully-reconciled, non-alternating compiled unit with no unresolved numeric/structural signal, AND the source-only condition-suspicion classifier (${conditionSuspicion?.provider ?? "(unknown)"}/${conditionSuspicion?.model ?? "(unknown)"}) explicitly reported NO_MATERIAL_CONDITION_SUSPECTED with zero evidence spans - conservative two-gate V1 routing (task §32 + this phase's Architecture Decision) skipped adversarial semantic review`;
   }
 
+  // Proof of exactly what Layer 2 is shown of the compiled units (projection.ts) - computed from the same compilation
+  // state the snapshot is taken from, recorded whether or not the review runs.
+  const verificationProjection = { version: SEMANTIC_VERIFICATION_PROJECTION_VERSION, hash: computeSemanticVerificationProjectionHash(buildSemanticVerificationProjection(compilationResult)), shownToReviewer: false };
   if (needsSemanticReview) {
     semanticReviewInvoked = true;
-    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion, admissibleEvidence);
+    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion, admissibleEvidence, { signal: options.signal, budget: options.budget });
+    verificationProjection.shownToReviewer = true;
+    if (review.projection.hash !== verificationProjection.hash) throw new Error("semantic verification projection mismatch: the reviewer was shown content whose hash differs from the compilation being verified");
     semanticReviewFailed = review.failed;
     allFindings = mergeFindings(deterministicFindings, review.findings);
     allFindings = downgradeUnconfirmedAmbiguousFindings(allFindings, reconciliation, review);
@@ -448,6 +484,8 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     // Lifted off the reconciliation rather than recomputed, so the reported grounding verdicts are
     // by construction the same ones the findings above were built from.
     numericAssertions: { inventory: numericAssertionInventory, groundings: reconciliation.items.flatMap((i) => (i.numericGrounding ? [i.numericGrounding] : [])) },
+    qualitativeLineage: qualitativeAudit,
+    verificationProjection,
     verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION,
     verifiedAt: new Date().toISOString(),
   };

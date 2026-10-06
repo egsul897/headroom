@@ -1,0 +1,462 @@
+{
+  "mission": "HEADROOM PHASE-3 - CONMED BENCHMARK RECOVERY EXECUTION (full pipeline allowance + bounded second attempt, $15 hard ceiling)",
+  "evidenceLabel": "BENCHMARK_RECOVERY",
+  "verdict": "CONMED_BENCHMARK_RECOVERY_PARTIAL",
+  "whyPartial": "All eight targets received their first attempt and 7.2(c) its bounded second; none recovered. Every served attempt was a 480 s TIMEOUT with the same shape: the Pass A semantic-inventory stage alone returned 26k-117k output tokens (26,499-116,913) at 133-244+ tok/s, consuming most or all of the wall-clock ceiling before any shard compile could run (7.2, 8,843 chars, did not even finish Pass A). 7.10's first attempt was consumed by a harness abort (accounting defect, see below). Under the P-7 reservations the $15 ceiling admitted exactly one Pass 2 retry; seven cases are NOT_RETRIED_BUDGET. Recovery is limited by execution (systematic, not stochastic), not by evidence integrity: every artifact validates, the ledger reconciles, no target was dispatched more than twice, no non-target was dispatched, no 402 occurred, and the population is byte-identical.",
+  "startingSha": "6f916064fe4eb6c6df9161001406a1ede33150b5",
+  "model": "deepseek/deepseek-v4-flash",
+  "timeoutMs": 480000,
+  "concurrency": 1,
+  "maxAttemptsPerCase": 2,
+  "autoRetries": 0,
+  "fallbackCalls": 0,
+  "premiumCalls": 0,
+  "targets": [
+    {
+      "ref": "7.1",
+      "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+      "operativeChars": 3275
+    },
+    {
+      "ref": "7.10",
+      "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+      "operativeChars": 1995
+    },
+    {
+      "ref": "7.13",
+      "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+      "operativeChars": 1212
+    },
+    {
+      "ref": "7.14",
+      "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+      "operativeChars": 1106
+    },
+    {
+      "ref": "7.16",
+      "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+      "operativeChars": 1144
+    },
+    {
+      "ref": "7.17",
+      "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+      "operativeChars": 795
+    },
+    {
+      "ref": "7.2",
+      "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+      "operativeChars": 8843
+    },
+    {
+      "ref": "7.2(c)",
+      "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "operativeChars": 529
+    }
+  ],
+  "excluded": "7.11 (complete current-pipeline evidence in the population)",
+  "healthProbes": {
+    "ok": true,
+    "model": "deepseek/deepseek-v4-flash",
+    "spendUsd": 0.00082199,
+    "probes": [
+      {
+        "tier": "A_TINY",
+        "status": 200,
+        "inputTokens": 90,
+        "outputTokens": 12,
+        "costUsd": 1.482e-05
+      },
+      {
+        "tier": "B_WORKLOAD",
+        "status": 200,
+        "inputTokens": 5431,
+        "outputTokens": 389,
+        "costUsd": 0.00080717
+      }
+    ],
+    "reservedUsd": 0.00130234
+  },
+  "budget": {
+    "hardCeilingUsd": 15.0,
+    "stopAtUsd": 14.9,
+    "accountingBeganAt": 0,
+    "populationSpendCounted": false
+  },
+  "segments": [
+    {
+      "dir": "run-segment-1",
+      "attempted": [
+        "7.1"
+      ],
+      "ended": "HARNESS_ABORT (runner stopped by the operator after row 1: the loop had settled the 7.1 timeout from its Pass A usage instead of retaining the reservation); 7.10 in flight -> attempt consumed as HARNESS_ABORTED_IN_FLIGHT, one reservation charged",
+      "reservationPolicy": "125 tok/s output bound (compile $1.3513, verify $0.0416)"
+    },
+    {
+      "dir": "run-segment-2",
+      "attempted": [
+        "7.13",
+        "7.14",
+        "7.16"
+      ],
+      "ended": "RESERVATION_SHAPE_EXCEEDED at 7.16 (Pass A output 63,943 > reserved 60,000)",
+      "reservationPolicy": "125 tok/s (compile $1.3513)"
+    },
+    {
+      "dir": "run-segment-3",
+      "attempted": [
+        "7.17",
+        "7.2",
+        "7.2(c)"
+      ],
+      "ended": "RESERVATION_SHAPE_EXCEEDED at 7.2(c) (Pass A output 116,913 > reserved 96,000); pass 1 complete",
+      "reservationPolicy": "200 tok/s (compile $1.6415 / $1.6675 for 7.2, verify $0.05096)"
+    },
+    {
+      "dir": "run-segment-4",
+      "attempted": [
+        "7.2(c) attempt 2"
+      ],
+      "ended": "BUDGET_STOP: HARD_CEILING - committed $13.608863 + $1.8994 would be $15.508 > $15 / STOP_AT $14.9; 7.17 not dispatched",
+      "reservationPolicy": "300 tok/s -> output cap = max_tokens 128,000 (compile $1.8994 / $1.9254 for 7.2, verify $0.05928)"
+    }
+  ],
+  "pass1": {
+    "attempted": 8,
+    "recovered": 0,
+    "timeout": 7,
+    "schemaFailure": 0,
+    "providerFailure": 0,
+    "otherFailure": 1,
+    "otherFailureDetail": "7.10 HARNESS_ABORTED_IN_FLIGHT (attempt consumed; billing unknown; one reservation charged)"
+  },
+  "pass2": {
+    "eligible": 8,
+    "priorityOrder": [
+      "7.2(c)",
+      "7.17",
+      "7.14",
+      "7.16",
+      "7.13",
+      "7.10",
+      "7.1",
+      "7.2"
+    ],
+    "attempted": 1,
+    "attemptedRefs": [
+      "7.2(c)"
+    ],
+    "recovered": 0,
+    "timeout": 1,
+    "schemaFailure": 0,
+    "providerFailure": 0,
+    "notRunBudget": [
+      "7.17",
+      "7.14",
+      "7.16",
+      "7.13",
+      "7.10",
+      "7.1",
+      "7.2"
+    ]
+  },
+  "totalAttempts": 9,
+  "targetsWithTwoAttempts": [
+    "7.2(c)"
+  ],
+  "finalRecovered": [],
+  "finalNotRecovered": [
+    "7.1",
+    "7.10",
+    "7.13",
+    "7.14",
+    "7.16",
+    "7.17",
+    "7.2",
+    "7.2(c)"
+  ],
+  "perCase": {
+    "7.1": [
+      {
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480009,
+        "passAUsage": {
+          "inputTokens": 4914,
+          "outputTokens": 42396
+        },
+        "shapeExceeded": null,
+        "chargedUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.3513292,
+        "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-1/evidence/attempt-1/discovery-candidate:a26970121ceb558846ff8d1c.json"
+      }
+    ],
+    "7.10": [
+      {
+        "attempt": 1,
+        "recovery": "OTHER_EXECUTION_FAILURE",
+        "compile": "OTHER_EXECUTION_FAILURE",
+        "failureReasons": [
+          "HARNESS_ABORTED_IN_FLIGHT"
+        ],
+        "wallClockMs": null,
+        "passAUsage": null,
+        "shapeExceeded": null,
+        "chargedUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.3513292,
+        "evidenceFile": null
+      }
+    ],
+    "7.13": [
+      {
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480006,
+        "passAUsage": {
+          "inputTokens": 1468,
+          "outputTokens": 43846
+        },
+        "shapeExceeded": null,
+        "chargedUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.3513292,
+        "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:6c3daaff31337b2767a15b68.json"
+      }
+    ],
+    "7.14": [
+      {
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480003,
+        "passAUsage": {
+          "inputTokens": 1887,
+          "outputTokens": 45028
+        },
+        "shapeExceeded": null,
+        "chargedUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.3513292,
+        "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:6d475ada38fa539312598179.json"
+      }
+    ],
+    "7.16": [
+      {
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480003,
+        "passAUsage": {
+          "inputTokens": 1345,
+          "outputTokens": 63943
+        },
+        "shapeExceeded": [
+          "output tokens 63943 > reserved 60000"
+        ],
+        "chargedUsd": 1.3513292,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.3513292,
+        "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:71cd58e50f8b3598cb7f1ffb.json"
+      }
+    ],
+    "7.17": [
+      {
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480006,
+        "passAUsage": {
+          "inputTokens": 1240,
+          "outputTokens": 40605
+        },
+        "shapeExceeded": null,
+        "chargedUsd": 1.6414892,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.6414892,
+        "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-3/evidence/attempt-1/discovery-candidate:d375c748c3fbadc6014d5f26.json"
+      }
+    ],
+    "7.2": [
+      {
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480004,
+        "passAUsage": null,
+        "shapeExceeded": null,
+        "chargedUsd": 1.6674892,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.6674892,
+        "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-3/evidence/attempt-1/discovery-candidate:4cd22c1476a7c5046da3cc41.json"
+      }
+    ],
+    "7.2(c)": [
+      {
+        "attempt": 1,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480004,
+        "passAUsage": {
+          "inputTokens": 9888,
+          "outputTokens": 116913
+        },
+        "shapeExceeded": [
+          "output tokens 116913 > reserved 96000"
+        ],
+        "chargedUsd": 1.6414892,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.6414892,
+        "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-3/evidence/attempt-1/discovery-candidate:7a3f36589dacd05c41331a80.json"
+      },
+      {
+        "attempt": 2,
+        "recovery": "TIMEOUT",
+        "compile": "TIMEOUT",
+        "failureReasons": [
+          "WALL_CLOCK_TIMEOUT"
+        ],
+        "wallClockMs": 480007,
+        "passAUsage": {
+          "inputTokens": 1094,
+          "outputTokens": 36761
+        },
+        "shapeExceeded": null,
+        "chargedUsd": 1.8994092,
+        "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+        "reservationUsd": 1.8994092,
+        "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-4/evidence/attempt-2/discovery-candidate:7a3f36589dacd05c41331a80.json"
+      }
+    ]
+  },
+  "canonicalEvidencePerCase": {
+    "7.1": null,
+    "7.10": null,
+    "7.13": null,
+    "7.14": null,
+    "7.16": null,
+    "7.17": null,
+    "7.2": null,
+    "7.2(c)": null
+  },
+  "twoAttemptVariance": [],
+  "varianceNote": "7.2(c) has two attempts but neither compile completed, so there is no structural output to compare; both evidence files are preserved (attempt-1 in run-segment-3, attempt-2 in run-segment-4)",
+  "verificationStatusCounts": {},
+  "materialFindingCounts": {},
+  "p1Occurrences": [],
+  "packagesComplete": 0,
+  "packagesIncomplete": 9,
+  "packagesNote": "every attempt produced a package record with no units (compile timed out) - incomplete by construction",
+  "spend": {
+    "ledger": {
+      "exactUsd": 0.00234,
+      "timeoutReservationsRetainedUsd": 13.606523,
+      "outstandingReservedUsd": 0,
+      "committedUsd": 13.608863,
+      "remainingUsd": 1.391137,
+      "ceilingUsd": 15,
+      "stopAtUsd": 14.9,
+      "preflightUsd": 0.00082199,
+      "amendmentPipelineUsd": 0.00039559,
+      "seededPrior": {
+        "exactUsd": 0.001944,
+        "retainedUnknownUsd": 11.707114,
+        "breakdown": {
+          "earlierSegmentExactUsd": 0.001944,
+          "earlierSegmentRetainedUsd": 11.707114,
+          "correctionReleasedExactUsd": 0,
+          "correctionRetainedUsd": 0,
+          "preflightProbesUsd": 0.00082199,
+          "earlierSegmentAmendmentUsd": 0.00043329
+        }
+      },
+      "note": "cumulative across segments: includes the seeded prior"
+    },
+    "exactUsd": 0.00234,
+    "retainedTimeoutReservationsUsd": 13.606523,
+    "totalCommittedUsd": 13.608863,
+    "budgetRemainingUsd": 1.391137,
+    "knownBilledFloorUsd": 0.106446,
+    "knownBilledFloorNote": "probes + four amendment calls + every Pass A call observed before a timeout, priced at catalogue rates; the true bill for the timed-out shard calls is unknown and is what the retained reservations cover",
+    "creditExhaustionStop": false,
+    "gateway402": 0
+  },
+  "executionShapeObserved": {
+    "passAOutputTokensPerAttempt": {
+      "7.1#1": 42396,
+      "7.10#1": null,
+      "7.13#1": 43846,
+      "7.14#1": 45028,
+      "7.16#1": 63943,
+      "7.17#1": 40605,
+      "7.2#1": null,
+      "7.2(c)#1": 116913,
+      "7.2(c)#2": 36761
+    },
+    "driver": "Pass A semantic-inventory output volume at the locked model's output rate (measured lower bounds 133.2 and 243.6 tok/s) exhausts the 480 s ceiling before the shard compile; zero tool calls and no shard telemetry on every timeout (P-2 confirmed and explained)",
+    "noArtificialLimitsImposed": true,
+    "compilerLimitsUnchanged": true
+  },
+  "harnessDefectsFoundAndFixed": [
+    {
+      "id": "H-3",
+      "what": "loop settled a timed-out compile as EXACT from Pass A usage observed before the cut-off, releasing the reservation",
+      "consequence": "segment 1 stopped by the operator after one row; 7.10's in-flight attempt consumed; fixed in population-loop.ts (any pre-cut-off usage is a floor, never the bill) and pinned by test; segment 1's row re-accounted on resume, never edited"
+    },
+    {
+      "id": "H-4",
+      "what": "the P-7 output-rate bound (125 tok/s, 'rounded up past every rate measured') was falsified twice by this model (>=133.2, then >=243.6 tok/s)",
+      "consequence": "the shape guard stopped segments 2 and 3 as designed; the bound was recalibrated to 200 then 300, at which the cap becomes the structural per-call max_tokens (128,000); formula, compiler limits and pipeline unchanged; both measurements recorded beside the constant"
+    }
+  ],
+  "validation": {
+    "targetCandidateIds": 8,
+    "nonTargetDispatches": 0,
+    "maxAttemptsPerCase": 2,
+    "thirdAttempts": 0,
+    "fallback": 0,
+    "premium": 0,
+    "packageHashesValid": "no packages with units to validate (all 9 incomplete by construction); manifests re-parsed",
+    "secretScan": "0 hits over all four segments and every commit",
+    "populationFilesChanged": 0,
+    "ledgerReconciles": true,
+    "reservationsReconcile": true,
+    "canonicalSelectionDeterministic": true,
+    "problems": []
+  },
+  "populationImmutability": {
+    "populationTreeSha256": "4c53b31aeeba54015c95ebc18f7aa44b893d30aa7b6ad15aa576037c6dfe8701",
+    "compilerTreeSha256": "b10473765e6d000a815fe80ee0b3b87184df0f758204e39d1c92e0683f73d213",
+    "verifierTreeSha256": "536b944170f0c15c141470f311f70ba0f6bd69fc9b8e7daabc6bb6cc7e4f751b",
+    "phase4RuntimeTreeSha256": "9cd36dc78120f4d5b379e8d8e653581dffe20ec81a5776d596d40c43cff80d34"
+  },
+  "notDone": [
+    "no benchmark scoring",
+    "no P-1 fix (no occurrence)",
+    "no compiler/verifier semantic change",
+    "no Phase 4 / 4E"
+  ]
+}

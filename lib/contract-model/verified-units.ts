@@ -1,48 +1,52 @@
 /**
- * VERIFIED UNIT PERSISTENCE - the Phase-3 artifact contract the strict Phase-4 boundary consumes.
+ * VERIFIED-UNIT PACKAGES - the paired artifact that binds an exact compiled semantic unit to the exact verification
+ * result produced for it. Schema v2 (Phase 3 certification closure): a SHARED_CAPACITY is a first-class verified unit
+ * alongside RULE and DEFINITION - its cap expression is independent, model-derived source semantics that changes every
+ * member's capacity, so it is snapshotted, verified, hashed and bound exactly like a rule. v1 packages (rules and
+ * definitions only) remain readable; nothing historical is rewritten.
  *
- * One persisted record says: THIS exact IR unit was verified by THIS exact verification result under
- * THIS exact identity. The three pieces travel together or the record does not exist.
- *
- * Why: the historical corpus kept compiled IR and verification results in separate places, on
- * separate schedules. 411 of 498 MATERIAL findings could not be bound to the unit they were about,
- * because that unit was not preserved beside the result. The strict boundary
- * (verified-execution.ts) refuses to execute without the pair. This module makes the pair the unit
- * of persistence, produced while both objects are in memory - never reconstructed later.
- *
- * What this module does NOT do: resolve finding paths to exprIds (the resolver owns that), select
- * MATERIAL findings (the resolver owns that), decide anything about execution (the gate owns that),
- * or add a boolean that claims verification happened (the result and the identity ARE the claim).
- * It also never reads a clock: the same inputs serialize to the same bytes.
- *
- * Layering: Phase-3 side. Imports the IR and verification TYPES and, for the trivial adapter at the
- * bottom, the boundary's package type - type-only. No runtime code is imported.
+ * Invariant: identity stamping -> snapshot -> verification -> package. The package is built from the SNAPSHOT the
+ * verifier saw; a live unit whose identity drifted after the snapshot is refused (IDENTITY_MISMATCH), never re-paired.
  */
 import { createHash } from "node:crypto";
-import type { IRDefinition, IRRule } from "./ir/types";
+import type { IRDefinition, IRRule, IRSharedCapacity } from "./ir/types";
 import type { SemanticVerificationResult } from "./compiler/semantic-verification/types";
 import type { RuntimeVerificationIdentity } from "./runtime/verification-envelope";
 import type { VerifiedExecutionPackage, VerifiedUnitArtifact } from "./verified-execution";
 
-export const VERIFIED_UNIT_PACKAGE_SCHEMA = "p3-verified-unit-package.v1" as const;
+export const VERIFIED_UNIT_PACKAGE_SCHEMA = "p3-verified-unit-package.v2" as const;
+export const VERIFIED_UNIT_PACKAGE_SCHEMA_V1 = "p3-verified-unit-package.v1" as const;
 export const VERIFIED_UNIT_MANIFEST_SCHEMA = "p3-verified-unit-manifest.v1" as const;
 
-// ---------------------------------------------------------------------------
-// Canonical serialization - the same object always produces the same bytes
-// ---------------------------------------------------------------------------
-
-/** Sorted-key JSON. Arrays keep their order (a finding list's order is the verifier's, and is part of the exact result). */
+/** Canonical JSON: keys sorted at every level, undefined object members dropped (as JSON.stringify does), undefined array slots -> null. */
 export function canonicalJson(value: unknown): string {
   const walk = (v: unknown): unknown => {
-    if (Array.isArray(v)) return v.map(walk);
-    if (v && typeof v === "object") return Object.fromEntries(Object.keys(v as object).sort().map((k) => [k, walk((v as Record<string, unknown>)[k])]));
-    return v === undefined ? null : v;
+    if (Array.isArray(v)) return v.map((x) => (x === undefined ? null : walk(x)));
+    if (v && typeof v === "object") return Object.fromEntries(Object.keys(v as object).sort().filter((k) => (v as Record<string, unknown>)[k] !== undefined).map((k) => [k, walk((v as Record<string, unknown>)[k])]));
+    return v;
   };
   return JSON.stringify(walk(value));
 }
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
-/** A structural snapshot: no shared references with the live object, and frozen all the way down. */
+/**
+ * v2 identity hashing: the artifact and package hashes bind CONTENT. The two wall-clock keys a verification result
+ * carries (`verifiedAt` on the result, `createdAt` on each finding) and the one cache-hit flag (`fromCache` on the
+ * condition-suspicion result) are execution facts, not verified content: they are dropped before hashing, so the same
+ * verified content produced by two runs hashes the same and the hash can enter the canonical map's own identity.
+ * Nothing else is excluded. v1 packages were hashed over the full body and are still parsed that way.
+ */
+const VOLATILE_KEYS = new Set(["verifiedAt", "createdAt", "fromCache"]);
+export function stableContentJson(value: unknown): string {
+  const strip = (v: unknown): unknown => {
+    if (Array.isArray(v)) return v.map(strip);
+    if (v && typeof v === "object") return Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([k]) => !VOLATILE_KEYS.has(k)).map(([k, x]) => [k, strip(x)]));
+    return v;
+  };
+  return canonicalJson(strip(value));
+}
+const contentHash = (value: unknown) => sha256(stableContentJson(value));
+
 function snapshot<T>(value: T): T {
   const copy = JSON.parse(JSON.stringify(value)) as T;
   const freeze = (v: unknown) => { if (v && typeof v === "object" && !Object.isFrozen(v)) { Object.freeze(v); for (const x of Object.values(v as object)) freeze(x); } };
@@ -50,54 +54,36 @@ function snapshot<T>(value: T): T {
   return copy;
 }
 
-// ---------------------------------------------------------------------------
-// Identity, captured from the unit at the moment it is handed to the verifier
-// ---------------------------------------------------------------------------
+export type VerifiedUnitKind = "RULE" | "DEFINITION" | "SHARED_CAPACITY";
+export type VerifiableUnit = IRRule | IRDefinition | IRSharedCapacity;
+export const unitIdOf = (u: VerifiableUnit): string => ("ruleId" in u ? u.ruleId : "definitionId" in u ? u.definitionId : u.sharedCapId);
+export const unitKindOf = (u: VerifiableUnit): VerifiedUnitKind => ("ruleId" in u ? "RULE" : "definitionId" in u ? "DEFINITION" : "SHARED_CAPACITY");
+const KIND_ORDER: Record<VerifiedUnitKind, number> = { DEFINITION: 0, RULE: 1, SHARED_CAPACITY: 2 };
 
-export type VerifiedUnitKind = "RULE" | "DEFINITION";
-const unitIdOf = (u: IRRule | IRDefinition): string => ("ruleId" in u ? u.ruleId : u.definitionId);
-const kindOf = (u: IRRule | IRDefinition): VerifiedUnitKind => ("ruleId" in u ? "RULE" : "DEFINITION");
-
-/** The identity of a unit exactly as it stands - read from the unit, never from whatever IR is loaded later. */
-export function identityOfUnit(u: IRRule | IRDefinition): RuntimeVerificationIdentity {
-  return { ruleOrDefinitionId: unitIdOf(u), companyId: u.companyId, instrumentKey: u.instrumentKey, irSchemaVersion: u.irSchemaVersion, compilerVersion: u.compilerVersion ?? null, sourceContentVersion: u.sourceContentVersion ?? null };
+export function identityOfUnit(u: VerifiableUnit): RuntimeVerificationIdentity {
+  return { ruleOrDefinitionId: unitIdOf(u), companyId: u.companyId, instrumentKey: u.instrumentKey, irSchemaVersion: u.irSchemaVersion ?? "", compilerVersion: u.compilerVersion ?? null, sourceContentVersion: u.sourceContentVersion ?? null };
 }
 
-/**
- * The units as handed to the verifier: snapshotted BEFORE verification runs, with their identity
- * captured then. Persisting from this snapshot rather than from the live objects afterwards is what
- * guarantees "the exact unit the verifier saw" - if anything downstream mutates the live IR, the
- * snapshot does not move.
- */
 export interface UnitSnapshot {
-  units: readonly { kind: VerifiedUnitKind; unit: IRRule | IRDefinition; verifiedIdentity: RuntimeVerificationIdentity }[];
+  units: readonly { kind: VerifiedUnitKind; unit: VerifiableUnit; verifiedIdentity: RuntimeVerificationIdentity }[];
+  /** Content hash of the exact snapshotted units (kinds, units, identities) - what verification, packaging and Phase 4 must all refer to. */
+  snapshotHash: string;
 }
 
-export function snapshotUnitsForVerification(compiled: { rules?: readonly IRRule[] | null; definitions?: readonly IRDefinition[] | null }): UnitSnapshot {
-  const all: (IRRule | IRDefinition)[] = [...(compiled.rules ?? []), ...(compiled.definitions ?? [])];
-  const units = all.map((u) => ({ kind: kindOf(u), unit: snapshot(u), verifiedIdentity: identityOfUnit(u) }));
-  units.sort((a, b) => (a.kind !== b.kind ? (a.kind === "DEFINITION" ? -1 : 1) : unitIdOf(a.unit) < unitIdOf(b.unit) ? -1 : unitIdOf(a.unit) > unitIdOf(b.unit) ? 1 : 0));
-  return { units };
+/** Deep-frozen copies of EVERY semantic unit (rules, definitions, shared capacities) with the identity each carried at snapshot time. Taken BEFORE verification. */
+export function snapshotUnitsForVerification(compiled: { rules?: readonly IRRule[] | null; definitions?: readonly IRDefinition[] | null; sharedCapacities?: readonly IRSharedCapacity[] | null }): UnitSnapshot {
+  const all: VerifiableUnit[] = [...(compiled.rules ?? []), ...(compiled.definitions ?? []), ...(compiled.sharedCapacities ?? [])];
+  const units = all.map((u) => ({ kind: unitKindOf(u), unit: snapshot(u), verifiedIdentity: identityOfUnit(u) }));
+  units.sort((a, b) => (a.kind !== b.kind ? KIND_ORDER[a.kind] - KIND_ORDER[b.kind] : unitIdOf(a.unit) < unitIdOf(b.unit) ? -1 : unitIdOf(a.unit) > unitIdOf(b.unit) ? 1 : 0));
+  return snapshot({ units, snapshotHash: sha256(canonicalJson(units)) });
 }
 
-// ---------------------------------------------------------------------------
-// The persisted artifact
-// ---------------------------------------------------------------------------
-
-/**
- * One verified unit. Structurally the boundary's VerifiedUnitArtifact plus the unit itself and an
- * artifact hash; the adapter to the boundary is the identity function on the shared fields.
- */
 export interface PersistedVerifiedUnit {
   ruleOrDefinitionId: string;
   kind: VerifiedUnitKind;
-  /** Captured at verification time from the unit the verifier was given. */
   verifiedIdentity: RuntimeVerificationIdentity;
-  /** The complete unit, exactly as verified. Never an excerpt, never an id. */
-  unit: IRRule | IRDefinition;
-  /** The complete verification result, verbatim. Findings for other units of the same candidate are present too; the resolver filters by unit id. */
+  unit: VerifiableUnit;
   verification: SemanticVerificationResult;
-  /** sha256 over (id, kind, verifiedIdentity, unit, verification) in canonical form: these bytes are this verified unit. */
   artifactHash: string;
 }
 
@@ -112,24 +98,21 @@ export type PackageProblemCode =
 export interface PackageProblem { code: PackageProblemCode; message: string; refs: string[] }
 
 export interface PersistedVerifiedUnitPackage {
-  schema: typeof VERIFIED_UNIT_PACKAGE_SCHEMA;
+  schema: typeof VERIFIED_UNIT_PACKAGE_SCHEMA | typeof VERIFIED_UNIT_PACKAGE_SCHEMA_V1;
   companyId: string;
   instrumentKey: string;
   candidateRef: string;
-  /** Caller-supplied run identity. Never a clock read inside this module. */
   runId: string;
   compilerVersion: string | null;
   verifierAlgorithmVersion: string | null;
   verificationStatus: string | null;
-  /** Every verified unit, sorted definitions-then-rules by id. */
+  /** v2: the hash of the snapshot the verifier saw; every paired unit below is byte-for-byte that snapshot's unit. */
+  snapshotHash?: string;
   units: PersistedVerifiedUnit[];
-  /** Units the candidate compiled that could NOT be paired (no verification, or refused below), listed by id so nothing is silently omitted. */
   unpaired: { ruleOrDefinitionId: string; kind: VerifiedUnitKind; reason: PackageProblemCode }[];
   problems: PackageProblem[];
-  counts: { rulesCompiled: number; definitionsCompiled: number; unitsVerified: number; artifactsPersisted: number; unitsMissingVerification: number; unitsMissingIr: number };
-  /** True only when every compiled unit has a persisted artifact and no problem was found. */
+  counts: { rulesCompiled: number; definitionsCompiled: number; sharedCapacitiesCompiled?: number; unitsVerified: number; artifactsPersisted: number; unitsMissingVerification: number; unitsMissingIr: number };
   complete: boolean;
-  /** sha256 over everything above in canonical form. */
   packageHash: string;
 }
 
@@ -138,30 +121,18 @@ export interface BuildPackageArgs {
   instrumentKey: string;
   candidateRef: string;
   runId: string;
-  /** From snapshotUnitsForVerification, taken before the verifier ran. */
   snapshot: UnitSnapshot;
-  /** The verifier's result for this candidate, or null when the run did not verify (recorded as such, never as clean). */
   verification: SemanticVerificationResult | null;
-  /**
-   * Optional: the units as they stand NOW (after verification). When supplied, each is compared to
-   * its snapshot identity, and a unit whose identity changed since verification is refused rather
-   * than persisted under a stale claim.
-   */
-  currentUnits?: readonly (IRRule | IRDefinition)[];
+  /** The live units as they are NOW; any whose identity drifted from the snapshot is refused (IDENTITY_MISMATCH). */
+  currentUnits?: readonly VerifiableUnit[];
 }
 
-/**
- * Builds the package from a pre-verification snapshot and the verification result, while both are
- * in memory. Every problem is recorded; nothing is dropped silently; `complete` is false whenever
- * anything is missing.
- */
 export function buildVerifiedUnitPackage(args: BuildPackageArgs): PersistedVerifiedUnitPackage {
   const problems: PackageProblem[] = [];
   const unpaired: PersistedVerifiedUnitPackage["unpaired"] = [];
   const units: PersistedVerifiedUnit[] = [];
   const verification = args.verification ? snapshot(args.verification) : null;
 
-  // duplicates, scope
   const ids = new Map<string, number>();
   for (const s of args.snapshot.units) ids.set(unitIdOf(s.unit), (ids.get(unitIdOf(s.unit)) ?? 0) + 1);
   const duplicates = new Set([...ids].filter(([, n]) => n > 1).map(([id]) => id));
@@ -171,16 +142,16 @@ export function buildVerifiedUnitPackage(args: BuildPackageArgs): PersistedVerif
   const mixedInstrument = args.snapshot.units.filter((s) => s.unit.instrumentKey !== args.instrumentKey).map((s) => unitIdOf(s.unit)).sort();
   if (mixedInstrument.length > 0) problems.push({ code: "MIXED_INSTRUMENT", message: "unit(s) belong to another instrument than the package states", refs: mixedInstrument });
 
-  // identity drift between snapshot and now
-  const current = new Map((args.currentUnits ?? []).map((u) => [unitIdOf(u), identityOfUnit(u)]));
+  // identity drift AND content drift: a live unit that no longer equals the snapshot (identity or semantic content) is refused
+  const current = new Map((args.currentUnits ?? []).map((u) => [unitIdOf(u), u]));
   const drifted = new Set<string>();
   for (const s of args.snapshot.units) {
     const now = current.get(unitIdOf(s.unit));
-    if (now && canonicalJson(now) !== canonicalJson(s.verifiedIdentity)) drifted.add(unitIdOf(s.unit));
+    if (!now) continue;
+    if (canonicalJson(identityOfUnit(now)) !== canonicalJson(s.verifiedIdentity) || canonicalJson(now) !== canonicalJson(s.unit)) drifted.add(unitIdOf(s.unit));
   }
-  if (drifted.size > 0) problems.push({ code: "IDENTITY_MISMATCH", message: "unit identity changed between verification and persistence; the artifact would describe a unit the verifier did not see", refs: [...drifted].sort() });
+  if (drifted.size > 0) problems.push({ code: "IDENTITY_MISMATCH", message: "unit identity or content changed between the snapshot the verifier saw and persistence; the artifact would describe a unit the verifier did not see", refs: [...drifted].sort() });
 
-  // verification naming units the candidate did not compile
   if (verification) {
     const named = new Set(verification.findings.map((f) => f.ruleOrDefinitionId).filter((x): x is string => typeof x === "string"));
     const missingIr = [...named].filter((id) => !ids.has(id)).sort();
@@ -196,16 +167,17 @@ export function buildVerifiedUnitPackage(args: BuildPackageArgs): PersistedVerif
     if (drifted.has(id)) { refuse("IDENTITY_MISMATCH"); continue; }
     if (!verification) { refuse("IR_WITHOUT_VERIFICATION"); continue; }
     const body = { ruleOrDefinitionId: id, kind: s.kind, verifiedIdentity: s.verifiedIdentity, unit: s.unit, verification };
-    units.push({ ...body, artifactHash: sha256(canonicalJson(body)) });
+    units.push({ ...body, artifactHash: contentHash(body) });
   }
   if (!verification && args.snapshot.units.length > 0) problems.push({ code: "IR_WITHOUT_VERIFICATION", message: "the candidate compiled but was not verified; no unit can be paired", refs: args.snapshot.units.map((s) => unitIdOf(s.unit)).sort() });
   unpaired.sort((a, b) => (a.ruleOrDefinitionId < b.ruleOrDefinitionId ? -1 : 1));
   problems.sort((a, b) => (`${a.code}|${a.refs.join(",")}` < `${b.code}|${b.refs.join(",")}` ? -1 : 1));
 
   const rulesCompiled = args.snapshot.units.filter((s) => s.kind === "RULE").length;
-  const definitionsCompiled = args.snapshot.units.length - rulesCompiled;
+  const definitionsCompiled = args.snapshot.units.filter((s) => s.kind === "DEFINITION").length;
+  const sharedCapacitiesCompiled = args.snapshot.units.filter((s) => s.kind === "SHARED_CAPACITY").length;
   const counts = {
-    rulesCompiled, definitionsCompiled,
+    rulesCompiled, definitionsCompiled, sharedCapacitiesCompiled,
     unitsVerified: verification ? args.snapshot.units.length : 0,
     artifactsPersisted: units.length,
     unitsMissingVerification: unpaired.filter((u) => u.reason === "IR_WITHOUT_VERIFICATION").length,
@@ -217,33 +189,30 @@ export function buildVerifiedUnitPackage(args: BuildPackageArgs): PersistedVerif
     compilerVersion: args.snapshot.units[0]?.verifiedIdentity.compilerVersion ?? null,
     verifierAlgorithmVersion: verification?.verifierAlgorithmVersion ?? null,
     verificationStatus: verification?.status ?? null,
+    snapshotHash: args.snapshot.snapshotHash,
     units, unpaired, problems, counts, complete,
   };
-  return snapshot({ ...body, packageHash: sha256(canonicalJson(body)) });
+  return snapshot({ ...body, packageHash: contentHash(body) });
 }
 
-/** Canonical bytes. Deterministic: the same package serializes identically every time. */
 export function serializeVerifiedUnitPackage(pkg: PersistedVerifiedUnitPackage): string {
   return canonicalJson(pkg);
 }
 
-/** Parses and re-checks the package hash, so a file edited after writing is caught rather than trusted. */
+/** Reads v2 and historical v1 packages; the hash chain (package and every artifact) must verify. */
 export function parseVerifiedUnitPackage(text: string): PersistedVerifiedUnitPackage {
   const parsed = JSON.parse(text) as PersistedVerifiedUnitPackage;
-  if (parsed.schema !== VERIFIED_UNIT_PACKAGE_SCHEMA) throw new Error(`not a verified-unit package: schema ${String(parsed.schema)}`);
+  if (parsed.schema !== VERIFIED_UNIT_PACKAGE_SCHEMA && parsed.schema !== VERIFIED_UNIT_PACKAGE_SCHEMA_V1) throw new Error(`not a verified-unit package: schema ${String(parsed.schema)}`);
+  const hashOf = parsed.schema === VERIFIED_UNIT_PACKAGE_SCHEMA_V1 ? (v: unknown) => sha256(canonicalJson(v)) : contentHash;
   const { packageHash, ...body } = parsed;
-  const expected = sha256(canonicalJson(body));
+  const expected = hashOf(body);
   if (expected !== packageHash) throw new Error(`verified-unit package hash mismatch: file says ${packageHash}, content hashes to ${expected}`);
   for (const u of parsed.units) {
     const { artifactHash, ...ub } = u;
-    if (sha256(canonicalJson(ub)) !== artifactHash) throw new Error(`verified-unit artifact ${u.ruleOrDefinitionId} hash mismatch`);
+    if (hashOf(ub) !== artifactHash) throw new Error(`verified-unit artifact ${u.ruleOrDefinitionId} hash mismatch`);
   }
   return snapshot(parsed);
 }
-
-// ---------------------------------------------------------------------------
-// Run manifest
-// ---------------------------------------------------------------------------
 
 export interface VerifiedUnitRunManifest {
   schema: typeof VERIFIED_UNIT_MANIFEST_SCHEMA;
@@ -255,17 +224,16 @@ export interface VerifiedUnitRunManifest {
   candidates: { candidateRef: string; packageFile: string | null; packageHash: string; complete: boolean; artifactHashes: string[]; counts: PersistedVerifiedUnitPackage["counts"]; problems: PackageProblemCode[] }[];
   totals: PersistedVerifiedUnitPackage["counts"] & { candidates: number; completePackages: number; incompletePackages: number; problemsByCode: Record<PackageProblemCode, number> };
   verificationStatusCounts: Record<string, number>;
-  /** True only when every candidate package is complete. Never true while anything is missing. */
   complete: boolean;
 }
 
 export function buildVerifiedUnitRunManifest(args: { companyId: string; instrumentKey: string; runId: string; packages: { pkg: PersistedVerifiedUnitPackage; file: string | null }[] }): VerifiedUnitRunManifest {
-  const zero: PersistedVerifiedUnitPackage["counts"] = { rulesCompiled: 0, definitionsCompiled: 0, unitsVerified: 0, artifactsPersisted: 0, unitsMissingVerification: 0, unitsMissingIr: 0 };
+  const zero: PersistedVerifiedUnitPackage["counts"] = { rulesCompiled: 0, definitionsCompiled: 0, sharedCapacitiesCompiled: 0, unitsVerified: 0, artifactsPersisted: 0, unitsMissingVerification: 0, unitsMissingIr: 0 };
   const problemsByCode: Record<PackageProblemCode, number> = { IR_WITHOUT_VERIFICATION: 0, VERIFICATION_WITHOUT_IR: 0, DUPLICATE_UNIT_ID: 0, IDENTITY_MISMATCH: 0, MIXED_COMPANY: 0, MIXED_INSTRUMENT: 0 };
   const statusCounts: Record<string, number> = {};
   const sorted = [...args.packages].sort((a, b) => (a.pkg.candidateRef < b.pkg.candidateRef ? -1 : a.pkg.candidateRef > b.pkg.candidateRef ? 1 : 0));
   const candidates = sorted.map(({ pkg, file }) => {
-    for (const k of Object.keys(zero) as (keyof typeof zero)[]) zero[k] += pkg.counts[k];
+    for (const k of Object.keys(zero) as (keyof typeof zero)[]) zero[k] = (zero[k] ?? 0) + (pkg.counts[k] ?? 0);
     for (const p of pkg.problems) problemsByCode[p.code]++;
     const st = pkg.verificationStatus ?? "NOT_VERIFIED_IN_RUN";
     statusCounts[st] = (statusCounts[st] ?? 0) + 1;
@@ -283,23 +251,16 @@ export function buildVerifiedUnitRunManifest(args: { companyId: string; instrume
   };
 }
 
-// ---------------------------------------------------------------------------
-// Adapter to the strict boundary - the identity function on the shared fields
-// ---------------------------------------------------------------------------
-
-/** One persisted unit as the boundary's artifact: the same four fields, nothing added, nothing derived. */
 export function toVerifiedUnitArtifact(u: PersistedVerifiedUnit): VerifiedUnitArtifact {
   return { ruleOrDefinitionId: u.ruleOrDefinitionId, kind: u.kind, verifiedIdentity: u.verifiedIdentity, result: u.verification };
 }
 
 /**
- * One or more persisted packages (the candidates of one instrument) as the boundary's execution
- * package. The IR units come from the artifacts themselves - the exact units verified - so the
- * boundary executes what was verified, not whatever IR happens to be loaded. Packages that are not
- * complete still adapt: their unpaired units are simply absent, and the boundary's own coverage
- * report and REQUIRE semantics say so.
+ * The Phase 4 execution package is DERIVED from verified-unit packages only: rules, definitions AND shared capacities
+ * come from the paired artifacts. There is no side channel for an unverified shared capacity (the v1 `sharedCapacities`
+ * parameter is gone); a v1 package simply carries none.
  */
-export function toVerifiedExecutionPackage(packages: readonly PersistedVerifiedUnitPackage[], sharedCapacities: VerifiedExecutionPackage["sharedCapacities"] = []): VerifiedExecutionPackage {
+export function toVerifiedExecutionPackage(packages: readonly PersistedVerifiedUnitPackage[]): VerifiedExecutionPackage {
   const first = packages[0];
   if (!first) throw new Error("no verified-unit packages supplied");
   const units = packages.flatMap((p) => p.units);
@@ -307,7 +268,7 @@ export function toVerifiedExecutionPackage(packages: readonly PersistedVerifiedU
     companyId: first.companyId, instrumentKey: first.instrumentKey,
     rules: units.filter((u) => u.kind === "RULE").map((u) => u.unit as IRRule),
     definitions: units.filter((u) => u.kind === "DEFINITION").map((u) => u.unit as IRDefinition),
-    sharedCapacities,
+    sharedCapacities: units.filter((u) => u.kind === "SHARED_CAPACITY").map((u) => u.unit as IRSharedCapacity),
     verifications: units.map(toVerifiedUnitArtifact),
   };
 }

@@ -13,9 +13,13 @@
  * caller that disabled accountability) Pass C is simply not run and the whole-unit signals are not derived - the
  * certified F-7B/F-7B.3E per-shard run shape. Global Pass C for a sharded unit runs once, after stitching.
  */
+import { ProviderError } from "../../analyzer/provider-error";
+import { BudgetRefusedError } from "../../analyzer/dispatch-budget";
 import { validateCompilationUnit } from "../../ir/validate";
 import type { SemanticCaller } from "./caller";
-import { normalizeSubmission } from "./normalize";
+import { diagnosticRecord, normalizeSubmission } from "./normalize";
+import { findInvalidWireKinds } from "./wire-schema";
+import { IR_EXPRESSION_KINDS } from "../../ir/types";
 import { checkDefinitionCompleteness } from "./completeness-check";
 import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { IRDefinition } from "../../ir/types";
@@ -24,6 +28,7 @@ import { reconcileInventoryWithComposition } from "../semantic-accountability/re
 import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-accountability/types";
 import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass";
 import type { NormalizedCompilation } from "./normalize";
+import type { SemanticCompileCallOptions } from "./caller";
 
 const MAX_SANITIZED_MESSAGE_LENGTH = 500;
 /** Redacts common credential/token shapes before a message is ever persisted (task §33's "no secrets" instruction) - defensive even though a compile-time exception message should not ordinarily contain one. */
@@ -91,6 +96,8 @@ export function buildTransportFailureResult(err: unknown, caller: SemanticCaller
     failureCategory: classifyFailureCategory(errorClass, rawMessage),
     retryCount,
     hadPartialOutput: false,
+    ...(err instanceof ProviderError ? { providerError: err.toRecord() } : {}),
+    ...(err instanceof BudgetRefusedError ? { budgetRefusal: { reason: err.reason, detail: err.detail } } : {}),
   };
   return {
     status: "FAILED",
@@ -119,7 +126,7 @@ export function determineStatus(failureReasons: SemanticCompilerFailureReason[],
   // MODEL_SCHEMA_FAILURE here - a response cut off at the output-token ceiling is a
   // degraded attempt (PARTIAL when a validated prefix was recovered) even when every
   // recovered rule/definition itself validates cleanly, never a plain REVIEW_REQUIRED.
-  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE") || failureReasons.includes("OUTPUT_TRUNCATED")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
+  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE") || failureReasons.includes("OUTPUT_TRUNCATED") || failureReasons.includes("SEMANTIC_WIRE_KIND_INVALID")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
   if (failureReasons.length > 0 || hasReviewRequiredSufficiency || hasUnresolvedIssues) return "REVIEW_REQUIRED";
   return "COMPLETED";
 }
@@ -128,6 +135,8 @@ export function determineStatus(failureReasons: SemanticCompilerFailureReason[],
 export interface AccountabilityFields {
   sourceContext: SourceContextResult | null;
   frozenInventory: FrozenSemanticInventory | null;
+  /** GOVERNING SCOPE: the typed governing ancestor context compile.ts resolved (null when no anchor / no index). */
+  governingScope?: import("./governing-scope").GoverningSemanticContext | null;
   inventoryMode: SemanticInventoryMode | null;
   inventoryPasses: SemanticCompilationResult["inventoryPasses"];
 }
@@ -137,6 +146,8 @@ export interface BoundedCompositionContext {
   cacheKey: string;
   evidenceFlags: EvidenceFlags;
   accountability: AccountabilityFields;
+  /** Abort signal + dispatch budget for the model call (certified path). */
+  callOptions?: SemanticCompileCallOptions;
 }
 
 export interface BoundedCompositionOutcome {
@@ -165,7 +176,7 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
   // try/catch did.
   let callResult: Awaited<ReturnType<SemanticCaller["compile"]>>;
   try {
-    callResult = await caller.compile(callerInput);
+    callResult = await caller.compile(callerInput, ctx.callOptions);
   } catch (err) {
     return { result: { ...buildTransportFailureResult(err, caller, cacheKey, null, evidenceFlags), ...accountabilityFields, accountability: null }, cacheable: false, inventoryDispositions: [] };
   }
@@ -203,7 +214,12 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
   // partial submission was already assembled at this point, so
   // hadPartialOutput is true on this path).
   try {
-    const normalized = normalizeSubmission(callResult.submission, input);
+    // SA-3 PARITY: normalization judges the submission against exactly what the model was given - the resolved
+    // compilation unit's text, its source context (entity-scope witness regions), the frozen inventory (source-grounded
+    // reference lineage) and the governing scope. A shard's callerInput already carried all of these; the monolithic
+    // unit's `input` (the caller-supplied identity) carries none of them, so normalizing against it silently dropped the
+    // governing-scope precedence and the witness regions on the monolithic path only.
+    const normalized = normalizeSubmission(callResult.submission, callerInput);
 
     const validation = validateCompilationUnit({
       irSchemaVersion: input.irSchemaVersion,
@@ -220,6 +236,10 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
     // returns a validated, truncated-but-usable submission alongside OUTPUT_TRUNCATED. That
     // must not be silently dropped just because normalization/validation otherwise succeeds.
     if (callResult.failureReason) failureReasons.push(callResult.failureReason);
+    // SEMANTIC FIDELITY: transport-valid is not semantic-valid. An invented expression kind is kept as UNSUPPORTED by the
+    // normalizer (tolerant transport) but is never a successful representation - bounded non-success, no retry, no guess.
+    const invalidWireKinds = findInvalidWireKinds(callResult.submission);
+    if (invalidWireKinds.length > 0) failureReasons.push("SEMANTIC_WIRE_KIND_INVALID");
     if (!validation.ok) failureReasons.push("IR_VALIDATION_FAILURE");
     if (normalized.rules.length === 0 && normalized.definitions.length === 0) failureReasons.push("PARTIAL_COMPILATION");
     if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
@@ -342,7 +362,11 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
     const unresolvedIssues = [
       ...(callResult.failureDetail ? [callResult.failureDetail] : []),
       ...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`),
-      ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`),
+      // DIAGNOSTIC-class warnings (quarantined model output: target economics in prose, excluded reference expansions, an
+      // outranked unrecognized tag) are execution diagnostics carried in normalizationDiagnostics / certification warnings -
+      // never an unresolved issue that makes a semantically COMPLETE unit REVIEW_REQUIRED (the sharded path never did).
+      ...normalized.warnings.filter((w) => w.kind !== "DIAGNOSTIC").map((w) => `[${w.scope}] ${w.message}`),
+      ...invalidWireKinds.map((k) => `[${k.path}] SEMANTIC_WIRE_KIND_INVALID: "${k.kind}" is not an IR expression kind (valid kinds: ${IR_EXPRESSION_KINDS.join(", ")}, UNLIMITED_CAPACITY for a capacity); kept as UNSUPPORTED, never a successful representation`),
       ...callResult.submission.overallNotes,
       ...accountabilityIssues,
     ];
@@ -362,6 +386,10 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
       ...accountabilityFields,
       accountability,
       rawModelOutput: callResult.rawSubmission,
+      contextOnlyEmissions: normalized.contextOnlyEmissions,
+      dependencyProseDiagnostics: normalized.dependencyProse,
+      normalizationDiagnostics: normalized.diagnostics.map((d) => diagnosticRecord(input.candidateRef, null, d, normalized.scopeUnits)),
+      invalidWireKinds,
       provider: caller.providerName,
       model: caller.model,
       telemetry: callResult.telemetry,

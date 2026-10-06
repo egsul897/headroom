@@ -1,0 +1,186 @@
+{
+  "rules": [
+    {
+      "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+      "sourceSectionRef": "7.2(c)",
+      "sourceDependencies": [
+        {
+          "exactSourceTargetRef": "Section 7.3(g)",
+          "normalizedTargetRef": "7.3(g)",
+          "resolvedStructuralTarget": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+            "sectionRef": "7.3(g)"
+          },
+          "owningCandidateRefs": [
+            "discovery-candidate:082c80836268c7277cc39c18"
+          ],
+          "boundSemanticTargetIds": [],
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "relationshipType": "REQUIRES",
+          "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are owned by its own certified unit",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          }
+        },
+        {
+          "exactSourceTargetRef": "Section 7.1",
+          "normalizedTargetRef": "7.1",
+          "resolvedStructuralTarget": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+            "sectionRef": "7.1"
+          },
+          "owningCandidateRefs": [
+            "discovery-candidate:a26970121ceb558846ff8d1c",
+            "discovery-candidate:e37352369564a1e784e0560b"
+          ],
+          "boundSemanticTargetIds": [],
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "relationshipType": "REQUIRES",
+          "description": "requires that the terms of Section 7.1 are satisfied; the semantics of Section 7.1 are owned by its own certified unit",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          }
+        }
+      ],
+      "unresolvedDependencies": [],
+      "dependsOn": [],
+      "conditions": [
+        {
+          "conditionId": "rule[r-c].condition[0]",
+          "conditionType": "OTHER_RULE_SATISFIED",
+          "referencesRuleTargets": [
+            {
+              "exactSourceTargetRef": "Section 7.1(a)",
+              "normalizedTargetRef": "7.1(a)",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "structuralNodeId": "structural-node:726297b37ff47b14aabb7b12",
+                "sectionRef": "7.1(a)"
+              },
+              "owningCandidateRefs": [
+                "discovery-candidate:8fe38049fe62ea9e9e741511"
+              ],
+              "boundSemanticTargetIds": [],
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+            },
+            {
+              "exactSourceTargetRef": "Section 7.1(b)",
+              "normalizedTargetRef": "7.1(b)",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "structuralNodeId": "structural-node:c36729e59303f7ace761d8a1",
+                "sectionRef": "7.1(b)"
+              },
+              "owningCandidateRefs": [
+                "discovery-candidate:cf15af8f5fb1f77bd861a2ac"
+              ],
+              "boundSemanticTargetIds": [],
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+            },
+            {
+              "exactSourceTargetRef": "Section 7.1(c)",
+              "normalizedTargetRef": "7.1(c)",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "structuralNodeId": "structural-node:b442e3c45ba1c76217d77ee1",
+                "sectionRef": "7.1(c)"
+              },
+              "owningCandidateRefs": [
+                "discovery-candidate:5f83b15ed6cd0ea8b06289a0"
+              ],
+              "boundSemanticTargetIds": [],
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+            },
+            {
+              "exactSourceTargetRef": "Section 7.1(d)",
+              "normalizedTargetRef": "7.1(d)",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "structuralNodeId": "structural-node:b24e719c968f7098f4b6909c",
+                "sectionRef": "7.1(d)"
+              },
+              "owningCandidateRefs": [
+                "discovery-candidate:1b08da2e952127a1caebe77d"
+              ],
+              "boundSemanticTargetIds": [],
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+            }
+          ],
+          "targetCombination": "ALL_SATISFIED",
+          "evaluationBasis": {
+            "proForma": true,
+            "transactionEffect": "after giving effect to the incurrence of such Indebtedness",
+            "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+            "deemedEffectiveAt": "first day of each relevant period for testing such compliance",
+            "testingPeriod": null,
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(c)",
+              "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+            }
+          },
+          "expressionKind": null,
+          "description": "Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance."
+        }
+      ],
+      "inheritedAttributes": [],
+      "entityScope": [],
+      "entityScopeExcluded": [],
+      "entityScopeAudit": {
+        "guardVersion": "entity-scope-consistency-guard.v2",
+        "status": "UNRECOGNIZED_TAG",
+        "safeToRely": false,
+        "reasonCodes": [
+          "ENTITY_SCOPE_UNRECOGNIZED_TAG"
+        ],
+        "rawEmitted": {
+          "entityScope": [
+            "Parent Borrower",
+            "Restricted Subsidiary"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "raw": "Parent Borrower",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "BORROWER",
+            "viaAlias": true
+          },
+          {
+            "field": "entityScope",
+            "raw": "Restricted Subsidiary",
+            "outcome": "UNRECOGNIZED_ENTITY_TAG",
+            "normalized": null,
+            "viaAlias": false
+          }
+        ],
+        "before": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "COMPLETE"
+        },
+        "witness": {
+          "ownExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+          "citedUnitLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:",
+          "decidedBy": "NONE",
+          "signals": []
+        }
+      }
+    }
+  ]
+}

@@ -22,6 +22,8 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../../lib/contract-model/compiler/semantic/types";
 import type { SemanticVerificationResult } from "../../lib/contract-model/compiler/semantic-verification/types";
+import { certifyCandidate } from "../../lib/contract-model/phase3-certification/certify";
+import type { SemanticSourceContract } from "../../lib/contract-model/phase3-certification/semantic-source-contract";
 import {
   buildVerifiedUnitPackage, buildVerifiedUnitRunManifest, serializeVerifiedUnitPackage, snapshotUnitsForVerification,
   type PersistedVerifiedUnitPackage, type UnitSnapshot, type VerifiedUnitRunManifest,
@@ -56,8 +58,12 @@ export function assertNoSecrets(serialized: string, where: string): void {
   if (hits.length > 0) throw new Error(`refusing to write ${where}: it matches ${hits.map((h) => h.pattern).join(", ")}`);
 }
 
+export const CANDIDATE_EVIDENCE_SCHEMA = "p3-candidate-evidence.v2" as const;
+/** v2 adds (additively) what the v1 record could not answer after the fact: execution mode / sharding, the resolved
+ * source context, the operative-source origin, the certified configuration and its per-candidate execution telemetry,
+ * the structured provider error and the qualitative-lineage audit. Every v1 field is unchanged; a v1 reader still reads a v2 record. */
 export interface CandidateEvidence {
-  schema: "p3-candidate-evidence.v1";
+  schema: typeof CANDIDATE_EVIDENCE_SCHEMA;
   capturedAt: string;
   candidateRef: string;
   /** The complete compiler input, minus the live tool-access handles (which are objects, not evidence). */
@@ -74,7 +80,17 @@ export interface CandidateEvidence {
     compilerPromptVersion: string;
     toolPolicyVersion: string;
     operativeLineage: unknown;
+    /** v2: STRUCTURAL_NODE | OPERATIVE_STATE_CURRENT_TEXT (candidate-span.ts). */
+    operativeSourceOrigin: string | null;
   };
+  /** v2: how the compile was executed - the v1 record could not distinguish MONOLITHIC from SHARDED. */
+  execution: { mode: string | null; reason: string | null; planHash: string | null; plannedShards: number | null; oversizedShards: number | null; sharded: { executed: number; reused: number; retries: number; providerCalls: number; statusCounts: Record<string, number> } | null } | null;
+  /** v2: the resolved source context Pass A / Pass B saw (state + one summary row per region). */
+  sourceContext: { state: string; reasons: string[]; regions: { regionId: string; kind: string; documentId: string; sectionRef: string | null; chars: number; charStart: number; truncatedAtBudget: boolean }[] } | null;
+  /** v2: the explicit certified configuration identity and the candidate's execution telemetry (conversations, transport attempts, shard attempts, cost separation). */
+  certified: { configIdentity: string; telemetry: unknown } | null;
+  /** v2 (P3-E14): Pass A call-by-call records (pass id, batch, slot ids, requested ceiling, reasoning policy, input / visible / reasoning / total output tokens, latency, stop reason, schema outcome, item counts) and the policy identity. */
+  passA: { executionPolicy: string | null; calls: unknown[]; passes: unknown } | null;
   contextBundle: {
     bundleId: string;
     sufficiencyState: string;
@@ -87,6 +103,8 @@ export interface CandidateEvidence {
     status: string;
     failureReasons: string[];
     errorDetail: unknown;
+    /** v2: the structured provider error record when the failure was a classified provider failure. */
+    providerError: unknown;
     /** The model's own response, verbatim - the field whose absence made the 7.2(f) origin unprovable. */
     rawModelOutput: unknown;
     toolCallLog: unknown;
@@ -114,6 +132,8 @@ export interface CandidateEvidence {
     semanticReviewInvoked: boolean;
     conditionSuspicion: unknown;
     verifierAlgorithmVersion: string;
+    /** v2: deterministic qualitative-grounding audit. */
+    qualitativeLineage: unknown;
   } | null;
   run: {
     model: string;
@@ -131,6 +151,8 @@ export interface CandidateEvidence {
    * the runtime/audit contract, produced from the same in-memory objects. Present whenever the
    * candidate compiled at least one unit; its `complete` is false when the run did not verify.
    */
+  /** v2 (certification closure): the production certification decision for this candidate, recorded verbatim. */
+  certification?: { status: "CERTIFIED" | "REVIEW_REQUIRED" | "NOT_CERTIFIED"; blockers: string[]; warnings: string[]; operativeSourceVersion: string | null; semanticSourceContractVersion: string | null; artifactPackageHash: string | null; snapshotHash: string | null };
   verifiedUnits?: { file: string; packageHash: string; complete: boolean; artifactsPersisted: number; unitsMissingVerification: number; problems: string[] };
 }
 
@@ -139,10 +161,11 @@ export function buildCandidateEvidence(
   result: SemanticCompilationResult,
   verification: SemanticVerificationResult | null,
   run: CandidateEvidence["run"],
+  extras: { certified?: { configIdentity: string; telemetry: unknown } | null } = {},
 ): CandidateEvidence {
   const bundle = compilerInput.contextBundle as unknown as { bundleId?: string; sufficiencyState?: string; stopReasons?: unknown; edges?: unknown; items?: { itemId: string; type: string; normalizedRef: string | null; citation?: string | null; evidenceState?: string | null; excerptText: string }[] } | null;
   return {
-    schema: "p3-candidate-evidence.v1",
+    schema: CANDIDATE_EVIDENCE_SCHEMA,
     capturedAt: new Date().toISOString(),
     candidateRef: compilerInput.candidateRef,
     compilerInput: {
@@ -158,7 +181,16 @@ export function buildCandidateEvidence(
       compilerPromptVersion: compilerInput.compilerPromptVersion,
       toolPolicyVersion: compilerInput.toolPolicyVersion,
       operativeLineage: compilerInput.operativeLineage ?? null,
+      operativeSourceOrigin: compilerInput.operativeSourceOrigin ?? null,
     },
+    execution: result.execution
+      ? { mode: result.execution.mode, reason: result.execution.reason, planHash: result.execution.planHash, plannedShards: result.execution.plannedShards, oversizedShards: result.execution.oversizedShards, sharded: result.execution.sharded ? { executed: result.execution.sharded.executed, reused: result.execution.sharded.reused, retries: result.execution.sharded.retries, providerCalls: result.execution.sharded.providerCalls, statusCounts: result.execution.sharded.statusCounts } : null }
+      : null,
+    sourceContext: result.sourceContext
+      ? { state: result.sourceContext.state, reasons: result.sourceContext.reasons, regions: result.sourceContext.regions.map((r) => ({ regionId: r.regionId, kind: r.kind, documentId: r.documentId, sectionRef: r.sectionRef, chars: r.text.length, charStart: r.charStart, truncatedAtBudget: r.truncatedAtBudget })) }
+      : null,
+    certified: extras.certified ?? null,
+    passA: result.frozenInventory ? { executionPolicy: result.frozenInventory.executionPolicy ?? null, calls: result.frozenInventory.calls ?? [], passes: result.inventoryPasses ?? null } : null,
     contextBundle: bundle
       ? {
           bundleId: bundle.bundleId ?? "(none)",
@@ -173,6 +205,7 @@ export function buildCandidateEvidence(
       status: result.status,
       failureReasons: result.failureReasons ?? [],
       errorDetail: result.errorDetail ?? null,
+      providerError: result.errorDetail?.providerError ?? null,
       rawModelOutput: result.rawModelOutput ?? null,
       toolCallLog: result.toolCallLog ?? [],
       rules: result.rules ?? [],
@@ -199,6 +232,7 @@ export function buildCandidateEvidence(
           semanticReviewInvoked: verification.semanticReviewInvoked,
           conditionSuspicion: verification.conditionSuspicion,
           verifierAlgorithmVersion: verification.verifierAlgorithmVersion,
+          qualitativeLineage: verification.qualitativeLineage ?? null,
         }
       : null,
     run,
@@ -233,6 +267,8 @@ export interface PersistCandidateArgs {
    * which case the snapshot is taken now and the package records every unit as unverified.
    */
   snapshot?: UnitSnapshot;
+  /** The identities the canonical path stamps before the snapshot. A runner that did not stamp them omits this and its candidates are NOT_CERTIFIED. */
+  identity?: { structuralNodeIds: string[]; operativeSourceVersion: string | null; operativeIdentityStrength: "STRONG" | "WEAK"; semanticSourceContract: SemanticSourceContract | null };
 }
 
 /**
@@ -245,7 +281,16 @@ export function persistCandidate(a: PersistCandidateArgs): { evidencePath: strin
   const snapshot = a.snapshot ?? snapshotUnitsForVerification(a.result);
   const pkg = buildVerifiedUnitPackage({
     companyId: a.compilerInput.companyId, instrumentKey: a.compilerInput.instrumentKey, candidateRef: a.compilerInput.candidateRef, runId: a.runId,
-    snapshot, verification: a.verification, currentUnits: [...(a.result.rules ?? []), ...(a.result.definitions ?? [])],
+    snapshot, verification: a.verification, currentUnits: [...(a.result.rules ?? []), ...(a.result.definitions ?? []), ...(a.result.sharedCapacities ?? [])],
+  });
+  // The certification decision is production code (phase3-certification/certify.ts); this script only records it. A
+  // pilot runner that did not stamp the operative + semantic source identities on its units is honestly NOT_CERTIFIED.
+  const certification = certifyCandidate({
+    candidate: { discoveryId: a.compilerInput.candidateRef, structuralNodeIds: a.identity?.structuralNodeIds ?? [], normalizedSourceRef: a.compilerInput.sourceSectionRef ?? "" },
+    anchored: (a.identity?.structuralNodeIds.length ?? 0) > 0, operativeSourceVersion: a.identity?.operativeSourceVersion ?? null, operativeIdentityStrength: a.identity?.operativeIdentityStrength ?? "WEAK",
+    semanticSourceContract: a.identity?.semanticSourceContract ?? null, bundle: a.compilerInput.contextBundle, compilation: a.result, verification: a.verification,
+    operativeProvision: null, operativeLineage: a.compilerInput.operativeLineage, snapshot, verifiedPackage: pkg,
+    currentUnits: [...(a.result.rules ?? []), ...(a.result.definitions ?? []), ...(a.result.sharedCapacities ?? [])],
   });
   let verifiedUnitsPath: string | null = null;
   if (snapshot.units.length > 0) {
@@ -257,6 +302,7 @@ export function persistCandidate(a: PersistCandidateArgs): { evidencePath: strin
     fs.writeFileSync(verifiedUnitsPath, body);
   }
   const evidence = buildCandidateEvidence(a.compilerInput, a.result, a.verification, a.run);
+  evidence.certification = { status: certification.status, blockers: certification.blockers.map((b) => b.code), warnings: certification.warnings.map((w) => w.code), operativeSourceVersion: certification.operativeSourceVersion, semanticSourceContractVersion: certification.semanticSourceContractVersion, artifactPackageHash: certification.artifactPackageHash, snapshotHash: certification.snapshotHash };
   if (verifiedUnitsPath) evidence.verifiedUnits = { file: path.relative(a.dir, verifiedUnitsPath), packageHash: pkg.packageHash, complete: pkg.complete, artifactsPersisted: pkg.counts.artifactsPersisted, unitsMissingVerification: pkg.counts.unitsMissingVerification, problems: [...new Set(pkg.problems.map((p) => p.code))].sort() };
   const evidencePath = writeCandidateEvidence(a.dir, a.name, evidence);
   return { evidencePath, verifiedUnitsPath, package: pkg };

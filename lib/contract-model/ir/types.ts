@@ -101,8 +101,12 @@ export interface SourceProvenance {
   /** Phase 2A structural-index node key, when the citation is a real structural node - null for a citation that is a definition/proviso span without its own StructuralNode. */
   sourceNodeKey: string | null;
   sourceCitation: string;
-  /** Bounded excerpt of the actual source text this element was derived from - never a synthesized paraphrase (mirrors context-retrieval's own ContextItem.excerptText discipline). */
+  /** Bounded excerpt of the actual source text this element was derived from - never a synthesized paraphrase (mirrors context-retrieval's own ContextItem.excerptText discipline). PROVENANCE SOURCE BINDING: the AUTHORITATIVE excerpt - the exact source substring a model excerpt was bound to, the verbatim model text when it is itself a real quotation, or null when the model excerpt could not be bound (then `rawModelExcerpt` holds the model's text and `excerptResolution.status` is UNRESOLVED). */
   excerpt: string | null;
+  /** The model's own excerpt, verbatim, kept for audit whenever it differs from `excerpt` or could not be bound. Never authoritative. */
+  rawModelExcerpt?: string | null;
+  /** How `excerpt` was established against the admissible source texts (provenance-source-binding.v1); absent on provenance without a model excerpt or on pre-binding artifacts. */
+  excerptResolution?: import("../compiler/semantic/provenance-binding").ProvenanceExcerptResolution;
 }
 
 // ---------------------------------------------------------------------------
@@ -158,9 +162,13 @@ export type EntityScopeReasonCode =
   | "ENTITY_SCOPE_AMBIGUOUS_VS_SOURCE"
   | "ENTITY_SCOPE_UNSPECIFIED"
   | "ENTITY_SCOPE_UNWITNESSED"
-  | "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED";
+  | "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+  /** v3: the authoritative scope was established mechanically from authenticated source (the rule's own cited unit, else the governing ancestor chain - governing-scope.ts), outranking a model scope the source contradicts or the enum cannot name. */
+  | "ENTITY_SCOPE_SOURCE_DERIVED"
+  /** v3: the model's emitted scope differed from the source-derived scope; the discrepancy is recorded, never erased. */
+  | "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED";
 
-export type EntityScopeAuditStatus = "SOURCE_MATCH_CONFIRMED" | "UNDERINCLUSIVE_VS_SOURCE" | "AMBIGUOUS_VS_SOURCE" | "UNRECOGNIZED_TAG" | "UNSPECIFIED" | "UNWITNESSED";
+export type EntityScopeAuditStatus = "SOURCE_MATCH_CONFIRMED" | "UNDERINCLUSIVE_VS_SOURCE" | "AMBIGUOUS_VS_SOURCE" | "UNRECOGNIZED_TAG" | "UNSPECIFIED" | "UNWITNESSED" | "SOURCE_SCOPE_DERIVED";
 
 /** The atomic entity classes the guard reasons over - a small, fixed lattice every EntityClassTag and every source binding phrase maps onto. */
 export type EntityAtom = "BORROWER" | "PARENT" | "GUARANTOR_RS" | "NON_GUARANTOR_RS" | "UNRESTRICTED_SUB";
@@ -174,8 +182,10 @@ export interface IREntityTagNormalization {
 }
 
 export interface IREntityScopeSignal {
-  /** Which bound text the signal was found in. */
-  tier: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN";
+  /** Which bound text the signal was found in. PARENT_SCOPE: the immediately enclosing provision's lead-in; GOVERNING_SCOPE: a farther ancestor / article preamble (inherited applicability, recorded as such). */
+  tier: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "PARENT_SCOPE" | "GOVERNING_SCOPE";
+  /** OBLIGOR: the mention binds who may/may not act. MEASUREMENT_CONTEXT: the mention only names whose statements/metrics/periods a test is computed over. CONDITION_SUBJECT (v3): the mention names who must satisfy a compliance / delivery test in a proviso ("X shall be in compliance with ..."). Neither of the latter widens, narrows or contradicts applicability. */
+  role?: "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT";
   phrase: string;
   index: number;
   excludedContext: boolean;
@@ -195,7 +205,19 @@ export interface IREntityScopeAudit {
   tagNormalization: IREntityTagNormalization[];
   before: { entityScope: EntityClassTag[]; entityScopeExcluded: EntityClassTag[]; sufficiency: RepresentationSufficiency };
   /** Both bound texts are evaluated together: the rule's own excerpt AND the lead-in of the structural unit it cites (which governs every fragment under it). `decidedBy` names the tier(s) whose signals decided the status. */
-  witness: { ownExcerpt: string | null; citedUnitLeadIn: string | null; decidedBy: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "BOTH" | "NONE"; signals: IREntityScopeSignal[] };
+  witness: {
+    ownExcerpt: string | null; citedUnitLeadIn: string | null; parentScopeLeadIn?: string | null;
+    decidedBy: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "BOTH" | "PARENT_SCOPE" | "GOVERNING_SCOPE" | "NONE";
+    signals: IREntityScopeSignal[];
+    /** v3: the governing ancestor chain's mechanically derived applicability (null when it could not be established exactly) and the region it was read from. */
+    governingScope?: { derivedScope: EntityClassTag[] | null; basisSectionRef: string | null; basisRole: "PARENT_SCOPE" | "GOVERNING_SCOPE" | null; ancestorDistance: number | null; phrases: string[]; evidence: string | null } | null;
+  };
+  /** v3: precedence outcome - which authority decided the final scope. */
+  precedence?: "OWN_OPERATIVE_LANGUAGE" | "GOVERNING_SCOPE_SOURCE" | "MODEL_EMITTED" | "NONE";
+  /** v3: execution diagnostics (an unrecognized model tag that a source-derived scope outranked, ...) - never source evidence, never a sufficiency reason. */
+  diagnostics?: string[];
+  /** v3: the model's emitted scope against the source-derived scope. Evidence of a bad model output is preserved, never erased. */
+  modelDiscrepancy?: { modelScope: EntityClassTag[]; rawEmitted: string[]; governingScope: EntityClassTag[]; relation: "AGREES" | "MODEL_NARROWER" | "MODEL_WIDER" | "MODEL_DIFFERENT" | "MODEL_UNRECOGNIZED" } | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -515,6 +537,23 @@ export type IRExpression =
   | IREventActive
   | IRUnsupportedExpression;
 
+/**
+ * THE authoritative list of IR expression kinds. The wire layer's semantic-validity check, the normalizer's
+ * unknown-kind handling and the bounded compiler prompt's primitive list are all generated from this constant, so a
+ * kind cannot exist in prose without existing here (and vice versa).
+ */
+export const IR_EXPRESSION_KINDS = [
+  "MONEY", "NUMBER", "PERCENT", "RATIO", "BOOLEAN_LITERAL", "DATE_LITERAL",
+  "METRIC_REFERENCE", "DEFINED_TERM_REFERENCE", "RULE_REFERENCE", "LEDGER_USAGE_REFERENCE", "TRANSACTION_INPUT_REFERENCE", "ENTITY_SCOPE_REFERENCE",
+  "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "MAX", "MIN", "SUM",
+  "COMPARE", "AND", "OR", "NOT", "IF",
+  "AS_OF", "DURING_PERIOD", "SCHEDULE", "EVENT_ACTIVE",
+  "UNSUPPORTED",
+] as const satisfies readonly IRExpression["kind"][];
+export type IRExpressionKind = (typeof IR_EXPRESSION_KINDS)[number];
+/** The capacity-only form (a capacityExpression / capExpression may be this instead of an expression). */
+export const IR_CAPACITY_ONLY_KINDS = ["UNLIMITED_CAPACITY"] as const;
+
 /** An uncapped/unlimited capacity (task §7's real ground-truth cases - lsb-6.01/lsb-6.11's Payment-Conditions clauses) - a legitimate capacityExpression alternative to a MONEY-typed tree, never represented as "MONEY(Infinity)" or a missing/null threshold that could be confused with "not yet determined." */
 export interface UnlimitedCapacity {
   kind: "UNLIMITED_CAPACITY";
@@ -534,9 +573,90 @@ export type IRCapacityExpression = IRExpression | UnlimitedCapacity;
 // ContractConditionType enum exactly as CandidateContractRule already does.
 // ---------------------------------------------------------------------------
 
+/**
+ * SEMANTIC FIDELITY (Phase 3 closure) - a contractual reference to ANOTHER provision is first-class semantics, with two
+ * resolution stages that are never confused:
+ *   SOURCE_REFERENCE_RESOLVED  the reference text resolves to exactly one structural node of the package (and, when the
+ *                              sealed population is known, to the candidate(s) owning that node); its semantic unit is
+ *                              bound later, at package level, as a derived artifact - the verified unit is never mutated
+ *   SEMANTIC_TARGET_BOUND      package-level binding to certified semantic unit id(s) (derived artifacts only)
+ *   DEPENDENCY_UNKNOWN         the reference text resolves to no structural node - genuinely unknown
+ * The child never restates the target's economics: `description` is generated deterministically from the relationship
+ * type and the exact reference; model prose is kept out of the unit (diagnostics only).
+ */
+export type SourceDependencyResolution = "SOURCE_REFERENCE_RESOLVED" | "SEMANTIC_TARGET_BOUND" | "DEPENDENCY_UNKNOWN";
+
+export interface IRResolvedStructuralTarget { documentId: string; structuralNodeId: string; sectionRef: string }
+
+/**
+ * SOURCE-DERIVED TARGET SELECTOR (SA-2): the target-selection language the source drafts around a reference.
+ * "the financial covenants contained in Section X" selects PART of Section X (QUALIFIED_RULE_SET, qualifierText
+ * "financial covenants contained in"); "subject to Section X" selects the whole provision; "Sections X(a) and X(c)"
+ * is an explicit set; a named condition is its own definition. Read from authenticated source text only, never from
+ * model prose. Package-level binding may expand a reference one-to-many only in a way that satisfies the selector.
+ */
+export interface IRSourceTargetSelector {
+  sourceText: string;
+  kind: "WHOLE_PROVISION" | "QUALIFIED_RULE_SET" | "EXPLICIT_SUBCLAUSE_SET" | "NAMED_CONDITION" | "UNRESOLVED_SELECTOR";
+  qualifierText: string | null;
+}
+
+export interface IRSourceTargetRef {
+  /** The exact reference text as emitted ("Section 9.2(b)", "the Payment Conditions"). */
+  exactSourceTargetRef: string;
+  /** The normalized section ref the structural index was asked for, when the reference is section-shaped; null for a named-condition reference. */
+  normalizedTargetRef: string | null;
+  /** For a named-condition / defined-term reference ("the Payment Conditions"): the exact defined term the index resolved it to; null for section-shaped references. */
+  targetDefinedTerm?: string | null;
+  resolvedStructuralTarget: IRResolvedStructuralTarget | null;
+  /** Candidate(s) of the sealed population owning the resolved node (anchor or ancestor); [] when the population was not supplied. */
+  owningCandidateRefs: string[];
+  /** Always [] on a compiled unit; populated only on package-level derived artifacts. */
+  boundSemanticTargetIds: string[];
+  resolutionStatus: SourceDependencyResolution;
+  /** SA-2 (additive, optional): the selector the source drafts for this reference. Absent on pre-v7 compiler artifacts. */
+  selector?: IRSourceTargetSelector;
+}
+
+export interface IRSourceDependency extends IRSourceTargetRef {
+  relationshipType: ContractRuleRelationshipType;
+  /** Deterministic, generated from relationshipType + exactSourceTargetRef - never model prose, never the target's figures. */
+  description: string;
+  provenance: SourceProvenance | null;
+  inventoryItemIds?: string[];
+}
+
+/** How a cross-rule condition is evaluated, composed from general primitives (never a covenant-specific enum). */
+export interface IRConditionEvaluationBasis {
+  /** True when the source requires the test on a pro forma basis (giving effect to the transaction). */
+  proForma: boolean;
+  /** The transaction effect the pro forma test gives effect to, as the source states it ("the incurrence of such Indebtedness"); null when not stated. */
+  transactionEffect: string | null;
+  /** Source-grounded relative measurement date ("the last day of the most recently ended fiscal quarter for which financial statements are available"), or an ISO date. */
+  asOfSelector: string | null;
+  /** The source's deemed-effective assumption for the transaction ("as if incurred on the first day of each relevant period"); null when not stated. */
+  deemedEffectiveAt: string | null;
+  /**
+   * The testing period the source names, when any. INVARIANT: null is a valid value whenever the source gives no more
+   * precise period description than the one already embedded in `deemedEffectiveAt` / `asOfSelector`; the normalizer
+   * never synthesizes duplicate prose merely to populate the field, and null here is not a representation gap.
+   */
+  testingPeriod: string | null;
+  provenance: SourceProvenance | null;
+}
+
 export interface IRCondition {
   conditionId: string;
   conditionType: ContractConditionType;
+  /**
+   * SEMANTIC FIDELITY: the rule(s)/covenant set(s) whose satisfaction this condition requires ("in compliance with the
+   * financial covenants contained in Section X", "subject to the Payment Conditions"). One source reference may bind to
+   * several certified rules; `targetCombination` carries the meaning the source establishes. Absent on conditions that
+   * are not cross-rule references. A cross-rule condition's own `expression` is BOOLEAN or null - never a MONEY metric.
+   */
+  referencesRuleTargets?: IRSourceTargetRef[];
+  targetCombination?: "ALL_SATISFIED" | "ANY_SATISFIED" | "UNSPECIFIED";
+  evaluationBasis?: IRConditionEvaluationBasis | null;
   /** Formalized boolean expression where the condition can be (e.g. RATIO_SATISFIED -> COMPARE(...)); null for a condition that is real and material but not yet reducible to a boolean expression (e.g. a compound named condition like "Payment Conditions" whose own sub-conditions are represented on ITS OWN rule/definition rather than restated here - task §10's real "reused named condition" lesson from lsb-def-payment-conditions). */
   expression: IRExpression | null;
   /** Set when this condition is itself a reference to a separately-modeled reused named condition (an IRDefinition or another IRRule) rather than an inline expression - the mechanism that prevents restating "Payment Conditions" four times across four citing rules. */
@@ -591,6 +711,48 @@ export interface IRRuleDependency {
  * (review) disposition, never a REPRESENTED one, and is never "guessed"
  * into a real IRRuleDependency (mission §15).
  */
+export interface IRInheritedAttribute {
+  attribute: "governingProhibition" | "entityScope" | "action" | "applicabilityScope";
+  /** OWN_SOURCE: the rule's own excerpt. PARENT_SCOPE: the immediately enclosing provision's lead-in. GOVERNING_SCOPE: a farther structural ancestor or the article-level applicability preamble (governing-scope.ts). */
+  sourceAuthority: "OWN_SOURCE" | "PARENT_SCOPE" | "GOVERNING_SCOPE";
+  /** The governing provision's section ref (or article-group label) when sourceAuthority is not OWN_SOURCE. */
+  sourceSectionRef: string | null;
+  /** The literal source wording establishing the attribute - for "action", the full verb cluster and object as drafted (the source breadth the canonical `action` category represents). */
+  evidence: string;
+  /**
+   * GOVERNING SCOPE / ACTION SEMANTICS (additive, optional): the canonical machine value the evidence establishes -
+   * for "action" the canonical ContractAction the source verb cluster falls in (action-ontology.ts); for "entityScope"
+   * the derived tags joined by "+". `compatibility` records whether the rule's own canonical field agrees with it.
+   */
+  canonicalValue?: string | null;
+  compatibility?: "COMPATIBLE" | "INCOMPATIBLE" | "UNDETERMINED";
+  /** The authenticated span the evidence was read from. */
+  sourceSpan?: { documentId: string; structuralNodeId: string | null; charStart: number; charEnd: number; sha256: string } | null;
+  ancestorDistance?: number | null;
+}
+
+/**
+ * SOURCE-REFERENCE FIDELITY (additive, optional; source-reference-fidelity.ts): the non-authoritative audit of every
+ * reference the composition emitted for a cross-rule condition target or a source dependency, classified against the
+ * references the candidate's own source states. `authoritative` says whether the emitted reference survived into the
+ * unit's semantics; an excluded expansion / broadening / invention is retained here verbatim, never in the semantics.
+ */
+export interface IRSourceReferenceAuditEntry {
+  path: string;
+  emitted: string;
+  classification: "EXACT_SOURCE_REFERENCE" | "SOURCE_EQUIVALENT_NORMALIZATION" | "MODEL_NARROWED_REFERENCE" | "MODEL_BROADENED_REFERENCE" | "MODEL_INVENTED_REFERENCE" | "SOURCE_REFERENCE_UNVERIFIABLE";
+  authoritative: boolean;
+  restoredTo: string | null;
+  statedRefs: string[];
+  detail: string;
+}
+export interface IRSourceReferenceAudit {
+  version: string;
+  note: string;
+  statedReferences: { raw: string; normalized: string | null; origin: "OPERATIVE_TEXT" | "INVENTORY_LINEAGE" }[];
+  entries: IRSourceReferenceAuditEntry[];
+}
+
 export interface IRUnresolvedDependency {
   relationshipType: ContractRuleRelationshipType;
   /** The exact reference text the composition emitted ("Section 6.01(b)(iii)", "clause (x) of this Section"). */
@@ -620,6 +782,14 @@ export interface IRSharedCapacity {
   provenance: SourceProvenance | null;
   /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - the SHARED_CAP inventory item(s) this resource represents. */
   inventoryItemIds?: string[];
+  /**
+   * Phase 3 certification closure (additive): a shared capacity is a FIRST-CLASS verified semantic unit (its cap
+   * expression is independent model-derived source semantics, not derivable from its member rules), so it carries the
+   * same identity fields rules and definitions carry. Optional only for pre-existing fixtures; the compiler always sets them.
+   */
+  irSchemaVersion?: string;
+  compilerVersion?: string | null;
+  sourceContentVersion?: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -671,6 +841,12 @@ export interface IRRule {
   dependsOn: IRRuleDependency[];
   /** SEMANTIC ACCOUNTABILITY (additive, optional) - see IRUnresolvedDependency. Absent (not empty) on rules produced before this layer existed. */
   unresolvedDependencies?: IRUnresolvedDependency[];
+  /** SEMANTIC FIDELITY (additive, optional): every cross-unit source dependency as first-class semantics (resolved or unknown). `unresolvedDependencies` then carries only the DEPENDENCY_UNKNOWN ones. */
+  sourceDependencies?: IRSourceDependency[];
+  /** SEMANTIC FIDELITY (additive, optional): attributes this rule inherits from a governing provision rather than stating in its own source (e.g. the parent prohibition a basket is an exception to). Context informs; it never owns a unit. */
+  inheritedAttributes?: IRInheritedAttribute[];
+  /** SOURCE-REFERENCE FIDELITY (additive, optional): the non-authoritative audit of emitted cross-rule / dependency references (see IRSourceReferenceAudit). */
+  sourceReferenceAudit?: IRSourceReferenceAudit;
 
   operativeLineage: OperativeLineageRef | null;
 

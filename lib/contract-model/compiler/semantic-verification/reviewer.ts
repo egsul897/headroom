@@ -17,10 +17,13 @@
 import { getStageCaller, type StageCaller } from "../llm-caller";
 import { buildVerifierFewShotExamplesBlock, buildVerifierSystemPrompt } from "./prompt";
 import { computeSemanticVerificationFindingId } from "./identity";
+import { normalizeFindingOwner } from "./finding-owner";
 import { SubmitVerificationFindingsSchema, type WireVerificationFinding } from "./wire-schema";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION } from "./types";
+import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION, type SemanticVerificationProjection } from "./projection";
 import type { AdmissibleEvidenceSet, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
 import type { ConditionSuspicionResult } from "./condition-suspicion-classifier";
+import { renderGoverningScopeForPrompt } from "../semantic/governing-scope";
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 
 const VALID_FINDING_TYPES: SemanticVerificationFindingType[] = [
@@ -51,6 +54,7 @@ const VALID_FINDING_TYPES: SemanticVerificationFindingType[] = [
   "POSSIBLE_RULE_SPLIT_ERROR",
   "VERIFICATION_CONTEXT_INCOMPLETE",
   "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+ "QUALITATIVE_ASSERTION_UNGROUNDED",
 ];
 const VALID_SEVERITIES: SemanticVerificationSeverity[] = ["MATERIAL", "NON_MATERIAL", "UNCERTAIN"];
 
@@ -124,10 +128,10 @@ function buildUserContent(input: VerificationInput, reconciliation: Reconciliati
   const { compilerInput, compilationResult } = input;
   const contextItemsSummary = compilerInput.contextBundle.items.map((i) => `- [${i.itemId}] (${i.type}, ${i.sourceCitation}): ${i.excerptText}`).join("\n") || "(none)";
   const unresolvedSummary = compilerInput.contextBundle.unresolvedDependencies.map((u) => `- ${u.dependencyType} (${u.severity}): ${u.reason}`).join("\n") || "(none)";
-  const proposedIr = {
-    rules: compilationResult.rules.map((r) => ({ ruleId: r.ruleId, sourceSectionRef: r.sourceSectionRef, action: r.action, posture: r.posture, capacityExpression: r.capacityExpression, conditions: r.conditions, exceptions: r.exceptions, dependsOn: r.dependsOn, entityScope: r.entityScope, entityScopeExcluded: r.entityScopeExcluded, sufficiency: r.sufficiency })),
-    definitions: compilationResult.definitions.map((d) => ({ definitionId: d.definitionId, termName: d.termName, calculationExpression: d.calculationExpression, dependsOnTerms: d.dependsOnTerms, sufficiency: d.sufficiency })),
-  };
+  // THE semantic review projection (projection.ts): every compiled unit, every field explicitly classified, nothing
+  // inferred or repaired. Never a hand-written field subset again (P3-VP1).
+  const proposedIr: SemanticVerificationProjection = buildSemanticVerificationProjection(compilationResult);
+  const projectionHash = computeSemanticVerificationProjectionHash(proposedIr);
 
   return [
     `Operative source text (${compilerInput.sourceSectionRef ?? "no section ref"}):`,
@@ -143,10 +147,13 @@ function buildUserContent(input: VerificationInput, reconciliation: Reconciliati
     "Unresolved dependencies Phase 2 already flagged:",
     unresolvedSummary,
     "",
+    "GOVERNING SCOPE CONTEXT (authenticated source text of the candidate's structural ancestors - own lead-in only, nearest first - read deterministically from the same instrument's structural index; it governs the applicability, posture and act of the operative provision above but is NOT candidate-owned rule text: never expect it to be represented as a rule of this candidate; DO check that any inherited applicability / action / prohibition the proposed IR claims is actually stated here):",
+    renderGoverningScopeForPrompt(compilationResult.governingScope ?? compilerInput.governingScope) || "(no governing ancestor context was resolved for this candidate)",
+    "",
     "AUTHENTICATED RETRIEVED SOURCE (raw text outside the operative window that THIS verifier independently re-resolved from the same instrument's documents and authenticated by document, version, span and content hash - it is real source text, on the same footing as the operative text above; it is NOT anything the proposing system wrote or summarized). Compare the proposed IR against it directly:",
     summarizeAuthenticatedEvidenceForPrompt(evidence),
     "",
-    "PROPOSED IR (what you are checking - do not trust this merely because it is well-formed JSON):",
+    `PROPOSED IR (what you are checking - do not trust this merely because it is well-formed JSON; projection ${SEMANTIC_VERIFICATION_PROJECTION_VERSION}, content sha256 ${projectionHash}; it lists EVERY proposed rule, definition and shared capacity with every legally material field - a requirement may live in sourceDependencies / inheritedAttributes / unresolvedDependencies as well as in conditions, exceptions, dependsOn or the capacity expression):`,
     JSON.stringify(proposedIr, null, 2),
     "",
     "Deterministic discrepancy signals from an independent, non-AI pass (investigate each, do not merely rubber-stamp):",
@@ -163,6 +170,8 @@ export interface SemanticReviewResult {
   provider: string;
   model: string;
   telemetry: AnalyzerCallTelemetry | null;
+  /** The projection identity the reviewer was shown (projection.ts): version + sha256 of the canonical content. */
+  projection: { version: string; hash: string };
   failed: boolean;
   failureDetail: string | null;
   /**
@@ -183,14 +192,20 @@ function normalizeWireFinding(wire: WireVerificationFinding, input: Verification
   const findingType = matchEnum(wire.findingType, VALID_FINDING_TYPES, "OTHER_MATERIAL_SEMANTIC_DISCREPANCY");
   const severity = matchEnum(wire.severity, VALID_SEVERITIES, "UNCERTAIN");
   const sourceCitation = wire.sourceCitation || compilerInput.sourceSectionRef || "(unknown)";
+  // P-1 remediation: the wire owner id is never trusted verbatim. It is resolved against the
+  // real unit ids of THIS compilation (finding-owner.ts); a repaired owner comes from irPath,
+  // an ambiguous multi-unit owner stays null, and the finding id is computed from the
+  // normalized owner so a fabricated id can never mint a distinct finding.
+  const owner = normalizeFindingOwner({ ruleOrDefinitionId: wire.ruleOrDefinitionId, irPath: wire.irPath }, { rules: input.compilationResult.rules, definitions: input.compilationResult.definitions, sharedCapacities: input.compilationResult.sharedCapacities ?? [] });
 
   return {
-    findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, wire.ruleOrDefinitionId, wire.irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION),
+    findingId: computeSemanticVerificationFindingId(compilerInput.companyId, compilerInput.instrumentKey, compilerInput.candidateRef, findingType, owner.ownerId, wire.irPath, sourceCitation, SEMANTIC_VERIFIER_ALGORITHM_VERSION),
     companyId: compilerInput.companyId,
     instrumentKey: compilerInput.instrumentKey,
     sourceDocumentId: compilerInput.sourceDocumentId,
     candidateRef: compilerInput.candidateRef,
-    ruleOrDefinitionId: wire.ruleOrDefinitionId,
+    ruleOrDefinitionId: owner.ownerId,
+    ownerNormalization: owner,
     irPath: wire.irPath,
     findingType,
     severity,
@@ -209,15 +224,16 @@ function normalizeWireFinding(wire: WireVerificationFinding, input: Verification
   };
 }
 
-export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller(), conditionSuspicion: ConditionSuspicionResult | null = null, evidence: AdmissibleEvidenceSet | null = null): Promise<SemanticReviewResult> {
-  const systemPrompt = buildVerifierSystemPrompt({ verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, verifierPromptVersion: SEMANTIC_VERIFIER_PROMPT_VERSION }) + "\n\n" + buildVerifierFewShotExamplesBlock();
+export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller(), conditionSuspicion: ConditionSuspicionResult | null = null, evidence: AdmissibleEvidenceSet | null = null, callOptions: import("../llm-caller").StageCallOptions = {}): Promise<SemanticReviewResult> {
+  const systemPrompt = buildVerifierSystemPrompt({ verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, verifierPromptVersion: SEMANTIC_VERIFIER_PROMPT_VERSION, projectionVersion: SEMANTIC_VERIFICATION_PROJECTION_VERSION }) + "\n\n" + buildVerifierFewShotExamplesBlock();
   const userContent = buildUserContent(input, reconciliation, conditionSuspicion, evidence);
+  const projection = { version: SEMANTIC_VERIFICATION_PROJECTION_VERSION, hash: computeSemanticVerificationProjectionHash(buildSemanticVerificationProjection(input.compilationResult)) };
 
   try {
-    const wireResult = await caller.call(SubmitVerificationFindingsSchema, "semantic_verification", systemPrompt, userContent);
+    const wireResult = await caller.call(SubmitVerificationFindingsSchema, "semantic_verification", systemPrompt, userContent, callOptions);
     const findings = wireResult.findings.map((f) => normalizeWireFinding(f, input, caller.providerName, caller.model));
-    return { findings, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null, isSynthetic: caller.isSynthetic };
+    return { findings, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), projection, failed: false, failureDetail: null, isSynthetic: caller.isSynthetic };
   } catch (err) {
-    return { findings: [], overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: true, failureDetail: err instanceof Error ? err.message : String(err), isSynthetic: caller.isSynthetic };
+    return { findings: [], overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), projection, failed: true, failureDetail: err instanceof Error ? err.message : String(err), isSynthetic: caller.isSynthetic };
   }
 }

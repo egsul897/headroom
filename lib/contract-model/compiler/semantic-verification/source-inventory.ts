@@ -20,6 +20,7 @@
  * construction, and every numeric value comes from parsing the real source
  * text, never a hardcoded expectation.
  */
+import { scanSourceReferences } from "../source-reference-scan";
 import { countInlineEnumerationMarkers } from "../coverage-audit/signals";
 import { hashParts } from "../hashing";
 import type { SourceInventory, SourceInventoryItem, SourceInventoryItemKind } from "./types";
@@ -34,7 +35,11 @@ import { AMOUNT_RE, parseScaledAmount } from "./amount-parser";
  * 720000000 - the F-3 false-MATERIAL_DISCREPANCY cluster. Item ids carry this version, so v1 and v2 inventories are
  * never confused; finding ids (identity.ts) do not depend on item ids and stay comparable across the fix.
  */
-export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v2";
+// v3 (reference fidelity closure): the section-shaped references the operative text states are inventoried as
+// SECTION_REFERENCE items (source-reference-fidelity.ts's deterministic scan), so Layer 1 can ask whether every stated
+// cross-reference is represented by a typed dependency or cross-rule target - and whether the IR references a provision
+// the source never states.
+export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v3";
 
 interface PatternDef {
   kind: SourceInventoryItemKind;
@@ -119,7 +124,7 @@ function collectPatternMatches(text: string, kind: SourceInventoryItemKind, re: 
  * chain" doc comment on SemanticCompilerInput); this only makes that
  * caller-side assumption checkable rather than implicit.
  */
-export function buildSourceInventory(candidateRef: string, operativeSourceText: string, sourceDocumentId: string, sourceCitation: string, structuralNodeKey: string | null, structuralNodeId: string | null = null, supersessionIndex: NodeSupersessionIndex = EMPTY_SUPERSESSION_INDEX): SourceInventory {
+export function buildSourceInventory(candidateRef: string, operativeSourceText: string, sourceDocumentId: string, sourceCitation: string, structuralNodeKey: string | null, structuralNodeId: string | null = null, supersessionIndex: NodeSupersessionIndex = EMPTY_SUPERSESSION_INDEX, options: { excludedSpans?: readonly (readonly [number, number])[] } = {}): SourceInventory {
   const items: SourceInventoryItem[] = [];
 
   for (const pattern of PATTERNS) {
@@ -158,6 +163,29 @@ export function buildSourceInventory(candidateRef: string, operativeSourceText: 
       structuralNodeKey,
       charStart: hit.charStart,
       charEnd: hit.charEnd,
+    });
+  }
+
+  // v3: a reference to the candidate's own provision (or a clause inside it) is not a cross-reference, and a reference
+  // sitting inside a span owned by a separately-owned child candidate (options.excludedSpans, derived from the sealed
+  // population's structural ownership) is that child's dependency, never this candidate's.
+  const own = sourceCitation.replace(/^[§\s]+/, "").replace(/^Section\s+/i, "").replace(/\s+/g, "").toLowerCase();
+  const selfRef = (n: string | null) => !!n && !!own && /^\d/.test(own) && (n === own || n.startsWith(`${own}(`) || n.startsWith(`${own}.`));
+  const inExcluded = (at: number | null) => at !== null && (options.excludedSpans ?? []).some(([a, b]) => at >= a && at < b);
+  for (const ref of scanSourceReferences(operativeSourceText, { baseSectionRef: sourceCitation })) {
+    if (selfRef(ref.normalized) || inExcluded(ref.charStart)) continue;
+    items.push({
+      itemId: hashParts([candidateRef, "SECTION_REFERENCE", ref.normalized ?? ref.raw, SOURCE_INVENTORY_ALGORITHM_VERSION]),
+      kind: "SECTION_REFERENCE",
+      rawText: ref.raw,
+      numericValue: null,
+      normalizedRef: ref.normalized,
+      sourceDocumentId,
+      sourceCitation,
+      structuralNodeKey,
+      charStart: ref.charStart,
+      charEnd: ref.charEnd,
+      provenanceClass: "PRIMARY_LOCAL",
     });
   }
 

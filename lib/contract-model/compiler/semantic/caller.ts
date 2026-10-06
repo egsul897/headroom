@@ -24,6 +24,7 @@
  * evidence request that keeps the loop going (task §6/§7).
  */
 import Anthropic from "@anthropic-ai/sdk";
+import { renderGoverningScopeForPrompt } from "./governing-scope";
 import { z } from "zod";
 import { AI_GATEWAY_BASE_URL, DEFAULT_ANALYZER_MODEL, DEFAULT_GATEWAY_ANALYZER_MODEL } from "../../analyzer/anthropic-analyzer";
 import { calculateCostUsd, withRetry, type AnalyzerCallTelemetry } from "../../analyzer/telemetry";
@@ -119,9 +120,11 @@ function toolResultsForAssistantTurn(toolUseBlocks: Anthropic.ToolUseBlock[], re
  */
 export interface MinimalAnthropicClient {
   messages: {
-    stream: (params: { model: string; max_tokens: number; system: string; messages: Anthropic.MessageParam[]; tools: Anthropic.Tool[] }) => { finalMessage: () => Promise<Anthropic.Message> };
+    stream: (params: { model: string; max_tokens: number; system: string; messages: Anthropic.MessageParam[]; tools: Anthropic.Tool[]; tool_choice?: { type: "tool"; name: string } | { type: "auto" } }, options?: { signal?: AbortSignal }) => { finalMessage: () => Promise<Anthropic.Message> };
   };
 }
+/** Per-call execution controls threaded from the certified entrypoint: the candidate's abort signal and the hard dispatch budget. */
+export interface SemanticCompileCallOptions { signal?: AbortSignal; budget?: import("../../analyzer/dispatch-budget").DispatchBudget }
 
 export interface SemanticCallerResult {
   submission: SubmitCompilationInput | null;
@@ -139,7 +142,7 @@ export interface SemanticCaller {
   providerName: string;
   model: string;
   isSynthetic: boolean;
-  compile(input: SemanticCompilerInput): Promise<SemanticCallerResult>;
+  compile(input: SemanticCompilerInput, options?: SemanticCompileCallOptions): Promise<SemanticCallerResult>;
 }
 
 function submitToolInputSchema(): Record<string, unknown> {
@@ -192,6 +195,10 @@ export function renderAccountabilityContext(input: SemanticCompilerInput): strin
 
 function summarizeAccountability(input: SemanticCompilerInput): string {
   const parts: string[] = [];
+  // GOVERNING SCOPE (governing-scope.ts): a separately labelled block of authenticated ancestor lead-ins. Typed context
+  // for applicability / posture / action inheritance - never candidate inventory propositions, never operative source.
+  const governing = renderGoverningScopeForPrompt(input.governingScope);
+  if (governing) parts.push(governing);
   const sc = input.sourceContext;
   if (sc) {
     const expansions = sc.regions.filter((r) => r.kind !== "OPERATIVE");
@@ -224,7 +231,8 @@ function summarizeAccountability(input: SemanticCompilerInput): string {
   return parts.join("\n\n");
 }
 
-function summarizeContextBundle(input: SemanticCompilerInput): string {
+/** The deterministic first-turn user content: operative source, typed context regions, frozen inventory, Phase-2D bundle. Shared by the legacy loop and the certified bounded caller. */
+export function summarizeContextBundle(input: SemanticCompilerInput): string {
   const items = input.contextBundle.items.map(formatContextItem).join("\n");
   const unresolved = input.contextBundle.unresolvedDependencies.map((u) => `- ${u.dependencyType} (${u.severity}): ${u.reason}`).join("\n");
   const accountability = summarizeAccountability(input);
@@ -312,7 +320,7 @@ export class RealSemanticCaller implements SemanticCaller {
     private readonly client: MinimalAnthropicClient
   ) {}
 
-  async compile(input: SemanticCompilerInput): Promise<SemanticCallerResult> {
+  async compile(input: SemanticCompilerInput, callOptions: SemanticCompileCallOptions = {}): Promise<SemanticCallerResult> {
     const budget = input.toolBudget ?? DEFAULT_TOOL_BUDGET;
     const charsUsedRef = { current: 0 };
     const toolDefinitions = buildToolSet(input.toolAccess, input.sourceDocumentId, charsUsedRef, budget);
@@ -363,7 +371,7 @@ export class RealSemanticCaller implements SemanticCaller {
         const protocolViolations = validateToolUseProtocol(messages);
         if (protocolViolations.length > 0) throw new Error(`caller tool-protocol violation before send: ${protocolViolations.map((v) => `${v.toolName}:${v.toolUseId} ${v.reason}`).join("; ")}`);
         const { value, attemptCount, retryCount, rateLimitFailures } = await withRetry(async () => {
-          const stream = this.client.messages.stream({ model: this.model, max_tokens: maxTokens, system, messages, tools });
+          const stream = this.client.messages.stream({ model: this.model, max_tokens: maxTokens, system, messages, tools }, { signal: callOptions.signal });
           return stream.finalMessage();
         });
         message = value;

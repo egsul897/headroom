@@ -1,0 +1,387 @@
+[
+  {
+    "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+    "ref": "7.1",
+    "operativeChars": 3275,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480009,
+      "inputTokens": 4914,
+      "outputTokens": 42396,
+      "costUsd": 1.3513292,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": {
+        "inputTokens": 4914,
+        "outputTokens": 42396
+      },
+      "reservationUsd": 1.3513292
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "c8d0328d20afe28aaf5a136f7d324704ddeeb4fd3dcca2dbd945072c35b0e413",
+      "file": null
+    },
+    "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-1/evidence/attempt-1/discovery-candidate:a26970121ceb558846ff8d1c.json",
+    "committedUsd": 0.012849,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  },
+  {
+    "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+    "ref": "7.10",
+    "operativeChars": 1995,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "OTHER_EXECUTION_FAILURE",
+    "retryEligible": true,
+    "retryIneligibleReason": null,
+    "p1Occurrence": false,
+    "packageHashValid": null,
+    "compile": {
+      "outcome": "OTHER_EXECUTION_FAILURE",
+      "status": "FAILED",
+      "failureReasons": [
+        "HARNESS_ABORTED_IN_FLIGHT"
+      ],
+      "wallClockMs": null,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 1.3513292,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": null,
+      "reservationUsd": 1.3513292
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": null,
+    "evidenceFile": null,
+    "committedUsd": 0
+  },
+  {
+    "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+    "ref": "7.13",
+    "operativeChars": 1212,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480006,
+      "inputTokens": 1468,
+      "outputTokens": 43846,
+      "costUsd": 1.3513292,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": {
+        "inputTokens": 1468,
+        "outputTokens": 43846
+      },
+      "reservationUsd": 1.3513292
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "cf7dd97233af74e77e533f5750f23900c87b2802d57c715cba1d6bb909ced79e",
+      "file": null
+    },
+    "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:6c3daaff31337b2767a15b68.json",
+    "committedUsd": 4.055499,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  },
+  {
+    "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+    "ref": "7.14",
+    "operativeChars": 1106,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": 1887,
+      "outputTokens": 45028,
+      "costUsd": 1.3513292,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": {
+        "inputTokens": 1887,
+        "outputTokens": 45028
+      },
+      "reservationUsd": 1.3513292
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "9ac4492456d51095bfa8bde02cbe45c95d7b8b8d70cce04f7d961cc91b542faa",
+      "file": null
+    },
+    "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:6d475ada38fa539312598179.json",
+    "committedUsd": 5.406828,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  },
+  {
+    "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+    "ref": "7.16",
+    "operativeChars": 1144,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480003,
+      "inputTokens": 1345,
+      "outputTokens": 63943,
+      "costUsd": 1.3513292,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": {
+        "inputTokens": 1345,
+        "outputTokens": 63943
+      },
+      "reservationUsd": 1.3513292,
+      "shapeExceeded": [
+        "output tokens 63943 > reserved 60000"
+      ]
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "6d0da8731bef973023aa44cefc98ee3889c22ad7d1ed549c217b23bfa98a7314",
+      "file": null
+    },
+    "evidenceFile": "docs/phase-3-conmed-benchmark-recovery/run-segment-2/evidence/attempt-1/discovery-candidate:71cd58e50f8b3598cb7f1ffb.json",
+    "committedUsd": 6.758157,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  },
+  {
+    "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+    "ref": "7.17",
+    "operativeChars": 795,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480006,
+      "inputTokens": 1240,
+      "outputTokens": 40605,
+      "costUsd": 1.6414892,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": {
+        "inputTokens": 1240,
+        "outputTokens": 40605
+      },
+      "reservationUsd": 1.6414892
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "38c273fcd70a42858a49de08ff60dc0dbf6162e714611bf1c1b8a946e48c8979",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-3/evidence/attempt-1/discovery-candidate:d375c748c3fbadc6014d5f26.json",
+    "committedUsd": 8.400079,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  },
+  {
+    "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+    "ref": "7.2",
+    "operativeChars": 8843,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480004,
+      "inputTokens": null,
+      "outputTokens": null,
+      "costUsd": 1.6674892,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": null,
+      "reservationUsd": 1.6674892
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "3f28890018253942b37f4573757c65f89fc0c227b69380754aa643d53166d531",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-3/evidence/attempt-1/discovery-candidate:4cd22c1476a7c5046da3cc41.json",
+    "committedUsd": 10.067569,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  },
+  {
+    "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "ref": "7.2(c)",
+    "operativeChars": 529,
+    "compile": {
+      "outcome": "TIMEOUT",
+      "status": "FAILED",
+      "failureReasons": [
+        "WALL_CLOCK_TIMEOUT"
+      ],
+      "wallClockMs": 480004,
+      "inputTokens": 9888,
+      "outputTokens": 116913,
+      "costUsd": 1.6414892,
+      "costStatus": "UNKNOWN_TIMEOUT_BILLED",
+      "passAUsage": {
+        "inputTokens": 9888,
+        "outputTokens": 116913
+      },
+      "reservationUsd": 1.6414892,
+      "shapeExceeded": [
+        "output tokens 116913 > reserved 96000"
+      ]
+    },
+    "verify": {
+      "outcome": "NOT_RUN_COMPILE_FAILED",
+      "status": null,
+      "semanticReviewInvoked": null,
+      "findings": null,
+      "sideCalls": [],
+      "costUsd": 0,
+      "costStatus": null,
+      "wallClockMs": null
+    },
+    "package": {
+      "complete": false,
+      "artifactsPersisted": 0,
+      "unitsMissingVerification": 0,
+      "problems": [],
+      "packageHash": "b960769c6073c3be11fa23c9d662882d3f57678b393d74884412c7f2a02be9e3",
+      "file": null
+    },
+    "evidenceFile": "/tmp/claude-0/pilot/benchmark-recovery-3/evidence/attempt-1/discovery-candidate:7a3f36589dacd05c41331a80.json",
+    "committedUsd": 11.709058,
+    "attempt": 1,
+    "pass": 1,
+    "recovery": "TIMEOUT",
+    "packageHashValid": null,
+    "p1Occurrence": false,
+    "retryEligible": true,
+    "retryIneligibleReason": null
+  }
+]

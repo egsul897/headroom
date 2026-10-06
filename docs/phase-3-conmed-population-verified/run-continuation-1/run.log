@@ -1,0 +1,23 @@
+{
+ "out": "/tmp/claude-0/pilot/population-continuation",
+ "priorTerminal": 104,
+ "inFlightUnknown": {
+  "discoveryId": "discovery-candidate:e9236b1dc9d46e13db1b7678",
+  "ref": "7.6(f)(i)"
+ },
+ "neverAttempted": 28,
+ "skip": 105,
+ "priorSpend": {
+  "exactUsd": 0.7324841400000001,
+  "retainedUnknownUsd": 0.9521290399999999,
+  "label": "original run (validated ledger) + in-flight reservation + pre-flight probes + possible aborted-launch amendment call",
+  "breakdown": {
+   "originalExactUsd": 0.73168763,
+   "originalTimeoutReservationsUsd": 0.932306,
+   "originalInFlightReservationUsd": 0.01942304,
+   "originalPreflightProbesUsd": 0.00079651,
+   "abortedFirstLaunchPossibleAmendmentUsd": 0.0004
+  }
+ }
+}
+  [1/28] 7.6(f)(ii)     compile=TIMEOUT            verify=NOT_RUN_COMPILE_FAILED pkg=incomplete committed=$1.7044

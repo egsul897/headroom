@@ -7,11 +7,15 @@
  * Operates purely on the already-compiled IR objects - never re-derives or
  * re-interprets source text (that is source-inventory.ts's job).
  */
-import type { IRCondition, IRDefinition, IRException, IRExpression, IRRule } from "../../ir/types";
+import type { IRCondition, IRDefinition, IRException, IRExpression, IRRule, IRSharedCapacity } from "../../ir/types";
 import { hashParts } from "../hashing";
 import type { IrInventory, IrInventoryItem, IrInventoryItemKind } from "./types";
 
-export const IR_INVENTORY_ALGORITHM_VERSION = "phase-3c-ir-inventory.v1";
+// v2 (governing scope / reference fidelity closure): typed source dependencies, cross-rule condition targets, evaluation
+// bases and inherited attributes are inventoried as their own item kinds - a relationship edge (SOURCE_DEPENDENCY) and a
+// gating role (CROSS_RULE_TARGET) on the same reference are RELATED claims with distinct identities, never a duplicate
+// and never counted as a CONDITION/EXCEPTION, so the aggregate signals cannot double-count them.
+export const IR_INVENTORY_ALGORITHM_VERSION = "phase-3c-ir-inventory.v2";
 
 interface WalkCtx {
   candidateRef: string;
@@ -163,6 +167,9 @@ function walkExpression(ctx: WalkCtx, expr: IRExpression | null, path: string, i
 
 function walkCondition(ctx: WalkCtx, condition: IRCondition, path: string): void {
   pushItem(ctx, "CONDITION", path, null, condition.description || condition.conditionType, false, condition.provenance?.sourceCitation ?? null, condition.provenance?.excerpt ?? null);
+  (condition.referencesRuleTargets ?? []).forEach((t, k) => pushItem(ctx, "CROSS_RULE_TARGET", `${path}.referencesRuleTargets[${k}]`, null, `${t.normalizedTargetRef ?? t.exactSourceTargetRef}|${condition.targetCombination ?? "UNSPECIFIED"}|${t.resolutionStatus}`, false, condition.provenance?.sourceCitation ?? null, condition.provenance?.excerpt ?? null));
+  const b = condition.evaluationBasis;
+  if (b) pushItem(ctx, "EVALUATION_BASIS", `${path}.evaluationBasis`, null, `proForma:${b.proForma};transactionEffect:${!!b.transactionEffect};asOfSelector:${!!b.asOfSelector};deemedEffectiveAt:${!!b.deemedEffectiveAt};testingPeriod:${!!b.testingPeriod}`, false, b.provenance?.sourceCitation ?? condition.provenance?.sourceCitation ?? null, b.provenance?.excerpt ?? null);
   if (condition.expression) walkExpression(ctx, condition.expression, `${path}.expression`, false);
 }
 
@@ -186,6 +193,8 @@ function walkRule(candidateRef: string, rule: IRRule, rulePath: string): IrInven
   rule.conditions.forEach((c, i) => walkCondition(ctx, c, `${rulePath}.conditions[${i}]`));
   rule.exceptions.forEach((e, i) => walkException(ctx, e, `${rulePath}.exceptions[${i}]`));
   rule.dependsOn.forEach((d, i) => pushItem(ctx, "DEPENDENCY", `${rulePath}.dependsOn[${i}]`, null, `${d.relationshipType}:${d.targetRuleId}`, false, null, null));
+  (rule.sourceDependencies ?? []).forEach((d, i) => pushItem(ctx, "SOURCE_DEPENDENCY", `${rulePath}.sourceDependencies[${i}]`, null, `${d.relationshipType}:${d.normalizedTargetRef ?? d.exactSourceTargetRef}|${d.resolutionStatus}`, false, d.provenance?.sourceCitation ?? ruleCitation, null));
+  (rule.inheritedAttributes ?? []).forEach((a, i) => pushItem(ctx, "INHERITED_ATTRIBUTE", `${rulePath}.inheritedAttributes[${i}]`, null, `${a.attribute}:${a.canonicalValue ?? ""}@${a.sourceAuthority}:${a.sourceSectionRef ?? ""}`, false, a.sourceSectionRef, a.evidence));
 
   if (rule.capacityExpression) {
     if (rule.capacityExpression.kind === "UNLIMITED_CAPACITY") {
@@ -206,10 +215,22 @@ function walkDefinition(candidateRef: string, definition: IRDefinition, defPath:
   return ctx.items;
 }
 
-export function buildIrInventory(candidateRef: string, rules: IRRule[], definitions: IRDefinition[]): IrInventory {
+/** Phase 3 certification closure: a shared capacity's cap expression is verified exactly like a rule's capacity expression. */
+function walkSharedCapacity(candidateRef: string, cap: IRSharedCapacity, capPath: string): IrInventoryItem[] {
+  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: cap.sharedCapId, items: [], ownerTermName: null };
+  cap.memberRuleIds.forEach((m, i) => pushItem(ctx, "DEPENDENCY", `${capPath}.memberRuleIds[${i}]`, null, `SHARED_CAP_MEMBER:${m}`, false, null, null));
+  if (cap.capExpression.kind === "UNLIMITED_CAPACITY") {
+    pushItem(ctx, "UNLIMITED_CAPACITY_MARKER", `${capPath}.capExpression`, null, null, false, cap.capExpression.provenance?.sourceCitation ?? null, cap.capExpression.provenance?.excerpt ?? null);
+    if (cap.capExpression.gatedBy) walkExpression(ctx, cap.capExpression.gatedBy, `${capPath}.capExpression.gatedBy`, false);
+  } else walkExpression(ctx, cap.capExpression, `${capPath}.capExpression`, false);
+  return ctx.items;
+}
+
+export function buildIrInventory(candidateRef: string, rules: IRRule[], definitions: IRDefinition[], sharedCapacities: IRSharedCapacity[] = []): IrInventory {
   const items: IrInventoryItem[] = [];
   rules.forEach((rule, i) => items.push(...walkRule(candidateRef, rule, `rules[${i}]`)));
   definitions.forEach((def, i) => items.push(...walkDefinition(candidateRef, def, `definitions[${i}]`)));
+  sharedCapacities.forEach((cap, i) => items.push(...walkSharedCapacity(candidateRef, cap, `sharedCapacities[${i}]`)));
 
   return {
     candidateRef,

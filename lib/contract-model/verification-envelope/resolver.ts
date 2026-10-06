@@ -31,7 +31,7 @@ import type {
   RuntimeVerificationIdentity,
   RuntimeVerificationUnit,
 } from "../runtime/verification-envelope";
-import type { IRDefinition, IRRule } from "../ir/types";
+import type { IRDefinition, IRRule, IRSharedCapacity } from "../ir/types";
 import type { SemanticVerificationFinding, SemanticVerificationResult } from "../compiler/semantic-verification/types";
 
 export const RUNTIME_ENVELOPE_RESOLVER_VERSION = "phase-3-runtime-envelope-resolver.v1";
@@ -46,12 +46,12 @@ const ENVELOPE_VERSION = "phase-4-verification-envelope.v1";
  */
 const STRICT_PATH = /^(rules|definitions|sharedCapacities)\[\d+\]((?:\.[A-Za-z_][A-Za-z0-9_]*(?:\[\d+\])?)*)$/;
 
-export type UnitKind = "RULE" | "DEFINITION";
+export type UnitKind = "RULE" | "DEFINITION" | "SHARED_CAPACITY";
 
 export interface ResolverUnitInput {
   kind: UnitKind;
   /** The compiled unit exactly as the verifier saw it. */
-  unit: IRRule | IRDefinition;
+  unit: IRRule | IRDefinition | IRSharedCapacity;
   verification: SemanticVerificationResult;
 }
 
@@ -77,12 +77,12 @@ export interface ResolveEnvelopeResult {
   counts: Record<PathResolution | "MATERIAL_IN" | "MATERIAL_OUT" | "EXCLUDED_NON_MATERIAL", number>;
 }
 
-function identityOf(kind: UnitKind, unit: IRRule | IRDefinition): RuntimeVerificationIdentity {
+function identityOf(kind: UnitKind, unit: IRRule | IRDefinition | IRSharedCapacity): RuntimeVerificationIdentity {
   return {
-    ruleOrDefinitionId: kind === "RULE" ? (unit as IRRule).ruleId : (unit as IRDefinition).definitionId,
+    ruleOrDefinitionId: kind === "RULE" ? (unit as IRRule).ruleId : kind === "DEFINITION" ? (unit as IRDefinition).definitionId : (unit as IRSharedCapacity).sharedCapId,
     companyId: unit.companyId,
     instrumentKey: unit.instrumentKey,
-    irSchemaVersion: unit.irSchemaVersion,
+    irSchemaVersion: unit.irSchemaVersion ?? "",
     compilerVersion: unit.compilerVersion ?? null,
     sourceContentVersion: unit.sourceContentVersion ?? null,
   };
@@ -105,12 +105,12 @@ function classifyUnusable(path: string): PathResolution {
  * index is deliberately ignored: it is positional and the binding is by id, not by position.
  * The root's KIND is checked, because a `definitions[0]...` path on a rule is a real mismatch.
  */
-function walk(kind: UnitKind, unit: IRRule | IRDefinition, path: string): { resolution: PathResolution; exprIds: string[] } {
+function walk(kind: UnitKind, unit: IRRule | IRDefinition | IRSharedCapacity, path: string): { resolution: PathResolution; exprIds: string[] } {
   const m = STRICT_PATH.exec(path);
   if (!m) return { resolution: classifyUnusable(path), exprIds: [] };
 
   const root = m[1]!;
-  const expectedRoot = kind === "RULE" ? "rules" : "definitions";
+  const expectedRoot = kind === "RULE" ? "rules" : kind === "DEFINITION" ? "definitions" : "sharedCapacities";
   if (root !== expectedRoot) return { resolution: "UNIT_WRONG_ROOT_KIND", exprIds: [] };
 
   const steps = (m[2] ?? "").split(".").filter((s) => s.length > 0);
@@ -136,7 +136,7 @@ function walk(kind: UnitKind, unit: IRRule | IRDefinition, path: string): { reso
   return { resolution: "NODE_EXACT", exprIds: [exprId] };
 }
 
-function toRuntimeFinding(kind: UnitKind, unit: IRRule | IRDefinition, finding: SemanticVerificationFinding): { runtime: RuntimeMaterialFinding; audit: ResolverAudit } {
+function toRuntimeFinding(kind: UnitKind, unit: IRRule | IRDefinition | IRSharedCapacity, finding: SemanticVerificationFinding): { runtime: RuntimeMaterialFinding; audit: ResolverAudit } {
   const path = finding.irPath ?? null;
   const { resolution, exprIds } = path === null ? { resolution: "UNIT_NO_PATH" as PathResolution, exprIds: [] as string[] } : walk(kind, unit, path);
   const scope = resolution === "NODE_EXACT" && exprIds.length === 1 ? "NODE" : "UNIT";

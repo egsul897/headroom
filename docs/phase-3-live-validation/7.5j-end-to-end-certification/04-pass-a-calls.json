@@ -1,0 +1,132 @@
+{
+  "inventoryMode": "DUAL_PASS_ENSEMBLE",
+  "inventoryPasses": [
+    {
+      "passId": "pass-1",
+      "frozenContentHash": "da6c482d1d8087974b30e43aa186d9e4d6e8face5798e8f0d92dd682e36bd612",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "items": 9,
+      "telemetryCostUsd": 0.00066391
+    },
+    {
+      "passId": "pass-2",
+      "frozenContentHash": "1be1d4b03e801ea847370cf6f4a5313db1bedb6bfb235a234c184d62654fef63",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "items": 7,
+      "telemetryCostUsd": 0.000502782
+    }
+  ],
+  "calls": [
+    {
+      "passId": "pass-1",
+      "batchId": "b1",
+      "stage": "semantic_inventory",
+      "slotIds": [
+        "operative:region#1",
+        "operative:region#2",
+        "operative:region#3",
+        "operative:region#4"
+      ],
+      "requestedMaxOutputTokens": 6397,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 12,
+      "inputTokens": 1595,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": 1756,
+      "latencyMs": 13259,
+      "stopReason": "end_turn",
+      "schemaOk": true,
+      "error": null,
+      "itemsReturned": 9,
+      "itemsAccepted": 9,
+      "itemsRejectedOverBound": 0
+    },
+    {
+      "passId": "pass-1",
+      "batchId": "g1",
+      "stage": "semantic_inventory_gap",
+      "slotIds": [
+        "operative:region#1"
+      ],
+      "requestedMaxOutputTokens": 2226,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 4,
+      "inputTokens": null,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": null,
+      "latencyMs": 3540,
+      "stopReason": null,
+      "schemaOk": false,
+      "error": "Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      1,\n      \"parentRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters\n  - items.1.localRef: Too big: expected string to have <=6 characters\n  - items.1.parentRef: Too big: expected string to have <=6 characters",
+      "itemsReturned": 0,
+      "itemsAccepted": 0,
+      "itemsRejectedOverBound": 0
+    },
+    {
+      "passId": "pass-2",
+      "batchId": "b1",
+      "stage": "semantic_inventory",
+      "slotIds": [
+        "operative:region#1",
+        "operative:region#2",
+        "operative:region#3",
+        "operative:region#4"
+      ],
+      "requestedMaxOutputTokens": 6397,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 12,
+      "inputTokens": 571,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": 1538,
+      "latencyMs": 12448,
+      "stopReason": "end_turn",
+      "schemaOk": true,
+      "error": null,
+      "itemsReturned": 8,
+      "itemsAccepted": 8,
+      "itemsRejectedOverBound": 0
+    },
+    {
+      "passId": "pass-2",
+      "batchId": "g1",
+      "stage": "semantic_inventory_gap",
+      "slotIds": [
+        "operative:region#3"
+      ],
+      "requestedMaxOutputTokens": 2023,
+      "reasoningPolicy": "DISABLED",
+      "maxItems": 4,
+      "inputTokens": null,
+      "visibleOutputTokens": null,
+      "reasoningTokens": null,
+      "totalOutputTokens": null,
+      "latencyMs": 4560,
+      "stopReason": null,
+      "schemaOk": false,
+      "error": "Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 6,\n    \"inclusive\": true,\n    \"path\": [\n      \"items\",\n      0,\n      \"localRef\"\n    ],\n    \"message\": \"Too big: expected string to have <=6 characters\"\n  }\n]\nValidation issues:\n  - items.0.localRef: Too big: expected string to have <=6 characters",
+      "itemsReturned": 0,
+      "itemsAccepted": 0,
+      "itemsRejectedOverBound": 0
+    }
+  ],
+  "executionPolicy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+  "derivedBounds": {
+    "policy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+    "slots": 4,
+    "batches": 1,
+    "maxLegitimateItems": 12,
+    "parseCeilings": [
+      32
+    ],
+    "maxSerializedChars": 15352,
+    "requestedMaxOutputTokensByBatch": [
+      6397
+    ],
+    "reasoning": "DISABLED",
+    "callDeadlineMs": 180000
+  }
+}

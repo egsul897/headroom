@@ -1,0 +1,284 @@
+{
+  "sufficiencyState": "SUFFICIENT",
+  "stopReasons": [],
+  "retrievalStops": [
+    {
+      "reason": "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT",
+      "fromNodeId": "structural-node:99cfe0463b0b851f644273fb",
+      "targetNodeId": "structural-node:31a18e83f13af616c76add29",
+      "targetSectionRef": "7.3(g)",
+      "owningCandidateRefs": [
+        "discovery-candidate:082c80836268c7277cc39c18"
+      ],
+      "depth": 1,
+      "detail": "7.3(g) is owned by candidate(s) discovery-candidate:082c80836268c7277cc39c18; its dependency tree is delegated to that unit"
+    },
+    {
+      "reason": "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT",
+      "fromNodeId": "structural-node:99cfe0463b0b851f644273fb",
+      "targetNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+      "targetSectionRef": "7.1",
+      "owningCandidateRefs": [
+        "discovery-candidate:a26970121ceb558846ff8d1c",
+        "discovery-candidate:e37352369564a1e784e0560b"
+      ],
+      "depth": 1,
+      "detail": "7.1 is owned by candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b; its dependency tree is delegated to that unit"
+    }
+  ],
+  "performance": {
+    "itemsConsidered": 19,
+    "itemsRetained": 19,
+    "duplicatePathsDeduplicated": 5,
+    "maxDefinitionDepthReached": 5,
+    "maxCrossReferenceDepthReached": 1,
+    "crossReferenceTraversals": 1,
+    "crossDocumentLeads": 1,
+    "deterministicWallClockMs": 16,
+    "semanticWallClockMs": 0,
+    "semanticCalls": 0,
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "itemsRetained": 19,
+  "items": [
+    {
+      "type": "OPERATIVE_SOURCE",
+      "normalizedRef": "7.2(c)",
+      "retrievalDepth": 0,
+      "excerptChars": 529,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "PARENT_SCOPE",
+      "normalizedRef": "7.2",
+      "retrievalDepth": 1,
+      "excerptChars": 107,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "UNVERIFIED_SIBLING_SIGNAL",
+      "normalizedRef": "7.2(h)",
+      "retrievalDepth": 1,
+      "excerptChars": 467,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "UNVERIFIED_SIBLING_SIGNAL",
+      "normalizedRef": "7.2(k)",
+      "retrievalDepth": 1,
+      "excerptChars": 267,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "UNVERIFIED_SIBLING_SIGNAL",
+      "normalizedRef": "7.2(s)",
+      "retrievalDepth": 1,
+      "excerptChars": 154,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION",
+      "normalizedRef": "Indebtedness",
+      "retrievalDepth": 1,
+      "excerptChars": 2920,
+      "evidenceState": {
+        "status": "HISTORICAL_ONLY",
+        "isCurrentTruth": false,
+        "reason": "An amendment effect targeting indebtedness has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.; 2b40d9cca669ae877e5c94d678904f41dd728b60f79ecd9da8eae6e300b4832c: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation; preserved Phase-2 report: amendment chain of length 1 not replayed by this adapter (summary view only)"
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Capital Stock",
+      "retrievalDepth": 2,
+      "excerptChars": 451,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Finance Lease Obligations",
+      "retrievalDepth": 2,
+      "excerptChars": 973,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Agreement",
+      "retrievalDepth": 3,
+      "excerptChars": 49,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Obligations",
+      "retrievalDepth": 3,
+      "excerptChars": 1272,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Loan",
+      "retrievalDepth": 4,
+      "excerptChars": 65,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Swap",
+      "retrievalDepth": 4,
+      "excerptChars": 143,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Lien",
+      "retrievalDepth": 2,
+      "excerptChars": 431,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Parent Borrower",
+      "retrievalDepth": 2,
+      "excerptChars": 55,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "DEFINITION_DEPENDENCY",
+      "normalizedRef": "Property",
+      "retrievalDepth": 2,
+      "excerptChars": 170,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "CROSS_REFERENCE",
+      "normalizedRef": "7.3(g)",
+      "retrievalDepth": 1,
+      "excerptChars": 436,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "CROSS_REFERENCE",
+      "normalizedRef": "7.1",
+      "retrievalDepth": 1,
+      "excerptChars": 44,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "CROSS_REFERENCE",
+      "normalizedRef": "VIII",
+      "retrievalDepth": 2,
+      "excerptChars": 14,
+      "evidenceState": {
+        "status": "CURRENT",
+        "isCurrentTruth": true,
+        "reason": "Confirmed current operative text - no unresolved amendment/supersession issue."
+      }
+    },
+    {
+      "type": "AMENDMENT_LEAD",
+      "normalizedRef": "Indebtedness",
+      "retrievalDepth": 1,
+      "excerptChars": 274,
+      "evidenceState": {
+        "status": "OPERATIVE_STATE_UNRESOLVED",
+        "isCurrentTruth": false,
+        "reason": "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task §19)."
+      }
+    }
+  ],
+  "unresolvedDependencies": [
+    {
+      "originatingNodeKey": "structural-node:31a18e83f13af616c76add29",
+      "dependencyType": "OTHER",
+      "sourceText": "7.3(g)(i)",
+      "attemptedResolution": "7.3(g) has multiple child clauses; 7.3(g)(i)'s own text showed no operative/economic signal and was excluded from the retrieved region.",
+      "reason": "Bounded descendant selection excluded this clause - disclosed rather than silently retrieved or silently dropped.",
+      "candidateTargets": [
+        "7.3(g)(i)"
+      ],
+      "citation": "7.3(g)(i)",
+      "severity": "LOW"
+    },
+    {
+      "originatingNodeKey": null,
+      "dependencyType": "UNRESOLVED_DEFINED_TERM",
+      "sourceText": "Parent Borrower and",
+      "attemptedResolution": "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
+      "reason": "Not declared in this document, and no related document in the package declares it either.",
+      "candidateTargets": [],
+      "citation": "Parent Borrower and",
+      "severity": "LOW"
+    }
+  ],
+  "hasUnresolvedOperativeEvidence": true,
+  "unresolvedEvidenceItemIds": [
+    "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+    "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320"
+  ]
+}

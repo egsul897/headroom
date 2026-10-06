@@ -50,12 +50,28 @@ export const SLOWEST_OBSERVED_SUCCESS_MS = 427_000;
 /**
  * §7 — the output rate the reservation assumes, rounded UP past every rate measured.
  *
- * The fastest sustained rate across the admissible rows was 120.2 tok/s (mercury-2.5 on
- * 7.8(b)). Reserving at 125 means a candidate held for the full ceiling cannot bill more
- * than we set aside, which is the property the guard needs. Reserving too little would
- * reintroduce exactly the hole this module exists to close.
+ * History of the measurement, because the guard is only as good as this number:
+ *   - bake-off: the fastest sustained rate across the admissible rows was 120.2 tok/s
+ *     (mercury-2.5 on 7.8(b)); reserved at 125.
+ *   - benchmark recovery, 2026-09-25, deepseek/deepseek-v4-flash on 7.16: the Pass A inventory
+ *     calls alone returned 63,943 output tokens inside the 480 s ceiling, i.e. AT LEAST 133.2 tok/s
+ *     sustained (the calls finished before the cut-off, so the true rate is higher and unknowable
+ *     from the evidence). The P-7 shape guard stopped that run (RESERVATION_SHAPE_EXCEEDED), which
+ *     is exactly what it exists for. Reserved at 200 from then on: a 50% margin over the measured
+ *     lower bound. The reservation FORMULA is unchanged; this is the one empirical input it takes.
+ *   - benchmark recovery, same day, 7.2(c): Pass A alone returned 116,913 output tokens inside the
+ *     ceiling - AT LEAST 243.6 tok/s. Guard fired again. Reserved at 300 from then on; at this rate the
+ *     480 s output allowance (144,000) exceeds the requested max_tokens (128,000), so the per-candidate
+ *     output cap becomes the per-call max_tokens itself, a structural limit rather than a rate estimate.
+ *
+ * Reserving at this rate means a candidate held for the full ceiling cannot bill more output than
+ * we set aside, which is the property the guard needs. Reserving too little would reintroduce
+ * exactly the hole this module exists to close.
  */
-export const OBSERVED_OUTPUT_TOKENS_PER_SECOND = 125;
+export const OBSERVED_OUTPUT_TOKENS_PER_SECOND = 300;
+/** The measured lower bounds that forced the 2026-09-25 recalibrations (63,943 then 116,913 tokens / 480 s). */
+export const MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUNDS = [63_943 / 480, 116_913 / 480] as const;
+export const MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND = MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUNDS[1];
 
 export type CostAccountingStatus =
   | "EXACT"

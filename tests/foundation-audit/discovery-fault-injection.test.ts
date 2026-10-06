@@ -55,7 +55,7 @@ describe("Fault: discovery section crash (Phase 2F.2 fault isolation, re-verifie
     expect(result.summary.sectionFailures[0]!.errorMessage).toContain("audit-injected");
     // A section other than 6.02 must still have produced a candidate - proof the failure was isolated, not global.
     expect(result.candidates.length).toBeGreaterThan(0);
-    expect(result.candidates.every((c) => c.sectionRef !== "6.02" || false)).toBe(true);
+    expect(result.candidates.every((c) => c.normalizedSourceRef !== "6.02" || false)).toBe(true);
     expect(result.summary.documentDiscoveryHealth).toBe("DISCOVERY_PARTIAL"); // some, not all, sections failed
   });
 

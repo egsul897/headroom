@@ -25,13 +25,16 @@ import { auditShardMissingContext, reportedMissingDependencies } from "./missing
 import { DEFAULT_TOOL_BUDGET } from "./types";
 import type { ToolCallLogEntry } from "./types";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "./types";
-import type { NormalizedCompilation } from "./normalize";
+import { diagnosticRecord, type NormalizedCompilation } from "./normalize";
+import type { SemanticCompileCallOptions } from "./caller";
 
 export interface BoundedShardExecutorInput {
   /** compile.ts's own callerInput for the whole unit (carries the resolved sourceContext and the frozen inventory). */
   baseInput: SemanticCompilerInput;
   plan: ShardPlan;
   caller: SemanticCaller;
+  /** Certified path: abort signal + dispatch budget for every shard call. */
+  callOptions?: SemanticCompileCallOptions;
 }
 
 /**
@@ -68,7 +71,7 @@ export function summariseToolUsage(log: readonly ToolCallLogEntry[], budget = DE
 }
 
 /** Maps one bounded compilation's result into the executor's outcome shape - the same mapping the certified paid runs used. */
-export function shardOutcomeFromBoundedResult(compile: SemanticCompilationResult, inventoryDispositions: NormalizedCompilation["inventoryDispositions"], shard?: CompilationShard): Omit<ShardExecutionResult, "shardId" | "shardHash" | "reusedFromHash" | "attempts"> {
+export function shardOutcomeFromBoundedResult(compile: SemanticCompilationResult, inventoryDispositions: NormalizedCompilation["inventoryDispositions"], shard?: CompilationShard, baseCandidateRef?: string): Omit<ShardExecutionResult, "shardId" | "shardHash" | "reusedFromHash" | "attempts"> {
   const status = classifyShardStatus(compile.status, compile.failureReasons);
   const composition = compile.status === "FAILED" && compile.rules.length === 0 && compile.definitions.length === 0
     ? null
@@ -82,6 +85,14 @@ export function shardOutcomeFromBoundedResult(compile: SemanticCompilationResult
     toolUsage: summariseToolUsage(compile.toolCallLog ?? []),
     // §22: the MISSING_CONTEXT claim is audited against what this shard was actually handed, never taken at face value.
     ...(shard && composition ? { missingContextAudit: auditShardMissingContext({ shard, reported: reportedMissingDependencies(composition) }) } : {}),
+    // SA-3: every normalization safety signal travels with the shard result, stamped with the shard and re-keyed to the
+    // whole-unit candidate so its identity is the same one the monolithic path would mint (never a timestamp).
+    ...(shard ? { normalization: {
+      diagnostics: (compile.normalizationDiagnostics ?? []).map((d) => diagnosticRecord(baseCandidateRef ?? compile.rules[0]?.ruleId ?? shard.shardId, shard.shardId, d, d.sourceUnit ?? null)),
+      dependencyProseDiagnostics: (compile.dependencyProseDiagnostics ?? []).map((d) => ({ ...d, shardId: shard.shardId })),
+      contextOnlyEmissions: (compile.contextOnlyEmissions ?? []).map((e) => ({ ...e, shardId: shard.shardId })),
+      invalidWireKinds: (compile.invalidWireKinds ?? []).map((k) => ({ shardId: shard.shardId, path: k.path, kind: k.kind })),
+    } } : {}),
   };
 }
 
@@ -93,7 +104,8 @@ export function createBoundedShardExecutor(input: BoundedShardExecutorInput): Sh
       cacheKey: `${input.plan.planHash}#${shard.shardHash}`,
       evidenceFlags: contextBundleEvidenceFlags(shardInput),
       accountability: { sourceContext: null, frozenInventory: null, inventoryMode: null, inventoryPasses: null },
+      callOptions: input.callOptions,
     });
-    return shardOutcomeFromBoundedResult(outcome.result, outcome.inventoryDispositions, shard);
+    return shardOutcomeFromBoundedResult(outcome.result, outcome.inventoryDispositions, shard, input.baseInput.candidateRef);
   };
 }

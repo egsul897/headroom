@@ -21,12 +21,12 @@ import { compileReservationUsd, verifyReservationUsd } from "./reservation-polic
 import { loadModel } from "./compile-run";
 import { canonicalAttempt, MAX_ATTEMPTS_PER_CASE, OUT, TARGET_REFS, EXCLUDED_REF, type RecoveryAttempt } from "./run-benchmark-recovery";
 
-export const RECOVERY_DEST = "docs/phase-3-conmed-benchmark-recovery/run";
+export const RECOVERY_DEST = "docs/phase-3-conmed-benchmark-recovery/run-segment-2";
 const sha256File = (p: string) => createHash("sha256").update(fs.readFileSync(p)).digest("hex");
 const walk = (dir: string, out: string[] = []): string[] => { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const f = path.join(dir, e.name); if (e.isDirectory()) walk(f, out); else out.push(f); } return out; };
 const near = (a: number, b: number, eps = 2e-6) => Math.abs(a - b) < eps;
 
-export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST) {
+export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST, reportName = "01-run-validation.json") {
   const read = (n: string) => JSON.parse(fs.readFileSync(path.join(scratch, n), "utf8"));
   const problems: string[] = [];
   const files = walk(scratch).filter((f) => !f.endsWith("/.pid")).sort();
@@ -37,7 +37,9 @@ export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST) {
   const packages = packageFiles.map((f) => { try { return { file: path.relative(scratch, f), pkg: parseVerifiedUnitPackage(fs.readFileSync(f, "utf8")) }; } catch (e) { problems.push(`package ${path.relative(scratch, f)}: ${(e as Error).message}`); return null; } }).filter((x): x is NonNullable<typeof x> => x !== null);
 
   const plan = read("00-plan.json"); const attempts = read("01-attempts.json") as RecoveryAttempt[]; const costs = read("02-costs.json") as { snapshot: Record<string, number>; perRequest: { discoveryId: string; stage: string; attempt: number; chargedToBudgetUsd: number; costAccountingStatus: string }[]; sideCalls: { discoveryId: string | null; stage: string; costUsd: number; model: string }[] };
-  const preflight = read("preflight-health.json"); const manifest = fs.existsSync(path.join(scratch, "03-run-manifest.json")) ? read("03-run-manifest.json") : null;
+  // a resumed segment carries the probes through its seeded prior and has no local probe file
+  let probeDir = scratch; while (!fs.existsSync(path.join(probeDir, "preflight-health.json"))) probeDir = JSON.parse(fs.readFileSync(path.join(probeDir, "00-plan.json"), "utf8")).resume.segmentDir;
+  const preflight = JSON.parse(fs.readFileSync(path.join(probeDir, "preflight-health.json"), "utf8")); const manifest = fs.existsSync(path.join(scratch, "03-run-manifest.json")) ? read("03-run-manifest.json") : null;
   const model = loadModel(plan.model);
   const targets = plan.targets as { discoveryId: string; ref: string; operativeChars: number }[];
   const targetIds = new Set(targets.map((t) => t.discoveryId));
@@ -50,9 +52,15 @@ export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST) {
   for (const [ref, as] of perCase) { if (as.length > MAX_ATTEMPTS_PER_CASE) problems.push(`${ref}: ${as.length} attempts`); if (as.map((a) => a.attempt).join(",") !== as.map((_, i) => i + 1).join(",")) problems.push(`${ref}: attempt numbering ${as.map((a) => a.attempt)}`); if (as.length === 2 && as[0]!.recovery === "RECOVERED") problems.push(`${ref}: retried after RECOVERED`); if (as.length === 2 && !as[0]!.retryEligible) problems.push(`${ref}: retried although ineligible (${as[0]!.retryIneligibleReason})`); }
   if (attempts.length > 16) problems.push("more than 16 attempts");
   // reservations equal the policy figure for that candidate
+  // reservations equal the policy figure IN FORCE for that segment (its recorded output cap); carried rows keep theirs
+  const segmentOutputCap = plan.reservationPolicy.compileShapeAtMaxChars.outputTokens as number;
+  const carriedRows = new Set(((plan.resume?.priorAttempts ?? []) as { ref: string; attempt: number }[]).map((p) => `${p.ref}#${p.attempt}`));
   for (const a of attempts) {
-    if (!near(a.compile.reservationUsd ?? -1, compileReservationUsd(model, a.operativeChars), 1e-8)) problems.push(`${a.ref}#${a.attempt}: compile reservation ${a.compile.reservationUsd} != policy ${compileReservationUsd(model, a.operativeChars)}`);
-    if (a.verify.reservationUsd !== undefined && !near(a.verify.reservationUsd, verifyReservationUsd(model), 1e-8)) problems.push(`${a.ref}#${a.attempt}: verify reservation != policy`);
+    if (carriedRows.has(`${a.ref}#${a.attempt}`)) { if (!(a.compile.reservationUsd! > 0)) problems.push(`${a.ref}#${a.attempt}: carried row without a reservation`); }
+    else {
+      if (!near(a.compile.reservationUsd ?? -1, compileReservationUsd(model, a.operativeChars, undefined, segmentOutputCap), 1e-8)) problems.push(`${a.ref}#${a.attempt}: compile reservation ${a.compile.reservationUsd} != policy ${compileReservationUsd(model, a.operativeChars, undefined, segmentOutputCap)}`);
+      if (a.verify.reservationUsd !== undefined && !near(a.verify.reservationUsd, plan.reservationPolicy.verifyReservationUsd, 1e-8)) problems.push(`${a.ref}#${a.attempt}: verify reservation != policy`);
+    }
     if (a.compile.outcome === "TIMEOUT" && !near(a.compile.costUsd, a.compile.reservationUsd ?? 0, 1e-8)) problems.push(`${a.ref}#${a.attempt}: timeout did not retain the full reservation`);
     if (a.compile.outcome === "PROVIDER_FAILURE" && (a.compile.inputTokens ?? 0) === 0 && a.compile.costUsd !== 0) problems.push(`${a.ref}#${a.attempt}: zero-token provider failure charged`);
     for (const s of a.verify.sideCalls) if (!/semantic_verification|condition_suspicion/.test(s.stage)) problems.push(`${a.ref}#${a.attempt}: unexpected verify side call ${s.stage}`);
@@ -63,13 +71,34 @@ export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST) {
   const perRetained = costs.perRequest.filter((r) => r.costAccountingStatus === "UNKNOWN_TIMEOUT_BILLED").reduce((s, r) => s + r.chargedToBudgetUsd, 0);
   const amendmentUsd = costs.sideCalls.filter((c) => c.discoveryId === null).reduce((s, c) => s + c.costUsd, 0);
   const snap = costs.snapshot;
-  if (!near(snap.exactSpendUsd!, preflight.spendUsd + amendmentUsd + perExact)) problems.push(`ledger exact ${snap.exactSpendUsd} != probes ${preflight.spendUsd} + amendment ${amendmentUsd} + per-request exact ${perExact}`);
-  if (!near(snap.retainedUnknownTimeoutUsd!, perRetained)) problems.push("ledger retained != per-request timeouts");
-  if ((snap.outstandingReservedUsd ?? 0) !== 0 && manifest) problems.push("outstanding reservation after termination");
-  if (!near(snap.committedUsd!, snap.exactSpendUsd! + snap.retainedUnknownTimeoutUsd! + (snap.outstandingReservedUsd ?? 0))) problems.push("committed != exact + retained + outstanding");
-  if (snap.committedUsd! > plan.ceilingUsd) problems.push("ceiling exceeded");
-  const statusCharges = attempts.reduce((s, a) => s + a.compile.costUsd + a.verify.costUsd, 0);
-  if (!near(statusCharges, perExact + perRetained)) problems.push("attempt charges != per-request");
+  // a resumed segment seeds the earlier segment's probes, amendment and (corrected) charges; a fresh one seeds the probes
+  const seeded = plan.resume?.seededPrior as { exactUsd: number; retainedUnknownUsd: number } | undefined;
+  const baseExact = seeded ? seeded.exactUsd : preflight.spendUsd;
+  const baseRetained = seeded ? seeded.retainedUnknownUsd : 0;
+  if (!near(snap.exactSpendUsd!, baseExact + amendmentUsd + perExact)) problems.push(`ledger exact ${snap.exactSpendUsd} != seeded/probes ${baseExact} + amendment ${amendmentUsd} + per-request exact ${perExact}`);
+  if (!near(snap.retainedUnknownTimeoutUsd!, baseRetained + perRetained)) problems.push("ledger retained != seeded retained + per-request timeouts");
+  // the seeded prior must equal the earlier segment's cumulative ledger (+ corrections, + in-flight reservation).
+  // Two derivation shapes exist: v1 (segment 2: probes + earlier amendment + carried charges) and v2 (snapshot-based).
+  if (seeded) {
+    const b = plan.resume.seededPrior.breakdown as Record<string, number>;
+    const earlier = JSON.parse(fs.readFileSync(path.join(plan.resume.segmentDir, "02-costs.json"), "utf8")).snapshot as Record<string, number>;
+    const carriedRefs = (plan.resume.priorAttempts as { ref: string; attempt: number }[]).map((p) => `${p.ref}#${p.attempt}`);
+    const prior = attempts.filter((a) => carriedRefs.includes(`${a.ref}#${a.attempt}`));
+    const priorExact = prior.reduce((s, a) => s + (a.compile.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? 0 : a.compile.costUsd) + (a.verify.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? 0 : a.verify.costUsd), 0);
+    const priorRetained = prior.reduce((s, a) => s + (a.compile.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? a.compile.costUsd : 0) + (a.verify.costStatus === "UNKNOWN_TIMEOUT_BILLED" ? a.verify.costUsd : 0), 0);
+    if ("earlierSegmentExactUsd" in b) {
+      if (!near(b.earlierSegmentExactUsd!, earlier.exactSpendUsd!) || !near(b.earlierSegmentRetainedUsd!, earlier.retainedUnknownTimeoutUsd!)) problems.push("seeded breakdown != earlier segment snapshot");
+      if (!near(seeded.exactUsd, earlier.exactSpendUsd! - (b.correctionReleasedExactUsd ?? 0))) problems.push("seeded exact != earlier exact - corrections released");
+      if (!near(seeded.retainedUnknownUsd, earlier.retainedUnknownTimeoutUsd! + (b.correctionRetainedUsd ?? 0) + (b.inFlightAbortedReservationUsd ?? 0))) problems.push("seeded retained != earlier retained + corrections + in-flight");
+    } else {
+      if (!near(seeded.exactUsd, b.preflightProbesUsd! + b.segmentAmendmentUsd! + priorExact)) problems.push("seeded exact != probes + earlier amendment + carried exact charges");
+      if (!near(seeded.retainedUnknownUsd, priorRetained)) problems.push("seeded retained != carried retained charges");
+    }
+    for (const c of plan.resume.accountingCorrections as { ref: string; attempt: number; now: { costUsd: number } }[]) { const a = attempts.find((x) => x.ref === c.ref && x.attempt === c.attempt)!; if (!near(a.compile.costUsd, c.now.costUsd, 1e-8) || a.compile.costStatus !== "UNKNOWN_TIMEOUT_BILLED") problems.push(`${c.ref}#${c.attempt}: accounting correction not applied`); }
+  }
+  const carried = new Set(((plan.resume?.priorAttempts ?? []) as { ref: string; attempt: number }[]).map((p) => `${p.ref}#${p.attempt}`));
+  const statusCharges = attempts.filter((a) => !carried.has(`${a.ref}#${a.attempt}`)).reduce((s, a) => s + a.compile.costUsd + a.verify.costUsd, 0);
+  if (!near(statusCharges, perExact + perRetained)) problems.push("this segment's attempt charges != per-request");
   if (attempts.length > 0 && !near(attempts[attempts.length - 1]!.committedUsd, snap.committedUsd!)) problems.push("last attempt committed != snapshot");
   if (plan.ceilingUsd !== 15 || plan.stopAtUsd !== 14.9) problems.push("ceiling/stopAt != 15/14.9");
   // 402 halts: any credit-exhausted attempt must be the last one
@@ -82,6 +111,7 @@ export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST) {
     if (a.package?.file) { const p = pkgByHash.get(a.package.packageHash); if (!p) problems.push(`${a.ref}#${a.attempt}: package not on disk`); else if (p.pkg.complete !== a.package.complete) problems.push(`${a.ref}#${a.attempt}: completeness disagrees`); }
     if (a.evidenceFile && !fs.existsSync(a.evidenceFile)) problems.push(`${a.ref}#${a.attempt}: evidence missing`);
     if (a.evidenceFile && !a.evidenceFile.includes(`/attempt-${a.attempt}/`)) problems.push(`${a.ref}#${a.attempt}: evidence not in its attempt directory`);
+    if (a.compile.failureReasons.includes("HARNESS_ABORTED_IN_FLIGHT") && (a.compile.costStatus !== "UNKNOWN_TIMEOUT_BILLED" || a.compile.costUsd === 0 || a.evidenceFile !== null)) problems.push(`${a.ref}#${a.attempt}: aborted in-flight attempt must carry one reservation and no evidence`);
     if (a.recovery === "RECOVERED" && !(a.compile.outcome === "COMPLETED" && a.verify.outcome === "COMPLETED" && a.package?.complete && a.packageHashValid && a.evidenceFile)) problems.push(`${a.ref}#${a.attempt}: RECOVERED without the required evidence`);
     if (a.recovery !== "RECOVERED" && a.compile.outcome === "COMPLETED" && a.verify.outcome === "COMPLETED" && a.package?.complete && a.packageHashValid) problems.push(`${a.ref}#${a.attempt}: complete evidence not marked RECOVERED`);
   }
@@ -93,6 +123,7 @@ export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST) {
   if (popChanged.length > 0) problems.push(`POPULATION FILES CHANGED: ${popChanged.join(", ")}`);
 
   if (fs.existsSync(dest)) throw new Error(`refusing to preserve over ${dest}`);
+  if (plan.resume && !fs.existsSync(plan.resume.segmentDir)) problems.push("resumed segment directory missing from docs");
   fs.mkdirSync(dest, { recursive: true });
   const inventory = files.map((f) => { const rel = path.relative(scratch, f); const target = path.join(dest, rel); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.copyFileSync(f, target); const a = sha256File(f), b = sha256File(target); if (a !== b) problems.push(`copy mismatch ${rel}`); return { file: rel, bytes: fs.statSync(f).size, sha256: a }; });
   const report = {
@@ -102,12 +133,13 @@ export function validateAndPreserve(scratch = OUT, dest = RECOVERY_DEST) {
     ledger: { snapshot: snap, probesUsd: preflight.spendUsd, amendmentUsd, perRequestExactUsd: perExact, perRequestRetainedUsd: perRetained, ceilingUsd: plan.ceilingUsd, stopAtUsd: plan.stopAtUsd },
     populationFilesChanged: popChanged.length, problems, inventory,
   };
-  fs.writeFileSync(path.join(path.dirname(dest), "01-run-validation.json"), JSON.stringify(report, null, 2));
+  fs.writeFileSync(path.join(path.dirname(dest), reportName), JSON.stringify(report, null, 2));
   return report;
 }
 
 if (process.argv[1]?.endsWith("benchmark-recovery-postrun.ts")) {
-  const r = validateAndPreserve();
+  const [scratch, dest, reportName] = process.argv.slice(2);
+  const r = validateAndPreserve(scratch || undefined, dest || undefined, reportName || undefined);
   const { inventory, ...summary } = r;
   console.log(JSON.stringify({ ...summary, inventoryFiles: inventory.length }, null, 1));
   if (r.problems.length > 0) process.exitCode = 2;

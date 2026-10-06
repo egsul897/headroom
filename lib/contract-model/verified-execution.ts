@@ -33,7 +33,7 @@ import type { CapacityGraph, CapacityState, LedgerPolicy, LedgerUsageRecord } fr
 import { simulateTransaction } from "./runtime/transaction/simulate";
 import type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult } from "./runtime/transaction/types";
 import { hashOf } from "./runtime/input/identity";
-import { identityStrengthOf, type RuntimeVerificationEnvelope, type RuntimeVerificationIdentity, type VerificationBlockReason, type VerificationIdentityStrength } from "./runtime/verification-envelope";
+import { compareVerificationIdentity, identityStrengthOf, type RuntimeVerificationEnvelope, type RuntimeVerificationIdentity, type VerificationBlockReason, type VerificationIdentityStrength } from "./runtime/verification-envelope";
 import { blocksUnit, interpretVerificationStatus, type VerificationCoverage as UnitCoverage } from "./runtime/verification-gate";
 import { resolveRuntimeVerificationEnvelope, type ResolverUnitInput } from "./verification-envelope/resolver";
 
@@ -53,7 +53,7 @@ export const VERIFIED_EXECUTION_POLICY = "REQUIRE" as const;
  */
 export interface VerifiedUnitArtifact {
   ruleOrDefinitionId: string;
-  kind: "RULE" | "DEFINITION";
+  kind: "RULE" | "DEFINITION" | "SHARED_CAPACITY";
   /** The identity (id, company, instrument, schema/compiler/source versions) of the IR unit the verifier saw. */
   verifiedIdentity: RuntimeVerificationIdentity;
   /** The Phase-3 verification result, verbatim. Never mutated here. */
@@ -95,7 +95,9 @@ export type BoundaryRefusalCode =
   /** A verification artifact names a unit the package does not carry, names it twice, or contradicts itself about which unit it is for. */
   | "VERIFICATION_IDENTITY_UNBOUND"
   /** The IR package is not one instrument's consistent unit set (a unit for another company/instrument, or an id claimed twice). */
-  | "IR_PACKAGE_INCONSISTENT";
+  | "IR_PACKAGE_INCONSISTENT"
+  /** A rule's permission is gated on another rule's satisfaction (a cross-rule condition or a REQUIRES/LIMITED_BY source dependency). The runtime has no certified cross-rule satisfaction evaluator yet (PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE), so the package fails closed: the gate is never treated as satisfied and an UNLIMITED_CAPACITY behind it never executes. */
+  | "CROSS_RULE_GATE_NOT_EXECUTABLE";
 
 export interface BoundaryRefusal { code: BoundaryRefusalCode; message: string; refs: string[] }
 
@@ -128,7 +130,11 @@ export type VerifiedTransactionResult =
 
 const unitIdOf = (u: IRRule | IRDefinition): string => ("ruleId" in u ? u.ruleId : u.definitionId);
 
-interface Bound { refusals: BoundaryRefusal[]; envelope: RuntimeVerificationEnvelope | null; units: (IRRule | IRDefinition)[] }
+type BoundUnit = IRRule | IRDefinition | IRSharedCapacity;
+const anyUnitIdOf = (u: BoundUnit): string => ("ruleId" in u ? u.ruleId : "definitionId" in u ? u.definitionId : u.sharedCapId);
+const anyKindOf = (u: BoundUnit): "RULE" | "DEFINITION" | "SHARED_CAPACITY" => ("ruleId" in u ? "RULE" : "definitionId" in u ? "DEFINITION" : "SHARED_CAPACITY");
+
+interface Bound { refusals: BoundaryRefusal[]; envelope: RuntimeVerificationEnvelope | null; units: BoundUnit[] }
 
 /**
  * Validates the package and builds the envelope through the certified resolver against the exact
@@ -140,13 +146,16 @@ interface Bound { refusals: BoundaryRefusal[]; envelope: RuntimeVerificationEnve
  */
 function bind(pkg: VerifiedExecutionPackage): Bound {
   const refusals: BoundaryRefusal[] = [];
-  const units: (IRRule | IRDefinition)[] = [...pkg.rules, ...(pkg.definitions ?? [])];
+  // Phase 3 certification closure: a shared capacity is a verified semantic unit like a rule or a definition. Under the
+  // REQUIRE policy a shared capacity the package carries without a bound, clean verification artifact refuses the whole
+  // package - a pool that changes every member's capacity never executes unverified.
+  const units: BoundUnit[] = [...pkg.rules, ...(pkg.definitions ?? []), ...(pkg.sharedCapacities ?? [])];
 
   // 1. one instrument, each unit once
-  const outOfScope = units.filter((u) => u.companyId !== pkg.companyId || u.instrumentKey !== pkg.instrumentKey).map(unitIdOf).sort();
+  const outOfScope = units.filter((u) => u.companyId !== pkg.companyId || u.instrumentKey !== pkg.instrumentKey).map(anyUnitIdOf).sort();
   if (outOfScope.length > 0) refusals.push({ code: "IR_PACKAGE_INCONSISTENT", message: `${outOfScope.length} unit(s) belong to another company or instrument than the package states`, refs: outOfScope });
   const seen = new Map<string, number>();
-  for (const u of units) seen.set(unitIdOf(u), (seen.get(unitIdOf(u)) ?? 0) + 1);
+  for (const u of units) seen.set(anyUnitIdOf(u), (seen.get(anyUnitIdOf(u)) ?? 0) + 1);
   const dup = [...seen].filter(([, n]) => n > 1).map(([id]) => id).sort();
   if (dup.length > 0) refusals.push({ code: "IR_PACKAGE_INCONSISTENT", message: `unit id(s) claimed more than once in the package: nothing is chosen between them`, refs: dup });
 
@@ -154,7 +163,7 @@ function bind(pkg: VerifiedExecutionPackage): Bound {
   if (pkg.verifications.length === 0) refusals.push({ code: "VERIFICATION_ARTIFACT_INCOMPLETE", message: "no verification artifact was supplied; unverified IR does not execute at the product boundary", refs: [] });
 
   // 3. every artifact binds to exactly one unit of the stated kind and agrees with itself
-  const byId = new Map<string, IRRule | IRDefinition>(units.map((u) => [unitIdOf(u), u]));
+  const byId = new Map<string, BoundUnit>(units.map((u) => [anyUnitIdOf(u), u]));
   const claimed = new Map<string, number>();
   const inputs: ResolverUnitInput[] = [];
   const claimsById = new Map<string, RuntimeVerificationIdentity>();
@@ -162,7 +171,7 @@ function bind(pkg: VerifiedExecutionPackage): Bound {
     claimed.set(a.ruleOrDefinitionId, (claimed.get(a.ruleOrDefinitionId) ?? 0) + 1);
     const unit = byId.get(a.ruleOrDefinitionId);
     if (!unit) { refusals.push({ code: "VERIFICATION_IDENTITY_UNBOUND", message: `verification artifact names ${a.ruleOrDefinitionId}, which the package does not carry`, refs: [a.ruleOrDefinitionId] }); continue; }
-    const actualKind = "ruleId" in unit ? "RULE" : "DEFINITION";
+    const actualKind = anyKindOf(unit);
     if (actualKind !== a.kind) { refusals.push({ code: "VERIFICATION_IDENTITY_UNBOUND", message: `verification artifact says ${a.ruleOrDefinitionId} is a ${a.kind}; the package carries a ${actualKind}`, refs: [a.ruleOrDefinitionId] }); continue; }
     if (a.verifiedIdentity.ruleOrDefinitionId !== a.ruleOrDefinitionId) { refusals.push({ code: "VERIFICATION_IDENTITY_UNBOUND", message: `verification artifact for ${a.ruleOrDefinitionId} carries an identity claim for ${a.verifiedIdentity.ruleOrDefinitionId}`, refs: [a.ruleOrDefinitionId, a.verifiedIdentity.ruleOrDefinitionId] }); continue; }
     inputs.push({ kind: a.kind, unit, verification: a.result });
@@ -170,6 +179,40 @@ function bind(pkg: VerifiedExecutionPackage): Bound {
   }
   const twice = [...claimed].filter(([, n]) => n > 1).map(([id]) => id).sort();
   if (twice.length > 0) refusals.push({ code: "VERIFICATION_IDENTITY_UNBOUND", message: `more than one verification artifact claims the same unit; none is chosen`, refs: twice });
+
+  const sharedProblems: string[] = [];
+  for (const cap of pkg.sharedCapacities ?? []) {
+    const art = pkg.verifications.find((a) => a.ruleOrDefinitionId === cap.sharedCapId && a.kind === "SHARED_CAPACITY");
+    if (!art) { sharedProblems.push(`${cap.sharedCapId}: no verification artifact`); continue; }
+    if (interpretVerificationStatus(art.result.status) !== "COMPLETED") sharedProblems.push(`${cap.sharedCapId}: verification ${art.result.status}`);
+    if (art.result.findings.some((f) => f.severity === "MATERIAL" && f.ruleOrDefinitionId === cap.sharedCapId)) sharedProblems.push(`${cap.sharedCapId}: material verification finding`);
+    const known: RuntimeVerificationIdentity = { ruleOrDefinitionId: cap.sharedCapId, companyId: cap.companyId, instrumentKey: cap.instrumentKey, irSchemaVersion: cap.irSchemaVersion ?? "", compilerVersion: cap.compilerVersion ?? null, sourceContentVersion: cap.sourceContentVersion ?? null };
+    if (!compareVerificationIdentity(art.verifiedIdentity, known).matches || identityStrengthOf(art.verifiedIdentity) !== "STRONG") sharedProblems.push(`${cap.sharedCapId}: verified identity does not bind the shared capacity carried (or is WEAK)`);
+    // content: the verifier's own IR inventory of the pool (its figures and member set) must describe the pool in hand - a cap
+    // expression or membership edited after verification, under an unchanged identity, is a stale artifact and never executes
+    const inventoried = (art.result.irInventory?.items ?? []).filter((i) => i.ruleOrDefinitionId === cap.sharedCapId);
+    if (inventoried.length === 0) sharedProblems.push(`${cap.sharedCapId}: the verification artifact carries no IR inventory of the pool`);
+    else {
+      const seenFigures = inventoried.filter((i) => i.numericValue !== null).map((i) => i.numericValue as number).sort((a, b) => a - b);
+      const seenMembers = inventoried.filter((i) => i.kind === "DEPENDENCY" && (i.textValue ?? "").startsWith("SHARED_CAP_MEMBER:")).map((i) => (i.textValue as string).slice("SHARED_CAP_MEMBER:".length)).sort();
+      if (JSON.stringify(seenFigures) !== JSON.stringify(numericFiguresOf(cap.capExpression))) sharedProblems.push(`${cap.sharedCapId}: cap expression figures differ from the figures the verifier inventoried (stale or mutated pool)`);
+      if (JSON.stringify(seenMembers) !== JSON.stringify([...cap.memberRuleIds].sort())) sharedProblems.push(`${cap.sharedCapId}: member set differs from the members the verifier inventoried (stale or mutated pool)`);
+    }
+  }
+  if (sharedProblems.length > 0) refusals.push({ code: "VERIFICATION_ARTIFACT_INCOMPLETE", message: "shared capacity pool(s) are not cleanly verified; under REQUIRE an unverified pool never shapes capacity", refs: sharedProblems.sort() });
+
+  // SEMANTIC FIDELITY: cross-rule gates fail closed. A rule whose availability depends on another rule being satisfied
+  // (referencesRuleTargets on a condition, or a REQUIRES / LIMITED_BY source dependency) cannot be executed by this runtime
+  // as "satisfied" - whether or not the package has bound the target - because no certified cross-rule satisfaction
+  // evaluator exists yet. Refusing here is what keeps an UNLIMITED_CAPACITY behind such a gate from reading as available.
+  const gated: string[] = [];
+  for (const r of pkg.rules) {
+    const conds = r.conditions.filter((c) => (c.referencesRuleTargets?.length ?? 0) > 0).map((c) => `${r.ruleId} ${c.conditionId} -> ${c.referencesRuleTargets!.map((t) => `${t.exactSourceTargetRef} [${t.boundSemanticTargetIds.length > 0 ? `bound:${t.boundSemanticTargetIds.join("+")}` : t.resolutionStatus}]`).join(", ")}`);
+    const deps = (r.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY").map((d) => `${r.ruleId} ${d.relationshipType} ${d.exactSourceTargetRef} [${d.boundSemanticTargetIds.length > 0 ? `bound:${d.boundSemanticTargetIds.join("+")}` : d.resolutionStatus}]`);
+    const unknown = (r.unresolvedDependencies ?? []).filter((d) => (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") && !(r.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef)).map((d) => `${r.ruleId} ${d.relationshipType} ${d.targetRef} [DEPENDENCY_UNKNOWN]`);
+    gated.push(...conds, ...deps, ...unknown);
+  }
+  if (gated.length > 0) refusals.push({ code: "CROSS_RULE_GATE_NOT_EXECUTABLE", message: "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed", refs: gated.sort() });
 
   if (refusals.length > 0) return { refusals, envelope: null, units };
 
@@ -185,19 +228,33 @@ function bind(pkg: VerifiedExecutionPackage): Bound {
   return { refusals, envelope, units };
 }
 
-const knownIdentityOf = (u: IRRule | IRDefinition): RuntimeVerificationIdentity => ({
-  ruleOrDefinitionId: unitIdOf(u), companyId: u.companyId, instrumentKey: u.instrumentKey, irSchemaVersion: u.irSchemaVersion, compilerVersion: u.compilerVersion, sourceContentVersion: u.sourceContentVersion,
+/** Every numeric figure (amount / value / ratio) inside an expression tree, sorted - the same projection ir-inventory.ts walks. */
+function numericFiguresOf(root: unknown): number[] {
+  const out: number[] = [];
+  const walk = (v: unknown): void => {
+    if (!v || typeof v !== "object") return;
+    if (Array.isArray(v)) { v.forEach(walk); return; }
+    const r = v as Record<string, unknown>;
+    for (const k of ["amount", "value", "ratio"]) if (typeof r[k] === "number") out.push(r[k] as number);
+    for (const [k, x] of Object.entries(r)) if (x && typeof x === "object" && k !== "provenance") walk(x);
+  };
+  walk(root);
+  return out.sort((a, b) => a - b);
+}
+
+const knownIdentityOf = (u: BoundUnit): RuntimeVerificationIdentity => ({
+  ruleOrDefinitionId: anyUnitIdOf(u), companyId: u.companyId, instrumentKey: u.instrumentKey, irSchemaVersion: u.irSchemaVersion ?? "", compilerVersion: u.compilerVersion ?? null, sourceContentVersion: u.sourceContentVersion ?? null,
 });
 
-function coverageOf(units: readonly (IRRule | IRDefinition)[], envelope: RuntimeVerificationEnvelope): VerificationCoverage {
+function coverageOf(units: readonly BoundUnit[], envelope: RuntimeVerificationEnvelope): VerificationCoverage {
   const recorded = new Set(envelope.units.map((u) => u.identity.ruleOrDefinitionId));
-  const missing = units.map(unitIdOf).filter((id) => !recorded.has(id)).sort();
+  const missing = units.map(anyUnitIdOf).filter((id) => !recorded.has(id)).sort();
   const refused: VerificationCoverage["unitsRefusedByGate"] = [];
   const incomplete: string[] = [];
   const strength: Record<VerificationIdentityStrength, number> = { STRONG: 0, WEAK: 0 };
   const statuses: Record<string, number> = {};
   for (const u of units) {
-    const id = unitIdOf(u);
+    const id = anyUnitIdOf(u);
     const b = blocksUnit(id, envelope, VERIFIED_EXECUTION_POLICY, knownIdentityOf(u));
     if (b) refused.push({ unitId: id, reason: b.reason, identityStrength: b.identityStrength });
     const rec = envelope.units.find((x) => x.identity.ruleOrDefinitionId === id);

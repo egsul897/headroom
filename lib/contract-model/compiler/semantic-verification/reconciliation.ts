@@ -189,12 +189,15 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
   const out: ReconciliationItem[] = [];
 
   // Structural completeness (task §8) - the LSB §6.13-shaped signal, entirely generic.
-  if (source.apparentIndependentUnitCount > ir.ruleCount) {
+  // An enumerated unit is represented either by its own compiled rule or - when its permission is owned by a separate
+  // child candidate of the package - by an exception of this candidate's prohibition that cites it. Both count here.
+  const irExceptionCount = ir.items.filter((i) => i.kind === "EXCEPTION").length;
+  if (source.apparentIndependentUnitCount > ir.ruleCount + irExceptionCount) {
     out.push({
       classification: "AMBIGUOUS",
       sourceItem: null,
       irItems: [],
-      reason: `source text contains ${source.apparentIndependentUnitCount} apparent independent enumerated unit(s) (${source.apparentIndependentUnitEvidence.join(", ")}) but only ${ir.ruleCount} rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)`,
+      reason: `source text contains ${source.apparentIndependentUnitCount} apparent independent enumerated unit(s) (${source.apparentIndependentUnitEvidence.join(", ")}) but only ${ir.ruleCount} rule(s) and ${irExceptionCount} exception(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)`,
     });
   }
 
@@ -228,7 +231,10 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
   // no-package-knowledge counting layer (Architecture Invariants #29).
   const sourceConditionalSignalCount = source.items.filter((i) => i.kind === "CONDITIONAL_PHRASE" || i.kind === "EXCEPTION_MARKER" || i.kind === "PROVISO_MARKER").length;
   const irConditionOrExceptionCount = ir.items.filter((i) => i.kind === "CONDITION" || i.kind === "EXCEPTION").length;
-  if (sourceConditionalSignalCount >= 1 && irConditionOrExceptionCount === 0) {
+  // A definitions-only compilation (zero rules, one or more definitions) carries conditions inside the definitions' own
+  // meaning, not as rule conditions; the rule-condition signal does not apply to it.
+  const definitionsOnly = ir.ruleCount === 0 && ir.definitionCount > 0;
+  if (sourceConditionalSignalCount >= 1 && irConditionOrExceptionCount === 0 && !definitionsOnly) {
     out.push({
       classification: "AMBIGUOUS",
       sourceItem: null,
@@ -273,6 +279,39 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
   return out;
 }
 
+/**
+ * ir-inventory v2 / source-inventory v3 - typed dependency semantics. A section reference the source states is
+ * ACCOUNTED_FOR when at least one SOURCE_DEPENDENCY or CROSS_RULE_TARGET (or legacy DEPENDENCY) item references the
+ * same provision or one structurally related to it (the reference, a clause under it, or its enclosing section); the
+ * relationship edge and the gating role on one reference are listed together on ONE item - related claims, never a
+ * duplicate omission signal. A stated reference nothing represents is an AMBIGUOUS "possible missing dependency"
+ * signal (UNCERTAIN at this layer); a section-shaped IR reference the source never states is an AMBIGUOUS "possible
+ * unsupported reference" signal. Named (non-section) references are not judged here.
+ */
+const refKey = (textValue: string | null): string | null => { const v = (textValue ?? "").split("|")[0]!.replace(/^[A-Z_]+:/, ""); return /^\d/.test(v) ? v.toLowerCase() : null; };
+const related = (a: string, b: string) => a === b || a.startsWith(`${b}(`) || a.startsWith(`${b}.`) || b.startsWith(`${a}(`) || b.startsWith(`${a}.`);
+
+function reconcileSectionReferences(sourceItems: SourceInventoryItem[], irItems: IrInventoryItem[]): ReconciliationItem[] {
+  const out: ReconciliationItem[] = [];
+  const refItems = irItems.filter((i) => i.kind === "SOURCE_DEPENDENCY" || i.kind === "CROSS_RULE_TARGET");
+  const stated = sourceItems.filter((i) => i.kind === "SECTION_REFERENCE" && i.normalizedRef);
+  for (const src of stated) {
+    const want = src.normalizedRef!.toLowerCase();
+    const matches = refItems.filter((ir) => { const k = refKey(ir.textValue); return k !== null && related(k, want); });
+    if (matches.length > 0) out.push({ classification: "ACCOUNTED_FOR", sourceItem: src, irItems: matches, reason: `source reference "${src.rawText}" is represented by ${matches.length} typed reference item(s) (${[...new Set(matches.map((m) => m.kind))].join(" + ")})` });
+    else out.push({ classification: "AMBIGUOUS", sourceItem: src, irItems: [], reason: `source text references "${src.rawText}" but the compiled IR records no typed source dependency or cross-rule target for it - possible missing dependency` });
+  }
+  if (stated.length > 0) {
+    for (const ir of refItems) {
+      const k = refKey(ir.textValue);
+      if (k === null) continue;
+      if (stated.some((s) => related(k, s.normalizedRef!.toLowerCase()))) continue;
+      out.push({ classification: "AMBIGUOUS", sourceItem: null, irItems: [ir], reason: `compiled IR ${ir.kind} at ${ir.irPath} references "${k}", a provision the operative source never states - possible unsupported reference` });
+    }
+  }
+  return out;
+}
+
 export function reconcileInventories(source: SourceInventory, ir: IrInventory, retrieved: RetrievedEvidenceInventory | null = null, numericAssertions: { inventory: NumericAssertionInventory; evidence: NumericAssertionEvidenceText[] } | null = null): ReconciliationResult {
   const { items: numericItems, claimedIrItemIds } = reconcileNumericItems(source.items, ir.items);
   // F-4: authenticated retrieved evidence is reconciled AFTER the local window (which always has first claim) and
@@ -282,11 +321,12 @@ export function reconcileInventories(source: SourceInventory, ir: IrInventory, r
   const irOnlyItems = findIrOnlyNumericItems(ir.items, claimedIrItemIds);
   const metricItems = reconcileMetricMentions(source.items, ir.items);
   const aggregateItems = buildAggregateSignals(source, ir);
+  const referenceItems = reconcileSectionReferences(source.items, ir.items);
 
   // FIX B: appended AFTER the structured sweep so the structured path's own claim order is untouched.
   const numericAssertionItems = numericAssertions ? reconcileNumericAssertions(numericAssertions.inventory, numericAssertions.evidence) : [];
 
-  const items = [...numericItems, ...retrievedItems, ...irOnlyItems, ...metricItems, ...aggregateItems, ...numericAssertionItems];
+  const items = [...numericItems, ...retrievedItems, ...irOnlyItems, ...metricItems, ...aggregateItems, ...referenceItems, ...numericAssertionItems];
   const materialUnresolvedCount = items.filter((i) => i.classification === "NOT_ACCOUNTED_FOR" || i.classification === "IR_ONLY" || i.classification === "AMBIGUOUS").length;
 
   return { candidateRef: source.candidateRef, items, materialUnresolvedCount };

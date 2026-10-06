@@ -1,0 +1,191 @@
+{
+  "rules": [
+    {
+      "ruleId": "ir-rule:316fa105093456e00580e9bb",
+      "sourceSectionRef": "7.2(c)",
+      "sourceDependencies": [
+        {
+          "exactSourceTargetRef": "Section 7.3(g)",
+          "normalizedTargetRef": "7.3(g)",
+          "resolvedStructuralTarget": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+            "sectionRef": "7.3(g)"
+          },
+          "owningCandidateRefs": [
+            "discovery-candidate:082c80836268c7277cc39c18"
+          ],
+          "boundSemanticTargetIds": [],
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "relationshipType": "REQUIRES",
+          "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are owned by its own certified unit",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          },
+          "inventoryItemIds": [
+            "inv-item:ac31a719a47d4995cf16b375"
+          ]
+        },
+        {
+          "exactSourceTargetRef": "Section 7.1",
+          "normalizedTargetRef": "7.1",
+          "resolvedStructuralTarget": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+            "sectionRef": "7.1"
+          },
+          "owningCandidateRefs": [
+            "discovery-candidate:a26970121ceb558846ff8d1c",
+            "discovery-candidate:e37352369564a1e784e0560b"
+          ],
+          "boundSemanticTargetIds": [],
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "relationshipType": "REQUIRES",
+          "description": "requires that the terms of Section 7.1 are satisfied; the semantics of Section 7.1 are owned by its own certified unit",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          },
+          "inventoryItemIds": [
+            "inv-item:55c1c59cc23002bacf0f41f8"
+          ]
+        }
+      ],
+      "unresolvedDependencies": [],
+      "dependsOn": [],
+      "conditions": [
+        {
+          "conditionId": "rule[r-7-2c].condition[0]",
+          "conditionType": "OTHER_RULE_SATISFIED",
+          "referencesRuleTargets": [
+            {
+              "exactSourceTargetRef": "Section 7.1",
+              "normalizedTargetRef": "7.1",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+                "sectionRef": "7.1"
+              },
+              "owningCandidateRefs": [
+                "discovery-candidate:a26970121ceb558846ff8d1c",
+                "discovery-candidate:e37352369564a1e784e0560b"
+              ],
+              "boundSemanticTargetIds": [],
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+            }
+          ],
+          "targetCombination": "ALL_SATISFIED",
+          "evaluationBasis": {
+            "proForma": true,
+            "transactionEffect": "after giving effect to the incurrence of such Indebtedness",
+            "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+            "deemedEffectiveAt": "as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+            "testingPeriod": "each relevant period for testing compliance",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(c)",
+              "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+            }
+          },
+          "expressionKind": null,
+          "description": "Parent Borrower compliance, on a pro forma basis after giving effect to the incurrence, with the financial covenants in Section 7.1, recomputed as at the last day of the most recently ended fiscal quarter for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period"
+        }
+      ],
+      "inheritedAttributes": [],
+      "entityScope": [
+        "BORROWER"
+      ],
+      "entityScopeExcluded": [],
+      "entityScopeAudit": {
+        "guardVersion": "entity-scope-consistency-guard.v2",
+        "status": "SOURCE_MATCH_CONFIRMED",
+        "safeToRely": true,
+        "reasonCodes": [
+          "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+        ],
+        "rawEmitted": {
+          "entityScope": [
+            "Parent Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "raw": "Parent Borrower",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "BORROWER",
+            "viaAlias": true
+          }
+        ],
+        "before": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "COMPLETE"
+        },
+        "witness": {
+          "ownExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+          "citedUnitLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:",
+          "decidedBy": "OWN_EXCERPT",
+          "signals": [
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 84,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 338,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "MEASUREMENT_CONTEXT",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Subsidiaries",
+              "index": 355,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "MEASUREMENT_CONTEXT",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "partialOnly": false
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

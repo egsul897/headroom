@@ -73,8 +73,9 @@ export function outputTokensCap(model: GatewayModel, timeoutMs = DEFAULT_CANDIDA
   return Math.min(Math.ceil((timeoutMs / 1000) * OBSERVED_OUTPUT_TOKENS_PER_SECOND), Math.min(model.max_tokens, 128_000));
 }
 
-export function compileShape(model: GatewayModel, operativeChars: number, timeoutMs = DEFAULT_CANDIDATE_TIMEOUT_MS): ReservationShape {
-  const outputTokens = outputTokensCap(model, timeoutMs);
+/** `outputTokensOverride` reproduces a reservation taken under an earlier output-rate calibration (resume accounting). */
+export function compileShape(model: GatewayModel, operativeChars: number, timeoutMs = DEFAULT_CANDIDATE_TIMEOUT_MS, outputTokensOverride?: number): ReservationShape {
+  const outputTokens = outputTokensOverride ?? outputTokensCap(model, timeoutMs);
   const inputTokensPerTurn = MAX_FIRST_TURN_INPUT_TOKENS + TOOL_SOURCE_TOKENS + outputTokens;
   const passACalls = 2 * Math.max(1, Math.ceil(operativeChars / PASS_A_BATCH_CHARS_MIRROR));
   const conversations = MAX_RESERVED_CONVERSATIONS;
@@ -91,8 +92,8 @@ export function priceShape(model: GatewayModel, shape: ReservationShape): number
   return Number((shape.inputTokens * Number(model.pricing.input) + shape.outputTokens * Number(model.pricing.output)).toFixed(8));
 }
 
-export function compileReservationUsd(model: GatewayModel, operativeChars: number, timeoutMs = DEFAULT_CANDIDATE_TIMEOUT_MS): number {
-  return priceShape(model, compileShape(model, operativeChars, timeoutMs));
+export function compileReservationUsd(model: GatewayModel, operativeChars: number, timeoutMs = DEFAULT_CANDIDATE_TIMEOUT_MS, outputTokensOverride?: number): number {
+  return priceShape(model, compileShape(model, operativeChars, timeoutMs, outputTokensOverride));
 }
 
 export function verifyReservationUsd(model: GatewayModel, timeoutMs = DEFAULT_CANDIDATE_TIMEOUT_MS): number {

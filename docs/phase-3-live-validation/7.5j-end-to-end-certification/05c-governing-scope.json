@@ -1,0 +1,188 @@
+{
+  "version": "governing-scope-context.v1",
+  "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+  "anchorNodeId": "structural-node:8599a1bc2045c7ecda17f201",
+  "anchorSectionRef": "7.5(j)",
+  "ancestorRegions": [
+    {
+      "regionId": "governing-1",
+      "role": "PARENT_SCOPE",
+      "derivation": "STRUCTURAL_ANCESTOR_LEAD_IN",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+      "nodeType": "SECTION",
+      "sectionRef": "7.5",
+      "ancestorDistance": 1,
+      "charStart": 69668,
+      "charEnd": 69961,
+      "text": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:",
+      "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147",
+      "truncatedAtCap": false,
+      "note": "own lead-in of structural ancestor SECTION 7.5 (distance 1); descendants excluded"
+    },
+    {
+      "regionId": "governing-2",
+      "role": "GOVERNING_SCOPE",
+      "derivation": "UNPARSED_ARTICLE_PREAMBLE",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "structuralNodeId": null,
+      "nodeType": "UNPARSED_ARTICLE_PREAMBLE",
+      "sectionRef": "article-group:7",
+      "ancestorDistance": 2,
+      "charStart": 44178,
+      "charEnd": 44516,
+      "text": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+      "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9",
+      "truncatedAtCap": false,
+      "note": "governing lead-in recovered from the document text immediately preceding the first section 7.1 of article group 7 (no ARTICLE node carrying governing material was parsed above 7.5); trailing lead-in paragraph only"
+    }
+  ],
+  "postureEvidence": [
+    {
+      "regionId": "governing-2",
+      "sectionRef": "article-group:7",
+      "role": "GOVERNING_SCOPE",
+      "kind": "POSTURE",
+      "phrase": "shall not, and shall not permit",
+      "index": 255,
+      "detail": "PROHIBITION"
+    }
+  ],
+  "actionEvidence": [
+    {
+      "regionId": "governing-1",
+      "sectionRef": "7.5",
+      "role": "PARENT_SCOPE",
+      "classification": {
+        "version": "canonical-action-ontology.v1",
+        "phrase": "issue or sell any shares",
+        "verbs": [
+          "issue",
+          "sell"
+        ],
+        "object": "shares",
+        "objectFamily": "EQUITY_REPURCHASE",
+        "canonicalAction": null,
+        "categories": [],
+        "coverage": "ONTOLOGY_GAP",
+        "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+      }
+    }
+  ],
+  "entityScopeEvidence": [
+    {
+      "regionId": "governing-1",
+      "sectionRef": "7.5",
+      "role": "PARENT_SCOPE",
+      "kind": "ENTITY_SCOPE",
+      "phrase": "Subsidiary",
+      "index": 199,
+      "mentionRole": "OBLIGOR",
+      "excludedContext": false,
+      "mappedTags": [
+        "ANY_SUBSIDIARY"
+      ],
+      "detail": "obligor binding"
+    },
+    {
+      "regionId": "governing-1",
+      "sectionRef": "7.5",
+      "role": "PARENT_SCOPE",
+      "kind": "ENTITY_SCOPE",
+      "phrase": "Subsidiary",
+      "index": 244,
+      "mentionRole": "OBLIGOR",
+      "excludedContext": false,
+      "mappedTags": [
+        "ANY_SUBSIDIARY"
+      ],
+      "detail": "obligor binding"
+    },
+    {
+      "regionId": "governing-2",
+      "sectionRef": "article-group:7",
+      "role": "GOVERNING_SCOPE",
+      "kind": "ENTITY_SCOPE",
+      "phrase": "Borrower",
+      "index": 30,
+      "mentionRole": "OBLIGOR",
+      "excludedContext": false,
+      "mappedTags": [
+        "BORROWER"
+      ],
+      "detail": "obligor binding"
+    },
+    {
+      "regionId": "governing-2",
+      "sectionRef": "article-group:7",
+      "role": "GOVERNING_SCOPE",
+      "kind": "ENTITY_SCOPE",
+      "phrase": "Borrower",
+      "index": 246,
+      "mentionRole": "OBLIGOR",
+      "excludedContext": false,
+      "mappedTags": [
+        "BORROWER"
+      ],
+      "detail": "obligor binding"
+    },
+    {
+      "regionId": "governing-2",
+      "sectionRef": "article-group:7",
+      "role": "GOVERNING_SCOPE",
+      "kind": "ENTITY_SCOPE",
+      "phrase": "Subsidiaries",
+      "index": 298,
+      "mentionRole": "OBLIGOR",
+      "excludedContext": false,
+      "mappedTags": [
+        "ANY_SUBSIDIARY"
+      ],
+      "detail": "obligor binding"
+    }
+  ],
+  "inheritedEntityScope": [
+    "ANY_SUBSIDIARY"
+  ],
+  "inheritedEntityScopeBasis": {
+    "regionId": "governing-1",
+    "sectionRef": "7.5",
+    "role": "PARENT_SCOPE",
+    "phrases": [
+      "Subsidiary"
+    ],
+    "evidence": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of s"
+  },
+  "inheritedAction": null,
+  "inheritedActionBasis": {
+    "regionId": "governing-1",
+    "sectionRef": "7.5",
+    "role": "PARENT_SCOPE",
+    "evidence": "issue or sell any shares",
+    "classification": {
+      "version": "canonical-action-ontology.v1",
+      "phrase": "issue or sell any shares",
+      "verbs": [
+        "issue",
+        "sell"
+      ],
+      "object": "shares",
+      "objectFamily": "EQUITY_REPURCHASE",
+      "canonicalAction": null,
+      "categories": [],
+      "coverage": "ONTOLOGY_GAP",
+      "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+    }
+  },
+  "governingProhibition": {
+    "regionId": "governing-2",
+    "sectionRef": "article-group:7",
+    "role": "GOVERNING_SCOPE",
+    "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P"
+  },
+  "notes": [
+    "governing region governing-1 (7.5) states an act \"issue or sell any shares\" the canonical action ontology does not cover as one category (ONTOLOGY_GAP); inherited action not established"
+  ],
+  "contentHash": "16caeb74ccb6a0390167b4199d1ebbafa2406489bf717e59a1d2e75d10d29e0e"
+}

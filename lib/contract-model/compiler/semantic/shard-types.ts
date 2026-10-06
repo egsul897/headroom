@@ -281,6 +281,20 @@ export interface ShardExecutionResult {
   toolUsage?: ShardToolUsage;
   /** §22 - this shard's MISSING_CONTEXT claim audited against the evidence package it was actually handed. Optional for the same reason. */
   missingContextAudit?: import("./missing-context-contract").ShardMissingContextAudit;
+  /**
+   * SA-3 SHARD PARITY: every normalization safety signal the shard's bounded composition produced - DIAGNOSTIC-class
+   * events (deterministic identity, stamped with this shard), dependency-prose diagnostics, quarantined context-only
+   * emissions and invalid wire kinds. Optional only for pre-existing fixtures; the production executor always sets it.
+   */
+  normalization?: ShardNormalizationRecord;
+}
+
+/** SA-3: the normalization safety signals of one shard, each stamped with the shard it arose in. */
+export interface ShardNormalizationRecord {
+  diagnostics: import("./normalize").NormalizationDiagnosticRecord[];
+  dependencyProseDiagnostics: (import("./normalize").DependencyProseDiagnostic & { shardId: string })[];
+  contextOnlyEmissions: (import("./unit-ownership").ContextOnlyUnitEmission & { shardId: string })[];
+  invalidWireKinds: { shardId: string; path: string; kind: string }[];
 }
 
 /** §23 - what one shard's conversation actually spent its tool budget on. Bounded counters and targets only, never retrieved text. */
@@ -400,6 +414,8 @@ export interface StitchedCompilation {
   /** Lineage / disposition ids cited in bare-digest form and mapped to the known `inv-item:` id before ownership scoping (mirrors Pass C). */
   canonicalizedLineageReferences: number;
   unresolvedIssues: string[];
+  /** SA-3 SHARD PARITY: the union of every shard's normalization safety signals, deduplicated by deterministic identity only. */
+  normalization?: ShardNormalizationRecord;
   /** §17 - the cross-shard structural edges the stitcher added deterministically (carve-out exceptions from "shall not apply to" lead-ins; section-reference dependencies resolved to the one rule compiled from that section). Optional: absent on results produced before this pass. */
   crossShardLinks?: import("./shard-stitcher").CrossShardLinkReport;
 }

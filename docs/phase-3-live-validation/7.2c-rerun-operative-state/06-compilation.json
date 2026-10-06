@@ -1,0 +1,1443 @@
+{
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [
+    {
+      "ruleId": "ir-rule:316fa105093456e00580e9bb",
+      "irSchemaVersion": "headroom-covenant-ir.v1",
+      "companyId": "conmed-pilot",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sourceSectionRef": "7.2(c)",
+      "covenantFamily": "INDEBTEDNESS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "posture": "PERMISSION",
+      "action": "INCUR_DEBT",
+      "entityScope": [
+        "BORROWER"
+      ],
+      "entityScopeExcluded": [],
+      "transactionScope": null,
+      "capacityExpression": {
+        "kind": "UNLIMITED_CAPACITY",
+        "type": "CAPACITY",
+        "gatedBy": null,
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.2(c)",
+          "excerpt": null
+        }
+      },
+      "conditions": [
+        {
+          "conditionId": "rule[r-7-2c].condition[0]",
+          "conditionType": "OTHER_RULE_SATISFIED",
+          "expression": null,
+          "referencesDefinitionId": null,
+          "referencesRuleTargets": [
+            {
+              "exactSourceTargetRef": "Section 7.1",
+              "normalizedTargetRef": "7.1",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+                "sectionRef": "7.1"
+              },
+              "owningCandidateRefs": [
+                "discovery-candidate:a26970121ceb558846ff8d1c",
+                "discovery-candidate:e37352369564a1e784e0560b"
+              ],
+              "boundSemanticTargetIds": [],
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED"
+            }
+          ],
+          "targetCombination": "ALL_SATISFIED",
+          "evaluationBasis": {
+            "proForma": true,
+            "transactionEffect": "after giving effect to the incurrence of such Indebtedness",
+            "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+            "deemedEffectiveAt": "as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+            "testingPeriod": "each relevant period for testing compliance",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.2(c)",
+              "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+            }
+          },
+          "description": "Parent Borrower compliance, on a pro forma basis after giving effect to the incurrence, with the financial covenants in Section 7.1, recomputed as at the last day of the most recently ended fiscal quarter for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+          },
+          "inventoryItemIds": [
+            "inv-item:ec8b311518c4ef230e54f0b3",
+            "inv-item:55c1c59cc23002bacf0f41f8",
+            "inv-item:197d6a75e518b433abd00585",
+            "inv-item:a898fe5b6cdf0d0ca5334548"
+          ]
+        }
+      ],
+      "exceptions": [],
+      "dependsOn": [],
+      "sourceDependencies": [
+        {
+          "exactSourceTargetRef": "Section 7.3(g)",
+          "normalizedTargetRef": "7.3(g)",
+          "resolvedStructuralTarget": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:31a18e83f13af616c76add29",
+            "sectionRef": "7.3(g)"
+          },
+          "owningCandidateRefs": [
+            "discovery-candidate:082c80836268c7277cc39c18"
+          ],
+          "boundSemanticTargetIds": [],
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "relationshipType": "REQUIRES",
+          "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are owned by its own certified unit",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          },
+          "inventoryItemIds": [
+            "inv-item:ac31a719a47d4995cf16b375"
+          ]
+        },
+        {
+          "exactSourceTargetRef": "Section 7.1",
+          "normalizedTargetRef": "7.1",
+          "resolvedStructuralTarget": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+            "sectionRef": "7.1"
+          },
+          "owningCandidateRefs": [
+            "discovery-candidate:a26970121ceb558846ff8d1c",
+            "discovery-candidate:e37352369564a1e784e0560b"
+          ],
+          "boundSemanticTargetIds": [],
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "relationshipType": "REQUIRES",
+          "description": "requires that the terms of Section 7.1 are satisfied; the semantics of Section 7.1 are owned by its own certified unit",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.2(c)",
+            "excerpt": null
+          },
+          "inventoryItemIds": [
+            "inv-item:55c1c59cc23002bacf0f41f8"
+          ]
+        }
+      ],
+      "operativeLineage": null,
+      "sufficiency": "COMPLETE",
+      "sufficiencyReasons": [],
+      "provenance": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeKey": null,
+        "sourceCitation": "§7.2(c)",
+        "excerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+      },
+      "compilerVersion": "semantic-accountability-compiler.v5",
+      "sourceContentVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+      "entityScopeAudit": {
+        "guardVersion": "entity-scope-consistency-guard.v2",
+        "status": "SOURCE_MATCH_CONFIRMED",
+        "safeToRely": true,
+        "reasonCodes": [
+          "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+        ],
+        "rawEmitted": {
+          "entityScope": [
+            "Parent Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "raw": "Parent Borrower",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "normalized": "BORROWER",
+            "viaAlias": true
+          }
+        ],
+        "before": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "COMPLETE"
+        },
+        "witness": {
+          "ownExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+          "citedUnitLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:",
+          "decidedBy": "OWN_EXCERPT",
+          "signals": [
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 84,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Borrower",
+              "index": 338,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "MEASUREMENT_CONTEXT",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "partialOnly": false
+            },
+            {
+              "tier": "OWN_EXCERPT",
+              "phrase": "Subsidiaries",
+              "index": 355,
+              "excludedContext": false,
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "MEASUREMENT_CONTEXT",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "partialOnly": false
+            }
+          ]
+        }
+      },
+      "inventoryItemIds": [
+        "inv-item:ac31a719a47d4995cf16b375"
+      ]
+    }
+  ],
+  "definitions": [],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+    "Section 7.2(c) is a permission (basket) under the umbrella prohibition of Section 7.2 for incurrence of Indebtedness secured by Liens permitted by Section 7.3(g), subject to a pro forma compliance condition with the Section 7.1 financial covenants. The Section 7.1 covenants are themselves separately-owned rules (not part of the submitted operative text) and their thresholds are accordingly NOT restated in this rule to avoid double-counting; the condition is carried as a cross-rule OTHER_RULE_SATISFIED condition referencing Section 7.1 with the pro forma evaluation basis from the source's own words.",
+    "The three Section 7.1 financial ratios (Senior Secured Leverage, Total Leverage, Interest Coverage) plus the Liquidity test in Section 7.1(d) are all referenced collectively by 'the financial covenants contained in Section 7.1'. Because Section 7.1 is owned by its own candidate and its contents are not the submitted source text, the condition references Section 7.1 as a whole (ALL_SATISFIED across the referenced family) without restating its thresholds.",
+    "The Parent Borrower and its Subsidiaries is the measurement group named for the financial-covenant recomputation date; it does not widen entityScope, which identifies the obligor/actor (the Parent Borrower) that must be in compliance.",
+    "All five frozen inventory items are consumed: the Indebtedness-permitted-by-Liens permission (ac31a719a47d4995cf16b375) on the rule and REQUIRES dependency on Section 7.3(g); the pro forma compliance condition items (ec8b311518c4ef230e54f0b3, 55c1c59cc23002bacf0f41f8, 197d6a75e518b433abd00585, a898fe5b6cdf0d0ca5334548) are consumed by the OTHER_RULE_SATISFIED condition and its evaluationBasis fields."
+  ],
+  "toolCallLog": [
+    {
+      "toolName": "getReferencedProvision",
+      "input": {
+        "ref": "Section 7.3(g)"
+      },
+      "outputSummary": "[deterministic pre-retrieval] resolved reference \"Section 7.3(g)\" -> 7.3(g) [UNIQUE] (CURRENT_OPERATIVE)",
+      "charsReturned": 205,
+      "timestamp": "2026-10-05T03:07:17.157Z",
+      "evidenceUnresolved": false,
+      "evidenceTruncated": false,
+      "retrievedSource": {
+        "requestKind": "PROVISION",
+        "requestKey": "Section 7.3(g)",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeId": "structural-node:31a18e83f13af616c76add29",
+        "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)",
+        "charStart": 58598,
+        "charEnd": 58803,
+        "rawText": "(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either ",
+        "contentHash": "6a425b7ae633f2f374a9776cc4edc92298193356e98f8547a4c364485622c291",
+        "textOrigin": "BASE_DOCUMENT_TEXT",
+        "evidenceStatus": "CURRENT_OPERATIVE",
+        "isCurrentTruth": true
+      }
+    },
+    {
+      "toolName": "getReferencedProvision",
+      "input": {
+        "ref": "Section 7.1"
+      },
+      "outputSummary": "[deterministic pre-retrieval] resolved reference \"Section 7.1\" -> 7.1 [UNIQUE] (CURRENT_OPERATIVE)",
+      "charsReturned": 44,
+      "timestamp": "2026-10-05T03:07:17.157Z",
+      "evidenceUnresolved": false,
+      "evidenceTruncated": false,
+      "retrievedSource": {
+        "requestKind": "PROVISION",
+        "requestKey": "Section 7.1",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+        "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.1",
+        "charStart": 44517,
+        "charEnd": 44561,
+        "rawText": "SECTION 7.1 Financial Condition\nCovenants .\n",
+        "contentHash": "681e58e3cc689d8bf6409d5bee748444f762e7aa873571d19ff13a97b8c42d95",
+        "textOrigin": "BASE_DOCUMENT_TEXT",
+        "evidenceStatus": "CURRENT_OPERATIVE",
+        "isCurrentTruth": true
+      }
+    }
+  ],
+  "inputHasUnresolvedOperativeEvidence": true,
+  "unresolvedEvidenceItemIds": [
+    "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb",
+    "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320"
+  ],
+  "definitionCompletenessCheck": null,
+  "sourceContext": {
+    "state": "DEPENDENCY_EXPANDED_SOURCE",
+    "regions": [
+      {
+        "regionId": "operative",
+        "kind": "OPERATIVE",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeId": "structural-node:99cfe0463b0b851f644273fb",
+        "sectionRef": "7.2(c)",
+        "charStart": 48103,
+        "charEnd": 48632,
+        "text": "(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;\n",
+        "expandedFor": null,
+        "truncatedAtBudget": false,
+        "unitExtension": null
+      },
+      {
+        "regionId": "xref-1",
+        "kind": "CROSS_REFERENCE_EXPANSION",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeId": "structural-node:31a18e83f13af616c76add29",
+        "sectionRef": "7.3(g)",
+        "charStart": 58598,
+        "charEnd": 59556,
+        "text": "(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n",
+        "expandedFor": {
+          "referenceText": "Section 7.3(g)",
+          "resolution": "UNIQUE",
+          "note": "resolved by structural reference detection"
+        },
+        "truncatedAtBudget": false,
+        "unitExtension": null
+      },
+      {
+        "regionId": "xref-2",
+        "kind": "CROSS_REFERENCE_EXPANSION",
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "sourceNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+        "sectionRef": "7.1",
+        "charStart": 44517,
+        "charEnd": 47792,
+        "text": "SECTION 7.1 Financial Condition\nCovenants .\n(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant Material Acquisition and (ii) the\ndate by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a) or (b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition\nis consummated; provided that (x) such step-up shall be permitted only twice during the term of this Agreement and (y) there shall\nbe at least two fiscal quarters in between any such step-ups.\n(b)\nConsolidated Total Leverage Ratio . Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed 5.50 to 1.00. Notwithstanding\nthe foregoing, if the Parent Borrower or any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent\n94\nBorrower\n(the notice of which election shall be given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant\nMaterial Acquisition and (ii) the date by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a)\nor (b) in respect of the fiscal quarter in which such Material Acquisition was consummated), the Consolidated Total Leverage Ratio may\nbe 0.50 to 1.00 (or such lesser amount as is required to comply with clause (x) of the proviso below) greater than the ratio set forth\nabove for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition is consummated; provided\nthat (x) the required Consolidated Total Leverage Ratio that would apply as a result of any such step-up shall be no more than 6.00 to\n1.00, (y) such step-up shall be permitted only twice during this Agreement and (z) there shall be at least two fiscal quarters in between\nany such step-ups.\n(c)\nMinimum Interest Coverage Ratio . Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of\nthe Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.\n(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes\nand so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity\nat any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.\n",
+        "expandedFor": {
+          "referenceText": "Section\n7.1",
+          "resolution": "UNIQUE",
+          "note": "resolved by structural reference detection"
+        },
+        "truncatedAtBudget": false,
+        "unitExtension": null
+      }
+    ],
+    "unresolvedReferences": [],
+    "reasons": [],
+    "totalChars": 4762,
+    "budgetChars": 24000
+  },
+  "frozenInventory": {
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "items": [
+      {
+        "inventoryItemId": "inv-item:ac31a719a47d4995cf16b375",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:99cfe0463b0b851f644273fb",
+          "sectionRef": "7.2(c)",
+          "charStart": 4,
+          "charEnd": 62,
+          "sourceCitation": "§7.2(c)",
+          "excerpt": "Indebtedness secured by Liens permitted by Section 7.3(g);"
+        },
+        "semanticRole": "PERMISSION",
+        "semanticFunctions": {
+          "effect": "PERMISSION",
+          "logic": [
+            "CONDITION"
+          ],
+          "quantitative": [],
+          "dependency": [
+            "REFERENCE"
+          ]
+        },
+        "declaredRoles": [
+          "PERMISSION",
+          "CONDITION"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "effect:PERMISSION",
+            "logic:CONDITION"
+          ],
+          "deterministic": [
+            "dependency:REFERENCE"
+          ]
+        },
+        "proposition": "Permitted incurrence of Indebtedness secured by Liens under Section 7.3(g)",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Indebtedness"
+        ],
+        "referencedSections": [
+          "Section 7.3(g)"
+        ],
+        "parentItemId": null,
+        "relatedItemIds": [
+          "inv-item:197d6a75e518b433abd00585",
+          "inv-item:55c1c59cc23002bacf0f41f8",
+          "inv-item:a898fe5b6cdf0d0ca5334548",
+          "inv-item:ec8b311518c4ef230e54f0b3"
+        ],
+        "materiality": "MATERIAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#1",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:ac31a719a47d4995cf16b375"
+            ],
+            "pass-2": [
+              "inv-item:ac31a719a47d4995cf16b375"
+            ]
+          },
+          "supportGroupId": "support-group:ac31a719a47d4995cf16b375"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:ec8b311518c4ef230e54f0b3",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:99cfe0463b0b851f644273fb",
+          "sectionRef": "7.2(c)",
+          "charStart": 63,
+          "charEnd": 123,
+          "sourceCitation": "§7.2(c)",
+          "excerpt": "provided that the Parent Borrower shall be in compliance, on"
+        },
+        "semanticRole": "CONDITION",
+        "semanticFunctions": {
+          "effect": "REQUIREMENT",
+          "logic": [
+            "CONDITION"
+          ],
+          "quantitative": [],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "CONDITION",
+          "REQUIREMENT"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "effect:REQUIREMENT",
+            "logic:CONDITION"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Condition: Parent Borrower compliance on pro forma basis",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Parent Borrower"
+        ],
+        "referencedSections": [],
+        "parentItemId": "inv-item:ac31a719a47d4995cf16b375",
+        "relatedItemIds": [
+          "inv-item:197d6a75e518b433abd00585",
+          "inv-item:55c1c59cc23002bacf0f41f8",
+          "inv-item:a898fe5b6cdf0d0ca5334548"
+        ],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#2",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:ec8b311518c4ef230e54f0b3"
+            ],
+            "pass-2": [
+              "inv-item:ec8b311518c4ef230e54f0b3"
+            ]
+          },
+          "supportGroupId": "support-group:ec8b311518c4ef230e54f0b3"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:55c1c59cc23002bacf0f41f8",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:99cfe0463b0b851f644273fb",
+          "sectionRef": "7.2(c)",
+          "charStart": 124,
+          "charEnd": 251,
+          "sourceCitation": "§7.2(c)",
+          "excerpt": "a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section"
+        },
+        "semanticRole": "CONDITION",
+        "semanticFunctions": {
+          "effect": "REQUIREMENT",
+          "logic": [
+            "CONDITION"
+          ],
+          "quantitative": [],
+          "dependency": [
+            "REFERENCE"
+          ]
+        },
+        "declaredRoles": [
+          "CONDITION",
+          "REQUIREMENT"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "effect:REQUIREMENT",
+            "logic:CONDITION"
+          ],
+          "deterministic": [
+            "dependency:REFERENCE"
+          ]
+        },
+        "proposition": "Compliance with financial covenants after giving effect to incurrence",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Indebtedness"
+        ],
+        "referencedSections": [
+          "Section 7.1"
+        ],
+        "parentItemId": "inv-item:ec8b311518c4ef230e54f0b3",
+        "relatedItemIds": [
+          "inv-item:197d6a75e518b433abd00585",
+          "inv-item:a898fe5b6cdf0d0ca5334548"
+        ],
+        "materiality": "CRITICAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#3",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:55c1c59cc23002bacf0f41f8"
+            ],
+            "pass-2": [
+              "inv-item:55c1c59cc23002bacf0f41f8"
+            ]
+          },
+          "supportGroupId": "support-group:55c1c59cc23002bacf0f41f8"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:197d6a75e518b433abd00585",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:99cfe0463b0b851f644273fb",
+          "sectionRef": "7.2(c)",
+          "charStart": 252,
+          "charEnd": 391,
+          "sourceCitation": "§7.2(c)",
+          "excerpt": "7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial"
+        },
+        "semanticRole": "REFERENCE",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "CONDITION",
+            "TRIGGER"
+          ],
+          "quantitative": [
+            "FORMULA_COMPONENT",
+            "TIME_PERIOD"
+          ],
+          "dependency": [
+            "REFERENCE"
+          ]
+        },
+        "declaredRoles": [
+          "REFERENCE",
+          "TIME_PERIOD",
+          "FORMULA_COMPONENT",
+          "CONDITION",
+          "TRIGGER"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "logic:CONDITION",
+            "logic:TRIGGER",
+            "quantitative:FORMULA_COMPONENT",
+            "quantitative:TIME_PERIOD",
+            "dependency:REFERENCE"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Recompute as at last day of most recently ended fiscal quarter",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "referencedSections": [
+          "7.1",
+          "Section 7.1"
+        ],
+        "parentItemId": "inv-item:55c1c59cc23002bacf0f41f8",
+        "relatedItemIds": [
+          "inv-item:a898fe5b6cdf0d0ca5334548"
+        ],
+        "materiality": "MATERIAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#4",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:197d6a75e518b433abd00585"
+            ],
+            "pass-2": [
+              "inv-item:197d6a75e518b433abd00585"
+            ]
+          },
+          "supportGroupId": "support-group:197d6a75e518b433abd00585"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:a898fe5b6cdf0d0ca5334548",
+        "sourceSpan": {
+          "regionId": "operative",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:99cfe0463b0b851f644273fb",
+          "sectionRef": "7.2(c)",
+          "charStart": 392,
+          "charEnd": 528,
+          "sourceCitation": "§7.2(c)",
+          "excerpt": "statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;"
+        },
+        "semanticRole": "CONDITION",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "CONDITION",
+            "TRIGGER"
+          ],
+          "quantitative": [
+            "FORMULA_COMPONENT"
+          ],
+          "dependency": []
+        },
+        "declaredRoles": [
+          "CONDITION",
+          "TRIGGER",
+          "FORMULA_COMPONENT"
+        ],
+        "functionProvenance": {
+          "declared": [
+            "logic:CONDITION",
+            "logic:TRIGGER",
+            "quantitative:FORMULA_COMPONENT"
+          ],
+          "deterministic": []
+        },
+        "proposition": "Treat indebtedness as incurred on first day of relevant period for testing",
+        "quantitativeValues": [],
+        "referencedTerms": [
+          "Indebtedness"
+        ],
+        "referencedSections": [],
+        "parentItemId": "inv-item:197d6a75e518b433abd00585",
+        "relatedItemIds": [],
+        "materiality": "MATERIAL",
+        "ambiguity": "NONE",
+        "ambiguityReason": null,
+        "operative": "OPERATIVE",
+        "detectionMethod": "MODEL",
+        "slotId": "operative:region#5",
+        "mergedDuplicates": 1,
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:a898fe5b6cdf0d0ca5334548"
+            ],
+            "pass-2": [
+              "inv-item:a898fe5b6cdf0d0ca5334548"
+            ]
+          },
+          "supportGroupId": "support-group:a898fe5b6cdf0d0ca5334548"
+        }
+      }
+    ],
+    "uninventoriedValues": [],
+    "unaccountedSource": [],
+    "sourceCoverage": {
+      "regionsConsidered": [
+        "operative"
+      ],
+      "countsByDisposition": {
+        "COVERED_BY_INVENTORY": 5,
+        "COVERED_BY_CHILD_DESCENT": 0,
+        "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+        "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP": 0,
+        "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+        "STRUCTURAL_NOISE": 1,
+        "HEADING_OR_LABEL": 0,
+        "CITATION_ONLY": 0,
+        "DEFINED_TERM_LABEL": 0,
+        "PUNCTUATION_OR_DELIMITER": 5,
+        "NON_SEMANTIC_FORMATTING": 0,
+        "UNACCOUNTED_SOURCE": 0
+      },
+      "charsByDisposition": {
+        "COVERED_BY_INVENTORY": 441,
+        "COVERED_BY_CHILD_DESCENT": 0,
+        "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+        "COVERED_BY_OVERRIDE_OPERATOR_OWNERSHIP": 0,
+        "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+        "STRUCTURAL_NOISE": 3,
+        "HEADING_OR_LABEL": 0,
+        "CITATION_ONLY": 0,
+        "DEFINED_TERM_LABEL": 0,
+        "PUNCTUATION_OR_DELIMITER": 0,
+        "NON_SEMANTIC_FORMATTING": 0,
+        "UNACCOUNTED_SOURCE": 0
+      },
+      "accountedCharFraction": 1,
+      "externallyAccountedRegions": []
+    },
+    "gapReinventory": {
+      "attempted": false,
+      "segmentsBefore": 0,
+      "itemsAdded": 0,
+      "duplicatesDropped": 0,
+      "unverifiableDropped": 0,
+      "segmentsAfter": 0,
+      "costUsd": null,
+      "error": null
+    },
+    "inventoryStatus": "INVENTORY_OK",
+    "inventoryStatusReason": "5 canonical item(s) from 2 independent passes: 5 exactly corroborated, 0 coverage-corroborated, 0 single-run (0 CRITICAL/MATERIAL), 0 conflicted; 5 support group(s)",
+    "rejectedUnverifiableItems": 0,
+    "rejectedDuplicateItems": 5,
+    "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+    "frozenContentHash": "a7aee6e89ca7c17998ecf2adec0a3c5f7114a902f81f271c080d4a4d10a122ce",
+    "frozenAt": "2026-10-05T03:07:08.777Z",
+    "algorithmVersion": "semantic-accountability.v5+semantic-ensemble.v2",
+    "promptVersion": "semantic-inventory-prompt.v6",
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "telemetryCostUsd": 0.000830512,
+    "partition": {
+      "methods": {
+        "operative": "INDEPENDENT_SEGMENTS"
+      },
+      "slots": [
+        {
+          "slotId": "operative:region#1",
+          "regionId": "operative",
+          "sectionRef": "7.2(c)",
+          "charStart": 0,
+          "charEnd": 63
+        },
+        {
+          "slotId": "operative:region#2",
+          "regionId": "operative",
+          "sectionRef": "7.2(c)",
+          "charStart": 63,
+          "charEnd": 124
+        },
+        {
+          "slotId": "operative:region#3",
+          "regionId": "operative",
+          "sectionRef": "7.2(c)",
+          "charStart": 124,
+          "charEnd": 252
+        },
+        {
+          "slotId": "operative:region#4",
+          "regionId": "operative",
+          "sectionRef": "7.2(c)",
+          "charStart": 252,
+          "charEnd": 392
+        },
+        {
+          "slotId": "operative:region#5",
+          "regionId": "operative",
+          "sectionRef": "7.2(c)",
+          "charStart": 392,
+          "charEnd": 529
+        }
+      ],
+      "batches": 2,
+      "batchChars": 6000,
+      "gapBatches": 0,
+      "firstPassCalls": 2,
+      "gapCalls": 0
+    },
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+    "sourceIdentity": {
+      "method": "RECORDED_AT_FREEZE",
+      "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+      "partitionHash": "dc529c7875eea192860a151524ab15714d3a12b479b110f1e49893bb095aa1ad"
+    },
+    "ensemble": {
+      "algorithmVersion": "semantic-ensemble.v2",
+      "policy": "SUPPORT_AWARE_CANONICAL_UNION",
+      "passIds": [
+        "pass-1",
+        "pass-2"
+      ],
+      "passHashes": {
+        "pass-1": "7285597a4c1dffd5c0fc057e2251916d71aa95cec12f65c2f6fb972602424e70",
+        "pass-2": "c7e051d1daeb26da6ebabf7d8923c93f4634e85b1ddf2f988fbbaed1bc17d67b"
+      },
+      "counts": {
+        "canonicalItems": 5,
+        "corroborated": 5,
+        "coverageCorroborated": 0,
+        "singleRun": 0,
+        "singleRunByPass": {
+          "pass-1": 0,
+          "pass-2": 0
+        },
+        "conflicted": 0,
+        "materialSingleRun": 0,
+        "informationalSingleRun": 0,
+        "materialConflicted": 0,
+        "rejectedUnverifiable": 0,
+        "supportGroups": 5
+      },
+      "supportReviewRequired": false,
+      "supportReviewFraction": 0,
+      "conflicts": [],
+      "compatibility": {
+        "mode": "STRICT",
+        "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+        "partitionHash": "dc529c7875eea192860a151524ab15714d3a12b479b110f1e49893bb095aa1ad",
+        "documentIds": [
+          "conmed-doc-a-eighth-ar-credit-agreement"
+        ],
+        "passes": {
+          "pass-1": {
+            "algorithmVersion": "semantic-accountability.v5",
+            "promptVersion": "semantic-inventory-prompt.v6",
+            "provider": "vercel-ai-gateway",
+            "model": "deepseek/deepseek-v4-flash",
+            "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+            "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+            "partitionHash": "dc529c7875eea192860a151524ab15714d3a12b479b110f1e49893bb095aa1ad",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement"
+          },
+          "pass-2": {
+            "algorithmVersion": "semantic-accountability.v5",
+            "promptVersion": "semantic-inventory-prompt.v6",
+            "provider": "vercel-ai-gateway",
+            "model": "deepseek/deepseek-v4-flash",
+            "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+            "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+            "partitionHash": "dc529c7875eea192860a151524ab15714d3a12b479b110f1e49893bb095aa1ad",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement"
+          }
+        },
+        "checks": [
+          {
+            "check": "candidate-ref",
+            "pass": true,
+            "detail": "pass-1: candidateRef discovery-candidate:7a3f36589dacd05c41331a80 matches"
+          },
+          {
+            "check": "source-identity-recorded",
+            "pass": true,
+            "detail": "pass-1: source identity RECORDED_AT_FREEZE"
+          },
+          {
+            "check": "source-context-hash",
+            "pass": true,
+            "detail": "pass-1: source-context hash 7d4b22affb87e780 vs ensemble 7d4b22affb87e780"
+          },
+          {
+            "check": "partition",
+            "pass": true,
+            "detail": "pass-1: slot partition dc529c7875eea192 vs ensemble dc529c7875eea192"
+          },
+          {
+            "check": "document",
+            "pass": true,
+            "detail": "pass-1: document conmed-doc-a-eighth-ar-credit-agreement vs ensemble conmed-doc-a-eighth-ar-credit-agreement"
+          },
+          {
+            "check": "algorithm-generation",
+            "pass": true,
+            "detail": "pass-1: algorithm semantic-accountability.v5 supported"
+          },
+          {
+            "check": "prompt-generation",
+            "pass": true,
+            "detail": "pass-1: prompt semantic-inventory-prompt.v6 supported"
+          },
+          {
+            "check": "pass-status",
+            "pass": true,
+            "detail": "pass-1: INVENTORY_OK"
+          },
+          {
+            "check": "candidate-ref",
+            "pass": true,
+            "detail": "pass-2: candidateRef discovery-candidate:7a3f36589dacd05c41331a80 matches"
+          },
+          {
+            "check": "source-identity-recorded",
+            "pass": true,
+            "detail": "pass-2: source identity RECORDED_AT_FREEZE"
+          },
+          {
+            "check": "source-context-hash",
+            "pass": true,
+            "detail": "pass-2: source-context hash 7d4b22affb87e780 vs ensemble 7d4b22affb87e780"
+          },
+          {
+            "check": "partition",
+            "pass": true,
+            "detail": "pass-2: slot partition dc529c7875eea192 vs ensemble dc529c7875eea192"
+          },
+          {
+            "check": "document",
+            "pass": true,
+            "detail": "pass-2: document conmed-doc-a-eighth-ar-credit-agreement vs ensemble conmed-doc-a-eighth-ar-credit-agreement"
+          },
+          {
+            "check": "algorithm-generation",
+            "pass": true,
+            "detail": "pass-2: algorithm semantic-accountability.v5 supported"
+          },
+          {
+            "check": "prompt-generation",
+            "pass": true,
+            "detail": "pass-2: prompt semantic-inventory-prompt.v6 supported"
+          },
+          {
+            "check": "pass-status",
+            "pass": true,
+            "detail": "pass-2: INVENTORY_OK"
+          },
+          {
+            "check": "algorithm-generation",
+            "pass": true,
+            "detail": "pass-2 vs pass-1: algorithm semantic-accountability.v5 vs semantic-accountability.v5"
+          },
+          {
+            "check": "prompt-generation",
+            "pass": true,
+            "detail": "pass-2 vs pass-1: prompt semantic-inventory-prompt.v6 vs semantic-inventory-prompt.v6"
+          },
+          {
+            "check": "provider-model",
+            "pass": true,
+            "detail": "pass-2 vs pass-1: vercel-ai-gateway/deepseek/deepseek-v4-flash vs vercel-ai-gateway/deepseek/deepseek-v4-flash"
+          }
+        ],
+        "declaredExceptions": []
+      }
+    },
+    "calls": [
+      {
+        "passId": "pass-1",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "slotIds": [
+          "operative:region#1",
+          "operative:region#2",
+          "operative:region#3",
+          "operative:region#4",
+          "operative:region#5"
+        ],
+        "requestedMaxOutputTokens": 6218,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 13,
+        "inputTokens": 1638,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": 977,
+        "latencyMs": 8912,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "error": null,
+        "itemsReturned": 5,
+        "itemsAccepted": 5,
+        "itemsRejectedOverBound": 0
+      },
+      {
+        "passId": "pass-2",
+        "batchId": "b1",
+        "stage": "semantic_inventory",
+        "slotIds": [
+          "operative:region#1",
+          "operative:region#2",
+          "operative:region#3",
+          "operative:region#4",
+          "operative:region#5"
+        ],
+        "requestedMaxOutputTokens": 6218,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 13,
+        "inputTokens": 614,
+        "visibleOutputTokens": null,
+        "reasoningTokens": null,
+        "totalOutputTokens": 981,
+        "latencyMs": 9549,
+        "stopReason": "end_turn",
+        "schemaOk": true,
+        "error": null,
+        "itemsReturned": 5,
+        "itemsAccepted": 5,
+        "itemsRejectedOverBound": 0
+      }
+    ],
+    "executionPolicy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "rejectedOverBoundItems": 0
+  },
+  "inventoryMode": "DUAL_PASS_ENSEMBLE",
+  "inventoryPasses": [
+    {
+      "passId": "pass-1",
+      "frozenContentHash": "7285597a4c1dffd5c0fc057e2251916d71aa95cec12f65c2f6fb972602424e70",
+      "inventoryStatus": "INVENTORY_OK",
+      "items": 5,
+      "telemetryCostUsd": 0.00046696
+    },
+    {
+      "passId": "pass-2",
+      "frozenContentHash": "c7e051d1daeb26da6ebabf7d8923c93f4634e85b1ddf2f988fbbaed1bc17d67b",
+      "inventoryStatus": "INVENTORY_OK",
+      "items": 5,
+      "telemetryCostUsd": 0.000363552
+    }
+  ],
+  "accountability": {
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "inventoryStatus": "INVENTORY_OK",
+    "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+    "items": [
+      {
+        "inventoryItemId": "inv-item:ac31a719a47d4995cf16b375",
+        "semanticRole": "PERMISSION",
+        "materiality": "MATERIAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0]",
+          "rules[0].sourceDependencies[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0], rules[0].sourceDependencies[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:ac31a719a47d4995cf16b375"
+            ],
+            "pass-2": [
+              "inv-item:ac31a719a47d4995cf16b375"
+            ]
+          },
+          "supportGroupId": "support-group:ac31a719a47d4995cf16b375"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:ec8b311518c4ef230e54f0b3",
+        "semanticRole": "CONDITION",
+        "materiality": "CRITICAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0].conditions[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0].conditions[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:ec8b311518c4ef230e54f0b3"
+            ],
+            "pass-2": [
+              "inv-item:ec8b311518c4ef230e54f0b3"
+            ]
+          },
+          "supportGroupId": "support-group:ec8b311518c4ef230e54f0b3"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:55c1c59cc23002bacf0f41f8",
+        "semanticRole": "CONDITION",
+        "materiality": "CRITICAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0].conditions[0]",
+          "rules[0].sourceDependencies[1]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0].conditions[0], rules[0].sourceDependencies[1]",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:55c1c59cc23002bacf0f41f8"
+            ],
+            "pass-2": [
+              "inv-item:55c1c59cc23002bacf0f41f8"
+            ]
+          },
+          "supportGroupId": "support-group:55c1c59cc23002bacf0f41f8"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:197d6a75e518b433abd00585",
+        "semanticRole": "REFERENCE",
+        "materiality": "MATERIAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0].conditions[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0].conditions[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:197d6a75e518b433abd00585"
+            ],
+            "pass-2": [
+              "inv-item:197d6a75e518b433abd00585"
+            ]
+          },
+          "supportGroupId": "support-group:197d6a75e518b433abd00585"
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:a898fe5b6cdf0d0ca5334548",
+        "semanticRole": "CONDITION",
+        "materiality": "MATERIAL",
+        "disposition": "REPRESENTED",
+        "lineageIrPaths": [
+          "rules[0].conditions[0]"
+        ],
+        "modelDisposition": null,
+        "quantitative": [],
+        "reason": "lineage: rules[0].conditions[0]",
+        "support": {
+          "supportingPasses": [
+            "pass-1",
+            "pass-2"
+          ],
+          "supportStatus": "CORROBORATED",
+          "memberItemIds": {
+            "pass-1": [
+              "inv-item:a898fe5b6cdf0d0ca5334548"
+            ],
+            "pass-2": [
+              "inv-item:a898fe5b6cdf0d0ca5334548"
+            ]
+          },
+          "supportGroupId": "support-group:a898fe5b6cdf0d0ca5334548"
+        }
+      }
+    ],
+    "counts": {
+      "inventoried": 5,
+      "material": 5,
+      "represented": 5,
+      "intentionallyNonComputational": 0,
+      "unsupported": 0,
+      "ambiguous": 0,
+      "missingFromComposition": 0,
+      "materialMissingFromComposition": 0,
+      "criticalMissingFromComposition": 0,
+      "materialQuantitativeValues": 0,
+      "materialQuantitativeValuesMissing": 0,
+      "uninventoriedValues": 0,
+      "unaccountedSource": 0,
+      "danglingLineageReferences": 0,
+      "canonicalizedLineageReferences": 0
+    },
+    "semanticallyComplete": true,
+    "supportReviewRequired": false,
+    "support": {
+      "passIds": [
+        "pass-1",
+        "pass-2"
+      ],
+      "corroborated": 5,
+      "singleRun": 0,
+      "materialSingleRun": 0,
+      "conflicted": 0,
+      "materialConflicted": 0,
+      "byDisposition": {
+        "REPRESENTED": {
+          "corroborated": 5,
+          "singleRun": 0,
+          "conflicted": 0
+        },
+        "INTENTIONALLY_NON_COMPUTATIONAL": {
+          "corroborated": 0,
+          "singleRun": 0,
+          "conflicted": 0
+        },
+        "UNSUPPORTED": {
+          "corroborated": 0,
+          "singleRun": 0,
+          "conflicted": 0
+        },
+        "AMBIGUOUS": {
+          "corroborated": 0,
+          "singleRun": 0,
+          "conflicted": 0
+        },
+        "MISSING_FROM_COMPOSITION": {
+          "corroborated": 0,
+          "singleRun": 0,
+          "conflicted": 0
+        }
+      }
+    },
+    "reasons": [],
+    "algorithmVersion": "semantic-accountability.v5"
+  },
+  "rawModelOutput": {
+    "definitions": [],
+    "irExtensionCandidates": [],
+    "overallNotes": [
+      "Section 7.2(c) is a permission (basket) under the umbrella prohibition of Section 7.2 for incurrence of Indebtedness secured by Liens permitted by Section 7.3(g), subject to a pro forma compliance condition with the Section 7.1 financial covenants. The Section 7.1 covenants are themselves separately-owned rules (not part of the submitted operative text) and their thresholds are accordingly NOT restated in this rule to avoid double-counting; the condition is carried as a cross-rule OTHER_RULE_SATISFIED condition referencing Section 7.1 with the pro forma evaluation basis from the source's own words.",
+      "The three Section 7.1 financial ratios (Senior Secured Leverage, Total Leverage, Interest Coverage) plus the Liquidity test in Section 7.1(d) are all referenced collectively by 'the financial covenants contained in Section 7.1'. Because Section 7.1 is owned by its own candidate and its contents are not the submitted source text, the condition references Section 7.1 as a whole (ALL_SATISFIED across the referenced family) without restating its thresholds.",
+      "The Parent Borrower and its Subsidiaries is the measurement group named for the financial-covenant recomputation date; it does not widen entityScope, which identifies the obligor/actor (the Parent Borrower) that must be in compliance.",
+      "All five frozen inventory items are consumed: the Indebtedness-permitted-by-Liens permission (ac31a719a47d4995cf16b375) on the rule and REQUIRES dependency on Section 7.3(g); the pro forma compliance condition items (ec8b311518c4ef230e54f0b3, 55c1c59cc23002bacf0f41f8, 197d6a75e518b433abd00585, a898fe5b6cdf0d0ca5334548) are consumed by the OTHER_RULE_SATISFIED condition and its evaluationBasis fields."
+    ],
+    "rules": [
+      {
+        "action": "INCUR_DEBT",
+        "capacityExpression": {
+          "citation": "§7.2(c)",
+          "gatedBy": null,
+          "kind": "UNLIMITED_CAPACITY",
+          "sourceEvidence": "Indebtedness secured by Liens permitted by Section 7.3(g)"
+        },
+        "citation": "§7.2(c)",
+        "conditions": [
+          {
+            "citation": "§7.2(c)",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "description": "Parent Borrower compliance, on a pro forma basis after giving effect to the incurrence, with the financial covenants in Section 7.1, recomputed as at the last day of the most recently ended fiscal quarter for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period",
+            "evaluationBasis": {
+              "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+              "deemedEffectiveAt": "as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+              "proForma": true,
+              "testingPeriod": "each relevant period for testing compliance",
+              "transactionEffect": "after giving effect to the incurrence of such Indebtedness"
+            },
+            "excerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+            "expression": null,
+            "inventoryItemIds": [
+              "inv-item:ec8b311518c4ef230e54f0b3",
+              "inv-item:55c1c59cc23002bacf0f41f8",
+              "inv-item:197d6a75e518b433abd00585",
+              "inv-item:a898fe5b6cdf0d0ca5334548"
+            ],
+            "referencesDefinitionId": null,
+            "referencesRuleTargets": [
+              {
+                "targetRef": "Section 7.1"
+              }
+            ],
+            "targetCombination": "ALL_SATISFIED"
+          }
+        ],
+        "covenantFamily": "INDEBTEDNESS",
+        "dependsOn": [
+          {
+            "description": "the secured Indebtedness must be covered by Liens that are permitted under Section 7.3(g)",
+            "inventoryItemIds": [
+              "inv-item:ac31a719a47d4995cf16b375"
+            ],
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.3(g)"
+          },
+          {
+            "description": "the Parent Borrower must remain in compliance with the Section 7.1 financial covenants on a pro forma basis",
+            "inventoryItemIds": [
+              "inv-item:55c1c59cc23002bacf0f41f8"
+            ],
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 7.1"
+          }
+        ],
+        "entityScope": [
+          "Parent Borrower"
+        ],
+        "entityScopeExcluded": [],
+        "exceptions": [],
+        "excerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+        "inventoryItemIds": [
+          "inv-item:ac31a719a47d4995cf16b375"
+        ],
+        "localRef": "r-7-2c",
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "sourceSectionRef": "7.2(c)",
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": []
+      }
+    ],
+    "sharedCapacities": []
+  },
+  "contextOnlyEmissions": [],
+  "dependencyProseDiagnostics": [
+    {
+      "scope": "rule[r-7-2c].dependsOn[0]",
+      "exactSourceTargetRef": "Section 7.3(g)",
+      "modelProse": "the secured Indebtedness must be covered by Liens that are permitted under Section 7.3(g)",
+      "figuresInProse": [],
+      "targetEconomicsExcluded": []
+    },
+    {
+      "scope": "rule[r-7-2c].dependsOn[1]",
+      "exactSourceTargetRef": "Section 7.1",
+      "modelProse": "the Parent Borrower must remain in compliance with the Section 7.1 financial covenants on a pro forma basis",
+      "figuresInProse": [],
+      "targetEconomicsExcluded": []
+    }
+  ],
+  "invalidWireKinds": [],
+  "provider": "vercel-ai-gateway",
+  "model": "deepseek/deepseek-v4-flash",
+  "telemetry": {
+    "provider": "vercel-ai-gateway",
+    "model": "deepseek/deepseek-v4-flash",
+    "promptVersion": "semantic-accountability-compiler-prompt.v6",
+    "schemaVersion": "headroom-covenant-ir.v1",
+    "stage": "semantic_compilation_bounded",
+    "timestamp": "2026-10-05T03:07:25.644Z",
+    "inputTokens": 18242,
+    "outputTokens": 2706,
+    "cachedInputTokens": 16640,
+    "cacheCreationInputTokens": 0,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0,
+    "latencyMs": 16840,
+    "calculatedCostUsd": 0.00354094,
+    "pricing": {
+      "pricingVersion": "headroom-pricing.v1 (2026-09)",
+      "pricingStatus": "PRICED"
+    },
+    "transport": {
+      "attempts": 2,
+      "retries": 0,
+      "policyVersion": "headroom-transport-retry.v1"
+    },
+    "semanticConversations": 1,
+    "refinementConversations": 1,
+    "transportAttempts": 2,
+    "promptChars": {
+      "pass1": 53889,
+      "pass2": 60204
+    },
+    "deterministicRetrievals": 2
+  },
+  "cacheKey": "562f24fa4069269568eb8e75094506bcb45dec91d875d885d6d46012f2b4742e",
+  "compiledAt": "2026-10-05T03:07:25.644Z",
+  "execution": {
+    "mode": "MONOLITHIC",
+    "reason": "SINGLE_BOUNDED_SHARD",
+    "policyVersion": "semantic-execution-mode.v1",
+    "plannerAlgorithmVersion": "semantic-compilation-shards.v4-required-dependency-precision",
+    "planHash": "452f203f5745a46d92a12a94b71376287c734d57dae8772d7f6dcf6b04dbe08f",
+    "plannedShards": 1,
+    "oversizedShards": 0,
+    "frozenInventoryResume": null,
+    "sharded": null
+  }
+}

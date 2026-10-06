@@ -1,0 +1,1145 @@
+{
+  "assessmentVersion": "7.2c-final-live-semantic-assessment.v2",
+  "runId": "live-7.2c-rerun-operative-state-2026-10-06T14:25:38.951Z",
+  "startedAt": "2026-10-06T14:25:38.951Z",
+  "startingSha": "e74c2d091e1fd5d0b31cfb4bb92d22925b828ddd",
+  "note": "runId carries the runner default name (the committed runner was executed unmodified at the starting SHA); the attempt directory is 7.2c-final-source-authority",
+  "target": {
+    "id": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "operativeSourceSha256": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+    "chars": 529,
+    "assertions": {
+      "candidateIdMatches": true,
+      "documentMatches": true,
+      "sectionRefMatches": true,
+      "structuralNodeResolved": true,
+      "singleOccurrence": true,
+      "textSha256Matches": true,
+      "charsMatch": true
+    }
+  },
+  "phase2State": {
+    "source": {
+      "path": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json",
+      "runId": "PHASE_2G_CONMED_AMENDMENT_REGRESSION",
+      "generatedAt": "2026-08-27T19:00:41.956Z",
+      "asOfDate": "2026-08-27",
+      "sha256": "e036ebac936d7120b2bcd298f380b95b4257910653f94e8fe5496d374126d4d6",
+      "instrumentKeyInReport": "instrument:conmed-doc-a-eighth-ar-credit-agreement"
+    },
+    "asOfConsistency": {
+      "phase2AsOfDate": "2026-08-27",
+      "phase3AsOfDate": "2026-10-06",
+      "phase3IsLater": true,
+      "checks": [
+        {
+          "code": "EVERY_PACKAGE_DOCUMENT_REPRESENTED",
+          "passed": true,
+          "detail": "all 4 package document(s) appear in the preserved Phase-2 analysis (as analyzed amendment or target)"
+        },
+        {
+          "code": "DOCUMENT_COUNT_MATCHES",
+          "passed": true,
+          "detail": "Phase-2 processed 4 document(s); the package supplies 4"
+        },
+        {
+          "code": "NO_PACKAGE_DOCUMENT_AFTER_PHASE2_AS_OF",
+          "passed": true,
+          "detail": "latest package document 2026-05-27 <= Phase-2 as-of 2026-08-27"
+        }
+      ],
+      "proven": true
+    },
+    "instrumentStatus": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "indebtedness": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "governingProvisionForTarget": null
+  },
+  "spend": {
+    "hardCeilingUsd": 0.25,
+    "exactUsd": 0.010963806,
+    "retainedUsd": 0,
+    "paidRequests": 5,
+    "refusals": []
+  },
+  "telemetry": {
+    "candidateAttempt": 1,
+    "semanticConversations": 1,
+    "refinementConversations": 1,
+    "transportAttempts": 2,
+    "shardAttempts": 0,
+    "inventoryCalls": 2,
+    "verifierCalls": 1,
+    "providerCalls": 4,
+    "inputTokens": 33295,
+    "outputTokens": 23536,
+    "costUsd": 0.010963806,
+    "pricingStatus": "PRICED",
+    "wallClockMs": 250428,
+    "deadlineMs": 480000,
+    "timedOut": false
+  },
+  "transport": [
+    {
+      "seq": 1,
+      "model": "deepseek/deepseek-v4-flash",
+      "maxTokens": 6218,
+      "thinking": {
+        "type": "disabled"
+      },
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 1638,
+        "output_tokens": 939
+      },
+      "durationMs": 9098
+    },
+    {
+      "seq": 2,
+      "model": "deepseek/deepseek-v4-flash",
+      "maxTokens": 6218,
+      "thinking": {
+        "type": "disabled"
+      },
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 614,
+        "output_tokens": 928,
+        "cache_read_input_tokens": 1024
+      },
+      "durationMs": 7918
+    },
+    {
+      "seq": 3,
+      "model": "deepseek/deepseek-v4-flash",
+      "maxTokens": 32000,
+      "thinking": null,
+      "tools": [
+        "submit_compilation"
+      ],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 17793,
+        "output_tokens": 1306
+      },
+      "durationMs": 7951
+    },
+    {
+      "seq": 4,
+      "model": "deepseek/deepseek-v4-flash",
+      "maxTokens": 32000,
+      "thinking": null,
+      "tools": [
+        "submit_compilation"
+      ],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 1827,
+        "output_tokens": 1381,
+        "cache_read_input_tokens": 17408
+      },
+      "durationMs": 7325
+    },
+    {
+      "seq": 5,
+      "model": "deepseek/deepseek-v4-flash",
+      "maxTokens": 32000,
+      "thinking": null,
+      "tools": [],
+      "status": 200,
+      "responseModel": "deepseek/deepseek-v4-flash",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 11423,
+        "output_tokens": 18982
+      },
+      "durationMs": 217831
+    }
+  ],
+  "passA": {
+    "mode": "DUAL_PASS_ENSEMBLE",
+    "passes": [
+      {
+        "passId": "pass-1",
+        "frozenContentHash": "a3aeda4b11752ef09373d3b927c629211cdc06acf5c3ac5004e941b3c3df9735",
+        "inventoryStatus": "INVENTORY_OK",
+        "items": 5,
+        "telemetryCostUsd": 0.00045708
+      },
+      {
+        "passId": "pass-2",
+        "frozenContentHash": "534778b004bdaf4620a3f831712737a902a43bd202802533a44679da6ba7f087",
+        "inventoryStatus": "INVENTORY_OK",
+        "items": 5,
+        "telemetryCostUsd": 0.000349772
+      }
+    ],
+    "calls": [
+      {
+        "passId": "pass-1",
+        "requestedMaxOutputTokens": 6218,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 13,
+        "totalOutputTokens": 939,
+        "itemsReturned": 5,
+        "itemsAccepted": 5,
+        "stopReason": "end_turn"
+      },
+      {
+        "passId": "pass-2",
+        "requestedMaxOutputTokens": 6218,
+        "reasoningPolicy": "DISABLED",
+        "maxItems": 13,
+        "totalOutputTokens": 928,
+        "itemsReturned": 5,
+        "itemsAccepted": 5,
+        "stopReason": "end_turn"
+      }
+    ],
+    "ensembleCounts": {
+      "canonicalItems": 5,
+      "corroborated": 5,
+      "coverageCorroborated": 0,
+      "singleRun": 0,
+      "singleRunByPass": {
+        "pass-1": 0,
+        "pass-2": 0
+      },
+      "conflicted": 0,
+      "materialSingleRun": 0,
+      "informationalSingleRun": 0,
+      "materialConflicted": 0,
+      "rejectedUnverifiable": 0,
+      "supportGroups": 5
+    },
+    "supportReviewRequired": false,
+    "items": [
+      {
+        "inventoryItemId": "inv-item:5a0b860baa6791acdcb74808",
+        "span": [
+          4,
+          62
+        ],
+        "excerpt": "Indebtedness secured by Liens permitted by Section 7.3(g);",
+        "declaredReferencedSections": [
+          "7.3(g)"
+        ],
+        "sourceGroundedReferencedSections": [
+          "7.3(g)"
+        ],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [
+            {
+              "declared": "7.3(g)",
+              "normalized": "7.3(g)",
+              "classification": "CORROBORATED",
+              "sourceRef": "Section 7.3(g)"
+            }
+          ],
+          "omittedBySource": []
+        },
+        "supportStatus": "CORROBORATED",
+        "semanticFunctions": {
+          "effect": "PERMISSION",
+          "logic": [],
+          "quantitative": [],
+          "dependency": [
+            "REFERENCE"
+          ]
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:b2e4836195c0be7f3583454d",
+        "span": [
+          63,
+          123
+        ],
+        "excerpt": "provided that the Parent Borrower shall be in compliance, on",
+        "declaredReferencedSections": [],
+        "sourceGroundedReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "supportStatus": "CORROBORATED",
+        "semanticFunctions": {
+          "effect": "REQUIREMENT",
+          "logic": [
+            "CONDITION"
+          ],
+          "quantitative": [],
+          "dependency": []
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:e63570d96afd9a92fe94bb2d",
+        "span": [
+          124,
+          251
+        ],
+        "excerpt": "a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section",
+        "declaredReferencedSections": [
+          "7.1"
+        ],
+        "sourceGroundedReferencedSections": [
+          "7.1"
+        ],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [
+            {
+              "declared": "7.1",
+              "normalized": "7.1",
+              "classification": "CORROBORATED",
+              "sourceRef": "Section 7.1"
+            }
+          ],
+          "omittedBySource": []
+        },
+        "supportStatus": "CORROBORATED",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "CONDITION"
+          ],
+          "quantitative": [],
+          "dependency": [
+            "REFERENCE"
+          ]
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:111a934d9392092fd29630e0",
+        "span": [
+          252,
+          391
+        ],
+        "excerpt": "7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial",
+        "declaredReferencedSections": [
+          "7.1"
+        ],
+        "sourceGroundedReferencedSections": [
+          "7.1"
+        ],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [
+            {
+              "declared": "7.1",
+              "normalized": "7.1",
+              "classification": "CORROBORATED",
+              "sourceRef": "Section 7.1"
+            }
+          ],
+          "omittedBySource": []
+        },
+        "supportStatus": "CORROBORATED",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "CONDITION"
+          ],
+          "quantitative": [
+            "TIME_PERIOD"
+          ],
+          "dependency": [
+            "REFERENCE"
+          ]
+        }
+      },
+      {
+        "inventoryItemId": "inv-item:f4092bd7629e5bb9aa4abbd4",
+        "span": [
+          392,
+          528
+        ],
+        "excerpt": "statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;",
+        "declaredReferencedSections": [],
+        "sourceGroundedReferencedSections": [],
+        "referenceAudit": {
+          "version": "source-reference-scan.v1",
+          "claims": [],
+          "omittedBySource": []
+        },
+        "supportStatus": "CORROBORATED",
+        "semanticFunctions": {
+          "effect": "NONE",
+          "logic": [
+            "CONDITION",
+            "TRIGGER"
+          ],
+          "quantitative": [],
+          "dependency": []
+        }
+      }
+    ]
+  },
+  "sourceAuthority": {
+    "operativeTextScan": [
+      {
+        "raw": "Section 7.3(g)",
+        "normalized": "7.3(g)",
+        "span": [
+          47,
+          61
+        ],
+        "spanText": "Section 7.3(g)",
+        "selector": {
+          "sourceText": "Section 7.3(g)",
+          "kind": "WHOLE_PROVISION",
+          "qualifierText": null
+        },
+        "expandedFromRange": false
+      },
+      {
+        "raw": "Section 7.1",
+        "normalized": "7.1",
+        "span": [
+          244,
+          255
+        ],
+        "spanText": "Section\n7.1",
+        "selector": {
+          "sourceText": "financial covenants contained in Section 7.1",
+          "kind": "QUALIFIED_RULE_SET",
+          "qualifierText": "financial covenants contained in"
+        },
+        "expandedFromRange": false
+      }
+    ],
+    "authoritativeTargets": [
+      {
+        "path": "sourceDependencies",
+        "relationshipType": "REQUIRES",
+        "exactSourceTargetRef": "Section 7.3(g)",
+        "normalizedTargetRef": "7.3(g)",
+        "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+        "owningCandidateRefs": [
+          "discovery-candidate:082c80836268c7277cc39c18"
+        ],
+        "boundSemanticTargetIds": [],
+        "selector": {
+          "sourceText": "Section 7.3(g)",
+          "kind": "WHOLE_PROVISION",
+          "qualifierText": null
+        },
+        "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are separately owned and resolved at package level",
+        "sourceSpan": 47
+      },
+      {
+        "path": "conditions[0].referencesRuleTargets",
+        "relationshipType": null,
+        "exactSourceTargetRef": "Section 7.1",
+        "normalizedTargetRef": "7.1",
+        "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+        "owningCandidateRefs": [
+          "discovery-candidate:a26970121ceb558846ff8d1c",
+          "discovery-candidate:e37352369564a1e784e0560b"
+        ],
+        "boundSemanticTargetIds": [],
+        "selector": {
+          "sourceText": "financial covenants contained in Section 7.1",
+          "kind": "QUALIFIED_RULE_SET",
+          "qualifierText": "financial covenants contained in"
+        },
+        "description": null,
+        "sourceSpan": 244
+      }
+    ],
+    "inventedInventoryRefsAuthoritative": false,
+    "everyAuthoritativeRefHasSourceSpan": true
+  },
+  "contextRetrieval": {
+    "sufficiency": "SUFFICIENT",
+    "stopReasons": [],
+    "itemsRetained": 19,
+    "performance": {
+      "itemsConsidered": 19,
+      "itemsRetained": 19,
+      "duplicatePathsDeduplicated": 5,
+      "maxDefinitionDepthReached": 5,
+      "maxCrossReferenceDepthReached": 1,
+      "crossReferenceTraversals": 1,
+      "crossDocumentLeads": 1,
+      "deterministicWallClockMs": 16,
+      "semanticWallClockMs": 0,
+      "semanticCalls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0
+    },
+    "retrievalStops": [
+      {
+        "reason": "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT",
+        "fromNodeId": "structural-node:99cfe0463b0b851f644273fb",
+        "targetNodeId": "structural-node:31a18e83f13af616c76add29",
+        "targetSectionRef": "7.3(g)",
+        "owningCandidateRefs": [
+          "discovery-candidate:082c80836268c7277cc39c18"
+        ],
+        "depth": 1,
+        "detail": "7.3(g) is owned by candidate(s) discovery-candidate:082c80836268c7277cc39c18; its dependency tree is delegated to that unit"
+      },
+      {
+        "reason": "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT",
+        "fromNodeId": "structural-node:99cfe0463b0b851f644273fb",
+        "targetNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+        "targetSectionRef": "7.1",
+        "owningCandidateRefs": [
+          "discovery-candidate:a26970121ceb558846ff8d1c",
+          "discovery-candidate:e37352369564a1e784e0560b"
+        ],
+        "depth": 1,
+        "detail": "7.1 is owned by candidate(s) discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b; its dependency tree is delegated to that unit"
+      }
+    ],
+    "hasUnresolvedOperativeEvidence": true
+  },
+  "governingScope": {
+    "version": "governing-scope-context.v1",
+    "contentHash": "0581a3b1ebf80bb1c2bbe888a4d3263e68a0a726c16a0700d7f10ea74b9e89a0",
+    "regions": [
+      {
+        "regionId": "governing-1",
+        "role": "PARENT_SCOPE",
+        "sectionRef": "7.2",
+        "ancestorDistance": 1,
+        "charStart": 47792,
+        "charEnd": 47898,
+        "sha256": "595db524693580f02b0aeaa4cfaeb6c877fa334075a82842b0fb88b348259128"
+      },
+      {
+        "regionId": "governing-2",
+        "role": "GOVERNING_SCOPE",
+        "sectionRef": "article-group:7",
+        "ancestorDistance": 2,
+        "charStart": 44178,
+        "charEnd": 44516,
+        "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9"
+      }
+    ],
+    "inheritedEntityScope": [
+      "BORROWER",
+      "ANY_SUBSIDIARY"
+    ],
+    "inheritedActionBasis": {
+      "regionId": "governing-1",
+      "sectionRef": "7.2",
+      "role": "PARENT_SCOPE",
+      "evidence": "Create, incur, assume or suffer to exist any Indebtedness",
+      "classification": {
+        "version": "canonical-action-ontology.v1",
+        "phrase": "Create, incur, assume or suffer to exist any Indebtedness",
+        "verbs": [
+          "Create",
+          "incur",
+          "assume",
+          "suffer to exist"
+        ],
+        "object": "Indebtedness",
+        "objectFamily": "DEBT",
+        "canonicalAction": "INCUR_DEBT",
+        "categories": [
+          "INCUR_DEBT"
+        ],
+        "coverage": "COVERED",
+        "detail": "4 source verb(s) on DEBT fall in the canonical category INCUR_DEBT"
+      }
+    },
+    "articleScopeFound": true,
+    "sectionActionScopeFound": true
+  },
+  "composition": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "failureReasonsByLayer": {
+      "UPSTREAM_PHASE2": [
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "PHASE3_SEMANTIC": []
+    },
+    "executionMode": "MONOLITHIC",
+    "executionReason": "SINGLE_BOUNDED_SHARD",
+    "rulesEmitted": 1,
+    "definitions": 0,
+    "sharedCapacities": 0,
+    "contextOnlyEmissions": [],
+    "invalidWireKinds": [],
+    "normalizationDiagnostics": [],
+    "dependencyProseDiagnostics": [
+      {
+        "scope": "rule[r1].dependsOn[0]",
+        "exactSourceTargetRef": "Section 7.3(g)",
+        "modelProse": "the Indebtedness must be secured by Liens permitted under Section 7.3(g)",
+        "figuresInProse": [],
+        "targetEconomicsExcluded": []
+      }
+    ],
+    "passC": {
+      "inventoried": 5,
+      "material": 5,
+      "represented": 5,
+      "intentionallyNonComputational": 0,
+      "unsupported": 0,
+      "ambiguous": 0,
+      "missingFromComposition": 0,
+      "materialMissingFromComposition": 0,
+      "criticalMissingFromComposition": 0,
+      "materialQuantitativeValues": 0,
+      "materialQuantitativeValuesMissing": 0,
+      "uninventoriedValues": 0,
+      "unaccountedSource": 0,
+      "danglingLineageReferences": 0,
+      "canonicalizedLineageReferences": 10
+    },
+    "passCSemanticallyComplete": true,
+    "governingScopeOnResult": true,
+    "sourceReferenceAuditOnRule": true,
+    "entityScopeAuditOnRule": true
+  },
+  "childSemantics": {
+    "ruleId": "ir-rule:11f0445de25e714a1a3cfe31",
+    "action": "INCUR_DEBT",
+    "actionEvidence": [
+      {
+        "attribute": "action",
+        "sourceAuthority": "PARENT_SCOPE",
+        "sourceSectionRef": "7.2",
+        "evidence": "Create, incur, assume or suffer to exist any Indebtedness",
+        "canonicalValue": "INCUR_DEBT",
+        "compatibility": "COMPATIBLE",
+        "sourceSpan": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "structuralNodeId": "structural-node:a9b723686e58119d7cd922a5",
+          "charStart": 47792,
+          "charEnd": 47898,
+          "sha256": "595db524693580f02b0aeaa4cfaeb6c877fa334075a82842b0fb88b348259128"
+        },
+        "ancestorDistance": 1
+      }
+    ],
+    "rawModelEntityScope": [
+      "BORROWER"
+    ],
+    "authoritativeEntityScope": [
+      "BORROWER",
+      "ANY_SUBSIDIARY"
+    ],
+    "entityScopeAudit": {
+      "status": "SOURCE_SCOPE_DERIVED",
+      "precedence": "GOVERNING_SCOPE_SOURCE",
+      "safeToRely": true,
+      "modelDiscrepancy": {
+        "modelScope": [
+          "BORROWER"
+        ],
+        "rawEmitted": [
+          "BORROWER"
+        ],
+        "governingScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ],
+        "relation": "MODEL_NARROWER"
+      },
+      "reasonCodes": [
+        "ENTITY_SCOPE_SOURCE_DERIVED",
+        "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED"
+      ]
+    },
+    "inheritedAttributes": [
+      {
+        "attribute": "governingProhibition",
+        "sourceAuthority": "GOVERNING_SCOPE",
+        "sourceSectionRef": "article-group:7",
+        "canonicalValue": null,
+        "compatibility": null
+      },
+      {
+        "attribute": "action",
+        "sourceAuthority": "PARENT_SCOPE",
+        "sourceSectionRef": "7.2",
+        "canonicalValue": "INCUR_DEBT",
+        "compatibility": "COMPATIBLE"
+      },
+      {
+        "attribute": "entityScope",
+        "sourceAuthority": "GOVERNING_SCOPE",
+        "sourceSectionRef": "article-group:7",
+        "canonicalValue": "BORROWER+ANY_SUBSIDIARY",
+        "compatibility": "INCOMPATIBLE"
+      }
+    ],
+    "capacity": "UNLIMITED_CAPACITY",
+    "sourceDependencies": [
+      {
+        "relationshipType": "REQUIRES",
+        "exactSourceTargetRef": "Section 7.3(g)",
+        "normalizedTargetRef": "7.3(g)",
+        "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+        "owningCandidateRefs": [
+          "discovery-candidate:082c80836268c7277cc39c18"
+        ],
+        "boundSemanticTargetIds": [],
+        "selector": {
+          "sourceText": "Section 7.3(g)",
+          "kind": "WHOLE_PROVISION",
+          "qualifierText": null
+        },
+        "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are separately owned and resolved at package level"
+      }
+    ],
+    "condition": {
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "targetCombination": "ALL_SATISFIED",
+      "expression": null,
+      "referencesRuleTargets": [
+        {
+          "exactSourceTargetRef": "Section 7.1",
+          "normalizedTargetRef": "7.1",
+          "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+          "owningCandidateRefs": [
+            "discovery-candidate:a26970121ceb558846ff8d1c",
+            "discovery-candidate:e37352369564a1e784e0560b"
+          ],
+          "boundSemanticTargetIds": [],
+          "selector": {
+            "sourceText": "financial covenants contained in Section 7.1",
+            "kind": "QUALIFIED_RULE_SET",
+            "qualifierText": "financial covenants contained in"
+          }
+        }
+      ],
+      "evaluationBasis": {
+        "proForma": true,
+        "transactionEffect": "the incurrence of such Indebtedness - deemed to have been incurred on the first day of each relevant period for testing such compliance",
+        "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+        "deemedEffectiveAt": null,
+        "testingPeriod": "each relevant period for testing such compliance"
+      },
+      "provenanceExcerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter... as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance"
+    },
+    "rawModel71Targets": [
+      "Section 7.1"
+    ],
+    "rawModelDependsOn": [
+      "Section 7.3(g)"
+    ],
+    "modelChildExpansion": false,
+    "sourceReferenceAudit": {
+      "version": "source-reference-fidelity.v2",
+      "note": "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the candidate's source states; only `authoritative` entries entered the unit's semantics",
+      "statedReferences": [
+        {
+          "raw": "Section 7.3(g)",
+          "normalized": "7.3(g)",
+          "origin": "OPERATIVE_TEXT"
+        },
+        {
+          "raw": "Section 7.1",
+          "normalized": "7.1",
+          "origin": "OPERATIVE_TEXT"
+        }
+      ],
+      "entries": [
+        {
+          "path": "rule[r1].condition[0].referencesRuleTargets",
+          "emitted": "Section 7.1",
+          "classification": "EXACT_SOURCE_REFERENCE",
+          "authoritative": true,
+          "restoredTo": null,
+          "statedRefs": [
+            "Section 7.1"
+          ],
+          "detail": "the reference as drafted"
+        },
+        {
+          "path": "rule[r1].dependsOn[0]",
+          "emitted": "Section 7.3(g)",
+          "classification": "EXACT_SOURCE_REFERENCE",
+          "authoritative": true,
+          "restoredTo": null,
+          "statedRefs": [
+            "Section 7.3(g)"
+          ],
+          "detail": "the reference as drafted"
+        }
+      ]
+    },
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+      "ENTITY_SCOPE_SOURCE_DERIVED: entityScope [\"BORROWER\",\"ANY_SUBSIDIARY\"] - the rule's own text binds no obligor class; the authenticated governing ancestor scope article-group:7 (\"Borrower\", \"Subsidiaries\") establishes the applicability exactly; the model's scope [\"BORROWER\"] (MODEL_NARROWER) is recorded as a discrepancy and did not control the result"
+    ],
+    "targetEconomicsInAuthoritativeIr": {
+      "80%": 0,
+      "3.75": 0,
+      "5.50": 0,
+      "2.75": 0
+    },
+    "targetEconomicsInVerifiedUnits": {
+      "80%": 0,
+      "3.75": 0,
+      "5.50": 0,
+      "2.75": 0
+    },
+    "targetEconomicsInMap": {
+      "80%": 0,
+      "3.75": 0,
+      "5.50": 0,
+      "2.75": 0
+    },
+    "targetEconomicsInRawModelOutput": {
+      "80%": 1,
+      "3.75": 1,
+      "5.50": 1,
+      "2.75": 1
+    },
+    "evaluationBasisNote": "the model placed the deemed first-day timing inside transactionEffect and the period in testingPeriod (deemedEffectiveAt null); the source meaning is preserved verbatim across the three fields; no placeholder was invented"
+  },
+  "verification": {
+    "status": "MATERIAL_DISCREPANCY",
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v4",
+    "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "projectionVersion": "phase-3c-verification-projection.v3",
+    "projectionHash": "e42dc0b5ae7c8e4f25db38434ae900b189fbc41f109493c3f1abfde425099307",
+    "projectionHashesEqual": true,
+    "shownToReviewer": true,
+    "semanticReviewInvoked": true,
+    "reviewerFindings": 0,
+    "deterministicFindings": 1,
+    "findings": [
+      {
+        "findingId": "620d5121b487a432977a07811d6dcf56ccfc46c6058521e26a6332b831276f5e",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "irPath": "rules[?ir-rule:11f0445de25e714a1a3cfe31]",
+        "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(the cited excerpt does not occur in the admissible source)",
+        "sourceCitation": "7.2(c)",
+        "proposedIrEvidence": "RULE ir-rule:11f0445de25e714a1a3cfe31: conditions[0]",
+        "verifierReasoning": "qualitative grounding (qualitative-grounding.v3): FABRICATED - conditions[0] [FABRICATED]: conditions[0]: the provenance excerpt is not a substring of any admissible source text (inventory lineage does not rescue a quoted excerpt the source lacks)",
+        "deterministicSignals": [
+          "QUALITATIVE_GROUNDING"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": "deterministic",
+        "model": "qualitative-grounding",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v4",
+        "verifierPromptVersion": "qualitative-grounding.v3",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-10-06T14:26:11.627Z",
+        "origin": "PHASE3_SEMANTIC",
+        "originDetail": "deterministic qualitative-grounding (qualitative-grounding.v3), not a reviewer finding: the model-authored provenance excerpt of conditions[0] elides ~60 source chars with \"...\" so it is not a substring of any admissible source text; both halves of the excerpt occur verbatim in the operative source; the authoritative semantic fields of the condition (target, selector, combination, evaluation basis) are exact; the real reviewer returned zero findings"
+      }
+    ],
+    "reconciliationMaterialUnresolved": 0,
+    "numericGrounding": {
+      "inventory": {
+        "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+        "items": [],
+        "fieldsWalked": 4,
+        "algorithmVersion": "fix-b-numeric-assertion.v1"
+      },
+      "groundings": []
+    },
+    "qualitativeGrounding": {
+      "version": "qualitative-grounding.v3",
+      "materialUngrounded": 1,
+      "nonMaterialLineageGaps": 0,
+      "sourceTextsConsulted": 23
+    },
+    "qualitativeUnits": [
+      {
+        "unitId": "ir-rule:11f0445de25e714a1a3cfe31",
+        "kind": "RULE",
+        "verdict": "FABRICATED",
+        "grounded": [
+          "posture",
+          "action",
+          "ruleType",
+          "covenantFamily",
+          "entityScope"
+        ],
+        "ungrounded": [
+          {
+            "field": "conditions[0]",
+            "verdict": "FABRICATED",
+            "reason": "conditions[0]: the provenance excerpt is not a substring of any admissible source text (inventory lineage does not rescue a quoted excerpt the source lacks)"
+          }
+        ],
+        "hasProvenance": true,
+        "excerptLocated": true,
+        "inventoryItemIds": [
+          "5a0b860baa6791acdcb74808",
+          "b2e4836195c0be7f3583454d",
+          "e63570d96afd9a92fe94bb2d",
+          "111a934d9392092fd29630e0",
+          "f4092bd7629e5bb9aa4abbd4"
+        ],
+        "unknownInventoryItemIds": [
+          "5a0b860baa6791acdcb74808",
+          "b2e4836195c0be7f3583454d",
+          "e63570d96afd9a92fe94bb2d",
+          "111a934d9392092fd29630e0",
+          "f4092bd7629e5bb9aa4abbd4"
+        ]
+      }
+    ],
+    "layer1SourceInventory": [
+      [
+        "CONDITIONAL_PHRASE",
+        "provided that"
+      ],
+      [
+        "CONDITIONAL_PHRASE",
+        "pro forma basis"
+      ],
+      [
+        "CONDITIONAL_PHRASE",
+        "giving effect to"
+      ],
+      [
+        "ENTITY_SCOPE_TERM",
+        "Borrower"
+      ],
+      [
+        "ENTITY_SCOPE_TERM",
+        "Borrower"
+      ],
+      [
+        "TRANSACTION_ACTION_SIGNAL",
+        "incurrence"
+      ],
+      [
+        "METRIC_MENTION",
+        "Parent Borrower"
+      ],
+      [
+        "METRIC_MENTION",
+        "Parent Borrower"
+      ],
+      [
+        "SECTION_REFERENCE",
+        "Section 7.3(g)"
+      ],
+      [
+        "SECTION_REFERENCE",
+        "Section 7.1"
+      ],
+      [
+        "INDEPENDENT_LIST_ITEM",
+        "(c)"
+      ]
+    ],
+    "layer1IrInventory": [
+      "ACTION",
+      "POSTURE",
+      "ENTITY_SCOPE",
+      "CONDITION",
+      "CROSS_RULE_TARGET",
+      "EVALUATION_BASIS",
+      "SOURCE_DEPENDENCY",
+      "INHERITED_ATTRIBUTE",
+      "INHERITED_ATTRIBUTE",
+      "INHERITED_ATTRIBUTE",
+      "UNLIMITED_CAPACITY_MARKER"
+    ],
+    "evidenceSetHash": "1da6d9c7e94100b001c88ccc6c1238c775ca748fb9828767a1b5651b502c2150",
+    "reviewerNotesPersisted": false
+  },
+  "oldFindings": {
+    "H1_7_3_G_MISSING": "RESOLVED",
+    "H2_INVALID_REQUIRES": "RESOLVED",
+    "H3_AS_OF_MONEY": "RESOLVED",
+    "H4_COPIED_80": "RESOLVED",
+    "H5_COPIED_3_75": "RESOLVED",
+    "H6_COPIED_5_50": "RESOLVED",
+    "H7_COPIED_2_75": "RESOLVED",
+    "H8_FOREIGN_PARENT": "RESOLVED",
+    "H9_ACTION_NARROWED": "RESOLVED",
+    "H10_ENTITY_SCOPE": "RESOLVED",
+    "H11_7_1_CHILD_EXPANSION": "RESOLVED"
+  },
+  "snapshot": {
+    "hash": "c1f650ffe162381a15710237a3956755c7abfdbf6462217ff3d2ffda04d2475f",
+    "units": [
+      {
+        "kind": "RULE",
+        "id": "ir-rule:11f0445de25e714a1a3cfe31",
+        "identity": {
+          "ruleOrDefinitionId": "ir-rule:11f0445de25e714a1a3cfe31",
+          "companyId": "conmed-pilot",
+          "instrumentKey": "conmed-eighth-ar-credit-agreement",
+          "irSchemaVersion": "headroom-covenant-ir.v1",
+          "compilerVersion": "semantic-accountability-compiler.v7",
+          "sourceContentVersion": "sscv2:8fc45163f95b16465596ff5ab99fe692374fbc6d19fa3534471621bab0b277d3"
+        }
+      }
+    ]
+  },
+  "verifiedPackage": {
+    "schema": "p3-verified-unit-package.v2",
+    "hash": "5c3f1ac6fda32db74b9956064a9460b92494213773c7f8576cfad654d069ac7d",
+    "complete": true,
+    "counts": {
+      "artifactsPersisted": 1,
+      "definitionsCompiled": 0,
+      "rulesCompiled": 1,
+      "sharedCapacitiesCompiled": 0,
+      "unitsMissingIr": 0,
+      "unitsMissingVerification": 0,
+      "unitsVerified": 1
+    },
+    "problems": []
+  },
+  "candidateCertification": {
+    "status": "REVIEW_REQUIRED",
+    "blockers": [
+      {
+        "code": "COMPILATION_NOT_COMPLETED",
+        "severity": "REVIEW",
+        "detail": "compilation REVIEW_REQUIRED: OPERATIVE_STATE_UNRESOLVED"
+      },
+      {
+        "code": "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "severity": "REVIEW",
+        "detail": "1 open MATERIAL/UNCERTAIN finding(s)"
+      },
+      {
+        "code": "OPERATIVE_STATE_UNACCEPTABLE",
+        "severity": "REVIEW",
+        "detail": "the context bundle carries unresolved operative evidence (conflicted / ambiguous / partial amendment state)"
+      },
+      {
+        "code": "SUPPORT_UNACCEPTABLE",
+        "severity": "REVIEW",
+        "detail": "1 material qualitative unit(s) have no source lineage"
+      },
+      {
+        "code": "VERIFICATION_NOT_CLEAN",
+        "severity": "REVIEW",
+        "detail": "verification MATERIAL_DISCREPANCY: 1 material finding(s)"
+      }
+    ],
+    "warnings": [
+      "SEMANTIC_BINDING_PENDING_PACKAGE"
+    ]
+  },
+  "certificationBlockersByLayer": {
+    "PHASE3_SEMANTIC": [
+      "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+      "SUPPORT_UNACCEPTABLE",
+      "VERIFICATION_NOT_CLEAN"
+    ],
+    "UPSTREAM_PHASE2": [
+      "COMPILATION_NOT_COMPLETED",
+      "OPERATIVE_STATE_UNACCEPTABLE"
+    ],
+    "OTHER": []
+  },
+  "counterfactualNoUpstreamBlocker": {
+    "answer": "YES",
+    "remaining": [
+      "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+      "SUPPORT_UNACCEPTABLE",
+      "VERIFICATION_NOT_CLEAN"
+    ],
+    "reason": "the deterministic qualitative-grounding finding on the elided conditions[0] provenance excerpt keeps OPEN_MATERIAL_OR_UNCERTAIN_FINDING, VERIFICATION_NOT_CLEAN and SUPPORT_UNACCEPTABLE even if the Phase-2 operative-state condition were resolved"
+  },
+  "packageDependencies": {
+    "version": "p3-package-dependency-resolution.v3",
+    "counts": {
+      "total": 2,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 2,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0,
+      "reviewRequired": 0,
+      "oneToMany": 0,
+      "selectorReview": 0,
+      "qualifiedOneToMany": 0
+    },
+    "bindings": [
+      {
+        "kind": "CONDITION_TARGET",
+        "exactSourceTargetRef": "Section 7.1",
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "bindingMode": null,
+        "owningCandidateRefs": [
+          "discovery-candidate:a26970121ceb558846ff8d1c",
+          "discovery-candidate:e37352369564a1e784e0560b"
+        ]
+      },
+      {
+        "kind": "SOURCE_DEPENDENCY",
+        "exactSourceTargetRef": "Section 7.3(g)",
+        "status": "TARGET_CANDIDATE_NOT_IN_TARGET_SET",
+        "bindingMode": null,
+        "owningCandidateRefs": [
+          "discovery-candidate:082c80836268c7277cc39c18"
+        ]
+      }
+    ]
+  },
+  "packageCertification": {
+    "status": "PARTIAL",
+    "blockers": [
+      [
+        "CANDIDATE_REVIEW_REQUIRED",
+        "REVIEW"
+      ],
+      [
+        "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+        "PARTIAL"
+      ],
+      [
+        "DEPENDENCY_TARGET_NOT_IN_TARGET_SET",
+        "PARTIAL"
+      ],
+      [
+        "DISCOVERY_POPULATION_UNSEALED",
+        "PARTIAL"
+      ],
+      [
+        "PARTIAL_TARGET_SET",
+        "PARTIAL"
+      ],
+      [
+        "REVIEW_UNRESOLVED_ITEM",
+        "REVIEW"
+      ]
+    ],
+    "candidates": {
+      "total": 1,
+      "eligible": 1,
+      "represented": 1,
+      "certified": 0,
+      "reviewRequired": 1,
+      "notCertified": 0
+    }
+  },
+  "phase4": {
+    "attempted": false,
+    "reason": "certification REVIEW_REQUIRED"
+  },
+  "verdict": "PHASE3_7_2_C_FINAL_VALIDATION_SEMANTIC_FAILURE",
+  "verdictReasoning": "Every authoritative semantic of the candidate is correct and source-grounded (INCUR_DEBT with COMPATIBLE four-verb evidence; BORROWER+ANY_SUBSIDIARY from the Article preamble over the model's narrower BORROWER; REQUIRES Section 7.3(g) WHOLE_PROVISION; OTHER_RULE_SATISFIED on Section 7.1 with the QUALIFIED_RULE_SET selector; no child expansion; no target economics; zero normalization diagnostics; sufficiency COMPLETE; 1 owned rule; MONOLITHIC path carrying every safety signal) and the real independent reviewer returned zero findings - every historical defect class H1-H11 is RESOLVED. The run nevertheless carries one MATERIAL Phase-3 finding: the deterministic qualitative-grounding layer (fail-closed by design) rejects the condition's model-authored provenance excerpt because the model elided ~60 characters with \"...\", so the excerpt is not a verbatim substring of the source although both halves are. That is a genuine Phase-3 artifact defect (a non-verbatim quotation accepted into provenance), so gate A (zero Phase-3 MATERIAL findings) is not met; it is not a reviewer assertion (D), not an execution failure (E) and not an architecture breach (F)."
+}

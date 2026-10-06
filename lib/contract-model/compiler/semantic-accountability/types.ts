@@ -50,8 +50,13 @@
  * two propositions with contradictory deontic effects over one stretch stay two. semanticRole is retained as a
  * derived compatibility field. Ids are re-keyed relative to v4 evidence (cross-run comparison is semantic).
  */
-export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v5";
-export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v5";
+// v6 (source-authority closure SA-1): an item's `referencedSections` are SOURCE-GROUNDED - the deterministic citation
+// scanner (compiler/source-reference-scan.ts) over the item's authenticated span (a reference straddling two spans
+// belongs to both). The model's own claims are kept beside them as `declaredReferencedSections` with a per-claim
+// `referenceAudit` (CORROBORATED / MODEL_INVENTED_REFERENCE / MODEL_NARROWED_REFERENCE / MODEL_BROADENED_REFERENCE /
+// MODEL_OMITTED_SOURCE_REFERENCE) and never create a reference. Item identity and the freeze hash follow this version.
+export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v6";
+export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v6";
 
 // ---------------------------------------------------------------------------
 // Semantic roles (mission §3) - compact semantic PRIMITIVES, never covenant
@@ -98,6 +103,14 @@ export interface QuantitativeValue {
 // Source spans / provenance (mission §1: "where did this proposition come from")
 // ---------------------------------------------------------------------------
 
+/** v6 (SA-1): model-versus-source reference accounting for one inventory item. Never source authority. */
+export interface InventoryReferenceAudit {
+  version: string;
+  claims: { declared: string; normalized: string | null; classification: "CORROBORATED" | "MODEL_INVENTED_REFERENCE" | "MODEL_NARROWED_REFERENCE" | "MODEL_BROADENED_REFERENCE"; sourceRef: string | null }[];
+  /** Source-grounded references of the span that no model claim named (MODEL_OMITTED_SOURCE_REFERENCE). */
+  omittedBySource: string[];
+}
+
 export interface InventorySourceSpan {
   /** Which source-context region this span lives in (see SourceContextRegion.regionId; "operative" for the unit's own operative text). */
   regionId: string;
@@ -133,8 +146,12 @@ export interface SemanticInventoryItem {
   proposition: string;
   quantitativeValues: QuantitativeValue[];
   referencedTerms: string[];
-  /** Explicit section/clause references the proposition depends on ("Section 6.01(b)", "clause (x)"). */
+  /** Explicit section/clause references the proposition depends on. v6: SOURCE-GROUNDED - normalized identities the deterministic scanner found inside the item's authenticated span (never a model claim). On v5-and-earlier evidence: the model's declared values. */
   referencedSections: string[];
+  /** v6: the model's own declared referencedSections, verbatim (trimmed) - non-authoritative evidence. */
+  declaredReferencedSections?: string[];
+  /** v6: every model claim classified against the source-grounded references of the item's span, plus the source references the model omitted. */
+  referenceAudit?: InventoryReferenceAudit;
   parentItemId: string | null;
   relatedItemIds: string[];
   materiality: InventoryMateriality;
@@ -154,7 +171,13 @@ export interface SemanticInventoryItem {
 // F-5.3 dual-pass ensemble: support provenance (additive; single-pass inventories carry none of it).
 // ---------------------------------------------------------------------------
 
-export type SupportStatus = "CORROBORATED" | "SINGLE_RUN" | "CONFLICTED";
+/**
+ * CORROBORATED = EXACT corroboration (the normalizer merged byte-compatible members from more than one pass).
+ * COVERAGE_CORROBORATED (v2) = found by one pass only as an item, but the other pass independently recognized the same
+ * material SOURCE SEMANTIC REGION through an overlapping/containing item with compatible functions, values and references
+ * (a segmentation difference, not a disagreement). SINGLE_RUN = genuinely one pass only. CONFLICTED = incompatible claims.
+ */
+export type SupportStatus = "CORROBORATED" | "COVERAGE_CORROBORATED" | "SINGLE_RUN" | "CONFLICTED";
 
 export interface ItemSupport {
   /** Generic pass identifiers (never literal run labels baked into semantics), sorted. */
@@ -166,6 +189,10 @@ export interface ItemSupport {
   /** For CONFLICTED: the canonical ids this item conflicts with and why. */
   conflictWith?: string[];
   conflictReason?: string;
+  /** COVERAGE_CORROBORATED: the other pass's item(s) whose source span covers this proposition compatibly, and why. */
+  coverageBy?: { itemId: string; passId: string; overlapFraction: number; reason: string }[];
+  /** Identifier of the support group this item belongs to (items corroborating one source region share a group); distinct from the proposition id. */
+  supportGroupId?: string;
 }
 
 export interface EnsembleRecord {
@@ -174,7 +201,7 @@ export interface EnsembleRecord {
   passIds: string[];
   /** frozenContentHash of every input pass, keyed by passId. */
   passHashes: Record<string, string>;
-  counts: { canonicalItems: number; corroborated: number; singleRun: number; singleRunByPass: Record<string, number>; conflicted: number; materialSingleRun: number; informationalSingleRun: number; materialConflicted: number; rejectedUnverifiable: number };
+  counts: { canonicalItems: number; corroborated: number; coverageCorroborated?: number; singleRun: number; singleRunByPass: Record<string, number>; conflicted: number; materialSingleRun: number; informationalSingleRun: number; materialConflicted: number; rejectedUnverifiable: number; supportGroups?: number };
   /** True whenever any CRITICAL/MATERIAL item is SINGLE_RUN or CONFLICTED: support asymmetry forces REVIEW_REQUIRED unless independently resolved later (verifier, human approval, another certified mechanism). The union never claims semantic completeness by itself. */
   supportReviewRequired: boolean;
   supportReviewFraction: number;
@@ -268,6 +295,31 @@ export interface GapReinventoryRecord {
   error: string | null;
 }
 
+/** P3-E14: one record per Pass A provider call - what was asked, what came back, what was kept. */
+export interface InventoryCallRecord {
+  passId: string | null;
+  batchId: string;
+  stage: "semantic_inventory" | "semantic_inventory_gap";
+  slotIds: string[];
+  requestedMaxOutputTokens: number | null;
+  reasoningPolicy: string | null;
+  maxItems: number | null;
+  inputTokens: number | null;
+  /** Visible structured-output tokens when the provider separates them (output - thinking); null when it does not. */
+  visibleOutputTokens: number | null;
+  /** Reasoning/thinking tokens when the provider reports them (Anthropic usage.output_tokens_details.thinking_tokens); null when not reported. */
+  reasoningTokens: number | null;
+  totalOutputTokens: number | null;
+  latencyMs: number | null;
+  stopReason: string | null;
+  schemaOk: boolean;
+  error: string | null;
+  itemsReturned: number;
+  itemsAccepted: number;
+  /** Items beyond the slot allowance (telemetry; not dropped). */
+  itemsRejectedOverBound: number;
+}
+
 export interface FrozenSemanticInventory {
   candidateRef: string;
   items: SemanticInventoryItem[];
@@ -293,6 +345,12 @@ export interface FrozenSemanticInventory {
   provider: string;
   model: string;
   telemetryCostUsd: number | null;
+  /** P3-E14: call-by-call execution records (both passes under DUAL_PASS_ENSEMBLE). Additive. */
+  calls?: InventoryCallRecord[];
+  /** Identity of the inventory execution policy the calls ran under (inventory-policy.ts). Additive. */
+  executionPolicy?: string;
+  /** Items beyond their slot's derived proposition allowance (counted for telemetry; never dropped - the schema ceiling bounds volume before the call). Additive. */
+  rejectedOverBoundItems?: number;
   /** F-5 (v4): the deterministic slot partition Pass A inventoried against, and how many bounded calls it took. Absent on v3-and-earlier evidence. */
   /** F-5.3: present only on an ensemble (dual-pass) inventory built by ensemble.ts. */
   ensemble?: EnsembleRecord;

@@ -58,7 +58,8 @@ function scriptedPassA(kill: KillSwitch, live: { calls: number }, opts: { model?
     }, lastTelemetry: () => last };
 }
 const passAInput = (dir: string, kill: KillSwitch, live: { calls: number }, factoryCalls?: { n: number }) => ({ evidenceDir: dir, missionId: MISSION, candidateRef: scenario.id, documentId: DOC_ID, sourceContext: built.sourceContext, structuralIndex: built.index, batchChars: BATCH_CHARS, liveCallerFor: () => { if (factoryCalls) factoryCalls.n++; return scriptedPassA(kill, live); } });
-const stripVolatile = (v: unknown): unknown => Array.isArray(v) ? v.map(stripVolatile) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([k]) => !["frozenAt", "verifiedAt", "at", "timestamp", "createdAt", "compiledAt", "exprId" /* f7a corpus's synthetic global expression counter */].includes(k)).map(([k, x]) => [k, stripVolatile(x)])) : v;
+// `calls` (P3-E14 per-call execution records: latency, live-vs-replay token counters) is execution telemetry, not frozen content - stripped like frozenAt.
+const stripVolatile = (v: unknown): unknown => Array.isArray(v) ? v.map(stripVolatile) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([k]) => !["frozenAt", "verifiedAt", "at", "timestamp", "createdAt", "compiledAt", "exprId" /* f7a corpus's synthetic global expression counter */, "calls"].includes(k)).map(([k, x]) => [k, stripVolatile(x)])) : v;
 const recordFiles = (dir: string) => readdirSync(passAPaths(dir).calls).filter((f) => f.endsWith(".json"));
 
 let control: { inventory: unknown; hash: string; logical: number; costUsd: number | null; passCost: (number | null)[] };

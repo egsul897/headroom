@@ -294,7 +294,7 @@ const defaultConditionSuspicionCache = new InMemoryConditionSuspicionCache();
  * treats UNCERTAIN as review-forcing, so a caller that forgets to check
  * `failed` separately still gets the safe behavior).
  */
-export async function classifyConditionSuspicion(sourceText: string, identity: ConditionSuspicionCacheIdentity, caller: StageCaller = getStageCaller(), cache: ConditionSuspicionCache = defaultConditionSuspicionCache): Promise<ConditionSuspicionResult> {
+export async function classifyConditionSuspicion(sourceText: string, identity: ConditionSuspicionCacheIdentity, caller: StageCaller = getStageCaller(), cache: ConditionSuspicionCache = defaultConditionSuspicionCache, callOptions: import("../llm-caller").StageCallOptions = {}): Promise<ConditionSuspicionResult> {
   const providerIdentity = `${caller.providerName}::${caller.model}`;
   const cacheKey = computeConditionSuspicionCacheKey(identity, sourceText, providerIdentity);
 
@@ -305,7 +305,7 @@ export async function classifyConditionSuspicion(sourceText: string, identity: C
   const userContent = buildConditionSuspicionUserContent(sourceText);
 
   try {
-    const wireResult = await caller.call(SubmitConditionSuspicionSchema, "condition_suspicion_classification", systemPrompt, userContent);
+    const wireResult = await caller.call(SubmitConditionSuspicionSchema, "condition_suspicion_classification", systemPrompt, userContent, callOptions);
     const status = matchEnum(wireResult.status, VALID_STATUSES, "UNCERTAIN");
     const evidence: ConditionSuspicionEvidence[] = wireResult.evidence.map((e) => ({
       sourceSpan: e.sourceSpan,

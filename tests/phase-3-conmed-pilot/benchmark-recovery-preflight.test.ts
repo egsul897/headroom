@@ -7,9 +7,10 @@
 delete process.env.AI_GATEWAY_API_KEY;
 delete process.env.ANTHROPIC_API_KEY;
 
+import { CERTIFIED_INVENTORY_EXECUTION_POLICY } from "../../lib/contract-model/compiler/semantic-accountability/inventory-policy";
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
-import { accountForRequest, BudgetLedger, DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED_OUTPUT_TOKENS_PER_SECOND } from "../../scripts/p3-conmed-pilot/timeout-policy";
+import { accountForRequest, BudgetLedger, DEFAULT_CANDIDATE_TIMEOUT_MS, MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND, OBSERVED_OUTPUT_TOKENS_PER_SECOND } from "../../scripts/p3-conmed-pilot/timeout-policy";
 import { OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "../../scripts/p3-conmed-pilot/premium-lock";
 import { detectCreditExhaustionInError, detectCreditExhaustionInResult, GATEWAY_CREDIT_EXHAUSTED, GatewayResponseSentinel, parseProviderIssueText } from "../../scripts/p3-conmed-pilot/gateway-credit";
 import { candidateMaxReservationUsd, compileReservationUsd, compileShape, MAX_RESERVED_CONVERSATIONS, MAX_TURN_OVERHEAD_MIRROR, PASS_A_BATCH_CHARS_MIRROR, probeReservationUsd, shapeExceeded, TURNS_PER_CONVERSATION, verifyReservationUsd, verifyShape } from "../../scripts/p3-conmed-pilot/reservation-policy";
@@ -39,7 +40,7 @@ const timeout = (): CompileExecution => ({ result: { status: "FAILED", failureRe
 const verified = (): VerifyExecution => ({ verification: { status: "VERIFICATION_INCOMPLETE", semanticReviewInvoked: true, findings: [] }, outcome: "COMPLETED", timedOut: false, usage: { inputTokens: 5000, outputTokens: 3000 }, sideCalls: [{ stage: "semantic_verification", inputTokens: 5000, outputTokens: 3000, costUsd: 0.00143 }], wallClockMs: 9000, signal: null });
 
 function harness(executions: Record<string, () => CompileExecution>, opts: { ceiling?: number; stopAt?: number; seed?: number; verify?: (ref: string) => VerifyExecution } = {}) {
-  const ledger = new BudgetLedger(opts.ceiling ?? 3.5, opts.stopAt ?? 3.450577);
+  const ledger = new BudgetLedger(opts.ceiling ?? 15, opts.stopAt ?? 14.9);
   if (opts.seed) { ledger.reserve("prior", opts.seed); ledger.settle("prior", accountForRequest({ model, elapsedWallClockMs: 0, timedOut: false, providerUsage: { inputTokens: Math.round(opts.seed / 0.00000013), outputTokens: 0 }, streamedOutputTokensObserved: null, reservationUsd: 0 })); }
   const dispatched: string[] = []; const verifiedRefs: string[] = []; const flushes: number[] = []; const persisted: string[] = [];
   const deps: LoopDeps = {
@@ -170,7 +171,9 @@ describe("P-7: reservations cover the execution shape the runner permits", () =>
   it("the mirrored compiler limits match the frozen source they mirror", () => {
     expect(src("lib/contract-model/compiler/semantic/caller.ts")).toMatch(new RegExp(`const MAX_TURN_OVERHEAD = ${MAX_TURN_OVERHEAD_MIRROR};`));
     expect(src("lib/contract-model/compiler/semantic/caller.ts")).toMatch(/const maxTurns = budget\.maxToolCalls \+ MAX_TURN_OVERHEAD;/);
-    expect(src("lib/contract-model/compiler/semantic-accountability/inventory.ts")).toMatch(new RegExp(`input\\.batchChars \\?\\? ${PASS_A_BATCH_CHARS_MIRROR};`));
+    // the batch size now comes from the explicit inventory execution policy (P3-E10..E13), whose certified value the harness mirrors
+    expect(src("lib/contract-model/compiler/semantic-accountability/inventory.ts")).toMatch(/input\.batchChars \?\? policy\.batchChars;/);
+    expect(CERTIFIED_INVENTORY_EXECUTION_POLICY.batchChars).toBe(PASS_A_BATCH_CHARS_MIRROR);
     expect(TURNS_PER_CONVERSATION).toBe(DEFAULT_TOOL_BUDGET.maxToolCalls + 4);
     expect(src("scripts/p3-conmed-pilot/gateway-health.ts")).toMatch(/max_tokens: 32/); expect(src("scripts/p3-conmed-pilot/gateway-health.ts")).toMatch(/max_tokens: 1024/); expect(src("scripts/p3-conmed-pilot/gateway-health.ts")).toMatch(/\.repeat\(220\)/);
   });
@@ -184,15 +187,23 @@ describe("P-7: reservations cover the execution shape the runner permits", () =>
     expect(shapeExceeded({ attemptCount: 6, inputTokens: 100, outputTokens: 1 }, shape)).toHaveLength(1);
     expect(shapeExceeded({ attemptCount: 1, inputTokens: shape.inputTokens + 1, outputTokens: 1 }, shape)).toHaveLength(1);
   });
-  it("derived figures for the locked model at the population's largest span", () => {
+  it("derived figures for the locked model at the population's largest span (output rate recalibrated to 300 tok/s after 7.16 >= 133.2 and 7.2(c) >= 243.6)", () => {
+    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBe(300);
+    expect(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND).toBeCloseTo(243.569, 3);
+    expect(OBSERVED_OUTPUT_TOKENS_PER_SECOND).toBeGreaterThan(MEASURED_OUTPUT_TOKENS_PER_SECOND_LOWER_BOUND * 1.2);
+    // at 300 tok/s the wall-clock allowance (144,000) exceeds max_tokens, so the cap is the structural 128,000
+    expect(compileShape(model, 4667).outputTokens).toBe(128_000);
+    expect(shapeExceeded({ attemptCount: 1, inputTokens: 9888, outputTokens: 116_913 }, compileShape(model, 529))).toEqual([]);
     const r = compileReservationUsd(model, 4667);
-    expect(r).toBeCloseTo(1.3513292, 7);
-    expect(verifyReservationUsd(model)).toBeCloseTo(0.0416, 7);
-    expect(candidateMaxReservationUsd(model, 4667)).toBeCloseTo(1.3929292, 7);
+    expect(r).toBeCloseTo(1.8994092, 7);
+    expect(verifyReservationUsd(model)).toBeCloseTo(0.05928, 7);
+    expect(candidateMaxReservationUsd(model, 4667)).toBeCloseTo(1.9586892, 7);
+    // the figures the pre-flight mission derived at 125 tok/s, superseded by the recalibration
+    expect(r).toBeGreaterThan(1.3513292);
     expect(probeReservationUsd(model).both).toBeCloseTo(0.00130234, 8);
     expect(probeReservationUsd(model).tierA).toBeGreaterThan(0.00001508); expect(probeReservationUsd(model).tierB).toBeGreaterThan(0.00079495);
     // superseded: the old typical-cost reservation
-    expect(BudgetLedger.reservationFor(model, DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, OBSERVED_OUTPUT_TOKENS_PER_SECOND)).toBeCloseTo(0.01942304, 8);
+    expect(BudgetLedger.reservationFor(model, DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED_INPUT_TOKENS_PER_CANDIDATE, 125)).toBeCloseTo(0.01942304, 8);
   });
   it("P7-B: an exact cheap completion releases the unused reserve", async () => {
     const h = harness({ a: () => compiled(12000, 3000) });
@@ -208,6 +219,20 @@ describe("P-7: reservations cover the execution shape the runner permits", () =>
     expect(state.statuses[0]!.compile.costUsd).toBeCloseTo(compileReservationUsd(model, 300), 8);
     expect(h.ledger.retainedUnknownUsd).toBeCloseTo(compileReservationUsd(model, 300), 6);
     expect(h.ledger.outstandingReservedUsd).toBe(0);
+  });
+  it("P7-C': a timeout with Pass A usage observed before the cut-off still retains the FULL reservation (the observed usage is a floor, not the bill)", async () => {
+    const withPassA = (): CompileExecution => ({ ...timeout(), passAUsage: { inputTokens: 4914, outputTokens: 42396 } });
+    const h = harness({ a: withPassA, b: () => compiled(12000, 3000) });
+    const state = await runCandidateLoop(h.deps);
+    expect(state.statuses[0]!.compile.costStatus).toBe("UNKNOWN_TIMEOUT_BILLED");
+    expect(state.statuses[0]!.compile.costUsd).toBeCloseTo(compileReservationUsd(model, 300), 8);
+    expect(h.ledger.retainedUnknownUsd).toBeCloseTo(compileReservationUsd(model, 300), 6);
+    expect(state.statuses[0]!.compile.passAUsage).toEqual({ inputTokens: 4914, outputTokens: 42396 });
+    // verify-stage timeout with partial side-call usage: same rule
+    const h2 = harness({ a: () => compiled(12000, 3000) }, { verify: () => ({ verification: null, outcome: "TIMEOUT", timedOut: true, usage: { inputTokens: 5000, outputTokens: 100 }, sideCalls: [], wallClockMs: 480_000, signal: null }) });
+    const s2 = await runCandidateLoop(h2.deps);
+    expect(s2.statuses[0]!.verify.costStatus).toBe("UNKNOWN_TIMEOUT_BILLED");
+    expect(s2.statuses[0]!.verify.costUsd).toBeCloseTo(verifyReservationUsd(model), 8);
   });
   it("P7-D: a zero-token 402 settles at $0 exact (nothing served), releases its reservation, and stops", async () => {
     const h = harness({ a: refused402, b: () => compiled(1, 1) });

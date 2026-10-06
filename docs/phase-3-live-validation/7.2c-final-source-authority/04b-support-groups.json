@@ -1,0 +1,293 @@
+{
+  "ensemble": {
+    "algorithmVersion": "semantic-ensemble.v2",
+    "policy": "SUPPORT_AWARE_CANONICAL_UNION",
+    "passIds": [
+      "pass-1",
+      "pass-2"
+    ],
+    "passHashes": {
+      "pass-1": "a3aeda4b11752ef09373d3b927c629211cdc06acf5c3ac5004e941b3c3df9735",
+      "pass-2": "534778b004bdaf4620a3f831712737a902a43bd202802533a44679da6ba7f087"
+    },
+    "counts": {
+      "canonicalItems": 5,
+      "corroborated": 5,
+      "coverageCorroborated": 0,
+      "singleRun": 0,
+      "singleRunByPass": {
+        "pass-1": 0,
+        "pass-2": 0
+      },
+      "conflicted": 0,
+      "materialSingleRun": 0,
+      "informationalSingleRun": 0,
+      "materialConflicted": 0,
+      "rejectedUnverifiable": 0,
+      "supportGroups": 5
+    },
+    "supportReviewRequired": false,
+    "supportReviewFraction": 0,
+    "conflicts": [],
+    "compatibility": {
+      "mode": "STRICT",
+      "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+      "partitionHash": "dc529c7875eea192860a151524ab15714d3a12b479b110f1e49893bb095aa1ad",
+      "documentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement"
+      ],
+      "passes": {
+        "pass-1": {
+          "algorithmVersion": "semantic-accountability.v6",
+          "promptVersion": "semantic-inventory-prompt.v6",
+          "provider": "vercel-ai-gateway",
+          "model": "deepseek/deepseek-v4-flash",
+          "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+          "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+          "partitionHash": "dc529c7875eea192860a151524ab15714d3a12b479b110f1e49893bb095aa1ad",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement"
+        },
+        "pass-2": {
+          "algorithmVersion": "semantic-accountability.v6",
+          "promptVersion": "semantic-inventory-prompt.v6",
+          "provider": "vercel-ai-gateway",
+          "model": "deepseek/deepseek-v4-flash",
+          "sourceContextHash": "7d4b22affb87e780c7bc822b36dad68d2f881b35a6bcd426fca93e57bc4465a4",
+          "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+          "partitionHash": "dc529c7875eea192860a151524ab15714d3a12b479b110f1e49893bb095aa1ad",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement"
+        }
+      },
+      "checks": [
+        {
+          "check": "candidate-ref",
+          "pass": true,
+          "detail": "pass-1: candidateRef discovery-candidate:7a3f36589dacd05c41331a80 matches"
+        },
+        {
+          "check": "source-identity-recorded",
+          "pass": true,
+          "detail": "pass-1: source identity RECORDED_AT_FREEZE"
+        },
+        {
+          "check": "source-context-hash",
+          "pass": true,
+          "detail": "pass-1: source-context hash 7d4b22affb87e780 vs ensemble 7d4b22affb87e780"
+        },
+        {
+          "check": "partition",
+          "pass": true,
+          "detail": "pass-1: slot partition dc529c7875eea192 vs ensemble dc529c7875eea192"
+        },
+        {
+          "check": "document",
+          "pass": true,
+          "detail": "pass-1: document conmed-doc-a-eighth-ar-credit-agreement vs ensemble conmed-doc-a-eighth-ar-credit-agreement"
+        },
+        {
+          "check": "algorithm-generation",
+          "pass": true,
+          "detail": "pass-1: algorithm semantic-accountability.v6 supported"
+        },
+        {
+          "check": "prompt-generation",
+          "pass": true,
+          "detail": "pass-1: prompt semantic-inventory-prompt.v6 supported"
+        },
+        {
+          "check": "pass-status",
+          "pass": true,
+          "detail": "pass-1: INVENTORY_OK"
+        },
+        {
+          "check": "candidate-ref",
+          "pass": true,
+          "detail": "pass-2: candidateRef discovery-candidate:7a3f36589dacd05c41331a80 matches"
+        },
+        {
+          "check": "source-identity-recorded",
+          "pass": true,
+          "detail": "pass-2: source identity RECORDED_AT_FREEZE"
+        },
+        {
+          "check": "source-context-hash",
+          "pass": true,
+          "detail": "pass-2: source-context hash 7d4b22affb87e780 vs ensemble 7d4b22affb87e780"
+        },
+        {
+          "check": "partition",
+          "pass": true,
+          "detail": "pass-2: slot partition dc529c7875eea192 vs ensemble dc529c7875eea192"
+        },
+        {
+          "check": "document",
+          "pass": true,
+          "detail": "pass-2: document conmed-doc-a-eighth-ar-credit-agreement vs ensemble conmed-doc-a-eighth-ar-credit-agreement"
+        },
+        {
+          "check": "algorithm-generation",
+          "pass": true,
+          "detail": "pass-2: algorithm semantic-accountability.v6 supported"
+        },
+        {
+          "check": "prompt-generation",
+          "pass": true,
+          "detail": "pass-2: prompt semantic-inventory-prompt.v6 supported"
+        },
+        {
+          "check": "pass-status",
+          "pass": true,
+          "detail": "pass-2: INVENTORY_OK"
+        },
+        {
+          "check": "algorithm-generation",
+          "pass": true,
+          "detail": "pass-2 vs pass-1: algorithm semantic-accountability.v6 vs semantic-accountability.v6"
+        },
+        {
+          "check": "prompt-generation",
+          "pass": true,
+          "detail": "pass-2 vs pass-1: prompt semantic-inventory-prompt.v6 vs semantic-inventory-prompt.v6"
+        },
+        {
+          "check": "provider-model",
+          "pass": true,
+          "detail": "pass-2 vs pass-1: vercel-ai-gateway/deepseek/deepseek-v4-flash vs vercel-ai-gateway/deepseek/deepseek-v4-flash"
+        }
+      ],
+      "declaredExceptions": []
+    }
+  },
+  "items": [
+    {
+      "inventoryItemId": "inv-item:5a0b860baa6791acdcb74808",
+      "span": [
+        4,
+        62
+      ],
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "proposition": "Permits incurrence of Indebtedness secured by Liens allowed under Section 7.3(g)",
+      "support": {
+        "supportingPasses": [
+          "pass-1",
+          "pass-2"
+        ],
+        "supportStatus": "CORROBORATED",
+        "memberItemIds": {
+          "pass-1": [
+            "inv-item:5a0b860baa6791acdcb74808"
+          ],
+          "pass-2": [
+            "inv-item:5a0b860baa6791acdcb74808"
+          ]
+        },
+        "supportGroupId": "support-group:5a0b860baa6791acdcb74808"
+      }
+    },
+    {
+      "inventoryItemId": "inv-item:b2e4836195c0be7f3583454d",
+      "span": [
+        63,
+        123
+      ],
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "proposition": "Condition: Parent Borrower must be in compliance on a pro forma basis",
+      "support": {
+        "supportingPasses": [
+          "pass-1",
+          "pass-2"
+        ],
+        "supportStatus": "CORROBORATED",
+        "memberItemIds": {
+          "pass-1": [
+            "inv-item:b2e4836195c0be7f3583454d"
+          ],
+          "pass-2": [
+            "inv-item:b2e4836195c0be7f3583454d"
+          ]
+        },
+        "supportGroupId": "support-group:b2e4836195c0be7f3583454d"
+      }
+    },
+    {
+      "inventoryItemId": "inv-item:e63570d96afd9a92fe94bb2d",
+      "span": [
+        124,
+        251
+      ],
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "proposition": "Pro forma compliance with financial covenants in Section 7.1 after incurrence",
+      "support": {
+        "supportingPasses": [
+          "pass-1",
+          "pass-2"
+        ],
+        "supportStatus": "CORROBORATED",
+        "memberItemIds": {
+          "pass-1": [
+            "inv-item:e63570d96afd9a92fe94bb2d"
+          ],
+          "pass-2": [
+            "inv-item:e63570d96afd9a92fe94bb2d"
+          ]
+        },
+        "supportGroupId": "support-group:e63570d96afd9a92fe94bb2d"
+      }
+    },
+    {
+      "inventoryItemId": "inv-item:111a934d9392092fd29630e0",
+      "span": [
+        252,
+        391
+      ],
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "proposition": "Compliance tested as of last day of most recent fiscal quarter",
+      "support": {
+        "supportingPasses": [
+          "pass-1",
+          "pass-2"
+        ],
+        "supportStatus": "CORROBORATED",
+        "memberItemIds": {
+          "pass-1": [
+            "inv-item:111a934d9392092fd29630e0"
+          ],
+          "pass-2": [
+            "inv-item:111a934d9392092fd29630e0"
+          ]
+        },
+        "supportGroupId": "support-group:111a934d9392092fd29630e0"
+      }
+    },
+    {
+      "inventoryItemId": "inv-item:f4092bd7629e5bb9aa4abbd4",
+      "span": [
+        392,
+        528
+      ],
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "proposition": "Treat Indebtedness as incurred on first day of each relevant period for testing",
+      "support": {
+        "supportingPasses": [
+          "pass-1",
+          "pass-2"
+        ],
+        "supportStatus": "CORROBORATED",
+        "memberItemIds": {
+          "pass-1": [
+            "inv-item:f4092bd7629e5bb9aa4abbd4"
+          ],
+          "pass-2": [
+            "inv-item:f4092bd7629e5bb9aa4abbd4"
+          ]
+        },
+        "supportGroupId": "support-group:f4092bd7629e5bb9aa4abbd4"
+      }
+    }
+  ]
+}

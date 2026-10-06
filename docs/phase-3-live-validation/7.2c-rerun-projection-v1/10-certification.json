@@ -1,0 +1,154 @@
+{
+  "certification": {
+    "decisionVersion": "phase3-candidate-certification.v1",
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "status": "REVIEW_REQUIRED",
+    "blockers": [
+      {
+        "code": "COMPILATION_NOT_COMPLETED",
+        "severity": "REVIEW",
+        "detail": "compilation REVIEW_REQUIRED: OPERATIVE_STATE_UNRESOLVED",
+        "refs": []
+      },
+      {
+        "code": "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "severity": "REVIEW",
+        "detail": "3 open MATERIAL/UNCERTAIN finding(s)",
+        "refs": [
+          "6b472ff50cc3f60505d7234e514582a9e11555e864532bd4ad45e77189d5ae82",
+          "a202d614ba2c0233a695dd34ba2346470d0bffaf777e15ce736b580cc5cd11f8",
+          "c974fd9c4af40813fc98024f3afa4e38b5bf5da5c4e9fe7db2e8270dd9e3ba7d"
+        ]
+      },
+      {
+        "code": "OPERATIVE_STATE_UNACCEPTABLE",
+        "severity": "REVIEW",
+        "detail": "the context bundle carries unresolved operative evidence (conflicted / ambiguous / partial amendment state)",
+        "refs": [
+          "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+          "context-item:815358d12e45e8831b053459a0fe7453bb3176b104bfba0bb5eded3f9fba51cb"
+        ]
+      },
+      {
+        "code": "UNIT_SUFFICIENCY_INCOMPLETE",
+        "severity": "REVIEW",
+        "detail": "executable unit(s) are not COMPLETE",
+        "refs": [
+          "ir-rule:29309c463e06b77b4b243eda:PARTIAL"
+        ]
+      },
+      {
+        "code": "VERIFICATION_NOT_CLEAN",
+        "severity": "REVIEW",
+        "detail": "verification MATERIAL_DISCREPANCY: 1 material finding(s)",
+        "refs": []
+      }
+    ],
+    "warnings": [
+      {
+        "code": "SEMANTIC_BINDING_PENDING_PACKAGE",
+        "detail": "rule ir-rule:29309c463e06b77b4b243eda references Section 7.3(g), Section 7.1, Section 7.1(a), Section 7.1(b), Section 7.1(c), Section 7.1(d) - structurally resolved (owned by discovery-candidate:082c80836268c7277cc39c18, discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b, discovery-candidate:8fe38049fe62ea9e9e741511, discovery-candidate:cf15af8f5fb1f77bd861a2ac, discovery-candidate:5f83b15ed6cd0ea8b06289a0, discovery-candidate:1b08da2e952127a1caebe77d); semantic target binding is a package-level step",
+        "refs": [
+          "ir-rule:29309c463e06b77b4b243eda"
+        ]
+      },
+      {
+        "code": "TARGET_ECONOMICS_EXCLUDED",
+        "detail": "figures the model restated from referenced provisions were excluded from this unit's dependency semantics",
+        "refs": [
+          "80%"
+        ]
+      }
+    ],
+    "sourceIdentityStrength": "STRONG",
+    "semanticSourceIdentityStrength": "STRONG",
+    "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+    "semanticSourceContractVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+    "artifactPackageHash": "8ec39557d3537ca0d99b45aa2c71f40a1ab24b55942441c299054959c4cc4314",
+    "snapshotHash": "254457720a95e109cd1fe92d6dc5ab606105a34e81e363fd816b1c98dda65e3f",
+    "unitIds": [
+      "ir-rule:29309c463e06b77b4b243eda"
+    ],
+    "unitArtifactHashes": {
+      "ir-rule:29309c463e06b77b4b243eda": "ee10fe0c1a428d8dee2b19c82906f89025f0bcac479ddba8b6eae638d3c83563"
+    }
+  },
+  "semanticSourceContract": {
+    "version": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77",
+    "strength": "STRONG",
+    "attributionMode": "RELIED_UPON",
+    "reliedUpon": {
+      "definedTerms": [],
+      "sectionRefs": [],
+      "contextItems": [
+        {
+          "itemId": "context-item:24809e85434d11eadb21462b3c60bf3edc9b989202ad45b742b1563078122ec6",
+          "type": "OPERATIVE_SOURCE",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "normalizedRef": "7.2(c)",
+          "excerptSha256": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+          "evidenceStatus": "CURRENT"
+        },
+        {
+          "itemId": "context-item:5d2fe138c996c58fb63e65298a35a5d975e7c8d8feaf60fc28ecda8ec6ee6320",
+          "type": "AMENDMENT_LEAD",
+          "documentId": "conmed-doc-c-second-amendment-2022",
+          "normalizedRef": "Indebtedness",
+          "excerptSha256": "61c9c2e512faf508afa97bd21e7bbb64407155904ea9cb7e40a1c4462d2cb54c",
+          "evidenceStatus": "OPERATIVE_STATE_UNRESOLVED"
+        },
+        {
+          "itemId": "context-item:e05ac41a085b818422acb5216016f7c00064a6b8fa7f51b8408ef333d1de5867",
+          "type": "PARENT_SCOPE",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "normalizedRef": "7.2",
+          "excerptSha256": "e000d8f4d4eef4a8080ce1281fb14b2a42bb4f6c5079854120cf389f17ceb50d",
+          "evidenceStatus": "CURRENT"
+        }
+      ],
+      "retrievals": [
+        {
+          "requestKind": "PROVISION",
+          "requestKey": "Section 7.1",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+          "contentHash": "681e58e3cc689d8bf6409d5bee748444f762e7aa873571d19ff13a97b8c42d95",
+          "textOrigin": "BASE_DOCUMENT_TEXT"
+        },
+        {
+          "requestKind": "PROVISION",
+          "requestKey": "Section 7.3(g)",
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceNodeId": "structural-node:31a18e83f13af616c76add29",
+          "contentHash": "6a425b7ae633f2f374a9776cc4edc92298193356e98f8547a4c364485622c291",
+          "textOrigin": "BASE_DOCUMENT_TEXT"
+        }
+      ],
+      "unattributedTerms": [],
+      "unattributedSectionRefs": []
+    },
+    "components": {
+      "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+      "contextDependencyHash": "be4f2b3a4e0ec3fb26be4a8a4c751d1a7118da05b363c2ece1eec21d93fee05c",
+      "retrievalHash": "08bfafe1c538e8d0cdd2afb45eb3a63c8541dd8679a4efb7c525ebb37063a95f",
+      "lineageHash": "f7f327a708c03b63a70d21236891a0fe4cb889f13bafb4c22059ff45ed9ac496",
+      "asOfDate": "2026-10-05",
+      "bundleContentIdentity": null
+    }
+  },
+  "snapshotHash": "254457720a95e109cd1fe92d6dc5ab606105a34e81e363fd816b1c98dda65e3f",
+  "snapshotUnits": [
+    {
+      "kind": "RULE",
+      "id": "ir-rule:29309c463e06b77b4b243eda",
+      "identity": {
+        "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+        "companyId": "conmed-pilot",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "compilerVersion": "semantic-accountability-compiler.v5",
+        "sourceContentVersion": "sscv1:5a3b2d7362554f0343666f2bb826aed4c3567662e97aa517a63cbd7731d40a77"
+      }
+    }
+  ]
+}
