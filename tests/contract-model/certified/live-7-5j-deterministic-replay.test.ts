@@ -98,13 +98,34 @@ describe("the replay does not overclaim: genuine frozen-output limitations remai
     expect(r.residual.relatedSeries.artifact).toBe("docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md");
     expect(r.accountability.after.counts.materialMissingFromComposition).toBe(0);
   });
-  it("the two non-cash valuation mechanics are UNSUPPORTED via the model's non-vocabulary CONSUMED_IN_EXPRESSION dispositions (composition contract)", () => {
+  it("the two non-cash valuation mechanics are UNSUPPORTED via non-vocabulary dispositions WITH ADR-2 MODEL_CONTRACT_VIOLATION diagnostics (not quiet ordinary UNSUPPORTED)", () => {
     expect(r.residual.notesDebtSecuritiesValuation.status).toBe("UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION");
     expect(r.residual.notesDebtSecuritiesValuation.modelDisposition).toBe("CONSUMED_IN_EXPRESSION");
     expect(r.residual.notesDebtSecuritiesValuation.disposition).toBe("UNSUPPORTED");
+    expect(r.residual.notesDebtSecuritiesValuation.modelContractViolation).toMatchObject({
+      code: "MODEL_CONTRACT_VIOLATION",
+      reason: "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
+      rawLabel: "CONSUMED_IN_EXPRESSION",
+      inventoryItemId: "inv-item:da2ae7a8c96e1ad42210a94e",
+      contractRef: expect.stringContaining("MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR"),
+    });
     expect(r.residual.otherNonCashValuation.status).toBe("UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION");
     expect(r.residual.otherNonCashValuation.modelDispositions).toEqual(["CONSUMED_IN_EXPRESSION", "CONSUMED_IN_EXPRESSION"]);
     expect(r.residual.otherNonCashValuation.dispositions).toEqual(["UNSUPPORTED", "UNSUPPORTED"]);
+    expect(r.residual.otherNonCashValuation.modelContractViolations).toEqual([
+      expect.objectContaining({
+        code: "MODEL_CONTRACT_VIOLATION",
+        reason: "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
+        rawLabel: "CONSUMED_IN_EXPRESSION",
+        inventoryItemId: "inv-item:cfa2c306e7039e94371d186b",
+      }),
+      expect.objectContaining({
+        code: "MODEL_CONTRACT_VIOLATION",
+        reason: "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
+        rawLabel: "CONSUMED_IN_EXPRESSION",
+        inventoryItemId: "inv-item:5e02c2d017c10fdbce5ccaf7",
+      }),
+    ]);
     expect(r.accountability.after.counts.materialMissingFromComposition).toBe(0);
   });
   it("support asymmetry is not manufactured away", () => {
