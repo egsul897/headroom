@@ -7,6 +7,7 @@
 ## What this slice delivers
 
 1. **In-memory append-only store** under `lib/contract-model/runtime/input/store/` with durable-shaped event log + materialization.
+   - **Public façade seal:** `InMemoryApprovedSnapshotStore` exposes only validated APIs (`appendSnapshot`, `approveSnapshot`, getters). Unvalidated `commit` lives on a private composed backend and is not exported. Public `events` / materialization reads return deep-frozen copies (append-only + fail-closed).
 2. **Write API**
    - `appendSnapshot` — accepts `DRAFT | REVIEW_REQUIRED` only; refuses `APPROVED` / `SUPERSEDED` on raw append; refuses `approvalRef` on append.
    - `approveSnapshot` — attributable `DRAFT | REVIEW_REQUIRED → APPROVED` with required `reviewedBy`, `reviewedAt`, `approvalRef`.

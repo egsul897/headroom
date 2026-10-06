@@ -30,12 +30,17 @@ describe("append-only: cannot mutate in place", () => {
     expect(store.getSnapshot("s-1")!.version).toBe("1");
   });
 
-  it("returned snapshots are clones — mutating them does not change the store", () => {
+  it("returned snapshots are deep-frozen clones — mutate throws and store is unchanged", () => {
     const store = new InMemoryApprovedSnapshotStore();
     store.appendSnapshot({ snapshot: draft({ snapshotId: "s-clone" }) });
     const got = store.getSnapshot("s-clone")!;
-    got.status = "APPROVED";
-    got.review.approvalRef = "hacked";
+    expect(Object.isFrozen(got)).toBe(true);
+    expect(() => {
+      got.status = "APPROVED";
+    }).toThrow();
+    expect(() => {
+      got.review.approvalRef = "hacked";
+    }).toThrow();
     expect(store.getSnapshot("s-clone")!.status).toBe("DRAFT");
     expect(store.getSnapshot("s-clone")!.review.approvalRef).toBeNull();
   });

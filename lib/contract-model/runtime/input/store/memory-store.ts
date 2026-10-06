@@ -1,20 +1,27 @@
 /**
  * NS-4 slice 1 — in-memory append-only approved snapshot store.
  *
- * Primary implementation for tests; API is durable-shaped (event log + materialization)
- * so a Prisma-backed store can share the same write helpers later.
+ * Public façade exposes only validated write/read APIs. The unvalidated
+ * event-log `commit` lives on a private composed backend and is never
+ * reachable from the public surface. Public event/history reads return
+ * deep-frozen copies so callers cannot mutate or delete prior appends.
  */
 import type { FinancialSnapshot } from "../types";
 import type { AppendSnapshotRequest, ApprovalTransition, StoreEvent, WriteResult } from "./types";
 import {
   appendSnapshot as appendSnapshotWrite,
   approveSnapshot as approveSnapshotWrite,
+  cloneStoreEvent,
+  freezeSnapshot,
+  freezeStoreEvent,
   getSnapshot as getSnapshotWrite,
   getSnapshots as getSnapshotsWrite,
+  publicEventLog,
   type SnapshotStoreBackend,
 } from "./write";
 
-export class InMemoryApprovedSnapshotStore implements SnapshotStoreBackend {
+/** Private append-only log — not exported; holds the only `commit`. */
+class PrivateEventLog implements SnapshotStoreBackend {
   private readonly _events: StoreEvent[] = [];
 
   get events(): readonly StoreEvent[] {
@@ -22,30 +29,60 @@ export class InMemoryApprovedSnapshotStore implements SnapshotStoreBackend {
   }
 
   commit(events: StoreEvent[]): void {
-    // Append only — never splice, rewrite, or delete prior events.
-    for (const e of events) this._events.push(e);
+    // Append-only: clone each event so caller-held refs cannot rewrite the log.
+    for (const e of events) this._events.push(cloneStoreEvent(e));
   }
 
-  /** Append DRAFT | REVIEW_REQUIRED only. */
+  get length(): number {
+    return this._events.length;
+  }
+}
+
+function sealWriteResult(result: WriteResult): WriteResult {
+  if (!result.ok) return result;
+  return {
+    ok: true,
+    snapshot: freezeSnapshot(result.snapshot),
+    events: Object.freeze(result.events.map((e) => freezeStoreEvent(e))) as StoreEvent[],
+  };
+}
+
+/**
+ * Validated public store. Does **not** implement SnapshotStoreBackend and does
+ * **not** expose `commit` — APPROVED and unsafe-graph rows can only enter via
+ * `appendSnapshot` / `approveSnapshot` (which reuse `buildSnapshotGraph`).
+ */
+export class InMemoryApprovedSnapshotStore {
+  readonly #log = new PrivateEventLog();
+
+  /** Deep-frozen copy of the event log — `pop` / mutate does not affect the store. */
+  get events(): readonly StoreEvent[] {
+    return publicEventLog(this.#log.events);
+  }
+
+  /** Append DRAFT | REVIEW_REQUIRED only (nine-code graph check at write). */
   appendSnapshot(request: AppendSnapshotRequest): WriteResult {
-    return appendSnapshotWrite(this, request);
+    return sealWriteResult(appendSnapshotWrite(this.#log, request));
   }
 
   /** Attributable DRAFT | REVIEW_REQUIRED → APPROVED. */
   approveSnapshot(approval: ApprovalTransition): WriteResult {
-    return approveSnapshotWrite(this, approval);
+    return sealWriteResult(approveSnapshotWrite(this.#log, approval));
   }
 
   getSnapshots(companyId: string): FinancialSnapshot[] {
-    return getSnapshotsWrite(this, companyId);
+    return Object.freeze(
+      getSnapshotsWrite(this.#log, companyId).map((s) => freezeSnapshot(s)),
+    ) as FinancialSnapshot[];
   }
 
   getSnapshot(snapshotId: string): FinancialSnapshot | null {
-    return getSnapshotWrite(this, snapshotId);
+    const s = getSnapshotWrite(this.#log, snapshotId);
+    return s ? freezeSnapshot(s) : null;
   }
 
   /** Test/inspection helper: full event log length (append-only growth). */
   eventCount(): number {
-    return this._events.length;
+    return this.#log.length;
   }
 }

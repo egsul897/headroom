@@ -60,6 +60,54 @@ export function cloneSnapshot(s: FinancialSnapshot): FinancialSnapshot {
   };
 }
 
+/** Deep-freeze a cloned snapshot (public read / WriteOk materialization). */
+export function freezeSnapshot(s: FinancialSnapshot): FinancialSnapshot {
+  const c = cloneSnapshot(s);
+  for (const inp of c.inputs) {
+    Object.freeze(inp.identity.scope);
+    Object.freeze(inp.identity.period);
+    Object.freeze(inp.identity.asOf);
+    Object.freeze(inp.identity);
+    Object.freeze(inp.value);
+    Object.freeze(inp);
+  }
+  Object.freeze(c.inputs);
+  Object.freeze(c.provenance);
+  Object.freeze(c.review);
+  return Object.freeze(c);
+}
+
+/** Clone a store event so the log never shares mutable payload refs with callers. */
+export function cloneStoreEvent(e: StoreEvent): StoreEvent {
+  if (e.type === "SNAPSHOT_APPENDED") {
+    return {
+      type: "SNAPSHOT_APPENDED",
+      eventId: e.eventId,
+      at: e.at,
+      snapshot: cloneSnapshot(e.snapshot),
+    };
+  }
+  return { ...e };
+}
+
+/** Deep-freeze a cloned store event for public reads. */
+export function freezeStoreEvent(e: StoreEvent): StoreEvent {
+  if (e.type === "SNAPSHOT_APPENDED") {
+    return Object.freeze({
+      type: "SNAPSHOT_APPENDED" as const,
+      eventId: e.eventId,
+      at: e.at,
+      snapshot: freezeSnapshot(e.snapshot),
+    });
+  }
+  return Object.freeze({ ...e });
+}
+
+/** Deep-frozen copy of an event log (array + payloads). */
+export function publicEventLog(events: readonly StoreEvent[]): readonly StoreEvent[] {
+  return Object.freeze(events.map((e) => freezeStoreEvent(e)));
+}
+
 /**
  * Rebuild current snapshot materialization from the event log.
  * SNAPSHOT_APPENDED inserts a row; APPROVED / SUPERSEDED flip status (+ review fields) on that id.

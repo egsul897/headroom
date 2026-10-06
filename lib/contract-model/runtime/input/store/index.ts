@@ -19,8 +19,11 @@ export {
   appendSnapshot,
   approveSnapshot,
   cloneSnapshot,
+  freezeSnapshot,
+  cloneStoreEvent,
+  freezeStoreEvent,
+  publicEventLog,
   getSnapshot,
   getSnapshots,
   materializeFromEvents,
-  type SnapshotStoreBackend,
 } from "./write";
