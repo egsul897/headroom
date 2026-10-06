@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:cf3d8d9492aeca04392b5172:OPERATIVE_STATE",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "7dc233622bc9c6b799ad2a927ebe001cac5e5557",
+  "adapter": "phase3-validation-chwy-operative-state.v1",
+  "source": {
+    "path": "tests/fixtures/unseen-packages/phase-3-validation-chwy-run/stage5-operative-state.json",
+    "runId": "PHASE_3_VALIDATION_CHWY_DETERMINISTIC",
+    "finishedAt": "2026-09-03T13:02:34.464Z",
+    "asOfDate": "2026-09-03",
+    "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+    "instrumentKeyInReport": "instrument:doc-a"
+  },
+  "analyzedDocuments": [
+    {
+      "documentId": "doc-a",
+      "label": "Chewy, Inc. Credit Agreement dated as of June 23, 2026",
+      "targetDocuments": []
+    }
+  ],
+  "documentsProcessed": 1,
+  "asOfConsistency": {
+    "fixtureFrozenAt": "2026-09-03",
+    "phase3AsOfDate": "2026-10-06",
+    "checks": [
+      {
+        "code": "FIXTURE_DOCUMENT_PRESENT",
+        "passed": true,
+        "detail": "chwy-2026-credit-agreement doc-a extracted text hash-pinned in extraction-manifest.json"
+      },
+      {
+        "code": "SINGLE_PACKAGE_DOCUMENT_REPRESENTED",
+        "passed": true,
+        "detail": "chwy-2026-credit-agreement supplies 1 document (doc-a); operative-state run covers doc-a"
+      },
+      {
+        "code": "OPERATIVE_STATE_RESOLVED_EMPTY_PROVISIONS",
+        "passed": true,
+        "detail": "stage5-operative-state.json status OPERATIVE_STATE_RESOLVED with provisionCount 0"
+      }
+    ],
+    "proven": true
+  },
+  "instrumentState": {
+    "status": "OPERATIVE_STATE_RESOLVED",
+    "asOfDate": "2026-09-03",
+    "summary": "0 amended provision(s) tracked for this instrument as of 2026-09-03 in PHASE_3_VALIDATION_CHWY_DETERMINISTIC (single-document package; no amendment chain in fixture).",
+    "provisions": [],
+    "unattachedEffects": 0,
+    "effects": 0
+  },
+  "target": {
+    "governingProvision": null,
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "note": "no Phase-2 provision governs this candidate: the base structural node text is the operative source"
+  }
+}

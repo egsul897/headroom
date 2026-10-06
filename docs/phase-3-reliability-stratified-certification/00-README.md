@@ -52,3 +52,22 @@ Canonical map currently tags `discovery-candidate:565fd64640e534d8a46bbe7a` with
 ### Review owners
 
 Architect · Product · COO — PASS/FAIL the Chewy pin + thin matrix. Live/paid **not** authorized hereby.
+
+
+---
+
+## Pin-pipeline emitter (append — ADR-1)
+
+**Status:** `IMPLEMENTED` (soft gate: offline tooling + emitted pin)  
+**Base SHA:** `5cc2378c9f544001617e6ce0b3bce9dbf1e9bef6` (main after #68 offline pin-matrix)  
+**Design:** `05-pin-pipeline-emitter-design.md`
+
+| artifact | role |
+|---|---|
+| `scripts/stratified-cert/pin-candidate.ts` | CLI: `--package` `--discoveryId` `--asOf` `--out`; refuses `--live`/`--paid` |
+| `scripts/stratified-cert/lib/emit-pin-packet.ts` | `pinCandidate(...)` → 5 JSON files |
+| `pins/chwy-2026-credit-agreement/2.18(c)(vii)--cf3d8d94/v1/` | **Canonical** emitter-produced Chewy WITH_SHARED_CAPS pin |
+| `pins/chewy-2.18c-vii-incremental-shared-cap/` | #68 hand golden — **untouched**; superseded as source of truth by emitter folder |
+| `first-target/` | CONMED §7.6(c) baseline — **untouched** |
+
+Soft exclusions unchanged: no live/paid, no NS-4, no related-series A/C, no inventing sealed IDs.

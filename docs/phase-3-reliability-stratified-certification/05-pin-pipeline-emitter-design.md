@@ -1,6 +1,6 @@
 # Pin-pipeline emitter design (deterministic first-target packets)
 
-**Status:** DESIGN_NOTE (Architect → implementer) · 2026-10-06  
+**Status:** IMPLEMENTED (emitter + Chewy SHARED_CAP v1 pin) · 2026-10-06 — design retained as authority; see `scripts/stratified-cert/` + `pins/chwy-2026-credit-agreement/2.18(c)(vii)--cf3d8d94/v1/`  
 **Soft gate:** docs + offline tooling only. **No live/paid.** No NS-4. No related-series A/C. A/B seal untouched.  
 **Cite:** ADR-1 `EVIDENCE-PACKET-VERSIONING-ADR.md` (append-only); selection contract `00-selection-contract.json`
 
