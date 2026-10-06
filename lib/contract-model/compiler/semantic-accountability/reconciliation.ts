@@ -26,6 +26,13 @@
  * to null / silent MISSING - the composition named the item; the raw label
  * is preserved on modelDisposition.
  *
+ * RELATED-SERIES INTERIM B: an inventory item whose source claim is a
+ * "series of related …" aggregation, and that would otherwise earn
+ * REPRESENTED solely via lineage onto a rule/condition that does NOT
+ * structurally represent series aggregation, is dispositioned UNSUPPORTED
+ * with an explicit reason. Lineage into a bound excerpt is not an evaluable
+ * series aggregation (docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md).
+ *
  * QUANTITATIVE RECONCILIATION (mission §10) is separate and stricter: a
  * lineage claim does not earn REPRESENTED for a valued item unless the value
  * itself is in the IR (a composition may not "link every item without
@@ -321,6 +328,30 @@ function normalizeDisposition(raw: string | undefined): { disposition: Inventory
   return { disposition: null, nonVocabulary: false };
 }
 
+/**
+ * Source claim that a threshold / trigger applies to a single event OR a
+ * related series, with aggregation across the series. Matches ordinary US
+ * credit-agreement drafting ("series of related Dispositions / transactions").
+ * Proposition OR excerpt is enough - Pass A often puts the series alternative
+ * on its own ALTERNATIVE/TRIGGER item.
+ */
+const RELATED_SERIES_AGGREGATION_RE = /\bseries\s+of\s+related\b/i;
+
+export function isRelatedSeriesAggregationClaim(item: Pick<SemanticInventoryItem, "proposition" | "sourceSpan">): boolean {
+  const text = `${item.proposition ?? ""}\n${item.sourceSpan?.excerpt ?? ""}`;
+  return RELATED_SERIES_AGGREGATION_RE.test(text);
+}
+
+/**
+ * Interim B: the General Covenant IR has no licensed primitive for related-series
+ * aggregation (option A deferred). Until an additive IR shape or an honest
+ * metric/measurement-basis encoding (option C) lands, this is always false -
+ * lineage onto a single-event rule/condition does not count.
+ */
+export function irStructurallyRepresentsRelatedSeriesAggregation(_composed: unknown): boolean {
+  return false;
+}
+
 function isMaterial(item: SemanticInventoryItem): boolean {
   return item.materiality === "CRITICAL" || item.materiality === "MATERIAL";
 }
@@ -451,6 +482,14 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
         disposition = "MISSING_FROM_COMPOSITION";
         reasons.push(`no lineage, no explicit disposition, and no deterministic correspondence in the composed IR${item.quantitativeValues.length > 0 ? ` (value(s) ${item.quantitativeValues.map((v) => v.rawText).join(", ")} absent)` : ""}`);
       }
+    }
+
+    // Related-series interim B: lineage (or inferred correspondence) must not claim
+    // REPRESENTED for a series-aggregation source claim when the IR has no structural
+    // series aggregation. Prefer explicit UNSUPPORTED over a false completeness signal.
+    if (disposition === "REPRESENTED" && isRelatedSeriesAggregationClaim(item) && !irStructurallyRepresentsRelatedSeriesAggregation(composition)) {
+      disposition = "UNSUPPORTED";
+      reasons.push(`related-series aggregation claim ("series of related …") is not structurally represented in the IR (Phase 3 reliability interim posture B); lineage/correspondence alone (${[...lineage.map((e) => e.irPath), ...inferredPaths].join(", ") || "none"}) does not establish an evaluable series aggregation`);
     }
 
     return {

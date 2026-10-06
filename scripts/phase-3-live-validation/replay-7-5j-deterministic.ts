@@ -165,7 +165,18 @@ export async function replayFrozen75j() {
     return !!it && it.disposition === "UNSUPPORTED" && typeof it.modelDisposition === "string" && it.modelDisposition.length > 0 && !/^(INTENTIONALLY_NON_COMPUTATIONAL|UNSUPPORTED|AMBIGUOUS|REPRESENTED|MISSING_FROM_COMPOSITION)$/i.test(it.modelDisposition.trim().replace(/[\s-]+/g, "_"));
   };
   const residual = {
-    relatedSeries: { status: "NOT_STRUCTURALLY_REPRESENTED", evidence: "the related-series alternative lives in inventory items c262463526204a96714cd8f6 / 2bb0c84da8ad713ef2667e0f (consumed on the rule) and in the bound condition/gate excerpts; the IR carries no structural element aggregating a related series for the threshold test" },
+    relatedSeries: (() => {
+      const seriesIds = ["inv-item:c262463526204a96714cd8f6", "inv-item:2bb0c84da8ad713ef2667e0f"] as const;
+      const dispositions = seriesIds.map((id) => itemOf(id)?.disposition ?? null);
+      const allUnsupported = dispositions.every((d) => d === "UNSUPPORTED");
+      return {
+        status: allUnsupported ? "EXPLICIT_UNSUPPORTED_INTERIM_B" : dispositions.every((d) => d === "REPRESENTED") ? "NOT_STRUCTURALLY_REPRESENTED (lineage still credited — investigate)" : "CHANGED - investigate",
+        items: [...seriesIds],
+        dispositions,
+        evidence: "Pass C interim posture B: series-of-related claims are UNSUPPORTED when IR lacks structural series aggregation",
+        artifact: "docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md",
+      };
+    })(),
     notesDebtSecuritiesValuation: {
       status: nonVocabUnsupported("inv-item:da2ae7a8c96e1ad42210a94e") ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.some((i) => i.inventoryItemId === "inv-item:da2ae7a8c96e1ad42210a94e") ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
       item: "inv-item:da2ae7a8c96e1ad42210a94e",
