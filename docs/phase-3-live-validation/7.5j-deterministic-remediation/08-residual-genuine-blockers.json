@@ -7,7 +7,7 @@
     "status": "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
     "item": "inv-item:da2ae7a8c96e1ad42210a94e",
     "modelDisposition": "CONSUMED_IN_EXPRESSION",
-    "note": "Pass C composition contract maps non-vocabulary CONSUMED_IN_EXPRESSION \u2192 UNSUPPORTED; valuation still not structural IR (provenance only) \u2014 see docs/phase-3-reliability-composition-gaps/01-non-vocabulary-disposition-contract.md"
+    "disposition": "UNSUPPORTED"
   },
   "otherNonCashValuation": {
     "status": "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION",
@@ -15,8 +15,14 @@
       "inv-item:cfa2c306e7039e94371d186b",
       "inv-item:5e02c2d017c10fdbce5ccaf7"
     ],
-    "modelDisposition": "CONSUMED_IN_EXPRESSION",
-    "note": "same composition-contract remediation as notesDebtSecuritiesValuation"
+    "modelDispositions": [
+      "CONSUMED_IN_EXPRESSION",
+      "CONSUMED_IN_EXPRESSION"
+    ],
+    "dispositions": [
+      "UNSUPPORTED",
+      "UNSUPPORTED"
+    ]
   },
   "supportAsymmetry": {
     "supportReviewRequired": true,
@@ -34,12 +40,8 @@
   ],
   "gapReinventoryLocalRef": {
     "status": "CLOSED_OFFLINE",
-    "detail": "live gap calls failed Zod max(6) on localRef/parentRef; certified localRefChars raised to 24, prompt v7 states the bound, over-long handles coerced to a stable digest so parse cannot dump the whole gap payload",
+    "detail": "gap re-inventory call failed on gap batch 1/1: Failed to parse structured output: Error: Failed to parse structured output: [",
     "artifact": "docs/phase-3-reliability-composition-gaps/03-gap-call-localref-reliability.md",
-    "note": "offline reliability fix only; does not re-run paid \u00a77.5(j); with defect A closed the frozen coverage gap is not reproduced over the same items"
-  },
-  "compositionContractRemediation": {
-    "status": "CLOSED_OFFLINE",
-    "artifact": "docs/phase-3-reliability-composition-gaps/01-non-vocabulary-disposition-contract.md"
+    "note": "localRefChars 6→24 + prompt v7 + over-long coerce; live parse failure preserved in detail; with defect A closed the frozen coverage gap is not reproduced over the same items"
   }
 }
