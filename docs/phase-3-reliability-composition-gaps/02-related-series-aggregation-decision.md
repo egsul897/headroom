@@ -2,7 +2,7 @@
 
 **Status:** DECIDED (interim) — option **B**. Additive IR (A) and metric-basis (C) remain deferred.
 **Evidence:** `docs/phase-3-live-validation/7.5j-deterministic-remediation/08-residual-genuine-blockers.json`
-(related-series items `inv-item:c262463526204a96714cd8f6` / `inv-item:2bb0c84da8ad713ef2667e0f`).
+(related-series items `inv-item:0e5329437d345c7c5674b0b7` / `inv-item:c262463526204a96714cd8f6` / `inv-item:2bb0c84da8ad713ef2667e0f` — parent TRIGGER matches via excerpt).
 **Code:** Pass C `reconciliation.ts` — `isRelatedSeriesAggregationClaim` + interim override of false `REPRESENTED`.
 **Branch base:** `main` @ localRef merge (A/B seal `semantic-accountability.v8` untouched). Zero provider calls. No NS-4.
 
@@ -38,7 +38,7 @@ In `reconcileInventoryWithComposition`:
 - `irStructurallyRepresentsRelatedSeriesAggregation` is **false** until option A or C lands (no licensed IR primitive today).
 - If disposition would be `REPRESENTED` and the claim matches and IR lacks structure → **`UNSUPPORTED`**, reason cites interim B and the lineage paths that were insufficient.
 
-Effect on frozen §7.5(j) offline replay: the two series items become `UNSUPPORTED` (honest), not silent `MISSING` and not false `REPRESENTED`. Valuation non-vocab UNSUPPORTED and localRef closure unchanged.
+Effect on frozen §7.5(j) offline replay: all three detector-matched series items become `UNSUPPORTED` (honest), not silent `MISSING` and not false `REPRESENTED` — including the parent TRIGGER whose excerpt alone carries the series claim. Valuation non-vocab UNSUPPORTED and localRef closure unchanged.
 
 **Ask Headroom** fail-closes on series-aggregation claims under interim B (never answers as if structurally represented) until a later ADR chooses executable option A or C.
 

@@ -89,8 +89,12 @@ describe("the replay does not overclaim: genuine frozen-output limitations remai
   });
   it("related-series aggregation items are EXPLICIT_UNSUPPORTED_INTERIM_B (not false REPRESENTED via lineage)", () => {
     expect(r.residual.relatedSeries.status).toBe("EXPLICIT_UNSUPPORTED_INTERIM_B");
-    expect(r.residual.relatedSeries.items).toEqual(["inv-item:c262463526204a96714cd8f6", "inv-item:2bb0c84da8ad713ef2667e0f"]);
-    expect(r.residual.relatedSeries.dispositions).toEqual(["UNSUPPORTED", "UNSUPPORTED"]);
+    expect(r.residual.relatedSeries.items).toEqual([
+      "inv-item:0e5329437d345c7c5674b0b7",
+      "inv-item:c262463526204a96714cd8f6",
+      "inv-item:2bb0c84da8ad713ef2667e0f",
+    ]);
+    expect(r.residual.relatedSeries.dispositions).toEqual(["UNSUPPORTED", "UNSUPPORTED", "UNSUPPORTED"]);
     expect(r.residual.relatedSeries.artifact).toBe("docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md");
     expect(r.accountability.after.counts.materialMissingFromComposition).toBe(0);
   });

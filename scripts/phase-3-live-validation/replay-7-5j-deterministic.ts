@@ -25,7 +25,7 @@ import { SEMANTIC_COMPILER_ALGORITHM_VERSION, type SemanticCompilationResult, ty
 import { computeSourceCoverage } from "../../lib/contract-model/compiler/semantic-accountability/source-coverage";
 import { canonicalizeFrozenQuantitativeValue } from "../../lib/contract-model/compiler/semantic-accountability/inventory";
 import { quantitativeValuesEquivalent } from "../../lib/contract-model/compiler/semantic-accountability/quantitative";
-import { reconcileInventoryWithComposition } from "../../lib/contract-model/compiler/semantic-accountability/reconciliation";
+import { isRelatedSeriesAggregationClaim, reconcileInventoryWithComposition } from "../../lib/contract-model/compiler/semantic-accountability/reconciliation";
 import { SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, type FrozenSemanticInventory, type QuantitativeValue, type SourceContextRegion } from "../../lib/contract-model/compiler/semantic-accountability/types";
 import { verifyCompiledCandidate } from "../../lib/contract-model/compiler/semantic-verification/verify";
 import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "../../lib/contract-model/compiler/semantic-verification/projection";
@@ -166,12 +166,14 @@ export async function replayFrozen75j() {
   };
   const residual = {
     relatedSeries: (() => {
-      const seriesIds = ["inv-item:c262463526204a96714cd8f6", "inv-item:2bb0c84da8ad713ef2667e0f"] as const;
+      // Residual honesty: list EVERY inventory item the detector matches (proposition ∪ excerpt),
+      // including the parent TRIGGER whose excerpt alone carries "series of related …".
+      const seriesIds = inventoryAfter.items.filter((it) => isRelatedSeriesAggregationClaim(it)).map((it) => it.inventoryItemId);
       const dispositions = seriesIds.map((id) => itemOf(id)?.disposition ?? null);
-      const allUnsupported = dispositions.every((d) => d === "UNSUPPORTED");
+      const allUnsupported = dispositions.length > 0 && dispositions.every((d) => d === "UNSUPPORTED");
       return {
         status: allUnsupported ? "EXPLICIT_UNSUPPORTED_INTERIM_B" : dispositions.every((d) => d === "REPRESENTED") ? "NOT_STRUCTURALLY_REPRESENTED (lineage still credited — investigate)" : "CHANGED - investigate",
-        items: [...seriesIds],
+        items: seriesIds,
         dispositions,
         evidence: "Pass C interim posture B: series-of-related claims are UNSUPPORTED when IR lacks structural series aggregation",
         artifact: "docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md",

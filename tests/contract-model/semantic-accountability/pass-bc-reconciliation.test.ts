@@ -291,6 +291,7 @@ describe("semantic accountability - injected omissions (I41-I44) derived from ev
     const series = reconcileInventoryWithComposition({
       inventory: seriesInventory,
       composition: normalizeScenarioComposition(b, wire),
+      dispositions: [],
       sourceContextState: b.sourceContext.state,
     });
     const item = series.items.find((i) => i.inventoryItemId === b.idOf("lead"))!;
