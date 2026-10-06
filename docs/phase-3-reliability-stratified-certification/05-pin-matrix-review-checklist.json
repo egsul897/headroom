@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN_MATRIX_REVIEW_CHECKLIST",
+  "status": "AWAITING_REVIEW",
+  "baseSha": "58c3d8b",
+  "priorChecklist": "04-review-checklist.json",
+  "priorChecklistNote": "04-review-checklist.json remains the #64 DESIGN_DRAFT sign-off (PASS). This checklist is append-only for the offline pin-matrix packet \u2014 do not mutate 04-.",
+  "owners": {
+    "Architect": {
+      "fields": [
+        "chewyPinIdentityAcceptable",
+        "withSharedCapsCrossCutAcceptable",
+        "adr1AppendOnlyRespected",
+        "firstTargetUntouched",
+        "noInventedDiscoveryIds",
+        "deferredBlockedReasonsHonest"
+      ],
+      "decision": "PASS_WITH_NOTES",
+      "notes": "PASS_WITH_NOTES @ b7ba590: Chewy Incremental Cap WITH_SHARED_CAPS identity OK; ADR-1/first-target untouched; honesty on NEEDS_REVIEW. Non-blocking: add v1/ + 00-pin-manifest.json on next emitter pins; shared-cap discovery role \u2260 IR shared-capacity representation for live; rebase cosmetic done.",
+      "signedAt": "2026-10-06T23:03:00Z"
+    },
+    "Product": {
+      "fields": [
+        "chewyPreferredBeforeMoreConmedHeroes",
+        "baselineConmed76cNotDuplicatedAsHero",
+        "interimBPostureUntouched"
+      ],
+      "decision": "PENDING",
+      "notes": ""
+    },
+    "COO": {
+      "fields": [
+        "docsOnlyNoLivePaid",
+        "noNS4",
+        "noPaid75j",
+        "noRelatedSeriesAC",
+        "costCeilingUnchanged"
+      ],
+      "decision": "PASS_WITH_NOTES",
+      "notes": "PASS_WITH_NOTES: identity verified vs sealed Chewy; soft gate + PINNED_OFFLINE; first-target untouched. Non-blocking: Trust preferred (already PASS); follow-on offline pins for LIENS/INVESTMENTS/ASSET_SALES/FC/WITH_BUILDERS before live; false-claim clean.",
+      "signedAt": "2026-10-06T23:03:00Z"
+    },
+    "Trust": {
+      "fields": [
+        "adr1",
+        "identity",
+        "failClosed"
+      ],
+      "decision": "PASS",
+      "signedAt": "2026-10-06T23:03:00Z",
+      "notes": "PASS @ b7ba590 (checklist tip c0281bc substance same): first-target untouched; discovery identity + sha verified; fail-closed honesty."
+    }
+  },
+  "aggregate": {
+    "allPassRequiredForDocsMerge": true,
+    "livePaidAuthorization": "NOT_IN_THIS_PACKET"
+  }
+}

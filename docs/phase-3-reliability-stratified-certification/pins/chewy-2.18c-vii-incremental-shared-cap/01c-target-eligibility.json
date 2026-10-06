@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_PIN_CHEWY_2_18C_VII_TARGET_ELIGIBILITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "d5ac8beebc9e02117cbf9344ac7d13929e54e217",
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [],
+  "operativeTextSectionReferences": [],
+  "offlineBundle": {
+    "sufficiencyState": "SUFFICIENT_IDENTITY_ONLY",
+    "stopReasons": [],
+    "items": 2,
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "nonCurrentItems": [],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "2.18(c)(vii)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "2.18",
+        1
+      ]
+    ],
+    "note": "Offline pin binds identity + operative-state + eligibility only. Full context-bundle expansion is deferred to a later authorized live chunk \u2014 not executed here (zero provider calls)."
+  },
+  "sourceContentVersion": "scv1:f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "identityStrength": "STRONG",
+  "eligible": true,
+  "crossCutClaims": {
+    "WITH_SHARED_CAPS": {
+      "claimed": true,
+      "basis": "Sealed discovery role SHARED_CAP on discovery-candidate:cf3d8d9492aeca04392b5172; operative text caps aggregate Incremental Facilities + Incremental Equivalent Debt within the Incremental Cap (shared capacity across incremental debt forms)."
+    },
+    "WITHOUT_BUILDERS": {
+      "claimed": true,
+      "basis": "Operative window is a hard aggregate cap test at incurrence; no builder/grower formula in this clause text."
+    },
+    "WITHOUT_RECLASSIFICATION": {
+      "claimed": true,
+      "basis": "No classification/reclassification or anti-duplication mechanic in this operative window."
+    }
+  },
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:cf3d8d9492aeca04392b5172",
+    "mapTags": [],
+    "mapOutcome": "NO_CHEWY_CANONICAL_MAP_YET",
+    "note": "Chewy is not yet present under docs/canonical-covenant-map/maps/. Offline pin binds sealed discovery+structural fixtures only. Absence of map REVIEW is not pre-credit for later live CERTIFIED."
+  },
+  "discoveryHonesty": {
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "documentDiscoveryHealth": "DISCOVERY_PARTIAL",
+    "note": "Sealed paid discovery recorded NEEDS_REVIEW for this candidate and DISCOVERY_PARTIAL at document level (1 section failure elsewhere). Offline pin remains valid; discovery NEEDS_REVIEW is not pre-credit and must be cleared honestly at live cert time."
+  }
+}
