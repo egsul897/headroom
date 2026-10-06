@@ -28,6 +28,13 @@
  * diagnostic (reason UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION) is recorded —
  * never quiet ordinary semantic UNSUPPORTED.
  *
+ * ADR-2 §2.B: self-declared REPRESENTED is never accepted as a disposition
+ * (lineage/value correspondence alone may earn REPRESENTED). The raw label is
+ * kept on modelDisposition; accountability disposition still falls through to
+ * correspondence — AND a distinct MODEL_CONTRACT_VIOLATION diagnostic
+ * (reason SELF_DECLARED_REPRESENTED) is recorded (not quiet pass / not quiet
+ * UNSUPPORTED).
+ *
  * RELATED-SERIES INTERIM B: an inventory item whose source claim is a
  * "series of related …" aggregation, and that would otherwise earn
  * REPRESENTED solely via lineage onto a rule/condition that does NOT
@@ -54,6 +61,8 @@ import {
   INVENTORY_DISPOSITIONS,
   MODEL_CONTRACT_VIOLATION_CODE,
   NON_VOCABULARY_DISPOSITION_CONTRACT_REF,
+  SELF_DECLARED_REPRESENTED_CONTRACT_REF,
+  SELF_DECLARED_REPRESENTED_REASON,
   SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION,
   UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON,
 } from "./types";
@@ -324,9 +333,10 @@ function findValue(v: QuantitativeValue, irValues: IrValue[]): { present: string
 /**
  * Explicit disposition vocabulary the composition may declare for an item it
  * did NOT consume into lineage (wire-schema / prompt contract). REPRESENTED is
- * never accepted as a self-declaration. MISSING_FROM_COMPOSITION is accepted
- * as a raw label but does not count as an explicit non-MISSING disposition
- * below (the item still falls through to deterministic correspondence).
+ * never accepted as a self-declaration (ADR-2 §2.B) — but self-declaration is
+ * still a MODEL_CONTRACT_VIOLATION, not a quiet null. MISSING_FROM_COMPOSITION
+ * is accepted as a raw label but does not count as an explicit non-MISSING
+ * disposition below (the item still falls through to deterministic correspondence).
  *
  * COMPOSITION CONTRACT (Phase 3 reliability gate) + ADR-2: a non-empty disposition
  * outside this vocabulary is still an explicit attempt to disposition the
@@ -338,14 +348,22 @@ function findValue(v: QuantitativeValue, irValues: IrValue[]): { present: string
  */
 const EXPLICIT_DISPOSITION_VOCABULARY = ["INTENTIONALLY_NON_COMPUTATIONAL", "UNSUPPORTED", "AMBIGUOUS"] as const;
 
-function normalizeDisposition(raw: string | undefined): { disposition: InventoryDisposition | null; nonVocabulary: boolean } {
-  if (!raw) return { disposition: null, nonVocabulary: false };
+function normalizeDisposition(raw: string | undefined): {
+  disposition: InventoryDisposition | null;
+  nonVocabulary: boolean;
+  /** ADR-2 §2.B: wire self-declared REPRESENTED (illegal emit). */
+  selfDeclaredRepresented: boolean;
+} {
+  if (!raw) return { disposition: null, nonVocabulary: false, selfDeclaredRepresented: false };
   const upper = raw.trim().toUpperCase().replace(/[\s-]+/g, "_");
-  if (upper === "REPRESENTED") return { disposition: null, nonVocabulary: false }; // self-declared representation is never accepted - lineage/value correspondence decides
-  if (upper === "MISSING_FROM_COMPOSITION") return { disposition: "MISSING_FROM_COMPOSITION", nonVocabulary: false };
-  if ((EXPLICIT_DISPOSITION_VOCABULARY as readonly string[]).includes(upper)) return { disposition: upper as InventoryDisposition, nonVocabulary: false };
-  if (upper.length > 0) return { disposition: "UNSUPPORTED", nonVocabulary: true };
-  return { disposition: null, nonVocabulary: false };
+  // Self-declared representation is never accepted as a disposition — lineage/value
+  // correspondence alone may earn REPRESENTED — but the illegal emit must surface as
+  // MODEL_CONTRACT_VIOLATION (not quiet null / not quiet UNSUPPORTED).
+  if (upper === "REPRESENTED") return { disposition: null, nonVocabulary: false, selfDeclaredRepresented: true };
+  if (upper === "MISSING_FROM_COMPOSITION") return { disposition: "MISSING_FROM_COMPOSITION", nonVocabulary: false, selfDeclaredRepresented: false };
+  if ((EXPLICIT_DISPOSITION_VOCABULARY as readonly string[]).includes(upper)) return { disposition: upper as InventoryDisposition, nonVocabulary: false, selfDeclaredRepresented: false };
+  if (upper.length > 0) return { disposition: "UNSUPPORTED", nonVocabulary: true, selfDeclaredRepresented: false };
+  return { disposition: null, nonVocabulary: false, selfDeclaredRepresented: false };
 }
 
 /** ADR-2: build the claim-specific model-contract violation diagnostic for a non-vocabulary disposition. */
@@ -358,6 +376,20 @@ export function modelContractViolationForNonVocabularyDisposition(
     reason: UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON,
     rawLabel,
     contractRef: NON_VOCABULARY_DISPOSITION_CONTRACT_REF,
+    inventoryItemId,
+  };
+}
+
+/** ADR-2 §2.B: build the claim-specific model-contract violation diagnostic for self-declared REPRESENTED. */
+export function modelContractViolationForSelfDeclaredRepresented(
+  inventoryItemId: string,
+  rawLabel: string,
+): ModelContractViolationDiagnostic {
+  return {
+    code: MODEL_CONTRACT_VIOLATION_CODE,
+    reason: SELF_DECLARED_REPRESENTED_REASON,
+    rawLabel,
+    contractRef: SELF_DECLARED_REPRESENTED_CONTRACT_REF,
     inventoryItemId,
   };
 }
@@ -435,10 +467,10 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
     if (canonicalized) canonicalizedLineageReferences++;
     return { ...d, inventoryItemId: id };
   });
-  const dispositionById = new Map<string, { disposition: InventoryDisposition | null; raw: string; note: string; nonVocabulary: boolean }>();
+  const dispositionById = new Map<string, { disposition: InventoryDisposition | null; raw: string; note: string; nonVocabulary: boolean; selfDeclaredRepresented: boolean }>();
   for (const d of dispositions) {
     const norm = normalizeDisposition(d.disposition);
-    dispositionById.set(d.inventoryItemId, { disposition: norm.disposition, raw: d.disposition, note: d.note, nonVocabulary: norm.nonVocabulary });
+    dispositionById.set(d.inventoryItemId, { disposition: norm.disposition, raw: d.disposition, note: d.note, nonVocabulary: norm.nonVocabulary, selfDeclaredRepresented: norm.selfDeclaredRepresented });
   }
 
   let danglingLineageReferences = 0;
@@ -531,6 +563,12 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
     // even if lineage independently sets the accountability disposition.
     if (explicit?.nonVocabulary) {
       diagnostics.push(modelContractViolationForNonVocabularyDisposition(item.inventoryItemId, explicit.raw));
+    }
+    // ADR-2 §2.B: self-declared REPRESENTED is never quiet — diagnostic even when
+    // disposition falls through to correspondence (or lineage independently earns REPRESENTED).
+    if (explicit?.selfDeclaredRepresented) {
+      diagnostics.push(modelContractViolationForSelfDeclaredRepresented(item.inventoryItemId, explicit.raw));
+      reasons.push(`composition self-declared disposition "REPRESENTED" (illegal — REPRESENTED is inferred only via lineage/value correspondence); ${MODEL_CONTRACT_VIOLATION_CODE} (${SELF_DECLARED_REPRESENTED_REASON})`);
     }
 
     return {
