@@ -241,7 +241,7 @@ function loadConmed(asOfDate: string): LoadedPackage {
       adapter: phase2.adapterVersion,
       source: phase2.source as unknown as Record<string, unknown>,
       analyzedDocuments: phase2.analyzedDocuments as { documentId: string; label: string; targetDocuments: string[] }[],
-      documentsProcessed: phase2.documentsProcessed,
+      documentsProcessed: phase2.documentsProcessed ?? 0,
       asOfConsistency: asOf as unknown as Record<string, unknown>,
     },
     sealedDiscoverySource: "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
