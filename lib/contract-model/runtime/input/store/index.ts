@@ -27,3 +27,30 @@ export {
   getSnapshots,
   materializeFromEvents,
 } from "./write";
+
+/** NS-4 slice 2 — synthetic certificate → proposal → APPROVED (re-export). */
+export type {
+  ApproveCertificateProposalRequest,
+  BasketUsageScheduleLine,
+  CertificateFactLocator,
+  CertificateFactProposal,
+  CertificateFactValue,
+  CertificateProposalIssue,
+  CertificateProposalIssueCode,
+  CertificateProposer,
+  CertificateProposerKind,
+  LedgerProposal,
+  LedgerProposalStatus,
+  ProposeFromCertificateOk,
+  ProposeFromCertificateRejected,
+  ProposeFromCertificateResult,
+  SyntheticCertificate,
+} from "./certificate";
+export {
+  LedgerProposalRecorder,
+  proposeFromCertificate,
+  approveCertificateProposal,
+  certificateIdentityKey,
+  factToFinancialInput,
+  factToIdentity,
+} from "./certificate";

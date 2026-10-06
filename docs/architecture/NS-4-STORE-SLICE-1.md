@@ -30,8 +30,8 @@
 
 ## Not in this slice
 
-- Slice 2: synthetic certificate → proposal → APPROVED path.
-- Slice 3: loader parity vs hand-built 4B fixtures.
+- ~~Slice 2: synthetic certificate → proposal → APPROVED path.~~ **Landed** — see `NS-4-STORE-SLICE-2.md`.
+- Slice 3: loader parity vs hand-built 4B fixtures (**HOLD** — not authorized in the slice-2 PR).
 - Durable Prisma migration / runtime Prisma adapter (schema draft only).
 
 ## Test commands
