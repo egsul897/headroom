@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_CERT_DESIGN_REVIEW_CHECKLIST",
+  "status": "DESIGN_DRAFT",
+  "baseSha": "9c5f57664f3416769cf29d72d6d1f35b572a97e5",
+  "owners": {
+    "Architect": {
+      "fields": [
+        "selectionContractAcceptable",
+        "firstTargetPinAcceptable",
+        "exclusionsComplete",
+        "noABSealReopen",
+        "noRelatedSeriesAC",
+        "noNS4"
+      ],
+      "decision": "PASS",
+      "signedAt": "2026-10-06T22:53:00Z",
+      "notes": "PASS (re-stamp @ 7a0a306): all four prior notes landed \u2014 ADR cite, OOV model-contract diagnostic, versioned packets, canonicalMapHonesty. Docs-only; live/paid NOT authorized."
+    },
+    "Product": {
+      "fields": [
+        "strataCoverRoadmapStep2",
+        "interimBPostureRespected",
+        "firstTargetFamilyPreferenceOk"
+      ],
+      "decision": "PASS_WITH_NOTES",
+      "signedAt": "2026-10-06T22:50:00Z",
+      "notes": "PASS_WITH_NOTES: interim-B-not-generally-solved must stay visible (COO). Optional: Headroom Answer = paths/capacity/conditions/provenance one-liner folded into missionQuestion/README."
+    },
+    "COO": {
+      "fields": [
+        "costCeilingAcceptable",
+        "noLivePaidAuthInThisPacket",
+        "docsOnlyMergeOk"
+      ],
+      "decision": "PASS",
+      "signedAt": "2026-10-06T22:53:00Z",
+      "notes": "PASS (post-amendment re-review @ 7a0a306): costCeiling YES; noLivePaidAuth YES; docsOnlyMergeOk YES. Blocking standing-scrutiny amendments verified landed: (1) versioned packets / no mutate-in-place of 7.5j-deterministic-remediation/; (2) relatedSeriesInterimB TEMPORARY_CONMED_SHAPED \u2014 not generally solved; (3) nonVocabularyUnsupported requires explicit model-contract violation diagnostic. Still NOT authorizing live/paid stratified runs, NS-4, paid \u00a77.5(j), or related-series A/C."
+    }
+  },
+  "aggregate": {
+    "allPassRequiredForDocsMerge": true,
+    "livePaidAuthorization": "NOT_IN_THIS_PACKET"
+  }
+}
