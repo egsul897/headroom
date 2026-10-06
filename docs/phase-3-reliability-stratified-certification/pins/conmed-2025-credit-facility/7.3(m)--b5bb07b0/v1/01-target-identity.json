@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:b5bb07b092f9863985f89812:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "7a06e70d5701147fb775061b81e924054a403e29",
+  "identity": {
+    "discoveryId": "discovery-candidate:b5bb07b092f9863985f89812",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "packageKey": "conmed-2025-credit-facility",
+    "normalizedSourceRef": "7.3(m)",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(m)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "structuralNodeIds": [
+      "structural-node:b64c66fae666b21d66e2cbca",
+      "structural-node:fa65b905770511a338d69070"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:b64c66fae666b21d66e2cbca",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.3(m)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.3(m)",
+      "charStart": 61541,
+      "charEnd": 61999
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 458,
+    "operativeSourceSha256": "f3592673d6d3fcb4d7589bc9d824bbcb895cd0779f4c04c38156780e884c14dd",
+    "operativeSourceText": "(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations\nsecured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Liens);\n",
+    "expected": {
+      "chars": 458,
+      "sha256": "f3592673d6d3fcb4d7589bc9d824bbcb895cd0779f4c04c38156780e884c14dd"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "LIENS"
+    ],
+    "role": "BASKET",
+    "stratum": "LIENS",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+    "discoveryReviewStatus": "AUTO_ACCEPTED",
+    "discoveryConfidence": 0.9,
+    "description": "Permits Liens not otherwise permitted under Section 7.3 up to a cap on aggregate secured obligations and aggregate fair market value of assets subject thereto."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}

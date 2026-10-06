@@ -220,7 +220,15 @@
     },
     {
       "stratum": "LIENS",
-      "blocker": "Bind e.g. §7.3(m) or §7.3(g) via same offline pin shape; discoveryIds exist in sealed map but not yet pinned in this packet"
+      "status": "PINNED_OFFLINE",
+      "pinAuthority": "01-pin-matrix.json",
+      "discoveryId": "discovery-candidate:b5bb07b092f9863985f89812",
+      "pinFolder": "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/",
+      "note": "CONMED §7.3(m) general Lien BASKET pinned offline (eligible:true). Offline pin status is authoritative in 01-pin-matrix.json (this matrixRowsTbd row is superseded for pin status). Chewy LIENS still DEFERRED — no modest UNIQUE eligible:true sealed span; do not invent IDs.",
+      "chewyLiens": {
+        "status": "DEFERRED",
+        "blocker": "No Chewy LIENS BASKET/SHARED_CAP with modest UNIQUE structural window + eligible:true. Do not invent IDs."
+      }
     },
     {
       "stratum": "INVESTMENTS",

@@ -101,3 +101,29 @@ pnpm exec tsx scripts/stratified-cert/pin-candidate.ts \
 ## Out of scope
 
 Live certifyCandidate runs; paid calls; mutating `first-target/`; company `if (conmed)` branches; related-series A/C.
+
+---
+
+## Amendment — CONMED LIENS §7.3(m) offline pin (append · 2026-10-06)
+
+**Living-design append** (not an ADR-1 evidence-packet mutate). Prior Status line and “Next pins to emit” list above are retained verbatim; this section records the completed pin and residual blockers.
+
+| Field | Value |
+|---|---|
+| **discoveryId** | `discovery-candidate:b5bb07b092f9863985f89812` |
+| **sectionRef** | `7.3(m)` general Lien BASKET |
+| **pin folder** | `pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/` |
+| **chars / eligible** | 458 / `eligible:true` (offline identity — **not** live CERTIFIED) |
+| **matrix** | `01-pin-matrix.json` LIENS → `PINNED_OFFLINE` |
+
+### Priority list — residual after this pin
+
+Item 2 above (“Chewy / CONMED LIENS or INVESTMENTS”) is **partially satisfied** by CONMED §7.3(m):
+
+- ~~**CONMED LIENS**~~ — **DONE** (this amendment / pin packet).
+- **Chewy LIENS** — still **DEFERRED** (no modest UNIQUE `eligible:true` sealed span; 1.01 AMBIGUOUS; body spans `UNRESOLVED_OPERATIVE_EVIDENCE`). Do not invent IDs.
+- **INVESTMENTS** — still open: CONMED §7.8(l)/§7.8(d) BASKET scouted `eligible:true` offline (unpinned); Chewy still needs narrower UNIQUE `eligible:true` span than 1.01 / ambiguous §6.08.
+- Items 3–6 above (WITH_BUILDERS, CONMED WITH_SHARED_CAPS, CONMED DEBT, FC/reclass) unchanged.
+
+**Status addendum:** emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1 **+ CONMED LIENS §7.3(m) v1**. Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73 mutation.
+
