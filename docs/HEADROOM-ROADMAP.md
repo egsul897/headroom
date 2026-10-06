@@ -1,5 +1,7 @@
 # Headroom — Roadmap and Repository Alignment
 
+> **SUPERSEDED FOR PRODUCT DIRECTION BY `docs/headroom-north-star-v2.md`.** The stable phase sequence in §2 (incl. Phase 5 "Financial Data & Monitoring Platform" / 5C ERP connections and Phase 6 "Living Headroom State") and the "Current phase" marker below are replaced by `docs/headroom-north-star-reconciliation/06-revised-roadmap.md` (2026-10-06). The audit sections below are kept unchanged as a historical record.
+
 **Status: permanent, with a living "current phase" marker.** This document records the stable phase sequence, audits what has actually been built against `docs/HEADROOM-NORTH-STAR.md`, and recommends the next implementation phase. Update the "Current phase" line as work completes; do not otherwise restructure this document without an `ARCHITECTURE_CHANGE_PROPOSAL` (see `docs/HEADROOM-ARCHITECTURE-INVARIANTS.md`).
 
 **Current phase: Phase 2 complete (2A–2G, verdict `PHASE_2G_AMENDMENT_PRECEDENCE_GATE_PASSED`, commit `f722a79`). Recommended next phase: Phase 3A — General Covenant Intermediate Representation V1.** See §5 for the full recommendation and reasoning.

@@ -1,5 +1,7 @@
 # Headroom — Master Product Architecture
 
+> **SUPERSEDED FOR PRODUCT DIRECTION BY `docs/headroom-north-star-v2.md`** (2026-10-06): §A's position "gathered autonomously from ERP/treasury/document/public sources" no longer controls; financial state comes from approved, dated compliance-certificate / reporting snapshots. The rest of this document is kept unchanged as a historical record.
+
 **Status: PHASE A (customer workspace shell + Dashboard rename + prototype
 UX restoration) SHIPPED AND DEPLOYED. Phases B–G (contract compiler,
 evaluation harness, premium dashboard redesign, Ask Headroom, full

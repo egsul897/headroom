@@ -1,5 +1,7 @@
 # Headroom — Architecture Invariants
 
+> **2026-10-06 note:** all 37 invariants below remain in force. Only the phase *naming* in the anti-drift section ("Phase 5 = Financial Data / Continuous Monitoring, Phase 6 = Living Headroom State") is superseded, through the accepted ARCHITECTURE_CHANGE_PROPOSAL `docs/headroom-north-star-reconciliation/00-architecture-change-proposal.md`; the controlling product architecture is `docs/headroom-north-star-v2.md` and the phase sequence is `docs/headroom-north-star-reconciliation/06-revised-roadmap.md`.
+
 **Status: permanent.** These are non-negotiable rules for every future implementation phase. They exist so that a local bug, a failing benchmark, an unfamiliar model output, or a new customer's ERP does not become an excuse to quietly redesign the product. Read alongside `docs/HEADROOM-NORTH-STAR.md` (what we're building and why) and `docs/HEADROOM-ROADMAP.md` (the current phase and the stable phase sequence).
 
 A future phase may discover a bug, refine an internal interface, extend a general primitive, add a subphase, or remediate a validation failure. It may not casually change the macro roadmap, the AI-vs-deterministic boundary, or any invariant below. If a future agent genuinely believes one of these must change, it must produce an explicit `ARCHITECTURE_CHANGE_PROPOSAL` (format at the end of this document) rather than silently drifting.

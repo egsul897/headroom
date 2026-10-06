@@ -1,5 +1,7 @@
 # Headroom — Generalized Financial Analytics Architecture
 
+> **SUPERSEDED FOR PRODUCT DIRECTION BY `docs/headroom-north-star-v2.md`** (2026-10-06). The financial core described here (liquidity, interest, maturity, generic metrics, forecasts, generalized scenario engine) is optional supporting analytics, not Headroom's organizing architecture; forecasting and ERP / bank-feed adapters are off the core roadmap; transaction answers go through the Phase 4D simulation only. Classification: `docs/headroom-north-star-reconciliation/03-preserve-deprecate-defer-matrix.json`. Kept unchanged below as a historical design record.
+
 **Status: design only.** No Prisma schema, migration, engine code (`lib/covenant-engine.ts`, `lib/solver/**`), UI (`app/**`), seed data, or golden test was modified to produce this document. This is the architecture blueprint for the next phase of Headroom's development: a company-agnostic financial core that sits *upstream of and around* the existing contractual-permission solver, per the controlling pipeline direction —
 
 ```
