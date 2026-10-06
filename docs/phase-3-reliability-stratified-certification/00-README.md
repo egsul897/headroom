@@ -19,3 +19,11 @@ Architect · Product · COO — sign off on the selection contract and first-tar
 ## After PASS
 
 Implementation / live stratified certification is a **later authorized chunk** (not this PR). First live attempt, if later authorized, must use the pinned `first-target` identity artifacts and the cost ceiling in the selection contract — never a silent target swap.
+
+## Headroom Answer (product parity)
+
+Headroom Answer = paths / capacity / conditions / provenance.
+
+## Canonical map honesty (first-target)
+
+Canonical map currently tags `discovery-candidate:565fd64640e534d8a46bbe7a` with historical `CANDIDATE_COMPILE_REVIEW_REQUIRED` / `MATERIAL_DISCREPANCY`. Offline pin remains valid. Later live `CERTIFIED` must clear production blockers honestly — map REVIEW is **not** pre-credit.

@@ -6,10 +6,10 @@
   "roadmap": {
     "controlling": "docs/headroom-north-star-reconciliation/06-revised-roadmap.md",
     "step": 2,
-    "dependsOnStep1": "Phase 3 reliability gate \u2014 A/B seal, composition-contract, localRef CLOSED_OFFLINE, related-series interim B EXPLICIT_UNSUPPORTED",
+    "dependsOnStep1": "Phase 3 reliability gate — A/B seal, composition-contract, localRef CLOSED_OFFLINE, related-series interim B EXPLICIT_UNSUPPORTED",
     "unblocksStep3": "freeze semantic foundation except true defects"
   },
-  "missionQuestion": "Select and freeze a stratified real-provision certification set (debt, liens, RP, investments, asset sales, financial covenants; with/without shared caps / builders / reclassification) from sealed CONMED/Chewy fixtures, then certify offline-pinned targets under fail-closed gates \u2014 without reopening sealed A/B, without paid \u00a77.5(j) re-run, without NS-4, and without inventing related-series IR A/C.",
+  "missionQuestion": "Select and freeze a stratified real-provision certification set (debt, liens, RP, investments, asset sales, financial covenants; with/without shared caps / builders / reclassification) from sealed CONMED/Chewy fixtures, then certify offline-pinned targets under fail-closed gates — without reopening sealed A/B, without paid §7.5(j) re-run, without NS-4, and without inventing related-series IR A/C Headroom Answer = paths/capacity/conditions/provenance (parity with related-series interim-B product posture).",
   "softGate": {
     "allowed": [
       "selection contract freeze",
@@ -19,11 +19,12 @@
     ],
     "forbiddenNow": [
       "live certification runs",
-      "provider / paid \u00a77.5(j) calls or re-runs",
-      "NS-4 certificate\u2192snapshot work",
+      "provider / paid §7.5(j) calls or re-runs",
+      "NS-4 certificate→snapshot work",
       "additive related-series IR option A or C",
       "reopening semantic-accountability.v8 / enumerator handoff / quantitative authority A/B seal",
-      "rewriting historical live evidence under docs/phase-3-live-validation/7.2c-* or 7.5j-end-to-end-certification/"
+      "rewriting historical live evidence under docs/phase-3-live-validation/7.2c-* or 7.5j-end-to-end-certification/ (paid live packets immutable)",
+      "mutating docs/phase-3-live-validation/7.5j-deterministic-remediation/ (or any prior remediation/replay packet) in place after later remediations — future evidence must be new versioned packets"
     ]
   },
   "strata": [
@@ -33,7 +34,7 @@
         "INDEBTEDNESS"
       ],
       "roadmapLabel": "debt",
-      "notes": "Includes baskets, ratio-based permissions, refinancing permissions. \u00a77.2(c) already live-exhausted historically \u2014 remaining debt picks must be distinct sectionRefs."
+      "notes": "Includes baskets, ratio-based permissions, refinancing permissions. §7.2(c) already live-exhausted historically — remaining debt picks must be distinct sectionRefs."
     },
     {
       "id": "LIENS",
@@ -49,7 +50,7 @@
         "RESTRICTED_PAYMENTS"
       ],
       "roadmapLabel": "RP",
-      "notes": "Includes shared-cap members (e.g. CONMED \u00a77.6(b)/(b)(i)/(b)(ii))."
+      "notes": "Includes shared-cap members (e.g. CONMED §7.6(b)/(b)(i)/(b)(ii))."
     },
     {
       "id": "INVESTMENTS",
@@ -66,7 +67,7 @@
         "DISPOSITIONS"
       ],
       "roadmapLabel": "asset sales",
-      "notes": "\u00a77.5(j) already live-exhausted and carries interim-B series + non-vocab residuals \u2014 not first target; later strata rows may include non-series asset-sale baskets only if eligibility clears."
+      "notes": "§7.5(j) already live-exhausted and carries interim-B series + non-vocab residuals — not first target; later strata rows may include non-series asset-sale baskets only if eligibility clears."
     },
     {
       "id": "FINANCIAL_COVENANTS",
@@ -81,12 +82,12 @@
     {
       "id": "WITH_SHARED_CAPS",
       "required": true,
-      "evidenceHint": "CONMED map SHARED_CAPACITY on \u00a77.6(b) family; Phase 4C shared-capacity model is downstream of certified IR, not a substitute for Phase-3 cert"
+      "evidenceHint": "CONMED map SHARED_CAPACITY on §7.6(b) family; Phase 4C shared-capacity model is downstream of certified IR, not a substitute for Phase-3 cert"
     },
     {
       "id": "WITHOUT_SHARED_CAPS",
       "required": true,
-      "evidenceHint": "Standalone baskets (e.g. first pin \u00a77.6(c))"
+      "evidenceHint": "Standalone baskets (e.g. first pin §7.6(c))"
     },
     {
       "id": "WITH_BUILDERS",
@@ -100,7 +101,7 @@
     {
       "id": "WITH_RECLASSIFICATION",
       "required": true,
-      "bindingRule": "CONMED \u00a77.2 closing classification/anti-duplication mechanic is section-wide; bind a concrete discovery candidate before live \u2014 do not invent IDs"
+      "bindingRule": "CONMED §7.2 closing classification/anti-duplication mechanic is section-wide; bind a concrete discovery candidate before live — do not invent IDs"
     },
     {
       "id": "WITHOUT_RECLASSIFICATION",
@@ -123,13 +124,13 @@
       }
     ],
     "deterministicPickAlgorithm": {
-      "description": "Within each stratum, candidates are drawn from the sealed CONMED discovery population (and Chewy only after equivalent seal/pin). Sort by (packageKey, documentId, normalizedSourceRef, discoveryId). Exclude EXCLUSIONS. Prefer role in {BASKET, FINANCIAL_TEST, RATIO_BASED_PERMISSION, SHARED_CAP, QUANTITATIVE_PERMISSION}. First live pin prefers a family NOT already live-exhausted as \u00a77.2(c)/\u00a77.5(j).",
+      "description": "Within each stratum, candidates are drawn from the sealed CONMED discovery population (and Chewy only after equivalent seal/pin). Sort by (packageKey, documentId, normalizedSourceRef, discoveryId). Exclude EXCLUSIONS. Prefer role in {BASKET, FINANCIAL_TEST, RATIO_BASED_PERMISSION, SHARED_CAP, QUANTITATIVE_PERMISSION}. First live pin prefers a family NOT already live-exhausted as §7.2(c)/§7.5(j).",
       "firstTargetOverride": "Explicitly pinned in first-target/ before any live run; later matrix rows fill remaining strata/cross-cuts under the same algorithm without swapping the first pin."
     }
   },
   "firstTargetPin": {
     "status": "PINNED_OFFLINE",
-    "why": "RESTRICTED_PAYMENTS basket on sealed CONMED; not live-exhausted (unlike \u00a77.2(c) debt / \u00a77.5(j) asset sales); modest 191-char operative window; single occurrence; offline eligibility PASS with no governing Phase-2 REVIEW_REQUIRED provision; no related-series claim in operative text.",
+    "why": "RESTRICTED_PAYMENTS basket on sealed CONMED; not live-exhausted (unlike §7.2(c) debt / §7.5(j) asset sales); modest 191-char operative window; single occurrence; offline eligibility PASS with no governing Phase-2 REVIEW_REQUIRED provision; no related-series claim in operative text.",
     "packageKey": "conmed-2025-credit-facility",
     "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
     "sectionRef": "7.6(c)",
@@ -153,21 +154,28 @@
   "residualsTreatment": {
     "relatedSeriesInterimB": {
       "status": "EXPLICIT_UNSUPPORTED_INTERIM_B",
-      "inScopeBehavior": "Series-aggregation claims must disposition UNSUPPORTED (never REPRESENTED via lineage). Fail-closed in Ask Headroom. Not a certification PASS path until Architect ADR chooses A or C.",
+      "inScopeBehavior": "Series-aggregation claims must disposition UNSUPPORTED (never REPRESENTED via lineage). Fail-closed in Ask Headroom. Not a certification PASS path until Architect ADR chooses A or C. Detector from PR #63 is temporary CONMED-shaped (\\bseries\\s+of\\s+related\\b) fail-closed only — not general related-series semantics solved.",
       "outOfScopeThisPacket": "Additive IR A/C; re-litigating Product PASS on interim B",
       "evidence": [
+        "docs/architecture/RELATED-SERIES-INTERIM-B-ADR.md (ACCEPTED)",
         "docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md",
         "docs/phase-3-reliability-composition-gaps/04-product-posture-related-series-interim-b.md",
         "docs/phase-3-live-validation/7.5j-deterministic-remediation/08-residual-genuine-blockers.json"
-      ]
+      ],
+      "detectorScope": {
+        "status": "TEMPORARY_CONMED_SHAPED",
+        "pattern": "\\bseries\\s+of\\s+related\\b",
+        "note": "PR #63 interim-B detector is fail-closed for CONMED-shaped phrasing only; near-miss / general related-series semantics remain unsolved until A/C ADR."
+      }
     },
     "supportReviewRequired": {
       "inScopeBehavior": "supportReviewRequired / SEMANTIC_SUPPORT_REVIEW_REQUIRED remains a certification REVIEW blocker until independently resolved; diagnostic asymmetry is not rewritten as CREDIT",
-      "policyAlign": "docs/evaluation-contract-v3/04-certification-vs-diagnostic-policy.json \u2014 creditEligibility + surfacingStatus are safety-critical; representationCompleteness/verificationStatus stay diagnostic until promoted"
+      "policyAlign": "docs/evaluation-contract-v3/04-certification-vs-diagnostic-policy.json — creditEligibility + surfacingStatus are safety-critical; representationCompleteness/verificationStatus stay diagnostic until promoted"
     },
     "nonVocabularyUnsupported": {
-      "inScopeBehavior": "Pass C maps non-vocabulary inventoryDisposition \u2192 UNSUPPORTED (UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION). Honest residual, not silent MISSING.",
-      "evidence": "docs/phase-3-reliability-composition-gaps/01-non-vocabulary-disposition-contract.md"
+      "inScopeBehavior": "When Pass B emits a non-vocabulary inventoryDisposition, Pass C must map it to UNSUPPORTED with an explicit model-contract violation diagnostic — not ordinary quiet UNSUPPORTED. Preserve the raw non-vocab label and emit a distinct reason/code (e.g. UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION / model-contract violation). Pass C → UNSUPPORTED alone is necessary but not the full diagnostic story. Honest residual, not silent MISSING.",
+      "evidence": "docs/phase-3-reliability-composition-gaps/01-non-vocabulary-disposition-contract.md",
+      "diagnosticRequirement": "Explicit model-contract violation diagnostic required: raw inventoryDisposition label preserved + distinct reason/code (UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION). Must not describe OOV→UNSUPPORTED as ordinary quiet UNSUPPORTED."
     },
     "localRefGap": {
       "status": "CLOSED_OFFLINE",
@@ -182,21 +190,22 @@
   },
   "acceptanceCriteria": {
     "beforeSemanticFreeze": [
-      "Every stratum has \u22651 offline-pinned target with 01-target-identity assertions all true OR an explicit TBD row naming the binding blocker",
+      "Every stratum has ≥1 offline-pinned target with 01-target-identity assertions all true OR an explicit TBD row naming the binding blocker",
       "Required cross-cuts WITH/WITHOUT shared caps, builders, reclassification are either pinned or TBD-with-blocker",
-      "First live candidate (when later authorized) is the pinned first-target/ \u2014 no silent swap",
+      "First live candidate (when later authorized) is the pinned first-target/ — no silent swap",
       "Certification decision uses production certifyCandidate blockers; CERTIFIED only when blockers empty; REVIEW_REQUIRED is honest fail-closed, not PASS",
       "Related-series claims under interim B never receive REPRESENTED / CERTIFIED credit",
-      "Diagnostic dimensions do not override safety-critical creditEligibility / surfacingStatus (EC-V3 \u00a78)",
+      "Diagnostic dimensions do not override safety-critical creditEligibility / surfacingStatus (EC-V3 §8)",
       "Zero provider calls in design validation / offline pin path",
-      "A/B seal semantic-accountability.v8 untouched; no NS-4 files in the change set"
+      "A/B seal semantic-accountability.v8 untouched; no NS-4 files in the change set",
+      "New stratified-cert evidence packets (and future remediation/replay evidence) are append/versioned; never mutate-in-place prior packets. softGate already forbids rewriting 7.2c/7.5j-end-to-end; do not mutate 7.5j-deterministic-remediation/ (or prior remediation packets) in place after later remediations — paid live 7.2c/7.5j-end-to-end stays immutable."
     ],
-    "certifiedMeans": "Candidate status CERTIFIED under phase3-candidate-certification.v1 with STRONG source identities, no REVIEW/BLOCKING blockers, and no interim-B series false credit. Package-level PARTIAL_TARGET_SET is expected until the full stratified set is complete \u2014 not a defect by itself.",
-    "liveAuthorizationLater": "Live/paid runs require a separate authorization after Architect+Product+COO PASS on this packet. Historical \u00a77.5(j) evidence is immutable; no re-pay."
+    "certifiedMeans": "Candidate status CERTIFIED under phase3-candidate-certification.v1 with STRONG source identities, no REVIEW/BLOCKING blockers, and no interim-B series false credit. Package-level PARTIAL_TARGET_SET is expected until the full stratified set is complete — not a defect by itself.",
+    "liveAuthorizationLater": "Live/paid runs require a separate authorization after Architect+Product+COO PASS on this packet. Historical §7.5(j) evidence is immutable; no re-pay."
   },
   "exclusions": [
-    "Paid / live \u00a77.5(j) re-run",
-    "Using \u00a77.2(c) or \u00a77.5(j) as the first stratified pin",
+    "Paid / live §7.5(j) re-run",
+    "Using §7.2(c) or §7.5(j) as the first stratified pin",
     "Related-series claims treated as structurally represented under interim B",
     "Additive related-series IR options A or C",
     "NS-4 certificate-to-snapshot adapter / persisted approved-snapshot store",
@@ -207,15 +216,15 @@
   "matrixRowsTbd": [
     {
       "stratum": "DEBT",
-      "blocker": "Select distinct CONMED \u00a77.2 subsection (not 7.2(c)); offline pin identity+eligibility before live"
+      "blocker": "Select distinct CONMED §7.2 subsection (not 7.2(c)); offline pin identity+eligibility before live"
     },
     {
       "stratum": "LIENS",
-      "blocker": "Bind e.g. \u00a77.3(m) or \u00a77.3(g) via same offline pin shape; discoveryIds exist in sealed map but not yet pinned in this packet"
+      "blocker": "Bind e.g. §7.3(m) or §7.3(g) via same offline pin shape; discoveryIds exist in sealed map but not yet pinned in this packet"
     },
     {
       "stratum": "INVESTMENTS",
-      "blocker": "Bind e.g. \u00a77.8(d)/\u00a77.8(l) offline; currently UNSERVED in historical map outcomes \u2014 eligibility unknown until pin"
+      "blocker": "Bind e.g. §7.8(d)/§7.8(l) offline; currently UNSERVED in historical map outcomes — eligibility unknown until pin"
     },
     {
       "stratum": "ASSET_SALES",
@@ -227,7 +236,7 @@
     },
     {
       "crossCut": "WITH_SHARED_CAPS",
-      "candidateHint": "CONMED \u00a77.6(b) discovery-candidate:ac354ffa81d6ca806759ba60 \u2014 pin offline next"
+      "candidateHint": "CONMED §7.6(b) discovery-candidate:ac354ffa81d6ca806759ba60 — pin offline next"
     },
     {
       "crossCut": "WITH_BUILDERS",
@@ -235,7 +244,7 @@
     },
     {
       "crossCut": "WITH_RECLASSIFICATION",
-      "blocker": "Bind \u00a77.2 classification/reclassification mechanic candidate before live; map notes it as section-wide, not a standalone frozen identity yet"
+      "blocker": "Bind §7.2 classification/reclassification mechanic candidate before live; map notes it as section-wide, not a standalone frozen identity yet"
     },
     {
       "package": "chwy-2026-credit-agreement",
@@ -248,7 +257,7 @@
       "Product",
       "COO"
     ],
-    "ask": "PASS/FAIL this DESIGN_DRAFT selection contract and the offline first-target pin (CONMED \u00a77.6(c) RP basket). Confirm exclusions and cost ceiling. Do not authorize live/paid runs in this review \u2014 only freeze the contract + pin.",
+    "ask": "PASS/FAIL this DESIGN_DRAFT selection contract and the offline first-target pin (CONMED §7.6(c) RP basket). Confirm exclusions and cost ceiling. Do not authorize live/paid runs in this review — only freeze the contract + pin.",
     "passUnlocks": "Docs PR merge via usual gate; later chunk may implement live stratified certification against the frozen pin/matrix"
   },
   "patternRefs": [

@@ -79,5 +79,16 @@
   },
   "sourceContentVersion": "scv1:9d395c1847ae87fb02ad30a59bc934f0a85c979116f6101e3c18bef67d992108",
   "identityStrength": "STRONG",
-  "eligible": true
+  "eligible": true,
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:565fd64640e534d8a46bbe7a",
+    "mapTags": [
+      "CANDIDATE_COMPILE_REVIEW_REQUIRED",
+      "MATERIAL_DISCREPANCY"
+    ],
+    "mapOutcome": "MAPPED_WITH_REVIEW",
+    "compilationStatus": "REVIEW_REQUIRED",
+    "verificationStatus": "MATERIAL_DISCREPANCY",
+    "note": "Canonical map currently tags this discoveryId with historical CANDIDATE_COMPILE_REVIEW_REQUIRED / MATERIAL_DISCREPANCY (outcome MAPPED_WITH_REVIEW). Offline pin remains valid. Later live CERTIFIED must clear production blockers honestly — map REVIEW is not pre-credit."
+  }
 }
