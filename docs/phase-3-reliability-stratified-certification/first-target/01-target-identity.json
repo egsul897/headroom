@@ -1,0 +1,47 @@
+{
+  "identity": {
+    "discoveryId": "discovery-candidate:565fd64640e534d8a46bbe7a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "normalizedSourceRef": "7.6(c)",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(c)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6"
+    ],
+    "structuralNodeIds": [
+      "structural-node:02422af6129452478a3b3e1d",
+      "structural-node:8091dea774bff74d708f9ddc"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:02422af6129452478a3b3e1d",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.6(c)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.6(c)",
+      "charStart": 75790,
+      "charEnd": 75981
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 191,
+    "operativeSourceSha256": "d7a57ccba9daf8fa6b170e33a48c137053126a3dbfc67670e6855f3a76bbf552",
+    "operativeSourceText": "(c)\nredemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate\namount equal to $25,000,000 since the Closing Date;\n",
+    "expected": {
+      "chars": 191,
+      "sha256": "d7a57ccba9daf8fa6b170e33a48c137053126a3dbfc67670e6855f3a76bbf552"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "BASKET",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_CERT_DESIGN_REVIEW_CHECKLIST",
+  "status": "DESIGN_DRAFT",
+  "baseSha": "9c5f57664f3416769cf29d72d6d1f35b572a97e5",
+  "owners": {
+    "Architect": {
+      "fields": [
+        "selectionContractAcceptable",
+        "firstTargetPinAcceptable",
+        "exclusionsComplete",
+        "noABSealReopen",
+        "noRelatedSeriesAC",
+        "noNS4"
+      ],
+      "decision": null,
+      "signedAt": null,
+      "notes": null
+    },
+    "Product": {
+      "fields": [
+        "strataCoverRoadmapStep2",
+        "interimBPostureRespected",
+        "firstTargetFamilyPreferenceOk"
+      ],
+      "decision": null,
+      "signedAt": null,
+      "notes": null
+    },
+    "COO": {
+      "fields": [
+        "costCeilingAcceptable",
+        "noLivePaidAuthInThisPacket",
+        "docsOnlyMergeOk"
+      ],
+      "decision": null,
+      "signedAt": null,
+      "notes": null
+    }
+  },
+  "aggregate": {
+    "allPassRequiredForDocsMerge": true,
+    "livePaidAuthorization": "NOT_IN_THIS_PACKET"
+  }
+}
