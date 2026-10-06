@@ -69,7 +69,7 @@ export function crossCutClaims(args: {
     if (id === "WITH_SHARED_CAPS") {
       out[id] = {
         claimed: true,
-        basis: `Sealed discovery role ${args.role} on ${args.discoveryId}; operative text exhibits shared-capacity structure.`,
+        basis: `Sealed discovery role ${args.role} === SHARED_CAP on ${args.discoveryId}; WITH_SHARED_CAPS derived from role only (not operative-text heuristics).`,
       };
     } else if (id === "WITHOUT_SHARED_CAPS") {
       out[id] = { claimed: true, basis: `Sealed discovery role ${args.role} is not SHARED_CAP; treated as standalone for this pin.` };

@@ -371,6 +371,9 @@ export function pinCandidate(args: PinCandidateArgs): PinCandidateResult {
       ...(interimBHit ? ["INTERIM_B_RELATED_SERIES_DETECTED"] : []),
       ...(governingReview ? ["GOVERNING_PROVISION_REVIEW_REQUIRED"] : []),
       ...(ob.hasUnresolvedOperativeEvidence ? ["UNRESOLVED_OPERATIVE_EVIDENCE"] : []),
+      ...(directMentions.some((m) => m.directlyReferencedBySection || m.definedTermMentionedInOperativeText)
+        ? ["PHASE2_REVIEW_REQUIRED_MENTIONED_IN_OPERATIVE"]
+        : []),
     ],
     crossCutClaims: crossCutClaims({
       crossCuts,

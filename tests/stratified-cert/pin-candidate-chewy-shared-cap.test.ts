@@ -65,6 +65,18 @@ describe("pinCandidate Chewy WITH_SHARED_CAPS", () => {
     expect(eligibility.crossCutClaims.WITH_SHARED_CAPS.claimed).toBe(true);
     expect(eligibility.canonicalMapHonesty.mapOutcome).toBe("NO_CHEWY_CANONICAL_MAP_YET");
     expect(eligibility.eligibilityBlockers).toEqual([]);
+    // Packet honesty: every eligible:false clause must surface in eligibilityBlockers
+    if (!eligibility.eligible) {
+      expect(eligibility.eligibilityBlockers.length).toBeGreaterThan(0);
+    }
+    const mentionHit = (eligibility.phase2ReviewRequiredProvisions ?? []).some(
+      (m: { directlyReferencedBySection?: boolean; definedTermMentionedInOperativeText?: boolean }) =>
+        m.directlyReferencedBySection || m.definedTermMentionedInOperativeText,
+    );
+    if (mentionHit) {
+      expect(eligibility.eligibilityBlockers).toContain("PHASE2_REVIEW_REQUIRED_MENTIONED_IN_OPERATIVE");
+      expect(eligibility.eligible).toBe(false);
+    }
 
     const preflight = JSON.parse(fs.readFileSync(path.join(outDir, "00-preflight.json"), "utf8"));
     expect(preflight.mode).toBe("DRY_RUN_OFFLINE_PIN");
