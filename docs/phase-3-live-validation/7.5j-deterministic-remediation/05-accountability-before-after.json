@@ -1,0 +1,106 @@
+{
+  "before": {
+    "counts": {
+      "inventoried": 12,
+      "material": 12,
+      "represented": 6,
+      "intentionallyNonComputational": 0,
+      "unsupported": 0,
+      "ambiguous": 0,
+      "missingFromComposition": 6,
+      "materialMissingFromComposition": 6,
+      "criticalMissingFromComposition": 5,
+      "materialQuantitativeValues": 7,
+      "materialQuantitativeValuesMissing": 3,
+      "uninventoriedValues": 0,
+      "unaccountedSource": 2,
+      "danglingLineageReferences": 0,
+      "canonicalizedLineageReferences": 12
+    },
+    "failureReasons": [
+      "SEMANTIC_INVENTORY_COVERAGE_GAP",
+      "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+      "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+    ],
+    "status": "REVIEW_REQUIRED",
+    "missing": [
+      [
+        "inv-item:da2ae7a8c96e1ad42210a94e",
+        "FORMULA_COMPONENT",
+        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
+      ],
+      [
+        "inv-item:cfa2c306e7039e94371d186b",
+        "FORMULA_COMPONENT",
+        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
+      ],
+      [
+        "inv-item:5e02c2d017c10fdbce5ccaf7",
+        "FORMULA_COMPONENT",
+        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
+      ],
+      [
+        "inv-item:8178744a0966f30b34bfd88d",
+        "THRESHOLD",
+        "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count"
+      ],
+      [
+        "inv-item:5ac2fef6fb6c8558c27ae9af",
+        "THRESHOLD",
+        "composition lineage claims this item (rules[0]) but $25,000,000 appears nowhere in the composed IR - a lineage claim without value correspondence does not count"
+      ],
+      [
+        "inv-item:83b1553ecb2a2291a82e3532",
+        "THRESHOLD",
+        "composition lineage claims this item (rules[0]) but 1.5% appears nowhere in the composed IR - a lineage claim without value correspondence does not count"
+      ]
+    ]
+  },
+  "after": {
+    "counts": {
+      "inventoried": 12,
+      "material": 12,
+      "represented": 9,
+      "intentionallyNonComputational": 0,
+      "unsupported": 0,
+      "ambiguous": 0,
+      "missingFromComposition": 3,
+      "materialMissingFromComposition": 3,
+      "criticalMissingFromComposition": 2,
+      "materialQuantitativeValues": 4,
+      "materialQuantitativeValuesMissing": 0,
+      "uninventoriedValues": 0,
+      "unaccountedSource": 0,
+      "danglingLineageReferences": 0,
+      "canonicalizedLineageReferences": 12
+    },
+    "failureReasons": [
+      "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+      "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+    ],
+    "status": "REVIEW_REQUIRED",
+    "missing": [
+      [
+        "inv-item:da2ae7a8c96e1ad42210a94e",
+        "FORMULA_COMPONENT",
+        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
+      ],
+      [
+        "inv-item:cfa2c306e7039e94371d186b",
+        "FORMULA_COMPONENT",
+        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
+      ],
+      [
+        "inv-item:5e02c2d017c10fdbce5ccaf7",
+        "FORMULA_COMPONENT",
+        "no lineage, no explicit disposition, and no deterministic correspondence in the composed IR"
+      ]
+    ],
+    "reasons": [
+      "3 material inventory item(s) MISSING_FROM_COMPOSITION (2 CRITICAL): inv-item:da2ae7a8c96e1ad42210a94e [FORMULA_COMPONENT], inv-item:cfa2c306e7039e94371d186b [FORMULA_COMPONENT], inv-item:5e02c2d017c10fdbce5ccaf7 [FORMULA_COMPONENT]",
+      "independent-pass support asymmetry: 2 CRITICAL/MATERIAL item(s) SINGLE_RUN and 6 CONFLICTED across passes pass-1+pass-2 - valid discovered source semantics with weaker support provenance; REVIEW_REQUIRED until independently resolved (verifier, human approval, another certified mechanism), never resolved by Pass B consuming them"
+    ],
+    "semanticallyComplete": false,
+    "supportReviewRequired": true
+  }
+}

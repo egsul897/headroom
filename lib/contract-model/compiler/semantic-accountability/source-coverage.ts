@@ -37,6 +37,14 @@
  * INDEPENDENCE: this file derives only from source text + accepted item
  * spans. It imports no IR, no composition, no verifier (enforced by
  * tests/contract-model/semantic-accountability-independence.test.ts).
+ *
+ * LEADING BARE ENUMERATOR HANDOFF (semantic-accountability.v7, defect A of
+ * the §7.5(j) live-exposed closure): an item's coverage credit is still
+ * clipped to the independent segment its span starts in (canary #3), with
+ * one positively-proven exception - when that first segment is nothing but
+ * a recognised enumerator on its own line, the credit advances to the ONE
+ * substantive segment that immediately follows it. See
+ * clipCreditToStartSegment.
  */
 import { scanQuantitativeValues } from "./quantitative";
 import type { QuantitativeValue, SourceContextRegion } from "./types";
@@ -662,15 +670,49 @@ export function independentSegmentBounds(text: string): number[] {
  * because there is no deterministic basis for believing it represents the second and third (mission §6 - false
  * review beats silent omission). The item keeps its full span for provenance; only the credit is clipped.
  */
-function clipCreditToStartSegment(charStart: number, charEnd: number, bounds: number[]): { from: number; to: number } {
+function clipCreditToStartSegment(charStart: number, charEnd: number, bounds: number[], text: string): { from: number; to: number; enumeratorHandoff: boolean } {
   let segEnd = charEnd;
-  for (const b of bounds) {
+  let nextEnd = charEnd;
+  for (let i = 0; i < bounds.length; i++) {
+    const b = bounds[i]!;
     if (b > charStart) {
       segEnd = b;
+      nextEnd = bounds.find((x) => x > segEnd) ?? text.length;
       break;
     }
   }
-  return { from: charStart, to: Math.min(charEnd, segEnd) };
+  // LEADING BARE ENUMERATOR HANDOFF (§7.5(j) live-exposed closure, defect A). A line break is an independent-segment
+  // boundary, so an item whose span starts on an enumerator that sits alone on its line ("(j)\n") used to spend its one
+  // credit segment on the enumerator and never reach the proposition it anchors. The exception is narrow and
+  // positively proven: the first segment is NOTHING but one recognised enumerator plus whitespace/punctuation (no
+  // letter, no digit, hence no value and no content word), the span continues directly into the immediately
+  // following segment, and that segment is substantive. Credit then advances through the formatting segment to that
+  // ONE substantive segment and stops at the next genuine boundary exactly as before. Nothing else hops: a bare
+  // number that is not an enumerator (a page number), a heading, a blank line followed by another formatting
+  // segment, or an enumerator carrying words of its own all keep the ordinary clip. The provenance span is untouched.
+  if (charEnd > segEnd && isBareEnumeratorFormatting(text.slice(charStart, segEnd)) && isSubstantiveSegment(text.slice(segEnd, nextEnd))) {
+    return { from: charStart, to: Math.min(charEnd, nextEnd), enumeratorHandoff: true };
+  }
+  return { from: charStart, to: Math.min(charEnd, segEnd), enumeratorHandoff: false };
+}
+
+/** True when `segment` is exactly one recognised enumerator ("(j)", "(iv)", "(12)", "3.") plus whitespace/punctuation - no letter or digit in any script survives stripping it. */
+export function isBareEnumeratorFormatting(segment: string): boolean {
+  const m = ENUMERATOR_AT_START.exec(segment);
+  if (!m) return false;
+  return !/[\p{L}\p{N}]/u.test(segment.slice(m[0].length));
+}
+
+/**
+ * True when `segment` is substantive BY THE DETECTOR'S OWN VERDICT: it carries a letter (any script) and, judged as an
+ * unanchored fragment, it would be UNACCOUNTED_SOURCE - i.e. not bare enumerator formatting, not punctuation, not page or
+ * table-of-contents furniture, not a bare citation, not a quoted label, not a caption/heading, not closed-class glue.
+ * A lone number ("12") and an ALL-CAPS caption therefore never receive the handoff: the first is pagination or an
+ * unexplained figure that must stay reviewable on its own, the second is a heading.
+ */
+function isSubstantiveSegment(segment: string): boolean {
+  if (!/\p{L}/u.test(segment) || isBareEnumeratorFormatting(segment)) return false;
+  return classifyUnaccountedFragment(segment, scanQuantitativeValues(segment)).disposition === "UNACCOUNTED_SOURCE";
 }
 
 /**
@@ -744,7 +786,7 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
       if (s.regionId !== region.regionId || !accountsForSource(s.materiality)) continue;
       // Span overlap is NOT semantic coverage (canary #3). Credit is clipped to the independent segment the
       // span starts in, so an overbroad anchor cannot discharge propositions it does not represent.
-      const { from, to } = clipCreditToStartSegment(Math.max(0, s.charStart), Math.min(text.length, s.charEnd), bounds);
+      const { from, to } = clipCreditToStartSegment(Math.max(0, s.charStart), Math.min(text.length, s.charEnd), bounds, text);
       if (to > from) mask.fill(1, from, to);
     }
 

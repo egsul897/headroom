@@ -225,7 +225,7 @@ describe("projection, identity and determinism", () => {
     expect(text).toContain('"status":"SOURCE_BOUND_ELIDED"');
     expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v4");
     expect(SEMANTIC_VERIFIER_ALGORITHM_VERSION).toBe("phase-3c-semantic-verifier.v5");
-    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v9");
+    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v10");
     expect(PROVENANCE_SOURCE_BINDING_VERSION).toBe("provenance-source-binding.v2");
     expect(QUALITATIVE_GROUNDING_VERSION).toBe("qualitative-grounding.v4");
   });

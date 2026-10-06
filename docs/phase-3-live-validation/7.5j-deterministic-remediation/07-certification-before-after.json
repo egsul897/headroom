@@ -1,0 +1,33 @@
+{
+  "before": {
+    "status": "REVIEW_REQUIRED",
+    "blockers": [
+      [
+        "COMPILATION_NOT_COMPLETED",
+        "compilation REVIEW_REQUIRED: SEMANTIC_INVENTORY_COVERAGE_GAP, INVENTORY_ITEM_MISSING_FROM_COMPOSITION, SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+      ],
+      [
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "1 material source item(s) are not accounted for by the IR"
+      ],
+      [
+        "UNIT_SUFFICIENCY_INCOMPLETE",
+        "executable unit(s) are not COMPLETE"
+      ]
+    ]
+  },
+  "after": {
+    "status": "REVIEW_REQUIRED",
+    "blockers": [
+      [
+        "COMPILATION_NOT_COMPLETED",
+        "compilation REVIEW_REQUIRED: INVENTORY_ITEM_MISSING_FROM_COMPOSITION, SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+      ],
+      [
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "1 material source item(s) are not accounted for by the IR"
+      ]
+    ],
+    "warnings": []
+  }
+}

@@ -18,7 +18,11 @@
  */
 import type { ContractAction } from "../../types";
 
-export const CANONICAL_ACTION_ONTOLOGY_VERSION = "canonical-action-ontology.v1";
+// v2 (§7.5(j) live-exposed closure, defect C): object-family regexes carry the case-insensitive flag and every regex this
+// module reconstructs from another regex's `source` preserves that regex's own flags (`withFlags`). v1 rebuilt the object
+// regexes flag-less, so a capitalised object noun as drafted ("Dispose of any of its Property") was not an ASSET object,
+// the scan skipped the first verb cluster and recorded a LATER cluster as the governing act - a false source act.
+export const CANONICAL_ACTION_ONTOLOGY_VERSION = "canonical-action-ontology.v2";
 
 export type ActionCoverage = "COVERED" | "MIXED_CATEGORIES" | "ONTOLOGY_GAP" | "NO_ACTION_FOUND";
 export type ActionCompatibility = "COMPATIBLE" | "INCOMPATIBLE" | "UNDETERMINED";
@@ -56,24 +60,35 @@ const VERB_GROUPS: readonly { group: string; re: RegExp }[] = [
 ];
 
 const OBJECT_FAMILIES: readonly ObjectFamily[] = [
-  { family: "LIEN", re: /\b(?:Liens?|security interests?|mortgages?|pledges?|charges?|encumbrances?)\b/, byVerbGroup: [{ group: "INCUR", action: "CREATE_LIEN" }, { group: "GRANT_SECURITY", action: "CREATE_LIEN" }], defaultAction: "CREATE_LIEN" },
-  { family: "DEBT", re: /\b(?:Indebtedness|Debt|Guarantee Obligations?|obligations? for borrowed money|borrowed money)\b/, byVerbGroup: [{ group: "GUARANTEE", action: "GUARANTEE_DEBT" }, { group: "PREPAY", action: "PREPAY_DEBT" }, { group: "INCUR", action: "INCUR_DEBT" }], defaultAction: null },
-  { family: "INVESTMENT", re: /\b(?:Investments?|loans? or advances?|Acquisitions?)\b/, byVerbGroup: [{ group: "MAKE", action: "MAKE_INVESTMENT" }, { group: "INCUR", action: "MAKE_INVESTMENT" }], defaultAction: "MAKE_INVESTMENT" },
-  { family: "RESTRICTED_PAYMENT", re: /\b(?:dividends?|Restricted Payments?|distributions?)\b/, byVerbGroup: [{ group: "PAY", action: "PAY_DIVIDEND" }, { group: "MAKE", action: "PAY_DIVIDEND" }], defaultAction: "PAY_DIVIDEND" },
-  { family: "EQUITY_REPURCHASE", re: /\b(?:Capital Stock|Equity Interests?|shares)\b/, byVerbGroup: [{ group: "PREPAY", action: "REPURCHASE_EQUITY" }], defaultAction: null },
-  { family: "ASSET", re: /\b(?:assets?|propert(?:y|ies)|Dispositions?)\b/, byVerbGroup: [{ group: "DISPOSE", action: "SELL_ASSET" }], defaultAction: null },
-  { family: "AFFILIATE_TRANSACTION", re: /\b(?:transactions? (?:with|involving) (?:any )?(?:of its )?Affiliates?)\b/, byVerbGroup: [{ group: "ENTER", action: "ENTER_AFFILIATE_TRANSACTION" }], defaultAction: "ENTER_AFFILIATE_TRANSACTION" },
-  { family: "UNRESTRICTED_DESIGNATION", re: /\b(?:as an? Unrestricted Subsidiary|Unrestricted Subsidiar(?:y|ies))\b/, byVerbGroup: [{ group: "DESIGNATE", action: "DESIGNATE_UNRESTRICTED_SUBSIDIARY" }], defaultAction: null },
-  { family: "DOCUMENT", re: /\b(?:agreements?|documents?|certificate of incorporation|organizational documents?)\b/, byVerbGroup: [{ group: "AMEND", action: "AMEND_DOCUMENT" }], defaultAction: null },
+  { family: "LIEN", re: /\b(?:Liens?|security interests?|mortgages?|pledges?|charges?|encumbrances?)\b/i, byVerbGroup: [{ group: "INCUR", action: "CREATE_LIEN" }, { group: "GRANT_SECURITY", action: "CREATE_LIEN" }], defaultAction: "CREATE_LIEN" },
+  { family: "DEBT", re: /\b(?:Indebtedness|Debt|Guarantee Obligations?|obligations? for borrowed money|borrowed money)\b/i, byVerbGroup: [{ group: "GUARANTEE", action: "GUARANTEE_DEBT" }, { group: "PREPAY", action: "PREPAY_DEBT" }, { group: "INCUR", action: "INCUR_DEBT" }], defaultAction: null },
+  { family: "INVESTMENT", re: /\b(?:Investments?|loans? or advances?|Acquisitions?)\b/i, byVerbGroup: [{ group: "MAKE", action: "MAKE_INVESTMENT" }, { group: "INCUR", action: "MAKE_INVESTMENT" }], defaultAction: "MAKE_INVESTMENT" },
+  { family: "RESTRICTED_PAYMENT", re: /\b(?:dividends?|Restricted Payments?|distributions?)\b/i, byVerbGroup: [{ group: "PAY", action: "PAY_DIVIDEND" }, { group: "MAKE", action: "PAY_DIVIDEND" }], defaultAction: "PAY_DIVIDEND" },
+  { family: "EQUITY_REPURCHASE", re: /\b(?:Capital Stock|Equity Interests?|shares)\b/i, byVerbGroup: [{ group: "PREPAY", action: "REPURCHASE_EQUITY" }], defaultAction: null },
+  { family: "ASSET", re: /\b(?:assets?|propert(?:y|ies)|Dispositions?)\b/i, byVerbGroup: [{ group: "DISPOSE", action: "SELL_ASSET" }], defaultAction: null },
+  { family: "AFFILIATE_TRANSACTION", re: /\b(?:transactions? (?:with|involving) (?:any )?(?:of its )?Affiliates?)\b/i, byVerbGroup: [{ group: "ENTER", action: "ENTER_AFFILIATE_TRANSACTION" }], defaultAction: "ENTER_AFFILIATE_TRANSACTION" },
+  { family: "UNRESTRICTED_DESIGNATION", re: /\b(?:as an? Unrestricted Subsidiary|Unrestricted Subsidiar(?:y|ies))\b/i, byVerbGroup: [{ group: "DESIGNATE", action: "DESIGNATE_UNRESTRICTED_SUBSIDIARY" }], defaultAction: null },
+  { family: "DOCUMENT", re: /\b(?:agreements?|documents?|certificate of incorporation|organizational documents?)\b/i, byVerbGroup: [{ group: "AMEND", action: "AMEND_DOCUMENT" }], defaultAction: null },
 ];
 
 const MERGE_ONLY = /\b(?:merge|consolidate|amalgamate)\b/i;
-const VERB_UNION = new RegExp(VERB_GROUPS.map((g) => `(?:${g.re.source})`).join("|"), "gi");
+
+/**
+ * Rebuilds a regex from another regex's source WITHOUT dropping its flags (defect C). `extra` adds flags the call site
+ * needs (e.g. "g" for a scan); the original's own flags (notably "i") are always kept, and a fresh object is returned so
+ * no `lastIndex` state leaks between global scans. `source` may be wrapped (anchored / alternated) by the caller.
+ */
+function withFlags(source: string, like: RegExp | readonly RegExp[], extra = ""): RegExp {
+  const flags = new Set<string>(extra.split(""));
+  for (const r of Array.isArray(like) ? like : [like as RegExp]) for (const f of r.flags) if (f !== "g" && f !== "y") flags.add(f);
+  return new RegExp(source, [...flags].sort().join(""));
+}
+const VERB_UNION = withFlags(VERB_GROUPS.map((g) => `(?:${g.re.source})`).join("|"), VERB_GROUPS.map((g) => g.re), "g");
 const CONNECTOR = /^(?:\s*(?:,|and|or|and\/or|nor|,\s*or|,\s*and)\s*)+$/;
 const DETERMINERS = /^\s*(?:,\s*)?(?:any|all|other|additional|such|the|its|their|an?|of|to|in|on)\s+/i;
 
 function groupOf(verb: string): string | null {
-  for (const g of VERB_GROUPS) if (new RegExp(`^(?:${g.re.source})$`, "i").test(verb)) return g.group;
+  for (const g of VERB_GROUPS) if (withFlags(`^(?:${g.re.source})$`, g.re).test(verb)) return g.group;
   return null;
 }
 
@@ -85,7 +100,7 @@ const none = (detail: string): SourceActionClassification => ({ version: CANONIC
  * object is reported as NO_ACTION_FOUND unless it is a merge/consolidation (objectless act).
  */
 export function classifySourceAction(text: string): SourceActionClassification {
-  const re = new RegExp(VERB_UNION.source, "gi");
+  const re = withFlags(VERB_UNION.source, VERB_UNION, "g");
   let m: RegExpExecArray | null;
   const consumed = new Set<number>();
   while ((m = re.exec(text)) !== null) {
@@ -98,7 +113,7 @@ export function classifySourceAction(text: string): SourceActionClassification {
       const rest = text.slice(cursor, cursor + 24);
       const conn = rest.match(/^(?:\s*(?:,|and|or|and\/or|nor)\s*)+/);
       if (!conn || !CONNECTOR.test(conn[0])) break;
-      const next = new RegExp(`^(?:${VERB_GROUPS.map((g) => g.re.source).join("|")})`, "i").exec(text.slice(cursor + conn[0].length, cursor + conn[0].length + 40));
+      const next = withFlags(`^(?:${VERB_GROUPS.map((g) => g.re.source).join("|")})`, VERB_GROUPS.map((g) => g.re)).exec(text.slice(cursor + conn[0].length, cursor + conn[0].length + 40));
       if (!next) break;
       verbs.push(next[0]);
       consumed.add(cursor + conn[0].length);
@@ -111,7 +126,7 @@ export function classifySourceAction(text: string): SourceActionClassification {
     window = window.slice(objOffset);
     let best: { fam: ObjectFamily; m: RegExpExecArray } | null = null;
     for (const fam of OBJECT_FAMILIES) {
-      const om = new RegExp(fam.re.source).exec(window);
+      const om = withFlags(fam.re.source, fam.re).exec(window);
       if (om && om.index <= 45 && (!best || om.index < best.m.index)) best = { fam, m: om };
     }
     if (!best) {

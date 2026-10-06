@@ -408,7 +408,21 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
       const slotMetricType = expected && (METRIC_VALUE_TYPES as readonly string[]).includes(expected) ? (expected as "MONEY" | "RATIO" | "NUMBER") : null;
       const valueType: "MONEY" | "RATIO" | "NUMBER" = explicitMetricType ?? slotMetricType ?? "MONEY";
       if (wire.valueType && !explicitMetricType) warn(ctx, `METRIC_REFERENCE "${wire.metricName}" had unrecognized valueType "${wire.valueType}" - ${slotMetricType ? `typed ${slotMetricType} from its slot` : "defaulted to MONEY"}`);
-      return withExpressionId({ kind: "METRIC_REFERENCE", type: valueType, metricName: wire.metricName, companyId: ctx.companyId, instrumentKey: ctx.instrumentKey, resolvedDefinitionId: null });
+      const metric = withExpressionId({ kind: "METRIC_REFERENCE", type: valueType, metricName: wire.metricName, companyId: ctx.companyId, instrumentKey: ctx.instrumentKey, resolvedDefinitionId: null });
+      // METRIC_REFERENCE AS_OF LIFT (compiler v10, defect D of the §7.5(j) live-exposed closure). The generic wire contract
+      // accepts `asOfDate` on every node, and a model that dates a metric in place ("Consolidated Total Assets (measured
+      // on the date of such Disposition)") writes it HERE rather than wrapping the reference in AS_OF. The IR metric
+      // reference has no such field, so v9 dropped the selector silently - a source timing qualifier vanished from the
+      // authoritative structure with no diagnostic. A non-empty selector is now lifted deterministically into the
+      // existing first-class AS_OF shape (value = this metric, asOfDate = the trimmed selector, typed from the metric),
+      // recorded as a DIAGNOSTIC-class event: lossless, so never a sufficiency penalty. A whitespace-only selector is
+      // not a selector (nothing is invented); an explicit wire AS_OF still takes its own path and is never double-wrapped.
+      const liftedAsOf = typeof wire.asOfDate === "string" && wire.asOfDate.trim().length > 0 ? wire.asOfDate.trim() : null;
+      if (liftedAsOf !== null) {
+        diag(ctx, `METRIC_REFERENCE_AS_OF_LIFTED: ${ctx.scopePath} METRIC_REFERENCE "${wire.metricName}" carried asOfDate ${JSON.stringify(liftedAsOf)} on the reference itself; lifted deterministically into AS_OF(metric, asOfDate) - the source's measurement-date selector is preserved verbatim as structure, not dropped`);
+        return buildComposite(ctx, "AS_OF", { value: metric, asOfDate: liftedAsOf }, valueType, wire, prov, "lifted AS_OF value type could not be determined");
+      }
+      return metric;
     }
     case "DEFINED_TERM_REFERENCE": {
       if (!wire.termName) return unsupportedNode(ctx, "DEFINED_TERM_REFERENCE node missing termName", wire, prov);

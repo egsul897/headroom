@@ -1,0 +1,118 @@
+{
+  "before": {
+    "frozenOntologyVersion": "canonical-action-ontology.v1",
+    "actionEvidence": [
+      {
+        "regionId": "governing-1",
+        "sectionRef": "7.5",
+        "role": "PARENT_SCOPE",
+        "classification": {
+          "version": "canonical-action-ontology.v1",
+          "phrase": "issue or sell any shares",
+          "verbs": [
+            "issue",
+            "sell"
+          ],
+          "object": "shares",
+          "objectFamily": "EQUITY_REPURCHASE",
+          "canonicalAction": null,
+          "categories": [],
+          "coverage": "ONTOLOGY_GAP",
+          "detail": "verb(s) \"issue\", \"sell\" on EQUITY_REPURCHASE are covered by no canonical category"
+        }
+      }
+    ],
+    "inheritedAction": null,
+    "notes": [
+      "governing region governing-1 (7.5) states an act \"issue or sell any shares\" the canonical action ontology does not cover as one category (ONTOLOGY_GAP); inherited action not established"
+    ],
+    "ruleInheritedAction": {
+      "attribute": "action",
+      "sourceAuthority": "PARENT_SCOPE",
+      "sourceSectionRef": "7.5",
+      "evidence": "issue or sell any shares",
+      "canonicalValue": null,
+      "compatibility": "INCOMPATIBLE",
+      "sourceSpan": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+        "charStart": 69668,
+        "charEnd": 69961,
+        "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+      },
+      "ancestorDistance": 1
+    },
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+      "deterministic post-processing: 1 limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL",
+      "covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "ACTION_INCONSISTENT_WITH_SOURCE_ACT: action SELL_ASSET - the source act \"issue or sell any shares\" (ONTOLOGY_GAP: uncovered) does not fall in SELL_ASSET (PARENT_SCOPE 7.5); the canonical action is not re-mapped by guess"
+    ]
+  },
+  "after": {
+    "ontologyVersion": "canonical-action-ontology.v2",
+    "leadInClassification": {
+      "version": "canonical-action-ontology.v2",
+      "phrase": "Dispose of any of its Property",
+      "verbs": [
+        "Dispose of"
+      ],
+      "object": "Property",
+      "objectFamily": "ASSET",
+      "canonicalAction": "SELL_ASSET",
+      "categories": [
+        "SELL_ASSET"
+      ],
+      "coverage": "COVERED",
+      "detail": "1 source verb(s) on ASSET fall in the canonical category SELL_ASSET"
+    },
+    "compatibilityWithSellAsset": {
+      "compatibility": "COMPATIBLE",
+      "detail": "the source act \"Dispose of any of its Property\" falls in SELL_ASSET"
+    },
+    "governingActionEvidence": [
+      {
+        "regionId": "governing-1",
+        "sectionRef": "7.5",
+        "role": "PARENT_SCOPE",
+        "classification": {
+          "version": "canonical-action-ontology.v2",
+          "phrase": "Dispose of any of its Property",
+          "verbs": [
+            "Dispose of"
+          ],
+          "object": "Property",
+          "objectFamily": "ASSET",
+          "canonicalAction": "SELL_ASSET",
+          "categories": [
+            "SELL_ASSET"
+          ],
+          "coverage": "COVERED",
+          "detail": "1 source verb(s) on ASSET fall in the canonical category SELL_ASSET"
+        }
+      }
+    ],
+    "inheritedAction": "SELL_ASSET",
+    "notes": [],
+    "ruleInheritedAction": {
+      "attribute": "action",
+      "sourceAuthority": "PARENT_SCOPE",
+      "sourceSectionRef": "7.5",
+      "evidence": "Dispose of any of its Property",
+      "canonicalValue": "SELL_ASSET",
+      "compatibility": "COMPATIBLE",
+      "sourceSpan": {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "structuralNodeId": "structural-node:2e794887bf69b231906465c8",
+        "charStart": 69668,
+        "charEnd": 69961,
+        "sha256": "e41e0b28687fa5d05afbe840d0cdf7c8b0371f211bf2ac0b68cb7697a503e147"
+      },
+      "ancestorDistance": 1
+    },
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+      "covenantFamily \"LIMITATIONS_ON_SALE_OF_ASSETS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)"
+    ]
+  }
+}
