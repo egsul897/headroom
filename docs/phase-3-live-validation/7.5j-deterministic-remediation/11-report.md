@@ -22,8 +22,8 @@ zero findings; only deterministic layers are exercised.
   da2ae7a8…, cfa2c306…, 5e02c2d0… are no longer MISSING_FROM_COMPOSITION: Pass C maps the model's non-vocabulary
   `CONSUMED_IN_EXPRESSION` dispositions to UNSUPPORTED under the composition contract (still not structural IR —
   provenance only; see `docs/phase-3-reliability-composition-gaps/01-non-vocabulary-disposition-contract.md`)
-- related-series aggregation remains NOT_STRUCTURALLY_REPRESENTED (provenance and lineage only); IR decision deferred
-  (`docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md`)
+- related-series aggregation: EXPLICIT_UNSUPPORTED_INTERIM_B (Pass C refuses false REPRESENTED via lineage;
+  `docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md` — additive IR A/C still deferred)
 - the deterministic (j)/(x)/(y) enumeration signal still fires; it keeps its current disposition (NON_MATERIAL once the
   independent review does not confirm it) and still drives UNACCOUNTED_MATERIAL_SOURCE
 - candidate certification stays REVIEW_REQUIRED: COMPILATION_NOT_COMPLETED + UNACCOUNTED_MATERIAL_SOURCE; only the false

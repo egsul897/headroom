@@ -87,6 +87,17 @@ describe("the replay does not overclaim: genuine frozen-output limitations remai
     expect(r.accountability.after.status).toBe("REVIEW_REQUIRED");
     expect(r.accountability.after.semanticallyComplete).toBe(false);
   });
+  it("related-series aggregation items are EXPLICIT_UNSUPPORTED_INTERIM_B (not false REPRESENTED via lineage)", () => {
+    expect(r.residual.relatedSeries.status).toBe("EXPLICIT_UNSUPPORTED_INTERIM_B");
+    expect(r.residual.relatedSeries.items).toEqual([
+      "inv-item:0e5329437d345c7c5674b0b7",
+      "inv-item:c262463526204a96714cd8f6",
+      "inv-item:2bb0c84da8ad713ef2667e0f",
+    ]);
+    expect(r.residual.relatedSeries.dispositions).toEqual(["UNSUPPORTED", "UNSUPPORTED", "UNSUPPORTED"]);
+    expect(r.residual.relatedSeries.artifact).toBe("docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md");
+    expect(r.accountability.after.counts.materialMissingFromComposition).toBe(0);
+  });
   it("the two non-cash valuation mechanics are UNSUPPORTED via the model's non-vocabulary CONSUMED_IN_EXPRESSION dispositions (composition contract)", () => {
     expect(r.residual.notesDebtSecuritiesValuation.status).toBe("UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION");
     expect(r.residual.notesDebtSecuritiesValuation.modelDisposition).toBe("CONSUMED_IN_EXPRESSION");

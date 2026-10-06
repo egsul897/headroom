@@ -14,6 +14,7 @@ import { InMemorySemanticCompilationCache } from "../../../lib/contract-model/co
 import type { SemanticCaller, SemanticCallerResult } from "../../../lib/contract-model/compiler/semantic/caller";
 import type { SemanticCompilerInput } from "../../../lib/contract-model/compiler/semantic/types";
 import { rollupAgreementSemanticStatus } from "../../../lib/contract-model/compiler/semantic-accountability/rollup";
+import { isRelatedSeriesAggregationClaim, reconcileInventoryWithComposition } from "../../../lib/contract-model/compiler/semantic-accountability/reconciliation";
 import type { AgreementUnitInput, SemanticAccountabilityResult } from "../../../lib/contract-model/compiler/semantic-accountability/types";
 import { emptyContextBundle, testCompilerInput } from "../semantic-compiler/test-helpers";
 import { COMPLETE_SCENARIOS, CORPUS, M, rule, submission } from "./corpus";
@@ -266,6 +267,42 @@ describe("semantic accountability - injected omissions (I41-I44) derived from ev
     });
     const vocabAcc = reconcileScenario(b, normalizeScenarioComposition(b, vocab));
     expect(vocabAcc.items.find((i) => i.inventoryItemId === b.idOf("b"))!.disposition).toBe("INTENTIONALLY_NON_COMPUTATIONAL");
+  });
+
+  it("related-series interim B: lineage alone cannot REPRESENT a series-of-related claim (explicit UNSUPPORTED)", async () => {
+    const b = await get("I6");
+    // Control: lead is on lineage, no series language → REPRESENTED
+    const wire = submission({
+      rules: [rule("r1", "7.01", { capacityExpression: M(25_000_000, [b.idOf("a")]) }, [b.idOf("lead")])],
+    });
+    const control = reconcileScenario(b, normalizeScenarioComposition(b, wire));
+    expect(control.items.find((i) => i.inventoryItemId === b.idOf("lead"))!.disposition).toBe("REPRESENTED");
+
+    // Same lineage, but the inventory item carries a related-series aggregation claim → UNSUPPORTED (interim B)
+    const seriesInventory = {
+      ...b.inventory,
+      items: b.inventory.items.map((it) =>
+        it.inventoryItemId === b.idOf("lead")
+          ? { ...it, proposition: "Includes series of related Dispositions", semanticRole: "ALTERNATIVE" as const }
+          : it,
+      ),
+    };
+    expect(isRelatedSeriesAggregationClaim(seriesInventory.items.find((i) => i.inventoryItemId === b.idOf("lead"))!)).toBe(true);
+    const series = reconcileInventoryWithComposition({
+      inventory: seriesInventory,
+      composition: normalizeScenarioComposition(b, wire),
+      dispositions: [],
+      sourceContextState: b.sourceContext.state,
+    });
+    const item = series.items.find((i) => i.inventoryItemId === b.idOf("lead"))!;
+    expect(item.disposition).toBe("UNSUPPORTED");
+    expect(item.reason).toMatch(/interim posture B/);
+    expect(item.reason).toMatch(/series of related/);
+    // Other I6 material items may still be MISSING when only lead is on lineage — that is orthogonal.
+    // Interim B's contract: the series claim itself is never silent MISSING and never false REPRESENTED.
+    expect(item.disposition).not.toBe("MISSING_FROM_COMPOSITION");
+    expect(item.disposition).not.toBe("REPRESENTED");
+    expect(series.counts.unsupported).toBeGreaterThanOrEqual(1);
   });
 
   it("I10/I29/I32/I40: an unresolvable cross-unit dependsOn is preserved as IRRule.unresolvedDependencies (never dropped) and the inventory item is AMBIGUOUS (never REPRESENTED, never MISSING)", async () => {

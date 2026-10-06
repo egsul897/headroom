@@ -26,12 +26,12 @@ In `lib/contract-model/compiler/semantic-accountability/reconciliation.ts`:
 
 Effect on the frozen §7.5(j) offline replay: those three items become
 `UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION`; `INVENTORY_ITEM_MISSING_FROM_COMPOSITION` drops;
-`SEMANTIC_SUPPORT_REVIEW_REQUIRED` and related-series residual remain (gap-localRef closed in 03).
+`SEMANTIC_SUPPORT_REVIEW_REQUIRED` remains (gap-localRef closed in 03; related-series interim B in 02).
 
 ## Out of scope (this chunk)
 
-- Inventing IR for related-series aggregation (needs a design decision — see
-  `02-related-series-aggregation-decision.md`).
+- Inventing IR for related-series aggregation (interim B adopted in
+  `02-related-series-aggregation-decision.md`; additive A/C still deferred).
 - Pass-A gap-call `localRef` reliability → closed in `03-gap-call-localref-reliability.md`.
 - Prompt / wire-schema vocabulary tightening (optional follow-up; Pass C now fail-soft honestly).
 - Paid / live §7.5(j) re-run.

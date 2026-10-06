@@ -25,7 +25,7 @@ import { SEMANTIC_COMPILER_ALGORITHM_VERSION, type SemanticCompilationResult, ty
 import { computeSourceCoverage } from "../../lib/contract-model/compiler/semantic-accountability/source-coverage";
 import { canonicalizeFrozenQuantitativeValue } from "../../lib/contract-model/compiler/semantic-accountability/inventory";
 import { quantitativeValuesEquivalent } from "../../lib/contract-model/compiler/semantic-accountability/quantitative";
-import { reconcileInventoryWithComposition } from "../../lib/contract-model/compiler/semantic-accountability/reconciliation";
+import { isRelatedSeriesAggregationClaim, reconcileInventoryWithComposition } from "../../lib/contract-model/compiler/semantic-accountability/reconciliation";
 import { SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, type FrozenSemanticInventory, type QuantitativeValue, type SourceContextRegion } from "../../lib/contract-model/compiler/semantic-accountability/types";
 import { verifyCompiledCandidate } from "../../lib/contract-model/compiler/semantic-verification/verify";
 import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "../../lib/contract-model/compiler/semantic-verification/projection";
@@ -165,7 +165,20 @@ export async function replayFrozen75j() {
     return !!it && it.disposition === "UNSUPPORTED" && typeof it.modelDisposition === "string" && it.modelDisposition.length > 0 && !/^(INTENTIONALLY_NON_COMPUTATIONAL|UNSUPPORTED|AMBIGUOUS|REPRESENTED|MISSING_FROM_COMPOSITION)$/i.test(it.modelDisposition.trim().replace(/[\s-]+/g, "_"));
   };
   const residual = {
-    relatedSeries: { status: "NOT_STRUCTURALLY_REPRESENTED", evidence: "the related-series alternative lives in inventory items c262463526204a96714cd8f6 / 2bb0c84da8ad713ef2667e0f (consumed on the rule) and in the bound condition/gate excerpts; the IR carries no structural element aggregating a related series for the threshold test" },
+    relatedSeries: (() => {
+      // Residual honesty: list EVERY inventory item the detector matches (proposition ∪ excerpt),
+      // including the parent TRIGGER whose excerpt alone carries "series of related …".
+      const seriesIds = inventoryAfter.items.filter((it) => isRelatedSeriesAggregationClaim(it)).map((it) => it.inventoryItemId);
+      const dispositions = seriesIds.map((id) => itemOf(id)?.disposition ?? null);
+      const allUnsupported = dispositions.length > 0 && dispositions.every((d) => d === "UNSUPPORTED");
+      return {
+        status: allUnsupported ? "EXPLICIT_UNSUPPORTED_INTERIM_B" : dispositions.every((d) => d === "REPRESENTED") ? "NOT_STRUCTURALLY_REPRESENTED (lineage still credited — investigate)" : "CHANGED - investigate",
+        items: seriesIds,
+        dispositions,
+        evidence: "Pass C interim posture B: series-of-related claims are UNSUPPORTED when IR lacks structural series aggregation",
+        artifact: "docs/phase-3-reliability-composition-gaps/02-related-series-aggregation-decision.md",
+      };
+    })(),
     notesDebtSecuritiesValuation: {
       status: nonVocabUnsupported("inv-item:da2ae7a8c96e1ad42210a94e") ? "UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION" : missingAfter.some((i) => i.inventoryItemId === "inv-item:da2ae7a8c96e1ad42210a94e") ? "MISSING_FROM_COMPOSITION (unchanged)" : "CHANGED - investigate",
       item: "inv-item:da2ae7a8c96e1ad42210a94e",

@@ -8,7 +8,7 @@ for product direction; that document's audit sections stay as history.
 | layer | state | evidence |
 |---|---|---|
 | document / package intelligence (Phase 2A–2G) | built | structural index, discovery, package graph, context retrieval, independent coverage audit, amendment precedence and operative state |
-| semantic rulebook (Phase 3) | built; **reliability gate open** (related-series decision / stratified certification; composition-contract + localRef CLOSED_OFFLINE); §7.5(j) trust-boundary defects A/B **SEALED** at `semantic-accountability.v8` | certified compile → verify → certify path; source authority; provenance binding v2 (strict); live §7.2(c) and §7.5(j) both historically `SEMANTIC_FAILURE`; §7.5(j) deterministic false failures closed offline (genuine residuals remain, candidate `REVIEW_REQUIRED`); pre-4E readiness condition 7 unmet |
+| semantic rulebook (Phase 3) | built; **reliability gate open** (stratified certification; composition-contract + localRef + related-series interim B CLOSED_OFFLINE); §7.5(j) trust-boundary defects A/B **SEALED** at `semantic-accountability.v8` | certified compile → verify → certify path; source authority; provenance binding v2 (strict); live §7.2(c) and §7.5(j) both historically `SEMANTIC_FAILURE`; §7.5(j) deterministic false failures closed offline (genuine residuals remain, candidate `REVIEW_REQUIRED`); pre-4E readiness condition 7 unmet |
 | provenance / source authority / certification | built | `docs/canonical-covenant-map/12–14`, candidate + package certification |
 | Phase 4A evaluation | built | exact arithmetic, verification gate |
 | Phase 4B snapshot / input identity | built (in-memory) | approved / superseded snapshots, exact identity, manifest |
@@ -21,7 +21,7 @@ for product direction; that document's audit sections stay as history.
 | step | work | depends on | N-gate |
 |---|---|---|---|
 | **R0** | bounded legacy-safety fix: remove carry-forward in Feeds approval and onboarding promotion; replace Ledger hard delete with supersession (C5, C6, C10 partial) | — (any time; before real customer data enters legacy paths) | N7 |
-| **1** | **Phase 3 reliability gate** (current after A/B seal + non-vocab disposition contract): IR decision on related-series aggregation; then stratified certification. (gap-call localRef CLOSED_OFFLINE at wire.v3 / prompt.v7.) (Enumerator blank-line handoff + item-span quantitative authority SEALED at v8; non-vocabulary inventoryDisposition → UNSUPPORTED closed offline; do not reopen sealed A/B.) | — | N1 |
+| **1** | **Phase 3 reliability gate** (current after A/B seal + non-vocab disposition contract): Stratified certification. (related-series interim B = explicit UNSUPPORTED; gap-call localRef CLOSED_OFFLINE at wire.v3 / prompt.v7; additive series IR A/C deferred.) (Enumerator blank-line handoff + item-span quantitative authority SEALED at v8; non-vocabulary inventoryDisposition → UNSUPPORTED closed offline; do not reopen sealed A/B.) | — | N1 |
 | **2** | certify a **stratified real provision set** (debt, liens, RP, investments, asset sales, financial covenants; with and without shared caps / builders / reclassification) | 1 | N1 |
 | **3** | freeze the semantic foundation except true defects; unblocks Phase 4E readiness condition 7 | 2 | N1 |
 | **4** | **NS-4 certificate → 4B snapshot adapter + persisted approved-snapshot store** (next gate, `07`; **not implemented in this seal** — docs-only precision here) | 4B contract only — parallel-safe with 1–3 | N2, N7 |
