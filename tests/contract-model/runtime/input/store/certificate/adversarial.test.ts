@@ -10,7 +10,7 @@ import {
   approveCertificateProposal,
   proposeFromCertificate,
 } from "@/lib/contract-model/runtime/input/store";
-import type { CertificateFactProposal, SyntheticCertificate } from "@/lib/contract-model/runtime/input/store/certificate";
+import type { CertificateFactProposal, LedgerProposal, SyntheticCertificate } from "@/lib/contract-model/runtime/input/store/certificate";
 import {
   CHEWY_FORM_INSPIRED_CERT,
   INVENTED_TABULAR_CERT,
@@ -247,5 +247,61 @@ describe("adversarial: LEDGER_USAGE must not enter snapshot facts", () => {
     const r = proposeFromCertificate(store, baseCert({ snapshotId: "adv-ledger-fact", facts: [fact] }), ledger);
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.issues.map((i) => i.code)).toContain("BASKET_LINE_MUST_NOT_BE_SNAPSHOT_FACT");
+  });
+});
+
+describe("adversarial: LedgerProposalRecorder append-only public surface", () => {
+  const SHRINK_NAMES = ["clear", "reset", "truncate", "empty", "wipe"] as const;
+
+  it("clear/reset/truncate/empty/wipe absent on instance and prototype", () => {
+    const recorder = new LedgerProposalRecorder();
+    const proto = LedgerProposalRecorder.prototype as unknown as Record<string, unknown>;
+    const instance = recorder as unknown as Record<string, unknown>;
+
+    for (const name of SHRINK_NAMES) {
+      expect(typeof instance[name]).toBe("undefined");
+      expect(typeof proto[name]).toBe("undefined");
+      expect(Object.prototype.hasOwnProperty.call(proto, name)).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(instance, name)).toBe(false);
+      expect(name in recorder).toBe(false);
+    }
+  });
+
+  it("apply still throws (soft-gate refusal); list returns frozen clones", () => {
+    const recorder = new LedgerProposalRecorder();
+    const line = {
+      basketKey: "General Investments Basket",
+      instrumentKey: INST,
+      period: { kind: "VERBATIM_CONTRACT_PERIOD_KEY" as const, key: "FY2026-Q2" },
+      asOf: { kind: "EXACT_DATE" as const, isoDate: "2026-06-30" },
+      amount: "1000",
+      currency: "USD",
+      direction: "USAGE" as const,
+      locator: { page: 1, row: "General Investments" },
+    };
+    const recorded = recorder.record({
+      sourceDocumentId: "synth-adv-doc",
+      sourceVersionHash: "sha256:adv",
+      companyId: CO,
+      line,
+      proposer: { kind: "human", id: "adv-human" },
+    });
+
+    expect(() => recorder.apply(recorded.proposalId)).toThrow(/never applied/i);
+
+    const listed = recorder.list();
+    expect(Object.isFrozen(listed)).toBe(true);
+    expect(listed).toHaveLength(1);
+    expect(listed[0]).not.toBe(recorded);
+    expect(listed[0]!.proposalId).toBe(recorded.proposalId);
+    expect(listed[0]!.line).not.toBe(recorded.line);
+    expect(listed[0]!.line.basketKey).toBe("General Investments Basket");
+
+    // Mutating the returned list / clone must not shrink or alter the recorder.
+    expect(() => {
+      (listed as LedgerProposal[]).pop();
+    }).toThrow();
+    expect(recorder.count()).toBe(1);
+    expect(recorder.list()).toHaveLength(1);
   });
 });

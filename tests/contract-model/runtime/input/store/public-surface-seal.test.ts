@@ -28,6 +28,19 @@ describe("public surface seal", () => {
     expect((store as unknown as { _events?: unknown })._events).toBeUndefined();
   });
 
+  it("clear/reset/truncate/empty/wipe absent on instance and prototype (append-only façade)", () => {
+    const store = new InMemoryApprovedSnapshotStore();
+    const proto = InMemoryApprovedSnapshotStore.prototype as unknown as Record<string, unknown>;
+    const instance = store as unknown as Record<string, unknown>;
+    for (const name of ["clear", "reset", "truncate", "empty", "wipe"] as const) {
+      expect(typeof instance[name]).toBe("undefined");
+      expect(typeof proto[name]).toBe("undefined");
+      expect(Object.prototype.hasOwnProperty.call(proto, name)).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(instance, name)).toBe(false);
+      expect(name in store).toBe(false);
+    }
+  });
+
   it("cannot plant APPROVED without approveSnapshot", () => {
     const store = new InMemoryApprovedSnapshotStore();
     expect(store.appendSnapshot({ snapshot: draft({ snapshotId: "s-plant" }) }).ok).toBe(true);
