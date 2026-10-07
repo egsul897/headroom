@@ -12,7 +12,10 @@
  * test onto PURPOSE, ENTITY_TYPE, or SECURITY_SCOPE, and does not special-case
  * an agreement or a section. A defined term standing alone as the object is
  * not a property-character test. A single manner with no separate object class
- * is left as the emitter wrote it.
+ * is left as the emitter wrote it. A capitalized act name that the context
+ * bundle retrieved as a definition is not synthesized into a
+ * DEFINED_TERM_REFERENCE: a compiled term node is reliance, and the source
+ * contract then closes over that definition's own dependency edges.
  *
  * Soft gate. invent-absence forever. IMPLEMENTED ≠ CERTIFIED.
  */
