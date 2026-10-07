@@ -1,0 +1,12 @@
+{
+  "findingCount": 918,
+  "byCode": {
+    "DUPLICATE_LABEL_EXPECTED": 306,
+    "AMBIGUOUS_LEGAL_REFERENCE": 306,
+    "DUPLICATE_NORMALIZED_PATH": 306
+  },
+  "bySeverity": {
+    "INFO": 918
+  },
+  "note": "All findings on this single-document run are INFO duplicate-label / ambiguous-reference results from the table of contents repeating Articles I-X and the section labels. resolveUniqueNodeByRef is AMBIGUOUS for those repeated labels. This summary does not drop the underlying messages; they are reproducible by re-running buildStructuralIndex on the extracted text."
+}
