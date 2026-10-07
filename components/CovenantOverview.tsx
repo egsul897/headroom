@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Card, WarningList } from "@/components/ui";
+import { presentedCapacityUsedCaption } from "@/lib/dashboard/load-state";
 import { fmtDate, fmtM, fmtMaxCapacity, maxCapacityDetail } from "@/lib/format";
 import type { AttentionItem, BindingState, CovenantFamilySection, CovenantOverview, OverviewRow, ReviewStateLabel, RowStatus, RowTier } from "@/lib/covenant-overview-service";
 
@@ -183,15 +184,18 @@ function CapacityBar({ row }: { row: Extract<OverviewRow, { kind: "CAPACITY" }> 
   // to one specific basket) - the bar's FILL always shows full width at its
   // own tone color (there is no fill-percentage to show honestly); the
   // caption states the real capacity figure, or the real reason it's locked.
+  // A null `used` is not $0. Only VERIFIED_TRACKED paints a used figure.
+  const trackedCaption =
+    tone !== "red" && row.status === "MODELED" && !row.capacityUnlimited && row.currentCapacity !== null
+      ? presentedCapacityUsedCaption({ usageState: row.usageState, used: row.used, currentCapacity: row.currentCapacity })
+      : null;
   const caption =
     tone === "red"
       ? lockedReason(row)
       : row.status === "MODELED" && row.capacityUnlimited
         ? "Unlimited"
-        : row.status === "MODELED" && row.currentCapacity !== null
-          ? row.usageState === "NOT_TRACKED"
-            ? `${fmtM(row.currentCapacity)} capacity — usage not tracked`
-            : `${fmtM(row.used ?? 0)} used of ${fmtM(row.currentCapacity)}`
+        : trackedCaption
+          ? trackedCaption.caption
           : null;
   if (caption === null) return null;
   return (
@@ -199,7 +203,9 @@ function CapacityBar({ row }: { row: Extract<OverviewRow, { kind: "CAPACITY" }> 
       <div className="util-bar-track">
         <div className={`util-bar-fill tone-${tone}`} style={{ width: "100%" }} />
       </div>
-      <div className={`util-bar-caption ${tone === "red" ? "locked-reason" : ""}`}>{caption}</div>
+      <div className={`util-bar-caption ${tone === "red" ? "locked-reason" : ""}`} {...(trackedCaption ? { "data-used-kind": trackedCaption.kind } : {})}>
+        {caption}
+      </div>
     </div>
   );
 }
@@ -257,7 +263,7 @@ function CapacityRowView({ row }: { row: Extract<OverviewRow, { kind: "CAPACITY"
         <div className="covenant-cell-section">{row.sectionRef}</div>
         <div className="covenant-cell-formula">{row.formulaDisplay ?? row.reason ?? "—"}</div>
         <div className="covenant-cell-capacity covenant-cell-num">{capacityText(row)}</div>
-        <div className="covenant-cell-used covenant-cell-num">{row.usageState === "TRACKED" && row.used !== null ? fmtM(row.used) : "Not tracked"}</div>
+        <div className="covenant-cell-used covenant-cell-num">{row.usageState === "TRACKED" && typeof row.used === "number" && Number.isFinite(row.used) ? fmtM(row.used) : "Not tracked"}</div>
         <div className="covenant-cell-remaining covenant-cell-num">{remainingText(row)}</div>
         <div className="covenant-cell-mobile-only">
           {capacityText(row)} capacity · {remainingText(row)} remaining

@@ -4,7 +4,18 @@ import { useMemo, useState } from "react";
 import { Card, WarningList } from "@/components/ui";
 import { AttentionList, CovenantFamiliesView } from "@/components/CovenantOverview";
 import { buildCovenantOverview, type CoverageDeclarationInput, type PermissionRowInput } from "@/lib/covenant-overview-builder";
-import type { CompanyCovenantData, FormulaParams, SolverNativeCompanyContext } from "@/lib/covenant-engine";
+import { resolveDashboardCopy } from "@/lib/dashboard/copy";
+import {
+  maturitiesStateFromQuery,
+  presentFacilities,
+  presentMaturities,
+  facilitiesStateFromQuery,
+  type FacilitiesLoadState,
+  type FacilitiesQuery,
+  type MaturitiesLoadState,
+  type MaturitiesQuery,
+} from "@/lib/dashboard/load-state";
+import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
 import { fmtDate, fmtM } from "@/lib/format";
 
@@ -38,8 +49,13 @@ export interface DashboardClientProps {
   permissionRows: PermissionRowInput[];
   coverageDeclarations: CoverageDeclarationInput[];
   documentNameEntries: [string, string][];
-  capitalStructure: { name: string; secured: boolean; documentName: string | null; amount: number }[];
-  maturities: { nextMaturityLabel: string | null; nextMaturityDate: string | null; nextMaturityAmount: number | null; dueWithin12: number; dueWithin24: number; dueWithin36: number };
+  /**
+   * Serializable load outcomes. Verified-empty copy is minted in the client
+   * from these outcomes only. UNKNOWN / failed / not-loaded never become
+   * "no facilities" or "no dated maturities".
+   */
+  facilitiesQuery: FacilitiesQuery;
+  maturitiesQuery: MaturitiesQuery;
 }
 
 const FIELD_DEFS: { key: keyof FinancialsInput; label: string; suffix: string }[] = [
@@ -77,8 +93,94 @@ function restrictedPaymentsHeadline(families: ReturnType<typeof buildCovenantOve
   return { display: fmtM(sum) };
 }
 
+function DueWindows({ dueWithin12, dueWithin24, dueWithin36 }: { dueWithin12: number; dueWithin24: number; dueWithin36: number }) {
+  return (
+    <>
+      <div className="row">
+        <div className="row-label">Due within 12 months</div>
+        <div className="row-value">{fmtM(dueWithin12)}</div>
+      </div>
+      <div className="row">
+        <div className="row-label">Due within 24 months</div>
+        <div className="row-value">{fmtM(dueWithin24)}</div>
+      </div>
+      <div className="row" style={{ borderBottom: "none" }}>
+        <div className="row-label">Due within 36 months</div>
+        <div className="row-value">{fmtM(dueWithin36)}</div>
+      </div>
+    </>
+  );
+}
+
+function MaturitiesSection({ query }: { query: MaturitiesQuery }) {
+  const presented: MaturitiesLoadState = presentMaturities(maturitiesStateFromQuery(query));
+  const copy = resolveDashboardCopy("maturities", presented);
+  return (
+    <Card>
+      <div className="card-title">Near-term maturities</div>
+      <div data-slot="maturities" data-load-kind={presented.kind}>
+        {presented.kind === "VERIFIED_POPULATED" ? (
+          <>
+            <div className="row">
+              <div>
+                <div className="row-label">{presented.nextMaturityLabel}</div>
+                <div className="row-note">next maturity{presented.nextMaturityDate ? `, ${presented.nextMaturityDate}` : ""}</div>
+              </div>
+              <div className="row-value">{fmtM(presented.nextMaturityAmount)}</div>
+            </div>
+            <DueWindows dueWithin12={presented.dueWithin12} dueWithin24={presented.dueWithin24} dueWithin36={presented.dueWithin36} />
+          </>
+        ) : presented.kind === "VERIFIED_EMPTY" ? (
+          <>
+            <div className="row-note">{copy.detail}</div>
+            <DueWindows dueWithin12={presented.dueWithin12} dueWithin24={presented.dueWithin24} dueWithin36={presented.dueWithin36} />
+          </>
+        ) : (
+          <div className="row-note">{copy.detail}</div>
+        )}
+      </div>
+    </Card>
+  );
+}
+
+function FacilitiesSection({ query }: { query: FacilitiesQuery }) {
+  const presented: FacilitiesLoadState = presentFacilities(facilitiesStateFromQuery(query));
+  const copy = resolveDashboardCopy("facilities", presented);
+  return (
+    <Card>
+      <div className="card-title">Capital structure</div>
+      <div data-slot="facilities" data-load-kind={presented.kind}>
+        {presented.kind === "VERIFIED_POPULATED" ? (
+          <>
+            {presented.facilities.map((facility, i) => (
+              <div key={i} className="row">
+                <div>
+                  <div className="row-label">{facility.name}</div>
+                  <div className="row-note">
+                    {facility.secured ? "secured" : "unsecured"}
+                    {facility.documentName ? ` · ${facility.documentName}` : ""}
+                  </div>
+                </div>
+                <div className="row-value">{fmtM(facility.amount)}</div>
+              </div>
+            ))}
+            <div className="row" style={{ borderBottom: "none" }}>
+              <div className="row-label" style={{ fontWeight: 600 }}>
+                Total principal
+              </div>
+              <div className="row-value">{fmtM(presented.facilities.reduce((sum, facility) => sum + facility.amount, 0))}</div>
+            </div>
+          </>
+        ) : (
+          <div className="row-note">{copy.detail}</div>
+        )}
+      </div>
+    </Card>
+  );
+}
+
 export function DashboardClient(props: DashboardClientProps) {
-  const { companyName, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, capitalStructure, maturities } = props;
+  const { companyName, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations } = props;
   const documentNameById = useMemo(() => new Map(props.documentNameEntries), [props.documentNameEntries]);
 
   const [financials, setFinancials] = useState<FinancialsInput>(covenantData.financials);
@@ -153,57 +255,9 @@ export function DashboardClient(props: DashboardClientProps) {
       {/* 4-5. Covenant family summaries + detailed rows (§14-21). */}
       <CovenantFamiliesView families={overview.covenantFamilies} />
 
-      <Card>
-        <div className="card-title">Near-term maturities</div>
-        {maturities.nextMaturityLabel ? (
-          <div className="row">
-            <div>
-              <div className="row-label">{maturities.nextMaturityLabel}</div>
-              <div className="row-note">next maturity{maturities.nextMaturityDate ? `, ${maturities.nextMaturityDate}` : ""}</div>
-            </div>
-            <div className="row-value">{maturities.nextMaturityAmount !== null ? fmtM(maturities.nextMaturityAmount) : "—"}</div>
-          </div>
-        ) : (
-          <div className="row-note">No dated maturities on record.</div>
-        )}
-        <div className="row">
-          <div className="row-label">Due within 12 months</div>
-          <div className="row-value">{fmtM(maturities.dueWithin12)}</div>
-        </div>
-        <div className="row">
-          <div className="row-label">Due within 24 months</div>
-          <div className="row-value">{fmtM(maturities.dueWithin24)}</div>
-        </div>
-        <div className="row" style={{ borderBottom: "none" }}>
-          <div className="row-label">Due within 36 months</div>
-          <div className="row-value">{fmtM(maturities.dueWithin36)}</div>
-        </div>
-      </Card>
+      <MaturitiesSection query={props.maturitiesQuery} />
 
-      <Card>
-        <div className="card-title">Capital structure</div>
-        {capitalStructure.length === 0 && <div className="row-note">No facilities on record.</div>}
-        {capitalStructure.map((t, i) => (
-          <div key={i} className="row">
-            <div>
-              <div className="row-label">{t.name}</div>
-              <div className="row-note">
-                {t.secured ? "secured" : "unsecured"}
-                {t.documentName ? ` · ${t.documentName}` : ""}
-              </div>
-            </div>
-            <div className="row-value">{fmtM(t.amount)}</div>
-          </div>
-        ))}
-        {capitalStructure.length > 0 && (
-          <div className="row" style={{ borderBottom: "none" }}>
-            <div className="row-label" style={{ fontWeight: 600 }}>
-              Total principal
-            </div>
-            <div className="row-value">{fmtM(capitalStructure.reduce((s, t) => s + t.amount, 0))}</div>
-          </div>
-        )}
-      </Card>
+      <FacilitiesSection query={props.facilitiesQuery} />
     </div>
   );
 }

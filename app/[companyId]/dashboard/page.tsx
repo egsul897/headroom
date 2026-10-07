@@ -1,6 +1,6 @@
 import { DashboardClient } from "@/components/DashboardClient";
+import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
-import { fmtDate } from "@/lib/format";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
@@ -20,14 +20,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
   const inputs = await loadCovenantOverviewInputs(companyId);
   const { company, asOfDate, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById } = inputs;
 
-  const capitalStructure = financialPosition.capitalStructure.facilities.map((f) => ({
-    name: f.facility.name,
-    secured: f.facility.secured,
-    documentName: f.facility.governingDocumentId ? (documentNameById.get(f.facility.governingDocumentId) ?? null) : null,
-    amount: f.outstandingPrincipal,
-  }));
-
-  const nextMaturity = financialPosition.maturities.nextMaturity;
+  // Verified-empty maturities/facilities are minted only after this load returned.
+  // A throw never reaches these constructors, so a failed load cannot paint absence.
+  const facilitiesQuery = facilitiesQueryFromPosition(financialPosition, documentNameById);
+  const maturitiesQuery = maturitiesQueryFromPosition(financialPosition);
 
   return (
     <DashboardClient
@@ -39,15 +35,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
       permissionRows={permissionRows}
       coverageDeclarations={coverageDeclarations}
       documentNameEntries={[...documentNameById.entries()]}
-      capitalStructure={capitalStructure}
-      maturities={{
-        nextMaturityLabel: nextMaturity?.facilityName ?? null,
-        nextMaturityDate: nextMaturity ? fmtDate(nextMaturity.date) : null,
-        nextMaturityAmount: nextMaturity?.principal ?? null,
-        dueWithin12: financialPosition.maturities.dueWithin12Months,
-        dueWithin24: financialPosition.maturities.dueWithin24Months,
-        dueWithin36: financialPosition.maturities.dueWithin36Months,
-      }}
+      facilitiesQuery={facilitiesQuery}
+      maturitiesQuery={maturitiesQuery}
     />
   );
 }
