@@ -4,14 +4,16 @@
 **Date:** 2026-10-07
 **Base:** tip `62a40be22b9598d9732e9ce2574d86d2228d6270` (#122 MERGED). D2 fail-closed is already locked in `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md`. This note stamps the terminal disposition of that residual. It does not reopen the fail-closed lock.
 **Arch decision:** **PHASE3_CATEGORY_RECLASS_UNSUPPORTED**. Arch EXECUTE. CEO APPROVED. COO GRANTED.
-**Grant FROZEN sha256:** `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` (COO+Arch MATCH at this tip).
+**Grant FROZEN path:** `docs/architecture/PHASE-3-TRACK-C2-D2.FROZEN.md`
+**Grant FROZEN sha256:** `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` — sha256 of those bytes (LF, one trailing newline). MATCH is verifiable by `sha256sum` on that path. The same bytes are fenced in §6. COO+Arch MATCH at tip `62a40be22b9598d9732e9ce2574d86d2228d6270`.
 **Supersedes:** voided FROZEN prefix `23da0fcc…` and the voided label `EXISTING_IR_SUFFICIENT`. That label is not the disposition.
 **Rejected terminal path:** `GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED`.
 **Does not authorize:** an IR enum mint; a new edge type; a `RECLASSIFIABLE_TO` write; a category → `targetRuleId` invent; a seal emit; a pin or pin folder; a Phase-3 percentage raise; a `CERTIFIED` claim; a generalized category-reclass model
 **Related:**
 - `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md` — D2 fail-closed. Category → `targetRuleId` invent is FORBIDDEN.
 - `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md` — D1 naming only. Seal implement stays HOLD.
-- D2 grant FROZEN sha256 `5d57282b684816d26c82c60c345054121b01f0587e1a8c231b347cbf8116a41c` (prior MATCH). This note does not replace that body.
+- `docs/architecture/PHASE-3-TRACK-C2-D2.FROZEN.md` — grant body. sha256 `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae`.
+- D2 grant FROZEN sha256 `5d57282b684816d26c82c60c345054121b01f0587e1a8c231b347cbf8116a41c` (prior MATCH). This note does not replace that body. The D2 sealed packet stays untouched.
 
 Soft gate. Invent-absence forever. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.**
 
@@ -31,7 +33,7 @@ A voided FROZEN (prefix `23da0fcc…`) carried the label `EXISTING_IR_SUFFICIENT
 
 **Terminal disposition: `PHASE3_CATEGORY_RECLASS_UNSUPPORTED`.**
 
-1. **Category-to-category reclassification, absent evidence-bound rule ids, is unsupported.** The disposition code is `PHASE3_CATEGORY_RECLASS_UNSUPPORTED`. Cite grant FROZEN sha256 `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae`.
+1. **Category-to-category reclassification, absent evidence-bound rule ids, is unsupported.** The disposition code is `PHASE3_CATEGORY_RECLASS_UNSUPPORTED`. The grant body is `docs/architecture/PHASE-3-TRACK-C2-D2.FROZEN.md`. sha256 of those bytes is `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae`.
 
 2. **`GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED` is rejected as the terminal path.** This residual does not close by commissioning a generalized category-reclass model. Invent-absence forever includes that model.
 
@@ -83,8 +85,50 @@ A voided FROZEN (prefix `23da0fcc…`) carried the label `EXISTING_IR_SUFFICIENT
 - This file is the architecture stamp at `docs/architecture/PHASE3-CATEGORY-RECLASS-UNSUPPORTED-ADR.md` with Status **ACCEPTED** under the COO formal grant.
 - Base tip is `62a40be22b9598d9732e9ce2574d86d2228d6270`.
 - Decision is Arch EXECUTE **PHASE3_CATEGORY_RECLASS_UNSUPPORTED**.
-- Grant FROZEN sha256 `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` (COO+Arch MATCH at this tip). CEO APPROVED. COO GRANTED.
+- Grant FROZEN path `docs/architecture/PHASE-3-TRACK-C2-D2.FROZEN.md`. sha256 of those bytes is `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` (MATCH verifiable by recompute). The §6 fence is the same bytes. CEO APPROVED. COO GRANTED.
 - `GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED` is rejected as the terminal path.
 - Voided FROZEN prefix `23da0fcc…` and the label `EXISTING_IR_SUFFICIENT` are superseded.
 - D2 fail-closed is unchanged: category → `targetRuleId` invent is FORBIDDEN.
 - Docs only. No seal. No pin. No percentage. Soft gate. Invent-absence forever. **IMPLEMENTED ≠ CERTIFIED.** This stamp is not `CERTIFIED`.
+
+
+---
+
+## 6. Architect FROZEN body
+
+Grant FROZEN sha256 `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` is the sha256 of the bytes at `docs/architecture/PHASE-3-TRACK-C2-D2.FROZEN.md` (LF, one trailing newline). Recompute with `sha256sum` on that path. The fenced body below is those same bytes. MATCH is verifiable by recompute. CEO APPROVED. COO GRANTED. The body is the grant text. This ADR does not edit it.
+
+```text
+# PHASE-3-TRACK-C2 — D2 campaign terminal — invent-safe FROZEN
+
+**Tip:** `62a40be22b9598d9732e9ce2574d86d2228d6270` (#122 ACCEPTED fail-closed on main)
+**Checked:** 2026-10-07T16:28:00Z
+**Verdict:** invent-safe ALL Y — docs/decision — terminal below
+
+## Does #122 alone equal a terminal?
+**No.** #122 forbade category→`targetRuleId` invent and refused a new IR enum in that ADR. Owner now requires one explicit campaign terminal.
+
+## C2 terminal (ONE)
+**PHASE3_CATEGORY_RECLASS_UNSUPPORTED**
+
+### Locked meaning
+- Phase 3 does **not** support automatic category-to-category reclassification as an implementable / certifiable edge while targets would be invented from labels (#122) and tip has zero evidence-bound rule ids for those categories.
+- **GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED** is **rejected** for this campaign (would reopen invent of a new representation / additive IR without tip-grounded model).
+- Existing `IRRuleDependency` shape remains the only allowed shape **if** a later post-Phase-3 evidence-bound `targetRuleId` appears — that is not a Phase 3 implement GRANT.
+- `RECLASSIFIABLE_TO` count may stay 0. Matrix `WITH_RECLASSIFICATION` stays BLOCKED under this terminal (architecture, not hunter theater).
+- Independent of C1 seal primitive.
+
+## Deliverable
+Docs-only banner on `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md` (or one-file decision note) stating this terminal. No production IR enum. No edge invent.
+
+## Invent-safe 5-part
+| Part | Y/N |
+|---|---|
+| Tip-bound residual named | Y |
+| Generalized | Y |
+| No invent | Y — unsupported terminal; rejects generalized invent |
+| Docs-only | Y |
+| No CERTIFIED / pin | Y |
+
+**ALL Y? YES.** Soft gate; invent-absence forever; ≠CERTIFIED.
+```
