@@ -123,11 +123,11 @@ export default async function DocsPage({ params }: { params: Promise<{ companyId
           <b style={{ color: "var(--ink)" }}>Design choice — capacity is ratio-capped.</b> Real high-yield practice
           lets a borrower stack general (non-ratio) baskets on top of ratio-tested capacity, which can legitimately
           push a leverage ratio past its headline number while still being fully permitted. This tool deliberately
-          does not do that: every capacity figure here and on Dashboard/Simulate is capped at the ratio ceiling, so a
-          red &quot;fails&quot; always means genuinely blocked, never a false alarm — this tool never reports an
-          incurrence as allowed if the resulting ratio would breach its stated threshold. Individual general (non-
-          ratio) basket sizes are shown at their full, larger size on the Dashboard tab for reference; only the
-          combined capacity used for the verdict is conservative.
+          does not do that: every capacity figure here and on Dashboard/Simulate is capped at the ratio ceiling.
+          The cap is a modeling choice. Ratio-capped Simulate can still produce a wrong green — false comfort — so
+          a clear is not proof the incurrence is permitted, and a red &quot;fails&quot; is the capped model, not
+          proof the documents block it. Individual general (non-ratio) basket sizes are shown at their full, larger
+          size on the Dashboard tab for reference; only the combined capacity used for the verdict uses the cap.
         </div>
       </Card>
 
