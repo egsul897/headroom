@@ -13,6 +13,11 @@ on:
       - "lib/home/**"
       - "app/**/page.tsx"
       - ".github/workflows/home-overview.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
   pull_request:
     paths:
       - "tests/home-overview-*.test.tsx"
@@ -20,6 +25,11 @@ on:
       - "lib/home/**"
       - "app/**/page.tsx"
       - ".github/workflows/home-overview.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
 
 jobs:
   home-overview:
