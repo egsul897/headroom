@@ -15,7 +15,7 @@
  * Nothing in this module family is specific to any agreement, term, section or covenant family.
  */
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../../ir/types";
-import type { FrozenSemanticInventory, SemanticAccountabilityResult, SemanticInventoryItem, SourceContextResult, SourceContextState } from "../semantic-accountability/types";
+import type { FrozenSemanticInventory, ModelContractViolationDiagnostic, SemanticAccountabilityResult, SemanticInventoryItem, SourceContextResult, SourceContextState } from "../semantic-accountability/types";
 import type { SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
 
 /**
@@ -295,6 +295,8 @@ export interface ShardNormalizationRecord {
   dependencyProseDiagnostics: (import("./normalize").DependencyProseDiagnostic & { shardId: string })[];
   contextOnlyEmissions: (import("./unit-ownership").ContextOnlyUnitEmission & { shardId: string })[];
   invalidWireKinds: { shardId: string; path: string; kind: string }[];
+  /** ADR-2 emit gate, stamped with the shard. Absent on fixtures that predate the field; production executor sets it when the shard emitted an illegal disposition. */
+  modelContractViolations?: (ModelContractViolationDiagnostic & { shardId: string })[];
 }
 
 /** §23 - what one shard's conversation actually spent its tool budget on. Bounded counters and targets only, never retrieved text. */

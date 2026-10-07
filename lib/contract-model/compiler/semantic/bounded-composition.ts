@@ -240,6 +240,11 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
     // normalizer (tolerant transport) but is never a successful representation - bounded non-success, no retry, no guess.
     const invalidWireKinds = findInvalidWireKinds(callResult.submission);
     if (invalidWireKinds.length > 0) failureReasons.push("SEMANTIC_WIRE_KIND_INVALID");
+    // ADR-2 emit gate: illegal inventoryDisposition is a model-contract violation
+    // even when Pass C is not run (shards, accountability off). The raw label is
+    // kept on inventoryDispositions; this does not quiet-map it to UNSUPPORTED.
+    const modelContractViolations = normalized.modelContractViolations;
+    if (modelContractViolations.length > 0) failureReasons.push("MODEL_CONTRACT_VIOLATION");
     if (!validation.ok) failureReasons.push("IR_VALIDATION_FAILURE");
     if (normalized.rules.length === 0 && normalized.definitions.length === 0) failureReasons.push("PARTIAL_COMPILATION");
     if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
@@ -367,6 +372,7 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
       // never an unresolved issue that makes a semantically COMPLETE unit REVIEW_REQUIRED (the sharded path never did).
       ...normalized.warnings.filter((w) => w.kind !== "DIAGNOSTIC").map((w) => `[${w.scope}] ${w.message}`),
       ...invalidWireKinds.map((k) => `[${k.path}] SEMANTIC_WIRE_KIND_INVALID: "${k.kind}" is not an IR expression kind (valid kinds: ${IR_EXPRESSION_KINDS.join(", ")}, UNLIMITED_CAPACITY for a capacity); kept as UNSUPPORTED, never a successful representation`),
+      ...modelContractViolations.map((d) => `[inventoryDispositions] ${d.code} (${d.reason}) inventoryItemId=${d.inventoryItemId} rawLabel=${JSON.stringify(d.rawLabel)}; ${d.contractRef}`),
       ...callResult.submission.overallNotes,
       ...accountabilityIssues,
     ];
@@ -390,6 +396,7 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
       dependencyProseDiagnostics: normalized.dependencyProse,
       normalizationDiagnostics: normalized.diagnostics.map((d) => diagnosticRecord(input.candidateRef, null, d, normalized.scopeUnits)),
       invalidWireKinds,
+      ...(modelContractViolations.length > 0 ? { modelContractViolations } : {}),
       provider: caller.providerName,
       model: caller.model,
       telemetry: callResult.telemetry,
