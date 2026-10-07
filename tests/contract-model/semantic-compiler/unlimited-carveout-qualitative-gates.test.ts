@@ -155,8 +155,10 @@ describe("unlimited carve-out dual qualitative gates", () => {
     };
     const [out] = compile(SURPLUS, [rule({ sufficiency: "COMPLETE", capacityExpression: { kind: "UNLIMITED_CAPACITY", gatedBy }, conditions: honestConditions })]);
     expect(out!.conditions).toHaveLength(2);
-    expect(gate(out!).gatedBy?.kind).toBe("AND");
-    if (gate(out!).gatedBy?.kind === "AND") expect(gate(out!).gatedBy!.operands).toHaveLength(2);
+    const composed = gate(out!).gatedBy;
+    expect(composed?.kind).toBe("AND");
+    if (composed?.kind !== "AND") return;
+    expect(composed.operands).toHaveLength(2);
     expect(out!.sufficiency).toBe("PARTIAL");
     expect(out!.sufficiencyReasons.join("\n")).not.toMatch(/\bCERTIFIED\b/);
   });
