@@ -26,7 +26,7 @@
 
 **IMPLEMENTED ≠ CERTIFIED. PINNED_OFFLINE ≠ CERTIFIED. DEVELOPMENT ≠ CERTIFIED. A merged analysis note is not a rem. A merged HOLD is not a seal. A merged contract name is not an emit. LOCK ≠ GRANT for a resolver implement.**
 
-This note folds five lane reports so a reader can see what was learned, what is locked as fail-closed, what is still a HOLD, and what is still blocked for lack of evidence. It does not certify anything. It does not raise the formal Phase 3 percentage.
+This note folds five lane reports so a reader can see what was learned, what is locked as fail-closed, what is still a HOLD, and what is still blocked for lack of evidence. It does not certify anything. It does not raise a Phase 3 percentage. The carried “about 25%” in §12 is retired by `docs/phase-3-reliability-stratified-certification/TRACK-E-SCOREBOARD-HONESTY-62a40be.md`.
 
 ## 1. Soft-gate banner
 
@@ -259,21 +259,23 @@ Pins and the certified path are unchanged.
 
 ## 12. Formal percentage
 
-Standing board figure, carried and not recomputed: Phase 3 remains **BLOCKED_BY_EVIDENCE**, about **25%**, **CERTIFIED 0/12**. This report does not raise it.
+**Retired.** The sentence that called Phase 3 “about 25%” is not a board figure and is not a field in `01-pin-matrix.json`. Track E retires it: `docs/phase-3-reliability-stratified-certification/TRACK-E-SCOREBOARD-HONESTY-62a40be.md`. Recount at tip `62a40be22b9598d9732e9ce2574d86d2228d6270`: 12 matrix rows, status `CERTIFIED` on **0**. That count is not a completion percentage. This report does not publish one.
+
+Historical carried prose, no longer standing: Phase 3 remains BLOCKED_BY_EVIDENCE, about 25%, CERTIFIED 0/12.
 
 What this tip shows:
 
 - `docs/phase-3-reliability-stratified-certification/01-pin-matrix.json` is byte-unchanged from `1acdff3`. Its status remains `OFFLINE_PIN_MATRIX_PARTIAL`.
 - The matrix has 12 rows: 6 strata and 6 cross-cuts. The number of those rows whose status is `CERTIFIED` is **0**. That count was taken on the `1acdff3` matrix and the file has not changed.
 - Several rows are `PINNED_OFFLINE` or `BASELINE_PINNED`, including rows with `eligible: true`. Those are not `CERTIFIED`.
-- The board figure in the paragraph above is carried prose in this file. It is not a status value in `01-pin-matrix.json`. The matrix status remains `OFFLINE_PIN_MATRIX_PARTIAL`. Draft pull request #110 is not merged. This report does not turn the carried figure into a certification gate.
+- The “about 25%” sentence above is retired carried prose. It is not a status value in `01-pin-matrix.json`. The matrix status remains `OFFLINE_PIN_MATRIX_PARTIAL`. This report does not turn that prose into a certification gate. Live disposition of draft #110 is in the Track E note.
 - The live tip merge (#119) names the Lane B seal contract. It is not an emit. #117 is this consolidator. #112 is the Gibraltar development fixture. #115 is the Lane B HOLD note. #116 is the Lane D analysis. #118 is the fail-closed ADR. #114 and #113 are the discovery and metrics notes. None of those commits is a certification gate.
 
-No certification gate has landed. The percentage stays where the board left it.
+No certification gate has landed. The carried percentage is retired. The counted board is **CERTIFIED 0/12**.
 
 ## 13. Pull request state
 
-Checked 2026-10-07T15:42:14Z. Merged docs are not `CERTIFIED`. Draft is not merged.
+Checked 2026-10-07T15:42:14Z. Merged docs are not `CERTIFIED`. Draft is not merged. Live disposition of #104–#111 after that clock is in the Track E note. The table below is the 15:42 snapshot.
 
 | PR | State | What it is |
 |---|---|---|
@@ -300,7 +302,7 @@ No further generic hunters. Do not fetch another issuer to unstick builders, rec
 
 Next actions, and only these:
 
-1. **Architect.** Lane A’s refusal is on main (#118): stay `AMBIGUOUS_TARGET`. Lane B’s HOLD is on main (#115). #119 names `OPERATIVE_SUBWINDOW` and does not emit a window. The category-to-category representation question (D2) is still open. The merged name is not that answer.
+1. **Architect.** Lane A’s refusal is on main (#118): stay `AMBIGUOUS_TARGET`. Lane B’s HOLD is on main (#115). #119 names `OPERATIVE_SUBWINDOW` and does not emit a window. The category-to-category representation question (D2) was later locked fail-closed by #122 at `62a40be22b9598d9732e9ce2574d86d2228d6270`. That lock is not an emit and not `CERTIFIED`. The sentence “D2 is still open” described the #119 tip, not `62a40be`. The merged name is not an answer, and the later lock is not an implement.
 2. **COO.** The only named implementation candidate is the Lane D honesty rem. The analysis is already merged (#116). A rem grant file was not in that merge. This report is not that grant.
 3. **Implementer.** Do not start from this consolidator. Do not treat #116 as the rem. If the Lane D rem is later authorized, the shape is section 9. No new enum, no pin, no `eligible: true`.
 

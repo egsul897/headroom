@@ -269,3 +269,14 @@ Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI
 ### Review owners
 
 Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI · COO MERGE AUTHORIZED. Merge HOLD. Do not self-merge. Live/paid **not** authorized hereby.
+
+---
+
+## Track E scoreboard honesty (append)
+
+**Status:** board count only. No completion percentage.  
+**Tip:** `62a40be22b9598d9732e9ce2574d86d2228d6270`  
+**Note:** `TRACK-E-SCOREBOARD-HONESTY-62a40be.md`  
+**FROZEN sha256:** `37a4d8c1240fcbaf10341e9aaccc5ab294bbd95aec9243f17f1768bee5b22114`
+
+The carried “about 25%” Phase-3 figure is retired. Recount of `matrix.strata` plus `matrix.crossCuts` at this tip: **CERTIFIED 0/12**. `PINNED_OFFLINE` is not `CERTIFIED`. `IMPLEMENTED` is not `CERTIFIED`. Soft gate. Invent-absence forever. This append does not edit the pin matrix and does not authorize a pin.
