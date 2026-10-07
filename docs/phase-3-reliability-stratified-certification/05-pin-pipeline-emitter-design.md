@@ -161,3 +161,41 @@ The LIENS amendment’s residual “INVESTMENTS — still open” line is **sati
 
 **Status addendum:** emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1 + CONMED LIENS §7.3(m) v1 **+ CONMED INVESTMENTS §7.8(l) v1**. Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73/#76 mutation. PINNED_OFFLINE ≠ CERTIFIED.
 
+---
+
+## Amendment — CONMED FINANCIAL_COVENANTS §7.1(c) offline pin (append · 2026-10-06)
+
+**Living-design append** (not an ADR-1 evidence-packet mutate). Prior Status line, “Next pins to emit” list, and the LIENS and INVESTMENTS amendments above are retained verbatim; this section records the completed pin and residual blockers.
+
+| Field | Value |
+|---|---|
+| **discoveryId** | `discovery-candidate:5f83b15ed6cd0ea8b06289a0` |
+| **sectionRef** | `7.1(c)` Minimum Interest Coverage Ratio FINANCIAL_TEST |
+| **pin folder** | `pins/conmed-2025-credit-facility/7.1(c)--5f83b15e/v1/` |
+| **chars / eligible** | 234 / `eligible:true` (offline identity — **not** live CERTIFIED) |
+| **matrix** | `01-pin-matrix.json` FINANCIAL_COVENANTS → `PINNED_OFFLINE` |
+
+### Why §7.1(c)
+
+Sealed FINANCIAL_COVENANTS stratum scout (emitter `pinCandidate`, offline only):
+
+- **§7.1(c)** `discovery-candidate:5f83b15ed6cd0ea8b06289a0` — 234 chars, `FINANCIAL_TEST`, `multipleRulesLikely: false`, single occurrence, interim-B clean. Governing-definition check matches first-target shape: Phase-2 `OPERATIVE_STATE_REVIEW_REQUIRED` definitions `consolidated senior secured leverage ratio` and `consolidated total leverage ratio` (plus `indebtedness` and §1.1) are recorded on the eligibility packet with `definedTermMentionedInOperativeText: false`, `directlyReferencedBySection: false`, and `governingProvision: null`. Offline bundle `SUFFICIENT`, `hasUnresolvedOperativeEvidence: false`. **Pinned.** `eligible:true`.
+- **§7.1(a)** `discovery-candidate:8fe38049fe62ea9e9e741511` — 712 chars, seals identity, `eligible:false` (`PHASE2_REVIEW_REQUIRED_MENTIONED_IN_OPERATIVE`: operative text names Consolidated Senior Secured Leverage Ratio). **Unpinned.**
+- **§7.1(b)** `discovery-candidate:cf15af8f5fb1f77bd861a2ac` — 1886 chars, same fail-closed leverage-definition mention. **Unpinned.**
+- **§7.1(d)** `discovery-candidate:1b08da2e952127a1caebe77d` — 399 chars, `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`). **Unpinned.**
+- Chewy hinted **§1.08(a)(i)** `discovery-candidate:3746c55b7f0755c138bbcf59` (214 chars) and **§1.04(b)** `discovery-candidate:c9e7af41092f13e79989b95e` (579 chars) seal identity, `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`). **Unpinned.**
+- Chewy **§1.08(d)(i)** / **§1.08(d)(ii)** / **§1.08(g)** seal `eligible:true` but roles are CONDITION / EXCEPTION / EXCEPTION, not the preferred `FINANCIAL_TEST`. **Unpinned.** Do not invent narrower IDs.
+
+Map honesty for the pinned candidate is `MAPPED_WITH_REVIEW` with `CANDIDATE_COMPILE_REVIEW_REQUIRED` / `VERIFICATION_INCOMPLETE`. That historical map tag is not pre-credit. Canonical map `certificationStatus` on this candidate remains `NOT_CERTIFIED`.
+
+### Priority list — residual after this pin
+
+The INVESTMENTS amendment’s residual “FINANCIAL_COVENANTS remains deferred” line is **satisfied for the stratum** by CONMED §7.1(c):
+
+- ~~**CONMED FINANCIAL_COVENANTS**~~ — **DONE** (this amendment / pin packet) for the matrix stratum.
+- **CONMED §7.1(a) / §7.1(b) / §7.1(d)** — still **unpinned** (eligible:false). Leverage-definition fail-closed stands.
+- **Chewy FINANCIAL_COVENANTS** — still **DEFERRED** (hinted FINANCIAL_TEST eligible:false).
+- Items 3–5 in the original priority list (WITH_BUILDERS, CONMED WITH_SHARED_CAPS, CONMED DEBT) unchanged. Reclass remains blocked.
+
+**Status addendum:** emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1 + CONMED LIENS §7.3(m) v1 + CONMED INVESTMENTS §7.8(l) v1 **+ CONMED FINANCIAL_COVENANTS §7.1(c) v1**. Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73/#76/#78 mutation. PINNED_OFFLINE ≠ CERTIFIED.
+
