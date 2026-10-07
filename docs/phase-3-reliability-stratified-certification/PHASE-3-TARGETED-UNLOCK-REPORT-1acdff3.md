@@ -1,8 +1,9 @@
 # Phase 3 targeted unlock report
 
-**Live main tip:** `65be893f10ad4033afca43ba591074c05a49dd87`  
-**Live tip commit:** pull request #115, “Lane B reclass sealability HOLD at 1acdff3.” The HOLD note only. Not a sealed sentence, not an edge, not a certification gate.  
-**Checked:** 2026-10-07T15:28:50Z. `origin/main` was that SHA.
+**Live main tip:** `7683a14697dceaa264ac97268e4909d45725bbb5`  
+**Live tip commit:** pull request #119, “P3-LANE-B: name OPERATIVE_SUBWINDOW seal contract (Arch D1).” Docs name only. Not a sealed sentence, not an edge, not a certification gate. D2 stays deferred. Naming is not an emit.  
+**Checked:** 2026-10-07T15:42:14Z. `origin/main` was that SHA.  
+**Earlier check (not the live tip):** 2026-10-07T15:28:50Z recorded `65be893f10ad4033afca43ba591074c05a49dd87` (#115). That sentence was true at that clock. #112, #117, and #119 merged at 15:39Z. This file’s first merge (#117 at `ad9b6e728a8dd2ed0fadd290d97f9c922741f141`) still contains that earlier banner. This rebind replaces it.
 
 **Historical study base (not the current tip):** `1acdff345fff655f602fd61ff20c395028b6f140` (merge of #103). The five lane notes were written against that tree. This file’s name keeps that SHA as the study label. It is not a claim that `1acdff3` is still `main`.
 
@@ -15,12 +16,15 @@
 | #118 | `d9c4cb64414cf00612a2d10e0205c66c7eec1bfa` | Lane A `FAIL_CLOSED_AMBIGUOUS` ADR |
 | #116 | `6df53b4f225adfbe40bbc765647f1b4c17a2b7c3` | Lane D §7.5(a) discrepancy note (analysis, not a rem) |
 | #115 | `65be893f10ad4033afca43ba591074c05a49dd87` | Lane B reclass HOLD note |
+| #112 | `7c079b49703702e028441d88c35070a8313c3828` | Lane C Gibraltar DEVELOPMENT fixture and lane note. Not selected. Not a matrix cell. |
+| #117 | `ad9b6e728a8dd2ed0fadd290d97f9c922741f141` | This consolidator, first landed while it still named tip `65be893f…` |
+| #119 | `7683a14697dceaa264ac97268e4909d45725bbb5` | Lane B `OPERATIVE_SUBWINDOW` name (Arch D1). Current main tip. Not an emit. Not a seal. |
 
 `01-pin-matrix.json` is unchanged from `1acdff3` to this tip.
 
-**Mode:** one docs consolidator. Soft gate. Invent-absence forever. No product code. No pin. No new discoveryId, key, chunk, or HOLD.
+**Mode:** one docs consolidator. Soft gate. Invent-absence forever. No product code. No pin. No new discoveryId, key, chunk, or HOLD. A path-filter omit is not a green check.
 
-**IMPLEMENTED ≠ CERTIFIED. PINNED_OFFLINE ≠ CERTIFIED. DEVELOPMENT ≠ CERTIFIED. A merged analysis note is not a rem. A merged HOLD is not a seal. LOCK ≠ GRANT for a resolver implement.**
+**IMPLEMENTED ≠ CERTIFIED. PINNED_OFFLINE ≠ CERTIFIED. DEVELOPMENT ≠ CERTIFIED. A merged analysis note is not a rem. A merged HOLD is not a seal. A merged contract name is not an emit. LOCK ≠ GRANT for a resolver implement.**
 
 This note folds five lane reports so a reader can see what was learned, what is locked as fail-closed, what is still a HOLD, and what is still blocked for lack of evidence. It does not certify anything. It does not raise the formal Phase 3 percentage.
 
@@ -30,7 +34,7 @@ Allowed here: read the lane drafts, restate their terminals, and say which claim
 
 Not allowed, and not done: product edits, a pin folder, a minted discoveryId, a `RECLASSIFIABLE_TO` edge, an `eligible: true` flip, a Knife River body, a Gibraltar cell selected into the matrix, or a higher completion percentage.
 
-A lane that is open on GitHub is not merged. Ready-for-review is not merged. A merged docs note is not `CERTIFIED`. A written HOLD is not a certified identity. Pull request #116 on main is the §7.5(a) analysis, not the honesty rem.
+A lane that is open on GitHub is not merged. Ready-for-review is not merged. A merged docs note is not `CERTIFIED`. A written HOLD is not a certified identity. A workflow the path filter does not run is omitted. That omit is not a green check and is not certification credit. Pull request #116 on main is the §7.5(a) analysis, not the honesty rem.
 
 ## 2. What this directive allowed
 
@@ -89,14 +93,14 @@ The earlier frozen id `PHASE-3-LANE-A-DEFINITION-IDENTITY.FROZEN.9817b099…` is
 | Head | `461f24b9924b2766f12acfbb7ef69be97b70435e` |
 | Remote | **ON_REMOTE.** |
 | Pull request | https://github.com/egsul897/headroom/pull/115 |
-| PR state at check | **MERGED** at `65be893f10ad4033afca43ba591074c05a49dd87`. That commit is the current main tip. Diff is the HOLD note only (`docs/p3-lane-b-reclass-sealability-1acdff3.md`, 187 lines). |
+| PR state at check | **MERGED** at `65be893f10ad4033afca43ba591074c05a49dd87`. Diff is the HOLD note only (`docs/p3-lane-b-reclass-sealability-1acdff3.md`, 187 lines). That commit is not the current main tip. |
 | Record | `docs/p3-lane-b-reclass-sealability-1acdff3.md` (on main) |
 
 **Terminal:** HOLD. `RECLASS_ARCHITECTURE_DECISION_REQUIRED`
 
 The merge puts that HOLD on main. It does not mint a node, a discoveryId, or a `RECLASSIFIABLE_TO` edge. It does not make the 673-character sentence a sealed operative window. A merged HOLD is not a seal and not `CERTIFIED`.
 
-Draft pull request #119 (“P3-LANE-B: name OPERATIVE_SUBWINDOW seal contract”) was open at the check time. It is not merged and it is not on this tip. This note does not treat #119 as a landed seal contract.
+Pull request #119 (“P3-LANE-B: name OPERATIVE_SUBWINDOW seal contract”) is **MERGED** at `7683a14697dceaa264ac97268e4909d45725bbb5`. That commit is the current main tip. The file on main is `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md`. It names Arch D1. It does not emit a window, mint a discoveryId, write a `RECLASSIFIABLE_TO` edge, or authorize production seal code. D2 stays deferred. A merged name is not a seal and not `CERTIFIED`. Implementation of the seal stays HOLD. The ADR’s base line still records `65be893f…` (#115). That base label is the ADR’s own historical base. It is not this live tip.
 
 The sentence is real. Half-open span `[392815, 393488)`, 673 characters, SHA-256 `78b081e801e06744fd6e665164b5b0801857a621de0f041eb6d5b21abeb4c83e`. It says amounts incurred under Fixed Amounts are automatically reclassified into the applicable Incurrence-Based Amounts unless the Initial Borrower elects otherwise.
 
@@ -114,7 +118,8 @@ This is a different note from draft pull request #108 (Lane 5 prose, no span sea
 | Branch | `cursor/gibraltar-dev-edgar-07a3` |
 | Head | `34f72c97732a20a2c0e96e5282b5ae52465d924c` |
 | Remote | **ON_REMOTE.** |
-| Pull request | https://github.com/egsul897/headroom/pull/112 (draft) |
+| Pull request | https://github.com/egsul897/headroom/pull/112 |
+| PR state at check | **MERGED** at `7c079b49703702e028441d88c35070a8313c3828`. The development fixture and the lane note are on main. Not selected. Not a pin. Not `CERTIFIED`. |
 | Record | `docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md` |
 | Designation | Gibraltar = DEVELOPMENT. Knife River = BLIND. Arch+Cert OPTION B, recorded in the lane note as 2026-10-07T15:05:09Z. |
 
@@ -144,7 +149,7 @@ Three topics appeared and were **not** selected:
 
 Knife River’s body was not opened. The lane note says the tip had no Knife River record, the retrieval URL list has no Knife River, KNF, or MDU URL, and the Gibraltar fixture tree contains no “Knife River” string.
 
-At tip, before this draft, the packet hunt (#111) correctly recorded Gibraltar as absent. Lane C adds a development fixture on a branch. That fixture is not on `main`. Absence on `main` is still the tip fact.
+The packet hunt (#111) recorded Gibraltar as absent. #111 is still a draft and is not this tip. #112 later put the development fixture and the lane note on main. That fixture is DEVELOPMENT evidence. It is not selected, not a matrix cell, and not a pin. Knife River’s body is still not in the tree. Absence of a selected cell remains the tip fact. Presence of the development fixture is not a selection.
 
 ## 6. Lane D — CONMED §7.5(a) discrepancy
 
@@ -207,16 +212,16 @@ Leaving these three items off the freeze list does not clear an unpinned stratum
 
 ## 8. Cross-lane matrix
 
-Rows below are the cells these lanes touched. #113, #114, #115, #116, and #118 are merged documents. The pin matrix file is the same as at `1acdff3`. `eligible` flags below were not flipped by those merges.
+Rows below are the cells these lanes touched. #112, #113, #114, #115, #116, #117, #118, and #119 are merged documents. The pin matrix file is the same as at `1acdff3`. `eligible` flags below were not flipped by those merges. None of those merges is `CERTIFIED`.
 
 | Cell | Tip matrix / prior hunt | What the lanes added | Terminal now |
 |---|---|---|---|
 | `WITH_BUILDERS` Chewy `f62db8eb…` §6.01(b)(4)(a)(i) | `DEFERRED` / `PIN_HOLD`. Hunt: `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE`. `eligible: false`. | Lane A discovery is on main (#114). #118 locks `FAIL_CLOSED_AMBIGUOUS`: stay `AMBIGUOUS_TARGET`. | Unchanged. No pin. Not `eligible: true`. Not `CERTIFIED`. |
 | `WITH_BUILDERS` CONMED | Sealed population has 0 `BUILDER` roles (hunt). | No lane bound one. | `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE`. |
-| `WITH_RECLASSIFICATION` | Matrix `BLOCKED`. Hunt: `NO_VALID_CANDIDATE`. `RECLASSIFIABLE_TO` = 0. | Lane B HOLD note is on main (#115). The sentence exists and is not a sealed window. | HOLD `RECLASS_ARCHITECTURE_DECISION_REQUIRED`. Still not a candidate. Still no edge. |
+| `WITH_RECLASSIFICATION` | Matrix `BLOCKED`. Hunt: `NO_VALID_CANDIDATE`. `RECLASSIFIABLE_TO` = 0. | Lane B HOLD note is on main (#115). #119 names `OPERATIVE_SUBWINDOW` and does not emit the window. The sentence exists and is not a sealed window. | HOLD `RECLASS_ARCHITECTURE_DECISION_REQUIRED`. Still not a candidate. Still no edge. |
 | `ASSET_SALES` Chewy `b54ed7fe…` §6.05(a)(2)(c) | `PINNED_OFFLINE`, `eligible: false`. Hunt: certified path `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE`. | Lane A: same two definitions, same `AMBIGUOUS_TARGET`. | Identity pin stands. Certified path still blocked. `PINNED_OFFLINE` is not `CERTIFIED`. |
 | `ASSET_SALES` CONMED §7.5(a) `baca4371…` | Sealed row. No pin. Map `NOT_CERTIFIED`. `MATERIAL_DISCREPANCY`. | Lane D analysis is on main (#116). Object restriction is unmodeled. Licensed carry is a second `UNSUPPORTED` in an `AND`, sufficiency `PARTIAL`. | Analysis terminal `GENERALIZED_REPRESENTATION_DEFECT`. Not a rem. Pin path still `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE`. |
-| Gibraltar builder / §7.01 reclass / §7.04 dispositions | Not in the repo at tip. Hunt: `NO_VALID_CANDIDATE`. | Lane C: development evidence on draft #112. Not selected. | `DEVELOPMENT`. Not a matrix cell. Not `CERTIFIED`. |
+| Gibraltar builder / §7.01 reclass / §7.04 dispositions | Not a matrix row. Hunt #111 (still draft) recorded `NO_VALID_CANDIDATE` before the fixture landed. | Lane C: development evidence on main via #112. Not selected. | `DEVELOPMENT`. Not a matrix cell. Not `CERTIFIED`. |
 | Knife River | No body at tip. | Lane C: body not opened. | Stays BLIND. |
 | Holdout G5, “C7”, §7.5(j) support-review flag | Historical failures, often treated as freeze blockers. | Lane E: reproduced, and not on `beforeSemanticFreeze`. | Folklore. Do not block step 3 on them. Do not treat step 3 as unblocked. |
 
@@ -232,13 +237,13 @@ The analysis is on main via #116. That commit is the note. It is not the rem. Th
 
 The Architect freeze, CEO approval, and COO grant named in the original Lane D directive are not in the merged note. This consolidator does not describe the rem as granted.
 
-Nothing in lanes A, B, C, or E is invent-safe to implement from this consolidator. Lane A’s merged ADR locks the refusal and does not grant a resolver change. Lane B’s merged note is a HOLD. Lane C is an unselected development fixture still on draft #112. Lane E says not to remediate the three folklore metrics in order to unblock the freeze.
+Nothing in lanes A, B, C, or E is invent-safe to implement from this consolidator. Lane A’s merged ADR locks the refusal and does not grant a resolver change. Lane B’s merged note is a HOLD. #119 names the seal contract and does not authorize the seal. Lane C is an unselected development fixture on main via #112. Lane E says not to remediate the three folklore metrics in order to unblock the freeze.
 
 ## 10. What requires an Architect decision
 
 **Lane A.** The selector question is closed on main by #118 as a refusal, not as a pick. `FAIL_CLOSED_AMBIGUOUS`: stay `AMBIGUOUS_TARGET`. Case-as-identity, dropping a nested proviso, counting an alias once, later-declaration-wins, and both-bodies-operative stay absent. Both Chewy cells stay `eligible: false`. The ADR does not grant a resolver implement.
 
-**Lane B.** The HOLD note is on main via #115. The two questions in that note are still open: whether an unenumerated sentence can be a sealed operative window under a generalized rule, and whether a category-to-category automatic reclassification can be represented by anything other than `IRRuleDependency` (`relationshipType`, `targetRuleId`, `description`). A Chewy-only span is not an acceptable answer. Draft #119 is not that contract and is not merged. Implementation stays HOLD.
+**Lane B.** The HOLD note is on main via #115. #119, merged at the live tip, names `OPERATIVE_SUBWINDOW` (requirements 1–6) and defers D2. That file says naming is not an emit and does not authorize production seal code. The category-to-category question is still open: whether an automatic reclassification can be represented by anything other than `IRRuleDependency` (`relationshipType`, `targetRuleId`, `description`). A Chewy-only span is not an acceptable answer. The merged name is not a seal. Implementation stays HOLD.
 
 ## 11. What remains evidence-blocked
 
@@ -261,25 +266,25 @@ What this tip shows:
 - `docs/phase-3-reliability-stratified-certification/01-pin-matrix.json` is byte-unchanged from `1acdff3`. Its status remains `OFFLINE_PIN_MATRIX_PARTIAL`.
 - The matrix has 12 rows: 6 strata and 6 cross-cuts. The number of those rows whose status is `CERTIFIED` is **0**. That count was taken on the `1acdff3` matrix and the file has not changed.
 - Several rows are `PINNED_OFFLINE` or `BASELINE_PINNED`, including rows with `eligible: true`. Those are not `CERTIFIED`.
-- The literal strings `CERTIFIED 0/12` and `PHASE_3_BLOCKED_BY_EVIDENCE` are not in the tree. Draft pull request #110 already says that. #110 is not merged.
-- The live tip merge (#115) is the Lane B HOLD note. #116 is the Lane D analysis. #118 is the fail-closed ADR. #114 and #113 are the discovery and metrics notes. None of those commits is a certification gate.
+- The board figure in the paragraph above is carried prose in this file. It is not a status value in `01-pin-matrix.json`. The matrix status remains `OFFLINE_PIN_MATRIX_PARTIAL`. Draft pull request #110 is not merged. This report does not turn the carried figure into a certification gate.
+- The live tip merge (#119) names the Lane B seal contract. It is not an emit. #117 is this consolidator. #112 is the Gibraltar development fixture. #115 is the Lane B HOLD note. #116 is the Lane D analysis. #118 is the fail-closed ADR. #114 and #113 are the discovery and metrics notes. None of those commits is a certification gate.
 
 No certification gate has landed. The percentage stays where the board left it.
 
 ## 13. Pull request state
 
-Checked 2026-10-07T15:28:50Z. Merged docs are not `CERTIFIED`. Draft is not merged.
+Checked 2026-10-07T15:42:14Z. Merged docs are not `CERTIFIED`. Draft is not merged.
 
 | PR | State | What it is |
 |---|---|---|
-| #119 | Draft | Lane B operative-subwindow contract name. Not merged. Not a landed seal. |
-| #117 | Draft | This consolidator |
+| #119 | **MERGED** `7683a146…` | Lane B `OPERATIVE_SUBWINDOW` name (Arch D1). Current main tip. Not an emit. Not a seal. |
+| #117 | **MERGED** `ad9b6e72…` | This consolidator, first landed naming tip `65be893f…`. This rebind corrects that banner. |
 | #116 | **MERGED** `6df53b4f…` | Lane D discrepancy analysis. Not a rem. |
-| #115 | **MERGED** `65be893f…` | Lane B HOLD note. Current main tip. Not a seal. |
+| #115 | **MERGED** `65be893f…` | Lane B HOLD note. Not the current main tip. Not a seal. |
 | #114 | **MERGED** `b44c3dc6…` | Lane A definition-identity discovery |
 | #113 | **MERGED** `99a5a5fb…` | Lane E metrics |
 | #118 | **MERGED** `d9c4cb64…` | Lane A `FAIL_CLOSED_AMBIGUOUS` ADR. LOCK ≠ GRANT. |
-| #112 | Draft | Lane C Gibraltar development EDGAR fixture. Not on main. |
+| #112 | **MERGED** `7c079b49…` | Lane C Gibraltar DEVELOPMENT fixture and lane note. On main. Not selected. Not `CERTIFIED`. |
 | #111 | Draft | Discover-only packet hunt: builders, reclass, asset sales |
 | #110 | Draft | Discover-only weak-cell holds |
 | #109 | Draft | Fresh-blind package prep, blocked |
@@ -295,7 +300,7 @@ No further generic hunters. Do not fetch another issuer to unstick builders, rec
 
 Next actions, and only these:
 
-1. **Architect.** Lane A’s refusal is on main (#118): stay `AMBIGUOUS_TARGET`. Lane B’s HOLD is on main (#115). The seal-window question and the category-to-category representation question are still open. Draft #119 is not that answer.
+1. **Architect.** Lane A’s refusal is on main (#118): stay `AMBIGUOUS_TARGET`. Lane B’s HOLD is on main (#115). #119 names `OPERATIVE_SUBWINDOW` and does not emit a window. The category-to-category representation question (D2) is still open. The merged name is not that answer.
 2. **COO.** The only named implementation candidate is the Lane D honesty rem. The analysis is already merged (#116). A rem grant file was not in that merge. This report is not that grant.
 3. **Implementer.** Do not start from this consolidator. Do not treat #116 as the rem. If the Lane D rem is later authorized, the shape is section 9. No new enum, no pin, no `eligible: true`.
 
