@@ -6,16 +6,21 @@
 **Base:** main @ `62a40be22b9598d9732e9ce2574d86d2228d6270` (#122 MERGED).
 **Terminal:** `DEFINITION_SCOPE_NOT_REPRESENTED`
 **Runtime:** `AMBIGUOUS_TARGET` (fail closed)
-**Arch invent-safe FROZEN sha256:** `b42f6cf1605096a8819dd91777ca58cb63d781b4fa0f9752211f1115cc370f35` (COO+Arch MATCH at this tip). CEO APPROVED. COO GRANTED.
+**Grant FROZEN:** `docs/architecture/PHASE-3-TRACK-B-DEFINITION.FROZEN.md`. sha256 of those bytes is `b42f6cf1605096a8819dd91777ca58cb63d781b4fa0f9752211f1115cc370f35` (MATCH verifiable by recompute). CEO APPROVED. COO GRANTED.
 **Does not authorize:** an amendment hunt; `WITH_BUILDERS` for this track; a definition-scope IR field, enum, or edge; production code; seal emit; a pin or pin folder; coercing `eligible: true`; a Phase-3 percentage raise; a `CERTIFIED` claim
 **Related:**
+- `docs/architecture/PHASE-3-TRACK-B-DEFINITION.FROZEN.md` — grant-bound preimage. Do not edit. Digest is the sha256 of that file.
 - `docs/architecture/DUAL-DECLARATION-FAIL-CLOSED-AMBIGUOUS-ADR.md` — dual-declaration identity stays `AMBIGUOUS_TARGET`. This note does not amend that lock and does not turn it into a pin.
 - `docs/phase-3-reliability-stratified-certification/p3-lane-a-definition-identity-1acdff3.md` — discovery census. Not reopened here.
 - `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md` and `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md` — a different object (operative window / reclass representation). Not amended here.
 
 Soft gate only. Invent-absence forever. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.**
 
-This note cites the FROZEN sha256 above. It does not re-emit a reconstructed stamp body and does not recompute the hash.
+Grant-bound bytes are `docs/architecture/PHASE-3-TRACK-B-DEFINITION.FROZEN.md`. `sha256sum` of that file is `b42f6cf1605096a8819dd91777ca58cb63d781b4fa0f9752211f1115cc370f35`. This ADR does not edit those bytes. Recompute on the tip:
+
+```text
+sha256sum docs/architecture/PHASE-3-TRACK-B-DEFINITION.FROZEN.md
+```
 
 ---
 
@@ -85,6 +90,6 @@ Two nearby objects stay what they already are:
 
 - This file is the architecture lock at `docs/architecture/DEFINITION-SCOPE-NOT-REPRESENTED-ADR.md` with Status **ACCEPTED** under the COO formal grant.
 - Base tip is `62a40be22b9598d9732e9ce2574d86d2228d6270`.
-- Arch invent-safe FROZEN sha256 `b42f6cf1605096a8819dd91777ca58cb63d781b4fa0f9752211f1115cc370f35` is cited as the recorded COO+Arch MATCH. CEO APPROVED. COO GRANTED.
+- Grant FROZEN path is `docs/architecture/PHASE-3-TRACK-B-DEFINITION.FROZEN.md`. sha256 of those bytes is `b42f6cf1605096a8819dd91777ca58cb63d781b4fa0f9752211f1115cc370f35` (MATCH verifiable by recompute). CEO APPROVED. COO GRANTED.
 - Terminal is `DEFINITION_SCOPE_NOT_REPRESENTED`. Runtime fail-closed status is `AMBIGUOUS_TARGET`.
 - No amendment hunt. No `WITH_BUILDERS` for this track. No IR invent. No pin. Soft gate. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.**
