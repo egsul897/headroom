@@ -12,6 +12,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { prisma } from "../../lib/prisma";
+import { withPreMigrationSnapshotDuplicates } from "./p3-ffc2c-snapshot-unique-guard";
 import { CONFLICTING_FINANCIAL_FACTS, upsertFinancialFactsForDate, type BatchFinancialFact } from "../../lib/onboarding/financial";
 import { FINANCIAL_IDENTITY_AMBIGUOUS, FINANCIAL_IDENTITY_UNKNOWN, resolveCanonicalFinancialIdentity } from "../../lib/financial-identity";
 
@@ -292,52 +293,60 @@ describe("P3-FFC2b write-side same-date financial identity", () => {
   });
 
   it("W3 duplicate same-date Snapshots fail closed as AMBIGUOUS with no winner and no rewrite", async () => {
-    const companyId = IDS[5];
-    const snapA = await prisma.financialSnapshot.create({ data: { companyId, asOfDate: TARGET_DATE, notes: "snap-a", ...BASE_ROW, cash: 1 } });
-    const snapB = await prisma.financialSnapshot.create({ data: { companyId, asOfDate: TARGET_DATE, notes: "snap-b", ...BASE_ROW, cash: 2 } });
-    const state = await prisma.financialState.create({ data: bareStateData(companyId, "state-kept") });
-    const resolution = await resolveCanonicalFinancialIdentity(
-      (args) => prisma.financialSnapshot.findMany(args),
-      { where: { companyId, asOfDate: TARGET_DATE }, selection: "exact" },
-    );
-    expect(resolution).toMatchObject({ status: "AMBIGUOUS", code: FINANCIAL_IDENTITY_AMBIGUOUS, matchCount: 2 });
+    // Pre-migration duplicate Snapshot rows. The unique index is suspended
+    // for this seed only, then restored. No row is chosen as a winner.
+    await withPreMigrationSnapshotDuplicates(async () => {
+      const companyId = IDS[5];
+      const onlyId = IDS[6];
+      try {
+        const snapA = await prisma.financialSnapshot.create({ data: { companyId, asOfDate: TARGET_DATE, notes: "snap-a", ...BASE_ROW, cash: 1 } });
+        const snapB = await prisma.financialSnapshot.create({ data: { companyId, asOfDate: TARGET_DATE, notes: "snap-b", ...BASE_ROW, cash: 2 } });
+        const state = await prisma.financialState.create({ data: bareStateData(companyId, "state-kept") });
+        const resolution = await resolveCanonicalFinancialIdentity(
+          (args) => prisma.financialSnapshot.findMany(args),
+          { where: { companyId, asOfDate: TARGET_DATE }, selection: "exact" },
+        );
+        expect(resolution).toMatchObject({ status: "AMBIGUOUS", code: FINANCIAL_IDENTITY_AMBIGUOUS, matchCount: 2 });
 
-    const written = await upsertFinancialFactsForDate(companyId, TARGET_DATE, [
-      ...fullBatch("w3", { cash: 2 }),
-      { key: "unknown", metricName: "some_unrecognized_metric", value: 999 },
-    ], "w3-must-not-pick");
-    expect(written.financialSnapshotId).toBeUndefined();
-    expect(written.financialStateId).toBeUndefined();
-    expect(written.perFact.length).toBeGreaterThan(1);
-    expect(written.perFact.every((f) => f.applied === false)).toBe(true);
-    expect(written.perFact.every((f) => f.skipReason?.includes(FINANCIAL_IDENTITY_AMBIGUOUS))).toBe(true);
-    expect(written.perFact.every((f) => !f.skipReason?.includes(CONFLICTING_FINANCIAL_FACTS))).toBe(true);
-    expect(written.perFact.find((f) => f.key === "unknown")!.skipReason).toContain(FINANCIAL_IDENTITY_AMBIGUOUS);
-    expect(written.perFact.find((f) => f.key === "unknown")!.skipReason).not.toMatch(/Unrecognized metricName/);
+        const written = await upsertFinancialFactsForDate(companyId, TARGET_DATE, [
+          ...fullBatch("w3", { cash: 2 }),
+          { key: "unknown", metricName: "some_unrecognized_metric", value: 999 },
+        ], "w3-must-not-pick");
+        expect(written.financialSnapshotId).toBeUndefined();
+        expect(written.financialStateId).toBeUndefined();
+        expect(written.perFact.length).toBeGreaterThan(1);
+        expect(written.perFact.every((f) => f.applied === false)).toBe(true);
+        expect(written.perFact.every((f) => f.skipReason?.includes(FINANCIAL_IDENTITY_AMBIGUOUS))).toBe(true);
+        expect(written.perFact.every((f) => !f.skipReason?.includes(CONFLICTING_FINANCIAL_FACTS))).toBe(true);
+        expect(written.perFact.find((f) => f.key === "unknown")!.skipReason).toContain(FINANCIAL_IDENTITY_AMBIGUOUS);
+        expect(written.perFact.find((f) => f.key === "unknown")!.skipReason).not.toMatch(/Unrecognized metricName/);
 
-    const snaps = await prisma.financialSnapshot.findMany({ where: { companyId, asOfDate: TARGET_DATE }, orderBy: { notes: "asc" } });
-    expect(snaps.map((row) => row.id).sort()).toEqual([snapA.id, snapB.id].sort());
-    expect(snaps.map((row) => ({ notes: row.notes, cash: row.cash.toNumber() }))).toEqual([
-      { notes: "snap-a", cash: 1 },
-      { notes: "snap-b", cash: 2 },
-    ]);
-    const states = await prisma.financialState.findMany({ where: { companyId, asOfDate: TARGET_DATE } });
-    expect(states).toHaveLength(1);
-    expect(states[0]!.id).toBe(state.id);
-    expect(states[0]!.updatedAt.toISOString()).toBe(state.updatedAt.toISOString());
-    expect(states[0]!.notes).toBe("state-kept");
-    expect(states[0]!.balanceSheetFacts).toEqual({ marker: "state-kept" });
+        const snaps = await prisma.financialSnapshot.findMany({ where: { companyId, asOfDate: TARGET_DATE }, orderBy: { notes: "asc" } });
+        expect(snaps.map((row) => row.id).sort()).toEqual([snapA.id, snapB.id].sort());
+        expect(snaps.map((row) => ({ notes: row.notes, cash: row.cash.toNumber() }))).toEqual([
+          { notes: "snap-a", cash: 1 },
+          { notes: "snap-b", cash: 2 },
+        ]);
+        const states = await prisma.financialState.findMany({ where: { companyId, asOfDate: TARGET_DATE } });
+        expect(states).toHaveLength(1);
+        expect(states[0]!.id).toBe(state.id);
+        expect(states[0]!.updatedAt.toISOString()).toBe(state.updatedAt.toISOString());
+        expect(states[0]!.notes).toBe("state-kept");
+        expect(states[0]!.balanceSheetFacts).toEqual({ marker: "state-kept" });
 
-    const onlyId = IDS[6];
-    await prisma.financialSnapshot.create({ data: { companyId: onlyId, asOfDate: TARGET_DATE, notes: "only-a", ...BASE_ROW, cash: 10 } });
-    await prisma.financialSnapshot.create({ data: { companyId: onlyId, asOfDate: TARGET_DATE, notes: "only-b", ...BASE_ROW, cash: 20 } });
-    const noState = await upsertFinancialFactsForDate(onlyId, TARGET_DATE, fullBatch("w3b", { cash: 20 }), "w3-no-state");
-    expect(noState.perFact.every((f) => f.applied === false && f.skipReason?.includes(FINANCIAL_IDENTITY_AMBIGUOUS))).toBe(true);
-    expect(await prisma.financialSnapshot.count({ where: { companyId: onlyId } })).toBe(2);
-    expect(await prisma.financialState.count({ where: { companyId: onlyId } })).toBe(0);
-    const onlySnaps = await prisma.financialSnapshot.findMany({ where: { companyId: onlyId }, orderBy: { notes: "asc" } });
-    expect(onlySnaps.map((row) => row.cash.toNumber())).toEqual([10, 20]);
-  });
+        await prisma.financialSnapshot.create({ data: { companyId: onlyId, asOfDate: TARGET_DATE, notes: "only-a", ...BASE_ROW, cash: 10 } });
+        await prisma.financialSnapshot.create({ data: { companyId: onlyId, asOfDate: TARGET_DATE, notes: "only-b", ...BASE_ROW, cash: 20 } });
+        const noState = await upsertFinancialFactsForDate(onlyId, TARGET_DATE, fullBatch("w3b", { cash: 20 }), "w3-no-state");
+        expect(noState.perFact.every((f) => f.applied === false && f.skipReason?.includes(FINANCIAL_IDENTITY_AMBIGUOUS))).toBe(true);
+        expect(await prisma.financialSnapshot.count({ where: { companyId: onlyId } })).toBe(2);
+        expect(await prisma.financialState.count({ where: { companyId: onlyId } })).toBe(0);
+        const onlySnaps = await prisma.financialSnapshot.findMany({ where: { companyId: onlyId }, orderBy: { notes: "asc" } });
+        expect(onlySnaps.map((row) => row.cash.toNumber())).toEqual([10, 20]);
+      } finally {
+        await prisma.financialSnapshot.deleteMany({ where: { companyId: { in: [companyId, onlyId] } } });
+      }
+    });
+  }, 60_000);
 
   it("W4 duplicate same-date States fail closed as AMBIGUOUS with no silent state pick or update", async () => {
     const companyId = IDS[7];

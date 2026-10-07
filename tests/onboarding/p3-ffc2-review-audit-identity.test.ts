@@ -24,6 +24,7 @@ vi.mock("react", async () => {
 });
 
 import { prisma } from "../../lib/prisma";
+import { withPreMigrationSnapshotDuplicates } from "./p3-ffc2c-snapshot-unique-guard";
 import { connectSource } from "../../lib/connectors/registry";
 import { ensureFinancialFactContainer } from "../../lib/connectors/ingestion";
 import { promoteCompanyCandidates, CONFLICTING_DEFINED_TERMS, CONFLICTING_DOCUMENT_RELATIONSHIPS } from "../../lib/onboarding/promotion";
@@ -248,37 +249,45 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
       interestExpense: 2.1,
       assumedNewDebtRatePct: 7.5,
     });
-    await prisma.financialSnapshot.create({ data: { companyId: dupSnap, asOfDate: AS_OF, notes: "snap-b", ...BASE_ROW, cash: 2 } });
-    await expect(loadCompanyCovenantData(prisma, dupSnap, AS_OF)).rejects.toSatisfy((err: unknown) => {
-      expectCode(err, "AMBIGUOUS");
-      return true;
+    // Pre-migration duplicate Snapshot rows. The unique index is suspended
+    // for this seed only, then restored. No row is chosen as a winner.
+    await withPreMigrationSnapshotDuplicates(async () => {
+      try {
+        await prisma.financialSnapshot.create({ data: { companyId: dupSnap, asOfDate: AS_OF, notes: "snap-b", ...BASE_ROW, cash: 2 } });
+        await expect(loadCompanyCovenantData(prisma, dupSnap, AS_OF)).rejects.toSatisfy((err: unknown) => {
+          expectCode(err, "AMBIGUOUS");
+          return true;
+        });
+        await expect(getFinancialSnapshot(dupSnap, AS_OF)).rejects.toSatisfy((err: unknown) => {
+          expectCode(err, "AMBIGUOUS");
+          return true;
+        });
+        await expect(getDebtTranches(dupSnap)).rejects.toSatisfy((err: unknown) => {
+          expectCode(err, "AMBIGUOUS");
+          return true;
+        });
+        await expect(getCompanyDashboard(dupSnap)).rejects.toSatisfy((err: unknown) => {
+          expectCode(err, "AMBIGUOUS");
+          return true;
+        });
+        await expect(getCovenantOverview(dupSnap)).rejects.toSatisfy((err: unknown) => {
+          expectCode(err, "AMBIGUOUS");
+          return true;
+        });
+        expect((await loadFinancialState(prisma, dupSnap, AS_OF))?.id).toBe(dupSnapState.id);
+        const snapRows = await prisma.financialSnapshot.findMany({ where: { companyId: dupSnap, asOfDate: AS_OF } });
+        expect(snapRows).toHaveLength(2);
+        expect(new Set(snapRows.map((row) => row.cash.toNumber()))).toEqual(new Set([4.2, 2]));
+        const exactDup = await resolveCanonicalFinancialIdentity(
+          (args) => prisma.financialSnapshot.findMany(args),
+          { where: { companyId: dupSnap, asOfDate: AS_OF }, selection: "exact" },
+        );
+        expect(exactDup.status).toBe("AMBIGUOUS");
+        if (exactDup.status === "AMBIGUOUS") expect(exactDup.matchCount).toBe(2);
+      } finally {
+        await prisma.financialSnapshot.deleteMany({ where: { companyId: dupSnap, notes: "snap-b" } });
+      }
     });
-    await expect(getFinancialSnapshot(dupSnap, AS_OF)).rejects.toSatisfy((err: unknown) => {
-      expectCode(err, "AMBIGUOUS");
-      return true;
-    });
-    await expect(getDebtTranches(dupSnap)).rejects.toSatisfy((err: unknown) => {
-      expectCode(err, "AMBIGUOUS");
-      return true;
-    });
-    await expect(getCompanyDashboard(dupSnap)).rejects.toSatisfy((err: unknown) => {
-      expectCode(err, "AMBIGUOUS");
-      return true;
-    });
-    await expect(getCovenantOverview(dupSnap)).rejects.toSatisfy((err: unknown) => {
-      expectCode(err, "AMBIGUOUS");
-      return true;
-    });
-    expect((await loadFinancialState(prisma, dupSnap, AS_OF))?.id).toBe(dupSnapState.id);
-    const snapRows = await prisma.financialSnapshot.findMany({ where: { companyId: dupSnap, asOfDate: AS_OF } });
-    expect(snapRows).toHaveLength(2);
-    expect(new Set(snapRows.map((row) => row.cash.toNumber()))).toEqual(new Set([4.2, 2]));
-    const exactDup = await resolveCanonicalFinancialIdentity(
-      (args) => prisma.financialSnapshot.findMany(args),
-      { where: { companyId: dupSnap, asOfDate: AS_OF }, selection: "exact" },
-    );
-    expect(exactDup.status).toBe("AMBIGUOUS");
-    if (exactDup.status === "AMBIGUOUS") expect(exactDup.matchCount).toBe(2);
 
     const dupState = IDS[5];
     const kept = await createManualFinancialState({
@@ -325,14 +334,20 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
     expect(stateRows.map((row) => row.id)).toContain(kept.id);
 
     const cohort = IDS[6];
-    await prisma.financialSnapshot.create({ data: { companyId: cohort, asOfDate: PRIOR, notes: "old-a", ...BASE_ROW, cash: 1 } });
-    await prisma.financialSnapshot.create({ data: { companyId: cohort, asOfDate: PRIOR, notes: "old-b", ...BASE_ROW, cash: 2 } });
-    await prisma.financialSnapshot.create({ data: { companyId: cohort, asOfDate: AS_OF, notes: "later-unique", ...BASE_ROW, cash: 9 } });
-    const later = await loadCompanyCovenantData(prisma, cohort, AS_OF);
-    expect(later.financials.cash).toBe(9);
-    await expect(loadCompanyCovenantData(prisma, cohort, PRIOR)).rejects.toSatisfy((err: unknown) => {
-      expectCode(err, "AMBIGUOUS");
-      return true;
+    await withPreMigrationSnapshotDuplicates(async () => {
+      try {
+        await prisma.financialSnapshot.create({ data: { companyId: cohort, asOfDate: PRIOR, notes: "old-a", ...BASE_ROW, cash: 1 } });
+        await prisma.financialSnapshot.create({ data: { companyId: cohort, asOfDate: PRIOR, notes: "old-b", ...BASE_ROW, cash: 2 } });
+        await prisma.financialSnapshot.create({ data: { companyId: cohort, asOfDate: AS_OF, notes: "later-unique", ...BASE_ROW, cash: 9 } });
+        const later = await loadCompanyCovenantData(prisma, cohort, AS_OF);
+        expect(later.financials.cash).toBe(9);
+        await expect(loadCompanyCovenantData(prisma, cohort, PRIOR)).rejects.toSatisfy((err: unknown) => {
+          expectCode(err, "AMBIGUOUS");
+          return true;
+        });
+      } finally {
+        await prisma.financialSnapshot.deleteMany({ where: { companyId: cohort, notes: "old-b" } });
+      }
     });
 
     const effective = IDS[7];
@@ -366,7 +381,7 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
       expectCode(err, "AMBIGUOUS");
       return true;
     });
-  });
+  }, 60_000);
 
   it("R7 conflicting DEFINED_TERM values are not dual-promoted and identical text corroborates", async () => {
     async function termCandidate(companyId: string, documentId: string, fullText: string, createdAt: Date, sectionRef = "1.01") {

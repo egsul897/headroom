@@ -16,7 +16,9 @@
  * P3-FFC2b: same-date Snapshot and State resolve goes through
  * resolveCanonicalFinancialIdentity with selection "exact". Zero rows is
  * absent. One row is that row. More than one row on either table fails the
- * batch closed. Schema @@unique stays HOLD.
+ * batch closed. FinancialSnapshot @@unique([companyId, asOfDate]) landed in
+ * P3-FFC2c. FinancialState @@unique stays HOLD. createManualFinancialState
+ * product semantics stay HOLD.
  */
 
 import { Prisma, type Facility as PrismaFacility, type Permission as PrismaPermission, type PrismaClient } from "@prisma/client";

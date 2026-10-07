@@ -1,5 +1,14 @@
 /**
- * Canonical financial identity before a schema @@unique([companyId, asOfDate]).
+ * Canonical financial identity for stored financial rows.
+ *
+ * FinancialSnapshot @@unique([companyId, asOfDate]) landed in P3-FFC2c.
+ * A second Snapshot row for that pair is refused by the database.
+ * Rows that already shared a pair, from before that migration, still
+ * resolve as AMBIGUOUS. This helper does not pick one of them.
+ *
+ * FinancialState @@unique remains HOLD. State has periodType and scope.
+ * Do not invent a uniqueness shape that ignores those columns.
+ * createManualFinancialState product semantics remain HOLD.
  *
  * Soft gate only. IMPLEMENTED ≠ CERTIFIED. invent-absence forever.
  * PINNED_OFFLINE ≠ CERTIFIED.
@@ -13,9 +22,9 @@
  * findFirst + orderBy asOfDate desc already performed. It does not add a
  * dating rule. Ties on that latest asOfDate are not broken by findFirst.
  *
- * Schema @@unique remains HOLD. Write-side same-date resolve in
- * lib/onboarding/financial.ts calls this helper with selection "exact"
- * (P3-FFC2b). 0 → UNKNOWN, 1 → UNIQUE, >1 → AMBIGUOUS is unchanged.
+ * Write-side same-date resolve in lib/onboarding/financial.ts calls this
+ * helper with selection "exact" (P3-FFC2b). 0 → UNKNOWN, 1 → UNIQUE,
+ * >1 → AMBIGUOUS is unchanged.
  */
 
 export const FINANCIAL_IDENTITY_UNKNOWN = "FINANCIAL_IDENTITY_UNKNOWN";

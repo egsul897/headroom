@@ -26,7 +26,7 @@ FFC1 `CONFLICTING_FINANCIAL_FACTS`, applied honesty, R0 C6, and the PERMISSION d
 ## HOLD follow-ons (not this PR)
 
 - Write-side `lib/onboarding/financial.ts` `findFirst` on same-date Snapshot/State. FFC1b owns that file. Named residual, not abandoned.
-- Schema `@@unique([companyId, asOfDate])` and its migration, after this AMBIGUOUS path.
+- FinancialSnapshot `@@unique([companyId, asOfDate])` and its fail-closed migration landed in P3-FFC2c. FinancialState `@@unique` remains HOLD. State has `periodType` and `scope`. Do not invent a uniqueness shape that ignores those columns.
 - Reconciliation amplifier. EXTERNAL_INPUT always-create. Covenant activation create-per-candidate. permissionRelationship always-create.
 - Matrix / pins / stratified certification. SFG-1. Snapshot per-field provenance. Invented discoveryIds.
 

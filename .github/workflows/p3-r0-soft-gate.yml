@@ -29,7 +29,18 @@
 # resolveCanonicalFinancialIdentity. 0 is absent. 1 is that row. More than
 # one Snapshot or State row fails closed as FINANCIAL_IDENTITY_AMBIGUOUS
 # with no silent pick and no rewrite. This gate does not certify that
-# behavior. Schema @@unique stays HOLD.
+# behavior. FinancialSnapshot @@unique([companyId, asOfDate]) is P3-FFC2c.
+# FinancialState @@unique stays HOLD.
+#
+# P3-FFC2c FinancialSnapshot @@unique([companyId, asOfDate]) suite runs here too.
+# Soft gate only. IMPLEMENTED ≠ CERTIFIED. invent-absence forever.
+# PINNED_OFFLINE ≠ CERTIFIED. A green run is not certification credit.
+# The migration aborts when any (companyId, asOfDate) already has more than
+# one FinancialSnapshot row. It does not remove rows, pick a majority, or
+# keep a last row. A second insert of the same pair fails at the database.
+# Distinct dates and distinct companies still insert. FinancialState has no
+# @@unique in this chunk. State has periodType and scope. This gate does not
+# invent a State key and does not certify the Snapshot constraint.
 #
 # The suites need Postgres. No existing test workflow supplies
 # DATABASE_URL. initialize-neon.yml and migrate-neon-onboarding.yml are
@@ -38,8 +49,8 @@
 # not invent a paid credential. It starts an ephemeral Postgres 16 service
 # on the runner, applies this repo's migrations with `prisma migrate deploy`,
 # then runs the R0 suites, the P3-FFC1 financial-fact conflict suite, the
-# P3-FFC1b provenance-wrapper carry suite, the P3-FFC2 suites, and the
-# P3-FFC2b write-side identity suite.
+# P3-FFC1b provenance-wrapper carry suite, the P3-FFC2 suites, the
+# P3-FFC2b write-side identity suite, and the P3-FFC2c Snapshot-unique suite.
 
 name: p3-r0-soft-gate
 
@@ -62,6 +73,7 @@ on:
       - "tests/financial-identity/**"
       - "docs/p3-ffc2-review-audit-identity-checklist.md"
       - "docs/p3-ffc2b-write-side-financial-identity-checklist.md"
+      - "docs/p3-ffc2c-financial-snapshot-unique-checklist.md"
       - "prisma/schema.prisma"
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
@@ -87,6 +99,7 @@ on:
       - "tests/financial-identity/**"
       - "docs/p3-ffc2-review-audit-identity-checklist.md"
       - "docs/p3-ffc2b-write-side-financial-identity-checklist.md"
+      - "docs/p3-ffc2c-financial-snapshot-unique-checklist.md"
       - "prisma/schema.prisma"
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
@@ -131,7 +144,7 @@ jobs:
         run: npx tsc --noEmit -p .
       - name: apply migrations to the ephemeral Postgres service
         run: npx prisma migrate deploy
-      - name: P3-R0, financial-fact conflict, provenance-carry, FFC2, and FFC2b suites
+      - name: P3-R0, financial-fact conflict, provenance-carry, FFC2, FFC2b, and FFC2c suites
         run: >-
           npx vitest run
           tests/feeds/snapshot-update-no-carry-forward.test.ts
@@ -140,5 +153,6 @@ jobs:
           tests/onboarding/financial-state-provenance-carry.test.ts
           tests/onboarding/p3-ffc2-review-audit-identity.test.ts
           tests/onboarding/p3-ffc2b-write-side-financial-identity.test.ts
+          tests/onboarding/p3-ffc2c-financial-snapshot-unique.test.ts
           tests/company-state/canonical-state.test.ts
           tests/ledger/supersede-ledger-entry.test.ts

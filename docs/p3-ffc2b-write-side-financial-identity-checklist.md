@@ -4,7 +4,7 @@ Soft gate only. **IMPLEMENTED ≠ CERTIFIED.** invent-absence forever. **PINNED_
 
 FROZEN sha256 `2358d77f0b00591fd99c2451701455fd72c20a3422ca0c962c98c0c4be21a06d`. Base tip `7d882bde4d875d933ba2f65b0da718927197774b` (main after #99 P3-FFC2).
 
-Write-side same-date resolve in `upsertFinancialFactsForDate` uses `resolveCanonicalFinancialIdentity` with `selection: "exact"` and `where: { companyId, asOfDate }`. `lib/financial-identity.ts` 0 / 1 / >1 semantics are unchanged. Schema `@@unique` stays HOLD.
+Write-side same-date resolve in `upsertFinancialFactsForDate` uses `resolveCanonicalFinancialIdentity` with `selection: "exact"` and `where: { companyId, asOfDate }`. `lib/financial-identity.ts` 0 / 1 / >1 semantics are unchanged. FinancialSnapshot `@@unique([companyId, asOfDate])` landed in P3-FFC2c. FinancialState `@@unique` stays HOLD.
 
 ## Permanent reviewer questions
 
@@ -30,8 +30,8 @@ Write-side same-date resolve in `upsertFinancialFactsForDate` uses `resolveCanon
 
 ## HOLD follow-ons (not this PR)
 
-- Schema `@@unique([companyId, asOfDate])` and its migration. State also has `periodType` and `scope`. Do not invent a uniqueness shape that ignores those columns.
-- `createManualFinancialState` always-create duplicate risk.
+- FinancialState `@@unique`. State has `periodType` and `scope`. Do not invent a uniqueness shape that ignores those columns. FinancialSnapshot `@@unique([companyId, asOfDate])` landed in P3-FFC2c. The migration aborts when a pair already has more than one Snapshot row. It does not collapse those rows.
+- `createManualFinancialState` always-create duplicate risk. The Snapshot half now fails at the database on a duplicate pair. Wizard product semantics stay HOLD.
 - EXTERNAL_INPUT always-create. Covenant activation create-per-candidate. permissionRelationship always-create.
 - Reconciliation amplifier.
 - Matrix / pins / stratified certification. SFG-1. Simulate. NS-4 Slice 3. Ask theater. Invented discoveryIds.
