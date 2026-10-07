@@ -26,19 +26,13 @@ describe("repro: getOrCreateUploadConnection concurrent first-call race", () => 
     expect(rejected).toHaveLength(0);
   });
 
-  // AUDITOR FINDING (reported in 10-ingestion-identity-certification.json):
-  // this test is EXPECTED TO FAIL as written (it.fails) - it documents a
-  // real, reliably reproducible defect (lib/connectors/registry.ts's
-  // getOrCreateUploadConnection has its own unfixed TOCTOU race, the same
-  // class already fixed elsewhere in upload-connector.ts's own P2002 catch,
-  // but not applied here). Using it.fails keeps this suite GREEN overall
-  // while still serving as a live regression check: if a future fix
-  // resolves the race, THIS test starts failing (because it.fails expects
-  // failure), which is the correct signal to update it to a normal
-  // assertion.
-  it.fails("20 trials x 6 concurrent first-time calls each, fresh company per trial - looking for ANY P2002 rejection", async () => {
+  // AUD-S12-01: getOrCreateUploadConnection catches P2002 and returns the
+  // winning DOCUMENT_UPLOAD row. This case used to be it.fails while that
+  // race was unhandled. It now asserts zero rejections and one row per company.
+  it("20 trials x 6 concurrent first-time calls each, fresh company per trial - looking for ANY P2002 rejection", async () => {
     let totalRejected = 0;
     const codes: string[] = [];
+    const rowCounts: number[] = [];
     for (let trial = 0; trial < 20; trial++) {
       const trialCo = `${CO}-trial-${trial}`;
       await prisma.companySourceConnection.deleteMany({ where: { companyId: trialCo } }).catch(() => {});
@@ -48,11 +42,14 @@ describe("repro: getOrCreateUploadConnection concurrent first-call race", () => 
       const rejected = settled.filter((s) => s.status === "rejected");
       totalRejected += rejected.length;
       for (const r of rejected) codes.push((r as PromiseRejectedResult).reason?.code ?? String((r as PromiseRejectedResult).reason));
+      const rows = await prisma.companySourceConnection.findMany({ where: { companyId: trialCo, connectorType: "DOCUMENT_UPLOAD" } });
+      rowCounts.push(rows.length);
       await prisma.companySourceConnection.deleteMany({ where: { companyId: trialCo } }).catch(() => {});
       await prisma.company.deleteMany({ where: { id: trialCo } }).catch(() => {});
     }
     // eslint-disable-next-line no-console
     console.log("TOTAL REJECTED ACROSS 20 TRIALS:", totalRejected, codes);
     expect(totalRejected).toBe(0);
+    expect(rowCounts).toEqual(Array.from({ length: 20 }, () => 1));
   });
 });

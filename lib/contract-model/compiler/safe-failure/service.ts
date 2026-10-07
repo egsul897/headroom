@@ -12,6 +12,7 @@
  * `status` reflects only the LATEST decision (matching CandidateReviewEvent's
  * proven pattern elsewhere in this codebase).
  */
+import { Prisma } from "@prisma/client";
 import { prisma } from "../../../prisma";
 import type { ClaimReviewDecisionAction, ClaimReviewItemInput, ClaimReviewObservationInput, ClaimReviewRecordResult, ClaimReviewStatus, ExplicitSafeFailureCheckResult, ResolveClaimReviewInput } from "./types";
 
@@ -26,7 +27,7 @@ import type { ClaimReviewDecisionAction, ClaimReviewItemInput, ClaimReviewObserv
  * the same stage, still always appends).
  */
 export async function recordClaimReview(input: ClaimReviewItemInput): Promise<ClaimReviewRecordResult> {
-  const existing = await prisma.claimReviewItem.findUnique({
+  let existing = await prisma.claimReviewItem.findUnique({
     where: { companyId_claimKey: { companyId: input.companyId, claimKey: input.claimKey } },
     include: { observations: { orderBy: { createdAt: "desc" }, take: 1 } },
   });
@@ -39,33 +40,47 @@ export async function recordClaimReview(input: ClaimReviewItemInput): Promise<Cl
   };
 
   if (!existing) {
-    const created = await prisma.claimReviewItem.create({
-      data: {
-        companyId: input.companyId,
-        packageKey: input.packageKey,
-        instrumentKey: input.instrumentKey,
-        documentId: input.documentId,
-        claimKey: input.claimKey,
-        structuralNodeId: input.structuralNodeId,
-        sectionRef: input.sectionRef,
-        charStart: input.charStart,
-        charEnd: input.charEnd,
-        covenantFamily: input.covenantFamily,
-        materiality: input.materiality,
-        status: "OPEN_REVIEW",
-        reasonCode: input.reasonCode,
-        unresolvedDimensions: input.unresolvedDimensions,
-        originStage: input.originStage,
-        sourceEvidence: input.sourceEvidence,
-        sourceCitation: input.sourceCitation,
-        relatedSemanticObjectId: input.relatedSemanticObjectId,
-        operativeVersionRef: input.operativeVersionRef,
-        rationale: input.rationale,
-        algorithmVersion: input.algorithmVersion,
-        observations: { create: observation },
-      },
-    });
-    return { outcome: "CREATED", reviewItemId: created.id, claimKey: input.claimKey };
+    try {
+      const created = await prisma.claimReviewItem.create({
+        data: {
+          companyId: input.companyId,
+          packageKey: input.packageKey,
+          instrumentKey: input.instrumentKey,
+          documentId: input.documentId,
+          claimKey: input.claimKey,
+          structuralNodeId: input.structuralNodeId,
+          sectionRef: input.sectionRef,
+          charStart: input.charStart,
+          charEnd: input.charEnd,
+          covenantFamily: input.covenantFamily,
+          materiality: input.materiality,
+          status: "OPEN_REVIEW",
+          reasonCode: input.reasonCode,
+          unresolvedDimensions: input.unresolvedDimensions,
+          originStage: input.originStage,
+          sourceEvidence: input.sourceEvidence,
+          sourceCitation: input.sourceCitation,
+          relatedSemanticObjectId: input.relatedSemanticObjectId,
+          operativeVersionRef: input.operativeVersionRef,
+          rationale: input.rationale,
+          algorithmVersion: input.algorithmVersion,
+          observations: { create: observation },
+        },
+      });
+      return { outcome: "CREATED", reviewItemId: created.id, claimKey: input.claimKey };
+    } catch (err) {
+      // Concurrent first creates for the same (companyId, claimKey) race.
+      // Refetch the winner with the same observations include and fall through
+      // the existing-item branch. No new outcome code. resolveClaimReview is unchanged.
+      if (!(err instanceof Prisma.PrismaClientKnownRequestError) || err.code !== "P2002") {
+        throw err;
+      }
+      existing = await prisma.claimReviewItem.findUnique({
+        where: { companyId_claimKey: { companyId: input.companyId, claimKey: input.claimKey } },
+        include: { observations: { orderBy: { createdAt: "desc" }, take: 1 } },
+      });
+      if (!existing) throw err;
+    }
   }
 
   const lastObservation = existing.observations[0] ?? null;
