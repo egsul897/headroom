@@ -2,8 +2,10 @@
  * OPERATIVE_SUBWINDOW source-window seal. Soft gate.
  * Invent-absence forever. IMPLEMENTED ≠ CERTIFIED.
  *
- * C1 FROZEN sha256 35907db264d8b6201189d315ee1a282e0dca008023b953652d39f71862005f4d
- * (COO GRANT sole). Sealing is independent of RECLASSIFIABLE_TO / D2.
+ * Grant body docs/architecture/PHASE-3-TRACK-C1-SEAL.FROZEN.md.
+ * sha256 35907db264d8b6201189d315ee1a282e0dca008023b953652d39f71862005f4d (MATCH).
+ * COO GRANT sole. Sealing is independent of RECLASSIFIABLE_TO / D2.
+ * Seal ≠ CERTIFIED.
  */
 import fs from "node:fs";
 import { createHash } from "node:crypto";
@@ -68,6 +70,8 @@ function documentAround(sentence: string, documentId = "doc-generalized"): Opera
 
 describe("OPERATIVE_SUBWINDOW C1 seal", () => {
   it("binds the COO GRANT C1 FROZEN hash and stays uncertified", () => {
+    const frozenBytes = fs.readFileSync("docs/architecture/PHASE-3-TRACK-C1-SEAL.FROZEN.md");
+    expect(createHash("sha256").update(frozenBytes).digest("hex")).toBe(C1_FROZEN);
     expect(OPERATIVE_SUBWINDOW_C1_FROZEN_SHA256).toBe(C1_FROZEN);
     const result = sealed(documentAround("The borrower shall deliver the compliance certificate within ten days."));
     expect(result.frozenSha256).toBe(C1_FROZEN);

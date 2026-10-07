@@ -2,9 +2,11 @@
  * OPERATIVE_SUBWINDOW source-window seal.
  *
  * Arch D1 requirements 1–6 in
- * docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md. COO GRANT sole, bound
- * to C1 FROZEN sha256
- * 35907db264d8b6201189d315ee1a282e0dca008023b953652d39f71862005f4d.
+ * docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md. COO GRANT sole.
+ * Grant body: docs/architecture/PHASE-3-TRACK-C1-SEAL.FROZEN.md.
+ * sha256 of those bytes:
+ * 35907db264d8b6201189d315ee1a282e0dca008023b953652d39f71862005f4d
+ * (MATCH; recompute with sha256sum on that path). The file is the preimage.
  * That grant says a source window may be sealed independently of D2
  * category-to-rule edges, and it supersedes the prior seal FREEZE_NOT_READY
  * for this primitive only.
@@ -24,7 +26,7 @@
  */
 import { createHash } from "node:crypto";
 
-/** COO GRANT sole. Full C1 FROZEN identity. */
+/** COO GRANT sole. sha256 of docs/architecture/PHASE-3-TRACK-C1-SEAL.FROZEN.md (MATCH). */
 export const OPERATIVE_SUBWINDOW_C1_FROZEN_SHA256 =
   "35907db264d8b6201189d315ee1a282e0dca008023b953652d39f71862005f4d";
 
