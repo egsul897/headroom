@@ -96,19 +96,35 @@ export async function listCompanySourceConnections(companyId: string): Promise<C
  * uploadDocumentThroughIngestion or the onboarding wizard's Documents stage
  * creates it, and every call after that reuses the same row (upsert, per the
  * @@unique([companyId, connectorType]) constraint).
+ *
+ * Concurrent first calls can both miss the row and race into create.
+ * Postgres raises P2002 for the loser. That error is caught and the winning
+ * row is re-read by (companyId, DOCUMENT_UPLOAD) - the same catch-and-refetch
+ * `uploadDocumentThroughIngestion` uses. There is no document unwind: this
+ * function creates no side document.
  */
 export async function getOrCreateUploadConnection(companyId: string): Promise<CompanySourceConnection> {
-  return prisma.companySourceConnection.upsert({
-    where: { companyId_connectorType: { companyId, connectorType: "DOCUMENT_UPLOAD" } },
-    create: {
-      companyId,
-      connectorType: "DOCUMENT_UPLOAD",
-      provider: "Manual document upload",
-      status: "CONNECTED",
-      capabilities: DEFAULT_CAPABILITIES.DOCUMENT_UPLOAD,
-    },
-    update: {},
-  });
+  try {
+    return await prisma.companySourceConnection.upsert({
+      where: { companyId_connectorType: { companyId, connectorType: "DOCUMENT_UPLOAD" } },
+      create: {
+        companyId,
+        connectorType: "DOCUMENT_UPLOAD",
+        provider: "Manual document upload",
+        status: "CONNECTED",
+        capabilities: DEFAULT_CAPABILITIES.DOCUMENT_UPLOAD,
+      },
+      update: {},
+    });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const winner = await prisma.companySourceConnection.findUnique({
+        where: { companyId_connectorType: { companyId, connectorType: "DOCUMENT_UPLOAD" } },
+      });
+      if (winner) return winner;
+    }
+    throw err;
+  }
 }
 
 /**
