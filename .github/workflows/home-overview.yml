@@ -9,19 +9,14 @@ on:
   push:
     paths:
       - "tests/home-*.test.tsx"
-      - "tests/home-**"
       - "components/home/**"
       - "lib/home/**"
-      # Literal brackets: [[] / []] so the overview route matches app/[companyId]/page.tsx.
-      - "app/[[]companyId[]]/page.tsx"
       - ".github/workflows/home-overview.yml"
   pull_request:
     paths:
       - "tests/home-*.test.tsx"
-      - "tests/home-**"
       - "components/home/**"
       - "lib/home/**"
-      - "app/[[]companyId[]]/page.tsx"
       - ".github/workflows/home-overview.yml"
 
 jobs:
