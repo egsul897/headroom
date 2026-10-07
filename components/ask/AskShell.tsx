@@ -1,0 +1,56 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import type { AskShellResult } from "@/lib/ask/shell-runner";
+import { refuseAsk } from "@/lib/ask/shell-runner";
+
+/**
+ * Ask page. Plain heading plus the empty case.
+ * Chunk A′ does not run Ask, so the question control stays disabled.
+ */
+export function AskShell({ companyId, initial }: { companyId: string; initial: AskShellResult }) {
+  const [question, setQuestion] = useState("");
+  const unrunnable = initial.kind === "empty";
+
+  return (
+    <div className="home-overview">
+      <header className="home-top">
+        <div className="home-greeting-block">
+          <h1 className="home-greeting">Ask</h1>
+        </div>
+        <Link className="home-export home-export-link" href={`/${companyId}`}>
+          Back to overview
+        </Link>
+      </header>
+
+      <section className="home-card ask-card" data-ask-case={initial.caseId}>
+        <h2 className="home-headline">{initial.headline}</h2>
+        <p className="home-detail">{initial.detail}</p>
+      </section>
+
+      <form
+        className="home-card ask-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          // Disabled in A′. If a control is forced through, still refuse rather than answer.
+          refuseAsk({ companyId, question });
+        }}
+      >
+        <label className="home-eyebrow" htmlFor="ask-question">
+          Question
+        </label>
+        <textarea
+          id="ask-question"
+          value={question}
+          onChange={(event) => setQuestion(event.target.value)}
+          rows={4}
+          disabled={unrunnable}
+        />
+        <button type="submit" className="button" disabled={unrunnable} title={initial.headline}>
+          Submit question
+        </button>
+      </form>
+    </div>
+  );
+}

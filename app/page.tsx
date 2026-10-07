@@ -3,6 +3,7 @@ import { Card } from "@/components/ui";
 import { GlobalBrand } from "@/components/GlobalBrand";
 import { PROTECTED_COMPANY_IDS } from "@/lib/coherent";
 import { listCompanies } from "@/lib/dashboard-service";
+import { companyOpenHref } from "@/lib/home/nav";
 
 export const metadata = { title: "Headroom" };
 export const dynamic = "force-dynamic";
@@ -38,7 +39,7 @@ export default async function Home() {
   const customer = companies.filter((c) => c.tenantKind === "CUSTOMER");
   const evaluation = companies.filter((c) => c.tenantKind === "EVALUATION");
 
-  const openHref = (c: (typeof companies)[number]) => (c.onboardingStatus === "ONBOARDING" ? `/${c.id}/onboarding` : `/${c.id}/dashboard`);
+  const openHref = companyOpenHref;
 
   return (
     <>

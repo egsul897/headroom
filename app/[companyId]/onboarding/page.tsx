@@ -64,8 +64,8 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
           <div className="card-title">This company is live</div>
           <div className="row-note">It now appears in the generalized product pages, exactly like any other company.</div>
           <div className="button-row" style={{ marginTop: 10 }}>
-            <Link href={`/${companyId}/dashboard`} className="button button-primary" style={{ textDecoration: "none" }}>
-              Go to Dashboard
+            <Link href={`/${companyId}`} className="button button-primary" style={{ textDecoration: "none" }}>
+              Open overview
             </Link>
           </div>
         </Card>

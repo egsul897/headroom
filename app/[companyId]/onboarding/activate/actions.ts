@@ -8,6 +8,9 @@ import { prisma } from "@/lib/prisma";
 export async function promoteAction(companyId: string) {
   await promoteCompanyCandidates(companyId);
   revalidatePath(`/${companyId}/onboarding/activate`);
+  revalidatePath(`/${companyId}/onboarding`);
+  revalidatePath(`/${companyId}`);
+  // Legacy dashboard stays under Deal setup & tools. Invalidate its cache; it is not the home destination.
   revalidatePath(`/${companyId}/dashboard`);
 }
 
