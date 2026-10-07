@@ -1,0 +1,78 @@
+# Soft gate. IMPLEMENTED ≠ CERTIFIED.
+# Not certification credit. Does not replace canonical-compiler.yml.
+# Feeds invent-absence paths stay off the certified Phase-3 path
+# (canonical-compiler.yml and stratified-cert.yml). A green run here is
+# not certification credit. PINNED_OFFLINE ≠ CERTIFIED.
+# This gate is not merged into canonical-compiler.yml, stratified-cert.yml,
+# home-overview.yml, or p3-r0-soft-gate.yml.
+#
+# No Neon. No paid secrets. Provider keys are set empty so this job cannot
+# call a provider. Unit/render present-check only — no Postgres service.
+# IAF1 owns app/**/feeds/**, lib/feeds/**, and tests/feeds/**. If the
+# invent-absence Feeds suite is absent, vitest fail-closes. This file does
+# not invent placeholder tests.
+#
+# HOLD — these candidates are not path filters:
+# - tests/feeds/**invent-absence**
+#     Same shape as tests/home-**, which was dropped after GitHub rejected
+#     the workflow file before jobs ran (home-overview run 37560354663,
+#     commit 21506ab). "**" is not its own path segment.
+# - tests/feeds/invent-absence*.test.ts(x)
+#     "(x)" is prose for .ts or .tsx, not a filter pattern. Bracket
+#     character classes are invalid (same rejection as the overview route
+#     bracket escape).
+# - lib/feeds/**
+#     Directory is not present at base tip 6c200999. IAF1 owns it. This
+#     chunk does not create it.
+
+name: feeds-invent-absence
+
+on:
+  push:
+    paths:
+      - "tests/feeds/*invent-absence*"
+      - "tests/feeds/**/*invent-absence*"
+      - "tests/feeds/invent-absence*/**"
+      - "app/**/feeds/**"
+      - ".github/workflows/feeds-invent-absence.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
+  pull_request:
+    paths:
+      - "tests/feeds/*invent-absence*"
+      - "tests/feeds/**/*invent-absence*"
+      - "tests/feeds/invent-absence*/**"
+      - "app/**/feeds/**"
+      - ".github/workflows/feeds-invent-absence.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
+
+jobs:
+  feeds-invent-absence:
+    name: feeds invent-absence (soft gate)
+    runs-on: ubuntu-latest
+    env:
+      # Empty on purpose. A paid provider call from this gate is a defect.
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: present-check
+        run: >-
+          npx vitest run
+          "tests/feeds/*invent-absence*"
+          "tests/feeds/**/*invent-absence*"
+          "tests/feeds/invent-absence*/**"
