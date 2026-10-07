@@ -1,0 +1,92 @@
+{
+  "mode": "DRY_RUN_OFFLINE_PIN",
+  "startedAt": "2026-10-07T00:00:00.000Z",
+  "headSha": "6c2009993a50f2496f4074ed8069d2fded41ba0a",
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:5be40987571c84b616abb07e:PREFLIGHT",
+  "status": "PINNED_OFFLINE",
+  "adr1Cite": "docs/architecture/EVIDENCE-PACKET-VERSIONING-ADR.md",
+  "target": "discovery-candidate:5be40987571c84b616abb07e",
+  "sectionRef": "1.08(d)(ii)",
+  "stratum": "FINANCIAL_COVENANTS",
+  "packageKey": "chwy-2026-credit-agreement",
+  "crossCuts": [
+    "WITHOUT_SHARED_CAPS",
+    "WITHOUT_BUILDERS",
+    "WITHOUT_RECLASSIFICATION"
+  ],
+  "role": "EXCEPTION",
+  "model": "deepseek/deepseek-v4-flash",
+  "hardCeilingUsd": 0.25,
+  "certifiedConfigIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+  "candidateDeadlineMs": 480000,
+  "maxOutputTokensSemantic": 32000,
+  "inventoryMode": "DUAL_PASS_ENSEMBLE",
+  "expansionRegionPolicy": "CONTEXT_ONLY",
+  "operativeState": {
+    "source": "tests/fixtures/unseen-packages/phase-3-validation-chwy-run/stage5-operative-state.json",
+    "runId": "PHASE_3_VALIDATION_CHWY_DETERMINISTIC",
+    "status": "OPERATIVE_STATE_RESOLVED",
+    "provisions": 0,
+    "governingProvisionForTarget": null
+  },
+  "asOfDate": "2026-10-07",
+  "derivedPassABounds": {
+    "policy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+    "note": "Bounds are planning placeholders for a later authorized live chunk; no Pass A executed in this offline pin."
+  },
+  "inputs": {
+    "documents": [
+      {
+        "documentId": "doc-a",
+        "chars": 864362,
+        "sha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+        "rawSha256": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+        "title": "CREDIT AGREEMENT dated as of June 23, 2026"
+      }
+    ],
+    "sealedDiscoverySource": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/stage2b-discovery.json",
+    "sealedDiscoveryCandidateCount": 839,
+    "sealedStructuralNodesSource": "tests/fixtures/unseen-packages/phase-3-validation-chwy-run/stage1-all-nodes.json",
+    "fixtureRoot": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement",
+    "sealedPopulationCandidates": 839,
+    "rehydrationUnresolved": 0,
+    "discoveryHealth": "DISCOVERY_PARTIAL"
+  },
+  "asOfConsistency": {
+    "fixtureFrozenAt": "2026-09-03",
+    "phase3AsOfDate": "2026-10-07",
+    "checks": [
+      {
+        "code": "FIXTURE_DOCUMENT_PRESENT",
+        "passed": true,
+        "detail": "chwy-2026-credit-agreement doc-a extracted text hash-pinned in extraction-manifest.json"
+      },
+      {
+        "code": "SINGLE_PACKAGE_DOCUMENT_REPRESENTED",
+        "passed": true,
+        "detail": "chwy-2026-credit-agreement supplies 1 document (doc-a); operative-state run covers doc-a"
+      },
+      {
+        "code": "OPERATIVE_STATE_RESOLVED_EMPTY_PROVISIONS",
+        "passed": true,
+        "detail": "stage5-operative-state.json status OPERATIVE_STATE_RESOLVED with provisionCount 0"
+      },
+      {
+        "code": "DISCOVERY_ID_PRESENT_IN_SEALED_TREE",
+        "passed": true,
+        "detail": "discovery-candidate:5be40987571c84b616abb07e present in tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/stage2b-discovery.json"
+      },
+      {
+        "code": "STRUCTURAL_NODE_RESOLVED",
+        "passed": true,
+        "detail": "doc-a::1.08(d)(ii) resolved with single occurrence"
+      }
+    ],
+    "proven": true
+  },
+  "note": "Offline pin only. No credential loaded. No provider contacted. Live/paid certification is a later authorized chunk.",
+  "canonicalMapHonestyNote": "Chewy is not yet present under docs/canonical-covenant-map/maps/. Offline pin binds sealed discovery+structural fixtures only. Absence of map REVIEW is not pre-credit for later live CERTIFIED.",
+  "interimBRelatedSeriesDetected": false
+}

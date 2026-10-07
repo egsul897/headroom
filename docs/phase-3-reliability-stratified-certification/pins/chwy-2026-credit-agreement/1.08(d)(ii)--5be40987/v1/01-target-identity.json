@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:5be40987571c84b616abb07e:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "6c2009993a50f2496f4074ed8069d2fded41ba0a",
+  "identity": {
+    "discoveryId": "discovery-candidate:5be40987571c84b616abb07e",
+    "documentId": "doc-a",
+    "packageKey": "chwy-2026-credit-agreement",
+    "normalizedSourceRef": "1.08(d)(ii)",
+    "structuralNodeKeys": [
+      "doc-a::1.08(d)(ii)",
+      "doc-a::1.08(d)",
+      "doc-a::1.08"
+    ],
+    "structuralNodeIds": [
+      "structural-node:bc17e5ee3beb4c94fc806ea8",
+      "structural-node:87efe6e864d68b3b27e1d3b8",
+      "structural-node:8e5099b139aa4f9508e66f35"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:bc17e5ee3beb4c94fc806ea8",
+      "nodeKey": "doc-a::1.08(d)(ii)",
+      "nodeType": "CLAUSE",
+      "sectionRef": "1.08(d)(ii)",
+      "charStart": 385521,
+      "charEnd": 385773
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 252,
+    "operativeSourceSha256": "b35336b075ccfcb22bf7a2b998df44f63dbbb7ca71aaafb8f445c4268d3d8687",
+    "operativeSourceText": "(ii) no amounts shall be added pursuant to this clause (d) to the extent duplicative of any amounts that are otherwise added back in calculating Consolidated EBITDA, whether through a pro forma adjustment or otherwise,\nwith respect to any Test Period.\n",
+    "expected": {
+      "chars": 252,
+      "sha256": "b35336b075ccfcb22bf7a2b998df44f63dbbb7ca71aaafb8f445c4268d3d8687"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "EXCEPTION",
+    "stratum": "FINANCIAL_COVENANTS",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "discoveryReviewStatus": "UNCERTAIN",
+    "discoveryConfidence": 0.68,
+    "description": "Prohibits double-counting of add-back amounts already included in Consolidated EBITDA through another pro forma adjustment or otherwise."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}
