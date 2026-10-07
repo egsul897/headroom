@@ -9,7 +9,7 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { normalizeSubmission } from "../../../lib/contract-model/compiler/semantic/normalize";
 import { buildFewShotExamplesBlock, buildSystemPrompt } from "../../../lib/contract-model/compiler/semantic/prompt";
-import { applyUnlimitedCarveOutQualitativeGates, UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON } from "../../../lib/contract-model/compiler/semantic/unlimited-carveout-honesty";
+import { applyUnlimitedCarveOutQualitativeGates, UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON, UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON } from "../../../lib/contract-model/compiler/semantic/unlimited-carveout-honesty";
 import { SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION } from "../../../lib/contract-model/compiler/semantic/types";
 import type { SubmitCompilationInput, WireExpression, WireRule } from "../../../lib/contract-model/compiler/semantic/wire-schema";
 import { validateRule } from "../../../lib/contract-model/ir/validate";
@@ -183,7 +183,9 @@ describe("unlimited carve-out dual qualitative gates", () => {
       expect(gate(out).gatedBy).toBeNull();
       expect(out.conditions).toHaveLength(1);
       expect(out.conditions[0]?.provenance?.excerpt).toBe("in the ordinary course of business");
-      expect(out.sufficiency).toBe("COMPLETE");
+      expect(out.sufficiency).toBe("AMBIGUOUS");
+      expect(out.sufficiency).not.toBe("COMPLETE");
+      expect(out.sufficiencyReasons.join("\n")).toContain(UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON);
       expect(out.sufficiencyReasons.join("\n")).not.toContain("QUALITATIVE_GATE_NO_CLOSED_CONDITION_TYPE");
     }
   });
@@ -226,10 +228,111 @@ describe("unlimited carve-out dual qualitative gates", () => {
     expect(examples).not.toMatch(/CONMED|Chewy/);
     expect(CONTRACT_CONDITION_TYPES).toContain("UNSUPPORTED");
     expect(CONTRACT_CONDITION_TYPES).not.toContain("ORDINARY_COURSE_OF_BUSINESS" as never);
-    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v11");
+    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v12");
     expect(SEMANTIC_COMPILER_PROMPT_VERSION).toBe("semantic-accountability-compiler-prompt.v9");
     const src = fs.readFileSync("lib/contract-model/compiler/semantic/unlimited-carveout-honesty.ts", "utf8");
     expect(src).not.toMatch(/CONMED|Chewy|OBSOLETE_OR_WORN_OUT|PROPERTY_CHARACTER/);
     expect(src).not.toMatch(/enum /);
+  });
+
+  const THIRD = "payable solely in cash";
+  const SURPLUS_WITH_THIRD = `${SURPLUS} ${THIRD}`;
+  const RATIO: WireExpression = { kind: "COMPARE", left: { kind: "METRIC_REFERENCE", metricName: "Leverage Ratio", valueType: "RATIO" }, operator: "LTE", right: { kind: "RATIO", value: 4 } };
+
+  it("attributes the only unlimited rule to the one operative qualitative pair", () => {
+    const [out] = compile(SURPLUS, [rule({ conditions: [] })]);
+    expect(out!.sufficiency).toBe("PARTIAL");
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+    expect(out!.sufficiency).not.toBe("AMBIGUOUS");
+    expect(out!.sufficiencyReasons.join("\n")).toContain(UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON);
+    expect(out!.sufficiencyReasons.join("\n")).not.toContain(UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON);
+    expect(out!.conditions.map((c) => c.provenance?.excerpt)).toEqual(expect.arrayContaining(["surplus or damaged equipment", "in the ordinary course of business"]));
+    expect(gate(out!).gatedBy?.kind).toBe("AND");
+  });
+
+  it("attributes each unlimited sibling to the object class its own anchor names", () => {
+    const operative = `${SURPLUS}; the transfer of scrap or idle assets in the ordinary course of business;`;
+    const rules = compile(operative, [
+      rule({ localRef: "a", excerpt: "the transfer of surplus or damaged equipment in the ordinary course of business", conditions: [] }),
+      rule({ localRef: "b", excerpt: "the transfer of scrap or idle assets in the ordinary course of business", conditions: [] }),
+    ]);
+    expect(rules).toHaveLength(2);
+    const [surplus, scrap] = rules;
+    expect(surplus!.sufficiency).toBe("PARTIAL");
+    expect(scrap!.sufficiency).toBe("PARTIAL");
+    expect(surplus!.sufficiency).not.toBe("COMPLETE");
+    expect(scrap!.sufficiency).not.toBe("COMPLETE");
+    expect(surplus!.sufficiency).not.toBe("AMBIGUOUS");
+    expect(scrap!.sufficiency).not.toBe("AMBIGUOUS");
+    expect(surplus!.sufficiencyReasons.join("\n")).toContain(UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON);
+    expect(scrap!.sufficiencyReasons.join("\n")).toContain(UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON);
+    expect(surplus!.sufficiencyReasons.join("\n")).not.toContain("PROVENANCE_EXCERPT_UNRESOLVED");
+    expect(scrap!.sufficiencyReasons.join("\n")).not.toContain("PROVENANCE_EXCERPT_UNRESOLVED");
+    const surplusExcerpts = surplus!.conditions.map((c) => c.provenance?.excerpt ?? "");
+    const scrapExcerpts = scrap!.conditions.map((c) => c.provenance?.excerpt ?? "");
+    expect(surplusExcerpts).toContain("surplus or damaged equipment");
+    expect(surplusExcerpts.some((excerpt) => excerpt.includes("in the ordinary course of business"))).toBe(true);
+    expect(surplusExcerpts.join("\n")).not.toContain("scrap or idle assets");
+    expect(scrapExcerpts).toContain("scrap or idle assets");
+    expect(scrapExcerpts.some((excerpt) => excerpt.includes("in the ordinary course of business"))).toBe(true);
+    expect(scrapExcerpts.join("\n")).not.toContain("surplus or damaged equipment");
+    expect(gate(surplus!).gatedBy?.kind).toBe("AND");
+    expect(gate(scrap!).gatedBy?.kind).toBe("AND");
+  });
+
+  it("refuses COMPLETE when multiple unlimited rules cannot be uniquely attributed the qualitative pair", () => {
+    const rules = compile(SURPLUS, [
+      rule({ localRef: "a", conditions: [] }),
+      rule({ localRef: "b", conditions: [] }),
+    ]);
+    for (const out of rules) {
+      expect(out.sufficiency).toBe("AMBIGUOUS");
+      expect(out.sufficiency).not.toBe("COMPLETE");
+      expect(out.sufficiencyReasons.join("\n")).toContain(UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON);
+      expect(out.sufficiencyReasons.join("\n")).not.toContain("QUALITATIVE_GATE_NO_CLOSED_CONDITION_TYPE");
+      expect(gate(out).gatedBy).toBeNull();
+      expect(out.conditions).toHaveLength(0);
+      expect(out.conditions.map((c) => c.provenance?.excerpt)).not.toContain("surplus or damaged equipment");
+    }
+  });
+
+  it("keeps a third independent qualifier on an UNSUPPORTED condition that also names the object class and ordinary course", () => {
+    const foldedExcerpt = `surplus or damaged equipment in the ordinary course of business ${THIRD}`;
+    const [out] = compile(SURPLUS_WITH_THIRD, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: null,
+        referencesDefinitionId: null,
+        description: `The carve-out applies only to surplus or damaged equipment in the ordinary course of business ${THIRD}`,
+        citation: "§9.07(a)",
+        excerpt: foldedExcerpt,
+      }],
+    })]);
+    const surfaces = out!.conditions.map((c) => `${c.provenance?.excerpt ?? ""}\n${c.provenance?.rawModelExcerpt ?? ""}\n${c.description}`);
+    expect(surfaces.some((surface) => surface.includes(THIRD))).toBe(true);
+    expect(surfaces.some((surface) => surface.includes(foldedExcerpt))).toBe(true);
+    expect(out!.conditions.map((c) => c.provenance?.excerpt)).toEqual(expect.arrayContaining(["surplus or damaged equipment", "in the ordinary course of business", foldedExcerpt]));
+    expect(out!.sufficiency).toBe("PARTIAL");
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+    expect(out!.sufficiencyReasons.join("\n")).not.toMatch(/\bCERTIFIED\b/);
+    const report = validateRule(out!);
+    expect(report.issues.filter((issue) => issue.kind === "FALSE_COMPLETENESS")).toEqual([]);
+    expect(gate(out!).gatedBy?.kind).toBe("AND");
+  });
+
+  it("keeps a quantitative gate and records ambiguous attribution when the qualitative pair cannot be assigned", () => {
+    const operative = `${SURPLUS} so long as the Leverage Ratio does not exceed 4.00 to 1.00.`;
+    const rules = compile(operative, [
+      rule({ localRef: "a", capacityExpression: { kind: "UNLIMITED_CAPACITY", gatedBy: RATIO }, conditions: [] }),
+      rule({ localRef: "b", capacityExpression: { kind: "UNLIMITED_CAPACITY", gatedBy: RATIO }, conditions: [] }),
+    ]);
+    for (const out of rules) {
+      expect(out.sufficiency).toBe("AMBIGUOUS");
+      expect(out.sufficiency).not.toBe("COMPLETE");
+      expect(out.sufficiencyReasons.join("\n")).toContain(UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON);
+      expect(gate(out).gatedBy?.kind).toBe("COMPARE");
+      expect(unsupportedOperands(gate(out).gatedBy!)).toHaveLength(0);
+      expect(out.conditions.map((c) => c.provenance?.excerpt)).not.toContain("surplus or damaged equipment");
+    }
   });
 });
