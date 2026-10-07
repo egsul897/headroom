@@ -240,3 +240,20 @@ The prior amendment’s “Chewy FINANCIAL_COVENANTS — still DEFERRED” line 
 
 **Status addendum:** prior pins **+ Chewy FinCov §1.08(d)(i) CONDITION v1**. Soft gate unchanged: offline only; no live/paid; no NS-4 Slice 3; no related-series A/C; no SFG-1; no Rem H; no first-target/#68/#73/#76/#78/#81 mutation. PINNED_OFFLINE ≠ CERTIFIED.
 
+## Amendment — P3-WB1 WITH_BUILDERS emitter honesty (pin HOLD)
+
+| | |
+|---|---|
+| **chunk** | P3-WB1 |
+| **plan sha256** | `02df6672bc9b6c33c73132b75863092562d2b7cef4925feaa7ced5f279fe712c` |
+| **base** | `990e8f891f1fdbd47d77dec8e27ca86e8896cee4` |
+| **discoveryId probed** | `discovery-candidate:f62db8ebcda9d35c4fc03b2a` |
+| **sectionRef** | `6.01(b)(4)(a)(i)` role `BUILDER` |
+| **pin folder** | none — **pin HOLD** |
+| **chars / eligible** | 285 / `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`) |
+| **matrix** | `WITH_BUILDERS` stays `DEFERRED` |
+
+`deriveCrossCuts` now treats sealed `role === "BUILDER"` as `WITH_BUILDERS`, the same pattern as `SHARED_CAP` → `WITH_SHARED_CAPS`. The builder/grower text heuristic remains supplemental only when the sealed role is not `BUILDER`. A sealed `BUILDER` role is never overridden to `WITHOUT_BUILDERS`.
+
+The probed cell is UNIQUE (identity assertions all true, 285 chars, single occurrence) and the emitter now reports `WITH_BUILDERS`. It is not pinned. `eligible` stays `false` because the offline bundle has unresolved operative evidence (`AMBIGUOUS_TARGET` for Subsidiary and Uniform Commercial Code, plus context budget exceeded). Eligibility was not coerced. No narrower discoveryId or sectionRef was invented. Sibling `discovery-candidate:6ffcfd3794d39597caa7b83b` (§6.08) stays unpinned (`AMBIGUOUS`). `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`.
+
