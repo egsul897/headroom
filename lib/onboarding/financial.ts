@@ -4,11 +4,14 @@
  * compliance-certificate confirmation (deliverable 6).
  *
  * Reuses lib/financial-core/** types (`fact`, `ProvencancedFact`) - no ERP
- * integration, manual entry only, per explicit scope. Every fact this module
- * writes is wrapped with `fact(...)`, tagged `sourceType: "REPORTED"` (a
- * human typed it in directly) and `reviewStatus: "UNVERIFIED"` by default -
+ * integration, manual entry only, per explicit scope. A first write wraps
+ * every fact with `fact(...)`, tagged `sourceType: "REPORTED"` (a human
+ * typed it in directly) and `reviewStatus: "UNVERIFIED"` by default -
  * never auto-VERIFIED (see lib/financial-core/types.ts's own ProvenanceWrapper
- * shape, reused verbatim here, never reinvented).
+ * shape, reused verbatim here, never reinvented). A same-date FinancialState
+ * rewrite keeps the prior wrapper when the numeric value is unchanged
+ * (P3-FFC1b). FinancialSnapshot stays plain columns: this module does not
+ * invent per-field snapshot provenance.
  */
 
 import { Prisma, type Facility as PrismaFacility, type Permission as PrismaPermission, type PrismaClient } from "@prisma/client";
@@ -79,37 +82,164 @@ function snapshotFieldsFromInput(input: ManualFinancialStateInput) {
 }
 
 /**
+ * Stored FinancialState JSON groups from the same date. Omitted when the
+ * write is a first insert and there is no prior wrapper to carry.
+ */
+interface PriorFinancialStateFactGroups {
+  balanceSheetFacts?: unknown;
+  incomeStatementFacts?: unknown;
+  covenantMetricFacts?: unknown;
+}
+
+const FACT_SOURCE_TYPES = new Set(["REPORTED", "RECONSTRUCTED", "ASSUMED", "EXTERNAL_CERTIFICATE"]);
+const FACT_REVIEW_STATUSES = new Set(["UNVERIFIED", "VERIFIED", "DISPUTED"]);
+
+type CarriedFact = {
+  value: number;
+  sourceType: "REPORTED" | "RECONSTRUCTED" | "ASSUMED" | "EXTERNAL_CERTIFICATE";
+  reviewStatus: "UNVERIFIED" | "VERIFIED" | "DISPUTED";
+  asOfDate: string | Date;
+  notes?: string;
+  staleness?: { maxAgeDays: number };
+};
+
+/** A usable prior wrapper, copied down to the ProvencancedFact fields this chunk carries. Anything else is not a wrapper and is not repaired. */
+function readCarriedFact(raw: unknown): CarriedFact | null {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const o = raw as Record<string, unknown>;
+  if (typeof o.value !== "number") return null;
+  if (typeof o.sourceType !== "string" || !FACT_SOURCE_TYPES.has(o.sourceType)) return null;
+  if (typeof o.reviewStatus !== "string" || !FACT_REVIEW_STATUSES.has(o.reviewStatus)) return null;
+  let asOfDate: string | Date;
+  if (o.asOfDate instanceof Date) {
+    if (Number.isNaN(o.asOfDate.getTime())) return null;
+    asOfDate = o.asOfDate;
+  } else if (typeof o.asOfDate === "string" && !Number.isNaN(new Date(o.asOfDate).getTime())) {
+    asOfDate = o.asOfDate;
+  } else {
+    return null;
+  }
+  if (o.notes !== undefined && typeof o.notes !== "string") return null;
+  let staleness: { maxAgeDays: number } | undefined;
+  if (o.staleness !== undefined) {
+    if (!o.staleness || typeof o.staleness !== "object" || Array.isArray(o.staleness)) return null;
+    const maxAgeDays = (o.staleness as { maxAgeDays?: unknown }).maxAgeDays;
+    if (typeof maxAgeDays !== "number" || !Number.isFinite(maxAgeDays)) return null;
+    staleness = { maxAgeDays };
+  }
+  const carried: CarriedFact = {
+    value: o.value,
+    sourceType: o.sourceType as CarriedFact["sourceType"],
+    reviewStatus: o.reviewStatus as CarriedFact["reviewStatus"],
+    asOfDate,
+  };
+  if (typeof o.notes === "string") carried.notes = o.notes;
+  if (staleness) carried.staleness = staleness;
+  return carried;
+}
+
+/** Unchanged numeric value keeps the prior wrapper. A changed value, or no usable prior wrapper, gets a fresh fact(). */
+function factCarryingPrior(value: number, asOfDate: Date, prior: unknown) {
+  const carried = readCarriedFact(prior);
+  if (carried && carried.value === value) return carried;
+  return fact(value, "REPORTED", asOfDate);
+}
+
+function priorRecord(group: unknown): Record<string, unknown> | null {
+  if (!group || typeof group !== "object" || Array.isArray(group)) return null;
+  return group as Record<string, unknown>;
+}
+
+/** Facts this write does not replace stay on the group when they are already usable wrappers. */
+function withUntouchedPriorFacts(written: Record<string, unknown>, priorGroup: unknown): Record<string, unknown> {
+  const prior = priorRecord(priorGroup);
+  if (!prior) return written;
+  const out: Record<string, unknown> = { ...written };
+  for (const [key, raw] of Object.entries(prior)) {
+    if (Object.prototype.hasOwnProperty.call(written, key)) continue;
+    const carried = readCarriedFact(raw);
+    if (carried) out[key] = carried;
+  }
+  return out;
+}
+
+function cloneJsonArray(value: unknown): unknown[] {
+  if (!Array.isArray(value)) return [];
+  return JSON.parse(JSON.stringify(value)) as unknown[];
+}
+
+function covenantEbitdaFromInput(ebitda: number, asOfDate: Date, priorGroup: unknown) {
+  const priorObj = priorRecord(priorRecord(priorGroup)?.covenantEbitda);
+  const priorProvenance = readCarriedFact(priorObj?.provenance);
+  if (priorObj && typeof priorObj.value === "number" && priorObj.value === ebitda && priorProvenance && priorProvenance.value === ebitda) {
+    return { value: ebitda, addbacks: cloneJsonArray(priorObj.addbacks), provenance: priorProvenance };
+  }
+  return { value: ebitda, addbacks: [] as unknown[], provenance: fact(ebitda, "REPORTED", asOfDate) };
+}
+
+/**
  * Same factoring as snapshotFieldsFromInput, for FinancialState's three JSON fact groups.
  *
- * P3-FFC1b (HOLD follow-on, not this chunk): a same-date update through this
- * function rebuilds every fact wrapper. Unchanged fields receive new
- * wrappers, and prior source/review metadata is not carried.
- * FinancialSnapshot has no per-field provenance. FFC1 does not rewrite that
- * path. `upsertFinancialFactsForDate` does not call this when an existing
- * same-date row's canonical numbers are left unchanged (conflict preserve,
- * or identical-value corroboration).
+ * P3-FFC1b: optional prior fact groups from the same date. For each field
+ * whose numeric value equals the prior ProvencancedFact `value`, reuse that
+ * wrapper (`value`, `sourceType`, `reviewStatus`, `notes`, `asOfDate`,
+ * `staleness`). A changed or new value, or a prior that is not a usable
+ * wrapper, gets a fresh `fact(...)`. Optional facts omitted from `input`
+ * keep a usable prior wrapper. No provenance is invented for a non-wrapper.
+ * FinancialSnapshot has no per-field provenance; this function does not
+ * invent any.
+ *
+ * `upsertFinancialFactsForDate` does not call this to rewrite a row whose
+ * canonical numbers are left unchanged (conflict preserve, or identical-value
+ * corroboration). It does call this when a same-date FinancialState JSON
+ * row is rewritten, and when a missing state is created from an existing
+ * snapshot (no prior wrappers to carry).
  */
-function financialStateFactsFromInput(input: ManualFinancialStateInput) {
+function financialStateFactsFromInput(input: ManualFinancialStateInput, prior?: PriorFinancialStateFactGroups) {
   const { asOfDate } = input;
-  const balanceSheetFacts = {
-    cash: fact(input.cash, "REPORTED", asOfDate),
-    totalDebtPrincipal: fact(input.totalDebtPrincipal, "REPORTED", asOfDate),
-    securedDebtPrincipal: fact(input.securedDebtPrincipal, "REPORTED", asOfDate),
-  };
-  const incomeStatementFacts = {
-    ...(input.revenue !== undefined ? { revenue: fact(input.revenue, "REPORTED", asOfDate) } : {}),
-    gaapEbitda: fact(input.ebitda, "REPORTED", asOfDate),
-    ...(input.gaapNetIncome !== undefined ? { gaapNetIncome: fact(input.gaapNetIncome, "REPORTED", asOfDate) } : {}),
-    cumulativeNetIncomeSinceIssue: fact(input.cumulativeNetIncomeSinceIssue, "REPORTED", asOfDate),
-    equityProceedsSinceIssue: fact(input.equityProceedsSinceIssue, "REPORTED", asOfDate),
-    interestExpense: fact(input.interestExpense, "REPORTED", asOfDate),
-    ...(input.capex !== undefined ? { capex: fact(input.capex, "REPORTED", asOfDate) } : {}),
-  };
-  const covenantMetricFacts = {
-    assumedNewDebtRatePct: fact(input.assumedNewDebtRatePct, "REPORTED", asOfDate),
-    covenantEbitda: { value: input.ebitda, addbacks: [], provenance: fact(input.ebitda, "REPORTED", asOfDate) },
-  };
+  const balancePrior = priorRecord(prior?.balanceSheetFacts);
+  const incomePrior = priorRecord(prior?.incomeStatementFacts);
+  const covenantPrior = priorRecord(prior?.covenantMetricFacts);
+
+  const balanceSheetFacts = withUntouchedPriorFacts({
+    cash: factCarryingPrior(input.cash, asOfDate, balancePrior?.cash),
+    totalDebtPrincipal: factCarryingPrior(input.totalDebtPrincipal, asOfDate, balancePrior?.totalDebtPrincipal),
+    securedDebtPrincipal: factCarryingPrior(input.securedDebtPrincipal, asOfDate, balancePrior?.securedDebtPrincipal),
+  }, prior?.balanceSheetFacts);
+
+  const incomeStatementFacts = withUntouchedPriorFacts({
+    ...(input.revenue !== undefined ? { revenue: factCarryingPrior(input.revenue, asOfDate, incomePrior?.revenue) } : {}),
+    gaapEbitda: factCarryingPrior(input.ebitda, asOfDate, incomePrior?.gaapEbitda),
+    ...(input.gaapNetIncome !== undefined ? { gaapNetIncome: factCarryingPrior(input.gaapNetIncome, asOfDate, incomePrior?.gaapNetIncome) } : {}),
+    cumulativeNetIncomeSinceIssue: factCarryingPrior(input.cumulativeNetIncomeSinceIssue, asOfDate, incomePrior?.cumulativeNetIncomeSinceIssue),
+    equityProceedsSinceIssue: factCarryingPrior(input.equityProceedsSinceIssue, asOfDate, incomePrior?.equityProceedsSinceIssue),
+    interestExpense: factCarryingPrior(input.interestExpense, asOfDate, incomePrior?.interestExpense),
+    ...(input.capex !== undefined ? { capex: factCarryingPrior(input.capex, asOfDate, incomePrior?.capex) } : {}),
+  }, prior?.incomeStatementFacts);
+
+  const covenantMetricFacts = withUntouchedPriorFacts({
+    assumedNewDebtRatePct: factCarryingPrior(input.assumedNewDebtRatePct, asOfDate, covenantPrior?.assumedNewDebtRatePct),
+    covenantEbitda: covenantEbitdaFromInput(input.ebitda, asOfDate, prior?.covenantMetricFacts),
+  }, prior?.covenantMetricFacts);
+
   return { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts };
+}
+
+function financialStateJson(input: ManualFinancialStateInput, prior?: PriorFinancialStateFactGroups) {
+  const built = financialStateFactsFromInput(input, prior);
+  return {
+    balanceSheetFacts: built.balanceSheetFacts as unknown as Prisma.InputJsonValue,
+    incomeStatementFacts: built.incomeStatementFacts as unknown as Prisma.InputJsonValue,
+    covenantMetricFacts: built.covenantMetricFacts as unknown as Prisma.InputJsonValue,
+  };
+}
+
+function priorFactGroupsFromState(state: { balanceSheetFacts: unknown; incomeStatementFacts: unknown; covenantMetricFacts: unknown }): PriorFinancialStateFactGroups {
+  return {
+    balanceSheetFacts: state.balanceSheetFacts,
+    incomeStatementFacts: state.incomeStatementFacts,
+    covenantMetricFacts: state.covenantMetricFacts,
+  };
 }
 
 /**
@@ -124,17 +254,15 @@ export async function createManualFinancialState(input: ManualFinancialStateInpu
   await prisma.financialSnapshot.create({
     data: { companyId, asOfDate, ...snapshotFieldsFromInput(input), notes: input.notes },
   });
-  const { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts } = financialStateFactsFromInput(input);
-
+  // First insert. No prior same-date state is read, so every wrapper is a
+  // fresh fact() — a different row's provenance is not copied onto this one.
   return prisma.financialState.create({
     data: {
       companyId,
       asOfDate,
       periodType: "ACTUAL",
       scope: "CONSOLIDATED",
-      balanceSheetFacts: balanceSheetFacts as unknown as Prisma.InputJsonValue,
-      incomeStatementFacts: incomeStatementFacts as unknown as Prisma.InputJsonValue,
-      covenantMetricFacts: covenantMetricFacts as unknown as Prisma.InputJsonValue,
+      ...financialStateJson(input),
       notes: input.notes,
     },
   });
@@ -217,11 +345,16 @@ export interface UpsertFinancialFactResult {
  * designed around one human typing in a complete snapshot at once) - a
  * single connector-discovered fact only ever supplies ONE of those 8. This
  * function resolves that tension without copying another date's facts:
- *   1. An existing row for this EXACT asOfDate, if one exists (created by a
- *      prior manual entry or a prior promoted fact for the same date) - the
- *      new metric's field is merged on top of it and the row is UPDATED.
+ *   1. An existing row for this EXACT asOfDate is canonical V. A batch value
+ *      equal to V corroborates and does not rewrite stored numbers. A batch
+ *      value that disagrees is CONFLICTING_FINANCIAL_FACTS and does not
+ *      overwrite V. An existing same-date FinancialState is left untouched
+ *      in both of those cases. If the snapshot exists and the state row does
+ *      not, the missing state is created from V with fresh wrappers.
  *   2. Otherwise the batch itself must collectively cover all 8 required
  *      fields. A snapshot with asOfDate < this fact's date is not a seed.
+ *      A same-date FinancialState, if one already exists, is rewritten
+ *      through the carry-aware builder rather than replaced by a second row.
  *   3. If there is no same-date row and the batch leaves a required field
  *      uncovered, this function FAILS CLOSED: it does not fabricate the
  *      missing fields as 0 and it does not copy them from a prior date. It
@@ -381,11 +514,15 @@ export async function upsertFinancialFactsForDate(companyId: string, asOfDate: D
     }
   }
 
-  // Existing same-date V is preserved when the batch disagrees. Resolved
-  // groups on an existing row are identical corroboration, so the stored
-  // numbers do not change and the row is not rewritten (wrapper carry is
-  // P3-FFC1b). A first write happens only when the non-conflicting groups
-  // themselves cover every required field.
+  // Existing same-date V is preserved when the batch disagrees. No auto
+  // winner, no majority, no last-approved-wins. Identical corroboration does
+  // not rewrite stored numbers, so an existing state's wrappers stay
+  // byte-stable. A first snapshot write that finds a same-date FinancialState
+  // updates that state's JSON through the carry-aware builder (unchanged
+  // field values keep their prior wrappers). A snapshot with no state row
+  // gets the missing state created from the snapshot's own canonical numbers
+  // — fresh fact() wrappers, because there is no prior state to carry.
+  // Conflict preserve does not rewrite either row.
   let financialSnapshotId: string | undefined;
   let financialStateId: string | undefined;
 
@@ -393,24 +530,42 @@ export async function upsertFinancialFactsForDate(companyId: string, asOfDate: D
     const base = requiredFromResolved(resolvedFields);
     const merged: ManualFinancialStateInput = { companyId, asOfDate, ...base, notes };
     const snapshot = await client.financialSnapshot.create({ data: { companyId, asOfDate, ...snapshotFieldsFromInput(merged), notes: merged.notes } });
-    const { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts } = financialStateFactsFromInput(merged);
-    const state = await client.financialState.create({
-      data: {
-        companyId,
-        asOfDate,
-        periodType: "ACTUAL",
-        scope: "CONSOLIDATED",
-        balanceSheetFacts: balanceSheetFacts as unknown as Prisma.InputJsonValue,
-        incomeStatementFacts: incomeStatementFacts as unknown as Prisma.InputJsonValue,
-        covenantMetricFacts: covenantMetricFacts as unknown as Prisma.InputJsonValue,
-        notes: merged.notes,
-      },
-    });
+    const factData = financialStateJson(merged, existingState ? priorFactGroupsFromState(existingState) : undefined);
+    const state = existingState
+      ? await client.financialState.update({
+          where: { id: existingState.id },
+          data: factData,
+        })
+      : await client.financialState.create({
+          data: {
+            companyId,
+            asOfDate,
+            periodType: "ACTUAL",
+            scope: "CONSOLIDATED",
+            ...factData,
+            notes: merged.notes,
+          },
+        });
     financialSnapshotId = snapshot.id;
     financialStateId = state.id;
   } else if (contributors.length > 0) {
     financialSnapshotId = existingSnapshot!.id;
-    financialStateId = existingState?.id;
+    if (existingState) {
+      financialStateId = existingState.id;
+    } else {
+      const merged: ManualFinancialStateInput = { companyId, asOfDate, ...baseFromSameDate, notes: existingSnapshot!.notes ?? undefined };
+      const state = await client.financialState.create({
+        data: {
+          companyId,
+          asOfDate,
+          periodType: "ACTUAL",
+          scope: "CONSOLIDATED",
+          ...financialStateJson(merged),
+          notes: merged.notes,
+        },
+      });
+      financialStateId = state.id;
+    }
   }
 
   if (financialSnapshotId) {

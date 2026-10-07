@@ -14,13 +14,13 @@ For a FINANCIAL_FACT same-date canonical field, the field group fails closed as 
 
 Applied-contribution honesty is in this chunk. Non-conflicted field groups may still apply. Conflicted keys are `applied: false`. Unchanged same-date canonical numbers are not overwritten, and this path does not rebuild an existing FinancialState just to echo them.
 
-**P3-FFC1b (HOLD follow-on):** on a same-date update, `financialStateFactsFromInput` still rebuilds every fact JSON wrapper. Unchanged fields would receive new wrappers. Prior source/review metadata is not carried. FinancialSnapshot has no per-field provenance. That wrapper-carry work is not this PR.
+**P3-FFC1b (successor chunk):** provenance-wrapper carry for unchanged FinancialState fields is the follow-on, not a change to this conflict checklist's semantics. See `docs/p3-ffc1b-provenance-wrapper-carry-checklist.md`. FinancialSnapshot still has no per-field provenance. FFC1 conflict semantics are unchanged.
 
 ## HOLD follow-ons (not this PR)
 
 Confirmed same-class cites, left untouched because the FINANCIAL_FACT surfacing edit is local to the financial-fact block:
 
-- **P3-FFC1b** — provenance-wrapper carry for unchanged FinancialState fields.
+- **P3-FFC1b** — successor chunk (provenance-wrapper carry). Not an open edit inside the FFC1 conflict rules. See `docs/p3-ffc1b-provenance-wrapper-carry-checklist.md`.
 - **DEFINED_TERM** — upsert last-write-wins and both candidates promoted (`lib/onboarding/promotion.ts` defined-term block).
 - **DOCUMENT_RELATIONSHIP** — successive overwrite of type/supersession by approved-candidate order (document-relationship block).
 - **Reconciliation amplifier** — `lib/onboarding/reconciliation.ts` same-source duplicate skip. No majority invent was added.
