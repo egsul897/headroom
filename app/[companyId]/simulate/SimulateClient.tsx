@@ -360,7 +360,7 @@ function DebtPanel({
           <div className="card-title">Pro forma ratio tests</div>
           <div className="card-subtitle">
             Every LEVERAGE_RATIO_ROOM / COVERAGE_RATIO_ROOM covenant modeled for this company, pro forma for this
-            incurrence - capacity above is capped so it can never clear an amount that breaches one of these.
+            incurrence. Capacity above is ratio-capped; that cap can still produce a wrong green / false comfort.
           </div>
           {sim.ratioTests.map((r) => {
             const tone: ChipTone = !r.applies ? "idle" : r.status === "clear" ? "pass" : r.status === "blocked" ? "trip" : "tight";
