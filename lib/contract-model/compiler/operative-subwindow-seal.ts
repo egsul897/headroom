@@ -50,17 +50,52 @@ export interface OperativeSubwindowContainer {
   charEnd: number;
 }
 
+/**
+ * Operative-state authority verdict for the container's source.
+ * Only CURRENT_OPERATIVE and OPERATIVE_STATE_RESOLVED are current.
+ * Any other status, including KNOWN_SUPERSEDED and UNKNOWN_SUPERSESSION_STATUS,
+ * is not current. The seal does not compute operative state itself.
+ */
+export interface OperativeSourceAuthority {
+  status: string;
+}
+
 export interface OperativeSubwindowSealInput {
+  /** Stable document identity. Distinguishes the same bytes in two documents. */
+  documentId: string;
   /** Extracted document text. The window is a slice of these characters. */
   documentText: string;
+  /**
+   * Caller-asserted sha256 of the whole document. Compared to the hash of
+   * documentText. A mismatch refuses. It is not replaced with the actual hash.
+   */
+  assertedDocumentSha256: string;
   /** The sentence's own half-open span. Offsets are the window. */
   span: SourceSpan;
+  /**
+   * Caller-asserted sha256 of the exact source slice. Compared to the hash of
+   * documentText.slice(charStart, charEnd). A mismatch is a stale source and
+   * refuses. It is not recomputed into a seal.
+   */
+  requestedSourceSha256: string;
   /** Marker-owned container the sentence sits inside. */
   container: OperativeSubwindowContainer;
+  /**
+   * When present, the source must be current. A superseded or otherwise
+   * non-current verdict refuses. Omitted authority is not invented as current
+   * and is not treated as a supersession finding.
+   */
+  operativeAuthority?: OperativeSourceAuthority | null;
 }
 
 export type OperativeSubwindowRefusalCode =
+  | "DOCUMENT_ID_ABSENT"
+  | "DOCUMENT_HASH_MISMATCH"
+  | "ZERO_LENGTH_SPAN"
+  | "REVERSED_BOUNDS"
   | "SPAN_OUT_OF_DOCUMENT"
+  | "STALE_SOURCE_HASH"
+  | "SOURCE_NOT_CURRENT"
   | "CONTAINER_IDENTITY_ABSENT"
   | "CONTAINER_SPAN_INVALID"
   | "SPAN_EQUALS_CONTAINER"
@@ -82,6 +117,16 @@ export interface SealedOperativeSubwindow {
   verdict: "SEALED";
   certification: "NOT_CERTIFIED";
   frozenSha256: typeof OPERATIVE_SUBWINDOW_C1_FROZEN_SHA256;
+  /** Caller document identity. Part of the seal identity. */
+  documentId: string;
+  /** sha256 of the whole extracted document. An edit outside the window changes this. */
+  documentSha256: string;
+  /**
+   * Deterministic OPERATIVE_SUBWINDOW identity. Length-prefixed structured hash of
+   * documentId, whole-document sha256, offsets, window sha256, container nodeId,
+   * and container bounds. It does not mint a candidate identity or a structural node.
+   */
+  identity: string;
   window: {
     charStart: number;
     charEnd: number;
@@ -128,6 +173,47 @@ const MARKER_AT_START = /^\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/;
 function sha256Hex(text: string): string {
   return createHash("sha256").update(text).digest("hex");
 }
+
+function u32(value: number): Buffer {
+  const buf = Buffer.alloc(4);
+  buf.writeUInt32BE(value);
+  return buf;
+}
+
+/** Length-prefixed field. The length is the byte length, so delimiters inside a field cannot shift the next field. */
+function lengthPrefixed(part: Buffer): Buffer {
+  return Buffer.concat([u32(part.length), part]);
+}
+
+/**
+ * Collision-resistant identity. Each field is length-prefixed. Offsets are
+ * fixed-width integers, not decimal strings joined by a delimiter.
+ */
+function operativeSubwindowIdentity(parts: {
+  documentId: string;
+  documentSha256: string;
+  charStart: number;
+  charEnd: number;
+  windowSha256: string;
+  containerNodeId: string;
+  containerCharStart: number;
+  containerCharEnd: number;
+}): string {
+  const encoded = Buffer.concat([
+    lengthPrefixed(Buffer.from("OPERATIVE_SUBWINDOW", "utf8")),
+    lengthPrefixed(Buffer.from(parts.documentId, "utf8")),
+    lengthPrefixed(Buffer.from(parts.documentSha256, "utf8")),
+    lengthPrefixed(u32(parts.charStart)),
+    lengthPrefixed(u32(parts.charEnd)),
+    lengthPrefixed(Buffer.from(parts.windowSha256, "utf8")),
+    lengthPrefixed(Buffer.from(parts.containerNodeId, "utf8")),
+    lengthPrefixed(u32(parts.containerCharStart)),
+    lengthPrefixed(u32(parts.containerCharEnd)),
+  ]);
+  return createHash("sha256").update(encoded).digest("hex");
+}
+
+const CURRENT_OPERATIVE_STATUSES = new Set(["CURRENT_OPERATIVE", "OPERATIVE_STATE_RESOLVED"]);
 
 function downstreamRepresentation(): OperativeSubwindowDownstreamRepresentation {
   return {
@@ -218,8 +304,20 @@ export function isSealedOperativeSubwindow(result: OperativeSubwindowSealResult)
  */
 export function sealOperativeSubwindow(input: OperativeSubwindowSealInput): OperativeSubwindowSealResult {
   const { documentText, span, container } = input;
+  if (!identityPresent(input.documentId)) return refused("DOCUMENT_ID_ABSENT");
   if (typeof documentText !== "string") return refused("SPAN_OUT_OF_DOCUMENT");
-  if (!isHalfOpenInDocument(span.charStart, span.charEnd, documentText.length)) return refused("SPAN_OUT_OF_DOCUMENT");
+  const documentSha256 = sha256Hex(documentText);
+  if (input.assertedDocumentSha256 !== documentSha256) return refused("DOCUMENT_HASH_MISMATCH");
+  if (!Number.isInteger(span.charStart) || !Number.isInteger(span.charEnd)) return refused("SPAN_OUT_OF_DOCUMENT");
+  if (span.charStart === span.charEnd) return refused("ZERO_LENGTH_SPAN");
+  if (span.charStart > span.charEnd) return refused("REVERSED_BOUNDS");
+  if (span.charStart < 0 || span.charEnd > documentText.length) return refused("SPAN_OUT_OF_DOCUMENT");
+  const text = documentText.slice(span.charStart, span.charEnd);
+  const windowSha256 = sha256Hex(text);
+  if (input.requestedSourceSha256 !== windowSha256) return refused("STALE_SOURCE_HASH");
+  if (input.operativeAuthority != null && !CURRENT_OPERATIVE_STATUSES.has(input.operativeAuthority.status)) {
+    return refused("SOURCE_NOT_CURRENT");
+  }
   if (!identityPresent(container.nodeId) || !identityPresent(container.sectionRef)) return refused("CONTAINER_IDENTITY_ABSENT");
   if (!isHalfOpenInDocument(container.charStart, container.charEnd, documentText.length)) return refused("CONTAINER_SPAN_INVALID");
 
@@ -229,7 +327,6 @@ export function sealOperativeSubwindow(input: OperativeSubwindowSealInput): Oper
   const inside = span.charStart >= container.charStart && span.charEnd <= container.charEnd;
   if (!inside) return refused("SPAN_NOT_INSIDE_CONTAINER");
 
-  const text = documentText.slice(span.charStart, span.charEnd);
   if (spanHasOwnMarker(text)) return refused("SPAN_HAS_OWN_MARKER");
   if (!isOwnSentenceSpan(documentText, span.charStart, span.charEnd)) return refused("NOT_A_SENTENCE_SPAN");
 
@@ -238,11 +335,23 @@ export function sealOperativeSubwindow(input: OperativeSubwindowSealInput): Oper
     verdict: "SEALED",
     certification: "NOT_CERTIFIED",
     frozenSha256: OPERATIVE_SUBWINDOW_C1_FROZEN_SHA256,
+    documentId: input.documentId,
+    documentSha256,
+    identity: operativeSubwindowIdentity({
+      documentId: input.documentId,
+      documentSha256,
+      charStart: span.charStart,
+      charEnd: span.charEnd,
+      windowSha256,
+      containerNodeId: container.nodeId,
+      containerCharStart: container.charStart,
+      containerCharEnd: container.charEnd,
+    }),
     window: {
       charStart: span.charStart,
       charEnd: span.charEnd,
       text,
-      sha256: sha256Hex(text),
+      sha256: windowSha256,
     },
     container: copyContainer(container),
     refusedAsWindow: {

@@ -36,11 +36,25 @@ function sealed(input: OperativeSubwindowSealInput): SealedOperativeSubwindow {
   return result;
 }
 
-function documentAround(sentence: string): OperativeSubwindowSealInput {
+function authenticate(
+  partial: Omit<OperativeSubwindowSealInput, "assertedDocumentSha256" | "requestedSourceSha256"> & {
+    assertedDocumentSha256?: string;
+    requestedSourceSha256?: string;
+  },
+): OperativeSubwindowSealInput {
+  return {
+    ...partial,
+    assertedDocumentSha256: partial.assertedDocumentSha256 ?? sha256(partial.documentText),
+    requestedSourceSha256: partial.requestedSourceSha256 ?? sha256(partial.documentText.slice(partial.span.charStart, partial.span.charEnd)),
+  };
+}
+
+function documentAround(sentence: string, documentId = "doc-generalized"): OperativeSubwindowSealInput {
   const prefix = "(a) The container opens with a marker-owned clause.\n\n";
   const suffix = "\n(b) The container closes after the next marker.";
   const documentText = prefix + sentence + suffix;
-  return {
+  return authenticate({
+    documentId,
     documentText,
     span: { charStart: prefix.length, charEnd: prefix.length + sentence.length },
     container: {
@@ -49,7 +63,7 @@ function documentAround(sentence: string): OperativeSubwindowSealInput {
       charStart: 0,
       charEnd: documentText.length,
     },
-  };
+  });
 }
 
 describe("OPERATIVE_SUBWINDOW C1 seal", () => {
@@ -74,7 +88,8 @@ describe("OPERATIVE_SUBWINDOW C1 seal", () => {
     if (!containerNode) throw new Error("recorded container missing");
 
     const stage2bBefore = fs.readFileSync(CHEWY_STAGE2B);
-    const input: OperativeSubwindowSealInput = {
+    const input: OperativeSubwindowSealInput = authenticate({
+      documentId: "chwy-doc-a-2026-06-23-credit-agreement",
       documentText,
       span: { charStart: 392815, charEnd: 393488 },
       container: {
@@ -83,7 +98,7 @@ describe("OPERATIVE_SUBWINDOW C1 seal", () => {
         charStart: containerNode.charStart,
         charEnd: containerNode.charEnd,
       },
-    };
+    });
     const decoys = {
       ...input,
       description: "automatic reclassification of amounts originally under Fixed Amounts into Incurrence-Based Amounts",
@@ -99,6 +114,9 @@ describe("OPERATIVE_SUBWINDOW C1 seal", () => {
     expect(result.window.sha256).toBe(CHEWY_SENTENCE_SHA);
     expect(result.window.sha256).toBe(sha256(documentText.slice(392815, 393488)));
     expect(result.window.text).toBe(documentText.slice(392815, 393488));
+    expect(result.documentId).toBe("chwy-doc-a-2026-06-23-credit-agreement");
+    expect(result.documentSha256).toBe(sha256(documentText));
+    expect(result.identity).toMatch(/^[0-9a-f]{64}$/);
     expect(result.window.text.startsWith("In addition, any Indebtedness")).toBe(true);
     expect(result.window.text.endsWith("on a Pro Forma Basis.")).toBe(true);
     expect(result.window.text).not.toBe(decoys.description);
@@ -137,22 +155,30 @@ describe("OPERATIVE_SUBWINDOW C1 seal", () => {
       charStart: 387511,
       charEnd: 393489,
     };
-    expect(sealOperativeSubwindow({ documentText, span: { charStart: 387511, charEnd: 393489 }, container }).verdict).toBe("REFUSED");
-    expect(sealOperativeSubwindow({ documentText, span: { charStart: 387511, charEnd: 393489 }, container })).toMatchObject({
+    const whole = authenticate({
+      documentId: "chwy-doc-a-2026-06-23-credit-agreement",
+      documentText,
+      span: { charStart: 387511, charEnd: 393489 },
+      container,
+    });
+    expect(sealOperativeSubwindow(whole).verdict).toBe("REFUSED");
+    expect(sealOperativeSubwindow(whole)).toMatchObject({
       code: "SPAN_EQUALS_CONTAINER",
       certification: "NOT_CERTIFIED",
     });
     const quoteStart = documentText.indexOf("In addition", 392000);
-    expect(sealOperativeSubwindow({
+    expect(sealOperativeSubwindow(authenticate({
+      documentId: "chwy-doc-a-2026-06-23-credit-agreement",
       documentText,
       span: { charStart: quoteStart, charEnd: quoteStart + "In addition".length },
       container,
-    })).toMatchObject({ verdict: "REFUSED", code: "NOT_A_SENTENCE_SPAN" });
-    expect(sealOperativeSubwindow({
+    }))).toMatchObject({ verdict: "REFUSED", code: "NOT_A_SENTENCE_SPAN" });
+    expect(sealOperativeSubwindow(authenticate({
+      documentId: "chwy-doc-a-2026-06-23-credit-agreement",
       documentText,
       span: { charStart: 392815, charEnd: 393489 },
       container,
-    })).toMatchObject({ verdict: "REFUSED", code: "NOT_A_SENTENCE_SPAN" });
+    }))).toMatchObject({ verdict: "REFUSED", code: "NOT_A_SENTENCE_SPAN" });
   });
 
   it("seals any unenumerated sentence under the same rule, including one the IR cannot edge", () => {
@@ -237,5 +263,144 @@ describe("OPERATIVE_SUBWINDOW C1 seal", () => {
     expect(MODULE_SOURCE).not.toMatch(/[Kk]nife/);
     expect(MODULE_SOURCE).not.toMatch(/discoveryId|stage2b|RECLASSIFIABLE_TO/);
     expect(MODULE_SOURCE).toContain(C1_FROZEN);
+  });
+
+  it("gives the same identity for the same document, bytes, offsets, and container", () => {
+    const input = documentAround("The borrower shall deliver notice within ten days.");
+    const first = sealed(input);
+    const second = sealed(input);
+    expect(second.identity).toBe(first.identity);
+    expect(second.documentSha256).toBe(first.documentSha256);
+    expect(second.window).toEqual(first.window);
+    expect(first.identity).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("gives different identities for the same window text in different documents", () => {
+    const sentence = "The borrower shall deliver notice within ten days.";
+    const left = sealed(documentAround(sentence, "doc-left"));
+    const right = sealed(documentAround(sentence, "doc-right"));
+    expect(left.window.text).toBe(right.window.text);
+    expect(left.window.charStart).toBe(right.window.charStart);
+    expect(left.window.sha256).toBe(right.window.sha256);
+    expect(left.identity).not.toBe(right.identity);
+  });
+
+  it("gives different identities for the same text at different offsets in one container", () => {
+    const sentence = "The borrower shall deliver notice within ten days.";
+    const prefix = "(a) The container opens with a marker-owned clause.\n\n";
+    const documentText = `${prefix}${sentence}\n\n${sentence}\n(b) The container closes after the next marker.`;
+    const first = sealed(authenticate({
+      documentId: "doc-twice",
+      documentText,
+      span: { charStart: prefix.length, charEnd: prefix.length + sentence.length },
+      container: { nodeId: "structural-node:same-container", sectionRef: "9.01(a)", charStart: 0, charEnd: documentText.length },
+    }));
+    const secondStart = prefix.length + sentence.length + 2;
+    const second = sealed(authenticate({
+      documentId: "doc-twice",
+      documentText,
+      span: { charStart: secondStart, charEnd: secondStart + sentence.length },
+      container: { nodeId: "structural-node:same-container", sectionRef: "9.01(a)", charStart: 0, charEnd: documentText.length },
+    }));
+    expect(first.window.text).toBe(second.window.text);
+    expect(first.window.charStart).not.toBe(second.window.charStart);
+    expect(first.identity).not.toBe(second.identity);
+    expect(first.container.nodeId).toBe(second.container.nodeId);
+  });
+
+  it("gives different identities for the same text in separate containers", () => {
+    const sentence = "The borrower shall deliver notice within ten days.";
+    const base = documentAround(sentence);
+    const other = sealed({
+      ...base,
+      container: { ...base.container, nodeId: "structural-node:other-container", sectionRef: "9.02(a)" },
+    });
+    const first = sealed(base);
+    expect(first.window).toEqual(other.window);
+    expect(first.identity).not.toBe(other.identity);
+  });
+
+  it("seals overlapping and nested windows without overwriting the earlier result", () => {
+    const prefix = "(a) The container opens with a marker-owned clause.\n\n";
+    const body = "Hello overlap sentence ends.";
+    const documentText = `${prefix}${body}\n(b) The container closes after the next marker.`;
+    const outerSpan = { charStart: prefix.length, charEnd: prefix.length + body.length };
+    const nestedStart = documentText.indexOf("overlap sentence ends.");
+    const nestedSpan = { charStart: nestedStart, charEnd: nestedStart + "overlap sentence ends.".length };
+    const container = { nodeId: "structural-node:overlap", sectionRef: "9.01(a)", charStart: 0, charEnd: documentText.length };
+    const outer = sealed(authenticate({ documentId: "doc-overlap", documentText, span: outerSpan, container }));
+    const snapshot = JSON.parse(JSON.stringify(outer)) as SealedOperativeSubwindow;
+    const nested = sealed(authenticate({ documentId: "doc-overlap", documentText, span: nestedSpan, container }));
+    expect(nested.window.charStart).toBeGreaterThan(outer.window.charStart);
+    expect(nested.window.charEnd).toBe(outer.window.charEnd);
+    expect(nested.window.charStart).toBeLessThan(outer.window.charEnd);
+    expect(nested.identity).not.toBe(outer.identity);
+    expect(outer).toEqual(snapshot);
+    expect(JSON.stringify(outer)).not.toContain("discoveryId");
+    expect(JSON.stringify(nested)).not.toContain("discoveryId");
+  });
+
+  it("fails closed on a zero-length span and on reversed bounds", () => {
+    const base = documentAround("The borrower shall deliver notice within ten days.");
+    expect(sealOperativeSubwindow({
+      ...base,
+      span: { charStart: base.span.charStart, charEnd: base.span.charStart },
+    })).toMatchObject({ verdict: "REFUSED", code: "ZERO_LENGTH_SPAN" });
+    expect(sealOperativeSubwindow({
+      ...base,
+      span: { charStart: base.span.charEnd, charEnd: base.span.charStart },
+    })).toMatchObject({ verdict: "REFUSED", code: "REVERSED_BOUNDS" });
+  });
+
+  it("refuses a stale requested source hash instead of sealing the recomputed slice", () => {
+    const base = documentAround("The borrower shall deliver notice within ten days.");
+    const refused = sealOperativeSubwindow({ ...base, requestedSourceSha256: "0".repeat(64) });
+    expect(refused).toMatchObject({ verdict: "REFUSED", code: "STALE_SOURCE_HASH", certification: "NOT_CERTIFIED" });
+    expect("window" in refused).toBe(false);
+    expect("identity" in refused).toBe(false);
+  });
+
+  it("refuses an asserted document hash that is not the whole-document hash", () => {
+    const base = documentAround("The borrower shall deliver notice within ten days.");
+    const refused = sealOperativeSubwindow({ ...base, assertedDocumentSha256: "f".repeat(64) });
+    expect(refused).toMatchObject({ verdict: "REFUSED", code: "DOCUMENT_HASH_MISMATCH", certification: "NOT_CERTIFIED" });
+    expect("window" in refused).toBe(false);
+    expect("identity" in refused).toBe(false);
+    expect(JSON.stringify(refused)).not.toContain(base.assertedDocumentSha256);
+  });
+
+  it("changes identity when an edit outside the window changes the document hash", () => {
+    const base = documentAround("The borrower shall deliver notice within ten days.");
+    const edited = `${base.documentText.slice(0, 1) === "(" ? "X" : "Y"}${base.documentText.slice(1)}`;
+    expect(edited.slice(base.span.charStart, base.span.charEnd)).toBe(base.documentText.slice(base.span.charStart, base.span.charEnd));
+    const original = sealed(base);
+    const after = sealed(authenticate({
+      documentId: base.documentId,
+      documentText: edited,
+      span: base.span,
+      container: { ...base.container, charEnd: edited.length },
+    }));
+    expect(after.window.sha256).toBe(original.window.sha256);
+    expect(after.window.charStart).toBe(original.window.charStart);
+    expect(after.documentSha256).not.toBe(original.documentSha256);
+    expect(after.identity).not.toBe(original.identity);
+  });
+
+  it("refuses a superseded or non-current source and seals a current one", () => {
+    const base = documentAround("The borrower shall deliver notice within ten days.");
+    expect(sealOperativeSubwindow({ ...base, operativeAuthority: { status: "KNOWN_SUPERSEDED" } })).toMatchObject({
+      verdict: "REFUSED",
+      code: "SOURCE_NOT_CURRENT",
+    });
+    expect(sealOperativeSubwindow({ ...base, operativeAuthority: { status: "UNKNOWN_SUPERSESSION_STATUS" } })).toMatchObject({
+      verdict: "REFUSED",
+      code: "SOURCE_NOT_CURRENT",
+    });
+    const current = sealed({ ...base, operativeAuthority: { status: "CURRENT_OPERATIVE" } });
+    expect(current.certification).toBe("NOT_CERTIFIED");
+    expect(current.nonClaims.mintsCandidateIdentity).toBe(false);
+    expect(current.nonClaims.manufacturesStructuralNode).toBe(false);
+    expect(current.nonClaims.writesReclassEdge).toBe(false);
+    expect(current.downstreamRepresentation.targetRuleId).toBeNull();
   });
 });
