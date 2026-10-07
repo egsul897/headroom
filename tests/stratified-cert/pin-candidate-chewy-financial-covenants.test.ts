@@ -1,8 +1,9 @@
 /**
  * Golden: emitter produces Chewy §1.08(d)(i) FINANCIAL_COVENANTS CONDITION offline pin.
  * Soft gate: one cell; PINNED_OFFLINE ≠ CERTIFIED. Role CONDITION is not a Chewy FINANCIAL_TEST eligible:true claim.
- * Hinted FINANCIAL_TEST spans stay eligible:false and unpinned. Fallbacks stay unpinned.
- * Zero provider calls. first-target/ + prior pins untouched.
+ * Hinted FINANCIAL_TEST spans stay eligible:false and unpinned.
+ * P3-CF2 pins one EXCEPTION (§1.08(d)(ii)); §1.08(g) stays unpinned.
+ * Zero provider calls. first-target/ + CF1 pin packet untouched.
  */
 import fs from "node:fs";
 import os from "node:os";
@@ -19,6 +20,10 @@ const EXPECTED_SHA = "f1e98f1d5133d7e93cfe32cdbf57c8331e82c4b9f113326e498edbbc69
 const EXPECTED_CHARS = 557;
 const PLAN_SHA = "6f71e081842913e79ce22dd0a018d891feb5d78a39cd2f14274120a98c130483";
 const BASE_SHA = "7351d0fad8d75451b39a6ffb338de41be90518fc";
+const EXCEPTION_PLAN_SHA = "0d2fa52ec22e192ef370d67896b9af01420a6390cd9db8461ff73e2696549ddd";
+const EXCEPTION_BASE_SHA = "6c2009993a50f2496f4074ed8069d2fded41ba0a";
+const EXCEPTION_SHA = "b35336b075ccfcb22bf7a2b998df44f63dbbb7ca71aaafb8f445c4268d3d8687";
+const EXCEPTION_CHARS = 252;
 const CANONICAL_PIN =
   "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1";
 const MATRIX = "docs/phase-3-reliability-stratified-certification/01-pin-matrix.json";
@@ -39,7 +44,7 @@ const UNPINNED_108A =
   "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(a)(i)--3746c55b/v1";
 const UNPINNED_104B =
   "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.04(b)--c9e7af41/v1";
-const UNPINNED_108D_II =
+const EXCEPTION_PIN =
   "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1";
 const UNPINNED_108G =
   "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1";
@@ -147,7 +152,7 @@ describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(i) CONDITION", () => 
     }
 
     const matrix = JSON.parse(fs.readFileSync(MATRIX, "utf8"));
-    expect(matrix.baseSha).toBe(BASE_SHA);
+    expect(matrix.baseSha).toBe(EXCEPTION_BASE_SHA);
     const pin = matrix.pins.find((p: { discoveryId?: string }) => p.discoveryId === DISCOVERY_ID);
     expect(pin.status).toBe("PINNED_OFFLINE");
     expect(pin.role).toBe("CONDITION");
@@ -165,14 +170,26 @@ describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(i) CONDITION", () => 
     expect(stratum.chewyFollowOn.financialTest.status).toBe("DEFERRED");
     expect(stratum.chewyFollowOn.financialTest.candidateHintsFromSealedTree.join(" ")).toContain(FINANCIAL_TEST_108A);
     expect(stratum.chewyFollowOn.financialTest.candidateHintsFromSealedTree.join(" ")).toContain(FINANCIAL_TEST_104B);
+    expect(stratum.chewyFollowOn.exceptionFollowOn.status).toBe("PINNED_OFFLINE");
+    expect(stratum.chewyFollowOn.exceptionFollowOn.discoveryId).toBe(FALLBACK_108D_II);
+    expect(stratum.chewyFollowOn.exceptionFollowOn.role).toBe("EXCEPTION");
+    expect(stratum.chewyFollowOn.exceptionFollowOn.eligible).toBe(true);
+    expect(stratum.chewyFollowOn.exceptionFollowOn.note).toMatch(
+      /not a claim that a Chewy FINANCIAL_TEST became eligible:true/i,
+    );
     const unpinnedIds = stratum.chewyFollowOn.unpinnedEligibleScouts.map(
       (s: { discoveryId: string }) => s.discoveryId,
     );
-    expect(unpinnedIds).toEqual([FALLBACK_108D_II, FALLBACK_108G]);
+    expect(unpinnedIds).toEqual([FALLBACK_108G]);
+    expect(unpinnedIds).not.toContain(FALLBACK_108D_II);
 
     expect(matrix.coverageSummary.chewyFinancialCovenantsFollowOnPinned).toBe(true);
     expect(matrix.coverageSummary.chewyFinancialCovenantsFollowOnRole).toBe("CONDITION");
     expect(matrix.coverageSummary.chewyFinancialCovenantsFollowOnDiscoveryId).toBe(DISCOVERY_ID);
+    expect(matrix.coverageSummary.chewyFinancialCovenantsExceptionPinned).toBe(true);
+    expect(matrix.coverageSummary.chewyFinancialCovenantsExceptionRole).toBe("EXCEPTION");
+    expect(matrix.coverageSummary.chewyFinancialCovenantsExceptionDiscoveryId).toBe(FALLBACK_108D_II);
+    expect(matrix.coverageSummary.chewyFinancialCovenantsExceptionSectionRef).toBe("1.08(d)(ii)");
     expect(matrix.coverageSummary.chewyFinancialCovenantsStillDeferred).toBe(false);
     expect(matrix.coverageSummary.chewyFinancialCovenantsResolved).toBe(false);
     expect(matrix.coverageSummary.chewyFinancialTestStillUnpinned).toBe(true);
@@ -208,7 +225,7 @@ describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(i) CONDITION", () => 
 
     expect(fs.existsSync(UNPINNED_108A)).toBe(false);
     expect(fs.existsSync(UNPINNED_104B)).toBe(false);
-    expect(fs.existsSync(UNPINNED_108D_II)).toBe(false);
+    expect(fs.existsSync(path.join(EXCEPTION_PIN, "01-target-identity.json"))).toBe(true);
     expect(fs.existsSync(UNPINNED_108G)).toBe(false);
   });
 
@@ -268,5 +285,154 @@ describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(i) CONDITION", () => 
         startedAt: "2026-10-07T00:00:00.000Z",
       }),
     ).toThrow(/hand pin/);
+  });
+});
+
+const exceptionEmitArgs = {
+  packageKey: "chwy-2026-credit-agreement" as const,
+  discoveryId: FALLBACK_108D_II,
+  asOfDate: "2026-10-07",
+  headSha: EXCEPTION_BASE_SHA,
+  startedAt: "2026-10-07T00:00:00.000Z",
+  expected: { chars: EXCEPTION_CHARS, sha256: EXCEPTION_SHA },
+};
+
+describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(ii) EXCEPTION", () => {
+  it("emits one eligible EXCEPTION pin and preserves eligible:true", () => {
+    const outDir = tmpOut();
+    const result = pinCandidate({ ...exceptionEmitArgs, outDir });
+
+    expect(result.eligible).toBe(true);
+    expect(result.stratum).toBe("FINANCIAL_COVENANTS");
+    expect(result.operativeSourceChars).toBe(EXCEPTION_CHARS);
+    expect(result.operativeSourceSha256).toBe(EXCEPTION_SHA);
+    expect(result.crossCuts).toEqual([
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION",
+    ]);
+
+    const identity = JSON.parse(fs.readFileSync(path.join(outDir, "01-target-identity.json"), "utf8"));
+    expect(identity.identity.discoveryId).toBe(FALLBACK_108D_II);
+    expect(identity.identity.normalizedSourceRef).toBe("1.08(d)(ii)");
+    expect(identity.identity.packageKey).toBe("chwy-2026-credit-agreement");
+    expect(identity.identity.role).toBe("EXCEPTION");
+    expect(identity.identity.role).not.toBe("FINANCIAL_TEST");
+    expect(identity.identity.families).toEqual(["FINANCIAL_COVENANTS"]);
+    expect(identity.identity.occurrencesOfRefInDocument).toBe(1);
+    expect(identity.assertions).toEqual({
+      candidateIdMatches: true,
+      documentMatches: true,
+      sectionRefMatches: true,
+      structuralNodeResolved: true,
+      singleOccurrence: true,
+      textSha256Matches: true,
+      charsMatch: true,
+    });
+
+    const eligibility = JSON.parse(fs.readFileSync(path.join(outDir, "01c-target-eligibility.json"), "utf8"));
+    expect(eligibility.eligible).toBe(true);
+    expect(eligibility.eligibilityBlockers).toEqual([]);
+    expect(eligibility.identityStrength).toBe("STRONG");
+    expect(eligibility.governingProvision).toBeNull();
+    expect(eligibility.offlineBundle.hasUnresolvedOperativeEvidence).toBe(false);
+    expect(eligibility.status).toBe("PINNED_OFFLINE");
+    expect(eligibility.status).not.toBe("CERTIFIED");
+    expect(JSON.stringify(eligibility)).not.toMatch(/"status":"CERTIFIED"/);
+    expect(eligibility.canonicalMapHonesty.mapOutcome).toBe("NO_CHEWY_CANONICAL_MAP_YET");
+    expect(eligibility.discoveryHonesty.reviewStatus).toBe("UNCERTAIN");
+
+    const preflight = JSON.parse(fs.readFileSync(path.join(outDir, "00-preflight.json"), "utf8"));
+    expect(preflight.mode).toBe("DRY_RUN_OFFLINE_PIN");
+    expect(preflight.note).toMatch(/No provider contacted/i);
+    expect(preflight.interimBRelatedSeriesDetected).toBe(false);
+    expect(preflight.stratum).toBe("FINANCIAL_COVENANTS");
+    expect(preflight.role).toBe("EXCEPTION");
+
+    const manifest = JSON.parse(fs.readFileSync(path.join(outDir, "00-pin-manifest.json"), "utf8"));
+    expect(manifest.status).toBe("PINNED_OFFLINE");
+    expect(manifest.status).not.toBe("CERTIFIED");
+    expect(manifest.discoveryId).toBe(FALLBACK_108D_II);
+    expect(manifest.stratum).toBe("FINANCIAL_COVENANTS");
+
+    const canonicalIdentity = JSON.parse(
+      fs.readFileSync(path.join(EXCEPTION_PIN, "01-target-identity.json"), "utf8"),
+    );
+    expect(canonicalIdentity.identity.operativeSourceSha256).toBe(EXCEPTION_SHA);
+    expect(canonicalIdentity.identity.operativeSourceChars).toBe(EXCEPTION_CHARS);
+    expect(canonicalIdentity.identity.operativeSourceText).toBe(identity.identity.operativeSourceText);
+    expect(canonicalIdentity.identity.discoveryId).toBe(FALLBACK_108D_II);
+    expect(canonicalIdentity.identity.role).toBe("EXCEPTION");
+    expect(canonicalIdentity.baseSha).toBe(EXCEPTION_BASE_SHA);
+    for (const name of FILES) {
+      expect(fs.existsSync(path.join(EXCEPTION_PIN, name)), name).toBe(true);
+      const emitted = fs.readFileSync(path.join(outDir, name));
+      const canonical = fs.readFileSync(path.join(EXCEPTION_PIN, name));
+      expect(emitted.equals(canonical), `${name} differs from canonical pin`).toBe(true);
+    }
+
+    const cf1 = JSON.parse(fs.readFileSync(path.join(CANONICAL_PIN, "01-target-identity.json"), "utf8"));
+    expect(cf1.identity.discoveryId).toBe(DISCOVERY_ID);
+    expect(cf1.identity.role).toBe("CONDITION");
+    expect(cf1.identity.normalizedSourceRef).toBe("1.08(d)(i)");
+    expect(cf1.baseSha).toBe(BASE_SHA);
+
+    const matrix = JSON.parse(fs.readFileSync(MATRIX, "utf8"));
+    const pin = matrix.pins.find((p: { discoveryId?: string }) => p.discoveryId === FALLBACK_108D_II);
+    expect(pin.status).toBe("PINNED_OFFLINE");
+    expect(pin.role).toBe("EXCEPTION");
+    expect(pin.stratum).toBe("FINANCIAL_COVENANTS");
+    expect(pin.eligible).toBe(true);
+    expect(pin.planBinding.chunkId).toBe("P3-CF2");
+    expect(pin.planBinding.planSha256).toBe(EXCEPTION_PLAN_SHA);
+    expect(pin.planBinding.baseSha).toBe(EXCEPTION_BASE_SHA);
+    expect(pin.note).toMatch(/not a claim that a Chewy FINANCIAL_TEST became eligible:true/i);
+    expect(pin.note).toMatch(/PINNED_OFFLINE is not CERTIFIED/);
+    expect(pin.note).toMatch(/IMPLEMENTED is not CERTIFIED/);
+
+    const condition = matrix.pins.find((p: { discoveryId?: string }) => p.discoveryId === DISCOVERY_ID);
+    expect(condition.status).toBe("PINNED_OFFLINE");
+    expect(condition.role).toBe("CONDITION");
+    expect(condition.planBinding.planSha256).toBe(PLAN_SHA);
+
+    const builders = matrix.matrix.crossCuts.find((c: { id: string }) => c.id === "WITH_BUILDERS");
+    expect(builders.status).toBe("DEFERRED");
+    expect(builders.honestyOutcome).toBe("PIN_HOLD");
+
+    expect(fs.existsSync(UNPINNED_108G)).toBe(false);
+    expect(fs.existsSync(UNPINNED_108A)).toBe(false);
+    expect(fs.existsSync(UNPINNED_104B)).toBe(false);
+  });
+
+  it("leaves the §1.08(g) fallback eligible and unpinned", () => {
+    const outDir = tmpOut();
+    const result = pinCandidate({
+      packageKey: "chwy-2026-credit-agreement",
+      discoveryId: FALLBACK_108G,
+      asOfDate: "2026-10-07",
+      headSha: EXCEPTION_BASE_SHA,
+      outDir,
+      startedAt: "2026-10-07T00:00:00.000Z",
+    });
+    expect(result.eligible).toBe(true);
+    const identity = JSON.parse(fs.readFileSync(path.join(outDir, "01-target-identity.json"), "utf8"));
+    expect(identity.identity.role).toBe("EXCEPTION");
+    expect(identity.identity.normalizedSourceRef).toBe("1.08(g)");
+    expect(identity.assertions.singleOccurrence).toBe(true);
+    const eligibility = JSON.parse(fs.readFileSync(path.join(outDir, "01c-target-eligibility.json"), "utf8"));
+    expect(eligibility.eligible).toBe(true);
+    expect(fs.existsSync(UNPINNED_108G)).toBe(false);
+  });
+
+  it("re-run twice → byte-identical EXCEPTION packets", () => {
+    const a = tmpOut();
+    const b = tmpOut();
+    pinCandidate({ ...exceptionEmitArgs, outDir: a });
+    pinCandidate({ ...exceptionEmitArgs, outDir: b });
+    for (const name of FILES) {
+      const left = fs.readFileSync(path.join(a, name));
+      const right = fs.readFileSync(path.join(b, name));
+      expect(left.equals(right), `${name} differs across runs`).toBe(true);
+    }
   });
 });

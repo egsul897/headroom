@@ -208,3 +208,23 @@ Architect COMMENT (not APPROVE) · Notes/Cert · Trust · COO · CI. Merge HOLD.
 **Base SHA:** `990e8f891f1fdbd47d77dec8e27ca86e8896cee4`
 
 Sealed `role === "BUILDER"` now derives `WITH_BUILDERS` (text heuristic supplemental only when role is not `BUILDER`). Chewy `discovery-candidate:f62db8ebcda9d35c4fc03b2a` (§6.01(b)(4)(a)(i), 285 chars) is UNIQUE and emits `WITH_BUILDERS`, but `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`). No pin folder was written. Sibling §6.08 `discovery-candidate:6ffcfd3794d39597caa7b83b` stays unpinned (`AMBIGUOUS`). `IMPLEMENTED` ≠ `CERTIFIED`.
+
+---
+
+## Offline Chewy FinCov EXCEPTION (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` · `eligible:true` · role **EXCEPTION** (soft gate — **not** CERTIFIED)  
+**Chunk:** P3-CF2 · plan sha256 `0d2fa52ec22e192ef370d67896b9af01420a6390cd9db8461ff73e2696549ddd`  
+**Base SHA:** `6c2009993a50f2496f4074ed8069d2fded41ba0a`  
+**ADR-1:** append-only under `pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1/`. CF1 CONDITION packet `1.08(d)(i)--c2018498/v1/` untouched.
+
+| artifact | role |
+|---|---|
+| `pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1/` | Emitter-produced Chewy §1.08(d)(ii) EXCEPTION (`eligible:true`) |
+| `01-pin-matrix.json` | FinCov `chewyFollowOn.exceptionFollowOn` cites this cell; Chewy `FINANCIAL_TEST` stays deferred |
+
+Primary `discovery-candidate:5be40987571c84b616abb07e` sealed UNIQUE (252 chars, single occurrence, identity assertions true, interim-B clean, `eligible:true`). The sealed role is EXCEPTION under the `FINANCIAL_COVENANTS` family. This pin is not a claim that a Chewy `FINANCIAL_TEST` became `eligible:true`. Fallback §1.08(g) `discovery-candidate:c3708f1e7541fd0456804118` stays unpinned. `WITH_BUILDERS` stays DEFERRED / pin HOLD. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`.
+
+### Review owners
+
+Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI · COO MERGE AUTHORIZED. Merge HOLD. Do not self-merge. Live/paid **not** authorized hereby.
