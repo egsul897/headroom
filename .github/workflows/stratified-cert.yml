@@ -36,5 +36,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
       - name: present-check
         run: npx vitest run tests/stratified-cert

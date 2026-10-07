@@ -35,12 +35,14 @@ const INVESTMENTS_PIN =
   "docs/phase-3-reliability-stratified-certification/pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1";
 const CONMED_FC_PIN =
   "docs/phase-3-reliability-stratified-certification/pins/conmed-2025-credit-facility/7.1(c)--5f83b15e/v1";
-const UNPINNED = [
-  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(a)(i)--3746c55b/v1",
-  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.04(b)--c9e7af41/v1",
-  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1",
-  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1",
-];
+const UNPINNED_108A =
+  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(a)(i)--3746c55b/v1";
+const UNPINNED_104B =
+  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.04(b)--c9e7af41/v1";
+const UNPINNED_108D_II =
+  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1";
+const UNPINNED_108G =
+  "docs/phase-3-reliability-stratified-certification/pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1";
 const FILES = [
   "00-pin-manifest.json",
   "00-preflight.json",
@@ -204,9 +206,10 @@ describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(i) CONDITION", () => 
       "6caf027b1c9d4b750d05b26de025ebaee20a0ed031b2362c712878387762a19d",
     );
 
-    for (const folder of UNPINNED) {
-      expect(fs.existsSync(folder), folder).toBe(false);
-    }
+    expect(fs.existsSync(UNPINNED_108A)).toBe(false);
+    expect(fs.existsSync(UNPINNED_104B)).toBe(false);
+    expect(fs.existsSync(UNPINNED_108D_II)).toBe(false);
+    expect(fs.existsSync(UNPINNED_108G)).toBe(false);
   });
 
   it("fail-closes hinted Chewy FINANCIAL_TEST spans and does not ship them", () => {
@@ -227,8 +230,8 @@ describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(i) CONDITION", () => 
       const eligibility = JSON.parse(fs.readFileSync(path.join(outDir, "01c-target-eligibility.json"), "utf8"));
       expect(eligibility.eligibilityBlockers).toEqual(["UNRESOLVED_OPERATIVE_EVIDENCE"]);
     }
-    expect(fs.existsSync(UNPINNED[0])).toBe(false);
-    expect(fs.existsSync(UNPINNED[1])).toBe(false);
+    expect(fs.existsSync(UNPINNED_108A)).toBe(false);
+    expect(fs.existsSync(UNPINNED_104B)).toBe(false);
   });
 
   it("re-run twice → byte-identical packets", () => {
