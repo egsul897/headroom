@@ -102,15 +102,15 @@ These showed up from the document and from Pass A. They are not selected into th
 
 Absent, and left absent: grower; a section titled Asset Sales; a standalone Investments negative covenant; the phrase shared capacity; any post-closing amendment exhibit; any discoveryId; any pin.
 
-## 4. Blind contamination check — Knife River
+## 4. Blind contamination check
 
-Knife River’s body was not opened.
+The BLIND issuer’s body was not opened. This lane did not fetch that body, search its clauses, or inspect its covenant wording.
 
-- At tip `1acdff3` the repository had no Knife River or KNF record. This lane did not search for one, because metadata was allowed only if already recorded.
-- 130 retrieval URLs are listed in `tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/retrieval/urls.txt`. None contain Knife River, KNF, or MDU.
-- 127 of those URLs are under EDGAR data CIK `912562` (Gibraltar). One index URL used CIK `1140361`, which is the accession prefix of the same February 2, 2026 Gibraltar 8-K. That response is the filing index. Its document links point back at `/Archives/edgar/data/912562/...`. It is not another issuer’s agreement, and it is not Knife River.
-- The only credit-agreement body saved is `ef20064499_ex10-1.htm`, SHA256 above.
-- The Gibraltar fixture tree contains no “Knife River” string.
+The string “Knife River” does appear in this package. It appears in `tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/provenance.json` at `knifeRiver.reason`, and it appears in this report where the BLIND designation is restated. That is designation and reason text. It is not a retrieved URL and it is not a filing body.
+
+The retrieval URL list (`retrieval/urls.txt`) and the saved credit-agreement body (`raw-html/ef20064499_ex10-1.htm`, plus the extracted text) do not contain that issuer name, KNF, or MDU. 127 of the 130 retrieval URLs are under EDGAR data CIK `912562` (Gibraltar). One index URL used CIK `1140361`, the accession prefix of the same February 2, 2026 Gibraltar 8-K. That response is the filing index, and its document links point back at `/Archives/edgar/data/912562/...`. The only credit-agreement body saved is `ef20064499_ex10-1.htm`, SHA256 above.
+
+The BLIND designation stands. The body stays unread.
 
 ## 5. Gate
 
