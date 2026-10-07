@@ -1,8 +1,9 @@
 # Track E — Phase 3 scoreboard honesty
 
 **Tip read:** `62a40be22b9598d9732e9ce2574d86d2228d6270` (merge of #122).  
-**Arch invent-safe FROZEN sha256:** `37a4d8c1240fcbaf10341e9aaccc5ab294bbd95aec9243f17f1768bee5b22114`  
-**Authority on that digest:** COO MATCH + GRANT, CEO RE-APPROVE, Arch MATCH, bound at this tip. This note cites the granted digest. It does not recompute it.  
+**Grant FROZEN path:** `docs/phase-3-reliability-stratified-certification/PHASE-3-TRACK-E.FROZEN.md`  
+**sha256 of those bytes:** `37a4d8c1240fcbaf10341e9aaccc5ab294bbd95aec9243f17f1768bee5b22114` (MATCH). Recompute with `sha256sum` on that path. The file is the grant preimage. This note does not alter those bytes.  
+**Authority:** COO MATCH + GRANT, CEO RE-APPROVE, Arch MATCH, bound at the tip above.  
 **Lane:** Track E docs/ops. This is not the CONMED rerun cloud `bc-98c662d2`.
 
 Soft gate. Docs only. Invent-absence forever. **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.** **BASELINE_PINNED ≠ CERTIFIED.** **DEVELOPMENT ≠ CERTIFIED.** **LOCK ≠ implement.** This note is not a certification, not a pin, and not a completion percentage.
@@ -49,7 +50,9 @@ The two rows that are not pinned:
 
 ## 3. Pull requests #104–#111
 
-Checked live on GitHub at 2026-10-07T16:29:25Z and re-read after that close. Numbers 104–111 are pull requests. `gh issue view` on each number returns that pull request. There is no separate issue in this set.
+The grant preimage clock is 2026-10-07T16:25:00Z. Its residual line still names #104–#111 as open drafts. That sentence stays inside `PHASE-3-TRACK-E.FROZEN.md` and is not edited. Live disposition below is later than that clock.
+
+Checked live on GitHub at 2026-10-07T16:29:25Z and re-read after that close. Numbers 104–111 are pull requests. `gh issue view` on each number returns that pull request. There is no separate issue in this set. #106 and #107 stay open: closing them would drop notes that are not on main. That HOLD is execution honesty. It is not a rewrite of the frozen residual.
 
 Closed below means closed unmerged (`mergedAt` null, still draft). Closed is not merged, and not `CERTIFIED`.
 
