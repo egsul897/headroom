@@ -5,6 +5,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
+import { AskShell } from "../components/ask/AskShell";
 import { CompanyOverview } from "../components/home/Overview";
 import { CompanyIdentityCard } from "../components/home/CompanyIdentityCard";
 import { ToolsIndex } from "../components/home/ToolsIndex";
@@ -45,6 +46,35 @@ describe("Product LOCK empty overview", () => {
     expect(html).not.toContain("$");
     expect(html).not.toContain("%");
     expect(html).not.toMatch(/\d+\.\d+x/);
+    expect(html).toContain('title="Nothing to export yet"');
+    expect(html).toContain("disabled");
+  });
+
+  it("paints buyer details only and keeps implementer rules off the cards", () => {
+    expect(HOME_SLOTS.covenantsAtRisk.detail).toBe("None to show yet.");
+    expect(HOME_SLOTS.statusTable.detail).toBe("Status stays blank until we have real rows.");
+    expect(HOME_SLOTS.alerts.detail).toBe("Nothing to flag yet.");
+    expect(HOME_SLOTS.capacitySummary.detail).toBe("No facility split until figures are tied to sources.");
+    expect(HOME_SLOTS.transactions.detail).toBe("Nothing on the ledger yet.");
+    expect(HOME_SLOTS.drivers.detail).toBe("Drivers need explained capacity changes — not guesses.");
+
+    const html = renderToStaticMarkup(<CompanyOverview companyId="co" identityName={null} alertCount={0} />);
+    // Implementer rules (LOCK): never seed a count; if REVIEW_REQUIRED, do not invent one;
+    // never default a Healthy/green row; hide the bell badge when there is no real alert;
+    // capacity, drivers, and transactions stay provenance-bound and ledger-backed in the data path.
+    const implementerPhrases = [
+      "Never seed a count",
+      "REVIEW_REQUIRED",
+      "Never default Healthy",
+      "hide bell badge",
+      "provenance-bound",
+      "Ledger-backed only",
+      "fail-closed",
+    ];
+    for (const phrase of implementerPhrases) {
+      expect(html, phrase).not.toContain(phrase);
+    }
+    expect(html).not.toContain("data-alert-badge");
   });
 
   it("names a real identity and refuses the mockup person and company", () => {
@@ -114,6 +144,13 @@ describe("Ask shell", () => {
     expect(first.headline).toBe(ASK_CASES.REFUSE_NOT_INVENT.headline);
     expect(JSON.stringify(first)).not.toContain("How much");
     expect(askRunner.refuseAsk({ companyId: "", question: "hello" }).caseId).toBe("NO_COMPANY");
+
+    const askHtml = renderToStaticMarkup(<AskShell companyId="co" initial={askRunner.resolveAskShell({ companyId: "co" })} />);
+    expect(askHtml).toContain("Ask isn’t available on this deal yet");
+    expect(askHtml).not.toContain("Interrogation");
+    expect(askHtml).not.toContain("Secondary to the overview");
+    expect(askHtml).toContain("<button");
+    expect(askHtml).toMatch(/<button[^>]*disabled[^>]*>Submit question<\/button>/);
 
     for (const caseId of Object.keys(ASK_CASES) as (keyof typeof ASK_CASES)[]) {
       const view = askRunner.askEmpty(caseId);

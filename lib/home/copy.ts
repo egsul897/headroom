@@ -1,8 +1,10 @@
 /**
- * Product LOCK — Chunk A′ KPI empty copy.
- * SHA-256 cda3a4bd53f37677e0bfe5fc996d18b09af5a75712847a238361849ad5ba845a
- * Authority: CHUNK-A-PRIME-KPI-EMPTY-COPY-LOCK.md (CEO APPROVED 2026-10-07).
- * Strings below are the locked headline/detail text. Do not paraphrase.
+ * Product LOCK — Chunk A′ KPI empty copy (buyer UI only).
+ * SHA-256 7f68ced002e91cb4750f4a8680462f840a2bf54ae92bfb4a423af6d8c2b7d0a4
+ * Supersedes cda3a4bd53f37677e0bfe5fc996d18b09af5a75712847a238361849ad5ba845a.
+ * Authority: CHUNK-A-PRIME-KPI-EMPTY-COPY-LOCK.md (CEO APPROVED, buyer polish 2026-10-07).
+ * Headlines and details below are the locked buyer strings. Do not paraphrase.
+ * Implementer rules stay in the LOCK and in tests; they are not part of these strings.
  */
 
 export const HOME_GREETING_NO_NAME = "Here’s your headroom overview.";
@@ -26,7 +28,7 @@ export const HOME_SLOTS = {
   },
   covenantsAtRisk: {
     headline: "Covenants at risk",
-    detail: "None to show yet. If REVIEW_REQUIRED: Needs review. Never seed a count.",
+    detail: "None to show yet.",
   },
   nextTest: {
     headline: "Next test",
@@ -38,23 +40,23 @@ export const HOME_SLOTS = {
   },
   capacitySummary: {
     headline: "Capacity breakdown not available yet",
-    detail: "No facility split until provenance-bound.",
+    detail: "No facility split until figures are tied to sources.",
   },
   statusTable: {
     headline: "No covenant rows to show yet",
-    detail: "Never default Healthy/green.",
+    detail: "Status stays blank until we have real rows.",
   },
   drivers: {
     headline: "No drivers to show yet",
-    detail: "Drivers require explained capacity changes — not guesses.",
+    detail: "Drivers need explained capacity changes — not guesses.",
   },
   alerts: {
     headline: "No alerts",
-    detail: "Only real fail-closed signals; hide bell badge if none.",
+    detail: "Nothing to flag yet.",
   },
   transactions: {
     headline: "No transactions on file",
-    detail: "Ledger-backed only.",
+    detail: "Nothing on the ledger yet.",
   },
 } as const satisfies Record<string, HomeSlotCopy>;
 

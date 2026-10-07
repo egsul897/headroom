@@ -8,7 +8,7 @@
 | Binding | Value |
 |---|---|
 | Plan sha256 | `bb1cda9249b606e2d3fe1a064d8b22315500eed4169468660af052cef6f01379` |
-| Product LOCK sha256 | `cda3a4bd53f37677e0bfe5fc996d18b09af5a75712847a238361849ad5ba845a` |
+| Product LOCK sha256 | `7f68ced002e91cb4750f4a8680462f840a2bf54ae92bfb4a423af6d8c2b7d0a4` (buyer polish; supersedes `cda3a4bd53f37677e0bfe5fc996d18b09af5a75712847a238361849ad5ba845a`) |
 | Visual sha256 | `fbe53a17738e4c66106213906439451126fcea797346fd42830865195f7ace1f` |
 | Visual path | `/workspace/headroom-product-vision/home-dashboard-endstate.png` |
 | Product LOCK path | `/workspace/headroom-product-vision/CHUNK-A-PRIME-KPI-EMPTY-COPY-LOCK.md` |
