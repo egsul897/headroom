@@ -35,7 +35,7 @@ import { VALUE_SCHEMA_BY_KIND } from "./review";
 import { classifyCompanyCoverage } from "../solver/coverage";
 import type { CoverageResult } from "../solver/types";
 import { loadCompanySolverStaticData } from "../covenant-engine";
-import { upsertFinancialFactsForDate } from "./financial";
+import { CONFLICTING_FINANCIAL_FACTS, upsertFinancialFactsForDate } from "./financial";
 
 const VALID_ENTITY_CLASS_TAGS = new Set(["BORROWER", "GUARANTOR_RS", "NON_GUARANTOR_RS", "FOREIGN_RS", "UNRESTRICTED_SUB", "SECURITIZATION_SUB", "IMMATERIAL_SUB"]);
 
@@ -410,7 +410,11 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     //    required field uncovered by a same-date row or a sibling fact, is a
     //    documented per-fact skip (never an error that aborts the whole
     //    promotion batch, never a fabricated value, never a copy from an
-    //    earlier asOfDate).
+    //    earlier asOfDate). A CONFLICTING_FINANCIAL_FACTS skip is surfaced
+    //    as REVIEW_REQUIRED and is not given promotedAt. applied:true is
+    //    trusted only when this call also returns the canonical row id the
+    //    candidate actually contributed. One asOfDate group's conflict does
+    //    not abort a sibling date group.
     // -----------------------------------------------------------------------
     const financialFactCandidates = candidates.filter((c) => c.kind === "FINANCIAL_FACT");
     const byAsOfDate = new Map<string, { candidate: ExtractionCandidate; metricName: string; value: number }[]>();
@@ -435,11 +439,30 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
       const notes = `Promoted from FINANCIAL_FACT candidate(s): ${group.map((g) => g.candidate.id).join(", ")}.`;
       const result = await upsertFinancialFactsForDate(companyId, asOfDate, group.map((g) => ({ key: g.candidate.id, metricName: g.metricName, value: g.value })), notes, tx);
       for (const outcome of result.perFact) {
-        if (!outcome.applied) {
-          skipped.push({ candidateId: outcome.key, kind: "FINANCIAL_FACT", reason: outcome.skipReason ?? "upsertFinancialFactsForDate declined to apply this fact - not promoted." });
+        const reason = outcome.skipReason ?? "upsertFinancialFactsForDate declined to apply this fact - not promoted.";
+        const conflict = reason.includes(CONFLICTING_FINANCIAL_FACTS);
+        // applied:false never enters `promotions` (that list is the only
+        // writer of promotedAt below). A conflict code is fail-closed even
+        // if applied were wrongly true.
+        if (!outcome.applied || conflict) {
+          skipped.push({ candidateId: outcome.key, kind: "FINANCIAL_FACT", reason });
+          if (conflict) {
+            await tx.extractionCandidate.update({
+              where: { id: outcome.key },
+              data: {
+                reviewStatus: "REVIEW_REQUIRED",
+                rationale: reason,
+              },
+            });
+          }
           continue;
         }
-        promotions.push({ candidateId: outcome.key, promotedToId: outcome.financialSnapshotId ?? outcome.financialStateId! });
+        const promotedToId = outcome.financialSnapshotId ?? outcome.financialStateId;
+        if (!promotedToId) {
+          skipped.push({ candidateId: outcome.key, kind: "FINANCIAL_FACT", reason: "No canonical FinancialSnapshot/FinancialState id was returned for this fact - not promoted (fail closed)." });
+          continue;
+        }
+        promotions.push({ candidateId: outcome.key, promotedToId });
       }
     }
 

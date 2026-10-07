@@ -3,13 +3,18 @@
 # P3-R0 product and test paths stay off canonical-compiler.yml and off the
 # stratified-cert workflows. A green run here is not certification credit.
 #
-# The four suites need Postgres. No existing test workflow supplies
+# P3-FFC1 financial-fact conflict suite runs in this job with the R0 suites.
+# Soft gate only. IMPLEMENTED ≠ CERTIFIED. invent-absence forever.
+# PINNED_OFFLINE ≠ CERTIFIED. A green run is not certification credit.
+# Conflicting same-field evidence must not collapse by iteration order.
+#
+# The suites need Postgres. No existing test workflow supplies
 # DATABASE_URL. initialize-neon.yml and migrate-neon-onboarding.yml are
 # workflow_dispatch jobs against NEON_DATABASE_URL; they refuse localhost
 # and are not a test harness. This job does not use that secret and does
 # not invent a paid credential. It starts an ephemeral Postgres 16 service
 # on the runner, applies this repo's migrations with `prisma migrate deploy`,
-# then runs the four suites.
+# then runs the R0 suites and the P3-FFC1 financial-fact conflict suite.
 
 name: p3-r0-soft-gate
 
@@ -87,10 +92,11 @@ jobs:
         run: npx tsc --noEmit -p .
       - name: apply migrations to the ephemeral Postgres service
         run: npx prisma migrate deploy
-      - name: P3-R0 suites
+      - name: P3-R0 and financial-fact conflict suites
         run: >-
           npx vitest run
           tests/feeds/snapshot-update-no-carry-forward.test.ts
           tests/onboarding/financial-fact-promotion.test.ts
+          tests/onboarding/financial-fact-conflict.test.ts
           tests/company-state/canonical-state.test.ts
           tests/ledger/supersede-ledger-entry.test.ts
