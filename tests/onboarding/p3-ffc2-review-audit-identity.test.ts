@@ -541,9 +541,13 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
     expect(row.notes).toBe("canonical");
 
     const financialSrc = readFileSync(join(process.cwd(), "lib/onboarding/financial.ts"), "utf8");
-    expect(financialSrc).toContain("financialSnapshot.findFirst");
+    expect(financialSrc).toContain("resolveCanonicalFinancialIdentity");
+    expect(financialSrc).toContain('selection: "exact"');
+    expect(financialSrc).not.toMatch(/financialSnapshot\.findFirst\s*\(/);
+    expect(financialSrc).not.toMatch(/financialState\.findFirst\s*\(/);
     expect(financialSrc).toContain("CONFLICTING_FINANCIAL_FACTS");
-    expect(financialSrc).not.toContain("financial-identity");
+    expect(financialSrc).toContain("FINANCIAL_IDENTITY_AMBIGUOUS");
+    expect(financialSrc).toContain("financial-identity");
     const promotionSrc = readFileSync(join(process.cwd(), "lib/onboarding/promotion.ts"), "utf8");
     expect(promotionSrc).toContain("recordSystemReviewRequired");
     expect(promotionSrc).toContain("CONFLICTING_FINANCIAL_FACTS");

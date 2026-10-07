@@ -12,11 +12,17 @@
  * rewrite keeps the prior wrapper when the numeric value is unchanged
  * (P3-FFC1b). FinancialSnapshot stays plain columns: this module does not
  * invent per-field snapshot provenance.
+ *
+ * P3-FFC2b: same-date Snapshot and State resolve goes through
+ * resolveCanonicalFinancialIdentity with selection "exact". Zero rows is
+ * absent. One row is that row. More than one row on either table fails the
+ * batch closed. Schema @@unique stays HOLD.
  */
 
 import { Prisma, type Facility as PrismaFacility, type Permission as PrismaPermission, type PrismaClient } from "@prisma/client";
 import { prisma } from "../prisma";
 import { fact } from "../financial-core/types";
+import { FINANCIAL_IDENTITY_AMBIGUOUS, resolveCanonicalFinancialIdentity } from "../financial-identity";
 
 /** Either the global client or a `prisma.$transaction` callback's `tx` - lets upsertFinancialFactForDate participate in lib/onboarding/promotion.ts's single all-or-nothing transaction instead of writing outside it. */
 type FinancialDbClient = Prisma.TransactionClient | PrismaClient;
@@ -344,7 +350,12 @@ export interface UpsertFinancialFactResult {
  * Both tables require a FULL set of 8 numeric fields per row (they were
  * designed around one human typing in a complete snapshot at once) - a
  * single connector-discovered fact only ever supplies ONE of those 8. This
- * function resolves that tension without copying another date's facts:
+ * function resolves that tension without copying another date's facts.
+ * Same-date identity uses resolveCanonicalFinancialIdentity with selection
+ * "exact" on { companyId, asOfDate }. Zero matches is absent. One match is
+ * that row. More than one FinancialSnapshot or FinancialState row fails the
+ * whole batch closed as FINANCIAL_IDENTITY_AMBIGUOUS: every fact is
+ * applied:false, and neither table is rewritten.
  *   1. An existing row for this EXACT asOfDate is canonical V. A batch value
  *      equal to V corroborates and does not rewrite stored numbers. A batch
  *      value that disagrees is CONFLICTING_FINANCIAL_FACTS and does not
@@ -406,6 +417,10 @@ function conflictSkipReason(field: keyof RequiredFinancialFields, values: number
   return `${CONFLICTING_FINANCIAL_FACTS}: canonical field "${field}" has conflicting values (${formatConflictValues(values)}). REVIEW_REQUIRED. Not promoted (fail closed: no auto winner, no majority vote, no last-approved-wins, no insertion-order collapse).`;
 }
 
+function ambiguousIdentitySkipReason(asOfDate: Date, snapshotMatches: number, stateMatches: number): string {
+  return `${FINANCIAL_IDENTITY_AMBIGUOUS}: same-date financial identity for ${asOfDate.toISOString().slice(0, 10)} is not unique (FinancialSnapshot matches=${snapshotMatches}, FinancialState matches=${stateMatches}). Not promoted (fail closed: no silent pick, no rewrite, no majority, no last-row, no insertion-order collapse).`;
+}
+
 function requiredFromResolved(resolved: Map<keyof RequiredFinancialFields, number>): RequiredFinancialFields {
   return {
     ebitda: resolved.get("ebitda")!,
@@ -441,6 +456,9 @@ function requiredFromResolved(resolved: Map<keyof RequiredFinancialFields, numbe
  * fail closed as CONFLICTING_FINANCIAL_FACTS. Iteration order, majority,
  * and last-approved-wins do not choose a canonical number. `applied: true`
  * only for candidates that contributed the value that lands.
+ *
+ * Duplicate same-date Snapshot or State rows are AMBIGUOUS. This function
+ * does not pick one of them and does not rewrite either table on that call.
  */
 export async function upsertFinancialFactsForDate(companyId: string, asOfDate: Date, facts: BatchFinancialFact[], notes: string | undefined, client: FinancialDbClient = prisma): Promise<UpsertFinancialFactsResult> {
   const outcomes: FactOutcome[] = facts.map((f) => ({
@@ -471,11 +489,28 @@ export async function upsertFinancialFactsForDate(companyId: string, asOfDate: D
 
   if (groups.size === 0) return { perFact: outcomes };
 
-  const existingSnapshot = await client.financialSnapshot.findFirst({ where: { companyId, asOfDate } });
-  const existingState = await client.financialState.findFirst({ where: { companyId, asOfDate } });
+  // Exact (companyId, asOfDate). 0 → UNKNOWN (absent). 1 → UNIQUE (that row).
+  // >1 on Snapshot or State → AMBIGUOUS: no silent pick, no rewrite.
+  // A prior date is outside this where, so it is never a seed (P3-R0 C6).
+  const snapshotResolution = await resolveCanonicalFinancialIdentity(
+    (args) => client.financialSnapshot.findMany(args),
+    { where: { companyId, asOfDate }, selection: "exact" },
+  );
+  const stateResolution = await resolveCanonicalFinancialIdentity(
+    (args) => client.financialState.findMany(args),
+    { where: { companyId, asOfDate }, selection: "exact" },
+  );
+  if (snapshotResolution.status === "AMBIGUOUS" || stateResolution.status === "AMBIGUOUS") {
+    const reason = ambiguousIdentitySkipReason(asOfDate, snapshotResolution.matchCount, stateResolution.matchCount);
+    for (let index = 0; index < facts.length; index++) {
+      const batchFact = facts[index]!;
+      outcomes[index] = { key: batchFact.key, metricName: batchFact.metricName, applied: false, skipReason: reason };
+    }
+    return { perFact: outcomes };
+  }
+  const existingSnapshot = snapshotResolution.status === "UNIQUE" ? snapshotResolution.row : null;
+  const existingState = stateResolution.status === "UNIQUE" ? stateResolution.row : null;
 
-  // Same-date row only. A snapshot dated earlier is a different period and
-  // is never read as a seed (P3-R0 C6).
   const baseFromSameDate: RequiredFinancialFields | null = existingSnapshot ? requiredFieldsFromSnapshot(existingSnapshot) : null;
 
   const conflicted = new Set<keyof RequiredFinancialFields>();

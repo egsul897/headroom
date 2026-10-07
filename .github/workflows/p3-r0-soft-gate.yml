@@ -22,6 +22,15 @@
 # stored Snapshot/State rows fail closed as AMBIGUOUS. This gate does not
 # certify that behavior.
 #
+# P3-FFC2b write-side same-date identity suite runs here too.
+# Soft gate only. IMPLEMENTED ≠ CERTIFIED. invent-absence forever.
+# PINNED_OFFLINE ≠ CERTIFIED. A green run is not certification credit.
+# upsertFinancialFactsForDate resolves exact (companyId, asOfDate) through
+# resolveCanonicalFinancialIdentity. 0 is absent. 1 is that row. More than
+# one Snapshot or State row fails closed as FINANCIAL_IDENTITY_AMBIGUOUS
+# with no silent pick and no rewrite. This gate does not certify that
+# behavior. Schema @@unique stays HOLD.
+#
 # The suites need Postgres. No existing test workflow supplies
 # DATABASE_URL. initialize-neon.yml and migrate-neon-onboarding.yml are
 # workflow_dispatch jobs against NEON_DATABASE_URL; they refuse localhost
@@ -29,7 +38,8 @@
 # not invent a paid credential. It starts an ephemeral Postgres 16 service
 # on the runner, applies this repo's migrations with `prisma migrate deploy`,
 # then runs the R0 suites, the P3-FFC1 financial-fact conflict suite, the
-# P3-FFC1b provenance-wrapper carry suite, and the P3-FFC2 suites.
+# P3-FFC1b provenance-wrapper carry suite, the P3-FFC2 suites, and the
+# P3-FFC2b write-side identity suite.
 
 name: p3-r0-soft-gate
 
@@ -51,6 +61,7 @@ on:
       - "lib/coherent.ts"
       - "tests/financial-identity/**"
       - "docs/p3-ffc2-review-audit-identity-checklist.md"
+      - "docs/p3-ffc2b-write-side-financial-identity-checklist.md"
       - "prisma/schema.prisma"
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
@@ -75,6 +86,7 @@ on:
       - "lib/coherent.ts"
       - "tests/financial-identity/**"
       - "docs/p3-ffc2-review-audit-identity-checklist.md"
+      - "docs/p3-ffc2b-write-side-financial-identity-checklist.md"
       - "prisma/schema.prisma"
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
@@ -119,7 +131,7 @@ jobs:
         run: npx tsc --noEmit -p .
       - name: apply migrations to the ephemeral Postgres service
         run: npx prisma migrate deploy
-      - name: P3-R0, financial-fact conflict, provenance-carry, and FFC2 suites
+      - name: P3-R0, financial-fact conflict, provenance-carry, FFC2, and FFC2b suites
         run: >-
           npx vitest run
           tests/feeds/snapshot-update-no-carry-forward.test.ts
@@ -127,5 +139,6 @@ jobs:
           tests/onboarding/financial-fact-conflict.test.ts
           tests/onboarding/financial-state-provenance-carry.test.ts
           tests/onboarding/p3-ffc2-review-audit-identity.test.ts
+          tests/onboarding/p3-ffc2b-write-side-financial-identity.test.ts
           tests/company-state/canonical-state.test.ts
           tests/ledger/supersede-ledger-entry.test.ts
