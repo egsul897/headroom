@@ -247,17 +247,20 @@ describe("P3-R0 C6 — FINANCIAL_FACT promotion does not seed from a prior date"
     expect(prior.ebitda.toNumber()).toBe(111);
   });
 
-  it("same-date merge updates only the supplied field and keeps the other same-date values", async () => {
+  it("same-date value mismatch fails closed and keeps the existing canonical value", async () => {
     const companyId = C6_COMPANIES[2];
     const result = await upsertFinancialFactsForDate(companyId, TARGET_DATE, [{ key: "merge-cash", metricName: "cash", value: 8.8 }], undefined);
-    expect(result.perFact[0]!.applied).toBe(true);
+    expect(result.perFact[0]!.applied).toBe(false);
+    expect(result.perFact[0]!.skipReason).toMatch(/CONFLICTING_FINANCIAL_FACTS/);
+    expect(result.financialSnapshotId).toBeUndefined();
 
     const rows = await prisma.financialSnapshot.findMany({ where: { companyId, asOfDate: TARGET_DATE } });
     expect(rows).toHaveLength(1);
-    expect(rows[0]!.cash.toNumber()).toBe(8.8);
+    expect(rows[0]!.cash.toNumber()).toBe(4.2);
     expect(rows[0]!.ebitda.toNumber()).toBe(18);
     expect(rows[0]!.totalDebt.toNumber()).toBe(52);
     expect(rows[0]!.securedDebt.toNumber()).toBe(30);
+    expect(rows[0]!.notes).toBe("same-date row");
 
     const prior = await prisma.financialSnapshot.findFirstOrThrow({ where: { companyId, asOfDate: PRIOR_DATE } });
     expect(prior.cash.toNumber()).toBe(222);

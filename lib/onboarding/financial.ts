@@ -78,7 +78,17 @@ function snapshotFieldsFromInput(input: ManualFinancialStateInput) {
   };
 }
 
-/** Same factoring as snapshotFieldsFromInput, for FinancialState's three JSON fact groups. */
+/**
+ * Same factoring as snapshotFieldsFromInput, for FinancialState's three JSON fact groups.
+ *
+ * P3-FFC1b (HOLD follow-on, not this chunk): a same-date update through this
+ * function rebuilds every fact wrapper. Unchanged fields receive new
+ * wrappers, and prior source/review metadata is not carried.
+ * FinancialSnapshot has no per-field provenance. FFC1 does not rewrite that
+ * path. `upsertFinancialFactsForDate` does not call this when an existing
+ * same-date row's canonical numbers are left unchanged (conflict preserve,
+ * or identical-value corroboration).
+ */
 function financialStateFactsFromInput(input: ManualFinancialStateInput) {
   const { asOfDate } = input;
   const balanceSheetFacts = {
@@ -147,6 +157,14 @@ export async function createManualFinancialState(input: ManualFinancialStateInpu
  * absence and skip with a clear reason (fail closed) rather than guess a
  * mapping.
  */
+/**
+ * Named fail-closed outcome when two or more claims disagree on one canonical
+ * field (batch-internal, or batch versus an existing same-date value).
+ * Promotion maps this code to REVIEW_REQUIRED and must not set promotedAt.
+ * Not a winner, not a majority, not last-approved-wins.
+ */
+export const CONFLICTING_FINANCIAL_FACTS = "CONFLICTING_FINANCIAL_FACTS";
+
 export const FINANCIAL_METRIC_FIELD_MAP: Record<string, keyof ReturnType<typeof requiredFieldsFromSnapshot>> = {
   cash: "cash",
   total_debt: "totalDebtPrincipal",
@@ -212,7 +230,13 @@ export interface UpsertFinancialFactResult {
  *      snapshot exists or a same-date batch covers the remaining metrics.
  */
 export interface BatchFinancialFact {
-  /** Caller-supplied identifier (lib/onboarding/promotion.ts passes the originating ExtractionCandidate's own id) echoed back on the matching perFact entry - avoids relying on array position or on metricName uniqueness (two facts in the same batch CAN legitimately share a metricName, e.g. two independently-approved candidates both proposing "cash" for the same date) to match a result back to its request. */
+  /**
+   * Caller-supplied identifier (lib/onboarding/promotion.ts passes the
+   * originating ExtractionCandidate's own id) echoed back on the matching
+   * perFact entry. Two facts in the same batch may share a metricName.
+   * Identical values corroborate. Different values are
+   * CONFLICTING_FINANCIAL_FACTS — iteration order must not pick a winner.
+   */
   key: string;
   metricName: string;
   value: number;
@@ -223,6 +247,43 @@ export interface UpsertFinancialFactsResult {
   perFact: (UpsertFinancialFactResult & { key: string; metricName: string })[];
   financialSnapshotId?: string;
   financialStateId?: string;
+}
+
+type FactOutcome = UpsertFinancialFactResult & { key: string; metricName: string };
+
+const ALL_REQUIRED_FIELDS: (keyof RequiredFinancialFields)[] = ["ebitda", "cash", "totalDebtPrincipal", "securedDebtPrincipal", "cumulativeNetIncomeSinceIssue", "equityProceedsSinceIssue", "interestExpense", "assumedNewDebtRatePct"];
+
+/** Identical numbers (===) are one claim. Different numbers are never collapsed, and NaN does not collapse into itself. */
+function distinctNumbers(values: number[]): number[] {
+  const out: number[] = [];
+  for (const value of values) {
+    if (!out.some((existing) => existing === value)) out.push(value);
+  }
+  return out;
+}
+
+/** Order-independent rendering so two permutations of the same claims share one skipReason. */
+function formatConflictValues(values: number[]): string {
+  const finite = values.filter((v) => Number.isFinite(v)).sort((a, b) => a - b);
+  const nonFinite = values.filter((v) => !Number.isFinite(v)).map((v) => String(v)).sort();
+  return [...finite.map((v) => String(v)), ...nonFinite].join(", ");
+}
+
+function conflictSkipReason(field: keyof RequiredFinancialFields, values: number[]): string {
+  return `${CONFLICTING_FINANCIAL_FACTS}: canonical field "${field}" has conflicting values (${formatConflictValues(values)}). REVIEW_REQUIRED. Not promoted (fail closed: no auto winner, no majority vote, no last-approved-wins, no insertion-order collapse).`;
+}
+
+function requiredFromResolved(resolved: Map<keyof RequiredFinancialFields, number>): RequiredFinancialFields {
+  return {
+    ebitda: resolved.get("ebitda")!,
+    cash: resolved.get("cash")!,
+    totalDebtPrincipal: resolved.get("totalDebtPrincipal")!,
+    securedDebtPrincipal: resolved.get("securedDebtPrincipal")!,
+    cumulativeNetIncomeSinceIssue: resolved.get("cumulativeNetIncomeSinceIssue")!,
+    equityProceedsSinceIssue: resolved.get("equityProceedsSinceIssue")!,
+    interestExpense: resolved.get("interestExpense")!,
+    assumedNewDebtRatePct: resolved.get("assumedNewDebtRatePct")!,
+  };
 }
 
 /**
@@ -241,23 +302,41 @@ export interface UpsertFinancialFactsResult {
  * required field with no source at all, this still creates nothing and
  * reports every affected fact as skipped with a clear reason — never a
  * fabricated 0 and never a value copied from an earlier date.
+ *
+ * Same canonical field: identical values corroborate. Different values,
+ * including a batch value that disagrees with an existing same-date value,
+ * fail closed as CONFLICTING_FINANCIAL_FACTS. Iteration order, majority,
+ * and last-approved-wins do not choose a canonical number. `applied: true`
+ * only for candidates that contributed the value that lands.
  */
 export async function upsertFinancialFactsForDate(companyId: string, asOfDate: Date, facts: BatchFinancialFact[], notes: string | undefined, client: FinancialDbClient = prisma): Promise<UpsertFinancialFactsResult> {
-  const perFact: (UpsertFinancialFactResult & { key: string; metricName: string })[] = [];
-  const resolvedFields = new Map<keyof RequiredFinancialFields, number>();
-  const applicableFacts: { key: string; metricName: string; field: keyof RequiredFinancialFields; value: number }[] = [];
+  const outcomes: FactOutcome[] = facts.map((f) => ({
+    key: f.key,
+    metricName: f.metricName,
+    applied: false,
+    skipReason: "Internal: fact was not classified - not promoted (fail closed).",
+  }));
 
-  for (const f of facts) {
+  type Claim = { index: number; key: string; metricName: string; field: keyof RequiredFinancialFields; value: number };
+  const groups = new Map<keyof RequiredFinancialFields, Claim[]>();
+
+  facts.forEach((f, index) => {
     const field = FINANCIAL_METRIC_FIELD_MAP[f.metricName];
     if (!field) {
-      perFact.push({ key: f.key, metricName: f.metricName, applied: false, skipReason: `Unrecognized metricName "${f.metricName}" - no entry in FINANCIAL_METRIC_FIELD_MAP. Not promoted (fail closed): configuration/data gap, not an error, and never a fabricated mapping.` });
-      continue;
+      outcomes[index] = {
+        key: f.key,
+        metricName: f.metricName,
+        applied: false,
+        skipReason: `Unrecognized metricName "${f.metricName}" - no entry in FINANCIAL_METRIC_FIELD_MAP. Not promoted (fail closed): configuration/data gap, not an error, and never a fabricated mapping.`,
+      };
+      return;
     }
-    resolvedFields.set(field, f.value);
-    applicableFacts.push({ key: f.key, metricName: f.metricName, field, value: f.value });
-  }
+    const list = groups.get(field) ?? [];
+    list.push({ index, key: f.key, metricName: f.metricName, field, value: f.value });
+    groups.set(field, list);
+  });
 
-  if (applicableFacts.length === 0) return { perFact };
+  if (groups.size === 0) return { perFact: outcomes };
 
   const existingSnapshot = await client.financialSnapshot.findFirst({ where: { companyId, asOfDate } });
   const existingState = await client.financialState.findFirst({ where: { companyId, asOfDate } });
@@ -266,57 +345,90 @@ export async function upsertFinancialFactsForDate(companyId: string, asOfDate: D
   // is never read as a seed (P3-R0 C6).
   const baseFromSameDate: RequiredFinancialFields | null = existingSnapshot ? requiredFieldsFromSnapshot(existingSnapshot) : null;
 
-  const ALL_FIELDS: (keyof RequiredFinancialFields)[] = ["ebitda", "cash", "totalDebtPrincipal", "securedDebtPrincipal", "cumulativeNetIncomeSinceIssue", "equityProceedsSinceIssue", "interestExpense", "assumedNewDebtRatePct"];
+  const conflicted = new Set<keyof RequiredFinancialFields>();
+  const resolvedFields = new Map<keyof RequiredFinancialFields, number>();
+  const contributors: Claim[] = [];
 
-  let base: RequiredFinancialFields;
-  if (!baseFromSameDate) {
-    const missing = ALL_FIELDS.filter((f) => !resolvedFields.has(f));
-    if (missing.length > 0) {
-      const reason = `No same-date FinancialSnapshot for ${asOfDate.toISOString().slice(0, 10)}. Prior-date snapshots are not used as a seed. This batch does not cover: ${missing.join(", ")}. Not promoted (fail closed: never copies a value from an earlier date and never fabricates a required field as 0).`;
-      for (const f of applicableFacts) perFact.push({ key: f.key, metricName: f.metricName, applied: false, skipReason: reason });
-      return { perFact };
+  for (const [field, claims] of groups) {
+    const distinct = distinctNumbers(claims.map((c) => c.value));
+    const baseValue = baseFromSameDate ? baseFromSameDate[field] : undefined;
+    const nonFinite = distinct.some((v) => !Number.isFinite(v));
+    const disagreesWithBase = baseValue !== undefined && distinct.some((v) => v !== baseValue);
+    if (nonFinite || disagreesWithBase || distinct.length !== 1) {
+      conflicted.add(field);
+      const shown = [...distinct];
+      if (baseValue !== undefined && Number.isFinite(baseValue) && !shown.some((v) => v === baseValue)) shown.push(baseValue);
+      const reason = conflictSkipReason(field, shown);
+      for (const claim of claims) {
+        outcomes[claim.index] = { key: claim.key, metricName: claim.metricName, applied: false, skipReason: reason };
+      }
+      continue;
     }
-    base = {
-      ebitda: resolvedFields.get("ebitda")!,
-      cash: resolvedFields.get("cash")!,
-      totalDebtPrincipal: resolvedFields.get("totalDebtPrincipal")!,
-      securedDebtPrincipal: resolvedFields.get("securedDebtPrincipal")!,
-      cumulativeNetIncomeSinceIssue: resolvedFields.get("cumulativeNetIncomeSinceIssue")!,
-      equityProceedsSinceIssue: resolvedFields.get("equityProceedsSinceIssue")!,
-      interestExpense: resolvedFields.get("interestExpense")!,
-      assumedNewDebtRatePct: resolvedFields.get("assumedNewDebtRatePct")!,
-    };
-  } else {
-    base = { ...baseFromSameDate, ...Object.fromEntries(resolvedFields) };
+    resolvedFields.set(field, distinct[0]!);
+    contributors.push(...claims);
   }
 
-  const merged: ManualFinancialStateInput = { companyId, asOfDate, ...base, notes };
+  if (!baseFromSameDate) {
+    const missing = ALL_REQUIRED_FIELDS.filter((field) => !resolvedFields.has(field));
+    if (missing.length > 0) {
+      const conflictedMissing = missing.filter((field) => conflicted.has(field));
+      const withheld = conflictedMissing.length > 0 ? ` Conflicted canonical field(s) not used as a value (no winner chosen): ${conflictedMissing.join(", ")}.` : "";
+      const reason = `No same-date FinancialSnapshot for ${asOfDate.toISOString().slice(0, 10)}. Prior-date snapshots are not used as a seed. This batch does not cover: ${missing.join(", ")}. Not promoted (fail closed: never copies a value from an earlier date and never fabricates a required field as 0).${withheld}`;
+      for (const claim of contributors) {
+        outcomes[claim.index] = { key: claim.key, metricName: claim.metricName, applied: false, skipReason: reason };
+      }
+      return { perFact: outcomes };
+    }
+  }
 
-  const snapshot = existingSnapshot
-    ? await client.financialSnapshot.update({ where: { id: existingSnapshot.id }, data: { ...snapshotFieldsFromInput(merged), notes: merged.notes ?? existingSnapshot.notes } })
-    : await client.financialSnapshot.create({ data: { companyId, asOfDate, ...snapshotFieldsFromInput(merged), notes: merged.notes } });
+  // Existing same-date V is preserved when the batch disagrees. Resolved
+  // groups on an existing row are identical corroboration, so the stored
+  // numbers do not change and the row is not rewritten (wrapper carry is
+  // P3-FFC1b). A first write happens only when the non-conflicting groups
+  // themselves cover every required field.
+  let financialSnapshotId: string | undefined;
+  let financialStateId: string | undefined;
 
-  const { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts } = financialStateFactsFromInput(merged);
-  const state = existingState
-    ? await client.financialState.update({
-        where: { id: existingState.id },
-        data: { balanceSheetFacts: balanceSheetFacts as unknown as Prisma.InputJsonValue, incomeStatementFacts: incomeStatementFacts as unknown as Prisma.InputJsonValue, covenantMetricFacts: covenantMetricFacts as unknown as Prisma.InputJsonValue, notes: merged.notes ?? existingState.notes },
-      })
-    : await client.financialState.create({
-        data: {
-          companyId,
-          asOfDate,
-          periodType: "ACTUAL",
-          scope: "CONSOLIDATED",
-          balanceSheetFacts: balanceSheetFacts as unknown as Prisma.InputJsonValue,
-          incomeStatementFacts: incomeStatementFacts as unknown as Prisma.InputJsonValue,
-          covenantMetricFacts: covenantMetricFacts as unknown as Prisma.InputJsonValue,
-          notes: merged.notes,
-        },
-      });
+  if (!baseFromSameDate) {
+    const base = requiredFromResolved(resolvedFields);
+    const merged: ManualFinancialStateInput = { companyId, asOfDate, ...base, notes };
+    const snapshot = await client.financialSnapshot.create({ data: { companyId, asOfDate, ...snapshotFieldsFromInput(merged), notes: merged.notes } });
+    const { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts } = financialStateFactsFromInput(merged);
+    const state = await client.financialState.create({
+      data: {
+        companyId,
+        asOfDate,
+        periodType: "ACTUAL",
+        scope: "CONSOLIDATED",
+        balanceSheetFacts: balanceSheetFacts as unknown as Prisma.InputJsonValue,
+        incomeStatementFacts: incomeStatementFacts as unknown as Prisma.InputJsonValue,
+        covenantMetricFacts: covenantMetricFacts as unknown as Prisma.InputJsonValue,
+        notes: merged.notes,
+      },
+    });
+    financialSnapshotId = snapshot.id;
+    financialStateId = state.id;
+  } else if (contributors.length > 0) {
+    financialSnapshotId = existingSnapshot!.id;
+    financialStateId = existingState?.id;
+  }
 
-  for (const f of applicableFacts) perFact.push({ key: f.key, metricName: f.metricName, applied: true, financialSnapshotId: snapshot.id, financialStateId: state.id });
-  return { perFact, financialSnapshotId: snapshot.id, financialStateId: state.id };
+  if (financialSnapshotId) {
+    for (const claim of contributors) {
+      outcomes[claim.index] = {
+        key: claim.key,
+        metricName: claim.metricName,
+        applied: true,
+        financialSnapshotId,
+        financialStateId,
+      };
+    }
+  }
+
+  const result: UpsertFinancialFactsResult = { perFact: outcomes };
+  if (financialSnapshotId) result.financialSnapshotId = financialSnapshotId;
+  if (financialStateId) result.financialStateId = financialStateId;
+  return result;
 }
 
 /** Single-fact convenience wrapper over upsertFinancialFactsForDate. A single fact still fails closed when no same-date row exists and the other required fields are absent. A prior-date snapshot is not a seed. */
