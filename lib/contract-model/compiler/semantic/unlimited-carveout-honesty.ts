@@ -15,6 +15,10 @@
  * is left as the emitter wrote it. An exact gate whose description only
  * narrates both gates is narrowed to the gate its excerpt already states.
  * A description that also states an independent qualifier is left as written.
+ * A capitalized act name that the context bundle retrieved as a definition is
+ * not synthesized into a DEFINED_TERM_REFERENCE: a compiled term node is
+ * reliance, and the source contract then closes over that definition's own
+ * dependency edges.
  *
  * Soft gate. invent-absence forever. IMPLEMENTED ≠ CERTIFIED.
  */
