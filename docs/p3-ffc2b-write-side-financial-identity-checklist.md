@@ -30,7 +30,7 @@ Write-side same-date resolve in `upsertFinancialFactsForDate` uses `resolveCanon
 
 ## HOLD follow-ons (not this PR)
 
-- FinancialState `@@unique`. State has `periodType` and `scope`. Do not invent a uniqueness shape that ignores those columns. FinancialSnapshot `@@unique([companyId, asOfDate])` landed in P3-FFC2c. The migration aborts when a pair already has more than one Snapshot row. It does not collapse those rows.
+- FinancialState `@@unique`. State has `periodType` and `scope`. Do not invent a uniqueness shape that ignores those columns. Evidence lock: `docs/architecture/FINANCIAL-STATE-UNIQUENESS-KEY-EVIDENCE-ADR.md` (HOLD; does not authorize FFC2d). FinancialSnapshot `@@unique([companyId, asOfDate])` landed in P3-FFC2c. The migration aborts when a pair already has more than one Snapshot row. It does not collapse those rows.
 - `createManualFinancialState` always-create duplicate risk. The Snapshot half now fails at the database on a duplicate pair. Wizard product semantics stay HOLD.
 - EXTERNAL_INPUT always-create. Covenant activation create-per-candidate. permissionRelationship always-create.
 - Reconciliation amplifier.

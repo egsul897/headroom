@@ -34,7 +34,7 @@ FROZEN sha256 `6cf204ae0d83c28e455eaceb9e4ba6aa3c0458378e01e771c2be21cce4fbfcbb`
 
 ## HOLD follow-ons (not this PR)
 
-- FinancialState `@@unique`. State has `periodType` and `scope`. Do not invent a uniqueness shape that ignores those columns.
+- FinancialState `@@unique`. State has `periodType` and `scope`. Do not invent a uniqueness shape that ignores those columns. Evidence lock: `docs/architecture/FINANCIAL-STATE-UNIQUENESS-KEY-EVIDENCE-ADR.md` (HOLD; does not authorize FFC2d).
 - `createManualFinancialState` always-create. The Snapshot half now fails at the database on a duplicate pair. Wizard product semantics stay HOLD.
 - EXTERNAL_INPUT always-create. Covenant activation create-per-candidate. permissionRelationship always-create.
 - Reconciliation amplifier.

@@ -8,6 +8,7 @@
  *
  * FinancialState @@unique remains HOLD. State has periodType and scope.
  * Do not invent a uniqueness shape that ignores those columns.
+ * Evidence lock: docs/architecture/FINANCIAL-STATE-UNIQUENESS-KEY-EVIDENCE-ADR.md (does not authorize FFC2d).
  * createManualFinancialState product semantics remain HOLD.
  *
  * Soft gate only. IMPLEMENTED ≠ CERTIFIED. invent-absence forever.
