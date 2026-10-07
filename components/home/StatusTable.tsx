@@ -1,9 +1,10 @@
-import { HOME_SLOTS } from "@/lib/home/copy";
+import { UNKNOWN_STATE, presentStatus, type StatusLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
 const COLUMNS = ["Covenant", "Facility / Document", "Status", "Headroom", "Trend", "Next test"] as const;
 
-export function StatusTable() {
+export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState }) {
+  const presented = presentStatus(state);
   return (
     <RegionCard region="headroom-status" eyebrow="Headroom status">
       <div className="home-table-wrap">
@@ -18,11 +19,24 @@ export function StatusTable() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td colSpan={COLUMNS.length}>
-                <EmptyCopy slot={HOME_SLOTS.statusTable} />
-              </td>
-            </tr>
+            {presented.kind === "VERIFIED_POPULATED" ? (
+              presented.rows.map((row) => (
+                <tr key={row.covenant} data-load-kind="VERIFIED_POPULATED">
+                  <td>{row.covenant}</td>
+                  <td>{row.facility}</td>
+                  <td>{row.status}</td>
+                  <td>{row.headroom}</td>
+                  <td>{row.trend}</td>
+                  <td>{row.nextTest}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={COLUMNS.length}>
+                  <EmptyCopy slot="statusTable" state={presented} />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

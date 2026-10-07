@@ -29,7 +29,7 @@ const REGIONS = [
 
 describe("Product LOCK empty overview", () => {
   it("renders every region with the locked headline and detail, and no bell badge", () => {
-    const html = renderToStaticMarkup(<CompanyOverview companyId="co" identityName={null} alertCount={0} />);
+    const html = renderToStaticMarkup(<CompanyOverview companyId="co" identityName={null} />);
     expect(html).toContain(HOME_GREETING_NO_NAME);
     expect(html).not.toContain("Good morning");
     for (const region of REGIONS) {
@@ -46,19 +46,19 @@ describe("Product LOCK empty overview", () => {
     expect(html).not.toContain("$");
     expect(html).not.toContain("%");
     expect(html).not.toMatch(/\d+\.\d+x/);
-    expect(html).toContain('title="Nothing to export yet"');
+    expect(html).toContain('title="Export not available yet"');
     expect(html).toContain("disabled");
   });
 
   it("paints buyer details only and keeps implementer rules off the cards", () => {
-    expect(HOME_SLOTS.covenantsAtRisk.detail).toBe("None to show yet.");
-    expect(HOME_SLOTS.statusTable.detail).toBe("Status stays blank until we have real rows.");
-    expect(HOME_SLOTS.alerts.detail).toBe("Nothing to flag yet.");
-    expect(HOME_SLOTS.capacitySummary.detail).toBe("No facility split until figures are tied to sources.");
-    expect(HOME_SLOTS.transactions.detail).toBe("Nothing on the ledger yet.");
-    expect(HOME_SLOTS.drivers.detail).toBe("Drivers need explained capacity changes — not guesses.");
+    expect(HOME_SLOTS.covenantsAtRisk.detail).toBe("Risk assessment not available yet.");
+    expect(HOME_SLOTS.statusTable.detail).toBe("Rows stay blank until covenant status is loaded from sources.");
+    expect(HOME_SLOTS.alerts.detail).toBe("Alert status has not been loaded.");
+    expect(HOME_SLOTS.capacitySummary.detail).toBe("Facility split stays blank until figures are tied to sources.");
+    expect(HOME_SLOTS.transactions.detail).toBe("Ledger activity has not been loaded.");
+    expect(HOME_SLOTS.drivers.detail).toBe("Driver list stays blank until explained capacity changes are loaded.");
 
-    const html = renderToStaticMarkup(<CompanyOverview companyId="co" identityName={null} alertCount={0} />);
+    const html = renderToStaticMarkup(<CompanyOverview companyId="co" identityName={null} />);
     // Implementer rules stay here, not in buyer details: never seed a count; do not invent a
     // review count; never default a Healthy/green row; hide the bell badge when the count is 0;
     // capacity figures stay tied to sources in the data path, not in the card sentence.
