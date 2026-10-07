@@ -9,6 +9,7 @@ import { DEFAULT_CANDIDATE_TIMEOUT_MS } from "../../scripts/p3-conmed-pilot/time
 import {
   HAIKU_MODEL_ID,
   SHOWN_HAIKU_VERIFICATION_CEILING_USD,
+  gibraltarShapeStop,
   haikuGatewayModel,
   verificationDispatchRank,
 } from "../../scripts/p3-development-pipeline/verify-gibraltar";
@@ -49,5 +50,10 @@ describe("Gibraltar Haiku verification ceiling", () => {
     expect(rank("7.01", ["reclass"])).toBeLessThan(rank("7.04(a)", ["asset"]));
     expect(rank("7.04(a)", [])).toBeLessThan(rank("7.05(c)", []));
     expect(rank("7.05(c)", [])).toBeLessThan(rank("6.01", []));
+  });
+
+  it("records a CONMED conversation-cap miss and does not treat it as a stop", () => {
+    expect(gibraltarShapeStop(["conversations 11 > reserved 5"])).toEqual([]);
+    expect(gibraltarShapeStop(["input tokens 20000000 > reserved 1000"])).toEqual(["input tokens 20000000 > reserved 1000"]);
   });
 });

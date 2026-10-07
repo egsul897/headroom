@@ -47,6 +47,13 @@ export const DEVELOPMENT_BANNER = "DEVELOPMENT ≠ CERTIFIED ≠ PINNED_OFFLINE"
 export const HAIKU_MODEL_ID = "anthropic/claude-haiku-4.5";
 /** The Haiku figure already shown for 842 uncompiled rows. Compilation is inside this same ceiling. */
 export const SHOWN_HAIKU_VERIFICATION_CEILING_USD = 162.63;
+/**
+ * Per-candidate abort. The 480s CONMED ceiling cut the first Gibraltar section off
+ * mid-shard (wall clock 480022ms, SHARD_INCOMPLETE, 0 rules). Fifteen minutes lets a
+ * multi-shard compile finish. The dollar reservation is unchanged: output is already
+ * capped at 128000 tokens, so a longer wall clock does not raise compileReservationUsd.
+ */
+export const GIBRALTAR_CANDIDATE_TIMEOUT_MS = 900_000;
 export const COMPANY_ID = "gibraltar-2026-credit-agreement";
 export const PACKAGE_KEY = "gibraltar-2026-credit-agreement";
 export const INSTRUMENT_KEY = "gibraltar-doc-a-2026-02-02-credit-agreement";
@@ -69,6 +76,16 @@ export function haikuGatewayModel(): GatewayModel {
     type: "language",
     pricing: { input: String(1 / 1_000_000), output: String(5 / 1_000_000) },
   };
+}
+
+/**
+ * Token exceedance still stops the run. The CONMED conversation cap (5) does not:
+ * the first Gibraltar section executed 11 shard attempts, spent $1.05, and was still
+ * inside the token reservation. Stopping there would record a cut-off compile and
+ * never call the verifier.
+ */
+export function gibraltarShapeStop(reasons: string[]): string[] {
+  return reasons.filter((reason) => !reason.startsWith("conversations "));
 }
 
 export function verificationDispatchRank(args: {
@@ -101,6 +118,22 @@ interface PreparedCandidate {
   droppedFamilies: string[];
   rank: number;
   sourceIndex: number;
+}
+
+interface StoredAttempt {
+  discoveryId?: string;
+  compile?: { costUsd?: number; rules?: number; definitions?: number; wallClockMs?: number };
+  verify?: { costUsd?: number | null; status?: string | null };
+}
+
+function loadPriorAttempts(): StoredAttempt[] {
+  try {
+    const parsed = JSON.parse(readFileSync(OUT_PATH, "utf8")) as { model?: string; ceilingUsd?: number; attempts?: StoredAttempt[] };
+    if (parsed.model !== HAIKU_MODEL_ID || parsed.ceilingUsd !== SHOWN_HAIKU_VERIFICATION_CEILING_USD || !Array.isArray(parsed.attempts)) return [];
+    return parsed.attempts;
+  } catch {
+    return [];
+  }
 }
 
 function writeJson(file: string, body: unknown): void {
@@ -365,13 +398,44 @@ async function main(): Promise<void> {
 
   const ledger = new BudgetLedger(SHOWN_HAIKU_VERIFICATION_CEILING_USD, SHOWN_HAIKU_VERIFICATION_CEILING_USD);
   const cache = new InMemorySemanticCompilationCache();
-  const attempts: unknown[] = [];
+  const priorAttempts = loadPriorAttempts();
+  const attempts: unknown[] = [...priorAttempts];
+  const skipIds = new Set<string>();
+  const priorCount = new Map<string, number>();
+  priorAttempts.forEach((attempt, index) => {
+    const id = attempt.discoveryId;
+    if (!id) return;
+    priorCount.set(id, (priorCount.get(id) ?? 0) + 1);
+    const produced = (attempt.compile?.rules ?? 0) + (attempt.compile?.definitions ?? 0);
+    if (produced > 0 || attempt.verify?.status) skipIds.add(id);
+    const charged = (attempt.compile?.costUsd ?? 0) + (attempt.verify?.costUsd ?? 0);
+    if (charged > 0) {
+      const reservationId = `prior:${index}:${id}`;
+      ledger.reserve(reservationId, charged);
+      ledger.settle(reservationId, {
+        model: HAIKU_MODEL_ID,
+        elapsedWallClockMs: attempt.compile?.wallClockMs ?? 0,
+        streamedOutputTokensObserved: null,
+        providerUsageObserved: null,
+        locallyCalculatedCostUsd: charged,
+        finalProviderBillingUnavailable: false,
+        costAccountingStatus: "EXACT",
+        chargedToBudgetUsd: charged,
+      });
+    }
+  });
+  for (const [id, count] of priorCount) {
+    if (count >= 2) skipIds.add(id);
+  }
   let stop: { reason: string; detail: string | null; atIndex: number } | null = null;
 
   const flush = () => {
     writeJson(OUT_PATH, {
       ...preflight,
       executed: attempts.length > 0,
+      candidateTimeoutMs: GIBRALTAR_CANDIDATE_TIMEOUT_MS,
+      reservationTimeoutMs: DEFAULT_CANDIDATE_TIMEOUT_MS,
+      shapeStop: "Input and output token exceedance stops the run. The CONMED conversation cap of 5 is recorded on the attempt and does not stop it.",
       verificationCommand: 'ANALYZER_MODEL=anthropic/claude-haiku-4.5 SEMANTIC_COMPILER_MODEL=anthropic/claude-haiku-4.5 npx tsx scripts/p3-development-pipeline/verify-gibraltar.ts',
       attempts,
       stop,
@@ -382,6 +446,7 @@ async function main(): Promise<void> {
 
   for (let i = 0; i < prepared.length; i++) {
     const item = prepared[i]!;
+    if (skipIds.has(item.candidate.discoveryId)) continue;
     const compileReservation = compileReservationUsd(model, item.operativeChars, DEFAULT_CANDIDATE_TIMEOUT_MS);
     const decision = ledger.reserveOrRefuse(`${item.candidate.discoveryId}:compile`, compileReservation);
     if (!decision.allowed) {
@@ -391,7 +456,7 @@ async function main(): Promise<void> {
     }
     const inventory = meter(getStageCaller());
     const started = Date.now();
-    const signal = AbortSignal.timeout(DEFAULT_CANDIDATE_TIMEOUT_MS);
+    const signal = AbortSignal.timeout(GIBRALTAR_CANDIDATE_TIMEOUT_MS);
     let result: SemanticCompilationResult | null = null;
     let thrown: unknown = null;
     let timedOut = false;
@@ -410,7 +475,7 @@ async function main(): Promise<void> {
       });
       result = await withTimeout(
         compileCovenantToIR(built.input, { caller: getSemanticCaller(), inventoryCaller: inventory.caller, cache, callOptions: { signal } }),
-        DEFAULT_CANDIDATE_TIMEOUT_MS,
+        GIBRALTAR_CANDIDATE_TIMEOUT_MS,
       );
     } catch (error) {
       thrown = error;
@@ -433,10 +498,11 @@ async function main(): Promise<void> {
     const rules = result?.rules.length ?? 0;
     const definitions = result?.definitions.length ?? 0;
     const compileCompleted = !timedOut && !credit && rules + definitions > 0;
-    const exceeded = shapeExceeded(
+    const shapeReasons = shapeExceeded(
       { attemptCount: result?.telemetry?.attemptCount ?? null, inputTokens: usage?.inputTokens ?? null, outputTokens: usage?.outputTokens ?? null },
       compileShape(model, item.operativeChars, DEFAULT_CANDIDATE_TIMEOUT_MS),
     );
+    const exceeded = gibraltarShapeStop(shapeReasons);
 
     let verifyCost: CostRecord | null = null;
     let verification: SemanticVerificationResult | null = null;
@@ -451,7 +517,7 @@ async function main(): Promise<void> {
         const review = meter(getStageCaller());
         const suspicion = meter(getStageCaller());
         const verifyStarted = Date.now();
-        const verifySignal = AbortSignal.timeout(DEFAULT_CANDIDATE_TIMEOUT_MS);
+        const verifySignal = AbortSignal.timeout(GIBRALTAR_CANDIDATE_TIMEOUT_MS);
         try {
           const built = buildCandidateCompilerInput(item.candidate, {
             companyId: COMPANY_ID,
@@ -470,7 +536,7 @@ async function main(): Promise<void> {
               { compilerInput: built.input, compilationResult: result },
               { reviewCaller: review.caller, conditionSuspicionCaller: suspicion.caller, signal: verifySignal },
             ),
-            DEFAULT_CANDIDATE_TIMEOUT_MS,
+            GIBRALTAR_CANDIDATE_TIMEOUT_MS,
           );
         } catch (error) {
           verifyTimedOut = error instanceof CandidateTimeoutError || verifySignal.aborted || (error instanceof Error && error.name === "TimeoutError");
@@ -519,7 +585,7 @@ async function main(): Promise<void> {
         costStatus: compileCost.costAccountingStatus,
         timedOut,
         wallClockMs: Date.now() - started,
-        ...(exceeded.length > 0 ? { shapeExceeded: exceeded } : {}),
+        ...(shapeReasons.length > 0 ? { shapeExceeded: shapeReasons, shapeStop: exceeded } : {}),
       },
       verify: verification
         ? {
