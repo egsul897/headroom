@@ -128,7 +128,7 @@ export type CopyState = {
 /**
  * Empty-style buyer copy for a slot.
  * UNKNOWN and NOT_LOADED always return HOME_SLOTS.
- * VERIFIED_EMPTY returns HOME_VERIFIED_EMPTY only when the state carries a query-authority token.
+ * VERIFIED_EMPTY returns HOME_VERIFIED_EMPTY only when the state carries a query-authority token minted for EMPTY.
  * Populated states are rendered by the card, not by this helper; they fall back to UNKNOWN copy.
  */
 export function resolveBuyerCopy(slot: HomeSlotId, state: CopyState): HomeSlotCopy {
@@ -136,7 +136,7 @@ export function resolveBuyerCopy(slot: HomeSlotId, state: CopyState): HomeSlotCo
   if (state.kind === "UNKNOWN" || state.kind === "NOT_LOADED") return unknown;
   if (state.kind !== "VERIFIED_EMPTY") return unknown;
   if (FIGURE_SLOTS.has(slot)) return unknown;
-  if (!hasQueryAuthority(state.authority, slot)) return unknown;
+  if (!hasQueryAuthority(state.authority, slot, "EMPTY")) return unknown;
   const verified = HOME_VERIFIED_EMPTY[slot as VerifiedEmptySlotId];
   return verified ?? unknown;
 }

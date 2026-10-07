@@ -247,7 +247,10 @@ describe("verified empty is a separate state", () => {
   it("T-IA-21 transactions verified empty only after a ledger read", () => {
     const state = transactionsStateFromLedger({ sourceAvailable: true, ledgerRead: true, outcome: "empty" });
     expect(state.kind).toBe("VERIFIED_EMPTY");
-    if (state.kind === "VERIFIED_EMPTY") expect(hasQueryAuthority(state.authority, "transactions")).toBe(true);
+    if (state.kind === "VERIFIED_EMPTY") {
+      expect(hasQueryAuthority(state.authority, "transactions", "EMPTY")).toBe(true);
+      expect(hasQueryAuthority(state.authority, "transactions", "POPULATED")).toBe(false);
+    }
     const html = renderToStaticMarkup(<TransactionsCard state={state} />);
     expect(html).toContain("No transactions on file");
     expect(html).toContain("Nothing on the ledger for the loaded window.");
