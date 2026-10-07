@@ -1,0 +1,38 @@
+# Soft-gate present-check only. IMPLEMENTED ≠ CERTIFIED.
+# Not certification credit. Does not replace canonical-compiler.
+# Home overview paths stay off canonical-compiler.yml so this gate cannot
+# trigger or block the Phase-3 certified path (including P3-WB1).
+
+name: home-overview
+
+on:
+  push:
+    paths:
+      - "tests/home-overview-*.test.tsx"
+      - "components/home/**"
+      - "lib/home/**"
+      - "app/**/page.tsx"
+      - ".github/workflows/home-overview.yml"
+  pull_request:
+    paths:
+      - "tests/home-overview-*.test.tsx"
+      - "components/home/**"
+      - "lib/home/**"
+      - "app/**/page.tsx"
+      - ".github/workflows/home-overview.yml"
+
+jobs:
+  home-overview:
+    name: home overview (soft gate)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: present-check
+        run: npx vitest run tests/home-overview-*.test.tsx
