@@ -1,16 +1,22 @@
-# P3 missing-evidence inventory at `82a91cfa2bbb03a2722727125e909215ab96d2d4`
+# P3 missing-evidence inventory
 
-**Tip:** `82a91cfa2bbb03a2722727125e909215ab96d2d4` (full OID). Commit subject: P3 Lane D unlimited carve-out dual qualitative gates are UNSUPPORTED (#120). `origin/main` at the time of this note is that SHA.
+**Live main tip:** `62a40be22b9598d9732e9ce2574d86d2228d6270` (full OID). Commit subject: P3-LANE-B: lock OPERATIVE_SUBWINDOW D2 fail-closed (docs) (#122). `origin/main` at this rebind is that SHA.
 
-**Mode:** invent-safe gap inventory only. Docs only. Soft gate. invent-absence forever. **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.** **DEVELOPMENT ≠ CERTIFIED.** **LOCK ≠ GRANT.** No pin minted. No pin folder. No `discoveryId` minted. No `eligible: true`. No matrix edit. No Phase-3 GRANT. No `CERTIFIED` claim.
+**D2 on this tip:** **locked fail-closed** via #122, file `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md`. The wording “D2 deferred” does not describe this tip. Seal implement remains HOLD / `BLOCKED_BY_ARCHITECTURE` (`FREEZE_NOT_READY`). Arch honesty rebind sha256 `edad8704c56406570d651bd7f4a53849c20100041b2b4fdc56d485ea76d2609b`. FREEZE_NOT_READY honesty sha256 on the #122 ADR: `2e2b988eebb3e164cf909c0bbfed2834529cd3fb1a96686a40fc0fc2fa8dc13a`.
 
-**Knife River:** BLIND. The credit-agreement body was not opened for this note.
+**Earlier inventory base (not the live tip):** `82a91cfa2bbb03a2722727125e909215ab96d2d4`. Commit subject: P3 Lane D unlimited carve-out dual qualitative gates are UNSUPPORTED (#120). This file’s name keeps that SHA. It is not a claim that `82a91cfa` is still `main`. The #122 diff from that base is the D2 ADR only. Buckets 1, 3, 4, and 6 keep the terminals written against that base. Bucket 5 is corrected below.
+
+**Disposition:** archival record. This draft must not merge. It is not a soft-gate merge candidate.
+
+**Mode:** invent-safe gap inventory only. Docs only. Soft gate. invent-absence forever. **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.** **DEVELOPMENT ≠ CERTIFIED.** **LOCK ≠ GRANT.** **LOCK ≠ implement.** No pin minted. No pin folder. No `discoveryId` minted. No `eligible: true`. No matrix edit. No Phase-3 GRANT. No `CERTIFIED` claim.
+
+**Knife River:** `BLIND_RESERVED_NOT_EVALUATED`. The credit-agreement body was not opened for this note.
 
 **Not reopened:** hunters #109, #110, and #111. The unlock report on this tip still names them as drafts. Their cell lists are not copied here.
 
 Each bucket has one terminal:
 
-`READY_TO_PIN` | `READY_FOR_GENERALIZED_IMPLEMENTATION` | `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE` | `BLOCKED_BY_ARCHITECTURE` | `NO_VALID_CANDIDATE`
+`READY_TO_PIN` | `READY_FOR_GENERALIZED_IMPLEMENTATION` | `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE` | `BLOCKED_BY_ARCHITECTURE` | `NO_VALID_CANDIDATE` | `BLIND_RESERVED_NOT_EVALUATED`
 
 | Bucket | Terminal |
 | --- | --- |
@@ -18,7 +24,7 @@ Each bucket has one terminal:
 | 2. WITH_RECLASS / OPERATIVE_SUBWINDOW | `BLOCKED_BY_ARCHITECTURE` |
 | 3. Asset-sales / weak cells | `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE` |
 | 4. CONMED pin path (`baca4371`) | `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE` |
-| 5. Knife River | `NO_VALID_CANDIDATE` |
+| 5. Knife River | `BLIND_RESERVED_NOT_EVALUATED` |
 | 6. PINNED_OFFLINE → cert | `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE` |
 
 ---
@@ -57,28 +63,29 @@ Each bucket has one terminal:
 
 **Terminal:** `BLOCKED_BY_ARCHITECTURE`
 
-#119 named the sentence-window contract. Naming is not an emit, and D2 is still open. `RECLASSIFIABLE_TO` on the sealed Chewy discovery file is still 0. That is not implement ground.
+#119 named the sentence-window contract. Naming is not an emit. #122 **locked fail-closed** on D2 in `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md`. The wording “D2 deferred” does not describe this tip. `RECLASSIFIABLE_TO` on the sealed Chewy discovery file is still 0. Seal implement remains HOLD / `BLOCKED_BY_ARCHITECTURE` (`FREEZE_NOT_READY`). The lock is not implement ground.
 
 ### What the tip already records
 
-- Lane B note: `docs/p3-lane-b-reclass-sealability-1acdff3.md` (landed in #115, `65be893f10ad4033afca43ba591074c05a49dd87`). Header: **HOLD.** Termination: `RECLASS_ARCHITECTURE_DECISION_REQUIRED`. Closing paragraph: implementation stays HOLD until an architect contract decides the window question and the category-to-category question.
-- Architecture lock: `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md` (landed in #119, `7683a14697dceaa264ac97268e4909d45725bbb5`). Arch decision D1 only: name `OPERATIVE_SUBWINDOW`, requirements 1–6. Deferred: D2. The file’s own “Does not authorize” line lists production seal code, a Stage-1 marker, a `discoveryId`, a `stage2b` edit, a structural node, a pin, a `RECLASSIFIABLE_TO` edge, a percentage raise, and a `CERTIFIED` claim.
-- Sentence facts in ADR §2.1, document `tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt`: span `[392815, 393488)`, 673 characters, sha256 `78b081e801e06744fd6e665164b5b0801857a621de0f041eb6d5b21abeb4c83e`. No marker inside the span. Sealed candidate `discovery-candidate:82f0f8f14f2426d932b513dc` binds `structural-node:4769fe34429021eab497c82b`, `normalizedSourceRef` `1.08(f)`, span `[387511, 393489)`, 5978 characters. The sentence is a suffix of that span, not the span.
-- ADR §2.1: `RECLASSIFIABLE_TO` occurrences in `tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/stage2b-discovery.json`: 0. Re-checked on this tip: a search of that file for `RECLASSIFIABLE_TO` returned no matches. The same search of `tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json` returned no matches.
-- ADR §3 requirement 6: naming is not an emit. “The pipeline on this tip still cannot produce a UNIQUE candidate whose operative window is the sentence. Implementation stays HOLD until a later grant.”
-- ADR §3 D2: `IRRuleDependency` is `relationshipType`, `targetRuleId`, `description`, and optional `inventoryItemIds`. The sentence names categories, not a rule id. Mapping categories onto basket rules would invent targets. The ADR does not write a `RECLASSIFIABLE_TO` edge.
-- Matrix row still on this tip: `01-pin-matrix.json` cross-cut `WITH_RECLASSIFICATION`, `status` `BLOCKED`, blocker text: no sealed Chewy/CONMED discovery candidate yet bound offline to a concrete classification/reclassification mechanic identity. `coverageSummary.crossCutsBlocked` contains `WITH_RECLASSIFICATION`.
-- Unlock report `docs/phase-3-reliability-stratified-certification/PHASE-3-TARGETED-UNLOCK-REPORT-1acdff3.md` (rebind #121, `7076f028b0b74814439e3f5857df696ad39c3889`) §8 still records the lane terminal as HOLD `RECLASS_ARCHITECTURE_DECISION_REQUIRED`, and §10 says D2 remains open. That report’s live-tip banner is `7683a14697dceaa264ac97268e4909d45725bbb5` (#119). It predates #120 and was not rewritten by #120.
+- Lane B note: `docs/p3-lane-b-reclass-sealability-1acdff3.md` (landed in #115, `65be893f10ad4033afca43ba591074c05a49dd87`). Header: **HOLD.** Termination: `RECLASS_ARCHITECTURE_DECISION_REQUIRED`. Closing paragraph: implementation stays HOLD until an architect contract decides the window question and the category-to-category question. #119 later named the window. #122 later locked the category-to-category refusal. The HOLD note’s terminal string is the note’s own record. On this tip the category-to-category answer is the #122 lock, and the seal implement is still HOLD.
+- D1 name: `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md` (landed in #119, `7683a14697dceaa264ac97268e4909d45725bbb5`). Arch decision D1 only: name `OPERATIVE_SUBWINDOW`, requirements 1–6. That file’s own header still contains the sentence “Deferred: D2.” #122 does not amend that file. The sentence records what #119 decided. The live D2 status is the #122 lock. The file’s “Does not authorize” line lists production seal code, a Stage-1 marker, a `discoveryId`, a `stage2b` edit, a structural node, a pin, a `RECLASSIFIABLE_TO` edge, a percentage raise, and a `CERTIFIED` claim.
+- D2 lock: `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md` (landed in #122, `62a40be22b9598d9732e9ce2574d86d2228d6270`). Status ACCEPTED. D2 is **locked fail-closed**. Category → `targetRuleId` invent is FORBIDDEN. No `RECLASSIFIABLE_TO` edge from category labels alone. No new IR enum or edge type in that ADR. Seal implement remains HOLD. FREEZE_NOT_READY honesty sha256 `2e2b988eebb3e164cf909c0bbfed2834529cd3fb1a96686a40fc0fc2fa8dc13a`. The file’s “Does not authorize” line lists production seal code, a Stage-1 marker, a `discoveryId`, a `stage2b` edit, a structural node, a pin or pin folder, a `RECLASSIFIABLE_TO` edge, a new IR enum or edge type, a percentage raise, and a `CERTIFIED` claim. **LOCK ≠ implement.** Arch honesty rebind sha256 `edad8704c56406570d651bd7f4a53849c20100041b2b4fdc56d485ea76d2609b`.
+- Sentence facts in the #119 ADR §2.1, document `tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt`: span `[392815, 393488)`, 673 characters, sha256 `78b081e801e06744fd6e665164b5b0801857a621de0f041eb6d5b21abeb4c83e`. No marker inside the span. Sealed candidate `discovery-candidate:82f0f8f14f2426d932b513dc` binds `structural-node:4769fe34429021eab497c82b`, `normalizedSourceRef` `1.08(f)`, span `[387511, 393489)`, 5978 characters. The sentence is a suffix of that span, not the span. #122 does not re-copy that span table.
+- `RECLASSIFIABLE_TO` occurrences in `tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/stage2b-discovery.json`: 0. Re-checked on this tip: a search of that file for `RECLASSIFIABLE_TO` returned no matches. The same search of `tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json` returned no matches. #122 did not edit either file.
+- #119 ADR §3 requirement 6: naming is not an emit. “The pipeline on this tip still cannot produce a UNIQUE candidate whose operative window is the sentence. Implementation stays HOLD until a later grant.” #122 repeats that the seal implement remains HOLD and that the ADR does not implement seal emit.
+- D2 decision on this tip: `IRRuleDependency` is `relationshipType`, `targetRuleId`, `description`, and optional `inventoryItemIds` (`lib/contract-model/ir/types.ts`). The sentence names categories, not a rule id. #122 forbids mapping those categories onto `targetRuleId` and forbids a `RECLASSIFIABLE_TO` edge from the labels alone. It does not name a replacement representation. A generalized representation that is not `targetRuleId` exists only if a later, separate invent-safe FROZEN names it. This inventory does not name one.
+- Matrix row still on this tip: `01-pin-matrix.json` cross-cut `WITH_RECLASSIFICATION`, `status` `BLOCKED`, blocker text: no sealed Chewy/CONMED discovery candidate yet bound offline to a concrete classification/reclassification mechanic identity. `coverageSummary.crossCutsBlocked` contains `WITH_RECLASSIFICATION`. The #122 diff does not include this file.
+- Unlock report `docs/phase-3-reliability-stratified-certification/PHASE-3-TARGETED-UNLOCK-REPORT-1acdff3.md` (rebind #121, `7076f028b0b74814439e3f5857df696ad39c3889`) §8 still records the lane terminal as HOLD `RECLASS_ARCHITECTURE_DECISION_REQUIRED`, and §10 says D2 remains open. That report’s live-tip banner is `7683a14697dceaa264ac97268e4909d45725bbb5` (#119). It predates #120 and was not rewritten by #120 or #122. On this tip the D2 answer is the #122 ADR. The unlock report’s “D2 remains open” line is that report’s own banner. It is not the live D2 status.
 
 ### What is not missing evidence
 
-The sentence span, the container node, the zero edge count, and the six requirements are already written. A further census of the same sentence would not create implement ground. The ADR forbids reading the name as a grant to implement the seal, to mint a pin, or to invent the edge.
+The sentence span, the container node, the zero edge count, the six D1 requirements, and the D2 fail-closed lock are already written. A further census of the same sentence would not create implement ground. Neither ADR authorizes a seal emit, a pin, or a `RECLASSIFIABLE_TO` edge.
 
-### Still open as architecture
+### Seal implement still HOLD
 
-**D2, unanswered:** whether a category-to-category automatic reclassification is representable by anything other than `IRRuleDependency { relationshipType, targetRuleId, description }`.
+**D2 is locked fail-closed** via #122 (`docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md`). The #122 refusal is the category-to-category answer on this tip: category labels are not `targetRuleId` values, and no `RECLASSIFIABLE_TO` edge is written from those labels.
 
-**Implement grant, not issued:** ADR requirement 6 says implementation stays HOLD until a later grant. #119 is the name. It is not that grant. This inventory does not open one.
+**Implement grant, not issued:** Seal implement remains HOLD / `BLOCKED_BY_ARCHITECTURE` (`FREEZE_NOT_READY`). #119 is the name. #122 is the refusal. Implementation stays HOLD until a future invent-safe GRANT after either (a) evidence-bound rule ids exist, or (b) Arch stamps a separate generalized representation FROZEN. This inventory does not open that grant.
 
 ---
 
@@ -177,9 +184,9 @@ The paired UNCERTAIN finding `ca99bcbc…86030c5c` is also still `OPEN` on the s
 
 ## 5. Knife River
 
-**Terminal:** `NO_VALID_CANDIDATE`
+**Terminal:** `BLIND_RESERVED_NOT_EVALUATED`
 
-**Sealed status:** BLIND. Body unread. This note does not request the body.
+**Sealed status:** BLIND. Body unread. Reserved and not evaluated. This note does not request the body. The `NO_VALID_CANDIDATE` label does not apply.
 
 Designation text, not a filing body:
 
@@ -219,7 +226,7 @@ The inequality **PINNED_OFFLINE ≠ CERTIFIED** is already written on this tip. 
 - Builder cell `f62db8eb…` and asset-sales cell `b54ed7fe…` are `eligible: false` with `UNRESOLVED_OPERATIVE_EVIDENCE`. The asset-sales eligibility file sets `hasUnresolvedOperativeEvidence` true. `certifyCandidate` records that condition as a blocker.
 - `baca4371` verification status on the sealed packet is `MATERIAL_DISCREPANCY`, with an open MATERIAL finding and an open UNCERTAIN finding. The map certification status is `NOT_CERTIFIED` / `CERTIFICATION_NOT_PERFORMED`.
 - `WITH_RECLASSIFICATION` is `BLOCKED` and has no sealed sentence candidate.
-- Knife River has no candidate.
+- Knife River is `BLIND_RESERVED_NOT_EVALUATED`. The body was not opened. This inventory does not evaluate it.
 - `PINNED_OFFLINE` rows, including rows whose `eligible` field is true, are labeled on the matrix as not `CERTIFIED`. This inventory did not run `certifyCandidate` on them and does not convert those labels into a certification discussion.
 
 An empty-blocker record is what would have to exist before certification of one of these cells could be discussed. This file is not that record. No row is `CERTIFIED`.
