@@ -92,7 +92,7 @@ describe("getCanonicalCompanyState", () => {
     await reviewCandidate({ candidateId: csvCandidate.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     const promotion = await promoteCompanyCandidates(COMPANY_ID, new Date(TODAY));
     expect(promotion.promotedCount).toBe(0);
-    expect(promotion.skipped[0]!.reason).toMatch(/No existing or prior FinancialSnapshot/);
+    expect(promotion.skipped[0]!.reason).toMatch(/Prior-date snapshots are not used as a seed/);
 
     const state = await getCanonicalCompanyState(COMPANY_ID);
     expect(state.reviewProgress.approved).toBe(1);

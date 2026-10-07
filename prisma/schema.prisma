@@ -477,9 +477,24 @@ enum LedgerDirection {
   @@map("ledger_direction")
 }
 
+// Live vs withdrawn. SUPERSEDED rows stay in the table (history) and are
+// excluded from capacity. This is not a hard delete.
+enum LedgerEntryStatus {
+  ACTIVE
+  SUPERSEDED
+
+  @@map("ledger_entry_status")
+}
+
 // Public-record / compliance-certificate events that draw on or add to basket
 // capacity (equity raises, debt incurrence/repayment, asset-sale proceeds,
 // dividends, investments).
+//
+// P3-R0 C10: the product path supersedes an entry (status SUPERSEDED,
+// supersededAt set). It does not delete the row. supersededById is set only
+// when a real successor entry exists; the Supersede action leaves it null
+// and does not write a reversing entry. No self-FK — company cascade must
+// keep deleting these rows with the company.
 model LedgerEntry {
   id          String          @id @default(cuid())
   companyId   String
@@ -490,6 +505,9 @@ model LedgerEntry {
   amount      Decimal         @db.Decimal(18, 6)
   direction   LedgerDirection
   source      String?
+  status         LedgerEntryStatus @default(ACTIVE)
+  supersededAt   DateTime?
+  supersededById String?
 
   createdAt DateTime @default(now())
 
@@ -500,7 +518,9 @@ model LedgerEntry {
 }
 
 enum FeedQueueKind {
-  // Approving creates a new FinancialSnapshot, merging payload fields onto the current latest one.
+  // Approving writes a new FinancialSnapshot from the payload alone.
+  // Incomplete payloads are refused. Omitted fields are not merged from the
+  // latest snapshot, and prior debt tranches are not cloned.
   SNAPSHOT_UPDATE
   // Approving creates a new LedgerEntry from the payload.
   LEDGER_ENTRY

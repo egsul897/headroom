@@ -1,0 +1,96 @@
+# Soft gate. IMPLEMENTED ≠ CERTIFIED.
+# Not certification credit. Does not replace canonical-compiler.
+# P3-R0 product and test paths stay off canonical-compiler.yml and off the
+# stratified-cert workflows. A green run here is not certification credit.
+#
+# The four suites need Postgres. No existing test workflow supplies
+# DATABASE_URL. initialize-neon.yml and migrate-neon-onboarding.yml are
+# workflow_dispatch jobs against NEON_DATABASE_URL; they refuse localhost
+# and are not a test harness. This job does not use that secret and does
+# not invent a paid credential. It starts an ephemeral Postgres 16 service
+# on the runner, applies this repo's migrations with `prisma migrate deploy`,
+# then runs the four suites.
+
+name: p3-r0-soft-gate
+
+on:
+  push:
+    paths:
+      - "tests/feeds/**"
+      - "tests/onboarding/**"
+      - "tests/company-state/**"
+      - "tests/ledger/**"
+      - "app/**/feeds/**"
+      - "app/**/ledger/**"
+      - "lib/onboarding/**"
+      - "lib/covenant-engine.ts"
+      - "lib/coherent.ts"
+      - "prisma/schema.prisma"
+      - "prisma/seed-data.ts"
+      - "prisma/migrations/**"
+      - "docs/autonomous-information-retrieval-v1.md"
+      - ".github/workflows/p3-r0-soft-gate.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    paths:
+      - "tests/feeds/**"
+      - "tests/onboarding/**"
+      - "tests/company-state/**"
+      - "tests/ledger/**"
+      - "app/**/feeds/**"
+      - "app/**/ledger/**"
+      - "lib/onboarding/**"
+      - "lib/covenant-engine.ts"
+      - "lib/coherent.ts"
+      - "prisma/schema.prisma"
+      - "prisma/seed-data.ts"
+      - "prisma/migrations/**"
+      - "docs/autonomous-information-retrieval-v1.md"
+      - ".github/workflows/p3-r0-soft-gate.yml"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  p3-r0:
+    name: P3-R0 carry-forward and supersession (soft gate)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: headroom
+          POSTGRES_PASSWORD: headroom
+          POSTGRES_DB: headroom
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U headroom -d headroom"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      # Ephemeral runner Postgres only. Not NEON_DATABASE_URL.
+      DATABASE_URL: postgresql://headroom:headroom@localhost:5432/headroom?schema=public
+      # A paid provider call from this gate is a defect.
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: apply migrations to the ephemeral Postgres service
+        run: npx prisma migrate deploy
+      - name: P3-R0 suites
+        run: >-
+          npx vitest run
+          tests/feeds/snapshot-update-no-carry-forward.test.ts
+          tests/onboarding/financial-fact-promotion.test.ts
+          tests/company-state/canonical-state.test.ts
+          tests/ledger/supersede-ledger-entry.test.ts

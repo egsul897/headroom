@@ -6,11 +6,77 @@ import type { FeedQueueLedgerPayload, FeedQueueSnapshotPayload } from "@/prisma/
 
 /**
  * Generalized off app/feeds/actions.ts (Coherent-only, hardcoded
- * `DEFAULT_COMPANY_ID`) - same real behavior (approving creates a real
+ * `DEFAULT_COMPANY_ID`) - approving a complete item creates a real
  * FinancialSnapshot or LedgerEntry row, which is why Dashboard/Simulate
- * change afterward), now taking `companyId` explicitly so it works for any
- * company's own queue.
+ * change afterward. `companyId` is explicit so it works for any company's
+ * own queue.
+ *
+ * P3-R0 C5: SNAPSHOT_UPDATE approval refuses an incomplete payload. It
+ * writes only fields the payload itself supplies. It does not fill gaps
+ * from the latest snapshot and it does not clone prior debt tranches onto
+ * the new date. The queue item stays PENDING when approval is refused.
  */
+const REQUIRED_SNAPSHOT_FIELDS = [
+  "ebitda",
+  "cash",
+  "interestExpense",
+  "cumulativeNetIncome",
+  "equityProceedsSinceIssue",
+  "assumedNewDebtRatePct",
+  "totalDebt",
+  "securedDebt",
+] as const;
+
+type RequiredSnapshotField = (typeof REQUIRED_SNAPSHOT_FIELDS)[number];
+
+interface CompleteSnapshotUpdate {
+  asOfDate: Date;
+  ebitda: number;
+  cash: number;
+  interestExpense: number;
+  cumulativeNetIncome: number;
+  equityProceedsSinceIssue: number;
+  assumedNewDebtRatePct: number;
+  totalDebt: number;
+  securedDebt: number;
+  notes: string | null;
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+/** Fail closed. Missing or non-finite required facts are a refusal, not a cue to copy the prior snapshot. */
+function completeSnapshotUpdate(payload: FeedQueueSnapshotPayload): { ok: true; value: CompleteSnapshotUpdate } | { ok: false; missing: string[] } {
+  const missing: string[] = [];
+  const asOfDate = typeof payload?.asOfDate === "string" && payload.asOfDate.trim() !== "" ? new Date(payload.asOfDate) : null;
+  if (!asOfDate || Number.isNaN(asOfDate.getTime())) missing.push("asOfDate");
+
+  const numbers: Partial<Record<RequiredSnapshotField, number>> = {};
+  for (const field of REQUIRED_SNAPSHOT_FIELDS) {
+    const value = payload?.[field];
+    if (!isFiniteNumber(value)) missing.push(field);
+    else numbers[field] = value;
+  }
+
+  if (missing.length > 0 || !asOfDate) return { ok: false, missing };
+  return {
+    ok: true,
+    value: {
+      asOfDate,
+      ebitda: numbers.ebitda!,
+      cash: numbers.cash!,
+      interestExpense: numbers.interestExpense!,
+      cumulativeNetIncome: numbers.cumulativeNetIncome!,
+      equityProceedsSinceIssue: numbers.equityProceedsSinceIssue!,
+      assumedNewDebtRatePct: numbers.assumedNewDebtRatePct!,
+      totalDebt: numbers.totalDebt!,
+      securedDebt: numbers.securedDebt!,
+      notes: typeof payload.notes === "string" ? payload.notes : null,
+    },
+  };
+}
+
 export async function approveFeedItem(companyId: string, id: string) {
   const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
@@ -18,42 +84,28 @@ export async function approveFeedItem(companyId: string, id: string) {
 
   if (item.kind === "SNAPSHOT_UPDATE") {
     const payload = item.payload as unknown as FeedQueueSnapshotPayload;
-    const latest = await prisma.financialSnapshot.findFirstOrThrow({
-      where: { companyId },
-      orderBy: { asOfDate: "desc" },
-    });
-
-    const snapshot = await prisma.financialSnapshot.create({
+    const completed = completeSnapshotUpdate(payload);
+    if (!completed.ok) {
+      throw new Error(
+        `SNAPSHOT_UPDATE ${id} is incomplete (missing ${completed.missing.join(", ")}). Refused: omitted fields are not carried forward from a prior snapshot, and prior debt tranches are not cloned as new facts. Item left PENDING.`
+      );
+    }
+    const supplied = completed.value;
+    await prisma.financialSnapshot.create({
       data: {
         companyId,
-        asOfDate: new Date(payload.asOfDate),
-        ebitda: payload.ebitda ?? latest.ebitda,
-        cash: payload.cash ?? latest.cash,
-        interestExpense: payload.interestExpense ?? latest.interestExpense,
-        cumulativeNetIncome: payload.cumulativeNetIncome ?? latest.cumulativeNetIncome,
-        equityProceedsSinceIssue: payload.equityProceedsSinceIssue ?? latest.equityProceedsSinceIssue,
-        assumedNewDebtRatePct: payload.assumedNewDebtRatePct ?? latest.assumedNewDebtRatePct,
-        totalDebt: payload.totalDebt ?? latest.totalDebt,
-        securedDebt: payload.securedDebt ?? latest.securedDebt,
-        notes: payload.notes ?? latest.notes,
+        asOfDate: supplied.asOfDate,
+        ebitda: supplied.ebitda,
+        cash: supplied.cash,
+        interestExpense: supplied.interestExpense,
+        cumulativeNetIncome: supplied.cumulativeNetIncome,
+        equityProceedsSinceIssue: supplied.equityProceedsSinceIssue,
+        assumedNewDebtRatePct: supplied.assumedNewDebtRatePct,
+        totalDebt: supplied.totalDebt,
+        securedDebt: supplied.securedDebt,
+        notes: supplied.notes,
       },
     });
-
-    // Tranche-level detail isn't modeled in the payload - carry the prior
-    // snapshot's capital structure forward unchanged.
-    const priorTranches = await prisma.debtTranche.findMany({ where: { financialSnapshotId: latest.id } });
-    if (priorTranches.length > 0) {
-      await prisma.debtTranche.createMany({
-        data: priorTranches.map((t) => ({
-          companyId,
-          financialSnapshotId: snapshot.id,
-          name: t.name,
-          amount: t.amount,
-          secured: t.secured,
-          documentName: t.documentName,
-        })),
-      });
-    }
   } else if (item.kind === "LEDGER_ENTRY") {
     const payload = item.payload as unknown as FeedQueueLedgerPayload;
     await prisma.ledgerEntry.create({
