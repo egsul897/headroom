@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:8aaa7b743717492d1a9fa0b2:OPERATIVE_STATE",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "129724b3f3b945a5c06f87f9630c9d3c6b87cb73",
+  "adapter": "phase2-operative-state-adapter.v1",
+  "source": {
+    "path": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json",
+    "runId": "PHASE_2G_CONMED_AMENDMENT_REGRESSION",
+    "generatedAt": "2026-08-27T19:00:41.956Z",
+    "asOfDate": "2026-08-27",
+    "sha256": "e036ebac936d7120b2bcd298f380b95b4257910653f94e8fe5496d374126d4d6",
+    "instrumentKeyInReport": "instrument:conmed-doc-a-eighth-ar-credit-agreement"
+  },
+  "analyzedDocuments": [
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "label": "CONMED Eighth Amended and Restated Credit Agreement (2025-06-10)",
+      "targetDocuments": []
+    },
+    {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "label": "CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01)",
+      "targetDocuments": [
+        "conmed-doc-a-eighth-ar-credit-agreement"
+      ]
+    },
+    {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "label": "CONMED First Omnibus Amendment and Increased Facility Activation Notice (2026-05-27)",
+      "targetDocuments": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-b-guarantee-collateral-agreement"
+      ]
+    }
+  ],
+  "documentsProcessed": 4,
+  "asOfConsistency": {
+    "phase2AsOfDate": "2026-08-27",
+    "phase3AsOfDate": "2026-10-07",
+    "phase3IsLater": true,
+    "checks": [
+      {
+        "code": "EVERY_PACKAGE_DOCUMENT_REPRESENTED",
+        "passed": true,
+        "detail": "all 4 package document(s) appear in the preserved Phase-2 analysis (as analyzed amendment or target)"
+      },
+      {
+        "code": "DOCUMENT_COUNT_MATCHES",
+        "passed": true,
+        "detail": "Phase-2 processed 4 document(s); the package supplies 4"
+      },
+      {
+        "code": "NO_PACKAGE_DOCUMENT_AFTER_PHASE2_AS_OF",
+        "passed": true,
+        "detail": "latest package document 2026-05-27 <= Phase-2 as-of 2026-08-27"
+      }
+    ],
+    "proven": true
+  },
+  "instrumentState": {
+    "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "asOfDate": "2026-08-27",
+    "summary": "4 amended provision(s) tracked for this instrument as of 2026-08-27: 4 OPERATIVE_STATE_REVIEW_REQUIRED. [adapted from preserved Phase-2 report PHASE_2G_CONMED_AMENDMENT_REGRESSION; 4 unattached effect(s)]",
+    "provisions": [
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+        "kind": "DEFINITION",
+        "sectionRef": null,
+        "definedTermRef": "consolidated senior secured leverage ratio",
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "unresolvedIssues": [
+          "An amendment effect targeting consolidated senior secured leverage ratio has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+          "b09c8fe71264bea3a74dcabdcd49b0b479d9e2a0d718d57811927a846ec2b07d: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation",
+          "preserved Phase-2 report: amendment chain of length 1 not replayed by this adapter (summary view only)"
+        ]
+      },
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+        "kind": "DEFINITION",
+        "sectionRef": null,
+        "definedTermRef": "consolidated total leverage ratio",
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "unresolvedIssues": [
+          "An amendment effect targeting consolidated total leverage ratio has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+          "8c381eb6607317ebf012936d888ee4ca84a056fb5338234a3c7c886c43c15de3: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation",
+          "preserved Phase-2 report: amendment chain of length 1 not replayed by this adapter (summary view only)"
+        ]
+      },
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+        "kind": "DEFINITION",
+        "sectionRef": null,
+        "definedTermRef": "indebtedness",
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "unresolvedIssues": [
+          "An amendment effect targeting indebtedness has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+          "2b40d9cca669ae877e5c94d678904f41dd728b60f79ecd9da8eae6e300b4832c: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation",
+          "preserved Phase-2 report: amendment chain of length 1 not replayed by this adapter (summary view only)"
+        ]
+      },
+      {
+        "provisionKey": "conmed-eighth-ar-credit-agreement::SECTION::1.1",
+        "kind": "SECTION",
+        "sectionRef": "1.1",
+        "definedTermRef": null,
+        "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+        "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "unresolvedIssues": [
+          "An amendment effect targeting 1.1 has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+          "8cacc5dc57ec255da635f77e12c6adf988d761ba5d9985520b1fb561e23da5c0: low model confidence (0.3); The provided amendment clause text is truncated after 'The definition of \"Consolidated Senior Secured Leverage Ratio\"' and does not show the actual substantive change (replacement text, added language, or deletion) being made to that definition.; Cannot confirm whether this is a full replacement of the definition, a partial modification (e.g., threshold change), or an addition, since the operative text following the definition reference is missing.",
+          "preserved Phase-2 report: amendment chain of length 1 not replayed by this adapter (summary view only)"
+        ]
+      }
+    ],
+    "unattachedEffects": 4,
+    "effects": 8
+  },
+  "target": {
+    "governingProvision": null,
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "note": "no Phase-2 provision governs this candidate: the base structural node text is the operative source"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "mode": "DRY_RUN_OFFLINE_PIN",
+  "startedAt": "2026-10-07T00:00:00.000Z",
+  "headSha": "129724b3f3b945a5c06f87f9630c9d3c6b87cb73",
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:8aaa7b743717492d1a9fa0b2:PREFLIGHT",
+  "status": "PINNED_OFFLINE",
+  "adr1Cite": "docs/architecture/EVIDENCE-PACKET-VERSIONING-ADR.md",
+  "target": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+  "sectionRef": "7.8(d)",
+  "stratum": "INVESTMENTS",
+  "packageKey": "conmed-2025-credit-facility",
+  "crossCuts": [
+    "WITHOUT_SHARED_CAPS",
+    "WITHOUT_BUILDERS",
+    "WITHOUT_RECLASSIFICATION"
+  ],
+  "role": "BASKET",
+  "model": "deepseek/deepseek-v4-flash",
+  "hardCeilingUsd": 0.25,
+  "certifiedConfigIdentity": "certified-compiler-config.v1|inventory=DUAL_PASS_ENSEMBLE|semantic=deepseek/deepseek-v4-flash|inventoryModel=deepseek/deepseek-v4-flash|verifier=deepseek/deepseek-v4-flash|tools=8/3/20000|conv=1+1|shardAttempts=1|maxOut=32000|deadline=480000|retry=2|expansions=CONTEXT_ONLY|passA=phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4|certified-execution.v1",
+  "candidateDeadlineMs": 480000,
+  "maxOutputTokensSemantic": 32000,
+  "inventoryMode": "DUAL_PASS_ENSEMBLE",
+  "expansionRegionPolicy": "CONTEXT_ONLY",
+  "operativeState": {
+    "source": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json",
+    "runId": "PHASE_2G_CONMED_AMENDMENT_REGRESSION",
+    "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "provisions": 4,
+    "governingProvisionForTarget": null
+  },
+  "asOfDate": "2026-10-07",
+  "derivedPassABounds": {
+    "policy": "phase3-inventory-execution.v1|reasoning=DISABLED|deadline=180000|retry=2|batch=6000/24|calls=12|perSlot=1+c/150<=8|bounds=120/400/8/6/6|tpc=0.4",
+    "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+    "note": "Bounds are planning placeholders for a later authorized live chunk; no Pass A executed in this offline pin."
+  },
+  "inputs": {
+    "documents": [
+      {
+        "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+        "chars": 94258,
+        "sha256": "d4659601000fae07d5050167ecffb0d9da91708a57111c59dff0db40fb86540c"
+      },
+      {
+        "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+        "chars": 106821,
+        "sha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36"
+      },
+      {
+        "documentId": "conmed-doc-c-second-amendment-2022",
+        "chars": 11701,
+        "sha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82"
+      },
+      {
+        "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+        "chars": 18111,
+        "sha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401"
+      }
+    ],
+    "sealedDiscoverySource": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+    "sealedDiscoveryCandidateCount": 163,
+    "sealedStructuralNodesSource": null,
+    "fixtureRoot": "tests/fixtures/unseen-packages/conmed-2025-credit-facility",
+    "sealedPopulationCandidates": 163,
+    "rehydrationUnresolved": 2,
+    "discoveryHealth": null
+  },
+  "asOfConsistency": {
+    "phase2AsOfDate": "2026-08-27",
+    "phase3AsOfDate": "2026-10-07",
+    "phase3IsLater": true,
+    "checks": [
+      {
+        "code": "EVERY_PACKAGE_DOCUMENT_REPRESENTED",
+        "passed": true,
+        "detail": "all 4 package document(s) appear in the preserved Phase-2 analysis (as analyzed amendment or target)"
+      },
+      {
+        "code": "DOCUMENT_COUNT_MATCHES",
+        "passed": true,
+        "detail": "Phase-2 processed 4 document(s); the package supplies 4"
+      },
+      {
+        "code": "NO_PACKAGE_DOCUMENT_AFTER_PHASE2_AS_OF",
+        "passed": true,
+        "detail": "latest package document 2026-05-27 <= Phase-2 as-of 2026-08-27"
+      },
+      {
+        "code": "DISCOVERY_ID_PRESENT_IN_SEALED_TREE",
+        "passed": true,
+        "detail": "discovery-candidate:8aaa7b743717492d1a9fa0b2 present in tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json"
+      },
+      {
+        "code": "STRUCTURAL_NODE_RESOLVED",
+        "passed": true,
+        "detail": "conmed-doc-a-eighth-ar-credit-agreement::7.8(d) resolved with single occurrence"
+      }
+    ],
+    "proven": true
+  },
+  "note": "Offline pin only. No credential loaded. No provider contacted. Live/paid certification is a later authorized chunk.",
+  "canonicalMapHonestyNote": "Canonical map currently tags discovery-candidate:8aaa7b743717492d1a9fa0b2 with historical (none) (outcome UNSERVED). Offline pin remains valid. Later live CERTIFIED must clear production blockers honestly — map REVIEW is not pre-credit.",
+  "interimBRelatedSeriesDetected": false
+}
