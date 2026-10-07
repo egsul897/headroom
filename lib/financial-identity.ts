@@ -13,7 +13,9 @@
  * findFirst + orderBy asOfDate desc already performed. It does not add a
  * dating rule. Ties on that latest asOfDate are not broken by findFirst.
  *
- * Schema @@unique and the write-side financial.ts findFirst remain HOLD.
+ * Schema @@unique remains HOLD. Write-side same-date resolve in
+ * lib/onboarding/financial.ts calls this helper with selection "exact"
+ * (P3-FFC2b). 0 → UNKNOWN, 1 → UNIQUE, >1 → AMBIGUOUS is unchanged.
  */
 
 export const FINANCIAL_IDENTITY_UNKNOWN = "FINANCIAL_IDENTITY_UNKNOWN";
