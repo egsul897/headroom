@@ -262,6 +262,9 @@
     }
   ],
   "rehydration": "roleRaw, familiesRaw, confidence, sourceCitation, valueAnchors, and verifiedQuoteFingerprint were not in execution.json. They are not compiler inputs. roleNormalizationStatus and familiesNormalizationStatus are FALLBACK_REVIEW_REQUIRED. reviewStatus is NEEDS_REVIEW. multipleRulesLikely and definedTermDependencyLikely use the Pass B schema default false and are not compiler inputs. structural node keys and supersession come from the rebuilt index and the empty supersession index.",
+  "candidateTimeoutMs": 900000,
+  "reservationTimeoutMs": 480000,
+  "shapeStop": "Input and output token exceedance stops the run. The CONMED conversation cap of 5 is recorded on the attempt and does not stop it.",
   "verificationCommand": "ANALYZER_MODEL=anthropic/claude-haiku-4.5 SEMANTIC_COMPILER_MODEL=anthropic/claude-haiku-4.5 npx tsx scripts/p3-development-pipeline/verify-gibraltar.ts",
   "attempts": [
     {
@@ -316,20 +319,938 @@
         "error": null
       },
       "committedUsd": 1.053934
+    },
+    {
+      "discoveryId": "discovery-candidate:798fa16d46c9b9c008ec76a9",
+      "normalizedSourceRef": "7.05(c)",
+      "role": "EXCEPTION",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 1,
+      "operativeChars": 4626,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED",
+          "MODEL_SCHEMA_FAILURE",
+          "MISSING_CONTEXT",
+          "SHARD_CONFLICT",
+          "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 1449301,
+        "outputTokens": 28238,
+        "passACalls": 3,
+        "reservationUsd": 14.99484,
+        "costUsd": 1.5904909999999999,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 576518,
+        "shapeExceeded": [
+          "conversations 10 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 2.644425
+    },
+    {
+      "discoveryId": "discovery-candidate:ba21515735bcf4653a0e0815",
+      "normalizedSourceRef": "7.04",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 39,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED",
+          "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 4,
+        "definitions": 0,
+        "sharedCapacities": 1,
+        "inputTokens": 203463,
+        "outputTokens": 10001,
+        "passACalls": 3,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.25346799999999997,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 151719
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "13ebd59daa648ccba6f20c13c3e4e33ada272756b0056335bffaba5f153b71e4",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].capacityExpression.operands[0].amount",
+            "sourceEvidence": "The operative source text provided is only 'Section 7.04 Asset Dispositions 233' - a section heading with a page number. No substantive text of Section 7.04 is included in the OPER"
+          },
+          {
+            "findingId": "426def6b68297ad3b53e23065e86c9e6509c203ed062ed2b5643687c019f27dc",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].conditions[0].expression.right.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "1d27eca85aabf0ffe5d61e5fe6d08e8bdd28762e9a56b4dc82f110a8e97e8aa8",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].conditions[0].expression.right.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "890dd8581657b6d8451cc79fe97a6ab331b2004b62df30409b40b3d0bada7048",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].capacityExpression.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "1522129946e94c2363a2e4f7fe8f1548742099e62b968bfd08e4b133863cef0a",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].capacityExpression.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "a940c950d28ea708a9fc82d9a6124b39ca9d63314055b7db1871b596d5dc1306",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "sharedCapacities[0].capExpression.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "348021d557a76633123bbf3410e13dd454525abd5c49c2dafa8346c0c22eef9a",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "sharedCapacities[0].capExpression.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "e9dc6ff0a42fd3d761fd8080b27b4d55015c840037a22475487a242492c67a78",
+            "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+            "severity": "MATERIAL",
+            "irPath": "rules[1].conditions[1].description",
+            "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)"
+          },
+          {
+            "findingId": "1c480a6834688ac0948af375e56036be65d590b6dfd0a7a5856373cf8ff7f0c4",
+            "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+            "severity": "MATERIAL",
+            "irPath": "rules[1].conditions[1].expression.periodDescription",
+            "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)"
+          },
+          {
+            "findingId": "8f26e28d191957faf25b7fcf44b83875a72e4bf5c33bb0dafa90a12464a0b472",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:c4c8bc2e291887ff28a0da24]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "499e763e4dc5254c51551265c1587bf4c2b144445765057f4cc1c0e522ca7115",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:5c1b468da8921d5c44e70023]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "44bd6fbf060dbda4b67684093a592ffac3bb60c9151716fa8cd385a535771063",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:8278f00895e44c24b8516626]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0.021756,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 2.919649
+    },
+    {
+      "discoveryId": "discovery-candidate:a89da9a09d605a28307ff2c4",
+      "normalizedSourceRef": "7.04",
+      "role": "PERMISSION",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 39,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED",
+          "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 10,
+        "definitions": 0,
+        "sharedCapacities": 1,
+        "inputTokens": 237711,
+        "outputTokens": 15439,
+        "passACalls": 3,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.31490599999999996,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 178726
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "e26d4ea85f2664851d601541e49a7e1b53e0c7d00da50c0c1aa44887f8c707d1",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].expression.right.operands[0].amount",
+            "sourceEvidence": "The operative text provided is 'Section 7.04 Asset Dispositions' with page reference '233' but contains no substantive rule text, thresholds, or amounts."
+          },
+          {
+            "findingId": "fae19603e4a3d66c2fa02e752bb022d7341a158831942e09052306cb0c24ff7d",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].expression.right.operands[1].operands[0].value",
+            "sourceEvidence": "The operative text provided is 'Section 7.04 Asset Dispositions' with page reference '233' but contains no substantive rule text, thresholds, or percentages."
+          },
+          {
+            "findingId": "92bea69ea7a80722f3258f65a8dcace1fde04f9fdb1dc3c735dbe24768d76da7",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[7].capacityExpression.gatedBy.operands[0].right.value",
+            "sourceEvidence": "The operative text provided is 'Section 7.04 Asset Dispositions' with page reference '233' but contains no substantive rule text or timing references (e.g., '180 days')."
+          },
+          {
+            "findingId": "f60efeb515bf4e5075e0433e5d60ffec90da40c24b7821b3183e0c307d9c7921",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "All rules reference sourceSectionRef 7.04 and subsections, with proposed operative text extracted to individual rule conditions and expressions.",
+            "sourceEvidence": "The operative window for Section 7.04 contains only: 'Section 7.04 Asset Dispositions 233' with no further substantive text."
+          },
+          {
+            "findingId": "33a51a629e7c3ccd30c3690e87f008bd8d6dfac95171a3d84735f411240612b3",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].expression.right.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "a34ebbb1ea83776f62f78a690c386f3ffac7598329ce2e7d943284ad182a922c",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].expression.right.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "dc955adc8d9df448940afb02c20861b73eac1b497d326418f3de01dd58de6ade",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[7].capacityExpression.gatedBy.operands[0].right",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "e3a8c708836aab2be95a58d7d576d76d0952fae60b00278eab842cdd1c13a764",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "sharedCapacities[0].capExpression.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "4a430bf56946ab4b8968a6bcedc0c9a929e6ace6c36707891e6b1184ba3a1b90",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "sharedCapacities[0].capExpression.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "4b4d91a3de43bf12080bb859be725760feac72ee0c8583fe8017e4381566b169",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:de5e91405fe0d2db202bca1b]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "4d5f48019db46986e8521f55a4d4f58759f69e14e13f0d08abe932abe28c5bba",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:bc488c70fc625838a1bd847f]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "21afd767ad359dd35bfd8bf5154bf3a73e41de9dc930b400513db0f94454c848",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:b89c598c672533d7d805a2de]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "862a3a42aac0a5b9ebbbeb31c427ad11bb868e69e3566a7769ed88d5e946fb82",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:1010c55cfc2b5a04d7d010fa]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "80a844928588221df2ee6e00f59b3209b6c95e9cc3b51034535e5cc96cf8cd0a",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:81c1f1c7b7acfa63a21ecbe2]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0.042545,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 3.2771
+    },
+    {
+      "discoveryId": "discovery-candidate:3c6d53e92c505f92a9738e0c",
+      "normalizedSourceRef": "7.04",
+      "role": "BASKET",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 39,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "IR_VALIDATION_FAILURE",
+          "MISSING_CONTEXT",
+          "TRUNCATED_EVIDENCE_USED",
+          "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 7,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 234579,
+        "outputTokens": 10984,
+        "passACalls": 3,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.289499,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 174805
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "41e1774f22cf3fa22ee24c2928a2b70f0af74e983c9ab14be9445a66094b9bf1",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].capacityExpression.operands[0].amount",
+            "sourceEvidence": "Section 7.04 operative text provided shows only: 'Section 7.04 Asset Dispositions 233' with no substantive numeric content visible in the operative window"
+          },
+          {
+            "findingId": "973f6effb5e7b99dbc2b24c93eedf0065e55990912862c63e1aaf9dfe14e2eb2",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].capacityExpression.operands[1].operands[0].value",
+            "sourceEvidence": "Section 7.04 operative text provided shows only: 'Section 7.04 Asset Dispositions 233' with no substantive numeric content visible in the operative window"
+          },
+          {
+            "findingId": "563ba3a270127ef254a188ebd3e0c441aa62c9aafa1e61a5b4c60f154e0980ff",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2]",
+            "sourceEvidence": "Section 7.04 operative source text as provided: 'Section 7.04 Asset Dispositions 233'"
+          },
+          {
+            "findingId": "5ac2fad93544b94fb2bff69f90f0c701e9fa477185d98780931b29d1b273e444",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].inheritedAttributes[0]",
+            "sourceEvidence": "The operative text provided shows only 'Section 7.04 Asset Dispositions 233'; the IR's own inheritedAttributes[0].evidence quotes: '(iii) Indebtedness of any Restricted Subsidiary "
+          },
+          {
+            "findingId": "87f98c06f24d4c8d46d5a3ef1a8bbb9ead46504b80da7785df34037cab951aae",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].conditions[0].expression",
+            "sourceEvidence": "The proposed IR states that rule[3] (7.04(a)(3)(a)) contains a condition that references 'Section 2.05(b)(ii)' for prepayment procedures, but no source text for either Section 2.05"
+          },
+          {
+            "findingId": "03855de55fba13ce8b32af5bb9a66eedf51454d2ad7941fee4a98068d1802705",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[4].conditions[0].expression",
+            "sourceEvidence": "The operative text provided shows only the section header; the IR claims rule[4] (7.04(a)(3)(b)) conditions should evaluate to: Additional Assets OR replacement assets, but the rep"
+          },
+          {
+            "findingId": "5e21dd01095b2b62f3ed496b2b2ede67fa8b6059f82429d163c7c7e06ce1bb2e",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2] (entire rule)",
+            "sourceEvidence": "Operative source text window: 'Section 7.04 Asset Dispositions 233'; unresolved dependencies list includes: AMBIGUOUS_RELATIVE_REFERENCE (HIGH), UNRESOLVED_DEFINED_TERM (LOW), REFE"
+          },
+          {
+            "findingId": "de2cf4cfe22608dc8c55ebf6f7e9e90b4c4705ea27bb043e021bd9ef59673adb",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].expression.right.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "4feeda57fb00a43dc695974a08ea2f094c698fb0411e22777d9aceb623bce180",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].expression.right.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "252a3ea53413f8213d5d5e75f5885ce7aaac3878aec423a7c11ebac194cfa38c",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].capacityExpression.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "e6316e51368ec87e10b6b516b1eacdc76b1a97dd808d6795e7f0363945354eff",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].capacityExpression.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "315ba3de85805cfb33209f3b528fd4a7c2302dc1aadb596c673a27c0f3d3c9b7",
+            "findingType": "PROVENANCE_MISMATCH",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].provenance.excerpt",
+            "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)"
+          },
+          {
+            "findingId": "7ac299a32efd07f21495fdcbaf007dc9801f59c5d172fbcf3b4c36cd3af21d74",
+            "findingType": "PROVENANCE_MISMATCH",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[0].provenance.excerpt",
+            "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)"
+          },
+          {
+            "findingId": "f9336030bb2da47271391bac0d138eef44c7604f8fb500cb53fe04a5adbcf226",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "NON_MATERIAL",
+            "irPath": "rules[?ir-rule:72148c96cc6ad476e6daabc0]",
+            "sourceEvidence": "(no admissible source citation for this qualitative claim)"
+          },
+          {
+            "findingId": "8f5da4eecf92040260e5d045f1eea11e5d64ad43d41271be7c67262683ca3390",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "NON_MATERIAL",
+            "irPath": "rules[?ir-rule:1c6dd426284df182f123289b]",
+            "sourceEvidence": "(no admissible source citation for this qualitative claim)"
+          },
+          {
+            "findingId": "3c72ea97a9ddc78886611d8c3ca56be3b07296ff425b6e1b44606930f665e965",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "NON_MATERIAL",
+            "irPath": "rules[?ir-rule:5ec0a3f188f47292a0f716be]",
+            "sourceEvidence": "(no admissible source citation for this qualitative claim)"
+          },
+          {
+            "findingId": "a97fb45ea1c009c056e5dc931ba1736e2a59e805e289a6b8da375148ff2090f2",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:a3f61bb5040192b65a8311fa]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "5fc6c3d261577d5e03ebb2a41703fc8470c1a4bd121ecadf93ebc92cca9f6d6c",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:31cd1003210e3f426ec3551b]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "f4b145a4185cdbe5587bab7d2419769e80d70d4d0619f3fb8dca4e37437faf18",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "NON_MATERIAL",
+            "irPath": "rules[?ir-rule:84f9ca496a27d8f5f5258c59]",
+            "sourceEvidence": "(no admissible source citation for this qualitative claim)"
+          },
+          {
+            "findingId": "9a7796638bbd58da1a23b8482b724c1e8f69b71a60766f031fe9ed64142c52cd",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "NON_MATERIAL",
+            "irPath": "rules[?ir-rule:f57647a48304b5277a42be6a]",
+            "sourceEvidence": "(no admissible source citation for this qualitative claim)"
+          }
+        ],
+        "costUsd": 0.040457,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 3.607056
+    },
+    {
+      "discoveryId": "discovery-candidate:bbec10cdf0e4c53ab8b04108",
+      "normalizedSourceRef": "7.04",
+      "role": "EXCEPTION",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 39,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 327321,
+        "outputTokens": 5542,
+        "passACalls": 4,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.355031,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 283366
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 3.962087
+    },
+    {
+      "discoveryId": "discovery-candidate:396d1d28edf044a409f173c5",
+      "normalizedSourceRef": "7.04(a)",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 5722,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED",
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 4,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 600397,
+        "outputTokens": 13460,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.667697,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 419604,
+        "shapeExceeded": [
+          "conversations 6 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "a75dc5ff9d6481e71ee9e694d4f8d933fe64ffdfce128ea5081c2819c5645417",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].capacityExpression.amount",
+            "sourceEvidence": "The operative text Section 7.04(a)(3) states: 'within 540 days from the later of (A) the date of such Asset Disposition and (B) the receipt of the Net Cash Proceeds from such Asset"
+          },
+          {
+            "findingId": "c1453075db8b30c5cbe675486ce5304e562947198e58b182e8a03431fb629467",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].conditions[1].description (and the operative provision itself)",
+            "sourceEvidence": "Source text at Section 7.04(a)(2)(v) states: 'any Designated Non-Cash Consideration received by the Borrower or any Restricted Subsidiary in such Asset Dispositions having an aggre"
+          },
+          {
+            "findingId": "cc0e12347df64b46440a768864bbd4453dc00fca0e5baa52e40e44598ef50e71",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2] (the 75% cash requirement rule)",
+            "sourceEvidence": "Source Section 7.04(a)(2) contains a detailed 'provided that' clause enumerating five subcategories (i)–(v) of items that 'will be deemed to be cash': (i) assumption of Indebtednes"
+          },
+          {
+            "findingId": "cb6106b23a484a1965ab9972670c93b3c62c4d2b451e245f34f6778933b1b633",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions[0].expression",
+            "sourceEvidence": "Source Section 7.04(a) is structured as a master prohibition with three sequential conditions introduced by 'unless:' (1), (2), (3). Each condition is independently operative and m"
+          },
+          {
+            "findingId": "6996a6c5872196af36c72d933e6d9d206c04d6578f380858c5288c346673ee69",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].conditions[0]",
+            "sourceEvidence": "Source Section 7.04(a)(3) states: 'within 540 days from the later of (A) the date of such Asset Disposition and (B) the receipt of the Net Cash Proceeds from such Asset Disposition"
+          },
+          {
+            "findingId": "8abd52230f7dc60edc9231164a967a1907d96540e2816d55f02b76cd7436fd34",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].action",
+            "sourceEvidence": "Source Section 7.04(a)(3) requires that Net Cash Proceeds 'is applied' to one of four permitted uses: (a) prepay Loans and Permitted Debt, (b) invest in Additional Assets or replac"
+          },
+          {
+            "findingId": "08b551050b1ff35a93f16cd5406ac547c056a3a39b02aabfc17e7792a41de065",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "$ 86,000,000"
+          },
+          {
+            "findingId": "1344dc2ac8ae27417dbeca0220185ce4bbe49c2d93415605a28c5b528c7da17b",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "25.0%"
+          },
+          {
+            "findingId": "0a62c6753d4493daf898db6cbda53333c6a3cecbcd0186cfce5f73ac1c835f83",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[3].capacityExpression",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "c3aa1fb3e6e2a28ad0dd8581088057b067cd88ffee831ccb0ca17021b43ee4dc",
+            "findingType": "MISSING_RULE",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "9ad1bd45cb23d50d2b05d8d448708d6ad3f44f742c842d2b96818dae75049714",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:e038958a630fb7427ca88bfb]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "975a37b01034587b4d53efc8faa30551ffbd7223a7101e4b7df43c87a4914ef2",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:c8499d83ccbdae041a89606e]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "0bbdfd71a610995d6627b5a3c11914c4b91793cf03a953557ee73e36c3691442",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:d3f90503828bf27549e677ca]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0.053953,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 4.683737
+    },
+    {
+      "discoveryId": "discovery-candidate:909537bca1b6b597296e8b5a",
+      "normalizedSourceRef": "7.04(a)(1)",
+      "role": "CONDITION",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 568,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 52991,
+        "outputTokens": 1625,
+        "passACalls": 2,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.061116,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 70406
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 4.744853
+    },
+    {
+      "discoveryId": "discovery-candidate:b4014ccd221ca7cdab97918c",
+      "normalizedSourceRef": "7.04(a)(2)",
+      "role": "CONDITION",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 2573,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "REVIEW_REQUIRED",
+        "failureReasons": [
+          "TRUNCATED_EVIDENCE_USED",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 1,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 100171,
+        "outputTokens": 5286,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.126601,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 121777
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "423aec107d993bdd7c443c00e347b4d0e2347c32e3e2d1e177243a8fcaa89923",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].capacityExpression",
+            "sourceEvidence": "at least 75% of the consideration from such Asset Disposition received by the Borrower or such Restricted Subsidiary, as applicable, is in the form of cash or Cash Equivalents"
+          },
+          {
+            "findingId": "c819143a2692b79e83f1bfef512e19582a3a0b96ba5d8a45aa605020f0252cef",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0]",
+            "sourceEvidence": "in any such Asset Disposition, or series of related Asset Dispositions (except to the extent the Asset Disposition is a Permitted Asset Swap), with a purchase price in excess of th"
+          },
+          {
+            "findingId": "41ec3869da0cf5d09d8274eeb20464427639c36a5d9e8027a5acadbeb7c1e3f0",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions",
+            "sourceEvidence": "provided that, for purposes of this clause (2) , the following will be deemed to be cash: (i) [test 1] (ii) [test 2] (iii) [test 3] (iv) [test 4] (v) [test 5]"
+          },
+          {
+            "findingId": "b8c4785b3a78e6c0cfc4c0f593378e77cec969513294dc2cac4d5bda1ccee4e9",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].capacityExpression.attemptedStructure",
+            "sourceEvidence": "at least 75% of the consideration from such Asset Disposition received by the Borrower or such Restricted Subsidiary, as applicable, is in the form of cash or Cash Equivalents"
+          },
+          {
+            "findingId": "64d79c85653d9fb1b126e32710871f474d1f6156c29620e7216a5d7c01d6e14f",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].exceptions[0]",
+            "sourceEvidence": "(except to the extent the Asset Disposition is a Permitted Asset Swap)"
+          },
+          {
+            "findingId": "4cf164fc12dee7a332863248a10c981028e58cff05d9d5d89406dd42ed867939",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions[1]",
+            "sourceEvidence": "the assumption by the transferee of Indebtedness or other liabilities...of the Borrower or a Restricted Subsidiary (other than Subordinated Indebtedness of the Borrower or a Guaran"
+          },
+          {
+            "findingId": "5b67225d91a980fe2e4e3166b18b0ffd9682b7c513eab2e3068dba0314dabbdd",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions[5]",
+            "sourceEvidence": "any Designated Non-Cash Consideration received by the Borrower or any Restricted Subsidiary in such Asset Dispositions having an aggregate fair market value, taken together with al"
+          },
+          {
+            "findingId": "4a25e70476cac4bafe299d3072b3b97a02411ad165472872810b61fd880367b4",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].exceptions[0]",
+            "sourceEvidence": "Permitted Asset Swap is a defined term meaning the concurrent purchase and sale or exchange of assets used or useful in a Similar Business or a combination of such assets and cash "
+          },
+          {
+            "findingId": "77eb02d08dce2bd07e359800d388b6425947ddc06a9dfc6e737a3732d4d8acb8",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0]",
+            "sourceEvidence": "at least 75% of the consideration from such Asset Disposition received by the Borrower or such Restricted Subsidiary, as applicable, is in the form of cash or Cash Equivalents"
+          },
+          {
+            "findingId": "f22f77b69144d78cd4bd2c6e7c5ebc7df5df17a9e9e0826b794c532ea6baa694",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].dependsOn and sourceDependencies",
+            "sourceEvidence": "in any such Asset Disposition, or series of related Asset Dispositions (except to the extent the Asset Disposition is a Permitted Asset Swap), with a purchase price in excess of th"
+          },
+          {
+            "findingId": "4713fe49254da35a5e9959d5c459ed9dfd7426ed85e8f59ce8c8d3a133bcb9d8",
+            "findingType": "MISSING_BASKET",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "75%"
+          },
+          {
+            "findingId": "3e1fd5aeb87ed69a6635557af5ef470260af9fdb682cbda87e01dbe97422d900",
+            "findingType": "MISSING_RULE",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "11c749e73a5f5307f1c8debf0aaa48c32feebdf5a3769508a9b7757a82b4f8bf",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:10f754a7f5eee8a11d9ba5f5]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0.05827,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 4.929724
+    },
+    {
+      "discoveryId": "discovery-candidate:7d3828ac611da452d60e329f",
+      "normalizedSourceRef": "7.04(a)(2)(i)",
+      "role": "BASKET",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 20,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 134473,
+        "outputTokens": 976,
+        "passACalls": 2,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.13935299999999998,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 28948,
+        "shapeExceeded": [
+          "conversations 6 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 5.069077
     }
   ],
-  "stop": {
-    "reason": "RESERVATION_SHAPE_EXCEEDED",
-    "detail": "conversations 11 > reserved 5",
-    "atIndex": 1
-  },
+  "stop": null,
   "spend": {
     "ceilingUsd": 162.63,
     "stopAtUsd": 162.63,
-    "exactSpendUsd": 1.053934,
+    "exactSpendUsd": 5.069077,
     "retainedUnknownTimeoutUsd": 0,
     "outstandingReservedUsd": 0,
-    "committedUsd": 1.053934,
-    "remainingUsd": 161.576066
+    "committedUsd": 5.069077,
+    "remainingUsd": 157.560923
   }
 }
