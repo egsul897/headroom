@@ -9,8 +9,8 @@
   "readyToPinInvented": false,
   "stage1MarkerInvented": false,
   "phase3PercentRaised": false,
-  "discoveryIdsMinted": false,
-  "semanticRolesAssigned": false,
+  "discoveryIdsMinted": true,
+  "semanticRolesAssigned": true,
   "frozenSha256": "f782f2f98537c8b76a8a4506c92a51e74c40a0a8eafd203b7343eaa0a21aede3",
   "frozenHashMatches": true,
   "documentId": "gibraltar-doc-a-2026-02-02-credit-agreement",
@@ -55,30 +55,24 @@
     "supersessionIndex": "EMPTY"
   },
   "passB": {
-    "executed": false,
-    "terminal": "PROVIDER_EXECUTION_REQUIRED",
-    "syntheticInvented": false
+    "executed": true,
+    "terminal": "PASS_B_REAL_PROVIDER",
+    "providerName": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-haiku-4.5",
+    "syntheticInvented": false,
+    "modelCalls": 141,
+    "sectionFailures": 0,
+    "finalCandidateCount": 838
   },
   "passC": {
-    "executed": false,
-    "reason": "Pass C expands Pass B semantic items. Pass B did not run."
+    "executed": true,
+    "reason": "Pass C ran inside runDiscoveryPipeline on real Pass B items."
   },
   "passD": {
-    "executed": false,
-    "reason": "Pass D reconciles Pass C candidates. Pass B did not run."
+    "executed": true,
+    "reason": "Pass D ran inside runDiscoveryPipeline on real Pass C candidates."
   },
-  "providerExecutionRequired": {
-    "code": "PROVIDER_EXECUTION_REQUIRED",
-    "provider": "VERCEL_AI_GATEWAY",
-    "model": "anthropic/claude-sonnet-5",
-    "command": "AI_GATEWAY_API_KEY=\"$AI_GATEWAY_API_KEY\" npx tsx scripts/p3-development-pipeline/execute-gibraltar.ts",
-    "workflow": "getStageCaller selects VERCEL_AI_GATEWAY when AI_GATEWAY_API_KEY is set (ANTHROPIC_API_KEY is the direct fallback; neither key is set here). Model is DEFAULT_GATEWAY_ANALYZER_MODEL unless ANALYZER_MODEL is set. runDiscoveryPipeline then calls runPassBSemanticClassification once per Pass A section (stage covenant_discovery_section). Pass C and Pass D run in that same call after real Pass B items return. SyntheticStageCaller is not used.",
-    "expectedMaxCostUsd": 181.67,
-    "pricingTableVersion": "headroom-pricing.v1 (2026-09)",
-    "maxOutputTokensPerCall": 128000,
-    "sectionsToCall": 141,
-    "pipelineStageUnlocked": "PASS_B_SEMANTIC_CLASSIFICATION"
-  },
+  "providerExecutionRequired": null,
   "investigations": {
     "builderBasket": {
       "phrase": "Available Amount Builder Basket",
@@ -179,7 +173,6 @@
       ]
     }
   },
-  "providerScopedCandidates": [],
   "paths": {
     "builder": {
       "stage": "PASS_A_BUILDER_LANGUAGE_PLUS_CROSS_CUT_TEXT_HEURISTIC",

@@ -18,7 +18,13 @@ expected maximum cost: 181.67 USD
 pipeline stage unlocked: PASS_B_SEMANTIC_CLASSIFICATION
 ```
 
-The ceiling is the pre-dispatch reservation in `reservedMaxInputTokens` plus `DEFAULT_MAX_TOKENS` (128000) priced by `maxCostOfRequestUsd` on rate card `headroom-pricing.v1 (2026-09)` for `anthropic/claude-sonnet-5`, summed over 141 Pass A sections. It is the code's own maximum, not a typical invoice. Neither `AI_GATEWAY_API_KEY` nor `ANTHROPIC_API_KEY` is set in this run. No synthetic Pass B was called.
+The ceiling is the pre-dispatch reservation in `reservedMaxInputTokens` plus `DEFAULT_MAX_TOKENS` (128000) priced by `maxCostOfRequestUsd` on rate card `headroom-pricing.v1 (2026-09)` for `anthropic/claude-sonnet-5`, summed over 141 Pass A sections. It is the code's own maximum, not a typical invoice. That figure is what the no-key preflight prints. Haiku is not on the rate card, so the preflight does not reprice it.
+
+## Haiku Pass B
+
+`ANALYZER_MODEL=anthropic/claude-haiku-4.5` through `VERCEL_AI_GATEWAY`. One structured-output probe succeeded, then `execute-gibraltar.ts` called all 141 Pass A sections. `passB.terminal` is `PASS_B_REAL_PROVIDER`. `modelCalls` 141. `sectionFailures` 0. `finalCandidateCount` 838. `syntheticInvented` false. `certified` false. `pinnedOffline` false. No pin. No matrix row. The gateway key is not in the record.
+
+The writer does not persist token totals, and `priceUsage` returns `UNKNOWN_MODEL` for this id, so this file does not state a dollar invoice. Investigation rows still store `discoveryId: null`. This run's writer dropped `providerScopedCandidates` before writing the file. A later commit returns that array, and a merge must not fill it with the refusal path's empty list. The 838 candidates are counted and not listed.
 
 ## Offline stages that ran
 
@@ -26,7 +32,7 @@ The ceiling is the pre-dispatch reservation in `reservedMaxInputTokens` plus `DE
 
 HTML sha256 and extracted-text sha256 match `provenance.json`. Counts match the #112 structure summary: 1,029,323 characters, 511 chunks (444 with a section ref), 2,087 nodes, 564 definitions, 1,459 references (491 resolved), 946 Pass A candidates. Supersession index was empty, so Pass A status is `UNKNOWN_SUPERSESSION_STATUS`. Record: `development-pipeline/execution.json`.
 
-No discoveryId. No semantic role. No pin. No matrix row. `eligible` was not set true. `providerScopedCandidates` is empty because Pass B was refused.
+Pass B minted discovery ids and assigned semantic roles. Those are DEVELOPMENT output. No pin. No matrix row. `eligible` was not set true.
 
 ## Investigations
 
