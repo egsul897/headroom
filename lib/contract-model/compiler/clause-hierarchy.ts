@@ -221,6 +221,126 @@ interface OpenLevel {
   lastMarker: string;
 }
 
+function isLineStart(sectionText: string, charStart: number): boolean {
+  return /(?:^|\n)[ \t]*$/.test(sectionText.slice(Math.max(0, charStart - 8), charStart));
+}
+
+function letterToken(kind: "LOWER_ALPHA" | "UPPER_ALPHA", index: number): string | null {
+  if (index < 1) return null;
+  const base = kind === "LOWER_ALPHA" ? 96 : 64;
+  if (index <= 26) return String.fromCharCode(base + index);
+  const doubled = index - 26;
+  if (doubled <= 26) {
+    const ch = String.fromCharCode(base + doubled);
+    return `${ch}${ch}`;
+  }
+  return null;
+}
+
+function romanToken(kind: "LOWER_ROMAN" | "UPPER_ROMAN", index: number): string | null {
+  const table = kind === "LOWER_ROMAN" ? LOWER_ROMANS : UPPER_ROMANS;
+  if (index < 1 || index > table.length) return null;
+  return table[index - 1] ?? null;
+}
+
+function nextLineStartOccurrence(sectionText: string, occurrences: RawMarkerOccurrence[], fromIndex: number): RawMarkerOccurrence | null {
+  for (let i = fromIndex + 1; i < occurrences.length; i++) {
+    const later = occurrences[i];
+    if (later && isLineStart(sectionText, later.charStart)) return later;
+  }
+  return null;
+}
+
+/**
+ * letteredSiblingFollows: an outer lettered list is waiting for this exact letter, the deepest
+ * open list is a different sequence (typically roman) that would otherwise consume the marker,
+ * and the next line-start marker is that letter's successor rather than the roman successor.
+ * Do not fire when the deepest list IS the letter list — "(i)" after "(h)" stays a letter.
+ */
+function skipDeepestForOuterLetter(args: {
+  sectionText: string;
+  occurrences: RawMarkerOccurrence[];
+  occIndex: number;
+  stack: OpenLevel[];
+  candidates: MarkerCandidate[];
+  cont: MarkerCandidate;
+  atLineStart: boolean;
+}): boolean {
+  if (!args.atLineStart) return false;
+  if (args.cont.kind === "LOWER_ALPHA" || args.cont.kind === "UPPER_ALPHA") return false;
+  if (args.cont.kind !== "LOWER_ROMAN" && args.cont.kind !== "UPPER_ROMAN") return false;
+  let outerLetter: MarkerCandidate | null = null;
+  for (let level = args.stack.length - 2; level >= 0; level--) {
+    const outer = args.stack[level];
+    if (!outer || (outer.kind !== "LOWER_ALPHA" && outer.kind !== "UPPER_ALPHA")) continue;
+    const letter = args.candidates.find((c) => c.kind === outer.kind && c.index === outer.lastIndex + 1);
+    if (letter) {
+      outerLetter = letter;
+      break;
+    }
+  }
+  if (!outerLetter || (outerLetter.kind !== "LOWER_ALPHA" && outerLetter.kind !== "UPPER_ALPHA")) return false;
+  const nextLine = nextLineStartOccurrence(args.sectionText, args.occurrences, args.occIndex);
+  if (!nextLine) return false;
+  const expectedLetter = letterToken(outerLetter.kind, outerLetter.index + 1);
+  const expectedRoman = romanToken(args.cont.kind, args.cont.index + 1);
+  if (!expectedLetter || !expectedRoman) return false;
+  const nextMarker = args.occurrences[args.occIndex + 1];
+  if (nextMarker && nextMarker.token === expectedRoman) return false;
+  return nextLine.token === expectedLetter && nextLine.token !== expectedRoman;
+}
+
+/**
+ * restartedLetterRun: a line-start single letter past "a", continuing no open sequence, may open
+ * a lettered run when the next line-start marker is the following letter and is not the following roman.
+ * A lone "(x)" stays unparsed. "(x)" then "(xi)" does not become a letter run.
+ */
+function restartedLetterCandidate(args: {
+  sectionText: string;
+  occurrences: RawMarkerOccurrence[];
+  occIndex: number;
+  token: string;
+  candidates: MarkerCandidate[];
+  atLineStart: boolean;
+}): MarkerCandidate | null {
+  if (!args.atLineStart || args.token.length !== 1) return null;
+  const letter = args.candidates.find((c) => (c.kind === "LOWER_ALPHA" || c.kind === "UPPER_ALPHA") && c.index > 1);
+  if (!letter || (letter.kind !== "LOWER_ALPHA" && letter.kind !== "UPPER_ALPHA")) return null;
+  const nextLine = nextLineStartOccurrence(args.sectionText, args.occurrences, args.occIndex);
+  if (!nextLine) return null;
+  const expectedLetter = letterToken(letter.kind, letter.index + 1);
+  if (!expectedLetter || nextLine.token !== expectedLetter) return null;
+  const romanKind = letter.kind === "LOWER_ALPHA" ? "LOWER_ROMAN" : "UPPER_ROMAN";
+  const roman = args.candidates.find((c) => c.kind === romanKind);
+  if (roman) {
+    const expectedRoman = romanToken(romanKind, roman.index + 1);
+    const nextMarker = args.occurrences[args.occIndex + 1];
+    if (expectedRoman && ((nextMarker && nextMarker.token === expectedRoman) || nextLine.token === expectedRoman)) return null;
+  }
+  return letter;
+}
+
+/**
+ * A hanging paragraph closes the innermost list only when that list has no later line-start
+ * continuation before an outer list resumes. If the inner list resumes, leave it open.
+ */
+function innerResumesBeforeOuter(sectionText: string, occurrences: RawMarkerOccurrence[], fromIndex: number, stack: OpenLevel[]): boolean {
+  if (stack.length < 2) return false;
+  const inner = stack[stack.length - 1];
+  if (!inner) return false;
+  const expected = inner.lastIndex + 1;
+  for (let i = fromIndex + 1; i < occurrences.length; i++) {
+    const later = occurrences[i];
+    if (!later || !isLineStart(sectionText, later.charStart)) continue;
+    const cands = classifyMarker(later.token);
+    const continuesInner = cands.some((c) => c.kind === inner.kind && c.index === expected);
+    const resumesOuter = stack.slice(0, -1).some((outer) => cands.some((c) => c.kind === outer.kind && c.index === outer.lastIndex + 1));
+    if (continuesInner) return true;
+    if (resumesOuter) return false;
+  }
+  return false;
+}
+
 /**
  * Builds the nested clause structure for ONE section's own text (relative
  * offsets into that text - callers add the section's own charStart to get
@@ -238,19 +358,25 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
   const stack: OpenLevel[] = [];
   let previousLabelEnd = 0;
 
-  for (const occ of occurrences) {
+  for (let occIndex = 0; occIndex < occurrences.length; occIndex++) {
+    const occ = occurrences[occIndex]!;
     const candidates = classifyMarker(occ.token);
     if (candidates.length === 0) continue;
 
     const marker = `(${occ.token})`;
     const hangingParagraphBefore = hasHangingParagraph(sectionText, previousLabelEnd, occ.charStart, (pos) => labelStarts.has(pos));
     previousLabelEnd = occ.charEnd;
+    const atLineStart = /(?:^|\n)[ \t]*$/.test(sectionText.slice(Math.max(0, occ.charStart - 8), occ.charStart));
 
-    // 1. Continue the current (deepest open) level.
+    // 1. Continue the current (deepest open) level, unless an outer letter list is the one this
+    // line-start marker actually continues (letteredSiblingFollows).
     if (stack.length > 0) {
       const top = stack[stack.length - 1]!;
       const cont = candidates.find((c) => c.kind === top.kind && c.index === top.lastIndex + 1);
-      if (cont) {
+      const deferToOuterLetter = cont !== undefined && skipDeepestForOuterLetter({
+        sectionText, occurrences, occIndex, stack, candidates, cont, atLineStart,
+      });
+      if (cont && !deferToOuterLetter) {
         top.lastIndex = cont.index;
         top.lastMarker = marker;
         nodes.push({ nodeType: nodeTypeForDepth(stack.length), marker, charStart: occ.charStart, markerCharEnd: occ.charEnd, depth: stack.length, parentMarkerPath: [...top.ancestorPath] });
@@ -266,7 +392,6 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
     // mid-sentence "(c)" written right after an inline "(a) ..., (b) ..." at the innermost level (e.g.
     // "..., (b) the declaration ... and (c) if ...") is inline enumeration there and must never re-open
     // a distant outer subsection whose sequence merely happens to be waiting for (c).
-    const atLineStart = /(?:^|\n)[ \t]*$/.test(sectionText.slice(Math.max(0, occ.charStart - 8), occ.charStart));
     // Inline-enumeration context: the label is joined to the preceding text by a bare comma or
     // conjunction ("..., (b) ... and (c) ...") rather than by the list punctuation (";" / ":") that
     // separates sibling items of an outer list ("...; (c) ..." / "...; and (c) ...").
@@ -287,17 +412,20 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
     }
     if (resumedOuter) continue;
 
-    // 3. Start a brand-new nested level under the current top, only for a
-    // candidate whose index is exactly 1 (a/i/A/1) - never mid-sequence.
+    // 3. Start a brand-new nested level under the current top. Index 1 (a/i/A/1) always may.
+    // A line-start single letter past "a" may also open a restarted letter run when the next
+    // line-start marker is the following letter and not the following roman (restartedLetterRun).
+    const restarted = restartedLetterCandidate({ sectionText, occurrences, occIndex, token: occ.token, candidates, atLineStart });
     const startCandidates = candidates.filter((c) => c.index === 1);
-    if (startCandidates.length > 0 && stack.length < 6) {
-      // F-2 mechanism 2: a new family after a hanging paragraph attaches to the enclosing level.
-      if (hangingParagraphBefore && stack.length >= 2) stack.length -= 1;
+    if ((restarted !== null || startCandidates.length > 0) && stack.length < 6) {
+      // F-2 mechanism 2: a new family after a hanging paragraph attaches above the innermost list
+      // only when that inner list does not itself resume at a later line-start before an outer list does.
+      if (hangingParagraphBefore && stack.length >= 2 && !innerResumesBeforeOuter(sectionText, occurrences, occIndex, stack)) stack.length -= 1;
       const preference = START_PREFERENCE_BY_DEPTH[Math.min(stack.length, START_PREFERENCE_BY_DEPTH.length - 1)]!;
       const preferenceRank = (kind: MarkerSequenceKind) => (preference.includes(kind) ? preference.indexOf(kind) : preference.length);
-      const chosen = startCandidates.sort((a, b) => preferenceRank(a.kind) - preferenceRank(b.kind))[0]!;
+      const chosen = restarted ?? startCandidates.sort((a, b) => preferenceRank(a.kind) - preferenceRank(b.kind))[0]!;
       const parentPath = stack.length > 0 ? [...stack[stack.length - 1]!.ancestorPath, stack[stack.length - 1]!.lastMarker] : [];
-      stack.push({ kind: chosen.kind, lastIndex: 1, ancestorPath: parentPath, lastMarker: marker });
+      stack.push({ kind: chosen.kind, lastIndex: chosen.index, ancestorPath: parentPath, lastMarker: marker });
       nodes.push({ nodeType: nodeTypeForDepth(stack.length), marker, charStart: occ.charStart, markerCharEnd: occ.charEnd, depth: stack.length, parentMarkerPath: parentPath });
       continue;
     }
