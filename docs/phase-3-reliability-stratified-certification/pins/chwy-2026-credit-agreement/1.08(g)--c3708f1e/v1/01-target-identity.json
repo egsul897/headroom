@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:c3708f1e7541fd0456804118:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "e5905c4e1c0981b4f5691e284171d50ea40387b2",
+  "identity": {
+    "discoveryId": "discovery-candidate:c3708f1e7541fd0456804118",
+    "documentId": "doc-a",
+    "packageKey": "chwy-2026-credit-agreement",
+    "normalizedSourceRef": "1.08(g)",
+    "structuralNodeKeys": [
+      "doc-a::1.08(g)",
+      "doc-a::1.08"
+    ],
+    "structuralNodeIds": [
+      "structural-node:4127f5e17f76dfcf08cdfb60",
+      "structural-node:8e5099b139aa4f9508e66f35"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:4127f5e17f76dfcf08cdfb60",
+      "nodeKey": "doc-a::1.08(g)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "1.08(g)",
+      "charStart": 393489,
+      "charEnd": 394393
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 904,
+    "operativeSourceSha256": "72001edc05bf16d9be85423d621e039b4e8b1e716915f2a207fe96301c7e3bc6",
+    "operativeSourceText": "(g) For purposes of determining the permissibility of any action (or inaction),\nchange, transaction or event that requires a calculation of any financial ratio or test (including, without limitation, any Interest Coverage Ratio, First Lien Leverage Ratio test, any Senior Secured Leverage Ratio test and/or any Total Leverage\nRatio test and/or the amount of Consolidated EBITDA), such financial ratio or test shall be calculated at the time such action is taken (or inaction) (subject to Section 1.04(b) and this Section 1.08), such change is made, such transaction\nis consummated or such event occurs, as the case may be, and no Default or Event of Default shall be deemed to have occurred solely as a result of a change in such financial ratio, test or amount occurring after the time such action is taken, such\nchange is made, such transaction is consummated or such event occurs, as the case may be.\n",
+    "expected": {
+      "chars": 904,
+      "sha256": "72001edc05bf16d9be85423d621e039b4e8b1e716915f2a207fe96301c7e3bc6"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "EXCEPTION",
+    "stratum": "FINANCIAL_COVENANTS",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "discoveryReviewStatus": "UNCERTAIN",
+    "discoveryConfidence": 0.72,
+    "description": "Fixes the timing of any required financial ratio/test calculation to the date the relevant action, change, transaction or event occurs, and provides that no Default or Event of Default arises solely from a later change in that ratio or amount."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}

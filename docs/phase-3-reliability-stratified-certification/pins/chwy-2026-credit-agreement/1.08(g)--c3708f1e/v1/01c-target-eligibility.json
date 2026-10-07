@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:c3708f1e7541fd0456804118:TARGET_ELIGIBILITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "e5905c4e1c0981b4f5691e284171d50ea40387b2",
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [],
+  "operativeTextSectionReferences": [
+    {
+      "raw": "Section 1.04(b)",
+      "normalized": "1.04(b)",
+      "span": [
+        488,
+        503
+      ],
+      "selector": {
+        "sourceText": "Section 1.04(b)",
+        "kind": "WHOLE_PROVISION",
+        "qualifierText": null
+      }
+    },
+    {
+      "raw": "Section 1.08",
+      "normalized": "1.08",
+      "span": [
+        513,
+        525
+      ],
+      "selector": {
+        "sourceText": "Section 1.08",
+        "kind": "WHOLE_PROVISION",
+        "qualifierText": null
+      }
+    }
+  ],
+  "offlineBundle": {
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+    ],
+    "items": 8,
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "nonCurrentItems": [],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "1.08(g)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "1.08",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "1.08(d)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "1.08(e)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "1.08(j)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "1.08(k)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "1.08(l)",
+        1
+      ],
+      [
+        "CALCULATION_PROVISION",
+        "1.04(b)",
+        1
+      ]
+    ]
+  },
+  "sourceContentVersion": "scv1:51f3060e286fae11fb7006bca8198251bd63648e32c533fdc5c0158d28f90e3c",
+  "identityStrength": "STRONG",
+  "eligible": true,
+  "eligibilityBlockers": [],
+  "crossCutClaims": {
+    "WITHOUT_SHARED_CAPS": {
+      "claimed": true,
+      "basis": "Sealed discovery role EXCEPTION is not SHARED_CAP; treated as standalone for this pin."
+    },
+    "WITHOUT_BUILDERS": {
+      "claimed": true,
+      "basis": "Sealed discovery role EXCEPTION is not BUILDER; no builder/grower formula detected in this operative window."
+    },
+    "WITHOUT_RECLASSIFICATION": {
+      "claimed": true,
+      "basis": "No classification/reclassification mechanic detected in this operative window."
+    }
+  },
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:c3708f1e7541fd0456804118",
+    "mapTags": [],
+    "mapOutcome": "NO_CHEWY_CANONICAL_MAP_YET",
+    "note": "Chewy is not yet present under docs/canonical-covenant-map/maps/. Offline pin binds sealed discovery+structural fixtures only. Absence of map REVIEW is not pre-credit for later live CERTIFIED."
+  },
+  "discoveryHonesty": {
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.72,
+    "documentDiscoveryHealth": "DISCOVERY_PARTIAL",
+    "note": "Sealed discovery recorded UNCERTAIN for this candidate and DISCOVERY_PARTIAL at document level. Offline pin remains valid; discovery NEEDS_REVIEW is not pre-credit."
+  }
+}

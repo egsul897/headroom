@@ -228,3 +228,23 @@ Primary `discovery-candidate:5be40987571c84b616abb07e` sealed UNIQUE (252 chars,
 ### Review owners
 
 Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI · COO MERGE AUTHORIZED. Merge HOLD. Do not self-merge. Live/paid **not** authorized hereby.
+
+---
+
+## Offline Chewy FinCov §1.08(g) EXCEPTION (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` · `eligible:true` · role **EXCEPTION** (soft gate — **not** CERTIFIED)  
+**Chunk:** P3-CF3 · plan sha256 `3b7085d44e81bf171aa7a0e753c01baba4250fb6cd0c9231a21967bde71f516f`  
+**Base SHA:** `e5905c4e1c0981b4f5691e284171d50ea40387b2`  
+**ADR-1:** append-only under `pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1/`. CF1 CONDITION packet `1.08(d)(i)--c2018498/v1/` and CF2 EXCEPTION packet `1.08(d)(ii)--5be40987/v1/` untouched.
+
+| artifact | role |
+|---|---|
+| `pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1/` | Emitter-produced Chewy §1.08(g) EXCEPTION (`eligible:true`) |
+| `01-pin-matrix.json` | FinCov `chewyFollowOn.exception108g` cites this cell; Chewy `FINANCIAL_TEST` stays deferred |
+
+Primary `discovery-candidate:c3708f1e7541fd0456804118` sealed UNIQUE (904 chars, single occurrence, identity assertions true, interim-B clean, `eligible:true`). The sealed role is EXCEPTION under the `FINANCIAL_COVENANTS` family. This pin is not a claim that a Chewy `FINANCIAL_TEST` became `eligible:true`. `WITH_BUILDERS` stays DEFERRED / pin HOLD. CONMED is not rebound this cycle. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`.
+
+### Review owners
+
+Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI · COO MERGE AUTHORIZED. Merge HOLD. Do not self-merge. Live/paid **not** authorized hereby.
