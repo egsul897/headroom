@@ -11,6 +11,7 @@
  * instead (so the Dashboard tab's editable-financials reflow can call the
  * exact same logic client-side with zero server round-trip).
  */
+import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
 import { prisma } from "./prisma";
 import { computeLeverageMetrics, loadCompanyCovenantData, type CompanyCovenantData, type FormulaParams } from "./covenant-engine";
 import { getFinancialPosition } from "./financial-core/position-service";
@@ -53,14 +54,27 @@ export function emptyCovenantData(companyId: string): CompanyCovenantData {
 export async function loadCovenantDataOrEmpty(companyId: string, asOfDate: Date): Promise<CompanyCovenantData> {
   try {
     return await loadCompanyCovenantData(prisma, companyId, asOfDate);
-  } catch {
+  } catch (err) {
+    // Duplicate stored snapshots are not an empty legacy dataset.
+    if (err instanceof FinancialIdentityError && err.code === "AMBIGUOUS") throw err;
     return emptyCovenantData(companyId);
   }
 }
 
 async function resolveDefaultAsOfDate(companyId: string): Promise<Date> {
-  const latest = await prisma.financialState.findFirst({ where: { companyId }, orderBy: { asOfDate: "desc" } });
-  return latest?.asOfDate ?? new Date();
+  const resolution = await resolveCanonicalFinancialIdentity(
+    (args) => prisma.financialState.findMany(args),
+    { where: { companyId }, selection: "latest-cohort" },
+  );
+  if (resolution.status === "UNIQUE") return resolution.row.asOfDate;
+  if (resolution.status === "AMBIGUOUS") {
+    throw new FinancialIdentityError(
+      "AMBIGUOUS",
+      resolution.matchCount,
+      `${resolution.matchCount} FinancialState rows claim the latest identity for company ${companyId}`,
+    );
+  }
+  throw new FinancialIdentityError("UNKNOWN", 0, `No FinancialState found for company ${companyId}`);
 }
 
 /**

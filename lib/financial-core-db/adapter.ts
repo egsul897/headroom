@@ -10,6 +10,7 @@
  */
 
 import { reviveProvencancedFact } from "../financial-core/provenance";
+import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "../financial-identity";
 import type {
   BalanceSheetFacts,
   CovenantMetricFacts,
@@ -92,7 +93,7 @@ interface DbDebtEventRow {
 }
 
 export interface FinancialCorePrismaClient {
-  financialState: { findFirst(args: any): Promise<DbFinancialStateRow | null> };
+  financialState: { findMany(args: any): Promise<DbFinancialStateRow[]> };
   facility: { findMany(args: any): Promise<DbFacilityRow[]> };
   debtEvent: { findMany(args: any): Promise<DbDebtEventRow[]> };
 }
@@ -108,17 +109,25 @@ function reviveFactsGroup<T extends object>(g: T): T {
 
 /**
  * Loads the latest effective `FinancialState` for a company as of a given
- * date (same "at most one row matches a given query date" convention
- * `loadCompanyCovenantData` already uses - architecture §C.3). Returns
- * `null` if none exists, mirroring `loadCompanyCovenantData`'s own explicit
- * "no snapshot found" failure rather than fabricating an empty state.
+ * date. The filter is the same effective-dating + asOfDate <= query the
+ * previous findFirst used. Zero matches returns null. More than one row in
+ * that latest asOfDate cohort throws FINANCIAL_IDENTITY_AMBIGUOUS. No
+ * fabricated state, and no silent findFirst pick.
  */
 export async function loadFinancialState(prisma: FinancialCorePrismaClient, companyId: string, asOfDate: Date): Promise<FinancialState | null> {
-  const row = await prisma.financialState.findFirst({
-    where: { companyId, asOfDate: { lte: asOfDate }, ...effectiveDateFilter(asOfDate) },
-    orderBy: { asOfDate: "desc" },
-  });
-  if (!row) return null;
+  const resolution = await resolveCanonicalFinancialIdentity<DbFinancialStateRow>(
+    (args) => prisma.financialState.findMany(args),
+    { where: { companyId, asOfDate: { lte: asOfDate }, ...effectiveDateFilter(asOfDate) }, selection: "latest-cohort" },
+  );
+  if (resolution.status === "UNKNOWN") return null;
+  if (resolution.status === "AMBIGUOUS") {
+    throw new FinancialIdentityError(
+      "AMBIGUOUS",
+      resolution.matchCount,
+      `${resolution.matchCount} FinancialState rows claim the same identity for company ${companyId} as of ${asOfDate.toISOString()}`,
+    );
+  }
+  const row = resolution.row;
 
   const balanceSheetFacts = reviveFactsGroup(row.balanceSheetFacts as BalanceSheetFacts);
   const incomeStatementFacts = reviveFactsGroup(row.incomeStatementFacts as IncomeStatementFacts);
@@ -206,6 +215,8 @@ export interface CompanyFinancialCoreData {
 /** Convenience loader combining the three reads above - the single call site position-service.ts/scenario-service.ts actually use. */
 export async function loadCompanyFinancialCoreData(prisma: FinancialCorePrismaClient, companyId: string, asOfDate: Date): Promise<CompanyFinancialCoreData> {
   const [state, facilities, events] = await Promise.all([loadFinancialState(prisma, companyId, asOfDate), loadFacilities(prisma, companyId, asOfDate), loadDebtEvents(prisma, companyId, asOfDate)]);
-  if (!state) throw new Error(`No FinancialState found for company ${companyId} as of ${asOfDate.toISOString()}.`);
+  if (!state) {
+    throw new FinancialIdentityError("UNKNOWN", 0, `No FinancialState found for company ${companyId} as of ${asOfDate.toISOString()}.`);
+  }
   return { state, facilities, events };
 }

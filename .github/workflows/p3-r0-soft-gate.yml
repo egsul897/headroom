@@ -15,14 +15,21 @@
 # same-date rewrite. Changed values get new wrappers. FinancialSnapshot has
 # no per-field provenance. This gate does not invent any.
 #
+# P3-FFC2 review-audit and canonical financial-identity suites run here too.
+# Soft gate only. IMPLEMENTED ≠ CERTIFIED. invent-absence forever.
+# PINNED_OFFLINE ≠ CERTIFIED. A green run is not certification credit.
+# System REVIEW_REQUIRED is an append-only CandidateReviewEvent. Duplicate
+# stored Snapshot/State rows fail closed as AMBIGUOUS. This gate does not
+# certify that behavior.
+#
 # The suites need Postgres. No existing test workflow supplies
 # DATABASE_URL. initialize-neon.yml and migrate-neon-onboarding.yml are
 # workflow_dispatch jobs against NEON_DATABASE_URL; they refuse localhost
 # and are not a test harness. This job does not use that secret and does
 # not invent a paid credential. It starts an ephemeral Postgres 16 service
 # on the runner, applies this repo's migrations with `prisma migrate deploy`,
-# then runs the R0 suites, the P3-FFC1 financial-fact conflict suite, and
-# the P3-FFC1b provenance-wrapper carry suite.
+# then runs the R0 suites, the P3-FFC1 financial-fact conflict suite, the
+# P3-FFC1b provenance-wrapper carry suite, and the P3-FFC2 suites.
 
 name: p3-r0-soft-gate
 
@@ -36,8 +43,14 @@ on:
       - "app/**/feeds/**"
       - "app/**/ledger/**"
       - "lib/onboarding/**"
+      - "lib/financial-identity.ts"
+      - "lib/financial-core-db/**"
+      - "lib/dashboard-service.ts"
+      - "lib/covenant-overview-service.ts"
       - "lib/covenant-engine.ts"
       - "lib/coherent.ts"
+      - "tests/financial-identity/**"
+      - "docs/p3-ffc2-review-audit-identity-checklist.md"
       - "prisma/schema.prisma"
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
@@ -54,8 +67,14 @@ on:
       - "app/**/feeds/**"
       - "app/**/ledger/**"
       - "lib/onboarding/**"
+      - "lib/financial-identity.ts"
+      - "lib/financial-core-db/**"
+      - "lib/dashboard-service.ts"
+      - "lib/covenant-overview-service.ts"
       - "lib/covenant-engine.ts"
       - "lib/coherent.ts"
+      - "tests/financial-identity/**"
+      - "docs/p3-ffc2-review-audit-identity-checklist.md"
       - "prisma/schema.prisma"
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
@@ -100,12 +119,13 @@ jobs:
         run: npx tsc --noEmit -p .
       - name: apply migrations to the ephemeral Postgres service
         run: npx prisma migrate deploy
-      - name: P3-R0, financial-fact conflict, and provenance-carry suites
+      - name: P3-R0, financial-fact conflict, provenance-carry, and FFC2 suites
         run: >-
           npx vitest run
           tests/feeds/snapshot-update-no-carry-forward.test.ts
           tests/onboarding/financial-fact-promotion.test.ts
           tests/onboarding/financial-fact-conflict.test.ts
           tests/onboarding/financial-state-provenance-carry.test.ts
+          tests/onboarding/p3-ffc2-review-audit-identity.test.ts
           tests/company-state/canonical-state.test.ts
           tests/ledger/supersede-ledger-entry.test.ts

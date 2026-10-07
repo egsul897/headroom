@@ -10,6 +10,7 @@
  * of failing loudly. Every real call site already passes an explicit id.
  */
 import { cache } from "react";
+import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
 import { prisma } from "./prisma";
 import { computeCovenantPosition, loadCompanyCovenantData, loadCompanySolverStaticData } from "./covenant-engine";
 import { COHERENT_COMPANY, LEDGER_BASKET_LABELS } from "@/prisma/seed-data";
@@ -51,13 +52,20 @@ export const getSolverStaticData = cache(async (companyId: string, asOfDate: Dat
 });
 
 export const getDebtTranches = cache(async (companyId: string) => {
-  const snapshot = await prisma.financialSnapshot.findFirst({
-    where: { companyId },
-    orderBy: { asOfDate: "desc" },
-  });
-  if (!snapshot) return [];
+  const resolution = await resolveCanonicalFinancialIdentity(
+    (args) => prisma.financialSnapshot.findMany(args),
+    { where: { companyId }, selection: "latest-cohort" },
+  );
+  if (resolution.status === "UNKNOWN") return [];
+  if (resolution.status === "AMBIGUOUS") {
+    throw new FinancialIdentityError(
+      "AMBIGUOUS",
+      resolution.matchCount,
+      `${resolution.matchCount} FinancialSnapshot rows claim the latest identity for company ${companyId}`,
+    );
+  }
   return prisma.debtTranche.findMany({
-    where: { financialSnapshotId: snapshot.id },
+    where: { financialSnapshotId: resolution.row.id },
     orderBy: { createdAt: "asc" },
   });
 });
@@ -89,10 +97,17 @@ export const getDocuments = cache(async (companyId: string) => {
 
 /** Raw FinancialSnapshot row (asOfDate/notes) for display - the engine's FinancialSnapshotInput deliberately omits non-computational fields. */
 export const getFinancialSnapshot = cache(async (companyId: string, asOfDate: Date = new Date()) => {
-  return prisma.financialSnapshot.findFirst({
-    where: { companyId, asOfDate: { lte: asOfDate } },
-    orderBy: { asOfDate: "desc" },
-  });
+  const resolution = await resolveCanonicalFinancialIdentity(
+    (args) => prisma.financialSnapshot.findMany(args),
+    { where: { companyId, asOfDate: { lte: asOfDate } }, selection: "latest-cohort" },
+  );
+  if (resolution.status === "UNIQUE") return resolution.row;
+  if (resolution.status === "UNKNOWN") return null;
+  throw new FinancialIdentityError(
+    "AMBIGUOUS",
+    resolution.matchCount,
+    `${resolution.matchCount} FinancialSnapshot rows claim the same identity for company ${companyId} as of ${asOfDate.toISOString()}`,
+  );
 });
 
 export const getFeedQueueItems = cache(async (companyId: string) => {

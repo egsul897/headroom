@@ -40,6 +40,7 @@
 
 import { isEffective, determineCoverage, assertNoDoubleCounting } from "./solver/coverage";
 import { runSolver } from "./solver/service";
+import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
 import type {
   ActivationState,
   CollateralPoolRef,
@@ -1494,7 +1495,7 @@ export interface CovenantEnginePrismaClient {
   // types satisfy this adapter's looser `any`.
   document: { findMany(args: any): Promise<DbDocumentRow[]> };
   covenantProvision: { findMany(args: any): Promise<DbProvisionRow[]> };
-  financialSnapshot: { findFirst(args: any): Promise<DbSnapshotRow | null> };
+  financialSnapshot: { findMany(args: any): Promise<DbSnapshotRow[]> };
   ledgerEntry: { findMany(args: any): Promise<DbLedgerRow[]> };
 }
 
@@ -1534,6 +1535,7 @@ interface DbProvisionRow {
 }
 
 interface DbSnapshotRow {
+  asOfDate: Date;
   ebitda: DecimalField;
   cash: DecimalField;
   interestExpense: DecimalField;
@@ -1574,19 +1576,30 @@ export async function loadCompanyCovenantData(
   asOfDate: Date = new Date()
 ): Promise<CompanyCovenantData> {
   const dateFilter = effectiveDateFilter(asOfDate);
-  const [documents, provisions, snapshot, ledger] = await Promise.all([
+  const [documents, provisions, snapshotResolution, ledger] = await Promise.all([
     prisma.document.findMany({ where: { companyId, ...dateFilter } }),
     prisma.covenantProvision.findMany({ where: { companyId, ...dateFilter } }),
-    prisma.financialSnapshot.findFirst({ where: { companyId, asOfDate: { lte: asOfDate } }, orderBy: { asOfDate: "desc" } }),
+    resolveCanonicalFinancialIdentity<DbSnapshotRow>(
+      (args) => prisma.financialSnapshot.findMany(args),
+      { where: { companyId, asOfDate: { lte: asOfDate } }, selection: "latest-cohort" },
+    ),
     // SUPERSEDED rows are history. They must not keep drawing basket capacity
     // after the product Supersede action (P3-R0 C10). This is a status
     // filter, not a ledger rewrite.
     prisma.ledgerEntry.findMany({ where: { companyId, date: { lte: asOfDate }, status: "ACTIVE" } }),
   ]);
 
-  if (!snapshot) {
-    throw new Error(`No financial snapshot found for company ${companyId} as of ${asOfDate.toISOString()}`);
+  if (snapshotResolution.status === "AMBIGUOUS") {
+    throw new FinancialIdentityError(
+      "AMBIGUOUS",
+      snapshotResolution.matchCount,
+      `${snapshotResolution.matchCount} FinancialSnapshot rows claim the same identity for company ${companyId} as of ${asOfDate.toISOString()}`,
+    );
   }
+  if (snapshotResolution.status === "UNKNOWN") {
+    throw new FinancialIdentityError("UNKNOWN", 0, `No financial snapshot found for company ${companyId} as of ${asOfDate.toISOString()}`);
+  }
+  const snapshot = snapshotResolution.row;
 
   return {
     companyId,

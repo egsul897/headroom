@@ -31,13 +31,26 @@
 
 import { Prisma, type ExtractionCandidate, type ExtractionCandidateKind, type GrantType, type OnboardingStatus, type PrismaClient } from "@prisma/client";
 import { prisma } from "../prisma";
-import { VALUE_SCHEMA_BY_KIND } from "./review";
+import { recordSystemReviewRequired, VALUE_SCHEMA_BY_KIND } from "./review";
 import { classifyCompanyCoverage } from "../solver/coverage";
 import type { CoverageResult } from "../solver/types";
 import { loadCompanySolverStaticData } from "../covenant-engine";
 import { CONFLICTING_FINANCIAL_FACTS, upsertFinancialFactsForDate } from "./financial";
 
 const VALID_ENTITY_CLASS_TAGS = new Set(["BORROWER", "GUARANTOR_RS", "NON_GUARANTOR_RS", "FOREIGN_RS", "UNRESTRICTED_SUB", "SECURITIZATION_SUB", "IMMATERIAL_SUB"]);
+
+/** Same-batch or stored-row DEFINED_TERM collision. No last-write winner. */
+export const CONFLICTING_DEFINED_TERMS = "CONFLICTING_DEFINED_TERMS";
+/** Same-document DOCUMENT_RELATIONSHIP collision. No iteration-order winner. */
+export const CONFLICTING_DOCUMENT_RELATIONSHIPS = "CONFLICTING_DOCUMENT_RELATIONSHIPS";
+
+function termSignature(sectionRef: string, fullText: string): string {
+  return JSON.stringify([sectionRef, fullText]);
+}
+
+function documentRelationshipIdentity(type: string, supersessionTarget: string, effectiveFrom: Date | null, effectiveTo: Date | null): string {
+  return JSON.stringify([type, supersessionTarget, effectiveFrom ? effectiveFrom.toISOString() : null, effectiveTo ? effectiveTo.toISOString() : null]);
+}
 
 export interface PromotionSkip {
   candidateId: string;
@@ -118,6 +131,15 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     // -----------------------------------------------------------------------
     const docRelCandidates = candidates.filter((c) => c.kind === "DOCUMENT_RELATIONSHIP");
     const companyDocuments = await tx.document.findMany({ where: { companyId } });
+    interface DocRelReady {
+      candidate: ExtractionCandidate;
+      documentType: string;
+      supersedesId: string | null;
+      effectiveFrom: Date | null;
+      effectiveTo: Date | null;
+      identity: string;
+    }
+    const docRelReady: DocRelReady[] = [];
     for (const c of docRelCandidates) {
       const value = resolveEffectiveValue(c) as { documentType: string; supersedesDocumentRef?: string; effectiveFrom?: string; effectiveTo?: string } | null;
       if (!value) {
@@ -130,17 +152,71 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
       // reading "...amends the CREDIT AGREEMENT dated..."), and a supersession
       // link should not silently fail to resolve over a casing difference
       // alone. Still an exact (case-folded) name/id match, never a fuzzy one.
-      const supersedesId = value.supersedesDocumentRef
-        ? companyDocuments.find((d) => d.name.toLowerCase() === value.supersedesDocumentRef!.toLowerCase() || d.id === value.supersedesDocumentRef)?.id
-        : undefined;
-      const amendmentEffectiveFrom = parseDateOrNull(value.effectiveFrom);
+      const supersedesDocumentRef = value.supersedesDocumentRef ?? null;
+      const supersedesId = supersedesDocumentRef
+        ? companyDocuments.find((d) => d.name.toLowerCase() === supersedesDocumentRef.toLowerCase() || d.id === supersedesDocumentRef)?.id ?? null
+        : null;
+      const effectiveFrom = parseDateOrNull(value.effectiveFrom);
+      const effectiveTo = parseDateOrNull(value.effectiveTo);
+      const supersessionTarget = supersedesId ?? (supersedesDocumentRef ? `unresolved:${supersedesDocumentRef.toLowerCase()}` : "");
+      docRelReady.push({
+        candidate: c,
+        documentType: value.documentType,
+        supersedesId,
+        effectiveFrom,
+        effectiveTo,
+        identity: documentRelationshipIdentity(value.documentType, supersessionTarget, effectiveFrom, effectiveTo),
+      });
+    }
+    const docRelByDocument = new Map<string, DocRelReady[]>();
+    for (const item of docRelReady) {
+      const list = docRelByDocument.get(item.candidate.sourceDocumentId) ?? [];
+      list.push(item);
+      docRelByDocument.set(item.candidate.sourceDocumentId, list);
+    }
+    const docRelBlocked = new Map<string, string>();
+    for (const [sourceDocumentId, group] of docRelByDocument) {
+      const doc = companyDocuments.find((d) => d.id === sourceDocumentId);
+      const confirmed = !!doc && (doc.typeConfirmedByUser || doc.amendmentRelationshipConfirmedByUser);
+      const storedIdentity = doc
+        ? documentRelationshipIdentity(doc.type, doc.supersedesDocumentId ?? "", doc.effectiveFrom, doc.effectiveTo)
+        : null;
+      const byIdentity = new Map<string, DocRelReady[]>();
+      for (const item of group) {
+        const list = byIdentity.get(item.identity) ?? [];
+        list.push(item);
+        byIdentity.set(item.identity, list);
+      }
+      const identities = [...byIdentity.keys()];
+      let landing: string | null = null;
+      if (identities.length === 1) {
+        if (!confirmed || identities[0] === storedIdentity) landing = identities[0]!;
+      } else if (confirmed && storedIdentity && byIdentity.has(storedIdentity)) {
+        landing = storedIdentity;
+      }
+      const reason = `${CONFLICTING_DOCUMENT_RELATIONSHIPS}: divergent document type or supersession for document ${sourceDocumentId} — not promoted. No iteration-order winner.`;
+      if (!landing) {
+        for (const item of group) docRelBlocked.set(item.candidate.id, reason);
+        continue;
+      }
+      for (const [identity, members] of byIdentity) {
+        if (identity === landing) continue;
+        for (const item of members) docRelBlocked.set(item.candidate.id, reason);
+      }
+    }
+    for (const item of docRelReady) {
+      const blocked = docRelBlocked.get(item.candidate.id);
+      if (blocked) {
+        skipped.push({ candidateId: item.candidate.id, kind: item.candidate.kind, reason: blocked });
+        continue;
+      }
       await tx.document.update({
-        where: { id: c.sourceDocumentId },
+        where: { id: item.candidate.sourceDocumentId },
         data: {
-          type: value.documentType as never,
-          supersedesDocumentId: supersedesId ?? null,
-          effectiveFrom: amendmentEffectiveFrom,
-          effectiveTo: parseDateOrNull(value.effectiveTo),
+          type: item.documentType as never,
+          supersedesDocumentId: item.supersedesId,
+          effectiveFrom: item.effectiveFrom,
+          effectiveTo: item.effectiveTo,
           typeConfirmedByUser: true,
           amendmentRelationshipConfirmedByUser: true,
         },
@@ -160,27 +236,96 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
       // link with no date is recorded (supersedesDocumentId) but does not
       // retroactively cut off the base document's effectiveness, since "no
       // date" is not the same as "effective immediately."
-      if (supersedesId && amendmentEffectiveFrom) {
-        await tx.document.update({ where: { id: supersedesId }, data: { effectiveTo: amendmentEffectiveFrom } });
+      if (item.supersedesId && item.effectiveFrom) {
+        await tx.document.update({ where: { id: item.supersedesId }, data: { effectiveTo: item.effectiveFrom } });
       }
-      promotions.push({ candidateId: c.id, promotedToId: c.sourceDocumentId });
+      promotions.push({ candidateId: item.candidate.id, promotedToId: item.candidate.sourceDocumentId });
     }
 
     // -----------------------------------------------------------------------
-    // 2. DEFINED_TERM -> DefinedTerm (documentId, termName) upsert.
+    // 2. DEFINED_TERM -> DefinedTerm (documentId, termName).
+    //    Identical sectionRef/fullText corroborates (one row, every
+    //    contributor promoted). A different sectionRef or fullText, in the
+    //    same batch or against the stored row, is CONFLICTING_DEFINED_TERMS:
+    //    the conflicting candidate is not promoted and the stored text is
+    //    not overwritten. No last-write winner.
     // -----------------------------------------------------------------------
+    interface DefinedTermReady {
+      candidate: ExtractionCandidate;
+      termName: string;
+      sectionRef: string;
+      fullText: string;
+      signature: string;
+    }
+    const definedTermReady: DefinedTermReady[] = [];
     for (const c of candidates.filter((c) => c.kind === "DEFINED_TERM")) {
       const value = resolveEffectiveValue(c) as { termName: string; sectionRef: string; fullText: string } | null;
       if (!value) {
         skipped.push({ candidateId: c.id, kind: c.kind, reason: "Effective value failed re-validation against its own schema - not promoted." });
         continue;
       }
-      const row = await tx.definedTerm.upsert({
-        where: { documentId_termName: { documentId: c.sourceDocumentId, termName: value.termName } },
-        create: { documentId: c.sourceDocumentId, termName: value.termName, sectionRef: value.sectionRef, fullText: value.fullText },
-        update: { sectionRef: value.sectionRef, fullText: value.fullText },
+      definedTermReady.push({
+        candidate: c,
+        termName: value.termName,
+        sectionRef: value.sectionRef,
+        fullText: value.fullText,
+        signature: termSignature(value.sectionRef, value.fullText),
       });
-      promotions.push({ candidateId: c.id, promotedToId: row.id });
+    }
+    const definedTermGroups = new Map<string, DefinedTermReady[]>();
+    for (const item of definedTermReady) {
+      const key = `${item.candidate.sourceDocumentId}\0${item.termName}`;
+      const list = definedTermGroups.get(key) ?? [];
+      list.push(item);
+      definedTermGroups.set(key, list);
+    }
+    const definedTermDocumentIds = [...new Set(definedTermReady.map((item) => item.candidate.sourceDocumentId))];
+    const existingTerms = definedTermDocumentIds.length === 0
+      ? []
+      : await tx.definedTerm.findMany({ where: { documentId: { in: definedTermDocumentIds } } });
+    const existingTermByKey = new Map(existingTerms.map((row) => [`${row.documentId}\0${row.termName}`, row]));
+    for (const [key, group] of definedTermGroups) {
+      const bySignature = new Map<string, DefinedTermReady[]>();
+      for (const item of group) {
+        const list = bySignature.get(item.signature) ?? [];
+        list.push(item);
+        bySignature.set(item.signature, list);
+      }
+      const existing = existingTermByKey.get(key);
+      const existingSignature = existing ? termSignature(existing.sectionRef, existing.fullText) : null;
+      const signatures = [...bySignature.keys()];
+      let landing: string | null = null;
+      if (signatures.length === 1) {
+        if (!existingSignature || signatures[0] === existingSignature) landing = signatures[0]!;
+      } else if (existingSignature && bySignature.has(existingSignature)) {
+        landing = existingSignature;
+      }
+      const sample = group[0]!;
+      const reason = `${CONFLICTING_DEFINED_TERMS}: conflicting sectionRef/fullText for term "${sample.termName}" on document ${sample.candidate.sourceDocumentId} — not promoted. No last-write winner.`;
+      if (!landing) {
+        for (const item of group) skipped.push({ candidateId: item.candidate.id, kind: item.candidate.kind, reason });
+        continue;
+      }
+      const winners = bySignature.get(landing)!;
+      let promotedToId: string;
+      if (existing && existingSignature === landing) {
+        promotedToId = existing.id;
+      } else {
+        const created = await tx.definedTerm.create({
+          data: {
+            documentId: sample.candidate.sourceDocumentId,
+            termName: sample.termName,
+            sectionRef: winners[0]!.sectionRef,
+            fullText: winners[0]!.fullText,
+          },
+        });
+        promotedToId = created.id;
+      }
+      for (const winner of winners) promotions.push({ candidateId: winner.candidate.id, promotedToId });
+      for (const [signature, members] of bySignature) {
+        if (signature === landing) continue;
+        for (const item of members) skipped.push({ candidateId: item.candidate.id, kind: item.candidate.kind, reason });
+      }
     }
 
     // -----------------------------------------------------------------------
@@ -411,7 +556,9 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     //    documented per-fact skip (never an error that aborts the whole
     //    promotion batch, never a fabricated value, never a copy from an
     //    earlier asOfDate). A CONFLICTING_FINANCIAL_FACTS skip is surfaced
-    //    as REVIEW_REQUIRED and is not given promotedAt. applied:true is
+    //    as REVIEW_REQUIRED via an append-only CandidateReviewEvent
+    //    (reviewedBy null). The candidate's original rationale is left
+    //    byte-stable. The candidate is not given promotedAt. applied:true is
     //    trusted only when this call also returns the canonical row id the
     //    candidate actually contributed. One asOfDate group's conflict does
     //    not abort a sibling date group.
@@ -447,13 +594,7 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
         if (!outcome.applied || conflict) {
           skipped.push({ candidateId: outcome.key, kind: "FINANCIAL_FACT", reason });
           if (conflict) {
-            await tx.extractionCandidate.update({
-              where: { id: outcome.key },
-              data: {
-                reviewStatus: "REVIEW_REQUIRED",
-                rationale: reason,
-              },
-            });
+            await recordSystemReviewRequired(tx, { candidateId: outcome.key, note: reason });
           }
           continue;
         }

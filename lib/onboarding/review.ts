@@ -1,23 +1,26 @@
 /**
  * Review workspace logic (docs/company-onboarding-v1-implementation.md).
  *
- * The ONLY place ExtractionCandidate.reviewStatus/reviewerEditedValue are
- * ever written by a human action (as opposed to the extraction pipeline
- * itself setting the initial PENDING/REVIEW_REQUIRED state - see
- * lib/extraction/run-stage.ts's `deriveReviewStatus`). Every call is logged
- * as a new, immutable CandidateReviewEvent row - a prior reviewer decision on
- * the same candidate is never silently overwritten without a trace; a later
- * review is always a NEW event, and `reviewedAt`/`reviewedBy` on the
- * candidate itself always reflect the LATEST decision only (the full history
- * lives in CandidateReviewEvent).
+ * Human review decisions go through `reviewCandidate` only. That function
+ * requires a real `reviewedBy` (MissingReviewerError) and writes
+ * reviewStatus, reviewerEditedValue, reviewedAt, and reviewedBy together
+ * with an append-only CandidateReviewEvent. The extraction pipeline's
+ * initial PENDING/REVIEW_REQUIRED state is set elsewhere
+ * (lib/extraction/run-stage.ts `deriveReviewStatus`).
  *
- * `proposedValue` is NEVER written here - only `reviewerEditedValue`. That is
- * the permanent, load-bearing distinction the task requires: the AI's
- * original proposal must always remain inspectable independent of what a
- * reviewer later changed it to.
+ * `recordSystemReviewRequired` is the system transition used when promotion
+ * must force REVIEW_REQUIRED (conflicting financial facts). It appends a
+ * CandidateReviewEvent with reviewedBy null, updates reviewStatus only, and
+ * does not rewrite rationale, reviewedAt, or reviewedBy. It does not call
+ * `reviewCandidate`.
+ *
+ * `proposedValue` is NEVER written here - only `reviewerEditedValue`, and
+ * only on a human EDIT. The AI's original proposal stays inspectable
+ * independent of a later human edit. A system REVIEW_REQUIRED transition
+ * does not write reviewerEditedValue either.
  */
 
-import { Prisma, type ExtractionCandidate, type ExtractionCandidateKind, type ExtractionCandidateReviewStatus } from "@prisma/client";
+import { Prisma, type ExtractionCandidate, type ExtractionCandidateKind, type ExtractionCandidateReviewStatus, type PrismaClient } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "../prisma";
 import {
@@ -130,6 +133,47 @@ export async function reviewCandidate(params: ReviewCandidateParams): Promise<Ex
   ]);
 
   return updated;
+}
+
+type ReviewDb = Prisma.TransactionClient | PrismaClient;
+
+function isRootPrisma(client: ReviewDb): client is PrismaClient {
+  const root = client as PrismaClient;
+  return typeof root.$transaction === "function" && typeof root.$connect === "function";
+}
+
+/**
+ * System REVIEW_REQUIRED. Append-only audit. Does not call reviewCandidate
+ * and does not invent a human reviewedBy. Leaves rationale, reviewedAt, and
+ * reviewedBy on the candidate untouched.
+ */
+export async function recordSystemReviewRequired(client: ReviewDb, params: { candidateId: string; note: string }): Promise<void> {
+  const write = async (db: ReviewDb) => {
+    const candidate = await db.extractionCandidate.findUniqueOrThrow({
+      where: { id: params.candidateId },
+      select: { reviewStatus: true },
+    });
+    await db.extractionCandidate.update({
+      where: { id: params.candidateId },
+      data: { reviewStatus: "REVIEW_REQUIRED" },
+    });
+    await db.candidateReviewEvent.create({
+      data: {
+        candidateId: params.candidateId,
+        action: "REVIEW_REQUIRED",
+        previousStatus: candidate.reviewStatus,
+        newStatus: "REVIEW_REQUIRED",
+        note: params.note,
+        reviewedBy: null,
+      },
+    });
+  };
+
+  if (isRootPrisma(client)) {
+    await client.$transaction((tx) => write(tx));
+    return;
+  }
+  await write(client);
 }
 
 /** Full, ordered review history for one candidate - the audit trail the task requires beyond reviewedAt/reviewedBy's own "latest decision only" scope. */
