@@ -248,3 +248,24 @@ Primary `discovery-candidate:c3708f1e7541fd0456804118` sealed UNIQUE (904 chars,
 ### Review owners
 
 Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI · COO MERGE AUTHORIZED. Merge HOLD. Do not self-merge. Live/paid **not** authorized hereby.
+
+---
+
+## Offline CONMED INVESTMENTS §7.8(d) (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` · `eligible:true` · role **BASKET** (soft gate — **not** CERTIFIED)  
+**Chunk:** P3-CI2 · plan sha256 `1b84020d4e5f1acdf21a65278c3afca09995ced4730f859b63b63432154dbb7f`  
+**Frozen plan base:** `ceb419bf772854ce67a4008713e4f91b0de20b1a`  
+**PR base:** `129724b3f3b945a5c06f87f9630c9d3c6b87cb73` (main after #95; file-disjoint)  
+**ADR-1:** append-only under `pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/`. §7.8(l) packet `7.8(l)--3476b082/v1/` byte-untouched.
+
+| artifact | role |
+|---|---|
+| `pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/` | Emitter-produced CONMED §7.8(d) BASKET (`eligible:true`) |
+| `01-pin-matrix.json` | INVESTMENTS cites this cell; `conmed78dStillUnpinned` false; Chewy INVESTMENTS stays DEFERRED |
+
+`discovery-candidate:8aaa7b743717492d1a9fa0b2` sealed UNIQUE (389 chars, single occurrence, identity assertions true, interim-B clean, `eligible:true`). Sealed role is BASKET. The span is dirtier than §7.8(l): PDF page footer `103`, key-man-insurance proviso, discovery `multipleRulesLikely` true. The span was not narrowed. Those facts are machine-visible on the eligibility packet as `dirtySpanDiagnostics`. They are not `eligibilityBlockers`. Empty `eligibilityBlockers` means no eligible=false predicate (`eligible === (eligibilityBlockers.length === 0)`), not a clean window. Chewy INVESTMENTS remains DEFERRED. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`.
+
+### Review owners
+
+Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI · COO MERGE AUTHORIZED. Merge HOLD. Do not self-merge. Live/paid **not** authorized hereby.

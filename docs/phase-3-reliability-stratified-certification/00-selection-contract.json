@@ -236,16 +236,18 @@
       "pinAuthority": "01-pin-matrix.json",
       "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
       "pinFolder": "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
-      "note": "CONMED §7.8(l) general Investments BASKET pinned offline (eligible:true). Offline pin status is authoritative in 01-pin-matrix.json (this matrixRowsTbd row is superseded for pin status). Map outcome remains UNSERVED — not pre-credit and not CERTIFIED. Chewy INVESTMENTS still DEFERRED. CONMED §7.8(d) remains unpinned.",
+      "note": "CONMED §7.8(l) general Investments BASKET pinned offline (eligible:true). Offline pin status is authoritative in 01-pin-matrix.json (this matrixRowsTbd row is superseded for pin status). Map outcome remains UNSERVED — not pre-credit and not CERTIFIED. Chewy INVESTMENTS still DEFERRED. CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 is PINNED_OFFLINE as a dirtier follow-on (PDF page footer 103, key-man proviso, multipleRulesLikely true). PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED.",
       "chewyInvestments": {
         "status": "DEFERRED",
         "blocker": "No Chewy INVESTMENTS BASKET/SHARED_CAP with modest UNIQUE structural window + eligible:true. Do not invent IDs."
       },
       "unpinnedConmedScout": {
-        "status": "DEFERRED",
+        "status": "PINNED_OFFLINE",
+        "pinId": "conmed-7.8d-8aaa7b74-v1",
         "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
         "sectionRef": "7.8(d)",
-        "note": "eligible:true scouted UNIQUE span left unpinned: operative text embeds PDF page footer 103 and a key-man proviso. Not a contradictory DEFERRED claim on the pinned §7.8(l) row."
+        "pinFolder": "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/",
+        "note": "Marked pinned. Still the dirtier eligible:true UNIQUE span: operative text embeds PDF page footer 103 and a key-man proviso (discovery multipleRulesLikely true). Not cleaner than §7.8(l). Chewy INVESTMENTS remains DEFERRED. PINNED_OFFLINE is not CERTIFIED."
       }
     },
     {

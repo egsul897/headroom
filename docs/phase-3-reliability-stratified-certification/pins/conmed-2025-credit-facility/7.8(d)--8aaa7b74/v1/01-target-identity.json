@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:8aaa7b743717492d1a9fa0b2:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "129724b3f3b945a5c06f87f9630c9d3c6b87cb73",
+  "identity": {
+    "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "packageKey": "conmed-2025-credit-facility",
+    "normalizedSourceRef": "7.8(d)",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(d)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "structuralNodeIds": [
+      "structural-node:1e340e3e6a2211667557d7ec",
+      "structural-node:f0f31081de73c3bc3f45e490"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:1e340e3e6a2211667557d7ec",
+      "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.8(d)",
+      "nodeType": "SUBSECTION",
+      "sectionRef": "7.8(d)",
+      "charStart": 78401,
+      "charEnd": 78790
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 389,
+    "operativeSourceSha256": "4e5b6f9baa7708af8be1b7cda27ede79dfd2a501e69f82a8312c16fd6f95753b",
+    "operativeSourceText": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n",
+    "expected": {
+      "chars": 389,
+      "sha256": "4e5b6f9baa7708af8be1b7cda27ede79dfd2a501e69f82a8312c16fd6f95753b"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "BASKET",
+    "stratum": "INVESTMENTS",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+    "discoveryReviewStatus": "AUTO_ACCEPTED",
+    "discoveryConfidence": 0.9,
+    "description": "Permits loans and advances to employees or directors in the ordinary course of business up to an aggregate $5,000,000 cap outstanding at any time, with a proviso preserving key man insurance."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}

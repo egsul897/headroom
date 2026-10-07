@@ -322,3 +322,32 @@ No invented discoveryIds. CF1 CONDITION packet `1.08(d)(i)--c2018498/v1/` and CF
 
 **Status addendum:** prior pins **+ Chewy FinCov §1.08(g) EXCEPTION v1**. Soft gate unchanged. PINNED_OFFLINE ≠ CERTIFIED.
 
+---
+
+## Amendment — CONMED INVESTMENTS §7.8(d) offline pin (append · 2026-10-07)
+
+**Living-design append** (not an ADR-1 evidence-packet mutate). Prior amendments are retained verbatim. This section records one additional INVESTMENTS cell. The §7.8(l) pin packet is not reopened.
+
+| Field | Value |
+|---|---|
+| **chunk** | P3-CI2 |
+| **plan sha256** | `1b84020d4e5f1acdf21a65278c3afca09995ced4730f859b63b63432154dbb7f` |
+| **frozen plan base** | `ceb419bf772854ce67a4008713e4f91b0de20b1a` |
+| **PR base** | `129724b3f3b945a5c06f87f9630c9d3c6b87cb73` (main after #95; file-disjoint) |
+| **ranking sha256** | `6248ede2766cb67d0278ef0125eaa724eb4428967a892c5ea044fc9a116a65ca` |
+| **discoveryId** | `discovery-candidate:8aaa7b743717492d1a9fa0b2` |
+| **sectionRef** | `7.8(d)` BASKET (family `INVESTMENTS`) |
+| **pin folder** | `pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/` |
+| **chars / eligible** | 389 / `eligible:true` (offline identity — **not** live CERTIFIED) |
+| **matrix** | `01-pin-matrix.json` INVESTMENTS `unpinnedConmedScout` → `PINNED_OFFLINE`; `coverageSummary.conmed78dStillUnpinned` false |
+
+### Why this cell
+
+Primary sealed at the PR-base tip. `sectionRef` `7.8(d)` is UNIQUE, identity assertions all true, interim-B clean, `eligible:true`. Sealed role is **BASKET**. The span is dirtier than §7.8(l): operative text embeds PDF page footer `103`, a key-man-insurance proviso, and discovery `multipleRulesLikely` true. The span was not narrowed. No narrower discoveryId was invented.
+
+Eligibility contract (unchanged rule): `eligible === (eligibilityBlockers.length === 0)`. `eligibilityBlockers` lists only eligible=false predicates. Dirty-span facts are **not** those predicates, so they do not enter `eligibilityBlockers` and do not flip `eligible`. When any dirty-span fact is present, the eligibility packet adds `dirtySpanDiagnostics` plus `eligibilityBlockersContract` so an empty `eligibilityBlockers` array is not a silent clean-window claim. Clean pins omit those keys and stay byte-identical. `PINNED_OFFLINE` ≠ `CERTIFIED`.
+
+Chewy INVESTMENTS remains **DEFERRED**. §7.8(l) packet `7.8(l)--3476b082/v1/` is byte-untouched and remains the stratum primary. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`. Soft gate: Merge HOLD (Architect COMMENT, not APPROVE; Notes/Cert; Trust, IR as needed; tip CI; COO MERGE AUTHORIZED). Do not self-merge.
+
+**Status addendum:** prior pins **+ CONMED INVESTMENTS §7.8(d) BASKET v1**. Soft gate unchanged. PINNED_OFFLINE ≠ CERTIFIED.
+

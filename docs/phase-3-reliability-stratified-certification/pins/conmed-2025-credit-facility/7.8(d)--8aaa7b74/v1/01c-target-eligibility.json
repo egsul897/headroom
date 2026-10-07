@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:conmed-2025-credit-facility:discovery-candidate:8aaa7b743717492d1a9fa0b2:TARGET_ELIGIBILITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "129724b3f3b945a5c06f87f9630c9d3c6b87cb73",
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+      "kind": "DEFINITION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    },
+    {
+      "provisionKey": "conmed-eighth-ar-credit-agreement::SECTION::1.1",
+      "kind": "SECTION",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "directlyReferencedBySection": false,
+      "definedTermMentionedInOperativeText": false
+    }
+  ],
+  "operativeTextSectionReferences": [],
+  "offlineBundle": {
+    "sufficiencyState": "SUFFICIENT",
+    "stopReasons": [],
+    "items": 6,
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "nonCurrentItems": [],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "7.8(d)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "7.8",
+        1
+      ],
+      [
+        "PROVISO",
+        "7.8(i)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "7.8(j)",
+        1
+      ],
+      [
+        "UNVERIFIED_SIBLING_SIGNAL",
+        "7.8(l)",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Parent Borrower",
+        1
+      ]
+    ]
+  },
+  "sourceContentVersion": "scv1:8ef36800b8a94954973a85e3d61d59f9bfd25e51fe52bcdcfe8926e52b40c3f8",
+  "identityStrength": "STRONG",
+  "eligible": true,
+  "eligibilityBlockers": [],
+  "dirtySpanDiagnostics": [
+    {
+      "code": "PDF_PAGE_FOOTER_EMBEDDED",
+      "detail": "Operative text embeds a standalone numeric line (103), treated as a PDF page footer. The span was not narrowed."
+    },
+    {
+      "code": "KEY_MAN_INSURANCE_PROVISO",
+      "detail": "Operative text contains a key-man-insurance proviso. The span was not narrowed."
+    },
+    {
+      "code": "MULTIPLE_RULES_LIKELY",
+      "detail": "Sealed discovery multipleRulesLikely is true. UNIQUE is sectionRef single occurrence, not a clean operative window. This fact is not an eligibilityBlocker."
+    }
+  ],
+  "eligibilityBlockersContract": {
+    "rule": "eligible === (eligibilityBlockers.length === 0). eligibilityBlockers lists only eligible=false predicates (identity, interim-B, governing review, unresolved operative evidence, phase-2 mention). An empty array is not a clean-window claim when dirtySpanDiagnostics is non-empty. Dirty-span facts are not eligibility blockers and do not flip eligible. PINNED_OFFLINE is not CERTIFIED.",
+    "dirtySpanDiagnosticsAreEligibilityBlockers": false
+  },
+  "crossCutClaims": {
+    "WITHOUT_SHARED_CAPS": {
+      "claimed": true,
+      "basis": "Sealed discovery role BASKET is not SHARED_CAP; treated as standalone for this pin."
+    },
+    "WITHOUT_BUILDERS": {
+      "claimed": true,
+      "basis": "Sealed discovery role BASKET is not BUILDER; no builder/grower formula detected in this operative window."
+    },
+    "WITHOUT_RECLASSIFICATION": {
+      "claimed": true,
+      "basis": "No classification/reclassification mechanic detected in this operative window."
+    }
+  },
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+    "mapTags": [],
+    "mapOutcome": "UNSERVED",
+    "compilationStatus": null,
+    "verificationStatus": null,
+    "note": "Canonical map currently tags discovery-candidate:8aaa7b743717492d1a9fa0b2 with historical (none) (outcome UNSERVED). Offline pin remains valid. Later live CERTIFIED must clear production blockers honestly — map REVIEW is not pre-credit."
+  },
+  "discoveryHonesty": {
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "documentDiscoveryHealth": null,
+    "note": "Sealed discovery recorded AUTO_ACCEPTED for this candidate. Offline pin remains valid."
+  }
+}

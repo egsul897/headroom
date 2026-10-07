@@ -161,7 +161,7 @@
       "operativeSourceSha256": "1243e346aba340bbb822dfa32d7e7a36fe69b15e51bbc50eec0b51752476e91a",
       "operativeSourceChars": 427,
       "eligible": true,
-      "why": "Certification-preference INVESTMENTS pin after #76 LIENS: Chewy sealed INVESTMENTS BASKET/SHARED_CAP paths lack eligible:true (1.01 AMBIGUOUS 353k-char defs; modest §1.08(i) BUILDER emits UNRESOLVED_OPERATIVE_EVIDENCE). Fail-closed: do not invent narrower Chewy IDs. Both CONMED §7.8(l) and §7.8(d) seal eligible:true offline; §7.8(l) is the cleaner modest UNIQUE span (427 chars, single occurrence, multipleRulesLikely false, no page-footer artifact, all identity assertions true, interim-B clean). §7.8(d) stays unpinned (389 chars but operative text embeds PDF page footer 103 and a key-man proviso). Map honesty UNSERVED is not pre-credit. first-target/, #68 hand pin, #73 ASSET_SALES, and #76 LIENS packets untouched.",
+      "why": "Certification-preference INVESTMENTS pin after #76 LIENS: Chewy sealed INVESTMENTS BASKET/SHARED_CAP paths lack eligible:true (1.01 AMBIGUOUS 353k-char defs; modest §1.08(i) BUILDER emits UNRESOLVED_OPERATIVE_EVIDENCE). Fail-closed: do not invent narrower Chewy IDs. Both CONMED §7.8(l) and §7.8(d) seal eligible:true offline; §7.8(l) is the cleaner modest UNIQUE span (427 chars, single occurrence, multipleRulesLikely false, no page-footer artifact, all identity assertions true, interim-B clean). §7.8(d) is PINNED_OFFLINE as a dirtier follow-on (389 chars; operative text embeds PDF page footer 103 and a key-man proviso; discovery multipleRulesLikely true). Not a clean-window claim and not CERTIFIED. Map honesty UNSERVED is not pre-credit. first-target/, #68 hand pin, #73 ASSET_SALES, and #76 LIENS packets untouched.",
       "artifacts": [
         "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/00-pin-manifest.json",
         "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/00-preflight.json",
@@ -173,7 +173,47 @@
         "discovery": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
         "fixtureRoot": "tests/fixtures/unseen-packages/conmed-2025-credit-facility"
       },
-      "note": "eligible:true offline identity — not a live CERTIFIED claim. Chewy INVESTMENTS remains DEFERRED. CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 remains unpinned (eligible:true scout, dirtier span)."
+      "note": "eligible:true offline identity — not a live CERTIFIED claim. Chewy INVESTMENTS remains DEFERRED. CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 is PINNED_OFFLINE (eligible:true, dirtier span: PDF page footer 103, key-man proviso, multipleRulesLikely true). PINNED_OFFLINE is not CERTIFIED."
+    },
+    {
+      "pinId": "conmed-7.8d-8aaa7b74-v1",
+      "status": "PINNED_OFFLINE",
+      "producedBy": "scripts/stratified-cert/pin-candidate.ts",
+      "pinFolder": "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/",
+      "packageKey": "conmed-2025-credit-facility",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "sectionRef": "7.8(d)",
+      "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+      "stratum": "INVESTMENTS",
+      "role": "BASKET",
+      "crossCuts": [
+        "WITHOUT_SHARED_CAPS",
+        "WITHOUT_BUILDERS",
+        "WITHOUT_RECLASSIFICATION"
+      ],
+      "operativeSourceSha256": "4e5b6f9baa7708af8be1b7cda27ede79dfd2a501e69f82a8312c16fd6f95753b",
+      "operativeSourceChars": 389,
+      "eligible": true,
+      "why": "P3-CI2 one-cell CONMED INVESTMENTS follow-on. Primary sealed discovery discovery-candidate:8aaa7b743717492d1a9fa0b2 resolves UNIQUE at §7.8(d) (389 chars, single occurrence, all identity assertions true, interim-B clean, eligible:true). Sealed role is BASKET and sealed family is INVESTMENTS. This span is dirtier than the stratum primary §7.8(l): operative text embeds PDF page footer 103, a key-man-insurance proviso, and discovery multipleRulesLikely true. The span was not narrowed and no narrower discoveryId was invented. Map honesty UNSERVED is not pre-credit. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED. Chewy INVESTMENTS remains DEFERRED. §7.8(l) packet pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/ is byte-untouched and remains the stratum primary. WITH_BUILDERS stays DEFERRED / pin HOLD. Soft gate: Merge HOLD.",
+      "artifacts": [
+        "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/00-pin-manifest.json",
+        "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/00-preflight.json",
+        "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/01-target-identity.json",
+        "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/01b-operative-state.json",
+        "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/01c-target-eligibility.json"
+      ],
+      "sealedBinding": {
+        "discovery": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
+        "fixtureRoot": "tests/fixtures/unseen-packages/conmed-2025-credit-facility"
+      },
+      "planBinding": {
+        "chunkId": "P3-CI2",
+        "planSha256": "1b84020d4e5f1acdf21a65278c3afca09995ced4730f859b63b63432154dbb7f",
+        "baseSha": "ceb419bf772854ce67a4008713e4f91b0de20b1a",
+        "rankingSha256": "6248ede2766cb67d0278ef0125eaa724eb4428967a892c5ea044fc9a116a65ca",
+        "prBaseSha": "129724b3f3b945a5c06f87f9630c9d3c6b87cb73"
+      },
+      "note": "eligible:true offline identity for a dirtier CONMED INVESTMENTS BASKET than §7.8(l). Operative text embeds PDF page footer 103 and a key-man-insurance proviso; discovery multipleRulesLikely is true. Not cleaner than §7.8(l). Chewy INVESTMENTS remains DEFERRED. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED. Soft gate: Merge HOLD. PR is cut from main 129724b3f3b945a5c06f87f9630c9d3c6b87cb73 after #95 (file-disjoint from this pin). Frozen plan base remains ceb419bf772854ce67a4008713e4f91b0de20b1a."
     },
     {
       "pinId": "conmed-7.1c-5f83b15e-v1",
@@ -403,7 +443,7 @@
         "pinId": "conmed-7.8l-3476b082-v1",
         "packageKey": "conmed-2025-credit-facility",
         "sectionRef": "7.8(l)",
-        "note": "Emitter-produced CONMED general Investments BASKET — eligible:true offline. Chosen over CONMED §7.8(d) (also eligible:true) because §7.8(l) is the cleaner modest UNIQUE span. Chewy INVESTMENTS still lacks modest UNIQUE eligible:true sealed span.",
+        "note": "Emitter-produced CONMED general Investments BASKET — eligible:true offline. Stratum primary remains §7.8(l), the cleaner modest UNIQUE span. P3-CI2 also pins CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 (eligible:true, sealed role BASKET). That follow-on is dirtier than §7.8(l): operative text embeds PDF page footer 103, a key-man-insurance proviso, and discovery multipleRulesLikely true. The span was not narrowed. The §7.8(l) pin packet bytes are unchanged. The §7.8(l) pin-row note records §7.8(d) as PINNED_OFFLINE (dirtier follow-on), not as still unpinned. This is not a stratum swap. Chewy INVESTMENTS still lacks modest UNIQUE eligible:true sealed span and remains DEFERRED.",
         "pinFolder": "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
         "eligible": true,
         "chewyFollowOn": {
@@ -416,12 +456,16 @@
           ]
         },
         "unpinnedConmedScout": {
-          "status": "DEFERRED",
+          "status": "PINNED_OFFLINE",
+          "pinId": "conmed-7.8d-8aaa7b74-v1",
           "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
           "sectionRef": "7.8(d)",
+          "role": "BASKET",
           "eligible": true,
           "operativeSourceChars": 389,
-          "whyUnpinned": "Also seals eligible:true UNIQUE offline, but operative text embeds PDF page footer 103 and a key-man-insurance proviso (discovery multipleRulesLikely true). Not the cleaner span. Do not invent a narrower ID; leave unpinned this packet."
+          "operativeSourceSha256": "4e5b6f9baa7708af8be1b7cda27ede79dfd2a501e69f82a8312c16fd6f95753b",
+          "pinFolder": "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/",
+          "why": "Marked pinned. Still the dirtier span versus §7.8(l): operative text embeds PDF page footer 103 and a key-man-insurance proviso (discovery multipleRulesLikely true). No narrower discoveryId was invented. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED. Chewy INVESTMENTS remains DEFERRED."
         }
       },
       {
@@ -535,11 +579,12 @@
         "id": "WITHOUT_SHARED_CAPS",
         "status": "BASELINE_PINNED",
         "pinFolder": "first-target/",
-        "note": "CONMED §7.6(c) standalone RP basket (baseline) + Chewy §6.05(a)(2)(c) ASSET_SALES basket (eligible:false identity pin); CONMED §7.3(m) LIENS basket (eligible:true); CONMED §7.8(l) INVESTMENTS basket (eligible:true); CONMED §7.1(c) FINANCIAL_COVENANTS ratio test (eligible:true); Chewy §1.08(d)(i) FinCov CONDITION (eligible:true offline — not a Chewy FINANCIAL_TEST eligible:true claim); Chewy §1.08(d)(ii) FinCov EXCEPTION (eligible:true offline — not a Chewy FINANCIAL_TEST eligible:true claim); Chewy §1.08(g) FinCov EXCEPTION (eligible:true offline — not a Chewy FINANCIAL_TEST eligible:true claim).",
+        "note": "CONMED §7.6(c) standalone RP basket (baseline) + Chewy §6.05(a)(2)(c) ASSET_SALES basket (eligible:false identity pin); CONMED §7.3(m) LIENS basket (eligible:true); CONMED §7.8(l) INVESTMENTS basket (eligible:true); CONMED §7.8(d) INVESTMENTS basket (eligible:true offline — dirtier than §7.8(l); PDF page footer 103, key-man proviso, multipleRulesLikely); CONMED §7.1(c) FINANCIAL_COVENANTS ratio test (eligible:true); Chewy §1.08(d)(i) FinCov CONDITION (eligible:true offline — not a Chewy FINANCIAL_TEST eligible:true claim); Chewy §1.08(d)(ii) FinCov EXCEPTION (eligible:true offline — not a Chewy FINANCIAL_TEST eligible:true claim); Chewy §1.08(g) FinCov EXCEPTION (eligible:true offline — not a Chewy FINANCIAL_TEST eligible:true claim).",
         "also": [
           "pins/chwy-2026-credit-agreement/6.05(a)(2)(c)--b54ed7fe/v1/",
           "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/",
           "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
+          "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/",
           "pins/conmed-2025-credit-facility/7.1(c)--5f83b15e/v1/",
           "pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1/",
           "pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1/",
@@ -565,12 +610,13 @@
           "pins/chwy-2026-credit-agreement/6.05(a)(2)(c)--b54ed7fe/v1/",
           "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/",
           "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
+          "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/",
           "pins/conmed-2025-credit-facility/7.1(c)--5f83b15e/v1/",
           "pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1/",
           "pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1/",
           "pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1/"
         ],
-        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, Chewy §6.05(a)(2)(c), CONMED §7.3(m), CONMED §7.8(l), CONMED §7.1(c), Chewy §1.08(d)(i) CONDITION, Chewy §1.08(d)(ii) EXCEPTION, and Chewy §1.08(g) EXCEPTION all claim WITHOUT_BUILDERS."
+        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, Chewy §6.05(a)(2)(c), CONMED §7.3(m), CONMED §7.8(l), CONMED §7.8(d), CONMED §7.1(c), Chewy §1.08(d)(i) CONDITION, Chewy §1.08(d)(ii) EXCEPTION, and Chewy §1.08(g) EXCEPTION all claim WITHOUT_BUILDERS."
       },
       {
         "id": "WITH_RECLASSIFICATION",
@@ -586,12 +632,13 @@
           "pins/chwy-2026-credit-agreement/6.05(a)(2)(c)--b54ed7fe/v1/",
           "pins/conmed-2025-credit-facility/7.3(m)--b5bb07b0/v1/",
           "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
+          "pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/",
           "pins/conmed-2025-credit-facility/7.1(c)--5f83b15e/v1/",
           "pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1/",
           "pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1/",
           "pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1/"
         ],
-        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, Chewy §6.05(a)(2)(c), CONMED §7.3(m), CONMED §7.8(l), CONMED §7.1(c), Chewy §1.08(d)(i) CONDITION, Chewy §1.08(d)(ii) EXCEPTION, and Chewy §1.08(g) EXCEPTION all claim WITHOUT_RECLASSIFICATION."
+        "note": "Baseline CONMED §7.6(c), Chewy Incremental Cap, Chewy §6.05(a)(2)(c), CONMED §7.3(m), CONMED §7.8(l), CONMED §7.8(d), CONMED §7.1(c), Chewy §1.08(d)(i) CONDITION, Chewy §1.08(d)(ii) EXCEPTION, and Chewy §1.08(g) EXCEPTION all claim WITHOUT_RECLASSIFICATION."
       }
     ]
   },
@@ -627,7 +674,7 @@
     "zeroProviderCalls": true,
     "assetSalesPinned": true,
     "assetSalesEligibleForCertifiedPath": false,
-    "note": "FINANCIAL_COVENANTS stratum remains PINNED_OFFLINE via CONMED §7.1(c) Minimum Interest Coverage Ratio eligible:true (FINANCIAL_TEST; REVIEW_REQUIRED leverage definitions do not govern or appear in the window). Sibling §7.1(a)/§7.1(b) eligible:false on those leverage definitions and stay unpinned. Chewy FinCov follow-on is PINNED_OFFLINE as §1.08(d)(i) CONDITION (discovery-candidate:c2018498f55ca1d0fef7aa4f, eligible:true offline) under family mapping. That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. Chewy FINANCIAL_TEST hints §1.08(a)(i) and §1.04(b) stay eligible:false and unpinned. P3-CF2 pins §1.08(d)(ii) EXCEPTION discovery-candidate:5be40987571c84b616abb07e (eligible:true offline). That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. P3-CF3 pins §1.08(g) EXCEPTION discovery-candidate:c3708f1e7541fd0456804118 (eligible:true offline). That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. INVESTMENTS remains PINNED_OFFLINE via CONMED §7.8(l) eligible:true. LIENS remains PINNED_OFFLINE via CONMED §7.3(m) eligible:true. ASSET_SALES remains identity-only eligible:false. Remaining deferred: WITH_BUILDERS (P3-WB1 emitter now honors sealed role BUILDER; the §6.01(b)(4)(a)(i) cell is pin HOLD because eligible:false UNRESOLVED_OPERATIVE_EVIDENCE and was not coerced); WITH_RECLASSIFICATION still BLOCKED. Map MAPPED_WITH_REVIEW is not pre-credit. Absence of a Chewy canonical map is not pre-credit. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED. chewyFinancialCovenantsStillDeferred false records only that this one CONDITION follow-on cell is pinned. It does not mark Chewy FINANCIAL_COVENANTS resolved. chewyFinancialTestEligibleTrue remains false.",
+    "note": "FINANCIAL_COVENANTS stratum remains PINNED_OFFLINE via CONMED §7.1(c) Minimum Interest Coverage Ratio eligible:true (FINANCIAL_TEST; REVIEW_REQUIRED leverage definitions do not govern or appear in the window). Sibling §7.1(a)/§7.1(b) eligible:false on those leverage definitions and stay unpinned. Chewy FinCov follow-on is PINNED_OFFLINE as §1.08(d)(i) CONDITION (discovery-candidate:c2018498f55ca1d0fef7aa4f, eligible:true offline) under family mapping. That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. Chewy FINANCIAL_TEST hints §1.08(a)(i) and §1.04(b) stay eligible:false and unpinned. P3-CF2 pins §1.08(d)(ii) EXCEPTION discovery-candidate:5be40987571c84b616abb07e (eligible:true offline). That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. P3-CF3 pins §1.08(g) EXCEPTION discovery-candidate:c3708f1e7541fd0456804118 (eligible:true offline). That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. INVESTMENTS remains PINNED_OFFLINE via CONMED §7.8(l) eligible:true. LIENS remains PINNED_OFFLINE via CONMED §7.3(m) eligible:true. ASSET_SALES remains identity-only eligible:false. Remaining deferred: WITH_BUILDERS (P3-WB1 emitter now honors sealed role BUILDER; the §6.01(b)(4)(a)(i) cell is pin HOLD because eligible:false UNRESOLVED_OPERATIVE_EVIDENCE and was not coerced); WITH_RECLASSIFICATION still BLOCKED. Map MAPPED_WITH_REVIEW is not pre-credit. Absence of a Chewy canonical map is not pre-credit. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED. chewyFinancialCovenantsStillDeferred false records only that this one CONDITION follow-on cell is pinned. It does not mark Chewy FINANCIAL_COVENANTS resolved. chewyFinancialTestEligibleTrue remains false. P3-CI2 pins CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 (eligible:true offline, sealed role BASKET). That pin is dirtier than §7.8(l): operative text embeds PDF page footer 103, a key-man-insurance proviso, and discovery multipleRulesLikely true. The span was not narrowed. conmed78dStillUnpinned false records only that this dirtier scout is now pinned offline. It does not make the span cleaner than §7.8(l). Chewy INVESTMENTS remains DEFERRED. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED.",
     "liensPinned": true,
     "liensEligibleForCertifiedPath": true,
     "liensPackageKey": "conmed-2025-credit-facility",
@@ -636,7 +683,11 @@
     "investmentsEligibleForCertifiedPath": true,
     "investmentsPackageKey": "conmed-2025-credit-facility",
     "chewyInvestmentsStillDeferred": true,
-    "conmed78dStillUnpinned": true,
+    "conmed78dStillUnpinned": false,
+    "conmed78dPinned": true,
+    "conmed78dRole": "BASKET",
+    "conmed78dDiscoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+    "conmed78dSectionRef": "7.8(d)",
     "financialCovenantsPinned": true,
     "financialCovenantsEligibleForCertifiedPath": true,
     "financialCovenantsPackageKey": "conmed-2025-credit-facility",
@@ -667,7 +718,7 @@
       "Trust",
       "COO"
     ],
-    "ask": "COMMENT (not APPROVE) this P3-CF3 offline Chewy FinCov one-cell EXCEPTION pin: (1) emitter-produced Chewy §1.08(g) EXCEPTION discovery-candidate:c3708f1e7541fd0456804118 under pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1/ with eligible:true, (2) matrix FinCov chewyFollowOn cites that EXCEPTION and keeps Chewy FINANCIAL_TEST deferred/blocked (eligible:false hints stay unpinned), (3) honesty that the pin is EXCEPTION under FinCov family mapping and is not a claim that a Chewy FINANCIAL_TEST became eligible:true, and that PINNED_OFFLINE is not CERTIFIED and IMPLEMENTED is not CERTIFIED, (4) CF1 CONDITION pin packet pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1/ and CF2 EXCEPTION pin packet pins/chwy-2026-credit-agreement/1.08(d)(ii)--5be40987/v1/ untouched, (5) golden test, zero provider calls. Plan sha256 3b7085d44e81bf171aa7a0e753c01baba4250fb6cd0c9231a21967bde71f516f. Base e5905c4e1c0981b4f5691e284171d50ea40387b2. Ranking sha256 55ad8e62f24f71cc42d962d1a075260d3ad368ab1528a7e598736c847304300d. Soft exclusions: no live/paid, no WITH_BUILDERS pin, no CONMED bind this cycle, no related-series A/C, no NS-4 Slice 3, no SFG-1, no Rem H, no invented IDs, no eligible:false coerce, no FINANCIAL_TEST invent, no Feeds paths, no first-target/#68/#73/#76/#78/#81/#86/#91 mutation. Do not self-merge.",
+    "ask": "COMMENT (not APPROVE) this P3-CI2 offline CONMED INVESTMENTS one-cell §7.8(d) pin: (1) emitter-produced CONMED §7.8(d) BASKET discovery-candidate:8aaa7b743717492d1a9fa0b2 under pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/ with eligible:true, (2) matrix INVESTMENTS cites that pin, unpinnedConmedScout is marked PINNED_OFFLINE, and coverageSummary.conmed78dStillUnpinned is false, while Chewy INVESTMENTS stays DEFERRED, (3) honesty that the span is dirtier than §7.8(l) (PDF page footer 103, key-man-insurance proviso, discovery multipleRulesLikely true), that the span was not narrowed, and that PINNED_OFFLINE is not CERTIFIED and IMPLEMENTED is not CERTIFIED, (4) §7.8(l) pin packet pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/ byte-untouched, (5) golden test, zero provider calls. Plan sha256 1b84020d4e5f1acdf21a65278c3afca09995ced4730f859b63b63432154dbb7f. Frozen plan base ceb419bf772854ce67a4008713e4f91b0de20b1a. PR base 129724b3f3b945a5c06f87f9630c9d3c6b87cb73 (main after #95, file-disjoint). Ranking sha256 6248ede2766cb67d0278ef0125eaa724eb4428967a892c5ea044fc9a116a65ca. Soft exclusions: no live/paid, no WITH_BUILDERS pin, no Chewy INVESTMENTS coerce, no CF1/CF2/CF3 mutation, no Dashboard/feeds/invent-absence, no financial-fact conflict, no related-series A/C, no NS-4 Slice 3, no SFG-1, no invented IDs, no eligible:false coerce, no FINANCIAL_TEST invent, no first-target/#68/#73/#76/#78/#81 mutation. Do not self-merge.",
     "passUnlocks": "Does not unlock merge. Soft gate Merge HOLD until Architect COMMENT (not APPROVE) + Notes/Cert + Trust (+IR as needed) + tip CI + COO MERGE AUTHORIZED. This packet is not CERTIFIED. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED."
   },
   "emitter": {
