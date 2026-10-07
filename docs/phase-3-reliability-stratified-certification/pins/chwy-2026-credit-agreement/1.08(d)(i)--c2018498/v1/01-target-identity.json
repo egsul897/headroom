@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:c2018498f55ca1d0fef7aa4f:TARGET_IDENTITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "7351d0fad8d75451b39a6ffb338de41be90518fc",
+  "identity": {
+    "discoveryId": "discovery-candidate:c2018498f55ca1d0fef7aa4f",
+    "documentId": "doc-a",
+    "packageKey": "chwy-2026-credit-agreement",
+    "normalizedSourceRef": "1.08(d)(i)",
+    "structuralNodeKeys": [
+      "doc-a::1.08(d)(i)",
+      "doc-a::1.08(d)",
+      "doc-a::1.08"
+    ],
+    "structuralNodeIds": [
+      "structural-node:729f3d7ef36b63b1390934a3",
+      "structural-node:87efe6e864d68b3b27e1d3b8",
+      "structural-node:8e5099b139aa4f9508e66f35"
+    ],
+    "anchor": {
+      "nodeId": "structural-node:729f3d7ef36b63b1390934a3",
+      "nodeKey": "doc-a::1.08(d)(i)",
+      "nodeType": "CLAUSE",
+      "sectionRef": "1.08(d)(i)",
+      "charStart": 384964,
+      "charEnd": 385521
+    },
+    "operativeSourceOrigin": "STRUCTURAL_NODE",
+    "operativeSourceChars": 557,
+    "operativeSourceSha256": "f1e98f1d5133d7e93cfe32cdbf57c8331e82c4b9f113326e498edbbc692ef609",
+    "operativeSourceText": "(i) other than in the case of the Transactions (including any actions of the type of the Specified\nTransactions that are taken prior to the Effective Date) the amounts added back pursuant to this clause (d) are expected by the Initial Borrower in good faith to result from actions taken, committed to be taken or planned to be taken (in the\ngood faith determination of the Initial Borrower) within thirty-six (36) months after the end of the relevant period in which any change that is expected to result in such Specified Transaction Adjustment\noccurs and ",
+    "expected": {
+      "chars": 557,
+      "sha256": "f1e98f1d5133d7e93cfe32cdbf57c8331e82c4b9f113326e498edbbc692ef609"
+    },
+    "occurrencesOfRefInDocument": 1,
+    "rehydrationUnresolvedForTarget": [],
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "CONDITION",
+    "stratum": "FINANCIAL_COVENANTS",
+    "crossCuts": [
+      "WITHOUT_SHARED_CAPS",
+      "WITHOUT_BUILDERS",
+      "WITHOUT_RECLASSIFICATION"
+    ],
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "discoveryReviewStatus": "UNCERTAIN",
+    "discoveryConfidence": 0.7,
+    "description": "Limits add-backs (other than for the Transactions) to amounts expected to result from actions taken or planned within 36 months after the relevant period end."
+  },
+  "assertions": {
+    "candidateIdMatches": true,
+    "documentMatches": true,
+    "sectionRefMatches": true,
+    "structuralNodeResolved": true,
+    "singleOccurrence": true,
+    "textSha256Matches": true,
+    "charsMatch": true
+  }
+}
