@@ -269,3 +269,15 @@ Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI
 ### Review owners
 
 Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI · COO MERGE AUTHORIZED. Merge HOLD. Do not self-merge. Live/paid **not** authorized hereby.
+
+---
+
+## Fresh-blind package prep (append — discovery only)
+
+**Verdict:** `BLOCKED_BY_SPECIFIC_MISSING_EVIDENCE`  
+**Status:** `DISCOVERY_ONLY` · soft gate · not a pin · not CERTIFIED · not a Phase-3 grant  
+**Tip inspected:** `1acdff345fff655f602fd61ff20c395028b6f140`  
+**Report:** `06-fresh-blind-package-prep.md`  
+**Lane 7 source:** PR #107. That rank is unchanged.
+
+Prep order under the four criteria: Knife River, then Gibraltar. Insulet stays #107 rank 1 and is outside that pair because the recorded builder/reclass hits are on the indenture exhibit. The block is specific: amendment document form, unrecorded builder-phrase results, unverified HTML wrappers, the Gibraltar 2026 "dated as of" line, the Gibraltar 2022 builder-phrase window, and the absence of a frozen fresh-blind metric. No exhibit body was opened. No fixture was added. No discovery id was minted. `IMPLEMENTED` ≠ `CERTIFIED`. Rank ≠ ingestion.
