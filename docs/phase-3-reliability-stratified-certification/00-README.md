@@ -178,3 +178,23 @@ Architect · Product · COO — PASS/FAIL the INVESTMENTS eligible:true pin + ma
 ### Review owners
 
 Architect · Product · COO — PASS/FAIL the FINANCIAL_COVENANTS eligible:true pin + matrix update. Live/paid **not** authorized hereby. Merge HOLD until Architect+Trust+COO+CI.
+
+---
+
+## Offline Chewy FinCov follow-on (append — ADR-1)
+
+**Status:** `PINNED_OFFLINE` · `eligible:true` · role **CONDITION** (soft gate — **not** CERTIFIED)  
+**Chunk:** P3-CF1 · plan sha256 `6f71e081842913e79ce22dd0a018d891feb5d78a39cd2f14274120a98c130483`  
+**Base SHA:** `7351d0fad8d75451b39a6ffb338de41be90518fc`  
+**ADR-1:** append-only under `pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1/`. Prior pins untouched.
+
+| artifact | role |
+|---|---|
+| `pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1/` | Emitter-produced Chewy §1.08(d)(i) CONDITION (`eligible:true`) |
+| `01-pin-matrix.json` | FinCov `chewyFollowOn` cites this cell; Chewy `FINANCIAL_TEST` stays deferred |
+
+The sealed role is CONDITION under the `FINANCIAL_COVENANTS` family. This pin is not a claim that a Chewy `FINANCIAL_TEST` became `eligible:true`. Hinted `FINANCIAL_TEST` spans stay `eligible:false` and unpinned. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`.
+
+### Review owners
+
+Architect COMMENT (not APPROVE) · Notes/Cert · Trust · COO · CI. Merge HOLD. Live/paid **not** authorized hereby.

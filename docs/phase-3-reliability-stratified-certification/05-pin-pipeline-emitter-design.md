@@ -199,3 +199,44 @@ The INVESTMENTS amendment’s residual “FINANCIAL_COVENANTS remains deferred�
 
 **Status addendum:** emitter + Chewy SHARED_CAP v1 + ASSET_SALES §6.05(a)(2)(c) v1 + CONMED LIENS §7.3(m) v1 + CONMED INVESTMENTS §7.8(l) v1 **+ CONMED FINANCIAL_COVENANTS §7.1(c) v1**. Soft gate unchanged: offline only; no live/paid; no NS-4; no related-series A/C; no first-target/#68/#73/#76/#78 mutation. PINNED_OFFLINE ≠ CERTIFIED.
 
+---
+
+## Amendment — Chewy FINANCIAL_COVENANTS §1.08(d)(i) offline pin (append · 2026-10-07)
+
+**Living-design append** (not an ADR-1 evidence-packet mutate). Prior Status line, “Next pins to emit” list, and the LIENS, INVESTMENTS, and CONMED FINANCIAL_COVENANTS amendments above are retained verbatim; this section records the one-cell Chewy follow-on.
+
+| Field | Value |
+|---|---|
+| **chunk** | P3-CF1 |
+| **plan sha256** | `6f71e081842913e79ce22dd0a018d891feb5d78a39cd2f14274120a98c130483` |
+| **base** | `7351d0fad8d75451b39a6ffb338de41be90518fc` |
+| **discoveryId** | `discovery-candidate:c2018498f55ca1d0fef7aa4f` |
+| **sectionRef** | `1.08(d)(i)` CONDITION (family `FINANCIAL_COVENANTS`) |
+| **pin folder** | `pins/chwy-2026-credit-agreement/1.08(d)(i)--c2018498/v1/` |
+| **chars / eligible** | 557 / `eligible:true` (offline identity — **not** live CERTIFIED) |
+| **matrix** | `01-pin-matrix.json` FinCov `chewyFollowOn` → `PINNED_OFFLINE` |
+
+### Why this cell
+
+Primary sealed at tip without an emitter logic change. `sectionRef` `1.08(d)(i)` is UNIQUE, identity assertions all true, interim-B clean, `eligible:true`. Sealed role is **CONDITION**, not `FINANCIAL_TEST`. The pin is a FinCov-stratum follow-on by family mapping. It is **not** a claim that a Chewy `FINANCIAL_TEST` became `eligible:true`.
+
+Left unpinned:
+
+- `discovery-candidate:3746c55b7f0755c138bbcf59` §1.08(a)(i) `FINANCIAL_TEST` — identity seals, `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`).
+- `discovery-candidate:c9e7af41092f13e79989b95e` §1.04(b) `FINANCIAL_TEST` — identity seals, `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`).
+- `discovery-candidate:5be40987571c84b616abb07e` §1.08(d)(ii) EXCEPTION — would seal UNIQUE `eligible:true`; unused because the primary sealed. One cell only.
+- `discovery-candidate:c3708f1e7541fd0456804118` §1.08(g) EXCEPTION — same.
+
+No invented discoveryIds. CONMED §7.1(c) remains the stratum `FINANCIAL_TEST` pin. Map honesty `NO_CHEWY_CANONICAL_MAP_YET` is not pre-credit. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`. Soft gate: Merge HOLD (Architect COMMENT, not APPROVE; Notes/Cert; Trust; COO; CI).
+
+### Priority list — residual after this pin
+
+The prior amendment’s “Chewy FINANCIAL_COVENANTS — still DEFERRED” line is **satisfied only for this one CONDITION cell**:
+
+- **Chewy §1.08(d)(i) CONDITION** — **PINNED_OFFLINE** (this amendment).
+- **Chewy FINANCIAL_TEST** — still **DEFERRED** (`eligible:false`). Do not coerce.
+- **WITH_BUILDERS** — still deferred (P3-WB1 rescinded; not this packet).
+- Reclass remains blocked.
+
+**Status addendum:** prior pins **+ Chewy FinCov §1.08(d)(i) CONDITION v1**. Soft gate unchanged: offline only; no live/paid; no NS-4 Slice 3; no related-series A/C; no SFG-1; no Rem H; no first-target/#68/#73/#76/#78/#81 mutation. PINNED_OFFLINE ≠ CERTIFIED.
+

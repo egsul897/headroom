@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRATIFIED_OFFLINE_PIN:chwy-2026-credit-agreement:discovery-candidate:c2018498f55ca1d0fef7aa4f:TARGET_ELIGIBILITY",
+  "status": "PINNED_OFFLINE",
+  "baseSha": "7351d0fad8d75451b39a6ffb338de41be90518fc",
+  "governingProvision": null,
+  "governingProvisionReviewRequired": false,
+  "phase2ReviewRequiredProvisions": [],
+  "operativeTextSectionReferences": [
+    {
+      "raw": "Section 1.08(d)",
+      "normalized": "1.08(d)",
+      "span": [
+        196,
+        206
+      ],
+      "selector": {
+        "sourceText": "clause (d)",
+        "kind": "EXPLICIT_SUBCLAUSE_SET",
+        "qualifierText": null
+      }
+    }
+  ],
+  "offlineBundle": {
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "stopReasons": [
+      "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+      "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached",
+      "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+    ],
+    "items": 20,
+    "hasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "nonCurrentItems": [],
+    "retainedRefs": [
+      [
+        "OPERATIVE_SOURCE",
+        "1.08(d)(i)",
+        0
+      ],
+      [
+        "PARENT_SCOPE",
+        "1.08",
+        1
+      ],
+      [
+        "PARENT_SCOPE",
+        "1.08(d)",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Effective Date",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Initial Borrower",
+        1
+      ],
+      [
+        "DEFINITION",
+        "Specified Transaction",
+        1
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Loan Documents",
+        2
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Agreement",
+        3
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Collateral",
+        3
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Excluded Assets",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Cash Equivalents",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "CFC",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Equity Interests",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Foreign Subsidiary",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "FSHCO",
+        5
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Collateral Agreement",
+        3
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Loan Parties",
+        4
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Payment",
+        2
+      ],
+      [
+        "DEFINITION",
+        "Transactions",
+        1
+      ],
+      [
+        "DEFINITION_DEPENDENCY",
+        "Initial Term Loans",
+        2
+      ]
+    ]
+  },
+  "sourceContentVersion": "scv1:dbb38815c2274c61a134e688aea4c6046c57aef6b3b32e9e29a5474c4fb2043b",
+  "identityStrength": "STRONG",
+  "eligible": true,
+  "eligibilityBlockers": [],
+  "crossCutClaims": {
+    "WITHOUT_SHARED_CAPS": {
+      "claimed": true,
+      "basis": "Sealed discovery role CONDITION is not SHARED_CAP; treated as standalone for this pin."
+    },
+    "WITHOUT_BUILDERS": {
+      "claimed": true,
+      "basis": "No builder/grower formula detected in this operative window."
+    },
+    "WITHOUT_RECLASSIFICATION": {
+      "claimed": true,
+      "basis": "No classification/reclassification mechanic detected in this operative window."
+    }
+  },
+  "canonicalMapHonesty": {
+    "discoveryId": "discovery-candidate:c2018498f55ca1d0fef7aa4f",
+    "mapTags": [],
+    "mapOutcome": "NO_CHEWY_CANONICAL_MAP_YET",
+    "note": "Chewy is not yet present under docs/canonical-covenant-map/maps/. Offline pin binds sealed discovery+structural fixtures only. Absence of map REVIEW is not pre-credit for later live CERTIFIED."
+  },
+  "discoveryHonesty": {
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.7,
+    "documentDiscoveryHealth": "DISCOVERY_PARTIAL",
+    "note": "Sealed discovery recorded UNCERTAIN for this candidate and DISCOVERY_PARTIAL at document level. Offline pin remains valid; discovery NEEDS_REVIEW is not pre-credit."
+  }
+}
