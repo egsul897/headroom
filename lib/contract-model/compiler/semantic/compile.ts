@@ -396,6 +396,9 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     dependencyProseDiagnostics: (stitched.normalization?.dependencyProseDiagnostics ?? []).map(({ shardId: _s, ...d }) => d),
     contextOnlyEmissions: (stitched.normalization?.contextOnlyEmissions ?? []).map(({ shardId: _s, ...e }) => e),
     invalidWireKinds: (stitched.normalization?.invalidWireKinds ?? []).map(({ shardId: _s, ...k }) => k),
+    ...((stitched.normalization?.modelContractViolations ?? []).length > 0
+      ? { modelContractViolations: (stitched.normalization?.modelContractViolations ?? []).map(({ shardId: _s, ...d }) => d) }
+      : {}),
     rawModelOutput: null,
     provider: caller.providerName,
     model: caller.model,

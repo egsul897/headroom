@@ -251,6 +251,8 @@ export type SemanticCompilerFailureReason =
   | "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
   /** SEMANTIC FIDELITY: the submission parsed but used an expression kind that is not an IR kind (an invented `kind`); the node is kept as UNSUPPORTED and the composition is never a successful representation. */
   | "SEMANTIC_WIRE_KIND_INVALID"
+  /** ADR-2: Pass B emitted an inventoryDisposition outside INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS, or self-declared REPRESENTED. The raw label is kept; the attempt is never a silent success. Pass C remains the backstop. */
+  | "MODEL_CONTRACT_VIOLATION"
   /** F-7A (bounded compilation shards): at least one shard of a sharded compilation did not end SHARD_COMPLETE (provider / schema / missing-context / partial) - the stitched candidate is PARTIAL at best and its owned material items are listed as unresolved; never COMPLETED. */
   | "SHARD_INCOMPLETE"
   /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
@@ -440,4 +442,10 @@ export interface SemanticCompilationResult {
   dependencyProseDiagnostics?: import("./normalize").DependencyProseDiagnostic[];
   /** SEMANTIC FIDELITY: invented expression kinds found in the submission (SEMANTIC_WIRE_KIND_INVALID). */
   invalidWireKinds?: { path: string; kind: string }[];
+  /**
+   * ADR-2 emit gate: MODEL_CONTRACT_VIOLATION diagnostics for illegal Pass B
+   * inventoryDisposition strings, recorded at normalization — independent of
+   * Pass C reconciliation. Absent when the submission had no illegal label.
+   */
+  modelContractViolations?: import("../semantic-accountability/types").ModelContractViolationDiagnostic[];
 }

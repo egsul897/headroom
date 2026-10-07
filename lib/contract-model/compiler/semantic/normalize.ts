@@ -25,7 +25,8 @@ import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRC
 import { describeSourceDependency, figureStatedInText, normalizeReferenceText, numericFiguresInProse, resolveSourceTarget, type OwnershipIndexCandidate } from "./source-reference";
 import { classifyDefinitionOwnership, classifyUnitOwnership, type ContextOnlyUnitEmission, type OwnershipScope } from "./unit-ownership";
 import type { StructuralIndex } from "../structural-index";
-import type { SubmitCompilationInput, WireCondition, WireDefinition, WireException, WireExpression, WireRule, WireSharedCapacity } from "./wire-schema";
+import { findIllegalInventoryDispositions, type SubmitCompilationInput, type WireCondition, type WireDefinition, type WireException, type WireExpression, type WireRule, type WireSharedCapacity } from "./wire-schema";
+import type { ModelContractViolationDiagnostic } from "../semantic-accountability/types";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
 import { applyEntityScopeGuard, classifyEntityTag, entityScopeWitnessFor, normalizeEntityTags } from "./entity-scope-guard";
 import type { IREntityTagNormalization, IRSourceReferenceAudit, IRSourceReferenceAuditEntry, IRSourceTargetSelector } from "../../ir/types";
@@ -733,8 +734,14 @@ export interface NormalizedCompilation {
   definitions: IRDefinition[];
   sharedCapacities: IRSharedCapacity[];
   irExtensionCandidates: IRExtensionCandidate[];
-  /** SEMANTIC ACCOUNTABILITY: the composition's own explicit dispositions for inventory items it did not consume (passed through verbatim for Pass C; never interpreted here). */
+  /** SEMANTIC ACCOUNTABILITY: the composition's own explicit dispositions for inventory items it did not consume. Raw labels are preserved (never quiet-mapped to UNSUPPORTED). Pass C remains the backstop. */
   inventoryDispositions: NonNullable<SubmitCompilationInput["inventoryDispositions"]>;
+  /**
+   * ADR-2 emit gate: illegal inventoryDisposition strings (non-vocabulary or
+   * self-declared REPRESENTED) recorded before persistence. Empty when every
+   * non-empty label is in INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS.
+   */
+  modelContractViolations: ModelContractViolationDiagnostic[];
   warnings: NormalizationWarning[];
   /** SEMANTIC FIDELITY: units the composition emitted for source the candidate does not own - quarantined with evidence, never certified IR. */
   contextOnlyEmissions: ContextOnlyUnitEmission[];
@@ -996,5 +1003,8 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       contextOnlyEmissions.push({ kind: "SHARED_CAPACITY", localRef: wireCap.localRef, unitId: cap.sharedCapId, sourceSectionRef: wireCap.citation ?? null, decision, unit: cap });
     } else ownedCaps.push(cap);
   });
-  return { rules: ownedRules, definitions, sharedCapacities: ownedCaps, irExtensionCandidates: submission.irExtensionCandidates, inventoryDispositions: submission.inventoryDispositions ?? [], warnings, contextOnlyEmissions, dependencyProse, diagnostics: warnings.filter((w) => w.kind === "DIAGNOSTIC"), scopeUnits };
+  const inventoryDispositions = submission.inventoryDispositions ?? [];
+  // ADR-2: diagnose illegal emits here. Do not rewrite the stored label — Pass C may still map, and a quiet UNSUPPORTED would launder the emitter defect.
+  const modelContractViolations = findIllegalInventoryDispositions({ inventoryDispositions });
+  return { rules: ownedRules, definitions, sharedCapacities: ownedCaps, irExtensionCandidates: submission.irExtensionCandidates, inventoryDispositions, modelContractViolations, warnings, contextOnlyEmissions, dependencyProse, diagnostics: warnings.filter((w) => w.kind === "DIAGNOSTIC"), scopeUnits };
 }

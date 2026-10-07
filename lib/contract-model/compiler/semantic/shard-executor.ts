@@ -92,6 +92,7 @@ export function shardOutcomeFromBoundedResult(compile: SemanticCompilationResult
       dependencyProseDiagnostics: (compile.dependencyProseDiagnostics ?? []).map((d) => ({ ...d, shardId: shard.shardId })),
       contextOnlyEmissions: (compile.contextOnlyEmissions ?? []).map((e) => ({ ...e, shardId: shard.shardId })),
       invalidWireKinds: (compile.invalidWireKinds ?? []).map((k) => ({ shardId: shard.shardId, path: k.path, kind: k.kind })),
+      ...((compile.modelContractViolations ?? []).length > 0 ? { modelContractViolations: (compile.modelContractViolations ?? []).map((d) => ({ ...d, shardId: shard.shardId })) } : {}),
     } } : {}),
   };
 }

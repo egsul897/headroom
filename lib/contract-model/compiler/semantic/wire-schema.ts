@@ -23,6 +23,14 @@
  * typed Phase 3A discriminated union.
  */
 import { z } from "zod";
+import {
+  MODEL_CONTRACT_VIOLATION_CODE,
+  NON_VOCABULARY_DISPOSITION_CONTRACT_REF,
+  SELF_DECLARED_REPRESENTED_CONTRACT_REF,
+  SELF_DECLARED_REPRESENTED_REASON,
+  UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON,
+  type ModelContractViolationDiagnostic,
+} from "../semantic-accountability/types";
 
 export interface WireExpression {
   kind: string;
@@ -222,17 +230,75 @@ export const WireSharedCapacitySchema = z.object({
 export type WireSharedCapacity = z.infer<typeof WireSharedCapacitySchema>;
 
 /**
+ * ADR-2 legal Pass B inventoryDisposition vocabulary. REPRESENTED is inferred
+ * only via lineage/value correspondence and is never a legal self-declaration.
+ * Transport stays a tolerant string (this file's closed-enum crash invariant);
+ * an illegal non-empty string is diagnosed as MODEL_CONTRACT_VIOLATION at emit
+ * (findIllegalInventoryDispositions) and is not rewritten to UNSUPPORTED here.
+ * Pass C remains the backstop, not the only defense.
+ */
+export const PASS_B_LEGAL_INVENTORY_DISPOSITIONS = ["INTENTIONALLY_NON_COMPUTATIONAL", "UNSUPPORTED", "AMBIGUOUS"] as const;
+export type PassBLegalInventoryDisposition = (typeof PASS_B_LEGAL_INVENTORY_DISPOSITIONS)[number];
+
+/** Shared by the system prompt and the Pass B inventory block so the prompted vocabulary cannot drift from the wire set. */
+export const PASS_B_DISPOSITION_CLOSED_VOCABULARY_CLAUSE =
+  "DISPOSITION LABELS are a closed set and only these three are legal: INTENTIONALLY_NON_COMPUTATIONAL, UNSUPPORTED, AMBIGUOUS. Do not invent labels. Do not self-declare REPRESENTED (REPRESENTED is inferred only from lineage and value correspondence). Any other non-empty disposition string is MODEL_CONTRACT_VIOLATION and is not a successful disposition.";
+
+/** Same tolerant upper-snake fold Pass C uses, so a legal spacing/case variant is not a new product meaning. */
+export function canonicalizeInventoryDispositionLabel(raw: string): string {
+  return raw.trim().toUpperCase().replace(/[\s-]+/g, "_");
+}
+
+/**
+ * ADR-2 emit gate (docs/architecture/MODEL-CONTRACT-VIOLATION-VS-UNSUPPORTED-ADR.md).
+ * Illegal Pass B inventoryDisposition strings, including self-declared REPRESENTED,
+ * become MODEL_CONTRACT_VIOLATION diagnostics. The raw label is preserved; this
+ * function does not map the string to UNSUPPORTED.
+ */
+export function findIllegalInventoryDispositions(
+  submission: { inventoryDispositions?: readonly { inventoryItemId?: string; disposition?: string }[] | null },
+): ModelContractViolationDiagnostic[] {
+  const out: ModelContractViolationDiagnostic[] = [];
+  (submission.inventoryDispositions ?? []).forEach((item, index) => {
+    const raw = item.disposition ?? "";
+    const canonical = canonicalizeInventoryDispositionLabel(raw);
+    if (canonical.length === 0) return;
+    const inventoryItemId = (item.inventoryItemId ?? "").trim() || `inventoryDispositions[${index}]`;
+    if (canonical === "REPRESENTED") {
+      out.push({
+        code: MODEL_CONTRACT_VIOLATION_CODE,
+        reason: SELF_DECLARED_REPRESENTED_REASON,
+        rawLabel: raw,
+        contractRef: SELF_DECLARED_REPRESENTED_CONTRACT_REF,
+        inventoryItemId,
+      });
+      return;
+    }
+    if ((PASS_B_LEGAL_INVENTORY_DISPOSITIONS as readonly string[]).includes(canonical)) return;
+    out.push({
+      code: MODEL_CONTRACT_VIOLATION_CODE,
+      reason: UNSUPPORTED_VIA_NON_VOCABULARY_DISPOSITION_REASON,
+      rawLabel: raw,
+      contractRef: NON_VOCABULARY_DISPOSITION_CONTRACT_REF,
+      inventoryItemId,
+    });
+  });
+  return out;
+}
+
+/**
  * SEMANTIC ACCOUNTABILITY (mission §8): the composition's explicit
  * disposition for a frozen inventory item it did NOT consume into any IR
  * node. Every MATERIAL/CRITICAL item must be either consumed (lineage) or
  * dispositioned here; anything else is MISSING_FROM_COMPOSITION in Pass C.
- * `disposition` is a tolerant string: INTENTIONALLY_NON_COMPUTATIONAL |
- * UNSUPPORTED | AMBIGUOUS (REPRESENTED is inferred from lineage, never
- * self-declared here).
+ * `disposition` stays a tolerant string so an illegal emit still parses
+ * (ADR-2: diagnose MODEL_CONTRACT_VIOLATION; do not crash the tool schema
+ * and do not quiet-map the label to UNSUPPORTED). Legal vocabulary:
+ * INTENTIONALLY_NON_COMPUTATIONAL | UNSUPPORTED | AMBIGUOUS.
  */
 export const WireInventoryDispositionSchema = z.object({
   inventoryItemId: z.string(),
-  disposition: z.string().default("AMBIGUOUS"),
+  disposition: z.string().default("AMBIGUOUS").describe(PASS_B_DISPOSITION_CLOSED_VOCABULARY_CLAUSE),
   note: z.string().default(""),
 });
 export type WireInventoryDisposition = z.infer<typeof WireInventoryDispositionSchema>;

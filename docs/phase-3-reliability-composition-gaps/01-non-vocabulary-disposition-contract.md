@@ -33,5 +33,5 @@ Effect on the frozen §7.5(j) offline replay: those three items become
 - Inventing IR for related-series aggregation (interim B adopted in
   `02-related-series-aggregation-decision.md`; additive A/C still deferred).
 - Pass-A gap-call `localRef` reliability → closed in `03-gap-call-localref-reliability.md`.
-- Prompt / wire-schema vocabulary tightening (optional follow-up; Pass C now fail-soft honestly).
+- Prompt / wire-schema vocabulary tightening — **done at emit** (P3-R1). Pass B records `MODEL_CONTRACT_VIOLATION` for a non-vocabulary or self-declared `REPRESENTED` inventoryDisposition before persistence and does not quiet-map the raw label to `UNSUPPORTED`. Pass C (#70+#75) remains the backstop. This note is not a certification claim: IMPLEMENTED ≠ CERTIFIED.
 - Paid / live §7.5(j) re-run.
