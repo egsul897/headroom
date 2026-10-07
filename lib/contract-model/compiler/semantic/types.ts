@@ -72,8 +72,13 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // into the first-class AS_OF shape (METRIC_REFERENCE_AS_OF_LIFTED, diagnostic class) instead of losing the selector
 // silently; the governing-scope action ontology is v2 (flag-preserving, case-insensitive object families), so a
 // capitalised object noun no longer yields a false ACTION_INCONSISTENT_WITH_SOURCE_ACT limit.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v10";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v8";
+// v11 / prompt v9 (unlimited carve-out qualitative gates): an uncapped permission whose operative clause conjoins a
+// property-character object class with an ordinary-course manner is normalized to two conditionType UNSUPPORTED gates,
+// AND-composed on UNLIMITED_CAPACITY.gatedBy, with sufficiency PARTIAL. No new condition type is introduced. A v10-era
+// cached compilation may fold the object class into one ordinary-course description and claim COMPLETE; it must not be
+// served as this compiler's output. This bump is an honesty rem. IMPLEMENTED ≠ CERTIFIED.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v11";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v9";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------

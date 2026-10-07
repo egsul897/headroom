@@ -51,6 +51,7 @@ export function buildSystemPrompt(opts: { irSchemaVersion: string; toolPolicyVer
     "Comparison/boolean: COMPARE (left, operator: GT|GTE|LT|LTE|EQ, right), AND, OR (operands), NOT (operand), IF (condition, then, else).",
     "Time: AS_OF (operand - the value being dated, asOfDate), DURING_PERIOD (operand - the value being period-scoped, periodDescription), SCHEDULE (cases: [{from, to, value, description}], defaultValue) for stepped/dated thresholds, EVENT_ACTIVE (eventDescription, triggerCondition, activeDuration) for event-triggered temporary overrides like an acquisition step-up.",
     "Special capacity form: UNLIMITED_CAPACITY (gatedBy) - use this, never a MONEY node with an invented huge number, when a basket genuinely has NO dollar ceiling and is only gated by a ratio/liquidity/other boolean test (a common and legally significant real pattern - representing it as a dollar amount instead would be a dangerous, confidently wrong answer).",
+    "UNLIMITED QUALITATIVE CARVE-OUTS: when that uncapped permission is the conjunction of (1) a property-character object class — a lowercase restrictive phrase naming what may be transferred, not a defined term and not a dollar or ratio test — and (2) a manner such as 'in the ordinary course of business', those are TWO first-class gates. Do not fold the object class into the manner condition's description, and do not leave gatedBy null. Each gate is conditionType UNSUPPORTED. There is no licensed computable condition type for a property-character test: do not invent a conditionType name, and do not map the test onto PURPOSE, ENTITY_TYPE, or SECURITY_SCOPE. gatedBy is an AND of one kind UNSUPPORTED boolean per gate, each with sourceEvidence equal to that gate's own source excerpt. Sufficiency is PARTIAL, because each gate is a real UNSUPPORTED component. A defined term standing alone as the object stays a DEFINED_TERM_REFERENCE. A manner with no separate property-character restriction is one gate, not two.",
     "Escape hatch: UNSUPPORTED (semanticDescription, reason, sourceEvidence) - use this for any component you cannot faithfully represent with the node types above. It may appear ANYWHERE a real expression is expected, nested inside an otherwise-complete tree. Using it is the CORRECT, SAFE answer for a genuinely unsupported component - it is never a failure to avoid.",
     "",
     "TYPE DISCIPLINE: ADD/SUBTRACT/MULTIPLY/SUM only combine MONEY/NUMBER/RATIO (and MULTIPLY also accepts PERCENT as a scaling factor, e.g. PERCENT x METRIC_REFERENCE = MONEY). COMPARE requires both sides to be the same type. IF requires both branches to resolve to the same type. Do not mix incompatible types - if the source text's own combination genuinely does not type-check, use UNSUPPORTED for that component rather than forcing an invalid combination.",
@@ -67,7 +68,7 @@ export function buildSystemPrompt(opts: { irSchemaVersion: string; toolPolicyVer
     "",
     "MULTIPLE DEFINITIONS (equally mandatory - a frequent real mistake): a definitions section (e.g. a numbered 'Definitions' article) routinely declares many independent defined terms one after another. When your supplied source contains multiple independently meaningful defined terms, extract EVERY materially relevant definition supported by the supplied source - never select only the representative, salient, or apparently covenant-relevant ones and silently drop the rest. Emit one WireDefinition per distinct defined term you find, exactly as you would emit one WireRule per independently operative rule. A definitions batch that captures ten sibling terms correctly but silently omits an eleventh is exactly as much a defect as merging two independent rules into one - it is not mitigated by how many neighboring terms you got right.",
     "",
-    "CONDITIONS AND EXCEPTIONS are first-class - never fold a material condition or exception into free-text notes. Preserve the real logical structure (A OR (B AND C) is NOT the same as (A OR B) AND C) using nested AND/OR/NOT expressions, never a flattened list.",
+    "CONDITIONS AND EXCEPTIONS are first-class - never fold a material condition or exception into free-text notes. Preserve the real logical structure (A OR (B AND C) is NOT the same as (A OR B) AND C) using nested AND/OR/NOT expressions, never a flattened list. On an unlimited carve-out, a property-character object class and an ordinary-course manner are two conditions, each conditionType UNSUPPORTED, and their conjunction is gatedBy AND — never one description string.",
     "",
     "TOOL USE: you were given a bounded initial context (the provision's own text plus Phase 2's already-gathered related evidence). Try to compile from that FIRST. Request additional evidence via your tools ONLY when you can state a SPECIFIC reason a SPECIFIC piece of evidence is needed (e.g. 'I need the definition of X because this basket's percentage is stated as a fraction of X'). Never request evidence you cannot justify, and never request the same thing twice. If your tool budget is exhausted before you have what you need, mark the affected component MISSING_CONTEXT rather than guessing.",
     "",
@@ -144,6 +145,34 @@ export function buildFewShotExamplesBlock(): string {
       ],
       wireSharedCapacities: [{ localRef: "sc1", description: "aggregate ceiling shared by Zeta Loans (9.06(a)), Zeta Guarantees (9.06(b)) and amounts under Section 9.08(d)", capExpression: { kind: "MULTIPLY", operands: [{ kind: "PERCENT", value: 0.12 }, { kind: "METRIC_REFERENCE", metricName: "Zeta Base Amount" }], citation: "§9.06" }, memberRefs: ["r8a", "r8b"], citation: "§9.06" }],
       note: "The 12% ceiling appears ONCE, as a shared resource; each member references it rather than restating it. The Section 9.08(d) partner is outside this submission, so it is carried as a dependsOn with the exact section reference - preserved as an explicit unresolved cross-unit dependency, never dropped.",
+    },
+    {
+      title: "Unlimited qualitative carve-out - object class AND ordinary course are two UNSUPPORTED gates, sufficiency PARTIAL",
+      sourceText: "§9.07(a): the transfer of surplus or damaged equipment in the ordinary course of business;",
+      wireRule: {
+        localRef: "r9",
+        sourceSectionRef: "9.07(a)",
+        covenantFamily: "QUALITATIVE_NEGATIVE_COVENANTS",
+        ruleType: "EXCEPTION",
+        posture: "PERMISSION",
+        action: "SELL_ASSET",
+        capacityExpression: {
+          kind: "UNLIMITED_CAPACITY",
+          gatedBy: {
+            kind: "AND",
+            operands: [
+              { kind: "UNSUPPORTED", semanticDescription: "the equipment transferred is surplus or damaged", reason: "property-character test has no licensed computable condition type", sourceEvidence: "surplus or damaged equipment", citation: "§9.07(a)" },
+              { kind: "UNSUPPORTED", semanticDescription: "the transfer is in the ordinary course of business", reason: "ordinary-course manner has no licensed computable condition type", sourceEvidence: "in the ordinary course of business", citation: "§9.07(a)" },
+            ],
+          },
+        },
+        conditions: [
+          { conditionType: "UNSUPPORTED", description: "The carve-out applies only to surplus or damaged equipment.", citation: "§9.07(a)", excerpt: "surplus or damaged equipment" },
+          { conditionType: "UNSUPPORTED", description: "The carve-out applies only in the ordinary course of business.", citation: "§9.07(a)", excerpt: "in the ordinary course of business" },
+        ],
+        sufficiency: "PARTIAL",
+      },
+      note: "Two independent qualitative restrictions, conjoined. Neither is a licensed computable condition type, so each is UNSUPPORTED and gatedBy is their AND. PARTIAL is required by the UNSUPPORTED components. Do not invent a conditionType for the property-character test, and do not mark this COMPLETE.",
     },
     {
       title: "Genuinely unsupported fragment - the correct, safe answer, never a guess",
