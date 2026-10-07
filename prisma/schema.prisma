@@ -436,6 +436,9 @@ model FinancialSnapshot {
   company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
   debtTranches DebtTranche[]
 
+  // P3-FFC2c. Same-date Snapshot identity is (companyId, asOfDate) only.
+  // FinancialState is not part of this key. State still has periodType and scope.
+  @@unique([companyId, asOfDate])
   @@map("financial_snapshots")
 }
 
