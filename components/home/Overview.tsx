@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { ASK_CASES } from "@/lib/ask/copy";
 import { overviewGreeting } from "@/lib/home/copy";
+import {
+  UNWIRED_OVERVIEW_LOAD,
+  alertBadgeCount,
+  exportChromeTitle,
+  presentAlerts,
+  type OverviewLoad,
+} from "@/lib/home/load-state";
 import { AlertsCard } from "./AlertsCard";
 import { CapacitySummaryCard } from "./CapacitySummaryCard";
 import { CovenantsAtRiskCard } from "./CovenantsAtRiskCard";
@@ -14,21 +21,23 @@ import { TransactionsCard } from "./TransactionsCard";
 import { UtilizationCard } from "./UtilizationCard";
 
 /**
- * CFO overview skeleton. Every figure slot is Product LOCK empty copy.
- * `alertCount` is a real alert count only; Chunk A′ passes 0, which hides the bell badge.
- * `identityName` is a real signed-in name only. This chunk has no identity, so pages pass null.
+ * Company overview. Each slot renders from its own load state.
+ * The default load is UNKNOWN for every slot (sources unwired).
+ * The bell badge renders only for a queried non-zero alert count.
  */
 export function CompanyOverview({
   companyId,
   identityName = null,
-  alertCount = 0,
+  load = UNWIRED_OVERVIEW_LOAD,
 }: {
   companyId: string;
   identityName?: string | null;
-  alertCount?: number;
+  load?: Partial<OverviewLoad>;
 }) {
+  const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
+  const alerts = presentAlerts(slots.alerts);
   const greeting = overviewGreeting(identityName);
-  const showBadge = alertCount > 0;
+  const badge = alertBadgeCount(alerts);
 
   return (
     <div className="home-overview">
@@ -44,13 +53,13 @@ export function CompanyOverview({
           </Link>
           <a className="home-icon-button" href="#home-alerts" aria-label="Alerts">
             <BellIcon />
-            {showBadge ? (
+            {badge != null ? (
               <span className="home-alert-badge" data-alert-badge>
-                {alertCount}
+                {badge}
               </span>
             ) : null}
           </a>
-          <button type="button" className="home-export" disabled aria-disabled="true" title="Nothing to export yet">
+          <button type="button" className="home-export" disabled aria-disabled="true" title={exportChromeTitle(slots.exportState)}>
             <ExportIcon />
             Export
           </button>
@@ -59,22 +68,22 @@ export function CompanyOverview({
 
       <div className="home-regions">
         <div className="home-kpis">
-          <TotalHeadroomCard />
-          <UtilizationCard />
-          <CovenantsAtRiskCard />
-          <NextTestCard />
+          <TotalHeadroomCard state={slots.totalHeadroom} />
+          <UtilizationCard state={slots.utilization} />
+          <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
+          <NextTestCard state={slots.nextTest} />
         </div>
         <div className="home-split">
-          <HeadroomOverTimeCard />
-          <CapacitySummaryCard />
+          <HeadroomOverTimeCard state={slots.headroomOverTime} />
+          <CapacitySummaryCard state={slots.capacitySummary} />
         </div>
         <div className="home-split">
-          <StatusTable />
-          <DriversCard />
+          <StatusTable state={slots.statusTable} />
+          <DriversCard state={slots.drivers} />
         </div>
         <div className="home-pair">
-          <AlertsCard />
-          <TransactionsCard />
+          <AlertsCard state={alerts} />
+          <TransactionsCard state={slots.transactions} />
         </div>
       </div>
     </div>

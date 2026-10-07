@@ -20,7 +20,7 @@ Product tip rem after CFO PASS_WITH_NOTES (2026-10-07) on preview `568389f`. Buy
 
 ## What this chunk is
 
-Company home (`/[companyId]`) is an overview skeleton matching the end-state **regions**: total headroom, utilization, covenants at risk, next test, headroom over time, capacity summary, status table, drivers, alerts, and transactions. Every slot renders Product LOCK empty copy. No mock figures are drawn.
+Company home (`/[companyId]`) is an overview skeleton matching the end-state **regions**: total headroom, utilization, covenants at risk, next test, headroom over time, capacity summary, status table, drivers, alerts, and transactions. While a slot’s source is unwired, the slot renders UNKNOWN copy. Verified-empty copy is a separate state. No mock figures are drawn.
 
 Ask is a secondary route (`/[companyId]/ask`) plus a hero on the overview. The shell does not answer. An unrunnable open shows “Ask isn’t available on this deal yet.” A submitted question is refused and is not relabeled Unsupported.
 
@@ -35,8 +35,19 @@ ACTIVE company open from `/` goes to `/[companyId]`. A company still `ONBOARDING
 - Ask-as-landing is superseded. The overview is the company home.
 - Soft gates: no live or paid stratified certification, no related-series option A or C, no NS-4 Slice 3.
 - Empty slots are not provenance-bound figures.
+- UNKNOWN is not verified empty. A factual-negative empty without an authoritative queried source is a hard FAIL, alongside mock KPIs.
 - The company shell does not paint a leverage number beside those empty slots. Legacy Dashboard still computes its own existing view when opened from Deal setup & tools.
 - Simulate remains the legacy scenario tool.
+
+## IA-1 — invent-absence hard FAIL (soft gate)
+
+**Status:** IMPLEMENTED. Not CERTIFIED. Merge HOLD.
+
+Overview buyer copy binds Product LOCK UNKNOWN ≠ VERIFIED_EMPTY, sha256 `9489d25da4cd51bac8f49f3be1880915c65acf580f4cdc9373679511a19feb04` (plan `17e6f29f9bb933b48ef6ce13523ef3f68355c918fc29bb588e57a1f520b89822`).
+
+False-claim watchlist, alongside mock KPIs: painting none / no / nothing / 0 / clear / healthy without an authoritative queried source is a hard FAIL. Unwired, not loaded, and failed load stay on UNKNOWN copy. An unloaded alert slot is not a zero count.
+
+Architect review of this rem is COMMENT, not APPROVE. Soft gates hold. Phase 3 parallel work is outside this rem.
 
 ## Reversible
 

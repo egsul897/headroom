@@ -1,10 +1,11 @@
-import { HOME_SLOTS } from "@/lib/home/copy";
-import { EmptyCopy, RegionCard } from "./RegionCard";
+import { UNKNOWN_STATE, presentList, type ListLoadState } from "@/lib/home/load-state";
+import { EmptyCopy, LoadedList, RegionCard } from "./RegionCard";
 
-export function NextTestCard() {
+export function NextTestCard({ state = UNKNOWN_STATE }: { state?: ListLoadState<"nextTest"> }) {
+  const presented = presentList(state, "nextTest");
   return (
     <RegionCard region="next-test" eyebrow="Next test">
-      <EmptyCopy slot={HOME_SLOTS.nextTest} />
+      {presented.kind === "VERIFIED_POPULATED" ? <LoadedList rows={presented.rows} /> : <EmptyCopy slot="nextTest" state={presented} />}
     </RegionCard>
   );
 }

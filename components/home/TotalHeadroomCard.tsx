@@ -1,10 +1,19 @@
 import { HOME_SLOTS } from "@/lib/home/copy";
+import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
-export function TotalHeadroomCard() {
+export function TotalHeadroomCard({ state = UNKNOWN_STATE }: { state?: FigureLoadState<"totalHeadroom"> }) {
+  const presented = presentFigure(state, "totalHeadroom");
   return (
     <RegionCard region="total-headroom" eyebrow="Total Headroom">
-      <EmptyCopy slot={HOME_SLOTS.totalHeadroom} />
+      {presented.kind === "VERIFIED_POPULATED" ? (
+        <div className="home-empty" data-load-kind="VERIFIED_POPULATED" data-slot="totalHeadroom">
+          <p className="home-headline">{HOME_SLOTS.totalHeadroom.headline}</p>
+          <p className="home-detail">{presented.display}</p>
+        </div>
+      ) : (
+        <EmptyCopy slot="totalHeadroom" state={presented} />
+      )}
     </RegionCard>
   );
 }

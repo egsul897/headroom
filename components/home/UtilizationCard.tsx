@@ -1,10 +1,19 @@
 import { HOME_SLOTS } from "@/lib/home/copy";
+import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
-export function UtilizationCard() {
+export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadState<"utilization"> }) {
+  const presented = presentFigure(state, "utilization");
   return (
     <RegionCard region="utilization" eyebrow="Utilization">
-      <EmptyCopy slot={HOME_SLOTS.utilization} />
+      {presented.kind === "VERIFIED_POPULATED" ? (
+        <div className="home-empty" data-load-kind="VERIFIED_POPULATED" data-slot="utilization">
+          <p className="home-headline">{HOME_SLOTS.utilization.headline}</p>
+          <p className="home-detail">{presented.display}</p>
+        </div>
+      ) : (
+        <EmptyCopy slot="utilization" state={presented} />
+      )}
     </RegionCard>
   );
 }
