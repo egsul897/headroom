@@ -164,6 +164,30 @@ describe("Ask shell", () => {
   });
 });
 
+describe("onboarding completion opens the overview", () => {
+  it("primary CTAs do not use /dashboard as company home", () => {
+    const root = path.resolve(__dirname, "..");
+    const pages = ["app/[companyId]/onboarding/page.tsx", "app/[companyId]/onboarding/activate/page.tsx"].map((file) =>
+      readFileSync(path.join(root, file), "utf8"),
+    );
+    for (const text of pages) {
+      expect(text).toContain("href={`/${companyId}`}");
+      expect(text).toContain("Open overview");
+      expect(text).not.toContain("Go to Dashboard");
+      expect(text).not.toContain("href={`/${companyId}/dashboard`}");
+    }
+    const activate = readFileSync(path.join(root, "app/[companyId]/onboarding/activate/page.tsx"), "utf8");
+    expect(activate).toContain("no separate dashboard");
+    const actions = readFileSync(path.join(root, "app/[companyId]/onboarding/activate/actions.ts"), "utf8");
+    expect(actions).toContain("revalidatePath(`/${companyId}`)");
+    expect(actions).toContain("revalidatePath(`/${companyId}/onboarding`)");
+    expect(actions).toContain("revalidatePath(`/${companyId}/onboarding/activate`)");
+    expect(actions).toContain("revalidatePath(`/${companyId}/dashboard`)");
+    const tools = readFileSync(path.join(root, "lib/home/nav.ts"), "utf8");
+    expect(tools).toContain('segment: "dashboard"');
+  });
+});
+
 describe("banned mockup fiction", () => {
   it("is absent from the Chunk A′ sources", () => {
     const banned = [
