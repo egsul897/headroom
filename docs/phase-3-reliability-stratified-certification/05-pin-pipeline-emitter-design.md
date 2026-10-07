@@ -290,3 +290,35 @@ No invented discoveryIds. CF1 CONDITION packet `1.08(d)(i)--c2018498/v1/` untouc
 
 **Status addendum:** prior pins **+ Chewy FinCov §1.08(d)(ii) EXCEPTION v1**. Soft gate unchanged. PINNED_OFFLINE ≠ CERTIFIED.
 
+---
+
+## Amendment — Chewy FINANCIAL_COVENANTS §1.08(g) EXCEPTION offline pin (append · 2026-10-07)
+
+**Living-design append** (not an ADR-1 evidence-packet mutate). Prior amendments, including the P3-CF1 CONDITION pin, the P3-WB1 pin HOLD, and the P3-CF2 EXCEPTION pin, are retained verbatim. This section records one additional FinCov-stratum cell.
+
+| Field | Value |
+|---|---|
+| **chunk** | P3-CF3 |
+| **plan sha256** | `3b7085d44e81bf171aa7a0e753c01baba4250fb6cd0c9231a21967bde71f516f` |
+| **base** | `e5905c4e1c0981b4f5691e284171d50ea40387b2` |
+| **ranking sha256** | `55ad8e62f24f71cc42d962d1a075260d3ad368ab1528a7e598736c847304300d` |
+| **discoveryId** | `discovery-candidate:c3708f1e7541fd0456804118` |
+| **sectionRef** | `1.08(g)` EXCEPTION (family `FINANCIAL_COVENANTS`) |
+| **pin folder** | `pins/chwy-2026-credit-agreement/1.08(g)--c3708f1e/v1/` |
+| **chars / eligible** | 904 / `eligible:true` (offline identity — **not** live CERTIFIED) |
+| **matrix** | `01-pin-matrix.json` FinCov `chewyFollowOn.exception108g` → `PINNED_OFFLINE` |
+
+### Why this cell
+
+Primary sealed at tip without an emitter logic change. `sectionRef` `1.08(g)` is UNIQUE, identity assertions all true, interim-B clean, `eligible:true`. Sealed role is **EXCEPTION**, not `FINANCIAL_TEST`. The pin is a FinCov-stratum cell by family mapping. It is **not** a claim that a Chewy `FINANCIAL_TEST` became `eligible:true`.
+
+Left unpinned:
+
+- `discovery-candidate:3746c55b7f0755c138bbcf59` §1.08(a)(i) `FINANCIAL_TEST` — identity seals, `eligible:false`.
+- `discovery-candidate:c9e7af41092f13e79989b95e` §1.04(b) `FINANCIAL_TEST` — identity seals, `eligible:false`.
+- `WITH_BUILDERS` `discovery-candidate:f62db8ebcda9d35c4fc03b2a` — still pin HOLD (`eligible:false`).
+
+No invented discoveryIds. CF1 CONDITION packet `1.08(d)(i)--c2018498/v1/` and CF2 EXCEPTION packet `1.08(d)(ii)--5be40987/v1/` untouched. CONMED §7.1(c) remains the stratum `FINANCIAL_TEST` pin and is not rebound this cycle. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`. Soft gate: Merge HOLD (Architect COMMENT, not APPROVE; Notes/Cert; Trust, IR as needed; tip CI; COO MERGE AUTHORIZED). Do not self-merge.
+
+**Status addendum:** prior pins **+ Chewy FinCov §1.08(g) EXCEPTION v1**. Soft gate unchanged. PINNED_OFFLINE ≠ CERTIFIED.
+
