@@ -51,7 +51,10 @@ export function deriveCrossCuts(args: {
   const cuts: CrossCutId[] = [];
   if (args.role === "SHARED_CAP") cuts.push("WITH_SHARED_CAPS");
   else cuts.push("WITHOUT_SHARED_CAPS");
-  if (BUILDER_RE.test(args.operativeText)) cuts.push("WITH_BUILDERS");
+  // Sealed BUILDER is authoritative, same pattern as SHARED_CAP → WITH_SHARED_CAPS.
+  // The builder/grower text heuristic is supplemental only when role is not BUILDER.
+  // A sealed BUILDER role is never overridden to WITHOUT_BUILDERS.
+  if (args.role === "BUILDER" || BUILDER_RE.test(args.operativeText)) cuts.push("WITH_BUILDERS");
   else cuts.push("WITHOUT_BUILDERS");
   if (RECLASS_RE.test(args.operativeText)) cuts.push("WITH_RECLASSIFICATION");
   else cuts.push("WITHOUT_RECLASSIFICATION");
@@ -73,10 +76,21 @@ export function crossCutClaims(args: {
       };
     } else if (id === "WITHOUT_SHARED_CAPS") {
       out[id] = { claimed: true, basis: `Sealed discovery role ${args.role} is not SHARED_CAP; treated as standalone for this pin.` };
+    } else if (id === "WITH_BUILDERS" && args.role === "BUILDER") {
+      out[id] = {
+        claimed: true,
+        basis: `Sealed discovery role ${args.role} === BUILDER on ${args.discoveryId}; WITH_BUILDERS derived from role only (not operative-text heuristics).`,
+      };
     } else if (id === "WITH_BUILDERS") {
-      out[id] = { claimed: true, basis: "Operative window matches builder/grower heuristic." };
+      out[id] = {
+        claimed: true,
+        basis: `Sealed discovery role ${args.role} is not BUILDER; WITH_BUILDERS derived from the operative-text builder/grower heuristic (supplemental only when role is not BUILDER).`,
+      };
     } else if (id === "WITHOUT_BUILDERS") {
-      out[id] = { claimed: true, basis: "No builder/grower formula detected in this operative window." };
+      out[id] = {
+        claimed: true,
+        basis: `Sealed discovery role ${args.role} is not BUILDER; no builder/grower formula detected in this operative window.`,
+      };
     } else if (id === "WITH_RECLASSIFICATION") {
       out[id] = { claimed: true, basis: "Operative window matches reclassification/anti-duplication heuristic." };
     } else if (id === "WITHOUT_RECLASSIFICATION") {

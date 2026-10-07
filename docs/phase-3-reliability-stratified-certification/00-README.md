@@ -198,3 +198,13 @@ The sealed role is CONDITION under the `FINANCIAL_COVENANTS` family. This pin is
 ### Review owners
 
 Architect COMMENT (not APPROVE) · Notes/Cert · Trust · COO · CI. Merge HOLD. Live/paid **not** authorized hereby.
+
+---
+
+## WITH_BUILDERS emitter honesty (append — pin HOLD)
+
+**Status:** `DEFERRED` · pin **HOLD** · not `PINNED_OFFLINE` · not CERTIFIED  
+**Chunk:** P3-WB1 · plan sha256 `02df6672bc9b6c33c73132b75863092562d2b7cef4925feaa7ced5f279fe712c`  
+**Base SHA:** `990e8f891f1fdbd47d77dec8e27ca86e8896cee4`
+
+Sealed `role === "BUILDER"` now derives `WITH_BUILDERS` (text heuristic supplemental only when role is not `BUILDER`). Chewy `discovery-candidate:f62db8ebcda9d35c4fc03b2a` (§6.01(b)(4)(a)(i), 285 chars) is UNIQUE and emits `WITH_BUILDERS`, but `eligible:false` (`UNRESOLVED_OPERATIVE_EVIDENCE`). No pin folder was written. Sibling §6.08 `discovery-candidate:6ffcfd3794d39597caa7b83b` stays unpinned (`AMBIGUOUS`). `IMPLEMENTED` ≠ `CERTIFIED`.

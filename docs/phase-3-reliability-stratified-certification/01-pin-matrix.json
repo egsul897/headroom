@@ -458,10 +458,11 @@
       {
         "id": "WITH_BUILDERS",
         "status": "DEFERRED",
-        "blocker": "Chewy sealed BUILDER-role candidates exist but are not yet PINNED_OFFLINE for WITH_BUILDERS: discovery-candidate:6ffcfd3794d39597caa7b83b (§6.08) fails emitter UNIQUE sectionRef (AMBIGUOUS structural index); discovery-candidate:f62db8ebcda9d35c4fc03b2a (§6.01(b)(4)(a)(i), 285 chars) emits but deriveCrossCuts uses operative-text builder heuristic (not role===BUILDER) → WITHOUT_BUILDERS, and eligible:false (UNRESOLVED_OPERATIVE_EVIDENCE). Follow-on: either bind a narrower UNIQUE builder span, or extend cross-cut derivation to honor sealed BUILDER role — do not invent IDs.",
+        "honestyOutcome": "PIN_HOLD",
+        "blocker": "P3-WB1 emitter honesty landed at tip 990e8f891f1fdbd47d77dec8e27ca86e8896cee4: sealed role===BUILDER now derives WITH_BUILDERS (text heuristic supplemental only when role is not BUILDER; a sealed BUILDER role is never overridden to WITHOUT_BUILDERS). Offline pin HOLD for discovery-candidate:f62db8ebcda9d35c4fc03b2a (Chewy §6.01(b)(4)(a)(i), 285 chars, role BUILDER): sectionRef is UNIQUE and identity assertions are true, cross-cut is WITH_BUILDERS, but eligible:false (UNRESOLVED_OPERATIVE_EVIDENCE — offline bundle AMBIGUOUS_TARGET for Subsidiary and Uniform Commercial Code, plus context budget exceeded). Do not coerce eligible:true. Do not invent a narrower discoveryId or sectionRef. Sibling discovery-candidate:6ffcfd3794d39597caa7b83b (§6.08) remains AMBIGUOUS and unpinned. No PINNED_OFFLINE claim. IMPLEMENTED is not CERTIFIED.",
         "candidateHintsFromSealedTree": [
-          "discovery-candidate:6ffcfd3794d39597caa7b83b (Chewy §6.08 — AMBIGUOUS sectionRef blocker)",
-          "discovery-candidate:f62db8ebcda9d35c4fc03b2a (Chewy §6.01(b)(4)(a)(i) — role BUILDER but text heuristic WITHOUT_BUILDERS + eligible:false)"
+          "discovery-candidate:6ffcfd3794d39597caa7b83b (Chewy §6.08 — AMBIGUOUS sectionRef blocker; unpinned)",
+          "discovery-candidate:f62db8ebcda9d35c4fc03b2a (Chewy §6.01(b)(4)(a)(i) — role BUILDER now emits WITH_BUILDERS; pin HOLD because eligible:false UNRESOLVED_OPERATIVE_EVIDENCE)"
         ]
       },
       {
@@ -531,7 +532,7 @@
     "zeroProviderCalls": true,
     "assetSalesPinned": true,
     "assetSalesEligibleForCertifiedPath": false,
-    "note": "FINANCIAL_COVENANTS stratum remains PINNED_OFFLINE via CONMED §7.1(c) Minimum Interest Coverage Ratio eligible:true (FINANCIAL_TEST; REVIEW_REQUIRED leverage definitions do not govern or appear in the window). Sibling §7.1(a)/§7.1(b) eligible:false on those leverage definitions and stay unpinned. Chewy FinCov follow-on is PINNED_OFFLINE as §1.08(d)(i) CONDITION (discovery-candidate:c2018498f55ca1d0fef7aa4f, eligible:true offline) under family mapping. That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. Chewy FINANCIAL_TEST hints §1.08(a)(i) and §1.04(b) stay eligible:false and unpinned. Fallbacks §1.08(d)(ii) and §1.08(g) stay unpinned. INVESTMENTS remains PINNED_OFFLINE via CONMED §7.8(l) eligible:true. LIENS remains PINNED_OFFLINE via CONMED §7.3(m) eligible:true. ASSET_SALES remains identity-only eligible:false. Remaining deferred: WITH_BUILDERS; WITH_RECLASSIFICATION still BLOCKED. Map MAPPED_WITH_REVIEW is not pre-credit. Absence of a Chewy canonical map is not pre-credit. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED. chewyFinancialCovenantsStillDeferred false records only that this one CONDITION follow-on cell is pinned. It does not mark Chewy FINANCIAL_COVENANTS resolved. chewyFinancialTestEligibleTrue remains false.",
+    "note": "FINANCIAL_COVENANTS stratum remains PINNED_OFFLINE via CONMED §7.1(c) Minimum Interest Coverage Ratio eligible:true (FINANCIAL_TEST; REVIEW_REQUIRED leverage definitions do not govern or appear in the window). Sibling §7.1(a)/§7.1(b) eligible:false on those leverage definitions and stay unpinned. Chewy FinCov follow-on is PINNED_OFFLINE as §1.08(d)(i) CONDITION (discovery-candidate:c2018498f55ca1d0fef7aa4f, eligible:true offline) under family mapping. That pin is not a claim that a Chewy FINANCIAL_TEST became eligible:true. Chewy FINANCIAL_TEST hints §1.08(a)(i) and §1.04(b) stay eligible:false and unpinned. Fallbacks §1.08(d)(ii) and §1.08(g) stay unpinned. INVESTMENTS remains PINNED_OFFLINE via CONMED §7.8(l) eligible:true. LIENS remains PINNED_OFFLINE via CONMED §7.3(m) eligible:true. ASSET_SALES remains identity-only eligible:false. Remaining deferred: WITH_BUILDERS (P3-WB1 emitter now honors sealed role BUILDER; the §6.01(b)(4)(a)(i) cell is pin HOLD because eligible:false UNRESOLVED_OPERATIVE_EVIDENCE and was not coerced); WITH_RECLASSIFICATION still BLOCKED. Map MAPPED_WITH_REVIEW is not pre-credit. Absence of a Chewy canonical map is not pre-credit. PINNED_OFFLINE is not CERTIFIED. IMPLEMENTED is not CERTIFIED. chewyFinancialCovenantsStillDeferred false records only that this one CONDITION follow-on cell is pinned. It does not mark Chewy FINANCIAL_COVENANTS resolved. chewyFinancialTestEligibleTrue remains false.",
     "liensPinned": true,
     "liensEligibleForCertifiedPath": true,
     "liensPackageKey": "conmed-2025-credit-facility",
@@ -581,7 +582,9 @@
       "tests/stratified-cert/pin-candidate-conmed-liens.test.ts",
       "tests/stratified-cert/pin-candidate-conmed-investments.test.ts",
       "tests/stratified-cert/pin-candidate-conmed-financial-covenants.test.ts",
-      "tests/stratified-cert/pin-candidate-chewy-financial-covenants.test.ts"
+      "tests/stratified-cert/pin-candidate-chewy-financial-covenants.test.ts",
+      "tests/stratified-cert/cross-cuts-builders.test.ts",
+      "tests/stratified-cert/pin-candidate-chewy-builders-hold.test.ts"
     ]
   }
 }
