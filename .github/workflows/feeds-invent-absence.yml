@@ -1,0 +1,63 @@
+# Soft-gate present-check only. IMPLEMENTED ≠ CERTIFIED.
+# Not certification credit. Does not replace canonical-compiler.yml.
+# Feeds invent-absence paths stay off the certified Phase-3 path
+# (canonical-compiler.yml and stratified-cert.yml). A green run here
+# is not certification credit.
+#
+# Unit/render suite only. No Postgres. No Neon secret. No paid provider
+# credential. Provider keys below are empty on purpose.
+#
+# Held globs (same class HOF1 held; not shipped):
+# - tests/feeds/**invent-absence**  (glued **; same class as tests/home-**)
+# - bracket-escape forms (app/\[companyId\]/...)
+# The present-check runs tests/feeds/invent-absence*.test.ts(x) only.
+# It does not run the Postgres P3-R0 feeds suite.
+
+name: feeds-invent-absence
+
+on:
+  push:
+    paths:
+      - "tests/feeds/invent-absence*.test.ts"
+      - "tests/feeds/invent-absence*.test.tsx"
+      - "app/**/feeds/**"
+      - "lib/feeds/**"
+      - ".github/workflows/feeds-invent-absence.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
+  pull_request:
+    paths:
+      - "tests/feeds/invent-absence*.test.ts"
+      - "tests/feeds/invent-absence*.test.tsx"
+      - "app/**/feeds/**"
+      - "lib/feeds/**"
+      - ".github/workflows/feeds-invent-absence.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
+
+jobs:
+  feeds-invent-absence:
+    name: feeds invent-absence (soft gate)
+    runs-on: ubuntu-latest
+    env:
+      # Empty on purpose. This gate must not call a paid provider.
+      # DATABASE_URL is unset. No NEON_DATABASE_URL.
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: present-check
+        run: npx vitest run tests/feeds/invent-absence*.test.ts tests/feeds/invent-absence*.test.tsx
