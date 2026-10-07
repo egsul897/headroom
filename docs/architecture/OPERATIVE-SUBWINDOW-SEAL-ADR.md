@@ -2,12 +2,12 @@
 
 **Status:** ACCEPTED (COO formal grant; docs-only architecture lock)
 **Date:** 2026-10-07
-**Base:** main @ `6df53b4f225adfbe40bbc765647f1b4c17a2b7c3` (#116). Lane B census was taken at `1acdff345fff655f602fd61ff20c395028b6f140`. This lock was rebound from that starting tip through #113 (`99a5a5fbd14e648a58d26434fd3d3c74815c4424`), #114 (`b44c3dc699d59a803e6fedcdd2c412b72dbef75a`), #118 (`d9c4cb64414cf00612a2d10e0205c66c7eec1bfa`), onto #116. Those merges are docs-only. The compiler lines cited below are unchanged. The sentence hash was re-read on the pre-#118 tree and the fixture is untouched by #113, #114, #118, and #116.
+**Base:** main @ `65be893f10ad4033afca43ba591074c05a49dd87` (#115). Lane B census was taken at `1acdff345fff655f602fd61ff20c395028b6f140`. This lock was rebound from that starting tip through #113 (`99a5a5fbd14e648a58d26434fd3d3c74815c4424`), #114 (`b44c3dc699d59a803e6fedcdd2c412b72dbef75a`), #118 (`d9c4cb64414cf00612a2d10e0205c66c7eec1bfa`), #116 (`6df53b4f225adfbe40bbc765647f1b4c17a2b7c3`), onto #115. Those merges are docs-only. The compiler lines cited below are unchanged. The sentence hash was re-read on the pre-#118 tree and the fixture is untouched by #113, #114, #118, #116, and #115.
 **Arch decision:** D1 only. Name the generalized seal contract `OPERATIVE_SUBWINDOW` (requirements 1–6 below).
 **Deferred:** D2. Whether a category-to-category automatic reclassification is representable by anything other than `IRRuleDependency` is not decided here.
 **Does not authorize:** production seal code; a Stage-1 marker; a `discoveryId`; a `stage2b` edit; a structural node; a pin or pin folder; a `RECLASSIFIABLE_TO` edge; a Phase-3 percentage raise; a `CERTIFIED` claim
 **Related:**
-- Lane B record `docs/p3-lane-b-reclass-sealability-1acdff3.md` on draft #115 (`461f24b9924b2766f12acfbb7ef69be97b70435e`). That file is not on this tip. Verdict there: HOLD, `RECLASS_ARCHITECTURE_DECISION_REQUIRED`.
+- Lane B record `docs/p3-lane-b-reclass-sealability-1acdff3.md` on this tip (landed in #115, `461f24b9924b2766f12acfbb7ef69be97b70435e`). Verdict: HOLD, `RECLASS_ARCHITECTURE_DECISION_REQUIRED`.
 - `lib/contract-model/compiler/candidate-span.ts` `resolveOperativeSource`
 - `lib/contract-model/compiler/stage-structure.ts` rank-stack owned span
 - `lib/contract-model/compiler/clause-hierarchy.ts` `MARKER_OCCURRENCE`
@@ -133,7 +133,7 @@ Lane B did not issue a representation. This ADR does not issue one.
 ## 6. Acceptance
 
 - This file is the architecture lock at `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md` with Status **ACCEPTED** under the COO formal grant.
-- Base tip is `6df53b4f225adfbe40bbc765647f1b4c17a2b7c3`.
+- Base tip is `65be893f10ad4033afca43ba591074c05a49dd87`.
 - Decision is Arch D1 only: the seal contract is `OPERATIVE_SUBWINDOW`, requirements 1–6 in §3.
 - D2 is deferred. No `RECLASSIFIABLE_TO` edge is specified.
 - Docs only. No production seal. No pin. **IMPLEMENTED ≠ CERTIFIED.**
