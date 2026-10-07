@@ -1822,16 +1822,2558 @@
         "timedOut": false
       },
       "committedUsd": 5.881165
+    },
+    {
+      "discoveryId": "discovery-candidate:836ac001f607f328be6859ce",
+      "normalizedSourceRef": "7.04",
+      "role": "PROVISO",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 5767,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "MISSING_CONTEXT",
+          "SHARD_INCOMPLETE",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED",
+          "PROVIDER_FAILURE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 15,
+        "definitions": 0,
+        "sharedCapacities": 1,
+        "inputTokens": 651376,
+        "outputTokens": 15938,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.731066,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 773476
+      },
+      "verify": {
+        "status": "VERIFICATION_FAILED",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "371e3ca0a90d4a2aa0eec4f446ef403c2c548eb28872f33a5985f97500c0f8c2",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:06e8ac9f2bea3a0051a0ddd0]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "75ee9e6ef67d1ff9132ca1f3a6b6fcb9da312b4758a2bfa2a7b7c050e0986338",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:0f244b91935617730b8a12b5]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "2986c86756347d3c168ebfef24efaa595222394b5067676af69ef761a8cf8462",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:2c80115278a1834f505a2efc]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "53a1d39d70e5b78d38298ad9eb4cb2f3d72d6a41dd41cbc7b7599ec05bf8f7a5",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:45bbba40cc5cd717ff164515]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "b9c96e4baa331a7cf66b2217afd9e92132f9f6dfb2671280a6135bf8a55c59f7",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:27ab6e89bf1dfeda6c1caede]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 6.612231
+    },
+    {
+      "discoveryId": "discovery-candidate:6a4b4ca55d9b81d43fb326d8",
+      "normalizedSourceRef": "7.05",
+      "role": "GENERAL_PROHIBITION",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 40,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 358438,
+        "outputTokens": 10068,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.408778,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 228262
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 7.021009
+    },
+    {
+      "discoveryId": "discovery-candidate:cbc3b2e6ee9df99c054d179f",
+      "normalizedSourceRef": "7.05(a)",
+      "role": "BASKET",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 8704,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 3,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 884257,
+        "outputTokens": 10086,
+        "passACalls": 1,
+        "reservationUsd": 15.19484,
+        "costUsd": 0.9346869999999999,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 1158046,
+        "shapeExceeded": [
+          "conversations 9 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "43fb768356b6ea47c95f97c19c97d587f409410c2698b5372cc655b442b83fa8",
+            "findingType": "MISSING_RULE",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a) clauses (1), (2), (3), (4) with embedded exceptions (a), (b), (c)"
+          },
+          {
+            "findingId": "f71b67b66b177826c384a9aff43ffbf13694a4daa54f9790f88e31b8141e0d18",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y): 'the aggregate amount of such Restricted Payment and all other Restricted Payments made subsequent to the Closing Date (and not returned or rescinded) (includin"
+          },
+          {
+            "findingId": "e1aba2f40f2c8b6ff15c45796fa84b17ce7e2f3d0062d8026207aee4072ba4cd",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y) components (ii), (iii), (iv): '100% of the aggregate amount of cash...received by the Borrower from the issue or sale of its Capital Stock...', '100% of the aggr"
+          },
+          {
+            "findingId": "705d0501d3de2b1ae09d75747e265e144dd76d5b0690dc639dcb12ffd1171f07",
+            "findingType": "MISSING_RULE",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(1): 'Declare or pay any dividend or make any distribution on or in respect of the Borrower's or any Restricted Subsidiary's Capital Stock (including any such paymen"
+          },
+          {
+            "findingId": "118d39fab5cebef723f2579290d5119481a9c5aa8c1911945aba72d69abd7c73",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].sourceSectionRef",
+            "sourceEvidence": "Operative text of Section 7.05(a) contains only clauses (1), (2), (3), (4) under sub-heading (a), with qualifiers (a), (b), (c) for clause (1), and then main conditions (x) and (y)"
+          },
+          {
+            "findingId": "d17aa0bab2af0cf9d4a5d952441747566cde511829bc1777266411c84baf4806",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Source text Section 7.05(a) contains four independently operative clause headings: (1) Declare or pay...dividend or distribution; (2) purchase, repurchase, redeem...Capital Stock; "
+          },
+          {
+            "findingId": "98fa4c7dccc7f4d157d7fbfe1c6afc4b12c148b50ea7443c43e94ba5f252c620",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(x) and (y) establish two parallel conditions: (x) an Event of Default condition (with sub-conditions depending on which clause is triggered), and (y) the aggregate "
+          },
+          {
+            "findingId": "a00c55847d203f9186bad51390b128d674820eba9e40dbb7631e030724ca340b",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[1].inheritedAttributes",
+            "sourceEvidence": "Section 7.05(a)(v) text: 'in the case of the redesignation of an Unrestricted Subsidiary as a Restricted Subsidiary or the merger, amalgamation or consolidation of an Unrestricted "
+          },
+          {
+            "findingId": "3ce44def181bf1be911dfff379cd8974bc8c7af602b113c960156051913084ac",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].inheritedAttributes[0]",
+            "sourceEvidence": "Section 7.05(a)(y) component (iv): 'the sale or other disposition (other than to the Borrower or a Restricted Subsidiary) of, or other returns on Investment from, Restricted Invest"
+          },
+          {
+            "findingId": "130067c5c24eadd09d017dc5fbe51a473cc72eb1a58737f7b615c302ac7d8032",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[1].inheritedAttributes[0]",
+            "sourceEvidence": "Section 7.05(a)(v): 'in the case of the redesignation of an Unrestricted Subsidiary as a Restricted Subsidiary or the merger, amalgamation or consolidation of an Unrestricted Subsi"
+          },
+          {
+            "findingId": "5ad5019abb0285ceb0bd6cb1a53c07c36f83590b84ceeb14e33b1b3a2ef984c4",
+            "findingType": "MISSING_EXCEPTION",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(1) text: 'Declare or pay any dividend or make any distribution on or in respect of the Borrower's or any Restricted Subsidiary's Capital Stock (including any such p"
+          },
+          {
+            "findingId": "8ac259ccc51e6ed7e0a934eacd07572af715d681e1ce8eaf1f1d6004a9f365a7",
+            "findingType": "MISSING_EXCEPTION",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(3) text: 'purchase, repurchase, redeem, defease or otherwise acquire or retire for value, prior to scheduled maturity, scheduled repayment or scheduled sinking fund"
+          },
+          {
+            "findingId": "118d39fab5cebef723f2579290d5119481a9c5aa8c1911945aba72d69abd7c73",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].sourceSectionRef",
+            "sourceEvidence": "Section 7.05(a) structure: Main heading (a) [Restricted Payments]. Sub-clause (1) [Declare or pay dividend]. Sub-clause (2) [Purchase Capital Stock]. Sub-clause (3) [Purchase Subor"
+          },
+          {
+            "findingId": "031c872348dd0ec7ca5696d1b1a950a3218a599de53dd09e37e996c52c272345",
+            "findingType": "MISSING_CONDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions",
+            "sourceEvidence": "Section 7.05(a)(x): 'if at the time the Borrower or such Restricted Subsidiary makes such Restricted Payment: (x) (i) solely in the case of a Restricted Payment made under clauses "
+          },
+          {
+            "findingId": "c886e339bc6de7b195b76058e10c27cbb85d90a3be7df5be3894fa6dd4bd0db2",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[2].capacityExpression.operands[1].operands[1]",
+            "sourceEvidence": "Section 7.05(a)(vi): 'the greater of (A) $137,600,000 and (B) 40.0% of LTM EBITDA'"
+          },
+          {
+            "findingId": "c3b5a7c1d62c4489e676ae2c5c2524e88fdf24d5a27c2fb5ffde8f69b29d5c43",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2]",
+            "sourceEvidence": "Section 7.05(a) lead text: '(a) (1) Declare or pay any dividend...The Borrower or any Restricted Subsidiary shall NOT...' (prohibition posture); and Section 7.05(a)(y) text: 'if at"
+          },
+          {
+            "findingId": "26bbcbc6394638d32313b795300b62a5576e82c4a180453330a5c61fb022d906",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(c): 'For purposes of determining compliance with this covenant, in the event that a Restricted Payment or Investment (or portion thereof) meets the criteria of more th"
+          },
+          {
+            "findingId": "cf395302cc91ae3118d62b5f77d9afc2575f5ae602c1e6cad5066c71ae79e0cc",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].compilerSufficiencyClaim.sufficiency",
+            "sourceEvidence": "Section 7.05(a)(y): the Available Amount is the SUM of six enumerated components (i)-(vi), each of which is independently operative and required for the calculation"
+          },
+          {
+            "findingId": "98fa4c7dccc7f4d157d7fbfe1c6afc4b12c148b50ea7443c43e94ba5f252c620",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a) text: 'if at the time the Borrower or such Restricted Subsidiary makes such Restricted Payment: (x) (i) solely in the case of a Restricted Payment made under clause"
+          },
+          {
+            "findingId": "a681360048980b5ca6fe1d2b3613ebd760772c3848ca8f545cb029ffb8626704",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(4): 'make any Restricted Investment'"
+          },
+          {
+            "findingId": "ceb3df89a7283bdc5f3fc6440ac405cab9b5053b008a29ccd9f609f4e017ed9e",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(2): 'purchase, repurchase, redeem, retire or otherwise acquire or retire for value any Capital Stock of the Borrower or any direct or indirect parent thereof held b"
+          },
+          {
+            "findingId": "d17aa0bab2af0cf9d4a5d952441747566cde511829bc1777266411c84baf4806",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a): defines 'Restricted Payment' as 'any such dividend, distribution, payment, purchase, redemption, repurchase, defeasance, other acquisition, retirement or Restricte"
+          },
+          {
+            "findingId": "5cb918cb0473af42c83072634ffac53306cfa6de39ada8abd368ace60da71dde",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].reviewContext.provenance",
+            "sourceEvidence": "Section 7.05(a)(vi): 'the greater of (A) $137,600,000 and (B) 40.0% of LTM EBITDA (the foregoing clause (y) , the \" Available Amount Builder Basket \")'"
+          },
+          {
+            "findingId": "6c7254a17cb14884e777c4b168d502555f491b3e43abbf26e4cf56a690849111",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[1].inheritedAttributes[1]",
+            "sourceEvidence": "Section 7.05(a)(v): the rule describes a redesignation, merger, or consolidation event affecting an Unrestricted Subsidiary, not an action taken by the Borrower or Restricted Subsi"
+          },
+          {
+            "findingId": "711aa23dad8813c586ed3a6b677cf33e5cfd4597346d8b159c06b66d07ba4684",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y)(ii): '100% of the aggregate amount of cash, and the fair market value of property or assets or marketable securities, received by the Borrower from the issue or "
+          },
+          {
+            "findingId": "c24f8e3579ea52b349162545a8fe73bd204ce25a2ced5be5580b5420dba19efd",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y)(iii): '100% of the aggregate amount of cash, and the fair market value of property or assets or marketable securities, received by the Borrower or any Restricted"
+          },
+          {
+            "findingId": "674cffe8180366bb898bfa4a82795aac71369905f59d9c4cddde5b5692a40417",
+            "findingType": "MISSING_EXCEPTION",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(3): 'purchase, repurchase, redeem, defease or otherwise acquire or retire for value, prior to scheduled maturity, scheduled repayment or scheduled sinking fund paym"
+          },
+          {
+            "findingId": "98aa065de9660708337dce7a0a64ec4710213e2ef7cfbedc0cf5bee09e3e831c",
+            "findingType": "MISSING_EXCEPTION",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y)(ii): 'other than (A) Net Cash Proceeds or property or assets or marketable securities received from an issuance or sale of such Capital Stock to a Restricted Sub"
+          },
+          {
+            "findingId": "cb964da0e4eb17eb01d40718cc165254a6a1b28c232213863686bf0a059acb12",
+            "findingType": "MISSING_CONDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(x)(i): 'solely in the case of a Restricted Payment made under clauses (1) or (2) above, an Event of Default shall have occurred and be continuing (or would immediat"
+          },
+          {
+            "findingId": "0d2e32c20dbbd9f74663cb5fae302dc46f13ae6b5c668caa47bff454cf901c18",
+            "findingType": "MISSING_CONDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(x)(ii): 'solely in the case of a Restricted Payment under clauses (3) or (4) above, an Event of Default pursuant to Section 8.01(a) , (f) or (g) shall have occurred"
+          },
+          {
+            "findingId": "f71b67b66b177826c384a9aff43ffbf13694a4daa54f9790f88e31b8141e0d18",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y): 'the aggregate amount of such Restricted Payment and all other Restricted Payments made subsequent to the Closing Date (and not returned or rescinded) (includin"
+          },
+          {
+            "findingId": "9dd4f66a84ffe6977d4c3764148c6bea7460a59fa3d241267460dc85a9490199",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y)(iv): '100% of the aggregate amount received in cash and the fair market value, as determined in good faith by the Borrower, of marketable securities or other pro"
+          },
+          {
+            "findingId": "73cb77ea5d7d7e9b4ae8c6e2bb2d6cd755c881f7ebbf4efd357771fbd3213c7a",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y): 'including Permitted Payments made pursuant to clause (1) (without duplication) and clause (7) of Section 7.05(b) , but excluding all other Restricted Payments "
+          },
+          {
+            "findingId": "711aa23dad8813c586ed3a6b677cf33e5cfd4597346d8b159c06b66d07ba4684",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(a)(y): 'Excluded Contributions' (mentioned in the carve-out to clause (ii))"
+          },
+          {
+            "findingId": "26bbcbc6394638d32313b795300b62a5576e82c4a180453330a5c61fb022d906",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules",
+            "sourceEvidence": "Section 7.05(c): 'the Borrower will be entitled to divide or classify (or later divide, classify or reclassify in whole or in part in its sole discretion) such Restricted Payment o"
+          },
+          {
+            "findingId": "62a1c74fef23450d64690757a239b2ed2cdc9505342dceffedbbf001168c42dc",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "50%"
+          },
+          {
+            "findingId": "c45ffdab60742bb3b4b16d30b914465946528592250a6925408876a9824f7d3c",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "100%"
+          },
+          {
+            "findingId": "1f761e040c0ccb6fb9d758615828a9aa999d7c7b5ee817b6017cbb49666207b8",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "100%"
+          },
+          {
+            "findingId": "505b49a49c783fdb2db8997937847fba45d1dcb3b6981d8c0451493bba387fcc",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "100%"
+          },
+          {
+            "findingId": "c4eadcd213fd347f48af4223e9c810f7f9b75bb92b466a023849e1ab87a566bd",
+            "findingType": "MISSING_RECLASSIFICATION",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "f185d21c5aba097a31d9690ffbdc71b7bbe52073618a4c694531c2f744cafaaa",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(3)"
+          },
+          {
+            "findingId": "84d9883dbbd187a84fb88de5aecc675446bf720a6f31b19328a4ea356b67b768",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.01(b)"
+          },
+          {
+            "findingId": "bf70e149f6581613a3df46dfed8f97c285cd4c4356ecfa2879229e59f25f34b5",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "clauses (1) through (4) above"
+          },
+          {
+            "findingId": "570fc424fa03d48d875e9c16d92dd1591f6928db5476ecdcfd34394de69e8aa5",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(1)"
+          },
+          {
+            "findingId": "98f14edc5b683df392e93f95ff6b13644b4bb012fa72a9d5ec934f3aa6a8da3c",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(2)"
+          },
+          {
+            "findingId": "9de25913a9072b38fd6b156793b1fc60d18a56a784e2ec0650430f609110f13e",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(4)"
+          },
+          {
+            "findingId": "a260ba5fe0e40233170827c00d40ccb47bde3ad556c548ad59fbf03e2e9b578a",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 8.01(a)"
+          },
+          {
+            "findingId": "e32a9a15f9e8eca834a7832d07bd1d0c7c18d2a652d4052ea4c5b17d729588f6",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 8.01(f)"
+          },
+          {
+            "findingId": "d9303b285e6f78a238b2968044521284654b97c55c1f2b92bdd892349ce17662",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 8.01(g)"
+          },
+          {
+            "findingId": "55e6848754096c3f2be3181187a1b0b895e795abf1adf905abfc4e1b8db199b7",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(7)"
+          },
+          {
+            "findingId": "51fc42119e2adab24a482a5cce13eb25d985d69352987d51185c54348d6bd1eb",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(6)"
+          },
+          {
+            "findingId": "0c799050afb56d98d3c3b8cea6fa018a8426619f12bef6c05152b0060892bb2d",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(c)"
+          },
+          {
+            "findingId": "134974d27282850fd96e7d9da6bd6f1cb4d8052f171eee7519936c299b5db192",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(17)"
+          },
+          {
+            "findingId": "9ba8e55fc96e3639416047106ece15e19fb9086187ea0420e2fe34af5d51bf93",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(y)"
+          },
+          {
+            "findingId": "14660c8fc6e382eac2d97f4ab251bdb8b3f0a0e4426cfe260bc0939b40ee5e24",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:8daca0785e15aab908b24efc]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "462a051d35c20895600533541bd520b943d1502b0984cc58d69a9908d049ecfa",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:4b92d390979754195048ed30]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "e9b79b7112495ccbec04a086a71aa163d278f3ad3c78bebf6fd6e72c9d7349ac",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:8fa7357ffaffe8fbe6436df4]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0.11919500000000001,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 8.074891
+    },
+    {
+      "discoveryId": "discovery-candidate:c6993c39f6d6dc20911a6344",
+      "normalizedSourceRef": "7.05(b)",
+      "role": "BASKET",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 21229,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "MODEL_CONTRACT_VIOLATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "PARTIAL_COMPILATION",
+          "SHARD_INCOMPLETE",
+          "IR_VALIDATION_FAILURE",
+          "MISSING_CONTEXT",
+          "TRUNCATED_EVIDENCE_USED",
+          "PROVIDER_FAILURE",
+          "SHARD_CONFLICT",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 20,
+        "definitions": 0,
+        "sharedCapacities": 1,
+        "inputTokens": 591238,
+        "outputTokens": 22345,
+        "passACalls": 1,
+        "reservationUsd": 15.59484,
+        "costUsd": 0.7029629999999999,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 208359,
+        "shapeExceeded": [
+          "conversations 8 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": "VERIFICATION_FAILED",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "ae4c215c71ef1dffd8b38a63bc4d870bc36a04257d0347ab31eab897513a19ee",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "$1.00"
+          },
+          {
+            "findingId": "1b8ac51abd79c93b648283af67b47f541c8aedfe15acc1a0c9ba9e76c8a0eca5",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "$ 120,400,000"
+          },
+          {
+            "findingId": "d8f3921e3bebbb88da06331d5054ba8454fb229d29bc9db75379af876762d8a2",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "$137,600,000"
+          },
+          {
+            "findingId": "58916c8d5b1f1237295964696d235ef0f12351e92df30286dc5a84f2f84bd2db",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "35.0%"
+          },
+          {
+            "findingId": "12045cdbb44023e61ae44d342f971c3fd696d06753948c46e49df6211787743f",
+            "findingType": "MISSING_BASKET",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "40.0%"
+          },
+          {
+            "findingId": "d1cec7efb011ba427661505cacb6a5d024b9a61365f9dfd09597531d6a2d72a4",
+            "findingType": "MISSING_RULE",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "3.35 to 1.00"
+          },
+          {
+            "findingId": "ca7df95a01280aa669fa82acf72824a1b69a5c891f6706fca4656915aa6b9a93",
+            "findingType": "MISSING_RULE",
+            "severity": "MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "3.60 to 1.00"
+          },
+          {
+            "findingId": "9ebeaaa250b97e3160775eb2029fa14acff3458487505a85ae657fd1a42e8263",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[1].capacityExpression.defaultValue",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "c0277211bdc5dfdb59a14c4c9037b4123bc87a7bf7c2f08e760f16e9ce2f947c",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2].capacityExpression.gatedBy.operands[0].right",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "4953d710572c8fb1d141f6d83a06dcaee331187d050f7093b6102536076cd6c5",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(13)"
+          },
+          {
+            "findingId": "ab23f79576b20961e7880b5623c0c792e18a113c2c01a07be012c01cfef08833",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(y)"
+          },
+          {
+            "findingId": "2bc11912ead880d607c5403696f13f48dc68a3bfb0dfa28cecf06b29244f94b4",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(6)"
+          },
+          {
+            "findingId": "8aa4f2855191d463a1e5d178571e089335a6203bd79834ed1181aa188fa5313f",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(i)"
+          },
+          {
+            "findingId": "42ef60d52c9f348f2b6f9e9159d0a83699403828d62b4874fc06053270692515",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(ii)"
+          },
+          {
+            "findingId": "f8d266bfb3f1f8443753e78f6202730c33b858f0e755343aa144129ed80fde8e",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(2)"
+          },
+          {
+            "findingId": "976e68cc634a8289ff61fbad4d295ff1ec49efeed2d3a3a25b4cdae4823e1299",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(3)"
+          },
+          {
+            "findingId": "8c0cd0127ebbbc36a40c2978a050570b59b3de2bd3fdb05c2eeefab3e829dde9",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(5)"
+          },
+          {
+            "findingId": "a3fbb4a91d1a51646becfb5b2ba1a84ea2242bdf8b62f554e25c76ae6e642149",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(15)"
+          },
+          {
+            "findingId": "06c0412f6aa8f26969736b59a18b71394bb72ea3a33b3cd9b128f17362370a2a",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(19)"
+          },
+          {
+            "findingId": "fb54869b0a5ba417dce4bef9ca6f0f47b41c92f18b480fbac64bda0e60b03c3e",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(iii)"
+          },
+          {
+            "findingId": "dba1c623bffdbf716efb6772378a55a510eec317aca4db9e995952479307de3d",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(21)"
+          },
+          {
+            "findingId": "0b1127cebb36f488f05b278fb3317d3264b16901beb728e6c48d511a890e1089",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(17)"
+          },
+          {
+            "findingId": "9b624a2868f7ac53a13c6cb7f0a902eed567bacea0db86f8cb70568540032bb5",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 8.01(a)"
+          },
+          {
+            "findingId": "6a1a447f9784763f48adb7d63b334ce1caefcca310ff94a18bc53c252433c4ac",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 8.01(f)"
+          },
+          {
+            "findingId": "860cba35f7c134b5bbebb7fedfe21f4ecbbe3a74c0001292b345aff83e508d8d",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 8.01(g)"
+          },
+          {
+            "findingId": "f304268178b28c5e7092d3db6b604fb21201ca0b4d189976559c79caf36f6de1",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.03"
+          },
+          {
+            "findingId": "a9c59dc77a96da50bf25ce47f8a0b248658ce344167ed99efdd56140df36609e",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(e)"
+          },
+          {
+            "findingId": "4484ff136b3d158cae625c275d6295921da915de3f16c7820d80da4357247901",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "Section 7.05(12)"
+          },
+          {
+            "findingId": "0bc0d6cb33a628216501099a5f86e2ad0e7610027afe153cce3af9caec4c7d0f",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:667affbc166ae990076702fd]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "c96b05a8380a022d8e35bb4be5dbc6912e1fecb239b0667386f507025b5193f7",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:673123b7cc03e7ffa33dabc0]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "e9efc9b2402ebec0147589147ad661e4443859642d7707c701be7d8a188a2e8d",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:fedc927dbf43bf2c72b20ab1]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "fc16498c64e48eb15d048392e3b0ffac424571a48054f3a5d2ba5ecc2a02129f",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:8d703257fcd1b357d39882ea]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "ea7e2cc13a437e9c253319896c63a24bd6771bb67fe558a6a2bd455b11ab8e47",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:f9cce45752a7a773792a2c80]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "2b6bc6cdd53714790a57ce15209ad0b73deb28fc5e2b187842cbf7d4f8f747f3",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:43946330efbd6035fca121d5]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "a3f452b2b50d8c8a8b385cca509bcc654e48ff9c5299e0a26d8ae43003915137",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:fbbbb2cf2a8edfc17561d4db]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "c4d54516b51247ee269a5698b37ce68cca7bc58a35f8188b6ad8e29b985ccfe8",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:c79ed2d0a93f919c0b361220]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "96bcf552d0fb1896656b7002f00786620fd7a653b6432c247d839078fc6f4ed1",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:5ffb4395fd7569f27158a2be]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "24ccc1641e383a43f9a38ef775e88b64ce211f6d895319f9d2b8a56f63142b45",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:747551a5415477297dee9f36]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "6f60a41d6c141f1545c2b13986c13fc9f0ffe8bd71740e1720910e0311330eb1",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:e7ac4dae4fa8502cfde04eb6]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "a44379b8a3fa0fe3cb3d829eebea6b315ae033a26345c4abd247dd93925fe0c6",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:f098c66068474c83128882e7]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "3a69dea5cd82130caf5ab44f31a1ab386fbd196ea634a4fd38a5c5bbca2e82f7",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:73c0b428b351b82d79ba8a59]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:083feebc1b1c478cbef9acc0",
+      "normalizedSourceRef": "7.05",
+      "role": "PERMISSION",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 40,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 736
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:b146de21e00b5b20b73cf8fe",
+      "normalizedSourceRef": "7.05",
+      "role": "EXCEPTION",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 2058,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:5070254f4b83fc4da23967ab",
+      "normalizedSourceRef": "7.05",
+      "role": "CONDITION",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 2063,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:dc53320bf6e215c37d579aca",
+      "normalizedSourceRef": "7.05",
+      "role": "FINANCIAL_TEST",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 2215,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:bc42ce8c6158d5e473f513e0",
+      "normalizedSourceRef": "7.05",
+      "role": "BUILDER",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 1905,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:3332fef2978314e8b46a782e",
+      "normalizedSourceRef": "7.05",
+      "role": "BASKET",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 2084,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:3d929d394e89a458420a06f6",
+      "normalizedSourceRef": "7.05",
+      "role": "PROVISO",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 2427,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:a59d7fde9cb001e94794535c",
+      "normalizedSourceRef": "7.05",
+      "role": "RATIO_BASED_PERMISSION",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 1967,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:fde5d5f42ff575b2fa47325d",
+      "normalizedSourceRef": "7.05",
+      "role": "DESIGNATION_RULE",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "rank": 3,
+      "operativeChars": 34605,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 1810,
+        "shapeExceeded": [
+          "conversations 12 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:a00566b54611baeead667018",
+      "normalizedSourceRef": "2.11",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 45,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 927
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:76ace91b7e2cb1ca8f358ac9",
+      "normalizedSourceRef": "2.15",
+      "role": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 48,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 495
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:0fdfb9fa460aed4eb8dae370",
+      "normalizedSourceRef": "2.18",
+      "role": "OTHER_RELEVANT_RULE",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 47,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 979
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:0e7c94db6c0df4dfe449c0a8",
+      "normalizedSourceRef": "2.20",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 45,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 1100
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:d7155f981544f37ce6ec6cbb",
+      "normalizedSourceRef": "5.08",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 49,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 325
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:8e378a532ebaf0eef879811c",
+      "normalizedSourceRef": "5.12",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 48,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 1090
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:6db75b56b4b2340321574721",
+      "normalizedSourceRef": "5.12",
+      "role": "PERMISSION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 48,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 448
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:417fa21db56e871a12d6f04c",
+      "normalizedSourceRef": "5.12",
+      "role": "EXCEPTION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 48,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 588
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:887e5844c575f234f3eeb1c5",
+      "normalizedSourceRef": "5.13",
+      "role": "OTHER_RELEVANT_RULE",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 63,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 513
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:3d61fcbc1d7c9c4ce480195c",
+      "normalizedSourceRef": "6.12",
+      "role": "GUARANTEE_OBLIGATION",
+      "families": [
+        "GUARANTEES"
+      ],
+      "rank": 4,
+      "operativeChars": 72,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 666
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:c02a3a9c935852c0fb90249d",
+      "normalizedSourceRef": "6.12",
+      "role": "SECURITY_GRANT",
+      "families": [
+        "COLLATERAL_SECURITY"
+      ],
+      "rank": 4,
+      "operativeChars": 72,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 872
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:6e3c0f2a9c6de07a751ff977",
+      "normalizedSourceRef": "6.17",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 50,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 558
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:128c999390ee9253db7bb2c0",
+      "normalizedSourceRef": "7.01",
+      "role": "GENERAL_PROHIBITION",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "rank": 4,
+      "operativeChars": 33,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 694
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:a56fc7bb938f4ea03dbcecb1",
+      "normalizedSourceRef": "7.01(a)",
+      "role": "BASKET",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "rank": 4,
+      "operativeChars": 1437,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 1112
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:467f44a7067e183d3f68c7ba",
+      "normalizedSourceRef": "7.01(b)",
+      "role": "BASKET",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "rank": 4,
+      "operativeChars": 20015,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 15.59484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 3058,
+        "shapeExceeded": [
+          "conversations 16 > reserved 5"
+        ],
+        "shapeStop": []
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:e19e046bd71d4a1b6e003ebe",
+      "normalizedSourceRef": "7.01",
+      "role": "BASKET",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "rank": 4,
+      "operativeChars": 33,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 814
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:2e8879f7f2eef42ba583c73d",
+      "normalizedSourceRef": "7.02",
+      "role": "GENERAL_PROHIBITION",
+      "families": [
+        "LIENS"
+      ],
+      "rank": 4,
+      "operativeChars": 41,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 450
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:fddee28074f79259711305da",
+      "normalizedSourceRef": "7.02",
+      "role": "PERMISSION",
+      "families": [
+        "LIENS"
+      ],
+      "rank": 4,
+      "operativeChars": 41,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 596
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:7fa58797d3037e96059055e2",
+      "normalizedSourceRef": "7.03",
+      "role": "GENERAL_PROHIBITION",
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "rank": 4,
+      "operativeChars": 40,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 568
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:b317993e71c40422eb230ae9",
+      "normalizedSourceRef": "7.08",
+      "role": "GENERAL_PROHIBITION",
+      "families": [
+        "FINANCIAL_COVENANTS"
+      ],
+      "rank": 4,
+      "operativeChars": 40,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 545
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:c07b4b376fbfa48e699e55d8",
+      "normalizedSourceRef": "7.08",
+      "role": "OTHER_RELEVANT_RULE",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 40,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 706
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:241c41c24306f9c4ba0dde0e",
+      "normalizedSourceRef": "9.10",
+      "role": "OTHER_RELEVANT_RULE",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 66,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 529
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:abfc8b68fea3a23c20b217b0",
+      "normalizedSourceRef": "9.11",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 52,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 624
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:3dec237d51444c3a3883ebad",
+      "normalizedSourceRef": "9.14",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 150,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 443
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:e74c9e1daeac1c6e520a3a7d",
+      "normalizedSourceRef": "10.03",
+      "role": "WAIVER",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 65,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 415
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
+    },
+    {
+      "discoveryId": "discovery-candidate:9dd40691373f57a5b522582f",
+      "normalizedSourceRef": "7.01",
+      "role": "GENERAL_PROHIBITION",
+      "families": [],
+      "rank": 4,
+      "operativeChars": 33,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE"
+        ],
+        "rules": 0,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 129
+      },
+      "verify": {
+        "status": null,
+        "semanticReviewInvoked": null,
+        "findings": [],
+        "costUsd": 0,
+        "costStatus": null,
+        "timedOut": false,
+        "error": null
+      },
+      "committedUsd": 8.777854
     }
   ],
-  "stop": null,
+  "stop": {
+    "reason": "GATEWAY_CREDIT_EXHAUSTED",
+    "detail": "insufficient_funds",
+    "atIndex": 50
+  },
   "spend": {
     "ceilingUsd": 162.63,
     "stopAtUsd": 162.63,
-    "exactSpendUsd": 5.881165,
+    "exactSpendUsd": 8.777854,
     "retainedUnknownTimeoutUsd": 0,
     "outstandingReservedUsd": 0,
-    "committedUsd": 5.881165,
-    "remainingUsd": 156.748835
+    "committedUsd": 8.777854,
+    "remainingUsd": 153.852146
   }
 }

@@ -42,7 +42,7 @@ No generalized code change follows. The resolver still refuses the missing `(y)`
 
 ## Verification reservation
 
-Verification was not run. There is no verification command in `scripts/p3-development-pipeline/`. The reservation treats each of the 842 discovery rows as one compiled candidate, which these rows are not.
+The reservation below was computed before any verification call. It treats each of the 842 discovery rows as one already-compiled candidate, which they were not. Compilation is a separate bill.
 
 | Basis | USD |
 |---|---|
@@ -61,19 +61,29 @@ The run's hard ceiling is the $162.63 Haiku figure from the table above. Compila
 
 Cross-cut order is the phrase nodes, then reclass windows, then `7.04`, then `7.05`, then the rest. No persisted row sits on either phrase node, so nothing was dispatched at that rank.
 
-Results below are list-price charges from the in-progress record `development-pipeline/verification.json`. DEVELOPMENT. `certified` false. `pinnedOffline` false. `eligibleClaimed` false. No pin.
+The run stopped with `GATEWAY_CREDIT_EXHAUSTED` / `insufficient_funds`. The $162.63 ceiling had not been met. List-price committed is $8.78. Record: `development-pipeline/verification.json`. DEVELOPMENT. `certified` false. `pinnedOffline` false. `eligibleClaimed` false. No pin.
+
+Fifty-one attempts were written. Attempts 1–16 are the billed calls. Attempts 17–51 recorded $0 and `PROVIDER_FAILURE` after the balance was exhausted. Those $0 rows are refusals, not evidence that the section has no rules. Uncalled rows are not evidence of absence.
 
 | Section | Chars | Compile | Verify | Compile list price |
 |---|---:|---|---|---:|
-| 7.05(c) | 4,626 | FAILED, 0 rules (two attempts; first cut off at 480s) | not called | 2.6444 |
-| 7.04 | 39 | PARTIAL, 4 / 10 / 7 rules | MATERIAL_DISCREPANCY | 0.8580 |
-| 7.04 | 39 | FAILED, 0 rules | not called | 0.3550 |
+| 7.05(c), two attempts | 4,626 | FAILED, 0 rules | not called | 2.6444 |
+| 7.04, three TOC rows | 39 | PARTIAL, 4 / 10 / 7 rules | MATERIAL_DISCREPANCY | 0.8579 |
+| 7.04 TOC | 39 | FAILED, 0 rules | not called | 0.3550 |
 | 7.04(a) | 5,722 | PARTIAL, 4 rules | MATERIAL_DISCREPANCY | 0.6677 |
 | 7.04(a)(1) | 568 | FAILED, 0 rules | not called | 0.0611 |
 | 7.04(a)(2) | 2,573 | REVIEW_REQUIRED, 1 rule | MATERIAL_DISCREPANCY | 0.1266 |
 | 7.04(a)(2)(i) | 20 | FAILED, 0 rules | not called | 0.1394 |
+| 7.04(a)(2)(ii) | 294 | REVIEW_REQUIRED, 1 rule | MATERIAL_DISCREPANCY | 0.2178 |
+| 7.04(a)(3) | 2,521 | PARTIAL, 9 rules | MATERIAL_DISCREPANCY | 0.4204 |
+| 7.04 body | 5,767 | PARTIAL, 15 rules | VERIFICATION_FAILED | 0.7311 |
+| 7.05 TOC | 40 | FAILED, 0 rules | not called | 0.4088 |
+| 7.05(a) | 8,704 | PARTIAL, 3 rules | MATERIAL_DISCREPANCY | 0.9347 |
+| 7.05(b) | 21,229 | PARTIAL, 20 rules | VERIFICATION_FAILED | 0.7030 |
 
-The three 39-character `7.04` rows are the table-of-contents line `Section 7.04 Asset Dispositions 233`. The verifier's findings say that heading is the operative text and the compiled rules add content the line does not contain. The longer `7.04` body was not selected. `7.04(a)` and `7.04(a)(2)` also verified as `MATERIAL_DISCREPANCY`. One finding quotes a compiled proviso that replaced the five deemed-cash clauses with placeholder tests. The table is the earlier part of the run. Later rows are in `verification.json`. At the snapshot committed with this paragraph: 12 attempts, 5 compiles failed with no rules, 7 compiles produced rules and each verified `MATERIAL_DISCREPANCY`. Committed list price $5.88 of $162.63. The process is still dispatching. Uncalled rows are not evidence of absence.
+Eight billed compiles verified `MATERIAL_DISCREPANCY`. Two compiled and the review call failed (`VERIFICATION_FAILED`): the 5,767-character `7.04` body and `7.05(b)`. Six billed compiles produced no rules, so the verifier was not called. `7.05(c)` is in that last group. It is the reclass window. No edge was written.
+
+The 39-character `7.04` rows are the table-of-contents line `Section 7.04 Asset Dispositions 233`. Findings say that heading is the operative text and the compiled rules add content the line does not contain. The 5,767-character body was compiled separately and the review did not finish. Bare `7.04` stays `AMBIGUOUS`. `7.05(a)` verified `MATERIAL_DISCREPANCY` on a `BASKET` row. One finding quotes text that mentions `7.05(a)(y)`. The resolver result for that cite remains `NOT_FOUND`. No row was dispatched on either phrase node.
 
 ## Offline stages that ran
 
