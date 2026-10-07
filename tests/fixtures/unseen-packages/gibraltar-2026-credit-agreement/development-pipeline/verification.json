@@ -1241,16 +1241,597 @@
         "error": null
       },
       "committedUsd": 5.069077
+    },
+    {
+      "discoveryId": "discovery-candidate:3cd8e061f31bdddcc376ec88",
+      "normalizedSourceRef": "7.04(a)(2)(ii)",
+      "role": "BASKET",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 294,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "REVIEW_REQUIRED",
+        "failureReasons": [
+          "MODEL_CONTRACT_VIOLATION",
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED"
+        ],
+        "rules": 1,
+        "definitions": 5,
+        "sharedCapacities": 0,
+        "inputTokens": 143760,
+        "outputTokens": 14810,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.21781,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 162134
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "6da8f854fda7ce5321c89e14a726ada8febfe85d70e17634f1150205c0922e28",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0]",
+            "sourceEvidence": "20.0% of LTM EBITDA"
+          },
+          {
+            "findingId": "23f30c1a770ef892c9faa3dd66ba7a211ecb5eb3c178240faacc7e8e80394ebf",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions[0]",
+            "sourceEvidence": "at least 75% of the consideration from such Asset Disposition received by the Borrower or such Restricted Subsidiary, as applicable, is in the form of cash or Cash Equivalents"
+          },
+          {
+            "findingId": "5000310283766ad65f54e9114f58750494e119faec3e071d98c27675249f3466",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].dependsOn",
+            "sourceEvidence": "provided that, for purposes of this clause (2) , the following will be deemed to be cash: (i) the assumption by the transferee of Indebtedness or other liabilities... (ii) securiti"
+          },
+          {
+            "findingId": "deb7b0fc513fff014a29e086aaa2b6879bf6e921a9e14a12aec0562c3cb6f01b",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "definitions[4].calculationExpression.operands[1].operands[0]",
+            "sourceEvidence": "any Designated Non-Cash Consideration received by the Borrower or any Restricted Subsidiary in such Asset Dispositions having an aggregate fair market value, taken together with al"
+          },
+          {
+            "findingId": "676718785bd91abfd2cb39f8f1f561ee7fb4e89476e77e03c66f381bb7aef0b1",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0]",
+            "sourceEvidence": "in any such Asset Disposition, or series of related Asset Dispositions (except to the extent the Asset Disposition is a Permitted Asset Swap), with a purchase price in excess of th"
+          },
+          {
+            "findingId": "00b53157af0677d515063c748e6958e4b05762f21adf626361e3f50888a8ef04",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "definitions[0].dependsOnTerms[1]",
+            "sourceEvidence": "the assumption by the transferee of Indebtedness or other liabilities (including by way of relief from, or by any other Person assuming responsibility for, any such Indebtedness or"
+          },
+          {
+            "findingId": "58fed6e4332f1f53b8a5aaba368fbac8bc30d79fedba3e827a9b50f7b0424e52",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "definitions[2].calculationExpression.semanticDescription",
+            "sourceEvidence": "Indebtedness of any Restricted Subsidiary that is no longer a Restricted Subsidiary as a result of such Asset Disposition, to the extent that, immediately following such Asset Disp"
+          },
+          {
+            "findingId": "9d2dc614e9dfddf858c8fe6d749a401eef417ba88903deb2fdf1f90efc455ce2",
+            "findingType": "MISSING_BASKET",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "20.0%"
+          },
+          {
+            "findingId": "fc6ec906e8b574775cb7491219a26421e0932adcfd961510555642fb38f65ea9",
+            "findingType": "MISSING_BASKET",
+            "severity": "UNCERTAIN",
+            "irPath": null,
+            "sourceEvidence": "75%"
+          },
+          {
+            "findingId": "e1409a8132e360302de5e25226c4a8124a0cb5dea21843cdf970ac2d85004994",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "UNCERTAIN",
+            "irPath": "definitions[4].calculationExpression.operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "b88bf8ff65b07b667d65628baeffc8c87df98f3b61db0fad5ce28d4e8d9ea7a1",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "UNCERTAIN",
+            "irPath": "definitions[4].calculationExpression.operands[1].operands[0]",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "0e9850044c99364b71a9c5a5975fe9a3d1d70bc34b0c9c24ed1e58d53be2c04d",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.04(2)"
+          },
+          {
+            "findingId": "c7247dc7e342d4dd2e8d2c047c23df9b2441f129435a94b9762fac36b4e41b48",
+            "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+            "severity": "UNCERTAIN",
+            "irPath": "definitions[1].calculationExpression.semanticDescription",
+            "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)"
+          },
+          {
+            "findingId": "e3480832c9029461ffa4762050e56d39cb629c9a0d49a98fffa13025a00a6cf4",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "definitions[?ir-definition:ece86deb9060c5b42bc10b17]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "ad0c7519e4f0399d1824fa27561f99cf54072b43ab33c8606231a62c180493d9",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "definitions[?ir-definition:65cef370a4d4f8fc79386932]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "2a886cc2ae7f4776fb64aae46bc5bbf5c89d271bdadcee2a5bbc982d1c85ee97",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "definitions[?ir-definition:43d5d68503a3810c81fc24a2]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "73368bc7c9b5d8731447c21ba3dced8be6119e0429dd51b48e37f8b50888b206",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "definitions[?ir-definition:1fd172d8198b05f446205aff]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0.040392,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 5.327279
+    },
+    {
+      "discoveryId": "discovery-candidate:1c136713d88a10fd47bf44b0",
+      "normalizedSourceRef": "7.04(a)(3)",
+      "role": "CONDITION",
+      "families": [],
+      "rank": 2,
+      "operativeChars": 2521,
+      "droppedFamilies": [],
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false,
+      "compile": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "OPERATIVE_STATE_UNRESOLVED",
+          "TRUNCATED_EVIDENCE_USED",
+          "PROVIDER_FAILURE",
+          "SHARD_INCOMPLETE",
+          "PARTIAL_COMPILATION",
+          "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+          "SEMANTIC_INVENTORY_UNAVAILABLE",
+          "SEMANTIC_INVENTORY_COVERAGE_GAP"
+        ],
+        "rules": 9,
+        "definitions": 0,
+        "sharedCapacities": 0,
+        "inputTokens": 356179,
+        "outputTokens": 12837,
+        "passACalls": 1,
+        "reservationUsd": 14.99484,
+        "costUsd": 0.42036399999999996,
+        "costStatus": "EXACT",
+        "timedOut": false,
+        "wallClockMs": 368647
+      },
+      "verify": {
+        "status": "MATERIAL_DISCREPANCY",
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "conditionSuspicionStatus": null,
+        "findings": [
+          {
+            "findingId": "7862e2a0d90477a7d529a50b0e4d9a98b9d45f5d9ffe636633dab8b35b83e304",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[5].capacityExpression.cases[1]",
+            "sourceEvidence": "provided however, that a binding agreement shall be treated as a permitted application of Net Cash Proceeds from the date of such commitment provided that an amount equal to Net Ca"
+          },
+          {
+            "findingId": "376c1891e279aa41e4db664f1a1fd6ff6af575ad770e1ec83510915231ccc5ec",
+            "findingType": "MISSING_CONDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[5]",
+            "sourceEvidence": "provided however, that a binding agreement shall be treated as a permitted application of Net Cash Proceeds from the date of such commitment provided that an amount equal to Net Ca"
+          },
+          {
+            "findingId": "6d32e297b0bddba73c1643cecc32f565cec4246908744a5f05faaf2ef3d4e50f",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[7].sourceDependencies[0]",
+            "sourceEvidence": "to prepay Loans and other Permitted Debt in accordance with Section 2.05(b)(ii)"
+          },
+          {
+            "findingId": "351bf3fa5280442d0295fa71e251477db6b523dda9af0ee09468bf1c76b3a23e",
+            "findingType": "MISSING_CONDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[0]",
+            "sourceEvidence": "pending the final application of the amount of any such Net Cash Proceeds pursuant to Section 2.05(b)(ii) and this Section 7.04, the Borrower or the applicable Restricted Subsidiar"
+          },
+          {
+            "findingId": "729b8b762a783e8944517474c18078711b1e5c3640689abbe409c1cd0a4ed0ee",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[5].capacityExpression.cases[1].description",
+            "sourceEvidence": "provided that an amount equal to Net Cash Proceeds will be applied to satisfy such commitment within 180 days after the end of such 540-day period"
+          },
+          {
+            "findingId": "1a2a62a14901e554dfe2269644228e5ad224a3241635595a7d2ff20460d4017b",
+            "findingType": "MISSING_RULE",
+            "severity": "MATERIAL",
+            "irPath": "rules[]",
+            "sourceEvidence": "Section 7.04 ... in any such Asset Disposition, or series of related Asset Dispositions (except to the extent the Asset Disposition is a Permitted Asset Swap), with a purchase pric"
+          },
+          {
+            "findingId": "313cb4b2476b5396291e4538cd3ee335a64d67e376c43399e3b1377b121ff77f",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions[]",
+            "sourceEvidence": "Section 7.04(a) ... Cause or make any Asset Disposition, unless: ... (3) within 540 days from the later of (A) the date of such Asset Disposition and (B) the receipt of the Net Cas"
+          },
+          {
+            "findingId": "ef2c8eeef599c42b12c8d13b4540543d1339565ee046db1e575dc9c1cbc26d4b",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[5].capacityExpression",
+            "sourceEvidence": "provided however, that a binding agreement shall be treated as a permitted application of Net Cash Proceeds from the date of such commitment provided that an amount equal to Net Ca"
+          },
+          {
+            "findingId": "55f1934ae39c3cc5fc11fcd39896f1018e54794adcab90c90fa3de8900a18d04",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].dependsOn[]",
+            "sourceEvidence": "an amount equal to the Net Cash Proceeds from such Asset Disposition is applied, to the extent the Borrower or any Restricted Subsidiary, as applicable, elects: (a) to prepay Loans"
+          },
+          {
+            "findingId": "dab2e389baece6afc415217c9a2520741579c99376a18aba1e6d90f5f9d3a7de",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].conditions[].expression.value.termName",
+            "sourceEvidence": "an amount equal to the Net Cash Proceeds from such Asset Disposition"
+          },
+          {
+            "findingId": "32374b0345271dcf0bdcadd51812d888b64c2756d464d8497c93188f4db8a4b8",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[7].entityScope",
+            "sourceEvidence": "to prepay Loans and other Permitted Debt in accordance with Section 2.05(b)(ii)"
+          },
+          {
+            "findingId": "974f703e07762102f5045d8d80b1c5adf0f7bb59510747dfbcabe248944b8341",
+            "findingType": "MISSING_EXCEPTION",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].exceptions[]",
+            "sourceEvidence": "in any such Asset Disposition, or series of related Asset Dispositions (except to the extent the Asset Disposition is a Permitted Asset Swap)"
+          },
+          {
+            "findingId": "3a0025ecac2dc2f890cf4dee79c403ba80f226f06c5571c0024fce7dd91c899f",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[4].action",
+            "sourceEvidence": "any combination of the foregoing"
+          },
+          {
+            "findingId": "bd7931a0e0578e1f54060b5cdc1dc578363b8174ac5ba95fe275275e6304538f",
+            "findingType": "MISSING_CONDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[2]",
+            "sourceEvidence": "to invest (including capital expenditures) in any one or more businesses, properties or assets that replace the businesses, properties and/or assets that are the subject of such As"
+          },
+          {
+            "findingId": "2ec86c0adc94645a2e5988061b1d11e13d4c849952920a1fd09131ee7cc89e2e",
+            "findingType": "MISSING_CONDITION",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0]",
+            "sourceEvidence": "(as may be extended by an Acceptable Commitment as set forth below)"
+          },
+          {
+            "findingId": "4c9ad01c5647540340ce3f46d926e9dd71529c7938851317d0d825cb37911f42",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[5].capacityExpression.cases[0]",
+            "sourceEvidence": "within 540 days from the later of (A) the date of such Asset Disposition and (B) the receipt of the Net Cash Proceeds from such Asset Disposition"
+          },
+          {
+            "findingId": "80e70f56ad0a8156d9f1661039a5649f8257e088b1f2d9a9cabf699790a79f6c",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[7].conditions[0]",
+            "sourceEvidence": "to prepay Loans and other Permitted Debt in accordance with Section 2.05(b)(ii)"
+          },
+          {
+            "findingId": "5a8aab0bc523dc4852f36273132e7f97516842d433b3de8482c3aab2dbb3caef",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0]",
+            "sourceEvidence": "Asset Disposition"
+          },
+          {
+            "findingId": "518bb45c547e934885d4d2baacc10bac209d0bec28a1ebc339a35c07e64c040a",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[2].conditions[0]",
+            "sourceEvidence": "with any such investment made by way of a capital or other lease valued at the present value of the minimum amount of payments under such lease (as reasonably determined by the Bor"
+          },
+          {
+            "findingId": "1a6d9cf9700fc6b3b31acd42885f7ae58c06861a8f669fac7d5aa5983f1ad4ce",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0].sourceDependencies[]",
+            "sourceEvidence": "Section 7.04 ... and this Section 7.04"
+          },
+          {
+            "findingId": "b7bd65d0646453bc67c28f24d4204d2885ad90eb6e90ae405dadf7d4508a2e9d",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0]",
+            "sourceEvidence": "(a) Cause or make any Asset Disposition, unless: (1) The Borrower or such Restricted Subsidiary, as applicable, receives consideration...as determined in good faith by the Borrower"
+          },
+          {
+            "findingId": "d08d39e6d162adb7488d0bb6065fcb260d5a5be65f24d062796bb151c1677e27",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[1].capacityExpression",
+            "sourceEvidence": "to invest (including capital expenditures) in Additional Assets"
+          },
+          {
+            "findingId": "63dfa072f96fc907396d869bc899689a1419de080ee730f37c90672f73143218",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[6]",
+            "sourceEvidence": "the Borrower or the applicable Restricted Subsidiaries may apply such amount of Net Cash Proceeds temporarily to reduce Indebtedness under the Revolving Credit Facility"
+          },
+          {
+            "findingId": "2a8fec93e5997566dd1695decd967aa6a3f7ae9e77e0aa0a2279f8f299f9af01",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[2]",
+            "sourceEvidence": "in any one or more businesses, properties or assets that replace the businesses, properties and/or assets"
+          },
+          {
+            "findingId": "ef2c8eeef599c42b12c8d13b4540543d1339565ee046db1e575dc9c1cbc26d4b",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[5].capacityExpression",
+            "sourceEvidence": "within 540 days from the later of (A) the date of such Asset Disposition and (B) the receipt of the Net Cash Proceeds from such Asset Disposition (as may be extended by an Acceptab"
+          },
+          {
+            "findingId": "2e83c3008efa7c32257bf8c68f92bb3de6a0760b62c8f986c10b87c723cee05b",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[3]",
+            "sourceEvidence": "to make any other Permitted Investment"
+          },
+          {
+            "findingId": "2ad6f70511fe04f9a84949d10fd05215e13e381fc6d8ff8734edbcd34e32e2fd",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0].conditions[0]",
+            "sourceEvidence": "from the later of (A) the date of such Asset Disposition and (B) the receipt of the Net Cash Proceeds from such Asset Disposition"
+          },
+          {
+            "findingId": "2a8fec93e5997566dd1695decd967aa6a3f7ae9e77e0aa0a2279f8f299f9af01",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[2]",
+            "sourceEvidence": "with any such investment made by way of a capital or other lease valued at the present value of the minimum amount of payments under such lease (as reasonably determined by the Bor"
+          },
+          {
+            "findingId": "8b3a3d128b9b72bdb34c4124ac6b2682a5b62ba448be84d7c35f4a4f5b4501f9",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[7]",
+            "sourceEvidence": "the Borrower (or any Restricted Subsidiary, as applicable) may elect to invest in Additional Assets prior to receiving the Net Cash Proceeds attributable to any given Asset Disposi"
+          },
+          {
+            "findingId": "148db9ddba332fdcfeaadb89bc4c4cbd69ce0f0388feec88e9081621370643d7",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "MATERIAL",
+            "irPath": "rules[0].ruleType",
+            "sourceEvidence": "(3) within 540 days from the later of (A) the date of such Asset Disposition and (B) the receipt of the Net Cash Proceeds from such Asset Disposition (as may be extended by an Acce"
+          },
+          {
+            "findingId": "c8986383360e501fb4017bc5a30873df9afec899eae38d8121e78596c68210fc",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0].entityScope",
+            "sourceEvidence": "an amount equal to the Net Cash Proceeds from such Asset Disposition is applied, to the extent the Borrower or any Restricted Subsidiary, as applicable, elects"
+          },
+          {
+            "findingId": "169477fb8e8228a524d9e89d88bfd2cb42cbd583f5b7fd2cfa9cd8bfcd534b65",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0]",
+            "sourceEvidence": "in any such Asset Disposition, or series of related Asset Dispositions (except to the extent the Asset Disposition is a Permitted Asset Swap), with a purchase price in excess of th"
+          },
+          {
+            "findingId": "d1c3b75ac2484dbc3ba05fa59f56debf1ad1744111db3b997ac43c4527184a73",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0]",
+            "sourceEvidence": "Section 7.04 ... Section 2.05(b)(ii) and this Section 7.04"
+          },
+          {
+            "findingId": "347ae31070f649959c74d519c8b8c3d4c16d0b07fb975e84e70cdb7743db8343",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[5].compilerSufficiencyClaim",
+            "sourceEvidence": "provided however, that a binding agreement shall be treated as a permitted application of Net Cash Proceeds from the date of such commitment provided that an amount equal to Net Ca"
+          },
+          {
+            "findingId": "5a8aab0bc523dc4852f36273132e7f97516842d433b3de8482c3aab2dbb3caef",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[0]",
+            "sourceEvidence": "(a) to prepay Loans and other Permitted Debt in accordance with Section 2.05(b)(ii); (b) (i) to invest ... (ii) to invest ...; (c) to make any other Permitted Investment; or (d) an"
+          },
+          {
+            "findingId": "80614e216c5d8584d55bb8a30844be3485d5fc4fd911ff48e4e627479502c23f",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[1].conditions[0]",
+            "sourceEvidence": "to invest (including capital expenditures) in Additional Assets (including by means of an investment in Additional Assets by a Restricted Subsidiary)"
+          },
+          {
+            "findingId": "14f9023568d4d26f967341c176127a9ca2b3aa5c7716ccb458260c58ec015845",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[1]",
+            "sourceEvidence": "to invest (including capital expenditures) in Additional Assets (including by means of an investment in Additional Assets by a Restricted Subsidiary)"
+          },
+          {
+            "findingId": "29e86d444fafffae963c5914607e7550833606a3543c4811258b8f746a24bd08",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[7]",
+            "sourceEvidence": "to prepay Loans and other Permitted Debt in accordance with Section 2.05(b)(ii)"
+          },
+          {
+            "findingId": "8b3a3d128b9b72bdb34c4124ac6b2682a5b62ba448be84d7c35f4a4f5b4501f9",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[7]",
+            "sourceEvidence": "may elect to invest in Additional Assets prior to receiving the Net Cash Proceeds attributable to any given Asset Disposition ( provided that such investment shall be made no earli"
+          },
+          {
+            "findingId": "29e86d444fafffae963c5914607e7550833606a3543c4811258b8f746a24bd08",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[7]",
+            "sourceEvidence": "to prepay Loans and other Permitted Debt"
+          },
+          {
+            "findingId": "518bb45c547e934885d4d2baacc10bac209d0bec28a1ebc339a35c07e64c040a",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[2].conditions[0]",
+            "sourceEvidence": "valued at the present value of the minimum amount of payments under such lease (as reasonably determined by the Borrower)"
+          },
+          {
+            "findingId": "2a8fec93e5997566dd1695decd967aa6a3f7ae9e77e0aa0a2279f8f299f9af01",
+            "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+            "severity": "UNCERTAIN",
+            "irPath": "rules[2]",
+            "sourceEvidence": "the present value of the minimum amount of payments under such lease"
+          },
+          {
+            "findingId": "6ab5a0403c7786cc08d7107c45e2da02c569b1741025ef2a8091c11c649e4349",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[5].capacityExpression.cases[0].value",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "d6f3ffcd49a5d13129fd7eb162eb8b9514861bba0467e635cb92a3facc01e1d4",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[5].capacityExpression.cases[1].value",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "8c7d030f17353437fde1f4be6baeab2a5a00582ac0efa9c0de603d540e6cda7f",
+            "findingType": "UNSUPPORTED_IR_ADDITION",
+            "severity": "MATERIAL",
+            "irPath": "rules[5].capacityExpression.defaultValue",
+            "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+          },
+          {
+            "findingId": "6646b409d1d6c1b6a977d70b796569e4913c81a855e5c1bd13cc7aa43e067d57",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.04"
+          },
+          {
+            "findingId": "16f6a2b7a3f7bbd3af66243fbd33b22e61d9de04af27fed45c816ee7f2d7ca32",
+            "findingType": "MISSING_DEPENDENCY",
+            "severity": "NON_MATERIAL",
+            "irPath": null,
+            "sourceEvidence": "Section 7.04(b)"
+          },
+          {
+            "findingId": "5ea3819ae17406c841fe3256a918ee59898e543be0d44a9e7a815fdb28dc9fd1",
+            "findingType": "UNSUPPORTED_NUMERIC_ASSERTION",
+            "severity": "MATERIAL",
+            "irPath": "rules[5].capacityExpression.cases[1].description",
+            "sourceEvidence": "(no authenticated source figure supports this assertion - neither the candidate's own operative window nor any authenticated retrieved evidence states it)"
+          },
+          {
+            "findingId": "a2d68b9cf6c22187a40dea480a8f250f9709d13c75d12a2fe2a17adab6e7e170",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:c26f48d1d4512ff77be6268b]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "1b0541920512f56c16f2cf96a59cd46d0927fa669c8e4e83b42c7411e97b908e",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:d83f913114abb8acd68a15e2]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "0f941c2afaf0bf0a2429973f93acff6e2c611f84d00a30718bc3ca4e4d13e8d7",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:87862b96ca72166e02b7d0d9]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "af965369ed0bcfff9e44233ac4feb54421ec4bbfe728557102f6ac5ab86b629e",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:747818b4404fe7c6a010b37d]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          },
+          {
+            "findingId": "bca139b64599c021192b9a356ff968a32f8a70f2bf6b8106c2ac14734dc13a1d",
+            "findingType": "QUALITATIVE_ASSERTION_UNGROUNDED",
+            "severity": "MATERIAL",
+            "irPath": "rules[?ir-rule:12c150034f76672caa5933cb]",
+            "sourceEvidence": "(the cited excerpt does not occur in the admissible source)"
+          }
+        ],
+        "costUsd": 0.133522,
+        "costStatus": "EXACT",
+        "timedOut": false
+      },
+      "committedUsd": 5.881165
     }
   ],
   "stop": null,
   "spend": {
     "ceilingUsd": 162.63,
     "stopAtUsd": 162.63,
-    "exactSpendUsd": 5.069077,
+    "exactSpendUsd": 5.881165,
     "retainedUnknownTimeoutUsd": 0,
     "outstandingReservedUsd": 0,
-    "committedUsd": 5.069077,
-    "remainingUsd": 157.560923
+    "committedUsd": 5.881165,
+    "remainingUsd": 156.748835
   }
 }

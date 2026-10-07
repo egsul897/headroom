@@ -73,7 +73,7 @@ Results below are list-price charges from the in-progress record `development-pi
 | 7.04(a)(2) | 2,573 | REVIEW_REQUIRED, 1 rule | MATERIAL_DISCREPANCY | 0.1266 |
 | 7.04(a)(2)(i) | 20 | FAILED, 0 rules | not called | 0.1394 |
 
-The three 39-character `7.04` rows are the table-of-contents line `Section 7.04 Asset Dispositions 233`. The verifier's findings say that heading is the operative text and the compiled rules add content the line does not contain. The longer `7.04` body was not selected. `7.04(a)` and `7.04(a)(2)` also verified as `MATERIAL_DISCREPANCY`. One finding quotes a compiled proviso that replaced the five deemed-cash clauses with placeholder tests. Committed list price at this snapshot is $5.07 of $162.63. The process is still dispatching. Uncalled rows are not evidence of absence.
+The three 39-character `7.04` rows are the table-of-contents line `Section 7.04 Asset Dispositions 233`. The verifier's findings say that heading is the operative text and the compiled rules add content the line does not contain. The longer `7.04` body was not selected. `7.04(a)` and `7.04(a)(2)` also verified as `MATERIAL_DISCREPANCY`. One finding quotes a compiled proviso that replaced the five deemed-cash clauses with placeholder tests. The table is the earlier part of the run. Later rows are in `verification.json`. At the snapshot committed with this paragraph: 12 attempts, 5 compiles failed with no rules, 7 compiles produced rules and each verified `MATERIAL_DISCREPANCY`. Committed list price $5.88 of $162.63. The process is still dispatching. Uncalled rows are not evidence of absence.
 
 ## Offline stages that ran
 
