@@ -377,8 +377,21 @@ describe("P3-FFC1 financial fact conflict fail-closed", () => {
     expect(laterAfter.promotedToId).toBeNull();
     expect(earlyAfter.reviewStatus).toBe("REVIEW_REQUIRED");
     expect(laterAfter.reviewStatus).toBe("REVIEW_REQUIRED");
-    expect(earlyAfter.rationale).toContain(CONFLICTING_FINANCIAL_FACTS);
+    // Original rationale stays byte-stable (null on this fixture). The conflict
+    // code is on the skip and on the append-only system review event.
+    expect(earlyAfter.rationale).toBeNull();
+    expect(laterAfter.rationale).toBeNull();
     expect(earlyAfter.reviewedBy).toBeNull();
+    expect(earlyAfter.reviewedAt).toBeNull();
+    const earlyEvents = await prisma.candidateReviewEvent.findMany({ where: { candidateId: cashEarly.id } });
+    expect(earlyEvents).toHaveLength(1);
+    expect(earlyEvents[0]).toMatchObject({
+      action: "REVIEW_REQUIRED",
+      previousStatus: "APPROVED",
+      newStatus: "REVIEW_REQUIRED",
+      reviewedBy: null,
+    });
+    expect(earlyEvents[0]!.note).toContain(CONFLICTING_FINANCIAL_FACTS);
 
     const ebitdaAfter = await prisma.extractionCandidate.findUniqueOrThrow({ where: { id: ebitda.id } });
     expect(ebitdaAfter.promotedAt).not.toBeNull();
