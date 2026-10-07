@@ -8,15 +8,17 @@ name: home-overview
 on:
   push:
     paths:
-      - "tests/home-*.test.tsx"
+      - "tests/home-overview-*.test.tsx"
       - "components/home/**"
       - "lib/home/**"
+      - "app/**/page.tsx"
       - ".github/workflows/home-overview.yml"
   pull_request:
     paths:
-      - "tests/home-*.test.tsx"
+      - "tests/home-overview-*.test.tsx"
       - "components/home/**"
       - "lib/home/**"
+      - "app/**/page.tsx"
       - ".github/workflows/home-overview.yml"
 
 jobs:
@@ -30,5 +32,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
       - name: present-check
-        run: npx vitest run tests/home-*.test.tsx
+        run: npx vitest run tests/home-overview-*.test.tsx
