@@ -31,6 +31,39 @@ import { maxCostOfRequestUsd, PRICING_TABLE_VERSION } from "../../lib/contract-m
 
 export const DEVELOPMENT_BANNER = "DEVELOPMENT ≠ CERTIFIED ≠ PINNED_OFFLINE";
 
+const VERIFICATION_RESERVATION_SOURCE = "docs/phase-3-final-chewy/02-cost-preflight.json verifierSemanticReviewPerCandidate $0.3293 (85,458 in / 15,838 out on Sonnet) and conditionSuspicionPerCall $0.0114 times 5. Haiku figure scales that same token observation by scripts/semantic-accountability-cost-plan.ts list prices $1/$5, which are half of Sonnet $2/$10. Not executed. Not a rate-card price. Verification is per compiled candidate; these rows were not compiled.";
+
+function reserveVerification(candidateCount: number): DevelopmentPipelineResult["verificationReservation"] {
+  const sonnetReview = 0.3293;
+  const suspicion = 0.0114;
+  const suspicionCalls = 5;
+  const haikuReview = 85458 * (1 / 1e6) + 15838 * (5 / 1e6);
+  const haikuSuspicion = suspicion * 0.5;
+  return {
+    executed: false,
+    candidateCount,
+    sonnetObservedRateUsd: Number((candidateCount * sonnetReview + candidateCount * suspicionCalls * suspicion).toFixed(2)),
+    haikuListScaledUsd: Number((candidateCount * haikuReview + candidateCount * suspicionCalls * haikuSuspicion).toFixed(2)),
+    source: VERIFICATION_RESERVATION_SOURCE,
+  };
+}
+
+function readCrossCuts(candidates: DevelopmentPipelineResult["discoveredCandidates"], owningNodeIds: string[], reclassNodeIds: string[], assetNodeIds: string[]): DevelopmentPipelineResult["crossCutRead"] {
+  const owns = new Set(owningNodeIds);
+  const reclass = new Set(reclassNodeIds);
+  const assets = new Set(assetNodeIds);
+  const hits = (ids: string[], wanted: Set<string>) => ids.some((id) => wanted.has(id));
+  return {
+    builderRoleCount: candidates.filter((candidate) => candidate.role === "BUILDER").length,
+    builderOnOwningNodes: candidates.filter((candidate) => hits(candidate.structuralNodeIds, owns)).map((candidate) => candidate.discoveryId),
+    builderOn705: candidates.filter((candidate) => candidate.normalizedSourceRef === "7.05" || candidate.normalizedSourceRef.startsWith("7.05")).map((candidate) => candidate.discoveryId),
+    reclassOnWindowNodes: candidates.filter((candidate) => hits(candidate.structuralNodeIds, reclass)).map((candidate) => candidate.discoveryId),
+    reclassEdgeWritten: false,
+    assetOn704Nodes: candidates.filter((candidate) => hits(candidate.structuralNodeIds, assets) || candidate.normalizedSourceRef === "7.04" || candidate.normalizedSourceRef.startsWith("7.04")).map((candidate) => candidate.discoveryId),
+    assetNodeSelected: false,
+  };
+}
+
 export interface DevelopmentPackageInput {
   /** Fixture root. Only files under this directory are read. */
   packageDir: string;
@@ -121,6 +154,8 @@ export interface DevelopmentPipelineResult {
     modelCalls: number;
     sectionFailures: number;
     finalCandidateCount: number;
+    inputTokens: number;
+    outputTokens: number;
   };
   passC: { executed: boolean; reason: string };
   passD: { executed: boolean; reason: string };
@@ -158,7 +193,19 @@ export interface DevelopmentPipelineResult {
       candidates: Array<{ nodeId: string; heading: string; charStart: number; charEnd: number; ownedChars: number }>;
     };
   };
-  /** Real Pass B/C/D identities, only when a provider key was present. Empty when Pass B is refused. */
+  /** Every Pass D candidate from a real provider run. Empty when Pass B is refused. */
+  discoveredCandidates: Array<{
+    discoveryId: string;
+    role: string;
+    families: string[];
+    normalizedSourceRef: string;
+    structuralNodeIds: string[];
+    description: string;
+    banner: typeof DEVELOPMENT_BANNER;
+    certified: false;
+    pinnedOffline: false;
+  }>;
+  /** Real Pass B/C/D identities for the builder and asset-disposition filters. Empty when Pass B is refused. */
   providerScopedCandidates: Array<{
     discoveryId: string;
     role: string;
@@ -169,6 +216,24 @@ export interface DevelopmentPipelineResult {
     certified: false;
     pinnedOffline: false;
   }>;
+  /** Read of persisted candidates against the deterministic cross-cut windows. Does not seal a role or write an edge. */
+  crossCutRead: {
+    builderRoleCount: number;
+    builderOnOwningNodes: string[];
+    builderOn705: string[];
+    reclassOnWindowNodes: string[];
+    reclassEdgeWritten: false;
+    assetOn704Nodes: string[];
+    assetNodeSelected: false;
+  };
+  /** Not executed. Arithmetic from the frozen Chewy per-candidate observations times this run's candidate count. */
+  verificationReservation: {
+    executed: false;
+    candidateCount: number;
+    sonnetObservedRateUsd: number;
+    haikuListScaledUsd: number;
+    source: string;
+  };
   paths: {
     builder: {
       stage: "PASS_A_BUILDER_LANGUAGE_PLUS_CROSS_CUT_TEXT_HEURISTIC";
@@ -390,6 +455,7 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
   let passB: DevelopmentPipelineResult["passB"];
   let passC: DevelopmentPipelineResult["passC"];
   let passD: DevelopmentPipelineResult["passD"];
+  let discoveredCandidates: DevelopmentPipelineResult["discoveredCandidates"] = [];
   let providerScopedCandidates: DevelopmentPipelineResult["providerScopedCandidates"] = [];
   let discoveryIdsMinted = false;
   let semanticRolesAssigned = false;
@@ -425,7 +491,20 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
       modelCalls: discovery.summary.modelCalls,
       sectionFailures: discovery.summary.sectionFailures.length,
       finalCandidateCount: discovery.summary.finalCandidateCount,
+      inputTokens: discovery.summary.inputTokens,
+      outputTokens: discovery.summary.outputTokens,
     };
+    discoveredCandidates = discovery.candidates.map((candidate) => ({
+      discoveryId: candidate.discoveryId,
+      role: candidate.role,
+      families: [...candidate.families],
+      normalizedSourceRef: candidate.normalizedSourceRef,
+      structuralNodeIds: [...candidate.structuralNodeIds],
+      description: candidate.description,
+      banner: DEVELOPMENT_BANNER,
+      certified: false as const,
+      pinnedOffline: false as const,
+    }));
     passC = { executed: true, reason: "Pass C ran inside runDiscoveryPipeline on real Pass B items." };
     passD = { executed: true, reason: "Pass D ran inside runDiscoveryPipeline on real Pass C candidates." };
     providerScopedCandidates = discovery.candidates
@@ -516,7 +595,10 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
         })),
       },
     },
+    discoveredCandidates,
     providerScopedCandidates,
+    crossCutRead: readCrossCuts(discoveredCandidates, owningNodes.map((node) => node.nodeId), reclassWindows.map((window) => window.nodeId), assetCandidates.map((node) => node.nodeId)),
+    verificationReservation: reserveVerification(discoveredCandidates.length),
     paths: {
       builder: {
         stage: "PASS_A_BUILDER_LANGUAGE_PLUS_CROSS_CUT_TEXT_HEURISTIC",

@@ -43,7 +43,15 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(result.eligibleClaimed).toBe(false);
     expect(result.discoveryIdsMinted).toBe(false);
     expect(result.semanticRolesAssigned).toBe(false);
+    expect(result.discoveredCandidates).toEqual([]);
     expect(result.providerScopedCandidates).toEqual([]);
+    expect(result.crossCutRead.builderRoleCount).toBe(0);
+    expect(result.crossCutRead.reclassEdgeWritten).toBe(false);
+    expect(result.crossCutRead.assetNodeSelected).toBe(false);
+    expect(result.verificationReservation.executed).toBe(false);
+    expect(result.verificationReservation.candidateCount).toBe(0);
+    expect(result.verificationReservation.sonnetObservedRateUsd).toBe(0);
+    expect(result.verificationReservation.haikuListScaledUsd).toBe(0);
     expect(result.passB.executed).toBe(false);
     expect(result.passB.terminal).toBe("PROVIDER_EXECUTION_REQUIRED");
     expect(result.offline.passACandidates).toBe(946);
