@@ -1,0 +1,67 @@
+# Soft-gate present-check only. IMPLEMENTED ≠ CERTIFIED.
+# Not certification credit. Does not replace canonical-compiler.yml.
+# Dashboard invent-absence paths stay off the certified Phase-3 path
+# (canonical-compiler.yml and stratified-cert.yml). A green run here
+# is not certification credit.
+#
+# Unit/render suite only. No Postgres. No Neon secret. No paid provider
+# credential. Provider keys below are empty on purpose. DATABASE_URL is unset.
+#
+# Held globs (same class HOF1 / IAFSG1 held; not shipped):
+# - tests/dashboard/**invent-absence**  (glued **; same class as tests/home-**)
+# - bracket-escape forms (app/\[companyId\]/...)
+# The present-check runs tests/dashboard/invent-absence*.test.ts(x) only.
+# It does not run a Postgres harness.
+
+name: dashboard-invent-absence
+
+on:
+  push:
+    paths:
+      - "tests/dashboard/invent-absence*.test.ts"
+      - "tests/dashboard/invent-absence*.test.tsx"
+      - "app/**/dashboard/**"
+      - "components/DashboardClient.tsx"
+      - "components/CovenantOverview.tsx"
+      - "lib/dashboard/**"
+      - ".github/workflows/dashboard-invent-absence.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
+  pull_request:
+    paths:
+      - "tests/dashboard/invent-absence*.test.ts"
+      - "tests/dashboard/invent-absence*.test.tsx"
+      - "app/**/dashboard/**"
+      - "components/DashboardClient.tsx"
+      - "components/CovenantOverview.tsx"
+      - "lib/dashboard/**"
+      - ".github/workflows/dashboard-invent-absence.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig*.json"
+      - "vitest.config.*"
+
+jobs:
+  dashboard-invent-absence:
+    name: dashboard invent-absence (soft gate)
+    runs-on: ubuntu-latest
+    env:
+      # Empty on purpose. This gate must not call a paid provider.
+      # DATABASE_URL is unset. No NEON_DATABASE_URL.
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: present-check
+        run: npx vitest run tests/dashboard/invent-absence*.test.ts tests/dashboard/invent-absence*.test.tsx
