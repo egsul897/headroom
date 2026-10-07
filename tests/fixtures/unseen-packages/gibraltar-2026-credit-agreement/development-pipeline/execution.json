@@ -1,0 +1,586 @@
+{
+  "banner": "DEVELOPMENT ≠ CERTIFIED ≠ PINNED_OFFLINE",
+  "designation": "DEVELOPMENT",
+  "certified": false,
+  "pinnedOffline": false,
+  "eligibleClaimed": false,
+  "matrixCellSelected": false,
+  "pinWritten": false,
+  "readyToPinInvented": false,
+  "stage1MarkerInvented": false,
+  "phase3PercentRaised": false,
+  "discoveryIdsMinted": false,
+  "semanticRolesAssigned": false,
+  "frozenSha256": "f782f2f98537c8b76a8a4506c92a51e74c40a0a8eafd203b7343eaa0a21aede3",
+  "frozenHashMatches": true,
+  "documentId": "gibraltar-doc-a-2026-02-02-credit-agreement",
+  "label": "Gibraltar Industries, Inc. Credit Agreement dated as of February 2, 2026 (EX-10.1)",
+  "offline": {
+    "structuredFrom": "html-parse-matches-extracted-text",
+    "htmlParseMatchesExtractedText": true,
+    "extractedTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+    "provenanceExtractedTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+    "extractedTextMatchesProvenance": true,
+    "htmlBodySha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "provenanceBodySha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "htmlBodyMatchesProvenance": true,
+    "parsedChars": 1029323,
+    "chunkCount": 511,
+    "chunksWithSectionRef": 444,
+    "totalNodes": 2087,
+    "definitionsDetected": 564,
+    "referencesDetected": 1459,
+    "referencesResolved": 491,
+    "referencesUnresolved": 145,
+    "referencesAmbiguous": 823,
+    "passACandidates": 946,
+    "passASignalCounts": {
+      "headline_heading": 33,
+      "permitted_construct": 73,
+      "covenant_verb": 217,
+      "permission_construction": 275,
+      "builder_language": 8,
+      "financial_metric": 114,
+      "exception_marker": 454,
+      "prohibitive_construction": 231,
+      "percentage": 74,
+      "greater_lesser_of": 42,
+      "dollar_value": 51,
+      "ratio_expression": 14,
+      "shared_cap": 51,
+      "refinancing": 3,
+      "cure_or_trigger": 22
+    },
+    "healthFindings": 918,
+    "supersessionIndex": "EMPTY"
+  },
+  "passB": {
+    "executed": false,
+    "terminal": "PROVIDER_EXECUTION_REQUIRED",
+    "syntheticInvented": false
+  },
+  "passC": {
+    "executed": false,
+    "reason": "Pass C expands Pass B semantic items. Pass B did not run."
+  },
+  "passD": {
+    "executed": false,
+    "reason": "Pass D reconciles Pass C candidates. Pass B did not run."
+  },
+  "providerExecutionRequired": {
+    "code": "PROVIDER_EXECUTION_REQUIRED",
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "command": "AI_GATEWAY_API_KEY=\"$AI_GATEWAY_API_KEY\" npx tsx scripts/p3-development-pipeline/execute-gibraltar.ts",
+    "workflow": "getStageCaller selects VERCEL_AI_GATEWAY when AI_GATEWAY_API_KEY is set (ANTHROPIC_API_KEY is the direct fallback; neither key is set here). Model is DEFAULT_GATEWAY_ANALYZER_MODEL unless ANALYZER_MODEL is set. runDiscoveryPipeline then calls runPassBSemanticClassification once per Pass A section (stage covenant_discovery_section). Pass C and Pass D run in that same call after real Pass B items return. SyntheticStageCaller is not used.",
+    "expectedMaxCostUsd": 181.67,
+    "pricingTableVersion": "headroom-pricing.v1 (2026-09)",
+    "maxOutputTokensPerCall": 128000,
+    "sectionsToCall": 141,
+    "pipelineStageUnlocked": "PASS_B_SEMANTIC_CLASSIFICATION"
+  },
+  "investigations": {
+    "builderBasket": {
+      "phrase": "Available Amount Builder Basket",
+      "citedRef": "7.05(a)(y)",
+      "citedRefResolution": "NOT_FOUND",
+      "citedRefCandidateCount": 0,
+      "owningNodes": [
+        {
+          "sectionRef": "1.01(3)(31)(ii)",
+          "nodeId": "structural-node:87f014fc8c17c129a3c0e15f",
+          "ownChars": 1174,
+          "excerpt": "it ” has the meaning specified in Section 2.03(c)(iii) . “ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) . “ Available Tenor ” means, as of any "
+        },
+        {
+          "sectionRef": "7.05(a)(4)(ii)(vi)(B)",
+          "nodeId": "structural-node:99a53df526604251c4688760",
+          "ownChars": 95,
+          "excerpt": "(B) 40.0% of LTM EBITDA (the foregoing clause (y) , the “ Available Amount Builder Basket ”)."
+        }
+      ],
+      "discoveryId": null,
+      "sealedRole": null
+    },
+    "reclass": {
+      "edgeWritten": false,
+      "categoryToTargetRuleIdInvented": false,
+      "windows": [
+        {
+          "sectionRef": "1.01(3)(31)(ii)",
+          "nodeId": "structural-node:4716c16a7c6bd408e2181750",
+          "ownChars": 866,
+          "mentionsSectionRef": true,
+          "excerpt": "s sole discretion, will be entitled to divide, classify and reclassify such transaction (or a portion thereof) as an Asset Disposition and/or one or more of the types of"
+        },
+        {
+          "sectionRef": "1.01(3)(31)(2)(I)(b)(xv)",
+          "nodeId": "structural-node:465e574b5e26b09b9c67d39f",
+          "ownChars": 788,
+          "mentionsSectionRef": false,
+          "excerpt": "Restricted Group during such period, (y) as a result of the reclassification of items from short-term to long-term or vice versa or (z) the application of recapitalization or p"
+        },
+        {
+          "sectionRef": "1.01(9)(c)(46)",
+          "nodeId": "structural-node:7254026c586c453960bc7646",
+          "ownChars": 697,
+          "mentionsSectionRef": true,
+          "excerpt": "s sole discretion may divide, classify or from time to time reclassify all or any portion of such Permitted Lien in any manner that complies with this Agreement and such"
+        },
+        {
+          "sectionRef": "7.01(b)(a)",
+          "nodeId": "structural-node:6cb24e6cce5938385cd350b3",
+          "ownChars": 488,
+          "mentionsSectionRef": true,
+          "excerpt": "s sole discretion, will classify, and may from time to time reclassify pursuant to clause (b) below, such item of Indebtedness (or any portion thereof) and only be requir"
+        },
+        {
+          "sectionRef": "7.01(b)(b)",
+          "nodeId": "structural-node:3ec203d9ebbb05c27d365f87",
+          "ownChars": 884,
+          "mentionsSectionRef": true,
+          "excerpt": "y related Liens are permitted to be incurred at the time of reclassification; provided that any Indebtedness incurred by any Loan Party pursuant to one of the clauses of Sectio"
+        },
+        {
+          "sectionRef": "7.01(b)(j)",
+          "nodeId": "structural-node:1772592ddcc8ac1c8be3810b",
+          "ownChars": 1910,
+          "mentionsSectionRef": true,
+          "excerpt": "onal shares of Preferred Stock or Disqualified Stock or the reclassification of commitments or obligations not treated as Indebtedness due to a change in GAAP, will not be deem"
+        },
+        {
+          "sectionRef": "7.05(c)",
+          "nodeId": "structural-node:22026d2626147954808fba2d",
+          "ownChars": 3798,
+          "mentionsSectionRef": true,
+          "excerpt": "ntitled to divide or classify (or later divide, classify or reclassify in whole or in part in its sole discretion) such Restricted Payment or Investment (or portion there"
+        }
+      ]
+    },
+    "assetDispositions704": {
+      "sectionRef": "7.04",
+      "resolution": "AMBIGUOUS",
+      "selected": false,
+      "candidates": [
+        {
+          "nodeId": "structural-node:a744dbebadfcae7ddeac6525",
+          "heading": "Asset Dispositions",
+          "charStart": 5496,
+          "charEnd": 5535,
+          "ownedChars": 39
+        },
+        {
+          "nodeId": "structural-node:a80b8b3639f39c55e5617fd7",
+          "heading": "Asset Dispositions",
+          "charStart": 768425,
+          "charEnd": 774192,
+          "ownedChars": 5767
+        }
+      ]
+    }
+  },
+  "paths": {
+    "builder": {
+      "stage": "PASS_A_BUILDER_LANGUAGE_PLUS_CROSS_CUT_TEXT_HEURISTIC",
+      "sealedRole": null,
+      "crossCutClaimed": false,
+      "rows": [
+        {
+          "sectionRef": "10.03",
+          "heading": "No Waiver; Cumulative Remedies; Enforcement",
+          "nodeType": "SECTION",
+          "nodeId": "structural-node:73eb44b617e791fa0fee424d",
+          "charStart": 7119,
+          "charEnd": 7184,
+          "ownChars": 65,
+          "passASignals": [
+            "builder_language"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "Section 10.03 No Waiver; Cumulative Remedies; Enforcement 282"
+        },
+        {
+          "sectionRef": "1.01(3)(31)(ii)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:87f014fc8c17c129a3c0e15f",
+          "charStart": 37038,
+          "charEnd": 38212,
+          "ownChars": 1174,
+          "passASignals": [
+            "permission_construction",
+            "builder_language"
+          ],
+          "builderHeuristic": true,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "it ” has the meaning specified in Section 2.03(c)(iii) . “ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) . “ Available Tenor ” means, as o"
+        },
+        {
+          "sectionRef": "1.01(3)(31)(2)(5)(a)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:d3c7285b25808830028baf9f",
+          "charStart": 114277,
+          "charEnd": 114608,
+          "ownChars": 331,
+          "passASignals": [
+            "builder_language"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "n of the Borrower with respect to any quarterly period, the cumulative effect (including charges, accruals, expenses and reserves) of a change in law, regulation or accou"
+        },
+        {
+          "sectionRef": "1.01(3)(31)(2)(5)(b)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:1183b38e123b2ca31f360894",
+          "charStart": 114608,
+          "charEnd": 114950,
+          "ownChars": 342,
+          "passASignals": [
+            "builder_language"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "ject to the last paragraph of the definition of “GAAP,” the cumulative effect of a change in accounting principles and changes as a result of the adoption or modification"
+        },
+        {
+          "sectionRef": "2.05(b)(B)(8)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:327e27890e5a4c6ff604c03b",
+          "charStart": 465576,
+          "charEnd": 468670,
+          "ownChars": 3094,
+          "passASignals": [
+            "dollar_value",
+            "percentage",
+            "ratio_expression",
+            "prohibitive_construction",
+            "permission_construction",
+            "exception_marker",
+            "greater_lesser_of",
+            "covenant_verb",
+            "financial_metric",
+            "builder_language",
+            "shared_cap"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "Amount for such Excess Cash Flow Period shall constitute “ Retained Excess Cash Flow Amount ” which Retained Excess Cash Flow Amount may be used for any purpose not prohibited here"
+        },
+        {
+          "sectionRef": "7.05(a)(4)(ii)(vi)(B)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:99a53df526604251c4688760",
+          "charStart": 782847,
+          "charEnd": 782942,
+          "ownChars": 95,
+          "passASignals": [
+            "percentage",
+            "financial_metric",
+            "builder_language"
+          ],
+          "builderHeuristic": true,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "(B) 40.0% of LTM EBITDA (the foregoing clause (y) , the “ Available Amount Builder Basket ”)."
+        },
+        {
+          "sectionRef": "10.03",
+          "heading": "No Waiver; Cumulative Remedies; Enforcement",
+          "nodeType": "SECTION",
+          "nodeId": "structural-node:ec975d1261fab961adf34cd5",
+          "charStart": 940412,
+          "charEnd": 944543,
+          "ownChars": 67,
+          "passASignals": [
+            "builder_language"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "Section 10.03 No Waiver; Cumulative Remedies; Enforcement ."
+        },
+        {
+          "sectionRef": "10.03(a)",
+          "heading": "",
+          "nodeType": "SUBSECTION",
+          "nodeId": "structural-node:1bc3a2a1c36d19aa98fcc482",
+          "charStart": 940479,
+          "charEnd": 941166,
+          "ownChars": 687,
+          "passASignals": [
+            "cure_or_trigger",
+            "builder_language"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "provided hereunder and under each other Loan Document, are cumulative and not exclusive of any rights, remedies, powers and privileges provided by Law. 282"
+        }
+      ]
+    },
+    "reclass": {
+      "stage": "CROSS_CUT_RECLASS_TEXT_HEURISTIC",
+      "sealedRole": null,
+      "crossCutClaimed": false,
+      "rows": [
+        {
+          "sectionRef": "1.01(3)(31)(ii)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:4716c16a7c6bd408e2181750",
+          "charStart": 35979,
+          "charEnd": 36845,
+          "ownChars": 866,
+          "passASignals": [
+            "percentage",
+            "permitted_construct",
+            "financial_metric"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": true,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "s sole discretion, will be entitled to divide, classify and reclassify such transaction (or a portion thereof) as an Asset Disposition and/or one or more of the types of"
+        },
+        {
+          "sectionRef": "1.01(3)(31)(2)(I)(b)(xv)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:465e574b5e26b09b9c67d39f",
+          "charStart": 162070,
+          "charEnd": 162858,
+          "ownChars": 788,
+          "passASignals": [
+            "exception_marker"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": true,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "Restricted Group during such period, (y) as a result of the reclassification of items from short-term to long-term or vice versa or (z) the application of recapitalization or p"
+        },
+        {
+          "sectionRef": "1.01(9)(c)(46)",
+          "heading": "",
+          "nodeType": "SUBCLAUSE",
+          "nodeId": "structural-node:7254026c586c453960bc7646",
+          "charStart": 304812,
+          "charEnd": 305509,
+          "ownChars": 697,
+          "passASignals": [
+            "permission_construction",
+            "permitted_construct"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": true,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "s sole discretion may divide, classify or from time to time reclassify all or any portion of such Permitted Lien in any manner that complies with this Agreement and such"
+        },
+        {
+          "sectionRef": "7.01(b)(a)",
+          "heading": "",
+          "nodeType": "CLAUSE",
+          "nodeId": "structural-node:6cb24e6cce5938385cd350b3",
+          "charStart": 756110,
+          "charEnd": 756598,
+          "ownChars": 488,
+          "passASignals": [
+            "permission_construction"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": true,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "s sole discretion, will classify, and may from time to time reclassify pursuant to clause (b) below, such item of Indebtedness (or any portion thereof) and only be requir"
+        },
+        {
+          "sectionRef": "7.01(b)(b)",
+          "heading": "",
+          "nodeType": "CLAUSE",
+          "nodeId": "structural-node:3ec203d9ebbb05c27d365f87",
+          "charStart": 756598,
+          "charEnd": 757482,
+          "ownChars": 884,
+          "passASignals": [
+            "permission_construction",
+            "exception_marker"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": true,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "y related Liens are permitted to be incurred at the time of reclassification; provided that any Indebtedness incurred by any Loan Party pursuant to one of the clauses of Sectio"
+        },
+        {
+          "sectionRef": "7.01(b)(j)",
+          "heading": "",
+          "nodeType": "CLAUSE",
+          "nodeId": "structural-node:1772592ddcc8ac1c8be3810b",
+          "charStart": 760278,
+          "charEnd": 762188,
+          "ownChars": 1910,
+          "passASignals": [
+            "prohibitive_construction",
+            "exception_marker"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": true,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "onal shares of Preferred Stock or Disqualified Stock or the reclassification of commitments or obligations not treated as Indebtedness due to a change in GAAP, will not be deem"
+        },
+        {
+          "sectionRef": "7.05(c)",
+          "heading": "",
+          "nodeType": "SUBSECTION",
+          "nodeId": "structural-node:22026d2626147954808fba2d",
+          "charStart": 804171,
+          "charEnd": 808797,
+          "ownChars": 3798,
+          "passASignals": [
+            "permission_construction",
+            "exception_marker",
+            "permitted_construct",
+            "covenant_verb",
+            "financial_metric"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": true,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": null,
+          "bareRefCandidateCount": null,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "ntitled to divide or classify (or later divide, classify or reclassify in whole or in part in its sole discretion) such Restricted Payment or Investment (or portion there"
+        }
+      ]
+    },
+    "assetDispositions": {
+      "stage": "PASS_A_HEADLINE_DISPOSITION_HEADING",
+      "familyAssigned": false,
+      "stratum": null,
+      "crossCutClaimed": false,
+      "rows": [
+        {
+          "sectionRef": "7.04",
+          "heading": "Asset Dispositions",
+          "nodeType": "SECTION",
+          "nodeId": "structural-node:a744dbebadfcae7ddeac6525",
+          "charStart": 5496,
+          "charEnd": 5535,
+          "ownChars": 39,
+          "passASignals": [
+            "headline_heading"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": "AMBIGUOUS",
+          "bareRefCandidateCount": 2,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "Section 7.04 Asset Dispositions 233"
+        },
+        {
+          "sectionRef": "7.04",
+          "heading": "Asset Dispositions",
+          "nodeType": "SECTION",
+          "nodeId": "structural-node:a80b8b3639f39c55e5617fd7",
+          "charStart": 768425,
+          "charEnd": 774192,
+          "ownChars": 45,
+          "passASignals": [
+            "headline_heading"
+          ],
+          "builderHeuristic": false,
+          "reclassificationHeuristic": false,
+          "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+          "bareRefResolution": "AMBIGUOUS",
+          "bareRefCandidateCount": 2,
+          "discoveryId": null,
+          "sealedRole": null,
+          "family": null,
+          "excerpt": "Section 7.04 Asset Dispositions ."
+        }
+      ]
+    }
+  }
+}
