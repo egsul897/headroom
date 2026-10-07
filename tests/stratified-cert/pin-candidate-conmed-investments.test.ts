@@ -236,6 +236,21 @@ describe("pinCandidate CONMED INVESTMENTS §7.8(d)", () => {
     const eligibility = JSON.parse(fs.readFileSync(path.join(outDir, "01c-target-eligibility.json"), "utf8"));
     expect(eligibility.eligible).toBe(true);
     expect(eligibility.eligibilityBlockers).toEqual([]);
+    expect(eligibility.eligibilityBlockersContract.dirtySpanDiagnosticsAreEligibilityBlockers).toBe(false);
+    expect(eligibility.eligibilityBlockersContract.rule).toMatch(
+      /eligible === \(eligibilityBlockers\.length === 0\)/,
+    );
+    expect(eligibility.eligibilityBlockersContract.rule).toMatch(/not a clean-window claim/i);
+    expect(eligibility.dirtySpanDiagnostics.map((d: { code: string }) => d.code)).toEqual([
+      "PDF_PAGE_FOOTER_EMBEDDED",
+      "KEY_MAN_INSURANCE_PROVISO",
+      "MULTIPLE_RULES_LIKELY",
+    ]);
+    const dirt = JSON.stringify(eligibility.dirtySpanDiagnostics);
+    expect(dirt).toMatch(/103/);
+    expect(dirt).toMatch(/key-man/i);
+    expect(dirt).toMatch(/multipleRulesLikely is true/);
+    expect(dirt).not.toMatch(/CERTIFIED(?! is not)/);
     expect(eligibility.identityStrength).toBe("STRONG");
     expect(eligibility.status).toBe("PINNED_OFFLINE");
     expect(eligibility.status).not.toBe("CERTIFIED");
@@ -303,7 +318,12 @@ describe("pinCandidate CONMED INVESTMENTS §7.8(d)", () => {
     expect(primary.status).toBe("PINNED_OFFLINE");
     expect(primary.sectionRef).toBe("7.8(l)");
     expect(primary.role).toBe("BASKET");
-    expect(primary.note).toMatch(/remains unpinned/);
+    expect(primary.note).not.toMatch(/remains unpinned/i);
+    expect(primary.why).not.toMatch(/stays unpinned/i);
+    expect(primary.note).toMatch(/is PINNED_OFFLINE/);
+    expect(primary.note).toMatch(/8aaa7b743717492d1a9fa0b2/);
+    expect(primary.why).toMatch(/PINNED_OFFLINE/);
+    expect(primary.why).toMatch(/multipleRulesLikely true/);
 
     const stratum = matrix.matrix.strata.find((s: { id: string }) => s.id === "INVESTMENTS");
     expect(stratum.status).toBe("PINNED_OFFLINE");
@@ -315,6 +335,8 @@ describe("pinCandidate CONMED INVESTMENTS §7.8(d)", () => {
     expect(stratum.unpinnedConmedScout.sectionRef).toBe("7.8(d)");
     expect(stratum.unpinnedConmedScout.eligible).toBe(true);
     expect(stratum.unpinnedConmedScout.role).toBe("BASKET");
+    expect(stratum.note).not.toMatch(/as unpinned/i);
+    expect(stratum.note).toMatch(/PINNED_OFFLINE/);
     expect(stratum.note).toMatch(/PDF page footer 103/);
     expect(stratum.note).toMatch(/key-man/i);
     expect(stratum.note).toMatch(/multipleRulesLikely/);

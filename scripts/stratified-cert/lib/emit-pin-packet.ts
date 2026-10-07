@@ -23,7 +23,44 @@ export type DirectMentionHit = {
   definedTermMentionedInOperativeText: boolean;
 };
 
-/** Packet honesty: every eligible=false predicate must appear here. */
+/**
+ * Disclosed operative-window dirt. Not an eligible=false predicate.
+ * eligibilityBlockers stays the contract list (eligible === blockers.length === 0).
+ * These facts are attached only when present so clean pins stay byte-identical.
+ */
+export type DirtySpanDiagnostic = {
+  code: "PDF_PAGE_FOOTER_EMBEDDED" | "KEY_MAN_INSURANCE_PROVISO" | "MULTIPLE_RULES_LIKELY";
+  detail: string;
+};
+
+export function collectDirtySpanDiagnostics(args: {
+  operativeText: string;
+  multipleRulesLikely: boolean;
+}): DirtySpanDiagnostic[] {
+  const facts: DirtySpanDiagnostic[] = [];
+  const footerLines = [...args.operativeText.matchAll(/(?:^|\n)(\d{2,4})(?=\n|$)/g)].map((m) => m[1]);
+  if (footerLines.length > 0) {
+    facts.push({
+      code: "PDF_PAGE_FOOTER_EMBEDDED",
+      detail: `Operative text embeds a standalone numeric line (${footerLines.join(", ")}), treated as a PDF page footer. The span was not narrowed.`,
+    });
+  }
+  if (/key man insurance/i.test(args.operativeText)) {
+    facts.push({
+      code: "KEY_MAN_INSURANCE_PROVISO",
+      detail: "Operative text contains a key-man-insurance proviso. The span was not narrowed.",
+    });
+  }
+  if (args.multipleRulesLikely) {
+    facts.push({
+      code: "MULTIPLE_RULES_LIKELY",
+      detail: "Sealed discovery multipleRulesLikely is true. UNIQUE is sectionRef single occurrence, not a clean operative window. This fact is not an eligibilityBlocker.",
+    });
+  }
+  return facts;
+}
+
+/** Packet honesty: every eligible=false predicate must appear here. Dirty-span facts are not eligible=false predicates. */
 export function computeEligibilityBlockers(args: {
   identityOk: boolean;
   interimBHit: boolean;
@@ -231,7 +268,12 @@ export function pinCandidate(args: PinCandidateArgs): PinCandidateResult {
     directMentions,
   });
   // After identity asserts succeed, eligible === (eligibilityBlockers.length === 0).
+  // Dirty-span facts are disclosed beside that array. They do not enter it and do not flip eligible.
   const eligible = eligibilityBlockers.length === 0;
+  const dirtySpanDiagnostics = collectDirtySpanDiagnostics({
+    operativeText: src.text,
+    multipleRulesLikely: target.multipleRulesLikely,
+  });
 
   const mapHonesty = resolveMapHonesty(pkg, args.discoveryId);
   const outDir = args.outDir ?? defaultPinOutDir({ packageKey: pkg.packageKey, normalizedSourceRef: target.normalizedSourceRef, discoveryId: args.discoveryId });
@@ -395,6 +437,15 @@ export function pinCandidate(args: PinCandidateArgs): PinCandidateResult {
     identityStrength: offline.identityStrength,
     eligible,
     eligibilityBlockers,
+    ...(dirtySpanDiagnostics.length > 0
+      ? {
+          dirtySpanDiagnostics,
+          eligibilityBlockersContract: {
+            rule: "eligible === (eligibilityBlockers.length === 0). eligibilityBlockers lists only eligible=false predicates (identity, interim-B, governing review, unresolved operative evidence, phase-2 mention). An empty array is not a clean-window claim when dirtySpanDiagnostics is non-empty. Dirty-span facts are not eligibility blockers and do not flip eligible. PINNED_OFFLINE is not CERTIFIED.",
+            dirtySpanDiagnosticsAreEligibilityBlockers: false,
+          },
+        }
+      : {}),
     crossCutClaims: crossCutClaims({
       crossCuts,
       role: target.role,

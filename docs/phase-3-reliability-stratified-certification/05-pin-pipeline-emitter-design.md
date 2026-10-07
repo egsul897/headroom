@@ -343,7 +343,9 @@ No invented discoveryIds. CF1 CONDITION packet `1.08(d)(i)--c2018498/v1/` and CF
 
 ### Why this cell
 
-Primary sealed at the PR-base tip without an emitter logic change. `sectionRef` `7.8(d)` is UNIQUE, identity assertions all true, interim-B clean, `eligible:true`. Sealed role is **BASKET**. The span is dirtier than §7.8(l): operative text embeds PDF page footer `103`, a key-man-insurance proviso, and discovery `multipleRulesLikely` true. The span was not narrowed. No narrower discoveryId was invented.
+Primary sealed at the PR-base tip. `sectionRef` `7.8(d)` is UNIQUE, identity assertions all true, interim-B clean, `eligible:true`. Sealed role is **BASKET**. The span is dirtier than §7.8(l): operative text embeds PDF page footer `103`, a key-man-insurance proviso, and discovery `multipleRulesLikely` true. The span was not narrowed. No narrower discoveryId was invented.
+
+Eligibility contract (unchanged rule): `eligible === (eligibilityBlockers.length === 0)`. `eligibilityBlockers` lists only eligible=false predicates. Dirty-span facts are **not** those predicates, so they do not enter `eligibilityBlockers` and do not flip `eligible`. When any dirty-span fact is present, the eligibility packet adds `dirtySpanDiagnostics` plus `eligibilityBlockersContract` so an empty `eligibilityBlockers` array is not a silent clean-window claim. Clean pins omit those keys and stay byte-identical. `PINNED_OFFLINE` ≠ `CERTIFIED`.
 
 Chewy INVESTMENTS remains **DEFERRED**. §7.8(l) packet `7.8(l)--3476b082/v1/` is byte-untouched and remains the stratum primary. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`. Soft gate: Merge HOLD (Architect COMMENT, not APPROVE; Notes/Cert; Trust, IR as needed; tip CI; COO MERGE AUTHORIZED). Do not self-merge.
 

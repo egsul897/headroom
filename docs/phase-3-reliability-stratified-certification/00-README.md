@@ -264,7 +264,7 @@ Architect COMMENT (not APPROVE) · Notes/Cert · Trust (+IR as needed) · tip CI
 | `pins/conmed-2025-credit-facility/7.8(d)--8aaa7b74/v1/` | Emitter-produced CONMED §7.8(d) BASKET (`eligible:true`) |
 | `01-pin-matrix.json` | INVESTMENTS cites this cell; `conmed78dStillUnpinned` false; Chewy INVESTMENTS stays DEFERRED |
 
-`discovery-candidate:8aaa7b743717492d1a9fa0b2` sealed UNIQUE (389 chars, single occurrence, identity assertions true, interim-B clean, `eligible:true`). Sealed role is BASKET. The span is dirtier than §7.8(l): PDF page footer `103`, key-man-insurance proviso, discovery `multipleRulesLikely` true. The span was not narrowed. Chewy INVESTMENTS remains DEFERRED. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`.
+`discovery-candidate:8aaa7b743717492d1a9fa0b2` sealed UNIQUE (389 chars, single occurrence, identity assertions true, interim-B clean, `eligible:true`). Sealed role is BASKET. The span is dirtier than §7.8(l): PDF page footer `103`, key-man-insurance proviso, discovery `multipleRulesLikely` true. The span was not narrowed. Those facts are machine-visible on the eligibility packet as `dirtySpanDiagnostics`. They are not `eligibilityBlockers`. Empty `eligibilityBlockers` means no eligible=false predicate (`eligible === (eligibilityBlockers.length === 0)`), not a clean window. Chewy INVESTMENTS remains DEFERRED. `PINNED_OFFLINE` ≠ `CERTIFIED`. `IMPLEMENTED` ≠ `CERTIFIED`.
 
 ### Review owners
 

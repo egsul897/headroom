@@ -80,6 +80,24 @@
   "identityStrength": "STRONG",
   "eligible": true,
   "eligibilityBlockers": [],
+  "dirtySpanDiagnostics": [
+    {
+      "code": "PDF_PAGE_FOOTER_EMBEDDED",
+      "detail": "Operative text embeds a standalone numeric line (103), treated as a PDF page footer. The span was not narrowed."
+    },
+    {
+      "code": "KEY_MAN_INSURANCE_PROVISO",
+      "detail": "Operative text contains a key-man-insurance proviso. The span was not narrowed."
+    },
+    {
+      "code": "MULTIPLE_RULES_LIKELY",
+      "detail": "Sealed discovery multipleRulesLikely is true. UNIQUE is sectionRef single occurrence, not a clean operative window. This fact is not an eligibilityBlocker."
+    }
+  ],
+  "eligibilityBlockersContract": {
+    "rule": "eligible === (eligibilityBlockers.length === 0). eligibilityBlockers lists only eligible=false predicates (identity, interim-B, governing review, unresolved operative evidence, phase-2 mention). An empty array is not a clean-window claim when dirtySpanDiagnostics is non-empty. Dirty-span facts are not eligibility blockers and do not flip eligible. PINNED_OFFLINE is not CERTIFIED.",
+    "dirtySpanDiagnosticsAreEligibilityBlockers": false
+  },
   "crossCutClaims": {
     "WITHOUT_SHARED_CAPS": {
       "claimed": true,

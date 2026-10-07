@@ -161,7 +161,7 @@
       "operativeSourceSha256": "1243e346aba340bbb822dfa32d7e7a36fe69b15e51bbc50eec0b51752476e91a",
       "operativeSourceChars": 427,
       "eligible": true,
-      "why": "Certification-preference INVESTMENTS pin after #76 LIENS: Chewy sealed INVESTMENTS BASKET/SHARED_CAP paths lack eligible:true (1.01 AMBIGUOUS 353k-char defs; modest §1.08(i) BUILDER emits UNRESOLVED_OPERATIVE_EVIDENCE). Fail-closed: do not invent narrower Chewy IDs. Both CONMED §7.8(l) and §7.8(d) seal eligible:true offline; §7.8(l) is the cleaner modest UNIQUE span (427 chars, single occurrence, multipleRulesLikely false, no page-footer artifact, all identity assertions true, interim-B clean). §7.8(d) stays unpinned (389 chars but operative text embeds PDF page footer 103 and a key-man proviso). Map honesty UNSERVED is not pre-credit. first-target/, #68 hand pin, #73 ASSET_SALES, and #76 LIENS packets untouched.",
+      "why": "Certification-preference INVESTMENTS pin after #76 LIENS: Chewy sealed INVESTMENTS BASKET/SHARED_CAP paths lack eligible:true (1.01 AMBIGUOUS 353k-char defs; modest §1.08(i) BUILDER emits UNRESOLVED_OPERATIVE_EVIDENCE). Fail-closed: do not invent narrower Chewy IDs. Both CONMED §7.8(l) and §7.8(d) seal eligible:true offline; §7.8(l) is the cleaner modest UNIQUE span (427 chars, single occurrence, multipleRulesLikely false, no page-footer artifact, all identity assertions true, interim-B clean). §7.8(d) is PINNED_OFFLINE as a dirtier follow-on (389 chars; operative text embeds PDF page footer 103 and a key-man proviso; discovery multipleRulesLikely true). Not a clean-window claim and not CERTIFIED. Map honesty UNSERVED is not pre-credit. first-target/, #68 hand pin, #73 ASSET_SALES, and #76 LIENS packets untouched.",
       "artifacts": [
         "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/00-pin-manifest.json",
         "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/00-preflight.json",
@@ -173,7 +173,7 @@
         "discovery": "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json",
         "fixtureRoot": "tests/fixtures/unseen-packages/conmed-2025-credit-facility"
       },
-      "note": "eligible:true offline identity — not a live CERTIFIED claim. Chewy INVESTMENTS remains DEFERRED. CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 remains unpinned (eligible:true scout, dirtier span)."
+      "note": "eligible:true offline identity — not a live CERTIFIED claim. Chewy INVESTMENTS remains DEFERRED. CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 is PINNED_OFFLINE (eligible:true, dirtier span: PDF page footer 103, key-man proviso, multipleRulesLikely true). PINNED_OFFLINE is not CERTIFIED."
     },
     {
       "pinId": "conmed-7.8d-8aaa7b74-v1",
@@ -443,7 +443,7 @@
         "pinId": "conmed-7.8l-3476b082-v1",
         "packageKey": "conmed-2025-credit-facility",
         "sectionRef": "7.8(l)",
-        "note": "Emitter-produced CONMED general Investments BASKET — eligible:true offline. Stratum primary remains §7.8(l), the cleaner modest UNIQUE span. P3-CI2 also pins CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 (eligible:true, sealed role BASKET). That follow-on is dirtier than §7.8(l): operative text embeds PDF page footer 103, a key-man-insurance proviso, and discovery multipleRulesLikely true. The span was not narrowed. The §7.8(l) pin row is unchanged; its historical why recorded §7.8(d) as unpinned at that packet. This follow-on supersedes that unpinned status without mutating the §7.8(l) packet or that pin row. Chewy INVESTMENTS still lacks modest UNIQUE eligible:true sealed span and remains DEFERRED.",
+        "note": "Emitter-produced CONMED general Investments BASKET — eligible:true offline. Stratum primary remains §7.8(l), the cleaner modest UNIQUE span. P3-CI2 also pins CONMED §7.8(d) discovery-candidate:8aaa7b743717492d1a9fa0b2 (eligible:true, sealed role BASKET). That follow-on is dirtier than §7.8(l): operative text embeds PDF page footer 103, a key-man-insurance proviso, and discovery multipleRulesLikely true. The span was not narrowed. The §7.8(l) pin packet bytes are unchanged. The §7.8(l) pin-row note records §7.8(d) as PINNED_OFFLINE (dirtier follow-on), not as still unpinned. This is not a stratum swap. Chewy INVESTMENTS still lacks modest UNIQUE eligible:true sealed span and remains DEFERRED.",
         "pinFolder": "pins/conmed-2025-credit-facility/7.8(l)--3476b082/v1/",
         "eligible": true,
         "chewyFollowOn": {
