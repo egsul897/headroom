@@ -1,50 +1,39 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { OnboardingStatus } from "@prisma/client";
+import { AskIcon, HomeIcon, OnboardingIcon, ToolsIcon } from "@/components/home/icons";
+import { companyNavItems, isCompanyNavItemActive, type CompanyNavKey } from "@/lib/home/nav";
 
-// Exactly the prototype's 5 tabs (reference/headroom-coherent.jsx - task
-// "MAKE THE UI MATCH THE PROTOTYPE EXACTLY"), in the prototype's own order.
-// The prototype's own tab was named "Position" - renamed to "Dashboard"
-// everywhere per the task's explicit instruction, including this route
-// segment (this app's Dashboard route already existed under this name from
-// an earlier phase - the prototype's Position tab's content now lives
-// there). Capital Structure/Capacity (their content is folded into
-// Dashboard's own covenant overview) and the onboarding-only Sources/Review
-// steps are intentionally not part of this steady-state 5-tab row.
-const PRODUCT_TABS: { segment: string; label: string }[] = [
-  { segment: "feeds", label: "Feeds" },
-  { segment: "dashboard", label: "Dashboard" },
-  { segment: "simulate", label: "Simulate" },
-  { segment: "docs", label: "Docs" },
-  { segment: "ledger", label: "Ledger" },
-];
-
-const ONBOARDING_TAB = { segment: "onboarding", label: "Onboarding" };
+const ICONS: Record<CompanyNavKey, () => ReactNode> = {
+  home: HomeIcon,
+  ask: AskIcon,
+  tools: ToolsIcon,
+  onboarding: OnboardingIcon,
+};
 
 /**
- * Product-page tabs work identically for any ACTIVE/ACTIVE_WITH_LIMITATIONS
- * company (task hard requirement - no company-specific branching); a
- * company still ONBOARDING has no financial/covenant data for those pages
- * to render yet, so only the Onboarding tab is shown until it's live -
- * this is a lifecycle gate on `onboardingStatus`, not a per-company special
- * case. "Onboarding" itself is internal/setup language (docs/headroom-master-
- * product-architecture.md §38 - remove engineering language from customer
- * surfaces) so it drops out of the nav entirely once a company reaches
- * ACTIVE; ACTIVE_WITH_LIMITATIONS keeps it, since that company still has
- * open onboarding work worth surfacing.
+ * Company shell navigation for Chunk A′.
+ * Home is primary. Ask is the secondary interrogation route.
+ * Deal setup & tools is the door to legacy Dashboard, Simulate, Feeds, Docs, and Ledger.
+ * Reports and Settings are omitted — they are not real pages.
+ * Onboarding stays only while that company still has setup work.
  */
 export function CompanyNav({ companyId, onboardingStatus }: { companyId: string; onboardingStatus: OnboardingStatus }) {
-  const pathname = usePathname();
-  const tabs = onboardingStatus === "ONBOARDING" ? [ONBOARDING_TAB] : onboardingStatus === "ACTIVE_WITH_LIMITATIONS" ? [...PRODUCT_TABS, ONBOARDING_TAB] : PRODUCT_TABS;
+  const pathname = usePathname() ?? "";
+  const items = companyNavItems(companyId, onboardingStatus);
+
   return (
-    <nav className="nav">
-      {tabs.map((tab) => {
-        const href = `/${companyId}/${tab.segment}`;
+    <nav className="app-nav" aria-label="Company">
+      {items.map((item) => {
+        const Icon = ICONS[item.key];
+        const active = isCompanyNavItemActive(pathname, item, companyId);
         return (
-          <Link key={tab.segment} href={href} className={`nav-link ${pathname === href || pathname?.startsWith(`${href}/`) ? "active" : ""}`}>
-            {tab.label}
+          <Link key={item.key} href={item.href} className={`app-nav-link${active ? " active" : ""}`} aria-current={active ? "page" : undefined}>
+            <Icon />
+            <span>{item.label}</span>
           </Link>
         );
       })}
