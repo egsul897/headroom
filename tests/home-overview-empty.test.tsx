@@ -59,9 +59,9 @@ describe("Product LOCK empty overview", () => {
     expect(HOME_SLOTS.drivers.detail).toBe("Drivers need explained capacity changes — not guesses.");
 
     const html = renderToStaticMarkup(<CompanyOverview companyId="co" identityName={null} alertCount={0} />);
-    // Implementer rules (LOCK): never seed a count; if REVIEW_REQUIRED, do not invent one;
-    // never default a Healthy/green row; hide the bell badge when there is no real alert;
-    // capacity, drivers, and transactions stay provenance-bound and ledger-backed in the data path.
+    // Implementer rules stay here, not in buyer details: never seed a count; do not invent a
+    // review count; never default a Healthy/green row; hide the bell badge when the count is 0;
+    // capacity figures stay tied to sources in the data path, not in the card sentence.
     const implementerPhrases = [
       "Never seed a count",
       "REVIEW_REQUIRED",
@@ -70,8 +70,11 @@ describe("Product LOCK empty overview", () => {
       "provenance-bound",
       "Ledger-backed only",
       "fail-closed",
+      "If REVIEW_REQUIRED",
     ];
+    const buyerDetails = Object.values(HOME_SLOTS).map((slot) => slot.detail).join("\n");
     for (const phrase of implementerPhrases) {
+      expect(buyerDetails, phrase).not.toContain(phrase);
       expect(html, phrase).not.toContain(phrase);
     }
     expect(html).not.toContain("data-alert-badge");

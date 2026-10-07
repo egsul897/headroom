@@ -16,6 +16,8 @@
 
 The plan file is not edited by this change. Product LOCK strings are implemented in `lib/home/copy.ts`. Ask empty cases are in `lib/ask/copy.ts`.
 
+Product tip rem after CFO PASS_WITH_NOTES (2026-10-07) on preview `568389f`. Buyer details do not carry eng instruction text. Product will re-PASS. This skeleton is not certification.
+
 ## What this chunk is
 
 Company home (`/[companyId]`) is an overview skeleton matching the end-state **regions**: total headroom, utilization, covenants at risk, next test, headroom over time, capacity summary, status table, drivers, alerts, and transactions. Every slot renders Product LOCK empty copy. No mock figures are drawn.

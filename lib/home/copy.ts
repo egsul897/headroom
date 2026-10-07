@@ -1,10 +1,12 @@
 /**
  * Product LOCK — Chunk A′ KPI empty copy (buyer UI only).
- * SHA-256 7f68ced002e91cb4750f4a8680462f840a2bf54ae92bfb4a423af6d8c2b7d0a4
- * Supersedes cda3a4bd53f37677e0bfe5fc996d18b09af5a75712847a238361849ad5ba845a.
- * Authority: CHUNK-A-PRIME-KPI-EMPTY-COPY-LOCK.md (CEO APPROVED, buyer polish 2026-10-07).
- * Headlines and details below are the locked buyer strings. Do not paraphrase.
- * Implementer rules stay in the LOCK and in tests; they are not part of these strings.
+ * Product tip rem after CFO PASS_WITH_NOTES (2026-10-07) on preview 568389f.
+ * Product will re-PASS. This tip is not certification.
+ *
+ * Buyer-polish LOCK sha256 7f68ced002e91cb4750f4a8680462f840a2bf54ae92bfb4a423af6d8c2b7d0a4
+ * supersedes cda3a4bd53f37677e0bfe5fc996d18b09af5a75712847a238361849ad5ba845a.
+ * Headlines stay. Details are the buyer-facing strings from that polish (CFO notes 1–4).
+ * Implementer rules stay in tests, not in these strings.
  */
 
 export const HOME_GREETING_NO_NAME = "Here’s your headroom overview.";
