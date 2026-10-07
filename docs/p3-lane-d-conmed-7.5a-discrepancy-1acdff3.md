@@ -178,3 +178,13 @@ The current unit does not use that carry. It folds the object class into the ord
 ## Terminal
 
 `GENERALIZED_REPRESENTATION_DEFECT`
+
+---
+
+## Later reading — do not synthesize the term node
+
+The missing-dependency section above names `DEFINED_TERM_REFERENCE` as the carrier for capitalized `Disposition`. That sentence describes what the prompt asks a model to emit when the term is an operand of the unit. It is not a grant to insert the node after the fact.
+
+A later probe compiled one such node onto `gatedBy` and ran `computeSemanticSourceContract` on the sealed bundle. The contract then relied on `Disposition`, `Division`, and `Property`. The operative `DEPENDS_ON_DEFINITION` edge is retrieval until a compiled term node exists. Discovery on this candidate records `definedTermDependencyLikely: false`.
+
+The node stays unemitted. Record: `docs/p3-conmed-75a-disposition-reference-reliance-stop.md`. Terminal of that note: `MENTION_IS_NOT_RELIANCE`. This appendix does not rewrite the analysis above, does not close `ca99bcbc…`, and does not add a pin.

@@ -2,7 +2,7 @@
 
 Soft gate. invent-absence forever. **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.**
 
-No pin. No pin folder. No compiler change. No new condition type. No section-specific branch. No new discoveryId. Knife River was not opened. The historical evidence file was not edited. This note does not re-execute the #124 replay and does not reclassify the open finding.
+No pin. No pin folder. No new condition type. No section-specific branch. No new discoveryId. Knife River was not opened. The historical evidence file was not edited. This note does not re-execute the #124 replay and does not reclassify the open finding. The compiler’s qualitative-gate pass still does not insert a term node; a regression locks that absence.
 
 | Field | Value |
 |---|---|
@@ -102,7 +102,7 @@ Each existing place a `DEFINED_TERM_REFERENCE` can sit is an expression the runt
 | `dependsOn` / `EXCLUDED_FROM` toward `Section 7.5` | The operative window cites no section. The #124 replay classified that stored edge `MODEL_INVENTED_REFERENCE`. `dependsOn` on the replay is empty. |
 | New rule field | A new carrier would be a new abstraction. The licensed kind is still an expression, and the collectors that give that kind meaning are the ones above. |
 
-`#120` (`applyUnlimitedCarveOutQualitativeGates`) does not synthesize a term reference. This note does not add a pass that does.
+`#120` (`applyUnlimitedCarveOutQualitativeGates`) does not synthesize a term reference. The normalizer is locked to that absence by `tests/contract-model/semantic-compiler/defined-term-mention-not-reliance.test.ts`: a capitalized act name present as a context `DEFINITION`, with its own `DEFINITION_DEPENDENCY`, is left unreferenced, and `computeSemanticSourceContract` relies on neither term. A `DEFINED_TERM_REFERENCE` the wire already submitted is kept, and that kept node is reliance. The fixture uses `Conveyance` / `Asset`, not this candidate’s section or term names.
 
 ---
 
