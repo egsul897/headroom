@@ -43,6 +43,7 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(result.eligibleClaimed).toBe(false);
     expect(result.discoveryIdsMinted).toBe(false);
     expect(result.semanticRolesAssigned).toBe(false);
+    expect(result.providerScopedCandidates).toEqual([]);
     expect(result.passB.executed).toBe(false);
     expect(result.passB.terminal).toBe("PROVIDER_EXECUTION_REQUIRED");
     expect(result.offline.passACandidates).toBe(946);

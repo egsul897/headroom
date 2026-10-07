@@ -26,7 +26,7 @@ The ceiling is the pre-dispatch reservation in `reservedMaxInputTokens` plus `DE
 
 HTML sha256 and extracted-text sha256 match `provenance.json`. Counts match the #112 structure summary: 1,029,323 characters, 511 chunks (444 with a section ref), 2,087 nodes, 564 definitions, 1,459 references (491 resolved), 946 Pass A candidates. Supersession index was empty, so Pass A status is `UNKNOWN_SUPERSESSION_STATUS`. Record: `development-pipeline/execution.json`.
 
-No discoveryId. No semantic role. No pin. No matrix row. `eligible` was not set true.
+No discoveryId. No semantic role. No pin. No matrix row. `eligible` was not set true. `providerScopedCandidates` is empty because Pass B was refused.
 
 ## Investigations
 

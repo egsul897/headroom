@@ -516,6 +516,7 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
         })),
       },
     },
+    providerScopedCandidates,
     paths: {
       builder: {
         stage: "PASS_A_BUILDER_LANGUAGE_PLUS_CROSS_CUT_TEXT_HEURISTIC",
