@@ -171,8 +171,11 @@ describe("pinCandidate Chewy FINANCIAL_COVENANTS §1.08(d)(i) CONDITION", () => 
     expect(matrix.coverageSummary.chewyFinancialCovenantsFollowOnPinned).toBe(true);
     expect(matrix.coverageSummary.chewyFinancialCovenantsFollowOnRole).toBe("CONDITION");
     expect(matrix.coverageSummary.chewyFinancialCovenantsFollowOnDiscoveryId).toBe(DISCOVERY_ID);
+    expect(matrix.coverageSummary.chewyFinancialCovenantsStillDeferred).toBe(false);
+    expect(matrix.coverageSummary.chewyFinancialCovenantsResolved).toBe(false);
     expect(matrix.coverageSummary.chewyFinancialTestStillUnpinned).toBe(true);
     expect(matrix.coverageSummary.chewyFinancialTestEligibleTrue).toBe(false);
+    expect(matrix.coverageSummary.note).toMatch(/does not mark Chewy FINANCIAL_COVENANTS resolved/);
     expect(matrix.coverageSummary.note).toMatch(/not a claim that a Chewy FINANCIAL_TEST became eligible:true/i);
     expect(matrix.coverageSummary.note).toMatch(/PINNED_OFFLINE is not CERTIFIED/);
     expect(matrix.reviewAsk.passUnlocks).toMatch(/Merge HOLD/);
