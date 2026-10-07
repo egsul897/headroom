@@ -376,7 +376,11 @@ export const COHERENT_INDENTURE_ID = INDENTURE_ID;
 // Feeds review queue
 // ---------------------------------------------------------------------------
 
-/** SNAPSHOT_UPDATE payload: fields present override the latest FinancialSnapshot; fields omitted carry forward unchanged. */
+/**
+ * SNAPSHOT_UPDATE payload. Approval writes only these fields. Every required
+ * numeric field must be present. Omitted fields are not carried forward from
+ * a prior snapshot, and prior debt tranches are not cloned.
+ */
 export interface FeedQueueSnapshotPayload {
   asOfDate: string;
   ebitda?: number;
@@ -411,7 +415,7 @@ export const COHERENT_FEED_QUEUE_ITEMS: {
   {
     title: "10-Q filed — quarter ended 9/30/26",
     description:
-      "First fiscal quarter of FY27. EBITDA and cash both grew sequentially and interest expense ticked down on continued Term Loan B-3 amortization. No new debt issuance, repurchases, or asset sales disclosed this quarter, so total/secured debt and the capital structure are carried forward unchanged.",
+      "First fiscal quarter of FY27. EBITDA and cash both grew sequentially and interest expense ticked down on continued Term Loan B-3 amortization. Total debt, secured debt, equity proceeds, the assumed new-debt rate, and debt tranches are omitted from this payload. Approval refuses an incomplete SNAPSHOT_UPDATE and does not copy those facts from the prior snapshot.",
     source: "10-Q filed 11/10/2026",
     filedDate: "2026-11-10",
     kind: "SNAPSHOT_UPDATE",

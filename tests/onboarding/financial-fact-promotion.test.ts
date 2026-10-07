@@ -9,6 +9,8 @@
  * reflect the promoted value with ZERO changes to lib/dashboard-service.ts
  * itself.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { prisma } from "../../lib/prisma";
 import { connectSource } from "../../lib/connectors/registry";
@@ -16,6 +18,7 @@ import { createIngestionJob, runAllPendingIngestionStages } from "../../lib/conn
 import { reviewCandidate } from "../../lib/onboarding/review";
 import { promoteCompanyCandidates } from "../../lib/onboarding/promotion";
 import { getCompanyDashboard } from "../../lib/dashboard-service";
+import { upsertFinancialFactForDate, upsertFinancialFactsForDate } from "../../lib/onboarding/financial";
 
 const COMPANY_ID = "fixture-financial-fact-promotion-co";
 const AS_OF = "2026-06-30";
@@ -136,5 +139,128 @@ describe("FINANCIAL_FACT promotion", () => {
     expect(result.promotedCount).toBe(0);
     const after = await prisma.financialSnapshot.count({ where: { companyId: COMPANY_ID } });
     expect(after).toBe(before);
+  });
+});
+
+const C6_COMPANIES = ["fixture-p3-r0-c6-incomplete", "fixture-p3-r0-c6-complete", "fixture-p3-r0-c6-samedate"] as const;
+const PRIOR_DATE = new Date("2026-01-31T00:00:00.000Z");
+const TARGET_DATE = new Date("2026-06-30T00:00:00.000Z");
+
+const PRIOR_FACTS = {
+  ebitda: 111,
+  cash: 222,
+  interestExpense: 3,
+  cumulativeNetIncome: 4,
+  equityProceedsSinceIssue: 5,
+  assumedNewDebtRatePct: 6.5,
+  totalDebt: 7,
+  securedDebt: 8,
+};
+
+function fullBatch(prefix: string, values: Record<string, number>) {
+  return [
+    { key: `${prefix}-cash`, metricName: "cash", value: values.cash! },
+    { key: `${prefix}-debt`, metricName: "total_debt", value: values.totalDebt! },
+    { key: `${prefix}-secured`, metricName: "secured_debt", value: values.securedDebt! },
+    { key: `${prefix}-ebitda`, metricName: "covenant_ebitda", value: values.ebitda! },
+    { key: `${prefix}-interest`, metricName: "interest_expense", value: values.interestExpense! },
+    { key: `${prefix}-cni`, metricName: "cumulative_net_income", value: values.cumulativeNetIncome! },
+    { key: `${prefix}-equity`, metricName: "equity_proceeds", value: values.equityProceeds! },
+    { key: `${prefix}-rate`, metricName: "assumed_new_debt_rate_pct", value: values.rate! },
+  ];
+}
+
+describe("P3-R0 C6 — FINANCIAL_FACT promotion does not seed from a prior date", () => {
+  beforeAll(async () => {
+    await prisma.company.deleteMany({ where: { id: { in: [...C6_COMPANIES] } } });
+    for (const id of C6_COMPANIES) {
+      await prisma.company.create({ data: { id, name: `Fixture ${id} (synthetic, test-only)` } });
+      await prisma.financialSnapshot.create({
+        data: { companyId: id, asOfDate: PRIOR_DATE, notes: "prior-date row", ...PRIOR_FACTS },
+      });
+    }
+    await prisma.financialSnapshot.create({
+      data: {
+        companyId: C6_COMPANIES[2],
+        asOfDate: TARGET_DATE,
+        notes: "same-date row",
+        ebitda: 18,
+        cash: 4.2,
+        interestExpense: 2.1,
+        cumulativeNetIncome: 9,
+        equityProceedsSinceIssue: 5,
+        assumedNewDebtRatePct: 7.5,
+        totalDebt: 52,
+        securedDebt: 30,
+      },
+    });
+  });
+
+  afterAll(async () => {
+    await prisma.company.deleteMany({ where: { id: { in: [...C6_COMPANIES] } } });
+  });
+
+  it("does not query an earlier asOfDate as a seed", () => {
+    const src = readFileSync(join(process.cwd(), "lib/onboarding/financial.ts"), "utf8");
+    expect(src).not.toMatch(/asOfDate:\s*\{\s*lt:/);
+  });
+
+  it("an incomplete batch for a new date fails closed and leaves the prior snapshot untouched", async () => {
+    const companyId = C6_COMPANIES[0];
+    const result = await upsertFinancialFactsForDate(companyId, TARGET_DATE, [{ key: "only-cash", metricName: "cash", value: 999 }], "must not promote");
+    expect(result.perFact).toHaveLength(1);
+    expect(result.perFact[0]!.applied).toBe(false);
+    expect(result.perFact[0]!.skipReason).toMatch(/Prior-date snapshots are not used as a seed/);
+    expect(result.financialSnapshotId).toBeUndefined();
+
+    const single = await upsertFinancialFactForDate({ companyId, asOfDate: TARGET_DATE, metricName: "covenant_ebitda", value: 50 });
+    expect(single.applied).toBe(false);
+    expect(single.skipReason).toMatch(/Prior-date snapshots are not used as a seed/);
+
+    const snapshots = await prisma.financialSnapshot.findMany({ where: { companyId }, orderBy: { asOfDate: "asc" } });
+    expect(snapshots).toHaveLength(1);
+    expect(snapshots[0]!.asOfDate.toISOString().slice(0, 10)).toBe("2026-01-31");
+    expect(snapshots[0]!.cash.toNumber()).toBe(222);
+    expect(snapshots[0]!.ebitda.toNumber()).toBe(111);
+    expect(snapshots[0]!.notes).toBe("prior-date row");
+  });
+
+  it("a complete batch for a new date writes only the supplied facts, not the prior row's values", async () => {
+    const companyId = C6_COMPANIES[1];
+    const supplied = { cash: 4.2, totalDebt: 52, securedDebt: 30, ebitda: 18, interestExpense: 2.1, cumulativeNetIncome: 9, equityProceeds: 5, rate: 7.5 };
+    const result = await upsertFinancialFactsForDate(companyId, TARGET_DATE, fullBatch("full", supplied), "complete batch");
+    expect(result.perFact.every((f) => f.applied)).toBe(true);
+
+    const created = await prisma.financialSnapshot.findFirstOrThrow({ where: { companyId, asOfDate: TARGET_DATE } });
+    expect(created.cash.toNumber()).toBe(4.2);
+    expect(created.totalDebt.toNumber()).toBe(52);
+    expect(created.securedDebt.toNumber()).toBe(30);
+    expect(created.ebitda.toNumber()).toBe(18);
+    expect(created.interestExpense.toNumber()).toBe(2.1);
+    expect(created.cumulativeNetIncome.toNumber()).toBe(9);
+    expect(created.equityProceedsSinceIssue.toNumber()).toBe(5);
+    expect(created.assumedNewDebtRatePct.toNumber()).toBe(7.5);
+    expect(created.ebitda.toNumber()).not.toBe(PRIOR_FACTS.ebitda);
+
+    const prior = await prisma.financialSnapshot.findFirstOrThrow({ where: { companyId, asOfDate: PRIOR_DATE } });
+    expect(prior.cash.toNumber()).toBe(222);
+    expect(prior.ebitda.toNumber()).toBe(111);
+  });
+
+  it("same-date merge updates only the supplied field and keeps the other same-date values", async () => {
+    const companyId = C6_COMPANIES[2];
+    const result = await upsertFinancialFactsForDate(companyId, TARGET_DATE, [{ key: "merge-cash", metricName: "cash", value: 8.8 }], undefined);
+    expect(result.perFact[0]!.applied).toBe(true);
+
+    const rows = await prisma.financialSnapshot.findMany({ where: { companyId, asOfDate: TARGET_DATE } });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.cash.toNumber()).toBe(8.8);
+    expect(rows[0]!.ebitda.toNumber()).toBe(18);
+    expect(rows[0]!.totalDebt.toNumber()).toBe(52);
+    expect(rows[0]!.securedDebt.toNumber()).toBe(30);
+
+    const prior = await prisma.financialSnapshot.findFirstOrThrow({ where: { companyId, asOfDate: PRIOR_DATE } });
+    expect(prior.cash.toNumber()).toBe(222);
+    expect(prior.notes).toBe("prior-date row");
   });
 });

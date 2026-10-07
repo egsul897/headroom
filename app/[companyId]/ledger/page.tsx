@@ -1,9 +1,68 @@
 import { Banner, Card } from "@/components/ui";
 import { Disclosure } from "@/components/Disclosure";
-import { LEDGER_BASKET_LABELS, getLedgerEntries, getPosition } from "@/lib/coherent";
+import { LEDGER_BASKET_LABELS, getLedgerEntries, getPosition, getSupersededLedgerEntries } from "@/lib/coherent";
 import { fmtM, fmtX, fmtDate } from "@/lib/format";
 import { documentsWithRpWaterfall, simulateRestrictedPayment } from "@/lib/covenant-engine";
-import { addLedgerEntry, deleteLedgerEntry } from "./actions";
+import { addLedgerEntry, supersedeLedgerEntry } from "./actions";
+
+type LedgerRow = Awaited<ReturnType<typeof getLedgerEntries>>[number];
+
+function LiveLedgerList({ companyId, entries, supersededCount }: { companyId: string; entries: LedgerRow[]; supersededCount: number }) {
+  if (entries.length === 0 && supersededCount === 0) return <div className="muted">No ledger entries yet.</div>;
+  if (entries.length === 0) return <div className="muted">No live ledger entries. Superseded history is preserved below and still in the database.</div>;
+  return (
+    <>
+      {entries.map((e) => (
+        <div key={e.id} className="ledger-entry">
+          <div>
+            <div className="row-label">{e.description}</div>
+            <div className="row-note">
+              <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
+              {e.source ? ` · ${e.source}` : ""}
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0 }}>
+            <span className="mono" style={{ fontWeight: 600, color: e.direction === "CREDIT" ? "var(--green)" : "var(--ink)" }}>
+              {e.direction === "CREDIT" ? "+" : "−"}
+              {fmtM(Math.abs(Number(e.amount)))}
+            </span>
+            <form action={supersedeLedgerEntry.bind(null, companyId, e.id)}>
+              <button type="submit" className="button">
+                Supersede
+              </button>
+            </form>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function SupersededLedgerHistory({ entries }: { entries: LedgerRow[] }) {
+  if (entries.length === 0) return null;
+  return (
+    <Card>
+      <div className="card-title">Superseded — history preserved</div>
+      <div className="card-subtitle">These entries no longer count toward capacity. The rows were kept. This page does not delete ledger entries.</div>
+      {entries.map((e) => (
+        <div key={e.id} className="ledger-entry">
+          <div>
+            <div className="row-label">{e.description}</div>
+            <div className="row-note">
+              <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
+              {e.source ? ` · ${e.source}` : ""}
+              {e.supersededAt ? ` · superseded ${fmtDate(e.supersededAt)}` : ""}
+            </div>
+          </div>
+          <span className="mono" style={{ fontWeight: 600, color: "var(--ink)" }}>
+            {e.direction === "CREDIT" ? "+" : "−"}
+            {fmtM(Math.abs(Number(e.amount)))}
+          </span>
+        </div>
+      ))}
+    </Card>
+  );
+}
 
 export const metadata = { title: "Headroom — Ledger" };
 
@@ -17,7 +76,11 @@ export const metadata = { title: "Headroom — Ledger" };
  */
 export default async function LedgerPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [positionResult, entries] = await Promise.all([getPosition(companyId).catch(() => null), getLedgerEntries(companyId)]);
+  const [positionResult, entries, superseded] = await Promise.all([
+    getPosition(companyId).catch(() => null),
+    getLedgerEntries(companyId),
+    getSupersededLedgerEntries(companyId),
+  ]);
 
   if (!positionResult) {
     return (
@@ -25,30 +88,10 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
         <Banner tone="red">No covenant financial snapshot on record for this company yet - the ledger and restricted-payment pool summary need one to evaluate against.</Banner>
         <Card>
           <div className="card-title">Public-record ledger</div>
-          {entries.length === 0 && <div className="muted">No ledger entries yet.</div>}
-          {entries.map((e) => (
-            <div key={e.id} className="ledger-entry">
-              <div>
-                <div className="row-label">{e.description}</div>
-                <div className="row-note">
-                  <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
-                  {e.source ? ` · ${e.source}` : ""}
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0 }}>
-                <span className="mono" style={{ fontWeight: 600, color: e.direction === "CREDIT" ? "var(--green)" : "var(--ink)" }}>
-                  {e.direction === "CREDIT" ? "+" : "−"}
-                  {fmtM(Math.abs(Number(e.amount)))}
-                </span>
-                <form action={deleteLedgerEntry.bind(null, companyId, e.id)}>
-                  <button type="submit" className="button">
-                    Remove
-                  </button>
-                </form>
-              </div>
-            </div>
-          ))}
+          <div className="card-subtitle">Supersede keeps the row and stops it from counting. This page does not delete ledger entries.</div>
+          <LiveLedgerList companyId={companyId} entries={entries} supersededCount={superseded.length} />
         </Card>
+        <SupersededLedgerHistory entries={superseded} />
       </div>
     );
   }
@@ -102,33 +145,13 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
 
       <Card>
         <div className="card-title">Public-record ledger</div>
-        <div className="card-subtitle">Logs what&apos;s stated in filings: equity raises, debt incurrence/repayment, and asset-sale proceeds, plus any dividend/Investment amounts committed from the Simulate tab.</div>
+        <div className="card-subtitle">Logs what&apos;s stated in filings: equity raises, debt incurrence/repayment, and asset-sale proceeds, plus any dividend/Investment amounts committed from the Simulate tab. Supersede keeps the row and stops it from counting. This page does not delete ledger entries.</div>
         <div>
-          {entries.length === 0 && <div className="muted">No ledger entries yet.</div>}
-          {entries.map((e) => (
-            <div key={e.id} className="ledger-entry">
-              <div>
-                <div className="row-label">{e.description}</div>
-                <div className="row-note">
-                  <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
-                  {e.source ? ` · ${e.source}` : ""}
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0 }}>
-                <span className="mono" style={{ fontWeight: 600, color: e.direction === "CREDIT" ? "var(--green)" : "var(--ink)" }}>
-                  {e.direction === "CREDIT" ? "+" : "−"}
-                  {fmtM(Math.abs(Number(e.amount)))}
-                </span>
-                <form action={deleteLedgerEntry.bind(null, companyId, e.id)}>
-                  <button type="submit" className="button">
-                    Remove
-                  </button>
-                </form>
-              </div>
-            </div>
-          ))}
+          <LiveLedgerList companyId={companyId} entries={entries} supersededCount={superseded.length} />
         </div>
       </Card>
+
+      <SupersededLedgerHistory entries={superseded} />
 
       <Card>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

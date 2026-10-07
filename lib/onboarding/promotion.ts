@@ -407,9 +407,10 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     //    required fields - not silently forced to fail closed one-fact-at-a-
     //    time just because promotion happened to process them in isolation.
     //    An unrecognized metricName, or a batch that still leaves some
-    //    required field uncovered by any base row or sibling fact, is a
+    //    required field uncovered by a same-date row or a sibling fact, is a
     //    documented per-fact skip (never an error that aborts the whole
-    //    promotion batch, never a fabricated value).
+    //    promotion batch, never a fabricated value, never a copy from an
+    //    earlier asOfDate).
     // -----------------------------------------------------------------------
     const financialFactCandidates = candidates.filter((c) => c.kind === "FINANCIAL_FACT");
     const byAsOfDate = new Map<string, { candidate: ExtractionCandidate; metricName: string; value: number }[]>();

@@ -62,10 +62,19 @@ export const getDebtTranches = cache(async (companyId: string) => {
   });
 });
 
+/** Live ledger facts only. Superseded rows stay in the database and are loaded separately. */
 export const getLedgerEntries = cache(async (companyId: string) => {
   return prisma.ledgerEntry.findMany({
-    where: { companyId },
+    where: { companyId, status: "ACTIVE" },
     orderBy: { createdAt: "asc" },
+  });
+});
+
+/** Preserved history. These rows no longer count toward capacity. */
+export const getSupersededLedgerEntries = cache(async (companyId: string) => {
+  return prisma.ledgerEntry.findMany({
+    where: { companyId, status: "SUPERSEDED" },
+    orderBy: { supersededAt: "desc" },
   });
 });
 

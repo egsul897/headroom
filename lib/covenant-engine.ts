@@ -1578,7 +1578,10 @@ export async function loadCompanyCovenantData(
     prisma.document.findMany({ where: { companyId, ...dateFilter } }),
     prisma.covenantProvision.findMany({ where: { companyId, ...dateFilter } }),
     prisma.financialSnapshot.findFirst({ where: { companyId, asOfDate: { lte: asOfDate } }, orderBy: { asOfDate: "desc" } }),
-    prisma.ledgerEntry.findMany({ where: { companyId, date: { lte: asOfDate } } }),
+    // SUPERSEDED rows are history. They must not keep drawing basket capacity
+    // after the product Supersede action (P3-R0 C10). This is a status
+    // filter, not a ledger rewrite.
+    prisma.ledgerEntry.findMany({ where: { companyId, date: { lte: asOfDate }, status: "ACTIVE" } }),
   ]);
 
   if (!snapshot) {

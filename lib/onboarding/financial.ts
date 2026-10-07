@@ -198,21 +198,18 @@ export interface UpsertFinancialFactResult {
  * Both tables require a FULL set of 8 numeric fields per row (they were
  * designed around one human typing in a complete snapshot at once) - a
  * single connector-discovered fact only ever supplies ONE of those 8. This
- * function resolves that tension by finding a BASE row to seed the other 7
- * fields from:
+ * function resolves that tension without copying another date's facts:
  *   1. An existing row for this EXACT asOfDate, if one exists (created by a
  *      prior manual entry or a prior promoted fact for the same date) - the
  *      new metric's field is merged on top of it and the row is UPDATED.
- *   2. Otherwise, the company's most recent PRIOR row (asOfDate < this
- *      fact's) - its 8 values seed a NEW row, again with only this metric's
- *      field overridden.
- *   3. If neither exists (this is the company's very first financial fact of
- *      any kind), this function FAILS CLOSED: it does not fabricate the
- *      other 7 required fields as 0 or any other guessed value. It returns
- *      applied:false with a clear skipReason instead - the fact remains an
- *      approved-but-not-yet-promotable candidate until either a full manual
- *      snapshot or a second promotable fact for the same date exists to seed
- *      the missing fields from.
+ *   2. Otherwise the batch itself must collectively cover all 8 required
+ *      fields. A snapshot with asOfDate < this fact's date is not a seed.
+ *   3. If there is no same-date row and the batch leaves a required field
+ *      uncovered, this function FAILS CLOSED: it does not fabricate the
+ *      missing fields as 0 and it does not copy them from a prior date. It
+ *      returns applied:false with a clear skipReason. The fact stays an
+ *      approved-but-not-yet-promotable candidate until a same-date manual
+ *      snapshot exists or a same-date batch covers the remaining metrics.
  */
 export interface BatchFinancialFact {
   /** Caller-supplied identifier (lib/onboarding/promotion.ts passes the originating ExtractionCandidate's own id) echoed back on the matching perFact entry - avoids relying on array position or on metricName uniqueness (two facts in the same batch CAN legitimately share a metricName, e.g. two independently-approved candidates both proposing "cash" for the same date) to match a result back to its request. */
@@ -234,15 +231,16 @@ export interface UpsertFinancialFactsResult {
  * asOfDate) at once. This matters for the common real case a single-fact
  * call cannot handle - a CSV/EDGAR/upload source that reports SEVERAL
  * metrics for the same reporting date in one batch, for a company with NO
- * prior FinancialSnapshot at all (e.g. a brand-new company's very first
- * financial data). Resolving facts one at a time (each looking for a "base"
- * row before the others in the same batch have been written) would make
- * EVERY one of them fail closed, even though the batch as a whole may
- * collectively supply all 8 required fields. Batching them together fixes
- * that without weakening the fail-closed guarantee: if the batch (merged
- * onto whatever base row exists) still leaves a required field with no
- * source at all, this still creates nothing and reports every affected fact
- * as skipped with a clear reason - never a fabricated 0.
+ * same-date FinancialSnapshot at all (e.g. a brand-new company's very first
+ * financial data). Resolving facts one at a time (each looking for a
+ * same-date row before the others in the same batch have been written)
+ * would make EVERY one of them fail closed, even though the batch as a
+ * whole may collectively supply all 8 required fields. Batching them
+ * together fixes that without weakening the fail-closed guarantee: if the
+ * batch (merged onto a same-date row, when one exists) still leaves a
+ * required field with no source at all, this still creates nothing and
+ * reports every affected fact as skipped with a clear reason — never a
+ * fabricated 0 and never a value copied from an earlier date.
  */
 export async function upsertFinancialFactsForDate(companyId: string, asOfDate: Date, facts: BatchFinancialFact[], notes: string | undefined, client: FinancialDbClient = prisma): Promise<UpsertFinancialFactsResult> {
   const perFact: (UpsertFinancialFactResult & { key: string; metricName: string })[] = [];
@@ -264,19 +262,17 @@ export async function upsertFinancialFactsForDate(companyId: string, asOfDate: D
   const existingSnapshot = await client.financialSnapshot.findFirst({ where: { companyId, asOfDate } });
   const existingState = await client.financialState.findFirst({ where: { companyId, asOfDate } });
 
-  let base: RequiredFinancialFields | null = existingSnapshot ? requiredFieldsFromSnapshot(existingSnapshot) : null;
-  if (!base) {
-    const prior = await client.financialSnapshot.findFirst({ where: { companyId, asOfDate: { lt: asOfDate } }, orderBy: { asOfDate: "desc" } });
-    if (prior) base = requiredFieldsFromSnapshot(prior);
-  }
+  // Same-date row only. A snapshot dated earlier is a different period and
+  // is never read as a seed (P3-R0 C6).
+  const baseFromSameDate: RequiredFinancialFields | null = existingSnapshot ? requiredFieldsFromSnapshot(existingSnapshot) : null;
 
   const ALL_FIELDS: (keyof RequiredFinancialFields)[] = ["ebitda", "cash", "totalDebtPrincipal", "securedDebtPrincipal", "cumulativeNetIncomeSinceIssue", "equityProceedsSinceIssue", "interestExpense", "assumedNewDebtRatePct"];
 
-  if (!base) {
-    // No base row anywhere - the batch itself must collectively cover all 8 required fields, or every applicable fact is skipped (never a fabricated 0 for whatever's missing).
+  let base: RequiredFinancialFields;
+  if (!baseFromSameDate) {
     const missing = ALL_FIELDS.filter((f) => !resolvedFields.has(f));
     if (missing.length > 0) {
-      const reason = `No existing or prior FinancialSnapshot for ${asOfDate.toISOString().slice(0, 10)} to seed the missing required field(s) from, and this batch does not itself cover: ${missing.join(", ")}. Not promoted (fail closed: never fabricates a required field as 0). Promote a full manual financial snapshot first, or wait for facts covering the remaining metrics.`;
+      const reason = `No same-date FinancialSnapshot for ${asOfDate.toISOString().slice(0, 10)}. Prior-date snapshots are not used as a seed. This batch does not cover: ${missing.join(", ")}. Not promoted (fail closed: never copies a value from an earlier date and never fabricates a required field as 0).`;
       for (const f of applicableFacts) perFact.push({ key: f.key, metricName: f.metricName, applied: false, skipReason: reason });
       return { perFact };
     }
@@ -291,7 +287,7 @@ export async function upsertFinancialFactsForDate(companyId: string, asOfDate: D
       assumedNewDebtRatePct: resolvedFields.get("assumedNewDebtRatePct")!,
     };
   } else {
-    base = { ...base, ...Object.fromEntries(resolvedFields) };
+    base = { ...baseFromSameDate, ...Object.fromEntries(resolvedFields) };
   }
 
   const merged: ManualFinancialStateInput = { companyId, asOfDate, ...base, notes };
@@ -323,7 +319,7 @@ export async function upsertFinancialFactsForDate(companyId: string, asOfDate: D
   return { perFact, financialSnapshotId: snapshot.id, financialStateId: state.id };
 }
 
-/** Single-fact convenience wrapper over upsertFinancialFactsForDate - see that function's own header comment for why a batch of sibling facts for the same date should generally be promoted together when a company has no prior snapshot to seed from. */
+/** Single-fact convenience wrapper over upsertFinancialFactsForDate. A single fact still fails closed when no same-date row exists and the other required fields are absent. A prior-date snapshot is not a seed. */
 export async function upsertFinancialFactForDate(params: UpsertFinancialFactParams, client: FinancialDbClient = prisma): Promise<UpsertFinancialFactResult> {
   const result = await upsertFinancialFactsForDate(params.companyId, params.asOfDate, [{ key: "single", metricName: params.metricName, value: params.value }], params.notes, client);
   const { key: _key, metricName: _metricName, ...rest } = result.perFact[0]!;

@@ -25,10 +25,20 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
   revalidatePath(`/${companyId}`, "layout");
 }
 
-export async function deleteLedgerEntry(companyId: string, id: string) {
+/**
+ * Withdraw a ledger entry from the live model without erasing it.
+ * Sets status SUPERSEDED and records supersededAt. Does not delete the row,
+ * does not write a reversing entry, and leaves supersededById null because
+ * there is no successor fact. A second call fails closed.
+ */
+export async function supersedeLedgerEntry(companyId: string, id: string) {
   const entry = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id } });
   if (entry.companyId !== companyId) throw new Error(`Ledger entry ${id} does not belong to this company`);
-  await prisma.ledgerEntry.delete({ where: { id } });
+  if (entry.status === "SUPERSEDED") throw new Error(`Ledger entry ${id} is already superseded`);
+  await prisma.ledgerEntry.update({
+    where: { id },
+    data: { status: "SUPERSEDED", supersededAt: new Date(), supersededById: null },
+  });
   revalidatePath(`/${companyId}`, "layout");
 }
 
