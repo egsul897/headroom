@@ -1,0 +1,40 @@
+# Soft-gate present-check only. IMPLEMENTED ≠ CERTIFIED. PINNED_OFFLINE ≠ CERTIFIED.
+# Not certification credit. Does not replace canonical-compiler.
+# Stratified-cert paths stay off canonical-compiler.yml so this gate cannot
+# trigger or block the Phase-3 certified path.
+# Zero provider calls: the suite reads sealed fixtures only.
+
+name: stratified-cert
+
+on:
+  push:
+    paths:
+      - "tests/stratified-cert/**"
+      - "docs/phase-3-reliability-stratified-certification/**"
+      - "scripts/stratified-cert/**"
+      - ".github/workflows/stratified-cert.yml"
+  pull_request:
+    paths:
+      - "tests/stratified-cert/**"
+      - "docs/phase-3-reliability-stratified-certification/**"
+      - "scripts/stratified-cert/**"
+      - ".github/workflows/stratified-cert.yml"
+
+jobs:
+  stratified-cert:
+    name: stratified-cert (soft gate)
+    runs-on: ubuntu-latest
+    env:
+      # deliberately unset: a provider call from this present-check is a defect
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+      SEMANTIC_INVENTORY_MODE: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: present-check
+        run: npx vitest run tests/stratified-cert
