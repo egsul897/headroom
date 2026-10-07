@@ -275,7 +275,7 @@ No certification gate has landed. The carried percentage is retired. The counted
 
 ## 13. Pull request state
 
-Checked 2026-10-07T15:42:14Z. Merged docs are not `CERTIFIED`. Draft is not merged. Live disposition of #104–#111 after that clock is in the Track E note. The table below is the 15:42 snapshot.
+Checked 2026-10-07T15:42:14Z. Merged docs are not `CERTIFIED`. Draft is not merged. Live disposition of #104–#111 after that clock is in the Track E note. The table below is the 15:42 snapshot. #106 and #107 later closed unmerged at 2026-10-07T16:40:00Z (`mergedAt` null, still draft). Draft in those two rows is that earlier snapshot. Their window notes and six-issuer rank were not copied onto main and may still exist only on the closed drafts.
 
 | PR | State | What it is |
 |---|---|---|

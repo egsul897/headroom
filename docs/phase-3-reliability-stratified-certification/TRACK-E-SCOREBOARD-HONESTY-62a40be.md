@@ -52,7 +52,7 @@ The two rows that are not pinned:
 
 The grant preimage clock is 2026-10-07T16:25:00Z. Its residual line still names #104–#111 as open drafts. That sentence stays inside `PHASE-3-TRACK-E.FROZEN.md` and is not edited. Live disposition below is later than that clock.
 
-Checked live on GitHub at 2026-10-07T16:29:25Z and re-read after that close. Numbers 104–111 are pull requests. `gh issue view` on each number returns that pull request. There is no separate issue in this set. #106 and #107 stay open: closing them would drop notes that are not on main. That HOLD is execution honesty. It is not a rewrite of the frozen residual.
+Checked live on GitHub at 2026-10-07T16:29:25Z for the set, then re-read #106 and #107 after they closed. Numbers 104–111 are pull requests. `gh issue view` on each number returns that pull request. There is no separate issue in this set. #106 and #107 are CLOSED unmerged (`closedAt` 2026-10-07T16:40:00Z, `mergedAt` null, still draft). That close did not copy their draft notes onto main. Pin HOLD and the six-issuer rank may still exist only on those closed drafts. Recording the close is execution honesty. It is not a rewrite of the frozen residual.
 
 Closed below means closed unmerged (`mergedAt` null, still draft). Closed is not merged, and not `CERTIFIED`.
 
@@ -60,8 +60,8 @@ Closed below means closed unmerged (`mergedAt` null, still draft). Closed is not
 |---|---|---|---|
 | #104 | CLOSED 2026-10-07T16:29:25Z, not merged | Superseded closed-path | Lexical verdict is on main in #115: section-wide reclass prose, zero `RECLASSIFIABLE_TO`. #122 locks D2. The variant-count appendix in the draft was not copied onto main. |
 | #105 | CLOSED 2026-10-07T16:29:25Z, not merged | Superseded closed-path | The five bounded spans and the sealed-identity mismatches are in #115. The draft JSON was not merged. |
-| #106 | OPEN draft | **HOLD** | Pin HOLD itself is already on main (#114, #118, matrix). The draft’s window notes are not: the 285-character window as a greater-of cap component rather than an Available Amount builder; the `Pro Forma Basis` index miss; the asked definition chain; predicate-`eligible: true` rows `discovery-candidate:ac3033fd2611599aad30c670` (§1.08(j)) and `discovery-candidate:0fa404221f4a6ea4bce4d6ca` (§2.16(b)) are not this cell and are not pins. Those notes stay on the open draft. They are not `CERTIFIED`. |
-| #107 | OPEN draft | **HOLD** | The six-issuer rank and the filing-index metadata are not in a merged record. #112 records Knife River as `BLIND` with `bodyOpened: false` and does not store a Knife River URL or accession. This draft is not closed as superseded. It is not authority to open a body. |
+| #106 | CLOSED 2026-10-07T16:40:00Z, not merged, still draft | Superseded closed-path | Pin HOLD itself is already on main (#114, #118, matrix). The draft’s window notes were not copied onto main: the 285-character window as a greater-of cap component rather than an Available Amount builder; the `Pro Forma Basis` index miss; the asked definition chain; predicate-`eligible: true` rows `discovery-candidate:ac3033fd2611599aad30c670` (§1.08(j)) and `discovery-candidate:0fa404221f4a6ea4bce4d6ca` (§2.16(b)) are not this cell and are not pins. Those notes may still exist only on this closed draft. They are not `CERTIFIED`. |
+| #107 | CLOSED 2026-10-07T16:40:00Z, not merged, still draft | Superseded closed-path | The six-issuer rank and the filing-index metadata are not in a merged record. They may still exist only on this closed draft. #112 records Knife River as `BLIND` with `bodyOpened: false` and does not store a Knife River URL or accession. This close is not authority to open a body. |
 | #108 | CLOSED 2026-10-07T16:29:25Z, not merged | Superseded closed-path | Identity verdict is on main: prose exists, no sealed sentence identity, zero edges (#115, #119, #122). Architect review on this draft was COMMENT, not APPROVE, and named Merge HOLD. The later D2 lock is why the draft is closed unmerged rather than landed. The CONMED §7.3 limb mismatch in the draft was not copied onto main. It is not a sealed identity and not an edge. |
 | #109 | CLOSED 2026-10-07T16:29:25Z, not merged | Superseded closed-path | Prep named Knife River first, then stopped. #112 replaced that slot: Gibraltar is `DEVELOPMENT` and not a matrix cell; Knife River is `BLIND`; `bodyOpened` is false. Index-only notes in the draft were not merged. They are not authority to open the body. |
 | #110 | CLOSED 2026-10-07T16:29:25Z, not merged | Superseded closed-path | Weak-cell terminals are on main (matrix, #114, #115, #116, #118, #122). The 15-id Chewy `BUILDER` census in the draft was not copied onto main. No row is `CERTIFIED`. |
@@ -73,7 +73,7 @@ Closed below means closed unmerged (`mergedAt` null, still draft). Closed is not
 
 Not opened. Not evaluated. Terminal on main, from the Gibraltar package provenance: `knifeRiver.designation` `BLIND`, `bodyOpened` false, `clausesSearched` false, `covenantWordingInspected` false, `metadataRecordedFromThisRun` false. This note did not fetch a body, a URL, or an accession.
 
-#107 stays open only because its rank is not on main. That open state is not a Knife River eval.
+#107 is closed unmerged. Its rank was not copied onto main and may still exist only on that closed draft. That close is not a Knife River eval.
 
 ## 5. What this note does not do
 
