@@ -1,0 +1,331 @@
+{
+  "schema": "p3-ws2-with-reclassification-agent-b-semantic-span.v1",
+  "independence": "Lexical-pass output was not read. Schema parity with that pass is not claimed. Seeds were leads only.",
+  "tip": "3f1182511758c85ffc92023b06a46114820e69fe",
+  "mode": "DISCOVER_ONLY",
+  "conceptualQuestion": "Does this agreement permit an amount originally using one permission/basket/classification to later be treated as using another?",
+  "reclassifiableTo": {
+    "emitted": false,
+    "invented": false,
+    "note": "No RECLASSIFIABLE_TO or REDESIGNATES_TO dependency is created by this pass. A string search of docs/canonical-covenant-map/maps/conmed-2025-credit-facility.map.json found no RECLASSIFIABLE_TO token. No Chewy canonical map file exists under that maps directory. Absence of an edge in those files is not a certification that no edge exists in every historical compile."
+  },
+  "softGate": "Soft gate only. IMPLEMENTED is not CERTIFIED. PINNED_OFFLINE is not CERTIFIED. This packet does not pin, compile, or certify.",
+  "sourceTexts": {
+    "conmedJoined": {
+      "construction": "definitions excerpt, then two newlines, then Article VII curated text. Offsets match phase-2f-stage1 doc-a nodes (max charEnd equals joined length).",
+      "files": [
+        "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+        "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt"
+      ],
+      "chars": 94258,
+      "sha256": "d4659601000fae07d5050167ecffb0d9da91708a57111c59dff0db40fb86540c"
+    },
+    "chewy": {
+      "file": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "chars": 864362,
+      "sha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb"
+    }
+  },
+  "bestCandidateRank": 1,
+  "bestCandidateId": "B1",
+  "candidates": [
+    {
+      "candidateId": "B1",
+      "rank": 1,
+      "lead": "Chewy §1.08(f)",
+      "answersQuestion": "YES",
+      "whyThisRank": "The unique sentence states all three elements: an amount incurred in reliance on Fixed Amounts, later ('at any time' / 'subsequently'), treated as incurred under Incurrence-Based Amounts. It names Indebtedness, Liens, Investments, Restricted Payments, and prepayments, and the same subsection names Fixed Incremental Amount and Ratio Incremental Amount. No structural node equals this sentence.",
+      "packageKey": "chwy-2026-credit-agreement",
+      "documentId": "doc-a",
+      "boundedSpan": {
+        "charStart": 392815,
+        "charEndExclusive": 393488,
+        "chars": 673,
+        "occurrencesInDocumentText": 1,
+        "sha256": "78b081e801e06744fd6e665164b5b0801857a621de0f041eb6d5b21abeb4c83e",
+        "text": "In addition, any Indebtedness (and associated Liens, subject to the applicable priorities required pursuant to the applicable\nIncurrence-Based Amounts), Investments, liquidations, dissolutions, mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts\nshall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio for\nsuch Incurrence-Based Amounts on a Pro Forma Basis."
+      },
+      "tightestStructuralNode": {
+        "sectionRef": "1.08(f)(i)(i)(B)(A)(B)",
+        "nodeType": "SUBCLAUSE",
+        "nodeKey": "doc-a::1.08(f)(i)(i)(B)(A)(B)",
+        "nodeId": "structural-node:42bf031c5fbe7821f4d8f94d",
+        "charStart": 389977,
+        "charEndExclusive": 393489,
+        "chars": 3512,
+        "equalsBoundedSpan": false,
+        "ancestorSectionRefs": [
+          "1.08(f)(i)",
+          "1.08(f)",
+          "1.08"
+        ]
+      },
+      "sealedIdentity": {
+        "exists": true,
+        "discoveryId": "discovery-candidate:82f0f8f14f2426d932b513dc",
+        "role": "DESIGNATION_RULE",
+        "normalizedSourceRef": "1.08(f)",
+        "structuralNodeKey": "doc-a::1.08(f)",
+        "nodeContainsBoundedSpan": true,
+        "nodeEqualsBoundedSpan": false,
+        "nodeChars": 5978,
+        "multipleRulesLikely": false,
+        "reviewStatus": "NEEDS_REVIEW",
+        "confidence": 0.6,
+        "descriptionMatchesSpan": true,
+        "sameNodeAlsoSeals": {
+          "discoveryId": "discovery-candidate:501eb9d39a0af643dc5dc8ec",
+          "role": "BUILDER",
+          "note": "Same §1.08(f) node also seals the incurrence-time ordering sentence (Incremental Facility deemed incurred first under the Ratio Incremental Amount). That sentence is not this bounded span."
+        },
+        "canonicalMap": "No Chewy file under docs/canonical-covenant-map/maps/.",
+        "certificationStatus": "NOT_CERTIFIED"
+      },
+      "reclassifiableToEmitted": false
+    },
+    {
+      "candidateId": "B2",
+      "rank": 2,
+      "lead": "CONMED §7.2",
+      "answersQuestion": "YES",
+      "whyThisRank": "Clause (B) is an explicit later election: classify or reclassify, or later divide, classify or reclassify, an item of Indebtedness among §7.2(a)–(s), counted under only one clause. Clause (A) of the same closing is simultaneous combination, not the later-treatment grant. The bounded clause is swallowed into §7.2(s)(i).",
+      "packageKey": "conmed-2025-credit-facility",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "boundedSpan": {
+        "charStart": 55967,
+        "charEndExclusive": 56634,
+        "chars": 667,
+        "occurrencesInDocumentText": 1,
+        "sha256": "faadbc0faf861b2236420cea28b103de013fc9d3e6930e6cd62a30a8da6496db",
+        "text": "(B) in the event that an item of Indebtedness (or any\nportion thereof) meets the criteria of one or more of the categories of permitted Indebtedness described in Sections 7.2(a) through (s),\nthe Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness\n(or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of\nsuch item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having\nbeen incurred or existing pursuant to only one of such clauses."
+      },
+      "closingParagraphAlsoBounded": {
+        "charStart": 55701,
+        "charEndExclusive": 56634,
+        "chars": 933,
+        "occurrencesInDocumentText": 1,
+        "sha256": "6966dd04dcef0c05e371c6f6d2f2c888a6f82a6e89f10280b796cc4f94f10d4e",
+        "text": "For purposes of determining compliance with\nthis Section 7.2, (A) Indebtedness need not be permitted solely by reference to one category of permitted Indebtedness described in Section\n7.2(a) through (s) but may be permitted in part under any combination thereof and (B) in the event that an item of Indebtedness (or any\nportion thereof) meets the criteria of one or more of the categories of permitted Indebtedness described in Sections 7.2(a) through (s),\nthe Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness\n(or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of\nsuch item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having\nbeen incurred or existing pursuant to only one of such clauses."
+      },
+      "tightestStructuralNode": {
+        "sectionRef": "7.2(s)(i)",
+        "nodeType": "CLAUSE",
+        "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2(s)(i)",
+        "nodeId": null,
+        "charStart": 54567,
+        "charEndExclusive": 56635,
+        "chars": 2068,
+        "equalsBoundedSpan": false,
+        "ancestorSectionRefs": [
+          "7.2(s)",
+          "7.2"
+        ]
+      },
+      "sealedIdentity": {
+        "descriptionMatch": {
+          "exists": true,
+          "discoveryId": "discovery-candidate:c76edbc49663c57628ed3cee",
+          "role": "OTHER_RELEVANT_RULE",
+          "normalizedSourceRef": "7.2",
+          "structuralNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.2",
+          "nodeContainsBoundedSpan": true,
+          "nodeEqualsBoundedSpan": false,
+          "nodeChars": 8843,
+          "sourceCitationIsSectionChapeau": true,
+          "mapOutcome": "UNSERVED",
+          "certificationStatus": "NOT_CERTIFIED",
+          "compilationStatus": null
+        },
+        "tightestNodeSealedAsSomethingElse": {
+          "discoveryId": "discovery-candidate:5b0cf887a4cf4a3b5caa1c81",
+          "role": "FINANCIAL_TEST",
+          "normalizedSourceRef": "7.2(s)(i)",
+          "note": "The smallest structural node that contains clause (B) is sealed as the acquisition-debt pro forma financial test. Its node text also contains the classification closing. That identity is not a reclassification identity."
+        }
+      },
+      "amendmentSearch": "Sealed second-amendment and first-omnibus texts were searched for 'Section 7.2', 'Section 7.3', and 'reclassif'. No match. That search does not speak to documents outside the sealed fixture.",
+      "reclassifiableToEmitted": false
+    },
+    {
+      "candidateId": "B3",
+      "rank": 3,
+      "lead": "Chewy §6.08",
+      "answersQuestion": "YES",
+      "whyThisRank": "The closing sentence says the Initial Borrower may classify or later reclassify a Restricted Payment or Investment among §6.08(a), §6.08(b)(1)–(25), and Permitted Investments, based on circumstances on the date of reclassification. The sealed candidate whose description states that mechanic is anchored to §6.08(h), and §6.08(h) does not contain this span.",
+      "packageKey": "chwy-2026-credit-agreement",
+      "documentId": "doc-a",
+      "boundedSpan": {
+        "charStart": 696782,
+        "charEndExclusive": 697570,
+        "chars": 788,
+        "occurrencesInDocumentText": 1,
+        "sha256": "1c0c7c368afc9fb9bdeabe0f2b5845a555cc9408ef294decc8ee36ee42271056",
+        "text": "For purposes of\ndetermining compliance with this Section 6.08, in the event that a proposed Restricted Payment or Investment (or a portion thereof) meets the criteria of Sections 6.08(b)(1) through (25) hereof or is entitled to be made pursuant to\nSection 6.08(a) hereof and/or one or more of the exceptions contained in the definition of “Permitted Investments,” the Initial Borrower shall be entitled to classify or later reclassify (based on circumstances existing on the date\nof such reclassification) such Restricted Payment or Investment (or portion thereof) among such Sections 6.08(b)(1) through (25) and Section 6.08(a) hereof and/or one or more of the exceptions contained in the definition of\n“Permitted Investments,” in a manner that otherwise complies with this Section 6.08."
+      },
+      "tightestStructuralNode": {
+        "sectionRef": "6.08(i)(iii)(II)",
+        "nodeType": "SUBCLAUSE",
+        "nodeKey": "doc-a::6.08(i)(iii)(II)",
+        "nodeId": "structural-node:f6901a54f1021a61321c7a8c",
+        "charStart": 693852,
+        "charEndExclusive": 697571,
+        "chars": 3719,
+        "equalsBoundedSpan": false,
+        "ancestorSectionRefs": [
+          "6.08(i)(iii)",
+          "6.08(i)",
+          "6.08"
+        ]
+      },
+      "sealedIdentity": {
+        "descriptionMatchMisAnchored": {
+          "exists": true,
+          "discoveryId": "discovery-candidate:e8467da748d59de764b93705",
+          "role": "DESIGNATION_RULE",
+          "normalizedSourceRef": "6.08(h)",
+          "structuralNodeKey": "doc-a::6.08(h)",
+          "nodeCharStart": 669505,
+          "nodeCharEndExclusive": 669729,
+          "nodeContainsBoundedSpan": false,
+          "nodeTextIs": "(h) 100% of the aggregate amount received in cash and the Fair Market Value of marketable securities or other assets or property received by any Restricted Party in connection with any sale and leaseback transaction; minus",
+          "note": "Description claims later reclassification. The sealed node is the Available Amount sale-leaseback builder component and ends before the proved span."
+        },
+        "primaryCandidateOnTightestNode": null,
+        "parentSectionCandidatesContainSpanViaDocA6_08": true,
+        "note": "Parent §6.08 candidates include the span only because their keys include the whole section. None of those primary descriptions is this closing sentence. No discovery candidate has structuralNodeKeys[0] equal to doc-a::6.08(i)(iii)(II)."
+      },
+      "reclassifiableToEmitted": false
+    },
+    {
+      "candidateId": "B4",
+      "rank": 4,
+      "lead": "Chewy §6.01",
+      "answersQuestion": "YES_WITH_LOCK_IN",
+      "whyThisRank": "Paragraph (1) gives sole discretion to allocate, classify and reclassify an item that meets more than one permitted category, and to count it in only one clause. The same paragraph treats Effective Date facility debt as incurred under §6.01(b)(1)(X) and Effective Date ABL debt as incurred under §6.01(b)(1)(Y). The sentence does not add the adverb 'later' or 'at any time'. The word 'reclassify' is the later-treatment word that is actually present.",
+      "packageKey": "chwy-2026-credit-agreement",
+      "documentId": "doc-a",
+      "boundedSpan": {
+        "charStart": 636063,
+        "charEndExclusive": 637329,
+        "chars": 1266,
+        "occurrencesInDocumentText": 1,
+        "sha256": "828cc561953971d3a9e544e859d93c8c4337c4f65a74968ed89c5d0952410de7",
+        "text": "For purposes of determining compliance with this Section 6.01:\n\n(1) in the event that an item of Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) meets the\ncriteria of more than one of the categories of permitted Indebtedness, Disqualified Stock or Preferred Stock described in Sections 6.01(b)(1) through (33) hereof or is entitled to be incurred pursuant to Section 6.01(a) hereof, the Initial\nBorrower, in its sole discretion, shall allocate, classify and reclassify all or a portion of such item of Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) in any manner that complies with this Section 6.01 and shall\nonly be required to include the amount and type of such Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) in one (1) of the above clauses or subsections; provided that (X) all Indebtedness outstanding\nunder this Agreement on the Effective Date after giving effect to the Transactions shall be treated as incurred under Section 6.01(b)(1)(X) hereof and (Y) all Indebtedness represented by the ABL Credit Agreement on the Effective Date\n(including any guarantee thereof) after giving effect to the Transactions shall be treated as incurred under Section 6.01(b)(1)(Y); and"
+      },
+      "tightestStructuralNode": {
+        "sectionRef": "6.01(d)(2)(ii)(ii)(ii)(b)",
+        "nodeType": "SUBCLAUSE",
+        "nodeKey": "doc-a::6.01(d)(2)(ii)(ii)(ii)(b)",
+        "nodeId": "structural-node:2f4403e6b8e161edb027e723",
+        "charStart": 633606,
+        "charEndExclusive": 642524,
+        "chars": 8918,
+        "equalsBoundedSpan": false,
+        "ancestorSectionRefs": [
+          "6.01(d)(2)",
+          "6.01(d)",
+          "6.01"
+        ]
+      },
+      "sealedIdentity": {
+        "exists": true,
+        "discoveryId": "discovery-candidate:e93fc56312525fd9ac9bfd04",
+        "role": "DESIGNATION_RULE",
+        "normalizedSourceRef": "6.01",
+        "structuralNodeKey": "doc-a::6.01",
+        "nodeContainsBoundedSpan": true,
+        "nodeEqualsBoundedSpan": false,
+        "nodeChars": 33623,
+        "multipleRulesLikely": true,
+        "reviewStatus": "AUTO_ACCEPTED",
+        "confidence": 0.8,
+        "sourceCitationIsSectionHeading": true,
+        "primaryCandidateOnTightestNode": null,
+        "certificationStatus": "NOT_CERTIFIED"
+      },
+      "reclassifiableToEmitted": false
+    },
+    {
+      "candidateId": "B5",
+      "rank": 5,
+      "lead": "CONMED §7.3",
+      "answersQuestion": "YES",
+      "whyThisRank": "Clause (B) is the same later election as §7.2, for a Lien securing Indebtedness. The full closing paragraph is not contained in any node tighter than section §7.3, because the structural index splits the paragraph on the cross-reference 'through (q)' and creates a node labeled 7.3(q) whose text begins '(q) but may be permitted'. Enumerated lien clauses in the curated Article VII end at (p). Clause (B) cites 'through (p)'. No sealed discovery candidate is bound to that 7.3(q) node.",
+      "packageKey": "conmed-2025-credit-facility",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "boundedSpan": {
+        "charStart": 62975,
+        "charEndExclusive": 63687,
+        "chars": 712,
+        "occurrencesInDocumentText": 1,
+        "sha256": "75f32ba1879832ba0c6538b7585bc69107f798e7f2d000a2d5a02128f4fbf2df",
+        "text": "(B) in the event that a Lien securing\nan item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section\n7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify,\nsuch Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant and will only be\nrequired to include the amount and type of such Lien or such item of Indebtedness secured by such Lien in one of the above clauses and\nsuch Lien securing such item of Indebtedness will be treated as being incurred or existing pursuant to only one of such clauses."
+      },
+      "closingParagraphAlsoBounded": {
+        "charStart": 62689,
+        "charEndExclusive": 63687,
+        "chars": 998,
+        "occurrencesInDocumentText": 1,
+        "sha256": "b02fe4713eed1b4895428894a5403fedb2995fe8414a3ff07e7443226def0cbf",
+        "text": "For purposes of determining compliance with\nthis Section 7.3, (A) a Lien securing an item of Indebtedness need not be permitted solely by reference to one category of permitted Liens\ndescribed in Section 7.3(a) through (q) but may be permitted in part under any combination thereof and (B) in the event that a Lien securing\nan item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories of permitted Liens described in Section\n7.3(a) through (p), the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify,\nsuch Lien securing such item of Indebtedness (or any portion thereof) in any manner that complies with this covenant and will only be\nrequired to include the amount and type of such Lien or such item of Indebtedness secured by such Lien in one of the above clauses and\nsuch Lien securing such item of Indebtedness will be treated as being incurred or existing pursuant to only one of such clauses."
+      },
+      "tightestStructuralNodeForClauseB": {
+        "sectionRef": "7.3(q)",
+        "nodeType": "SUBSECTION",
+        "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.3(q)",
+        "nodeId": null,
+        "charStart": 62908,
+        "charEndExclusive": 63688,
+        "chars": 780,
+        "equalsBoundedSpan": false,
+        "ancestorSectionRefs": [
+          "7.3"
+        ]
+      },
+      "tightestStructuralNodeForFullClosing": {
+        "sectionRef": "7.3",
+        "nodeType": "SECTION",
+        "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.3",
+        "nodeId": null,
+        "charStart": 56635,
+        "charEndExclusive": 63688,
+        "chars": 7053,
+        "equalsBoundedSpan": false,
+        "ancestorSectionRefs": []
+      },
+      "falseNode": {
+        "sectionRef": "7.3(q)",
+        "nodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.3(q)",
+        "charStart": 62908,
+        "charEndExclusive": 63688,
+        "sealedDiscoveryCandidates": 0,
+        "startsWith": "(q) but may be permitted in part under any combination thereof"
+      },
+      "sealedIdentity": {
+        "descriptionMatch": {
+          "exists": true,
+          "discoveryId": "discovery-candidate:9fda59c688efd0a4baac658f",
+          "role": "DESIGNATION_RULE",
+          "normalizedSourceRef": "7.3",
+          "nodeContainsBoundedSpan": true,
+          "nodeEqualsBoundedSpan": false,
+          "nodeChars": 7053,
+          "mapOutcome": "UNSERVED",
+          "certificationStatus": "NOT_CERTIFIED",
+          "compilationStatus": null
+        },
+        "node7_3_p": {
+          "discoveryId": "discovery-candidate:d743c01b399ff5f9bd439df9",
+          "role": "EXCEPTION",
+          "note": "§7.3(p) is sealed as the acquisition-escrow lien exception. That node contains the start of the closing paragraph through the words 'through ' and does not contain clause (B)."
+        }
+      },
+      "reclassifiableToEmitted": false
+    }
+  ],
+  "notRanked": [
+    "Other Chewy sentences (Asset Sale definition reclassification, Permitted Liens definition reclassification, Permitted Investments clauses (22) and (30) deemed move to clause (1), Available RP Capacity reallocation, General Lien Basket Reallocated Amount, §5.18 affiliate-transaction reclassification) were seen in the extracted text and are not bounded or ranked in this packet.",
+    "CONMED Investments §7.8, Restricted Payments §7.6, and Asset Sales §7.5 closings in the curated Article VII do not contain 'classify or reclassify'. That is a search of the sealed Article VII text, not a finding about unsealed documents.",
+    "GAAP current/noncurrent reclassification, loan Class/Type classification in Chewy §1.02, and collateral-agreement capital-stock reclassification are not answers to the basket question."
+  ]
+}
