@@ -49,7 +49,7 @@ describe("Pass B enum-tight inventory dispositions (ADR-2)", () => {
   it("cites the closed vocabulary and does not treat transport parse as a quiet success", () => {
     expect(PASS_B_LEGAL_INVENTORY_DISPOSITIONS).toEqual(["INTENTIONALLY_NON_COMPUTATIONAL", "UNSUPPORTED", "AMBIGUOUS"]);
     expect(SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION).toBe("semantic-accountability.v8");
-    expect(SEMANTIC_COMPILER_PROMPT_VERSION).toBe("semantic-accountability-compiler-prompt.v8");
+    expect(SEMANTIC_COMPILER_PROMPT_VERSION).toBe("semantic-accountability-compiler-prompt.v9");
     const parsed = SubmitCompilationSchema.parse({
       inventoryDispositions: [{ inventoryItemId: "inv-item:abc", disposition: "CONSUMED_IN_EXPRESSION", note: "folded" }],
     });

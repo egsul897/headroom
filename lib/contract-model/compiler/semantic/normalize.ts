@@ -34,6 +34,7 @@ import type { GoverningSemanticContext } from "./governing-scope";
 import { classifySourceAction, assessActionCompatibility } from "./action-ontology";
 import { classifyEmittedReferences, statedReferencesFor, SOURCE_REFERENCE_FIDELITY_VERSION } from "./source-reference-fidelity";
 import { resolveProvenanceExcerpt, type AdmissibleSourceText } from "./provenance-binding";
+import { applyUnlimitedCarveOutQualitativeGates } from "./unlimited-carveout-honesty";
 
 const IR_VALUE_TYPES: readonly IRValueType[] = ["MONEY", "NUMBER", "PERCENT", "RATIO", "BOOLEAN", "DATE", "DURATION", "PERIOD", "ENTITY_SET", "CAPACITY"];
 const SUFFICIENCY_VALUES: readonly RepresentationSufficiency[] = ["COMPLETE", "PARTIAL", "AMBIGUOUS", "UNSUPPORTED", "MISSING_CONTEXT", "CONFLICTED"];
@@ -795,6 +796,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
   // SEMANTIC FIDELITY §7: parent scope informs (inherited attributes with PARENT_SCOPE authority); it never owns a unit.
   const parentScopeItems = (input.contextBundle?.items ?? []).filter((i) => i.type === "PARENT_SCOPE");
 
+  const soleUnlimitedCarveOut = submission.rules.filter((rule) => rule.capacityExpression?.kind === "UNLIMITED_CAPACITY").length === 1;
   const rules: IRRule[] = submission.rules.map((wireRule) => {
     const ctx = baseCtx(`rule[${wireRule.localRef}]`);
     scopeUnits[`rule[${wireRule.localRef}]`] = wireRule.sourceSectionRef;
@@ -805,8 +807,22 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     if (!matchEnum(wireRule.ruleType, Object.values(ContractRuleType))) warn(ctx, `ruleType "${wireRule.ruleType}" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)`);
     const posture = matchEnum(wireRule.posture, Object.values(ContractRulePosture)) ?? "N_A";
     const action = wireRule.action ? matchEnum(wireRule.action, CONTRACT_ACTIONS) ?? "OTHER" : null;
-    const capacityExpression = normalizeCapacityExpression(wireRule.capacityExpression, ctx);
-    const conditions = wireRule.conditions.map((c, i) => normalizeCondition(c, ctx, i));
+    let capacityExpression = normalizeCapacityExpression(wireRule.capacityExpression, ctx);
+    let conditions = wireRule.conditions.map((c, i) => normalizeCondition(c, ctx, i));
+    // Unlimited carve-out honesty: a property-character object class and an ordinary-course manner are two
+    // UNSUPPORTED gates, AND-composed on gatedBy. Sufficiency falls to PARTIAL. No new condition type.
+    const honestGates = applyUnlimitedCarveOutQualitativeGates({
+      operativeText: input.operativeSourceText,
+      anchors: [wireRule.excerpt, wireRule.capacityExpression?.excerpt ?? null, ...wireRule.conditions.flatMap((c) => [c.excerpt, c.description])],
+      scopePath: ctx.scopePath,
+      soleUnlimited: soleUnlimitedCarveOut,
+      capacity: capacityExpression,
+      conditions,
+      bindExcerpt: (excerpt) => provenanceFor(ctx, wireRule.citation, excerpt) ?? null,
+    });
+    if (honestGates.applied && honestGates.reason) limitRule(ctx, honestGates.reason);
+    capacityExpression = honestGates.capacity;
+    conditions = honestGates.conditions;
     // §17: the rule-level fields when the model supplied them; otherwise the entity-scope tags the rule's own
     // ENTITY_SCOPE_REFERENCE nodes already carry (deterministic, never invented).
     const scopeNodes = collectEntityScopeNodes([capacityExpression, ...conditions.map((c) => c.expression)]);
