@@ -17,6 +17,8 @@
  * IMPLEMENTED ≠ CERTIFIED.
  */
 
+import { hasQueryAuthority } from "@/lib/home/load-state";
+
 export const HOME_GREETING_NO_NAME = "Here’s your headroom overview.";
 
 /** Tail of the named greeting. The full locked sentence is "Good morning, {name}. " + this. */
@@ -120,16 +122,13 @@ const FIGURE_SLOTS = new Set<HomeSlotId>(["totalHeadroom", "utilization", "capac
 
 export type CopyState = {
   kind: string;
-  authoritativeEmpty?: boolean;
-  ledgerRead?: boolean;
-  sourceAvailable?: boolean;
-  queried?: boolean;
+  authority?: unknown;
 };
 
 /**
  * Empty-style buyer copy for a slot.
  * UNKNOWN and NOT_LOADED always return HOME_SLOTS.
- * VERIFIED_EMPTY returns HOME_VERIFIED_EMPTY only when the state carries query authority.
+ * VERIFIED_EMPTY returns HOME_VERIFIED_EMPTY only when the state carries a query-authority token.
  * Populated states are rendered by the card, not by this helper; they fall back to UNKNOWN copy.
  */
 export function resolveBuyerCopy(slot: HomeSlotId, state: CopyState): HomeSlotCopy {
@@ -137,9 +136,7 @@ export function resolveBuyerCopy(slot: HomeSlotId, state: CopyState): HomeSlotCo
   if (state.kind === "UNKNOWN" || state.kind === "NOT_LOADED") return unknown;
   if (state.kind !== "VERIFIED_EMPTY") return unknown;
   if (FIGURE_SLOTS.has(slot)) return unknown;
-  if (slot === "transactions" && (state.ledgerRead !== true || state.sourceAvailable !== true)) return unknown;
-  if (slot === "alerts" && state.queried !== true) return unknown;
-  if (slot !== "alerts" && slot !== "transactions" && state.authoritativeEmpty !== true) return unknown;
+  if (!hasQueryAuthority(state.authority, slot)) return unknown;
   const verified = HOME_VERIFIED_EMPTY[slot as VerifiedEmptySlotId];
   return verified ?? unknown;
 }

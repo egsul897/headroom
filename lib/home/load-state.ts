@@ -5,9 +5,9 @@
  * VERIFIED_ZERO) and from VERIFIED_POPULATED (count slots: VERIFIED_NONZERO).
  * Negative facts require an authoritative queried source.
  *
- * An unloaded alert slot is UNKNOWN or NOT_LOADED. A numeric zero is not that
- * state. Verified zero is `{ kind: "VERIFIED_EMPTY", queried: true }` only
- * after the alert query has run.
+ * Verified empty and verified populated states carry an opaque query-authority
+ * token. That token is minted only inside the per-slot `*StateFromQuery` /
+ * `transactionsStateFromLedger` constructors. A boolean literal is not authority.
  *
  * Product LOCK sha256: 9489d25da4cd51bac8f49f3be1880915c65acf580f4cdc9373679511a19feb04
  * IMPLEMENTED ≠ CERTIFIED.
@@ -16,6 +16,19 @@
 export const VERIFIED_ZERO = "VERIFIED_EMPTY" as const;
 export const VERIFIED_NONZERO = "VERIFIED_POPULATED" as const;
 
+const queryAuthority: unique symbol = Symbol("headroom.overview.queryAuthority");
+
+/** Opaque proof that a `*StateFromQuery` constructor observed a real query outcome. */
+export type QueryAuthority<Slot extends string> = { readonly [queryAuthority]: Slot };
+
+function mintAuthority<Slot extends string>(slot: Slot): QueryAuthority<Slot> {
+  return { [queryAuthority]: slot };
+}
+
+export function hasQueryAuthority(authority: unknown, slot: string): boolean {
+  return typeof authority === "object" && authority !== null && (authority as { [queryAuthority]?: unknown })[queryAuthority] === slot;
+}
+
 export type UnloadedState = { kind: "UNKNOWN" } | { kind: "NOT_LOADED" };
 
 export const UNKNOWN_STATE: { kind: "UNKNOWN" } = { kind: "UNKNOWN" };
@@ -23,23 +36,27 @@ export const NOT_LOADED_STATE: { kind: "NOT_LOADED" } = { kind: "NOT_LOADED" };
 
 export type AlertLoadState =
   | UnloadedState
-  | { kind: typeof VERIFIED_ZERO; queried: true }
-  | { kind: typeof VERIFIED_NONZERO; queried: true; count: number };
+  | { kind: typeof VERIFIED_ZERO; authority: QueryAuthority<"alerts"> }
+  | { kind: typeof VERIFIED_NONZERO; authority: QueryAuthority<"alerts">; count: number };
 
 export type TransactionsLoadState =
   | UnloadedState
-  | { kind: "VERIFIED_EMPTY"; ledgerRead: true; sourceAvailable: true }
-  | { kind: "VERIFIED_POPULATED"; ledgerRead: true; sourceAvailable: true; rows: readonly string[] };
+  | { kind: "VERIFIED_EMPTY"; authority: QueryAuthority<"transactions"> }
+  | { kind: "VERIFIED_POPULATED"; authority: QueryAuthority<"transactions">; rows: readonly string[] };
 
-export type ListLoadState =
-  | UnloadedState
-  | { kind: "VERIFIED_EMPTY"; authoritativeEmpty: true }
-  | { kind: "VERIFIED_POPULATED"; authoritative: true; rows: readonly string[] };
+export type ListSlot = "nextTest" | "drivers" | "headroomOverTime";
 
-export type FigureLoadState =
+export type ListLoadState<Slot extends ListSlot = ListSlot> =
   | UnloadedState
-  | { kind: "VERIFIED_EMPTY"; authoritativeEmpty: true }
-  | { kind: "VERIFIED_POPULATED"; certified: true; display: string };
+  | { kind: "VERIFIED_EMPTY"; authority: QueryAuthority<Slot> }
+  | { kind: "VERIFIED_POPULATED"; authority: QueryAuthority<Slot>; rows: readonly string[] };
+
+export type FigureSlot = "totalHeadroom" | "utilization" | "capacitySummary";
+
+export type FigureLoadState<Slot extends FigureSlot = FigureSlot> =
+  | UnloadedState
+  | { kind: "VERIFIED_EMPTY"; authority: QueryAuthority<Slot> }
+  | { kind: "VERIFIED_POPULATED"; authority: QueryAuthority<Slot>; display: string };
 
 export type StatusRow = {
   covenant: string;
@@ -52,14 +69,14 @@ export type StatusRow = {
 
 export type StatusLoadState =
   | UnloadedState
-  | { kind: "VERIFIED_EMPTY"; authoritativeEmpty: true }
-  | { kind: "VERIFIED_POPULATED"; authoritative: true; rows: readonly StatusRow[] };
+  | { kind: "VERIFIED_EMPTY"; authority: QueryAuthority<"statusTable"> }
+  | { kind: "VERIFIED_POPULATED"; authority: QueryAuthority<"statusTable">; rows: readonly StatusRow[] };
 
 export type RiskLoadState =
   | UnloadedState
-  | { kind: "VERIFIED_EMPTY"; authoritativeEmpty: true }
-  | { kind: "VERIFIED_POPULATED"; disposition: "NEEDS_REVIEW" }
-  | { kind: "VERIFIED_POPULATED"; disposition: "LIST"; items: readonly string[] };
+  | { kind: "VERIFIED_EMPTY"; authority: QueryAuthority<"covenantsAtRisk"> }
+  | { kind: "VERIFIED_POPULATED"; authority: QueryAuthority<"covenantsAtRisk">; disposition: "NEEDS_REVIEW" }
+  | { kind: "VERIFIED_POPULATED"; authority: QueryAuthority<"covenantsAtRisk">; disposition: "LIST"; items: readonly string[] };
 
 export type ExportLoadState =
   | UnloadedState
@@ -70,13 +87,13 @@ export type OverviewLoad = {
   alerts: AlertLoadState;
   transactions: TransactionsLoadState;
   covenantsAtRisk: RiskLoadState;
-  nextTest: ListLoadState;
-  headroomOverTime: ListLoadState;
-  capacitySummary: FigureLoadState;
+  nextTest: ListLoadState<"nextTest">;
+  headroomOverTime: ListLoadState<"headroomOverTime">;
+  capacitySummary: FigureLoadState<"capacitySummary">;
   statusTable: StatusLoadState;
-  drivers: ListLoadState;
-  totalHeadroom: FigureLoadState;
-  utilization: FigureLoadState;
+  drivers: ListLoadState<"drivers">;
+  totalHeadroom: FigureLoadState<"totalHeadroom">;
+  utilization: FigureLoadState<"utilization">;
   exportState: ExportLoadState;
 };
 
@@ -103,29 +120,7 @@ export function isUnloaded(state: { kind: string }): boolean {
   return state.kind === "UNKNOWN" || state.kind === "NOT_LOADED";
 }
 
-export function verifiedEmptyList(): ListLoadState {
-  return { kind: "VERIFIED_EMPTY", authoritativeEmpty: true };
-}
-
-export function verifiedEmptyRisk(): RiskLoadState {
-  return { kind: "VERIFIED_EMPTY", authoritativeEmpty: true };
-}
-
-export function verifiedEmptyStatus(): StatusLoadState {
-  return { kind: "VERIFIED_EMPTY", authoritativeEmpty: true };
-}
-
-/** Verified zero alerts. Requires the alert query. There is no numeric stand-in. */
-export function verifiedZeroAlerts(): AlertLoadState {
-  return { kind: VERIFIED_ZERO, queried: true };
-}
-
-export function verifiedNonzeroAlerts(count: number): AlertLoadState {
-  if (!Number.isInteger(count) || count < 1) {
-    throw new Error("VERIFIED_NONZERO requires a positive integer from the alert query");
-  }
-  return { kind: VERIFIED_NONZERO, queried: true, count };
-}
+type MissedQuery = { outcome: "failed" } | { outcome: "skipped" } | { outcome: "not_loaded" };
 
 export function alertBadgeCount(state: AlertLoadState): number | null {
   const presented = presentAlerts(state);
@@ -135,13 +130,14 @@ export function alertBadgeCount(state: AlertLoadState): number | null {
 
 /**
  * Alert state from a query outcome.
- * A bare zero is not accepted. `outcome: "zero"` is verified empty only when `queried` is true.
- * Failed and skipped queries stay UNKNOWN or NOT_LOADED.
+ * Verified zero is minted only for `outcome: "zero"` when `queried` is true.
+ * A numeric zero, a failed query, or a skipped query does not mint it.
  */
 export function alertStateFromQuery(
   input:
     | { queried: false }
     | { queried: true; outcome: "failed" }
+    | { queried: true; outcome: "skipped" }
     | { queried: true; outcome: "not_loaded" }
     | { queried: true; outcome: "zero" }
     | { queried: true; outcome: "nonzero"; count: number },
@@ -149,21 +145,22 @@ export function alertStateFromQuery(
   if (!input.queried) return NOT_LOADED_STATE;
   switch (input.outcome) {
     case "failed":
+    case "skipped":
       return UNKNOWN_STATE;
     case "not_loaded":
       return NOT_LOADED_STATE;
     case "zero":
-      return verifiedZeroAlerts();
+      return { kind: VERIFIED_ZERO, authority: mintAuthority("alerts") };
     case "nonzero":
       if (!Number.isInteger(input.count) || input.count < 1) return UNKNOWN_STATE;
-      return verifiedNonzeroAlerts(input.count);
+      return { kind: VERIFIED_NONZERO, authority: mintAuthority("alerts"), count: input.count };
   }
 }
 
 /**
  * Transaction state from a ledger read.
- * Verified empty is returned only when the source is available and the ledger read ran
- * and the authoritative result is empty. Otherwise the slot stays UNKNOWN or NOT_LOADED.
+ * Verified empty is minted only when the source is available, the ledger read ran,
+ * and the authoritative result is empty.
  * An empty row array is not verified empty and is not populated.
  */
 export function transactionsStateFromLedger(
@@ -171,6 +168,7 @@ export function transactionsStateFromLedger(
     | { sourceAvailable: false }
     | { sourceAvailable: true; ledgerRead: false }
     | { sourceAvailable: true; ledgerRead: true; outcome: "failed" }
+    | { sourceAvailable: true; ledgerRead: true; outcome: "skipped" }
     | { sourceAvailable: true; ledgerRead: true; outcome: "not_loaded" }
     | { sourceAvailable: true; ledgerRead: true; outcome: "empty" }
     | { sourceAvailable: true; ledgerRead: true; outcome: "populated"; rows: readonly string[] },
@@ -178,62 +176,163 @@ export function transactionsStateFromLedger(
   if (!input.sourceAvailable || !input.ledgerRead) return UNKNOWN_STATE;
   switch (input.outcome) {
     case "failed":
+    case "skipped":
       return UNKNOWN_STATE;
     case "not_loaded":
       return NOT_LOADED_STATE;
     case "empty":
-      return { kind: "VERIFIED_EMPTY", ledgerRead: true, sourceAvailable: true };
+      return { kind: "VERIFIED_EMPTY", authority: mintAuthority("transactions") };
     case "populated":
       if (input.rows.length === 0) return UNKNOWN_STATE;
-      return { kind: "VERIFIED_POPULATED", ledgerRead: true, sourceAvailable: true, rows: input.rows };
+      return { kind: "VERIFIED_POPULATED", authority: mintAuthority("transactions"), rows: input.rows };
   }
 }
 
-export function presentAlerts(state: AlertLoadState): AlertLoadState {
-  if (state.kind === "VERIFIED_EMPTY" && state.queried !== true) return UNKNOWN_STATE;
-  if (state.kind === "VERIFIED_POPULATED") {
-    if (state.queried !== true || !Number.isInteger(state.count) || state.count < 1) return UNKNOWN_STATE;
+type ListQuery = MissedQuery | { outcome: "empty" } | { outcome: "populated"; rows: readonly string[] };
+
+function listStateFromQuery<Slot extends ListSlot>(slot: Slot, input: ListQuery): ListLoadState<Slot> {
+  switch (input.outcome) {
+    case "failed":
+    case "skipped":
+    case "not_loaded":
+      return UNKNOWN_STATE;
+    case "empty":
+      return { kind: "VERIFIED_EMPTY", authority: mintAuthority(slot) };
+    case "populated":
+      if (input.rows.length === 0) return UNKNOWN_STATE;
+      return { kind: "VERIFIED_POPULATED", authority: mintAuthority(slot), rows: input.rows };
   }
+}
+
+/** Failed, skipped, and not-loaded outcomes stay UNKNOWN. Empty is minted only for `outcome: "empty"`. */
+export function nextTestStateFromQuery(input: ListQuery): ListLoadState<"nextTest"> {
+  return listStateFromQuery("nextTest", input);
+}
+
+export function driversStateFromQuery(input: ListQuery): ListLoadState<"drivers"> {
+  return listStateFromQuery("drivers", input);
+}
+
+export function headroomOverTimeStateFromQuery(input: ListQuery): ListLoadState<"headroomOverTime"> {
+  return listStateFromQuery("headroomOverTime", input);
+}
+
+export function statusTableStateFromQuery(
+  input: MissedQuery | { outcome: "empty" } | { outcome: "populated"; rows: readonly StatusRow[] },
+): StatusLoadState {
+  switch (input.outcome) {
+    case "failed":
+    case "skipped":
+    case "not_loaded":
+      return UNKNOWN_STATE;
+    case "empty":
+      return { kind: "VERIFIED_EMPTY", authority: mintAuthority("statusTable") };
+    case "populated":
+      if (input.rows.length === 0) return UNKNOWN_STATE;
+      return { kind: "VERIFIED_POPULATED", authority: mintAuthority("statusTable"), rows: input.rows };
+  }
+}
+
+export function covenantsAtRiskStateFromQuery(
+  input: MissedQuery | { outcome: "empty" } | { outcome: "needs_review" } | { outcome: "list"; items: readonly string[] },
+): RiskLoadState {
+  switch (input.outcome) {
+    case "failed":
+    case "skipped":
+    case "not_loaded":
+      return UNKNOWN_STATE;
+    case "empty":
+      return { kind: "VERIFIED_EMPTY", authority: mintAuthority("covenantsAtRisk") };
+    case "needs_review":
+      return { kind: "VERIFIED_POPULATED", authority: mintAuthority("covenantsAtRisk"), disposition: "NEEDS_REVIEW" };
+    case "list":
+      if (input.items.length === 0) return UNKNOWN_STATE;
+      return { kind: "VERIFIED_POPULATED", authority: mintAuthority("covenantsAtRisk"), disposition: "LIST", items: input.items };
+  }
+}
+
+type FigureQuery = MissedQuery | { outcome: "empty" } | { outcome: "populated"; display: string };
+
+function figureStateFromQuery<Slot extends FigureSlot>(slot: Slot, input: FigureQuery): FigureLoadState<Slot> {
+  switch (input.outcome) {
+    case "failed":
+    case "skipped":
+    case "not_loaded":
+      return UNKNOWN_STATE;
+    case "empty":
+      return { kind: "VERIFIED_EMPTY", authority: mintAuthority(slot) };
+    case "populated":
+      if (isInventedZeroFigure(input.display)) return UNKNOWN_STATE;
+      return { kind: "VERIFIED_POPULATED", authority: mintAuthority(slot), display: input.display };
+  }
+}
+
+export function totalHeadroomStateFromQuery(input: FigureQuery): FigureLoadState<"totalHeadroom"> {
+  return figureStateFromQuery("totalHeadroom", input);
+}
+
+export function utilizationStateFromQuery(input: FigureQuery): FigureLoadState<"utilization"> {
+  return figureStateFromQuery("utilization", input);
+}
+
+export function capacitySummaryStateFromQuery(input: FigureQuery): FigureLoadState<"capacitySummary"> {
+  return figureStateFromQuery("capacitySummary", input);
+}
+
+export function presentAlerts(state: AlertLoadState): AlertLoadState {
+  if (state.kind !== "VERIFIED_EMPTY" && state.kind !== "VERIFIED_POPULATED") return state;
+  if (!hasQueryAuthority(state.authority, "alerts")) return UNKNOWN_STATE;
+  if (state.kind === "VERIFIED_POPULATED" && (!Number.isInteger(state.count) || state.count < 1)) return UNKNOWN_STATE;
   return state;
 }
 
 export function presentTransactions(state: TransactionsLoadState): TransactionsLoadState {
-  if (state.kind === "VERIFIED_EMPTY") {
-    if (state.ledgerRead !== true || state.sourceAvailable !== true) return UNKNOWN_STATE;
-    return state;
-  }
-  if (state.kind === "VERIFIED_POPULATED") {
-    if (state.ledgerRead !== true || state.sourceAvailable !== true || state.rows.length === 0) return UNKNOWN_STATE;
-  }
+  if (state.kind !== "VERIFIED_EMPTY" && state.kind !== "VERIFIED_POPULATED") return state;
+  if (!hasQueryAuthority(state.authority, "transactions")) return UNKNOWN_STATE;
+  if (state.kind === "VERIFIED_POPULATED" && state.rows.length === 0) return UNKNOWN_STATE;
   return state;
 }
 
-export function presentList(state: ListLoadState): ListLoadState {
-  if (state.kind === "VERIFIED_EMPTY" && state.authoritativeEmpty !== true) return UNKNOWN_STATE;
-  if (state.kind === "VERIFIED_POPULATED" && (state.authoritative !== true || state.rows.length === 0)) return UNKNOWN_STATE;
+export function presentList<Slot extends ListSlot>(state: ListLoadState<Slot>, slot: Slot): ListLoadState<Slot> {
+  if (state.kind !== "VERIFIED_EMPTY" && state.kind !== "VERIFIED_POPULATED") return state;
+  if (!hasQueryAuthority(state.authority, slot)) return UNKNOWN_STATE;
+  if (state.kind === "VERIFIED_POPULATED" && state.rows.length === 0) return UNKNOWN_STATE;
   return state;
 }
 
 export function presentRisk(state: RiskLoadState): RiskLoadState {
-  if (state.kind === "VERIFIED_EMPTY" && state.authoritativeEmpty !== true) return UNKNOWN_STATE;
+  if (state.kind !== "VERIFIED_EMPTY" && state.kind !== "VERIFIED_POPULATED") return state;
+  if (!hasQueryAuthority(state.authority, "covenantsAtRisk")) return UNKNOWN_STATE;
   if (state.kind === "VERIFIED_POPULATED" && state.disposition === "LIST" && state.items.length === 0) return UNKNOWN_STATE;
   return state;
 }
 
 export function presentStatus(state: StatusLoadState): StatusLoadState {
-  if (state.kind === "VERIFIED_EMPTY" && state.authoritativeEmpty !== true) return UNKNOWN_STATE;
-  if (state.kind === "VERIFIED_POPULATED" && (state.authoritative !== true || state.rows.length === 0)) return UNKNOWN_STATE;
+  if (state.kind !== "VERIFIED_EMPTY" && state.kind !== "VERIFIED_POPULATED") return state;
+  if (!hasQueryAuthority(state.authority, "statusTable")) return UNKNOWN_STATE;
+  if (state.kind === "VERIFIED_POPULATED" && state.rows.length === 0) return UNKNOWN_STATE;
   return state;
 }
 
-function isInventedZeroFigure(display: string): boolean {
-  return /\$\s*0(?:\.0+)?\b/.test(display) || /\b0\s*%/.test(display);
+/**
+ * True when `display` asserts a zero figure.
+ *
+ * Invented zeros: `$0`, `$0.0`, `$0M` / `$0B` / `$0K` (any case), `$0.0M` and the same
+ * suffix class, `0%`, `0.0%`, and zero ratios `0x` / `0.0x`.
+ * Non-zero figures pass, including `$0.4M`, `0.4%`, `0.4x`, and `1.0x`.
+ * `0.0x` is in scope because a zero multiple is the same invented-zero class as `$0` and `0%`.
+ */
+export function isInventedZeroFigure(display: string): boolean {
+  const dollarZero = /\$\s*0(?:\.0+)?(?:\s*[kmb])?(?![\d.])/i.test(display);
+  const percentZero = /(?<![\d.])0(?:\.0+)?\s*%/.test(display);
+  const ratioZero = /(?<![\d.])0(?:\.0+)?\s*x\b/i.test(display);
+  return dollarZero || percentZero || ratioZero;
 }
 
-export function presentFigure(state: FigureLoadState): FigureLoadState {
-  if (state.kind === "VERIFIED_POPULATED") {
-    if (state.certified !== true || isInventedZeroFigure(state.display)) return UNKNOWN_STATE;
-  }
+export function presentFigure<Slot extends FigureSlot>(state: FigureLoadState<Slot>, slot: Slot): FigureLoadState<Slot> {
+  if (state.kind !== "VERIFIED_EMPTY" && state.kind !== "VERIFIED_POPULATED") return state;
+  if (!hasQueryAuthority(state.authority, slot)) return UNKNOWN_STATE;
+  if (state.kind === "VERIFIED_POPULATED" && isInventedZeroFigure(state.display)) return UNKNOWN_STATE;
   return state;
 }
 
