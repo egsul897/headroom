@@ -17,7 +17,7 @@
 | 6 | Training-eligible records | **0** (SFT blocked) |
 | 7 | Evaluation-eligible records | **227** |
 | 8 | Import results | KF delivery package prepared for **229**; **0** accepted for import (blocked pending independent verification + rights) |
-| 9 | SHA / tests / CI / PR | See PR update; focused tests **16/16** pass; draft PR #149; no merge |
+| 9 | SHA / tests / CI / PR | Tip after TS fix `dcd99183194931a009b8aa6034b8ab61fcc7cd00`; `tsc --noEmit` clean; focused tests **16/16**; draft PR #149; no merge |
 
 ## Verification audit
 
