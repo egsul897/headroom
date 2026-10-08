@@ -61,16 +61,16 @@ async function verify(text: string, capacity: IRRule["capacityExpression"]) {
 describe("figure roles", () => {
   it("classifies permission, condition, trigger, ratio, prohibition, and exception amounts", () => {
     const text = [
-      "other Indebtedness in an aggregate principal amount not to exceed $10,000,000",
-      "in excess of $5,000,000, so long as approved",
-      "if Availability would be less than $15,000,000",
-      "so long as the Ratio does not exceed 3.50 to 1.00",
-      "shall not incur Indebtedness in excess of $8,000,000",
-      "except Indebtedness not to exceed $2,000,000",
-    ].join("; ");
+      "SECTION 9.01 Indebtedness. The Borrower shall not incur Indebtedness, except other Indebtedness in an aggregate principal amount not to exceed $10,000,000.",
+      "SECTION 9.02 Affiliate Transactions. Any other transaction in excess of $5,000,000, so long as approved.",
+      "SECTION 9.03 Availability. If Availability would be less than $15,000,000.",
+      "SECTION 9.04 Ratio. So long as the Ratio does not exceed 3.50 to 1.00.",
+      "SECTION 9.05 Restricted Debt. The Borrower shall not incur Indebtedness in excess of $8,000,000.",
+      "SECTION 9.06 Baskets. The Borrower shall not incur Indebtedness, except Indebtedness not to exceed $2,000,000.",
+    ].join("\n\n");
     const figures = classifyFigures(text);
     const roleFor = (value: number, kind: "MONEY" | "RATIO") => figures.find((figure) => figure.kind === kind && figure.value === value)?.role;
-    expect(roleFor(10_000_000, "MONEY")).toBe("AFFIRMATIVE_PERMISSION");
+    expect(roleFor(10_000_000, "MONEY")).toBe("EXCEPTION_AMOUNT");
     expect(roleFor(5_000_000, "MONEY")).toBe("CONDITION_THRESHOLD");
     expect(roleFor(15_000_000, "MONEY")).toBe("TRIGGER_THRESHOLD");
     expect(roleFor(3.5, "RATIO")).toBe("RATIO_REQUIREMENT");
@@ -96,7 +96,7 @@ describe("figure roles", () => {
   });
 
   it("keeps a cap, including inside a nested proviso, and rejects a flipped ratio comparator", () => {
-    const nested = "Indebtedness in an aggregate principal amount not to exceed $10,000,000, provided that the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00";
+    const nested = "The Borrower shall not incur Indebtedness, except Indebtedness in an aggregate principal amount not to exceed $10,000,000, provided that the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00";
     expect(figureRoleIssues(nested, [rule(money(10_000_000))])).toEqual([]);
     const flipped = rule(null, [{ conditionId: "c", conditionType: "RATIO_SATISFIED", expression: compare("GTE", 3.5), referencesDefinitionId: null, description: "ratio at least 3.50", provenance: null }]);
     expect(figureRoleIssues(nested, [flipped]).some((issue) => issue.kind === "COMPARATOR_MISMATCH")).toBe(true);
@@ -132,7 +132,7 @@ describe("figure roles", () => {
       ["if Availability would be less than $5,000,000.", "TRIGGER_THRESHOLD", false],
       ["an amount equal to the greater of $5,000,000 and Consolidated EBITDA.", "FORMULA_COMPONENT", false],
       ["The Borrower may incur an amount equal to the greater of $5,000,000 and Consolidated EBITDA.", "FORMULA_COMPONENT", true],
-      ["The aggregate principal amount incurred under this Section shall not at any time exceed the greater of $5,000,000 and 10% of Total Assets.", "FORMULA_COMPONENT", true],
+      ["The aggregate principal amount incurred under this Section shall not at any time exceed the greater of $5,000,000 and 10% of Total Assets.", "PROHIBITION_THRESHOLD", false],
       ["$5,000,000.", "UNCLASSIFIED", false],
       ["so long as Indebtedness does not exceed $5,000,000.", "CONDITION_THRESHOLD", false],
     ];
@@ -143,18 +143,64 @@ describe("figure roles", () => {
       const issues = figureRoleIssues(text, [rule(money(amount))]).map((issue) => issue.kind);
       expect(issues, text).toEqual(capacity ? [] : ["THRESHOLD_AS_CAPACITY"]);
     }
-    const siblingProviso = "other Indebtedness in an aggregate principal amount not to exceed $9,000,000; provided that no Default has occurred; and Indebtedness not to exceed the greater of $5,000,000 and Consolidated EBITDA.";
+    const siblingProviso = [
+      "SECTION 7.01 Indebtedness. The Borrower shall not incur Indebtedness, except:",
+      "(a) other Indebtedness in an aggregate principal amount not to exceed $9,000,000; provided that no Default has occurred; and",
+      "(b) Indebtedness not to exceed the greater of $5,000,000 and Consolidated EBITDA.",
+    ].join("\n");
     const sibling = classifyFigures(siblingProviso).find((item) => item.kind === "MONEY" && item.value === amount);
-    expect(sibling?.role, siblingProviso).toBe("FORMULA_COMPONENT");
+    expect(sibling?.role, siblingProviso).toBe("EXCEPTION_AMOUNT");
     expect(sibling?.capacity, siblingProviso).toBe(true);
     expect(figureRoleIssues(siblingProviso, [rule(money(amount))]), siblingProviso).toEqual([]);
-    const conditionInsideGrant = "not to exceed, so long as approved, the greater of $5,000,000 and Consolidated EBITDA.";
+    const conditionInsideGrant = "The Borrower may incur Indebtedness not to exceed, so long as approved, the greater of $5,000,000 and Consolidated EBITDA.";
     const inside = classifyFigures(conditionInsideGrant).find((item) => item.kind === "MONEY" && item.value === amount);
     expect(inside?.capacity, conditionInsideGrant).toBe(false);
     expect(figureRoleIssues(conditionInsideGrant, [rule(money(amount))]).map((issue) => issue.kind), conditionInsideGrant).toEqual(["THRESHOLD_AS_CAPACITY"]);
     const maintenance = "The Borrower shall not permit the Leverage Ratio to exceed 5.00 to 1.00.";
     expect(classifyFigures(maintenance).find((figure) => figure.kind === "RATIO")?.role).toBe("FINANCIAL_MAINTENANCE");
     expect(figureRoleIssues(maintenance, [rule(null, [{ conditionId: "a", conditionType: "RATIO_SATISFIED", expression: compare("LTE", 5), referencesDefinitionId: null, description: "maximum leverage", provenance: null }])])).toEqual([]);
+  });
+
+  it("refuses intervening provisos, nested conditions, remote verbs, conflicting verbs, and a shared ceiling", () => {
+    const amount = 5_000_000;
+    const proviso = "The Borrower may incur Indebtedness, provided that such Indebtedness does not exceed $5,000,000.";
+    expect(classifyFigures(proviso).find((item) => item.value === amount)?.capacity).toBe(false);
+    const nested = [
+      "SECTION 7.01 Indebtedness. The Borrower shall not incur Indebtedness, except:",
+      "(a) Indebtedness not to exceed $9,000,000, provided that:",
+      "(i) if the consideration is in excess of $5,000,000, the Required Lenders have consented.",
+    ].join("\n");
+    const nestedFigures = classifyFigures(nested);
+    expect(nestedFigures.find((item) => item.value === 9_000_000)?.capacity).toBe(true);
+    expect(nestedFigures.find((item) => item.value === amount)?.capacity).toBe(false);
+    const remote = [
+      "SECTION 7.01 Indebtedness. The Borrower may incur Indebtedness not to exceed $9,000,000.",
+      "",
+      "SECTION 7.02 Liens. The Borrower shall not create a Lien in excess of $5,000,000.",
+    ].join("\n");
+    expect(classifyFigures(remote).find((item) => item.value === amount)?.capacity).toBe(false);
+    expect(classifyFigures(remote).find((item) => item.value === 9_000_000)?.capacity).toBe(true);
+    const conflict = "The Borrower may incur Indebtedness. The Borrower shall not incur Indebtedness not to exceed $5,000,000.";
+    expect(classifyFigures(conflict).find((item) => item.value === amount)?.capacity).toBe(false);
+    const shared = [
+      "SECTION 7.04 Investments. The Borrower shall not make any Investment, except:",
+      "(a) Investments not to exceed $20,000,000; and",
+      "(b) other Investments not to exceed $30,000,000.",
+      "The aggregate amount of Investments made in reliance on clauses (a) and (b) together shall not exceed $5,000,000.",
+    ].join("\n");
+    const sharedFigures = classifyFigures(shared);
+    expect(sharedFigures.find((item) => item.value === 20_000_000)?.capacity).toBe(true);
+    expect(sharedFigures.find((item) => item.value === 30_000_000)?.capacity).toBe(true);
+    expect(sharedFigures.find((item) => item.value === amount)?.capacity).toBe(false);
+    expect(figureRoleIssues(shared, [rule(money(amount))]).map((issue) => issue.kind)).toEqual(["THRESHOLD_AS_CAPACITY"]);
+    const ambiguous = [
+      "SECTION 7.05 Payments. The Borrower shall not pay, except:",
+      "(a) ordinary course payments.",
+      "(h) a listed payment.",
+      "(i) payments not to exceed $5,000,000.",
+    ].join("\n");
+    expect(classifyFigures(ambiguous).find((item) => item.value === amount)?.role).toBe("UNCLASSIFIED");
+    expect(classifyFigures(ambiguous).find((item) => item.value === amount)?.capacity).toBe(false);
   });
 
   it("still verifies a source-supported cap", async () => {

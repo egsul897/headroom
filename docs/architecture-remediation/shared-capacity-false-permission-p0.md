@@ -27,6 +27,7 @@ Semantic-verification inventory already excluded bare aggregate amount; figure-r
 ## Interactions
 
 - **Comparator-as-capacity** (`figure-role.ts`, commits `ec7d5df` / `9acebd3` / `8f87a06`): regression tests confirm threshold-as-capacity refusal undisturbed.
+- **Clause-boundary capacity** (same file, on top of `316c22e`): a dollar is available capacity only when its own clause is an affirmative permission or an exception item and the dollar is that clause's cap. Bare aggregate amount, a shall-not-exceed ceiling, a comparator, a formula, and a may/except in another clause do not grant capacity. The LCQG positive control `The Borrower may incur Indebtedness in an aggregate amount not to exceed $25,000,000` stays `AFFIRMATIVE_PERMISSION` with capacity true. The sentence `together shall not exceed $X` stays a shared-capacity relationship when the relationship language is present, and it is not an independent basket.
 - **PR #130** (`unlimited-carveout-fail-closed-3953`): no shared files in this change set; carve-out fail-closed path orthogonal.
 
 ## Gibraltar offline probe (post-fix)
@@ -50,6 +51,7 @@ Acceptance for LCQG ADV-FP-01/02: ordinary aggregate text must not classify as `
 
 ## Remaining risks
 
+- The frozen 7.2(c) replay still expects 19 context items. Live retrieval now returns 18. The dropped item is `7.2(h)`, an ordinary aggregate ceiling (`in an aggregate amount outstanding … not to exceed the greater of`), previously attached only as `UNVERIFIED_SIBLING_SIGNAL` because the old sibling regex treated `aggregate amount` as shared-cap language. It is not restored as `SHARED_CAP`.
 - Exotic shared-pool phrasing outside the relationship regex may under-recall (fail-closed to aggregate_amount / REVIEW_REQUIRED — preferred to false affirmative).
 - Frozen Phase-1 `pass-a-shared-cap.json` (51 hits) remains historical evidence until a new evaluation epoch.
 - Pass A is still a recall-oriented candidate generator — shared_cap hits are not capacity grants; consumers must still require affirmative permission + relationship IR.

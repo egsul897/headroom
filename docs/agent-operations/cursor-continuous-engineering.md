@@ -122,15 +122,18 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Reversing a dated replacement chain does not change status or current text. Two same-day replacements stay `OPERATIVE_STATE_CONFLICTED` with `currentText` null in either order. An effect with a null instrument key is unattached and is not an applied amendment.
 - Pre-existing `phase-3f1-operative-state-honesty` test 40 still expects a null-instrument effect passed only in `allEffects` to stay off a different instrument. IPV-05 attaches every null-instrument effect to the computed instrument. This pass did not change that rule.
 
-## IPV-22 — a comparator is capacity only with governing authority
+## IPV-22 — capacity requires the figure's own permission or exception
 
-- Capacity is true for a grant phrase that states the cap by itself (`not to exceed`, `not exceeding`, `not greater than`, `not more than`, `no more than`, `up to`, `equal to or less than`) when the nearest frame before that phrase is not a condition.
-- `does not exceed`, `not in excess of`, `greater of`, `lesser of`, and `shall not exceed` do not grant capacity on their own. `greater of` / `lesser of` become capacity when a permission, an exception, an amount ceiling (`aggregate` or `principal amount` … `shall not`), or an unconsumed grant phrase governs them.
-- A prohibition (`shall not` / `No … shall` … `in excess of`) is `PROHIBITION_THRESHOLD` with capacity false. A condition or trigger is capacity false. A ratio is `RATIO_REQUIREMENT`, or `FINANCIAL_MAINTENANCE` when a bare comparator states the forbidden state. An unclassified figure, including a bare dollar, is capacity false.
-- A proviso that closed before a later unconsumed grant belongs to the earlier clause. `provided that … not to exceed the greater of $X` stays a formula with capacity. A condition between the grant and the formula (`not to exceed, so long as approved, the greater of $X`) stays capacity false.
-- `may` plus `in excess of` stays a condition. `may` plus `greater of` is capacity. Permission does not promote a threshold phrase into a basket.
-- Adversarial file `tests/contract-model/figure-role.test.ts` uses the same `$5,000,000` under an affirmative grant, an exception, a prohibition, a condition, a trigger, a bare formula, a permitted formula, an amount ceiling, an unclassified dollar, and a maintenance ratio.
-- Independent replay on `46ebf2e`, expectations unchanged: `INV-25:L-P2` refuses `WRONG_AMOUNT`. `INV-25b:H-T2` refuses `WRONG_AMOUNT` with compilation `COMPLETED`. `INV-09b:A-T1` and `INV-09b:B-T1` refuse `WRONG_LOGIC`. H-T1, H-T3, L-P1, L-P3, and A-T2 still refuse.
+- Capacity is true on exactly two paths in `decideMoney`. Both require the figure's own clause to be an affirmative permission (`may` / `permitted` / `except` later than any prohibition in that clause) or an exception-list item (the section introduction ends in `except` / `except:`), with no condition word before the figure and no governing prohibition.
+- `statedCap`: the closest phrase is an `alone` cap (`not to exceed`, `not exceeding`, `not greater than`, `not more than`, `no more than`, `up to`, `equal to or less than`) and that cap phrase occurs in the clause.
+- `formulaCap`: the closest phrase is `greater of` or `lesser of`, and a cap phrase introduces it with no dollar between them, or the clause says `an amount equal to the greater/lesser of` or `equal to the greater/lesser of`.
+- Clause start is the latest of the section heading, a line/colon/semicolon list marker, a sentence boundary, and a blank line. The 220-character authority window and the 1,600-character prohibition lookback are gone. `AMOUNT_CEILING` is gone.
+- These do not set capacity: aggregate principal amount, a shall-not-exceed ceiling, a comparator, a formula by itself, or a may/except that belongs to another clause or section. An `alone` phrase without a governing permission is `UNCLASSIFIED`, capacity false. A condition word before the dollar is capacity false.
+- Ambiguous `(i)` after both `(h)` and `(a)` in the same section is `UNCLASSIFIED`, capacity false. A compiled basket on that figure is `WRONG_AMOUNT` / `REVIEW_REQUIRED`.
+- A parent `shall not:` list still inverts a bare ratio comparator inside its items. A parent `except:` list still leaves a cap inside an item as `EXCEPTION_AMOUNT`.
+- Adversarial file `tests/contract-model/figure-role.test.ts` covers an intervening proviso, a nested condition under an exception item, a remote permission in another section, conflicting governing verbs, a shared `together shall not exceed` ceiling, and ambiguous `(i)`.
+- LCQG ADV-FP-01/02 (`83cde5b`) keep bare aggregate language out of `shared_cap`. Their positive control `may incur … not to exceed $25,000,000` stays capacity true. The pool sentence is a relationship signal, not an independent basket.
+- Independent replay on `46ebf2e`, expectations unchanged, with this `lib/` overlaid: `INV-25:L-P2` refuses `WRONG_AMOUNT`. `INV-25b:H-T2` refuses `WRONG_AMOUNT` with compilation `COMPLETED`. `INV-09b:A-T1` and `INV-09b:B-T1` refuse `WRONG_LOGIC`. H-T1, H-T3, L-P1, L-P3, and A-T2 still refuse. `INV-19:true-cycle-still-reported` and `INV-19b:genuine-cycles-reported` still fail with detail `none`. MUT-08, MUT-12, MUT-13, MUT-14, and MUT-15 product assertions pass and their GAP kill predictions are `KILLED`. MUT-16 stays `SURVIVED`.
 
 ## IPV-21 — indenture spans are not a directed cycle
 
@@ -155,13 +158,13 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
   - MUT-16: `CURRENT`, applied 0, source `credit-agreement`, instrument `OPERATIVE_STATE_REVIEW_REQUIRED`, two consent effects. Product assertions pass. Kill verdict `SURVIVED`, predicted `GAP`, prediction held.
   - MUT-08, MUT-12, MUT-13, MUT-14, MUT-15 product assertions pass. Their harness kill prediction is `GAP` and the verdict is now `KILLED` (`CONTEXT_RETRIEVAL`). Those five `kill prediction (GAP) holds` rows fail. The expectations were not edited.
 
-## Remaining false-permission risks after the IPV-22 hardening
+## Remaining false-permission risks after the clause-boundary rule
 
-- A grant phrase (`not to exceed`, `up to`, and the other `alone` phrases) still establishes capacity on a clause excerpt that does not repeat `may` or `except`. A nearer condition denies it.
-- An amount ceiling (`aggregate` or `principal amount` within 160 characters, then `shall not`) makes the following figure capacity. `shall not exceed` alone does not.
-- The authority window is 220 characters. A `may` or `except` inside that window can still govern a later `greater of` when no closer frame intervenes.
-- A bare comparator's prohibition frame looks back 1,600 characters. An earlier `shall not` can still invert a later ratio when no later condition word intervenes. The financial-covenant fixtures still agree.
-- A condition placed between a grant and `the greater of` refuses the figure. That is a false refusal on that drafting shape, and it is the conservative side of the rule.
+- A ceiling-only basket has no affirmative permission or exception in its own clause. Section 7.04 of the xref fixture (`The aggregate principal amount … shall not at any time exceed the greater of $123,000,000`) is `PROHIBITION_THRESHOLD`, capacity false, and the candidate is `MAPPED_WITH_REVIEW` / `REVIEW_REQUIRED`. The certification suite still expects that candidate `CERTIFIED`. That expectation was not edited.
+- A condition word before the dollar refuses capacity even when the same clause also says `may` and `not to exceed`. `The Borrower may incur Indebtedness, if no Default has occurred, not to exceed $X` stays capacity false. That is a false refusal, and it is the conservative side of the rule.
+- An exception basket whose operative window is only the clause, and whose `except:` lives only in a parent the figure-role pass does not read, stays capacity false. Golden 7.01 passes because the operative text includes the chapeau.
+- The frozen 7.2(c) replay expects 19 context items. Live retrieval returns 18. `7.2(h)` (`in an aggregate amount outstanding … not to exceed the greater of`) is no longer attached as `UNVERIFIED_SIBLING_SIGNAL`. It is not restored as `SHARED_CAP`.
+- Exotic shared-pool phrasing outside the LCQG relationship regex under-recalls to `aggregate_amount`. A real pool that is only a ceiling is not an independent basket.
 - An unclassified override does not invent the side-letter amount. The last authoritative text stays, with `REVIEW_REQUIRED`. A genuine deletion still clears the text.
 
 ## Queue
@@ -173,7 +176,7 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | P0-B IPV-20 retrieval ignores operative definition | P0 | VERIFIED locally | Bundle excerpt uses the operative definition when one exists |
 | P0-C IPV-16 notwithstanding side letter | P0 | PRODUCT assertions pass on replay | Override stays REVIEW_REQUIRED and does not erase authoritative text. Five GAP kill predictions are now KILLED. Expectations were not edited. Next owner: challenger harness |
 | IPV-21 false definition cycle | P0 | FIXED, indenture control disagreed | Spans prove one direction only. `true-cycle-still-reported` and `genuine-cycles-reported` still fail. Expectations were not edited. Next owner: challenger expectation author |
-| IPV-22 comparator as capacity | P0 | HARDENED on replay | Weak comparators need a grant, permission, exception, or amount ceiling. L-P2, H-T2, A-T1, and B-T1 refuse |
+| IPV-22 comparator as capacity | P0 | CLAUSE BOUNDARY | Capacity requires the figure's own permission or exception. xref 7.04 ceiling stays REVIEW_REQUIRED. L-P2, H-T2, A-T1, and B-T1 refuse |
 | IPV-04 section candidate compiles superseded clauses | P0 | PUSHED `c2a913b` | Parent operative text splices resolved clause replacements and deletions |
 | IPV-05 ABL amendment target unresolved | P0 | PUSHED `70023f7` | CI 9 checks passed on that SHA |
 | A1 failed definition splice returns base section | P0 | VERIFIED locally | Unspliceable definition amendment withholds the section |

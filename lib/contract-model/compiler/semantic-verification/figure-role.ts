@@ -1,15 +1,16 @@
 /**
- * A dollar figure or ratio in the source has a role. Available capacity requires a
- * grant the words themselves make ("not to exceed", "up to") or governing permission,
- * exception, or amount-ceiling authority. These comparators never grant capacity on
- * their own: "does not exceed", "not in excess of", "greater of", "lesser of",
- * "shall not exceed". A prohibition ceiling, a condition, a trigger, a maintenance
- * test, a bare formula, and an unclassified figure are not freely available baskets.
- * A condition in an earlier clause does not govern a later figure that an unconsumed
- * grant introduces. A COMPARE operator has to match the comparator that introduces
- * the figure.
+ * A dollar figure or ratio in the source has a role. Available capacity is true
+ * only when the figure's own clause is an affirmative permission or an exception
+ * item, and the figure is the cap of that clause.
  *
- * No package names and no expected amounts. The words in front of the figure decide.
+ * These do not establish that permission: an aggregate principal amount, a
+ * shall-not-exceed ceiling, a comparator, a formula, or a may/except that belongs
+ * to another clause. Clause and section boundaries come from the text's own
+ * markers. When the marker is ambiguous or the governing act conflicts, the
+ * figure stays unclassified and capacity stays false, so a compiled basket is
+ * REVIEW_REQUIRED.
+ *
+ * No package names and no expected amounts.
  */
 import type { IRCapacityExpression, IRExpression, IRRule, CompareOperator } from "../../ir/types";
 import { AMOUNT_RE, parseScaledAmount } from "./amount-parser";
@@ -97,9 +98,72 @@ const PHRASES: readonly Phrase[] = [
 ];
 
 const RATIO_RE = /\b(\d[\d,]*(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?\b/gi;
-const WINDOW = 220;
-const FRAME_WINDOW = 1600;
-const FRAME_RE = /\b(?:if|provided|so long as|unless|when|whenever|(?:shall|will|may|must)\s+not)\b/gi;
+const MARKER_RE = /(?:^|\n|[;:])[ \t]*(\((?:[ivxlcdm]+|[a-z]|[A-Z]|\d+)\))(?=[ \t])/g;
+const CAP_RE = /\b(?:not to exceed|not exceeding|not greater than|not more than|no more than|up to|equal to or less than)\b/gi;
+const COND_RE = /\b(?:if|provided|so long as|unless|when|whenever)\b/gi;
+const PERM_RE = /\b(?:may(?!\s+not)|permitted|except)\b/gi;
+const PROHIB_RE = /\b(?:(?:shall|will|must)\s+not|may\s+not)\b|\b(?:no|neither)\b(?:(?!\bif\b|\bprovided\b|\bunless\b).){0,80}?\b(?:shall|may|will|must)\b/gi;
+
+function lastHit(text: string, re: RegExp): { index: number; end: number } | null {
+  let found: { index: number; end: number } | null = null;
+  for (const match of text.matchAll(new RegExp(re.source, re.flags.includes("g") ? re.flags : `${re.flags}g`))) {
+    const index = match.index ?? 0;
+    found = { index, end: index + match[0].length };
+  }
+  return found;
+}
+
+function markerIndexes(text: string): number[] {
+  return [...text.matchAll(new RegExp(MARKER_RE.source, MARKER_RE.flags))].map((match) => match.index ?? 0);
+}
+
+function innermostStart(text: string, figureStart: number): number {
+  const before = text.slice(0, figureStart);
+  let start = 0;
+  const sectionAt = Math.max(before.lastIndexOf("\nSECTION "), before.lastIndexOf("\nARTICLE "));
+  if (sectionAt >= 0) start = sectionAt + 1;
+  const marker = markerIndexes(before).pop();
+  if (marker !== undefined && marker > start) start = marker;
+  const local = before.slice(start);
+  let shift = 0;
+  for (const match of local.matchAll(/[.;][ \t]*(?:\n+[ \t]*)?(?=[A-Z“"])/g)) {
+    const index = match.index ?? 0;
+    const letter = match[0].search(/[A-Z“"]/);
+    shift = index + (letter >= 0 ? letter : match[0].length);
+  }
+  const blank = local.lastIndexOf("\n\n");
+  if (blank >= 0 && blank + 2 > shift) shift = blank + 2;
+  return start + shift;
+}
+
+function introductionBeforeList(text: string, figureStart: number): string {
+  const markers = markerIndexes(text).filter((index) => index < figureStart);
+  const mine = markers[markers.length - 1];
+  if (mine === undefined) return "";
+  const sectionAt = Math.max(text.lastIndexOf("\nSECTION ", mine), text.lastIndexOf("\nARTICLE ", mine), 0);
+  const first = markers.find((index) => index >= sectionAt) ?? mine;
+  return text.slice(sectionAt, first);
+}
+
+function markerLabel(text: string, figureStart: number): string | null {
+  const start = innermostStart(text, figureStart);
+  const match = text.slice(start, figureStart).match(/^\s*(\([^)]+\))/);
+  return match?.[1] ?? null;
+}
+
+/** "(i)" is a letter after "(h)" and a roman under "(a)". Both signals in one section leave the clause unowned. */
+function ambiguousClause(text: string, figureStart: number): boolean {
+  const label = markerLabel(text, figureStart);
+  if (label === null || !/^\(i\)$/i.test(label)) return false;
+  const start = innermostStart(text, figureStart);
+  const sectionAt = Math.max(text.lastIndexOf("\nSECTION ", start), text.lastIndexOf("\nARTICLE ", start), 0);
+  const prior = text.slice(sectionAt, start);
+  return /\(h\)/i.test(prior) && /\(a\)/i.test(prior);
+}
+
+function conditionOwns(own: string): boolean {
+  return lastHit(own, COND_RE) !== null;
+}
 
 function closestPhrase(prefix: string): { phrase: Phrase; start: number; end: number } | null {
   let best: { phrase: Phrase; start: number; end: number } | null = null;
@@ -115,74 +179,52 @@ function closestPhrase(prefix: string): { phrase: Phrase; start: number; end: nu
   return best;
 }
 
-function forbiddenState(text: string, figureStart: number, phraseStartInPrefix: number, bare: boolean): boolean {
-  if (!bare) return false;
-  const phraseAt = Math.max(0, figureStart - WINDOW) + phraseStartInPrefix;
-  const before = text.slice(Math.max(0, figureStart - FRAME_WINDOW), phraseAt);
-  const frames = [...before.matchAll(new RegExp(FRAME_RE.source, FRAME_RE.flags))];
-  const last = frames[frames.length - 1];
-  return last !== undefined && /\bnot\b/i.test(last[0]);
+function clauseGoverned(text: string, figureStart: number): { own: string; permission: boolean; exception: boolean; prohibition: boolean } {
+  const own = text.slice(innermostStart(text, figureStart), figureStart);
+  const intro = introductionBeforeList(text, figureStart);
+  const permission = lastHit(own, PERM_RE);
+  const prohibition = lastHit(own, PROHIB_RE);
+  const permissionInClause = permission !== null && (prohibition === null || permission.index > prohibition.index);
+  const exceptionList = /\bexcept\s*:/.test(intro) || /\bexcept\s*:?\s*$/.test(intro);
+  const exceptionItem = exceptionList && (prohibition === null || permissionInClause);
+  const prohibitionList = /\b(?:shall|will|must)\s+not\s*:?\s*$/.test(intro) && !/\bexcept\b/i.test(intro);
+  return { own, permission: permissionInClause, exception: exceptionItem, prohibition: (prohibition !== null && !permissionInClause) || prohibitionList };
 }
 
-type Governing = "CONDITION" | "EXCEPTION" | "PERMISSION" | "AMOUNT_CEILING" | "PROHIBITION" | "NONE";
-
-const GRANT_BEFORE = /\b(?:not to exceed|not exceeding|not greater than|not more than|no more than|up to)\b/i;
-
-function nearestAuthority(before: string): { kind: Governing; end: number } {
-  const hits: { end: number; len: number; kind: Governing }[] = [];
-  const consider = (re: RegExp, kind: Governing) => {
-    for (const match of before.matchAll(re)) {
-      hits.push({ end: (match.index ?? 0) + match[0].length, len: match[0].length, kind });
-    }
-  };
-  consider(/\b(?:if|provided|so long as|unless|when|whenever)\b/gi, "CONDITION");
-  consider(/\bexcept\b/gi, "EXCEPTION");
-  consider(/\b(?:may|permitted)\b/gi, "PERMISSION");
-  consider(/\b(?:aggregate|principal)\s+(?:principal\s+)?(?:amount|sum)\b[\s\S]{0,160}?\bshall not\b/gi, "AMOUNT_CEILING");
-  consider(/\b(?:shall|will|may|must)\s+not\b/gi, "PROHIBITION");
-  consider(/\b(?:no|neither)\b(?:(?!\bif\b|\bprovided\b|\bunless\b).){0,100}?\b(?:shall|may|will|must)\b/gi, "PROHIBITION");
-  let best: { end: number; len: number; kind: Governing } | null = null;
-  for (const hit of hits) {
-    if (!best || hit.end > best.end || (hit.end === best.end && hit.len > best.len)) best = hit;
-  }
-  return best ? { kind: best.kind, end: best.end } : { kind: "NONE", end: -1 };
+function capIntroducesFormula(own: string): boolean {
+  const cap = lastHit(own, CAP_RE);
+  if (cap && !/\$\s?\d/.test(own.slice(cap.end))) return true;
+  return /\b(?:an amount equal to|equal to)\s+the\s+(?:greater|lesser)\s+of\b/i.test(own);
 }
 
-function decideMoney(prefix: string, hit: { phrase: Phrase; start: number } | null): { role: FigureRole; operator: CompareOperator | null; capacity: boolean } {
+function prohibitionGovernsBare(text: string, figureStart: number): boolean {
+  const governed = clauseGoverned(text, figureStart);
+  if (conditionOwns(governed.own)) return false;
+  if (!governed.prohibition) return false;
+  return !governed.permission && !governed.exception;
+}
+
+function decideMoney(text: string, figureStart: number, hit: { phrase: Phrase } | null): { role: FigureRole; operator: CompareOperator | null; capacity: boolean } {
   if (!hit) return { role: "UNCLASSIFIED", operator: null, capacity: false };
-  const beforePhrase = prefix.slice(0, hit.start);
-  const authority = nearestAuthority(beforePhrase);
-  const auth = authority.kind;
-  const grantMatches = [...beforePhrase.matchAll(new RegExp(GRANT_BEFORE.source, "gi"))];
-  const lastGrant = grantMatches[grantMatches.length - 1];
-  const grantBefore = lastGrant !== undefined && !/\$\s?\d/.test(beforePhrase.slice((lastGrant.index ?? 0) + lastGrant[0].length));
-  // A proviso that closed before this grant belongs to the earlier clause.
-  const grantAfterAuthority = grantBefore && (lastGrant?.index ?? -1) >= authority.end;
-  let role = hit.phrase.role;
-  let operator = hit.phrase.operator;
-  let capacity = false;
-  if (auth === "CONDITION" && !grantAfterAuthority) {
-    role = role === "TRIGGER_THRESHOLD" || operator === "LT" ? "TRIGGER_THRESHOLD" : "CONDITION_THRESHOLD";
-  } else if (hit.phrase.alone) {
-    role = auth === "EXCEPTION" ? "EXCEPTION_AMOUNT" : "AFFIRMATIVE_PERMISSION";
-    capacity = true;
-  } else if (grantBefore || auth === "AMOUNT_CEILING" || ((auth === "PERMISSION" || auth === "EXCEPTION") && hit.phrase.formula)) {
-    // Permission or exception authority turns a formula into capacity.
-    // It does not turn "in excess of" or "greater than" into a basket.
-    capacity = true;
-    if (auth === "EXCEPTION") role = "EXCEPTION_AMOUNT";
-    else if (hit.phrase.formula) role = "FORMULA_COMPONENT";
-    else role = "AFFIRMATIVE_PERMISSION";
-  } else if (auth === "PROHIBITION" || role === "PROHIBITION_THRESHOLD") {
-    role = "PROHIBITION_THRESHOLD";
-    capacity = false;
-  } else if (hit.phrase.formula) {
-    role = "FORMULA_COMPONENT";
-  } else if (!hit.phrase.alone && role === "AFFIRMATIVE_PERMISSION") {
-    role = "UNCLASSIFIED";
+  const governed = clauseGoverned(text, figureStart);
+  const operator = hit.phrase.operator;
+  if (ambiguousClause(text, figureStart)) return { role: "UNCLASSIFIED", operator, capacity: false };
+  const inCondition = conditionOwns(governed.own);
+  const governedCap = (governed.permission || governed.exception) && !inCondition && !governed.prohibition;
+  const formulaCap = hit.phrase.formula && governedCap && capIntroducesFormula(governed.own);
+  const statedCap = hit.phrase.alone && governedCap && lastHit(governed.own, CAP_RE) !== null;
+  if (formulaCap || statedCap) {
+    const role: FigureRole = governed.exception || /\bexcept\b/i.test(governed.own) ? "EXCEPTION_AMOUNT" : hit.phrase.formula ? "FORMULA_COMPONENT" : "AFFIRMATIVE_PERMISSION";
+    return { role, operator, capacity: true };
   }
-  if (capacity && role === "AFFIRMATIVE_PERMISSION" && /\bexcept\b/i.test(beforePhrase)) role = "EXCEPTION_AMOUNT";
-  return { role, operator, capacity };
+  if (inCondition) {
+    const role: FigureRole = hit.phrase.role === "TRIGGER_THRESHOLD" || operator === "LT" ? "TRIGGER_THRESHOLD" : "CONDITION_THRESHOLD";
+    return { role, operator, capacity: false };
+  }
+  if (governed.prohibition || hit.phrase.role === "PROHIBITION_THRESHOLD") return { role: "PROHIBITION_THRESHOLD", operator, capacity: false };
+  if (hit.phrase.formula) return { role: "FORMULA_COMPONENT", operator, capacity: false };
+  if (hit.phrase.role === "AFFIRMATIVE_PERMISSION") return { role: "UNCLASSIFIED", operator, capacity: false };
+  return { role: hit.phrase.role, operator, capacity: false };
 }
 
 export function classifyFigures(text: string): ClassifiedFigure[] {
@@ -195,11 +237,10 @@ export function classifyFigures(text: string): ClassifiedFigure[] {
     const end = start + match[0].length;
     const parsed = parseScaledAmount(match[0]);
     if (parsed.canonicalValue === null) continue;
-    const prefix = text.slice(Math.max(0, start - WINDOW), start);
+    const prefix = text.slice(innermostStart(text, start), start);
     const hit = closestPhrase(prefix);
-    const decided = decideMoney(prefix, hit);
-    if (/\bif\b/i.test(prefix) && (decided.role === "TRIGGER_THRESHOLD" || decided.operator === "LT") && decided.role !== "AFFIRMATIVE_PERMISSION" && decided.role !== "EXCEPTION_AMOUNT") decided.role = "TRIGGER_THRESHOLD";
-    const invertOperator = hit ? forbiddenState(text, start, hit.start, hit.phrase.bare) : false;
+    const decided = decideMoney(text, start, hit);
+    const invertOperator = hit ? prohibitionGovernsBare(text, start) && hit.phrase.bare : false;
     out.push({ role: decided.role, operator: decided.operator, capacity: decided.capacity, invertOperator, rawText: match[0], value: parsed.canonicalValue, kind: "MONEY", charStart: start });
     taken.push({ start, end });
   }
@@ -210,9 +251,9 @@ export function classifyFigures(text: string): ClassifiedFigure[] {
     if (overlaps(start, end)) continue;
     const value = Number((match[1] ?? "").replace(/,/g, ""));
     if (!Number.isFinite(value)) continue;
-    const prefix = text.slice(Math.max(0, start - WINDOW), start);
+    const prefix = text.slice(innermostStart(text, start), start);
     const hit = closestPhrase(prefix);
-    const invertOperator = hit ? forbiddenState(text, start, hit.start, hit.phrase.bare) : false;
+    const invertOperator = hit ? prohibitionGovernsBare(text, start) && hit.phrase.bare : false;
     out.push({
       role: invertOperator ? "FINANCIAL_MAINTENANCE" : "RATIO_REQUIREMENT",
       operator: hit?.phrase.operator ?? null,
