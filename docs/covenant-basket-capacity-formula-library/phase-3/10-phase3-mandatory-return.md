@@ -8,7 +8,7 @@ Starting SHA: `c438de3c12793bdec889936d51249c6edbfee39d`
 | Item | Value |
 |---|---|
 | Starting SHA | `c438de3c12793bdec889936d51249c6edbfee39d` |
-| Ending SHA (Phase 3 content) | *(filled after commit)* |
+| Ending SHA (Phase 3 content) |  |
 | PR | https://github.com/egsul897/headroom/pull/148 (draft; **not merged**) |
 
 ## 2. Full 390-candidate classification audit
