@@ -1033,6 +1033,13 @@ interface RawNode {
   sectionRef: string;
   charStart: number;
   parentSectionRef: string | null;
+  /**
+   * Nesting rank for the owned-span / parent stack. ARTICLE/SECTION use the
+   * schema RANK. Clause-tree nodes use SECTION_RANK + clause depth so depths
+   * beyond SUBCLAUSE (repeated nodeType) still nest by physical ancestry —
+   * required for adjacent chains like Chewy §6.08(a)(3)(b)(i)(A)(x).
+   */
+  nestingRank: number;
 }
 
 /** True if `candidate`'s own matched span overlaps any span already claimed by `existing` - the dedup rule that lets decimal-style and integer-style SECTION patterns run as an ADDITIVE union (task §5) without ever double-counting the same real heading twice. */
@@ -1156,12 +1163,26 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
 function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, articleMatches: RegExpExecArray[], sectionMatches: RegExpExecArray[]): StructuralNode[] {
   const raws: RawNode[] = [];
   for (const m of articleMatches) {
-    raws.push({ nodeType: "ARTICLE", heading: extractTitleLikeSpan(m[2] ?? ""), sectionRef: (m[1] ?? "").trim(), charStart: m.index, parentSectionRef: null });
+    raws.push({
+      nodeType: "ARTICLE",
+      heading: extractTitleLikeSpan(m[2] ?? ""),
+      sectionRef: (m[1] ?? "").trim(),
+      charStart: m.index,
+      parentSectionRef: null,
+      nestingRank: RANK.ARTICLE,
+    });
   }
   for (const m of sectionMatches) {
     const sectionRef = (m[1] ?? "").trim();
     const parentArticle = [...articleMatches].reverse().find((a) => a.index < m.index);
-    raws.push({ nodeType: "SECTION", heading: (m[2] ?? "").trim(), sectionRef, charStart: m.index, parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null });
+    raws.push({
+      nodeType: "SECTION",
+      heading: (m[2] ?? "").trim(),
+      sectionRef,
+      charStart: m.index,
+      parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null,
+      nestingRank: RANK.SECTION,
+    });
   }
   raws.sort((a, b) => a.charStart - b.charStart);
 
@@ -1182,6 +1203,9 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
         sectionRef: `${node.sectionRef}${ownSuffix}`,
         charStart: node.charStart + c.charStart,
         parentSectionRef: `${node.sectionRef}${parentSuffix}`,
+        // SECTION rank + clause depth keeps deeper-than-SUBCLAUSE ancestry exact
+        // even though nodeType clamps at SUBCLAUSE.
+        nestingRank: RANK.SECTION + c.depth,
       });
     }
   }
@@ -1222,7 +1246,7 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
   const parentIndexByIndex = new Map<number, number>();
   const stack: number[] = [];
   raws.forEach((r, i) => {
-    while (stack.length > 0 && RANK[raws[stack[stack.length - 1]!]!.nodeType] >= RANK[r.nodeType]) {
+    while (stack.length > 0 && raws[stack[stack.length - 1]!]!.nestingRank >= r.nestingRank) {
       charEndByIndex.set(stack.pop()!, r.charStart);
     }
     if (stack.length > 0) parentIndexByIndex.set(i, stack[stack.length - 1]!);

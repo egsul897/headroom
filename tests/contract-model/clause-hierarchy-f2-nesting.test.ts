@@ -118,6 +118,26 @@ const CHEWY = "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extract
     for (const l of ["a", "b", "c", "d", "e", "f", "g", "h", "i"]) expect(byRef.get(`6.08(a)(3)(${l})`)?.parentNodeId).toBe(byRef.get("6.08(a)(3)")?.nodeId);
     expect(text.slice(byRef.get("6.08(a)(3)(a)")!.charStart, byRef.get("6.08(a)(3)(a)")!.charStart + 30)).toMatch(/^\(a\) the greater of \(x\) 50%/);
   });
+  it("6.08(a)(3)(b) keeps the true (i)/(A)/(B)/(ii) structure and does not fabricate (b)(x)/(b)(y)", () => {
+    const b = byRef.get("6.08(a)(3)(b)")!;
+    const i = byRef.get("6.08(a)(3)(b)(i)")!;
+    const A = byRef.get("6.08(a)(3)(b)(i)(A)")!;
+    const B = byRef.get("6.08(a)(3)(b)(i)(B)")!;
+    const ii = byRef.get("6.08(a)(3)(b)(ii)")!;
+    const x = byRef.get("6.08(a)(3)(b)(i)(A)(x)")!;
+    const y = byRef.get("6.08(a)(3)(b)(i)(A)(y)")!;
+    expect(i.parentNodeId).toBe(b.nodeId);
+    expect(A.parentNodeId).toBe(i.nodeId);
+    expect(B.parentNodeId).toBe(i.nodeId);
+    expect(ii.parentNodeId).toBe(b.nodeId);
+    expect(x.parentNodeId).toBe(A.nodeId);
+    expect(y.parentNodeId).toBe(A.nodeId);
+    expect(text.slice(A.charStart, A.charStart + 20)).toMatch(/^\(A\) Equity Interests/);
+    expect(text.slice(B.charStart, B.charStart + 24)).toMatch(/^\(B\) to the extent/);
+    expect(text.slice(ii.charStart, ii.charStart + 24)).toMatch(/^\(ii\) Indebtedness/);
+    expect(byRef.has("6.08(a)(3)(b)(x)")).toBe(false);
+    expect(byRef.has("6.08(a)(3)(b)(y)")).toBe(false);
+  });
   it("the real 6.08(b) is 6.08(b) and its children are 6.08(b)(1)..(27) with 6.08(b)(12) anchoring the general basket text", () => {
     const b = byRef.get("6.08(b)")!;
     expect(text.slice(b.charStart, b.charStart + 40)).toMatch(/^\(b\) The foregoing provisions of Section/);
