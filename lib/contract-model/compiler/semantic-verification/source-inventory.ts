@@ -85,9 +85,10 @@ const PATTERNS: PatternDef[] = [
   ...CONDITION_SUSPICION_PATTERNS.map((p) => ({ kind: p.kind, re: p.re }) as PatternDef),
   { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding|with\s+the\s+exception\s+of)\b/gi },
   { kind: "PROVISO_MARKER", re: /\bprovided,?\s+further\b/gi },
-  // "together with … pursuant to Section" / "under Section" is a cross-basket cap.
-  // An ordinary "aggregate amount" with no companion citation is not.
-  { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under)|together with\b[^.]{0,240}?\b(?:pursuant to|under)\s+(?:Sections?|§|Articles?|Clauses?))\b/gi },
+  // Shared-capacity relationship language only. An ordinary "aggregate amount"
+  // with no companion citation / multi-permission join is not a SHARED_CAP_MARKER.
+  // Pattern source: compiler/shared-capacity-signals.ts (keep in sync).
+  { kind: "SHARED_CAP_MARKER", re: /\b(?:combined(?:\s+with)?\s+(?:with|capacity|basket)|shared\s+(?:capacity|basket|pool)|in\s+the\s+aggregate\s+(?:with|under)|together\s+with\b[^.]{0,240}?\b(?:pursuant\s+to|under)\s+(?:Sections?|§|Articles?|Clauses?)|when\s+combined\s+with|(?:this\s+)?clause\s*\([a-z0-9]+\)[^.]{0,80}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|(?:made\s+)?in\s+reliance\s+on\s+this\s+clause\s*\([a-z0-9]+\)[^.]{0,120}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|without\s+duplication\b[^.]{0,160}?\b(?:together\s+with|combined\s+with|in\s+the\s+aggregate\s+with))/gi },
   { kind: "BUILDER_SIGNAL", re: /\b(?:cumulative(?:ly)?|builder|Retained (?:Excess )?Cash Flow|Available Amount)\b/gi },
   { kind: "RECLASSIFICATION_SIGNAL", re: /\breclassif(?:y|ied|ication)|redesignat(?:e|ed|ion)\b/gi },
   { kind: "ENTITY_SCOPE_TERM", re: /\b(?:Restricted Subsidiary|Restricted Subsidiaries|Unrestricted Subsidiary|Unrestricted Subsidiaries|Borrower|Guarantor|Loan Part(?:y|ies)|domestic subsidiary|foreign subsidiary)\b/gi },

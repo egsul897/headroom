@@ -17,6 +17,11 @@ import type { StructuralNode } from "../types";
 import type { DeterministicCandidate } from "./types";
 import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../amendment/operative-state";
 import type { NodeSupersessionIndex } from "../amendment/types";
+import {
+  classifyAggregateOrSharedCapacitySignal,
+  ORDINARY_AGGREGATE_AMOUNT_RE,
+  SHARED_CAPACITY_RELATIONSHIP_RE,
+} from "../shared-capacity-signals";
 
 interface SignalPattern {
   name: string;
@@ -37,7 +42,10 @@ const SIGNAL_PATTERNS: SignalPattern[] = [
   { name: "financial_metric", re: /\b(?:EBITDA|Net Income|Leverage Ratio|Coverage Ratio|Fixed Charges|Total Assets|Net Worth)\b/i },
   { name: "refinancing", re: /\b(?:refinanc|refund|replace(?:ment|d)? (?:of|the) (?:existing )?Indebtedness)\b/i },
   { name: "builder_language", re: /\b(?:cumulative|Available Amount|builder basket|Retained Excess Cash Flow)\b/i },
-  { name: "shared_cap", re: /\b(?:aggregate(?:d)? (?:amount|basket)|combined (?:with|capacity)|shared (?:capacity|basket))\b/i },
+  // Ordinary aggregate monetary ceilings are ECONOMIC recall, never shared_cap.
+  { name: "aggregate_amount", re: ORDINARY_AGGREGATE_AMOUNT_RE },
+  // Shared capacity requires multi-permission relationship language.
+  { name: "shared_cap", re: SHARED_CAPACITY_RELATIONSHIP_RE },
 ];
 
 const HEADLINE_HEADING_WORDS = /\b(?:Indebtedness|Debt|Liens?|Restricted Payments?|Investments?|Dispositions?|Asset Sales?|Affiliate Transactions?|Financial Covenants?|Guarant(?:y|ies|ee)|Subsidiar(?:y|ies)|Merger|Consolidation|Fundamental Changes?|Change of Control|Sale.?Leaseback|Prepayment|Subordinat|Business|Line of Business|Nature of Business|Amendment|Modification)\b/i;
@@ -50,7 +58,14 @@ export function isAssetDispositionHeading(heading: string): boolean {
 }
 
 function detectSignals(text: string): string[] {
-  return SIGNAL_PATTERNS.filter((p) => p.re.test(text)).map((p) => p.name);
+  const signals = SIGNAL_PATTERNS.filter((p) => p.re.test(text)).map((p) => p.name);
+  // Fail-closed: never keep shared_cap without relationship language, and
+  // never promote bare aggregate_amount into shared_cap.
+  const kind = classifyAggregateOrSharedCapacitySignal(text);
+  const withoutShared = signals.filter((s) => s !== "shared_cap" && s !== "aggregate_amount");
+  if (kind === "shared_cap") return [...withoutShared, "shared_cap", ...(ORDINARY_AGGREGATE_AMOUNT_RE.test(text) ? ["aggregate_amount"] : [])];
+  if (kind === "aggregate_amount") return [...withoutShared, "aggregate_amount"];
+  return withoutShared;
 }
 
 /**

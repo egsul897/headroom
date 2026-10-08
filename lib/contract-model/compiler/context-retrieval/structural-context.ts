@@ -21,7 +21,12 @@ import type { ContextItem, ContextItemEvidenceState } from "./types";
 const PROVISO_SIGNALS = [/\bprovided(?:,)? that\b/i, /\bprovided further\b/i, /\bnotwithstanding\b/i, /\bso long as\b/i];
 const EXCEPTION_SIGNALS = [/\bexcept that\b/i, /\bexcept as\b/i, /\bother than\b/i];
 const CONDITION_SIGNALS = [/\bin each case\b/i, /\bsubject to\b/i, /\bno Default (?:or Event of Default )?(?:shall have occurred|exists)\b/i];
-const SHARED_CAP_SIGNALS = [/\bin the aggregate\b/i, /\baggregate (?:amount|cap|limit)\b/i, /\bshared\b.*\bcap\b/i, /\banti-duplication\b/i];
+// Sibling SHARED_CAP typing requires relationship language. Bare "in the
+// aggregate" / "aggregate amount" alone is an ordinary ceiling, not a shared pool.
+const SHARED_CAP_SIGNALS = [
+  /\b(?:combined(?:\s+with)?\s+(?:with|capacity|basket)|shared\s+(?:capacity|basket|pool)|in\s+the\s+aggregate\s+(?:with|under)|together\s+with\b[^.]{0,240}?\b(?:pursuant\s+to|under)\s+(?:Sections?|§|Articles?|Clauses?)|when\s+combined\s+with|(?:this\s+)?clause\s*\([a-z0-9]+\)[^.]{0,80}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|(?:made\s+)?in\s+reliance\s+on\s+this\s+clause\s*\([a-z0-9]+\)[^.]{0,120}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|without\s+duplication\b[^.]{0,160}?\b(?:together\s+with|combined\s+with|in\s+the\s+aggregate\s+with))/i,
+  /\banti-duplication\b/i,
+];
 
 function classifySiblingSignal(text: string): { type: "PROVISO" | "EXCEPTION" | "CONDITION" | "SHARED_CAP"; signal: string } | null {
   for (const re of PROVISO_SIGNALS) if (re.test(text)) return { type: "PROVISO", signal: re.source };
