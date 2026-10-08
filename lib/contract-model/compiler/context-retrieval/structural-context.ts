@@ -143,7 +143,11 @@ function assessSiblingRelevance(candidateText: string, candidateSectionRef: stri
 function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documentId: string, node: { nodeId: string; sectionRef: string }, ownWhenUnamended: boolean): { text: string; evidenceState: ContextItemEvidenceState } {
   const resolved = resolveOperativeSource({ structuralNodeIds: [node.nodeId], documentId, normalizedSourceRef: node.sectionRef }, index, state.operativeState);
   if (resolved.withheld) {
-    return { text: "", evidenceState: { status: "OPERATIVE_STATE_UNRESOLVED", isCurrentTruth: false, reason: "An amendment to a clause inside this text could not be applied without guessing, so the base text is not current operative text." } };
+    const reason =
+      resolved.withheldReasons.length > 0
+        ? resolved.withheldReasons.join("; ")
+        : "An amendment to a clause inside this text could not be applied without guessing, so the base text is not current operative text.";
+    return { text: "", evidenceState: { status: "OPERATIVE_STATE_UNRESOLVED", isCurrentTruth: false, reason } };
   }
   const text = resolved.origin === "OPERATIVE_STATE_CURRENT_TEXT" || !ownWhenUnamended ? resolved.text : index.getNodeText(node.nodeId, "OWN");
   const structural = index.getNodeById(node.nodeId);
@@ -225,9 +229,16 @@ export function retrieveChildRules(state: RetrievalState, index: StructuralIndex
   for (const child of children) {
     const excerpt = operativeExcerpt(state, index, documentId, child, true);
     const text = excerpt.text;
-    if (text.trim().length === 0) continue;
-    if (!withinBudget(state, text.length)) return;
-    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, excerpt.evidenceState));
+    // A withheld / non-current child must still be retained: empty text is a disclosure
+    // that the clause is not CURRENT, not a reason to silently drop it from the bundle.
+    // Dropping it would let the parent section certify without hasUnresolvedOperativeEvidence.
+    const unresolvedChild = excerpt.evidenceState != null && !excerpt.evidenceState.isCurrentTruth;
+    if (text.trim().length === 0 && !unresolvedChild) continue;
+    if (!withinBudget(state, Math.max(text.length, 1))) return;
+    const reason = unresolvedChild
+      ? `A sub-rule of the discovered candidate's own section whose operative state is not confirmed current${excerpt.evidenceState?.reason ? ` (${excerpt.evidenceState.reason})` : ""}.`
+      : `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`;
+    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, reason, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, excerpt.evidenceState));
     addEdge(state, operativeItemId, item.itemId, "CHILD_OF", "Independently operative sub-rule of the discovered section.");
   }
 }

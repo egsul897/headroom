@@ -56,6 +56,10 @@ describe("unclassified side-letter and consent overrides", () => {
     expect(effect?.newText).toBeNull();
     expect(effect?.status).toBe("REVIEW_REQUIRED");
     expect(effect?.unresolvedReason).toMatch(/^UNCLASSIFIED_OVERRIDE:/);
+    expect(effect?.unresolvedReason).toContain("documentId=side-letter");
+    expect(effect?.unresolvedReason).toContain('label="Side Letter"');
+    expect(effect?.unresolvedReason).toContain(`effectId=${effect!.effectId}`);
+    expect(effect?.unresolvedReason).not.toMatch(/\$10,000,000|shall not incur/);
     expect(calls).toBe(0);
     expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
     const provision = state.provisions.find((p) => p.sectionRef === "7.01(b)");
@@ -65,6 +69,7 @@ describe("unclassified side-letter and consent overrides", () => {
     expect(provision?.currentSourceDocumentId).toBe("credit-agreement");
     expect(provision?.appliedChain).toEqual([]);
     expect(provision?.unresolvedIssues.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
+    expect(provision?.unresolvedIssues.join(" ")).toContain("documentId=side-letter");
   });
 
   it("a lender consent that names a section is the same unresolved override", async () => {
