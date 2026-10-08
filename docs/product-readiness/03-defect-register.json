@@ -268,7 +268,8 @@
         "pkg-f-capacity-ledger-honesty",
         "pkg-g-adversarial-evidence",
         "pkg-i-secured-debt-lien",
-        "pkg-k-three-way-builder"
+        "pkg-k-three-way-builder",
+        "pkg-m-composed-p0"
       ],
       "signatures": [
         {
@@ -318,6 +319,10 @@
         {
           "packageId": "pkg-k-three-way-builder",
           "expectationRef": "context:K-7.08(d):definitions"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "context:M-7.01(b):definitions"
         }
       ],
       "failingInput": "\"Dispositions of property …\", \"Investments in Subsidiaries …\", \"Restricted Payments in an aggregate amount …\" with singular definitions \"Disposition\", \"Investment\", \"Restricted Payment\".",
@@ -531,11 +536,12 @@
       "stage": "OPERATIVE_STATE",
       "title": "A side letter that overrides a covenant cap 'notwithstanding' the credit agreement produces no amendment effect; the operative state stays RESOLVED with the base-agreement text",
       "packages": [
-        "pkg-b-multi-document",
         "pkg-a-basic-credit-agreement",
+        "pkg-b-multi-document",
         "pkg-c-amendment-supersession",
         "pkg-h-unseen-composition",
-        "pkg-i-secured-debt-lien"
+        "pkg-i-secured-debt-lien",
+        "pkg-m-composed-p0"
       ],
       "evidence": "MUTATION",
       "signatures": [
@@ -610,11 +616,16 @@
           "expectationRef": "mutation:MUT-16:effects:consent",
           "severity": "MISSING_DEPENDENCY",
           "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "operative:2026-06-30:credit-agreement#7.01(b)",
+          "severity": "CRITICAL_FALSE_PERMISSION"
         }
       ],
       "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) … exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) … as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
       "expected": "The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.",
-      "actual": "runAmendmentPipeline yields 0 effects and 0 unattached effects from the side letter (0 interpreter calls: the deterministic parser produces no modification candidate for 'notwithstanding … shall not … exceeding'); computeOperativeContractState(2026-06-30) is OPERATIVE_STATE_RESOLVED with no provision view for 7.01(b), so 7.01(b) reads $30,000,000 CURRENT. The package graph does record a cross-document lead side-letter→credit-agreement (REVIEW_REQUIRED) and the hybrid closure includes side-letter#1, but neither is propagated to the operative state. Breadth (mutants MUT-13…16, same mechanism): a tightening side letter on the single-agreement package A, on package C after two real amendments (the amendments still apply; the override is dropped), on the ABL package H (7.02(d)), and a lender CONSENT on package I ('The Required Lenders hereby consent to … notwithstanding the limitation in Section 7.02(b)') - 0 effects in every case.",
+      "actual": "runAmendmentPipeline yields 0 effects and 0 unattached effects from the side letter (0 interpreter calls: the deterministic parser produces no modification candidate for 'notwithstanding … shall not … exceeding'); computeOperativeContractState(2026-06-30) is OPERATIVE_STATE_RESOLVED with no provision view for 7.01(b), so 7.01(b) reads $30,000,000 CURRENT. The package graph does record a cross-document lead side-letter→credit-agreement (REVIEW_REQUIRED) and the hybrid closure includes side-letter#1, but neither is propagated to the operative state. Breadth (mutants MUT-13…16, same mechanism): a tightening side letter on the single-agreement package A, on package C after two real amendments (the amendments still apply; the override is dropped), on the ABL package H (7.02(d)), and a lender CONSENT on package I ('The Required Lenders hereby consent to … notwithstanding the limitation in Section 7.02(b)') - 0 effects in every case. ON DISK (package M, side letter effective 2026-05-01 capping 7.01(b) at $15,000,000): no provision view for 7.01(b); the base node is CURRENT_OPERATIVE at 2026-06-30; the manifest's expectation that the side letter governs fails in the acceptance run (first acceptance-run signature for this defect).",
       "repro": "npx tsx -e \"import('./scripts/product-acceptance/mutations').then(async m=>{const {loadPackage}=await import('./scripts/product-acceptance/corpus');const o=await m.observeMutation(loadPackage('pkg-b-multi-document'),m.MUTATIONS.find(x=>x.id==='MUT-12'));console.log(o.verdicts.filter(v=>v.kind==='PRODUCT'))})\"",
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not … exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
@@ -693,7 +704,8 @@
       "packages": [
         "pkg-a-basic-credit-agreement",
         "pkg-c-amendment-supersession",
-        "pkg-i-secured-debt-lien"
+        "pkg-i-secured-debt-lien",
+        "pkg-m-composed-p0"
       ],
       "evidence": "INVARIANT",
       "signatures": [
@@ -751,11 +763,34 @@
           "packageId": "pkg-i-secured-debt-lien",
           "expectationRef": "semantic:credit-agreement::1.01",
           "severity": "MISSING_REQUIRED_COVENANT"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "operative:2026-06-30:credit-agreement#Consolidated EBITDA"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "operative:2026-06-30:credit-agreement#1.01"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "semantic:credit-agreement::1.01",
+          "severity": "MISSING_REQUIRED_COVENANT"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "certification:credit-agreement::7.01",
+          "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "certification:credit-agreement::7.02",
+          "severity": "NONMATERIAL_OMISSION"
         }
       ],
       "failingInput": "Package A plus an in-memory Amendment No. 1 (effective May 1, 2026): 'The definition of \"Consolidated EBITDA\" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: \"Consolidated EBITDA\" means … and non-cash stock compensation expense for such period.' (form F1; F3 'set forth in Section 1.01 … to read in its entirety as follows' behaves the same).",
       "expected": "A DEFINITION-kind effect (targetDefinedTermRef 'Consolidated EBITDA') applied from 2026-05-01, so that the operative definition changes and Section 1.01's other ten definitions are untouched; or an unresolved/REVIEW effect.",
-      "actual": "runAmendmentPipeline: one effect, target kind SECTION, targetSectionRef 1.01, operation REPLACE_TEXT, status RESOLVED, resolved deterministically (0 interpreter calls). computeOperativeContractState(2026-06-30): instrument OPERATIVE_STATE_RESOLVED; provision SECTION 1.01 applied 1, currentText = the 243-character restated definition, where the base Section 1.01 is 1,537 characters holding eleven definitions. Form F2 ('Section 1.01 … is hereby amended by amending and restating the definition of …') goes to the interpreter and is REVIEW_REQUIRED (correct fail-closed offline). INV-05b: the same mis-targeting for a definition amendment that REMOVES an add-back (A) and for a definition amendment layered on package C after two resolved section amendments (the two section amendments stay intact; the definition amendment again becomes a REPLACE_TEXT of Section 1.01, currentText 153 chars). ON DISK (package I, Amendment No. 1 effective 2026-10-15 restating 'Foreign Subsidiary' to exclude Canadian Subsidiaries): no DEFINITION provision view for 'Foreign Subsidiary'; Section 1.01 SUPERSEDED with currentText lacking every other definition; and the certified path's definitions candidate for 1.01, compiled from that operative text, now reports Permitted Liens, Guarantor, Foreign Subsidiary and Lien MISSING (semantic:credit-agreement::1.01) - the downstream consequence predicted above, now evidenced in the acceptance run.",
+      "actual": "runAmendmentPipeline: one effect, target kind SECTION, targetSectionRef 1.01, operation REPLACE_TEXT, status RESOLVED, resolved deterministically (0 interpreter calls). computeOperativeContractState(2026-06-30): instrument OPERATIVE_STATE_RESOLVED; provision SECTION 1.01 applied 1, currentText = the 243-character restated definition, where the base Section 1.01 is 1,537 characters holding eleven definitions. Form F2 ('Section 1.01 … is hereby amended by amending and restating the definition of …') goes to the interpreter and is REVIEW_REQUIRED (correct fail-closed offline). INV-05b: the same mis-targeting for a definition amendment that REMOVES an add-back (A) and for a definition amendment layered on package C after two resolved section amendments (the two section amendments stay intact; the definition amendment again becomes a REPLACE_TEXT of Section 1.01, currentText 153 chars). ON DISK (package I, Amendment No. 1 effective 2026-10-15 restating 'Foreign Subsidiary' to exclude Canadian Subsidiaries): no DEFINITION provision view for 'Foreign Subsidiary'; Section 1.01 SUPERSEDED with currentText lacking every other definition; and the certified path's definitions candidate for 1.01, compiled from that operative text, now reports Permitted Liens, Guarantor, Foreign Subsidiary and Lien MISSING (semantic:credit-agreement::1.01) - the downstream consequence predicted above, now evidenced in the acceptance run. COMPOSITION (package M: definition amendment + side letter + Guarantor/Subsidiary definitions): the mis-targeted Section 1.01 replacement makes every unit that depends on a 1.01 definition carry 'unresolved operative evidence (partial amendment state)', so 7.01 and 7.02 are REVIEW_REQUIRED with OPERATIVE_STATE_UNACCEPTABLE. That fail-closed side effect is currently the only thing preventing the IPV-16 ($40,000,000 after the side letter) and IPV-20 (stale EBITDA) false permissions from certifying on M: the adversarial M-P1 is 'refused' solely by it. Fixing IPV-19 before IPV-16/IPV-20 would expose both. The Guarantor/Subsidiary diamond did not fire here because 7.01(b) says 'Guarantors' (plural) and the mention finder is singular-only (IPV-09) - two defects cancelling.",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-05 (scripts/product-acceptance/invariants.ts, DEFINITION_AMENDMENT_FORMS F1/F3)",
       "impact": "Evidence corruption at the operative-state layer (priority 0): every other definition in Section 1.01 is reported superseded with no text as of the amendment date; a consumer compiling the definitions candidate from the operative text would see one definition. The amendment itself is applied to the wrong unit, so lineage for 'Consolidated EBITDA' never exists (see IPV-20 for the retrieval consequence).",
       "hypothesis": "The deterministic parser's target resolver matches 'in Section 1.01' before (or instead of) 'the definition of \"…\"', so the explicit-pattern path binds a SECTION target with the restated text as the replacement; the DEFINITION target kind exists in the type but this drafting form never reaches it.",
@@ -770,7 +805,8 @@
       "stage": "CONTEXT_RETRIEVAL",
       "title": "Definition retrieval hands the compiler the base-agreement definition text even when the operative state holds a RESOLVED amendment to the section the definition lives in",
       "packages": [
-        "pkg-a-basic-credit-agreement"
+        "pkg-a-basic-credit-agreement",
+        "pkg-m-composed-p0"
       ],
       "evidence": "INVARIANT",
       "signatures": [
@@ -791,11 +827,16 @@
           "expectationRef": "invariant:INV-05b:A:bundle-definition-current",
           "severity": "CRITICAL_FALSE_PERMISSION",
           "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "context:M-7.01(c):definition-currency:Consolidated EBITDA",
+          "severity": "WRONG_OPERATIVE_SOURCE"
         }
       ],
       "failingInput": "As IPV-19; buildCandidateCompilerInput for credit-agreement::7.01 with operativeState(2026-06-30), amendmentEffects and supersessionIndex supplied.",
       "expected": "The DEFINITION / DEFINITION_DEPENDENCY item for 'Consolidated EBITDA' at 2026-06-30 carries the amended text (with the stock-compensation add-back), or the bundle flags the definition's supersession status as unresolved.",
-      "actual": "The bundle item for Consolidated EBITDA carries the original base-agreement text ('… depreciation and amortization expense for such period.'); no flag. The ratio basket 7.01(c) would be compiled against the pre-amendment EBITDA. INV-05b (false-permission direction): with an amendment that removes the income-tax add-back resolved in the operative state, the compiler is still handed the base definition WITH the add-back - every ratio basket would be sized on an overstated EBITDA.",
+      "actual": "The bundle item for Consolidated EBITDA carries the original base-agreement text ('… depreciation and amortization expense for such period.'); no flag. The ratio basket 7.01(c) would be compiled against the pre-amendment EBITDA. INV-05b (false-permission direction): with an amendment that removes the income-tax add-back resolved in the operative state, the compiler is still handed the base definition WITH the add-back - every ratio basket would be sized on an overstated EBITDA. ON DISK (package M): 7.01(c) is handed the base Consolidated EBITDA (with income tax expense) at 2026-06-30 although Amendment No. 1 removed it from 2026-04-01 (definition-currency audit).",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-05 bundle-definition-current",
       "impact": "Demonstrated in the false-permission direction (INV-05b): a definition amendment that shrinks EBITDA leaves the compiler with the larger pre-amendment definition. Mechanism independent of IPV-19: definition items are read from the static definitions index, never re-resolved against the operative state.",
       "hypothesis": "buildCovenantContextBundle resolves definitions through the static definitions index (exactTermsByDocument / allDefinitions) and only consults the operative state for the candidate's own anchor node (operativeSourceTextFor / deriveOperativeLineage).",

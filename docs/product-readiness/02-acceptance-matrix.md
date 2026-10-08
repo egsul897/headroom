@@ -74,6 +74,7 @@ rule; "pure omission" variants strip it.
 | J | 3/3 | — (J-P1 both variants refused with MATERIAL_DISCREPANCY: the definition-sourced Default kill-switch is accounted for; J-P2 is the IPV-15 representation gap, not expressible) |
 | K | 2/2 | — (K-P2 both variants refused; K-P1 as J-P2) |
 | L | 4/4 | — (L-P1 both variants, L-P2, L-P3 refused; every refusal cites CONTEXT_CONTRACT_UNACCEPTABLE from the false cycle IPV-21, so these are not evidence the gates caught the claims) |
+| M | 1/1 | — (M-P1 '$40,000,000 after the side letter' refused only because IPV-19's Section 1.01 replacement makes the unit's operative evidence unresolved: a fail-closed defect masking a false permission) |
 
 Refusals worth noting because they are the product doing the right thing: a non-operative recital/exhibit figure
 (G-P1), a stale amendment's figure (G-P2), a superseded amount at a later date (C-P1), a figure invented for a
@@ -96,6 +97,7 @@ mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, 
 | J | FAILED | 7.06 review (MISSING_RULE material — mock did not represent one sibling unit); 7.08 review (IPV-15: dependsOn to 7.06(c) rejected as invented) |
 | K | FAILED | 7.06 and 7.08 review (IPV-14 class: mock did not represent one sibling unit each); 7.09 review (IPV-18: family unrecognised, relabelled) |
 | L | REVIEW_REQUIRED | 7.07 review: context contract unacceptable because of a FALSE DEFINITION_CYCLE 'Loan Parties → Subsidiary → Loan Parties' (IPV-21), plus one inventory item the mock did not represent |
+| M | FAILED | 7.01 and 7.02 REVIEW (OPERATIVE_STATE_UNACCEPTABLE: the mis-targeted definition amendment leaves every dependent unit with 'partial amendment state' — IPV-19); 1.01 definitions candidate loses every definition (IPV-19); the side letter never reaches the operative state (IPV-16 on disk); 7.01(c) compiled on the pre-amendment EBITDA (IPV-20 on disk) |
 
 ## Runtime (package F, production Phase-4 runtime over fixture IR): 14/14
 

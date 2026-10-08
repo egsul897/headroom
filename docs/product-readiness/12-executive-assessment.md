@@ -40,6 +40,11 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
 5. **Definition-mediated relationships** (builder baskets netting across sections) are retrieved correctly (J and K
    controls) but have no representation the compiler accepts (IPV-15), and a junior-debt prepayment basket has no
    covenant family at all (IPV-18).
+9. **Defects interact**: on a package that composes a definition amendment, a side letter and a Guarantor/Subsidiary
+   definition (package M), the mis-targeted definition amendment (IPV-19) makes every dependent unit REVIEW, which is
+   currently the only thing stopping the side-letter ($40m instead of $15m, IPV-16) and stale-EBITDA (IPV-20) false
+   permissions from certifying; and the diamond cycle (IPV-21) does not fire there because the plural "Guarantors" is
+   not matched (IPV-09). Remediation order matters: closing IPV-19 first, alone, would expose two false permissions.
 8. **Common definitional drafting is refused**: "Guarantor means each Subsidiary that …" plus a covenant naming both
    terms is reported as a definition cycle (IPV-21); 4 of the 33 section-level covenants in the corpus are
    uncertifiable for that reason alone. Fail-closed, but it makes realistic packages unusable and hides other evidence.

@@ -10,7 +10,7 @@ collaboration contract: Cursor owns `lib/` remediation; this track owns fixtures
 | 1 | Entity-scope widening refused when the clause narrows the section lead-in | IPV-01 | `adversarial:A-P2` passes |
 | 2 | "together with … pursuant to Section X" shared cap required in the IR | IPV-02 | `adversarial:F-P3` both variants pass |
 | 3 | Lineage-cited omission of a material proviso refused | IPV-03 | `adversarial:A-P1`, `H-P3` lineage-on-rule pass |
-| 4 | Override / waiver / side-letter documents reach the operative state (at least unattached or REVIEW) | IPV-16 | `mutation:MUT-12:*`, `MUT-08:*` PRODUCT verdicts pass |
+| 4 | Override / waiver / side-letter documents reach the operative state (at least unattached or REVIEW) | IPV-16 | `mutation:MUT-12:*`, `MUT-08:*` PRODUCT verdicts pass; M `operative:2026-06-30:credit-agreement#7.01(b)` passes. Land with or before item 5a: on package M, IPV-19's REVIEW is what currently hides this false permission |
 | 5 | Operative-authority gate: TOC-title modal, no-modal covenants, stale descendants | PR136-F1/F2/F4 | `source-authority.test.ts` 28/28 in the PR #136 worktree |
 | 5a | Definition amendments target the definition; definition retrieval reads the operative text | IPV-19, IPV-20 | `invariants.test.ts` INV-05 F1/F3 PRODUCT verdicts pass |
 | 5b | Comparator direction: a figure introduced by 'in excess of' / 'exceeding' / 'not less than' is never accepted as a cap | IPV-22 | `invariants.test.ts` INV-25 L-P2 refused |
@@ -76,7 +76,7 @@ Per the directive's §SELF-REPLENISHING BACKLOG, inspected in order:
 Next prioritized bounded tasks (this track):
 - T1. On-disk definition-amendment fixtures (one per package B, F, I) so IPV-19/20 carry acceptance-run signatures.
 - T2. Posture-flip and percentage-change adversarial kinds (item 2) via the declarative `adversarial` field.
-- T3. Triple-composition package (item 6) with expectations for refusal precedence.
+- T3. ~~Triple-composition package~~ done (`pkg-m-composed-p0`): IPV-19's fail-closed side effect masks IPV-16 and IPV-20; IPV-21 does not fire because of IPV-09. Remediation order: IPV-16 and IPV-20 must land with or before IPV-19 (doc 12 point 9).
 - T4. ~~Supplemental-indenture package~~ done on B (second-instrument amendment resolves correctly; IPV-04 breadth on the indenture).
 - T5. ~~Prompt-token measurement from the mocked stage~~ done (doc 08 §Prompt-size measurement: estimates low by ≈2–3× on input tokens; re-basing deferred to E2).
 - T6. ~~Onboarding / data-room ingestion assumptions doc~~ done (`19-onboarding-and-ingestion-assumptions.md`).

@@ -1,0 +1,411 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-m-composed-p0",
+  "title": "Package M — three priority-0 patterns composed in one package",
+  "issuer": "Cedar Valley Robotics, Inc. (synthetic)",
+  "scenario": "One credit agreement composes three patterns the register holds as separate defects: (1) 'Guarantor' is defined as 'each Subsidiary that has executed the Guarantee' and 7.01 names both Subsidiaries and Guarantors (a diamond dependency - IPV-21 reports it as a cycle); (2) Amendment No. 1 (effective 2026-04-01) restates 'Consolidated EBITDA' without the income-tax add-back, shrinking the 7.01(c) ratio basket (IPV-19/20); (3) a side letter (effective 2026-05-01) tightens the 7.01(b) general basket from $40,000,000 to $15,000,000 'notwithstanding' the agreement (IPV-16). Authored to see which refusal governs and whether a fail-closed defect hides false permissions.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:cedar-valley",
+  "instrumentKey": "cedar-valley-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "e6c435e8ff18a7ec43575906519b4d361d8b91c705e37c97381e5081cdba75e4"
+    },
+    {
+      "documentId": "amendment-1",
+      "label": "Amendment No. 1",
+      "file": "documents/amendment-1.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "sha256": "01d473007ab58782262be18fc9da7f3d5d94d75945d55b281f94ae5a30e1b158"
+    },
+    {
+      "documentId": "side-letter",
+      "label": "Side Letter",
+      "file": "documents/side-letter.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "sha256": "fe4826431150081258cc5a4d06f0e20814ea9ded094df4cd94013bf6ce25fedb"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-03-15",
+      "2026-06-30"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2026-03-15",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$40,000,000"
+        ],
+        "mustNotContain": [
+          "$15,000,000"
+        ]
+      },
+      {
+        "asOfDate": "2026-03-15",
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "definitionTerm": "Consolidated EBITDA",
+        "status": "CURRENT",
+        "mustContain": [
+          "income tax expense"
+        ],
+        "mustNotContain": []
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "definitionTerm": "Consolidated EBITDA",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "Interest Expense and depreciation and amortization expense"
+        ],
+        "mustNotContain": [
+          "income tax expense"
+        ],
+        "supersededBy": "amendment-1"
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "\"Guarantor\" means",
+          "\"Subsidiary\" means",
+          "\"Consolidated Total Leverage Ratio\" means",
+          "Interest Expense and depreciation and amortization expense"
+        ],
+        "mustNotContain": [
+          "income tax expense"
+        ],
+        "supersededBy": "amendment-1"
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "$15,000,000"
+        ],
+        "mustNotContain": [],
+        "supersededBy": "side-letter"
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "status": "CURRENT",
+        "mustContain": [
+          "4.00 to 1.00"
+        ],
+        "mustNotContain": []
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "I",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "shall not, and shall not permit any Subsidiary to"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "Borrower and the Guarantors",
+          "$40,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "4.00 to 1.00"
+        ]
+      },
+      {
+        "documentId": "amendment-1",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "\"Consolidated EBITDA\"",
+          "amended and restated"
+        ]
+      },
+      {
+        "documentId": "side-letter",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "Notwithstanding Section 7.01(b)",
+          "$15,000,000"
+        ]
+      }
+    ],
+    "invariants": []
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated EBITDA",
+        "unique": true,
+        "excerptContains": "Consolidated Net Income"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated Total Leverage Ratio",
+        "unique": true,
+        "excerptContains": "Consolidated Total Debt"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Guarantor",
+        "unique": true,
+        "excerptContains": "each Subsidiary"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Subsidiary",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Indebtedness",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "M-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "d7d69afb6bdbc7865fa189693ce1fac46e8596d4c3c80e5694851923acd67f94"
+    },
+    {
+      "id": "M-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "EXCEPTION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": [],
+      "textSha256": "ca81604f99c5270c9dcf5e436fa38658a2a37475d5616d2aafcdf7cfc905d577"
+    },
+    {
+      "id": "M-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$40,000,000",
+        "Borrower and the Guarantors"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 40000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "entityScope": [
+        "BORROWER",
+        "GUARANTOR_RS"
+      ],
+      "operativeNote": "From 2026-05-01 the side letter caps incurrence under this clause at $15,000,000; the clause text is unchanged.",
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Guarantor"
+      ],
+      "crossReferences": [],
+      "textSha256": "871ddfce086155c2bde1c9248d4b320838acb3711fbc2b990c9fd1c6beaf67d0"
+    },
+    {
+      "id": "M-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "RATIO_BASED_PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "4.00 to 1.00",
+        "pro forma"
+      ],
+      "value": {
+        "kind": "RATIO_THRESHOLD",
+        "metric": "Consolidated Total Leverage Ratio",
+        "comparator": "LTE",
+        "numerator": 4,
+        "denominator": 1
+      },
+      "entityScope": [
+        "BORROWER"
+      ],
+      "conditions": [
+        {
+          "kind": "RATIO_TEST",
+          "textContains": "Consolidated Total Leverage Ratio does not exceed 4.00 to 1.00",
+          "independent": true,
+          "material": true
+        },
+        {
+          "kind": "PRO_FORMA",
+          "textContains": "after giving pro forma effect thereto",
+          "independent": false,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Consolidated Total Leverage Ratio",
+        "Consolidated Total Debt",
+        "Consolidated EBITDA"
+      ],
+      "crossReferences": [],
+      "textSha256": "19970e647620fee46ab08c2453f320ee10396b5f2faa1dbdc5a54f9abce2e136"
+    },
+    {
+      "id": "M-7.02",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02",
+      "family": "LIENS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Section 7.01(b)"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "mustResolve": true
+        }
+      ],
+      "textSha256": "629aaa7d62651de87b55ea551bc98df656442ac332f445e7faf34cca884214bf"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [],
+  "unsupported": [
+    {
+      "id": "M-U1",
+      "where": "side letter / 7.01(b)",
+      "construct": "An override stated in a side letter ('notwithstanding Section 7.01(b) … shall not … exceeding $15,000,000') without amending the clause text.",
+      "acceptableOutcomes": [
+        "7.01(b) reported as governed by the side letter",
+        "REVIEW_REQUIRED with the side letter named",
+        "UNSUPPORTED"
+      ],
+      "unacceptableOutcomes": [
+        "$40,000,000 reported as available after 2026-05-01 with the instrument RESOLVED"
+      ]
+    }
+  ],
+  "prohibitedClaims": [
+    {
+      "id": "M-P1",
+      "claim": "7.01(b) permits $40,000,000 of other Indebtedness as of 2026-06-30",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The side letter caps incurrence under 7.01(b) at $15,000,000 from 2026-05-01.",
+      "adversarial": {
+        "kind": "CLAIM_COMPLETE",
+        "sectionRef": "7.01(b)",
+        "amount": 40000000,
+        "excerpt": "$40,000,000"
+      }
+    },
+    {
+      "id": "M-P2",
+      "claim": "7.01(c) is sized on Consolidated EBITDA including income tax expense as of 2026-06-30",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "Amendment No. 1 removed the income-tax add-back from 2026-04-01."
+    },
+    {
+      "id": "M-P3",
+      "claim": "7.01 cannot be compiled because its definitions are circular",
+      "severityIfAsserted": "UNSUPPORTED_AS_COMPLETE",
+      "reason": "No definition in the package refers to itself; Guarantor → Subsidiary is a one-way dependency."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "At 2026-06-30: the operative Consolidated EBITDA excludes income tax expense; every other definition in Section 1.01 is unchanged; 7.01(b) is governed by the side letter ($15,000,000); 7.01(c) is compiled against the restated definition; no definition cycle is reported.",
+    "A false refusal (IPV-21) must not be the only thing standing between a user and the IPV-16 / IPV-19 / IPV-20 false permissions."
+  ]
+}
