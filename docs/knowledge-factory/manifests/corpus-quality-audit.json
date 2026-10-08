@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-10-08T22:05:36.785Z",
+  "sourceCoverage": {
+    "issuers": 5,
+    "documents": 12,
+    "byFormType": {
+      "FIXTURE": 12
+    },
+    "byDocumentClass": {
+      "CREDIT_AGREEMENT": 9,
+      "ABL_AGREEMENT": 3
+    }
+  },
+  "covenantFamilyCoverage": {
+    "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS": 9,
+    "GENERAL_CONDITIONS_AND_EXCEPTIONS": 57,
+    "INVESTMENTS": 22,
+    "INDEBTEDNESS": 27,
+    "LIENS": 20,
+    "ASSET_SALES": 15,
+    "FUNDAMENTAL_CHANGES": 2,
+    "RESTRICTED_PAYMENTS": 13,
+    "EVENTS_OF_DEFAULT": 14,
+    "GUARANTEES": 22,
+    "RESTRICTED_SUBSIDIARIES": 11,
+    "INCREMENTAL_DEBT_AND_FACILITIES": 5,
+    "AFFILIATE_TRANSACTIONS": 2,
+    "UNRESTRICTED_SUBSIDIARIES": 4,
+    "FINANCIAL_MAINTENANCE_COVENANTS": 3,
+    "RATIO_BASED_PERMISSIONS": 6,
+    "SHARED_CAPACITY_PROVISIONS": 9,
+    "MANDATORY_PREPAYMENTS": 2,
+    "JUNIOR_DEBT_PREPAYMENTS": 5
+  },
+  "uncoveredTaxonomyFamilies": [
+    "DESIGNATIONS"
+  ],
+  "definitionDiversity": {
+    "uniqueTerms": 5,
+    "totalDefinitions": 6
+  },
+  "amendmentChainCompleteness": {
+    "amendments": 0,
+    "linkedAmendments": 0,
+    "unlinkedAmendments": 0
+  },
+  "parsingSuccess": {
+    "structurallyIndexed": 12,
+    "failed": 0,
+    "unsupported": 0,
+    "ambiguousNodes": 386
+  },
+  "missingOperativeAuthority": 12,
+  "duplicateContamination": {
+    "exactBytePairs": 0,
+    "normalizedPairs": 0
+  },
+  "unverifiedSemanticHypotheses": 0,
+  "notes": [
+    "Discovery labels and taxonomy coverage are not operative legal authority.",
+    "Unlinked amendments are expected when title/metadata evidence is insufficient — chronology alone is not used.",
+    "Measure legal coverage via family/definition/amendment completeness, not document count alone."
+  ]
+}

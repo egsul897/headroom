@@ -148,6 +148,11 @@ model Company {
   analysisRunIssues    AnalysisRunIssue[]
   analysisFailureLogs  AnalysisFailureLog[]
 
+  // --- Covenant Knowledge Factory (docs/knowledge-factory/README.md) ---
+  // Additive only. Corpus registry rows may exist without a company link
+  // (issuer-level EDGAR acquisition). Never writes Permission/capacity rules.
+  knowledgeSources KnowledgeSource[]
+
   @@map("companies")
 }
 
@@ -3668,4 +3673,174 @@ model SemanticTruthRecord {
   @@index([companyId, instrumentKey])
   @@index([analysisRunId])
   @@map("semantic_truth_records")
+}
+
+// =============================================================================
+// Covenant Knowledge Factory — additive corpus registry
+// (docs/knowledge-factory/README.md)
+//
+// Integrates with existing Company / Document / SourceArtifact when linked,
+// but acquisition may proceed issuer-first without a customer company.
+// Representation levels are NOT legal certification. Bulk bytes stay outside
+// Postgres/Git (storageRef / local corpus store).
+// =============================================================================
+
+enum KnowledgeRepresentationLevel {
+  SOURCE_ONLY
+  STRUCTURALLY_INDEXED
+  DISCOVERED_CANDIDATE
+  SEMANTIC_HYPOTHESIS
+  DETERMINISTICALLY_VALIDATED
+  REVIEW_REQUIRED
+  REVIEWER_VERIFIED
+  CERTIFIED
+
+  @@map("knowledge_representation_level")
+}
+
+enum KnowledgeDebtDocumentClass {
+  CREDIT_AGREEMENT
+  REVOLVING_CREDIT_AGREEMENT
+  TERM_LOAN_AGREEMENT
+  ABL_AGREEMENT
+  INDENTURE
+  SUPPLEMENTAL_INDENTURE
+  AMENDMENT
+  RESTATEMENT
+  WAIVER
+  CONSENT
+  SIDE_LETTER
+  INTERCREDITOR_AGREEMENT
+  SECURITY_AGREEMENT
+  GUARANTEE_AGREEMENT
+  OTHER_DEBT_RELATED
+  UNKNOWN
+
+  @@map("knowledge_debt_document_class")
+}
+
+enum KnowledgeExtractionStatus {
+  PENDING
+  ACQUIRED
+  TEXT_EXTRACTED
+  STRUCTURALLY_INDEXED
+  CLASSIFIED
+  CANDIDATES_DISCOVERED
+  FAILED
+  UNSUPPORTED_FORMAT
+
+  @@map("knowledge_extraction_status")
+}
+
+enum KnowledgeUsageRightsStatus {
+  UNREVIEWED
+  PUBLIC_SEC_EDGAR
+  FIXTURE_INTERNAL
+  RESTRICTED
+  CLEARED
+
+  @@map("knowledge_usage_rights_status")
+}
+
+enum KnowledgeRelationshipKind {
+  AGREEMENT_AMENDMENT
+  AGREEMENT_RESTATEMENT
+  INDENTURE_SUPPLEMENTAL
+  AGREEMENT_WAIVER
+  AGREEMENT_CONSENT
+  AGREEMENT_SIDE_LETTER
+  AGREEMENT_INTERCREDITOR
+  PROVISION_DEFINITION
+  PROVISION_CROSS_REFERENCE
+  PROVISION_EXCEPTION
+  PROVISION_CONDITION
+  PROVISION_SHARED_CAPACITY
+
+  @@map("knowledge_relationship_kind")
+}
+
+enum KnowledgeRelationshipEvidenceStatus {
+  DISCOVERED
+  INFERRED
+  AUTHENTICATED
+  REVIEWED
+
+  @@map("knowledge_relationship_evidence_status")
+}
+
+/// Canonical source registry for the knowledge factory corpus.
+model KnowledgeSource {
+  id                       String                       @id @default(cuid())
+  sourceId                 String                       @unique
+  companyId                String?
+  documentId               String?
+  sourceArtifactId         String?
+  issuerCik                String
+  issuerTicker             String?
+  issuerName               String?
+  accessionNumber          String
+  exhibitFilename          String
+  sourceUrl                String
+  filingDate               DateTime
+  formType                 String
+  documentTitle            String
+  documentClass            KnowledgeDebtDocumentClass   @default(UNKNOWN)
+  instrumentIdentity       String?
+  originalBytesHash        String
+  normalizedTextHash       String?
+  acquisitionTimestamp     DateTime
+  parserVersion            String
+  extractionStatus         KnowledgeExtractionStatus    @default(PENDING)
+  representationLevel      KnowledgeRepresentationLevel @default(SOURCE_ONLY)
+  provenance               String
+  usageRightsReviewStatus  KnowledgeUsageRightsStatus   @default(UNREVIEWED)
+  discoveryScore           Float?
+  byteSize                 Int?
+  storageRef               String?
+  metadata                 Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company       Company?                   @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  relationships KnowledgeRelationshipEdge[]
+
+  @@index([issuerCik])
+  @@index([accessionNumber])
+  @@index([originalBytesHash])
+  @@index([documentClass])
+  @@index([representationLevel])
+  @@map("knowledge_sources")
+}
+
+model KnowledgeRelationshipEdge {
+  id             String                              @id @default(cuid())
+  sourceRecordId String
+  targetSourceId String
+  kind           KnowledgeRelationshipKind
+  evidenceStatus KnowledgeRelationshipEvidenceStatus @default(DISCOVERED)
+  rationale      String
+  confidence     Float                               @default(0)
+  metadata       Json?
+
+  createdAt DateTime @default(now())
+
+  sourceRecord KnowledgeSource @relation(fields: [sourceRecordId], references: [id], onDelete: Cascade)
+
+  @@index([targetSourceId])
+  @@index([kind])
+  @@map("knowledge_relationship_edges")
+}
+
+model KnowledgeCostLedgerEntry {
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+  category  String
+  amount    Float
+  unit      String
+  estimated Boolean
+  note      String?
+
+  @@index([category, estimated])
+  @@map("knowledge_cost_ledger_entries")
 }

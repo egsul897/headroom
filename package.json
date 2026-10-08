@@ -15,7 +15,17 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
     "golden-test": "tsx scripts/golden-test.ts",
-    "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts"
+    "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts",
+    "kf:ingest-fixtures": "tsx scripts/knowledge-factory/ingest-fixtures.ts",
+    "kf:discover": "tsx scripts/knowledge-factory/discover-documents.ts",
+    "kf:download": "tsx scripts/knowledge-factory/download-documents.ts",
+    "kf:parse": "tsx scripts/knowledge-factory/parse-documents.ts",
+    "kf:index": "tsx scripts/knowledge-factory/build-index.ts",
+    "kf:refresh": "tsx scripts/knowledge-factory/refresh-corpus.ts",
+    "kf:audit": "tsx scripts/knowledge-factory/audit-corpus.ts",
+    "kf:query": "tsx scripts/knowledge-factory/query-examples.ts",
+    "kf:costs": "tsx scripts/knowledge-factory/estimate-costs.ts",
+    "test:knowledge-factory": "vitest run tests/knowledge-factory"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
