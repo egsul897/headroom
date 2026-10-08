@@ -6,7 +6,7 @@
 |---|---|
 | Starting SHA (`origin/main` at branch cut) | `caa08f8b1c68d9656b30cabb6a866f8cf9b23b1d` |
 | Ending SHA (Phase 4 content) | `946925b74d8e8560ba7624e766e37f3731b37b55` |
-| Branch tip | `cda5291ba129bf4b911b2fb52cc0e43d5a840c26` |
+| Branch tip | `2dac5f637eb06c638a05dd2f36081862fca72fad` |
 | Prior merged PR #148 head | `01a1972817091f6bd4c074d2d8b9c75dfb6fcd18` |
 
 ## 2. PR URL and integration status
