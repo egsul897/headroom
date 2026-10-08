@@ -2,7 +2,9 @@
 
 **Verdict:** `CKG_BENCHMARK_STANDUP_COMPLETE_OFFLINE_BASELINE_RECORDED`
 
-**Exact SHA:** `380a590484741da0a2f0cb8ff301c1987d2f0365`
+**Exact tip SHA:** `3d58889d84b7555fc2c34684a2b877c4ddf290a0`
+
+**Evaluation content SHA (harness + baseline fixtures):** `0fe2fbe309fde988e9946c845e7fe50188260553`
 
 **Branch:** `cursor/covenant-knowledge-generalization-bench-7f51`
 
