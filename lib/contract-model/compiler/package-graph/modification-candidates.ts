@@ -32,7 +32,21 @@ interface StatementPattern {
 // itself.
 const OPTIONAL_SECTION_HEADING = String.raw`(?:\(\s*[A-Za-z][A-Za-z0-9 ,.'&-]{0,60}\s*\)\s+)?`;
 
+// A definition amendment often names the section that houses the term
+// ("the definition of X in Section 1.01", "set forth in Section 1.01")
+// before the verb. That locator is not a section restatement. The
+// pattern is non-capturing except for the term, and it must run before
+// the section patterns so the section number inside the same sentence
+// is not claimed as the target.
+const DEFINITION_SECTION_LOCATOR = String.raw`(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?`;
+
 const PATTERNS: StatementPattern[] = [
+  {
+    operation: "MODIFY",
+    re: new RegExp(String.raw`the definition of\s*["“]?\s*([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)\s*["”]?\s+${DEFINITION_SECTION_LOCATOR}is (?:hereby )?amended`, "gi"),
+    sectionRef: () => null,
+    definedTermRef: (m) => m[1]?.trim() ?? null,
+  },
   // "Section 6.01 is hereby amended and restated in its entirety..."
   {
     operation: "RESTATE",
@@ -124,7 +138,10 @@ export function detectModificationCandidates(doc: PackageDocumentInput): Modific
         if (m.index === re.lastIndex) re.lastIndex++;
         continue;
       }
-      if (pattern.operation === "UNKNOWN_CHANGE" && !sectionRef && !definedTermRef && claimedSpans.some(([start, end]) => m!.index >= start && m!.index < end)) {
+      // A more specific candidate already owns this span. A section
+      // pattern must not retarget the locator inside "the definition of X
+      // in Section 1.01 is hereby amended and restated".
+      if (claimedSpans.some(([start, end]) => m!.index >= start && m!.index < end)) {
         if (m.index === re.lastIndex) re.lastIndex++;
         continue;
       }

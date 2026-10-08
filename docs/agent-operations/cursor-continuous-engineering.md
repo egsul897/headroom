@@ -22,13 +22,22 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Tests: `tests/contract-model/entity-scope-guard.test.ts` (frozen replay, prohibition-must-not-widen, different-class refusal, replay does not refill). `npm run test:phase3-certification` 459 passed. `npx tsc --noEmit -p .` clean. `tests/contract-model/entity-scope.test.ts` skipped (no `DATABASE_URL`).
 - False-permission implication: the ratio permission is no longer confirmed for guarantor and non-guarantor restricted subsidiaries. Empty scope on replay is `UNSPECIFIED`, which the transaction simulator reports as `SCOPE_UNSPECIFIED` (review), not `CONFIRMED_APPLICABLE`.
 
+## P0-B — Definition amendments (IPV-19, IPV-20)
+
+- Status: local tests passed; push follows this entry.
+- Reproduction: `The definition of "Consolidated EBITDA" in Section 1.01 ... is hereby amended and restated ... to read as follows`. The section-restatement pattern matched the locator `Section 1.01 ... is hereby amended and restated` and emitted `REPLACE_TEXT` for the whole section.
+- Fix: a definition sentence that names its section is a definition candidate. The section pattern does not reclaim that span. `REPLACE_DEFINITION` captures the quoted replacement. The section's operative text is the base section with that one definition span replaced, when the old span occurs once. Retrieval uses that operative definition text instead of the static base definition.
+- Preserved: a real `Section 6.01 is hereby amended and restated` remains a section replacement. `Section 1.01 is hereby amended by amending and restating the definition of ...` stays a section candidate for interpretation and is not captured as a deterministic definition replacement.
+- Tests: `tests/contract-model/definition-level-amendment.test.ts` 6 passed. `phase-2g-amendment-precedence.test.ts` 48 passed. `context-retrieval-pipeline.test.ts` 36 passed. `npx tsc --noEmit -p .` clean.
+- False-permission implication: an EBITDA amendment that removes an add-back no longer leaves the compiler with the larger base definition, and it no longer deletes the other definitions in the section.
+
 ## Queue
 
 | Id | Severity | Status | Next action |
 | --- | --- | --- | --- |
 | P0-A entity-scope widening | P0 | VERIFIED locally | Watch CI on the push SHA |
-| P0-B IPV-19 definition amendment replaces all of Section 1.01 | P0 | QUEUED | Definition-level target; do not `REPLACE_TEXT` the section |
-| P0-B IPV-20 retrieval ignores operative definition | P0 | QUEUED | After IPV-19, hand the compiler the operative definition |
+| P0-B IPV-19 definition amendment replaces all of Section 1.01 | P0 | VERIFIED locally | Definition target plus section splice; see definition-level-amendment tests |
+| P0-B IPV-20 retrieval ignores operative definition | P0 | VERIFIED locally | Bundle excerpt uses the operative definition when one exists |
 | P0-C IPV-16 notwithstanding side letter | P0 | QUEUED | Unresolved override must block `OPERATIVE_STATE_RESOLVED` |
 | P0-D IPV-02 / IPV-03 | P0 | VERIFIED on `bb9bfd4` | Re-check only if those files change |
 | P0-E source authentication | P0 | VERIFIED on `bb9bfd4` | Do not reopen |

@@ -9,7 +9,7 @@
  * structural-definitions.ts already declared, never a fuzzy guess.
  */
 import type { StructuralIndex } from "../structural-index";
-import { addEdge, addItem, makeItemInput, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
+import { addEdge, addItem, makeItemInput, operativeDefinitionText, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { computeItemId } from "./identity";
 import type { ContextItem } from "./types";
 
@@ -102,7 +102,8 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
       continue;
     }
 
-    const fullText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
+    const baseText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
+    const fullText = operativeDefinitionText(state, index, documentId, mention.exactTerm, baseText);
     if (!withinBudget(state, fullText.length)) return;
 
     // Phase 3F.1 FIX-2 - this is the exact defect class the reproduced

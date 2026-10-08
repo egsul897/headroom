@@ -36,6 +36,7 @@
  * operative provision it changes" (`targetResolutionStatus === "UNIQUE"`).
  */
 import type { StructuralIndex } from "../structural-index";
+import type { StructuralNode } from "../types";
 import type { DetectedDefinition } from "../structural-definitions";
 import { groupEffectsByProvision, buildProvisionChain, computeOperativeDocument, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
 import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, NodeSupersessionStatus, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
@@ -451,11 +452,83 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
   };
 }
 
+/**
+ * A resolved definition replacement does not restate the section that houses
+ * the term. When the old definition occurs once inside that section, the
+ * section's operative text is the base section with that one span replaced.
+ * A section that already has its own effect is left to that effect. A span
+ * that cannot be found once is not guessed.
+ */
+function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionView[], baseDocumentId: string, index: StructuralIndex): OperativeProvisionView[] {
+  const claimedSectionRefs = new Set(provisions.filter((p) => p.kind === "SECTION" && p.sectionRef).map((p) => p.sectionRef));
+  const bySection = new Map<string, { section: StructuralNode; replacements: Array<{ at: number; oldText: string; view: OperativeProvisionView }> }>();
+  for (const view of provisions) {
+    if (view.kind !== "DEFINITION" || view.status !== "OPERATIVE_STATE_RESOLVED" || !view.currentText || !view.definedTermRef) continue;
+    const def = index.getDefinition(view.definedTermRef, baseDocumentId);
+    if (!def?.sourceNodeId) continue;
+    const enclosing = index.getNode(def.sourceNodeId);
+    if (!enclosing) continue;
+    const section = [enclosing, ...index.getAncestors(def.sourceNodeId).slice().reverse()].find((n) => n.nodeType === "SECTION");
+    if (!section || claimedSectionRefs.has(section.sectionRef)) continue;
+    const oldText = index.getDefinitionFullText(def.exactTerm, baseDocumentId);
+    const sectionText = index.getNodeText(section.nodeId, "DESCENDANTS");
+    if (!oldText || !sectionText) continue;
+    const at = sectionText.indexOf(oldText);
+    if (at < 0 || sectionText.indexOf(oldText, at + 1) >= 0) continue;
+    const bucket = bySection.get(section.nodeId) ?? { section, replacements: [] };
+    bucket.replacements.push({ at, oldText, view });
+    bySection.set(section.nodeId, bucket);
+  }
+  const derived: OperativeProvisionView[] = [];
+  for (const { section, replacements } of bySection.values()) {
+    let text = index.getNodeText(section.nodeId, "DESCENDANTS");
+    const ordered = [...replacements].sort((a, b) => b.at - a.at);
+    let spliced = true;
+    for (const replacement of ordered) {
+      const at = text.indexOf(replacement.oldText);
+      if (at < 0 || text.indexOf(replacement.oldText, at + 1) >= 0 || !replacement.view.currentText) { spliced = false; break; }
+      const trailing = replacement.oldText.match(/\s*$/)?.[0] ?? "";
+      text = text.slice(0, at) + replacement.view.currentText.replace(/\s*$/, "") + trailing + text.slice(at + replacement.oldText.length);
+    }
+    if (!spliced) continue;
+    const latest = [...replacements].sort((a, b) => a.view.appliedChain.length - b.view.appliedChain.length).at(-1) ?? replacements[0]!;
+    derived.push({
+      instrumentKey: latest.view.instrumentKey,
+      provisionKey: `${latest.view.instrumentKey}::SECTION::${section.sectionRef}`,
+      kind: "SECTION",
+      documentId: baseDocumentId,
+      sectionRef: section.sectionRef,
+      definedTermRef: null,
+      asOfDate: latest.view.asOfDate,
+      currentSourceDocumentId: latest.view.currentSourceDocumentId,
+      currentSourceNodeKey: null,
+      currentSourceNodeId: null,
+      currentText: text,
+      fullChain: replacements.flatMap((r) => r.view.fullChain),
+      appliedChain: replacements.flatMap((r) => r.view.appliedChain),
+      supersededSourceNodeKeys: [],
+      supersededSourceNodeIds: [],
+      status: "OPERATIVE_STATE_RESOLVED",
+      unresolvedIssues: [],
+      conflicts: [],
+      targetResolutionStatus: "UNIQUE",
+      targetResolutionReason: null,
+      candidateSourceNodeIds: [],
+      ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
+      attemptedText: text,
+      reviewRequired: false,
+      candidateTexts: [],
+    });
+  }
+  return derived;
+}
+
 export function computeOperativeContractState(input: OperativeStateInput): OperativeContractState {
   const instrumentEffects = input.allEffects.filter((e) => e.target.targetInstrumentKey === input.instrumentKey);
   const { groups, unattachedEffects: unattachedFromResolved } = groupEffectsByProvision(instrumentEffects);
 
-  const provisions = groups.map((g) => buildProvisionView(g, input.baseDocumentId, input.asOfDate, input.index));
+  const fromEffects = groups.map((g) => buildProvisionView(g, input.baseDocumentId, input.asOfDate, input.index));
+  const provisions = [...fromEffects, ...sectionViewsAfterDefinitionReplacements(fromEffects, input.baseDocumentId, input.index)];
 
   // Phase 3F.1 §29-32/F3 - the caller-asserted unresolved-target effects
   // combine with anything groupEffectsByProvision itself could not attach
