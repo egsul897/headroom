@@ -185,7 +185,7 @@ const Runtime = z.object({
 
 export const ExpectationsManifestSchema = z.object({
   manifestVersion: z.literal(MANIFEST_VERSION),
-  packageId: z.string().regex(/^pkg-[a-h]-[a-z0-9-]+$/),
+  packageId: z.string().regex(/^pkg-[a-z]-[a-z0-9-]+$/),
   title: z.string(),
   issuer: z.string().regex(/\(synthetic\)$/),
   scenario: z.string(),

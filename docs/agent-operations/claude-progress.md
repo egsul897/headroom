@@ -12,11 +12,14 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `3a4925d` | PR #136 challenge (`07-pr136-…`), checkpoint file | `vitest run tests/product-acceptance/source-authority.test.ts` in PR #136 worktree: 22 pass / 6 unmet |
 | 2026-10-08 | `bd45b95` | corpus A–H, manifests, runner, auditor, mocked semantic stage, runtime F cases, defect register (14), matrix, scorecard, MVP spec, commercial plan, committed run `acceptance-runs/8f51e2981bd2` | `vitest run tests/product-acceptance` 110 pass; `tsx scripts/product-acceptance/run-all.ts` 360 checks |
 
 ## Current task
 
-Extraction architecture benchmark (task 2 below). PR #136 challenge complete: `07-pr136-source-authority-challenge.md` (22/28 independent expectations hold on `982c3bc`; defects PR136-F1…F4, risks R1–R5).
+Mutation suite + anti-overfitting audit (task 3 below). Benchmark complete: `08-extraction-architecture-benchmark.md`, `scripts/product-acceptance/benchmark/`, `tests/product-acceptance/benchmark.test.ts`; packages I and J added (register now IPV-01…IPV-15).
+
+Previous — extraction architecture benchmark. PR #136 challenge complete: `07-pr136-source-authority-challenge.md` (22/28 independent expectations hold on `982c3bc`; defects PR136-F1…F4, risks R1–R5).
 
 Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a74e40830e5f1903c1500`, base `cursor/gibraltar-haiku-verify-7cc2`): integration worktree at `/home/user/headroom-pr136` (not committed), acceptance suite re-run against PR #136 lib, unit-level adversarial cases with independent expectations in `tests/product-acceptance/source-authority.test.ts` (skip-safe when the module is absent), write-up in `docs/product-readiness/07-pr136-source-authority-challenge.md`.
 
@@ -43,7 +46,13 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: finish PR #136 challenge — unit adversarial cases, integration diff of findings main vs PR #136, write-up with handoffs.
+- Objective: mutation suite (threshold, added condition, removed exception, revised definition, new amendment, moved covenant, changed scope, conflicting document, reordered hierarchy, missing referenced provision) with expectation deltas; anti-overfitting grep audit of lib/ for issuer names / fixture ids / hardcoded doc ids.
+- Files: `scripts/product-acceptance/mutations.ts`, `tests/product-acceptance/mutations.test.ts`, `docs/product-readiness/09-mutation-and-overfitting.md`.
+- First step: `grep -rn "conmed\|gibraltar\|CNMD" lib --include=*.ts | wc -l` and design mutation operators over package text with re-pinned expectations.
+- Expected output: per-mutation table of what changed in structure/operative-state/closure outputs vs expectation deltas; list of production files with issuer-specific tokens.
+- Acceptance: tests pass; findings registered; commit + push.
+
+Historical — PR #136 challenge — unit adversarial cases, integration diff of findings main vs PR #136, write-up with handoffs.
 - Files: `tests/product-acceptance/source-authority.test.ts`, `docs/product-readiness/07-pr136-source-authority-challenge.md`.
 - First step: `git -C /home/user/headroom worktree add --detach /home/user/headroom-pr136 pr/136` (fetch `refs/pull/136/head`), copy harness dirs in, `npx tsx scripts/product-acceptance/run-all.ts --out <scratch>`.
 - Expected output: list of findings that changed between main and PR #136; classification of the authority gate's refusals/acceptances per case.

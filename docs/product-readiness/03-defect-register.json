@@ -255,7 +255,8 @@
         "pkg-d-qualitative-restrictions",
         "pkg-e-structural-ambiguity",
         "pkg-f-capacity-ledger-honesty",
-        "pkg-g-adversarial-evidence"
+        "pkg-g-adversarial-evidence",
+        "pkg-i-secured-debt-lien"
       ],
       "signatures": [
         {
@@ -277,11 +278,31 @@
         {
           "packageId": "pkg-g-adversarial-evidence",
           "expectationRef": "context:G-7.03(a):definitions"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "context:I-7.01(b):definitions"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "context:I-7.01(c):definitions"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "context:I-7.02(a):definitions"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "context:I-7.02(b):definitions"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "context:I-7.02(c):definitions"
         }
       ],
       "failingInput": "\"Dispositions of property \u2026\", \"Investments in Subsidiaries \u2026\", \"Restricted Payments in an aggregate amount \u2026\" with singular definitions \"Disposition\", \"Investment\", \"Restricted Payment\".",
       "expected": "The singular definition is retrieved as a DEFINITION context item.",
-      "actual": "Not retrieved; the singular form in sibling clauses is retrieved.",
+      "actual": "Not retrieved; the singular form in sibling clauses is retrieved. Package I adds: \"Guarantors\", \"Foreign Subsidiaries\", \"Liens\" not resolved to Guarantor / Foreign Subsidiary / Lien.",
       "repro": "buildCandidateCompilerInput(candidateFor('credit-agreement','7.05(j)')).bundle.items",
       "impact": "Pass B compiles without the governing definition in context; sufficiency can be overstated.",
       "hypothesis": "Term matching is exact-string on the defined term; no inflection normalization.",
@@ -296,17 +317,22 @@
       "stage": "CONTEXT_RETRIEVAL",
       "title": "Undefined terms inside a retrieved definition are not reported; the bundle claims SUFFICIENT",
       "packages": [
-        "pkg-h-unseen-composition"
+        "pkg-h-unseen-composition",
+        "pkg-j-restricted-payments-builder"
       ],
       "signatures": [
         {
           "packageId": "pkg-h-unseen-composition",
           "expectationRef": "context:H-7.11"
+        },
+        {
+          "packageId": "pkg-j-restricted-payments-builder",
+          "expectationRef": "context:J-7.06(c)"
         }
       ],
       "failingInput": "7.11 depends on \"Fixed Charge Coverage Ratio\" (defined) which depends on \"Consolidated EBITDA\" and \"Fixed Charges\" (never defined).",
       "expected": "Unresolved dependencies for the two undefined terms; sufficiency not SUFFICIENT.",
-      "actual": "sufficiency SUFFICIENT; the two unresolved items reported are heading/fragment noise (\"Financial Covenant\", \"Fixed Charge Coverage Ratio of\").",
+      "actual": "sufficiency SUFFICIENT; the two unresolved items reported are heading/fragment noise (\"Financial Covenant\", \"Fixed Charge Coverage Ratio of\"). Package J: Total Leverage Ratio \u2192 Consolidated EBITDA / Consolidated Total Debt (undefined) not reported; bundle SUFFICIENT.",
       "repro": "buildCandidateCompilerInput(candidateFor('abl-credit-agreement','7.11')).bundle",
       "impact": "A springing financial covenant is presented as computable when its metric is undefined.",
       "hypothesis": "Undefined-term detection runs on the operative text only, not on retrieved definition text.",
@@ -361,17 +387,30 @@
       "stage": "CONTEXT_RETRIEVAL",
       "title": "A self-referential definition trips DEFINITION_CYCLE and blocks certification of every dependent covenant",
       "packages": [
-        "pkg-b-multi-document"
+        "pkg-b-multi-document",
+        "pkg-i-secured-debt-lien"
       ],
       "signatures": [
         {
           "packageId": "pkg-b-multi-document",
           "expectationRef": "certification:indenture::4.09"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "certification:credit-agreement::7.01"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "certification:credit-agreement::7.02"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "certification:credit-agreement::7.04"
         }
       ],
       "failingInput": "\"Unrestricted Subsidiary\" means any Subsidiary of the Issuer designated as an Unrestricted Subsidiary \u2026; \"Restricted Subsidiary\" means any Subsidiary \u2026 that is not an Unrestricted Subsidiary.",
       "expected": "Standard drafting; bundle SUFFICIENT.",
-      "actual": "DEFINITION_CYCLE/MEDIUM on Restricted Subsidiary \u2192 bundle REVIEW_REQUIRED \u2192 VERIFICATION_INCOMPLETE \u2192 NOT_CERTIFIED for 4.09 (and the indenture definitions candidate).",
+      "actual": "DEFINITION_CYCLE/MEDIUM on Restricted Subsidiary \u2192 bundle REVIEW_REQUIRED \u2192 VERIFICATION_INCOMPLETE \u2192 NOT_CERTIFIED for 4.09 (and the indenture definitions candidate). Package I: DEFINITION_CYCLE on \"Subsidiary\" and \"Guarantor\" (\"Guarantor\" means each Subsidiary that has executed the Guarantee; \"Foreign Subsidiary\" means any Subsidiary \u2026) blocks 7.01, 7.02 and 7.04 - no genuine cycle exists.",
       "repro": "buildCandidateCompilerInput(candidateFor('indenture','4.09')).bundle.unresolvedDependencies",
       "impact": "Fail-closed, but a ubiquitous drafting pattern makes indenture covenants uncertifiable.",
       "hypothesis": "The cycle detector treats a term's own name appearing inside its definition (\"designated as an Unrestricted Subsidiary\") as a dependency edge.",
@@ -417,7 +456,8 @@
       "title": "Residual fail-closed outcomes on faithful submissions (recorded, not defects): unaccounted Layer-1 items on 2.05 and 7.01 (C) and the stale-text rejection of the correct amended basket",
       "packages": [
         "pkg-d-qualitative-restrictions",
-        "pkg-g-adversarial-evidence"
+        "pkg-g-adversarial-evidence",
+        "pkg-i-secured-debt-lien"
       ],
       "signatures": [
         {
@@ -427,15 +467,44 @@
         {
           "packageId": "pkg-g-adversarial-evidence",
           "expectationRef": "certification:credit-agreement::7.01#2"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "certification:credit-agreement::9.15"
         }
       ],
       "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
       "expected": "CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).",
-      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate.",
+      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents).",
       "repro": "faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2",
       "impact": "None (fail-closed); listed so the register accounts for every finding in the report.",
       "hypothesis": "Mock incompleteness (D) and correct behaviour (G).",
       "acceptance": "Close when the acceptance matrix no longer reports them, or re-classify if a real cause emerges."
+    },
+    {
+      "id": "IPV-15",
+      "status": "OPEN",
+      "severity": "NONMATERIAL_OMISSION",
+      "outcomeClass": "CORRECT_FAIL_CLOSED",
+      "deterministic": true,
+      "stage": "SEMANTIC_COMPOSITION",
+      "title": "Shared capacity mediated through a definition (Available Amount netting across 7.06(c)/7.08(d)) has no representation channel; a dependsOn to the sibling is rejected as invented",
+      "packages": [
+        "pkg-j-restricted-payments-builder"
+      ],
+      "signatures": [
+        {
+          "packageId": "pkg-j-restricted-payments-builder",
+          "expectationRef": "certification:credit-agreement::7.08"
+        }
+      ],
+      "failingInput": "\"Available Amount\" means \u2026 minus the aggregate amount of Restricted Payments made under Section 7.06(c) and Investments made under Section 7.08(d) \u2026; 7.08(d) permits Investments up to the Available Amount.",
+      "expected": "7.08(d) and 7.06(c) are linked as sharing one pool (via the definition) and the Default kill-switch inside the definition is attached to both.",
+      "actual": "A dependsOn from 7.08(d) to Section 7.06(c) is excluded as MODEL_INVENTED_REFERENCE (the clause's own text never names 7.06(c)) and the unit stays REVIEW. The link exists only in the definition text; neither sharedCapacities (member rules) nor dependsOn can carry a definition-mediated relationship without the source-reference guard rejecting it.",
+      "repro": "faithful submission for pkg-j credit-agreement::7.08 \u2192 compilation.unresolvedIssues (MODEL_INVENTED_REFERENCE_EXCLUDED)",
+      "impact": "Fail-closed today (REVIEW). A future model that drops the link to satisfy the guard would report two independent $20,000,000 baskets (J-P2).",
+      "hypothesis": "The source-reference fidelity guard scopes admissible references to the unit's own text and its retrieved regions; definition text that names other sections is not an admissible reference source for the citing unit.",
+      "acceptance": "References stated inside a retrieved definition the unit depends on are admissible for that unit, or a definition-level shared-capacity construct exists."
     }
   ],
   "observations": [

@@ -1,9 +1,9 @@
 {
   "manifestVersion": "product-acceptance-expectations.v1",
   "packageId": "pkg-f-capacity-ledger-honesty",
-  "title": "Package F \u2014 capacity, ledger usage, shared caps, foreign currency and reclassification",
+  "title": "Package F — capacity, ledger usage, shared caps, foreign currency and reclassification",
   "issuer": "Summit Ridge Foods LLC (synthetic)",
-  "scenario": "Capacity computation honesty. 7.01(b) is a $50,000,000 general basket with $18,000,000 of recorded prior usage. 7.01(c) is 20% of Consolidated EBITDA (needs an approved metric input). 7.06(b) and 7.08(c) share a single $20,000,000 cap. 7.01(f) is EUR 10,000,000 with no FX rate in the package. 7.01(g) is a reclassification election. Expected outcomes are stated as what an honest system must say \u2014 including 'I cannot compute this'.",
+  "scenario": "Capacity computation honesty. 7.01(b) is a $50,000,000 general basket with $18,000,000 of recorded prior usage. 7.01(c) is 20% of Consolidated EBITDA (needs an approved metric input). 7.06(b) and 7.08(c) share a single $20,000,000 cap. 7.01(f) is EUR 10,000,000 with no FX rate in the package. 7.01(g) is a reclassification election. Expected outcomes are stated as what an honest system must say — including 'I cannot compute this'.",
   "authorship": "Expectations written by reading the source text. Runtime expectations hand-computed. Not derived from compiler output.",
   "companyId": "company:summit-ridge",
   "instrumentKey": "summit-ridge-credit-agreement-2026",
@@ -483,7 +483,7 @@
           "used": 18000000,
           "remaining": 32000000
         },
-        "invariant": "remaining = cap \u2212 sum(unsuperseded usage); never ignore ledger usage."
+        "invariant": "remaining = cap − sum(unsuperseded usage); never ignore ledger usage."
       },
       {
         "id": "F-R2",
@@ -495,7 +495,7 @@
           "used": 0,
           "remaining": 16000000
         },
-        "invariant": "20% \u00d7 approved EBITDA; the DRAFT snapshot's 120,000,000 must not be used under the default policy."
+        "invariant": "20% × approved EBITDA; the DRAFT snapshot's 120,000,000 must not be used under the default policy."
       },
       {
         "id": "F-R2c",
@@ -513,7 +513,7 @@
         "expected": {
           "status": "NEEDS_INPUT"
         },
-        "invariant": "No metric \u2192 no number."
+        "invariant": "No metric → no number."
       },
       {
         "id": "F-R4",
@@ -546,7 +546,7 @@
           "used": 13000000,
           "remaining": 7000000
         },
-        "invariant": "Same remaining as F-R5 \u2014 one pool, two doors."
+        "invariant": "Same remaining as F-R5 — one pool, two doors."
       },
       {
         "id": "F-R7",
@@ -565,7 +565,7 @@
           "status": "EXCEEDS|NOT_AVAILABLE",
           "remainingAfter": -3000000
         },
-        "invariant": "32,000,000 remaining < 35,000,000 proposed \u2192 the simulation must not report headroom."
+        "invariant": "32,000,000 remaining < 35,000,000 proposed → the simulation must not report headroom."
       },
       {
         "id": "F-R9",
@@ -608,7 +608,7 @@
   ],
   "nonOperative": [],
   "invariants": [
-    "Every capacity figure must trace to (rule, inputs used, ledger entries used) \u2014 a number without its inputs is not acceptable.",
+    "Every capacity figure must trace to (rule, inputs used, ledger entries used) — a number without its inputs is not acceptable.",
     "An unapproved financial snapshot must never supply a value under the default policy.",
     "Shared capacity must be reported identically from each participating clause."
   ]

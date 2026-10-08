@@ -16,12 +16,13 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 | IPV-06 | SOURCE_PROVENANCE_FAILURE | INCORRECT_RESULT | STRUCTURE | Inline enumerations inside a definition are minted as structural nodes and capture the following definitions | h-unseen-composition, e-structural-ambiguity |
 | IPV-07 | MISSING_REQUIRED_COVENANT | INCORRECT_RESULT | STRUCTURE | A dropped enumeration letter merges the next clause into the previous sibling | g-adversarial-evidence |
 | IPV-08 | SOURCE_PROVENANCE_FAILURE | INCORRECT_RESULT | STRUCTURE | Non-operative exhibit "Term:" lines become definition records with no source node | g-adversarial-evidence |
-| IPV-09 | NONMATERIAL_OMISSION | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Plural use of a defined term is not resolved to its definition | d-qualitative-restrictions, e-structural-ambiguity, f-capacity-ledger-honesty, g-adversarial-evidence |
-| IPV-10 | UNSUPPORTED_AS_COMPLETE | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Undefined terms inside a retrieved definition are not reported; the bundle claims SUFFICIENT | h-unseen-composition |
+| IPV-09 | NONMATERIAL_OMISSION | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Plural use of a defined term is not resolved to its definition | d-qualitative-restrictions, e-structural-ambiguity, f-capacity-ledger-honesty, g-adversarial-evidence, i-secured-debt-lien |
+| IPV-10 | UNSUPPORTED_AS_COMPLETE | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Undefined terms inside a retrieved definition are not reported; the bundle claims SUFFICIENT | h-unseen-composition, j-restricted-payments-builder |
 | IPV-11 | UNSUPPORTED_AS_COMPLETE | CAPABILITY_NOT_IMPLEMENTED | STRUCTURE | Table-of-contents lines are parsed as duplicate ARTICLE/SECTION nodes on the certified path; every covenant becomes ambiguous | e-structural-ambiguity |
-| IPV-12 | NONMATERIAL_OMISSION | CAPABILITY_NOT_IMPLEMENTED | CONTEXT_RETRIEVAL | A self-referential definition trips DEFINITION_CYCLE and blocks certification of every dependent covenant | b-multi-document |
+| IPV-12 | NONMATERIAL_OMISSION | CAPABILITY_NOT_IMPLEMENTED | CONTEXT_RETRIEVAL | A self-referential definition trips DEFINITION_CYCLE and blocks certification of every dependent covenant | b-multi-document, i-secured-debt-lien |
 | IPV-13 | NONMATERIAL_OMISSION | INCORRECT_RESULT | SEMANTIC_COMPOSITION | Action-ontology guard misreads "make any Disposition" (gap) and "purchase money Indebtedness" (PREPAY_DEBT) | d-qualitative-restrictions, e-structural-ambiguity |
-| IPV-14 | NONMATERIAL_OMISSION | CORRECT_FAIL_CLOSED | CERTIFICATION | Residual fail-closed outcomes on faithful submissions (recorded, not defects): unaccounted Layer-1 items on 2.05 and 7.01 (C) and the stale-text rejection of the correct amended basket | d-qualitative-restrictions, g-adversarial-evidence |
+| IPV-14 | NONMATERIAL_OMISSION | CORRECT_FAIL_CLOSED | CERTIFICATION | Residual fail-closed outcomes on faithful submissions (recorded, not defects): unaccounted Layer-1 items on 2.05 and 7.01 (C) and the stale-text rejection of the correct amended basket | d-qualitative-restrictions, g-adversarial-evidence, i-secured-debt-lien |
+| IPV-15 | NONMATERIAL_OMISSION | CORRECT_FAIL_CLOSED | SEMANTIC_COMPOSITION | Shared capacity mediated through a definition (Available Amount netting across 7.06(c)/7.08(d)) has no representation channel; a dependsOn to the sibling is rejected as invented | j-restricted-payments-builder |
 
 ## IPV-01 — Entity-scope widening is confirmed and certified when the clause narrows the section's governing scope
 
@@ -133,12 +134,12 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 - **failingInput**: "Dispositions of property …", "Investments in Subsidiaries …", "Restricted Payments in an aggregate amount …" with singular definitions "Disposition", "Investment", "Restricted Payment".
 - **expected**: The singular definition is retrieved as a DEFINITION context item.
-- **actual**: Not retrieved; the singular form in sibling clauses is retrieved.
+- **actual**: Not retrieved; the singular form in sibling clauses is retrieved. Package I adds: "Guarantors", "Foreign Subsidiaries", "Liens" not resolved to Guarantor / Foreign Subsidiary / Lien.
 - **repro**: buildCandidateCompilerInput(candidateFor('credit-agreement','7.05(j)')).bundle.items
 - **impact**: Pass B compiles without the governing definition in context; sufficiency can be overstated.
 - **hypothesis**: Term matching is exact-string on the defined term; no inflection normalization.
 - **acceptance**: Regular plural/possessive forms of a defined term resolve to the definition (with the matched form recorded).
-- **signatures**: `pkg-d-qualitative-restrictions` → `context:D-7.05(j):definitions`; `pkg-e-structural-ambiguity` → `context:E-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.08(c):definitions`; `pkg-g-adversarial-evidence` → `context:G-7.03(a):definitions`
+- **signatures**: `pkg-d-qualitative-restrictions` → `context:D-7.05(j):definitions`; `pkg-e-structural-ambiguity` → `context:E-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.08(c):definitions`; `pkg-g-adversarial-evidence` → `context:G-7.03(a):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.01(b):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.01(c):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(a):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(b):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(c):definitions`
 
 ## IPV-10 — Undefined terms inside a retrieved definition are not reported; the bundle claims SUFFICIENT
 
@@ -146,12 +147,12 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 - **failingInput**: 7.11 depends on "Fixed Charge Coverage Ratio" (defined) which depends on "Consolidated EBITDA" and "Fixed Charges" (never defined).
 - **expected**: Unresolved dependencies for the two undefined terms; sufficiency not SUFFICIENT.
-- **actual**: sufficiency SUFFICIENT; the two unresolved items reported are heading/fragment noise ("Financial Covenant", "Fixed Charge Coverage Ratio of").
+- **actual**: sufficiency SUFFICIENT; the two unresolved items reported are heading/fragment noise ("Financial Covenant", "Fixed Charge Coverage Ratio of"). Package J: Total Leverage Ratio → Consolidated EBITDA / Consolidated Total Debt (undefined) not reported; bundle SUFFICIENT.
 - **repro**: buildCandidateCompilerInput(candidateFor('abl-credit-agreement','7.11')).bundle
 - **impact**: A springing financial covenant is presented as computable when its metric is undefined.
 - **hypothesis**: Undefined-term detection runs on the operative text only, not on retrieved definition text.
 - **acceptance**: Capitalized multi-word terms inside retrieved definitions that resolve to no definition are reported as UNRESOLVED_DEFINED_TERM with appropriate severity.
-- **signatures**: `pkg-h-unseen-composition` → `context:H-7.11`
+- **signatures**: `pkg-h-unseen-composition` → `context:H-7.11`; `pkg-j-restricted-payments-builder` → `context:J-7.06(c)`
 
 ## IPV-11 — Table-of-contents lines are parsed as duplicate ARTICLE/SECTION nodes on the certified path; every covenant becomes ambiguous
 
@@ -172,12 +173,12 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 - **failingInput**: "Unrestricted Subsidiary" means any Subsidiary of the Issuer designated as an Unrestricted Subsidiary …; "Restricted Subsidiary" means any Subsidiary … that is not an Unrestricted Subsidiary.
 - **expected**: Standard drafting; bundle SUFFICIENT.
-- **actual**: DEFINITION_CYCLE/MEDIUM on Restricted Subsidiary → bundle REVIEW_REQUIRED → VERIFICATION_INCOMPLETE → NOT_CERTIFIED for 4.09 (and the indenture definitions candidate).
+- **actual**: DEFINITION_CYCLE/MEDIUM on Restricted Subsidiary → bundle REVIEW_REQUIRED → VERIFICATION_INCOMPLETE → NOT_CERTIFIED for 4.09 (and the indenture definitions candidate). Package I: DEFINITION_CYCLE on "Subsidiary" and "Guarantor" ("Guarantor" means each Subsidiary that has executed the Guarantee; "Foreign Subsidiary" means any Subsidiary …) blocks 7.01, 7.02 and 7.04 - no genuine cycle exists.
 - **repro**: buildCandidateCompilerInput(candidateFor('indenture','4.09')).bundle.unresolvedDependencies
 - **impact**: Fail-closed, but a ubiquitous drafting pattern makes indenture covenants uncertifiable.
 - **hypothesis**: The cycle detector treats a term's own name appearing inside its definition ("designated as an Unrestricted Subsidiary") as a dependency edge.
 - **acceptance**: A definition that mentions its own term is not a cycle; genuine A→B→A cycles still are.
-- **signatures**: `pkg-b-multi-document` → `certification:indenture::4.09`
+- **signatures**: `pkg-b-multi-document` → `certification:indenture::4.09`; `pkg-i-secured-debt-lien` → `certification:credit-agreement::7.01`; `pkg-i-secured-debt-lien` → `certification:credit-agreement::7.02`; `pkg-i-secured-debt-lien` → `certification:credit-agreement::7.04`
 
 ## IPV-13 — Action-ontology guard misreads "make any Disposition" (gap) and "purchase money Indebtedness" (PREPAY_DEBT)
 
@@ -198,12 +199,25 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 - **failingInput**: D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).
 - **expected**: CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).
-- **actual**: D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate.
+- **actual**: D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the "Notwithstanding anything to the contrary in Article VII" override phrase is not a unit the mock represents).
 - **repro**: faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2
 - **impact**: None (fail-closed); listed so the register accounts for every finding in the report.
 - **hypothesis**: Mock incompleteness (D) and correct behaviour (G).
 - **acceptance**: Close when the acceptance matrix no longer reports them, or re-classify if a real cause emerges.
-- **signatures**: `pkg-d-qualitative-restrictions` → `certification:credit-agreement::2.05`; `pkg-g-adversarial-evidence` → `certification:credit-agreement::7.01#2`
+- **signatures**: `pkg-d-qualitative-restrictions` → `certification:credit-agreement::2.05`; `pkg-g-adversarial-evidence` → `certification:credit-agreement::7.01#2`; `pkg-i-secured-debt-lien` → `certification:credit-agreement::9.15`
+
+## IPV-15 — Shared capacity mediated through a definition (Available Amount netting across 7.06(c)/7.08(d)) has no representation channel; a dependsOn to the sibling is rejected as invented
+
+**Status** OPEN · **Severity** NONMATERIAL_OMISSION · **Outcome** CORRECT_FAIL_CLOSED · **Stage** SEMANTIC_COMPOSITION · **Deterministic** true
+
+- **failingInput**: "Available Amount" means … minus the aggregate amount of Restricted Payments made under Section 7.06(c) and Investments made under Section 7.08(d) …; 7.08(d) permits Investments up to the Available Amount.
+- **expected**: 7.08(d) and 7.06(c) are linked as sharing one pool (via the definition) and the Default kill-switch inside the definition is attached to both.
+- **actual**: A dependsOn from 7.08(d) to Section 7.06(c) is excluded as MODEL_INVENTED_REFERENCE (the clause's own text never names 7.06(c)) and the unit stays REVIEW. The link exists only in the definition text; neither sharedCapacities (member rules) nor dependsOn can carry a definition-mediated relationship without the source-reference guard rejecting it.
+- **repro**: faithful submission for pkg-j credit-agreement::7.08 → compilation.unresolvedIssues (MODEL_INVENTED_REFERENCE_EXCLUDED)
+- **impact**: Fail-closed today (REVIEW). A future model that drops the link to satisfy the guard would report two independent $20,000,000 baskets (J-P2).
+- **hypothesis**: The source-reference fidelity guard scopes admissible references to the unit's own text and its retrieved regions; definition text that names other sections is not an admissible reference source for the citing unit.
+- **acceptance**: References stated inside a retrieved definition the unit depends on are admissible for that unit, or a definition-level shared-capacity construct exists.
+- **signatures**: `pkg-j-restricted-payments-builder` → `certification:credit-agreement::7.08`
 
 ## Observations (not defects)
 
