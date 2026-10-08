@@ -5,8 +5,8 @@
   "challengerSha": "a66c6466f218b79886a990bed3075fdffb0722b3",
   "startingShaReviewedByChallenger": "ce07b1525972d1dea00792a2058900fa56291163",
   "interveningShaBeforeRemediation": "b2074fb60ff272a107032551e267b39df884815c",
-  "interveningNote": "Tip advanced after reviewed SHA with Vercel typecheck fix (effectiveDate null→undefined) before Phase 3 remediation; reconciled rather than overwritten.",
-  "endingSha": "PENDING_COMMIT",
+  "interveningNote": "Tip advanced after reviewed SHA with Vercel typecheck fix (effectiveDate null\u2192undefined) before Phase 3 remediation; reconciled rather than overwritten.",
+  "endingSha": "8f477fe59d33211768677c83f488ef3730308c76",
   "promotionStatus": "NOT_INDEPENDENTLY_LEGALLY_VERIFIED",
   "mergeReady": false,
   "legallyVerified": false,
@@ -16,14 +16,14 @@
   "challengerBranchModified": false,
   "challengerDefectDispositions": [
     {
-      "defect": "Manifests MISSING while ledger ACQUIRED (CONMED Seventh, Internap orig/Am1–6)",
+      "defect": "Manifests MISSING while ledger ACQUIRED (CONMED Seventh, Internap orig/Am1\u20136)",
       "disposition": "REMEDIATED",
-      "action": "Synced manifests to RETRIEVED/SOURCE_ACQUIRED; added distinct authorityLayerStates; Internap Am1–6 listed without claiming OPERATIVE_STATE_RESOLVED"
+      "action": "Synced manifests to RETRIEVED/SOURCE_ACQUIRED; added distinct authorityLayerStates; Internap Am1\u20136 listed without claiming OPERATIVE_STATE_RESOLVED"
     },
     {
       "defect": "AZZ absent from Knowledge Factory export",
       "disposition": "REMEDIATED",
-      "action": "Added azz-2022-05-13-credit-agreement to chainIdentities; Am4 hashed ACQUIRED; orig/Am1–3 PHASE1_RETRIEVED_HASH_PENDING"
+      "action": "Added azz-2022-05-13-credit-agreement to chainIdentities; Am4 hashed ACQUIRED; orig/Am1\u20133 PHASE1_RETRIEVED_HASH_PENDING"
     },
     {
       "defect": "AZZ defined term Applicable Margin vs Applicable Rate",
@@ -33,7 +33,7 @@
     {
       "defect": "Internap before-text still 8-K/UNRESOLVED despite acquired orig CA",
       "disposition": "REMEDIATED_WITH_EXPLICIT_GAP",
-      "action": "Reconstructed §6.04(m)/§6.01(k) before-text from orig EX-10.1; preserved Am1–Am6 intervening UNRESOLVED_DEPENDENCY and completeOperativeStateReconstruction=false"
+      "action": "Reconstructed \u00a76.04(m)/\u00a76.01(k) before-text from orig EX-10.1; preserved Am1\u2013Am6 intervening UNRESOLVED_DEPENDENCY and completeOperativeStateReconstruction=false"
     },
     {
       "defect": "DSGR Am4 beforeText null despite Doc B $10M",
@@ -46,7 +46,7 @@
       "action": "Kept MISSING_DOCUMENT; 10-Q remains NOT_OPERATIVE"
     },
     {
-      "defect": "CONMED Am2→Am1 parent link imprecise",
+      "defect": "CONMED Am2\u2192Am1 parent link imprecise",
       "disposition": "REMEDIATED",
       "action": "Export/authority now parent=cnmd-seventh-ar with intermediateState=cnmd-am1-2022"
     },
@@ -59,28 +59,33 @@
   "vcReplayRequired": [
     {
       "vc": "VC-005",
-      "reason": "Defined-term correction + KF export inclusion — independent replay required"
+      "reason": "Defined-term correction + KF export inclusion \u2014 independent replay required"
     },
     {
       "vc": "VC-008",
-      "reason": "Before-text now SOURCE_BACKED from orig CA with intervening-gap discipline — independent replay required"
+      "reason": "Before-text now SOURCE_BACKED from orig CA with intervening-gap discipline \u2014 independent replay required"
     },
     {
       "vc": "VC-002",
-      "reason": "Before-text $10M correction — confirm still PASS under fail-closed ED/deemed model"
+      "reason": "Before-text $10M correction \u2014 confirm still PASS under fail-closed ED/deemed model"
     },
     {
       "vc": "VC-003",
-      "reason": "Manifest freshness + parent-instrument link correction — confirm WP-003 still holds"
+      "reason": "Manifest freshness + parent-instrument link correction \u2014 confirm WP-003 still holds"
     }
   ],
-  "vcReplayOptionalConfirm": ["VC-001", "VC-004", "VC-006", "VC-007"],
+  "vcReplayOptionalConfirm": [
+    "VC-001",
+    "VC-004",
+    "VC-006",
+    "VC-007"
+  ],
   "remainingUnresolvedLegalQuestions": [
     "Condition-satisfaction calendars for all CONDITIONAL_UNRESOLVED Effective Dates",
     "DSGR Am2 operative wrapper text",
-    "Internap Am1–Am6 exhaustive basket/definition propagation",
-    "AZZ orig/Am1–Am3 content hashes (Phase-1 retrieval claimed)",
-    "Independent legal verification of VC-001–008 ground truth"
+    "Internap Am1\u2013Am6 exhaustive basket/definition propagation",
+    "AZZ orig/Am1\u2013Am3 content hashes (Phase-1 retrieval claimed)",
+    "Independent legal verification of VC-001\u2013008 ground truth"
   ],
   "authorityLayerModel": [
     "SOURCE_ACQUIRED",
@@ -100,6 +105,6 @@
     "tests/amendment-chain-research/phase2-corpus-integrity.test.ts",
     "tests/amendment-chain-research/phase3-challenger-remediation.test.ts"
   ],
-  "currentHeadCi": "PENDING_AFTER_PUSH",
+  "currentHeadCi": "PENDING_PUSH_SUBSCRIPTION",
   "filesChangedNote": "See git diff / PR #150 files list at endingSha"
 }
