@@ -56,3 +56,15 @@
 - Added `scripts/parallel-agents/check-ownership-boundaries.ts` to WS-PAR exclusiveOwn.
 - Map version bumped to **2**; non-overlap invariant retained.
 - Soft gate reminder: WS-EHB must not invent a second EDGAR downloader/registry vs WS-CKF.
+
+---
+
+## 2026-10-08T22:06:39Z — v2 tip verified locally
+
+- **branchTipSha:** `d1c349089f7621dcf001cbd50f91c0dfd622e84e`
+- **focusedTests:** `npx vitest run tests/architecture/parallel-agents` → 11 passed / 0 failed
+- **ownershipChecker:** WS-PAR self-check on `git diff --name-only origin/main...HEAD` → OK (6 files)
+- **changedFiles:** docs/architecture/parallel-agents/**, tests/architecture/parallel-agents/**, scripts/parallel-agents/check-ownership-boundaries.ts
+- **ciStatus:** pending on new tip; CI resubscribed
+- **ownershipViolations:** []
+- **integrationDependencies:** peers consume map v2 + interface contracts; no unfinished peer code required
