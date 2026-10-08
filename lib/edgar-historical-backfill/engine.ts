@@ -47,6 +47,8 @@ export interface RunDiscoveryOptions {
   sec?: SecAccessCoordinator;
   /** Resolve IBR targets by fetching original indexes (extra SEC calls). */
   resolveIbrIndexes?: boolean;
+  /** Cap on distinct original-filing index fetches for IBR completion per issuer. */
+  maxIbrIndexFetches?: number;
   acquisitionQueueLimit?: number;
   onProgress?: (msg: string) => void;
 }
@@ -148,19 +150,23 @@ export async function runHistoricalDiscovery(opts: RunDiscoveryOptions): Promise
       }
 
       // Optional second-pass IBR completion against original indexes.
+      // Batch by unique accession so one index fetch completes many IBR rows.
       if (opts.resolveIbrIndexes !== false) {
         const pending = discovered.filter(
           (e) => e.ibr && e.ibr.resolvedAccessionNumber && e.ibr.resolutionStatus !== "RESOLVED",
         );
+        const uniqueAccessions = [...new Set(pending.map((e) => e.ibr!.resolvedAccessionNumber!))];
+        const maxIbrIndexes = opts.maxIbrIndexFetches ?? 40;
         const originals = new Map<string, ReturnType<typeof parseIndexExhibitRows>>();
-        for (const e of pending.slice(0, 20)) {
+        for (const acc of uniqueAccessions.slice(0, maxIbrIndexes)) {
+          const { status, text } = await sec.getText(indexUrlFor(enriched.cik, acc));
+          checkpoint.stats.indexesFetched++;
+          originals.set(acc, status === 200 ? parseIndexExhibitRows(text) : []);
+        }
+        for (const e of pending) {
           const acc = e.ibr!.resolvedAccessionNumber!;
-          if (!originals.has(acc)) {
-            const { status, text } = await sec.getText(indexUrlFor(e.cik, acc));
-            checkpoint.stats.indexesFetched++;
-            originals.set(acc, status === 200 ? parseIndexExhibitRows(text) : []);
-          }
-          const rows = originals.get(acc) ?? [];
+          const rows = originals.get(acc);
+          if (!rows) continue; // deferred — accession beyond budget
           e.ibr = completeIbrFromOriginalIndex(
             e.ibr!,
             rows.map((r) => ({

@@ -152,9 +152,15 @@ export function completeIbrFromOriginalIndex(
   if (!want) {
     return { ...ibr, resolutionStatus: ibr.resolutionStatus === "UNRESOLVED" ? "UNRESOLVED" : "PARTIAL" };
   }
+  const norm = (t: string) => t.toUpperCase().replace(/\s+/g, "").replace(/^EXHIBIT/, "EX-").replace(/^EX(?!-)/, "EX-");
+  const wantN = norm(want);
   const match = originalRows.find((r) => {
-    const t = r.type.toUpperCase().replace(/\s+/g, "");
-    return t === want || t.startsWith(want) || want.startsWith(t);
+    const t = norm(r.type);
+    if (t === wantN) return true;
+    // EX-10.1 matches EX-10.1A only when citation has no letter suffix.
+    if (t.startsWith(wantN) && wantN.length >= 4) return true;
+    if (wantN.startsWith(t) && t.length >= 4) return true;
+    return false;
   });
   if (!match) {
     return {

@@ -1,36 +1,51 @@
 /**
- * Shared SEC fair-access coordinator for historical discovery workers.
+ * SEC fair-access coordinator for historical discovery workers (process-local).
  *
- * Enforces SEC.gov fair-access expectations across all workers in this process:
- * identifying User-Agent, response caching, 429/5xx backoff with jitter, and
- * concurrency / request-rate caps. Does not evade SEC restrictions.
+ * Enforces within THIS process: authorized User-Agent (from config — never a
+ * placeholder default), response caching, 429/5xx backoff with jitter, and
+ * concurrency / RPS caps.
  *
- * CKF acquisition agents should route SEC traffic through the same coordinator
- * (or an equivalent shared limiter) so discovery + download share one budget.
+ * Does NOT coordinate separate Cursor Cloud Agents. See fleet-sec-budget.ts
+ * for the explicit shared-budget / single-owner contract. Live network is
+ * refused unless evaluateSecAccessPolicy allows it.
  *
- * This is NOT a second source registry — it is transport only.
+ * This is NOT a second source registry — transport only.
  */
 
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-
-export const DEFAULT_SEC_USER_AGENT =
-  "HeadroomHistoricalBackfill/1.0 (contact: engineering@headroom-app.example; research; respectful fair-access)";
+import { requireSecUserAgentFromEnv, assertAuthorizedSecUserAgent } from "./sec-identity";
+import {
+  evaluateSecAccessPolicy,
+  sharedBudgetPath,
+  tryAcquireSharedBudgetToken,
+  type SecAccessPolicy,
+  type SecFetchOwnerRole,
+} from "./fleet-sec-budget";
 
 export interface SecAccessOptions {
+  /** Required for live use unless allowMissingUserAgentForTests. Must include a real contact. */
   userAgent?: string;
+  /** Workstream role for fleet ownership checks (default WS-EHB). */
+  role?: SecFetchOwnerRole;
   /** Max concurrent in-flight SEC requests (default 2). */
   maxConcurrency?: number;
-  /** Target max requests per second across workers (default 8; SEC ceiling is 10). */
+  /** Target max requests per second in this process (default 6; SEC ceiling is 10). */
   maxRequestsPerSecond?: number;
   /** On-disk cache directory; set null to disable. */
   cacheDir?: string | null;
   /** Cache TTL for successful GETs in ms (default 24h). */
   cacheTtlMs?: number;
-  /** Injected fetch for tests. */
+  /** When true, never open live network (cache only). */
+  cacheOnly?: boolean;
+  /**
+   * Test-only: when true with an injected fetchImpl, skip fleet live-owner gate
+   * (still requires a non-placeholder User-Agent).
+   */
+  bypassFleetPolicyForTests?: boolean;
+  env?: NodeJS.ProcessEnv;
   fetchImpl?: typeof fetch;
-  /** Clock for tests. */
   now?: () => number;
   sleep?: (ms: number) => Promise<void>;
 }
@@ -42,42 +57,71 @@ export interface SecFetchResult {
   url: string;
 }
 
-type CacheEntry = { status: number; text: string; fetchedAt: number; etag?: string };
+type CacheEntry = { status: number; text: string; fetchedAt: number };
 
 export class SecAccessCoordinator {
   private readonly userAgent: string;
+  private readonly role: SecFetchOwnerRole;
   private readonly maxConcurrency: number;
   private readonly minIntervalMs: number;
   private readonly cacheDir: string | null;
   private readonly cacheTtlMs: number;
+  private readonly cacheOnly: boolean;
+  private readonly env: NodeJS.ProcessEnv;
   private readonly fetchImpl: typeof fetch;
   private readonly now: () => number;
   private readonly sleep: (ms: number) => Promise<void>;
+  private readonly policy: SecAccessPolicy;
 
   private inFlight = 0;
   private lastRequestAt = 0;
   private readonly waiters: Array<() => void> = [];
   private requestCount = 0;
+  private liveRequestCount = 0;
 
   constructor(opts: SecAccessOptions = {}) {
-    this.userAgent = opts.userAgent ?? DEFAULT_SEC_USER_AGENT;
+    this.env = opts.env ?? process.env;
+    if (opts.userAgent) {
+      this.userAgent = assertAuthorizedSecUserAgent(opts.userAgent);
+    } else {
+      this.userAgent = requireSecUserAgentFromEnv(this.env);
+    }
+    this.role = opts.role ?? "WS-EHB";
     this.maxConcurrency = Math.max(1, opts.maxConcurrency ?? 2);
-    const rps = Math.min(10, Math.max(0.2, opts.maxRequestsPerSecond ?? 8));
+    const rps = Math.min(10, Math.max(0.2, opts.maxRequestsPerSecond ?? 6));
     this.minIntervalMs = Math.ceil(1000 / rps);
     this.cacheDir = opts.cacheDir === null ? null : (opts.cacheDir ?? join(process.cwd(), ".cache", "sec-edgar"));
     this.cacheTtlMs = opts.cacheTtlMs ?? 24 * 60 * 60 * 1000;
+    this.cacheOnly = opts.cacheOnly ?? false;
     this.fetchImpl = opts.fetchImpl ?? globalThis.fetch.bind(globalThis);
     this.now = opts.now ?? Date.now;
     this.sleep = opts.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms)));
     if (this.cacheDir) mkdirSync(this.cacheDir, { recursive: true });
+    const evaluated = evaluateSecAccessPolicy({ role: this.role, userAgent: this.userAgent, env: this.env });
+    this.policy =
+      opts.bypassFleetPolicyForTests && opts.fetchImpl
+        ? {
+            ...evaluated,
+            liveNetworkAllowed: true,
+            reason: "bypassFleetPolicyForTests with injected fetchImpl (unit tests only)",
+          }
+        : evaluated;
   }
 
   getRequestCount(): number {
     return this.requestCount;
   }
 
+  getLiveRequestCount(): number {
+    return this.liveRequestCount;
+  }
+
   getUserAgent(): string {
     return this.userAgent;
+  }
+
+  getAccessPolicy(): SecAccessPolicy {
+    return this.policy;
   }
 
   async getText(url: string, opts?: { bypassCache?: boolean; maxAttempts?: number }): Promise<SecFetchResult> {
@@ -86,14 +130,22 @@ export class SecAccessCoordinator {
       if (cached) return { status: cached.status, text: cached.text, fromCache: true, url };
     }
 
+    if (this.cacheOnly || !this.policy.liveNetworkAllowed) {
+      throw new Error(
+        `SecAccessCoordinator: live SEC network denied (${this.cacheOnly ? "cacheOnly" : this.policy.reason}). Cache miss for ${url}`,
+      );
+    }
+
     await this.acquireSlot();
     try {
       const maxAttempts = opts?.maxAttempts ?? 5;
       let lastStatus = 0;
       let lastText = "";
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        await this.awaitSharedBudgetToken();
         await this.throttle();
         this.requestCount++;
+        this.liveRequestCount++;
         const res = await this.fetchImpl(url, {
           headers: {
             "User-Agent": this.userAgent,
@@ -109,7 +161,6 @@ export class SecAccessCoordinator {
         if (res.status === 404) {
           return { status: 404, text: lastText, fromCache: false, url };
         }
-        // Fair-access / transient: backoff, never hammer.
         if (res.status === 429 || res.status === 503 || res.status >= 500) {
           const backoff = Math.min(60_000, 500 * 2 ** (attempt - 1));
           const jitter = Math.floor(Math.random() * backoff * 0.4);
@@ -132,6 +183,17 @@ export class SecAccessCoordinator {
     } catch {
       return { status: 200, data: null, fromCache: r.fromCache };
     }
+  }
+
+  private async awaitSharedBudgetToken(): Promise<void> {
+    const path = sharedBudgetPath(this.env);
+    if (!path) return;
+    for (let i = 0; i < 30; i++) {
+      const attempt = tryAcquireSharedBudgetToken({ path, role: this.role, nowMs: this.now() });
+      if (attempt.ok) return;
+      await this.sleep(200 + Math.floor(Math.random() * 200));
+    }
+    throw new Error(`SecAccessCoordinator: could not acquire shared SEC budget token at ${path}`);
   }
 
   private async acquireSlot(): Promise<void> {
@@ -182,12 +244,11 @@ export class SecAccessCoordinator {
     try {
       writeFileSync(p, JSON.stringify(entry));
     } catch {
-      // Cache is best-effort; discovery must continue if disk is full/readonly.
+      /* best-effort */
     }
   }
 }
 
-/** Process-wide default coordinator so workers share one fair-access budget. */
 let sharedCoordinator: SecAccessCoordinator | null = null;
 
 export function getSharedSecAccess(opts?: SecAccessOptions): SecAccessCoordinator {
@@ -198,3 +259,6 @@ export function getSharedSecAccess(opts?: SecAccessOptions): SecAccessCoordinato
 export function resetSharedSecAccessForTests(): void {
   sharedCoordinator = null;
 }
+
+/** @deprecated Removed — placeholder defaults are forbidden. Use requireSecUserAgentFromEnv. */
+export const DEFAULT_SEC_USER_AGENT = undefined;

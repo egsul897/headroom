@@ -132,6 +132,30 @@ export interface CoverageGap {
   year?: number;
 }
 
+export type AcquisitionResolutionStatus =
+  | "FETCHABLE_INLINE"
+  | "IBR_RESOLVED"
+  | "IBR_PARTIAL"
+  | "IBR_UNRESOLVED"
+  | "URL_MISSING";
+
+export type ParentRelationshipCandidateKind =
+  | "AMENDS"
+  | "RESTATES"
+  | "SUPPLEMENTS"
+  | "WAIVES"
+  | "CONSENTS_TO"
+  | "UNKNOWN_RELATED";
+
+export interface ParentRelationshipCandidate {
+  kind: ParentRelationshipCandidateKind;
+  /** Candidate parent agreementIdentityKey or accession:exhibit when known. */
+  candidateRef: string;
+  evidence: string;
+  /** Never operative authority — discovery hint only. */
+  authority: "DISCOVERY_HINT_ONLY";
+}
+
 export interface AcquisitionQueueItem {
   queueId: string;
   priority: number;
@@ -151,6 +175,19 @@ export interface AcquisitionQueueItem {
   reason: string;
   status: "QUEUED" | "CLAIMED" | "DONE" | "FAILED";
   enqueuedAt: string;
+  /** Queue contract v2 fields */
+  resolutionStatus: AcquisitionResolutionStatus;
+  parentRelationshipCandidates: ParentRelationshipCandidate[];
+  dedupeIdentity: string;
+  isIncorporatedByReference: boolean;
+  ibrAccessionNumber?: string;
+  validation?: QueueItemValidation;
+}
+
+export interface QueueItemValidation {
+  ok: boolean;
+  checks: Record<string, boolean>;
+  errors: string[];
 }
 
 export interface CheckpointState {

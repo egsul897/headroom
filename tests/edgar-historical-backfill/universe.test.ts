@@ -12,7 +12,14 @@ describe("issuer universe selection", () => {
       "3": { cik_str: 3, ticker: "CCC", title: "C" },
     };
     const fetchImpl = vi.fn(async () => new Response(JSON.stringify(payload), { status: 200 })) as unknown as typeof fetch;
-    const sec = new SecAccessCoordinator({ fetchImpl, cacheDir: null, maxRequestsPerSecond: 100, sleep: async () => {} });
+    const sec = new SecAccessCoordinator({
+      userAgent: "VitestSecAccess/1.0 (contact: vitest-sec-access@headroom.dev; research)",
+      fetchImpl,
+      cacheDir: null,
+      maxRequestsPerSecond: 100,
+      sleep: async () => {},
+      bypassFleetPolicyForTests: true,
+    });
     const issuers = await selectIssuerUniverse(sec, 10, { preferTickers: ["AAA"] });
     const ciks = issuers.map((i) => i.cik);
     expect(new Set(ciks).size).toBe(ciks.length);

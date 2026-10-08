@@ -3,8 +3,16 @@
  * relevance and drafting diversity for the acquisition queue.
  */
 
-import type { AcquisitionQueueItem, DebtDocumentKind, ExhibitRef, IssuerRef } from "./types";
+import type {
+  AcquisitionQueueItem,
+  AcquisitionResolutionStatus,
+  DebtDocumentKind,
+  ExhibitRef,
+  IssuerRef,
+} from "./types";
 import { createHash } from "node:crypto";
+import { parentRelationshipCandidates } from "./relationships";
+import { validateQueueItem } from "./queue-validate";
 
 const KIND_WEIGHT: Record<DebtDocumentKind, number> = {
   CREDIT_AGREEMENT: 100,
@@ -47,9 +55,31 @@ export function relevancePriority(exhibit: ExhibitRef, diversityBonus: number): 
   const kind = KIND_WEIGHT[exhibit.documentKind] ?? 0;
   const year = Number(exhibit.filingDate.slice(0, 4));
   const recency = Number.isFinite(year) ? Math.max(0, Math.min(20, year - 2005)) : 0;
-  // Prefer inline fetchable docs over unresolved IBR.
-  const fetchable = exhibit.sourceUri && !exhibit.isIncorporatedByReference ? 15 : exhibit.ibr?.resolutionStatus === "RESOLVED" ? 10 : 0;
+  const fetchable =
+    exhibit.sourceUri && !exhibit.isIncorporatedByReference
+      ? 15
+      : exhibit.ibr?.resolutionStatus === "RESOLVED"
+        ? 10
+        : exhibit.ibr?.resolvedAccessionNumber
+          ? 4
+          : 0;
   return kind + exhibit.relevanceScore * 0.5 + recency + diversityBonus + fetchable;
+}
+
+function resolutionStatusOf(e: ExhibitRef, sourceUri: string): AcquisitionResolutionStatus {
+  if (!sourceUri) return "URL_MISSING";
+  if (e.isIncorporatedByReference) {
+    if (e.ibr?.resolutionStatus === "RESOLVED" && e.ibr.resolvedFilename) return "IBR_RESOLVED";
+    if (e.ibr?.resolvedAccessionNumber || e.ibr?.resolutionStatus === "PARTIAL") return "IBR_PARTIAL";
+    return "IBR_UNRESOLVED";
+  }
+  return "FETCHABLE_INLINE";
+}
+
+function isFetchableExhibitUri(uri: string): boolean {
+  if (!uri) return false;
+  if (/index\.htm/i.test(uri)) return false;
+  return /^https:\/\/www\.sec\.gov\//i.test(uri) || /^https:\/\/data\.sec\.gov\//i.test(uri);
 }
 
 export function buildAcquisitionQueue(params: {
@@ -57,15 +87,19 @@ export function buildAcquisitionQueue(params: {
   issuersByCik: Map<string, IssuerRef>;
   minRelevance?: number;
   limit?: number;
+  /** When true, include IBR_PARTIAL items that have accession but no exhibit file URL yet. */
+  includePartialIbr?: boolean;
 }): AcquisitionQueueItem[] {
   const minRelevance = params.minRelevance ?? 55;
-  const candidates = params.exhibits.filter(
-    (e) =>
-      e.relevanceScore >= minRelevance &&
-      e.discoveryStatus !== "SKIPPED_DUPLICATE" &&
-      e.discoveryStatus !== "SKIPPED_LOW_RELEVANCE" &&
-      Boolean(e.sourceUri || e.ibr?.resolvedSourceUri),
-  );
+  const includePartialIbr = params.includePartialIbr ?? true;
+  const candidates = params.exhibits.filter((e) => {
+    if (e.relevanceScore < minRelevance) return false;
+    if (e.discoveryStatus === "SKIPPED_DUPLICATE" || e.discoveryStatus === "SKIPPED_LOW_RELEVANCE") return false;
+    const uri = e.sourceUri || e.ibr?.resolvedSourceUri || "";
+    if (isFetchableExhibitUri(uri)) return true;
+    if (includePartialIbr && e.ibr?.resolvedAccessionNumber && e.ibr.resolvedExhibitType) return true;
+    return false;
+  });
 
   const kindCounts = new Map<DebtDocumentKind, number>();
   const titleTokens = new Map<string, number>();
@@ -81,11 +115,20 @@ export function buildAcquisitionQueue(params: {
     const priority = relevancePriority(e, diversity);
     const sourceUri = e.sourceUri || e.ibr?.resolvedSourceUri || "";
     const issuer = params.issuersByCik.get(e.cik);
+    const dedupeIdentity = e.agreementIdentityKey;
     const queueId = createHash("sha256")
-      .update(`${e.cik}|${e.accessionNumber}|${e.filename}|${sourceUri}`)
+      .update(`${e.cik}|${e.accessionNumber}|${e.filename}|${sourceUri}|${dedupeIdentity}`)
       .digest("hex")
       .slice(0, 24);
-    return {
+    const resolutionStatus = resolutionStatusOf(e, sourceUri);
+    const parents = parentRelationshipCandidates({
+      documentKind: e.documentKind,
+      description: e.description,
+      agreementIdentityKey: e.agreementIdentityKey,
+      ibrAccessionNumber: e.ibr?.resolvedAccessionNumber,
+      ibrExhibitType: e.ibr?.resolvedExhibitType,
+    });
+    const item: AcquisitionQueueItem = {
       queueId,
       priority,
       cik: e.cik,
@@ -101,10 +144,17 @@ export function buildAcquisitionQueue(params: {
       agreementIdentityKey: e.agreementIdentityKey,
       relevanceScore: e.relevanceScore,
       draftingDiversityBonus: diversity,
-      reason: `kind=${e.documentKind}; relevance=${e.relevanceScore}; diversity=+${diversity}`,
+      reason: `kind=${e.documentKind}; relevance=${e.relevanceScore}; diversity=+${diversity}; resolution=${resolutionStatus}`,
       status: "QUEUED",
       enqueuedAt: new Date().toISOString(),
+      resolutionStatus,
+      parentRelationshipCandidates: parents,
+      dedupeIdentity,
+      isIncorporatedByReference: e.isIncorporatedByReference,
+      ibrAccessionNumber: e.ibr?.resolvedAccessionNumber,
     };
+    item.validation = validateQueueItem(item);
+    return item;
   });
 
   items.sort((a, b) => b.priority - a.priority || b.filingDate.localeCompare(a.filingDate));
