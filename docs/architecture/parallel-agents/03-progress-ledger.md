@@ -105,3 +105,11 @@
 - **EDGAR bulk:** no open PR yet evidences large live EDGAR-derived corpus; CKF/EHB are capable; DEF/CDA are fixture/source-backed overlays.
 - Conflicts logged: dual SEC access (C-001), package.json collisions (C-002); path drift resolved (C-003).
 - Schema owners declared: PAR=identity/import contracts; CKF=KF Prisma+SEC scheduler; VIC=adapters; Phase-3 IR out of fleet.
+
+---
+
+## 2026-10-08T22:11:00Z — inventory tip refresh
+
+- **branchTipSha:** `749448edb3f7f0da323c12de4e4e1e066fe66b67`
+- **focusedTests:** 19 passed / 0 failed (prior tip)
+- Queued founder coordination mandates already absorbed into pack; awaiting delivery as follow-ups.
