@@ -1,0 +1,293 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-l-affiliate-transactions",
+  "title": "Package L — affiliate transactions covenant (new family for the corpus)",
+  "issuer": "Tidewater Logistics Group, Inc. (synthetic)",
+  "scenario": "7.07 prohibits transactions with Affiliates subject to four exceptions: an arm's-length qualitative exception (a), an intra-Loan-Party exception (b), a capped management-fee basket (c) with a no-Default proviso, and a board-approval gate for transactions above $5,000,000 (d). The disinterested-director approval is a qualitative gate that cannot be computed; the management-fee basket is a per-fiscal-year basket with a condition. 'Sponsor' and 'Management Agreement' are defined; the Management Agreement itself is not in the package.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:tidewater",
+  "instrumentKey": "tidewater-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "3fad147c066aef22a2d98bece25ede360057133f9fbfabf498227e5e8dbbd08f"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2027-03-31"
+    ],
+    "exact": []
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.07",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "transaction with any Affiliate"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.07(a)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.07",
+        "unique": true,
+        "ownTextContains": [
+          "arm's-length"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.07(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.07",
+        "unique": true,
+        "ownTextContains": [
+          "$2,000,000",
+          "no Default"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.07(d)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.07",
+        "unique": true,
+        "ownTextContains": [
+          "$5,000,000",
+          "disinterested"
+        ]
+      }
+    ],
+    "invariants": []
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Affiliate",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Loan Parties",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Management Agreement",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Sponsor",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Default",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "L-7.07",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.07",
+      "family": "AFFILIATE_TRANSACTIONS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not, and shall not permit any Subsidiary to, enter into any transaction with any Affiliate"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Affiliate",
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "1a8f116d461c520a9b4fff41a26852c34403b40fd25713c3ab7c7c4fb3a6e348"
+    },
+    {
+      "id": "L-7.07(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.07(a)",
+      "family": "AFFILIATE_TRANSACTIONS",
+      "role": "EXCEPTION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "not less favorable",
+        "arm's-length"
+      ],
+      "conditions": [
+        {
+          "kind": "QUALITATIVE",
+          "textContains": "terms not less favorable to the Borrower or such Subsidiary than those that could be obtained in a comparable arm's-length transaction",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Affiliate"
+      ],
+      "crossReferences": [],
+      "textSha256": "f40022f4ee15a8fc4b915a57f860004236f3e757202aedac21714b098113b553"
+    },
+    {
+      "id": "L-7.07(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.07(b)",
+      "family": "AFFILIATE_TRANSACTIONS",
+      "role": "EXCEPTION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "between or among the Loan Parties"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Parties"
+      ],
+      "crossReferences": [],
+      "textSha256": "ecd273262c3cfd20fceece3873e1f1973b2e041802e2e265bc8e9fa8b0e00340"
+    },
+    {
+      "id": "L-7.07(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.07(c)",
+      "family": "AFFILIATE_TRANSACTIONS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$2,000,000",
+        "in any fiscal year",
+        "no Default has occurred"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 2000000,
+        "currency": "USD",
+        "basis": "PER_FISCAL_YEAR"
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "no Default has occurred and is continuing at the time of payment",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Sponsor",
+        "Management Agreement",
+        "Default"
+      ],
+      "crossReferences": [],
+      "textSha256": "d45a2a00c0d496b7747deddcbc51043eb1cbfab5c9f555e80090a5c1ed2a094f"
+    },
+    {
+      "id": "L-7.07(d)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.07(d)",
+      "family": "AFFILIATE_TRANSACTIONS",
+      "role": "EXCEPTION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$5,000,000",
+        "disinterested members of the board"
+      ],
+      "conditions": [
+        {
+          "kind": "APPROVAL",
+          "textContains": "approved by a majority of the disinterested members of the board of directors of the Borrower",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Affiliate"
+      ],
+      "crossReferences": [],
+      "textSha256": "ef9140c3f4efb1ebda5cb0097e6103d8f5a04567b8a3c2a5ae2a43a709b8a7e0"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [
+    {
+      "id": "L-A1",
+      "where": "7.07(d)",
+      "description": "'in excess of $5,000,000' describes which transactions need board approval; it is a threshold on the gate, not a basket amount. A transaction of $5,000,000 or less with an Affiliate is permitted only under (a), (b) or (c).",
+      "mustBePreservedAs": [
+        "gate represented as a condition on a qualitative permission",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptable": [
+        "$5,000,000 reported as available capacity",
+        "(d) treated as a quantitative basket"
+      ]
+    }
+  ],
+  "unsupported": [
+    {
+      "id": "L-U1",
+      "where": "7.07(a) / 7.07(d)",
+      "construct": "Qualitative gates (arm's-length terms; disinterested-director approval) that cannot be computed from inputs.",
+      "acceptableOutcomes": [
+        "NEEDS_INPUT",
+        "UNSUPPORTED",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptableOutcomes": [
+        "AVAILABLE without a recorded approval / arm's-length determination"
+      ]
+    }
+  ],
+  "prohibitedClaims": [
+    {
+      "id": "L-P1",
+      "claim": "The Borrower may pay the Sponsor $2,000,000 under the Management Agreement while a Default is continuing",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "7.07(c) proviso."
+    },
+    {
+      "id": "L-P2",
+      "claim": "7.07(d) permits Affiliate transactions up to $5,000,000",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "$5,000,000 is the threshold above which board approval is required, not a basket."
+    },
+    {
+      "id": "L-P3",
+      "claim": "7.07 does not restrict Subsidiaries",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "'and shall not permit any Subsidiary to'."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "An Affiliate transaction question must surface the arm's-length gate, the Loan-Party carve-out, the capped management-fee basket with its no-Default proviso, and the board-approval gate; none of the qualitative gates may be reported as satisfied without an input."
+  ]
+}

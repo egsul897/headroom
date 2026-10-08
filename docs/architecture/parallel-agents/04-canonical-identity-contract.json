@@ -1,0 +1,119 @@
+{
+  "artifact": "canonical-covenant-knowledge-identity-contract",
+  "version": 1,
+  "status": "DRAFT_CONTRACT",
+  "ownerWorkstream": "WS-PAR",
+  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "rule": "Reuse existing identifiers and schema where available. Do not introduce incompatible replacements. New logical names below are aliases onto existing production fields unless marked NEW_CORPUS_ONLY.",
+  "identities": [
+    {
+      "logicalId": "issuer_id",
+      "mapsTo": [
+        { "path": "Company.id", "kind": "primary" },
+        { "path": "CompanySourceConnection / EDGAR CIK (zero-padded 10-digit)", "kind": "external_key", "notes": "CIK is the public SEC issuer key; store alongside Company, never replace Company.id" }
+      ],
+      "forbidden": ["Inventing a second company PK", "Using ticker as durable PK"]
+    },
+    {
+      "logicalId": "filing_id",
+      "mapsTo": [
+        { "path": "EDGAR accession number", "kind": "external_key" },
+        { "path": "DiscoveredSourceItem.sourceIdentifier (when accession-shaped)", "kind": "connector" }
+      ],
+      "status": "NEW_CORPUS_ONLY_UNTIL_CKF_PUBLISHES",
+      "notes": "No first-class Filing Prisma model today. WS-CKF must publish corpus filing records keyed by accession + CIK before dependents persist filing_id as a FK."
+    },
+    {
+      "logicalId": "source_document_id",
+      "mapsTo": [
+        { "path": "Document.id", "kind": "primary" },
+        { "path": "SourceArtifact.id / contentHash", "kind": "bytes_identity" }
+      ],
+      "notes": "Bytes identity is contentHash (sha256). Document.id is the product document row once promoted."
+    },
+    {
+      "logicalId": "instrument_id",
+      "mapsTo": [
+        { "path": "DebtInstrument.id", "kind": "primary" },
+        { "path": "Document.instrumentId", "kind": "fk" }
+      ]
+    },
+    {
+      "logicalId": "document_version_id",
+      "mapsTo": [
+        { "path": "Document.id + Document.effectiveFrom/effectiveTo + contentHash of stored bytes", "kind": "composite" }
+      ],
+      "notes": "No separate DocumentVersion table. Version identity is document row + effective dating + content hash. Restatement/supersession uses Document.supersedesDocumentId / DocumentRelationshipEdge."
+    },
+    {
+      "logicalId": "structural_provision_id",
+      "mapsTo": [
+        { "path": "DocumentNode.id", "kind": "primary" },
+        { "path": "DocumentNode.stableKey (scoped by companyId)", "kind": "stable" }
+      ]
+    },
+    {
+      "logicalId": "covenant_candidate_id",
+      "mapsTo": [
+        { "path": "ExtractionCandidate.id (when present)", "kind": "primary" },
+        { "path": "discovery candidate keys in contract-model discovery outputs", "kind": "pipeline" }
+      ],
+      "status": "REUSE_OR_CKF_CORPUS_KEY",
+      "notes": "Corpus agents may publish importable candidate records with stable content identities before DB promotion; must carry source spans + status, never silent permission invent."
+    },
+    {
+      "logicalId": "definition_id",
+      "mapsTo": [
+        { "path": "DefinedTermNode.id", "kind": "primary" },
+        { "path": "DefinedTermNode.stableKey (scoped by companyId)", "kind": "stable" }
+      ]
+    },
+    {
+      "logicalId": "dependency_edge_id",
+      "mapsTo": [
+        { "path": "DefinedTermDependencyEdge.id", "kind": "primary" },
+        { "path": "ContractReferenceEdge.id", "kind": "primary" },
+        { "path": "DocumentRelationshipEdge.id", "kind": "primary" }
+      ],
+      "notes": "WS-CDA atlas edges are corpus overlays until mapped onto these production edge tables; do not invent a second production dependency resolver."
+    },
+    {
+      "logicalId": "amendment_event_id",
+      "mapsTo": [
+        { "path": "AmendmentEffect.id", "kind": "primary" },
+        { "path": "DocumentRelationshipEdge where relationshipType in AMENDS/RESTATES/SUPERSEDES", "kind": "graph" }
+      ]
+    },
+    {
+      "logicalId": "precedent_pattern_id",
+      "mapsTo": [],
+      "status": "NEW_CORPUS_ONLY",
+      "ownerWorkstream": "WS-PCI",
+      "notes": "No production precedent-pattern table. WS-PCI publishes corpus-only pattern IDs with source provenance; never label as reviewed precedent without human verification_record."
+    },
+    {
+      "logicalId": "semantic_representation_id",
+      "mapsTo": [
+        { "path": "ContractRule.id / IR semantic object ids (Phase 3)", "kind": "primary" },
+        { "path": "SemanticTruthRecord.semanticObjectId", "kind": "truth" }
+      ],
+      "notes": "Corpus hypotheses are NOT semantic_representation_id until they clear verification gates. Do not write Phase-3 IR from corpus agents."
+    },
+    {
+      "logicalId": "verification_record_id",
+      "mapsTo": [
+        { "path": "SemanticTruthRecord.id", "kind": "primary" },
+        { "path": "ExtractionCandidateReviewStatus / human review events", "kind": "review" }
+      ],
+      "notes": "Source-only and model-hypothesis records must carry verificationStatus != VERIFIED/APPROVED."
+    }
+  ],
+  "antiPatterns": [
+    "Replacing Company.id with CIK",
+    "Using ticker as issuer_id",
+    "Creating parallel Document/DocumentNode tables for the same bytes",
+    "Promoting model hypotheses to semantic_representation_id without verification_record_id",
+    "Asserting operative authority from superseded text",
+    "Counting duplicate agreements as distinct instruments without contentHash/filing reconciliation"
+  ]
+}

@@ -1,0 +1,380 @@
+{
+  "artifact": "live-integration-inventory",
+  "version": 2,
+  "asOf": "2026-10-08T23:25:35Z",
+  "baseMainSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
+  "mandate": "PARALLEL KNOWLEDGE PRODUCTION CONTROL",
+  "schemaOwner": {
+    "canonicalImportContract": "WS-PAR (06-dataset-delivery-contract.json + 04-canonical-identity-contract.json)",
+    "knowledgeFactoryPrismaAndIngest": "WS-CKF",
+    "secScheduler": "WS-CKF",
+    "modelAdaptersInference": "WS-VIC",
+    "productionLegalEngineAndPhase3IR": "OUT_OF_FLEET",
+    "independentBenchmark": "WS-CKB"
+  },
+  "canonicalImportContractPath": "docs/architecture/parallel-agents/06-dataset-delivery-contract.json",
+  "centralIngestionQueuePath": "docs/architecture/parallel-agents/08-integration-queue.json",
+  "sharedCorpusManifestPath": "docs/architecture/parallel-agents/13-shared-corpus-manifest.json",
+  "agents": [
+    {
+      "workstreamId": "WS-PAR",
+      "branch": "cursor/parallel-agent-operating-rules-0e3f",
+      "headSha": "a8e5d8859764af0905f6aa26e37f37d4c5f26fc3",
+      "pr": "https://github.com/egsul897/headroom/pull/138",
+      "scope": "integration coordinator: contracts, ownership, gates, queue, daily summary",
+      "ownedFiles": [
+        "docs/architecture/parallel-agents/**",
+        "tests/architecture/parallel-agents/**",
+        "scripts/parallel-agents/**"
+      ],
+      "actualDataProduced": "none (contracts/inventory only)",
+      "dataStorageLocation": "n/a",
+      "importExportFormat": "JSON contracts + mission reports",
+      "dependencies": [],
+      "testsAndCi": "focused vitest 21/21 local; Vercel tip often pending/flaky",
+      "integrationConflicts": [],
+      "nextExecutableTask": "Keep inventory/queue current; enforce no duplicate KF stores",
+      "dataClass": "INFRASTRUCTURE"
+    },
+    {
+      "workstreamId": "WS-CKF",
+      "branch": "cursor/covenant-knowledge-factory-7327",
+      "headSha": "252f91fbdf3381df536017c32be7d26980bf2815",
+      "pr": null,
+      "scope": "acquisition, corpus store, EDGAR client/rate-limit, KF Prisma migration",
+      "ownedFiles": [
+        "docs/knowledge-factory/**",
+        "lib/knowledge-factory/**",
+        "scripts/knowledge-factory/**",
+        "tests/knowledge-factory/**",
+        "prisma/migrations/20261008220000_knowledge_factory_foundation/**"
+      ],
+      "actualDataProduced": "fixture ingest manifests + corpus stats/economics/quality JSON; EDGAR client present; bulk live EDGAR counts not published",
+      "dataStorageLocation": "Prisma KF models + docs/knowledge-factory/manifests/*",
+      "importExportFormat": "manifest JSON; corpus-store APIs",
+      "dependencies": [
+        "SourceConnector",
+        "WS-PAR identity/dataset contracts"
+      ],
+      "testsAndCi": "branch unit tests; NO draft PR \u2192 no PR CI",
+      "integrationConflicts": [
+        "Must open draft PR",
+        "Must expose SecRequestScheduler",
+        "VIC duplicate store lib/contract-model/covenant-knowledge/**"
+      ],
+      "nextExecutableTask": "Open draft PR; publish SecRequestScheduler fa\u00e7ade; refuse second KF store",
+      "dataClass": "MIXED_FIXTURE_AND_EDGAR_CAPABLE_INFRA"
+    },
+    {
+      "workstreamId": "WS-VIC",
+      "branch": "cursor/vercel-independent-covenant-compilation-6d1d",
+      "headSha": "3878e099e81bc96743b76257e2bac3aae0e01834",
+      "pr": "https://github.com/egsul897/headroom/pull/146",
+      "scope": "provider-independent inference adapters + deterministic extraction + local semantic compile",
+      "ownedFiles": [
+        "docs/vercel-independent-covenant-compilation/**",
+        "lib/contract-model/compiler/inference/**",
+        "lib/contract-model/compiler/deterministic-extraction/**",
+        "lib/contract-model/compiler/local-semantic/**",
+        "lib/contract-model/compiler/selective-compilation/**"
+      ],
+      "actualDataProduced": "architecture/audit docs + cost/throughput JSON + adversarial cases; not EDGAR bulk corpus",
+      "dataStorageLocation": "docs/vercel-independent-covenant-compilation/*.json",
+      "importExportFormat": "adapter I/O contracts; benchmark JSON",
+      "dependencies": [
+        "existing compiler SPI",
+        "WS-PAR contracts"
+      ],
+      "testsAndCi": "draft PR #146; CI=pending",
+      "integrationConflicts": [
+        "DUPLICATE: lib/contract-model/covenant-knowledge/** overlaps CKF corpus responsibility \u2014 must not become second knowledge factory",
+        "Path claim differs from earlier extraction/providers/** proposal"
+      ],
+      "nextExecutableTask": "Keep adapters; relocate or delete duplicate covenant-knowledge store in favor of CKF import API",
+      "dataClass": "INFRASTRUCTURE_COMPILER"
+    },
+    {
+      "workstreamId": "WS-CCA",
+      "branch": "cursor/maximize-cursor-cloud-compute-3334",
+      "headSha": "7180ae820a87d56765e90bd25be695290f85792e",
+      "pr": "https://github.com/egsul897/headroom/pull/141",
+      "scope": "100-doc Cursor Cloud compute benchmark + optional GPU interface",
+      "ownedFiles": [
+        "docs/cursor-cloud-compute/**",
+        "lib/cursor-cloud-compute/**",
+        "scripts/cursor-cloud-compute/**",
+        "tests/cursor-cloud-compute/**"
+      ],
+      "actualDataProduced": "synthetic benchmark corpus generator + harness (not EDGAR bulk)",
+      "dataStorageLocation": "durable-store module / docs results",
+      "importExportFormat": "assessment result types",
+      "dependencies": [
+        "structural compile entrypoints"
+      ],
+      "testsAndCi": "draft PR #141; CI=success",
+      "integrationConflicts": [
+        "package.json touch risk"
+      ],
+      "nextExecutableTask": "Publish measured 100-doc numbers; no paid GPUs",
+      "dataClass": "INFRASTRUCTURE_BENCHMARK"
+    },
+    {
+      "workstreamId": "WS-EHB",
+      "branch": "cursor/edgar-historical-backfill-c45c",
+      "headSha": "2cc7b013982258ae7e63b27dff3363d3f84a3fb9",
+      "pr": "https://github.com/egsul897/headroom/pull/142",
+      "scope": "historical EDGAR discovery/IBR/dedupe/coverage/pilot",
+      "ownedFiles": [
+        "docs/edgar-historical-backfill/**",
+        "lib/edgar-historical-backfill/**",
+        "scripts/edgar-historical-backfill/**",
+        "tests/edgar-historical-backfill/**"
+      ],
+      "actualDataProduced": "fixture index HTML + unit artifacts; pilot scripts; not bulk accession corpus in tree",
+      "dataStorageLocation": "checkpoint types / local outputs",
+      "importExportFormat": "discovery manifests TBD",
+      "dependencies": [
+        "WS-CKF SEC scheduler"
+      ],
+      "testsAndCi": "draft PR #142; CI=success",
+      "integrationConflicts": [
+        "sec-access must not flood SEC independently"
+      ],
+      "nextExecutableTask": "Wire sec-access to CKF scheduler or PAR mock; publish pilot accession counts",
+      "dataClass": "INFRASTRUCTURE_PLUS_FIXTURES"
+    },
+    {
+      "workstreamId": "WS-DEF",
+      "branch": "cursor/definition-encyclopedia-2a50",
+      "headSha": "8a7d9615ef75e98481b3bbb86ec31d5265627b42",
+      "pr": "https://github.com/egsul897/headroom/pull/139",
+      "scope": "definition encyclopedia corpus",
+      "ownedFiles": [
+        "docs/definition-encyclopedia/**",
+        "lib/definition-encyclopedia/**",
+        "scripts/definition-encyclopedia/**",
+        "tests/definition-encyclopedia/**"
+      ],
+      "actualDataProduced": "large JSON definition/source/dependency corpora from existing fixtures",
+      "dataStorageLocation": "docs/definition-encyclopedia/*.json",
+      "importExportFormat": "knowledge-factory-export.json + jsonl search index",
+      "dependencies": [
+        "WS-CKF import",
+        "06-contract"
+      ],
+      "testsAndCi": "draft PR #139; CI=success",
+      "integrationConflicts": [
+        "package.json",
+        "06-align pending"
+      ],
+      "nextExecutableTask": "Add 06-contract fields + actualRecordCounts; keep verificationStatus honest",
+      "dataClass": "SOURCE_BACKED_FROM_EXISTING_FIXTURES"
+    },
+    {
+      "workstreamId": "WS-CDA",
+      "branch": "cursor/covenant-dependency-atlas-5021",
+      "headSha": "1e36be14c94dbd40112c3c341ecccd7acec0bc2c",
+      "pr": "https://github.com/egsul897/headroom/pull/140",
+      "scope": "covenant dependency atlas + KF export",
+      "ownedFiles": [
+        "docs/covenant-dependency-atlas/**",
+        "scripts/covenant-dependency-atlas/**",
+        "tests/covenant-dependency-atlas/**",
+        "tests/fixtures/covenant-dependency-atlas/**"
+      ],
+      "actualDataProduced": "authored edges + export datasets from ground-truth fixtures",
+      "dataStorageLocation": "docs/... + tests/fixtures/.../export",
+      "importExportFormat": "atlas-dataset.json + knowledge-factory-dataset.json",
+      "dependencies": [
+        "WS-CKF import",
+        "identity dependency_edge_id"
+      ],
+      "testsAndCi": "draft PR #140; CI=success",
+      "integrationConflicts": [],
+      "nextExecutableTask": "06-align export; do not alter production dependency resolver",
+      "dataClass": "SOURCE_BACKED_FROM_EXISTING_FIXTURES"
+    },
+    {
+      "workstreamId": "WS-NED",
+      "branch": "cursor/negative-covenant-exception-db-21b5",
+      "headSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
+      "pr": "https://github.com/egsul897/headroom/pull/143",
+      "scope": "offline negative-covenant exception research DB",
+      "ownedFiles": [
+        "docs/negative-covenant-exception-database/**",
+        "lib/negative-covenant-exceptions/**",
+        "scripts/negative-covenant-exception-database/**",
+        "tests/negative-covenant-exception-database/**"
+      ],
+      "actualDataProduced": "research dataset docs/adversarial examples (offline)",
+      "dataStorageLocation": "docs/negative-covenant-exception-database/**",
+      "importExportFormat": "JSON research records",
+      "dependencies": [
+        "06-contract",
+        "do not treat as capacity"
+      ],
+      "testsAndCi": "PR #143 MERGED; CI=success at reviewed head ed2216a",
+      "integrationConflicts": [
+        "must not imply unconditional capacity"
+      ],
+      "nextExecutableTask": "Hold Phase 5; no capacity promotion until CKF wire-up + human review",
+      "dataClass": "RESEARCH_DATASET_OFFLINE",
+      "prStatus": "MERGED",
+      "integrationStatus": "MERGED_NON_PROMOTING_RESEARCH_OVERLAY"
+    },
+    {
+      "workstreamId": "WS-PCI",
+      "branch": "cursor/precedent-comparison-intelligence-616b",
+      "headSha": "9f4562c4cd9850d43de69c11049c47bd25e8d3f8",
+      "pr": "https://github.com/egsul897/headroom/pull/144",
+      "scope": "precedent comparison intelligence",
+      "ownedFiles": [
+        "docs/precedent-comparison-intelligence.md",
+        "lib/precedent-comparison/**",
+        "scripts/precedent-comparison/**",
+        "tests/precedent-comparison/**"
+      ],
+      "actualDataProduced": "public-credit-provisions corpus JSON + comparison tooling",
+      "dataStorageLocation": "lib/precedent-comparison/corpus/**",
+      "importExportFormat": "JSON corpus + API compare results",
+      "dependencies": [
+        "identity precedent_pattern_id",
+        "no reviewed-precedent labeling without verification"
+      ],
+      "testsAndCi": "draft PR #144; CI=pending",
+      "integrationConflicts": [],
+      "nextExecutableTask": "06-align; never auto-label model summaries as reviewed precedent",
+      "dataClass": "SOURCE_BACKED_CORPUS"
+    },
+    {
+      "workstreamId": "WS-CKB",
+      "branch": "cursor/covenant-knowledge-generalization-bench-7f51",
+      "headSha": "f52c00f45bb0976376b8ec2302e97a6d9fda3124",
+      "pr": "https://github.com/egsul897/headroom/pull/145",
+      "scope": "independent generalization benchmark (held-out)",
+      "ownedFiles": [
+        "docs/covenant-knowledge-generalization-benchmark/**",
+        "lib/evaluation/ckg-benchmark/**"
+      ],
+      "actualDataProduced": "held-out dataset manifest + evaluation results",
+      "dataStorageLocation": "docs/covenant-knowledge-generalization-benchmark/**",
+      "importExportFormat": "protocol/manifest/results JSON",
+      "dependencies": [
+        "must not be contaminated by tuning"
+      ],
+      "testsAndCi": "draft PR #145; CI=pending",
+      "integrationConflicts": [
+        "path reconciled in map v5"
+      ],
+      "nextExecutableTask": "Remain isolated (G6); publish metrics only",
+      "dataClass": "HELD_OUT_BENCHMARK"
+    },
+    {
+      "workstreamId": "WS-RCD",
+      "branch": "cursor/rare-covenant-drafting-discovery-553e",
+      "headSha": "6c9e8a65c9cbac50c922c0d4ec4a91611957fdbb",
+      "pr": "https://github.com/egsul897/headroom/pull/147",
+      "scope": "rare drafting novelty discovery (deterministic)",
+      "ownedFiles": [
+        "docs/rare-covenant-drafting-discovery/**",
+        "lib/drafting-novelty/**",
+        "scripts/rare-covenant-drafting-discovery.ts",
+        "tests/drafting-novelty/**"
+      ],
+      "actualDataProduced": "clusters/reviewer-queue/novelty-findings/acquisition-recommendations JSON",
+      "dataStorageLocation": "docs/rare-covenant-drafting-discovery/**",
+      "importExportFormat": "JSON novelty + queue exports",
+      "dependencies": [
+        "do not edit production legal rules"
+      ],
+      "testsAndCi": "draft PR #147; CI=pending",
+      "integrationConflicts": [],
+      "nextExecutableTask": "Keep similarity\u2260legal equivalence; feed acquisition recommendations to CKF/EHB",
+      "dataClass": "ANALYTIC_OVERLAY_ON_EXISTING_CORPUS"
+    },
+    {
+      "workstreamId": "WS-GIB",
+      "branch": null,
+      "headSha": null,
+      "pr": null,
+      "scope": "Pass B cheapest-path cost analysis without paid inference",
+      "ownedFiles": [
+        "docs/gibraltar-pass-b-cost/**",
+        "scripts/gibraltar-pass-b-cost/**",
+        "tests/gibraltar-pass-b-cost/**"
+      ],
+      "actualDataProduced": "none yet",
+      "dataStorageLocation": "n/a",
+      "importExportFormat": "cost report JSON TBD",
+      "dependencies": [
+        "existing Pass B artifacts only"
+      ],
+      "testsAndCi": "awaiting agent",
+      "integrationConflicts": [
+        "Do not conflate with #128/#135 Track D/Haiku compile"
+      ],
+      "nextExecutableTask": "When agent appears: analyze existing artifacts only",
+      "dataClass": "AWAITING_AGENT"
+    },
+    {
+      "workstreamId": "WS-BFL",
+      "branch": null,
+      "headSha": null,
+      "pr": null,
+      "scope": "basket formula library",
+      "ownedFiles": [
+        "docs/covenant-basket-capacity-formula-library/**",
+        "lib/basket-formula-corpus/**",
+        "datasets/basket-capacity-formulas/**"
+      ],
+      "actualDataProduced": "none on origin yet",
+      "dataStorageLocation": "n/a",
+      "importExportFormat": "formula corpus JSON TBD",
+      "dependencies": [
+        "no capacity without inputs"
+      ],
+      "testsAndCi": "awaiting branch",
+      "integrationConflicts": [],
+      "nextExecutableTask": "Publish exclusive-tree draft PR",
+      "dataClass": "NOT_STARTED_ON_ORIGIN"
+    }
+  ],
+  "edgarDerivedVsSynthetic": {
+    "realEdgarCapable": [
+      "WS-CKF",
+      "WS-EHB"
+    ],
+    "provenBulkLiveEdgarCorpusInOpenPrs": false,
+    "fixtureOrSyntheticOrResearch": [
+      "WS-DEF",
+      "WS-CDA",
+      "WS-NED",
+      "WS-PCI",
+      "WS-RCD",
+      "WS-CCA",
+      "WS-CKF fixture manifests",
+      "WS-VIC docs JSON"
+    ],
+    "heldOutEvalOnly": [
+      "WS-CKB"
+    ]
+  },
+  "criticalConflicts": [
+    {
+      "id": "C-DUP-KF",
+      "summary": "WS-VIC #146 adds lib/contract-model/covenant-knowledge/** while WS-CKF owns lib/knowledge-factory/** \u2014 duplicate knowledge-factory risk",
+      "resolution": "VIC keeps inference/deterministic-extraction trees; covenant-knowledge store must be removed or thin-client to CKF APIs before merge",
+      "status": "OPEN_BLOCKER_FOR_INTEGRATION"
+    },
+    {
+      "id": "C-001",
+      "summary": "Dual SEC access CKF+EHB",
+      "resolution": "Single SecRequestScheduler on CKF",
+      "status": "PROPOSED"
+    }
+  ],
+  "outOfFleetOpenPrsIgnoredHere": [
+    136,
+    127
+  ]
+}

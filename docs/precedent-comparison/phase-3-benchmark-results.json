@@ -1,0 +1,444 @@
+{
+  "schemaVersion": "precedent-comparison-benchmark.v1",
+  "generatedAt": "2026-10-08T22:32:05.543Z",
+  "scenarioCounts": {
+    "total": 50,
+    "dev": 35,
+    "heldOut": 15,
+    "byCategory": {
+      "MATERIALLY_DIFFERENT": 7,
+      "TEXTUALLY_DIFFERENT_LEGALLY_EQUIVALENT": 6,
+      "IDENTICAL_TEXT_DIFFERENT_DEFINITIONS": 5,
+      "DIFFERENT_PROVISO_ATTACHMENT": 5,
+      "DIFFERENT_ENTITY_SCOPE": 6,
+      "DIFFERENT_AMENDMENT_STATUS": 4,
+      "DIFFERENT_FINANCIAL_THRESHOLDS": 4,
+      "CROSS_DOCUMENT_RESTRICTION": 4,
+      "MISSING_CONTROLLING_DEFINITIONS": 4,
+      "SHARED_CAPACITY_DIFFERENCE": 5
+    }
+  },
+  "metrics": {
+    "all": {
+      "split": "ALL",
+      "n": 50,
+      "textualAccuracy": 1,
+      "materialPrecision": 0.926829268292683,
+      "materialRecall": 0.95,
+      "materialPrecisionDenominator": 41,
+      "materialRecallDenominator": 40,
+      "falseMaterialDifferenceCount": 3,
+      "missedMaterialDifferenceCount": 2,
+      "citationCorrectRate": 1,
+      "citationDenominator": 50,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    },
+    "dev": {
+      "split": "DEV",
+      "n": 35,
+      "textualAccuracy": 1,
+      "materialPrecision": 0.9310344827586207,
+      "materialRecall": 0.9642857142857143,
+      "materialPrecisionDenominator": 29,
+      "materialRecallDenominator": 28,
+      "falseMaterialDifferenceCount": 2,
+      "missedMaterialDifferenceCount": 1,
+      "citationCorrectRate": 1,
+      "citationDenominator": 35,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    },
+    "heldOut": {
+      "split": "HELD_OUT",
+      "n": 15,
+      "textualAccuracy": 1,
+      "materialPrecision": 0.9166666666666666,
+      "materialRecall": 0.9166666666666666,
+      "materialPrecisionDenominator": 12,
+      "materialRecallDenominator": 12,
+      "falseMaterialDifferenceCount": 1,
+      "missedMaterialDifferenceCount": 1,
+      "citationCorrectRate": 1,
+      "citationDenominator": 15,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    }
+  },
+  "falseLegalDifferenceFindings": [
+    {
+      "scenarioId": "D18",
+      "category": "TEXTUALLY_DIFFERENT_LEGALLY_EQUIVALENT",
+      "split": "DEV",
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Colon vs to-1.00"
+      ]
+    },
+    {
+      "scenarioId": "D28",
+      "category": "TEXTUALLY_DIFFERENT_LEGALLY_EQUIVALENT",
+      "split": "DEV",
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Ordinary-course paraphrase"
+      ]
+    },
+    {
+      "scenarioId": "H02",
+      "category": "TEXTUALLY_DIFFERENT_LEGALLY_EQUIVALENT",
+      "split": "HELD_OUT",
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=true",
+        "Available Amount RP paraphrase — equivalence assumes same definition."
+      ]
+    }
+  ],
+  "heldOutEvaluations": [
+    {
+      "scenarioId": "H01",
+      "split": "HELD_OUT",
+      "category": "MATERIALLY_DIFFERENT",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Non-Guarantor sub-cap on Ratio Debt."
+      ]
+    },
+    {
+      "scenarioId": "H02",
+      "split": "HELD_OUT",
+      "category": "TEXTUALLY_DIFFERENT_LEGALLY_EQUIVALENT",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": false,
+      "falseMaterialDifference": true,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=true",
+        "Available Amount RP paraphrase — equivalence assumes same definition."
+      ]
+    },
+    {
+      "scenarioId": "H03",
+      "split": "HELD_OUT",
+      "category": "IDENTICAL_TEXT_DIFFERENT_DEFINITIONS",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=true",
+        "CNI cumulative vs trailing four-quarter changes builder."
+      ]
+    },
+    {
+      "scenarioId": "H04",
+      "split": "HELD_OUT",
+      "category": "DIFFERENT_PROVISO_ATTACHMENT",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Priority proviso on hedge liens."
+      ]
+    },
+    {
+      "scenarioId": "H05",
+      "split": "HELD_OUT",
+      "category": "DIFFERENT_ENTITY_SCOPE",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Who may use the general debt basket."
+      ]
+    },
+    {
+      "scenarioId": "H06",
+      "split": "HELD_OUT",
+      "category": "DIFFERENT_AMENDMENT_STATUS",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=true",
+        "Amendment introduces leverage-based step-down of AS prepay."
+      ]
+    },
+    {
+      "scenarioId": "H07",
+      "split": "HELD_OUT",
+      "category": "DIFFERENT_FINANCIAL_THRESHOLDS",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "3.25x vs 3.75x SSLR."
+      ]
+    },
+    {
+      "scenarioId": "H08",
+      "split": "HELD_OUT",
+      "category": "CROSS_DOCUMENT_RESTRICTION",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=true",
+        "Intercreditor priority is controlling context outside the lien carveout."
+      ]
+    },
+    {
+      "scenarioId": "H09",
+      "split": "HELD_OUT",
+      "category": "MISSING_CONTROLLING_DEFINITIONS",
+      "textualOk": true,
+      "materialPredicted": false,
+      "materialExpected": false,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SEMANTIC_HYPOTHESIS",
+        "closureComplete=false",
+        "qualified=true",
+        "Identical incremental wording without Free and Clear / Ratio Amount defs."
+      ]
+    },
+    {
+      "scenarioId": "H10",
+      "split": "HELD_OUT",
+      "category": "SHARED_CAPACITY_DIFFERENCE",
+      "textualOk": true,
+      "materialPredicted": false,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": true,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=STRUCTURAL_SIMILARITY",
+        "closureComplete=false",
+        "qualified=false",
+        "Disposition basket shared with investment carveout."
+      ]
+    },
+    {
+      "scenarioId": "H11",
+      "split": "HELD_OUT",
+      "category": "MATERIALLY_DIFFERENT",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Uncapped vs capped preferred dividends."
+      ]
+    },
+    {
+      "scenarioId": "H12",
+      "split": "HELD_OUT",
+      "category": "TEXTUALLY_DIFFERENT_LEGALLY_EQUIVALENT",
+      "textualOk": true,
+      "materialPredicted": false,
+      "materialExpected": false,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=TEXTUAL_SIMILARITY",
+        "closureComplete=false",
+        "qualified=false",
+        "Bankruptcy investment carveout paraphrase."
+      ]
+    },
+    {
+      "scenarioId": "H13",
+      "split": "HELD_OUT",
+      "category": "DIFFERENT_PROVISO_ATTACHMENT",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Acquisition step-up proviso."
+      ]
+    },
+    {
+      "scenarioId": "H14",
+      "split": "HELD_OUT",
+      "category": "DIFFERENT_ENTITY_SCOPE",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=false",
+        "Board approval perimeter Borrower vs Restricted Sub."
+      ]
+    },
+    {
+      "scenarioId": "H15",
+      "split": "HELD_OUT",
+      "category": "IDENTICAL_TEXT_DIFFERENT_DEFINITIONS",
+      "textualOk": true,
+      "materialPredicted": true,
+      "materialExpected": true,
+      "falseMaterialDifference": false,
+      "missedMaterialDifference": false,
+      "citationOk": true,
+      "dependencyClosureReported": true,
+      "amendmentVersionOk": true,
+      "unsupportedConclusionRefused": true,
+      "qualifiedWhenIncomplete": true,
+      "notes": [
+        "algorithm=token-lcs.v1",
+        "maxStanding=SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        "closureComplete=false",
+        "qualified=true",
+        "Net Proceeds with vs without tax gross-up deduction."
+      ]
+    }
+  ]
+}

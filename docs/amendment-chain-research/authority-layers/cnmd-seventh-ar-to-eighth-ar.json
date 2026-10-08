@@ -1,0 +1,143 @@
+{
+  "chainId": "cnmd-seventh-ar-to-eighth-ar",
+  "generatedAt": "2026-10-08T22:54:05Z",
+  "discipline": {
+    "recitalIsNotOperativeText": true,
+    "eightKSummaryIsNotOperativeText": true,
+    "levels": [
+      "DISCOVERED_AMENDMENT_EVENT",
+      "ACQUIRED_AMENDMENT_BODY",
+      "ACQUIRED_INCORPORATED_EXHIBITS",
+      "VERIFIED_PARENT_INSTRUMENT",
+      "VERIFIED_AMENDMENT_TARGET",
+      "VERIFIED_EFFECTIVE_DATE_CONDITIONS",
+      "VERIFIED_BEFORE_TEXT",
+      "VERIFIED_AFTER_TEXT",
+      "INDEPENDENTLY_REVIEWED_LEGAL_EFFECT"
+    ]
+  },
+  "events": [
+    {
+      "docId": "cnmd-seventh-ar",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "accession": "0001193125-21-217426",
+      "exhibit": "EX-10.1",
+      "afterText": "SOURCE_BACKED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "cnmd-am1-2022",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "cnmd-seventh-ar",
+      "executionDate": "2022-06-06",
+      "accession": "0001193125-22-169336",
+      "targetsVerified": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Consolidated Total Leverage Ratio"
+      ],
+      "verifiedOperation": {
+        "kind": "MODIFY_DEFINITION",
+        "before": "$25,000,000 cash-netting cap in CSSLR and CTLR",
+        "after": "$75,000,000",
+        "authority": "SOURCE_BACKED",
+        "quote": "deleting the reference therein to \"$25,000,000\" and substituting in lieu thereof the dollar amount \"$75,000,000\""
+      },
+      "beforeText": "SOURCE_BACKED_FROM_SEVENTH_AR",
+      "afterText": "SOURCE_BACKED_FROM_AM1_INSTRUCTION",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "cnmd-second-am-2022",
+      "acquiredBody": "FIXTURE_RAW_PRESENT",
+      "parent": "cnmd-seventh-ar",
+      "targetsVerified": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Consolidated Total Leverage Ratio",
+        "Indebtedness",
+        "7.1(b)"
+      ],
+      "beforeText": "NOW_EXTRACTABLE_FROM_SEVENTH_AR",
+      "afterText": "SOURCE_BACKED",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "verifiedOperation": {
+        "definitions": [
+          {
+            "term": "Consolidated Senior Secured Leverage Ratio",
+            "before": "$75,000,000",
+            "after": "$100,000,000",
+            "beforeAuthority": "ACQUIRED_AM1_INSTRUCTION_NOT_RESTATED_BODY"
+          },
+          {
+            "term": "Consolidated Total Leverage Ratio",
+            "before": "$75,000,000",
+            "after": "$100,000,000",
+            "beforeAuthority": "ACQUIRED_AM1_INSTRUCTION_NOT_RESTATED_BODY"
+          },
+          {
+            "term": "Indebtedness",
+            "before": "Seventh A&R definition without Second Am earn-out proviso",
+            "after": "earn-out proviso added",
+            "authority": "SOURCE_BACKED"
+          }
+        ],
+        "covenant": {
+          "section": "7.1(b)",
+          "before": "5.25x for 6/30/21\u20139/30/21 else 5.00x (+ Material Acquisition step-up)",
+          "after": "multi-step schedule through 12/31/23 ending at 5.50x with revised step-up (cap 6.00x, twice, \u22652 quarters between)",
+          "beforeAuthority": "SOURCE_BACKED_FROM_SEVENTH_AR",
+          "afterAuthority": "SOURCE_BACKED_FROM_SECOND_AMENDMENT"
+        }
+      },
+      "warning": "Do not apply Am2 $75\u2192$100 against Seventh A&R $25 figure \u2014 wrong intermediate parent. Correct parent state is post-Am1.",
+      "parentInstrument": "cnmd-seventh-ar",
+      "intermediateState": "cnmd-am1-2022",
+      "parentNote": "Parent instrument is Seventh A&R; Am1 is intermediate state (post-Am1 $75M), not the amended instrument identity."
+    },
+    {
+      "docId": "cnmd-eighth-ar",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": "cnmd-seventh-ar",
+      "role": "RESTATEMENT",
+      "warning": "Must not inherit Second Amendment effects without comparing Eighth A&R text"
+    },
+    {
+      "docId": "cnmd-gca",
+      "acquiredBody": "FIXTURE_PRESENT"
+    },
+    {
+      "docId": "cnmd-omnibus-2026",
+      "acquiredBody": "FIXTURE_RAW_PRESENT",
+      "parent": [
+        "cnmd-eighth-ar",
+        "cnmd-gca"
+      ],
+      "incorporatedExhibits": {
+        "status": "ACQUIRED_EMBEDDED_IN_EX_10_1",
+        "note": "No separate SEC exhibit files; blacklines attached inside EX-10.1 (sha256 on raw fixture).",
+        "sha256": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97"
+      },
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ]
+}

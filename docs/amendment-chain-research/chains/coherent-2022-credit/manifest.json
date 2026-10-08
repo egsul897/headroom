@@ -1,0 +1,170 @@
+{
+  "chainId": "cohr-2022-07-01-credit-agreement",
+  "issuer": {
+    "name": "Coherent Corp.",
+    "ticker": "COHR",
+    "cik": "0000820318"
+  },
+  "instrument": {
+    "instrumentId": "cohr-ca-2022-07-01",
+    "title": "Credit Agreement dated July 1, 2022 (as amended through Amendment No. 5)",
+    "governingLawNote": "Not independently re-derived in this research pass; see filed exhibits.",
+    "identityNotes": [
+      "Instrument lineage is the July 1, 2022 Credit Agreement as amended by Amendments Nos. 1–5.",
+      "Amendments Nos. 1–5 are amendment-and-restatement style documents embedding conformed copies.",
+      "Amendment No. 5 expressly amends the agreement as already amended by Amendment No. 4 on the same calendar day."
+    ]
+  },
+  "documents": [
+    {
+      "docId": "cohr-ca-orig",
+      "role": "ORIGINAL",
+      "title": "Credit Agreement",
+      "executionDate": "2022-07-01",
+      "filingDate": "2022-07-01",
+      "accession": "0001193125-22-186770",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/820318/000119312522186770/",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "INFERRED_FROM_EXECUTION_DATE",
+        "namedEffectiveDate": "2022-07-01",
+        "conditionsSummary": null,
+        "evidenceQuote": "Original dated July 1, 2022 (prior Headroom reconstruction docs/coherent-credit-agreement-amendment-reconstruction.md)."
+      },
+      "amendsInstrumentId": null,
+      "amendsDocIds": [],
+      "notes": ["Prior research reconstruction reused; not re-fetched byte-for-byte in this pass."]
+    },
+    {
+      "docId": "cohr-am1",
+      "role": "AMENDMENT",
+      "title": "Amendment No. 1 (LIBOR→SOFR)",
+      "executionDate": "2023-03-31",
+      "filingDate": null,
+      "accession": "0000820318-23-000009",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/820318/000082031823000009/",
+      "localFixturePath": null,
+      "retrievalStatus": "PARTIAL",
+      "effectiveDateProvision": {
+        "status": "EXPLICIT_EFFECTIVE_DATE",
+        "namedEffectiveDate": "2023-03-31",
+        "conditionsSummary": null,
+        "evidenceQuote": "Prior reconstruction: Early Opt-In Election under §2.14(b); confirmed no change to §6.01/§6.02/§6.11/Incremental Amount."
+      },
+      "amendsInstrumentId": "cohr-ca-2022-07-01",
+      "amendsDocIds": ["cohr-ca-orig"],
+      "notes": []
+    },
+    {
+      "docId": "cohr-am2",
+      "role": "AMENDMENT",
+      "title": "Amendment No. 2 (Term B repricing)",
+      "executionDate": "2024-04-02",
+      "filingDate": null,
+      "accession": "0001193125-24-085009",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/820318/000119312524085009/",
+      "localFixturePath": null,
+      "retrievalStatus": "PARTIAL",
+      "effectiveDateProvision": {
+        "status": "EXPLICIT_EFFECTIVE_DATE",
+        "namedEffectiveDate": "2024-04-02",
+        "conditionsSummary": null,
+        "evidenceQuote": "Prior reconstruction: Term B repricing only; §6.11 schedule unchanged."
+      },
+      "amendsInstrumentId": "cohr-ca-2022-07-01",
+      "amendsDocIds": ["cohr-am1"],
+      "notes": []
+    },
+    {
+      "docId": "cohr-am3",
+      "role": "AMENDMENT",
+      "title": "Amendment No. 3 (Term B-2 repricing)",
+      "executionDate": "2025-01-02",
+      "filingDate": null,
+      "accession": "0001193125-25-002808",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/820318/000119312525002808/",
+      "localFixturePath": null,
+      "retrievalStatus": "PARTIAL",
+      "effectiveDateProvision": {
+        "status": "EXPLICIT_EFFECTIVE_DATE",
+        "namedEffectiveDate": "2025-01-02",
+        "conditionsSummary": null,
+        "evidenceQuote": "Prior reconstruction: Term B-2 repricing; step-down schedule still intact; operative TNL then 4.00x."
+      },
+      "amendsInstrumentId": "cohr-ca-2022-07-01",
+      "amendsDocIds": ["cohr-am2"],
+      "notes": []
+    },
+    {
+      "docId": "cohr-am4",
+      "role": "AMENDMENT",
+      "title": "Refinancing Amendment, Incremental Assumption Agreement and Amendment No. 4",
+      "executionDate": "2025-09-26",
+      "filingDate": "2025-09-26",
+      "accession": "0001193125-25-220656",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/820318/000119312525220656/d854664dex101.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Uses defined term 'Amendment No. 4 Effective Date'; full condition list not exhaustively extracted in this pass beyond presence of conditions-precedent structure.",
+        "evidenceQuote": "Retrieved exhibit uses 'Amendment No. 4 Effective Date (as defined below)' in operative text (e.g., revolving commitment provision)."
+      },
+      "amendsInstrumentId": "cohr-ca-2022-07-01",
+      "amendsDocIds": ["cohr-am3"],
+      "notes": [
+        "Live-retrieved this session (~2.26MB HTML).",
+        "Same calendar day as Amendment No. 5."
+      ]
+    },
+    {
+      "docId": "cohr-am5",
+      "role": "AMENDMENT",
+      "title": "Amendment No. 5 (Term B-2→B-3 repricing)",
+      "executionDate": "2025-09-26",
+      "filingDate": "2025-09-26",
+      "accession": "0001193125-25-220656",
+      "exhibit": "EX-10.2",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/820318/000119312525220656/d854664dex102.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Uses 'Amendment No. 5 Effective Date'; conditions not fully transcribed here.",
+        "evidenceQuote": "Retrieved exhibit names 'Amendment No. 5 Effective Date'."
+      },
+      "amendsInstrumentId": "cohr-ca-2022-07-01",
+      "amendsDocIds": ["cohr-am4"],
+      "notes": [
+        "Same-day overlapping effectiveness risk with Amendment No. 4.",
+        "Clean restated copy confirms Am4 figures ($1,428,000,000 Incremental Cash-Capped; $786,000,000/55% General Debt Basket) carried forward."
+      ]
+    }
+  ],
+  "authorityPolicy": {
+    "noInferenceWithoutSource": true,
+    "waiversSeparateFromAmendments": true,
+    "notes": [
+      "Basket/ratio operative figures for Am4→Am5 verified from Am5 clean restated text retrieved this session.",
+      "Am1–Am3 phase-1-scope 'no change' conclusions rely on prior Headroom reconstruction; flagged PARTIAL where not re-extracted byte-for-byte here."
+    ]
+  },
+  "adversarialTags": [
+    "SAME_DAY_OR_OVERLAPPING_EFFECTIVENESS",
+    "CONDITIONAL_EFFECTIVENESS",
+    "RESTATEMENT_THEN_TARGETED",
+    "BASKET_AMOUNT_CHANGE",
+    "RATIO_CHANGE",
+    "MULTI_COVENANT_FAMILY",
+    "CROSS_REFERENCE_CORRECTION",
+    "INCORPORATION_BY_REFERENCE"
+  ]
+}

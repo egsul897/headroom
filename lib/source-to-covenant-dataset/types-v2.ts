@@ -104,7 +104,8 @@ export interface DuplicateDecision {
     | "DUPLICATE_TRAINING_OBSERVATION"
     | "INTENTIONAL_DEDUP_PROBE"
     | "AMENDMENT_LINEAGE_OVERLAP"
-    | "REPEATED_LEGAL_MECHANIC";
+    | "REPEATED_LEGAL_MECHANIC"
+    | "NEAR_DUPLICATE_QUARANTINED";
   keepInCorpus: boolean;
   trainingEligible: boolean;
   rationale: string;
@@ -152,6 +153,10 @@ export interface Phase2IntegrityReport {
   };
   duplicates: {
     exactDuplicatePairs: number;
+    nearDuplicateClusters: number;
+    quarantinedRecordCount: number;
+    /** Records not in an exact-dup pair or near-dup cluster — do not treat quarantined dups as independent examples. */
+    independentObservationCount: number;
     decisions: DuplicateDecision[];
   };
   eligibility: {

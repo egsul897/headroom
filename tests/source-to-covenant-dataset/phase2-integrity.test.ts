@@ -58,6 +58,20 @@ describe("phase-2 ground-truth integrity", () => {
     const probe = integrityReport.duplicates.decisions.find((d) => d.classification === "INTENTIONAL_DEDUP_PROBE");
     expect(probe).toBeTruthy();
     expect(records.some((r) => r.exampleId.includes("near-dup-probe"))).toBe(true);
+    expect(integrityReport.duplicates.nearDuplicateClusters).toBeGreaterThan(0);
+    expect(integrityReport.duplicates.independentObservationCount).toBeLessThan(records.length);
+    expect(integrityReport.duplicates.quarantinedRecordCount).toBeGreaterThan(0);
+    const nearQ = integrityReport.duplicates.decisions.filter((d) => d.classification === "NEAR_DUPLICATE_QUARANTINED");
+    expect(nearQ.length).toBeGreaterThan(0);
+    expect(nearQ.every((d) => d.trainingEligible === false)).toBe(true);
+  });
+
+  it("never promotes dataset labels into certified legal truth or SFT", () => {
+    expect(records.every((r) => r.deliveryVerificationStatus !== "VERIFIED")).toBe(true);
+    expect(records.every((r) => r.trainingEligibility !== "ELIGIBLE_PENDING_RIGHTS_AND_VERIFICATION")).toBe(true);
+    expect(records.every((r) => r.knowledgeFactoryImport.importable === false)).toBe(true);
+    expect(records.every((r) => r.independentlyReviewedGroundTruth === null)).toBe(true);
+    expect(integrityReport.importResults.recordsAcceptedForImport).toBe(0);
   });
 
   it("keeps held-out issuer separation and expands authentic examples only", () => {

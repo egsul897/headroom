@@ -77,7 +77,12 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // AND-composed on UNLIMITED_CAPACITY.gatedBy, with sufficiency PARTIAL. No new condition type is introduced. A v10-era
 // cached compilation may fold the object class into one ordinary-course description and claim COMPLETE; it must not be
 // served as this compiler's output. This bump is an honesty rem. IMPLEMENTED ≠ CERTIFIED.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v11";
+// v12 (unlimited carve-out fail-closed): a pre-existing UNSUPPORTED condition is dropped only when exact redundancy
+// with the qualitative gates is proven (substring containment is not equivalence), and an operative pair that cannot
+// be uniquely attributed leaves sufficiency AMBIGUOUS rather than COMPLETE. A v11-era cached compilation may delete an
+// independent qualifier or claim COMPLETE on an unattributed pair; it must not be served as this compiler's output.
+// Prompt wording is unchanged. IMPLEMENTED ≠ CERTIFIED.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v12";
 export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v9";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 

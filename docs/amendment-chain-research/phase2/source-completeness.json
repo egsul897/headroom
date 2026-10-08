@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-10-08T22:54:05Z",
+  "chains": [
+    {
+      "chainId": "cohr-2022-07-01-credit-agreement",
+      "status": "SOURCE_COMPLETE_FOR_CORE_CHAIN",
+      "acquired": "orig+Am1-5",
+      "gaps": [
+        "Effective Date condition satisfaction calendar dates not proven",
+        "\u00a76.01(p) cross-ref not re-extracted"
+      ]
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "status": "SOURCE_COMPLETE_AM1_THROUGH_AM6",
+      "acquired": "base+Am1-Am6",
+      "gaps": [
+        "Am1\u2013Am6 Effective Date condition calendars unresolved",
+        "Full Interest Coverage / Temporary Senior Leverage Increase Period mechanics pending independent review"
+      ]
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "status": "PARTIAL_AM4_HASHED_EXPORT_INCLUDED",
+      "acquired": "Am4 hashed Phase3; orig+Am1-3 Phase1 retrieval claimed (hashes pending)",
+      "gaps": [
+        "ED calendars unresolved",
+        "Am2 non-pricing targets not fully logged",
+        "orig/Am1-3 content hashes pending"
+      ]
+    },
+    {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "status": "IMPROVED_PARTIAL",
+      "acquired": "Am1+Am2(image)+Am2-10Q+fixture Am3+Am4+Second A&R",
+      "gaps": [
+        "Am2 text wrapper MISSING (image EX-10.1; 10-Q narrative not operative)",
+        "Am4 ED condition calendar unresolved (deemed Jan 1 attaches only once ED occurs)"
+      ]
+    },
+    {
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "status": "SOURCE_COMPLETE_FOR_SEVENTH_ERA_DEFINITION_CHAIN",
+      "acquired": "Seventh A&R+Am1+Am2+Eighth curated+Omnibus raw (embedded blacklines)",
+      "gaps": [
+        "Eighth full raw not re-hashed in ledger this pass (fixture present)",
+        "Omnibus Effective Date conditions not proven satisfied",
+        "Am1/Am2/Omnibus ED calendars unresolved"
+      ]
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "status": "BODIES_ACQUIRED_PROPAGATION_INCOMPLETE",
+      "acquired": "orig+Am1-Am7",
+      "gaps": [
+        "Am1\u2013Am6 basket/definition propagation not exhaustively modeled",
+        "Am7 Effective Date calendar unresolved",
+        "\u00a76.10 before-tables not re-extracted"
+      ]
+    }
+  ]
+}

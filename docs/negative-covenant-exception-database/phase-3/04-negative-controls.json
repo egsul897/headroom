@@ -1,0 +1,171 @@
+{
+  "artifact": "04-negative-controls",
+  "selectionPrinciple": "Independently selected to cover hanging provisos, nested exceptions, defined-term restrictions, conditional ratios, shared baskets, cross-document constraints, amendment changes, numeric thresholds that are not permissions, and prohibitions with no exception. Preserves both positive and negative controls. AMBIGUOUS_CONDITION_SCOPE completed in Phase 3.",
+  "byClass": {
+    "LOCAL_CONDITIONS": [
+      "riot-5.02-a-ii-tax-liens-local",
+      "conmed-7.5-a-qualitative-gates"
+    ],
+    "REMOTE_CONDITIONS": [
+      "sup-7.01-permitted-liens-definitional",
+      "fwrg-6.04-a-iii-builder-remote"
+    ],
+    "NO_ADDITIONAL_CONDITIONS": [
+      "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "dsgr-6.01-a-secured-obligations",
+      "riot-5.02-a-i-facility-liens"
+    ],
+    "AMBIGUOUS_CONDITION_SCOPE": [
+      "amb-gib-7.06-a-proviso-hanging",
+      "amb-fwrg-nested-except-within-except",
+      "amb-sup-permitted-liens-defined-term",
+      "amb-fwrg-ratio-conditional",
+      "amb-fwrg-shared-basket-available-amount",
+      "amb-lsb-cross-doc-secured-notes",
+      "amb-sup-amendment-change",
+      "amb-gib-706b1-scope-vs-permission"
+    ],
+    "PROHIBITION_NO_EXCEPTION": [
+      "riot-5.02-c-no-collateral-sale-exception",
+      "amb-riot-5.02-c-no-exception"
+    ],
+    "NUMERIC_THRESHOLD_NOT_PERMISSION": [
+      "conmed-7.2-trailing-classify-not-permission",
+      "conmed-7.1-a-csslr-threshold-not-permission",
+      "sup-7.01-classify-not-permission",
+      "amb-conmed-7.1-threshold-not-permission"
+    ],
+    "CONSTRAINED_BY_OTHER_DOCUMENT": [
+      "lsb-6.04-b-external-secured-notes"
+    ]
+  },
+  "counts": {
+    "LOCAL_CONDITIONS": 2,
+    "REMOTE_CONDITIONS": 2,
+    "NO_ADDITIONAL_CONDITIONS": 3,
+    "AMBIGUOUS_CONDITION_SCOPE": 8,
+    "PROHIBITION_NO_EXCEPTION": 2,
+    "NUMERIC_THRESHOLD_NOT_PERMISSION": 4,
+    "CONSTRAINED_BY_OTHER_DOCUMENT": 1
+  },
+  "caseTypesCovered": [
+    "AMENDMENT_CHANGE",
+    "CATEGORICAL_VS_PERMISSION",
+    "CONDITIONAL_RATIO",
+    "CROSS_DOCUMENT_CONSTRAINT",
+    "DEFINED_TERM_RESTRICTION",
+    "HANGING_PROVISO",
+    "NESTED_EXCEPTION",
+    "NUMERIC_THRESHOLD_NOT_PERMISSION",
+    "PROHIBITION_NO_EXCEPTION",
+    "SHARED_BASKET"
+  ],
+  "cases": [
+    {
+      "controlId": "amb-gib-7.06-a-proviso-hanging",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "HANGING_PROVISO",
+      "issuerKey": "ROCK",
+      "sectionRef": "7.06(a) proviso",
+      "summary": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse.",
+      "expectedDetectorBehavior": "FLAG_AMBIGUOUS_ATTACHMENT",
+      "polarity": "NEGATIVE_CONTROL"
+    },
+    {
+      "controlId": "amb-fwrg-nested-except-within-except",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "NESTED_EXCEPTION",
+      "issuerKey": "FWRG",
+      "sectionRef": "6.04 nested builders",
+      "summary": "Nested exception/builder structures where inner except may re-open outer capacity.",
+      "expectedDetectorBehavior": "FLAG_NESTING_UNRESOLVED",
+      "polarity": "NEGATIVE_CONTROL"
+    },
+    {
+      "controlId": "amb-sup-permitted-liens-defined-term",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "DEFINED_TERM_RESTRICTION",
+      "issuerKey": "SUP",
+      "sectionRef": "7.01 / Permitted Liens",
+      "summary": "Exception capacity gated entirely through Permitted Liens defined-term restrictions.",
+      "expectedDetectorBehavior": "REQUIRE_DEFINITION_CLOSURE",
+      "polarity": "NEGATIVE_CONTROL",
+      "linkedExceptionId": "sup-7.01-permitted-liens-definitional"
+    },
+    {
+      "controlId": "amb-fwrg-ratio-conditional",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "CONDITIONAL_RATIO",
+      "issuerKey": "FWRG",
+      "sectionRef": "ratio baskets",
+      "summary": "Ratio-gated baskets where measurement date / pro forma adjustments are remote.",
+      "expectedDetectorBehavior": "FLAG_RATIO_REMOTE_CONDITIONS",
+      "polarity": "NEGATIVE_CONTROL"
+    },
+    {
+      "controlId": "amb-fwrg-shared-basket-available-amount",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "SHARED_BASKET",
+      "issuerKey": "FWRG",
+      "sectionRef": "Available Amount / builder",
+      "summary": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families.",
+      "expectedDetectorBehavior": "REQUIRE_SHARED_CAPACITY_EDGE",
+      "polarity": "NEGATIVE_CONTROL"
+    },
+    {
+      "controlId": "amb-lsb-cross-doc-secured-notes",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "CROSS_DOCUMENT_CONSTRAINT",
+      "issuerKey": "LXU",
+      "sectionRef": "6.04(b) external secured notes",
+      "summary": "Constraint depends on external Secured Notes indenture/docs.",
+      "expectedDetectorBehavior": "FLAG_EXTERNAL_UNRESOLVED",
+      "polarity": "NEGATIVE_CONTROL",
+      "linkedExceptionId": "lsb-6.04-b-external-secured-notes"
+    },
+    {
+      "controlId": "amb-sup-amendment-change",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "AMENDMENT_CHANGE",
+      "issuerKey": "SUP",
+      "sectionRef": "First Amendment 2025-03-31",
+      "summary": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete.",
+      "expectedDetectorBehavior": "REQUIRE_AMENDMENT_CHAIN_CLOSURE",
+      "polarity": "NEGATIVE_CONTROL"
+    },
+    {
+      "controlId": "amb-conmed-7.1-threshold-not-permission",
+      "negativeControlClass": "NUMERIC_THRESHOLD_NOT_PERMISSION",
+      "caseType": "NUMERIC_THRESHOLD_NOT_PERMISSION",
+      "issuerKey": "CNMD",
+      "sectionRef": "7.1(a)",
+      "summary": "Financial maintenance threshold is not an affirmative exception permission.",
+      "expectedDetectorBehavior": "CLASSIFY_NOT_AN_AFFIRMATIVE_PERMISSION",
+      "polarity": "NEGATIVE_CONTROL",
+      "linkedExceptionId": "conmed-7.1-a-csslr-threshold-not-permission"
+    },
+    {
+      "controlId": "amb-riot-5.02-c-no-exception",
+      "negativeControlClass": "PROHIBITION_NO_EXCEPTION",
+      "caseType": "PROHIBITION_NO_EXCEPTION",
+      "issuerKey": "RIOT",
+      "sectionRef": "5.02(c)",
+      "summary": "Collateral sale prohibition with no enumerated exception list.",
+      "expectedDetectorBehavior": "NO_FALSE_EXCEPTION_DISCOVERY",
+      "polarity": "NEGATIVE_CONTROL",
+      "linkedExceptionId": "riot-5.02-c-no-collateral-sale-exception"
+    },
+    {
+      "controlId": "amb-gib-706b1-scope-vs-permission",
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "caseType": "CATEGORICAL_VS_PERMISSION",
+      "issuerKey": "ROCK",
+      "sectionRef": "7.06(b)(1)",
+      "summary": "Phase-3 audit exemplar: categorical local form coexists with Closing Date external limb \u2014 scope of 'unconditional' is ambiguous if remote limbs ignored.",
+      "expectedDetectorBehavior": "DOWNGRADE_IF_REMOTE_PRESENT",
+      "polarity": "NEGATIVE_CONTROL",
+      "linkedExceptionId": "gibraltar-7.06-b-1-loan-docs-burdensome-exception"
+    }
+  ],
+  "noteOnNoAdditionalConditions": "NO_ADDITIONAL_CONDITIONS remains as a structural positive control for absent local economic gates, but Phase-3 audit downgraded those records from UNCONDITIONAL_SOURCE_VERIFIED \u2014 they are not unconditional legal permissions."
+}

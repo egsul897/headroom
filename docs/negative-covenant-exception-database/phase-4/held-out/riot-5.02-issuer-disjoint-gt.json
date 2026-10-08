@@ -1,0 +1,71 @@
+{
+  "protocol": "Issuer-disjoint Phase-4 evaluation set for Riot §5.02(a). Authored from source independently of analyzer outputs. Not used to tune the Phase-4 analyzer. Includes genuine positive exception limbs and negative controls.",
+  "document": {
+    "issuerKey": "RIOT",
+    "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+    "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349"
+  },
+  "independenceDeclaration": {
+    "groundTruthFromDetectorOutputs": false,
+    "usedToTuneDetector": false,
+    "issuerDisjointFromFrozenPhase3": true,
+    "frozenPhase3Issuer": "ROCK"
+  },
+  "items": [
+    {
+      "gtId": "HO-RIOT-P4-5.02-a",
+      "kind": "PROHIBITION_WITH_EXCEPTIONS",
+      "sectionRef": "5.02(a)",
+      "summary": "Collateral Liens prohibition with (i)-(iv) exceptions",
+      "polarity": "NEGATIVE"
+    },
+    {
+      "gtId": "HO-RIOT-P4-5.02-a-i",
+      "kind": "EXCEPTION",
+      "sectionRef": "5.02(a)(i)",
+      "summary": "Collateral Agent Loan Document liens — categorical form but definitionally/externally bounded",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": ["Loan Document defs", "Collateral external"],
+      "entityScopeExpected": ["Borrower"],
+      "crossRefsExpected": ["Loan Document"],
+      "polarity": "POSITIVE"
+    },
+    {
+      "gtId": "HO-RIOT-P4-5.02-a-ii",
+      "kind": "EXCEPTION",
+      "sectionRef": "5.02(a)(ii)",
+      "summary": "Tax liens with local contest/reserve conditions — genuine conditional permission",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": ["local contest/reserve conditions"],
+      "entityScopeExpected": ["Borrower"],
+      "polarity": "POSITIVE"
+    },
+    {
+      "gtId": "HO-RIOT-P4-5.02-a-iii",
+      "kind": "EXCEPTION",
+      "sectionRef": "5.02(a)(iii)",
+      "summary": "Liens imposed by law ordinary course with contest conditions",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": ["local contest/reserve conditions"],
+      "crossRefsExpected": ["Section 430(k)"],
+      "polarity": "POSITIVE"
+    },
+    {
+      "gtId": "HO-RIOT-P4-5.02-a-iv",
+      "kind": "EXCEPTION",
+      "sectionRef": "5.02(a)(iv)",
+      "summary": "Custodian Collateral Account liens",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": ["Collateral external"],
+      "entityScopeExpected": ["Borrower"],
+      "polarity": "POSITIVE"
+    },
+    {
+      "gtId": "HO-RIOT-P4-5.02-c",
+      "kind": "PROHIBITION_NO_EXCEPTION",
+      "sectionRef": "5.02(c)",
+      "summary": "No sale of Collateral — negative control (no exception list)",
+      "polarity": "NEGATIVE"
+    }
+  ]
+}

@@ -1,0 +1,429 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-c-amendment-supersession",
+  "title": "Package C — original agreement with two amendments (restate and delete)",
+  "issuer": "Westmark Logistics Holdings LLC (synthetic)",
+  "scenario": "Amendment No. 1 (effective 2025-08-15) raises the 7.01(b) general basket from $25,000,000 to $40,000,000 and adds a no-Default proviso. Amendment No. 2 (effective 2026-02-02) deletes 7.01(e). Historical as-of dates must reflect the state of the agreement at that date.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:westmark",
+  "instrumentKey": "westmark-credit-agreement-2025",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "75e5e6fa507ca3c06c1a5ba2ac83f6dc1dca870132029b937b2117d2adaa0a88"
+    },
+    {
+      "documentId": "amendment-1",
+      "label": "Amendment No. 1",
+      "file": "documents/amendment-1.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "effectiveDate": "2025-08-15",
+      "amends": "credit-agreement",
+      "sha256": "895b5394ce0f01668a81b87b0df03312faa053e606ac05256a522944b538d5d2"
+    },
+    {
+      "documentId": "amendment-2",
+      "label": "Amendment No. 2",
+      "file": "documents/amendment-2.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "effectiveDate": "2026-02-02",
+      "amends": "credit-agreement",
+      "sha256": "9fa0e19021c84dc30364d07aa30791d515c41044f37f43a294a7ae273e8567b1"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2025-06-30",
+      "2025-12-31",
+      "2026-06-30"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2025-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$25,000,000"
+        ],
+        "mustNotContain": [
+          "$40,000,000",
+          "no Default"
+        ]
+      },
+      {
+        "asOfDate": "2025-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(e)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$15,000,000",
+          "Permitted Acquisition"
+        ],
+        "mustNotContain": []
+      },
+      {
+        "asOfDate": "2025-12-31",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "$40,000,000",
+          "no Default has occurred"
+        ],
+        "mustNotContain": [
+          "$25,000,000"
+        ],
+        "supersededBy": "amendment-1"
+      },
+      {
+        "asOfDate": "2025-12-31",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(e)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$15,000,000"
+        ],
+        "mustNotContain": []
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "$40,000,000",
+          "no Default has occurred"
+        ],
+        "mustNotContain": [
+          "$25,000,000"
+        ],
+        "supersededBy": "amendment-1"
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(e)",
+        "status": "DELETED",
+        "mustContain": [],
+        "mustNotContain": [
+          "$15,000,000"
+        ],
+        "supersededBy": "amendment-2"
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(d)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$5,000,000",
+          "capital leases"
+        ],
+        "mustNotContain": []
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$25,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(e)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$15,000,000"
+        ]
+      },
+      {
+        "documentId": "amendment-1",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "Section 7.01(b)",
+          "$40,000,000"
+        ]
+      },
+      {
+        "documentId": "amendment-2",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "Section 7.01(e)",
+          "deleted in its entirety"
+        ]
+      }
+    ],
+    "invariants": [
+      "The base agreement's own text must remain the $25,000,000 text; amendments must never rewrite the base document bytes."
+    ]
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Permitted Acquisition",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Default",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "C-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create, incur or assume any Indebtedness"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "60c1f13619be3b550d635b998ef84331b56eddee2a6d88bd275f9e835292b462"
+    },
+    {
+      "id": "C-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": [],
+      "textSha256": "ca81604f99c5270c9dcf5e436fa38658a2a37475d5616d2aafcdf7cfc905d577"
+    },
+    {
+      "id": "C-7.01(b)-original",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": false,
+      "operativeUntil": "2025-08-15",
+      "material": true,
+      "mustContain": [
+        "$25,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 25000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "ffdfe828e4b08dc9ab6775f168dce27515c11620d489eb206a590ff5506e4c65"
+    },
+    {
+      "id": "C-7.01(b)-amended",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "operativeFrom": "2025-08-15",
+      "material": true,
+      "mustContain": [
+        "$40,000,000",
+        "no Default has occurred and is continuing"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 40000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "no Default has occurred and is continuing at the time of incurrence",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Default"
+      ],
+      "crossReferences": [],
+      "operativeTextDocumentId": "amendment-1",
+      "textSha256": "ffdfe828e4b08dc9ab6775f168dce27515c11620d489eb206a590ff5506e4c65"
+    },
+    {
+      "id": "C-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "owed to the Borrower by any Subsidiary"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "e24f4fec289baeb4477ac059b43e42f4e832234fc45d1fe14fb5221498da9492"
+    },
+    {
+      "id": "C-7.01(d)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(d)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$5,000,000",
+        "capital leases"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 5000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "aeb9aeff4fd96ab5edc053332386dfaa1738df0125e47ef99ad2bff6a72439ec"
+    },
+    {
+      "id": "C-7.01(e)-deleted",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(e)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": false,
+      "operativeUntil": "2026-02-02",
+      "material": true,
+      "mustContain": [
+        "$15,000,000",
+        "Permitted Acquisition"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 15000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Permitted Acquisition"
+      ],
+      "crossReferences": [],
+      "textSha256": "8f4b6bcf48a7b1b6310b5be927b1357f1d9c63fd4a1c74a8d3e998aa63aa6f95"
+    },
+    {
+      "id": "C-7.02",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02",
+      "family": "LIENS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Section 7.01(d)"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(d)",
+          "mustResolve": true
+        }
+      ],
+      "textSha256": "c2c029ea130035b1fded06b647e069517f87bba995286fb61a730b8ede723465"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [],
+  "unsupported": [],
+  "prohibitedClaims": [
+    {
+      "id": "C-P1",
+      "claim": "As of 2026-06-30 the general basket is $25,000,000",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "Superseded by Amendment No. 1."
+    },
+    {
+      "id": "C-P2",
+      "claim": "As of 2026-06-30 $15,000,000 of acquisition debt is permitted under 7.01(e)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "7.01(e) was deleted by Amendment No. 2."
+    },
+    {
+      "id": "C-P3",
+      "claim": "As of 2025-06-30 the general basket is $40,000,000",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "Amendment No. 1 was not yet effective."
+    },
+    {
+      "id": "C-P4",
+      "claim": "The amended 7.01(b) is unconditional",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "Amendment No. 1 added a no-Default proviso."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "Operative text for a superseded section must be sourced from the amendment document, with the amendment identified as the source.",
+    "A deleted section must never be reported as a current permission at any as-of date on or after the deletion effective date.",
+    "The as-of date must change the answer; an as-of-insensitive answer is wrong for at least one of the three dates."
+  ]
+}

@@ -1,0 +1,434 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-k-three-way-builder",
+  "title": "Package K — one Available Amount shared by three baskets in three sections",
+  "issuer": "Ridgeline Packaging Corp. (synthetic)",
+  "scenario": "The Available Amount definition (Article I) names three sections whose usage reduces it - 7.06(c) Restricted Payments, 7.08(d) Investments, 7.09(b) prepayments of Junior Indebtedness - and is zero while a Default continues. None of the three clauses names the others; the relationship exists only in the definition. Authored to test whether the definition-mediated cross-reference closure is complete for every citing basket (IPV-17 found it asymmetric for two).",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:ridgeline",
+  "instrumentKey": "ridgeline-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "be33db8820f38773520069f82be415528fcf8a725258af53e37426ae0e8ba84a"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-12-31"
+    ],
+    "exact": []
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.06(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.06",
+        "unique": true,
+        "ownTextContains": [
+          "Available Amount"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.08(d)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.08",
+        "unique": true,
+        "ownTextContains": [
+          "Available Amount"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.09(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.09",
+        "unique": true,
+        "ownTextContains": [
+          "Available Amount"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.09",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "Junior Indebtedness"
+        ]
+      }
+    ],
+    "invariants": []
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Available Amount",
+        "unique": true,
+        "excerptContains": "Section 7.09(b)"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Cumulative Retained Excess Cash Flow",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Excess Cash Flow",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated Net Income",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Junior Indebtedness",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Restricted Payment",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Investment",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "K-7.06",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.06",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not make any Restricted Payment"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Restricted Payment"
+      ],
+      "crossReferences": [],
+      "textSha256": "e956b517c68fa6f3ebbbf7c1bec0a8279a4ff8f6ed21e6a6801a6b9b1a5817be"
+    },
+    {
+      "id": "K-7.06(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.06(c)",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "BUILDER",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Available Amount"
+      ],
+      "value": {
+        "kind": "BUILDER",
+        "formulaTerm": "Available Amount",
+        "components": [
+          {
+            "kind": "STARTER",
+            "amount": 25000000
+          },
+          {
+            "kind": "PERCENT_OF_METRIC",
+            "percent": 50,
+            "metric": "Excess Cash Flow",
+            "period": "cumulative fiscal years after the Closing Date"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.06(c)"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.08(d)"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.09(b)"
+          }
+        ]
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+          "independent": true,
+          "material": true,
+          "source": "inside the Available Amount definition (Section 1.01)"
+        }
+      ],
+      "dependsOnTerms": [
+        "Available Amount",
+        "Cumulative Retained Excess Cash Flow",
+        "Excess Cash Flow",
+        "Consolidated Net Income",
+        "Default",
+        "Restricted Payment"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.08(d)",
+          "mustResolve": true,
+          "note": "shared usage through the Available Amount definition"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.09(b)",
+          "mustResolve": true,
+          "note": "shared usage through the Available Amount definition"
+        }
+      ],
+      "textSha256": "dba3f912aeb5ce995921810577756660b3580a96196bb968220874538e871366"
+    },
+    {
+      "id": "K-7.08",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.08",
+      "family": "INVESTMENTS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not make any Investment"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Investment"
+      ],
+      "crossReferences": [],
+      "textSha256": "60b8bb77ca8eb0c20a3e42b5b70f73a9a3ea64f1c88aef80add7b959dc981d82"
+    },
+    {
+      "id": "K-7.08(d)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.08(d)",
+      "family": "INVESTMENTS",
+      "role": "BUILDER",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Available Amount"
+      ],
+      "value": {
+        "kind": "BUILDER",
+        "formulaTerm": "Available Amount",
+        "components": [
+          {
+            "kind": "STARTER",
+            "amount": 25000000
+          },
+          {
+            "kind": "PERCENT_OF_METRIC",
+            "percent": 50,
+            "metric": "Excess Cash Flow",
+            "period": "cumulative fiscal years after the Closing Date"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.06(c)"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.08(d)"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.09(b)"
+          }
+        ]
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+          "independent": true,
+          "material": true,
+          "source": "inside the Available Amount definition (Section 1.01)"
+        }
+      ],
+      "dependsOnTerms": [
+        "Available Amount",
+        "Investment"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.06(c)",
+          "mustResolve": true,
+          "note": "shared usage through the Available Amount definition"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.09(b)",
+          "mustResolve": true,
+          "note": "shared usage through the Available Amount definition"
+        }
+      ],
+      "textSha256": "7983325bdc70d5298fc79d83b9985179ae4095ff79ee409c383cd6b66ccd7da4"
+    },
+    {
+      "id": "K-7.09",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.09",
+      "family": "PREPAYMENTS_OF_JUNIOR_DEBT",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not prepay, redeem or repurchase any Junior Indebtedness"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Junior Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "fd5bc9e888b1c8f740e18a8f414907e847482ca14bd83ac6ae87ed3e5434bf42"
+    },
+    {
+      "id": "K-7.09(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.09(b)",
+      "family": "PREPAYMENTS_OF_JUNIOR_DEBT",
+      "role": "BUILDER",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Available Amount"
+      ],
+      "value": {
+        "kind": "BUILDER",
+        "formulaTerm": "Available Amount",
+        "components": [
+          {
+            "kind": "STARTER",
+            "amount": 25000000
+          },
+          {
+            "kind": "PERCENT_OF_METRIC",
+            "percent": 50,
+            "metric": "Excess Cash Flow",
+            "period": "cumulative fiscal years after the Closing Date"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.06(c)"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.08(d)"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.09(b)"
+          }
+        ]
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+          "independent": true,
+          "material": true,
+          "source": "inside the Available Amount definition (Section 1.01)"
+        }
+      ],
+      "dependsOnTerms": [
+        "Available Amount",
+        "Junior Indebtedness"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.06(c)",
+          "mustResolve": true,
+          "note": "shared usage through the Available Amount definition"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.08(d)",
+          "mustResolve": true,
+          "note": "shared usage through the Available Amount definition"
+        }
+      ],
+      "textSha256": "4a14ec188063a6470db39b8e619130b80bf1d3e9e0caa48bb5b8298052383d43"
+    }
+  ],
+  "sharedCaps": [
+    {
+      "id": "K-SC-1",
+      "documentId": "credit-agreement",
+      "where": "Available Amount definition",
+      "participants": [
+        "7.06(c)",
+        "7.08(d)",
+        "7.09(b)"
+      ],
+      "cap": {
+        "kind": "BUILDER",
+        "formulaTerm": "Available Amount"
+      },
+      "textContains": "minus the aggregate amount of Restricted Payments made under Section 7.06(c), Investments made under Section 7.08(d) and prepayments of Junior Indebtedness made under Section 7.09(b)"
+    }
+  ],
+  "ambiguities": [],
+  "unsupported": [
+    {
+      "id": "K-U1",
+      "where": "7.06(c) / 7.08(d) / 7.09(b)",
+      "construct": "One builder pool netted across three sections, defined only in Article I, with a Default kill-switch inside the definition.",
+      "acceptableOutcomes": [
+        "NEEDS_INPUT",
+        "UNSUPPORTED",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptableOutcomes": [
+        "three independent $25,000,000 baskets",
+        "any basket AVAILABLE during a Default"
+      ]
+    }
+  ],
+  "prohibitedClaims": [
+    {
+      "id": "K-P1",
+      "claim": "7.06(c), 7.08(d) and 7.09(b) are three independent $25,000,000 baskets",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "All three draw on one Available Amount."
+    },
+    {
+      "id": "K-P2",
+      "claim": "7.09(b) permits prepayments of Junior Indebtedness up to the Available Amount while a Default is continuing",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "The Available Amount is zero during a Default (definition)."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "Compiling any one of 7.06(c), 7.08(d), 7.09(b) must bring the other two into the closure through the Available Amount definition; the result must be symmetric."
+  ]
+}

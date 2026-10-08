@@ -1,0 +1,506 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-g-adversarial-evidence",
+  "title": "Package G — adversarial: non-operative exhibit, recital number, duplicate section, dropped letter, stale amendment, undefined term, truncated document",
+  "issuer": "Bluewater Marine Group, Inc. (synthetic)",
+  "scenario": "Every document here is designed to tempt a false answer. A recital states a $100,000,000 figure 'without operative effect'. An Exhibit A Summary of Terms repeats $100,000,000 and disclaims operative effect. SECTION 7.01 appears twice with different text ($20,000,000 basket vs $35,000,000 aggregate). 7.03 is headed 'Liens' but restricts Investments, and its enumeration skips (c). A stale amendment targets a 2021 agreement and a Section 7.09 that does not exist. 7.01(c) relies on undefined 'Permitted Refinancing Indebtedness'. 7.04 is truncated mid-sentence.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:bluewater",
+  "instrumentKey": "bluewater-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "b7c57500cdf28aa47f636722b1a9ad6f8516dfd35e69161dcc3a3759c2abf827"
+    },
+    {
+      "documentId": "stale-amendment",
+      "label": "Amendment No. 1 (to a different agreement)",
+      "file": "documents/stale-amendment.txt",
+      "role": "STALE_AMENDMENT",
+      "operative": false,
+      "amends": null,
+      "sha256": "7176ab87c2af09821a8ebfb47770f80c675f547ef35f2f0ec9e5bf09d4d849dd"
+    },
+    {
+      "documentId": "exhibit-summary-of-terms",
+      "label": "Exhibit A — Summary of Principal Terms",
+      "file": "documents/exhibit-summary-of-terms.txt",
+      "role": "NON_OPERATIVE_EXHIBIT",
+      "operative": false,
+      "sha256": "1ce1987e0c2d913abfaf0cb622eb1879ed0c8f223300e80c26854bc7297d48eb"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-09-30"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2026-09-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$20,000,000"
+        ],
+        "mustNotContain": [
+          "$60,000,000"
+        ]
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": false,
+        "occurrences": 2,
+        "uniquenessNote": "Two physical SECTION 7.01 occurrences with different text. A reference to '7.01' must be AMBIGUOUS."
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$20,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.03",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "Investment"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.03(d)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.03",
+        "unique": true,
+        "ownTextContains": [
+          "$2,500,000"
+        ],
+        "note": "Letter (c) is absent in the source; (d) must still be its own provision, not merged into (b)."
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.04",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "not to exceed"
+        ]
+      }
+    ],
+    "invariants": [
+      "The exhibit must produce no operative covenant nodes.",
+      "The stale amendment must not supersede any node of the credit agreement (its target, Section 7.09, does not exist and it names a different agreement date)."
+    ]
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Indebtedness",
+        "unique": true,
+        "excerptContains": "borrowed money"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Investment",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Permitted Refinancing Indebtedness",
+        "forbiddenSourceDocumentId": "*",
+        "reason": "Never defined."
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Indebtedness",
+        "forbiddenSourceDocumentId": "exhibit-summary-of-terms",
+        "reason": "The exhibit's 'Indebtedness:' line is a summary heading, not a definition."
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Cash Equivalents",
+        "forbiddenSourceDocumentId": "*",
+        "reason": "Used in 7.03(b) but never defined."
+      }
+    ]
+  },
+  "covenants": [
+    {
+      "id": "G-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "occurrence": 1,
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create, incur or assume any Indebtedness, except"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "47b0ec59ff54f7e69f4fe6538c7cd7435fa8ffc712413c48f7816332dba961c0"
+    },
+    {
+      "id": "G-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": [],
+      "textSha256": "ca81604f99c5270c9dcf5e436fa38658a2a37475d5616d2aafcdf7cfc905d577"
+    },
+    {
+      "id": "G-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$20,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 20000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "sourceNote": "Lives under the FIRST 7.01 occurrence; the second 7.01 has no subsections.",
+      "textSha256": "96d37a47ccca51d3ae47a9ff1e0bd7ed18fe81bfa786fe61830d25800366e408"
+    },
+    {
+      "id": "G-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "REFINANCING_PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Permitted Refinancing Indebtedness"
+      ],
+      "value": {
+        "kind": "UNRESOLVABLE"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Permitted Refinancing Indebtedness"
+      ],
+      "unresolvedTerms": [
+        "Permitted Refinancing Indebtedness"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "mustResolve": true
+        }
+      ],
+      "textSha256": "916d81cc4ee4c6f768a67e2afe7e4f70abe93fe60aeb94bbd412390eb94495fa"
+    },
+    {
+      "id": "G-7.01-second",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "occurrence": 2,
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "operativeNote": "Conflicting duplicate; which 7.01 governs is not decidable from the package.",
+      "material": true,
+      "mustContain": [
+        "$35,000,000"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "value": {
+        "kind": "MONEY",
+        "amount": 35000000,
+        "currency": "USD",
+        "basis": "AGGREGATE_AT_ANY_TIME_OUTSTANDING"
+      },
+      "textSha256": "6b720c41de3a1ee7665f2aade8e1c407367ded7c31ed72cb771cc246c93e348f"
+    },
+    {
+      "id": "G-7.03",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.03",
+      "family": "INVESTMENTS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not make any Investment"
+      ],
+      "familyNote": "Heading says 'Liens'; operative text restricts Investments. Family must follow the operative text.",
+      "conditions": [],
+      "dependsOnTerms": [
+        "Investment"
+      ],
+      "crossReferences": [],
+      "textSha256": "94b5da72abd3a75c05b7acf24bef5f5da1811e60ad3b9112d51e0d320037384d"
+    },
+    {
+      "id": "G-7.03(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.03(a)",
+      "family": "INVESTMENTS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$5,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 5000000,
+        "currency": "USD",
+        "basis": "AGGREGATE"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Investment",
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "7520e24fe3cb06bd4227230b5251ff83b3cb0729415241b02571d82cd76830e4"
+    },
+    {
+      "id": "G-7.03(d)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.03(d)",
+      "family": "INVESTMENTS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$2,500,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 2500000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Investment"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "G-7.04",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.04",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not declare or pay any dividend"
+      ],
+      "value": {
+        "kind": "TRUNCATED"
+      },
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [],
+      "truncated": true,
+      "textSha256": "5a06dae92dba580c8fef8832a0e717bdadabc2e874a019471dcd1a4be39afea9"
+    },
+    {
+      "id": "G-7.03(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.03(b)",
+      "family": "INVESTMENTS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Cash Equivalents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "unresolvedTerms": [
+        "Cash Equivalents"
+      ],
+      "crossReferences": [],
+      "textSha256": "13424d816ec060876169296bf55abff711906e695250fbeecd968332c267d1a6"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [
+    {
+      "id": "G-AMB-1",
+      "where": "credit-agreement 7.01 (two occurrences)",
+      "description": "Two SECTION 7.01 texts conflict ($20,000,000 basket plus refinancing vs flat $35,000,000 aggregate).",
+      "mustBePreservedAs": [
+        "AMBIGUOUS",
+        "REVIEW_REQUIRED",
+        "CONFLICT"
+      ],
+      "unacceptable": [
+        "silently choosing either occurrence",
+        "reporting a single $20,000,000 or $35,000,000 debt capacity"
+      ]
+    },
+    {
+      "id": "G-AMB-2",
+      "where": "credit-agreement 7.04",
+      "description": "The dividend cap is cut off; the amount is unknowable.",
+      "mustBePreservedAs": [
+        "TRUNCATED",
+        "EVIDENCE_INCOMPLETE",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptable": [
+        "any dollar amount for 7.04",
+        "treating 7.04 as an unlimited permission",
+        "treating 7.04 as a flat prohibition"
+      ]
+    },
+    {
+      "id": "G-AMB-3",
+      "where": "credit-agreement 7.03 enumeration",
+      "description": "Letters run (a), (b), (d). Whether (c) was deleted or dropped is unknowable.",
+      "mustBePreservedAs": [
+        "ENUMERATION_GAP",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptable": [
+        "merging (d) into (b)",
+        "dropping (d)"
+      ]
+    }
+  ],
+  "unsupported": [
+    {
+      "id": "G-U1",
+      "where": "stale-amendment",
+      "construct": "Amendment whose target section (7.09) and base agreement date do not match the package base agreement.",
+      "acceptableOutcomes": [
+        "UNMATCHED_TARGET",
+        "NO_EFFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptableOutcomes": [
+        "applying $60,000,000 to any section of the package credit agreement"
+      ]
+    }
+  ],
+  "prohibitedClaims": [
+    {
+      "id": "G-P1",
+      "claim": "The Borrower may incur up to $100,000,000 of Indebtedness",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "$100,000,000 appears only in a recital 'without operative effect' and in a non-operative exhibit."
+    },
+    {
+      "id": "G-P2",
+      "claim": "The general debt basket is $60,000,000",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "$60,000,000 comes from a stale amendment to a different agreement."
+    },
+    {
+      "id": "G-P3",
+      "claim": "7.03 is a Liens covenant",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "Heading mislabels; the operative verb is 'make any Investment'."
+    },
+    {
+      "id": "G-P4",
+      "claim": "7.01(c) permits refinancing of any amount",
+      "severityIfAsserted": "UNSUPPORTED_AS_COMPLETE",
+      "reason": "The governing defined term does not exist in the package."
+    },
+    {
+      "id": "G-P5",
+      "claim": "Dividends are capped at $X under 7.04",
+      "severityIfAsserted": "EVIDENCE_INCOMPLETE",
+      "reason": "The number is missing from the evidence."
+    },
+    {
+      "id": "G-P6",
+      "claim": "7.03(b) permits $2,500,000 of other Investments",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "$2,500,000 belongs to clause (d); (b) is the Cash Equivalents permission."
+    }
+  ],
+  "nonOperative": [
+    {
+      "documentId": "credit-agreement",
+      "textContains": "without operative effect, the parties note that the Borrower will not incur Indebtedness in excess of $100,000,000",
+      "why": "Recital; self-described as non-operative."
+    },
+    {
+      "documentId": "exhibit-summary-of-terms",
+      "textContains": "up to $100,000,000",
+      "why": "Exhibit disclaims operative effect."
+    },
+    {
+      "documentId": "stale-amendment",
+      "textContains": "$60,000,000",
+      "why": "Amends a different agreement and a non-existent section."
+    }
+  ],
+  "invariants": [
+    "No figure may be attributed to the package unless its source node is inside an operative document.",
+    "A duplicate section label must surface as ambiguity, not be silently resolved to the first or last occurrence.",
+    "A truncated provision must be flagged as incomplete evidence, never completed by inference.",
+    "A document whose amendment target cannot be matched must produce zero supersession effects."
+  ]
+}

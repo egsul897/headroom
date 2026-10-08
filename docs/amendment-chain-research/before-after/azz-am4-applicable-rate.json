@@ -1,0 +1,35 @@
+{
+  "recordId": "ba-azz-am4-applicable-rate",
+  "chainId": "azz-2022-05-13-credit-agreement",
+  "amendingDocId": "azz-am4",
+  "comparisons": [
+    {
+      "changeClass": "DEFINITION",
+      "target": {
+        "kind": "DEFINITION",
+        "definedTerm": "Applicable Rate",
+        "covenantFamily": "OTHER"
+      },
+      "label": "Initial Term Loan Applicable Rate multi-era grid (same definition amended across Am1/Am3/Am4)",
+      "beforeText": "Per Fourth Amendment historical recount: prior to First Amendment Effective Date \u2014 SOFR 4.25% / Base 3.25%; after First but before Third \u2014 SOFR 3.75% / Base 2.75%; after Third but before Fourth \u2014 SOFR 3.25% / Base 2.25%.",
+      "afterText": "(ii) with respect to any Initial Term Loan, (A) at any time prior to the First Amendment Effective Date, (x) for any Adjusted Term SOFR Loan, 4.25% per annum and (y) for any Base Rate Loan, 3.25% per annum, (B) at any time on or following the First Amendment Effective Date but prior to the Third Amendment Effective Date, (x) for any Adjusted Term SOFR Loan, 3.75% per annum and (y) for any Base Rate Loan, 2.75% per annum, (C) at any time on or following the Third Amendment Effective Date but prior to the Fourth Amendment Effective Date, (x) for any Adjusted Term SOFR Loan, 3.25% per annum, and (y) for any Base Rate Loan, 2.25% per annum and (D) at any time on or following the Fourth Amendment Effective Date, (x) for any Adjusted Term SOFR Loan, 2.50% per annum, and (y) for any Base Rate Loan, 1.50% per annum,",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0000008947-24-000205",
+        "exhibit": "EX-10.1",
+        "quote": "Clause (a)(ii) of the definition of \"Applicable Rate\" is hereby amended and restated in its entirety to read as follows: [afterText]. Recital colloquial \"Applicable Margin\" is NOT the defined term amended."
+      },
+      "adversarialTags": [
+        "MULTI_AMEND_SAME_DEFINITION",
+        "CONDITIONAL_EFFECTIVENESS",
+        "INCORPORATION_BY_REFERENCE"
+      ]
+    }
+  ],
+  "notes": [
+    "Operative defined term is Applicable Rate (Am4 \u00a7(b)). Recital uses colloquial Applicable Margin once \u2014 non-controlling.",
+    "This is a single definition carrying the entire amendment-chain pricing history \u2014 query-date sensitive.",
+    "Second Amendment is in the chain but does not appear as a pricing breakpoint in this Applicable Rate clause.",
+    "Fourth Amendment Effective Date CONDITIONAL_UNRESOLVED \u2014 do not invent era subclause from execution/filing date."
+  ]
+}

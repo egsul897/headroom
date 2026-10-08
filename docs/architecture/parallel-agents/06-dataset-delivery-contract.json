@@ -1,0 +1,20 @@
+{
+  "artifact": "corpus-dataset-delivery-contract",
+  "version": 1,
+  "status": "DRAFT_CONTRACT",
+  "ownerWorkstream": "WS-PAR",
+  "requiredFieldsPerImportableDataset": [
+    { "field": "exactSourceProvenance", "description": "issuer/filing/source URL/accession/document refs" },
+    { "field": "stableContentIdentities", "description": "contentHash + logical ids from 04-canonical-identity-contract" },
+    { "field": "sourceTextHashes", "description": "sha256 of source text spans or full document bytes" },
+    { "field": "compilerOrModelVersions", "description": "tooling versions; use deterministic/offline when no model" },
+    { "field": "confidenceAndUncertaintyLabels", "description": "explicit enums; never silent certainty" },
+    { "field": "verificationStatus", "description": "SOURCE_ONLY | HYPOTHESIS | REVIEW_REQUIRED | VERIFIED | REJECTED — never skip to VERIFIED without verification_record_id" },
+    { "field": "duplicateDetection", "description": "contentHash / filing reconciliation results" },
+    { "field": "deterministicReplay", "description": "inputs + versions sufficient to rebuild identical outputs" },
+    { "field": "actualRecordCounts", "description": "integer counts, not estimates" },
+    { "field": "independentQualityMetrics", "description": "precision/recall/false-permission proxies as applicable; held-out metrics owned by WS-CKB" }
+  ],
+  "manifestPathConvention": "docs/<workstream-docs>/corpus-manifest.json OR datasets/<name>/manifest.json under exclusiveOwn",
+  "integrationQueuePath": "docs/architecture/parallel-agents/08-integration-queue.json"
+}

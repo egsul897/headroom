@@ -143,10 +143,38 @@ export function buildPhase2Dataset(repoRoot: string): {
       controllingContextComplete: records.filter((r) => r.controllingContextAudit.status === "CONTROLLING_CONTEXT_COMPLETE").length,
       contextIncomplete: records.filter((r) => r.controllingContextAudit.status === "CONTEXT_INCOMPLETE").length,
     },
-    duplicates: {
-      exactDuplicatePairs: dupReport.exactDuplicatePairs.length,
-      decisions,
-    },
+    duplicates: (() => {
+      const exactIds = new Set<string>();
+      for (const p of dupReport.exactDuplicatePairs) {
+        exactIds.add(p.a);
+        exactIds.add(p.b);
+      }
+      const nearIds = new Set<string>();
+      for (const c of dupReport.nearDuplicateClusters) {
+        for (const id of c.exampleIds) nearIds.add(id);
+      }
+      const quarantinedIds = new Set<string>([...exactIds, ...nearIds]);
+      // Count one canonical observation per near-dup cluster + all non-clustered non-exact-dup records.
+      // Exact-dup members are never independent; near-dup clusters contribute at most one.
+      const independent = records.filter((r) => {
+        if (exactIds.has(r.exampleId)) return false;
+        if (!nearIds.has(r.exampleId)) return true;
+        // Keep only the lexicographically first id in each cluster as the independent slot.
+        for (const c of dupReport.nearDuplicateClusters) {
+          if (!c.exampleIds.includes(r.exampleId)) continue;
+          const canonical = [...c.exampleIds].sort()[0];
+          return r.exampleId === canonical;
+        }
+        return false;
+      });
+      return {
+        exactDuplicatePairs: dupReport.exactDuplicatePairs.length,
+        nearDuplicateClusters: dupReport.nearDuplicateClusters.length,
+        quarantinedRecordCount: quarantinedIds.size,
+        independentObservationCount: independent.length,
+        decisions,
+      };
+    })(),
     eligibility: {
       trainingEligibleCount: records.filter((r) => r.trainingEligibility === "ELIGIBLE_PENDING_RIGHTS_AND_VERIFICATION").length,
       evaluationEligibleCount: records.filter((r) =>

@@ -119,5 +119,22 @@ export function decideDuplicates(records: readonly SourceToCovenantRecord[]): Du
     }
   }
 
+  // Quarantine near-duplicate clusters: keep in corpus, never count as independent training observations.
+  for (const cluster of report.nearDuplicateClusters) {
+    const ids = cluster.exampleIds;
+    if (ids.length < 2) continue;
+    for (const id of ids) {
+      if (decisions.some((d) => d.exampleId === id)) continue;
+      decisions.push({
+        exampleId: id,
+        pairedExampleIds: ids.filter((x) => x !== id),
+        classification: "NEAR_DUPLICATE_QUARANTINED",
+        keepInCorpus: true,
+        trainingEligible: false,
+        rationale: `Near-duplicate cluster ${cluster.clusterId} (similarity=${cluster.similarity}, ${cluster.method}). Quarantined from independent-example counts and training until spans are differentiated.`,
+      });
+    }
+  }
+
   return decisions;
 }

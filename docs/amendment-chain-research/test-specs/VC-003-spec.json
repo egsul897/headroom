@@ -1,0 +1,65 @@
+{
+  "specId": "VC-003-SPEC",
+  "schemaVersion": "amendment-chain-research.test-spec.v1",
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "sourceAuthorExpectation": {
+    "purpose": "Multiple amendments to related definitions in one instrument (CSSLR, CTLR, Indebtedness) plus ratio schedule restatement; also tests missing-parent fail-closed when Seventh A&R is absent.",
+    "expectedFailClosedBehavior": "Without Seventh A&R in package, targetResolutionStatus for definition targets must not claim UNIQUE against Eighth A&R; out-of-package parent must remain unresolved. Independent verification must not confirm RESOLVED effects against the wrong base document.",
+    "queryDates": [
+      "2022-07-31",
+      "2022-08-01",
+      "2022-08-02",
+      "2025-06-10"
+    ],
+    "mapsToProductionModules": [
+      "deterministic-parser",
+      "chain",
+      "operative-state",
+      "independent-verification"
+    ],
+    "sourcePointers": [
+      {
+        "docId": "cnmd-second-am-2022",
+        "accession": "0001193125-22-209154",
+        "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+        "quote": "The definition of \"Consolidated Senior Secured Leverage Ratio\" is hereby amended by deleting the reference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\"."
+      },
+      {
+        "docId": "cnmd-eighth-ar",
+        "accession": "0001174947-25-000941",
+        "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+        "quote": "Eighth A&R Closing Date June 10, 2025 \u2014 distinct instrument vintage from Seventh A&R parent of Second Amendment"
+      }
+    ],
+    "relatedScenarios": [
+      {
+        "scenarioId": "CNMD-S5",
+        "asOf": "2025-06-10",
+        "expect": "Eighth A&R restatement \u2014 Seventh-era Am1/Am2 effects must not silently attach without Eighth text authority",
+        "status": "WRONG_PARENT_GUARD",
+        "vc": "VC-003"
+      }
+    ],
+    "notLegalGroundTruth": true,
+    "updatedPhase2Note": "Multi-definition chain is Am1 ($25\u2192$75) then Am2 ($75\u2192$100); applying Am2 to Seventh A&R $25M is wrong-parent."
+  },
+  "independentlyReviewedLegalGroundTruth": {
+    "status": "PENDING_INDEPENDENT_REVIEW",
+    "reviewer": null,
+    "reviewedAt": null,
+    "disposition": null,
+    "notes": "Source-author expectations above are NOT independently reviewed legal ground truth. Reserved for independent legal challenger."
+  },
+  "replay": {
+    "portable": true,
+    "requiresProductionPatch": false,
+    "claudeOwnedFixturesTouched": false,
+    "inputs": {
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "acquisitionLedger": "docs/amendment-chain-research/phase2/acquisition-ledger.json",
+      "authorityLayer": "docs/amendment-chain-research/authority-layers/cnmd-seventh-ar-to-eighth-ar.json",
+      "byteCache": ".local-amendment-research/bytes/ (gitignored; reconstruct via EdgarConnector using ledger URIs)"
+    }
+  },
+  "notAProductionPatch": true
+}
