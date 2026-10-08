@@ -5,6 +5,7 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
+import { HISTORICAL_PARSER_CODE_SHA256, HISTORICAL_STRUCTURAL_TREE_SHA256, hashParserCode, hashProducingCode } from "../../scripts/p3-development-pipeline/evidence-integrity";
 import { runOfflineDevelopmentPipeline } from "../../scripts/p3-development-pipeline/run-offline";
 
 const GRANT = "docs/architecture/OWNER-GIBRALTAR-DEVELOPMENT-GRANT-2026-10-07.md";
@@ -54,6 +55,16 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(result.verificationReservation.haikuListScaledUsd).toBe(0);
     expect(result.passB.executed).toBe(false);
     expect(result.passB.terminal).toBe("PROVIDER_EXECUTION_REQUIRED");
+    expect(result.evidenceIdentity.providerExecutionIdentity).toBe("PROVIDER_EXECUTION_REQUIRED");
+    expect(result.evidenceIdentity.verificationState).toBe("NOT_EXECUTED");
+    expect(result.evidenceIdentity.parserCodeSha256).toBe(hashParserCode());
+    expect(result.evidenceIdentity.producingCodeSha256).toBe(hashProducingCode());
+    expect(result.evidenceIdentity.parserCodeSha256).not.toBe(HISTORICAL_PARSER_CODE_SHA256);
+    expect(result.evidenceIdentity.structuralTreeSha256).not.toBe(HISTORICAL_STRUCTURAL_TREE_SHA256);
+    expect(result.evidenceIdentity.sourceHtmlSha256).toBe(result.offline.htmlBodySha256);
+    expect(result.evidenceIdentity.extractedTextSha256).toBe(result.offline.extractedTextSha256);
+    expect(result.evidenceIdentity.structuralTreeSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(result.evidenceIdentity.passACandidateSetSha256).toMatch(/^[0-9a-f]{64}$/);
     expect(result.offline.passACandidates).toBe(938);
     expect(result.offline.totalNodes).toBe(2064);
     expect(result.offline.htmlBodyMatchesProvenance).toBe(true);

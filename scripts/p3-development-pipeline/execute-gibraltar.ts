@@ -5,6 +5,7 @@
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { assertProviderFreeExecution } from "./evidence-integrity";
 import { runOfflineDevelopmentPipeline } from "./run-offline";
 
 const PACKAGE_DIR = "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement";
@@ -22,6 +23,9 @@ async function main() {
     expectedFrozenSha256: "f782f2f98537c8b76a8a4506c92a51e74c40a0a8eafd203b7343eaa0a21aede3",
     passBCommand: 'AI_GATEWAY_API_KEY="$AI_GATEWAY_API_KEY" npx tsx scripts/p3-development-pipeline/execute-gibraltar.ts',
   });
+  if (!process.env.AI_GATEWAY_API_KEY && !process.env.ANTHROPIC_API_KEY) {
+    assertProviderFreeExecution(result);
+  }
   mkdirSync(path.dirname(OUT), { recursive: true });
   writeFileSync(OUT, JSON.stringify(result, null, 2) + "\n");
   const escalation = result.providerExecutionRequired;

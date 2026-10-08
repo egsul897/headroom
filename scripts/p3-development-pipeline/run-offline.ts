@@ -30,6 +30,16 @@ import { DEFAULT_GATEWAY_ANALYZER_MODEL, DEFAULT_MAX_TOKENS, reservedMaxInputTok
 import { maxCostOfRequestUsd, PRICING_TABLE_VERSION } from "../../lib/contract-model/analyzer/pricing";
 import { resolveReferenceTarget } from "../../lib/contract-model/compiler/semantic-accountability/reference-resolver";
 import type { ReferenceResolutionStatus } from "../../lib/contract-model/compiler/semantic-accountability/types";
+import {
+  assertProviderCandidatesMatchCurrentTree,
+  assertProviderFreeExecution,
+  assertSectionRefAnchorsMatchLiveTree,
+  hashParserCode,
+  hashPassACandidateSet,
+  hashProducingCode,
+  hashStructuralTree,
+  type EvidenceIdentity,
+} from "./evidence-integrity";
 
 export const DEVELOPMENT_BANNER = "DEVELOPMENT ≠ CERTIFIED ≠ PINNED_OFFLINE";
 
@@ -238,6 +248,8 @@ export interface DevelopmentPipelineResult {
     haikuListScaledUsd: number;
     source: string;
   };
+  /** Binds this record to the source bytes, parser, tree, Pass A set, and provider state that produced it. */
+  evidenceIdentity: EvidenceIdentity;
   paths: {
     builder: {
       stage: "PASS_A_BUILDER_LANGUAGE_PLUS_CROSS_CUT_TEXT_HEURISTIC";
@@ -531,7 +543,19 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
     semanticRolesAssigned = discovery.candidates.length > 0;
   }
 
-  return {
+  const evidenceIdentity: EvidenceIdentity = {
+    sourceHtmlSha256: sha256(rawHtml),
+    extractedTextSha256: sha256(extractedText),
+    parserCodeSha256: hashParserCode(),
+    structuralTreeSha256: hashStructuralTree(nodes),
+    passACandidateSetSha256: hashPassACandidateSet(deterministic.map((candidate) => ({ nodeId: candidate.nodeId, signals: candidate.signals }))),
+    providerExecutionIdentity: passB.executed ? `PASS_B_REAL_PROVIDER:${passB.providerName}:${passB.model}` : "PROVIDER_EXECUTION_REQUIRED",
+    verificationState: "NOT_EXECUTED",
+    producingCodeSha256: hashProducingCode(),
+  };
+  const liveSectionRefByNodeId = new Map(nodes.map((node) => [node.nodeId, node.sectionRef]));
+
+  const result: DevelopmentPipelineResult = {
     banner: DEVELOPMENT_BANNER,
     designation: "DEVELOPMENT",
     certified: false,
@@ -609,6 +633,7 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
     providerScopedCandidates,
     crossCutRead: readCrossCuts(discoveredCandidates, owningNodes.map((node) => node.nodeId), reclassWindows.map((window) => window.nodeId), assetCandidates.map((node) => node.nodeId)),
     verificationReservation: reserveVerification(discoveredCandidates.length),
+    evidenceIdentity,
     paths: {
       builder: {
         stage: "PASS_A_BUILDER_LANGUAGE_PLUS_CROSS_CUT_TEXT_HEURISTIC",
@@ -631,4 +656,20 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
       },
     },
   };
+  const anchors = [
+    ...owningNodes.map((node) => ({ nodeId: node.nodeId, sectionRef: node.sectionRef })),
+    ...builderRows.map((row) => ({ nodeId: row.nodeId, sectionRef: row.sectionRef })),
+    ...reclassRows.map((row) => ({ nodeId: row.nodeId, sectionRef: row.sectionRef })),
+    ...assetRows.map((row) => ({ nodeId: row.nodeId, sectionRef: row.sectionRef })),
+  ];
+  assertSectionRefAnchorsMatchLiveTree(anchors, liveSectionRefByNodeId);
+  assertProviderCandidatesMatchCurrentTree({
+    candidates: discoveredCandidates,
+    recordParserCodeSha256: evidenceIdentity.parserCodeSha256,
+    recordStructuralTreeSha256: evidenceIdentity.structuralTreeSha256,
+    currentParserCodeSha256: evidenceIdentity.parserCodeSha256,
+    currentStructuralTreeSha256: evidenceIdentity.structuralTreeSha256,
+  });
+  if (!provider) assertProviderFreeExecution(result);
+  return result;
 }
