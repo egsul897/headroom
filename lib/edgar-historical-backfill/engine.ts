@@ -79,19 +79,32 @@ export async function runHistoricalDiscovery(opts: RunDiscoveryOptions): Promise
   const manifests: IssuerManifest[] = [];
   const allExhibits: ExhibitRef[] = [];
   const issuersByCik = new Map(checkpoint.issuers.map((i) => [i.cik, i]));
+  const hydrated = new Set<string>();
 
-  for (let i = checkpoint.issuerCursor; i < checkpoint.issuers.length; i++) {
+  // Resume-safe: always reload completed manifests first. Relying solely on
+  // issuerCursor would skip hydration when cursor already equals issuers.length
+  // and would regenerate an empty queue.
+  for (const cik of checkpoint.completedCiks) {
+    try {
+      const m = readJson<IssuerManifest>(join(manifestsDir, `${cik}.json`));
+      manifests.push(m);
+      allExhibits.push(...m.exhibits);
+      issuersByCik.set(m.issuer.cik, m.issuer);
+      hydrated.add(cik);
+    } catch {
+      log(`  missing manifest for completed CIK ${cik} — will rediscover`);
+    }
+  }
+
+  for (let i = 0; i < checkpoint.issuers.length; i++) {
     const issuer = checkpoint.issuers[i]!;
-    if (checkpoint.completedCiks.includes(issuer.cik)) {
-      try {
-        const m = readJson<IssuerManifest>(join(manifestsDir, `${issuer.cik}.json`));
-        manifests.push(m);
-        allExhibits.push(...m.exhibits);
-      } catch {
-        /* continue rediscovery */
-      }
-      checkpoint.issuerCursor = i + 1;
+    if (checkpoint.completedCiks.includes(issuer.cik) && hydrated.has(issuer.cik)) {
+      checkpoint.issuerCursor = Math.max(checkpoint.issuerCursor, i + 1);
       continue;
+    }
+    // If marked completed but manifest missing, fall through to rediscover.
+    if (checkpoint.completedCiks.includes(issuer.cik) && !hydrated.has(issuer.cik)) {
+      checkpoint.completedCiks = checkpoint.completedCiks.filter((c) => c !== issuer.cik);
     }
 
     log(`[${i + 1}/${checkpoint.issuers.length}] CIK ${issuer.cik} ${issuer.ticker ?? ""}`);

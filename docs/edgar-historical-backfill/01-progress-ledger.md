@@ -16,3 +16,14 @@
 - Smoke (CNMD/MATW/AAL/ROCK/F): 67 IBR exhibits discovered (1 RESOLVED with source URI, 66 PARTIAL with accession/form-date).
 - Focused tests: 21/21 passing.
 - Draft PR: https://github.com/egsul897/headroom/pull/142
+
+## 2026-10-08 — Phase 2 (acquisition handoff / IBR / fleet-safe SEC)
+
+- Starting SHA: `1526986781805da41e2fa477ef6b550696f778d2`
+- SEC placeholder UA removed; live requires configured authorized contact.
+- Fleet contract: process-local limiter honesty + `HEADROOM_SEC_FETCH_OWNER` / shared budget path.
+- Legacy queue validated 126/126; CKF handoff export shipped.
+- IBR: engine resolved 80 in pilot-100-v2; residuals RESOLVED 45 / MISSING_ACCESSION 19 / NEEDS_ORIGINAL_INDEX 10.
+- Pilot-100-v2: **100/100 distinct CIKs**, 78,859 filings, 873 exhibits, 868 distinct agreements, **149 fetchable** queued (108 inline + 41 IBR_RESOLVED).
+- Resume bug fixed (hydrate completed manifests when cursor at end); queue regeneration idempotent.
+- Tests: 29/29. Draft PR #142.

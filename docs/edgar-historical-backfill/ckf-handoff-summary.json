@@ -1,13 +1,117 @@
 {
   "contractVersion": 1,
-  "generatedAt": "2026-10-08T22:29:54.308Z",
+  "generatedAt": "2026-10-08T22:46:24.896Z",
   "producer": "WS-EHB",
   "consumer": "WS-CKF",
   "storageStatus": "COMMITTED_DOCS_SUMMARY",
   "storageNote": "Runtime queue/manifest bytes under data/edgar-historical-backfill/ are workspace-local unless exported. Summaries under docs/edgar-historical-backfill/ are committed; do not claim cross-agent durability from VM-only paths.",
-  "fetchableCount": 17,
+  "fetchableCount": 149,
   "deferredPartialIbrCount": 0,
   "documents": [
+    {
+      "sourceId": "ehb:c8cb111afe06e36e1d620ff6",
+      "filing": {
+        "accessionNumber": "0001213900-26-036897",
+        "formType": "10-K",
+        "filingDate": "2026-03-31",
+        "issuer": {
+          "cik": "0000012239",
+          "ticker": "DOMH"
+        }
+      },
+      "exhibit": {
+        "filename": "ea028315901ex3-12.htm",
+        "description": "CERTIFICATE OF AMENDMENT OF THE AMENDED AND RESTATED CERTIFICATE OF INCORPORATIO",
+        "exhibitType": "EX-3.12",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/12239/000121390026036897/ea028315901ex3-12.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+2; resolution=FETCHABLE_INLINE",
+        "priority=183",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "c8cb111afe06e36e1d620ff6",
+      "ehbPriority": 183,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000012239|RESTATEMENT|certificate of amendment of the amended and restated certificate of incorporatio|amended_and_restated|0001213900-26-036897",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:e9708044924f4e109f96211f",
+      "filing": {
+        "accessionNumber": "0000018230-22-000199",
+        "formType": "8-K",
+        "filingDate": "2022-09-06",
+        "issuer": {
+          "cik": "0000018230",
+          "ticker": "CAT"
+        }
+      },
+      "exhibit": {
+        "filename": "ex101-364xdayfacility.htm",
+        "description": "EX-10.1 364-DAY CREDIT AGREEMENT",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/18230/000001823022000199/ex101-364xdayfacility.htm"
+      },
+      "discoverySignals": [
+        "kind=CREDIT_AGREEMENT; relevance=95; diversity=+1; resolution=FETCHABLE_INLINE",
+        "priority=180.5",
+        "kind=CREDIT_AGREEMENT"
+      ],
+      "documentClass": "CREDIT_AGREEMENT",
+      "ehbQueueId": "e9708044924f4e109f96211f",
+      "ehbPriority": 180.5,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000018230|CREDIT_AGREEMENT|1 364 day credit agreement",
+      "parentRelationshipCandidates": [],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:c5f78a3ee58479f43cf6e4ea",
+      "filing": {
+        "accessionNumber": "0000950157-24-001406",
+        "formType": "8-K",
+        "filingDate": "2024-10-11",
+        "issuer": {
+          "cik": "0000014930",
+          "ticker": "BC"
+        }
+      },
+      "exhibit": {
+        "filename": "ex10-1.htm",
+        "description": "AMENDED AND RESTATED CREDIT AGREEMENT",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/14930/000095015724001406/ex10-1.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=180",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "c5f78a3ee58479f43cf6e4ea",
+      "ehbPriority": 180,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000014930|RESTATEMENT|amended and restated credit agreement|amended_and_restated|0000950157-24-001406",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
     {
       "sourceId": "ehb:a77c506b087aab39da748554",
       "filing": {
@@ -26,19 +130,391 @@
         "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329624000010/fifthamendmenttothirdamend.htm"
       },
       "discoverySignals": [
-        "kind=RESTATEMENT; relevance=96; diversity=+13; resolution=FETCHABLE_INLINE",
-        "priority=193",
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=180",
         "kind=RESTATEMENT"
       ],
       "documentClass": "RESTATEMENT",
       "ehbQueueId": "a77c506b087aab39da748554",
-      "ehbPriority": 193,
+      "ehbPriority": 180,
       "ehbResolutionStatus": "FETCHABLE_INLINE",
       "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 fifth amendment to the third amended and restated loan agreement|fifth_amendment|0000063296-24-000010",
       "parentRelationshipCandidates": [
         {
           "kind": "RESTATES",
           "candidateRef": "third amended and restated loan agreement",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:8f0a399001a5940742ab1772",
+      "filing": {
+        "accessionNumber": "0001654954-20-000956",
+        "formType": "8-K",
+        "filingDate": "2020-01-30",
+        "issuer": {
+          "cik": "0000002186",
+          "ticker": "BKTI"
+        }
+      },
+      "exhibit": {
+        "filename": "bkti_ex101.htm",
+        "description": "CREDIT AGREEMENT",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/2186/000165495420000956/bkti_ex101.htm"
+      },
+      "discoverySignals": [
+        "kind=CREDIT_AGREEMENT; relevance=95; diversity=+1; resolution=FETCHABLE_INLINE",
+        "priority=178.5",
+        "kind=CREDIT_AGREEMENT"
+      ],
+      "documentClass": "CREDIT_AGREEMENT",
+      "ehbQueueId": "8f0a399001a5940742ab1772",
+      "ehbPriority": 178.5,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000002186|CREDIT_AGREEMENT|credit agreement",
+      "parentRelationshipCandidates": [],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:0a86e3b22041f3452871ac68",
+      "filing": {
+        "accessionNumber": "0000018230-22-000199",
+        "formType": "8-K",
+        "filingDate": "2022-09-06",
+        "issuer": {
+          "cik": "0000018230",
+          "ticker": "CAT"
+        }
+      },
+      "exhibit": {
+        "filename": "ex104-thirdamendmendandres.htm",
+        "description": "EX-10.4 THIRD AMENDED AND RESTATED CREDIT AGREEMENT (3Y)",
+        "exhibitType": "EX-10.4",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/18230/000001823022000199/ex104-thirdamendmendandres.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=178",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "0a86e3b22041f3452871ac68",
+      "ehbPriority": 178,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000018230|RESTATEMENT|4 third amended and restated credit agreement 3y|amended_and_restated|0000018230-22-000199",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:89001ae98391326522ad9cc9",
+      "filing": {
+        "accessionNumber": "0000018230-22-000199",
+        "formType": "8-K",
+        "filingDate": "2022-09-06",
+        "issuer": {
+          "cik": "0000018230",
+          "ticker": "CAT"
+        }
+      },
+      "exhibit": {
+        "filename": "ex107-thirdamendedandresta.htm",
+        "description": "EX-10.7 THIRD AMENDED AND RESTATED CREDIT AGREEMENT (5Y)",
+        "exhibitType": "EX-10.7",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/18230/000001823022000199/ex107-thirdamendedandresta.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=178",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "89001ae98391326522ad9cc9",
+      "ehbPriority": 178,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000018230|RESTATEMENT|7 third amended and restated credit agreement 5y|amended_and_restated|0000018230-22-000199",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "filing": {
+        "accessionNumber": "0000063296-20-000040",
+        "formType": "8-K",
+        "filingDate": "2020-03-30",
+        "issuer": {
+          "cik": "0000063296",
+          "ticker": "MATW"
+        }
+      },
+      "exhibit": {
+        "filename": "ex101loanagreement.htm",
+        "description": "EXHIBIT 10.1 THIRD AMENDED AND RESTATED LOAN AGREEMENT",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329620000040/ex101loanagreement.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=176",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "e08b2d33f66897b31a4dd6d0",
+      "ehbPriority": 176,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 third amended and restated loan agreement|amended_and_restated|0000063296-20-000040",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:42e4a267e5f11e0fb858e576",
+      "filing": {
+        "accessionNumber": "0000063296-17-000103",
+        "formType": "8-K",
+        "filingDate": "2017-11-22",
+        "issuer": {
+          "cik": "0000063296",
+          "ticker": "MATW"
+        }
+      },
+      "exhibit": {
+        "filename": "exhibit10-1xfirstamendment.htm",
+        "description": "EXHIBIT 10.1 FIRST AMENDMENT TO SECOND AMENDED AND RESTATED LOAN AGREEMENT",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329617000103/exhibit10-1xfirstamendment.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=173",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "42e4a267e5f11e0fb858e576",
+      "ehbPriority": 173,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 first amendment to second amended and restated loan agreement|first_amendment|0000063296-17-000103",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "second amended and restated loan agreement",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:9892e6df9cfd54bf26192d5a",
+      "filing": {
+        "accessionNumber": "0001193125-12-326074",
+        "formType": "8-K",
+        "filingDate": "2012-07-31",
+        "issuer": {
+          "cik": "0000014272",
+          "ticker": "BMY"
+        }
+      },
+      "exhibit": {
+        "filename": "d387499dex101.htm",
+        "description": "$1,500,000,000 FIVE YEAR COMPETITIVE ADVANCE AND REVOLVING CREDIT FACILITY AGREE",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/14272/000119312512326074/d387499dex101.htm"
+      },
+      "discoverySignals": [
+        "kind=CREDIT_AGREEMENT; relevance=95; diversity=+3; resolution=FETCHABLE_INLINE",
+        "priority=172.5",
+        "kind=CREDIT_AGREEMENT"
+      ],
+      "documentClass": "CREDIT_AGREEMENT",
+      "ehbQueueId": "9892e6df9cfd54bf26192d5a",
+      "ehbPriority": 172.5,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000014272|CREDIT_AGREEMENT|1 500 000 000 five year competitive advance and revolving credit facility agree",
+      "parentRelationshipCandidates": [],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:689e6883dab945cf591f0a74",
+      "filing": {
+        "accessionNumber": "0000008177-06-000040",
+        "formType": "8-K",
+        "filingDate": "2006-12-22",
+        "issuer": {
+          "cik": "0000008177",
+          "ticker": "AAME"
+        }
+      },
+      "exhibit": {
+        "filename": "creditagreemt2006.htm",
+        "description": "CREDIT AGREEMENT BETWEEN ATLANTIC AMERICAN CORPORATION AND WACHOVIA BANK, NATION",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8177/000000817706000040/creditagreemt2006.htm"
+      },
+      "discoverySignals": [
+        "kind=CREDIT_AGREEMENT; relevance=95; diversity=+9; resolution=FETCHABLE_INLINE",
+        "priority=172.5",
+        "kind=CREDIT_AGREEMENT"
+      ],
+      "documentClass": "CREDIT_AGREEMENT",
+      "ehbQueueId": "689e6883dab945cf591f0a74",
+      "ehbPriority": 172.5,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000008177|CREDIT_AGREEMENT|credit agreement atlantic american corporation and wachovia bank nation",
+      "parentRelationshipCandidates": [],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "filing": {
+        "accessionNumber": "0000063296-16-000132",
+        "formType": "8-K",
+        "filingDate": "2016-04-28",
+        "issuer": {
+          "cik": "0000063296",
+          "ticker": "MATW"
+        }
+      },
+      "exhibit": {
+        "filename": "exhibit10-1-loanagree.htm",
+        "description": "EXHIBIT 10.1 SECOND AMENDED AND RESTATED LOAN AGREEMENT",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329616000132/exhibit10-1-loanagree.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=172",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "68579e05aae3a5300e6a69a0",
+      "ehbPriority": 172,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 second amended and restated loan agreement|amended_and_restated|0000063296-16-000132",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "authority": "DISCOVERY_HINT_ONLY"
+        }
+      ],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:59c763cb30f0543730fb97a0",
+      "filing": {
+        "accessionNumber": "0001628280-25-029105",
+        "formType": "8-K",
+        "filingDate": "2025-06-03",
+        "issuer": {
+          "cik": "0000016058",
+          "ticker": "CACI"
+        }
+      },
+      "exhibit": {
+        "filename": "caci-indenture.htm",
+        "description": "EX-4.1",
+        "exhibitType": "EX-4.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/16058/000162828025029105/caci-indenture.htm"
+      },
+      "discoverySignals": [
+        "kind=INDENTURE; relevance=92; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=171",
+        "kind=INDENTURE"
+      ],
+      "documentClass": "INDENTURE",
+      "ehbQueueId": "59c763cb30f0543730fb97a0",
+      "ehbPriority": 171,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000016058|INDENTURE|1",
+      "parentRelationshipCandidates": [],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:64875932ad6fc03b0aae4bd4",
+      "filing": {
+        "accessionNumber": "0001193125-12-246873",
+        "formType": "8-K",
+        "filingDate": "2012-05-24",
+        "issuer": {
+          "cik": "0000010795",
+          "ticker": "BDX"
+        }
+      },
+      "exhibit": {
+        "filename": "d356487dex10.htm",
+        "description": "FIVE-YEAR CREDIT AGREEMENT, DATED AS OF MAY 18, 2012",
+        "exhibitType": "EX-10",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/10795/000119312512246873/d356487dex10.htm"
+      },
+      "discoverySignals": [
+        "kind=CREDIT_AGREEMENT; relevance=95; diversity=+1; resolution=FETCHABLE_INLINE",
+        "priority=170.5",
+        "kind=CREDIT_AGREEMENT"
+      ],
+      "documentClass": "CREDIT_AGREEMENT",
+      "ehbQueueId": "64875932ad6fc03b0aae4bd4",
+      "ehbPriority": 170.5,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000010795|CREDIT_AGREEMENT|five year credit agreement may 18 2012",
+      "parentRelationshipCandidates": [],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:dae7aec85a9345c25b232c11",
+      "filing": {
+        "accessionNumber": "0001193125-12-350038",
+        "formType": "8-K",
+        "filingDate": "2012-08-10",
+        "issuer": {
+          "cik": "0000016918",
+          "ticker": "STZ"
+        }
+      },
+      "exhibit": {
+        "filename": "d388918dex43.htm",
+        "description": "AMENDED AND RESTATED INTERIM LOAN AGREEMENT",
+        "exhibitType": "EX-4.3",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/16918/000119312512350038/d388918dex43.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+2; resolution=FETCHABLE_INLINE",
+        "priority=170",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "dae7aec85a9345c25b232c11",
+      "ehbPriority": 170,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000016918|RESTATEMENT|amended and restated interim loan agreement|amended_and_restated|0001193125-12-350038",
+      "parentRelationshipCandidates": [
+        {
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
           "evidence": "documentKind=RESTATEMENT; description-hint",
           "authority": "DISCOVERY_HINT_ONLY"
         }
@@ -63,13 +539,13 @@
         "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000207709626000190/ea029246401ex10-1.htm"
       },
       "discoverySignals": [
-        "kind=AMENDMENT; relevance=93; diversity=+29; resolution=FETCHABLE_INLINE",
-        "priority=190.5",
+        "kind=AMENDMENT; relevance=93; diversity=+8; resolution=FETCHABLE_INLINE",
+        "priority=169.5",
         "kind=AMENDMENT"
       ],
       "documentClass": "AMENDMENT",
       "ehbQueueId": "21bdd6d249ed900f5c6fcef1",
-      "ehbPriority": 190.5,
+      "ehbPriority": 169.5,
       "ehbResolutionStatus": "FETCHABLE_INLINE",
       "ehbDedupeIdentity": "0000816956|AMENDMENT|first omnibus amendment and increased facility activation notice ma|2026-06-01|0002077096-26-000190",
       "parentRelationshipCandidates": [
@@ -83,62 +559,32 @@
       "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
     },
     {
-      "sourceId": "ehb:8f26240e1e02e95a3df8c5e4",
+      "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
       "filing": {
-        "accessionNumber": "0000063296-10-000089",
+        "accessionNumber": "0000063296-13-000045",
         "formType": "8-K",
-        "filingDate": "2010-12-28",
+        "filingDate": "2013-07-22",
         "issuer": {
           "cik": "0000063296",
           "ticker": "MATW"
         }
       },
       "exhibit": {
-        "filename": "exhibit10-1loanagrmt12212010.htm",
-        "description": "EXHIBIT 10.1 LOAN AGREEMENT DATED DECEMBER 21, 2010",
+        "filename": "exhibit10-1loanagrmt7182013.htm",
+        "description": "EXHIBIT 10.1 RESTATED LOAN AGREEMENT DATED JULY 18, 2013",
         "exhibitType": "EX-10.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329610000089/exhibit10-1loanagrmt12212010.htm"
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329613000045/exhibit10-1loanagrmt7182013.htm"
       },
       "discoverySignals": [
-        "kind=CREDIT_AGREEMENT; relevance=95; diversity=+23; resolution=FETCHABLE_INLINE",
-        "priority=190.5",
-        "kind=CREDIT_AGREEMENT"
-      ],
-      "documentClass": "CREDIT_AGREEMENT",
-      "ehbQueueId": "8f26240e1e02e95a3df8c5e4",
-      "ehbPriority": 190.5,
-      "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|CREDIT_AGREEMENT|1 loan agreement december 21 2010",
-      "parentRelationshipCandidates": [],
-      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
-    },
-    {
-      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
-      "filing": {
-        "accessionNumber": "0000063296-20-000040",
-        "formType": "8-K",
-        "filingDate": "2020-03-30",
-        "issuer": {
-          "cik": "0000063296",
-          "ticker": "MATW"
-        }
-      },
-      "exhibit": {
-        "filename": "ex101loanagreement.htm",
-        "description": "EXHIBIT 10.1 THIRD AMENDED AND RESTATED LOAN AGREEMENT",
-        "exhibitType": "EX-10.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329620000040/ex101loanagreement.htm"
-      },
-      "discoverySignals": [
-        "kind=RESTATEMENT; relevance=96; diversity=+13; resolution=FETCHABLE_INLINE",
-        "priority=189",
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=169",
         "kind=RESTATEMENT"
       ],
       "documentClass": "RESTATEMENT",
-      "ehbQueueId": "e08b2d33f66897b31a4dd6d0",
-      "ehbPriority": 189,
+      "ehbQueueId": "29c628c2d47f883dee2f7ef6",
+      "ehbPriority": 169,
       "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 third amended and restated loan agreement|amended_and_restated|0000063296-20-000040",
+      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 restated loan agreement july 18 2013|2013-07-22|0000063296-13-000045",
       "parentRelationshipCandidates": [
         {
           "kind": "RESTATES",
@@ -150,80 +596,104 @@
       "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
     },
     {
-      "sourceId": "ehb:d55198aea2a0c1a1c655a1bf",
+      "sourceId": "ehb:df96d51336ad82f0cc76e64f",
       "filing": {
-        "accessionNumber": "0000816956-25-000004",
-        "formType": "10-K",
-        "filingDate": "2025-02-18",
+        "accessionNumber": "0000003545-10-000077",
+        "formType": "8-K",
+        "filingDate": "2010-09-09",
         "issuer": {
-          "cik": "0000816956",
-          "ticker": "CNMD"
+          "cik": "0000003545",
+          "ticker": "ALCO"
         }
       },
       "exhibit": {
-        "filename": "ex10.13-ibr",
-        "description": "Supplemental Indenture, dated as of June 6, 2022, to the Indenture, dated January 29, 2019, by and between CONMED Corporation and U.S. Bank Trust Company, National Association, as successor to MUFG Union Bank, N.A. as trustee (",
-        "exhibitType": "EX-10.13",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312522169336/d320648dex42.htm"
+        "filename": "exhibit1001.htm",
+        "description": "CREDIT AGREEMENT",
+        "exhibitType": "EX-10.01",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/3545/000000354510000077/exhibit1001.htm"
       },
       "discoverySignals": [
-        "kind=SUPPLEMENTAL_INDENTURE; relevance=94; diversity=+25; resolution=IBR_RESOLVED",
-        "priority=187",
-        "kind=SUPPLEMENTAL_INDENTURE"
+        "kind=CREDIT_AGREEMENT; relevance=95; diversity=+1; resolution=FETCHABLE_INLINE",
+        "priority=168.5",
+        "kind=CREDIT_AGREEMENT"
       ],
-      "documentClass": "SUPPLEMENTAL_INDENTURE",
-      "ehbQueueId": "d55198aea2a0c1a1c655a1bf",
-      "ehbPriority": 187,
-      "ehbResolutionStatus": "IBR_RESOLVED",
-      "ehbDedupeIdentity": "0000816956|SUPPLEMENTAL_INDENTURE|supplemental indenture june 6 2022 to the indenture january 29 2019 by and conmed corporation and u s bank trust company|2025-02-18|0000816956-25-000004",
+      "documentClass": "CREDIT_AGREEMENT",
+      "ehbQueueId": "df96d51336ad82f0cc76e64f",
+      "ehbPriority": 168.5,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000003545|CREDIT_AGREEMENT|credit agreement",
+      "parentRelationshipCandidates": [],
+      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
+    },
+    {
+      "sourceId": "ehb:4fb6e395e900520f0de0f289",
+      "filing": {
+        "accessionNumber": "0001193125-11-007530",
+        "formType": "8-K",
+        "filingDate": "2011-01-13",
+        "issuer": {
+          "cik": "0000005981",
+          "ticker": "AVD"
+        }
+      },
+      "exhibit": {
+        "filename": "dex101.htm",
+        "description": "AMENDED AND RESTATED CREDIT AGREEMENT",
+        "exhibitType": "EX-10.1",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/5981/000119312511007530/dex101.htm"
+      },
+      "discoverySignals": [
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=167",
+        "kind=RESTATEMENT"
+      ],
+      "documentClass": "RESTATEMENT",
+      "ehbQueueId": "4fb6e395e900520f0de0f289",
+      "ehbPriority": 167,
+      "ehbResolutionStatus": "FETCHABLE_INLINE",
+      "ehbDedupeIdentity": "0000005981|RESTATEMENT|amended and restated credit agreement|amended_and_restated|0001193125-11-007530",
       "parentRelationshipCandidates": [
         {
-          "kind": "SUPPLEMENTS",
-          "candidateRef": "june 6, 2022, to the indenture",
-          "evidence": "documentKind=SUPPLEMENTAL_INDENTURE; description-hint",
-          "authority": "DISCOVERY_HINT_ONLY"
-        },
-        {
-          "kind": "UNKNOWN_RELATED",
-          "candidateRef": "0001193125-22-169336:EX-4.2",
-          "evidence": "IBR citation points at prior filing exhibit (not operative authority by itself)",
+          "kind": "RESTATES",
+          "candidateRef": "parent-agreement-unspecified",
+          "evidence": "documentKind=RESTATEMENT; description-hint",
           "authority": "DISCOVERY_HINT_ONLY"
         }
       ],
       "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
     },
     {
-      "sourceId": "ehb:42e4a267e5f11e0fb858e576",
+      "sourceId": "ehb:d15e54262c9e521319cb11b1",
       "filing": {
-        "accessionNumber": "0000063296-17-000103",
-        "formType": "8-K",
-        "filingDate": "2017-11-22",
+        "accessionNumber": "0001628280-26-011402",
+        "formType": "10-K",
+        "filingDate": "2026-02-25",
         "issuer": {
-          "cik": "0000063296",
-          "ticker": "MATW"
+          "cik": "0000004977",
+          "ticker": "AFL"
         }
       },
       "exhibit": {
-        "filename": "exhibit10-1xfirstamendment.htm",
-        "description": "EXHIBIT 10.1 FIRST AMENDMENT TO SECOND AMENDED AND RESTATED LOAN AGREEMENT",
-        "exhibitType": "EX-10.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329617000103/exhibit10-1xfirstamendment.htm"
+        "filename": "ex4.2-ibr",
+        "description": "Indenture, dated as of May 21, 2009, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee &#8211;",
+        "exhibitType": "EX-4.2",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/4977/000095014409004505/g19200exv4w1.htm"
       },
       "discoverySignals": [
-        "kind=RESTATEMENT; relevance=96; diversity=+13; resolution=FETCHABLE_INLINE",
-        "priority=186",
-        "kind=RESTATEMENT"
+        "kind=INDENTURE; relevance=92; diversity=+0; resolution=IBR_RESOLVED",
+        "priority=166",
+        "kind=INDENTURE"
       ],
-      "documentClass": "RESTATEMENT",
-      "ehbQueueId": "42e4a267e5f11e0fb858e576",
-      "ehbPriority": 186,
-      "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 first amendment to second amended and restated loan agreement|first_amendment|0000063296-17-000103",
+      "documentClass": "INDENTURE",
+      "ehbQueueId": "d15e54262c9e521319cb11b1",
+      "ehbPriority": 166,
+      "ehbResolutionStatus": "IBR_RESOLVED",
+      "ehbDedupeIdentity": "0000004977|INDENTURE|indenture may 21 2009 aflac incorporated and the bank of new york mellon trust company n a as trustee 8211",
       "parentRelationshipCandidates": [
         {
-          "kind": "RESTATES",
-          "candidateRef": "second amended and restated loan agreement",
-          "evidence": "documentKind=RESTATEMENT; description-hint",
+          "kind": "UNKNOWN_RELATED",
+          "candidateRef": "0000950144-09-004505:EX-4.1",
+          "evidence": "IBR citation points at prior filing exhibit (not operative authority by itself)",
           "authority": "DISCOVERY_HINT_ONLY"
         }
       ],
@@ -247,13 +717,13 @@
         "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312522169336/d320648dex41.htm"
       },
       "discoverySignals": [
-        "kind=INDENTURE; relevance=92; diversity=+19; resolution=IBR_RESOLVED",
-        "priority=185",
+        "kind=INDENTURE; relevance=92; diversity=+0; resolution=IBR_RESOLVED",
+        "priority=166",
         "kind=INDENTURE"
       ],
       "documentClass": "INDENTURE",
       "ehbQueueId": "8dbd3212a9f91a14a5cf35ae",
-      "ehbPriority": 185,
+      "ehbPriority": 166,
       "ehbResolutionStatus": "IBR_RESOLVED",
       "ehbDedupeIdentity": "0000816956|INDENTURE|indenture june 6 2022 by and conmed corporation and u s bank trust company national association as trustee",
       "parentRelationshipCandidates": [
@@ -284,13 +754,13 @@
         "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312519021020/d697836dex41.htm"
       },
       "discoverySignals": [
-        "kind=INDENTURE; relevance=92; diversity=+19; resolution=IBR_RESOLVED",
-        "priority=185",
+        "kind=INDENTURE; relevance=92; diversity=+0; resolution=IBR_RESOLVED",
+        "priority=166",
         "kind=INDENTURE"
       ],
       "documentClass": "INDENTURE",
       "ehbQueueId": "3d7a2cbca4c404d838c8bd94",
-      "ehbPriority": 185,
+      "ehbPriority": 166,
       "ehbResolutionStatus": "IBR_RESOLVED",
       "ehbDedupeIdentity": "0000816956|INDENTURE|indenture january 29 2019 by and conmed corporation and mufg union bank n a as trustee",
       "parentRelationshipCandidates": [
@@ -304,32 +774,32 @@
       "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
     },
     {
-      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sourceId": "ehb:2a09cf6c0f9e0384d6c46b6f",
       "filing": {
-        "accessionNumber": "0000063296-16-000132",
+        "accessionNumber": "0000012208-10-000058",
         "formType": "8-K",
-        "filingDate": "2016-04-28",
+        "filingDate": "2010-06-25",
         "issuer": {
-          "cik": "0000063296",
-          "ticker": "MATW"
+          "cik": "0000012208",
+          "ticker": "BIO"
         }
       },
       "exhibit": {
-        "filename": "exhibit10-1-loanagree.htm",
-        "description": "EXHIBIT 10.1 SECOND AMENDED AND RESTATED LOAN AGREEMENT",
-        "exhibitType": "EX-10.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329616000132/exhibit10-1-loanagree.htm"
+        "filename": "exhibit101.htm",
+        "description": "EXHIBIT 10.1 - SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+        "exhibitType": "EX-10",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/12208/000001220810000058/exhibit101.htm"
       },
       "discoverySignals": [
-        "kind=RESTATEMENT; relevance=96; diversity=+13; resolution=FETCHABLE_INLINE",
-        "priority=185",
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=166",
         "kind=RESTATEMENT"
       ],
       "documentClass": "RESTATEMENT",
-      "ehbQueueId": "68579e05aae3a5300e6a69a0",
-      "ehbPriority": 185,
+      "ehbQueueId": "2a09cf6c0f9e0384d6c46b6f",
+      "ehbPriority": 166,
       "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 second amended and restated loan agreement|amended_and_restated|0000063296-16-000132",
+      "ehbDedupeIdentity": "0000012208|RESTATEMENT|1 second amended and restated credit agreement|amended_and_restated|0000012208-10-000058",
       "parentRelationshipCandidates": [
         {
           "kind": "RESTATES",
@@ -341,32 +811,32 @@
       "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
     },
     {
-      "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
+      "sourceId": "ehb:c075fc436b4f3eddecd939e2",
       "filing": {
-        "accessionNumber": "0000063296-13-000045",
+        "accessionNumber": "0000012208-10-000058",
         "formType": "8-K",
-        "filingDate": "2013-07-22",
+        "filingDate": "2010-06-25",
         "issuer": {
-          "cik": "0000063296",
-          "ticker": "MATW"
+          "cik": "0000012208",
+          "ticker": "BIO"
         }
       },
       "exhibit": {
-        "filename": "exhibit10-1loanagrmt7182013.htm",
-        "description": "EXHIBIT 10.1 RESTATED LOAN AGREEMENT DATED JULY 18, 2013",
-        "exhibitType": "EX-10.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329613000045/exhibit10-1loanagrmt7182013.htm"
+        "filename": "exhibit102.htm",
+        "description": "EXHIBIT 10.2 - SECOND AMENDED AND RESTATED SECURITY AGREEMENT",
+        "exhibitType": "EX-10",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/12208/000001220810000058/exhibit102.htm"
       },
       "discoverySignals": [
-        "kind=RESTATEMENT; relevance=96; diversity=+13; resolution=FETCHABLE_INLINE",
-        "priority=182",
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=166",
         "kind=RESTATEMENT"
       ],
       "documentClass": "RESTATEMENT",
-      "ehbQueueId": "29c628c2d47f883dee2f7ef6",
-      "ehbPriority": 182,
+      "ehbQueueId": "c075fc436b4f3eddecd939e2",
+      "ehbPriority": 166,
       "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|RESTATEMENT|1 restated loan agreement july 18 2013|2013-07-22|0000063296-13-000045",
+      "ehbDedupeIdentity": "0000012208|RESTATEMENT|2 second amended and restated security agreement|amended_and_restated|0000012208-10-000058",
       "parentRelationshipCandidates": [
         {
           "kind": "RESTATES",
@@ -378,269 +848,66 @@
       "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
     },
     {
-      "sourceId": "ehb:48e5472e73a8e3b96357fbf8",
+      "sourceId": "ehb:84be5468aebd41c33c42f94a",
       "filing": {
-        "accessionNumber": "0000816956-25-000004",
-        "formType": "10-K",
-        "filingDate": "2025-02-18",
-        "issuer": {
-          "cik": "0000816956",
-          "ticker": "CNMD"
-        }
-      },
-      "exhibit": {
-        "filename": "ex10.5-ibr",
-        "description": "Fourth Amendment to Guarantee and Collateral Agreement, dated as of January 4, 2016, made by CONMED Corporation and certain of its subsidiaries in favor of JP Morgan Chase Bank (",
-        "exhibitType": "EX-10.5",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312516420081/d106424dex102.htm"
-      },
-      "discoverySignals": [
-        "kind=AMENDMENT; relevance=93; diversity=+21; resolution=IBR_RESOLVED",
-        "priority=177.5",
-        "kind=AMENDMENT"
-      ],
-      "documentClass": "AMENDMENT",
-      "ehbQueueId": "48e5472e73a8e3b96357fbf8",
-      "ehbPriority": 177.5,
-      "ehbResolutionStatus": "IBR_RESOLVED",
-      "ehbDedupeIdentity": "0000816956|AMENDMENT|fourth amendment to guarantee and collateral agreement january 4 2016 made by conmed corporation and certain of its subs|fourth_amendment|0000816956-25-000004",
-      "parentRelationshipCandidates": [
-        {
-          "kind": "AMENDS",
-          "candidateRef": "parent-agreement-unspecified",
-          "evidence": "documentKind=AMENDMENT; description-hint",
-          "authority": "DISCOVERY_HINT_ONLY"
-        },
-        {
-          "kind": "UNKNOWN_RELATED",
-          "candidateRef": "0001193125-16-420081:EX-10.2",
-          "evidence": "IBR citation points at prior filing exhibit (not operative authority by itself)",
-          "authority": "DISCOVERY_HINT_ONLY"
-        }
-      ],
-      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
-    },
-    {
-      "sourceId": "ehb:8b895fb699886a716ba820b4",
-      "filing": {
-        "accessionNumber": "0001194396-05-000199",
+        "accessionNumber": "0000012208-10-000058",
         "formType": "8-K",
-        "filingDate": "2005-12-13",
+        "filingDate": "2010-06-25",
         "issuer": {
-          "cik": "0000912562",
-          "ticker": "ROCK"
+          "cik": "0000012208",
+          "ticker": "BIO"
         }
       },
       "exhibit": {
-        "filename": "gibraltarex101_93736.htm",
-        "description": "AMENDED &amp; RESTATED CREDIT AGREEMENT DEC 8/05",
-        "exhibitType": "EX-10.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/912562/000119439605000199/gibraltarex101_93736.htm"
+        "filename": "exhibit103.htm",
+        "description": "EXHIBIT 10.3 - SECOND AMENDED AND RESTATED PLEDGE AGREEMENT",
+        "exhibitType": "EX-10",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/12208/000001220810000058/exhibit103.htm"
       },
       "discoverySignals": [
-        "kind=RESTATEMENT; relevance=96; diversity=+15; resolution=FETCHABLE_INLINE",
-        "priority=176",
+        "kind=RESTATEMENT; relevance=96; diversity=+0; resolution=FETCHABLE_INLINE",
+        "priority=166",
         "kind=RESTATEMENT"
       ],
       "documentClass": "RESTATEMENT",
-      "ehbQueueId": "8b895fb699886a716ba820b4",
-      "ehbPriority": 176,
+      "ehbQueueId": "84be5468aebd41c33c42f94a",
+      "ehbPriority": 166,
       "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000912562|RESTATEMENT|amended amp restated credit agreement dec 8 05|2005-12-13|0001194396-05-000199",
+      "ehbDedupeIdentity": "0000012208|RESTATEMENT|3 second amended and restated pledge agreement|amended_and_restated|0000012208-10-000058",
       "parentRelationshipCandidates": [
         {
           "kind": "RESTATES",
           "candidateRef": "parent-agreement-unspecified",
           "evidence": "documentKind=RESTATEMENT; description-hint",
-          "authority": "DISCOVERY_HINT_ONLY"
-        }
-      ],
-      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
-    },
-    {
-      "sourceId": "ehb:f670d11eb77d466e17f71b9d",
-      "filing": {
-        "accessionNumber": "0000816956-25-000004",
-        "formType": "10-K",
-        "filingDate": "2025-02-18",
-        "issuer": {
-          "cik": "0000816956",
-          "ticker": "CNMD"
-        }
-      },
-      "exhibit": {
-        "filename": "ex10.6-ibr",
-        "description": "Fifth Amendment to Guarantee and Collateral Agreement, dated as of July 16, 2021, made by CONMED Corporation and certain of its subsidiaries in favor of JPMorgan Chase Bank, N.A., as administrative agent (",
-        "exhibitType": "EX-10.6",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312521217426/d170717dex102.htm"
-      },
-      "discoverySignals": [
-        "kind=AMENDMENT; relevance=93; diversity=+19; resolution=IBR_RESOLVED",
-        "priority=175.5",
-        "kind=AMENDMENT"
-      ],
-      "documentClass": "AMENDMENT",
-      "ehbQueueId": "f670d11eb77d466e17f71b9d",
-      "ehbPriority": 175.5,
-      "ehbResolutionStatus": "IBR_RESOLVED",
-      "ehbDedupeIdentity": "0000816956|AMENDMENT|fifth amendment to guarantee and collateral agreement july 16 2021 made by conmed corporation and certain of its subsidi|fifth_amendment|0000816956-25-000004",
-      "parentRelationshipCandidates": [
-        {
-          "kind": "AMENDS",
-          "candidateRef": "parent-agreement-unspecified",
-          "evidence": "documentKind=AMENDMENT; description-hint",
-          "authority": "DISCOVERY_HINT_ONLY"
-        },
-        {
-          "kind": "UNKNOWN_RELATED",
-          "candidateRef": "0001193125-21-217426:EX-10.2",
-          "evidence": "IBR citation points at prior filing exhibit (not operative authority by itself)",
-          "authority": "DISCOVERY_HINT_ONLY"
-        }
-      ],
-      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
-    },
-    {
-      "sourceId": "ehb:f78f73c096f37e04ec99961e",
-      "filing": {
-        "accessionNumber": "0001194396-05-000199",
-        "formType": "8-K",
-        "filingDate": "2005-12-13",
-        "issuer": {
-          "cik": "0000912562",
-          "ticker": "ROCK"
-        }
-      },
-      "exhibit": {
-        "filename": "gibraltarex41_93736.htm",
-        "description": "INDENTURE, DATED AS OF DECEMBER 8, 2005",
-        "exhibitType": "EX-4.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/912562/000119439605000199/gibraltarex41_93736.htm"
-      },
-      "discoverySignals": [
-        "kind=INDENTURE; relevance=92; diversity=+19; resolution=FETCHABLE_INLINE",
-        "priority=170",
-        "kind=INDENTURE"
-      ],
-      "documentClass": "INDENTURE",
-      "ehbQueueId": "f78f73c096f37e04ec99961e",
-      "ehbPriority": 170,
-      "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000912562|INDENTURE|indenture december 8 2005",
-      "parentRelationshipCandidates": [],
-      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
-    },
-    {
-      "sourceId": "ehb:eabea2da72ecd730366deaed",
-      "filing": {
-        "accessionNumber": "0000063296-25-000070",
-        "formType": "10-K",
-        "filingDate": "2025-11-21",
-        "issuer": {
-          "cik": "0000063296",
-          "ticker": "MATW"
-        }
-      },
-      "exhibit": {
-        "filename": "matw_93025xex231.htm",
-        "description": "EX-23.1 - CONSENT OF INDEPENDENT PUBLIC ACCOUNTING FIRM",
-        "exhibitType": "EX-23.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329625000070/matw_93025xex231.htm"
-      },
-      "discoverySignals": [
-        "kind=CONSENT; relevance=86; diversity=+19; resolution=FETCHABLE_INLINE",
-        "priority=162",
-        "kind=CONSENT"
-      ],
-      "documentClass": "CONSENT",
-      "ehbQueueId": "eabea2da72ecd730366deaed",
-      "ehbPriority": 162,
-      "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|CONSENT|1 consent of independent public accounting firm|2025-11-21|0000063296-25-000070",
-      "parentRelationshipCandidates": [
-        {
-          "kind": "CONSENTS_TO",
-          "candidateRef": "parent-agreement-unspecified",
-          "evidence": "documentKind=CONSENT; description-hint",
-          "authority": "DISCOVERY_HINT_ONLY"
-        }
-      ],
-      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
-    },
-    {
-      "sourceId": "ehb:518be5070818a3f33e846fda",
-      "filing": {
-        "accessionNumber": "0000063296-24-000094",
-        "formType": "10-K",
-        "filingDate": "2024-11-22",
-        "issuer": {
-          "cik": "0000063296",
-          "ticker": "MATW"
-        }
-      },
-      "exhibit": {
-        "filename": "matw_93024xex231.htm",
-        "description": "EX-23.1 - CONSENT OF INDEPENDENT PUBLIC ACCOUNTING FIRM",
-        "exhibitType": "EX-23.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329624000094/matw_93024xex231.htm"
-      },
-      "discoverySignals": [
-        "kind=CONSENT; relevance=86; diversity=+19; resolution=FETCHABLE_INLINE",
-        "priority=161",
-        "kind=CONSENT"
-      ],
-      "documentClass": "CONSENT",
-      "ehbQueueId": "518be5070818a3f33e846fda",
-      "ehbPriority": 161,
-      "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|CONSENT|1 consent of independent public accounting firm|2024-11-22|0000063296-24-000094",
-      "parentRelationshipCandidates": [
-        {
-          "kind": "CONSENTS_TO",
-          "candidateRef": "parent-agreement-unspecified",
-          "evidence": "documentKind=CONSENT; description-hint",
-          "authority": "DISCOVERY_HINT_ONLY"
-        }
-      ],
-      "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
-    },
-    {
-      "sourceId": "ehb:270065a5a4d826e274981855",
-      "filing": {
-        "accessionNumber": "0000063296-23-000103",
-        "formType": "10-K",
-        "filingDate": "2023-11-17",
-        "issuer": {
-          "cik": "0000063296",
-          "ticker": "MATW"
-        }
-      },
-      "exhibit": {
-        "filename": "matw_93023xex231.htm",
-        "description": "EX-23.1 - CONSENT OF INDEPENDENT PUBLIC ACCOUNTING FIRM",
-        "exhibitType": "EX-23.1",
-        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329623000103/matw_93023xex231.htm"
-      },
-      "discoverySignals": [
-        "kind=CONSENT; relevance=86; diversity=+19; resolution=FETCHABLE_INLINE",
-        "priority=160",
-        "kind=CONSENT"
-      ],
-      "documentClass": "CONSENT",
-      "ehbQueueId": "270065a5a4d826e274981855",
-      "ehbPriority": 160,
-      "ehbResolutionStatus": "FETCHABLE_INLINE",
-      "ehbDedupeIdentity": "0000063296|CONSENT|1 consent of independent public accounting firm|2023-11-17|0000063296-23-000103",
-      "parentRelationshipCandidates": [
-        {
-          "kind": "CONSENTS_TO",
-          "candidateRef": "parent-agreement-unspecified",
-          "evidence": "documentKind=CONSENT; description-hint",
           "authority": "DISCOVERY_HINT_ONLY"
         }
       ],
       "ibrAuthorityNote": "DISCOVERY_HINT_ONLY"
     }
   ],
-  "note": "Truncated summary for PR visibility; full handoff is workspace-local under the runDir."
+  "sourceQueuePath": "data/edgar-historical-backfill/pilot-100-v2/acquisition-queue.json",
+  "validation": {
+    "generatedAt": "2026-10-08T22:46:24.895Z",
+    "total": 149,
+    "okCount": 149,
+    "errorCount": 0,
+    "byResolutionStatus": {
+      "FETCHABLE_INLINE": 108,
+      "IBR_RESOLVED": 41
+    },
+    "byDocumentKind": {
+      "RESTATEMENT": 22,
+      "CREDIT_AGREEMENT": 12,
+      "INDENTURE": 16,
+      "AMENDMENT": 15,
+      "SUPPLEMENTAL_INDENTURE": 42,
+      "SECURITY_AGREEMENT": 5,
+      "CONSENT": 19,
+      "OTHER_DEBT_AGREEMENT": 18
+    },
+    "fetchableCount": 149,
+    "partialIbrCount": 0,
+    "fieldErrorCounts": {},
+    "sampleErrors": []
+  }
 }

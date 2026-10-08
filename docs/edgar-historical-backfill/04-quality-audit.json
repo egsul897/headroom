@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-08T22:29:38.867Z",
-  "runDir": "data/edgar-historical-backfill/smoke-ibr",
+  "generatedAt": "2026-10-08T22:45:36.060Z",
+  "runDir": "data/edgar-historical-backfill/pilot-100-v2",
   "denominators": {
-    "manifests": 5,
-    "exhibitsTotal": 143,
-    "highRelevance": 45,
-    "withUri": 13,
-    "ibrTotal": 67
+    "manifests": 100,
+    "exhibitsTotal": 873,
+    "highRelevance": 214,
+    "withUri": 149,
+    "ibrTotal": 74
   },
   "relevantExhibitPrecision": {
-    "value": 0.4222222222222222,
-    "numerator": 19,
-    "denominator": 45,
+    "value": 0.5046728971962616,
+    "numerator": 108,
+    "denominator": 214,
     "method": "Weak title heuristic (debt keywords ∩ ¬false-positive keywords). Not human-labeled gold.",
     "confidence": "LOW_TO_MEDIUM"
   },
@@ -21,24 +21,24 @@
     "confidence": "NONE"
   },
   "duplicateCollapseAccuracy": {
-    "uniqueAgreementKeys": 45,
-    "highRelevanceExhibits": 45,
+    "uniqueAgreementKeys": 209,
+    "highRelevanceExhibits": 214,
     "note": "Kept exhibits should already be deduped; ratio near 1.0 is expected."
   },
   "amendmentVersusOriginal": {
     "agreementRate": 1,
-    "numerator": 9,
-    "denominator": 9
+    "numerator": 46,
+    "denominator": 46
   },
   "ibrResolution": {
-    "RESOLVED": 1,
     "MISSING_ACCESSION": 19,
-    "NEEDS_ORIGINAL_INDEX": 47
+    "RESOLVED": 45,
+    "NEEDS_ORIGINAL_INDEX": 10
   },
   "queueUrlCorrectness": {
     "goodUriRate": 1,
-    "numerator": 13,
-    "denominator": 13
+    "numerator": 149,
+    "denominator": 149
   },
   "caveats": [
     "Discovered ≠ acquired. This audit scores discovery metadata only.",
