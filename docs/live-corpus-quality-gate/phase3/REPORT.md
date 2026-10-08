@@ -59,3 +59,5 @@ See `26-legal-safety-metrics.json`. Unavailable GT never converted to PASS.
 - HEAD: `893a52f86b8d8067389f03e965cb620a374cc65b`
 - Tests: `npm run live-corpus-quality-gate:phase3` · `npx vitest run tests/live-corpus-quality-gate/`
 - PR: #153 draft — do not merge
+
+**Branch tip SHA:** `97b4a912438413464b209bfc200f781ccc1eb375` (report generation content SHA: `893a52f86b8d8067389f03e965cb620a374cc65b`)

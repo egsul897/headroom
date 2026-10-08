@@ -280,7 +280,7 @@
         "numerator": 4,
         "denominator": 4,
         "rate": 1,
-        "uncertainty": "Denominator = 4 SUP GT checks (2 classifications + RESTATES + AMENDS). DSGR/RIOT/CONMED amendment chains lack fresh independent GT this unpaid gate → UNVERIFIED (not scored as PASS).",
+        "uncertainty": "Denominator = 4 SUP GT checks (2 classifications + RESTATES + AMENDS). DSGR/RIOT/CONMED amendment chains lack fresh independent GT this unpaid gate \u2192 UNVERIFIED (not scored as PASS).",
         "groundTruthBasis": "SUP final-lightweight-unseen GT C2/D1/D2",
         "notes": "SUP development docs considered: sup-doc-a, sup-doc-b, sup-doc-c"
       },
@@ -315,7 +315,7 @@
         "rate": null,
         "uncertainty": "Pass B semantic compile not executed for Gibraltar DEVELOPMENT batch.",
         "groundTruthBasis": "Unavailable",
-        "notes": "UNVERIFIED — not PASS."
+        "notes": "UNVERIFIED \u2014 not PASS."
       },
       {
         "metricId": "entity_scope_fidelity",
@@ -324,9 +324,9 @@
         "numerator": null,
         "denominator": null,
         "rate": null,
-        "uncertainty": "Source phrase present for §7.08 facility scope; IR entityScope population absent.",
-        "groundTruthBasis": "Partial source probe only — insufficient for fidelity rate",
-        "notes": "UNVERIFIED — not PASS."
+        "uncertainty": "Source phrase present for \u00a77.08 facility scope; IR entityScope population absent.",
+        "groundTruthBasis": "Partial source probe only \u2014 insufficient for fidelity rate",
+        "notes": "UNVERIFIED \u2014 not PASS."
       }
     ],
     "8_remainingUnverifiedAreas": [
@@ -349,7 +349,7 @@
       "Heuristic UNVERIFIED: dsgr-doc-d / expansion_doc_no_independent_gt_this_gate"
     ],
     "9_exactShaTestsCiPr": {
-      "headSha": "893a52f86b8d8067389f03e965cb620a374cc65b",
+      "headSha": "97b4a912438413464b209bfc200f781ccc1eb375",
       "branch": "cursor/live-corpus-quality-gate-7f51",
       "startingPr": 153,
       "startingSha": "18e2ed4bd66eaa9caff25eac49ef490c2fbb1816",
@@ -359,8 +359,12 @@
         "npx vitest run tests/live-corpus-quality-gate/"
       ],
       "ci": "GitHub Actions on PR #153 (draft)",
-      "prStatus": "draft — do not merge"
+      "prStatus": "draft \u2014 do not merge",
+      "branchTipSha": "97b4a912438413464b209bfc200f781ccc1eb375",
+      "evaluationContentSha": "893a52f86b8d8067389f03e965cb620a374cc65b"
     }
   },
-  "gateVerdict": "LIVE_CORPUS_QUALITY_GATE_PHASE3_REMEDIATION_VERIFICATION_RECORDED"
+  "gateVerdict": "LIVE_CORPUS_QUALITY_GATE_PHASE3_REMEDIATION_VERIFICATION_RECORDED",
+  "branchTipSha": "97b4a912438413464b209bfc200f781ccc1eb375",
+  "evaluationContentSha": "893a52f86b8d8067389f03e965cb620a374cc65b"
 }
