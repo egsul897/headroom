@@ -10,6 +10,8 @@ import {
   buildHandoffRecord,
   persistHandoffPackage,
   proveArtifactReconstruction,
+  exportHandoffTarball,
+  proveTarballReconstruction,
   sha256Buffer,
   HANDOFF_CONTRACT_VERSION,
 } from "../../lib/cursor-cloud-compute/phase3/handoff-contract";
@@ -93,6 +95,15 @@ describe("phase3 handoff contract", () => {
     expect(proof.structuralMatches).toBe(1);
     // Working corpus path is NOT required for proof
     expect(proof.notes.some((n) => n.includes("CAS"))).toBe(true);
+
+    const tarball = path.join(os.tmpdir(), `cca-handoff-${Date.now()}.tar.gz`);
+    const meta = exportHandoffTarball(packageRoot, tarball);
+    expect(meta.bytesWritten).toBeGreaterThan(0);
+    const fromTar = proveTarballReconstruction({
+      tarballPath: tarball,
+      reconstructRoot: fs.mkdtempSync(path.join(os.tmpdir(), "cca-tar-recon-")),
+    });
+    expect(fromTar.proved).toBe(true);
   });
 });
 

@@ -11,8 +11,10 @@
  *   that can read the same artifact volume)
  * - VM-local corpus under data/ is a working cache only — never claimed as durable
  */
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import type { SourceDocumentRef } from "../phase2/types";
 
@@ -229,6 +231,44 @@ export function persistHandoffPackage(params: {
   };
   fs.writeFileSync(paths.manifest, JSON.stringify(manifest, null, 2));
   return manifest;
+}
+
+/**
+ * Export a handoff package directory as a single durable tarball.
+ * Prefer this for /opt/cursor/artifacts — many small CAS writes on that
+ * volume are slow and have been observed to EIO under burst load.
+ */
+export function exportHandoffTarball(packageRoot: string, tarballPath: string): { bytesWritten: number; sha256: string } {
+  fs.mkdirSync(path.dirname(tarballPath), { recursive: true });
+  execFileSync("tar", ["-czf", tarballPath, "-C", packageRoot, "."], { stdio: "pipe" });
+  const body = fs.readFileSync(tarballPath);
+  return { bytesWritten: body.length, sha256: sha256Buffer(body) };
+}
+
+/** Extract a handoff tarball into an independent root and verify CAS hashes. */
+export function proveTarballReconstruction(params: {
+  tarballPath: string;
+  reconstructRoot: string;
+  sampleLimit?: number;
+}): DurabilityProofResult {
+  if (!fs.existsSync(params.tarballPath)) {
+    return {
+      proved: false,
+      mode: "artifact-cas-reconstruct",
+      documentsChecked: 0,
+      hashMatches: 0,
+      structuralMatches: 0,
+      failures: [{ sourceDocumentId: "*", reason: `tarball missing: ${params.tarballPath}` }],
+      notes: ["Durable proof requires the artifact tarball, not a VM-local working corpus."],
+    };
+  }
+  fs.mkdirSync(params.reconstructRoot, { recursive: true });
+  execFileSync("tar", ["-xzf", params.tarballPath, "-C", params.reconstructRoot], { stdio: "pipe" });
+  return proveArtifactReconstruction({
+    sourcePackageRoot: params.reconstructRoot,
+    reconstructRoot: fs.mkdtempSync(path.join(os.tmpdir(), "cca-handoff-verify-")),
+    sampleLimit: params.sampleLimit,
+  });
 }
 
 export interface DurabilityProofResult {

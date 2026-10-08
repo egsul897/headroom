@@ -21,7 +21,8 @@ import { processQueueItem, directorySizeBytes } from "../../lib/cursor-cloud-com
 import {
   buildHandoffRecord,
   persistHandoffPackage,
-  proveArtifactReconstruction,
+  exportHandoffTarball,
+  proveTarballReconstruction,
   type ExtractionStatus,
   type FailureDiagnostic,
 } from "../../lib/cursor-cloud-compute/phase3/handoff-contract";
@@ -71,15 +72,23 @@ async function main(): Promise<void> {
   const forensicPath =
     arg("forensic") ??
     path.join(process.cwd(), "docs", "cursor-cloud-compute", "results", "phase3-forensic-classification.json");
-  const artifactHandoffRoot = path.join(
-    "/opt/cursor/artifacts",
+  // Build CAS on local disk (fast), then export a single durable tarball to
+  // /opt/cursor/artifacts (many small writes there are slow / EIO-prone).
+  const localHandoffRoot = path.join(
+    process.cwd(),
+    "data",
     "cursor-cloud-compute",
-    "handoff-cas",
+    "handoff-cas-build",
   );
   const checkpointId = `phase3-${new Date().toISOString().replace(/[:.]/g, "-")}-${createHash("sha256")
     .update(String(process.pid))
     .digest("hex")
     .slice(0, 8)}`;
+  const artifactTarball = path.join(
+    "/opt/cursor/artifacts",
+    "cursor-cloud-compute",
+    `handoff-${checkpointId}.tar.gz`,
+  );
 
   // Fleet SEC: designate WS-EHB as owner; optional shared budget on local volume for coop proof.
   if (!process.env.HEADROOM_SEC_FETCH_OWNER) {
@@ -215,11 +224,15 @@ async function main(): Promise<void> {
     });
   }
 
+  if (fs.existsSync(localHandoffRoot)) {
+    fs.rmSync(localHandoffRoot, { recursive: true, force: true });
+  }
   const handoffManifest = persistHandoffPackage({
-    packageRoot: artifactHandoffRoot,
+    packageRoot: localHandoffRoot,
     checkpointId,
     records: handoffRecords,
   });
+  const tarballMeta = exportHandoffTarball(localHandoffRoot, artifactTarball);
 
   // Also write git-tracked index (hashes only — not raw bodies)
   const gitIndexPath = path.join(
@@ -231,20 +244,22 @@ async function main(): Promise<void> {
   );
   const gitIndex = {
     ...handoffManifest,
+    artifactTarball,
+    artifactTarballSha256: tarballMeta.sha256,
+    artifactTarballBytes: tarballMeta.bytesWritten,
     documents: handoffManifest.documents.map((d) => ({
       ...d,
-      // strip nothing essential; bodies are CAS-referenced not inlined
     })),
     durableClaim:
-      "Git tracks this index of content hashes + provenance. Raw source bytes are in /opt/cursor/artifacts CAS and/or re-fetchable from SEC via WS-EHB. This JSON alone is not corpus durability.",
+      "Git tracks this index of content hashes + provenance. Raw source bytes are in the artifact-store tarball (content-addressed CAS inside) and/or re-fetchable from SEC via WS-EHB. This JSON alone is not corpus durability. The local handoff-cas-build/ tree is a staging cache only.",
   };
   fs.mkdirSync(path.dirname(gitIndexPath), { recursive: true });
   fs.writeFileSync(gitIndexPath, JSON.stringify(gitIndex, null, 2));
 
-  // Durability proof: reconstruct into independent temp dir from artifact CAS
+  // Durability proof: extract artifact tarball into an independent temp dir and verify hashes
   const reconstructRoot = fs.mkdtempSync(path.join(os.tmpdir(), "cca-handoff-reconstruct-"));
-  const durability = proveArtifactReconstruction({
-    sourcePackageRoot: artifactHandoffRoot,
+  const durability = proveTarballReconstruction({
+    tarballPath: artifactTarball,
     reconstructRoot,
     sampleLimit: handoffManifest.documentCount,
   });
@@ -397,7 +412,10 @@ async function main(): Promise<void> {
     durableHandoff: {
       contractVersion: handoffManifest.contractVersion,
       processingVersion: handoffManifest.processingVersion,
-      artifactPackageRoot: artifactHandoffRoot,
+      localStagingRootNotDurable: localHandoffRoot,
+      artifactTarball,
+      artifactTarballSha256: tarballMeta.sha256,
+      artifactTarballBytes: tarballMeta.bytesWritten,
       gitTrackedIndex: gitIndexPath,
       documentCount: handoffManifest.documentCount,
       distinctSourceHashes: handoffManifest.distinctSourceHashes,
