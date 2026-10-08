@@ -1,6 +1,8 @@
 # Headroom — Precedent Comparison Intelligence
 
-**Status: IMPLEMENTED.** Sidecar analysis over public credit-agreement and indenture source text. Zero Prisma migrations. Zero paid provider calls. Zero certification advancement. Production legal engine (`lib/covenant-engine.ts`, IR compiler, semantic-precedent store, solver) untouched.
+**Status: IMPLEMENTED (Phase 1 + Phase 2).** Sidecar analysis over public credit-agreement and indenture source text. Zero Prisma migrations. Zero paid provider calls. Zero certification advancement. Production legal engine (`lib/covenant-engine.ts`, IR compiler, semantic-precedent store, solver) untouched.
+
+Phase 2 market-wide report: `docs/precedent-comparison/phase-2-market-wide.md`.
 
 ---
 
