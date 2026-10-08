@@ -19,6 +19,7 @@ import { buildIrInventory } from "./ir-inventory";
 import { collectNumericAssertions } from "./numeric-assertion";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
+import { figureRoleFindings } from "./figure-role";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
 import { runAdversarialSemanticReview } from "./reviewer";
 import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "./projection";
@@ -419,7 +420,11 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
   // qualitative accountability: material qualitative claims without source-backed lineage are MATERIAL findings
   const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null, sourceTexts: [compilerInput.operativeSourceText, ...((compilationResult.sourceContext ?? compilerInput.sourceContext)?.regions.map((r) => r.text) ?? []), ...compilerInput.contextBundle.items.map((i) => i.excerptText)] });
-  const deterministicFindings = [...buildFindingsFromReconciliation(input, reconciliation), ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef })];
+  const deterministicFindings = [
+    ...buildFindingsFromReconciliation(input, reconciliation),
+    ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+    ...figureRoleFindings(compilerInput.operativeSourceText, compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+  ];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
   // (see docs/phase-3f1-terminal-architecture-decision/02-architecture-

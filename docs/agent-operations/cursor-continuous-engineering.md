@@ -122,6 +122,26 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Reversing a dated replacement chain does not change status or current text. Two same-day replacements stay `OPERATIVE_STATE_CONFLICTED` with `currentText` null in either order. An effect with a null instrument key is unattached and is not an applied amendment.
 - Pre-existing `phase-3f1-operative-state-honesty` test 40 still expects a null-instrument effect passed only in `allEffects` to stay off a different instrument. IPV-05 attaches every null-instrument effect to the computed instrument. This pass did not change that rule.
 
+## IPV-22 — comparator figures are not basket capacity
+
+- A dollar or ratio keeps the role of the phrase in front of it. Available capacity is an affirmative permission (`not to exceed`, `up to`, `greater of`), a prohibition ceiling (`shall not` / `No … shall` … `in excess of`), or an exception amount. `in excess of`, `less than`, `greater than`, `not less than`, and `at least` are thresholds. A ratio is a ratio requirement.
+- A bare comparator under a prohibition states the forbidden state. `shall not permit the ratio to be less than 2.50` is a minimum test (`GTE`). `so long as the ratio does not exceed 3.50` stays `LTE`. A flipped operator is `WRONG_LOGIC`. A threshold submitted as money capacity is `WRONG_AMOUNT`. Both are material, so certification cannot be `CERTIFIED`.
+- No phrase in the window leaves the figure as capacity. The gate does not invent a refusal.
+- Independent replay on `46ebf2e` with this `lib/` overlaid, expectations unchanged: `INV-25:L-P2`, `INV-25b:H-T2`, and `INV-09b:A-T1` refuse. H-T2 and A-T1 refuse on `WRONG_AMOUNT` / `WRONG_LOGIC` with compilation `COMPLETED`.
+
+## IPV-21 — a diamond is not a definition cycle
+
+- `getDefinitionFullText` stopped at the next definition or at the end of the document. The last definition swallowed later sections. A covenant that names an ancestor then looked like a back-edge.
+- The span now also stops at the next article or section in the same document. The on-stack cycle check is unchanged. A mutual mention inside two definition bodies is still a cycle. A missing term is not a cycle. A cross-document definition is not recursed into a same-document cycle.
+- Independent replay: package A diamond, package I `7.01`, package L `7.07`, and the corpus-wide false-cycle sweep pass. `INV-19:true-cycle-still-reported` and `INV-19b:genuine-cycles-reported` fail. The indenture pair is one direction plus a later covenant mention, which the wide span had turned into a cycle. That control is not a directed cycle. Their expectation was not edited.
+
+## Independent replay — IPV-16, IPV-19, IPV-20
+
+- Replay used `origin/claude/independent-product-validation` at `46ebf2ee0b0da20358755cbc70f851420ade20ee`, with this branch's `lib/` copied over. Their fixtures and expectations were not edited. No paid provider.
+- IPV-19: fixed and independently passing. `INV-05` F1 and F3 are `REPLACE_DEFINITION` / `RESOLVED`. F2 stays `UNKNOWN_CHANGE` / `REVIEW_REQUIRED`. `INV-05b` keeps Section 1.01 from being replaced as a whole and keeps prior section amendments.
+- IPV-20: fixed and independently passing. `INV-05b:A:bundle-definition-current` retrieves the amended Consolidated EBITDA text.
+- IPV-16: partially fixed. Side letters and the consent produce an effect, the instrument is `OPERATIVE_STATE_REVIEW_REQUIRED`, and `currentText` is null, so the base cap is not a resolved current amount. Their operative assertion still fails: the harness treats an applied null text as `DELETED` and expects `CURRENT` (or, on MUT-14, `SUPERSEDED` from the prior amendment). MUT-08 through MUT-16 do not pass that assertion. Not closed.
+
 ## Queue
 
 | Id | Severity | Status | Next action |
@@ -129,7 +149,9 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | P0-A entity-scope widening | P0 | VERIFIED locally | Watch CI on the push SHA |
 | P0-B IPV-19 definition amendment replaces all of Section 1.01 | P0 | VERIFIED locally | Definition target plus section splice; see definition-level-amendment tests |
 | P0-B IPV-20 retrieval ignores operative definition | P0 | VERIFIED locally | Bundle excerpt uses the operative definition when one exists |
-| P0-C IPV-16 notwithstanding side letter | P0 | VERIFIED locally | Unresolved override; no invented amount; base cap not RESOLVED |
+| P0-C IPV-16 notwithstanding side letter | P0 | PARTIAL on independent replay | Instrument is REVIEW_REQUIRED and currentText is null. Their harness still expects CURRENT or the prior amendment as SUPERSEDED. Not closed |
+| IPV-21 false definition cycle | P0 | FIXED on replay except their indenture control | Diamond, I 7.01, L 7.07, and the corpus sweep pass. The indenture "cycle" was the wide span. Mutual cycles still refuse |
+| IPV-22 comparator as capacity | P0 | FIXED on replay | L-P2, H-T2, and A-T1 refuse on WRONG_AMOUNT or WRONG_LOGIC |
 | IPV-04 section candidate compiles superseded clauses | P0 | PUSHED `c2a913b` | Parent operative text splices resolved clause replacements and deletions |
 | IPV-05 ABL amendment target unresolved | P0 | PUSHED `70023f7` | CI 9 checks passed on that SHA |
 | A1 failed definition splice returns base section | P0 | VERIFIED locally | Unspliceable definition amendment withholds the section |
