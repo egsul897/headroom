@@ -9,7 +9,7 @@ Soft gate. **DEVELOPMENT ≠ CERTIFIED.** No paid inference. No certification ad
 | Role | SHA |
 |---|---|
 | Defective #132 merge tip | `348bfedb33725d9a00adbf331131c038aa7d5a22` |
-| This remediation tip | `6760e31f1735f14416efa05bfc59683153e4be10` |
+| This remediation tip | `3d5411c77bdc08930d45d6bdbf043eb98b375135` |
 
 ## Root cause
 
@@ -60,7 +60,7 @@ Please replay on the ending SHA:
 
 ```bash
 git fetch origin cursor/chewy-a3b-span-remediation-aa25
-git checkout 6760e31f1735f14416efa05bfc59683153e4be10
+git checkout 3d5411c77bdc08930d45d6bdbf043eb98b375135
 npx vitest run tests/contract-model/clause-hierarchy.test.ts \
   tests/contract-model/clause-hierarchy-f2-nesting.test.ts --reporter=verbose
 # Expect: 6.08(a)(3)(b) charStart 664123 charEnd 666205; no 6.08(a)(3)(b)(x)/(y)
