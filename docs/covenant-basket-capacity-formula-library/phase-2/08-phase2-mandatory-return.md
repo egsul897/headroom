@@ -123,8 +123,7 @@ IDs: `sc-fixed-vs-incurrence`, `sc-auto-vs-elected-reclass`, `sc-shared-double-s
 | Item | Value |
 |---|---|
 | Starting SHA | `26e21e46391cf00948bd4de0972662feb1598b5d` |
-| Phase 2 content SHA | `1f1474c0313718b2346293aff3c1956afa630990` |
-| Ending SHA (branch tip) | `60c948d4ec44d596a89a665526aedbad53dd7ad5` |
+| Ending SHA (Phase 2 content) | `1f1474c0313718b2346293aff3c1956afa630990` |
 | Tests | `npx vitest run tests/basket-formula-corpus/` → **14 passed** |
 | PR | https://github.com/egsul897/headroom/pull/148 (draft, updated; **not merged**) |
 | Paid inference | none |
