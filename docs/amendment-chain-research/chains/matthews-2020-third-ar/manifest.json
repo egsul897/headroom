@@ -11,7 +11,7 @@
     "governingLawNote": "See filed exhibits.",
     "identityNotes": [
       "Sixth Amendment recitals enumerate the full prior amendment chain (First through Fifth).",
-      "Second Amendment exhibit filename not independently isolated in prior work; recital-confirmed only — MISSING for file-level retrieval, not for chain identity."
+      "Second through Fifth Amendments acquired Phase 2 via EdgarConnector; Am2/Am4/Am5 include blackline-embedded Loan Agreement bodies."
     ]
   },
   "documents": [
@@ -34,7 +34,9 @@
       },
       "amendsInstrumentId": null,
       "amendsDocIds": [],
-      "notes": ["Functions as base restated agreement for this chain."]
+      "notes": [
+        "Functions as base restated agreement for this chain."
+      ]
     },
     {
       "docId": "matw-am1",
@@ -48,14 +50,18 @@
       "localFixturePath": null,
       "retrievalStatus": "RETRIEVED",
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
+        "status": "CONDITIONAL_UNRESOLVED",
         "namedEffectiveDate": null,
-        "conditionsSummary": "Not fully extracted this pass.",
-        "evidenceQuote": null
+        "conditionsSummary": "Sections 2\u201316 not effective until Agent receives listed deliverables.",
+        "evidenceQuote": "The provisions of Sections 2 through 16 of this First Amendment shall not become effective until the Agent has received the following..."
       },
       "amendsInstrumentId": "matw-third-ar-loan-2020-03-27",
-      "amendsDocIds": ["matw-third-ar"],
-      "notes": []
+      "amendsDocIds": [
+        "matw-third-ar"
+      ],
+      "notes": [
+        "ACQUIRED Phase 2; targeted amendment (no \u00a75.14 touch)."
+      ]
     },
     {
       "docId": "matw-am2",
@@ -63,20 +69,24 @@
       "title": "Second Amendment to Third A&R Loan Agreement",
       "executionDate": "2021-12-27",
       "filingDate": null,
-      "accession": "UNKNOWN",
-      "exhibit": "UNKNOWN",
-      "sourceUrl": "",
+      "accession": "0000063296-22-000060",
+      "exhibit": "secondamendmenttothirdamen.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329622000060/secondamendmenttothirdamen.htm",
       "localFixturePath": null,
-      "retrievalStatus": "RECITAL_ONLY",
+      "retrievalStatus": "RETRIEVED",
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
-        "namedEffectiveDate": "2021-12-27",
-        "conditionsSummary": "Date from Sixth Amendment recitals only.",
-        "evidenceQuote": "Sixth Amendment WHEREAS clause lists Second Amendment dated December 27, 2021."
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Effective when Agent determines conditions received; calendar satisfaction not proven.",
+        "evidenceQuote": "shall become effective on the date that the Agent has determined that it has received..."
       },
       "amendsInstrumentId": "matw-third-ar-loan-2020-03-27",
-      "amendsDocIds": ["matw-am1"],
-      "notes": ["MISSING DOCUMENT for independent exhibit retrieval; identity resolved via later amendment recital."]
+      "amendsDocIds": [
+        "matw-am1"
+      ],
+      "notes": [
+        "ACQUIRED Phase 2; blackline amendment embedding full Loan Agreement body."
+      ]
     },
     {
       "docId": "matw-am3",
@@ -88,16 +98,20 @@
       "exhibit": "thirdamendmenttothirdamend.htm",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329622000099/thirdamendmenttothirdamend.htm",
       "localFixturePath": null,
-      "retrievalStatus": "PARTIAL",
+      "retrievalStatus": "RETRIEVED",
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
-        "namedEffectiveDate": "2022-07-01",
-        "conditionsSummary": null,
-        "evidenceQuote": null
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Not effective until Agent receives amendment, fees, and other docs.",
+        "evidenceQuote": "shall not become effective until the Agent has received the following..."
       },
       "amendsInstrumentId": "matw-third-ar-loan-2020-03-27",
-      "amendsDocIds": ["matw-am2"],
-      "notes": ["Located in prior onboarding; not re-fetched this pass."]
+      "amendsDocIds": [
+        "matw-am2"
+      ],
+      "notes": [
+        "ACQUIRED Phase 2; targeted amendment (no \u00a75.14 touch)."
+      ]
     },
     {
       "docId": "matw-am4",
@@ -109,16 +123,20 @@
       "exhibit": "fourthamendmenttothirdamen.htm",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329623000044/fourthamendmenttothirdamen.htm",
       "localFixturePath": null,
-      "retrievalStatus": "PARTIAL",
+      "retrievalStatus": "RETRIEVED",
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
-        "namedEffectiveDate": "2023-03-17",
-        "conditionsSummary": null,
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Blackline effectiveness conditions present; calendar satisfaction not proven.",
         "evidenceQuote": null
       },
       "amendsInstrumentId": "matw-third-ar-loan-2020-03-27",
-      "amendsDocIds": ["matw-am3"],
-      "notes": []
+      "amendsDocIds": [
+        "matw-am3"
+      ],
+      "notes": [
+        "ACQUIRED Phase 2; blackline amendment embedding full Loan Agreement body."
+      ]
     },
     {
       "docId": "matw-am5",
@@ -132,14 +150,18 @@
       "localFixturePath": null,
       "retrievalStatus": "RETRIEVED",
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
-        "namedEffectiveDate": "2024-01-31",
-        "conditionsSummary": "Not fully extracted this pass.",
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Blackline effectiveness conditions present; calendar satisfaction not proven.",
         "evidenceQuote": null
       },
       "amendsInstrumentId": "matw-third-ar-loan-2020-03-27",
-      "amendsDocIds": ["matw-am4"],
-      "notes": ["Retrieved this session (~1.2MB); content not fully diffed against §5.14."]
+      "amendsDocIds": [
+        "matw-am4"
+      ],
+      "notes": [
+        "ACQUIRED Phase 2; blackline amendment embedding full Loan Agreement body."
+      ]
     },
     {
       "docId": "matw-am6",
@@ -159,10 +181,12 @@
         "evidenceQuote": "Amendment restates definitions including Prior Security Interest / Security Agreement concurrent with 2024 Note Offering effective date language."
       },
       "amendsInstrumentId": "matw-third-ar-loan-2020-03-27",
-      "amendsDocIds": ["matw-am5"],
+      "amendsDocIds": [
+        "matw-am5"
+      ],
       "notes": [
-        "Narrows §6.01(j) general secured-lien basket into Notes-only subordinate lien exception.",
-        "Does not restate §5.14 Financial Covenants (confirmed by prior onboarding reading)."
+        "Narrows \u00a76.01(j) general secured-lien basket into Notes-only subordinate lien exception.",
+        "Does not restate \u00a75.14 Financial Covenants (confirmed by prior onboarding reading)."
       ]
     }
   ],
@@ -170,14 +194,14 @@
     "noInferenceWithoutSource": true,
     "waiversSeparateFromAmendments": true,
     "notes": [
-      "§5.14 leverage levels after Am1–Am5 remain SOURCE_CHAIN_INCOMPLETE for precise before/after (see unresolved-authority.json).",
-      "§6.01(j) before/after is SOURCE_BACKED from base + Sixth Amendment retrieved this session."
+      "\u00a75.14 numeric leverage caps (5.00/4.75/4.50 and Senior 4.00/3.75/3.50) SOURCE_BACKED unchanged across base\u2192Am2\u2192Am4\u2192Am5 blackline bodies; Am1/Am3/Am6 do not amend \u00a75.14.",
+      "Am5 blackline shifts final Leverage Ratio tier start date March 31, 2021\u2192December 31, 2023 (schedule/era, not ratio level).",
+      "\u00a76.01(j) before/after remains SOURCE_BACKED from base + Sixth Amendment."
     ]
   },
   "adversarialTags": [
     "RESTATEMENT_THEN_TARGETED",
     "PERMISSION_NARROWING",
-    "MISSING_DOCUMENT",
     "CONDITIONAL_EFFECTIVENESS",
     "MULTI_COVENANT_FAMILY",
     "INCORPORATION_BY_REFERENCE"

@@ -1,6 +1,6 @@
 {
   "chainId": "matw-2020-03-27-third-ar-loan",
-  "generatedAt": "2026-10-08T22:22:47Z",
+  "generatedAt": "2026-10-08T22:32:25Z",
   "discipline": {
     "recitalIsNotOperativeText": true,
     "eightKSummaryIsNotOperativeText": true,
@@ -21,13 +21,22 @@
       "docId": "matw-third-ar",
       "acquiredBody": "ACQUIRED",
       "parent": null,
-      "afterText": "SOURCE_BACKED"
+      "afterText": "SOURCE_BACKED",
+      "accession": "0000063296-20-000040"
     },
     {
       "docId": "matw-am1",
       "discoveredEvent": true,
-      "acquiredBody": "PRIOR_RETRIEVED_PARTIAL",
+      "acquiredBody": "ACQUIRED",
       "parent": "matw-third-ar",
+      "accession": "0000063296-21-000048",
+      "targetsNotTouched": [
+        "5.14"
+      ],
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
       "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
@@ -37,31 +46,59 @@
       "parent": "matw-am1",
       "executionDate": "2021-12-27",
       "accession": "0000063296-22-000060",
+      "form": "BLACKLINE_EMBEDDED_LOAN_AGREEMENT",
       "effectiveDate": {
         "status": "CONDITIONAL_UNRESOLVED",
         "conditionsVerified": false
       },
       "beforeText": "PARENT_AVAILABLE",
       "afterText": "SOURCE_BACKED",
+      "section514NumericCaps": "UNCHANGED_VS_BASE",
       "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "matw-am3",
       "discoveredEvent": true,
-      "acquiredBody": "PARTIAL",
-      "parent": "matw-am2"
+      "acquiredBody": "ACQUIRED",
+      "parent": "matw-am2",
+      "accession": "0000063296-22-000099",
+      "targetsNotTouched": [
+        "5.14"
+      ],
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "matw-am4",
       "discoveredEvent": true,
-      "acquiredBody": "PARTIAL",
-      "parent": "matw-am3"
+      "acquiredBody": "ACQUIRED",
+      "parent": "matw-am3",
+      "accession": "0000063296-23-000044",
+      "form": "BLACKLINE_EMBEDDED_LOAN_AGREEMENT",
+      "section514NumericCaps": "UNCHANGED_VS_BASE",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "matw-am5",
       "discoveredEvent": true,
-      "acquiredBody": "PRIOR_RETRIEVED_PARTIAL",
-      "parent": "matw-am4"
+      "acquiredBody": "ACQUIRED",
+      "parent": "matw-am4",
+      "accession": "0000063296-24-000010",
+      "form": "BLACKLINE_EMBEDDED_LOAN_AGREEMENT",
+      "section514NumericCaps": "UNCHANGED_VS_BASE",
+      "section514ScheduleNote": "Final Leverage Ratio tier start date blacklined March 31, 2021 \u2192 December 31, 2023",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "matw-am6",
@@ -70,6 +107,9 @@
       "parent": "matw-am5",
       "targetsVerified": [
         "6.01(j)"
+      ],
+      "targetsNotTouched": [
+        "5.14"
       ],
       "beforeText": "SOURCE_BACKED",
       "afterText": "SOURCE_BACKED",

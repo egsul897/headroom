@@ -1,6 +1,6 @@
 {
   "chainId": "dsgr-2022-04-01-ar-credit",
-  "generatedAt": "2026-10-08T22:22:47Z",
+  "generatedAt": "2026-10-08T22:32:25Z",
   "discipline": {
     "recitalIsNotOperativeText": true,
     "eightKSummaryIsNotOperativeText": true,
@@ -38,12 +38,15 @@
     {
       "docId": "dsgr-am2",
       "discoveredEvent": true,
-      "acquiredBody": "ACQUIRED_CONFORMED_EXHIBIT_A",
+      "acquiredBody": "ACQUIRED_IMAGE_CONFORMED_EXHIBIT",
       "parent": "dsgr-am1",
       "executionDate": "2024-06-13",
       "accession": "0000703604-24-000079",
-      "notes": "Conformed CA exhibit; amendment wrapper PARTIAL",
-      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+      "notes": "10-Q narrative: Second Amendment dated June 13, 2024; CDOR replaced with CORRA effective June 28, 2024. Do not treat as operative amendment body.",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "wrapperText": "MISSING",
+      "relatedFilingBody": "dsgr-am2-10q",
+      "filingNarrative": "NOT_OPERATIVE_TEXT"
     },
     {
       "docId": "dsgr-doc-b",
@@ -69,6 +72,17 @@
       "acquiredBody": "FIXTURE_PRESENT",
       "parent": "dsgr-doc-c",
       "role": "RESTATEMENT"
+    },
+    {
+      "docId": "dsgr-am2-10q",
+      "discoveredEvent": false,
+      "role": "FILING_BODY",
+      "acquiredBody": "ACQUIRED",
+      "accession": "0000703604-24-000079",
+      "filename": "dsgr-20240630.htm",
+      "authorityLevel": "DISCOVERY_AND_NARRATIVE_ONLY",
+      "operativeAuthority": false,
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     }
   ]
 }

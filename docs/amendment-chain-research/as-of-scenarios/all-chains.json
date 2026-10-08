@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:24:33Z",
+  "generatedAt": "2026-10-08T22:32:25Z",
   "chains": {
     "cohr-2022-07-01-credit-agreement": [
       {
@@ -71,6 +71,13 @@
     ],
     "dsgr-2022-04-01-ar-credit": [
       {
+        "scenarioId": "DSGR-S0",
+        "asOf": "2024-06-28",
+        "expect": "CDOR\u2192CORRA replacement referenced in 10-Q narrative; do NOT treat 10-Q as operative amendment body; Am2 wrapper text MISSING",
+        "status": "REVIEW_REQUIRED_MISSING_WRAPPER",
+        "authority": "dsgr-am2-10q narrative + image EX-10.1; MISSING_DOCUMENT for wrapper"
+      },
+      {
         "scenarioId": "DSGR-S1",
         "asOf": "2024-12-31",
         "expect": "\u00a76.08(a)(v) pre-Fourth Amendment",
@@ -133,22 +140,46 @@
     "matw-2020-03-27-third-ar-loan": [
       {
         "scenarioId": "MATW-S1",
-        "asOf": "2024-09-01",
-        "expect": "\u00a76.01(j) general Permitted Amount $50M basket still operative (if not earlier amended \u2014 Am2\u2013Am5 not fully re-diffed for 6.01(j))",
-        "status": "PARTIAL"
+        "asOf": "2021-03-29",
+        "expect": "\u00a75.14 base leverage caps; Am1 not yet effective",
+        "status": "SOURCE_BACKED",
+        "authority": "Third A&R EX-10.1 \u00a75.14"
       },
       {
         "scenarioId": "MATW-S2",
-        "asOf": "2024-09-23",
-        "expect": "If Sixth Amendment Effective Date satisfied: Notes-only subordinate lien; general basket gone",
-        "status": "CONDITIONAL_PERMISSION_NARROWING",
-        "vc": "VC-004"
+        "asOf": "2021-12-28",
+        "expect": "If Am2 Effective Date satisfied: blackline-embedded CA operative; \u00a75.14 numeric caps unchanged",
+        "status": "CONDITIONAL_UNRESOLVED_EFFECTIVENESS",
+        "authority": "matw-am2 accession 0000063296-22-000060"
       },
       {
         "scenarioId": "MATW-S3",
-        "asOf": "2021-12-27",
-        "expect": "Second Amendment now acquired \u2014 targeted changes apply only to its verified targets, not whole agreement",
-        "status": "ACQUIRED_AM2_AVAILABLE"
+        "asOf": "2024-01-31",
+        "expect": "If Am5 Effective Date satisfied: \u00a75.14 final Leverage tier schedule uses December 31, 2023 start; ratios still 4.50/3.50 \u2014 not invent new ratio levels",
+        "status": "SOURCE_BACKED_IF_EFFECTIVE",
+        "authority": "matw-am5 blackline \u00a75.14",
+        "tests": [
+          "DEFINITION_LEVEL_REPLACEMENT",
+          "SCHEDULE_ERA"
+        ]
+      },
+      {
+        "scenarioId": "MATW-S4",
+        "asOf": "2024-09-22",
+        "expect": "Pre-Am6: \u00a76.01(j) general secured-lien basket still broad form",
+        "status": "SOURCE_BACKED",
+        "authority": "base / pre-Am6 text"
+      },
+      {
+        "scenarioId": "MATW-S5",
+        "asOf": "2024-09-24",
+        "expect": "If Am6 Effective Date satisfied: \u00a76.01(j) narrowed to Notes-only subordinate lien; \u00a75.14 unchanged by Am6",
+        "status": "CONDITIONAL_UNRESOLVED_EFFECTIVENESS",
+        "vc": "VC-004",
+        "tests": [
+          "PERMISSION_NARROWING",
+          "WRONG_TARGET_GUARD"
+        ]
       }
     ],
     "inap-2017-04-06-credit-agreement": [

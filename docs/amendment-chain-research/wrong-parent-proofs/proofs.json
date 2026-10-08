@@ -80,6 +80,18 @@
         "expectedEngineBehavior": "CROSS_REFERENCE_CORRECTION distinct from MODIFY_THRESHOLD on \u00a76.11(a) itself"
       },
       "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-008",
+      "claim": "A schedule/era blackline date shift is not a silent leverage-ratio replacement",
+      "evidence": {
+        "chainId": "matw-2020-03-27-third-ar-loan",
+        "docId": "matw-am5",
+        "operation": "Am5 blackline changes final Leverage Ratio tier start date March 31, 2021 → December 31, 2023 while retaining ≤4.50 / ≤3.50 numeric caps",
+        "wrongBehavior": "Treat Am5 as rewriting §5.14 wholesale or inventing new ratio levels",
+        "expectedEngineBehavior": "SCHEDULE_ERA_SHIFT on the dated tier only; numeric caps unchanged; Am1/Am3/Am6 confirmed non-touch of §5.14"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     }
   ]
 }

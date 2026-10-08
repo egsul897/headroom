@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:24:33Z",
+  "generatedAt": "2026-10-08T22:32:25Z",
   "chains": [
     {
       "chainId": "cohr-2022-07-01-credit-agreement",
@@ -12,12 +12,11 @@
     },
     {
       "chainId": "matw-2020-03-27-third-ar-loan",
-      "status": "IMPROVED_INCOMPLETE",
-      "acquired": "base+Am2+Am6 (+Am1/Am5 prior)",
+      "status": "SOURCE_COMPLETE_AM1_THROUGH_AM6",
+      "acquired": "base+Am1-Am6",
       "gaps": [
-        "Am3/Am4 not re-fetched this phase",
-        "\u00a75.14 after Am1-Am5 not fully re-diffed",
-        "Am6 Effective Date conditional"
+        "Am1\u2013Am6 Effective Date condition calendars unresolved",
+        "Full Interest Coverage / Temporary Senior Leverage Increase Period mechanics pending independent review"
       ]
     },
     {
@@ -32,9 +31,9 @@
     {
       "chainId": "dsgr-2022-04-01-ar-credit",
       "status": "IMPROVED_PARTIAL",
-      "acquired": "Am1+Am2+fixture Am3+Am4+Second A&R",
+      "acquired": "Am1+Am2(image)+Am2-10Q+fixture Am3+Am4+Second A&R",
       "gaps": [
-        "Am2 filed as conformed Exhibit A (wrapper PARTIAL)",
+        "Am2 text wrapper MISSING (image EX-10.1; 10-Q narrative not operative)",
         "prior \u00a76.08(a)(v) text not extracted"
       ]
     },

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "knowledge-factory.amendment-chain-research-export.v1",
-  "generatedAt": "2026-10-08T22:24:33Z",
-  "idempotencyKey": "amendment-chain-research-phase2-f26444e538711138",
+  "generatedAt": "2026-10-08T22:32:25Z",
+  "idempotencyKey": "amendment-chain-research-phase2-550e1da3f4fb6512",
   "importContract": {
     "consumer": "WS-CKF lib/knowledge-factory",
     "mode": "UPSERT_BY_sourceId",
@@ -355,6 +355,77 @@
       "byteLength": 39083,
       "acquisitionStatus": "ACQUIRED",
       "title": "First Amendment to Seventh A&R Credit Agreement (dated June 6, 2022)"
+    },
+    {
+      "sourceId": "edgar:0000063296-21-000048:firstamendmenttothirdamend.htm",
+      "cik": "0000063296",
+      "accessionNumber": "0000063296-21-000048",
+      "filename": "firstamendmenttothirdamend.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/63296/000006329621000048/firstamendmenttothirdamend.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "matw-2020-03-27-third-ar-loan",
+      "researchDocId": "matw-am1",
+      "originalBytesHash": "96100188c046d1d3d9fd6c8eb60ced979089c76f8fc774f2155aebbf4e598817",
+      "byteLength": 231260,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "First Amendment to Third A&R Loan Agreement"
+    },
+    {
+      "sourceId": "edgar:0000063296-22-000099:thirdamendmenttothirdamend.htm",
+      "cik": "0000063296",
+      "accessionNumber": "0000063296-22-000099",
+      "filename": "thirdamendmenttothirdamend.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/63296/000006329622000099/thirdamendmenttothirdamend.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "matw-2020-03-27-third-ar-loan",
+      "researchDocId": "matw-am3",
+      "originalBytesHash": "a67d1924939f7b5988efb5dd1a877ed59bd5bd99fb6602e663ee96c0be3f8307",
+      "byteLength": 80597,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "Third Amendment to Third A&R Loan Agreement"
+    },
+    {
+      "sourceId": "edgar:0000063296-23-000044:fourthamendmenttothirdamen.htm",
+      "cik": "0000063296",
+      "accessionNumber": "0000063296-23-000044",
+      "filename": "fourthamendmenttothirdamen.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/63296/000006329623000044/fourthamendmenttothirdamen.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "matw-2020-03-27-third-ar-loan",
+      "researchDocId": "matw-am4",
+      "originalBytesHash": "f78c812b6e5a5533f09b037822478a252ab466241e19aff822d8be6136ddd181",
+      "byteLength": 1230726,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "Fourth Amendment to Third A&R Loan Agreement"
+    },
+    {
+      "sourceId": "edgar:0000063296-24-000010:fifthamendmenttothirdamend.htm",
+      "cik": "0000063296",
+      "accessionNumber": "0000063296-24-000010",
+      "filename": "fifthamendmenttothirdamend.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/63296/000006329624000010/fifthamendmenttothirdamend.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "matw-2020-03-27-third-ar-loan",
+      "researchDocId": "matw-am5",
+      "originalBytesHash": "46f928b51ed1f18f56fd0aa098d97f0c62ac4ac1090f60b4bd493c4e8b3bf3c6",
+      "byteLength": 1199691,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "Fifth Amendment to Third A&R Loan Agreement"
+    },
+    {
+      "sourceId": "edgar:0000703604-24-000079:dsgr-20240630.htm",
+      "cik": "0000703604",
+      "accessionNumber": "0000703604-24-000079",
+      "filename": "dsgr-20240630.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/703604/000070360424000079/dsgr-20240630.htm",
+      "documentClass": "FILING_BODY",
+      "instrumentIdentity": "dsgr-2022-04-01-ar-credit",
+      "researchDocId": "dsgr-am2-10q",
+      "originalBytesHash": "a22fcd1dff0023074d75d6ba56e4a867ca7b8f1b577f8484b7a73dcd040da796",
+      "byteLength": 1883057,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "10-Q body accompanying Second Amendment exhibit filing",
+      "notes": "Narrative summary only; not treated as operative amendment text. EX-10.1 remains image-based conformed CA."
     }
   ],
   "parentChildAuthorityLinks": [
@@ -566,6 +637,56 @@
         "status": "CONDITIONAL_UNRESOLVED",
         "conditionsVerified": false
       }
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "child": "matw-am1",
+      "parent": "matw-third-ar",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_ACQUISITION"
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "child": "matw-am2",
+      "parent": "matw-am1",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_ACQUISITION"
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "child": "matw-am3",
+      "parent": "matw-am2",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_ACQUISITION"
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "child": "matw-am4",
+      "parent": "matw-am3",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_ACQUISITION"
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "child": "matw-am5",
+      "parent": "matw-am4",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_ACQUISITION"
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "child": "matw-am6",
+      "parent": "matw-am5",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_ACQUISITION"
+    },
+    {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "child": "dsgr-am2-10q",
+      "parent": "dsgr-am2",
+      "kind": "FILING_BODY_FOR",
+      "authorityStatus": "NOT_OPERATIVE",
+      "note": "10-Q narrative must not be imported as amendment operative text"
     }
   ],
   "effectiveDateEvidencePath": "docs/amendment-chain-research/authority-layers/",
@@ -573,5 +694,23 @@
   "beforeAfterSourceSpansPath": "docs/amendment-chain-research/before-after/",
   "missingAuthorityPath": "docs/amendment-chain-research/chains/*/unresolved-authority.json",
   "verificationStatusPath": "docs/amendment-chain-research/test-specs/",
-  "asOfDateScenariosPath": "docs/amendment-chain-research/as-of-scenarios/all-chains.json"
+  "asOfDateScenariosPath": "docs/amendment-chain-research/as-of-scenarios/all-chains.json",
+  "missingAuthority": [
+    {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "item": "dsgr-am2-wrapper-text",
+      "status": "MISSING_DOCUMENT"
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "item": "am1-am6-effective-date-calendars",
+      "status": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "chainId": "cohr-2022-07-01-credit-agreement",
+      "item": "am4-am5-effective-date-calendars",
+      "status": "CONDITIONAL_UNRESOLVED"
+    }
+  ],
+  "verificationStatus": "PENDING_INDEPENDENT_REVIEW"
 }

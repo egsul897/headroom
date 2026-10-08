@@ -49,7 +49,16 @@ describe("amendment-chain-research phase2 corpus", () => {
     expect(Object.keys(scenarios.chains).length).toBeGreaterThanOrEqual(5);
     const proofs = readJson(join(ROOT, "wrong-parent-proofs/proofs.json"));
     expect(proofs.proofs.map((p: { id: string }) => p.id)).toEqual(
-      expect.arrayContaining(["WP-001", "WP-002", "WP-003", "WP-004", "WP-005", "WP-006"]),
+      expect.arrayContaining([
+        "WP-001",
+        "WP-002",
+        "WP-003",
+        "WP-004",
+        "WP-005",
+        "WP-006",
+        "WP-007",
+        "WP-008",
+      ]),
     );
   });
 
@@ -59,6 +68,21 @@ describe("amendment-chain-research phase2 corpus", () => {
     expect(exp.importContract.mode).toBe("UPSERT_BY_sourceId");
     expect(exp.documents.length).toBeGreaterThan(10);
     expect(exp.parentChildAuthorityLinks.length).toBeGreaterThan(5);
+  });
+
+  it("Matthews Am1/Am3/Am4/Am5 appear as ACQUIRED in the ledger", () => {
+    const ledger = readJson(join(ROOT, "phase2/acquisition-ledger.json"));
+    for (const id of ["matw-am1", "matw-am3", "matw-am4", "matw-am5"]) {
+      const d = ledger.documents.find((x: { docId: string }) => x.docId === id);
+      expect(d).toBeTruthy();
+      expect(d.acquisitionStatus).toBe("ACQUIRED");
+      expect(d.sha256).toMatch(/^[a-f0-9]{64}$/);
+    }
+    const completeness = readJson(join(ROOT, "phase2/source-completeness.json"));
+    const matw = completeness.chains.find(
+      (c: { chainId: string }) => c.chainId === "matw-2020-03-27-third-ar-loan",
+    );
+    expect(matw.status).toBe("SOURCE_COMPLETE_AM1_THROUGH_AM6");
   });
 
   it("local byte cache is gitignored when present", () => {
