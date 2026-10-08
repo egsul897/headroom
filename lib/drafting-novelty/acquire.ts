@@ -4,10 +4,12 @@
  * Does not invent a second downloader or source registry.
  * Writes local bytes under data/rare-covenant-drafting-discovery/ (gitignored)
  * and KF-compatible source manifests for the knowledge factory to import.
+ *
+ * Fair-access: caches company_tickers.json once; backs off on HTTP 429.
  */
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { EdgarConnector, resolveCikForTicker } from "../connectors/edgar-connector";
+import { EdgarConnector } from "../connectors/edgar-connector";
 import { parseDocument } from "../extraction/parse";
 import { normalizeDraftingText, sha256Hex } from "./normalize";
 import { allAcquisitionTickers } from "./issuers";
@@ -15,9 +17,41 @@ import type { AcquiredAgreementManifest } from "./phase2-types";
 import type { DocumentSource } from "./types";
 
 const DEFAULT_ROOT = "data/rare-covenant-drafting-discovery";
+const USER_AGENT = "Headroom/1.0 (contact: engineering@headroom-app.example)";
+const TICKERS_URL = "https://www.sec.gov/files/company_tickers.json";
 
 function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
+}
+
+async function fetchWithBackoff(url: string, attempts = 6): Promise<{ status: number; text: string }> {
+  let delay = 1500;
+  for (let i = 0; i < attempts; i++) {
+    const res = await fetch(url, { headers: { "User-Agent": USER_AGENT, Accept: "*/*" } });
+    const text = await res.text();
+    if (res.status !== 429 && res.status < 500) return { status: res.status, text };
+    await sleep(delay + Math.floor(Math.random() * 500));
+    delay = Math.min(30_000, delay * 2);
+  }
+  return { status: 429, text: "" };
+}
+
+async function loadTickerMap(cachePath: string): Promise<Map<string, { cik: string; title: string }>> {
+  if (existsSync(cachePath)) {
+    const raw = JSON.parse(readFileSync(cachePath, "utf8")) as Record<string, { cik: string; title: string }>;
+    return new Map(Object.entries(raw));
+  }
+  const { status, text } = await fetchWithBackoff(TICKERS_URL);
+  if (status !== 200) throw new Error(`Failed to fetch company_tickers.json (HTTP ${status})`);
+  const data = JSON.parse(text) as Record<string, { cik_str: number; ticker: string; title: string }>;
+  const map = new Map<string, { cik: string; title: string }>();
+  for (const entry of Object.values(data)) {
+    map.set(entry.ticker.toUpperCase(), { cik: String(entry.cik_str).padStart(10, "0"), title: entry.title });
+  }
+  const obj = Object.fromEntries(map.entries());
+  mkdirSync(cachePath.replace(/\/[^/]+$/, ""), { recursive: true });
+  writeFileSync(cachePath, `${JSON.stringify(obj)}\n`);
+  return map;
 }
 
 function looksLikeCreditAgreement(summary: string, filename: string): boolean {
@@ -75,11 +109,28 @@ export async function acquireAgreementsViaEdgarConnector(options?: {
     }
   }
 
+  let tickerMap: Map<string, { cik: string; title: string }>;
+  try {
+    await sleep(2000);
+    tickerMap = await loadTickerMap(`${root}/.sec-cache/company_tickers.json`);
+  } catch (err) {
+    return {
+      manifests,
+      documentSources: [],
+      errors: [`ticker_map: ${err instanceof Error ? err.message : String(err)}`],
+    };
+  }
+
   for (const ticker of tickers) {
     if (manifests.length >= target) break;
     try {
-      await sleep(options?.delayMs ?? 350);
-      const { cik, title } = await resolveCikForTicker(ticker);
+      await sleep(options?.delayMs ?? 800);
+      const resolved = tickerMap.get(ticker.toUpperCase());
+      if (!resolved) {
+        errors.push(`${ticker}: not in SEC ticker map`);
+        continue;
+      }
+      const { cik, title } = resolved;
       const connector = new EdgarConnector({ cik, ticker });
       const items = await connector.discover({ limit: options?.filingsPerTicker ?? 20 });
       const ranked = items

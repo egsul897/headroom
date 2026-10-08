@@ -50,4 +50,5 @@ export { recoverControllingContext, recoverContextsForFindings } from "./context
 export { independentlyReviewQueue, stratifyQueueSample } from "./review";
 export { buildKnowledgeFactoryImport, buildHighRiskExamples } from "./kf-export";
 export { acquireAgreementsViaEdgarConnector } from "./acquire";
+export { consumeEhbAcquisitionQueue, loadExistingAcquired } from "./consume-ehb-queue";
 export { allAcquisitionTickers, issuerMetaFor, issuerIdForPackage } from "./issuers";

@@ -30,7 +30,8 @@ Phase 2 writes `docs/rare-covenant-drafting-discovery/phase2/` (balanced metrics
 | `04-novelty-findings.json` | Full scored findings |
 | `05-acquisition-recommendations.json` | Diversified acquisition list |
 | `06-run-manifest.json` | Artifact hashes / run metadata |
+| `phase2/` | Validated novelty: balanced metrics, contexts, independent review, KF import, acquisition |
 
 ## Code
 
-`lib/drafting-novelty/` — normalize → extract → signature → cluster → score → queue/acquisition
+`lib/drafting-novelty/` — normalize → extract → signature → cluster → score → queue/acquisition → phase2 validation

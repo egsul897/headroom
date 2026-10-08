@@ -166,6 +166,7 @@ async function main(): Promise<void> {
         "04-high-risk-examples.json",
         "05-knowledge-factory-import.json",
         "06-acquired-agreements.json",
+        "08-knowledge-factory-source-records.json",
       ].map((f) => [f, shaOf(`${OUT}/${f}`)]),
     ),
   });
