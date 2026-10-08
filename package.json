@@ -15,7 +15,10 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
     "golden-test": "tsx scripts/golden-test.ts",
-    "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts"
+    "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts",
+    "compute:inspect": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=1",
+    "compute:bench-100": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=100",
+    "test:cursor-cloud-compute": "vitest run tests/cursor-cloud-compute"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
