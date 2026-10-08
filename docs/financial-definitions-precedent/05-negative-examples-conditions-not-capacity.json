@@ -1,7 +1,7 @@
 {
   "artifact": "financial-definitions-precedent.negative-examples",
   "version": "fdp.v1",
-  "count": 9,
+  "count": 10,
   "examples": [
     {
       "id": "NEG-CONMED-7_1-SSLR-3_75",
@@ -127,6 +127,20 @@
       "excerptSha256": "e57dbf79d0690289d5dd8363ce2e0b16dbe4255fabf0335950488a5c9a65e91a",
       "whyNotCapacity": "Ratio selects Applicable Rate / SOFR margin level. Not affirmative debt or RP capacity.",
       "correctClassification": "PRICING_GRID_INPUT",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-RIOT-Cure_Amount_BTC_Is_Not_Equity_Cure",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Cure Amount (BTC) on Margin Funding Notice schedule",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "charStart": 185976,
+      "charEnd": 186256,
+      "excerpt": "\n\u200b\n\n\u200b\n\nSchedule 1 to Margin Funding Notice\n\nMargin Call Issue Time: [date][time]\n\nLoan Amount (U.S.$): [\u25cf]\n\nCurrent Collateral (BTC): [\u25cf]\n\nBTC Price: [\u25cf]\n\n[Actual LTV Ratio]: [\u25cf]\n\nCure Amount (BTC): [\u25cf]\n\nMargin Funding Deadline: [\u25cf]\n\nMargin Call Reference: [\u25cf]\n\nPlease reach out t",
+      "excerptSha256": "7877271ac1a6e776ec358ec03e487165ac7aa8a19a5662b5241982f76f5ee02e",
+      "whyNotCapacity": "Schedule field for BTC quantity to post/pay under a margin call. Not an equity cure that deems Consolidated EBITDA increased, not Available Amount capacity, and not a debt basket.",
+      "correctClassification": "MARGIN_CALL_CURE_QUANTITY_NOT_EBITDA_EQUITY_CURE",
       "verificationStatus": "NEGATIVE_EXAMPLE"
     }
   ]

@@ -56,17 +56,40 @@
     "definitionEncyclopedia": {
       "agent": "Debt definitions encyclopedia",
       "bcId": "bc-01a11d88-c6c6-7e7e-bccf-657370092a50",
-      "boundary": "Encyclopedia owns general defined-term corpus and term identity. WS-FDP owns calculation mechanics, add-back taxonomy, leverage/coverage tests, missing-input rules, and negative condition-vs-capacity examples for financial metrics."
+      "boundary": "Encyclopedia owns general defined-term corpus and term identity. WS-FDP owns calculation mechanics, add-back taxonomy, leverage/coverage tests, missing-input rules, and negative condition-vs-capacity examples for financial metrics.",
+      "exclusivePathsObserved": [
+        "docs/definition-encyclopedia/**",
+        "lib/definition-encyclopedia/**",
+        "scripts/definition-encyclopedia/**",
+        "tests/definition-encyclopedia/**"
+      ],
+      "branch": "cursor/definition-encyclopedia-2a50",
+      "exportPath": "docs/definition-encyclopedia/knowledge-factory-export.json"
     },
     "basketFormulaLibrary": {
       "agent": "Covenant basket formula library",
       "bcId": "bc-01a11d88-e563-798e-a07e-2cdcd60dae51",
-      "boundary": "Basket library owns capacity/basket formula taxonomy and permission semantics. WS-FDP records Available Amount / Excess Cash Flow as financial calculation objects and hands capacity-utilization framing to the basket library via published interfaces."
+      "boundary": "Basket library owns capacity/basket formula taxonomy and permission semantics. WS-FDP records Available Amount / Excess Cash Flow as financial calculation objects and hands capacity-utilization framing to the basket library via published interfaces.",
+      "exclusivePathsObserved": [
+        "docs/covenant-basket-capacity-formula-library/**",
+        "lib/basket-formula-corpus/**",
+        "scripts/basket-formula-corpus/**",
+        "tests/basket-formula-corpus/**"
+      ],
+      "branch": "cursor/covenant-basket-capacity-formula-library-ae51",
+      "manifestPath": "docs/covenant-basket-capacity-formula-library/export/dataset-manifest.json"
     },
     "covenantKnowledgeFactory": {
       "agent": "Covenant knowledge factory",
       "bcId": "bc-01a11d83-6b3f-71e1-9438-3e157bb27327",
-      "boundary": "Factory owns corpus acquisition. WS-FDP consumes in-repo fixtures only in this draft; future factory document IDs can be linked via sourceId without schema fork."
+      "boundary": "Factory owns corpus acquisition. WS-FDP consumes in-repo fixtures only in this draft; future factory document IDs can be linked via sourceId without schema fork.",
+      "exclusivePathsObserved": [
+        "docs/knowledge-factory/**",
+        "lib/knowledge-factory/**",
+        "scripts/knowledge-factory/**",
+        "tests/knowledge-factory/**"
+      ],
+      "branch": "cursor/covenant-knowledge-factory-7327"
     }
   }
 }

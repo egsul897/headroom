@@ -4,7 +4,7 @@
   "status": "DRAFT_DATASET",
   "workstreamId": "WS-FDP",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "generatedAt": "2026-10-08T22:17:26Z",
+  "generatedAt": "2026-10-08T22:19:30Z",
   "sourceRegistry": {
     "CHWY-2026-CA": {
       "packageId": "chwy-2026-credit-agreement",
@@ -57,16 +57,25 @@
       "sourceKind": "EXTRACTED_TEXT_FIXTURE",
       "issuer": "Distribution Solutions Group (fixture package)",
       "asOf": "2024"
+    },
+    "RIOT-2026-CA": {
+      "packageId": "riot-2025-2026-credit-facility",
+      "instrumentName": "Riot Platforms Second Amended and Restated Credit Agreement dated April 21, 2026 (BTC margin facility)",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Riot Platforms, Inc.",
+      "asOf": "2026-04-21",
+      "facilityKindNote": "BTC-collateralized margin credit agreement with Coinbase Credit \u2014 not a traditional EBITDA covenant package"
     }
   },
   "counts": {
-    "entries": 47,
+    "entries": 49,
     "byKind": {
       "FINANCIAL_DEFINITION": 17,
       "ADJUSTMENT_MECHANIC": 6,
-      "LEVERAGE_OR_COVERAGE_TEST": 14,
+      "LEVERAGE_OR_COVERAGE_TEST": 15,
       "BUILDER_OR_POOL": 6,
-      "CURE_RIGHT": 2,
+      "CURE_RIGHT": 3,
       "STEP_CHANGE_TEST": 2
     },
     "bySource": {
@@ -75,13 +84,14 @@
       "FWRG-2021-CA": 4,
       "LSB-2023-ABL": 1,
       "GIB-2026-CA": 12,
-      "DSGR-2024-AMD": 4
+      "DSGR-2024-AMD": 4,
+      "RIOT-2026-CA": 2
     },
-    "negativeExamples": 9,
-    "missingInputKeys": 14,
-    "unresolvedItems": 8,
-    "regressionCandidates": 10,
-    "divergencePairs": 8,
+    "negativeExamples": 10,
+    "missingInputKeys": 15,
+    "unresolvedItems": 9,
+    "regressionCandidates": 11,
+    "divergencePairs": 9,
     "addbackFamilies": 18
   },
   "entries": [
@@ -1583,8 +1593,67 @@
       "amendments": [],
       "verificationStatus": "SOURCE_SPAN_VERIFIED",
       "notes": "Headword uses non-breaking spaces between words in source PDF extract. Numerator is Funded * Indebtedness (netting lives in those debt defs / cash netting rules), denominator is LTM EBITDA \u2014 not CHWY Consolidated EBITDA/Test Period stack."
+    },
+    {
+      "id": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Actual LTV Ratio",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 4327,
+      "charEnd": 4647,
+      "excerpt": "\u201cActual LTV Ratio\u201d means, at any time, the ratio (expressed as a percentage) of (a)\u00a0the principal amount of the Loan outstanding at such time to (b)\u00a0the Prevailing Market Value of the Collateral at such time.\n\n\u201cAdditional Collateral\u201d has the meaning given to it in Section 2.06(a)(i).\n\n\u201cAdministrative Agent\u201d means Coinb",
+      "excerptSha256": "fcb77542a7d55d3dd2b03734676f1c83cd85706bf1999d2caab3498d0b68e0bb",
+      "units": "RATIO_PERCENT",
+      "measurementPeriod": "at any time",
+      "entityScope": "Borrower loan vs Collateral",
+      "formulaSketch": "outstanding Loan principal / Prevailing Market Value of Collateral (expressed as %)",
+      "dependencies": [
+        "Prevailing Market Value",
+        "Collateral",
+        "Loan"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "LTV on BTC collateral \u2014 not Consolidated Total/First Lien Net Leverage. Do not join to EBITDA leverage formulas by label similarity."
+    },
+    {
+      "id": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "kind": "CURE_RIGHT",
+      "termLabel": "Cure Amount (BTC) \u2014 margin funding notice",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sectionHint": "Schedule 1 to Margin Funding Notice",
+      "charStart": 185976,
+      "charEnd": 186256,
+      "excerpt": "\n\u200b\n\n\u200b\n\nSchedule 1 to Margin Funding Notice\n\nMargin Call Issue Time: [date][time]\n\nLoan Amount (U.S.$): [\u25cf]\n\nCurrent Collateral (BTC): [\u25cf]\n\nBTC Price: [\u25cf]\n\n[Actual LTV Ratio]: [\u25cf]\n\nCure Amount (BTC): [\u25cf]\n\nMargin Funding Deadline: [\u25cf]\n\nMargin Call Reference: [\u25cf]\n\nPlease reach out t",
+      "excerptSha256": "7877271ac1a6e776ec358ec03e487165ac7aa8a19a5662b5241982f76f5ee02e",
+      "units": "BTC_QUANTITY",
+      "measurementPeriod": "Margin Call Issue Time / Margin Funding Deadline",
+      "entityScope": "Borrower / Coinbase Credit as agents",
+      "formulaSketch": "MISSING_INPUT:margin_call_ltv_inputs \u2014 schedule placeholder [\u25cf] for BTC cure quantity; mechanics are LTV/margin-call, not EBITDA equity cure",
+      "dependencies": [
+        "Actual LTV Ratio",
+        "Current Collateral (BTC)",
+        "BTC Price",
+        "Margin Funding Deadline"
+      ],
+      "adjustments": [
+        {
+          "family": "CURE",
+          "direction": "SPECIAL",
+          "note": "margin collateral cure, not EBITDA deeming"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Same English words \u201cCure Amount\u201d as FWRG/CHWY ABL equity-cure family, completely different legal/economic object."
     }
   ],
   "disclaimer": "Source-backed draft atlas. Excerpts may be truncated; re-open sourcePath for full clauses. No legal equivalence claimed across instruments. No financial results invented.",
-  "batch": "batch-2-gibraltar-dsgr-expansion"
+  "batch": "batch-3-peer-coord-refresh-riot-cure-divergence"
 }

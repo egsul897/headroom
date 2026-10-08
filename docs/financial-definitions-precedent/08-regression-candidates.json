@@ -100,6 +100,16 @@
         "CONMED-2025-CA::test::Financial_Covenants_7_1"
       ],
       "failureClass": "FALSE_EQUIVALENCE"
+    },
+    {
+      "id": "REG-FDP-011",
+      "title": "Cure Amount label \u2260 equity cure",
+      "assertion": "Riot Cure Amount (BTC) must never be routed into EBITDA equity-cure or Available Amount exclusion logic used for FWRG/CHWY ABL cures.",
+      "fixtures": [
+        "NEG-RIOT-Cure_Amount_BTC_Is_Not_Equity_Cure",
+        "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA"
+      ],
+      "failureClass": "FALSE_EQUIVALENCE"
     }
   ]
 }

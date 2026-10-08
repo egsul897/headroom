@@ -135,6 +135,17 @@
       "valueType": "MONEY",
       "periodicity": "FOUR_QUARTERS",
       "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "margin_call_ltv_inputs",
+      "requiredBy": [
+        "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+        "RIOT-2026-CA::ratio::Actual_LTV_Ratio"
+      ],
+      "valueType": "STRUCTURED",
+      "periodicity": "EVENT",
+      "status": "MISSING_UNLESS_ATTESTED",
+      "note": "Loan principal, Prevailing Market Value of BTC collateral, BTC price, margin thresholds"
     }
   ]
 }

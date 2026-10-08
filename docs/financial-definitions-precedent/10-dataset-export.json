@@ -2,10 +2,15 @@
   "artifact": "financial-definitions-precedent.export",
   "version": "fdp.v1",
   "compatibleWith": [
-    "covenant-knowledge-factory (future documentId link)",
-    "definition-encyclopedia (termLabel join, non-authoritative)",
-    "basket-formula-library (Available Amount handoff)"
+    "docs/definition-encyclopedia/knowledge-factory-export.json (termLabel join; non-authoritative)",
+    "docs/covenant-basket-capacity-formula-library/export/* (AA/builder handoff)",
+    "docs/knowledge-factory/** (future documentId link)"
   ],
+  "peerBranchesObserved": {
+    "definitionEncyclopedia": "cursor/definition-encyclopedia-2a50",
+    "basketFormulaLibrary": "cursor/covenant-basket-capacity-formula-library-ae51",
+    "covenantKnowledgeFactory": "cursor/covenant-knowledge-factory-7327"
+  },
   "records": [
     {
       "id": "CHWY-2026-CA::def::Consolidated_EBITDA",
@@ -916,6 +921,47 @@
       "verificationStatus": "SOURCE_SPAN_VERIFIED"
     },
     {
+      "id": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "termLabel": "Actual LTV Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "charStart": 4327,
+      "charEnd": 4647,
+      "excerptSha256": "fcb77542a7d55d3dd2b03734676f1c83cd85706bf1999d2caab3498d0b68e0bb",
+      "units": "RATIO_PERCENT",
+      "measurementPeriod": "at any time",
+      "entityScope": "Borrower loan vs Collateral",
+      "formulaSketch": "outstanding Loan principal / Prevailing Market Value of Collateral (expressed as %)",
+      "dependencies": [
+        "Prevailing Market Value",
+        "Collateral",
+        "Loan"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "termLabel": "Cure Amount (BTC) \u2014 margin funding notice",
+      "kind": "CURE_RIGHT",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "charStart": 185976,
+      "charEnd": 186256,
+      "excerptSha256": "7877271ac1a6e776ec358ec03e487165ac7aa8a19a5662b5241982f76f5ee02e",
+      "units": "BTC_QUANTITY",
+      "measurementPeriod": "Margin Call Issue Time / Margin Funding Deadline",
+      "entityScope": "Borrower / Coinbase Credit as agents",
+      "formulaSketch": "MISSING_INPUT:margin_call_ltv_inputs \u2014 schedule placeholder [\u25cf] for BTC cure quantity; mechanics are LTV/margin-call, not EBITDA equity cure",
+      "dependencies": [
+        "Actual LTV Ratio",
+        "Current Collateral (BTC)",
+        "BTC Price",
+        "Margin Funding Deadline"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
       "id": "NEG-CONMED-7_1-SSLR-3_75",
       "termLabel": "Consolidated Senior Secured Leverage Ratio \u2264 3.75 to 1.00",
       "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
@@ -1022,6 +1068,18 @@
       "excerptSha256": "e57dbf79d0690289d5dd8363ce2e0b16dbe4255fabf0335950488a5c9a65e91a",
       "verificationStatus": "NEGATIVE_EXAMPLE",
       "correctClassification": "PRICING_GRID_INPUT"
+    },
+    {
+      "id": "NEG-RIOT-Cure_Amount_BTC_Is_Not_Equity_Cure",
+      "termLabel": "Cure Amount (BTC) on Margin Funding Notice schedule",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "charStart": 185976,
+      "charEnd": 186256,
+      "excerptSha256": "7877271ac1a6e776ec358ec03e487165ac7aa8a19a5662b5241982f76f5ee02e",
+      "verificationStatus": "NEGATIVE_EXAMPLE",
+      "correctClassification": "MARGIN_CALL_CURE_QUANTITY_NOT_EBITDA_EQUITY_CURE"
     }
   ]
 }

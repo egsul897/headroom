@@ -77,6 +77,15 @@
         "CONMED: Material Acquisition step-UP of maximum leverage ratios",
         "GIB: ECF mandatory prepayment percentage step-DOWN as First Lien Net Leverage improves"
       ]
+    },
+    {
+      "termLabel": "Cure Amount",
+      "left": "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+      "right": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "differences": [
+        "FWRG/CHWY-family Cure Amount is equity cure / AA exclusion around financial-covenant EBITDA deeming",
+        "Riot Cure Amount (BTC) is a margin-call collateral schedule quantity on an LTV facility with zero EBITDA definitions in the extracted CA text"
+      ]
     }
   ]
 }

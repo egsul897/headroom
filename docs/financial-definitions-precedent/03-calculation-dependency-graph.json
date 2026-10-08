@@ -1,8 +1,8 @@
 {
   "artifact": "financial-definitions-precedent.calculation-dependency-graph",
   "version": "fdp.v1",
-  "nodeCount": 112,
-  "edgeCount": 120,
+  "nodeCount": 121,
+  "edgeCount": 128,
   "nodes": [
     {
       "id": "CHWY-2026-CA::def::Consolidated_EBITDA",
@@ -673,6 +673,60 @@
     {
       "id": "TERM::Consolidated Funded Indebtedness",
       "label": "Consolidated Funded Indebtedness",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "label": "Actual LTV Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "RIOT-2026-CA"
+    },
+    {
+      "id": "TERM::Prevailing Market Value",
+      "label": "Prevailing Market Value",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Collateral",
+      "label": "Collateral",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Loan",
+      "label": "Loan",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "label": "Cure Amount (BTC) \u2014 margin funding notice",
+      "kind": "CURE_RIGHT",
+      "sourceId": "RIOT-2026-CA"
+    },
+    {
+      "id": "TERM::Actual LTV Ratio",
+      "label": "Actual LTV Ratio",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Current Collateral (BTC)",
+      "label": "Current Collateral (BTC)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::BTC Price",
+      "label": "BTC Price",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Margin Funding Deadline",
+      "label": "Margin Funding Deadline",
       "kind": "TERM_REF",
       "sourceId": null
     }
@@ -1351,6 +1405,48 @@
       "note": "depends"
     },
     {
+      "from": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "to": "TERM::Prevailing Market Value",
+      "edgeType": "USES",
+      "note": "depends"
+    },
+    {
+      "from": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "to": "TERM::Collateral",
+      "edgeType": "USES",
+      "note": "depends"
+    },
+    {
+      "from": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "to": "TERM::Loan",
+      "edgeType": "USES",
+      "note": "depends"
+    },
+    {
+      "from": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "to": "TERM::Actual LTV Ratio",
+      "edgeType": "USES",
+      "note": "depends"
+    },
+    {
+      "from": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "to": "TERM::Current Collateral (BTC)",
+      "edgeType": "USES",
+      "note": "depends"
+    },
+    {
+      "from": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "to": "TERM::BTC Price",
+      "edgeType": "USES",
+      "note": "depends"
+    },
+    {
+      "from": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "to": "TERM::Margin Funding Deadline",
+      "edgeType": "USES",
+      "note": "depends"
+    },
+    {
       "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
       "to": "CONMED-2025-CA::def::Consolidated_EBITDA",
       "edgeType": "RELATED_MECHANIC_NOT_EQUIVALENT",
@@ -1378,7 +1474,7 @@
       "from": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
       "to": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
       "edgeType": "RELATED_MECHANIC_NOT_EQUIVALENT",
-      "note": "Same instrument: First Lien Debt requires equal/senior priority vs Secured Obligations; Senior Secured Debt requires security on material Collateral without that equal/senior filte"
+      "note": "Same instrument: First Lien Debt requires equal/senior priority vs Secured Obligations; Senior Secured Debt requires security on material Collateral without that equal/senior filter"
     },
     {
       "from": "CONMED-2025-CA::def::Consolidated_EBITDA",
@@ -1397,6 +1493,12 @@
       "to": "GIB-2026-CA::test::ECF_Prepay_Step_Down",
       "edgeType": "RELATED_MECHANIC_NOT_EQUIVALENT",
       "note": "CONMED: Material Acquisition step-UP of maximum leverage ratios"
+    },
+    {
+      "from": "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+      "to": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "edgeType": "RELATED_MECHANIC_NOT_EQUIVALENT",
+      "note": "FWRG/CHWY-family Cure Amount is equity cure / AA exclusion around financial-covenant EBITDA deeming"
     }
   ]
 }
