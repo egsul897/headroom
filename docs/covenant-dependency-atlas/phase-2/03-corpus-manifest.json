@@ -19,6 +19,13 @@
       "max": 50
     },
     "targetMet": true,
+    "holdoutIntegrity": {
+      "gibraltarSplit": "development",
+      "gibraltarDesignation": "DEVELOPMENT — Arch+Cert 2026-10-07; Phase 2 evaluation label corrected",
+      "knifeRiverBlind": "PRESERVED_UNREAD — no body registered; no inspection this mission",
+      "evaluationPackage": "cnmd-htm-amd2",
+      "evaluationPackagePolicy": "Extract for measurement only; do not tune Atlas connectives against evaluation docs"
+    },
     "note": "Local+acquired corpus meets the 25–50 authentic-agreement target window."
   },
   "entries": [
@@ -225,7 +232,7 @@
       "packageId": "conmed-2025",
       "issuer": "CNMD",
       "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm",
-      "split": "development",
+      "split": "evaluation",
       "hasGroundTruth": false,
       "bytes": 37209,
       "sha256": "45f8abcacf2f0bc0fd0b06b2f4a974b5bb395ebf18a0b667c30e2ac5f5d0851a",
@@ -291,7 +298,7 @@
       "packageId": "gibraltar-2026",
       "issuer": "ROCK",
       "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
-      "split": "evaluation",
+      "split": "development",
       "hasGroundTruth": false,
       "bytes": 1043514,
       "sha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",

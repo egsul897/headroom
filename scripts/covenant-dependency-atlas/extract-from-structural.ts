@@ -51,18 +51,50 @@ const CONNECTIVE_RULES: { re: RegExp; kind: DependencyEdgeKind; label: string }[
   { re: /\b(?:Restricted|Unrestricted)\s+Subsidiar(?:y|ies)\b|\bLoan\s+Part(?:y|ies)\b|\bGuarantor(?:s)?\b/i, kind: "ENTITY_SCOPE", label: "entity-scope term" },
   { re: /\b(?:Total\s+Net\s+)?Leverage\s+Ratio\b|\bInterest\s+Coverage\s+Ratio\b|\bFixed\s+Charge\s+Coverage\b/i, kind: "RATIO_CALCULATION", label: "ratio reference" },
   { re: /\bas\s+amended\b|\bAmendment\b.{0,40}\b(?:Section|hereby)\b/i, kind: "COVENANT_TO_AMENDMENT", label: "amendment authority" },
-  { re: /\b(?:Security|Collateral|Intercreditor|Guarantee)\s+Agreement\b/i, kind: "COVENANT_TO_CROSS_DOCUMENT", label: "cross-document instrument" },
+  {
+    re: /\b(?:Security|Collateral|Intercreditor|Guarantee|Custody)\s+Agreement\b|\bCollateral\s+Documents?\b|\b(?:Pledge\s+and\s+)?Collateral\s+Account\s+Control\s+Agreement\b/i,
+    kind: "COVENANT_TO_CROSS_DOCUMENT",
+    label: "cross-document instrument",
+  },
 ];
 
 const FINANCIAL_INPUT_CUES: { re: RegExp; key: string }[] = [
   { re: /\bNet\s+Income\b/, key: "NET_INCOME" },
+  { re: /\bConsolidated\s+Net\s+Income\b/, key: "CONSOLIDATED_NET_INCOME" },
   { re: /\bInterest\s+Expense\b/, key: "INTEREST_EXPENSE" },
   { re: /\bUnrestricted\s+Cash\b/, key: "UNRESTRICTED_CASH" },
   { re: /\bConsolidated\s+Total\s+Assets\b/, key: "CONSOLIDATED_TOTAL_ASSETS" },
+  { re: /\bPrevailing\s+Market\s+Value\b/, key: "PREVAILING_MARKET_VALUE" },
 ];
+
+/** Max chars for Atlas-owned definition body window (does not change production detector spans). */
+const DEF_BODY_MAX = 3500;
 
 function sha16(s: string): string {
   return createHash("sha256").update(s).digest("hex").slice(0, 16);
+}
+
+/**
+ * Production `detectStructuralDefinitions` sets charEnd at the end of the
+ * declaration match ("… means") — typically ~20–50 chars — while
+ * `definitionExcerpt` already carries a bounded body. Atlas-owned extraction
+ * therefore reconstructs a body window from excerpt + text after charStart
+ * until the next definition declaration or DEF_BODY_MAX. Production parser
+ * spans are never mutated.
+ */
+function definitionBodyWindow(
+  text: string,
+  d: { charStart: number; charEnd: number; definitionExcerpt: string },
+  nextDefStart: number | null,
+): { body: string; bodyStart: number; bodyEnd: number } {
+  const bodyStart = d.charStart;
+  const excerptEnd = d.charStart + (d.definitionExcerpt?.length ?? 0);
+  const boundByNext = nextDefStart != null ? nextDefStart : text.length;
+  const bodyEnd = Math.min(text.length, boundByNext, d.charStart + DEF_BODY_MAX, Math.max(d.charEnd, excerptEnd, d.charStart + 400));
+  // Prefer a longer window when the next definition is nearby but excerpt is short.
+  const expandedEnd = Math.min(text.length, boundByNext, d.charStart + DEF_BODY_MAX);
+  const end = Math.max(bodyEnd, Math.min(expandedEnd, Math.max(excerptEnd, d.charStart + 800)));
+  return { body: text.slice(bodyStart, end), bodyStart, bodyEnd: end };
 }
 
 function ensureNode(nodes: Map<string, AtlasNode>, node: AtlasNode): void {
@@ -118,6 +150,14 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
     return nodeById.get(sourceNodeId)?.sectionRef ?? null;
   };
 
+  const defsSorted = [...definitions].sort((a, b) => a.charStart - b.charStart);
+  const nextDefStartAfter = (charStart: number): number | null => {
+    for (const d of defsSorted) {
+      if (d.charStart > charStart) return d.charStart;
+    }
+    return null;
+  };
+
   const defByNorm = new Map<string, (typeof definitions)[number]>();
   for (const d of definitions) {
     defByNorm.set(d.normalizedTerm, d);
@@ -153,7 +193,7 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
 
   // Definition → definition via "as defined in" / compositional term mentions inside definition bodies.
   for (const d of definitions) {
-    const body = text.slice(d.charStart, Math.min(d.charEnd, d.charStart + 2500));
+    const { body, bodyStart } = definitionBodyWindow(text, d, nextDefStartAfter(d.charStart));
     const fromId = nodeIdForTerm(documentId, d.exactTerm);
     for (const other of definitions) {
       if (other.normalizedTerm === d.normalizedTerm) continue;
@@ -163,7 +203,7 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
       const m = body.match(termRe);
       if (!m || m.index == null) continue;
       const window = body.slice(Math.max(0, m.index - 40), Math.min(body.length, m.index + other.exactTerm.length + 40));
-      const compositional = /\b(?:means|plus|minus|divided by|less|including|as defined)\b/i.test(body.slice(0, 200)) || /\bas\s+defined\b/i.test(window);
+      const compositional = /\b(?:means|plus|minus|divided by|less|including|as defined|ratio of)\b/i.test(body.slice(0, 240)) || /\bas\s+defined\b/i.test(window);
       if (!compositional) continue;
       const toId = nodeIdForTerm(documentId, other.exactTerm);
       addEdge(edges, {
@@ -174,15 +214,15 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
         resolution: "RESOLVED",
         confidence: "MEDIUM",
         evidenceClass: "STRUCTURAL_DEFINITION_OCCURRENCE",
-        rationale: `Definition '${d.exactTerm}' body compositionally references '${other.exactTerm}' (structural definition span).`,
+        rationale: `Definition '${d.exactTerm}' body compositionally references '${other.exactTerm}' (Atlas definition-body window; production charEnd left unchanged).`,
         sourceSpans: [
           {
             documentId,
             sourceFile,
             sectionRef: sectionRefOf(d.sourceNodeId) ?? null,
             unitId: null,
-            charStart: d.charStart + m.index,
-            charEnd: d.charStart + m.index + other.exactTerm.length,
+            charStart: bodyStart + m.index,
+            charEnd: bodyStart + m.index + other.exactTerm.length,
             excerpt: window.slice(0, 200),
           },
         ],
@@ -196,7 +236,7 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
 
     for (const cue of FINANCIAL_INPUT_CUES) {
       if (!cue.re.test(body)) continue;
-      if (!/\b(?:means|plus|minus|divided by|less|aggregate)\b/i.test(body.slice(0, 400))) continue;
+      if (!/\b(?:means|plus|minus|divided by|less|aggregate|ratio of)\b/i.test(body.slice(0, 400))) continue;
       const finId = nodeIdForFinancialInput(cue.key);
       ensureNode(nodes, {
         nodeId: finId,
@@ -224,8 +264,8 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
             sourceFile,
             sectionRef: sectionRefOf(d.sourceNodeId) ?? null,
             unitId: null,
-            charStart: d.charStart,
-            charEnd: Math.min(d.charEnd, d.charStart + 240),
+            charStart: bodyStart,
+            charEnd: bodyStart + Math.min(body.length, 240),
             excerpt: body.slice(0, 200),
           },
         ],
@@ -275,6 +315,168 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
         rootCause: null,
         controllingRestrictionRisk: false,
       });
+    }
+  }
+
+  // Section-body high-risk family scan (Atlas-owned): cross-document instruments,
+  // shared baskets, entity scope, reclassification, remote "subject to" conditions.
+  // Requires an explicit connective/instrument phrase in the section body — never similarity-only.
+  for (const sn of sectionNodes(structuralNodes)) {
+    if (!isCovenantishSection(sn.sectionRef, sn.heading)) continue;
+    const fromId = nodeIdForSection(documentId, sn.sectionRef);
+    const body = text.slice(sn.charStart, Math.min(sn.charEnd, sn.charStart + 5000));
+    const bodyStart = sn.charStart;
+
+    const pushSectionEdge = (
+      kind: DependencyEdgeKind,
+      toId: string,
+      resolution: AtlasEdge["resolution"],
+      rationale: string,
+      excerpt: string,
+      charStart: number,
+      charEnd: number,
+      unresolvedReason: string | null,
+      extra?: Partial<AtlasEdge>,
+    ) => {
+      addEdge(edges, {
+        edgeId: edgeIdOf(kind, fromId, toId, sha16(excerpt + String(charStart))),
+        kind,
+        fromNodeId: fromId,
+        toNodeId: toId,
+        resolution,
+        confidence: resolution === "RESOLVED" ? "MEDIUM" : "LOW",
+        evidenceClass: "EXPLICIT_SOURCE_CONNECTIVE",
+        rationale,
+        sourceSpans: [
+          {
+            documentId,
+            sourceFile,
+            sectionRef: sn.sectionRef,
+            unitId: sn.nodeId,
+            charStart,
+            charEnd,
+            excerpt: excerpt.slice(0, 220),
+          },
+        ],
+        unresolvedReason,
+        sharedBasketKey: extra?.sharedBasketKey ?? null,
+        financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
+      });
+    };
+
+    const xdRe =
+      /\b(?:Security|Collateral|Intercreditor|Guarantee|Custody)\s+Agreement\b|\bCollateral\s+Documents?\b|\b(?:Pledge\s+and\s+)?Collateral\s+Account\s+Control\s+Agreement\b/gi;
+    let xd: RegExpExecArray | null;
+    while ((xd = xdRe.exec(body)) !== null) {
+      const label = xd[0]!;
+      const toId = nodeIdForCrossDocument(label);
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "CROSS_DOCUMENT_TARGET",
+        documentId,
+        label,
+        sectionRef: null,
+        unitId: null,
+        termName: null,
+        materiality: null,
+        notes: null,
+      });
+      pushSectionEdge(
+        "COVENANT_TO_CROSS_DOCUMENT",
+        toId,
+        "UNRESOLVED",
+        `Section ${sn.sectionRef} references cross-document instrument '${label}'.`,
+        body.slice(Math.max(0, xd.index - 40), xd.index + label.length + 40),
+        bodyStart + xd.index,
+        bodyStart + xd.index + label.length,
+        "Cross-document instrument reference; target not in this document text.",
+      );
+    }
+
+    if (/\b(?:shares?|shared)\s+(?:capacity|basket|amount)\b|\bAvailable\s+Amount\b|\bAvailable\s+(?:RP|Investment)\s+Capacity\s+Amount\b/i.test(body)) {
+      const key = /\bAvailable\s+RP\s+Capacity\s+Amount\b/i.test(body)
+        ? "Available RP Capacity Amount"
+        : /\bAvailable\s+Investment\s+Capacity\s+Amount\b/i.test(body)
+          ? "Available Investment Capacity Amount"
+          : /\bAvailable\s+Amount\b/i.test(body)
+            ? "Available Amount"
+            : "SHARED_CAPACITY";
+      const toId = nodeIdForTerm(documentId, key);
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "SHARED_BASKET",
+        documentId,
+        label: key,
+        sectionRef: sectionRefOf(defByNorm.get(key.toLowerCase())?.sourceNodeId ?? null),
+        unitId: null,
+        termName: key,
+        materiality: null,
+        notes: null,
+      });
+      const resolved = defByNorm.has(key.toLowerCase()) || key === "SHARED_CAPACITY";
+      pushSectionEdge(
+        "COVENANT_TO_SHARED_BASKET",
+        toId,
+        resolved ? "RESOLVED" : "UNRESOLVED",
+        `Section ${sn.sectionRef} references shared-capacity basket '${key}'.`,
+        body.slice(0, 200),
+        bodyStart,
+        bodyStart + Math.min(200, body.length),
+        resolved ? null : `Shared basket '${key}' not located as a structural definition.`,
+        { sharedBasketKey: key },
+      );
+    }
+
+    if (/\b(?:Restricted|Unrestricted)\s+Subsidiar(?:y|ies)\b|\bLoan\s+Part(?:y|ies)\b|\bGuarantor(?:s)?\b|\bRestricted\s+Part(?:y|ies)\b/i.test(body)) {
+      const toId = `${fromId}::entity_scope`;
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "ENTITY_SCOPE_RULE",
+        documentId,
+        label: `Entity scope signal @ ${sn.sectionRef}`,
+        sectionRef: sn.sectionRef,
+        unitId: sn.nodeId,
+        termName: null,
+        materiality: null,
+        notes: "Entity-scope term in covenantish section body.",
+      });
+      pushSectionEdge(
+        "ENTITY_SCOPE",
+        toId,
+        "RESOLVED",
+        `Section ${sn.sectionRef} contains entity-scope defined-party language.`,
+        body.slice(0, 200),
+        bodyStart,
+        bodyStart + Math.min(200, body.length),
+        null,
+      );
+    }
+
+    if (/\breclassif(?:y|ication|iable)\b/i.test(body)) {
+      const toId = nodeIdForUnresolved(documentId, `reclass-${sn.sectionRef}`);
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "UNRESOLVED_TARGET",
+        documentId,
+        label: `reclassification @ ${sn.sectionRef}`,
+        sectionRef: sn.sectionRef,
+        unitId: null,
+        termName: null,
+        materiality: null,
+        notes: null,
+      });
+      pushSectionEdge(
+        "RECLASSIFICATION",
+        toId,
+        "UNRESOLVED",
+        `Section ${sn.sectionRef} contains reclassification connective; destination provision not uniquely resolved.`,
+        body.slice(0, 200),
+        bodyStart,
+        bodyStart + Math.min(200, body.length),
+        "Reclassification connective found; destination provision not uniquely resolved.",
+      );
     }
   }
 
@@ -461,17 +663,24 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
     });
   }
 
-  // Ratio definitions: term name contains Ratio and body has compositional deps — already partly covered;
-  // add RATIO_CALCULATION edges from leverage/coverage definitions to component terms.
+  // Ratio definitions: term name contains Ratio and body has compositional deps.
+  // Component matching uses defined terms appearing in the Atlas body window after a
+  // ratio connective — not production charEnd (which ends at "means").
   for (const d of definitions) {
     if (!/ratio/i.test(d.exactTerm)) continue;
     const fromId = nodeIdForTerm(documentId, d.exactTerm);
-    const body = text.slice(d.charStart, Math.min(d.charEnd, d.charStart + 2000));
+    const { body, bodyStart } = definitionBodyWindow(text, d, nextDefStartAfter(d.charStart));
+    if (!/\bratio\b|\bdivided by\b|\bto\b/i.test(body.slice(0, 500))) continue;
     for (const other of definitions) {
       if (other.normalizedTerm === d.normalizedTerm) continue;
-      if (!/\b(EBITDA|Indebtedness|Interest|Cash|Income|Assets)\b/i.test(other.exactTerm)) continue;
+      if (other.exactTerm.length < 4) continue;
+      // Prefer classic financial components; also admit defined terms named in "ratio of (a) X to (b) Y".
+      const classic = /\b(EBITDA|Indebtedness|Interest|Cash|Income|Assets|Debt|Loan|Collateral|Market Value|LTV)\b/i.test(other.exactTerm);
       const termRe = new RegExp(`\\b${other.exactTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`);
-      if (!termRe.test(body)) continue;
+      const m = body.match(termRe);
+      if (!m || m.index == null) continue;
+      if (!classic && m.index > 500) continue; // non-classic components must appear near the ratio formula head
+      if (!classic && !/\bratio of\b|\bexpressed as\b|\bpercentage\b/i.test(body.slice(0, Math.min(body.length, m.index + 80)))) continue;
       const toId = nodeIdForTerm(documentId, other.exactTerm);
       addEdge(edges, {
         edgeId: edgeIdOf("RATIO_CALCULATION", fromId, toId),
@@ -481,16 +690,16 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
         resolution: "RESOLVED",
         confidence: "MEDIUM",
         evidenceClass: "STRUCTURAL_DEFINITION_OCCURRENCE",
-        rationale: `Ratio definition '${d.exactTerm}' references component '${other.exactTerm}'.`,
+        rationale: `Ratio definition '${d.exactTerm}' references component '${other.exactTerm}' (Atlas definition-body window).`,
         sourceSpans: [
           {
             documentId,
             sourceFile,
             sectionRef: sectionRefOf(d.sourceNodeId) ?? null,
             unitId: null,
-            charStart: d.charStart,
-            charEnd: Math.min(d.charEnd, d.charStart + 200),
-            excerpt: body.slice(0, 200),
+            charStart: bodyStart + m.index,
+            charEnd: bodyStart + m.index + other.exactTerm.length,
+            excerpt: body.slice(Math.max(0, m.index - 40), m.index + other.exactTerm.length + 40).slice(0, 200),
           },
         ],
         unresolvedReason: null,

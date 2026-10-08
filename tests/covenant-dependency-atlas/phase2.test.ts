@@ -99,9 +99,12 @@ describe("Dependency Atlas Phase 2", () => {
     const registry = buildFixtureCorpusRegistry();
     const summary = corpusSummary(registry);
     expect(summary.available).toBeGreaterThanOrEqual(20);
-    expect(registry.some((e) => e.documentId === "gibraltar-ca" && e.split === "evaluation")).toBe(true);
+    // Phase 3: Gibraltar is DEVELOPMENT per Arch+Cert; sealed eval is cnmd-htm-amd2.
+    expect(registry.some((e) => e.documentId === "gibraltar-ca" && e.split === "development")).toBe(true);
+    expect(registry.some((e) => e.documentId === "cnmd-htm-amd2" && e.split === "evaluation")).toBe(true);
     expect(registry.filter((e) => e.split === "development" && e.available).length).toBeGreaterThan(15);
     expect(summary.issuers.length).toBeGreaterThan(5);
+    expect(summary.holdoutIntegrity?.knifeRiverBlind).toMatch(/PRESERVED_UNREAD/);
   });
 
   it("graph fixtures still distinguish diamond shared deps from circular definitions", () => {

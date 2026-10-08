@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "covenant-dependency-atlas.phase-3",
+  "generatedAt": "2026-10-08T22:30:44.287Z",
+  "startingSha": "fdea754a4c3f2cbf6ffa34ed2355506280b0f2b7",
+  "shaAtBuild": "fdea754a4c3f2cbf6ffa34ed2355506280b0f2b7",
+  "paidInference": false,
+  "productionResolverTouched": false,
+  "merges": false,
+  "certificationChanges": false,
+  "corpus": {
+    "registered": 25,
+    "available": 25,
+    "developmentAvailable": 24,
+    "evaluationAvailable": 1,
+    "issuers": [
+      "CHWY",
+      "CNMD",
+      "DSGR",
+      "FWRG",
+      "LSB",
+      "RIOT",
+      "ROCK",
+      "SXI"
+    ],
+    "targetRange": {
+      "min": 25,
+      "max": 50
+    },
+    "targetMet": true,
+    "holdoutIntegrity": {
+      "gibraltarSplit": "development",
+      "gibraltarDesignation": "DEVELOPMENT — Arch+Cert 2026-10-07; Phase 2 evaluation label corrected",
+      "knifeRiverBlind": "PRESERVED_UNREAD — no body registered; no inspection this mission",
+      "evaluationPackage": "cnmd-htm-amd2",
+      "evaluationPackagePolicy": "Extract for measurement only; do not tune Atlas connectives against evaluation docs"
+    },
+    "note": "Local+acquired corpus meets the 25–50 authentic-agreement target window."
+  },
+  "structuralIndexOnly": {
+    "documents": 25,
+    "edges": 20328,
+    "priorityCoverage": {
+      "RECLASSIFICATION": 20,
+      "ENTITY_SCOPE": 1416,
+      "COVENANT_TO_SHARED_BASKET": 44,
+      "COVENANT_TO_CROSS_DOCUMENT": 448,
+      "RATIO_CALCULATION": 272,
+      "FINANCIAL_INPUT": 109,
+      "COVENANT_TO_CONDITION": 470,
+      "COVENANT_TO_AMENDMENT": 34
+    }
+  },
+  "missedEdgeAudit": {
+    "structuralExtractionBoundary": 1,
+    "incorrectGroundTruthSample": 3,
+    "covenantFamilyRecognitionGap": 1,
+    "note": "Correctness prioritized: three of five 'misses' were bad expected edges, not extractor failures."
+  },
+  "independentGroundTruth": {
+    "edges": 135,
+    "bySplit": {
+      "development": 46,
+      "evaluation": 46,
+      "blind": 43
+    },
+    "byIssuer": {
+      "CHWY": 22,
+      "RIOT": 14,
+      "DSGR": 19,
+      "LSB": 10,
+      "FWRG": 22,
+      "CNMD": 17,
+      "SXI": 21,
+      "ROCK": 10
+    },
+    "byKind": {
+      "COVENANT_TO_DEFINITION": 39,
+      "RATIO_CALCULATION": 18,
+      "ENTITY_SCOPE": 16,
+      "COVENANT_TO_CONDITION": 15,
+      "COVENANT_TO_EXCEPTION": 8,
+      "RECLASSIFICATION": 5,
+      "FINANCIAL_INPUT": 7,
+      "COVENANT_TO_SHARED_BASKET": 9,
+      "COVENANT_TO_CROSS_DOCUMENT": 10,
+      "COVENANT_TO_AMENDMENT": 7,
+      "DEFINITION_TO_DEFINITION": 1
+    }
+  },
+  "recallPrecision": {
+    "smallSample": {
+      "expected": 17,
+      "truePositives": 17,
+      "recall": 1
+    },
+    "expanded": {
+      "expected": 135,
+      "truePositives": 93,
+      "falseNegatives": 42,
+      "precisionProbeFalsePositives": 0,
+      "recall": 0.6888888888888889,
+      "precision": 1,
+      "wilsonRecallLow": 0.606478665324072,
+      "wilsonRecallHigh": 0.7608464015146853
+    },
+    "bySplit": {
+      "development": {
+        "expected": 46,
+        "truePositives": 36,
+        "falseNegatives": 10,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.782608695652174,
+        "precision": 1,
+        "wilsonRecallLow": 0.6442603416081054,
+        "wilsonRecallHigh": 0.8773922538141925
+      },
+      "evaluation": {
+        "expected": 46,
+        "truePositives": 27,
+        "falseNegatives": 19,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.5869565217391305,
+        "precision": 1,
+        "wilsonRecallLow": 0.44339242387017885,
+        "wilsonRecallHigh": 0.7171160670289898
+      },
+      "blind": {
+        "expected": 43,
+        "truePositives": 30,
+        "falseNegatives": 13,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.6976744186046512,
+        "precision": 1,
+        "wilsonRecallLow": 0.5489435424759018,
+        "wilsonRecallHigh": 0.8139817205381712
+      }
+    }
+  },
+  "controllingRestrictionRisks": {
+    "total": 135,
+    "byCategory": {
+      "MISSING_DEFINITIONS": 0,
+      "AMENDMENT_TARGET_RESOLUTION": 51,
+      "STRUCTURAL_PARSING_FAILURE": 0,
+      "REMOTE_CONDITIONS": 14,
+      "SHARED_CAPACITY": 0,
+      "RECLASSIFICATION": 0,
+      "CROSS_DOCUMENT_RESTRICTIONS": 2,
+      "AMBIGUOUS_REFERENCE": 68,
+      "OTHER": 0
+    }
+  },
+  "definitionSubtypes": {
+    "TRULY_MISSING_DEFINITION": 588,
+    "DEFINITION_IN_ANOTHER_DOCUMENT": 3,
+    "FORWARDING_DEFINITION": 4,
+    "INCORRECT_EXTRACTION_BOUNDARY": 0,
+    "ALIAS_OR_PLURALIZATION": 4,
+    "NON_DEFINITION_REFERENCE": 28,
+    "INCORRECT_CANDIDATE_EDGE": 0
+  },
+  "cycleAdjudication": {
+    "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION": 5,
+    "STRUCTURAL_EXTRACTION_ARTIFACT": 1,
+    "GENUINE_SEMANTIC_DEPENDENCY_CYCLE": 1,
+    "DIAMOND_SHARED_DEPENDENCY_ACYCLIC": 25
+  },
+  "holdoutIntegrity": {
+    "gibraltarSplit": "development",
+    "gibraltarDesignation": "DEVELOPMENT — Arch+Cert 2026-10-07; Phase 2 evaluation label corrected",
+    "knifeRiverBlind": "PRESERVED_UNREAD — no body registered; no inspection this mission",
+    "evaluationPackage": "cnmd-htm-amd2",
+    "evaluationPackagePolicy": "Extract for measurement only; do not tune Atlas connectives against evaluation docs"
+  },
+  "ckfImport": {
+    "idempotent": true,
+    "unresolvedPreserved": 1085,
+    "promotedToLegalTruth": 0,
+    "sourceVersionId": "srcver:a707f65f9c542f265b7d5f88"
+  },
+  "checksums": {
+    "docs/covenant-dependency-atlas/phase-3/00-summary.json": "473078ee11135dd7992b7f49c0f625acd3b2f8aad1e7b2e4b3a8b9c621d20284",
+    "docs/covenant-dependency-atlas/phase-3/01-missed-edge-audit.json": "c3b3b29a4e1a26501a70069902fc832ed37b0a172de29ca73520cdd45e19baac",
+    "docs/covenant-dependency-atlas/phase-3/02-independent-ground-truth.json": "90331f44ef467e804e9aee7312196411b6d4714e84404c3c02bdb8ca4b5f7256",
+    "docs/covenant-dependency-atlas/phase-3/03-recall-precision.json": "4d535b031681e7f17e851b0403a167c6f9f0d23e7d1f2895d958e377ea764db9",
+    "docs/covenant-dependency-atlas/phase-3/04-controlling-restriction-risks.json": "86888d756f1d9b54d9f730c1a288d2a50c9f962b8a1debe9f2e8e3162adfd17e",
+    "docs/covenant-dependency-atlas/phase-3/05-definition-resolution.json": "f5c4fefefb36f569f875c695a2c92bf55191d9e53f99ab638baee0abb1fcf754",
+    "docs/covenant-dependency-atlas/phase-3/06-cycle-adjudication.json": "a36312f814cec6a6b3de71eb24d39bde8fb12ad4a202a72b61b5f2c87abd32bd",
+    "docs/covenant-dependency-atlas/phase-3/07-high-risk-family-coverage.json": "e7598b2127adf18981674840f680c9a038ba71e9e2b329035ece0db95dc15abe",
+    "docs/covenant-dependency-atlas/phase-3/08-holdout-integrity.json": "b3eea874cdbf71231d3b084625c193c8065505d6d0ebcf6b8b15c767477f6b55",
+    "docs/covenant-dependency-atlas/phase-3/09-ckf-import.json": "2b19eecae4aa813d32616fb0207ae71f15251172c047fa7957f2070c901f4d37"
+  }
+}

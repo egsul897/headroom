@@ -82,15 +82,18 @@ export function buildFixtureCorpusRegistry(): CorpusEntry[] {
     entry("cnmd-htm-base", "conmed-2025", "CNMD", "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm", "development", false),
     entry("cnmd-htm-omnibus", "conmed-2025", "CNMD", "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-first-omnibus-amendment-2026-06-01.htm", "development", false),
     entry("cnmd-htm-gca", "conmed-2025", "CNMD", "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm", "development", false),
-    entry("cnmd-htm-amd2", "conmed-2025", "CNMD", "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm", "development", false),
+    // Sealed evaluation corpus: CONMED second amendment HTML — extract for measurement only.
+    entry("cnmd-htm-amd2", "conmed-2025", "CNMD", "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm", "evaluation", false),
     // FWRG / LSB excerpts
     entry("fwrg-art6", "fwrg-2021", "FWRG", "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt", "development", false),
     entry("fwrg-defs", "fwrg-2021", "FWRG", "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt", "development", false),
     entry("lsb-art6", "lsb-2023", "LSB", "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt", "development", false),
     entry("lsb-defs", "lsb-2023", "LSB", "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt", "development", false),
     entry("lsb-intercreditor", "lsb-2023", "LSB", "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt", "development", false),
-    // EVAL holdout — Gibraltar (CKG coordination: do not tune connectives on this)
-    entry("gibraltar-ca", "gibraltar-2026", "ROCK", "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt", "evaluation", false),
+    // Gibraltar — DEVELOPMENT per Arch+Cert (docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md).
+    // Phase 2 incorrectly labeled this evaluation; Phase 3 corrects the split.
+    // Knife River remains BLIND (body never opened / not registered here).
+    entry("gibraltar-ca", "gibraltar-2026", "ROCK", "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt", "development", false),
   ];
 
   // Expand with any additional .txt under .local-dependency-atlas/corpus/ (EDGAR/CKF drops).
@@ -127,6 +130,13 @@ export function corpusSummary(entries: CorpusEntry[]) {
     issuers,
     targetRange: { min: 25, max: 50 },
     targetMet: available.length >= 25,
+    holdoutIntegrity: {
+      gibraltarSplit: available.find((e) => e.documentId === "gibraltar-ca")?.split ?? "missing",
+      gibraltarDesignation: "DEVELOPMENT — Arch+Cert 2026-10-07; Phase 2 evaluation label corrected",
+      knifeRiverBlind: "PRESERVED_UNREAD — no body registered; no inspection this mission",
+      evaluationPackage: available.find((e) => e.split === "evaluation")?.documentId ?? null,
+      evaluationPackagePolicy: "Extract for measurement only; do not tune Atlas connectives against evaluation docs",
+    },
     note:
       available.length < 25
         ? `Only ${available.length} authentic local texts available; additional agreements require EDGAR Backfill acquisition-queue + CKF download into .local-dependency-atlas/corpus/ (gitignored).`
