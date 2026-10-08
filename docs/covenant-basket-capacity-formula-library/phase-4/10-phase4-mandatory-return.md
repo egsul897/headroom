@@ -6,7 +6,7 @@
 |---|---|
 | Starting SHA (`origin/main` at branch cut) | `caa08f8b1c68d9656b30cabb6a866f8cf9b23b1d` |
 | Ending SHA (Phase 4 content) | `946925b74d8e8560ba7624e766e37f3731b37b55` |
-| Branch tip | `48f670e8e6da1b109486228085d380fc53004022` |
+| Branch tip | `cda5291ba129bf4b911b2fb52cc0e43d5a840c26` |
 | Prior merged PR #148 head | `01a1972817091f6bd4c074d2d8b9c75dfb6fcd18` |
 
 ## 2. PR URL and integration status
@@ -119,7 +119,7 @@ Known false affirmative permissions: **0** (release blocker clear for *library* 
 | Item | Value |
 |---|---|
 | Tests | `npx vitest run tests/basket-formula-corpus/` → **34 passed** |
-| CI | **pending CI** |
+| CI | subscribed — awaiting terminal checks on PR #170 |
 
 ## 12. Remaining blockers and exact owners
 
