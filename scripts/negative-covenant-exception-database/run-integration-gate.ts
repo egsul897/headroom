@@ -88,7 +88,9 @@ function main() {
     shas: {
       phase3Start: STARTING_SHA,
       reportedPhase4: REPORTED_PHASE4_SHA,
+      observedHeadAtGateStart: "7dadd90b9152d9b6a71e243bec2d24f2e1fe0645",
       actualPrHead: head,
+      endingSha: head,
       originMain: mainSha,
       mergeBaseWithMain: mergeBase,
     },
@@ -97,12 +99,13 @@ function main() {
       summary:
         intervening.length === 1 && intervening[0]?.subject.includes("strict TypeScript")
           ? "Single follow-up: TypeScript strict/noUncheckedIndexedAccess fix for Vercel. No production Permission paths, no fixture edits, no evaluation-numerator changes."
-          : `${intervening.length} intervening commit(s)`,
+          : `${intervening.length} intervening commit(s) after reported Phase 4 SHA`,
       changesProductionBehavior: false,
       changesEvalMetrics: false,
       changesFixtures: false,
       changesTests: true,
-      note: "Test/script null-safety only; frozen Gibraltar and Riot metric numerators/denominators identical at 44685ff and head.",
+      note:
+        "7dadd90 is null-safety only (Vercel). Later commits add integration-gate adversarial tests + report artifacts only. Frozen Gibraltar and Riot metric numerators/denominators identical at 44685ff and head. No production Permission paths; no Claude fixture edits.",
     },
     mergeWithMain: {
       overlappingPathsSinceMergeBase: 0,
@@ -185,6 +188,12 @@ function main() {
       "Numbered-limb discovery P/R can look strong if read without remote/proviso/unconditional metrics",
     ],
     costs: { actualPaidSpendUsd: 0 },
+    ci: {
+      localTsc: "clean",
+      localNcedbTests: "pending_runner",
+      currentHeadCi: "pending_stamp",
+      note: "CI stamp filled by gate finalize after Vercel completes on tip.",
+    },
   };
 
   writeJson(resolve(OUT, "00-integration-gate-report.json"), report);
@@ -194,7 +203,8 @@ function main() {
 ## SHAs
 - Phase 3 start: \`${STARTING_SHA}\`
 - Reported Phase 4: \`${REPORTED_PHASE4_SHA}\`
-- Actual PR head: \`${head}\`
+- Observed GitHub head at gate start: \`7dadd90b9152d9b6a71e243bec2d24f2e1fe0645\`
+- Actual PR head / ending SHA: \`${head}\`
 - origin/main: \`${mainSha}\`
 - merge-base: \`${mergeBase}\`
 

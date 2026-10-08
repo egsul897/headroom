@@ -1,19 +1,28 @@
 {
   "artifact": "ncedb-current-head-integration-gate",
-  "generatedAt": "2026-10-08T23:15:22.880Z",
+  "generatedAt": "2026-10-08T23:18:59.432Z",
   "workstreamId": "WS-NED",
   "pr": 143,
   "shas": {
     "phase3Start": "1456000040f03faeb2beca3c9f46bc2db91ac960",
     "reportedPhase4": "44685ff410190e3ea67d33bf862a833c6cb3f39c",
-    "actualPrHead": "f4e3981fd33c28ee1266d122e660001ad1f9cb7b",
+    "observedHeadAtGateStart": "7dadd90b9152d9b6a71e243bec2d24f2e1fe0645",
+    "actualPrHead": "5d02b54de857a8927eba1cca03794108a636f69b",
+    "endingSha": "5d02b54de857a8927eba1cca03794108a636f69b",
     "originMain": "64e5b5c23d153714a78659c408f3078227084a49",
     "mergeBaseWithMain": "9de4e5737166fcec84a35fdc9a3404870549211f",
-    "gateCommitParent": "a3c60363ef5608957b4a6ec7c3dff609c5dd410e",
-    "endingSha": "f4e3981fd33c28ee1266d122e660001ad1f9cb7b"
+    "ciVerifiedTip": "5d02b54de857a8927eba1cca03794108a636f69b"
   },
   "interveningChanges": {
     "commits": [
+      {
+        "sha": "5d02b54de857a8927eba1cca03794108a636f69b",
+        "subject": "NCEDB integration gate: pin ending SHA on tip."
+      },
+      {
+        "sha": "f4e3981fd33c28ee1266d122e660001ad1f9cb7b",
+        "subject": "NCEDB integration gate: refresh report at current tip after gate commit."
+      },
       {
         "sha": "a3c60363ef5608957b4a6ec7c3dff609c5dd410e",
         "subject": "NCEDB integration gate: reconcile head, adversarial fail-closed tests, merge report."
@@ -23,12 +32,12 @@
         "subject": "NCEDB Phase 4: fix strict TypeScript errors breaking Vercel build."
       }
     ],
-    "summary": "2 intervening commit(s)",
+    "summary": "4 intervening commit(s) after reported Phase 4 SHA",
     "changesProductionBehavior": false,
     "changesEvalMetrics": false,
     "changesFixtures": false,
     "changesTests": true,
-    "note": "Test/script null-safety only; frozen Gibraltar and Riot metric numerators/denominators identical at 44685ff and head."
+    "note": "7dadd90 is null-safety only (Vercel). Later commits add integration-gate adversarial tests + report artifacts only. Frozen Gibraltar and Riot metric numerators/denominators identical at 44685ff and head. No production Permission paths; no Claude fixture edits."
   },
   "mergeWithMain": {
     "overlappingPathsSinceMergeBase": 0,
@@ -165,10 +174,10 @@
     }
   },
   "adversarialCoverage": [
-    "Missing remote conditions \u2192 mayClassifyUnconditional false",
-    "Unresolved definitions \u2192 mayClassifyUnconditional false",
+    "Missing remote conditions → mayClassifyUnconditional false",
+    "Unresolved definitions → mayClassifyUnconditional false",
     "Parent proviso interactions visible on 7.06(b)(1)",
-    "Unresolved amendment authority \u2192 not unconditional",
+    "Unresolved amendment authority → not unconditional",
     "Prohibition-only 5.02(c) not emitted as exception",
     "Entity-scope uncertainty fails closed / no Guarantor inference from Loan Parties",
     "productionCapacityApproved always false on import batches"
@@ -224,7 +233,7 @@
       "WS-CKF canonical schema not on main (IQ-002)",
       "Must not promote SOURCE_ONLY/PARTIAL dependency closures into Permission tables (G1/G2)"
     ],
-    "recommendation": "MERGE_INTACT_AS_NON_PROMOTING_RESEARCH_OVERLAY \u2014 merge PR #143 into main as WS-NED research corpus + offline analyzer library; do not enable production Permission ingestion until CKF schema wire-up and human review path exist."
+    "recommendation": "MERGE_INTACT_AS_NON_PROMOTING_RESEARCH_OVERLAY — merge PR #143 into main as WS-NED research corpus + offline analyzer library; do not enable production Permission ingestion until CKF schema wire-up and human review path exist."
   },
   "remainingFalsePermissionRisks": [
     "PARTIAL definitional joins may understate nested definition depth",
@@ -237,7 +246,11 @@
   },
   "ci": {
     "localTsc": "clean",
-    "localNcedbTests": "43/25+adversarial",
-    "note": "awaiting CI on tip after gate commit"
+    "localNcedbTests": "43/43",
+    "currentHeadCi": "green",
+    "vercel": "pass",
+    "vercelPreviewComments": "pass",
+    "verifiedOnSha": "5d02b54de857a8927eba1cca03794108a636f69b",
+    "note": "Vercel + Vercel Preview Comments success on tip 5d02b54 before finalize stamp commit."
   }
 }

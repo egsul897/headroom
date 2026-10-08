@@ -3,11 +3,14 @@
 ## SHAs
 - Phase 3 start: `1456000040f03faeb2beca3c9f46bc2db91ac960`
 - Reported Phase 4: `44685ff410190e3ea67d33bf862a833c6cb3f39c`
-- Actual PR head (pre-final stamp): `a3c60363ef5608957b4a6ec7c3dff609c5dd410e`
+- Observed GitHub head at gate start: `7dadd90b9152d9b6a71e243bec2d24f2e1fe0645`
+- Actual PR head / ending SHA: `5d02b54de857a8927eba1cca03794108a636f69b`
 - origin/main: `64e5b5c23d153714a78659c408f3078227084a49`
 - merge-base: `9de4e5737166fcec84a35fdc9a3404870549211f`
 
 ## Intervening changes (reported Phase 4 → head)
+- `5d02b54` NCEDB integration gate: pin ending SHA on tip.
+- `f4e3981` NCEDB integration gate: refresh report at current tip after gate commit.
 - `a3c6036` NCEDB integration gate: reconcile head, adversarial fail-closed tests, merge report.
 - `7dadd90` NCEDB Phase 4: fix strict TypeScript errors breaking Vercel build.
 
@@ -25,5 +28,8 @@ CKF status: **ALIGNED_FOR_REVIEW**
 productionCapacityApproved: **false**
 actualPaidSpendUsd: **0**
 
-
-Ending SHA (integration-gate tip): 
+## Current-head CI
+- local tsc: clean
+- local NCEDB vitest: 43/43
+- Vercel: pass on `5d02b54`
+- Vercel Preview Comments: pass
