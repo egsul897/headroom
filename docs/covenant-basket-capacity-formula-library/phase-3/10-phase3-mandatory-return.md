@@ -9,7 +9,7 @@ Starting SHA: `c438de3c12793bdec889936d51249c6edbfee39d`
 |---|---|
 | Starting SHA | `c438de3c12793bdec889936d51249c6edbfee39d` |
 | Ending SHA (Phase 3 content) | `1698f15222e124b2b8ef9d46b839cd6dca7ed9dd` |
-| Branch tip | `136ebb09c8016dc0ab23995855e55d621062cbb4` |
+| Branch tip | `1b47f54baf5696dfd83340a1c307b9ab8de06a02` |
 | PR | https://github.com/egsul897/headroom/pull/148 (draft; **not merged**) |
 
 ## 2. Full 390-candidate classification audit
