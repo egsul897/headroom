@@ -1,0 +1,25 @@
+{
+  "chainId": "cohr-2022-07-01-credit-agreement",
+  "nodes": [
+    { "id": "cohr-ca-orig", "date": "2022-07-01", "label": "Original CA" },
+    { "id": "cohr-am1", "date": "2023-03-31", "label": "Am No. 1 SOFR" },
+    { "id": "cohr-am2", "date": "2024-04-02", "label": "Am No. 2 Term B" },
+    { "id": "cohr-am3", "date": "2025-01-02", "label": "Am No. 3 Term B-2" },
+    { "id": "cohr-am4", "date": "2025-09-26", "label": "Am No. 4 refinancing + covenant reset" },
+    { "id": "cohr-am5", "date": "2025-09-26", "label": "Am No. 5 Term B-3 (same day)" }
+  ],
+  "edges": [
+    { "from": "cohr-ca-orig", "to": "cohr-am1", "kind": "AMENDS", "authority": "SOURCE_BACKED" },
+    { "from": "cohr-am1", "to": "cohr-am2", "kind": "AMENDS", "authority": "SOURCE_BACKED" },
+    { "from": "cohr-am2", "to": "cohr-am3", "kind": "AMENDS", "authority": "SOURCE_BACKED" },
+    { "from": "cohr-am3", "to": "cohr-am4", "kind": "AMENDS", "authority": "SOURCE_BACKED" },
+    { "from": "cohr-am4", "to": "cohr-am5", "kind": "AMENDS", "authority": "SOURCE_BACKED", "note": "Same calendar day; Am5 amends Am4-amended agreement" }
+  ],
+  "sameDayClusters": [
+    {
+      "date": "2025-09-26",
+      "docIds": ["cohr-am4", "cohr-am5"],
+      "risk": "Ordering depends on each amendment's own Effective Date definition and conditions, not filing order alone."
+    }
+  ]
+}
