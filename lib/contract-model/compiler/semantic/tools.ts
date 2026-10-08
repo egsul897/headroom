@@ -21,6 +21,7 @@ import { buildNodeSupersessionIndex, getNodeSupersessionStatus, getOperativeDefi
 import type { DefinitionEvidenceFound } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import { computeSourceContentHash } from "../hashing";
+import { classifyStructuralOccurrence } from "../operative-authority";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import { findDefinedTermVariant } from "../structural-index";
 import type { RetrievedSourceRecord, SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
@@ -631,6 +632,9 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           degenerate = { status: generic.status, note: generic.note, excludedDegenerateNodeIds: generic.excludedDegenerateNodeIds };
         } else {
           node = resolution.node;
+        }
+        if (classifyStructuralOccurrence(node, access.structuralIndex) === "CONTENTS_LISTING") {
+          return refuse(`section reference "${sectionRef}" resolves to a contents listing, not an operative covenant`);
         }
         const fullNodeText = access.structuralIndex.getNodeText(node.nodeId, "OWN");
         const { text, truncated } = truncate(fullNodeText);

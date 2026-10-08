@@ -433,3 +433,21 @@ describe("BLOCKER-5 permanent enforcement: every registered LLM-facing evidence 
     });
   });
 });
+
+describe("getOperativeProvision does not serve a contents listing as the section", () => {
+  it("refuses a label whose only node is a contents row and still returns a unique operative body", () => {
+    const toc = "Section 6.01 Minimum Liquidity of $50,000,000 225\n";
+    const body = "Section 6.03 Insurance. The Borrower shall maintain insurance.\n";
+    const text = toc + body;
+    const tocNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Minimum Liquidity", sectionRef: "6.01", nodeKey: `${TEST_DOCUMENT_ID}::6.01`, nodeId: "toc-6.01", charStart: 0, charEnd: toc.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
+    const bodyNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Insurance", sectionRef: "6.03", nodeKey: `${TEST_DOCUMENT_ID}::6.03`, nodeId: "body-6.03", charStart: toc.length, charEnd: text.length, ordinal: 1, parentSectionRef: null, parentNodeId: null };
+    const index = buildStructuralIndex(new Map([[TEST_DOCUMENT_ID, { text, nodes: [tocNode, bodyNode] }]]), [], []);
+    const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
+    const contents = tools.find((tool) => tool.name === "getOperativeProvision")!.execute({ sectionRef: "6.01" });
+    expect(contents.ok).toBe(false);
+    expect(JSON.stringify(contents.result)).toContain("contents listing");
+    const operative = tools.find((tool) => tool.name === "getOperativeProvision")!.execute({ sectionRef: "6.03" });
+    expect(operative.ok).toBe(true);
+    expect(JSON.stringify(operative.result)).toContain("shall maintain insurance");
+  });
+});
