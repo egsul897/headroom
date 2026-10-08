@@ -1,7 +1,9 @@
 /**
  * Hybrid lexical + structural retrieval over the covenant research corpus.
+ * Amendment-aware and read-only: never certifies, approves, or promotes status.
  */
 
+import { passesAmendmentAwareFilter } from "./amendment-aware";
 import { scoreLexical } from "./lexical";
 import { parseResearchQuery, type StructuredQueryInput } from "./parse-query";
 import { passesHardFilters, scoreStructural } from "./structural";
@@ -11,10 +13,11 @@ import {
   type ParsedResearchQuery,
   type ResearchCorpusEntry,
   type ResearchHit,
+  type ResearchMissingDependency,
   type ResearchResponse,
 } from "./types";
 
-export const COVENANT_RESEARCH_RETRIEVAL_VERSION = "covenant-precedent-research-retrieval.v1";
+export const COVENANT_RESEARCH_RETRIEVAL_VERSION = "covenant-precedent-research-retrieval.v2";
 
 export interface RetrieveOptions {
   corpus: readonly ResearchCorpusEntry[];
@@ -44,6 +47,8 @@ export function retrieveFromParsed(query: ParsedResearchQuery, options: Retrieve
       refused: true,
       refusalReason: query.unsupportedReason,
       resultCount: 0,
+      readOnly: true,
+      missingDependencyDisclosures: [],
     };
   }
 
@@ -53,15 +58,31 @@ export function retrieveFromParsed(query: ParsedResearchQuery, options: Retrieve
   const structuralWeight = options.structuralWeight ?? 0.45;
 
   const hits: ResearchHit[] = [];
+  const missingDependencyDisclosures: ResearchMissingDependency[] = [];
 
   for (const entry of options.corpus) {
     if (!passesHardFilters(entry, query)) continue;
 
+    const { pass, classification } = passesAmendmentAwareFilter(entry, {
+      asOfDate: query.filters.asOfDate,
+      operativeOnly: query.filters.operativeOnly,
+    });
+    if (!pass) continue;
+
     const lex = scoreLexical(entry.searchText, query.lexicalTerms, query.phrases);
     const structural = scoreStructural(entry, query);
-    const score = combineScores(lex.score, structural.score, lexicalWeight, structuralWeight);
+    let score = combineScores(lex.score, structural.score, lexicalWeight, structuralWeight);
+
+    // Soft penalty for non-operative hits when as-of is set but operativeOnly is false.
+    if (query.filters.asOfDate && !classification.includeInOperativeOnly) {
+      score *= 0.85;
+    }
 
     if (score < minScore && structural.score < 3) continue;
+
+    for (const d of entry.missingDependencies ?? []) {
+      if (d.disclosed) missingDependencyDisclosures.push(d);
+    }
 
     hits.push({
       entry,
@@ -69,6 +90,8 @@ export function retrieveFromParsed(query: ParsedResearchQuery, options: Retrieve
       lexicalScore: Number(lex.score.toFixed(4)),
       structuralScore: Number(structural.score.toFixed(4)),
       matchedSignals: [...new Set([...lex.matched, ...structural.matched])],
+      operativeClassification: classification.status,
+      uncertaintyNotes: classification.uncertaintyNotes,
     });
   }
 
@@ -83,6 +106,8 @@ export function retrieveFromParsed(query: ParsedResearchQuery, options: Retrieve
     refused: false,
     refusalReason: null,
     resultCount: limited.length,
+    readOnly: true,
+    missingDependencyDisclosures,
   };
 }
 

@@ -17,16 +17,18 @@ function formatHit(hit: ResearchHit, index: number): string {
     `instrument: ${e.instrument.name} [${e.instrument.agreementType}]`,
     `covenantFamily: ${e.covenantFamily}${e.ruleType ? ` / ${e.ruleType}` : ""}`,
     `operativeVersion: ${e.operativeVersion.status}`,
+    `operativeClassification: ${hit.operativeClassification ?? e.operativeVersion.status}`,
     `verificationStatus: ${e.verificationStatus}`,
     `filingUrl: ${e.filing.url ?? "(none)"}`,
     `accession: ${e.filing.accession ?? "(none)"}${e.filing.filedOn ? `  filed ${e.filing.filedOn}` : ""}`,
     `citation: ${e.sourceCitation}`,
     `section: ${e.sourceSectionRef ?? "(none)"}`,
     `matchedSignals: ${hit.matchedSignals.join(", ") || "(none)"}`,
-    "",
-    "SOURCE EXCERPT:",
-    e.sourceExcerpt,
   ];
+  if (hit.uncertaintyNotes?.length) {
+    lines.push(`uncertainty: ${hit.uncertaintyNotes.join(" | ")}`);
+  }
+  lines.push("", "SOURCE EXCERPT:", e.sourceExcerpt);
 
   if (e.relevantDefinitions.length > 0) {
     lines.push("", "RELEVANT DEFINITIONS:");
@@ -44,6 +46,12 @@ function formatHit(hit: ResearchHit, index: number): string {
     lines.push("", "AMENDMENT RELATIONSHIPS:");
     for (const a of e.amendmentRelationships) {
       lines.push(`- ${a.relationshipType}: ${a.description}${a.relatedEntryId ? ` (→ ${a.relatedEntryId})` : ""}`);
+    }
+  }
+  if (e.missingDependencies?.length) {
+    lines.push("", "MISSING DEPENDENCIES (disclosed, not filled):");
+    for (const d of e.missingDependencies) {
+      lines.push(`- [${d.kind}] ${d.description}`);
     }
   }
 

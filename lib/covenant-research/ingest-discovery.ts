@@ -6,7 +6,9 @@
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { resolve, join } from "node:path";
 import { normalizeCorpusEntry } from "./corpus";
-import type { ResearchCorpusEntry, ResearchStructuralFeatures } from "./types";
+import { featuresFromText, mapSupersessionToOperative } from "./features";
+import { attachIdentityFields } from "./identity";
+import type { ResearchCorpusEntry } from "./types";
 
 export interface PackageIngestSpec {
   packageId: string;
@@ -14,52 +16,42 @@ export interface PackageIngestSpec {
   issuer: ResearchCorpusEntry["issuer"];
   instrument: ResearchCorpusEntry["instrument"];
   filing: ResearchCorpusEntry["filing"];
-  /** Max candidates to ingest from this package (high-signal first). */
+  /** Max candidates; omit/undefined = ingest all with a source citation. */
   limit?: number;
+  /** Optional map documentId → filing override (multi-doc packages). */
+  documentFilings?: Record<string, ResearchCorpusEntry["filing"]>;
 }
 
-function featuresFromCandidate(c: {
-  families?: string[];
-  description?: string;
-  sourceCitation?: string;
-  role?: string;
-}): ResearchStructuralFeatures {
-  const text = `${c.description ?? ""} ${c.sourceCitation ?? ""}`.toLowerCase();
-  const moneyAmountsUsd: number[] = [];
-  for (const m of text.matchAll(/\$([0-9]{1,3}(?:,[0-9]{3})+)/g)) {
-    moneyAmountsUsd.push(Number(m[1]!.replace(/,/g, "")));
+function loadCandidateArray(path: string): Array<Record<string, unknown>> {
+  const raw = JSON.parse(readFileSync(path, "utf8")) as unknown;
+  if (Array.isArray(raw)) return raw as Array<Record<string, unknown>>;
+  if (raw && typeof raw === "object") {
+    const obj = raw as Record<string, unknown>;
+    if (Array.isArray(obj.candidates)) return obj.candidates as Array<Record<string, unknown>>;
+    // Some freeze files nest under results/allCandidates
+    for (const key of ["allCandidates", "discoveredCandidates", "items"]) {
+      if (Array.isArray(obj[key])) return obj[key] as Array<Record<string, unknown>>;
+    }
   }
-  const families = (c.families ?? []).map((f) => f.toUpperCase());
-  return {
-    moneyAmountsUsd: [...new Set(moneyAmountsUsd)],
-    hasRatioGate: /leverage ratio|coverage ratio|ratio (does )?not exceed|pro forma/.test(text),
-    hasUnlimitedCapacity: /unlimited amount|unlimited/.test(text),
-    conditionTypes: /no (event of )?default/.test(text) ? ["NO_DEFAULT"] : [],
-    entityScopeTags: /not a loan party|non-guarantor/.test(text)
-      ? ["NON_GUARANTOR_RS", "NOT_A_LOAN_PARTY"]
-      : ["BORROWER"],
-    hasSharedCapacity: /available amount|shared|in the aggregate with/.test(text),
-    hasReclassification: /reclassif/.test(text),
-    hasSpringingTest: /springing|availability block/.test(text),
-    hasSynergyAddback: /synerg/.test(text),
-    synergyAddbackCapped: /synerg/.test(text) ? (/shall not exceed|% of/.test(text) ? true : null) : null,
-    sharesWithJuniorDebtPrepay: /restricted debt payment|junior lien|subordinated/.test(text) && /investment|available amount/.test(text),
-    isGeneralDebtBasket: families.includes("INDEBTEDNESS") && /other indebtedness|general/.test(text),
-    amendmentReducesRpCapacity: false,
-    hasOverlappingBaskets: /reclassif|overlapping|available amount/.test(text),
-    unusualReclassification: /reclassif/.test(text) && /sole discretion|later divide/.test(text),
-  };
+  return [];
+}
+
+function priorityOf(features: ReturnType<typeof featuresFromText>, description: string): number {
+  let priority = 0;
+  if (features.moneyAmountsUsd.length) priority += 3;
+  if (features.hasRatioGate) priority += 2;
+  if (features.hasSpringingTest) priority += 3;
+  if (features.hasReclassification) priority += 2;
+  if (features.hasSynergyAddback) priority += 2;
+  if (features.conditionTypes.includes("NO_DEFAULT")) priority += 1;
+  if (/basket|except|permitted/.test(description.toLowerCase())) priority += 1;
+  return priority;
 }
 
 export function ingestDiscoveryRun(spec: PackageIngestSpec): ResearchCorpusEntry[] {
   const path = resolve(process.cwd(), spec.discoveryRunPath);
   if (!existsSync(path)) return [];
-  const raw = JSON.parse(readFileSync(path, "utf8")) as unknown;
-  const candidates: Array<Record<string, unknown>> = Array.isArray(raw)
-    ? (raw as Array<Record<string, unknown>>)
-    : Array.isArray((raw as { candidates?: unknown }).candidates)
-      ? ((raw as { candidates: Array<Record<string, unknown>> }).candidates)
-      : [];
+  const candidates = loadCandidateArray(path);
 
   const scored = candidates
     .filter((c) => typeof c.sourceCitation === "string" && String(c.sourceCitation).trim().length > 20)
@@ -68,65 +60,79 @@ export function ingestDiscoveryRun(spec: PackageIngestSpec): ResearchCorpusEntry
       const description = String(c.description ?? "");
       const families = Array.isArray(c.families) ? (c.families as string[]) : [];
       const family = families[0] ?? "QUALITATIVE_NEGATIVE_COVENANTS";
-      const features = featuresFromCandidate({
-        families,
-        description,
-        sourceCitation: citation,
-        role: typeof c.role === "string" ? c.role : undefined,
+      const features = featuresFromText({ families, description, sourceCitation: citation });
+      const documentId = typeof c.documentId === "string" ? c.documentId : null;
+      const filing = (documentId && spec.documentFilings?.[documentId]) || spec.filing;
+      const operativeStatus = mapSupersessionToOperative(c.supersessionStatus);
+      const extractionVersion =
+        typeof c.discoveryRunVersion === "string" ? c.discoveryRunVersion : "discovery-unknown";
+
+      const missingDependencies =
+        c.definedTermDependencyLikely === true
+          ? [
+              {
+                kind: "DEFINED_TERM_DEPENDENCY_LIKELY",
+                description:
+                  "Discovery flagged likely defined-term dependency; definition text was not attached at ingest.",
+                disclosed: true as const,
+              },
+            ]
+          : [];
+
+      const entry = normalizeCorpusEntry({
+        entryId: `discovery:${spec.packageId}:${String(c.discoveryId ?? `${documentId}-${c.normalizedSourceRef}-${idx}`)}`,
+        kind: "RULE",
+        issuer: spec.issuer,
+        instrument: spec.instrument,
+        filing,
+        covenantFamily: family,
+        ruleType: typeof c.role === "string" ? String(c.role) : null,
+        action: null,
+        operativeVersion: {
+          status: operativeStatus,
+          effectiveFrom: filing.filedOn,
+          effectiveTo: null,
+          supersededByEntryId: null,
+        },
+        sourceExcerpt: citation,
+        sourceCitation:
+          typeof c.normalizedSourceRef === "string" ? `§${c.normalizedSourceRef}` : citation.slice(0, 120),
+        sourceSectionRef: typeof c.normalizedSourceRef === "string" ? String(c.normalizedSourceRef) : null,
+        relevantDefinitions: [],
+        relatedConditions: features.conditionTypes.map((type) => ({
+          type,
+          description: type === "NO_DEFAULT" ? "no-default language present in source citation/description" : type,
+        })),
+        amendmentRelationships: [],
+        verificationStatus: "UNVERIFIED",
+        structuralFeatures: features,
+        searchText: [citation, description, family, spec.issuer.name, spec.issuer.ticker ?? ""].join("\n"),
+        tags: ["discovery-ingest", spec.packageId, ...families.map(String)],
+        sourceDocumentId: documentId,
+        extractionVersion,
+        missingDependencies,
       });
-      // Prefer quantitative / basket-like candidates for research utility.
-      let priority = 0;
-      if (features.moneyAmountsUsd.length) priority += 3;
-      if (features.hasRatioGate) priority += 2;
-      if (features.hasSpringingTest) priority += 3;
-      if (features.hasReclassification) priority += 2;
-      if (features.hasSynergyAddback) priority += 2;
-      if (features.conditionTypes.includes("NO_DEFAULT")) priority += 1;
-      if (/basket|except|permitted/.test(description.toLowerCase())) priority += 1;
-      return { c, idx, priority, family, features, citation, description };
+
+      return {
+        entry: attachIdentityFields(entry, { sourceDocumentId: documentId, extractionVersion }),
+        priority: priorityOf(features, description),
+        idx,
+      };
     })
     .sort((a, b) => b.priority - a.priority || a.idx - b.idx);
 
-  const limit = spec.limit ?? 80;
-  return scored.slice(0, limit).map(({ c, family, features, citation, description }) =>
-    normalizeCorpusEntry({
-      entryId: `discovery:${spec.packageId}:${String(c.discoveryId ?? c.normalizedSourceRef ?? citation).slice(0, 80)}`,
-      kind: "RULE",
-      issuer: spec.issuer,
-      instrument: spec.instrument,
-      filing: spec.filing,
-      covenantFamily: family,
-      ruleType: typeof c.role === "string" ? String(c.role) : null,
-      action: null,
-      operativeVersion: {
-        status: "UNKNOWN",
-        effectiveFrom: spec.filing.filedOn,
-        effectiveTo: null,
-        supersededByEntryId: null,
-      },
-      sourceExcerpt: citation,
-      sourceCitation: typeof c.normalizedSourceRef === "string" ? `§${c.normalizedSourceRef}` : citation.slice(0, 120),
-      sourceSectionRef: typeof c.normalizedSourceRef === "string" ? String(c.normalizedSourceRef) : null,
-      relevantDefinitions: [],
-      relatedConditions: features.conditionTypes.map((type) => ({
-        type,
-        description: type === "NO_DEFAULT" ? "no-default language present in source citation/description" : type,
-      })),
-      amendmentRelationships: [],
-      verificationStatus: "UNVERIFIED",
-      structuralFeatures: features,
-      searchText: [citation, description, family, spec.issuer.name, spec.issuer.ticker ?? ""].join("\n"),
-      tags: ["discovery-ingest", spec.packageId, ...(Array.isArray(c.families) ? (c.families as string[]) : [])],
-    }),
-  );
+  const limit = spec.limit;
+  const sliced = limit == null ? scored : scored.slice(0, limit);
+  return sliced.map((s) => s.entry);
 }
 
-/** Default ingest set: already-acquired FWRG + LSB discovery runs (pinned in-repo). */
+/** Legacy FWRG/LSB defaults (kept for backward-compatible CLI flag). */
 export function defaultDiscoveryIngestSpecs(): PackageIngestSpec[] {
   return [
     {
       packageId: "fwrg-2021",
-      discoveryRunPath: "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json",
+      discoveryRunPath:
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/discovery-runs/run-1787801821.json",
       issuer: {
         companyId: "fwrg-2021-credit-agreement",
         name: "First Watch Restaurant Group, Inc.",
@@ -144,11 +150,11 @@ export function defaultDiscoveryIngestSpecs(): PackageIngestSpec[] {
         filedOn: "2021-10-06",
         documentName: "Credit Agreement (EX-10.1)",
       },
-      limit: 100,
     },
     {
       packageId: "lsb-2023",
-      discoveryRunPath: "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json",
+      discoveryRunPath:
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/discovery-runs/run-1787801821.json",
       issuer: {
         companyId: "lsb-2023-abl-credit-agreement",
         name: "LSB Industries, Inc.",
@@ -166,7 +172,6 @@ export function defaultDiscoveryIngestSpecs(): PackageIngestSpec[] {
         filedOn: "2023-12-26",
         documentName: "Credit Agreement (EX-10.1)",
       },
-      limit: 80,
     },
   ];
 }

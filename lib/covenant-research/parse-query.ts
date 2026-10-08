@@ -13,13 +13,18 @@ const UNSUPPORTED_PATTERNS: { re: RegExp; reason: string }[] = [
       "This interface retrieves source-backed precedent excerpts only. It does not opine on whether a transaction is permitted or approve capacity.",
   },
   {
-    re: /\b(how much capacity|remaining capacity|headroom (left|available)|maximum we can)\b/i,
+    re: /\b(how much capacity|remaining capacity|headroom (left|available)|maximum we can|calculate (the )?capacity|unsupported capacity)\b/i,
     reason:
       "Capacity computation is out of scope for the research interface. Use the capacity/solver surfaces for calculation; this tool only retrieves comparable source language.",
   },
   {
     re: /\b(draft|rewrite|mark[- ]up|negotiate)\b/i,
     reason: "Drafting and negotiation advice are unsupported. Ask for comparable source excerpts instead.",
+  },
+  {
+    re: /\b(certify|promote .{0,40} to verified|mark as verified|override unresolved|infer (the )?missing financial|approve (the )?transaction)\b/i,
+    reason:
+      "Read-only research surface: it cannot certify covenants, promote hypotheses to verified, override unresolved restrictions, infer financial inputs, or approve transactions.",
   },
 ];
 
@@ -125,6 +130,7 @@ export interface StructuredQueryInput {
   agreementType?: string | string[];
   dateFrom?: string;
   dateTo?: string;
+  asOfDate?: string;
   family?: string | string[];
   operativeOnly?: boolean;
   amountUsd?: number;
@@ -189,6 +195,7 @@ export function parseResearchQuery(input: string | StructuredQueryInput): Parsed
     agreementTypes: asArray(structured.agreementType),
     dateFrom: structured.dateFrom ?? null,
     dateTo: structured.dateTo ?? null,
+    asOfDate: structured.asOfDate ?? null,
     covenantFamilies: asArray(structured.family) ?? familyFromIntent(intent),
     operativeOnly: structured.operativeOnly ?? false,
     moneyAmountUsd: moneyAmountUsd,

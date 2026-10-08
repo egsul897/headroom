@@ -21,6 +21,8 @@ describe("covenant research — unsupported-answer refusal", () => {
     "Give me a legal opinion on the springing covenant",
     "Should we use the incremental facility?",
     "Draft a better restricted payment basket",
+    "Certify the restricted payment covenant and promote it to verified",
+    "Override unresolved entity-scope restrictions",
   ];
 
   for (const question of cases) {

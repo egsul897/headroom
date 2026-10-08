@@ -12,12 +12,13 @@ import {
 describe("covenant research — discovery ingest batch", () => {
   it("ingests FWRG + LSB discovery candidates with exact source citations", () => {
     const ingested = ingestDefaultDiscoveryPackages();
-    expect(ingested.length).toBeGreaterThan(50);
+    expect(ingested.length).toBeGreaterThan(200);
     expect(ingested.every((e) => e.sourceExcerpt.trim().length > 20)).toBe(true);
     expect(ingested.every((e) => e.verificationStatus === "UNVERIFIED")).toBe(true);
     expect(ingested.some((e) => e.issuer.ticker === "FWRG")).toBe(true);
     expect(ingested.some((e) => e.issuer.ticker === "LXU")).toBe(true);
     expect(ingested.every((e) => e.filing.url?.includes("sec.gov"))).toBe(true);
+    expect(ingested.every((e) => e.identityKey && e.sourceSpan?.excerptHash)).toBe(true);
   });
 
   it("merged corpus still answers curated high-precision queries", () => {

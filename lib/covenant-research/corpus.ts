@@ -121,7 +121,7 @@ export function researchEntryFromSemanticTruth(input: {
 
   return normalizeCorpusEntry({
     entryId: `db:${input.id}`,
-    kind: input.kind,
+    kind: input.kind === "DEFINITION" ? "DEFINITION" : "RULE",
     issuer: {
       companyId: input.companyId,
       name: input.companyName,

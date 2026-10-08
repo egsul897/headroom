@@ -23,14 +23,18 @@ export type OperativeVersionStatus =
   | "SUPERSEDED"
   | "AMENDED"
   | "HISTORICAL"
-  | "UNKNOWN";
+  | "UNKNOWN"
+  | "UNKNOWN_EFFECTIVE_DATE"
+  | "MISSING_AMENDMENT_AUTHORITY"
+  | "UNRESOLVED_OPERATIVE_STATE";
 
 export type ResearchVerificationStatus =
   | "UNVERIFIED"
   | "COMPILED"
   | "VERIFIED"
   | "REVIEW_REQUIRED"
-  | "FIXTURE";
+  | "FIXTURE"
+  | "HYPOTHESIS";
 
 export interface ResearchIssuer {
   companyId: string;
@@ -92,6 +96,19 @@ export interface ResearchStructuralFeatures {
   unusualReclassification: boolean;
 }
 
+export interface ResearchMissingDependency {
+  kind: string;
+  description: string;
+  /** Always true when surfaced — missing deps are disclosed, never filled. */
+  disclosed: true;
+}
+
+export interface ResearchSourceSpan {
+  charStart: number | null;
+  charEnd: number | null;
+  excerptHash: string;
+}
+
 export interface ResearchCorpusEntry {
   entryId: string;
   kind: ResearchEntryKind;
@@ -119,6 +136,13 @@ export interface ResearchCorpusEntry {
   /** Lexical index text (excerpt + citation + definition terms + condition prose). */
   searchText: string;
   tags: string[];
+  /** Canonical source document id within the package (e.g. doc-a). */
+  sourceDocumentId?: string | null;
+  extractionVersion?: string | null;
+  covenantIdentity?: string;
+  identityKey?: string;
+  sourceSpan?: ResearchSourceSpan;
+  missingDependencies?: ResearchMissingDependency[];
 }
 
 export type ResearchIntent =
@@ -139,6 +163,8 @@ export interface ResearchFilters {
   agreementTypes?: string[];
   dateFrom?: string | null;
   dateTo?: string | null;
+  /** As-of date for amendment-aware operative filtering (ISO YYYY-MM-DD). */
+  asOfDate?: string | null;
   covenantFamilies?: string[];
   operativeOnly?: boolean;
   moneyAmountUsd?: number | null;
@@ -162,6 +188,9 @@ export interface ResearchHit {
   lexicalScore: number;
   structuralScore: number;
   matchedSignals: string[];
+  /** Amendment-aware operative classification for this hit under the query as-of date. */
+  operativeClassification?: OperativeVersionStatus;
+  uncertaintyNotes?: string[];
 }
 
 export interface ResearchResponse {
@@ -172,4 +201,7 @@ export interface ResearchResponse {
   refused: boolean;
   refusalReason: string | null;
   resultCount: number;
+  /** Read-only safety: always true for this interface. */
+  readOnly?: true;
+  missingDependencyDisclosures?: ResearchMissingDependency[];
 }

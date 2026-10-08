@@ -1,21 +1,23 @@
 #!/usr/bin/env npx tsx
 /**
- * CLI — Covenant Precedent Research Interface
+ * CLI — Covenant Precedent Research Interface (Phase 2)
  *
  * Usage:
  *   npx tsx scripts/covenant-precedent-research.ts "Find credit agreements with a $25 million general debt basket"
- *   npx tsx scripts/covenant-precedent-research.ts --issuer DSGR --family INDEBTEDNESS --amount 25000000
- *   npx tsx scripts/covenant-precedent-research.ts --json --operative-only "springing leverage covenants"
- *
- * Hybrid lexical/structural retrieval only — no paid vector calls.
+ *   npx tsx scripts/covenant-precedent-research.ts --phase2-corpus --as-of 2024-06-01 --operative-only "Restricted Payments"
+ *   npx tsx scripts/covenant-precedent-research.ts --report-corpus
+ *   npx tsx scripts/covenant-precedent-research.ts --eval-held-out
  */
 
 import {
   DEFAULT_RESEARCH_CORPUS_PATH,
+  buildPhase2ResearchCorpus,
+  evaluateHeldOutRetrieval,
   formatResearchResponse,
   ingestDefaultDiscoveryPackages,
   loadResearchCorpusFromFile,
   parseResearchQuery,
+  probeKnowledgeFactoryIntegrations,
   retrieveResearch,
   tryLoadResearchCorpusFromDb,
   type ResearchIntent,
@@ -23,7 +25,7 @@ import {
 } from "../lib/covenant-research";
 
 function usage(): never {
-  console.error(`Covenant Precedent Research Interface
+  console.error(`Covenant Precedent Research Interface (Phase 2)
 
 Usage:
   npx tsx scripts/covenant-precedent-research.ts [options] "<natural language query>"
@@ -35,13 +37,17 @@ Options:
   --amount <USD>                Money amount filter (e.g. 25000000)
   --date-from <YYYY-MM-DD>      Filing date lower bound
   --date-to <YYYY-MM-DD>        Filing date upper bound
+  --as-of <YYYY-MM-DD>          Amendment-aware as-of date
   --condition <TYPE>            Condition type filter (e.g. NO_DEFAULT)
   --intent <INTENT>             Force a research intent
-  --operative-only              Only CURRENT_OPERATIVE entries
+  --operative-only              Only CURRENT_OPERATIVE (as-of aware)
   --limit <n>                   Max hits (default 10)
-  --corpus <path>               Corpus JSON path (default fixture corpus)
-  --from-db                     Also try SemanticTruthRecord projection (falls back if empty)
-  --with-discovery-ingest       Merge FWRG/LSB discovery-candidate fixtures into the corpus
+  --corpus <path>               Curated corpus JSON path
+  --phase2-corpus               Build corpus from curated + all available discovery/compiled fixtures
+  --with-discovery-ingest       Legacy: merge FWRG/LSB discovery only
+  --from-db                     Try SemanticTruthRecord projection (falls back if empty)
+  --report-corpus               Print corpus build + knowledge-factory status JSON and exit
+  --eval-held-out               Run held-out retrieval metrics JSON and exit
   --json                        Emit JSON instead of text
   --help                        Show this help
 
@@ -56,6 +62,9 @@ function parseArgs(argv: string[]): {
   corpusPath: string;
   fromDb: boolean;
   withDiscoveryIngest: boolean;
+  phase2Corpus: boolean;
+  reportCorpus: boolean;
+  evalHeldOut: boolean;
   asJson: boolean;
 } {
   const structured: StructuredQueryInput = {};
@@ -63,6 +72,9 @@ function parseArgs(argv: string[]): {
   let corpusPath = DEFAULT_RESEARCH_CORPUS_PATH;
   let fromDb = false;
   let withDiscoveryIngest = false;
+  let phase2Corpus = false;
+  let reportCorpus = false;
+  let evalHeldOut = false;
   let asJson = false;
   const issuers: string[] = [];
   const agreementTypes: string[] = [];
@@ -100,6 +112,9 @@ function parseArgs(argv: string[]): {
       case "--date-to":
         structured.dateTo = next();
         break;
+      case "--as-of":
+        structured.asOfDate = next();
+        break;
       case "--condition":
         conditions.push(next());
         break;
@@ -121,6 +136,15 @@ function parseArgs(argv: string[]): {
       case "--with-discovery-ingest":
         withDiscoveryIngest = true;
         break;
+      case "--phase2-corpus":
+        phase2Corpus = true;
+        break;
+      case "--report-corpus":
+        reportCorpus = true;
+        break;
+      case "--eval-held-out":
+        evalHeldOut = true;
+        break;
       case "--json":
         asJson = true;
         break;
@@ -140,18 +164,34 @@ function parseArgs(argv: string[]): {
   if (families.length) structured.family = families;
   if (conditions.length) structured.conditionType = conditions;
 
-  if (!structured.text && structured.amountUsd == null && !structured.intent && !structured.family) {
+  if (!reportCorpus && !evalHeldOut && !structured.text && structured.amountUsd == null && !structured.intent && !structured.family) {
     usage();
   }
 
-  return { structured, limit, corpusPath, fromDb, withDiscoveryIngest, asJson };
+  return {
+    structured,
+    limit,
+    corpusPath,
+    fromDb,
+    withDiscoveryIngest,
+    phase2Corpus,
+    reportCorpus,
+    evalHeldOut,
+    asJson,
+  };
 }
 
-async function main() {
-  const { structured, limit, corpusPath, fromDb, withDiscoveryIngest, asJson } = parseArgs(process.argv.slice(2));
-
-  let corpus = loadResearchCorpusFromFile(corpusPath);
-  if (withDiscoveryIngest) {
+async function loadCorpus(opts: {
+  corpusPath: string;
+  fromDb: boolean;
+  withDiscoveryIngest: boolean;
+  phase2Corpus: boolean;
+}) {
+  if (opts.phase2Corpus) {
+    return buildPhase2ResearchCorpus().entries;
+  }
+  let corpus = loadResearchCorpusFromFile(opts.corpusPath);
+  if (opts.withDiscoveryIngest) {
     const ingested = ingestDefaultDiscoveryPackages();
     const seen = new Set(corpus.map((e) => e.entryId));
     for (const e of ingested) {
@@ -161,20 +201,47 @@ async function main() {
       }
     }
   }
-  if (fromDb) {
+  if (opts.fromDb) {
     const dbEntries = await tryLoadResearchCorpusFromDb();
-    if (dbEntries.length > 0) {
-      const seen = new Set(corpus.map((e) => e.entryId));
-      for (const e of dbEntries) {
-        if (!seen.has(e.entryId)) corpus.push(e);
-      }
+    const seen = new Set(corpus.map((e) => e.entryId));
+    for (const e of dbEntries) {
+      if (!seen.has(e.entryId)) corpus.push(e);
     }
   }
+  return corpus;
+}
 
-  const query = parseResearchQuery(structured);
-  const response = retrieveResearch(query, { corpus, limit });
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
 
-  if (asJson) {
+  if (args.reportCorpus) {
+    const report = buildPhase2ResearchCorpus();
+    const { entries: _e, ...summary } = report;
+    console.log(
+      JSON.stringify(
+        {
+          corpus: summary,
+          knowledgeFactory: probeKnowledgeFactoryIntegrations(),
+        },
+        null,
+        2,
+      ),
+    );
+    return;
+  }
+
+  const corpus = await loadCorpus(args);
+
+  if (args.evalHeldOut) {
+    const evalReport = evaluateHeldOutRetrieval(corpus);
+    console.log(JSON.stringify(evalReport, null, 2));
+    return;
+  }
+
+  const query = parseResearchQuery(args.structured);
+  const response = retrieveResearch(query, { corpus, limit: args.limit });
+
+  if (args.asJson) {
     console.log(JSON.stringify(response, null, 2));
   } else {
     process.stdout.write(formatResearchResponse(response));
