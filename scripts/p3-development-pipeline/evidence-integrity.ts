@@ -40,7 +40,7 @@ export const KNOWN_SECTION_REF_DRIFT = [
   {
     nodeId: "structural-node:7254026c586c453960bc7646",
     historicalSectionRef: "1.01(9)(c)(46)",
-    currentSectionRef: "1.01(9)(c)(c)(46)",
+    currentSectionRef: "1.01(6)(A)(46)",
   },
 ] as const;
 

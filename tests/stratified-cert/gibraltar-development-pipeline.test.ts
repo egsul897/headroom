@@ -65,8 +65,8 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(result.evidenceIdentity.extractedTextSha256).toBe(result.offline.extractedTextSha256);
     expect(result.evidenceIdentity.structuralTreeSha256).toMatch(/^[0-9a-f]{64}$/);
     expect(result.evidenceIdentity.passACandidateSetSha256).toMatch(/^[0-9a-f]{64}$/);
-    expect(result.offline.passACandidates).toBe(938);
-    expect(result.offline.totalNodes).toBe(2064);
+    expect(result.offline.passACandidates).toBe(943);
+    expect(result.offline.totalNodes).toBe(2081);
     expect(result.offline.htmlBodyMatchesProvenance).toBe(true);
     expect(result.offline.extractedTextMatchesProvenance).toBe(true);
 
