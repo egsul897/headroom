@@ -132,3 +132,11 @@ Supersession was not re-derived (`UNKNOWN_SUPERSESSION_STATUS` on the stub). Do 
 ## Terminal
 
 `MISSING_CONDITION` on this candidate: the representation defect #120 was written to carry is absent after recompiling the stored wire. Result **1**. Pin **N**. No further code change came out of the replay.
+
+---
+
+## Later reading — the missing term node stays missing
+
+The sentence above records that no `DEFINED_TERM_REFERENCE` for `Disposition` was emitted. A later probe showed why a deterministic pass must not add one: one such node makes `computeSemanticSourceContract` rely on `Disposition`, `Division`, and `Property`. Mention on the operative `DEPENDS_ON_DEFINITION` edge stays retrieval.
+
+Record: `docs/p3-conmed-75a-disposition-reference-reliance-stop.md`. Terminal of that note: `MENTION_IS_NOT_RELIANCE`. `ca99bcbc…` stays un-adjudicated. Pin eligibility on this rerun stays **N**.
