@@ -1,0 +1,217 @@
+{
+  "exampleId": "stc-bkt-fwrg-available-amount-and-excluded-contribution",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "fwrg",
+    "issuerName": "First Watch Restaurant Group, Inc.",
+    "instrumentKey": "fwrg-2021-credit-agreement",
+    "documentId": "fwrg-doc-a-credit-agreement-2021",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+    "cik": "0001789940"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "fwrg-doc-a-credit-agreement-2021",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "§6.04 / RP-related permission using Available Amount and Available Excluded Contribution Amount",
+  "input": {
+    "exactText": " of, the Capital Stock of the Borrower or any Parent Company that are Not Otherwise Applied (to the extent such proceeds are contributed in respect of Qualified Capital Stock to the Borrower or any Restricted Subsidiary); and/or (C) with the net proceeds of any key-man life insurance policy; (iii) the Borrower may make Restricted Payments in an amount not to exceed (A) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (iii)(A) and/or (B) the portion, if any, of the Available Excluded Contribution Amount on such date that the Borrower elects to apply to this clause (iii)(B) ; (iv) the Borrower may make Restricted Payments: (A) to any Parent Company to enable such Parent Company to make Cash payments in lieu of the issuance of fractional shares in connection with any dividend, split or combination thereof in connection with any Investment permitted hereunder or the exercise or vesting of warrants, options, restricted stock units or similar incentive interests or other securities convertible into or exchangeable for Capital Stock of such Parent Company or otherwise to honor a conversion requested by a holder thereof or (B) consisting of (1) payments made or expected to be made in respect of withholding or similar Taxes payable by any future, present or former officers, directors, employees, members of management, managers or consultants of the Borrower, any subsidiary of the Borrower or Parent Company or any of their respective Immediate Family Members, (2) payments or other adjustments to outstanding Capital Stock in accordance with any management equity plan, stock option plan or any other similar employee benefit or incentive plan, agreement or arrangement in connection with any Restricted Payment and/or (3) repurchases of Capital Stock in consideration of the payments described in clauses (1) and/or (2) above, including demand repurchases, in connection with the exercise or vesting of stock options, restricte",
+    "charStartInFixture": 45291,
+    "charEndInFixture": 47291,
+    "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+    "windowSha256": "7073f5530a01a2ec4ccab5874b8ff2e38daf9abdf2a4692bb10ea5036e94df9f",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [
+      "\"Borrower election to apply stated amounts\""
+    ],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Borrower\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (fwrg-available-amount-and-excluded-contribution). Not independently reviewed.",
+      "figures": [
+        "elective application of Available Amount and/or Available Excluded Contribution Amount to the clause"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Available Amount",
+        "description": "Shared capacity dependency from basket corpus"
+      },
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Available Excluded Contribution Amount",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "Available Amount and Available Excluded Contribution Amount builder definitions/inputs not fully reconstituted from this usage span alone"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "fwrg-2021-credit-agreement",
+    "operativeVersion": "fwrg-doc-a-credit-agreement-2021",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=7073f5530a01a2ec4ccab5874b8ff2e38daf9abdf2a4692bb10ea5036e94df9f",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "§6.04 / RP-related permission using Available Amount and Available Excluded Contribution Amount",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Borrower\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (fwrg-available-amount-and-excluded-contribution). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "7073f5530a01a2ec4ccab5874b8ff2e38daf9abdf2a4692bb10ea5036e94df9f",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

@@ -1,0 +1,447 @@
+{
+  "datasetVersion": "ncedb.phase4.v1",
+  "workstreamId": "WS-NED",
+  "productionCapacityApproved": false,
+  "importIntegrationStatus": "ALIGNED_FOR_REVIEW",
+  "records": [
+    {
+      "importKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed::conmed-7.2-a-loan-document-debt",
+      "exceptionId": "conmed-7.2-a-loan-document-debt",
+      "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Loan Party",
+          "reason": "Phase-3 audit: MISSING_FROM_CURATED_EXCERPT"
+        },
+        {
+          "ref": "Loan Document",
+          "reason": "Phase-3 audit: MISSING_FROM_CURATED_EXCERPT"
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed::conmed-7.2-d-finance-leases-local-greater-of",
+      "exceptionId": "conmed-7.2-d-finance-leases-local-greater-of",
+      "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed::conmed-7.2-c-remote-lien-and-7.1",
+      "exceptionId": "conmed-7.2-c-remote-lien-and-7.1",
+      "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed::conmed-7.2-trailing-classify-not-permission",
+      "exceptionId": "conmed-7.2-trailing-classify-not-permission",
+      "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed::conmed-7.1-a-csslr-threshold-not-permission",
+      "exceptionId": "conmed-7.1-a-csslr-threshold-not-permission",
+      "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073::lsb-6.01-i-local-greater-of",
+      "exceptionId": "lsb-6.01-i-local-greater-of",
+      "sourceIdentityKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073::lsb-6.11-c-remote-payment-conditions",
+      "exceptionId": "lsb-6.11-c-remote-payment-conditions",
+      "sourceIdentityKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Payment Conditions definition",
+          "reason": "Full definition lives in definitions excerpt / Article I, not in article-6 file alone."
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073::lsb-6.04-b-external-secured-notes",
+      "exceptionId": "lsb-6.04-b-external-secured-notes",
+      "sourceIdentityKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Secured Notes Documents",
+          "reason": "External instrument not in this NC article file."
+        },
+        {
+          "ref": "Secured Notes Indenture",
+          "reason": "Proceeds application rules external."
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:CHWY:5273be46be8bcf799b6daee8::chwy-6.01-a-ratio-gated-incurrence",
+      "exceptionId": "chwy-6.01-a-ratio-gated-incurrence",
+      "sourceIdentityKey": "ncedb-src:CHWY:5273be46be8bcf799b6daee8",
+      "sourceSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:ROCK:b23a5fbea8d9fe9c419c6e30::gibraltar-7.01-a-ratio-incurrence-proviso",
+      "exceptionId": "gibraltar-7.01-a-ratio-incurrence-proviso",
+      "sourceIdentityKey": "ncedb-src:ROCK:b23a5fbea8d9fe9c419c6e30",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:ROCK:b23a5fbea8d9fe9c419c6e30::gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "exceptionId": "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "sourceIdentityKey": "ncedb-src:ROCK:b23a5fbea8d9fe9c419c6e30",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "Dependency closure incomplete/blocking (6 non-resolved controlling atoms)",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Loan Documents",
+          "reason": "Phase-3 audit: REFERENCED_NOT_FULLY_CLOSED_IN_RECORD"
+        },
+        {
+          "ref": "Closing Date",
+          "reason": "Phase-3 audit: EXTERNAL_TEMPORAL_ANCHOR"
+        },
+        {
+          "ref": "Obligations / Facilities",
+          "reason": "Phase-3 audit: REFERENCED_NOT_FULLY_CLOSED_IN_RECORD"
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:DSGR:8a85c4d48172e73edf61377b::dsgr-6.01-a-secured-obligations",
+      "exceptionId": "dsgr-6.01-a-secured-obligations",
+      "sourceIdentityKey": "ncedb-src:DSGR:8a85c4d48172e73edf61377b",
+      "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Guaranteed Obligations",
+          "reason": "Phase-3 audit: PARTIALLY_RESOLVED — Canadian/U.S. Guaranteed Obligations variants; full closure not in phase-2 record"
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:DSGR:8a85c4d48172e73edf61377b::dsgr-6.01-b-intercompany-shared-cap",
+      "exceptionId": "dsgr-6.01-b-intercompany-shared-cap",
+      "sourceIdentityKey": "ncedb-src:DSGR:8a85c4d48172e73edf61377b",
+      "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:DSGR:e92853e7350c5d996bf8861e::dsgr-fourth-amendment-authority-pointer",
+      "exceptionId": "dsgr-fourth-amendment-authority-pointer",
+      "sourceIdentityKey": "ncedb-src:DSGR:e92853e7350c5d996bf8861e",
+      "sourceSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "permissionClassification": "UNKNOWN",
+      "verificationStatus": "UNVERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Fourth Amendment operative amendatory sections",
+          "reason": "Need clause-level mapping to 6.01/6.04 etc. before classification."
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "DSGR Fourth Amendment 2025-03-31",
+          "effect": "Amends Existing Credit Agreement; clause-level NC impact not fully extracted here",
+          "status": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2::riot-5.02-a-i-facility-liens",
+      "exceptionId": "riot-5.02-a-i-facility-liens",
+      "sourceIdentityKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2",
+      "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Collateral",
+          "reason": "Phase-3 audit: EXTERNAL_DOCUMENT"
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2::riot-5.02-a-ii-tax-liens-local",
+      "exceptionId": "riot-5.02-a-ii-tax-liens-local",
+      "sourceIdentityKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2",
+      "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2::riot-5.02-c-no-collateral-sale-exception",
+      "exceptionId": "riot-5.02-c-no-collateral-sale-exception",
+      "sourceIdentityKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2",
+      "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:SUP:743e93841de67060af081311::sup-7.01-permitted-liens-definitional",
+      "exceptionId": "sup-7.01-permitted-liens-definitional",
+      "sourceIdentityKey": "ncedb-src:SUP:743e93841de67060af081311",
+      "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Permitted Liens definition",
+          "reason": "Full definitional basket inventory not inlined in §7.01."
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:SUP:743e93841de67060af081311::sup-7.01-classify-not-permission",
+      "exceptionId": "sup-7.01-classify-not-permission",
+      "sourceIdentityKey": "ncedb-src:SUP:743e93841de67060af081311",
+      "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:FWRG:a790344e606a5500545b00bb::fwrg-6.04-a-iii-builder-remote",
+      "exceptionId": "fwrg-6.04-a-iii-builder-remote",
+      "sourceIdentityKey": "ncedb-src:FWRG:a790344e606a5500545b00bb",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [
+        {
+          "ref": "Available Amount definition",
+          "reason": "Builder component gates live in Article I definitions excerpt."
+        }
+      ],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    },
+    {
+      "importKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed::conmed-7.5-a-qualitative-gates",
+      "exceptionId": "conmed-7.5-a-qualitative-gates",
+      "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "permissionClassification": "CONDITIONAL",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "productionCapacityApproved": false,
+      "dependencyClosureSummary": "not analyzed in phase-4 held-out pass",
+      "unresolvedControllingSources": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ]
+    }
+  ]
+}

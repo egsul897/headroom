@@ -1,0 +1,200 @@
+{
+  "exampleId": "stc-sec-dsgr-6_04_doc_a",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "train",
+  "document": {
+    "issuerId": "dsgr",
+    "issuerName": "Distribution Solutions Group, Inc.",
+    "instrumentKey": "dsgr-2022-2025-credit-facility",
+    "documentId": "dsgr-doc-d-second-ar-2025",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "dsgr-doc-d-second-ar-2025",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": true
+  },
+  "structural": {
+    "sectionRef": "6.04-doc-a",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Section 6.04, Dispositions constituting Liens permitted by Section 6.02, and Dispositions constituting Restricted Payments permitted by Section 6.08;\n\n(e) Sale and Leaseback Transactions permitted by Section 6.06;\n\n(f) Dispositions resulting from any casualty or any taking under power of eminent domain or by condemnation or similar proceeding of, any\nproperty or asset of any Borrower or any Restricted Subsidiary;\n\n(g) foreclosures, condemnation, expropriation or any similar action on\nassets or other Dispositions required by a Governmental Authority or casualty or insured damage to assets;\n\n(h) the disposition or discount\nof inventory, accounts receivable, or notes receivable in the ordinary course of business or the conversion of accounts receivable to notes receivable in the ordinary course of business and consistent with past practice;\n\n(i) other than in respect of any intellectual property, leases, assignments, subleases, licenses, sublicenses, covenants not to sue, releases,\nconsents and other forms of license (and terminations thereof), in each case, in the ordinary course of business and which do not materially interfere with the business of the Company and its Restricted Subsidiaries, taken as a whole;\n\n(j) Dispositions resulting from sales of Accounts under Permitted Supply Chain Financings; and\n\n(k) Dispositions of assets (other than Equity Interests in (i) a Borrower or (ii) a Restricted Subsidiary (other than any Borrower)\nunless all Equity Interests in such Restricted Subsidiary are sold) that are not permitted by any other clause of this Section; provided that the aggregate fair market value of all assets Disposed of in reliance upon this paragraph\n(k) shall not exceed during any fiscal year of the Company an amount equal to the greater of $25,000,000 and 25% of Applicable EBITDA; provided that, other than as set forth on Schedule 6.05, all Dispositions permitted under this\n",
+    "charStartInFixture": 464503,
+    "charEndInFixture": 466423,
+    "sourceTextSha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+    "windowSha256": "587f1dd96b3fb5898be506ebe640d920fcc6172de8055e8ec9a5e2b9f1d367f1",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "INVESTMENTS",
+    "candidatePermissionProhibitionClass": "UNRESOLVED",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Per-limb economics",
+      "Definition pack"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Section sweep expansion; unresolved semantics"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC section window from fixture sweep. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "dsgr-2022-2025-credit-facility",
+    "operativeVersion": "dsgr-doc-d-second-ar-2025",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "windowSha256=587f1dd96b3fb5898be506ebe640d920fcc6172de8055e8ec9a5e2b9f1d367f1",
+      "sectionRef=6.04-doc-a"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "587f1dd96b3fb5898be506ebe640d920fcc6172de8055e8ec9a5e2b9f1d367f1",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

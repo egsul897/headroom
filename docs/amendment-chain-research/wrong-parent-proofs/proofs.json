@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "proofs": [
+    {
+      "id": "WP-001",
+      "claim": "A definition amendment does not replace all of Section 1.01",
+      "evidence": {
+        "chainId": "cnmd-seventh-ar-to-eighth-ar",
+        "docId": "cnmd-am1-2022",
+        "operation": "Amends only CSSLR and CTLR defined-term cash-netting figures; does not restate Article I wholesale",
+        "expectedEngineBehavior": "MODIFY_DEFINITION on two terms only; other Section 1.1 definitions remain parent text"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-002",
+      "claim": "A later restatement does not inherit superseded provisions without authority",
+      "evidence": {
+        "chainId": "cnmd-seventh-ar-to-eighth-ar",
+        "wrongBehavior": "Attaching Seventh-era Am1/Am2 effects onto Eighth A&R (2025-06-10) without comparing Eighth text",
+        "requiredBehavior": "REVIEW_REQUIRED / out-of-package or restatement-supersession analysis"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-003",
+      "claim": "A targeted amendment attaches to the correct parent document / intermediate state",
+      "evidence": {
+        "chainId": "cnmd-seventh-ar-to-eighth-ar",
+        "wrongBehavior": "Apply Am2 $75\u2192$100 against Seventh A&R which still says $25M",
+        "correctParentState": "Post-Am1 ($75M). Am2 instruction matches Am1 after-text, not original Seventh A&R.",
+        "authority": [
+          "0001193125-21-217426 EX-10.1 ($25M)",
+          "0001193125-22-169336 EX-10.25 ($25\u2192$75)",
+          "0001193125-22-209154 EX-10.2 ($75\u2192$100)"
+        ]
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-004",
+      "claim": "An incorporated blackline is not silently treated as available when only curated short text is loaded",
+      "evidence": {
+        "chainId": "cnmd-seventh-ar-to-eighth-ar",
+        "docId": "cnmd-omnibus-2026",
+        "fact": "Blacklines embedded in EX-10.1 (raw sha256 56ac9cc2...); curated fixture omits exhibit pages",
+        "expectedEngineBehavior": "If package lacks embedded pages, independent verification newTextFoundInSource fails closed"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-005",
+      "claim": "A consent is not automatically a waiver",
+      "evidence": {
+        "chainId": "dsgr-2022-04-01-ar-credit",
+        "quote": "shall not operate as a waiver of any right, power or remedy",
+        "expectedEngineBehavior": "No WAIVER effect invented from Consenting Lender signatures alone"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-006",
+      "claim": "A missing effective-date condition cannot silently become satisfied",
+      "evidence": {
+        "examples": [
+          "COHR Am4/Am5 Effective Dates",
+          "AZZ Fourth Amendment Effective Date",
+          "CNMD Am1/Am2 Effective Dates"
+        ],
+        "expectedEngineBehavior": "CONDITIONAL_UNRESOLVED stays unresolved; no silent use of execution/filing date as satisfaction proof"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-007",
+      "claim": "Section renumbering / cross-reference correction is not a ratio change",
+      "evidence": {
+        "chainId": "cohr-2022-07-01-credit-agreement",
+        "operation": "\u00a76.11(i)\u2192\u00a76.11(a) in Incremental Amount",
+        "expectedEngineBehavior": "CROSS_REFERENCE_CORRECTION distinct from MODIFY_THRESHOLD on \u00a76.11(a) itself"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "WP-008",
+      "claim": "A schedule/era blackline date shift is not a silent leverage-ratio replacement",
+      "evidence": {
+        "chainId": "matw-2020-03-27-third-ar-loan",
+        "docId": "matw-am5",
+        "operation": "Am5 blackline changes final Leverage Ratio tier start date March 31, 2021 → December 31, 2023 while retaining ≤4.50 / ≤3.50 numeric caps",
+        "wrongBehavior": "Treat Am5 as rewriting §5.14 wholesale or inventing new ratio levels",
+        "expectedEngineBehavior": "SCHEDULE_ERA_SHIFT on the dated tier only; numeric caps unchanged; Am1/Am3/Am6 confirmed non-touch of §5.14"
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ]
+}

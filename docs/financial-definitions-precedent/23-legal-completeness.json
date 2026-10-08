@@ -1,0 +1,326 @@
+{
+  "artifact": "financial-definitions-precedent.legal-completeness",
+  "version": "fdp.legal-complete.v1",
+  "status": "DRAFT",
+  "phase": 5,
+  "disclaimer": "Legal-completeness dimensions are structural completeness checks on the draft model pack. They do NOT constitute independent legal review or production approval. Arithmetic PASS/PARTIAL must not upgrade models to legally complete.",
+  "models": [
+    {
+      "modelId": "CM-CONMED-SSLR-v1",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "dimensions": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 25,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 6
+        },
+        "definitionClosure": {
+          "status": "PASS",
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "REVIEW_REQUIRED",
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Parent Borrower and Subsidiaries on a consolidated basis per definitions"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      },
+      "independentlyLegallyReviewed": false,
+      "legalVerificationClaimedFromArithmetic": false
+    },
+    {
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "dimensions": {
+        "arithmeticCorrectness": {
+          "status": "PARTIAL",
+          "caseCount": 13,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 4
+        },
+        "definitionClosure": {
+          "status": "PARTIAL",
+          "simplifiedAway": [
+            "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model",
+            "Cross-clause without-duplication identity across all EBITDA prongs",
+            "Material Acquisition step-up interaction with PF cap (separate from \u00a77.1)"
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "PARTIAL_REVIEW_REQUIRED",
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "unresolvedCount": 1
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Consolidated Borrower group"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      },
+      "independentlyLegallyReviewed": false,
+      "legalVerificationClaimedFromArithmetic": false
+    },
+    {
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "dimensions": {
+        "arithmeticCorrectness": {
+          "status": "PARTIAL",
+          "caseCount": 19,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 4
+        },
+        "definitionClosure": {
+          "status": "PARTIAL",
+          "simplifiedAway": [
+            "Not all EBITDA (a)/(b) prongs enumerated as separate typed components; uncapped prongs treated as attested aggregates when present"
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "PARTIAL_REVIEW_REQUIRED",
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 4
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Borrower and Restricted Subsidiaries (per Doc D)"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      },
+      "independentlyLegallyReviewed": false,
+      "legalVerificationClaimedFromArithmetic": false
+    },
+    {
+      "modelId": "CM-CHWY-TLR-v1",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "dimensions": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 13,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 5
+        },
+        "definitionClosure": {
+          "status": "PASS",
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+          "chainId": null,
+          "unresolvedCount": 1
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 2
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Restricted Parties / consolidated group per CHWY defs"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      },
+      "independentlyLegallyReviewed": false,
+      "legalVerificationClaimedFromArithmetic": false
+    },
+    {
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "dimensions": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 12,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 3
+        },
+        "definitionClosure": {
+          "status": "PASS",
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+          "chainId": null,
+          "unresolvedCount": 0
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 1
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Restricted Parties"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      },
+      "independentlyLegallyReviewed": false,
+      "legalVerificationClaimedFromArithmetic": false
+    },
+    {
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "dimensions": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 12,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 5
+        },
+        "definitionClosure": {
+          "status": "PARTIAL",
+          "simplifiedAway": [
+            "Exact Initial LTV schedule numeric remains SEMANTIC_HYPOTHESIS pending schedule attestation"
+          ],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "PARTIAL_REVIEW_REQUIRED",
+          "chainId": null,
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Borrower / Collateral under Riot CA"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      },
+      "independentlyLegallyReviewed": false,
+      "legalVerificationClaimedFromArithmetic": false
+    },
+    {
+      "modelId": "CM-GIB-AA-BUILDER-v1",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "dimensions": {
+        "arithmeticCorrectness": {
+          "status": "BLOCKED",
+          "caseCount": 6,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 4
+        },
+        "definitionClosure": {
+          "status": "BLOCKED",
+          "simplifiedAway": [],
+          "representationClass": "BLOCKED_REVIEW_REQUIRED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "REVIEW_REQUIRED",
+          "chainId": null,
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Borrower Restricted Payments context"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      },
+      "independentlyLegallyReviewed": false,
+      "legalVerificationClaimedFromArithmetic": false
+    }
+  ],
+  "summary": {
+    "modelCount": 7,
+    "blockedModels": 1,
+    "partialModels": 2,
+    "independentlyLegallyReviewedCount": 0,
+    "missingInputRefusalPassCount": 7,
+    "unsupportedCaseRefusalPassCount": 7
+  }
+}

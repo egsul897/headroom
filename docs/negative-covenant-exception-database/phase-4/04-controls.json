@@ -1,0 +1,39 @@
+{
+  "artifact": "04-controls",
+  "genuinePositivePermissions": [
+    {
+      "id": "POS-RIOT-5.02-a-ii",
+      "sectionRef": "5.02(a)(ii)",
+      "note": "Tax lien exception with local contest/reserve conditions — genuine conditional permission"
+    },
+    {
+      "id": "POS-GIB-7.06-b-3",
+      "sectionRef": "7.06(b)(3)",
+      "note": "Law/rule/regulation burdensome exception — genuine enumerated permission limb"
+    },
+    {
+      "id": "POS-GIB-7.06-b-1",
+      "sectionRef": "7.06(b)(1)",
+      "note": "Loan Documents / Closing Date limb — permission form with remote conditions"
+    }
+  ],
+  "negativeControls": [
+    {
+      "id": "NEG-RIOT-5.02-c",
+      "class": "PROHIBITION_NO_EXCEPTION",
+      "sectionRef": "5.02(c)",
+      "note": "No collateral sale exception list"
+    },
+    {
+      "id": "NEG-GIB-7.06-b-5-nested",
+      "class": "AMBIGUOUS_CONDITION_SCOPE",
+      "sectionRef": "7.06(b)(5)",
+      "note": "Nested sub-limb structure — attachment may be ambiguous"
+    },
+    {
+      "id": "NEG-NO-UNCONDITIONAL-WITHOUT-CLOSURE",
+      "class": "AMBIGUOUS_CONDITION_SCOPE",
+      "note": "Any categorical limb with unresolved deps must not be UNCONDITIONAL_SOURCE_VERIFIED"
+    }
+  ]
+}

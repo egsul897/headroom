@@ -1,0 +1,231 @@
+{
+  "chainId": "cnmd-seventh-ar-to-eighth-ar",
+  "issuer": {
+    "name": "CONMED Corporation",
+    "ticker": "CNMD",
+    "cik": "0000816956"
+  },
+  "instrument": {
+    "instrumentId": "cnmd-credit-lineage-2021-2026",
+    "title": "Seventh A&R Credit Agreement (Jul 16, 2021) \u2192 Eighth A&R (Jun 10, 2025) \u2192 First Omnibus Amendment (May 27, 2026)",
+    "governingLawNote": "New York (Second Amendment \u00a77).",
+    "identityNotes": [
+      "Phase 2F fixture deliberately mixes Seventh-era Second Amendment with Eighth A&R base \u2014 out-of-package parent for Doc C.",
+      "First Omnibus Amendment simultaneously amends Credit Agreement and Guarantee and Collateral Agreement (multi-target).",
+      "Instrument identity must not silently attach Seventh-era amendment effects to Eighth A&R text."
+    ]
+  },
+  "documents": [
+    {
+      "docId": "cnmd-seventh-ar",
+      "role": "RESTATEMENT",
+      "title": "Seventh Amended and Restated Credit Agreement",
+      "executionDate": "2021-07-16",
+      "filingDate": null,
+      "accession": "0001193125-21-217426",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312521217426/d170717dex101.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "INFERRED_FROM_EXECUTION_DATE",
+        "namedEffectiveDate": "2021-07-16",
+        "conditionsSummary": "Face dating July 16, 2021; Closing Date satisfaction not independently re-proven this pass beyond exhibit identity.",
+        "evidenceQuote": "Seventh Amended and Restated Credit Agreement dated as of July 16, 2021 (EX-10.1 accession 0001193125-21-217426)."
+      },
+      "amendsInstrumentId": null,
+      "amendsDocIds": [],
+      "notes": [
+        "Phase-2 ACQUIRED via EdgarConnector EX-10.1 (not EX-10.2 GCA am). sha256 c0c901d6\u2026",
+        "SOURCE_ACQUIRED + TEXT_EXTRACTED for cash-netting / \u00a77.1(b) spans; OPERATIVE_STATE_RESOLVED false (ED calendars for later ams; Eighth-era separation)."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "cnmd-am1-2022",
+      "role": "AMENDMENT",
+      "title": "First Amendment to Seventh A&R Credit Agreement",
+      "executionDate": "2022-06-06",
+      "filingDate": null,
+      "accession": "0001193125-22-169336",
+      "exhibit": "EX-10.25",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312522169336/d320648dex1025.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "First Amendment Effective Date subject to conditions; calendar satisfaction not proven.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
+      "amendsDocIds": [
+        "cnmd-seventh-ar"
+      ],
+      "notes": [
+        "Cash-netting $25M\u2192$75M on CSSLR/CTLR definitions."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": true,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "cnmd-second-am-2022",
+      "role": "AMENDMENT",
+      "title": "Second Amendment to Seventh A&R Credit Agreement",
+      "executionDate": "2022-08-01",
+      "filingDate": null,
+      "accession": "0001193125-22-209154",
+      "exhibit": "EX-10.2",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312522209154/d220699dex102.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Second Amendment Effective Date = satisfaction of conditions (execution by Required Lenders; fees).",
+        "evidenceQuote": "The amendments set forth in this Amendment shall become effective on the date (the \"Second Amendment Effective Date\") on which the following conditions precedent have been satisfied"
+      },
+      "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
+      "amendsDocIds": [
+        "cnmd-seventh-ar"
+      ],
+      "notes": [
+        "Amends Seventh A&R definitions CSSLR/CTLR cash-netting $75M\u2192$100M and restates \u00a77.1(b).",
+        "Parent instrument = Seventh A&R; Am1 is intermediate state (post-Am1 $75M), not the amended instrument identity.",
+        "Requires post-Am1 token state; applying against unamended $25M Seventh text is wrong-parent (WP-003)."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": true,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "cnmd-eighth-ar",
+      "role": "RESTATEMENT",
+      "title": "Eighth Amended and Restated Credit Agreement",
+      "executionDate": "2025-06-10",
+      "filingDate": null,
+      "accession": "0001174947-25-000941",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-1.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "EXPLICIT_EFFECTIVE_DATE",
+        "namedEffectiveDate": "2025-06-10",
+        "conditionsSummary": "Closing Date defined as date conditions in Section 5.1 satisfied, which date is June 10, 2025 (definitions excerpt).",
+        "evidenceQuote": "date on which the conditions precedent set forth in Section 5.1 shall have been satisfied, which date is June 10, 2025."
+      },
+      "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
+      "amendsDocIds": [
+        "cnmd-seventh-ar"
+      ],
+      "notes": [
+        "Superseding restatement; Seventh-era Second Amendment must not auto-apply."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "cnmd-gca",
+      "role": "RELATED_SECURITY",
+      "title": "Amended and Restated Guarantee and Collateral Agreement",
+      "executionDate": "2025-06-10",
+      "filingDate": null,
+      "accession": "0001174947-25-000941",
+      "exhibit": "EX-10.2",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-2.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "INFERRED_FROM_EXECUTION_DATE",
+        "namedEffectiveDate": "2025-06-10",
+        "conditionsSummary": null,
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": null,
+      "amendsDocIds": [],
+      "notes": [],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "cnmd-omnibus-2026",
+      "role": "OMNIBUS_AMENDMENT",
+      "title": "First Omnibus Amendment and Increased Facility Activation Notice",
+      "executionDate": "2026-05-27",
+      "filingDate": null,
+      "accession": "0002077096-26-000190",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000207709626000190/ea029246401ex10-1.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "First Amendment Effective Date requires multiple deliveries, Solvency, bring-downs, no Default, KYC/Beneficial Ownership timing.",
+        "evidenceQuote": "shall become effective as of the date (the \"First Amendment Effective Date\") on which each of the following conditions precedent shall have been satisfied"
+      },
+      "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
+      "amendsDocIds": [
+        "cnmd-eighth-ar",
+        "cnmd-gca"
+      ],
+      "notes": [
+        "Amends BOTH Credit Agreement and Guarantee/Collateral Agreement via blackline exhibits (incorporation by reference).",
+        "Adds Term A-2 Commitments to Schedule 1 (schedule modification).",
+        "Consenting Lenders / Required Lenders consent language \u2014 consent distinct from permanent text change mechanism."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    }
+  ],
+  "authorityPolicy": {
+    "noInferenceWithoutSource": true,
+    "waiversSeparateFromAmendments": true,
+    "notes": [
+      "Seventh A&R body SOURCE_ACQUIRED (Phase 2). Do not leave retrievalStatus MISSING.",
+      "Am1/Am2 ED calendars CONDITIONAL_UNRESOLVED. Eighth Closing supersedes Seventh-era without overlaying Am1/Am2 onto Eighth.",
+      "Omnibus targets Eighth CA + GCA only."
+    ]
+  },
+  "adversarialTags": [
+    "MULTI_AMEND_SAME_DEFINITION",
+    "RESTATEMENT_THEN_TARGETED",
+    "CONDITIONAL_EFFECTIVENESS",
+    "PARENT_CHILD_CONFLICT_RISK",
+    "INCORPORATION_BY_REFERENCE",
+    "MULTI_COVENANT_FAMILY",
+    "RATIO_CHANGE",
+    "WAIVER_OR_CONSENT_SEPARATE"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "blockers": [
+    {
+      "blocker": "LEGAL_AUTHORITY_UNVERIFIED",
+      "affectedCandidates": 390,
+      "detail": "No candidate has independently verified legal authority for execution."
+    },
+    {
+      "blocker": "DEPENDENCY_SYSTEMS_INTERFACE_ONLY",
+      "affectedCandidates": 390,
+      "detail": "Encyclopedia/Atlas/Exception DB/Legal Core/Financial Precedent/Knowledge Factory unavailable in-repo."
+    },
+    {
+      "blocker": "THIN_OR_UNBOUND_SPANS",
+      "affectedCandidates": 336,
+      "detail": "Mined fragments still require governing-section binding."
+    },
+    {
+      "blocker": "HYPOTHESIS_LANE_ONLY",
+      "affectedCandidates": 390,
+      "detail": "Import lane remains SOURCE_SUPPORTED_HYPOTHESIS; no auto-promotion to verified."
+    }
+  ]
+}

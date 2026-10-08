@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "headroom://amendment-chain-research/change-record",
+  "title": "AmendmentChangeRecord",
+  "type": "object",
+  "required": ["changeId", "chainId", "changeClass", "target", "amendingDocId", "authority"],
+  "properties": {
+    "changeId": { "type": "string" },
+    "chainId": { "type": "string" },
+    "changeClass": {
+      "type": "string",
+      "enum": [
+        "DEFINITION",
+        "COVENANT",
+        "BASKET_AMOUNT",
+        "FINANCIAL_RATIO",
+        "PERMISSION_NARROWING",
+        "PERMISSION_EXPANSION",
+        "WAIVER",
+        "CONSENT",
+        "SCHEDULE",
+        "ENTITY_SCOPE",
+        "CROSS_REFERENCE_CORRECTION",
+        "OTHER",
+        "UNRESOLVED"
+      ]
+    },
+    "operationHint": {
+      "type": "string",
+      "description": "Maps conceptually to AmendmentOperation in amendment/types.ts without importing production code",
+      "enum": [
+        "REPLACE_TEXT",
+        "ADD_TEXT",
+        "DELETE_TEXT",
+        "MODIFY_THRESHOLD",
+        "MODIFY_DEFINITION",
+        "ADD_DEFINITION",
+        "REPLACE_DEFINITION",
+        "MODIFY_ENTITY_SCOPE",
+        "ADD_EXCEPTION",
+        "REMOVE_EXCEPTION",
+        "ADD_COVENANT",
+        "REMOVE_COVENANT",
+        "RESTATE_AGREEMENT",
+        "REAFFIRM",
+        "MODIFY_SCHEDULE",
+        "NO_TEXTUAL_CHANGE",
+        "UNKNOWN_CHANGE"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["SECTION", "DEFINITION", "DOCUMENT", "SCHEDULE", "UNKNOWN"] },
+        "sectionRef": { "type": ["string", "null"] },
+        "definedTerm": { "type": ["string", "null"] },
+        "covenantFamily": {
+          "type": ["string", "null"],
+          "enum": [null, "INDEBTEDNESS", "LIENS", "INVESTMENTS", "RESTRICTED_PAYMENTS", "ASSET_SALES", "FINANCIAL_COVENANTS", "AFFILIATE", "OTHER"]
+        }
+      }
+    },
+    "amendingDocId": { "type": "string" },
+    "priorDocId": { "type": ["string", "null"] },
+    "beforeText": { "type": ["string", "null"] },
+    "afterText": { "type": ["string", "null"] },
+    "beforeAfterRecordPath": { "type": ["string", "null"] },
+    "isPermanentAmendment": { "type": "boolean" },
+    "isWaiverOrConsentOnly": { "type": "boolean" },
+    "authority": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["SOURCE_BACKED", "PARTIAL", "UNRESOLVED_AUTHORITY", "MISSING_PRIOR_TEXT", "MISSING_AMENDING_DOC"]
+        },
+        "accession": { "type": ["string", "null"] },
+        "exhibit": { "type": ["string", "null"] },
+        "quote": { "type": ["string", "null"] },
+        "gapReason": { "type": ["string", "null"] }
+      }
+    },
+    "adversarialTags": { "type": "array", "items": { "type": "string" } }
+  }
+}

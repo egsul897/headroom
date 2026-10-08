@@ -1,0 +1,215 @@
+{
+  "exampleId": "stc-conmed-7.8-investments",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "dev",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+    "cik": "0000816956",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2025-06-16"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": "2025-06-16",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": true
+  },
+  "structural": {
+    "sectionRef": "7.8",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE VII",
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": "Limitation on Investments, Loans and Advances",
+  "input": {
+    "exactText": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business unit of, or\nmake any other investment in, any Person (collectively, \" Investments \"), except:\n(a)\nextensions of trade credit in the ordinary course of business;\n(b)\nInvestments in Cash Equivalents;\n(c)\nGuarantee Obligations permitted by Section 7.2;\n(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time outstanding; provided , however that this provision shall not limit key man insurance;\n103\n(e)\nthe investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables\nTransfer Program into a Subsidiary;\n(f)\nInvestments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount;\n(g)\nInvestments by the Parent Borrower or any of its Subsidiaries in the Parent Borrower or any Subsidiary Guarantor in the ordinary\ncourse of business;\n(h)\nInvestments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with\nthe bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers\nand suppliers arising in the ordinary course of business;\n(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);\n(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by way of capital contribution or otherwise) in any Subsidiary, the requirements of Section 6.9 are satisfied\nand (y) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis\n(giving effect to such Investments and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended\nfiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than the Consolidated\nSenior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter\nunder Section 7.1(a);\n(k)\nother Investments constituting Permitted Business Acquisitions;\n(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any\ntime outstanding; and\n(m)\nto the extent constituting Investments, any (i) interest rate Swap Agreements in the ordinary course of business up to an aggregate\nnotional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time,\n(ii) Swap Agreements in the ordinary course of business entered into in order to manage existing or anticipated exchange rate or\ncommodity price risks and not for speculative purposes or (iii) Permitted Bond Hedge Transaction or any Permitted Warrant Transaction.\nFor purposes of this Agreement, the amount of\nany Investment shall be the original cost of such Investment plus the cost of all additions thereto, without any adjustments for\nincreases or decreases in value, or write-ups, write-downs or write-offs with respect to such Investment, but giving effect to any repayments\nof principal in the case of Investments in the form of loans and any return of capital or return\n104\non Investment in the case of equity Investments\n(whether as a distribution, dividend, redemption or sale, but not in excess of the amount of the initial Investment).\n",
+    "charStartInFixture": 33672,
+    "charEndInFixture": 38339,
+    "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+    "windowSha256": "17b19011b492b681bb8de904b1481b063e7cb77bb1ff6f6e27fec890a248b1ec",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "7.8 lettered exceptions"
+    ],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "Parent Borrower and Subsidiaries; Loan Party / non-Loan Party distinctions in limbs"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "INVESTMENTS",
+    "candidatePermissionProhibitionClass": "PROHIBITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "PROHIBITION_WITH_ENUMERATED_EXCEPTIONS",
+      "description": "General Investments/loans/advances limitation with enumerated exceptions.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Specific exception limb figures for capacity questions"
+    ],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Long multi-limb section; this record labels the governing prohibition family, not every basket"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Family/prohibition verified from CONMED §7.8; per-basket formulas intentionally not auto-approved."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING",
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": "No independent review scope recorded. Catalog author checked the cited source window while generating the candidate label.",
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "windowSha256=17b19011b492b681bb8de904b1481b063e7cb77bb1ff6f6e27fec890a248b1ec",
+      "sectionRef=7.8"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity."
+  },
+  "verificationHistory": [
+    {
+      "at": "2026-10-08T22:30:00.000Z",
+      "fromStatus": "HUMAN_SOURCE_VERIFIED",
+      "toStatus": "HUMAN_HYPOTHESIS",
+      "reason": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity.",
+      "actor": "PHASE2_INTEGRITY_AUDIT"
+    }
+  ],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Limitation on Investments, Loans and Advances",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "Parent Borrower and Subsidiaries; Loan Party / non-Loan Party distinctions in limbs",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "General Investments/loans/advances limitation with enumerated exceptions.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "17b19011b492b681bb8de904b1481b063e7cb77bb1ff6f6e27fec890a248b1ec",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

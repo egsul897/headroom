@@ -1,0 +1,36 @@
+{
+  "artifact": "08-unresolved-legal-questions",
+  "questions": [
+    {
+      "id": "ULQ-1",
+      "question": "When is definitional entity/instrument scope (Loan Party / Loan Document) a 'condition' versus mere object of an unconditional categorical exception?",
+      "status": "OPEN",
+      "workingRule": "Phase 2 records categorical no-quantum exceptions as UNCONDITIONAL_SOURCE_VERIFIED and places definitional scope in remoteConditions/entityScope \u2014 never as production capacity."
+    },
+    {
+      "id": "ULQ-2",
+      "question": "How should Permitted Liens / Permitted Investments definitional inventories be exploded into exception rows without double-counting \u00a76.02/\u00a77.01 pointers?",
+      "status": "OPEN"
+    },
+    {
+      "id": "ULQ-3",
+      "question": "What is the correct attachment of hanging provisos that follow an entire enumerated list when some limbs have their own provisos?",
+      "status": "OPEN",
+      "relatedPatterns": [
+        "PAT-hanging-trailing-proviso"
+      ]
+    },
+    {
+      "id": "ULQ-4",
+      "question": "For Notes Priority Collateral / intercreditor-constrained sales, is the ABL exception UNCONDITIONAL as to the ABL or CONDITIONAL via external docs?",
+      "status": "WORKING_ANSWER",
+      "workingRule": "CONDITIONAL with EXTERNAL_DOCUMENT remote condition + unresolvedControllingSources."
+    },
+    {
+      "id": "ULQ-5",
+      "question": "Amendment instruments: when does an amendment create a new exception identity versus supersede an existing one?",
+      "status": "OPEN",
+      "blocker": "Requires clause-level redline mapping (DSGR Fourth Amendment recorded as UNKNOWN)."
+    }
+  ]
+}

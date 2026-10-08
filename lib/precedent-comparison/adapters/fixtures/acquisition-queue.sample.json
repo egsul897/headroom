@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "edgar-historical-backfill.acquisition-queue.v1",
+  "note": "Sample queue envelope for PCI adapter coordination tests. Not a live EDGAR download list.",
+  "items": [
+    {
+      "queueId": "sample-q-001",
+      "priority": 10,
+      "cik": "0000000000",
+      "ticker": "SAMPLE",
+      "accessionNumber": "0000000000-00-000000",
+      "filingDate": "2024-01-01",
+      "form": "8-K",
+      "exhibitType": "EX-10.1",
+      "filename": "ex10-1.htm",
+      "description": "Sample credit agreement exhibit — adapter schema probe only",
+      "documentKind": "CREDIT_AGREEMENT",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/0/000000000000000000/ex10-1.htm",
+      "agreementIdentityKey": "sample|credit|2024",
+      "relevanceScore": 0.5,
+      "draftingDiversityBonus": 0,
+      "reason": "PCI adapter fixture — do not fetch",
+      "status": "QUEUED",
+      "enqueuedAt": "2026-10-08T00:00:00.000Z"
+    }
+  ]
+}

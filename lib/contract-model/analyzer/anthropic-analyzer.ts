@@ -37,6 +37,11 @@ export interface StructuredStageOptions { signal?: AbortSignal; budget?: Dispatc
 /** Calibrated chars-per-token used only for the pre-dispatch maximum-cost reservation of a stage call. */
 const RESERVATION_TOKENS_PER_CHAR = 0.3957;
 
+/** Same reservation the stage caller uses before a request is sent. */
+export function reservedMaxInputTokens(promptChars: number): number {
+  return Math.ceil(promptChars * RESERVATION_TOKENS_PER_CHAR) + 64;
+}
+
 /** Claude Sonnet 5, per explicit user instruction to use the cheaper model for this spike ($2/$10 per M tokens vs. Opus 5's $5/$25). */
 export const DEFAULT_ANALYZER_MODEL = "claude-sonnet-5";
 export const DEFAULT_GATEWAY_ANALYZER_MODEL = "anthropic/claude-sonnet-5";
@@ -91,7 +96,7 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
     const maxTokens = options.execution?.maxOutputTokens ?? this.maxTokens;
     const reasoning = options.execution?.reasoning ?? "PROVIDER_DEFAULT";
     const thinking: Anthropic.ThinkingConfigParam | undefined = reasoning === "DISABLED" ? { type: "disabled" } : reasoning === "MINIMAL" ? { type: "enabled", budget_tokens: 1024 } : undefined;
-    if (options.budget) ticket = options.budget.reserve({ stage, model: this.model, maxInputTokens: Math.ceil((systemPrompt.length + userContent.length) * RESERVATION_TOKENS_PER_CHAR) + 64, maxOutputTokens: maxTokens });
+    if (options.budget) ticket = options.budget.reserve({ stage, model: this.model, maxInputTokens: reservedMaxInputTokens(systemPrompt.length + userContent.length), maxOutputTokens: maxTokens });
     let transport: { attempts: number; retries: number; rateLimitFailures: number } = { attempts: 0, retries: 0, rateLimitFailures: 0 };
     try {
       // ONE retry owner (transport-retry.ts); the client itself is constructed with maxRetries: 0.

@@ -1,0 +1,58 @@
+{
+  "specId": "VC-002-SPEC",
+  "schemaVersion": "amendment-chain-research.test-spec.v1",
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "sourceAuthorExpectation": {
+    "purpose": "Exercise deemed retroactive effectiveness: Fourth Amendment executed 2025-03-31 but parties give deemed effect as of 2025-01-01 for specified clauses.",
+    "expectedFailClosedBehavior": "Query date 2025-02-15 must not treat \u00a76.08(a)(v) as amended unless the engine can represent deemed-effect authority; if deemed-effect is unsupported, status must be CONDITIONAL_UNRESOLVED / REVIEW_REQUIRED \u2014 never silently use execution date only or silently apply as of 2025-01-01 without modeling the deemed-effect clause.",
+    "queryDates": [
+      "2024-12-31",
+      "2025-01-01",
+      "2025-02-15",
+      "2025-03-31",
+      "2025-04-01"
+    ],
+    "mapsToProductionModules": [
+      "effective-date",
+      "chain",
+      "operative-state"
+    ],
+    "sourcePointers": [
+      {
+        "docId": "dsgr-doc-c",
+        "accession": "0001193125-25-070858",
+        "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+        "quote": "agreeing to give deemed effect to the amendments described in clauses (a) and (b) below as of January 1, 2025"
+      }
+    ],
+    "relatedScenarios": [
+      {
+        "scenarioId": "DSGR-S2",
+        "asOf": "2025-01-01",
+        "expect": "Deemed effect of Fourth Amendment clauses (a)(b) IF engine models deemed-effect; else REVIEW_REQUIRED",
+        "status": "DEEMED_RETROACTIVE",
+        "vc": "VC-002"
+      }
+    ],
+    "notLegalGroundTruth": true
+  },
+  "independentlyReviewedLegalGroundTruth": {
+    "status": "PENDING_INDEPENDENT_REVIEW",
+    "reviewer": null,
+    "reviewedAt": null,
+    "disposition": null,
+    "notes": "Source-author expectations above are NOT independently reviewed legal ground truth. Reserved for independent legal challenger."
+  },
+  "replay": {
+    "portable": true,
+    "requiresProductionPatch": false,
+    "claudeOwnedFixturesTouched": false,
+    "inputs": {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "acquisitionLedger": "docs/amendment-chain-research/phase2/acquisition-ledger.json",
+      "authorityLayer": "docs/amendment-chain-research/authority-layers/dsgr-2022-04-01-ar-credit.json",
+      "byteCache": ".local-amendment-research/bytes/ (gitignored; reconstruct via EdgarConnector using ledger URIs)"
+    }
+  },
+  "notAProductionPatch": true
+}

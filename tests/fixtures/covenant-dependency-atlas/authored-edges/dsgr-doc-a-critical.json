@@ -1,0 +1,128 @@
+{
+  "documentId": "doc-a",
+  "packageId": "dsgr-2022-2025-credit-facility",
+  "notes": "Hand-authored critical edges with source-backed rationales from Phase-3F ground truth. Complements deterministic inventory extraction; never relies on bare string similarity.",
+  "nodes": [],
+  "edges": [
+    {
+      "edgeId": "COVENANT_TO_SHARED_BASKET::authored::6.04q-available-amount",
+      "kind": "COVENANT_TO_SHARED_BASKET",
+      "fromNodeId": "node:doc-a:unit:doc-a::VI::6.04q",
+      "toNodeId": "node:doc-a:term:available_amount",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "Ground-truth unit doc-a::VI::6.04q and definition unit Available Amount both state the same pool is consumed by 6.04(q) and 6.08(a)(iv).",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.04(q)",
+          "unitId": "doc-a::VI::6.04q",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "SHARED RESOURCE: consumes the same Available Amount as Section 6.08(a)(iv) Restricted Payments"
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": "Available Amount",
+      "financialInputKey": null
+    },
+    {
+      "edgeId": "COVENANT_TO_SHARED_BASKET::authored::6.08aiv-available-amount",
+      "kind": "COVENANT_TO_SHARED_BASKET",
+      "fromNodeId": "node:doc-a:unit:doc-a::VI::6.08a-iv",
+      "toNodeId": "node:doc-a:term:available_amount",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "Ground-truth unit for 6.08(a)(iv) explicitly shares Available Amount with 6.04(q).",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.08(a)(iv)",
+          "unitId": "doc-a::VI::6.08a-iv",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "SHARED RESOURCE: draws on the same Available Amount as Section 6.04(q) investments"
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": "Available Amount",
+      "financialInputKey": null
+    },
+    {
+      "edgeId": "RATIO_CALCULATION::authored::tnlr-components",
+      "kind": "RATIO_CALCULATION",
+      "fromNodeId": "node:doc-a:term:total_net_leverage_ratio",
+      "toNodeId": "node:doc-a:term:total_indebtedness",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "Total Net Leverage Ratio = (Total Indebtedness minus Unrestricted Cash capped) / EBITDA — numerator depends on Total Indebtedness.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "1.01",
+          "unitId": "doc-a::I::total-net-leverage-ratio",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Total Net Leverage Ratio = (Total Indebtedness minus Unrestricted Cash, with cash netting capped at $25,000,000) divided by EBITDA"
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": null,
+      "financialInputKey": null
+    },
+    {
+      "edgeId": "FINANCIAL_INPUT::authored::net-income-leaf",
+      "kind": "FINANCIAL_INPUT",
+      "fromNodeId": "node:doc-a:term:ebitda",
+      "toNodeId": "node:financial_input:NET_INCOME",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "EBITDA definition opens with Net Income plus enumerated add-backs — Net Income is a financial-input leaf.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "1.01",
+          "unitId": "doc-a::I::ebitda",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "EBITDA = Net Income plus twenty enumerated add-backs"
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": null,
+      "financialInputKey": "NET_INCOME"
+    },
+    {
+      "edgeId": "COVENANT_TO_CROSS_DOCUMENT::authored::excluded-property",
+      "kind": "COVENANT_TO_CROSS_DOCUMENT",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::collateral-and-security-documents",
+      "toNodeId": "node:cross_document:security_agreements",
+      "resolution": "UNRESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "Excluded Property is defined only by cross-reference to the Security Agreements, which are not part of this document.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "1.01",
+          "unitId": "doc-a::I::collateral-and-security-documents",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Excluded Property is defined only by cross-reference to the Security Agreements, which are not part of this document - a genuine cross-document dependency."
+        }
+      ],
+      "unresolvedReason": "Security Agreements are outside the DSGR credit-agreement package.",
+      "sharedBasketKey": null,
+      "financialInputKey": null
+    }
+  ]
+}

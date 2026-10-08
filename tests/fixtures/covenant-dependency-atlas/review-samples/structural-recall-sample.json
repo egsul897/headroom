@@ -1,0 +1,91 @@
+[
+  {
+    "documentId": "chwy-doc-a",
+    "notes": "Independently authored from Chewy CA source text for structural-adapter recall. Development split. Phase 3: RATIO expects Consolidated EBITDA (source-true Total Leverage Ratio body).",
+    "expected": [
+      {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Indebtedness",
+        "connective": "defined-term occurrence in negative covenant region"
+      },
+      {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "EBITDA",
+        "connective": "defined-term occurrence"
+      },
+      {
+        "kind": "RATIO_CALCULATION",
+        "termName": "Consolidated EBITDA",
+        "connective": "ratio definition compositional reference (Total Leverage Ratio body)"
+      },
+      {
+        "kind": "ENTITY_SCOPE",
+        "connective": "Restricted Subsidiary / Loan Party connective window"
+      },
+      {
+        "kind": "COVENANT_TO_CONDITION",
+        "connective": "subject to"
+      },
+      {
+        "kind": "COVENANT_TO_EXCEPTION",
+        "connective": "except as provided / permitted by"
+      },
+      {
+        "kind": "RECLASSIFICATION",
+        "connective": "reclassification"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "termName": "NET_INCOME",
+        "connective": "compositional means/plus Net Income"
+      },
+      {
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "termName": "Available Amount",
+        "connective": "Available Amount shared basket"
+      },
+      {
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "connective": "Intercreditor Agreement"
+      }
+    ]
+  },
+  {
+    "documentId": "riot-doc-a",
+    "notes": "Phase 3 rewrite from exact RIOT source spans. Prior sample incorrectly expected Indebtedness / Available Amount / Security Agreement / traditional Leverage Ratio — those terms are absent. RIOT is an LTV / Collateral Documents facility.",
+    "expected": [
+      {
+        "kind": "RATIO_CALCULATION",
+        "termName": "Prevailing Market Value",
+        "connective": "Actual LTV Ratio compositional reference"
+      },
+      {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Collateral",
+        "connective": "defined-term occurrence"
+      },
+      {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Loan",
+        "connective": "defined-term occurrence"
+      },
+      {
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "connective": "Collateral Documents / Custody Agreement"
+      },
+      {
+        "kind": "COVENANT_TO_CONDITION",
+        "connective": "subject to"
+      },
+      {
+        "kind": "ENTITY_SCOPE",
+        "connective": "Restricted Party"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "termName": "PREVAILING_MARKET_VALUE",
+        "connective": "Prevailing Market Value LTV input"
+      }
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "artifact": "04-negative-controls",
+  "selectionPrinciple": "Independently selected from source text to cover required control classes; not assumed all exceptions are conditional or unconditional.",
+  "byClass": {
+    "NUMERIC_THRESHOLD_NOT_PERMISSION": [
+      "conmed-7.2-trailing-classify-not-permission",
+      "conmed-7.1-a-csslr-threshold-not-permission",
+      "sup-7.01-classify-not-permission"
+    ],
+    "CONSTRAINED_BY_OTHER_DOCUMENT": [
+      "lsb-6.04-b-external-secured-notes"
+    ],
+    "NO_ADDITIONAL_CONDITIONS": [
+      "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "dsgr-6.01-a-secured-obligations",
+      "riot-5.02-a-i-facility-liens"
+    ],
+    "LOCAL_CONDITIONS": [
+      "riot-5.02-a-ii-tax-liens-local",
+      "conmed-7.5-a-qualitative-gates"
+    ],
+    "PROHIBITION_NO_EXCEPTION": [
+      "riot-5.02-c-no-collateral-sale-exception"
+    ],
+    "REMOTE_CONDITIONS": [
+      "sup-7.01-permitted-liens-definitional",
+      "fwrg-6.04-a-iii-builder-remote"
+    ]
+  },
+  "counts": {
+    "NUMERIC_THRESHOLD_NOT_PERMISSION": 3,
+    "CONSTRAINED_BY_OTHER_DOCUMENT": 1,
+    "NO_ADDITIONAL_CONDITIONS": 3,
+    "LOCAL_CONDITIONS": 2,
+    "PROHIBITION_NO_EXCEPTION": 1,
+    "REMOTE_CONDITIONS": 2
+  }
+}

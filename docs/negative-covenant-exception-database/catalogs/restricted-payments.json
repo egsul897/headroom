@@ -1,0 +1,528 @@
+{
+  "covenantFamily": "RESTRICTED_PAYMENTS",
+  "count": 6,
+  "exceptionIds": [
+    "conmed-7.6-e-ratio-gated-unlimited-rp",
+    "conmed-7.6-d-annual-flat-rp",
+    "lsb-6.11-c-rp-payment-conditions",
+    "lsb-6.11-d-residual-last-resort-rp",
+    "fwrg-6.04-a-iii-available-amount-rp",
+    "fwrg-6.04-a-xi-ratio-unlimited-rp"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.6-e-ratio-gated-unlimited-rp",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "7.6",
+        "text": "Declare or pay any dividend ... or make any other distribution ... (collectively, \"Restricted Payments\"), except:"
+      },
+      "exceptionSectionRef": "7.6(e)",
+      "exactExceptionText": "so long as (i) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro forma basis (giving effect to such Restricted Payment and any Indebtedness incurred in connection therewith) as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, is no greater than 3.50 to 1.00 and (ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payments in an unlimited amount;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.6",
+        "Section 7.6(e)"
+      ],
+      "definedTerms": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Restricted Payments",
+        "Event of Default"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "pro forma CSSLR \u2264 3.50 to 1.00",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.6(e)(i)",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c2",
+          "text": "no EOD continuing or resulting",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.6(e)(ii)",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c3",
+          "text": "ratio definition / components live in definitions + \u00a77.1(a) related concepts",
+          "location": "DEFINED_TERM",
+          "locationRef": "Consolidated Senior Secured Leverage Ratio",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c4",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO",
+          "value": "3.50 to 1.00 Consolidated Senior Secured Leverage Ratio (pro forma)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower (payor)"
+        ],
+        "excludes": [],
+        "notes": "Unlimited amount only for Parent Borrower under this clause."
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "7.1(a)",
+          "role": "related CSSLR financial covenant (different threshold)"
+        },
+        {
+          "targetRef": "Consolidated Senior Secured Leverage Ratio",
+          "role": "defined term"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "CSSLR components and add-backs are defined outside \u00a77.6(e)."
+        },
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VII chapeau binds."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Textbook 'unlimited' that is not unconditional capacity \u2014 ratio + EOD gates + defined-term remote math.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.6-d-annual-flat-rp",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "7.6",
+        "text": "Declare or pay any dividend ... (collectively, \"Restricted Payments\"), except:"
+      },
+      "exceptionSectionRef": "7.6(d)",
+      "exactExceptionText": "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.6",
+        "Section 7.6(d)"
+      ],
+      "definedTerms": [
+        "Restricted Payments",
+        "Parent Borrower"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$40,000,000 per fiscal year"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VII chapeau binds."
+        }
+      ],
+      "capacityShape": "FIXED_MONEY",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Flat annual basket; still entity-scoped by Article VII and parent-prohibition definitions of Restricted Payments.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.11-c-rp-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.11",
+        "text": "Make any distribution or declare or pay any dividends ... (each, a \"Restricted Payment\"); provided, that the foregoing shall not prohibit any of the following:"
+      },
+      "exceptionSectionRef": "6.11(c)",
+      "exactExceptionText": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.11",
+        "Section 6.11(c)"
+      ],
+      "definedTerms": [
+        "Restricted Payment",
+        "Payment Conditions"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Payment Conditions satisfied for each RP",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Subsidiaries via Article VI chapeau"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions shared with 6.01 chapeau, 6.08(a)(v), 6.13(k)",
+          "relatedRefs": [
+            "6.01",
+            "6.08(a)(v)",
+            "6.13(k)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "remote defined-term gate"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "No local dollars; entire capacity is the Payment Conditions definition."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Seemingly unlimited RP basket with zero local conditions other than a remote defined term.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.11-d-residual-last-resort-rp",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.11",
+        "text": "Make any ... Restricted Payment; provided, that the foregoing shall not prohibit any of the following:"
+      },
+      "exceptionSectionRef": "6.11(d)",
+      "exactExceptionText": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any Restricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.11).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.11",
+        "Section 6.11(d)"
+      ],
+      "definedTerms": [
+        "Restricted Payment",
+        "Parent"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "only if not permitted under any other 6.11 clause",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.11(d) parenthetical",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$500,000 per fiscal year"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent fiscal-year aggregate"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "RESIDUAL_LAST_RESORT",
+          "description": "Cannot be used if another 6.11 clause is available",
+          "relatedRefs": [
+            "6.11(a)",
+            "6.11(b)",
+            "6.11(c)"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "it being understood ... only if not permitted under any other clause",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Last-resort residual."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "6.11(a)-(c)",
+          "role": "priority baskets"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "SECTION_WIDE_LIMITATION",
+          "description": "Residual use depends on unavailability of sibling exceptions, including Payment Conditions basket."
+        }
+      ],
+      "capacityShape": "FIXED_MONEY",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Small flat basket is not free capacity if Payment Conditions RP is available \u2014 residual-last-resort pattern.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.04-a-iii-available-amount-rp",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.04(a)",
+        "text": "The Borrower shall not pay or make any Restricted Payment, except that:"
+      },
+      "exceptionSectionRef": "6.04(a)(iii)",
+      "exactExceptionText": "the Borrower may make Restricted Payments in an amount not to exceed (A) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (iii)(A) and/or (B) the portion, if any, of the Available Excluded Contribution Amount on such date that the Borrower elects to apply to this clause (iii)(B);",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(a)",
+        "Section 6.04(a)(iii)"
+      ],
+      "definedTerms": [
+        "Available Amount",
+        "Available Excluded Contribution Amount",
+        "Restricted Payment"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Available Amount electively applied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Available Amount",
+          "computableHint": "SHARED_POOL"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Available Excluded Contribution Amount electively applied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Available Excluded Contribution Amount",
+          "computableHint": "SHARED_POOL"
+        },
+        {
+          "conditionId": "c3",
+          "text": "CNI Growth Amount component of Available Amount has its own ratio/EOD gates in definition",
+          "location": "DEFINED_TERM",
+          "locationRef": "Available Amount / CNI Growth Amount",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "BUILDER",
+          "value": "Available Amount (multi-component)"
+        },
+        {
+          "kind": "BUILDER",
+          "value": "Available Excluded Contribution Amount"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "BUILDER_ELECTION",
+          "description": "Borrower elects which builder pool to charge; pools also feed Investments/RDPs",
+          "relatedRefs": [
+            "6.04(a)(iii)",
+            "6.06",
+            "6.04(b)"
+          ]
+        },
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Available Amount is shared capacity across RP/Investment/RDP elections",
+          "relatedRefs": [
+            "Available Amount"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Available Amount",
+          "role": "builder definition with remote ratio/EOD gates"
+        },
+        {
+          "targetRef": "6.04(b)",
+          "role": "Restricted Debt Payments may also consume builder"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Builder components and their ratio/EOD limitations live in Article I definitions."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Same pool can be elected into Investments or Restricted Debt Payments elsewhere."
+        }
+      ],
+      "capacityShape": "BUILDER_SHARED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Builder RP basket is never local unconditional capacity; definitional gates and cross-family elections constrain it.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.04-a-xi-ratio-unlimited-rp",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.04(a)",
+        "text": "The Borrower shall not pay or make any Restricted Payment, except that:"
+      },
+      "exceptionSectionRef": "6.04(a)(xi)",
+      "exactExceptionText": "Unlimited (uncapped-dollar) Restricted Payments so long as the Total Rent Adjusted Net Leverage Ratio, calculated Pro Forma, would not exceed a fixed ratio - a ratio-gated unlimited basket (human-ground-truth fwrg-6.04(a)(xi)); no separate Event of Default condition attached in that inventory.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(a)",
+        "Section 6.04(a)(xi)"
+      ],
+      "definedTerms": [
+        "Total Rent Adjusted Net Leverage Ratio",
+        "Pro Forma"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Pro Forma Total Rent Adjusted Net Leverage Ratio \u2264 fixed threshold",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.04(a)(xi)",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c2",
+          "text": "ratio definition remote",
+          "location": "DEFINED_TERM",
+          "locationRef": "Total Rent Adjusted Net Leverage Ratio",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO",
+          "value": "fixed Total Rent Adjusted Net Leverage Ratio threshold (see GT)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Total Rent Adjusted Net Leverage Ratio",
+          "role": "remote ratio definition"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Ratio components and Pro Forma adjustments are definitional."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Unlimited RP is still gated; absence of an EOD condition does not make capacity unconditional.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}
