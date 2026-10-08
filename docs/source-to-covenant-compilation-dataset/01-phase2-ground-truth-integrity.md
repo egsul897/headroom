@@ -40,3 +40,7 @@ Coordination with peer corpora (read-only): exception DB, basket formula library
 ## Knowledge-factory import
 
 `exports/knowledge-factory-import.json` conforms to `corpus-dataset-delivery-contract.v1` without creating a competing Prisma schema. Idempotent content identity = exampleId + windowSha256 + document/amendment identity. All rows currently `importable: false`.
+
+## Integration handoff
+
+Merged `origin/main` (conflict-free after `package.json` script union). Near-duplicate clusters quarantined from independent-example counts. Tip after handoff rebuild: see git tip. Ready for Integration Lead merge through branch protections — no certification advancement.
