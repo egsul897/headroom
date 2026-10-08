@@ -2,6 +2,10 @@
 
 **Verdict:** `CKG_BENCHMARK_STANDUP_COMPLETE_OFFLINE_BASELINE_RECORDED`
 
+**Exact SHA:** `380a590484741da0a2f0cb8ff301c1987d2f0365`
+
+**Branch:** `cursor/covenant-knowledge-generalization-bench-7f51`
+
 **Certification impact:** none (diagnostic only; no certification status changed)
 
 **Paid calls:** `0`
