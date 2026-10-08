@@ -1,0 +1,423 @@
+{
+  "artifact": "financial-definitions-precedent.typed-calculations",
+  "version": "fdp.typed-calc.v1",
+  "status": "DRAFT",
+  "disclaimer": "Typed structures are agent-authored structured readings of SOURCE_SPAN_VERIFIED excerpts. They are SEMANTIC_HYPOTHESIS unless marked otherwise. Not INDEPENDENTLY_LEGALLY_REVIEWED. Arithmetic tests validate arithmetic against these authored examples, not legal correctness.",
+  "componentKinds": [
+    "BASE_METRIC",
+    "ADDBACK",
+    "DEDUCTION",
+    "CAP",
+    "LOOKBACK_OR_LOOKFORWARD",
+    "PRO_FORMA_ADJUSTMENT",
+    "CURE_AMOUNT",
+    "RATIO_NUMERATOR",
+    "RATIO_DENOMINATOR",
+    "FINANCIAL_INPUT_REQUIREMENT",
+    "CONDITIONAL_TEST",
+    "DOUBLE_COUNTING_RESTRICTION",
+    "BUILDER_COMPONENT",
+    "CITATION_AMBIGUITY"
+  ],
+  "calculations": [
+    {
+      "name": "Consolidated Senior Secured Leverage Ratio (CONMED)",
+      "sourceDocIds": [
+        "CONMED-2025-PLAIN",
+        "CONMED-2025-ART7"
+      ],
+      "extractionEntryIds": [
+        "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+        "CONMED-2025-CA::test::Financial_Covenants_7_1"
+      ],
+      "components": [
+        {
+          "kind": "RATIO_NUMERATOR",
+          "label": "Consolidated Senior Secured Funded Debt + RTP attributed principal \u2212 cash netting",
+          "inputs": [
+            "consolidated_senior_secured_funded_debt",
+            "rtp_attributed_principal",
+            "unrestricted_cash_and_cash_equivalents"
+          ]
+        },
+        {
+          "kind": "CAP",
+          "label": "cash netting cap",
+          "expression": "min(100_000_000, unrestricted_cash_and_cash_equivalents)",
+          "inputs": [
+            "unrestricted_cash_and_cash_equivalents"
+          ]
+        },
+        {
+          "kind": "RATIO_DENOMINATOR",
+          "label": "Consolidated EBITDA",
+          "inputs": [
+            "consolidated_ebitda_covenant_defined"
+          ]
+        },
+        {
+          "kind": "CONDITIONAL_TEST",
+          "label": "maintenance max 3.75x with optional Material Acquisition step-up +0.50x",
+          "inputs": [
+            "material_acquisition_election_and_dates"
+          ]
+        },
+        {
+          "kind": "FINANCIAL_INPUT_REQUIREMENT",
+          "label": "all numerator/denominator inputs must be attested",
+          "onMissing": "MISSING_INPUT"
+        }
+      ],
+      "arithmeticEvaluable": true,
+      "legalCertified": false,
+      "id": "TC-CONMED-SSLR-v1",
+      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+    },
+    {
+      "name": "EBITDA with Combined Cap (DSGR Second A&R)",
+      "sourceDocIds": [
+        "DSGR-2025-AR2"
+      ],
+      "extractionEntryIds": [
+        "DSGR-2025-AR2::def::EBITDA",
+        "DSGR-2025-AR2::adj::Cost_Savings",
+        "DSGR-2025-AR2::adj::Combined_Cap_20pct"
+      ],
+      "components": [
+        {
+          "kind": "BASE_METRIC",
+          "label": "Net Income",
+          "inputs": [
+            "net_income"
+          ]
+        },
+        {
+          "kind": "ADDBACK",
+          "label": "(a)(i) Interest Expense",
+          "inputs": [
+            "interest_expense"
+          ]
+        },
+        {
+          "kind": "ADDBACK",
+          "label": "(a)(ii) income tax expense net of refunds",
+          "inputs": [
+            "income_tax_expense_net"
+          ]
+        },
+        {
+          "kind": "ADDBACK",
+          "label": "(a)(iii) D&A",
+          "inputs": [
+            "depreciation_amortization"
+          ]
+        },
+        {
+          "kind": "ADDBACK",
+          "label": "(a)(vii) non-recurring/unusual/restructuring etc.",
+          "inputs": [
+            "nonrecurring_unusual_expenses"
+          ],
+          "capRef": "COMBINED_CAP"
+        },
+        {
+          "kind": "ADDBACK",
+          "label": "(a)(viii) Cost Savings run-rate",
+          "inputs": [
+            "cost_savings_projected",
+            "cost_savings_benefits_realized"
+          ],
+          "capRef": "COMBINED_CAP",
+          "lookforward": "24 months from period end; actions taken prior to last day of period"
+        },
+        {
+          "kind": "PRO_FORMA_ADJUSTMENT",
+          "label": "Cost Savings as-if first day of period, net of benefits realized",
+          "inputs": [
+            "cost_savings_projected",
+            "cost_savings_benefits_realized"
+          ]
+        },
+        {
+          "kind": "CAP",
+          "label": "Combined Cap = 20% of EBITDA before capped add-backs",
+          "expression": "0.20 * ebitda_before_capped_addbacks",
+          "appliesTo": [
+            "(a)(vii)",
+            "(a)(viii)",
+            "(a)(xviii)(b)"
+          ]
+        },
+        {
+          "kind": "LOOKBACK_OR_LOOKFORWARD",
+          "label": "Cost Savings realization within 24 months",
+          "inputs": [
+            "cost_savings_action_dates"
+          ]
+        },
+        {
+          "kind": "DOUBLE_COUNTING_RESTRICTION",
+          "label": "without duplication lead-in; Combined Cap shared across named clauses",
+          "inputs": []
+        },
+        {
+          "kind": "FINANCIAL_INPUT_REQUIREMENT",
+          "label": "missing Net Income or capped add-back schedule \u2192 MISSING_INPUT",
+          "onMissing": "MISSING_INPUT"
+        }
+      ],
+      "arithmeticEvaluable": true,
+      "legalCertified": false,
+      "id": "TC-DSGR-EBITDA-v1",
+      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+    },
+    {
+      "name": "Total Leverage Ratio (CHWY)",
+      "sourceDocIds": [
+        "CHWY-2026-CA"
+      ],
+      "extractionEntryIds": [
+        "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+        "CHWY-2026-CA::def::Consolidated_Total_Debt"
+      ],
+      "components": [
+        {
+          "kind": "RATIO_NUMERATOR",
+          "label": "Consolidated Total Debt excluding Excluded Revolving Loans",
+          "inputs": [
+            "consolidated_total_debt",
+            "excluded_revolving_loans_balance"
+          ]
+        },
+        {
+          "kind": "RATIO_DENOMINATOR",
+          "label": "Consolidated EBITDA for Test Period",
+          "inputs": [
+            "consolidated_ebitda_covenant_defined",
+            "test_period_election"
+          ]
+        },
+        {
+          "kind": "FINANCIAL_INPUT_REQUIREMENT",
+          "label": "CTD already embeds unrestricted cash netting per CTD definition",
+          "inputs": [
+            "unrestricted_cash_and_cash_equivalents"
+          ]
+        }
+      ],
+      "arithmeticEvaluable": true,
+      "legalCertified": false,
+      "id": "TC-CHWY-TLR-v1",
+      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+    },
+    {
+      "name": "Anti-duplication of add-backs \u00a71.08(d)(ii) (CHWY)",
+      "sourceDocIds": [
+        "CHWY-2026-CA"
+      ],
+      "extractionEntryIds": [
+        "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii"
+      ],
+      "components": [
+        {
+          "kind": "DOUBLE_COUNTING_RESTRICTION",
+          "label": "No add pursuant to clause (d) if duplicative of amounts otherwise added back in Consolidated EBITDA",
+          "inputs": [
+            "addback_amount_clause_d",
+            "addback_amount_already_in_ebitda"
+          ]
+        }
+      ],
+      "arithmeticEvaluable": true,
+      "legalCertified": false,
+      "id": "TC-CHWY-ANTIDUPE-v1",
+      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+    },
+    {
+      "name": "Available Amount Builder Basket (GIB) \u2014 UNRESOLVED CITATION SCOPE",
+      "sourceDocIds": [
+        "GIB-2026-CA"
+      ],
+      "extractionEntryIds": [
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y"
+      ],
+      "components": [
+        {
+          "kind": "CITATION_AMBIGUITY",
+          "label": "Article I cites \u00a77.05(a)(y); naming parenthetical after (vi) says \u201cforegoing clause (y)\u201d; loose \u201c7.05(y)\u201d cites also exist",
+          "resolution": "DO_NOT_CERTIFY_UNIQUE_TARGET"
+        },
+        {
+          "kind": "BUILDER_COMPONENT",
+          "label": "(y)(i) 50% CNI (deficit\u21920)",
+          "inputs": [
+            "consolidated_net_income_cumulative"
+          ],
+          "status": "EXTRACTED_NOT_CERTIFIED"
+        },
+        {
+          "kind": "BUILDER_COMPONENT",
+          "label": "(y)(ii) equity/contribution proceeds",
+          "inputs": [
+            "equity_proceeds_since_closing"
+          ],
+          "status": "EXTRACTED_NOT_CERTIFIED"
+        },
+        {
+          "kind": "BUILDER_COMPONENT",
+          "label": "(y)(iii) converted debt\u2192equity proceeds",
+          "inputs": [
+            "converted_debt_equity_proceeds"
+          ],
+          "status": "EXTRACTED_NOT_CERTIFIED"
+        },
+        {
+          "kind": "BUILDER_COMPONENT",
+          "label": "(y)(iv) returns on Restricted Investments / Unrestricted Sub dispositions",
+          "inputs": [
+            "restricted_investment_returns"
+          ],
+          "status": "EXTRACTED_NOT_CERTIFIED"
+        },
+        {
+          "kind": "BUILDER_COMPONENT",
+          "label": "(y)(v) redesignation FMV",
+          "inputs": [
+            "unrestricted_sub_redesignation_fmv"
+          ],
+          "status": "EXTRACTED_NOT_CERTIFIED"
+        },
+        {
+          "kind": "BUILDER_COMPONENT",
+          "label": "(y)(vi) greater of $137,600,000 and 40% LTM EBITDA",
+          "inputs": [
+            "ltm_ebitda"
+          ],
+          "status": "EXTRACTED_NOT_CERTIFIED"
+        },
+        {
+          "kind": "CONDITIONAL_TEST",
+          "label": "\u00a77.05(a)(x) Event of Default gates by RP type",
+          "inputs": [
+            "event_of_default_status"
+          ]
+        },
+        {
+          "kind": "FINANCIAL_INPUT_REQUIREMENT",
+          "label": "Any numeric AA evaluation without resolved citation scope + attested components \u2192 MISSING_INPUT / REVIEW_REQUIRED",
+          "onMissing": "MISSING_INPUT"
+        }
+      ],
+      "arithmeticEvaluable": false,
+      "arithmeticBlockedReason": "Citation/scope ambiguity: refuse to certify whether Builder Basket is entire (y) sum or only (vi). No capacity inferred.",
+      "legalCertified": false,
+      "legalReviewState": "REVIEW_REQUIRED",
+      "id": "TC-GIB-AA-BUILDER-v1"
+    },
+    {
+      "name": "Actual LTV + margin Additional Collateral cure (Riot)",
+      "sourceDocIds": [
+        "RIOT-2026-CA"
+      ],
+      "extractionEntryIds": [
+        "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+        "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+        "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin"
+      ],
+      "components": [
+        {
+          "kind": "RATIO_NUMERATOR",
+          "label": "Loan principal outstanding",
+          "inputs": [
+            "loan_principal"
+          ]
+        },
+        {
+          "kind": "RATIO_DENOMINATOR",
+          "label": "Prevailing Market Value of Collateral",
+          "inputs": [
+            "collateral_pmv"
+          ]
+        },
+        {
+          "kind": "CURE_AMOUNT",
+          "label": "Additional Collateral BTC so Actual LTV = Initial LTV",
+          "inputs": [
+            "loan_principal",
+            "collateral_pmv",
+            "initial_ltv",
+            "btc_price"
+          ],
+          "note": "Not an EBITDA equity cure; schedule field Cure Amount (BTC)"
+        },
+        {
+          "kind": "CONDITIONAL_TEST",
+          "label": "Margin Call Event triggers Margin Funding Notice; deadline 1 Business Day",
+          "inputs": [
+            "margin_call_event"
+          ]
+        },
+        {
+          "kind": "FINANCIAL_INPUT_REQUIREMENT",
+          "label": "missing LTV inputs \u2192 MISSING_INPUT",
+          "onMissing": "MISSING_INPUT"
+        }
+      ],
+      "arithmeticEvaluable": true,
+      "legalCertified": false,
+      "id": "TC-RIOT-LTV-MARGIN-v1",
+      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+    },
+    {
+      "name": "CONMED Consolidated EBITDA Pro Forma Adjustment 15% cap",
+      "sourceDocIds": [
+        "CONMED-2025-PLAIN"
+      ],
+      "extractionEntryIds": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ],
+      "components": [
+        {
+          "kind": "BASE_METRIC",
+          "label": "Consolidated Net Income",
+          "inputs": [
+            "consolidated_net_income"
+          ]
+        },
+        {
+          "kind": "PRO_FORMA_ADJUSTMENT",
+          "label": "Pro Forma Adjustments on Material Acquisition, net of benefits realized",
+          "inputs": [
+            "pro_forma_adjustment_gross",
+            "benefits_realized"
+          ]
+        },
+        {
+          "kind": "CAP",
+          "label": "15% of Consolidated EBITDA after giving effect to clause (i) adjustments",
+          "expression": "0.15 * ebitda_after_giving_effect_to_pf_adjustments"
+        },
+        {
+          "kind": "CAP",
+          "label": "$30,000,000 Transaction/Material Acquisition costs",
+          "expression": "30_000_000"
+        },
+        {
+          "kind": "DOUBLE_COUNTING_RESTRICTION",
+          "label": "without duplication",
+          "inputs": []
+        },
+        {
+          "kind": "FINANCIAL_INPUT_REQUIREMENT",
+          "label": "missing PF schedule \u2192 MISSING_INPUT",
+          "onMissing": "MISSING_INPUT"
+        }
+      ],
+      "arithmeticEvaluable": true,
+      "legalCertified": false,
+      "id": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+    }
+  ]
+}

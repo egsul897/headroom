@@ -30,3 +30,12 @@
 - Confirmed **zero path collision** with `docs/financial-definitions-precedent/**`; recorded concrete exclusive trees + export/manifest paths in `00-ownership-and-coordination.md` and `01-schema.json`.
 - Batch-3: Riot Platforms BTC margin CA — `Actual LTV Ratio` + negative example that `Cure Amount (BTC)` ≠ EBITDA equity cure; divergence + regression candidate REG-FDP-011.
 - Atlas 47 → 49 entries; negatives 9 → 10.
+
+## 2026-10-08 — Phase 3: calculation semantics + independent validation
+
+- SHA reconciliation: prompt-reported `ead0fc1` vs GitHub PR head `23e42a5` = same-branch WS-FDP follow-up (peer path sync + Riot); no foreign concurrent edits; HOLD not required. Focused tests on reconciled tree: 11/11.
+- Fixture batch: DSGR doc-d EBITDA / Cost Savings / Combined Cap; Gibraltar Builder Basket DEF_XREF + operative §7.05(a)(y); Riot §2.06 Margin Demand + Initial/Release LTV. Atlas 49 → 57.
+- Typed calculations (`14-typed-calculations.json`, `fdp.typed-calc.v1`): 7 records covering base/addback/deduction/cap/lookback/PF/cure/ratio/inputs/conditional/double-count; GIB AA blocked as `REVIEW_REQUIRED`.
+- Independent arithmetic (`15-arithmetic-evaluation.json`, `fdp.arith.v1`): 13 cases (positive, missing-input, double-count trap, addback-cap, PF timing, negative controls). Arithmetic ≠ legal correctness.
+- Legal states: `SOURCE_SPAN_VERIFIED` / `ARITHMETICALLY_TESTED` / `SEMANTIC_HYPOTHESIS` / `INDEPENDENTLY_LEGALLY_REVIEWED` / `REVIEW_REQUIRED`; independently reviewed count = 0.
+- Canonical export v2 + source registry; join keys only; no competing production schemas; no new SEC acquisition; no production calc-engine edits.

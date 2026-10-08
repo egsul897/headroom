@@ -1,16 +1,12 @@
 {
   "artifact": "financial-definitions-precedent.export",
   "version": "fdp.v1",
+  "supersededBy": "18-canonical-export-v2.json",
   "compatibleWith": [
-    "docs/definition-encyclopedia/knowledge-factory-export.json (termLabel join; non-authoritative)",
-    "docs/covenant-basket-capacity-formula-library/export/* (AA/builder handoff)",
-    "docs/knowledge-factory/** (future documentId link)"
+    "docs/definition-encyclopedia/knowledge-factory-export.json",
+    "docs/covenant-basket-capacity-formula-library/export/*",
+    "docs/knowledge-factory/**"
   ],
-  "peerBranchesObserved": {
-    "definitionEncyclopedia": "cursor/definition-encyclopedia-2a50",
-    "basketFormulaLibrary": "cursor/covenant-basket-capacity-formula-library-ae51",
-    "covenantKnowledgeFactory": "cursor/covenant-knowledge-factory-7327"
-  },
   "records": [
     {
       "id": "CHWY-2026-CA::def::Consolidated_EBITDA",
@@ -21,18 +17,10 @@
       "charStart": 79182,
       "charEnd": 81982,
       "excerptSha256": "ac87b73dae4c9650cb5885be7df52430f7fb7f2e622b9086129b7a5808a4cc8d",
-      "units": "MONEY",
-      "measurementPeriod": "Test Period (four consecutive fiscal quarters or twelve-month period, election)",
-      "entityScope": "Person and its Restricted Subsidiaries / Restricted Parties (as drafted)",
-      "formulaSketch": "Consolidated Net Income + elected add-backs (interest, taxes, D&A, non-cash, litigation, indemnified items, Expected Run Rate Benefit / synergies, pro forma new contracts, etc.) \u2212 future cash on prior non-cash add-backs; subject to Section 1.08 pro forma / anti-duplication rules",
-      "dependencies": [
-        "Consolidated Net Income",
-        "Test Period",
-        "Expected Run Rate Benefit",
-        "Pro Forma Basis",
-        "Consolidated Interest Expense"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
@@ -43,15 +31,10 @@
       "charStart": 89524,
       "charEnd": 91724,
       "excerptSha256": "1550c58b122e71654b4951439a2eba4c83787152d8f09bb173fa98c41dd330f5",
-      "units": "MONEY",
-      "measurementPeriod": "Added until fully realized; calculated on Pro Forma Basis as if realized from first day of period",
-      "entityScope": "Restricted Party / joint ventures as drafted",
-      "formulaSketch": "run-rate synergies, cost savings, opex reductions, operating improvements, business optimization, revenue enhancements/synergies, pricing initiatives, restructuring initiatives expected in good faith from actions taken/committed/expected; net of actual benefits realized; 36-month action lookforward for (b)(i)(y)",
-      "dependencies": [
-        "Consolidated EBITDA",
-        "Pro Forma Basis"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Consolidated_Net_Income",
@@ -62,14 +45,10 @@
       "charStart": 102725,
       "charEnd": 104925,
       "excerptSha256": "f158b6afd243df3486b55e370d8ca77f62238c6fdfe27e3584004054929964d0",
-      "units": "MONEY",
-      "measurementPeriod": "any period (as used); Available Amount uses quarterly CNI path",
-      "entityScope": "Restricted Parties consolidated per GAAP",
-      "formulaSketch": "GAAP net income (loss) excluding elected extraordinary/unusual/nonrecurring/restructuring/optimization items, cumulative accounting changes, Transaction Expenses, and additional drafted exclusions",
-      "dependencies": [
-        "GAAP"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Consolidated_Total_Debt",
@@ -80,16 +59,10 @@
       "charStart": 114736,
       "charEnd": 116536,
       "excerptSha256": "c70945353b021d2724e4a1e9fccc4a1a57ee5f692c6e629930198275a8cb5a94",
-      "units": "MONEY",
-      "measurementPeriod": "as of any date of determination",
-      "entityScope": "Restricted Parties consolidated",
-      "formulaSketch": "(third-party borrowed money + aged unreimbursed LC drawings + note-like instruments, with stated exclusions) \u2212 unrestricted cash and Cash Equivalents (not Restricted)",
-      "dependencies": [
-        "Cash Equivalents",
-        "Restricted (cash)",
-        "Indebtedness concepts (borrowed money)"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Consolidated_First_Lien_Debt",
@@ -100,14 +73,10 @@
       "charStart": 99357,
       "charEnd": 100257,
       "excerptSha256": "a9e20f75aa77a774a059cc5adec9613beaa2650811adf63daaf75c968fb2eb6e",
-      "units": "MONEY",
-      "measurementPeriod": "as of relevant date of determination",
-      "entityScope": "Restricted Parties / Loan Document Obligations collateral perimeter",
-      "formulaSketch": "Loans + non-subordinated debt secured equal/senior on material Collateral incl. ABL; inherits CTD cash netting",
-      "dependencies": [
-        "Consolidated Total Debt"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Consolidated_Senior_Secured_Debt",
@@ -118,14 +87,10 @@
       "charStart": 114128,
       "charEnd": 115028,
       "excerptSha256": "c50d933c998ec066924857c5544e58fd5ffe2ad32cf289abd830a79b0f457bcc",
-      "units": "MONEY",
-      "measurementPeriod": "as of relevant date of determination",
-      "entityScope": "Restricted Parties / Loan Document Obligations collateral perimeter",
-      "formulaSketch": "Loans + non-subordinated debt secured on material Collateral (broader than first-lien priority filter); inherits CTD cash netting",
-      "dependencies": [
-        "Consolidated Total Debt"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
@@ -136,17 +101,10 @@
       "charStart": 183487,
       "charEnd": 183937,
       "excerptSha256": "5a6454015499cc9fbb9292a2d9f9a05487bf2f951924cd13d75e7664fb8ec4c5",
-      "units": "RATIO",
-      "measurementPeriod": "date of determination over Test Period EBITDA",
-      "entityScope": "Borrowers / Restricted Parties as referenced by component defs",
-      "formulaSketch": "Consolidated First Lien Debt (excl. Excluded Revolving Loans) / Consolidated EBITDA for Test Period",
-      "dependencies": [
-        "Consolidated First Lien Debt",
-        "Consolidated EBITDA",
-        "Test Period",
-        "Excluded Revolving Loans"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
@@ -157,17 +115,10 @@
       "charStart": 328965,
       "charEnd": 329415,
       "excerptSha256": "f3821eaabfc105a3fec83a78c851cae4e14dd1dc8010741e79559ac91ff83277",
-      "units": "RATIO",
-      "measurementPeriod": "date of determination over Test Period EBITDA",
-      "entityScope": "Borrowers / Restricted Parties as referenced by component defs",
-      "formulaSketch": "Consolidated Senior Secured Debt (excl. Excluded Revolving Loans) / Consolidated EBITDA for Test Period",
-      "dependencies": [
-        "Consolidated Senior Secured Debt",
-        "Consolidated EBITDA",
-        "Test Period",
-        "Excluded Revolving Loans"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
@@ -178,17 +129,10 @@
       "charStart": 350203,
       "charEnd": 350653,
       "excerptSha256": "4548e655dafd511c648b4f77ccab257631d655c63a8318df22027c69d12c63ff",
-      "units": "RATIO",
-      "measurementPeriod": "date of determination over Test Period EBITDA",
-      "entityScope": "Borrowers / Restricted Parties as referenced by component defs",
-      "formulaSketch": "Consolidated Total Debt (excl. Excluded Revolving Loans) / Consolidated EBITDA for Test Period",
-      "dependencies": [
-        "Consolidated Total Debt",
-        "Consolidated EBITDA",
-        "Test Period",
-        "Excluded Revolving Loans"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Fixed_Charges",
@@ -199,14 +143,10 @@
       "charStart": 183796,
       "charEnd": 184496,
       "excerptSha256": "9e3e9cfb7c8a7ff885232d579b4bc735551fcd689e3fb876739a294e3a960aa0",
-      "units": "MONEY",
-      "measurementPeriod": "any period",
-      "entityScope": "Person and Restricted Subsidiaries",
-      "formulaSketch": "Consolidated Interest Expense + cash dividends on Preferred Stock + cash dividends on Disqualified Stock",
-      "dependencies": [
-        "Consolidated Interest Expense"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Excess_Cash_Flow",
@@ -217,16 +157,10 @@
       "charStart": 153704,
       "charEnd": 156904,
       "excerptSha256": "be64830cf81ac9c74110604f791cfbc994bc3ae22aedfb7a55d4f6478fcbb140",
-      "units": "MONEY",
-      "measurementPeriod": "Calculation Period / fiscal year as drafted",
-      "entityScope": "Restricted Parties",
-      "formulaSketch": "(CNI + non-cash charges + WC decreases + non-cash disposition losses + swap cash receipts) \u2212 (non-cash credits + capex + principal payments + WC increases + investments + dividends + planned/contract consideration + other drafted deductions)",
-      "dependencies": [
-        "Consolidated Net Income",
-        "Consolidated Working Capital",
-        "Calculation Period"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
@@ -237,16 +171,10 @@
       "charStart": 319584,
       "charEnd": 320484,
       "excerptSha256": "f14e8155a4b4ae77831043b66ae29ed9e73ac223383e3369f4c7b62769c207e9",
-      "units": "MONEY",
-      "measurementPeriod": "cumulative across Excess Cash Flow Periods / Interim Periods",
-      "entityScope": "Borrowers",
-      "formulaSketch": "ECF not required to be prepaid under \u00a72.09(c) + Retained ECF Percentage \u00d7 interim ECF",
-      "dependencies": [
-        "Excess Cash Flow",
-        "Retained Excess Cash Flow Percentage",
-        "Section 2.09(c)"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::builder::Available_Amount",
@@ -257,18 +185,10 @@
       "charStart": 662341,
       "charEnd": 665141,
       "excerptSha256": "e461ed21d21f0b1f601e9d1bc39aee3ba74ab799ea9b967633f9aa007faab7b0",
-      "units": "MONEY",
-      "measurementPeriod": "cumulative builder from Effective Date; CNI/EBITDA components on Pro Forma Basis",
-      "entityScope": "Restricted Parties / Borrowers",
-      "formulaSketch": "sum(a..f) where (a)=greater of (x) 50% cumulative CNI (floored at 0 per quarter), (y) 100% Retained ECF (floored), (z) cumulative Consolidated EBITDA \u2212 140% cumulative Consolidated Interest Expense (floored); plus equity proceeds; plus other builder prongs \u2014 capacity use is Basket Formula Library territory",
-      "dependencies": [
-        "Consolidated Net Income",
-        "Retained Excess Cash Flow",
-        "Consolidated EBITDA",
-        "Consolidated Interest Expense",
-        "Not Otherwise Applied"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::adj::Pro_Forma_Basis",
@@ -279,16 +199,10 @@
       "charStart": 294836,
       "charEnd": 297036,
       "excerptSha256": "9bca26e3c06c525b37dddce8411e70e04f426e47ee8b26136126393e697104a7",
-      "units": "CALCULATION_MODE",
-      "measurementPeriod": "applicable measurement period with Specified Transactions deemed from day 1",
-      "entityScope": "Borrowers and Restricted Parties",
-      "formulaSketch": "Apply Pro Forma Adjustment + give effect to Specified Transactions (include acquired IS items / exclude disposed; debt incurred/retired; cash after consummation) as of first day of period; carve-outs for fixed-dollar basket debt and certain interest expense",
-      "dependencies": [
-        "Pro Forma Adjustment",
-        "Specified Transaction",
-        "Consolidated EBITDA"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
@@ -299,15 +213,10 @@
       "charStart": 385506,
       "charEnd": 385856,
       "excerptSha256": "df93d335aa0c77860264c55a21da5abb4b107accae89e47bbe923d0b9709b276",
-      "units": "CONSTRAINT",
-      "measurementPeriod": "any Test Period",
-      "entityScope": "as in Consolidated EBITDA calculation",
-      "formulaSketch": "No add pursuant to clause (d) if duplicative of amounts otherwise added back in Consolidated EBITDA (pro forma or otherwise)",
-      "dependencies": [
-        "Consolidated EBITDA",
-        "Section 1.08(d)"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF",
@@ -318,14 +227,10 @@
       "charStart": 10201,
       "charEnd": 10321,
       "excerptSha256": "2a9bd35e03ca9be23e353da9f9ed6a431191d2bc75fc991541f704d6b8dd9fed",
-      "units": "MONEY",
-      "measurementPeriod": "MISSING_INPUT:abl_cure_mechanics",
-      "entityScope": "as defined in ABL Credit Agreement",
-      "formulaSketch": "CROSS_REF_ONLY \u2014 meaning assigned in ABL Credit Agreement; term loan CA excludes ABL Cure Amount from certain Available Amount equity prongs",
-      "dependencies": [
-        "ABL Credit Agreement"
-      ],
-      "verificationStatus": "CROSS_REF_ONLY"
+      "sourceFileSha256": null,
+      "verificationStatus": "CROSS_REF_ONLY",
+      "legalReviewState": "CROSS_REF_ONLY",
+      "typedCalcId": null
     },
     {
       "id": "CHWY-2026-CA::def::Test_Period",
@@ -336,15 +241,10 @@
       "charStart": 349461,
       "charEnd": 350011,
       "excerptSha256": "034ef41b82227f923bf0ddac17f9f7402020b9db16fb1ad23d5143ce40355ce0",
-      "units": "PERIOD",
-      "measurementPeriod": "self",
-      "entityScope": "Initial Borrower",
-      "formulaSketch": "four consecutive fiscal quarters OR twelve-month period, most recently ended, financials internally available or delivered under \u00a75.01(a)/(b) at Borrower election",
-      "dependencies": [
-        "Section 5.01(a)",
-        "Section 5.01(b)"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::def::Consolidated_EBITDA",
@@ -355,18 +255,10 @@
       "charStart": 44742,
       "charEnd": 46942,
       "excerptSha256": "f6bab4bcbfd93b497bc1b7ad6d2f1a3fb654de1dd922c7f5480c6b11c8ad9cc0",
-      "units": "MONEY",
-      "measurementPeriod": "any period; leverage/coverage uses four consecutive fiscal quarters",
-      "entityScope": "Parent Borrower and its Subsidiaries",
-      "formulaSketch": "CNI + (tax, interest/debt costs, D&A, intangibles amortization, extraordinary/unusual/non-recurring losses, other non-cash, Transactions/Material Acquisition costs \u2264 $30M, BI insurance proceeds, Pro Forma Adjustments) \u2212 (interest income, extraordinary/unusual gains, other non-cash income); plus acquisition/disposition pro forma for ratio tests",
-      "dependencies": [
-        "Consolidated Net Income",
-        "Consolidated Interest Expense",
-        "Pro Forma Adjustments",
-        "Material Acquisition",
-        "Material Disposition"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::def::Consolidated_Net_Income",
@@ -377,14 +269,10 @@
       "charStart": 51556,
       "charEnd": 52456,
       "excerptSha256": "1e2a8fea9570ae1d7ea6a1ecb3f2a5ffd0ef1d8e96b844bc1cf6949316295060",
-      "units": "MONEY",
-      "measurementPeriod": "any period",
-      "entityScope": "Parent Borrower and its Subsidiaries",
-      "formulaSketch": "consolidated GAAP net income with drafted exclusions (pre-acquisition income; non-subsidiary income except dividends received; etc.)",
-      "dependencies": [
-        "GAAP"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::def::Consolidated_Funded_Debt",
@@ -395,15 +283,10 @@
       "charStart": 48954,
       "charEnd": 49304,
       "excerptSha256": "8f284a57b182873daf1b3a37de2df8cfb003e1cefadbeccd3fe8d41aee06c4cc",
-      "units": "MONEY",
-      "measurementPeriod": "as of date",
-      "entityScope": "Parent Borrower and its Subsidiaries",
-      "formulaSketch": "aggregate principal amount of all Funded Debt of Parent Borrower and Subsidiaries consolidated per GAAP",
-      "dependencies": [
-        "Funded Debt",
-        "Indebtedness clauses (a)-(e)"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
@@ -414,16 +297,10 @@
       "charStart": 52954,
       "charEnd": 53854,
       "excerptSha256": "84bef9ba9f1fdf25dc657da780a958d6319428d219c344561eff6353c6af8118",
-      "units": "RATIO",
-      "measurementPeriod": "last day of four consecutive fiscal quarters",
-      "entityScope": "Parent Borrower and its Subsidiaries",
-      "formulaSketch": "(Consolidated Senior Secured Funded Debt + RTP attributed principal \u2212 min($100M, unrestricted cash/Cash Equivalents)) / Consolidated EBITDA",
-      "dependencies": [
-        "Consolidated Senior Secured Funded Debt",
-        "Receivables Transfer Program",
-        "Consolidated EBITDA"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
@@ -434,16 +311,10 @@
       "charStart": 54671,
       "charEnd": 55571,
       "excerptSha256": "4ac0f14c61586b9eb85ffc3773a36a0e1fa8088e7996bcc8639a0578eb35145f",
-      "units": "RATIO",
-      "measurementPeriod": "last day of four consecutive fiscal quarters",
-      "entityScope": "Parent Borrower and its Subsidiaries",
-      "formulaSketch": "(Consolidated Funded Debt + RTP attributed principal \u2212 min($100M, unrestricted cash/Cash Equivalents)) / Consolidated EBITDA",
-      "dependencies": [
-        "Consolidated Funded Debt",
-        "Receivables Transfer Program",
-        "Consolidated EBITDA"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::def::Interest_Coverage_Ratio",
@@ -454,15 +325,10 @@
       "charStart": 86625,
       "charEnd": 86975,
       "excerptSha256": "d56aafcc94651e4980643ef7885eccea0203e67a5a57310fe8a5481b798b936b",
-      "units": "RATIO",
-      "measurementPeriod": "any period (tested on four quarters in \u00a77.1)",
-      "entityScope": "Parent Borrower and its Subsidiaries",
-      "formulaSketch": "Consolidated EBITDA / Consolidated Interest Expense paid or payable in cash",
-      "dependencies": [
-        "Consolidated EBITDA",
-        "Consolidated Interest Expense"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::def::Funded_Debt",
@@ -473,14 +339,10 @@
       "charStart": 77535,
       "charEnd": 77785,
       "excerptSha256": "73a2d854bcf75bc50f7c06a97d2157bb0a1a3e4beb398df318de913e74af7101",
-      "units": "MONEY",
-      "measurementPeriod": "as applicable",
-      "entityScope": "Parent Borrower and its Subsidiaries",
-      "formulaSketch": "Indebtedness of types in Indebtedness clauses (a)-(e)",
-      "dependencies": [
-        "Indebtedness"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2025-CA::test::Financial_Covenants_7_1",
@@ -491,20 +353,10 @@
       "charStart": 307,
       "charEnd": 1907,
       "excerptSha256": "1f699b71cf3086058bf505d2e6cf1dab295fd0ab5cdac6a1bf0a68c4d2d9f9c0",
-      "units": "RATIO_AND_MONEY",
-      "measurementPeriod": "last day of four consecutive fiscal quarters (Liquidity: continuous while springing)",
-      "entityScope": "Parent Borrower and Subsidiaries",
-      "formulaSketch": "SSLR \u2264 3.75x (step-up +0.50x for 4 quarters after Material Acquisition, max twice, \u22652 quarter gap); TLR \u2264 5.50x (step-up +0.50x capped so required ratio \u2264 6.00x, max twice, \u22652 quarter gap); ICR \u2265 2.75x; springing Liquidity \u2265 $75M + Early Maturing Debt when within 91 days of Convertible Notes maturity and Early Maturing Debt > $200M",
-      "dependencies": [
-        "Consolidated Senior Secured Leverage Ratio",
-        "Consolidated Total Leverage Ratio",
-        "Interest Coverage Ratio",
-        "Liquidity",
-        "Material Acquisition",
-        "Early Maturing Debt",
-        "Convertible Notes"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
@@ -515,15 +367,10 @@
       "charStart": 1426,
       "charEnd": 2326,
       "excerptSha256": "6812722e72848cbccd1540aebf04c545bd12027e1510e01be8aa9f8b52b77d28",
-      "units": "MONEY",
-      "measurementPeriod": "definitional (as of determination dates under amended CA)",
-      "entityScope": "Parent Borrower and Subsidiaries",
-      "formulaSketch": "Replace $75,000,000 cash-netting cap with $100,000,000 in SSLR and TLR definitions",
-      "dependencies": [
-        "Consolidated Senior Secured Leverage Ratio",
-        "Consolidated Total Leverage Ratio"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
@@ -534,15 +381,10 @@
       "charStart": 5052,
       "charEnd": 6652,
       "excerptSha256": "c0d0d5179c09e82eec895caca9ce9f8c21fd5c62a09264a8b5d51333ff4074ff",
-      "units": "MONEY",
-      "measurementPeriod": "any period / Test Period when used in ratios",
-      "entityScope": "Person on a consolidated basis (Borrower and Restricted Subsidiaries in use)",
-      "formulaSketch": "Consolidated Net Income + BI insurance proceeds + add-backs for interest, taxes, D&A/impairment/write-offs, earn-outs, and further curated add-backs (excerpt truncated)",
-      "dependencies": [
-        "Consolidated Net Income",
-        "Consolidated Interest Expense"
-      ],
-      "verificationStatus": "SOURCE_SPAN_PARTIAL"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_PARTIAL",
+      "legalReviewState": "SOURCE_SPAN_PARTIAL",
+      "typedCalcId": null
     },
     {
       "id": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
@@ -553,18 +395,10 @@
       "charStart": 13218,
       "charEnd": 14318,
       "excerptSha256": "a7b4a47ba28d2de36cfdec68a7cf37280dc73f9d172071ce1cd44ae9f3b9dba7",
-      "units": "RATIO",
-      "measurementPeriod": "relevant Test Period",
-      "entityScope": "Borrower and Restricted Subsidiaries (via component metrics)",
-      "formulaSketch": "(Consolidated Adjusted EBITDAR \u2212 Maintenance Capex \u2212 cash income taxes added back in CA EBITDA \u2212 certain Cash Restricted Payments) / Consolidated Fixed Charges",
-      "dependencies": [
-        "Consolidated Adjusted EBITDAR",
-        "Maintenance Capital Expenditures",
-        "Consolidated Adjusted EBITDA",
-        "Consolidated Fixed Charges",
-        "Test Period"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "FWRG-2021-CA::builder::Available_Amount",
@@ -575,18 +409,10 @@
       "charStart": 0,
       "charEnd": 1600,
       "excerptSha256": "9f2619ff70e7dc4c1cdca0e9458a358a1316f2bb005eca60c6f07ddae7d19ab6",
-      "units": "MONEY",
-      "measurementPeriod": "cumulative from day after Closing Date through determination time",
-      "entityScope": "Borrower / Restricted Subsidiaries",
-      "formulaSketch": "CNI Growth Amount (ratio-gated) + Qualified Capital Stock contributions/issuances Not Otherwise Applied (excluding Cure Amount / AECA) + converted debt-to-equity + other builder prongs in excerpt",
-      "dependencies": [
-        "CNI Growth Amount",
-        "Total Rent Adjusted Net Leverage Ratio",
-        "Cure Amount",
-        "Available Excluded Contribution Amount",
-        "Not Otherwise Applied"
-      ],
-      "verificationStatus": "SOURCE_SPAN_PARTIAL"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_PARTIAL",
+      "legalReviewState": "SOURCE_SPAN_PARTIAL",
+      "typedCalcId": null
     },
     {
       "id": "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
@@ -597,15 +423,10 @@
       "charStart": 732,
       "charEnd": 1132,
       "excerptSha256": "747818fe53b2a7d6e9ff321257854c8934820940829696617e1d1ba7043f66f6",
-      "units": "MONEY",
-      "measurementPeriod": "MISSING_INPUT:section_6_10_cure_mechanics_full_text",
-      "entityScope": "Borrower",
-      "formulaSketch": "Cure Amount is excluded from Qualified Capital Stock proceeds that build Available Amount; full cure right frequency/amount rules are in financial-covenant cure section (not fully present in definitions excerpt)",
-      "dependencies": [
-        "Available Amount",
-        "Section 6.10 (cure) \u2014 MISSING in this excerpt"
-      ],
-      "verificationStatus": "CROSS_REF_ONLY"
+      "sourceFileSha256": null,
+      "verificationStatus": "CROSS_REF_ONLY",
+      "legalReviewState": "CROSS_REF_ONLY",
+      "typedCalcId": null
     },
     {
       "id": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
@@ -616,17 +437,10 @@
       "charStart": 1837,
       "charEnd": 2737,
       "excerptSha256": "d7aefd600a7ed22aff3b8eebe7b05dc9083ed9c7639d0d96fa83135b94546fdc",
-      "units": "RATIO",
-      "measurementPeriod": "any period (Payment Conditions uses TTM four quarters in operative tests)",
-      "entityScope": "Parent and its Subsidiaries",
-      "formulaSketch": "(EBITDA \u2212 Capital Expenditures) / (scheduled principal + Consolidated Net Interest Expense + Capitalized Lease payments due in period)",
-      "dependencies": [
-        "EBITDA",
-        "Capital Expenditures",
-        "Consolidated Net Interest Expense",
-        "Capitalized Lease Obligations"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::def::Consolidated_EBITDA",
@@ -637,14 +451,10 @@
       "charStart": 11842,
       "charEnd": 12242,
       "excerptSha256": "3f46b685f6057eb6497a012e7512aeff1f69622451800775af72bafa7f98b364",
-      "units": "MONEY",
-      "measurementPeriod": "Test Period / LTM as used",
-      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
-      "formulaSketch": "CNI-based build with add-backs; synergies/cost savings subject to Section 1.10(b) aggregate caps (see nearby pro forma calc)",
-      "dependencies": [
-        "Consolidated Net Income"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::def::Consolidated_Net_Income",
@@ -655,12 +465,10 @@
       "charStart": 81386,
       "charEnd": 81786,
       "excerptSha256": "ba27cf2f8834789462e95fd2a0737ffa40af16eec3508003a94bdac980d91d28",
-      "units": "MONEY",
-      "measurementPeriod": "any period",
-      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
-      "formulaSketch": "See excerpt; instrument-specific drafting for Consolidated Net Income",
-      "dependencies": [],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::ratio::Consolidated_Interest_Coverage_Ratio",
@@ -671,14 +479,10 @@
       "charStart": 104337,
       "charEnd": 105037,
       "excerptSha256": "d9fba7698d62b393048121eaa3fc55ce6840bdbc2df67df753d445f4cb5c024e",
-      "units": "RATIO",
-      "measurementPeriod": "Test Period",
-      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
-      "formulaSketch": "Consolidated EBITDA / Consolidated Interest Expense (see excerpt)",
-      "dependencies": [
-        "Consolidated EBITDA"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::def::Excess_Cash_Flow",
@@ -689,12 +493,10 @@
       "charStart": 154816,
       "charEnd": 156816,
       "excerptSha256": "59ea2342de05a11e6f6c6d345e53b4acc8f5eabd2550848a1db3b607865e633b",
-      "units": "MONEY",
-      "measurementPeriod": "Excess Cash Flow Period",
-      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
-      "formulaSketch": "See excerpt; instrument-specific drafting for Excess Cash Flow",
-      "dependencies": [],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::builder::Retained_Excess_Cash_Flow_Amount",
@@ -705,15 +507,10 @@
       "charStart": 466885,
       "charEnd": 467285,
       "excerptSha256": "a87bef7858f3973ebe075052d164ed0f56251b5deeef0c01eaa1193f43d009fc",
-      "units": "MONEY",
-      "measurementPeriod": "ECF Period",
-      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
-      "formulaSketch": "Excess Cash Flow for period minus ECF Prepayment Amount",
-      "dependencies": [
-        "Excess Cash Flow",
-        "ECF Prepayment Amount"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket",
@@ -724,15 +521,10 @@
       "charStart": 37216,
       "charEnd": 37716,
       "excerptSha256": "ecb313a5a36da1da5474277e8ecc462cb762169d3dcdc7efb5fdf00669d192ec",
-      "units": "MONEY",
-      "measurementPeriod": "as specified in Section 7.05(a)(y)",
-      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
-      "formulaSketch": "Cross-ref or inline builder basket tied to Section 7.05(a)(y); includes 40% LTM EBITDA prong in nearby drafting",
-      "dependencies": [
-        "LTM EBITDA",
-        "Section 7.05(a)(y)"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::def::LTM_EBITDA",
@@ -743,12 +535,10 @@
       "charStart": 231335,
       "charEnd": 231935,
       "excerptSha256": "8088feb9e55a66de199684402cd6c0a8ec688174156cdf32788f6cfede82c2a8",
-      "units": "MONEY",
-      "measurementPeriod": "last twelve months",
-      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
-      "formulaSketch": "See excerpt; instrument-specific drafting for LTM EBITDA",
-      "dependencies": [],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::adj::Synergy_ProForma_Cap_1_10",
@@ -759,15 +549,10 @@
       "charStart": 396039,
       "charEnd": 396939,
       "excerptSha256": "715523cfb026d11b66d7dd3a8e4def5e20b749de5b4e1ea143059e417f2608b1",
-      "units": "CONSTRAINT",
-      "measurementPeriod": "pro forma period being tested",
-      "entityScope": "Borrower / Restricted Subsidiaries",
-      "formulaSketch": "Cost savings, opex reductions, synergies given pro forma effect subject to aggregate cap combined with other named clauses (see excerpt)",
-      "dependencies": [
-        "Consolidated EBITDA",
-        "Section 1.10"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::test::ECF_Prepay_Step_Down",
@@ -778,15 +563,10 @@
       "charStart": 466271,
       "charEnd": 466721,
       "excerptSha256": "e233dc8ad87d250a7a5f3627568aa6f19362ed2b9f95215db0a156bf45f56374",
-      "units": "PERCENT",
-      "measurementPeriod": "Excess Cash Flow Period / fiscal year-end FLNLR",
-      "entityScope": "Borrower",
-      "formulaSketch": "ECF prepay % steps down to 25% / 0% when Consolidated First Lien Net Leverage Ratio \u2264 3.35x / 2.85x (per excerpt thresholds)",
-      "dependencies": [
-        "Excess Cash Flow",
-        "Consolidated First Lien Net Leverage Ratio"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "DSGR-2024-AMD::builder::Available_Amount",
@@ -797,14 +577,10 @@
       "charStart": 57195,
       "charEnd": 58795,
       "excerptSha256": "234d6f5b95961f9fd8d41441101296c976358db42541f64a5c4ba4d474536dea",
-      "units": "MONEY",
-      "measurementPeriod": "Reference Date cumulative builder",
-      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
-      "formulaSketch": "Cumulative builder from day after Effective Date through Reference Date (see excerpt components: CNI/retained amounts, equity, returns on AA investments, redesignations, minus usage)",
-      "dependencies": [
-        "Net Income / builder components per excerpt"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "DSGR-2024-AMD::ratio::Interest_Coverage_Ratio",
@@ -815,14 +591,10 @@
       "charStart": 155423,
       "charEnd": 155923,
       "excerptSha256": "65bbc29861c2f67d7f03394aa7897d718bc5e6bde351fbe42b8067ae73cef04d",
-      "units": "RATIO",
-      "measurementPeriod": "as defined / tested under \u00a76.12",
-      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
-      "formulaSketch": "EBITDA / Interest Expense style coverage (see excerpt)",
-      "dependencies": [
-        "EBITDA"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "DSGR-2024-AMD::ratio::Total_Net_Leverage_Ratio",
@@ -833,14 +605,10 @@
       "charStart": 222458,
       "charEnd": 223158,
       "excerptSha256": "1bf200505225d63b32fce470576dd24d712fb77e1483097a681edcbeb6002299",
-      "units": "RATIO",
-      "measurementPeriod": "most recent determination date",
-      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
-      "formulaSketch": "Net debt / EBITDA with Total Net Leverage Ratio Adjustment mechanics referenced",
-      "dependencies": [
-        "EBITDA"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "DSGR-2024-AMD::adj::Combined_Cap_20pct",
@@ -851,14 +619,10 @@
       "charStart": 129501,
       "charEnd": 130001,
       "excerptSha256": "d257c6f6d3ea654dda9eaf72717695caee6fdf60a0772c61723939281667c373",
-      "units": "PERCENT_OF_EBITDA",
-      "measurementPeriod": "any four fiscal quarter measurement period",
-      "entityScope": "Company consolidated",
-      "formulaSketch": "Aggregate add-backs under named clauses (a)(vii), (a)(viii), (a)(xviii)(b) \u2264 20% of EBITDA before those add-backs",
-      "dependencies": [
-        "EBITDA"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::ratio::Consolidated_First_Lien_Net_Leverage_Ratio",
@@ -869,16 +633,10 @@
       "charStart": 101260,
       "charEnd": 101810,
       "excerptSha256": "01cee25c07ca3b2ab33b7a69aa20f9152c99d5bfed988f84ac59741fcee8bbd0",
-      "units": "RATIO",
-      "measurementPeriod": "as of any date of determination / LTM EBITDA",
-      "entityScope": "Restricted Group",
-      "formulaSketch": "Consolidated Funded First Lien Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
-      "dependencies": [
-        "Consolidated Funded First Lien Indebtedness",
-        "LTM EBITDA",
-        "Section 1.10"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::ratio::Consolidated_Secured_Net_Leverage_Ratio",
@@ -889,16 +647,10 @@
       "charStart": 128077,
       "charEnd": 128627,
       "excerptSha256": "2c4a26c0be01ff7a8d705b06863a361e0d6b6b356b95cc6fa85c24d8d9db3d87",
-      "units": "RATIO",
-      "measurementPeriod": "as of any date of determination / LTM EBITDA",
-      "entityScope": "Restricted Group",
-      "formulaSketch": "Consolidated Funded Senior Secured Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
-      "dependencies": [
-        "Consolidated Funded Senior Secured Indebtedness",
-        "LTM EBITDA",
-        "Section 1.10"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "GIB-2026-CA::ratio::Consolidated_Total_Net_Leverage_Ratio",
@@ -909,16 +661,10 @@
       "charStart": 128381,
       "charEnd": 128931,
       "excerptSha256": "63af79f5d72e734550bacd9f70345aa7da37a8cf83246197067755a2d2e21e00",
-      "units": "RATIO",
-      "measurementPeriod": "as of any date of determination / LTM EBITDA",
-      "entityScope": "Restricted Group",
-      "formulaSketch": "Consolidated Funded Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
-      "dependencies": [
-        "Consolidated Funded Indebtedness",
-        "LTM EBITDA",
-        "Section 1.10"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
@@ -929,16 +675,10 @@
       "charStart": 4327,
       "charEnd": 4647,
       "excerptSha256": "fcb77542a7d55d3dd2b03734676f1c83cd85706bf1999d2caab3498d0b68e0bb",
-      "units": "RATIO_PERCENT",
-      "measurementPeriod": "at any time",
-      "entityScope": "Borrower loan vs Collateral",
-      "formulaSketch": "outstanding Loan principal / Prevailing Market Value of Collateral (expressed as %)",
-      "dependencies": [
-        "Prevailing Market Value",
-        "Collateral",
-        "Loan"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
     },
     {
       "id": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
@@ -949,17 +689,130 @@
       "charStart": 185976,
       "charEnd": 186256,
       "excerptSha256": "7877271ac1a6e776ec358ec03e487165ac7aa8a19a5662b5241982f76f5ee02e",
-      "units": "BTC_QUANTITY",
-      "measurementPeriod": "Margin Call Issue Time / Margin Funding Deadline",
-      "entityScope": "Borrower / Coinbase Credit as agents",
-      "formulaSketch": "MISSING_INPUT:margin_call_ltv_inputs \u2014 schedule placeholder [\u25cf] for BTC cure quantity; mechanics are LTV/margin-call, not EBITDA equity cure",
-      "dependencies": [
-        "Actual LTV Ratio",
-        "Current Collateral (BTC)",
-        "BTC Price",
-        "Margin Funding Deadline"
-      ],
-      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+      "sourceFileSha256": null,
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": null
+    },
+    {
+      "id": "DSGR-2025-AR2::def::EBITDA",
+      "termLabel": "EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "DSGR-2025-AR2",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "charStart": 87926,
+      "charEnd": 91126,
+      "excerptSha256": "ed48307900df8a1b2467514ef5b92d12308de32f6089dfea637967830d85af6c",
+      "sourceFileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "formulaSketch": "EBITDA = Net Income + Interest + Taxes + D&A + other (a) add-backs \u2212 (b) deductions; capped add-backs subject to Combined Cap (see TC-DSGR-EBITDA-v1). SEMANTIC_HYPOTHESIS \u2014 not certified."
+    },
+    {
+      "id": "DSGR-2025-AR2::adj::Cost_Savings",
+      "termLabel": "Cost Savings",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "DSGR-2025-AR2",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "charStart": 90175,
+      "charEnd": 91275,
+      "excerptSha256": "85c66fb14152516ef944a86ee912822df918a100aa3530c96d9ec26cc80e2e56",
+      "sourceFileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "formulaSketch": "Cost Savings add-back = projected run-rate savings net of benefits already realized; 24-month lookforward; shares Combined Cap with (a)(vii)/(a)(xviii)(b) (TC-DSGR-EBITDA-v1). SEMANTIC_HYPOTHESIS."
+    },
+    {
+      "id": "DSGR-2025-AR2::adj::Combined_Cap_20pct",
+      "termLabel": "Combined Cap",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "DSGR-2025-AR2",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "charStart": 98355,
+      "charEnd": 98575,
+      "excerptSha256": "7a6857acae7ebcac624027bafea8f9010012974b4f0a2d0169ae0b480cde2394",
+      "sourceFileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "formulaSketch": "Combined Cap = 20% \u00d7 EBITDA computed before giving effect to the capped add-back clauses. SEMANTIC_HYPOTHESIS."
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+      "termLabel": "Available Amount Builder Basket (Article I cross-reference)",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 37216,
+      "charEnd": 37356,
+      "excerptSha256": "7bdf98c8bfd8bf525d28bebd1dec3fe9d9c4810c396df3720ecb1976bb384cb6",
+      "sourceFileSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "verificationStatus": "CROSS_REF_ONLY",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "formulaSketch": "CROSS_REF_ONLY: Article I \u2192 meaning specified in Section 7.05(a)(y). Citation/scope conflict with operative naming parenthetical \u2014 see UQ-GIB-705AY-CITATION. Do NOT certify builder formula."
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+      "termLabel": "Available Amount Builder Basket \u2014 \u00a77.05(a)(y) operative text",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 776996,
+      "charEnd": 782942,
+      "excerptSha256": "d0d315a007599e2e6e5e0e4d9a1c34fbbe4662b46e0c82b144af609c189afc54",
+      "sourceFileSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "formulaSketch": "Operative \u00a77.05(a)(y) RP builder = sum of (i)\u2013(vi); naming parenthetical after (vi) refers to clause (y). Arithmetic blocked pending citation-scope review (TC-GIB-AA-BUILDER-v1). REVIEW_REQUIRED."
+    },
+    {
+      "id": "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+      "termLabel": "Section 2.06 Collateral Adjustments \u2014 Margin Demands",
+      "kind": "CURE_RIGHT",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "charStart": 64899,
+      "charEnd": 67099,
+      "excerptSha256": "300647ac3893cfe1d9bafea6cb1713df09e44af36ce5fca8fd48ad96fd77c466",
+      "sourceFileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "formulaSketch": "On Margin Call Event, deliver Additional Collateral so Actual LTV \u2264 Initial LTV within 1 Business Day (TC-RIOT-LTV-MARGIN-v1). Not an EBITDA equity cure. SEMANTIC_HYPOTHESIS."
+    },
+    {
+      "id": "RIOT-2026-CA::def::Initial_LTV",
+      "termLabel": "Initial LTV",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "charStart": 28791,
+      "charEnd": 29141,
+      "excerptSha256": "5ef4d8d27d081099882de97396532e4c5e59438ac5ac6b90503544d0b879cedd",
+      "sourceFileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "formulaSketch": "Initial LTV = schedule/defined threshold used as restore target for Margin Call Additional Collateral. SEMANTIC_HYPOTHESIS \u2014 numeric schedule value not asserted here."
+    },
+    {
+      "id": "RIOT-2026-CA::def::Release_LTV",
+      "termLabel": "Release LTV",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "charStart": 43051,
+      "charEnd": 43401,
+      "excerptSha256": "1a1980f1d3d49b6ae626799fa618552d284a651728ae975bea824975bfd3c0ef",
+      "sourceFileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "formulaSketch": "Release LTV = schedule/defined threshold for collateral release eligibility. Distinct from Initial LTV / Cure Amount (BTC). SEMANTIC_HYPOTHESIS."
     },
     {
       "id": "NEG-CONMED-7_1-SSLR-3_75",

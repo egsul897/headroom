@@ -1,8 +1,8 @@
 {
   "artifact": "financial-definitions-precedent.calculation-dependency-graph",
   "version": "fdp.v1",
-  "nodeCount": 121,
-  "edgeCount": 128,
+  "nodeCount": 136,
+  "edgeCount": 142,
   "nodes": [
     {
       "id": "CHWY-2026-CA::def::Consolidated_EBITDA",
@@ -728,6 +728,96 @@
       "id": "TERM::Margin Funding Deadline",
       "label": "Margin Funding Deadline",
       "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "DSGR-2025-AR2::def::EBITDA",
+      "label": "EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "DSGR-2025-AR2"
+    },
+    {
+      "id": "DSGR-2025-AR2::adj::Cost_Savings",
+      "label": "Cost Savings",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "DSGR-2025-AR2"
+    },
+    {
+      "id": "DSGR-2025-AR2::adj::Combined_Cap_20pct",
+      "label": "Combined Cap",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "DSGR-2025-AR2"
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+      "label": "Available Amount Builder Basket (Article I cross-reference)",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "GIB-2026-CA"
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+      "label": "Available Amount Builder Basket \u2014 \u00a77.05(a)(y) operative text",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "GIB-2026-CA"
+    },
+    {
+      "id": "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+      "label": "Section 2.06 Collateral Adjustments \u2014 Margin Demands",
+      "kind": "CURE_RIGHT",
+      "sourceId": "RIOT-2026-CA"
+    },
+    {
+      "id": "RIOT-2026-CA::def::Initial_LTV",
+      "label": "Initial LTV",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "RIOT-2026-CA"
+    },
+    {
+      "id": "RIOT-2026-CA::def::Release_LTV",
+      "label": "Release LTV",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "RIOT-2026-CA"
+    },
+    {
+      "id": "TC-CONMED-SSLR-v1",
+      "label": "Consolidated Senior Secured Leverage Ratio (CONMED)",
+      "kind": "TYPED_CALC",
+      "sourceId": null
+    },
+    {
+      "id": "TC-DSGR-EBITDA-v1",
+      "label": "EBITDA with Combined Cap (DSGR Second A&R)",
+      "kind": "TYPED_CALC",
+      "sourceId": null
+    },
+    {
+      "id": "TC-CHWY-TLR-v1",
+      "label": "Total Leverage Ratio (CHWY)",
+      "kind": "TYPED_CALC",
+      "sourceId": null
+    },
+    {
+      "id": "TC-CHWY-ANTIDUPE-v1",
+      "label": "Anti-duplication of add-backs \u00a71.08(d)(ii) (CHWY)",
+      "kind": "TYPED_CALC",
+      "sourceId": null
+    },
+    {
+      "id": "TC-GIB-AA-BUILDER-v1",
+      "label": "Available Amount Builder Basket (GIB) \u2014 UNRESOLVED CITATION SCOPE",
+      "kind": "TYPED_CALC",
+      "sourceId": null
+    },
+    {
+      "id": "TC-RIOT-LTV-MARGIN-v1",
+      "label": "Actual LTV + margin Additional Collateral cure (Riot)",
+      "kind": "TYPED_CALC",
+      "sourceId": null
+    },
+    {
+      "id": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "label": "CONMED Consolidated EBITDA Pro Forma Adjustment 15% cap",
+      "kind": "TYPED_CALC",
       "sourceId": null
     }
   ],
@@ -1499,6 +1589,90 @@
       "to": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
       "edgeType": "RELATED_MECHANIC_NOT_EQUIVALENT",
       "note": "FWRG/CHWY-family Cure Amount is equity cure / AA exclusion around financial-covenant EBITDA deeming"
+    },
+    {
+      "from": "TC-CONMED-SSLR-v1",
+      "to": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-CONMED-SSLR-v1",
+      "to": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-DSGR-EBITDA-v1",
+      "to": "DSGR-2025-AR2::def::EBITDA",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-DSGR-EBITDA-v1",
+      "to": "DSGR-2025-AR2::adj::Cost_Savings",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-DSGR-EBITDA-v1",
+      "to": "DSGR-2025-AR2::adj::Combined_Cap_20pct",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-CHWY-TLR-v1",
+      "to": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-CHWY-TLR-v1",
+      "to": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-CHWY-ANTIDUPE-v1",
+      "to": "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-GIB-AA-BUILDER-v1",
+      "to": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-GIB-AA-BUILDER-v1",
+      "to": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-RIOT-LTV-MARGIN-v1",
+      "to": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-RIOT-LTV-MARGIN-v1",
+      "to": "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-RIOT-LTV-MARGIN-v1",
+      "to": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
+    },
+    {
+      "from": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "to": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "edgeType": "STRUCTURED_READING_OF",
+      "note": "typed calc maps extraction entry"
     }
   ]
 }

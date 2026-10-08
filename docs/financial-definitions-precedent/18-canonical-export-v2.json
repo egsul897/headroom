@@ -1,0 +1,270 @@
+{
+  "schemaVersion": "fdp.canonical-export.v2",
+  "exportKind": "financial-definitions-precedent-canonical",
+  "generatedAt": "2026-10-08T22:29:35Z",
+  "workstreamId": "WS-FDP",
+  "reconciledStartingSha": "23e42a56973cd399e9150399e269092a5c6cf715",
+  "branch": "cursor/financial-definitions-precedent-43af",
+  "doesNotCompeteWith": [
+    "docs/definition-encyclopedia/knowledge-factory-export.json",
+    "docs/covenant-basket-capacity-formula-library/export/dataset-manifest.json",
+    "docs/knowledge-factory/**",
+    "cursor/covenant-dependency-atlas-5021 (Dependency Atlas)",
+    "cursor/amendment-chain-research-2926 (Amendment Intelligence)"
+  ],
+  "joinKeys": {
+    "definitionEncyclopedia": [
+      "termLabel",
+      "sourcePath",
+      "excerptSha256"
+    ],
+    "basketFormulaLibrary": [
+      "termLabel",
+      "packageId",
+      "kind=BUILDER_OR_POOL"
+    ],
+    "dependencyAtlas": [
+      "entryId",
+      "typedCalcId",
+      "dependency edges"
+    ],
+    "amendmentIntelligence": [
+      "amendments[].sourcePath",
+      "sourceFileSha256"
+    ],
+    "covenantKnowledgeFactory": [
+      "sourceFileSha256",
+      "packageId"
+    ]
+  },
+  "sourceDocuments": [
+    {
+      "sourceDocId": "CHWY-2026-CA",
+      "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "fileSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "byteLength": 868560,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "CONMED-2025-PLAIN",
+      "path": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "fileSha256": "887d11f90106ba3385069094ea8a10887b92bba00ab5ee97a92be966e7749a18",
+      "byteLength": 515981,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "CONMED-2025-CURATED-DEFS",
+      "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "fileSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+      "byteLength": 44178,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "CONMED-2025-ART7",
+      "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "fileSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "byteLength": 50080,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "CONMED-2022-AMD2",
+      "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+      "fileSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+      "byteLength": 11701,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "FWRG-2021-DEFS",
+      "path": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "fileSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "byteLength": 16544,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "LSB-2023-DEFS",
+      "path": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "fileSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "byteLength": 8137,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "GIB-2026-CA",
+      "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "fileSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "byteLength": 1043514,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "DSGR-2024-AMD3",
+      "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "fileSha256": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+      "byteLength": 741527,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "DSGR-2025-AR2",
+      "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "fileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "byteLength": 844994,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    },
+    {
+      "sourceDocId": "RIOT-2026-CA",
+      "path": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "fileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "byteLength": 189102,
+      "acquisitionKind": "IN_REPO_FIXTURE",
+      "newSecAcquisition": false
+    }
+  ],
+  "legalReviewStates": [
+    {
+      "id": "SOURCE_SPAN_VERIFIED",
+      "meaning": "Excerpt char offsets + sha256 match source file bytes (or owned plaintext sidecar)."
+    },
+    {
+      "id": "ARITHMETICALLY_TESTED",
+      "meaning": "A fdp.arith.v1 case executed and matched expected intermediates/outputs under stated assumptions. Not legal validation."
+    },
+    {
+      "id": "SEMANTIC_HYPOTHESIS",
+      "meaning": "Structured reading / typedCalc component map authored by agent; unverified legally."
+    },
+    {
+      "id": "INDEPENDENTLY_LEGALLY_REVIEWED",
+      "meaning": "Requires actual reviewer evidence record (reviewer id, timestamp, scope). NONE promoted in this pack."
+    },
+    {
+      "id": "REVIEW_REQUIRED",
+      "meaning": "Open ambiguity or missing authority; must not infer zero/unlimited/available capacity."
+    }
+  ],
+  "independentlyLegallyReviewedCount": 0,
+  "counts": {
+    "atlasEntries": 57,
+    "typedCalculations": 7,
+    "arithmeticCases": 13,
+    "unresolvedItems": 10,
+    "sourceDocuments": 11
+  },
+  "atlasEntryIds": [
+    "CHWY-2026-CA::def::Consolidated_EBITDA",
+    "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
+    "CHWY-2026-CA::def::Consolidated_Net_Income",
+    "CHWY-2026-CA::def::Consolidated_Total_Debt",
+    "CHWY-2026-CA::def::Consolidated_First_Lien_Debt",
+    "CHWY-2026-CA::def::Consolidated_Senior_Secured_Debt",
+    "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+    "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+    "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+    "CHWY-2026-CA::def::Fixed_Charges",
+    "CHWY-2026-CA::def::Excess_Cash_Flow",
+    "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
+    "CHWY-2026-CA::builder::Available_Amount",
+    "CHWY-2026-CA::adj::Pro_Forma_Basis",
+    "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+    "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF",
+    "CHWY-2026-CA::def::Test_Period",
+    "CONMED-2025-CA::def::Consolidated_EBITDA",
+    "CONMED-2025-CA::def::Consolidated_Net_Income",
+    "CONMED-2025-CA::def::Consolidated_Funded_Debt",
+    "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+    "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+    "CONMED-2025-CA::def::Interest_Coverage_Ratio",
+    "CONMED-2025-CA::def::Funded_Debt",
+    "CONMED-2025-CA::test::Financial_Covenants_7_1",
+    "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
+    "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
+    "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+    "FWRG-2021-CA::builder::Available_Amount",
+    "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+    "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+    "GIB-2026-CA::def::Consolidated_EBITDA",
+    "GIB-2026-CA::def::Consolidated_Net_Income",
+    "GIB-2026-CA::ratio::Consolidated_Interest_Coverage_Ratio",
+    "GIB-2026-CA::def::Excess_Cash_Flow",
+    "GIB-2026-CA::builder::Retained_Excess_Cash_Flow_Amount",
+    "GIB-2026-CA::builder::Available_Amount_Builder_Basket",
+    "GIB-2026-CA::def::LTM_EBITDA",
+    "GIB-2026-CA::adj::Synergy_ProForma_Cap_1_10",
+    "GIB-2026-CA::test::ECF_Prepay_Step_Down",
+    "DSGR-2024-AMD::builder::Available_Amount",
+    "DSGR-2024-AMD::ratio::Interest_Coverage_Ratio",
+    "DSGR-2024-AMD::ratio::Total_Net_Leverage_Ratio",
+    "DSGR-2024-AMD::adj::Combined_Cap_20pct",
+    "GIB-2026-CA::ratio::Consolidated_First_Lien_Net_Leverage_Ratio",
+    "GIB-2026-CA::ratio::Consolidated_Secured_Net_Leverage_Ratio",
+    "GIB-2026-CA::ratio::Consolidated_Total_Net_Leverage_Ratio",
+    "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+    "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+    "DSGR-2025-AR2::def::EBITDA",
+    "DSGR-2025-AR2::adj::Cost_Savings",
+    "DSGR-2025-AR2::adj::Combined_Cap_20pct",
+    "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+    "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+    "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+    "RIOT-2026-CA::def::Initial_LTV",
+    "RIOT-2026-CA::def::Release_LTV"
+  ],
+  "typedCalculationIds": [
+    "TC-CONMED-SSLR-v1",
+    "TC-DSGR-EBITDA-v1",
+    "TC-CHWY-TLR-v1",
+    "TC-CHWY-ANTIDUPE-v1",
+    "TC-GIB-AA-BUILDER-v1",
+    "TC-RIOT-LTV-MARGIN-v1",
+    "TC-CONMED-EBITDA-PF-CAP-v1"
+  ],
+  "arithmeticCaseIds": [
+    "ARITH-CONMED-SSLR-001",
+    "ARITH-CONMED-SSLR-002",
+    "ARITH-CONMED-SSLR-MISSING-001",
+    "ARITH-DSGR-COMBINED-CAP-001",
+    "ARITH-DSGR-COMBINED-CAP-002",
+    "ARITH-DSGR-COST-SAVINGS-NET-001",
+    "ARITH-CHWY-ANTIDUPE-001",
+    "ARITH-CHWY-TLR-001",
+    "ARITH-RIOT-LTV-001",
+    "ARITH-RIOT-LTV-MISSING-001",
+    "ARITH-GIB-AA-BLOCKED-001",
+    "ARITH-CONMED-PF-CAP-001",
+    "ARITH-NEG-MAINTENANCE-NOT-CAPACITY-001"
+  ],
+  "unresolvedIds": [
+    "UQ-001",
+    "UQ-002",
+    "UQ-003",
+    "UQ-004",
+    "UQ-005",
+    "UQ-006",
+    "UQ-007",
+    "UQ-008",
+    "UQ-009",
+    "UQ-GIB-705AY-CITATION"
+  ],
+  "gibraltarCitationStatus": {
+    "id": "UQ-GIB-705AY-CITATION",
+    "status": "OPEN_REVIEW_REQUIRED",
+    "certifiedBuilderFormula": false,
+    "capacityInferred": false
+  },
+  "artifacts": {
+    "atlas": "02-precedent-atlas.json",
+    "typedCalculations": "14-typed-calculations.json",
+    "arithmeticEvaluation": "15-arithmetic-evaluation.json",
+    "legalReviewStates": "16-legal-review-states.json",
+    "sourceDocumentRegistry": "17-source-document-registry.json",
+    "unresolvedQueue": "07-unresolved-interpretation-queue.json",
+    "datasetExportV1": "10-dataset-export.json"
+  }
+}

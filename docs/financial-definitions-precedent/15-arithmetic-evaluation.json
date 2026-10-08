@@ -1,0 +1,292 @@
+{
+  "artifact": "financial-definitions-precedent.arithmetic-evaluation",
+  "version": "fdp.arith.v1",
+  "status": "DRAFT",
+  "disclaimer": "ARITHMETICALLY_TESTED means the numeric procedure in the case matches expected intermediates/outputs under the case assumptions. It does NOT mean legal correctness or INDEPENDENTLY_LEGALLY_REVIEWED.",
+  "cases": [
+    {
+      "id": "ARITH-CONMED-SSLR-001",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "title": "SSLR with cash netting below cap",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 40000000,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 40000000,
+        "numerator": 460000000
+      },
+      "expectedOutput": {
+        "ratio": 2.3
+      },
+      "controlType": "POSITIVE"
+    },
+    {
+      "id": "ARITH-CONMED-SSLR-002",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "title": "SSLR cash netting hits $100M cap",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 250000000,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 100000000,
+        "numerator": 400000000
+      },
+      "expectedOutput": {
+        "ratio": 2.0
+      },
+      "controlType": "POSITIVE"
+    },
+    {
+      "id": "ARITH-CONMED-SSLR-MISSING-001",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "title": "SSLR missing EBITDA \u2192 MISSING_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 40000000
+      },
+      "expectedOutput": {
+        "status": "MISSING_INPUT",
+        "missingKeys": [
+          "consolidated_ebitda_covenant_defined"
+        ]
+      },
+      "controlType": "MISSING_INPUT",
+      "forbidInference": [
+        "zero_ebitda",
+        "unlimited_capacity",
+        "available_capacity"
+      ]
+    },
+    {
+      "id": "ARITH-DSGR-COMBINED-CAP-001",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "title": "Combined Cap binds when uncapped sum exceeds 20%",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "net_income": 100.0,
+        "interest_expense": 10.0,
+        "income_tax_expense_net": 5.0,
+        "depreciation_amortization": 15.0,
+        "nonrecurring_unusual_expenses": 20.0,
+        "cost_savings_projected": 20.0,
+        "cost_savings_benefits_realized": 0.0,
+        "clause_a_xviii_b": 0.0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 130.0,
+        "combined_cap": 26.0,
+        "uncapped_capped_bucket_sum": 40.0,
+        "allowed_capped_bucket_sum": 26.0
+      },
+      "expectedOutput": {
+        "ebitda": 156.0
+      },
+      "controlType": "ADDBACK_CAP"
+    },
+    {
+      "id": "ARITH-DSGR-COMBINED-CAP-002",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "title": "Combined Cap not binding when under 20%",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "net_income": 100.0,
+        "interest_expense": 10.0,
+        "income_tax_expense_net": 5.0,
+        "depreciation_amortization": 15.0,
+        "nonrecurring_unusual_expenses": 5.0,
+        "cost_savings_projected": 5.0,
+        "cost_savings_benefits_realized": 0.0,
+        "clause_a_xviii_b": 0.0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 130.0,
+        "combined_cap": 26.0,
+        "uncapped_capped_bucket_sum": 10.0,
+        "allowed_capped_bucket_sum": 10.0
+      },
+      "expectedOutput": {
+        "ebitda": 140.0
+      },
+      "controlType": "POSITIVE"
+    },
+    {
+      "id": "ARITH-DSGR-COST-SAVINGS-NET-001",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "title": "Cost Savings net of benefits realized",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "net_income": 100.0,
+        "interest_expense": 0.0,
+        "income_tax_expense_net": 0.0,
+        "depreciation_amortization": 0.0,
+        "nonrecurring_unusual_expenses": 0.0,
+        "cost_savings_projected": 30.0,
+        "cost_savings_benefits_realized": 10.0,
+        "clause_a_xviii_b": 0.0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 100.0,
+        "cost_savings_net": 20.0,
+        "combined_cap": 20.0,
+        "allowed_capped_bucket_sum": 20.0
+      },
+      "expectedOutput": {
+        "ebitda": 120.0
+      },
+      "controlType": "PRO_FORMA_TIMING"
+    },
+    {
+      "id": "ARITH-CHWY-ANTIDUPE-001",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "title": "Double-counting trap: same amount in EBITDA and clause (d)",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "addback_amount_clause_d": 25.0,
+        "addback_amount_already_in_ebitda": 25.0
+      },
+      "expectedOutput": {
+        "allowed_clause_d_add": 0.0,
+        "status": "DOUBLE_COUNT_BLOCKED"
+      },
+      "controlType": "DOUBLE_COUNTING_TRAP"
+    },
+    {
+      "id": "ARITH-CHWY-TLR-001",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "title": "Total Leverage with excluded revolvers",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "consolidated_total_debt": 900.0,
+        "excluded_revolving_loans_balance": 100.0,
+        "consolidated_ebitda_covenant_defined": 200.0,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {
+        "numerator": 800.0
+      },
+      "expectedOutput": {
+        "ratio": 4.0
+      },
+      "controlType": "POSITIVE"
+    },
+    {
+      "id": "ARITH-RIOT-LTV-001",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "title": "Additional Collateral BTC to restore Initial LTV",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 12000000,
+        "initial_ltv": 0.7,
+        "btc_price": 50000
+      },
+      "expectedIntermediates": {
+        "actual_ltv": 0.8333333333333334,
+        "target_collateral_pmv": 14285714.285714287,
+        "additional_collateral_usd": 2285714.2857142873
+      },
+      "expectedOutput": {
+        "cure_amount_btc": 45.714285714285744
+      },
+      "controlType": "POSITIVE",
+      "notes": "Arithmetic under stated Initial LTV assumption; confirm Initial LTV numeric from definition separately before legal use."
+    },
+    {
+      "id": "ARITH-RIOT-LTV-MISSING-001",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "title": "Missing BTC price \u2192 MISSING_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 12000000,
+        "initial_ltv": 0.7
+      },
+      "expectedOutput": {
+        "status": "MISSING_INPUT",
+        "missingKeys": [
+          "btc_price"
+        ]
+      },
+      "controlType": "MISSING_INPUT",
+      "forbidInference": [
+        "zero_cure",
+        "available_capacity"
+      ]
+    },
+    {
+      "id": "ARITH-GIB-AA-BLOCKED-001",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "title": "Refuse AA numeric evaluation under citation ambiguity",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "inputs": {
+        "ltm_ebitda": 400000000,
+        "consolidated_net_income_cumulative": 50000000
+      },
+      "expectedOutput": {
+        "status": "REVIEW_REQUIRED",
+        "reason": "UQ-GIB-705AY-CITATION \u2014 do not certify whether Builder Basket is entire \u00a77.05(a)(y) or only (vi)"
+      },
+      "controlType": "NEGATIVE_CONTROL_NO_CAPACITY_INFERENCE",
+      "forbidInference": [
+        "zero",
+        "unlimited",
+        "available_capacity",
+        "137600000_only",
+        "0.4_ltm_ebitda_only"
+      ]
+    },
+    {
+      "id": "ARITH-CONMED-PF-CAP-001",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "title": "15% PF Adjustment cap (simplified after-giving-effect model)",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200.0,
+        "pro_forma_adjustment_gross": 50.0,
+        "benefits_realized": 5.0
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 45.0
+      },
+      "expectedOutput": {
+        "pf_allowed": 35.294117647058826,
+        "ebitda_after": 235.29411764705884
+      },
+      "controlType": "ADDBACK_CAP",
+      "notes": "Simplified model treating only clause (i) as the after-giving-effect delta. Legal interaction with other add-backs remains SEMANTIC_HYPOTHESIS."
+    },
+    {
+      "id": "ARITH-NEG-MAINTENANCE-NOT-CAPACITY-001",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "title": "Negative control: 3.75x is condition headroom math only, not RP capacity",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 0,
+        "consolidated_ebitda_covenant_defined": 200000000,
+        "maintenance_max": 3.75
+      },
+      "expectedIntermediates": {
+        "ratio": 2.5,
+        "ratio_headroom_vs_max": 1.25
+      },
+      "expectedOutput": {
+        "maintenance_compliant": true,
+        "is_capacity_basket": false,
+        "capacity_amount": null
+      },
+      "controlType": "NEGATIVE_CONTROL_NOT_CAPACITY"
+    }
+  ]
+}

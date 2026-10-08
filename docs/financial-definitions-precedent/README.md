@@ -29,9 +29,16 @@ Deep, source-backed precedent dataset focused on **financial definitions**, **le
 | `07-unresolved-interpretation-queue.json` | Open interpretation / evidence gaps |
 | `08-regression-candidates.json` | Regression candidates (not certified goldens) |
 | `09-mechanic-divergences.json` | Same label, different calculation mechanics |
-| `10-dataset-export.json` | Compact joinable export |
+| `10-dataset-export.json` | Compact joinable export (`fdp.v1`) |
 | `11-progress-ledger.md` | Append-only progress ledger |
 | `12-mission-report.md` | Mission report |
+| `13-data-production-checkpoint.json` | Honest live-vs-fixture acquisition checkpoint |
+| `14-typed-calculations.json` | Typed calc components (`fdp.typed-calc.v1`); SEMANTIC_HYPOTHESIS |
+| `15-arithmetic-evaluation.json` | Independent arithmetic cases (`fdp.arith.v1`) |
+| `16-legal-review-states.json` | Legal-review state vocabulary + promotion rule |
+| `17-source-document-registry.json` | Immutable source file hashes (no new SEC acquisition) |
+| `18-canonical-export-v2.json` | Versioned canonical export for peer joins |
+| `19-sha-reconciliation.json` | PR SHA reconciliation record |
 | `examples/` | Human-readable source-backed vignettes |
 | `source-normalize/` | Deterministic plaintext sidecars for HTML fixtures (citation offsets) |
 
@@ -52,8 +59,10 @@ Deep, source-backed precedent dataset focused on **financial definitions**, **le
 | Pro forma / acquisition add-backs / synergies / run-rate | CHWY Expected Run Rate Benefit; CONMED PF Adjustments; GIB §1.10; DSGR Cost Savings / Combined Cap |
 | Restructuring charges | CHWY CNI exclusions |
 | Add-back caps / lookbacks | CONMED 15% / $30M; CHWY 36-month lookforward; DSGR 20% Combined Cap; GIB §1.10 aggregate |
-| Cure rights | Cross-ref / partial (ABL & FWRG §6.10 gaps queued) |
+| Cure rights | Riot BTC margin Cure Amount (≠ equity cure); ABL & FWRG §6.10 gaps queued |
 | Step-up / step-down leverage tests | CONMED §7.1 step-up; GIB ECF prepay % step-down |
+| DSGR doc-d EBITDA / Cost Savings | Second A&R EBITDA + Cost Savings + 20% Combined Cap (typed + arith) |
+| Gibraltar builder-basket citation | §7.05(a)(y) def vs operative parenthetical — OPEN (`UQ-GIB-705AY-CITATION`) |
 
 ## Tests
 
