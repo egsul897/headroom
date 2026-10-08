@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-10-08T22:19:59.878Z",
+  "generatedAt": "2026-10-08T22:27:32.045Z",
   "distinction": {
     "note": "Fixture documents are recorded public excerpts already in-repo. SEC documents were acquired live from sec.gov in this session. False-positive SEC exhibits are listed separately and excluded from debt-document counts."
   },
-  "realSecFilingsDiscoveredAccessions": 35,
-  "realSecDebtDocumentsAcquired": 45,
+  "realSecFilingsDiscoveredAccessions": 49,
+  "realSecDebtDocumentsAcquired": 63,
   "realSecFalsePositiveExhibitsAcquired": 6,
   "fixtureDocuments": 12,
   "uniqueIssuers": {
-    "secDebt": 13,
+    "secDebt": 21,
     "fixtures": 5,
-    "combinedDebtAndFixture": 17
+    "combinedDebtAndFixture": 25
   },
-  "uniqueInstrumentsApprox": 53,
-  "provisionsStructurallyIndexed": 18062,
-  "ambiguousStructuralNodes": 3296,
-  "covenantCandidatesExtracted": 2214,
-  "sourceBackedDefinitions": 60,
-  "dependencyEdgesCrossReferences": 11449,
+  "uniqueInstrumentsApprox": 66,
+  "provisionsStructurallyIndexed": 20003,
+  "ambiguousStructuralNodes": 3940,
+  "covenantCandidatesExtracted": 2386,
+  "sourceBackedDefinitions": 93,
+  "dependencyEdgesCrossReferences": 12806,
   "documentRelationships": 18,
   "semanticHypothesesProduced": 0,
   "independentlyVerifiedRepresentations": 0,
   "unresolvedOrAmbiguousLegalIssues": {
-    "uncertaintyQueueItems": 1687,
-    "ambiguousStructuralNodes": 3296,
+    "uncertaintyQueueItems": 1966,
+    "ambiguousStructuralNodes": 3940,
     "unlinkedAmendments": 11,
-    "missingOperativeAuthorityDocs": 47,
+    "missingOperativeAuthorityDocs": 59,
     "note": "These are unresolved discovery/ambiguity items — not independently verified legal conclusions."
   },
   "draftingPatterns": {
@@ -87,13 +87,13 @@
     ]
   },
   "processing": {
-    "measuredParsingMsFromLedger": 1480,
-    "secRequests": 124,
-    "downloadBytes": 26948617,
-    "storageBytes": 26948617,
+    "measuredParsingMsFromLedger": 1676,
+    "secRequests": 172,
+    "downloadBytes": 30087862,
+    "storageBytes": 30087862,
     "actualPaidProviderUsd": 0,
-    "estimatedModelCostUsdIfEnabled": 35.367891000000014,
-    "estimatedModelTokensIfEnabled": 11789297,
+    "estimatedModelCostUsdIfEnabled": 41.577579000000014,
+    "estimatedModelTokensIfEnabled": 13859193,
     "note": "Actual paid AI spend is $0. Estimated model figures are NOT actual spend."
   },
   "secDebtDocuments": [
@@ -117,6 +117,92 @@
       "filingDate": "2022-07-27",
       "bytes": 216085,
       "url": "https://www.sec.gov/Archives/edgar/data/12927/000001292722000058/a202206jun3010qex32.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000060667-22-000104:exhibit101_06022022.htm",
+      "ticker": "LOW",
+      "class": "UNKNOWN",
+      "title": "LOWE&#39;S COMPANIES, INC. 2006 LONG TERM INCENTIVE PLAN, AS AMENDED AND RESTATED",
+      "form": "8-K",
+      "filingDate": "2022-06-02",
+      "bytes": 205371,
+      "url": "https://www.sec.gov/Archives/edgar/data/60667/000006066722000104/exhibit101_06022022.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000060667-25-000210:exhibit151_10312025.htm",
+      "ticker": "LOW",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF DELOITTE &amp; TOUCHE LLP",
+      "form": "10-Q",
+      "filingDate": "2025-11-26",
+      "bytes": 8458,
+      "url": "https://www.sec.gov/Archives/edgar/data/60667/000006066725000210/exhibit151_10312025.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000060667-26-000072:exhibit151_05012026.htm",
+      "ticker": "LOW",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF DELOITTE &amp; TOUCHE LLP",
+      "form": "10-Q",
+      "filingDate": "2026-05-28",
+      "bytes": 8493,
+      "url": "https://www.sec.gov/Archives/edgar/data/60667/000006066726000072/exhibit151_05012026.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000060667-26-000117:exhibit151_07312026.htm",
+      "ticker": "LOW",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF DELOITTE &amp; TOUCHE LLP",
+      "form": "10-Q",
+      "filingDate": "2026-08-27",
+      "bytes": 8547,
+      "url": "https://www.sec.gov/Archives/edgar/data/60667/000006066726000117/exhibit151_07312026.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000077476-19-000046:exhibit31articlesofinc.htm",
+      "ticker": "PEP",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED ARTICLES OF INCORPORATION OF PEPSICO, INC.",
+      "form": "8-K",
+      "filingDate": "2019-05-03",
+      "bytes": 41962,
+      "url": "https://www.sec.gov/Archives/edgar/data/77476/000007747619000046/exhibit31articlesofinc.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000077476-24-000046:pepsico-ex32xseptember2020.htm",
+      "ticker": "PEP",
+      "class": "UNKNOWN",
+      "title": "PEPSICO, INC. AMENDED AND RESTATED BY-LAWS, AS OF SEPTEMBER 20, 2024",
+      "form": "8-K",
+      "filingDate": "2024-09-20",
+      "bytes": 142851,
+      "url": "https://www.sec.gov/Archives/edgar/data/77476/000007747624000046/pepsico-ex32xseptember2020.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000078003-18-000027:pfe-exhibit104x1231201.htm",
+      "class": "UNKNOWN",
+      "title": "FORM OF ACKN CONSENT SUMMARY OF KEY TERMS FOR STOCK OPTION GRANTS, RSUS &amp; TSRUS",
+      "form": "10-K",
+      "filingDate": "2018-02-22",
+      "bytes": 91643,
+      "url": "https://www.sec.gov/Archives/edgar/data/78003/000007800318000027/pfe-exhibit104x1231201.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000320187-15-000153:nikecreditagreement2015.htm",
+      "class": "CREDIT_AGREEMENT",
+      "title": "CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2015-09-02",
+      "bytes": 947054,
+      "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018715000153/nikecreditagreement2015.htm",
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
@@ -150,6 +236,46 @@
       "bytes": 121362,
       "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572520000024/exhibit101amendedandre.htm",
       "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex101amendedmasterconfirmgs.htm",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED MASTER CONFIRMATION",
+      "form": "10-Q",
+      "filingDate": "2014-10-03",
+      "bytes": 267148,
+      "url": "https://www.sec.gov/Archives/edgar/data/940944/000094094414000129/ex101amendedmasterconfirmgs.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex102amendedmasterconfirmwf.htm",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED MASTER CONFIRMATION",
+      "form": "10-Q",
+      "filingDate": "2014-10-03",
+      "bytes": 260739,
+      "url": "https://www.sec.gov/Archives/edgar/data/940944/000094094414000129/ex102amendedmasterconfirmwf.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex103amendedsupplementalco.htm",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED SUPPLEMENTAL CONFIRMATION",
+      "form": "10-Q",
+      "filingDate": "2014-10-03",
+      "bytes": 57730,
+      "url": "https://www.sec.gov/Archives/edgar/data/940944/000094094414000129/ex103amendedsupplementalco.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex104amendedsupplementalco.htm",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED SUPPLEMENTAL CONFIRMATION",
+      "form": "10-Q",
+      "filingDate": "2014-10-03",
+      "bytes": 56155,
+      "url": "https://www.sec.gov/Archives/edgar/data/940944/000094094414000129/ex104amendedsupplementalco.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
     },
     {
       "sourceId": "edgar:0000947871-20-000397:ss171930_ex1001.htm",
@@ -244,6 +370,36 @@
       "filingDate": "2025-06-20",
       "bytes": 140904,
       "url": "https://www.sec.gov/Archives/edgar/data/51143/000095015725000533/ex10-2.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001065280-13-000008:executiveseveranceandreten.htm",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED EXECUTIVE SEVERANCE AND RETENTION INCENTIVE PLAN",
+      "form": "10-K",
+      "filingDate": "2013-02-01",
+      "bytes": 72077,
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528013000008/executiveseveranceandreten.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-463586:d400394dex10.htm",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED KBI SHARES OPTION AGREEMENT",
+      "form": "10-Q",
+      "filingDate": "2012-11-09",
+      "bytes": 166950,
+      "url": "https://www.sec.gov/Archives/edgar/data/310158/000119312512463586/d400394dex10.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
+      "class": "INDENTURE",
+      "title": "INDENTURE",
+      "form": "8-K",
+      "filingDate": "2013-02-01",
+      "bytes": 536966,
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000119312513034798/d477945dex41.htm",
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
@@ -421,6 +577,36 @@
       "bytes": 4191,
       "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000009/ex23-12312024.htm",
       "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex102q115.htm",
+      "class": "UNKNOWN",
+      "title": "EMPLOYEE INCENTIVE COMPENSATION PLAN, AS AMENDED AND RESTATED",
+      "form": "10-Q",
+      "filingDate": "2014-11-25",
+      "bytes": 34738,
+      "url": "https://www.sec.gov/Archives/edgar/data/1327567/000132756714000043/panwex102q115.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex103q115.htm",
+      "class": "UNKNOWN",
+      "title": "2012 EMPLOYEE STOCK PURCHASE PLAN, AS AMENDED AND RESTATED",
+      "form": "10-Q",
+      "filingDate": "2014-11-25",
+      "bytes": 122820,
+      "url": "https://www.sec.gov/Archives/edgar/data/1327567/000132756714000043/panwex103q115.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001327567-17-000027:panwex104q417esppplan.htm",
+      "class": "UNKNOWN",
+      "title": "2012 EMPLOYEE STOCK PURCHASE PLAN, AS AMENDED AND RESTATED",
+      "form": "10-K",
+      "filingDate": "2017-09-07",
+      "bytes": 109543,
+      "url": "https://www.sec.gov/Archives/edgar/data/1327567/000132756717000027/panwex104q417esppplan.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
       "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
