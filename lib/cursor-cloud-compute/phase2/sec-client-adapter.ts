@@ -30,11 +30,13 @@ async function tryImportCkf(ckfRoot: string, cacheDir: string, logDir: string): 
   const httpPath = path.join(ckfRoot, "lib/knowledge-factory/edgar/http.ts");
   if (!fs.existsSync(httpPath)) return null;
   const mod = await import(pathToFileURL(httpPath).href);
+  // Use the same identifying UA family as lib/connectors/edgar-connector.ts so
+  // fair-access / Akamai policy matches the verified onboarding connector path.
   const client = new mod.SecHttpClient({
     cacheDir,
     logDir,
-    userAgent: "HeadroomCursorCloudCompute/1.0 (WS-CCA; contact: engineering@headroom-app.example; uses CKF SecHttpClient)",
-    rateLimit: { maxRequests: 6, windowMs: 1000, minIntervalMs: 150 },
+    userAgent: "Headroom/1.0 (contact: engineering@headroom-app.example; WS-CCA via CKF SecHttpClient)",
+    rateLimit: { maxRequests: 5, windowMs: 1000, minIntervalMs: 200 },
     maxBytes: 30 * 1024 * 1024,
   });
   return {

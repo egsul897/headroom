@@ -219,6 +219,8 @@ async function drainQueue(params: {
         forceRedownload: params.forceRedownload && attempt === 0 && params.mode === "cold",
       });
       if (result.status !== "FAILED" || result.errorClass !== "DOWNLOAD_FAILURE") break;
+      // HTTP 403 from SEC/Akamai is usually not cured by tight retries; advance.
+      if ((result.error ?? "").includes("HTTP 403")) break;
       attempt += 1;
       retryCount += 1;
       if (attempt >= maxAttempts) break;
