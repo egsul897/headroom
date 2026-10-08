@@ -120,10 +120,18 @@ describe("operative source authentication", () => {
     expect(authenticateStructuralOccurrence({ node: permissionIndex.getNodeById("permission")!, index: permissionIndex, supersessionStatus: "CURRENT_OPERATIVE" }).structuralKind).toBe("OPERATIVE_OCCURRENCE");
   });
 
-  it("does not refuse a raw-text fixture that supplies an index and no anchor", () => {
-    expect(operativeModelDispatchBlock({ index, anchorNodeId: null, supersessionStatus: "CURRENT_OPERATIVE" })).toBeNull();
-    expect(operativeModelDispatchBlock({ index: null, anchorNodeId: "body", supersessionStatus: "CURRENT_OPERATIVE" })).toBeNull();
-    expect(operativeModelDispatchBlock({ index, anchorNodeId: "", supersessionStatus: "CURRENT_OPERATIVE" })).toBeNull();
+  it("refuses a missing index or a missing anchor unless the test fixture waives those two absences", () => {
+    const missingAnchor = operativeModelDispatchBlock({ index, anchorNodeId: null, supersessionStatus: "CURRENT_OPERATIVE" });
+    const missingIndex = operativeModelDispatchBlock({ index: null, anchorNodeId: "body", supersessionStatus: "CURRENT_OPERATIVE" });
+    const emptyAnchor = operativeModelDispatchBlock({ index, anchorNodeId: "", supersessionStatus: "CURRENT_OPERATIVE" });
+    expect(missingAnchor?.refuseModelDispatch).toBe(true);
+    expect(missingAnchor?.reason).toContain("no anchor node id was supplied");
+    expect(missingIndex?.refuseModelDispatch).toBe(true);
+    expect(missingIndex?.reason).toContain("no structural index was supplied");
+    expect(emptyAnchor?.refuseModelDispatch).toBe(true);
+    expect(operativeModelDispatchBlock({ index, anchorNodeId: null, supersessionStatus: "CURRENT_OPERATIVE", syntheticRawTextFixture: true })).toBeNull();
+    expect(operativeModelDispatchBlock({ index: null, anchorNodeId: "body", supersessionStatus: "CURRENT_OPERATIVE", syntheticRawTextFixture: true })).toBeNull();
+    expect(operativeModelDispatchBlock({ index, anchorNodeId: "", supersessionStatus: "CURRENT_OPERATIVE", syntheticRawTextFixture: false })?.refuseModelDispatch).toBe(true);
   });
 
   it("classifies a contents row whose extraction split the label, title, and page number", () => {
@@ -208,6 +216,142 @@ describe("operative source authentication", () => {
     const missing = operativeModelDispatchBlock({ index, anchorNodeId: "missing-node", supersessionStatus: "CURRENT_OPERATIVE" });
     expect(missing?.refuseModelDispatch).toBe(true);
     expect(missing?.reason.startsWith("MISSING_OPERATIVE_AUTHORITY")).toBe(true);
+  });
+
+  describe("production fail-closed when operative identity is missing", () => {
+    function countingCaller(): { caller: SemanticCaller; calls: () => number } {
+      let calls = 0;
+      return {
+        calls: () => calls,
+        caller: {
+          providerName: "test",
+          model: "test",
+          isSynthetic: true,
+          compile: async () => {
+            calls += 1;
+            throw new Error("dispatched");
+          },
+        },
+      };
+    }
+
+    it("refuses a missing structural index and does not dispatch", async () => {
+      const recorded = countingCaller();
+      const decision = operativeModelDispatchBlock({ index: null, anchorNodeId: "body", supersessionStatus: "CURRENT_OPERATIVE" });
+      expect(decision?.structuralKind).toBe("NO_OPERATIVE_EVIDENCE");
+      expect(decision?.refuseModelDispatch).toBe(true);
+      expect(decision?.reason).toBe("MISSING_OPERATIVE_AUTHORITY: no structural index was supplied.");
+      const input = testCompilerInput({
+        syntheticRawTextFixture: false,
+        toolAccess: { structuralIndex: null as never, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() },
+      });
+      const result = await compileCovenantToIR(input, { caller: recorded.caller, accountability: false });
+      expect(result.status).toBe("FAILED");
+      expect(result.failureReasons).toEqual(["OPERATIVE_AUTHORITY_REFUSED"]);
+      expect(result.unresolvedIssues[0]).toContain("no structural index was supplied");
+      expect(recorded.calls()).toBe(0);
+      const waived = operativeModelDispatchBlock({ index: null, anchorNodeId: "body", supersessionStatus: "CURRENT_OPERATIVE", syntheticRawTextFixture: true });
+      expect(waived).toBeNull();
+    });
+
+    it("refuses a missing anchor id and does not dispatch", async () => {
+      const recorded = countingCaller();
+      const decision = operativeModelDispatchBlock({ index, anchorNodeId: null, supersessionStatus: "CURRENT_OPERATIVE" });
+      expect(decision?.refuseModelDispatch).toBe(true);
+      expect(decision?.reason).toBe("MISSING_OPERATIVE_AUTHORITY: no anchor node id was supplied.");
+      const input = testCompilerInput({
+        syntheticRawTextFixture: false,
+        operativeSourceText: body.trim(),
+        contextBundle: emptyContextBundle(),
+        toolAccess: { structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() },
+      });
+      const result = await compileCovenantToIR(input, { caller: recorded.caller, accountability: false });
+      expect(result.status).toBe("FAILED");
+      expect(result.failureReasons).toEqual(["OPERATIVE_AUTHORITY_REFUSED"]);
+      expect(result.unresolvedIssues[0]).toContain("no anchor node id was supplied");
+      expect(recorded.calls()).toBe(0);
+    });
+
+    it("refuses an invalid anchor id even when the raw-text waiver is set", () => {
+      const decision = operativeModelDispatchBlock({ index, anchorNodeId: "missing-node", supersessionStatus: "CURRENT_OPERATIVE", syntheticRawTextFixture: true });
+      expect(decision?.structuralKind).toBe("NO_OPERATIVE_EVIDENCE");
+      expect(decision?.refuseModelDispatch).toBe(true);
+      expect(decision?.reason).toBe("MISSING_OPERATIVE_AUTHORITY: the anchor node id is not in the structural index.");
+      expect(decision?.authoritativeCurrent).toBe(false);
+    });
+
+    it("refuses a table-of-contents-only source and the waiver does not admit it", async () => {
+      const recorded = countingCaller();
+      const decision = operativeModelDispatchBlock({ index, anchorNodeId: "toc", supersessionStatus: "CURRENT_OPERATIVE", syntheticRawTextFixture: true });
+      expect(decision?.structuralKind).toBe("CONTENTS_LISTING");
+      expect(decision?.refuseModelDispatch).toBe(true);
+      const input = testCompilerInput({
+        syntheticRawTextFixture: true,
+        operativeSourceText: toc.trim(),
+        contextBundle: emptyContextBundle({ originatingStructuralNodeIds: ["toc"], originatingSupersessionStatus: "CURRENT_OPERATIVE" }),
+        toolAccess: { structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() },
+      });
+      const result = await compileCovenantToIR(input, { caller: recorded.caller, accountability: false });
+      expect(result.failureReasons).toEqual(["OPERATIVE_AUTHORITY_REFUSED"]);
+      expect(result.unresolvedIssues[0]).toContain("CONTENTS_LISTING");
+      expect(recorded.calls()).toBe(0);
+    });
+
+    it("admits a valid operative body", async () => {
+      const recorded = countingCaller();
+      const decision = operativeModelDispatchBlock({ index, anchorNodeId: "body", supersessionStatus: "CURRENT_OPERATIVE" });
+      expect(decision?.structuralKind).toBe("OPERATIVE_OCCURRENCE");
+      expect(decision?.refuseModelDispatch).toBe(false);
+      expect(decision?.authoritativeCurrent).toBe(true);
+      const input = testCompilerInput({
+        syntheticRawTextFixture: false,
+        operativeSourceText: body.trim(),
+        contextBundle: emptyContextBundle({ originatingStructuralNodeIds: ["body"], originatingSupersessionStatus: "CURRENT_OPERATIVE" }),
+        toolAccess: { structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() },
+      });
+      await expect(compileCovenantToIR(input, { caller: recorded.caller, accountability: false })).resolves.toMatchObject({ failureReasons: expect.not.arrayContaining(["OPERATIVE_AUTHORITY_REFUSED"]) });
+      expect(recorded.calls()).toBe(1);
+    });
+
+    it("admits a definitions span that declares terms", () => {
+      const definitions = "\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period.\n";
+      const local = indexFor(doc, definitions, [node({ documentId: doc, nodeId: "defs", nodeType: "SECTION", sectionRef: "1.01", charStart: 0, charEnd: definitions.length, parentNodeId: null })]);
+      const decision = operativeModelDispatchBlock({ index: local, anchorNodeId: "defs", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS" });
+      expect(decision?.structuralKind).toBe("OPERATIVE_OCCURRENCE");
+      expect(decision?.refuseModelDispatch).toBe(false);
+      expect(decision?.authoritativeCurrent).toBe(false);
+      expect(decision?.reason).toContain("SUPERSESSION_UNRESOLVED");
+    });
+
+    it("keeps an operative cross-reference as operative and refuses a pointer that is not a covenant", () => {
+      const cited = "The Borrower shall not incur Indebtedness except as permitted by Section 7.02.\n";
+      const local = indexFor(doc, cited, [node({ documentId: doc, nodeId: "cite", nodeType: "SECTION", sectionRef: "7.01", charStart: 0, charEnd: cited.length, parentNodeId: null })]);
+      const cross = operativeModelDispatchBlock({ index: local, anchorNodeId: "cite", supersessionStatus: "CURRENT_OPERATIVE" });
+      expect(cross?.structuralKind).toBe("OPERATIVE_OCCURRENCE");
+      expect(cross?.refuseModelDispatch).toBe(false);
+      const pointerText = "the foregoing clause (y)\n";
+      const pointerIndex = indexFor(doc, pointerText, [node({ documentId: doc, nodeId: "pointer", nodeType: "SUBCLAUSE", sectionRef: "7.05(a)(4)", charStart: 0, charEnd: pointerText.length, parentNodeId: null })]);
+      const pointer = operativeModelDispatchBlock({ index: pointerIndex, anchorNodeId: "pointer", supersessionStatus: "CURRENT_OPERATIVE", syntheticRawTextFixture: true });
+      expect(pointer?.structuralKind).toBe("NO_OPERATIVE_EVIDENCE");
+      expect(pointer?.refuseModelDispatch).toBe(true);
+    });
+
+    it("refuses to select a body when two operative occurrences share a label", () => {
+      const first = "Section 4.01 First. The Borrower shall pay.\n";
+      const second = "Section 4.01 Second. The Borrower shall not pay.\n";
+      const combined = first + second;
+      const local = indexFor(doc, combined, [
+        node({ documentId: doc, nodeId: "first", nodeType: "SECTION", sectionRef: "4.01", charStart: 0, charEnd: first.length, parentNodeId: null }),
+        node({ documentId: doc, nodeId: "second", nodeType: "SECTION", sectionRef: "4.01", charStart: first.length, charEnd: combined.length, parentNodeId: null, ordinal: 1 }),
+      ]);
+      const rows = ["first", "second"].map((id) => {
+        const decision = operativeModelDispatchBlock({ index: local, anchorNodeId: id, supersessionStatus: "CURRENT_OPERATIVE" });
+        expect(decision?.structuralKind).toBe("OPERATIVE_OCCURRENCE");
+        expect(decision?.refuseModelDispatch).toBe(false);
+        return { normalizedSourceRef: "4.01", structuralKind: decision!.structuralKind, supersessionStatus: decision!.supersessionStatus, sourceHashOk: true, occurrenceId: id };
+      });
+      expect(selectAuthenticatedSectionBodies(rows, ["4.01"])).toEqual([]);
+    });
   });
 
   it("classifies a parsed unseen document without using a character-count cutoff", () => {

@@ -85,7 +85,7 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Current task: a definition mention withheld the operative section because a contents row shared the label.
 - Status: definition-text retrieval and `retrieveCrossReferencesFromNode` both skip a contents listing and retrieve the operative body when one shares the label. Two operative bodies stay unresolved. `context-retrieval-definition-contents.test.ts` 4 passed. `context-retrieval-pipeline.test.ts` 36 passed.
 - Known defects still open: `package-compile.ts` still compiles every eligible non-representation candidate. Local semantic-review timeouts under the 5s default are not a certification result. Actions on `8590be6` and `044d1b3` are unobserved.
-- Unanchored compile: every production caller that reaches `compileCovenantToIR` with a real package index also passes a non-empty anchor. Discovery Pass C sets `structuralNodeIds` to a node id from that index. `compileCandidateToVerifiedIR` returns `NO_STRUCTURAL_ANCHOR` before compile when the list is empty or the id is missing. Gibraltar `candidateFor` and `rehydrate` skip a row with no resolvable node id. `operativeModelDispatchBlock` still returns null when the index is absent or the anchor id is absent, because `testCompilerInput` and certified bounded-execution fixtures compile raw operative text with an index attached and `originatingStructuralNodeIds` empty. An anchor id that is present and missing from the index is still refused.
+- Missing operative identity is refused inside `compileCovenantToIR`. `operativeModelDispatchBlock` returns `MISSING_OPERATIVE_AUTHORITY` when the structural index is absent or the anchor id is absent, unless `syntheticRawTextFixture` is exactly true. That flag is set only by `tests/contract-model/semantic-compiler/test-helpers.ts`. A present anchor is still authenticated: a contents listing, a hash mismatch, a known-superseded span, and an id missing from the index are refused even when the flag is set. Production builders (`candidate-input.ts`, the analysis orchestrator, Gibraltar rehydration, the CONMED compile input) do not set the flag. `compileCandidateToVerifiedIR` still returns `NO_STRUCTURAL_ANCHOR` before compile when the anchor list is empty or the id is missing from the index.
 - `7.4(a)(iii)` and `7.4(a)(iv)` are not nodes. The marker scanner rejects a parenthesis that is immediately preceded by a comma and a space (`MARKER_OCCURRENCE` in `clause-hierarchy.ts`). The Section 7.4 text is "), (iii)" and "), (iv)". That exclusion is the documented citation-list rule. Those two discovery ids have no run-original evidence file. The same two keys were already unresolved on the parser before the letter-run guard. Do not accept every comma-separated marker; that was the FWRG citation false-positive the rule exists to stop.
 - Decision: do not merge `origin/main` (`9de4e57`) into this branch. The qualitative-honesty files diverge. Do not wire question closure into `package-compile.ts`.
 
@@ -94,6 +94,16 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Do not recompile Article VII and do not rerun the 788-row verification. Paid spend remains $0.
 - Do not treat a cache hit or a dry selection as certification.
 - Wiring `package-compile.ts` to the closure remains deferred.
+
+## Milestone — operative identity fail-closed
+
+- Starting SHA for this assignment: `1be490cd850ee71a98566cc32399dc24c37d6a15`.
+- Issue 1 (13 `OPERATIVE_AUTHORITY_REFUSED` failures on Actions `37793529670` at `481b19f`) was already closed by definition-declaration recognition before this assignment. Reproduced on this tree: `golden-map`, `edge-authority`, `xref-fixtures`, `certification`, and `offline-maps` passed. The refused span on `481b19f` was golden `1.01` (`NO_OPERATIVE_EVIDENCE` on a definitions section). The other twelve failures are the package-completeness cascade from that refusal.
+- Issue 2 was still open on `1be490c`: a missing index or a missing anchor returned null. It now refuses unless the explicit test flag is set.
+- `npx tsc --noEmit -p .` exited 0 after narrowing `resolvedTargetId` in `reference-context.ts` (the previous head did not typecheck).
+- `npm run test:phase3-certification`: 455 passed, 4 failed, all in `semantic-verification-verify.test.ts`. One assertion is `semanticReviewInvoked === false`. Three timed out at 5000ms. The timeout was not raised and the assertion was not changed.
+- Extra canonical-compiler suites: condition-suspicion and condition-remediation routing tests, plus two `phase-2g-amendment-precedence` tests, timed out at 5000ms when run together and the two amendment tests still timed out alone. They do not call `compileCovenantToIR`. Not attributed to this gate. Not weakened.
+- Paid calls: none. Certification: not advanced. Sealed evidence: not rewritten. PR #136 is not merge-ready until the checks on this head conclude.
 
 ## NEXT_TASK
 

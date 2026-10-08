@@ -216,6 +216,13 @@ export interface SemanticCompilerInput {
   operativeSourceOrigin?: import("../candidate-span").OperativeSourceOrigin;
   /** When set, compileCovenantToIR refuses dispatch unless the anchor span's sha256 matches. Absent means no hash was supplied. */
   expectedOperativeSourceSha256?: string | null;
+  /**
+   * NONPRODUCTION test boundary. Set only by tests/contract-model/semantic-compiler/test-helpers.ts.
+   * When true, a missing structural index or a missing anchor id does not refuse dispatch.
+   * A present anchor is still authenticated: a contents listing, a hash mismatch, a known-superseded span,
+   * and an id that is not in the index are refused. Production builders leave this unset.
+   */
+  syntheticRawTextFixture?: boolean;
   /** SEMANTIC ACCOUNTABILITY: populated by compileCovenantToIR before the model call - the resolved source-context (regions + state) handed to Pass A and Pass B. Never set by external callers. */
   sourceContext?: SourceContextResult | null;
   /** SEMANTIC ACCOUNTABILITY: the FROZEN Pass A inventory handed read-only to Pass B. Never set by external callers. */

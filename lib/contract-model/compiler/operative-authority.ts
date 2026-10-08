@@ -157,13 +157,22 @@ function uniquePhysicalOccurrences<T extends ArticleSevenAuthorityRow>(rows: rea
   return unique;
 }
 
+function missingAuthority(reason: string, supersessionStatus: NodeSupersessionStatus | null | undefined): OperativeAuthorityDecision {
+  return {
+    structuralKind: "NO_OPERATIVE_EVIDENCE",
+    supersessionStatus: supersessionStatus ?? "UNKNOWN_SUPERSESSION_STATUS",
+    authoritativeCurrent: false,
+    refuseModelDispatch: true,
+    sourceSha256: "",
+    reason,
+  };
+}
+
 /**
  * Production compile gate.
- * Discovery, the covenant-map pipeline, and Gibraltar rehydration each pass a
- * real anchor before compile. Certified raw-text fixtures call compile with a
- * structural index and an empty originatingStructuralNodeIds list. No index,
- * or an index with no anchor id, therefore returns null. An anchor id that
- * was supplied and is not in the index is still a refusal.
+ * A missing structural index or a missing anchor id refuses dispatch.
+ * `syntheticRawTextFixture` is the explicit nonproduction waiver for those two absences only.
+ * An anchor id that was supplied is always authenticated, including when the waiver is set.
  */
 export function operativeModelDispatchBlock(args: {
   index: Pick<StructuralIndex, "getNodeById" | "getNodeText" | "getDescendants"> | null | undefined;
@@ -171,8 +180,17 @@ export function operativeModelDispatchBlock(args: {
   supersessionStatus: NodeSupersessionStatus | null | undefined;
   operativeSourceOrigin?: "STRUCTURAL_NODE" | "OPERATIVE_STATE_CURRENT_TEXT";
   expectedSha256?: string | null;
+  syntheticRawTextFixture?: boolean;
 }): OperativeAuthorityDecision | null {
-  if (!args.index || !args.anchorNodeId) return null;
+  if (!args.index || !args.anchorNodeId) {
+    if (args.syntheticRawTextFixture === true) return null;
+    return missingAuthority(
+      !args.index
+        ? "MISSING_OPERATIVE_AUTHORITY: no structural index was supplied."
+        : "MISSING_OPERATIVE_AUTHORITY: no anchor node id was supplied.",
+      args.supersessionStatus,
+    );
+  }
   const node = args.index.getNodeById(args.anchorNodeId);
   if (!node) {
     return {

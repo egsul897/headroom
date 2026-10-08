@@ -202,6 +202,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     supersessionStatus: input.contextBundle?.originatingSupersessionStatus ?? null,
     operativeSourceOrigin: input.operativeSourceOrigin,
     expectedSha256: input.expectedOperativeSourceSha256,
+    syntheticRawTextFixture: input.syntheticRawTextFixture === true,
   });
   if (authorityBlock?.refuseModelDispatch) {
     return {

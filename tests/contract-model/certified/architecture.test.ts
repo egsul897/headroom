@@ -51,6 +51,16 @@ describe("one operative-source builder", () => {
   });
 });
 
+describe("operative identity is not waived in production source", () => {
+  it("only the semantic-compiler test helper assigns syntheticRawTextFixture: true", () => {
+    const production = [...walk("lib"), ...walk("scripts")].filter((f) => /syntheticRawTextFixture:\s*true\b/.test(read(f)));
+    expect(production).toEqual([]);
+    expect(read("tests/contract-model/semantic-compiler/test-helpers.ts")).toMatch(/syntheticRawTextFixture:\s*true\b/);
+    expect(read("lib/contract-model/compiler/semantic/compile.ts")).toMatch(/syntheticRawTextFixture: input\.syntheticRawTextFixture === true/);
+    expect(read("lib/contract-model/covenant-map/candidate-input.ts")).not.toMatch(/syntheticRawTextFixture/);
+  });
+});
+
 describe("certified path has no ambient behaviour", () => {
   it("no process.env read anywhere in the certified modules", () => {
     for (const f of CERTIFIED) expect({ file: f, reads: (read(f).match(/process\.env/g) ?? []).length }).toEqual({ file: f, reads: 0 });

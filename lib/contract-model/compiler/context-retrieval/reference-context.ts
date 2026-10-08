@@ -141,7 +141,7 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
       continue;
     }
     const targetNode = resolvedTargetId ? index.getNodeById(resolvedTargetId) : undefined;
-    if (!targetNode) continue;
+    if (!resolvedTargetId || !targetNode) continue;
     if (classifyStructuralOccurrence(targetNode, index) === "CONTENTS_LISTING") {
       state.unresolved.push({
         originatingNodeKey: nodeId,
