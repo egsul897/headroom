@@ -1,0 +1,17 @@
+{
+  "candidateId": "VC-006",
+  "chainId": "cnmd-seventh-ar-to-eighth-ar",
+  "purpose": "Omnibus amendment that (1) amends two parent documents, (2) incorporates blackline exhibits by reference, (3) adds schedule commitments, (4) uses Consenting Lender consents distinct from permanent text.",
+  "mapsToProductionModules": ["schedule-modification", "markup-exhibit", "independent-verification", "operative-state"],
+  "expectedFailClosedBehavior": "Without attached Exhibit pages containing the Amended Credit Agreement blackline, independent verification cannot confirm newTextFoundInSource for full restated sections — must fail closed / REVIEW_REQUIRED rather than inventing after-text. Schedule 1 Term A-2 addition should map to MODIFY_SCHEDULE taxonomy. Consents must not be misclassified as permanent waivers of unrelated covenants.",
+  "queryDates": ["2026-05-26", "2026-05-27", "2026-05-28"],
+  "sourcePointers": [
+    {
+      "docId": "cnmd-omnibus-2026",
+      "accession": "0002077096-26-000190",
+      "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+      "quote": "The \"Term A-2 Commitments\" set forth on Schedule 1 of this Amendment are hereby added to Schedule 1.1 of the Credit Agreement"
+    }
+  ],
+  "notAProductionPatch": true
+}

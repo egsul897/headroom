@@ -20,6 +20,7 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `11-concrete-integration-plan.md` | Executable integration plan + conflict resolutions |
 | `12-core-four-role-lock.md` | Binding CKF/VIC/CCA/GIB role lock |
 | `13-shared-corpus-manifest.json` | Shared corpus manifest + contributing datasets |
+| `14-continuous-main-integration-dashboard.json` | Live Integration Lead dashboard (merged SHAs, blockers, next five) |
 | `daily/` | Daily integration summaries |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |

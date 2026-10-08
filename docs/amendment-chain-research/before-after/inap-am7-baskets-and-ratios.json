@@ -1,0 +1,123 @@
+{
+  "recordId": "ba-inap-am7-baskets-ratios",
+  "chainId": "inap-2017-04-06-credit-agreement",
+  "amendingDocId": "inap-am7",
+  "generatedAt": "2026-10-08T22:54:05Z",
+  "comparisons": [
+    {
+      "changeClass": "BASKET_AMOUNT",
+      "target": {
+        "kind": "SECTION",
+        "sectionRef": "6.04(m)",
+        "covenantFamily": "INVESTMENTS"
+      },
+      "label": "General Investments basket narrowed",
+      "beforeText": "(m) other Investments in an aggregate amount not to exceed on the date such Investments are made the greater of (x) $25,000,000 and (y) 30% of Consolidated EBITDA for the most recently ended Test Period as of such date;",
+      "afterText": "(m) other Investments in an aggregate amount not to exceed on the date such Investments are made the greater of (x) $12,500,000 and (y) 15% of Consolidated EBITDA for the most recently ended Test Period as of such date;",
+      "authority": {
+        "status": "SOURCE_BACKED_WITH_INTERVENING_GAP",
+        "before": {
+          "status": "SOURCE_BACKED",
+          "accession": "0001571049-17-003250",
+          "exhibit": "EX-10.1",
+          "docId": "inap-ca-orig",
+          "quote": "(m) other Investments in an aggregate amount not to exceed on the date such Investments are made the greater of (x) $25,000,000 and (y) 30% of Consolidated EBITDA for the most recently ended Test Period as of such date;",
+          "note": "Orig-era before-text. Am1\u2013Am6 intervening changes to \u00a76.04(m) not exhaustively verified \u2014 Am6-era certainty remains UNRESOLVED_DEPENDENCY."
+        },
+        "after": {
+          "status": "SOURCE_BACKED",
+          "accession": "0001140361-19-019513",
+          "exhibit": "EX-10.1",
+          "docId": "inap-am7",
+          "quote": "Section 6.04(m) of the Credit Agreement is hereby amended and restated in its entirety as follows: [afterText]"
+        }
+      },
+      "adversarialTags": [
+        "PERMISSION_NARROWING",
+        "BASKET_AMOUNT_CHANGE",
+        "ACQUIRED_BUT_UNAPPLIED_INTERVENING"
+      ]
+    },
+    {
+      "changeClass": "BASKET_AMOUNT",
+      "target": {
+        "kind": "SECTION",
+        "sectionRef": "6.01(k)",
+        "covenantFamily": "INDEBTEDNESS"
+      },
+      "label": "Foreign Subsidiary debt basket narrowed",
+      "beforeText": "(k) Indebtedness of any Foreign Subsidiary in an aggregate outstanding principal amount for all such Foreign Subsidiaries in an amount not to exceed, at any time outstanding, the greater of (x) $15,000,000 and (y) 18% of Consolidated EBITDA for the most recently ended Test Period as of such time;",
+      "afterText": "(k) Indebtedness of any Foreign Subsidiary in an aggregate outstanding principal amount for all such Foreign Subsidiaries in an amount not to exceed, at any time outstanding, the greater of (x) $5,000,000 and (y) 6% of Consolidated EBITDA for the most recently ended Test Period as of such time;",
+      "authority": {
+        "status": "SOURCE_BACKED_WITH_INTERVENING_GAP",
+        "before": {
+          "status": "SOURCE_BACKED",
+          "accession": "0001571049-17-003250",
+          "exhibit": "EX-10.1",
+          "docId": "inap-ca-orig",
+          "quote": "(k) Indebtedness of any Foreign Subsidiary ... greater of (x) $15,000,000 and (y) 18% of Consolidated EBITDA ..."
+        },
+        "after": {
+          "status": "SOURCE_BACKED",
+          "accession": "0001140361-19-019513",
+          "exhibit": "EX-10.1",
+          "docId": "inap-am7",
+          "quote": "Section 6.01(k)... hereby amended and restated... greater of (x) $5,000,000 and (y) 6% of Consolidated EBITDA..."
+        }
+      },
+      "adversarialTags": [
+        "PERMISSION_NARROWING",
+        "BASKET_AMOUNT_CHANGE",
+        "ACQUIRED_BUT_UNAPPLIED_INTERVENING"
+      ]
+    },
+    {
+      "changeClass": "FINANCIAL_RATIO",
+      "target": {
+        "kind": "SECTION",
+        "sectionRef": "6.10(a)",
+        "covenantFamily": "FINANCIAL_COVENANTS"
+      },
+      "label": "Total Net Leverage Ratio table reset",
+      "beforeText": null,
+      "afterText": "Test Period End Date Total Net Leverage Ratio: 12/31/19\u201312/31/20 7.25:1.00; 3/31/21 5.50:1.00; 6/30/21 5.00:1.00; 9/30/21 4.50:1.00; 12/31/21 and thereafter 4.50:1.00",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001140361-19-019513",
+        "exhibit": "EX-10.1",
+        "gapReason": "Orig/Am1\u2013Am6 \u00a76.10(a) before-table not re-extracted this remediation; after-text SOURCE_BACKED from Am7."
+      },
+      "adversarialTags": [
+        "RATIO_CHANGE",
+        "MULTI_COVENANT_FAMILY"
+      ]
+    },
+    {
+      "changeClass": "FINANCIAL_RATIO",
+      "target": {
+        "kind": "SECTION",
+        "sectionRef": "6.10(b)",
+        "covenantFamily": "FINANCIAL_COVENANTS"
+      },
+      "label": "Consolidated Interest Coverage Ratio table reset",
+      "beforeText": null,
+      "afterText": "Table restated beginning 12/31/19 at 1.60:1.00 stepping to 2.00:1.00 by 9/30/21 and thereafter (full rows in EX-10.1).",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001140361-19-019513",
+        "exhibit": "EX-10.1"
+      }
+    }
+  ],
+  "multiFamilyNote": "Single amendment simultaneously touches Investments, Indebtedness, Asset Sales mechanics, and Financial Covenants \u2014 MULTI_COVENANT_FAMILY adversarial specimen.",
+  "propagationDiscipline": {
+    "documentAcquisition": "COMPLETE_ORIG_AM1_AM7",
+    "amendmentOrdering": "RECITAL_SUPPORTED",
+    "specificTextualAmendmentApplication": "AM7_BASKETS_AND_RATIOS_MODELED",
+    "completeOperativeStateReconstruction": false,
+    "unresolvedDependencies": [
+      "Am1\u2013Am6 intervening basket/definition diffs not exhaustively applied",
+      "Am7 Effective Date condition satisfaction calendar"
+    ]
+  }
+}

@@ -166,3 +166,16 @@
 - **branchTipSha:** `de57b718f1b8f5f7cca664c7896732e7bc3fe667`
 - **ciStatus:** success (2/2 checks; Vercel failure cleared after strict-TS fix)
 - ownershipViolations: []
+
+---
+
+## 2026-10-08T23:14:00Z — CONTINUOUS MAIN INTEGRATION
+
+- Integration Lead executed merges from `9de4e57` → `64e5b5c2`.
+- WS-PAR merges this wave: #151 (FDP), #144 (PCI sidecar), #148 (basket corpus, non-executable), #159 (FDP tsc hotfix).
+- Peer-concurrent merges observed: #130 (fail-closed carve-out), #150 (amendment-chain research), #158 (remediation replay).
+- Stopped queue after #151 `tsc` regression (`noUncheckedIndexedAccess` in FDP tests); fixed via #159; `tsc --noEmit` clean.
+- Focused vitest green (FDP/PCI/basket/covenant-engine/fail-closed/parallel-agents).
+- Open blockers: #143 `readyForMerge=false`; #128 do-not-merge grant; #146 C-DUP-KF + DIRTY; most remaining PRs DIRTY rebase.
+- Dashboard artifact: `14-continuous-main-integration-dashboard.json`.
+- actualExternalCostsUsd: 0
