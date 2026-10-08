@@ -26,7 +26,7 @@ Full PCI suite on tip before Phase 3 edits: **36 passed**.
 6. **Dependency-closure gaps:** Atlas/DEF/ACR/FDP/NCED exports largely UNAVAILABLE in this worktree; comparisons with unclosed builder/financial terms or cross-document instruments are **qualified** (`comparisonQualified`); regex edges remain `REGEX_HEURISTIC`.
 7. **New authentic documents integrated via CKF:** **0** — blocked (published KF corpus export not mounted; no second SEC downloader).
 8. **Diff performance / truncation:** 5-case suite (`phase-3-diff-benchmark.json`); bounded LCS marked **non-exhaustive**; Myers-line does not claim token-level exhaustiveness.
-9. **Ending SHA / tests / CI / PR:** see tip after push; `npx vitest run tests/precedent-comparison`; draft #144 updated; **not merged**.
+9. **Ending SHA / tests / CI / PR:** `3851c47be73a4cabf63998146646184b31af6b7d`; `npx vitest run tests/precedent-comparison` → **41 passed**; draft #144 updated; **not merged**.
 
 ## Artifacts
 
