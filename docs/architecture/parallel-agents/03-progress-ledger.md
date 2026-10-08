@@ -81,3 +81,15 @@
 - Role lock: CKF=acquisition/corpus; VIC=adapters/orchestration; CCA=infra measurements; GIB=Pass B cost study; PAR=contracts only (no rewrite of those components).
 - **ownershipViolations:** []
 - **ciStatus:** deferred while message queue non-empty (per cloud-agent guidance)
+
+---
+
+## 2026-10-08T22:08:45Z — coordination pack tip
+
+- **branchTipSha:** `ea28870d6d821c0af64809ea9ea144ca3cb3b407`
+- **focusedTests:** `npx vitest run tests/architecture/parallel-agents` → 18 passed / 0 failed
+- **ownershipChecker:** OK
+- **draftPR:** https://github.com/egsul897/headroom/pull/138
+- **changedFiles (exclusive):** docs/architecture/parallel-agents/**, tests/architecture/parallel-agents/**, scripts/parallel-agents/**
+- **integrationDependencies:** WS-CKF must implement SEC scheduler; peers may use mock; no Phase-3/NS-4 rewrites
+- **ownershipViolations:** []
