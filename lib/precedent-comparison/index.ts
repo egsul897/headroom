@@ -32,9 +32,18 @@ export { loadNegativeCovenantExceptionDatabase } from "./adapters/negative-coven
 export { auditCorpus, clusterDuplicateSpans, stratifiedSample } from "./validation/corpus-audit";
 export type { CorpusAuditReport } from "./validation/corpus-audit";
 export { ALL_BENCHMARK_SCENARIOS, DEV_SCENARIOS, HELD_OUT_SCENARIOS, benchmarkScenarioCounts } from "./benchmark/scenarios";
+export { ALL_PHASE4_SCENARIOS, PHASE4_DEV_SCENARIOS, PHASE4_HELD_OUT_SCENARIOS, phase4ScenarioCounts } from "./benchmark/phase4-scenarios";
 export { runBenchmarkSuite, evaluateScenario, aggregateMetrics } from "./benchmark/evaluate";
 export type { BenchmarkScenario, BenchmarkMetrics, ScenarioEvaluation } from "./benchmark/types";
 export { runDiffBenchmarkSuite, buildDiffBenchmarkCases } from "./diff-benchmark";
+export {
+  assembleControllingContext,
+  auditContextIncompleteness,
+  classifyMissingDependencies,
+} from "./context-assembly";
+export type { AssembledContext, MissingDependency, MissingDependencyKind } from "./context-assembly";
+export { importCkfExportIntoCorpus, probeCkfExportMount } from "./adapters/ckf-import";
+export type { CkfImportReport } from "./adapters/ckf-import";
 export {
   ALL_QUALITY_SCENARIOS,
   reviewForClaim,

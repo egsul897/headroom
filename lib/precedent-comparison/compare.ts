@@ -83,22 +83,27 @@ export function compareProvisions(
   }
 
   if (overlap.leftOnly.length > 0 || overlap.rightOnly.length > 0) {
-    claims.push(
-      makeClaim({
-        standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
-        dimension: "STRUCTURE",
-        summary: `Drafting-feature divergence — left-only: [${overlap.leftOnly.join(", ") || "none"}]; right-only: [${overlap.rightOnly.join(", ") || "none"}].`,
-        evidence: evidenceFromExcerpts(
-          [
-            ...overlap.leftOnly.slice(0, 3).map((f) => ex(left, leftFeatures.featureEvidence[f] ?? f)),
-            ...overlap.rightOnly.slice(0, 3).map((f) => ex(right, rightFeatures.featureEvidence[f] ?? f)),
-          ],
-          "feature presence differs in cited source excerpts",
-          [...overlap.leftOnly, ...overlap.rightOnly],
-        ),
-        featuresOnlyIn: { left: overlap.leftOnly, right: overlap.rightOnly },
-      }),
-    );
+    // Strip borrower-only naming noise from STRUCTURE elevation (handled under SCOPE).
+    const structLeft = overlap.leftOnly.filter((f) => f !== "BORROWER_SCOPE");
+    const structRight = overlap.rightOnly.filter((f) => f !== "BORROWER_SCOPE");
+    if (structLeft.length > 0 || structRight.length > 0) {
+      claims.push(
+        makeClaim({
+          standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+          dimension: "STRUCTURE",
+          summary: `Drafting-feature divergence — left-only: [${structLeft.join(", ") || "none"}]; right-only: [${structRight.join(", ") || "none"}].`,
+          evidence: evidenceFromExcerpts(
+            [
+              ...structLeft.slice(0, 3).map((f) => ex(left, leftFeatures.featureEvidence[f] ?? f)),
+              ...structRight.slice(0, 3).map((f) => ex(right, rightFeatures.featureEvidence[f] ?? f)),
+            ],
+            "feature presence differs in cited source excerpts",
+            [...structLeft, ...structRight],
+          ),
+          featuresOnlyIn: { left: structLeft, right: structRight },
+        }),
+      );
+    }
   }
 
   for (const excerpt of phrases.onlyLeft) {
@@ -127,22 +132,48 @@ export function compareProvisions(
   const rightScope = scopeFeatures.filter((f) => rightFeatures.features.includes(f));
   const scopeOverlap = featureOverlap([...leftScope], [...rightScope]);
   if (scopeOverlap.leftOnly.length > 0 || scopeOverlap.rightOnly.length > 0) {
-    claims.push(
-      makeClaim({
-        standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
-        dimension: "SCOPE",
-        summary: `Entity-scope drafting differs. Left: [${leftScope.join(", ") || "none"}]; right: [${rightScope.join(", ") || "none"}].`,
-        evidence: evidenceFromExcerpts(
-          [
-            ...scopeOverlap.leftOnly.map((f) => ex(left, leftFeatures.featureEvidence[f] ?? f)),
-            ...scopeOverlap.rightOnly.map((f) => ex(right, rightFeatures.featureEvidence[f] ?? f)),
-          ],
-          "scope markers diverge in source",
-          [...scopeOverlap.leftOnly, ...scopeOverlap.rightOnly],
-        ),
-        featuresOnlyIn: { left: [...scopeOverlap.leftOnly], right: [...scopeOverlap.rightOnly] },
-      }),
-    );
+    // Borrower-only naming on one side is not a material entity-scope change by itself:
+    // credit-agreement negatives default to the Borrower. Elevate only when Guarantor /
+    // Restricted Subsidiary / Non-Guarantor markers diverge, or both sides name conflicting scopes.
+    const materialScopeLeft = scopeOverlap.leftOnly.filter((f) => f !== "BORROWER_SCOPE");
+    const materialScopeRight = scopeOverlap.rightOnly.filter((f) => f !== "BORROWER_SCOPE");
+    const borrowerOnlyAsymmetry =
+      materialScopeLeft.length === 0 &&
+      materialScopeRight.length === 0 &&
+      (scopeOverlap.leftOnly.includes("BORROWER_SCOPE") || scopeOverlap.rightOnly.includes("BORROWER_SCOPE"));
+    if (borrowerOnlyAsymmetry) {
+      claims.push(
+        makeClaim({
+          standing: "SEMANTIC_HYPOTHESIS",
+          dimension: "SCOPE",
+          summary:
+            "One side names the Borrower explicitly and the other is silent — unverified semantic hypothesis (Borrower is the default obligor), not reviewed precedent and not a verified entity-scope legal difference.",
+          evidence: evidenceFromExcerpts(
+            [ex(left, left.sourceText.slice(0, 120)), ex(right, right.sourceText.slice(0, 120))],
+            "borrower-only naming asymmetry; not elevated to SOURCE_SUPPORTED",
+            [...scopeOverlap.leftOnly, ...scopeOverlap.rightOnly],
+          ),
+          featuresOnlyIn: { left: [...scopeOverlap.leftOnly], right: [...scopeOverlap.rightOnly] },
+        }),
+      );
+    } else {
+      claims.push(
+        makeClaim({
+          standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+          dimension: "SCOPE",
+          summary: `Entity-scope drafting differs. Left: [${leftScope.join(", ") || "none"}]; right: [${rightScope.join(", ") || "none"}].`,
+          evidence: evidenceFromExcerpts(
+            [
+              ...scopeOverlap.leftOnly.map((f) => ex(left, leftFeatures.featureEvidence[f] ?? f)),
+              ...scopeOverlap.rightOnly.map((f) => ex(right, rightFeatures.featureEvidence[f] ?? f)),
+            ],
+            "scope markers diverge in source",
+            [...scopeOverlap.leftOnly, ...scopeOverlap.rightOnly],
+          ),
+          featuresOnlyIn: { left: [...scopeOverlap.leftOnly], right: [...scopeOverlap.rightOnly] },
+        }),
+      );
+    }
   }
 
   for (const f of ["SHARED_CAPACITY", "RECLASSIFICATION_RIGHT"] as const) {
@@ -209,10 +240,18 @@ export function compareProvisions(
   }
 
   // Numeric / ratio threshold asymmetries (source-backed economics).
-  const moneyRe = /\$\s?[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?|\b\d+(?:\.\d+)?\s*%|\b\d+(?:\.\d+)?\s*(?:to\s*)?1\.0{0,2}\b|\b\d+(?:\.\d+)?x\b/gi;
+  // Normalize "4.00 to 1.00" / "4.00:1.00" / "4.00:1" / "4.00x" to a canonical key
+  // so purely orthographic ratio restatements are not false legal differences.
+  const moneyRe =
+    /\$\s?[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?|\b\d+(?:\.\d+)?\s*%|\b\d+(?:\.\d+)?\s*(?:to\s*|:)\s*1(?:\.0{1,2})?\b|\b\d+(?:\.\d+)?x\b/gi;
   const leftMoney = [...left.sourceText.matchAll(moneyRe)].map((m) => m[0]!.replace(/\s+/g, " "));
   const rightMoney = [...right.sourceText.matchAll(moneyRe)].map((m) => m[0]!.replace(/\s+/g, " "));
-  const normM = (s: string) => s.toLowerCase().replace(/,/g, "");
+  const normM = (s: string) => {
+    let t = s.toLowerCase().replace(/,/g, "").replace(/\s+/g, " ").trim();
+    t = t.replace(/\b(\d+(?:\.\d+)?)\s*(?:to\s*|:)\s*1(?:\.0{1,2})?\b/g, "$1:1");
+    t = t.replace(/\b(\d+(?:\.\d+)?)x\b/g, "$1:1");
+    return t;
+  };
   const leftMSet = new Set(leftMoney.map(normM));
   const rightMSet = new Set(rightMoney.map(normM));
   const moneyOnlyLeft = leftMoney.filter((m) => !rightMSet.has(normM(m)));
@@ -228,7 +267,7 @@ export function compareProvisions(
             ...moneyOnlyLeft.slice(0, 2).map((m) => ex(left, m)),
             ...moneyOnlyRight.slice(0, 2).map((m) => ex(right, m)),
           ],
-          "dollar/ratio/percent tokens differ in source text",
+          "dollar/ratio/percent tokens differ in source text after ratio-format normalization",
           ["numeric-threshold"],
         ),
       }),

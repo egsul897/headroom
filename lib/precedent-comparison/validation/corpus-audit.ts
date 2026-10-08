@@ -63,7 +63,7 @@ function nearDuplicate(a: string, b: string): boolean {
   return (nb.includes(pref) && nb.includes(suf)) || (na.includes(nb.slice(0, 120)) && na.includes(nb.slice(-120)));
 }
 
-/** Heuristic: controlling context present if definitions family OR financial terms OR amends link OR shared-capacity tags. */
+/** Heuristic: controlling context present if definitions family OR financial terms OR amends link OR parent assembled. */
 export function hasCompleteControllingContext(p: PrecedentProvision, corpus: PrecedentCorpus): boolean {
   if (p.covenantFamily === "DEFINITIONS_CALCULATION_RULES") return true;
   if (p.financialDefinitionTerms.length > 0) return true;
@@ -75,7 +75,6 @@ export function hasCompleteControllingContext(p: PrecedentProvision, corpus: Pre
       d.covenantFamily === "DEFINITIONS_CALCULATION_RULES" &&
       d.sourceText.length > 40,
   );
-  if (defs.length === 0) return false;
   const needs = [
     "Consolidated EBITDA",
     "Indebtedness",
@@ -85,12 +84,27 @@ export function hasCompleteControllingContext(p: PrecedentProvision, corpus: Pre
     "Total Net Leverage",
   ];
   const text = p.sourceText;
-  const referenced = needs.filter((t) => text.includes(t.split(" ")[0]!) && text.includes(t));
-  if (referenced.length === 0) {
-    // No heavy defined-term dependency detected — treat basket-only slices as incomplete
-    if (p.tags.includes("basket") && p.sourceText.length < 400) return false;
-    return true;
+  const referenced = needs.filter((t) => text.includes(t));
+
+  // Short basket: complete if parent section is present in corpus (Phase 4 assembly).
+  if (p.tags.includes("basket") && p.sourceText.length < 400) {
+    const parentRef = p.locator.sourceSectionRef.replace(/\([a-z0-9]+\)$/i, "");
+    const parent = corpus.list().find(
+      (x) =>
+        x.locator.packageId === p.locator.packageId &&
+        x.locator.sourceSectionRef === parentRef &&
+        x.provisionId !== p.provisionId &&
+        x.sourceText.length >= 200,
+    );
+    if (!parent) return false;
+    // Parent present — still require defs for referenced heavy terms if any
+    if (referenced.length === 0) return true;
+    if (defs.length === 0) return false;
+    return referenced.every((t) => defs.some((d) => d.sourceText.includes(t) || d.locator.sourceSectionRef.includes(t)));
   }
+
+  if (defs.length === 0) return referenced.length === 0;
+  if (referenced.length === 0) return true;
   return referenced.every((t) => defs.some((d) => d.sourceText.includes(t) || d.locator.sourceSectionRef.includes(t)));
 }
 

@@ -74,8 +74,9 @@ export function detectDraftingFeatures(sourceText: string, signals?: SemanticSig
   if (sig.exceptions.includes("INTERCOMPANY_CARVEOUT") || /\bintercompany\b/i.test(text)) {
     add("INTERCOMPANY_CARVEOUT", evidence(/\bintercompany\b/i, text) ?? "intercompany");
   }
-  if (sig.exceptions.includes("ORDINARY_COURSE") || /\bordinary course\b/i.test(text)) {
-    add("ORDINARY_COURSE_CARVEOUT", evidence(/\bordinary course\b/i, text) ?? "ordinary course");
+  // Hyphenated "ordinary-course" is legally the same drafting feature as "ordinary course".
+  if (sig.exceptions.includes("ORDINARY_COURSE") || /\bordinary[\s-]+course\b/i.test(text)) {
+    add("ORDINARY_COURSE_CARVEOUT", evidence(/\bordinary[\s-]+course\b/i, text) ?? "ordinary course");
   }
   if (
     /\b(?:subordinated|junior|Restricted Debt|Permitted Subordinated|Permitted Unsecured).{0,60}(?:prepay|payment|redeem|repurchase)/i.test(text) ||
