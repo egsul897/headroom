@@ -16,7 +16,8 @@ Cursor work. Provider calls: none in this workstream.
 | 6 | mutation suite + anti-overfitting audit (`09-mutation-and-overfitting.md`, `mutations.ts`, `mutations.test.ts`, `mutation-runs/83e6bf1d3ce0`), cross-reference audit, IPV-16/IPV-17, acceptance run `acceptance-runs/83e6bf1d3ce0` (444 checks) | done (`83e6bf1` + this commit) |
 | 7 | evidence quality scorecard, pilot acceptance criteria, executive assessment, design-partner package, positioning by maturity, proposed paid experiments, next queue (docs 10–16), scorecard 04 refresh | done (this commit) |
 | 8 | harness strengthening: text-hash pinning, side-letter/consent mutants, package K, I/J/K adversarial plans, IPV-17 closed, IPV-18; runs at `2b018f8a6719` | done (`2b018f8` + this commit) |
-| 9 | continuous-loop invariants batch 1 (ten of forty) | next |
+| 9 | invariant ledger (`17-invariant-backlog.md`, forty mapped), invariant checks INV-01/03/04/05/06/37 (`invariants.ts`, `invariants.test.ts`), IPV-19/IPV-20 | done (this commit) |
+| 10 | invariant batch 2: affiliate transactions fixture, designation mechanics, reclassification representation, maintenance test at runtime, add-back-removal definition amendment | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

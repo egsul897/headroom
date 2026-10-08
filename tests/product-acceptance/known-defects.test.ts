@@ -13,8 +13,8 @@ import { runAll } from "../../scripts/product-acceptance/runner";
 import type { AcceptanceReport } from "../../scripts/product-acceptance/report-types";
 
 interface Register { defects: Array<{ id: string; status: string; title: string; severity: string; signatures: Array<{ packageId: string; expectationRef: string; severity?: string; evidence?: string }> }> }
-/** Signatures whose evidence is the mutation suite are checked by tests/product-acceptance/mutations.test.ts, not by the acceptance run. */
-const runSignatures = (d: Register["defects"][number]) => d.signatures.filter((s) => s.evidence !== "MUTATION");
+/** Signatures whose evidence is the mutation suite or the invariant checks are owned by mutations.test.ts / invariants.test.ts, not by the acceptance run. */
+const runSignatures = (d: Register["defects"][number]) => d.signatures.filter((s) => !s.evidence);
 const register = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../docs/product-readiness/03-defect-register.json"), "utf8")) as Register;
 
 let report: AcceptanceReport;

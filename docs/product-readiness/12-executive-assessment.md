@@ -30,8 +30,10 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
 2. **Override documents are invisible to the operative state** (IPV-16): a side letter that tightens a basket produces
    no effect; the instrument reports RESOLVED on the base text. Any real package with waivers or consents is
    unsafe until this is fixed.
-3. **Section-level compilation over an amended agreement uses stale text** (IPV-04) and an unresolvable amendment
-   leaves the instrument RESOLVED (IPV-05).
+3. **Section-level compilation over an amended agreement uses stale text** (IPV-04), an unresolvable amendment
+   leaves the instrument RESOLVED (IPV-05), and **an amendment of a definition is applied to the whole definitions
+   section** while the compiler keeps the old definition (IPV-19/20): ratio baskets would be compiled against a
+   pre-amendment EBITDA.
 4. **Real-world formatting breaks the parser**: tables of contents, dropped enumeration letters, inline enumerations
    inside definitions, exhibit term lists (IPV-06/07/08/11). Two of these fail closed, two fail silently.
 5. **Definition-mediated relationships** (builder baskets netting across sections) are retrieved correctly (J and K
@@ -46,7 +48,7 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
 - The deterministic substrate is real engineering and most of it holds up under adversarial synthetic input. That is
   the asset.
 - The product is not ready for a reviewer-free workflow and must not be positioned as one. It is ready for a
-  **reviewer-in-the-loop diagnostic pilot** once the four priority-0 items (IPV-01/02/03/16) and the operative-source
+  **reviewer-in-the-loop diagnostic pilot** once the priority-0 items (IPV-01/02/03/16/19) and the operative-source
   gate (PR136-F1/F4) are closed and re-verified by the committed tests, and after one metered live run establishes
   cost and model-stage behaviour (doc 15).
 - Generality is plausible but unproven: the static audit found no issuer-specific logic, but the amendment and
@@ -58,7 +60,7 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
 
 ## Three decisions for the founder
 
-1. Fund the Cursor track to close IPV-01/02/03/16 and PR136-F1/F4 before any external demo on a real package.
+1. Fund the Cursor track to close IPV-01/02/03/16/19 and PR136-F1/F4 before any external demo on a real package (every real package has amended definitions).
 2. Authorise the three paid experiments in doc 15 (bounded, ≈$1 total at the locked rate card) to replace estimates
    with measurements before pricing conversations.
 3. Keep the synthetic corpus and the three runners as the CI oracle; every remediation commit must keep 160 tests green

@@ -26,6 +26,8 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 | IPV-16 | CRITICAL_FALSE_PERMISSION | INCORRECT_RESULT | OPERATIVE_STATE | A side letter that overrides a covenant cap 'notwithstanding' the credit agreement produces no amendment effect; the operative state stays RESOLVED with the base-agreement text | b-multi-document, a-basic-credit-agreement, c-amendment-supersession, h-unseen-composition, i-secured-debt-lien |
 | IPV-17 | MISSING_DEPENDENCY | INCORRECT_RESULT | CONTEXT_RETRIEVAL | [CLOSED - harness false positive] Definition-mediated cross-reference closure appeared asymmetric for J 7.08(d); the sibling was present under a different bundle item type | j-restricted-payments-builder |
 | IPV-18 | UNSUPPORTED_AS_COMPLETE | CORRECT_FAIL_CLOSED | SEMANTIC_COMPOSITION | No covenant family exists for voluntary prepayments / redemptions of junior (subordinated) debt; the normalizer silently relabels the unit QUALITATIVE_NEGATIVE_COVENANTS | k-three-way-builder |
+| IPV-19 | WRONG_OPERATIVE_SOURCE | INCORRECT_RESULT | OPERATIVE_STATE | A definition amendment ('The definition of "X" in Section 1.01 … is hereby amended and restated … to read as follows') is resolved as a REPLACE_TEXT of the whole of Section 1.01; the operative state then reads Section 1.01 as that single definition | a-basic-credit-agreement |
+| IPV-20 | WRONG_OPERATIVE_SOURCE | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Definition retrieval hands the compiler the base-agreement definition text even when the operative state holds a RESOLVED amendment to the section the definition lives in | a-basic-credit-agreement |
 
 ## IPV-01 — Entity-scope widening is confirmed and certified when the clause narrows the section's governing scope
 
@@ -260,6 +262,32 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 - **hypothesis**: The family enum was grown from the covenant families seen in the evaluation packages; junior-debt prepayment covenants were absent from them.
 - **acceptance**: A family (e.g. RESTRICTED_DEBT_PAYMENTS) with an action, or an explicit refusal naming an unsupported family; verified by semantic:K-7.09(b) and certification:credit-agreement::7.09 passing with the faithful submission.
 - **signatures**: `pkg-k-three-way-builder` → `semantic:K-7.09`; `pkg-k-three-way-builder` → `semantic:K-7.09(b)`; `pkg-k-three-way-builder` → `certification:credit-agreement::7.09`
+
+## IPV-19 — A definition amendment ('The definition of "X" in Section 1.01 … is hereby amended and restated … to read as follows') is resolved as a REPLACE_TEXT of the whole of Section 1.01; the operative state then reads Section 1.01 as that single definition
+
+**Status** OPEN · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** OPERATIVE_STATE · **Deterministic** true
+
+- **failingInput**: Package A plus an in-memory Amendment No. 1 (effective May 1, 2026): 'The definition of "Consolidated EBITDA" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: "Consolidated EBITDA" means … and non-cash stock compensation expense for such period.' (form F1; F3 'set forth in Section 1.01 … to read in its entirety as follows' behaves the same).
+- **expected**: A DEFINITION-kind effect (targetDefinedTermRef 'Consolidated EBITDA') applied from 2026-05-01, so that the operative definition changes and Section 1.01's other ten definitions are untouched; or an unresolved/REVIEW effect.
+- **actual**: runAmendmentPipeline: one effect, target kind SECTION, targetSectionRef 1.01, operation REPLACE_TEXT, status RESOLVED, resolved deterministically (0 interpreter calls). computeOperativeContractState(2026-06-30): instrument OPERATIVE_STATE_RESOLVED; provision SECTION 1.01 applied 1, currentText = the 243-character restated definition, where the base Section 1.01 is 1,537 characters holding eleven definitions. Form F2 ('Section 1.01 … is hereby amended by amending and restating the definition of …') goes to the interpreter and is REVIEW_REQUIRED (correct fail-closed offline).
+- **repro**: npx tsx scripts/product-acceptance/run-invariants.ts → INV-05 (scripts/product-acceptance/invariants.ts, DEFINITION_AMENDMENT_FORMS F1/F3)
+- **impact**: Evidence corruption at the operative-state layer (priority 0): every other definition in Section 1.01 is reported superseded with no text as of the amendment date; a consumer compiling the definitions candidate from the operative text would see one definition. The amendment itself is applied to the wrong unit, so lineage for 'Consolidated EBITDA' never exists (see IPV-20 for the retrieval consequence).
+- **hypothesis**: The deterministic parser's target resolver matches 'in Section 1.01' before (or instead of) 'the definition of "…"', so the explicit-pattern path binds a SECTION target with the restated text as the replacement; the DEFINITION target kind exists in the type but this drafting form never reaches it.
+- **acceptance**: F1 and F3 yield a DEFINITION-kind effect (or REVIEW), the 1.01 provision keeps its other definitions, and a DEFINITION provision view for 'Consolidated EBITDA' exists at 2026-06-30 with the new text; invariant:INV-05:F1/F3 PRODUCT verdicts pass.
+- **signatures**: `pkg-a-basic-credit-agreement` → `invariant:INV-05:F1:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F1:state-section-1.01-not-replaced`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F3:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F3:state-section-1.01-not-replaced`
+
+## IPV-20 — Definition retrieval hands the compiler the base-agreement definition text even when the operative state holds a RESOLVED amendment to the section the definition lives in
+
+**Status** OPEN · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
+
+- **failingInput**: As IPV-19; buildCandidateCompilerInput for credit-agreement::7.01 with operativeState(2026-06-30), amendmentEffects and supersessionIndex supplied.
+- **expected**: The DEFINITION / DEFINITION_DEPENDENCY item for 'Consolidated EBITDA' at 2026-06-30 carries the amended text (with the stock-compensation add-back), or the bundle flags the definition's supersession status as unresolved.
+- **actual**: The bundle item for Consolidated EBITDA carries the original base-agreement text ('… depreciation and amortization expense for such period.'); no flag. The ratio basket 7.01(c) would be compiled against the pre-amendment EBITDA.
+- **repro**: npx tsx scripts/product-acceptance/run-invariants.ts → INV-05 bundle-definition-current
+- **impact**: Dependent on IPV-19's mis-targeting, but independent in mechanism: definition items are read from the structural definitions index, which is built from the base text and not re-resolved against the operative state. An amendment that REMOVES an add-back would leave the compiler with an overstated EBITDA definition: false-permission direction for every ratio basket.
+- **hypothesis**: buildCovenantContextBundle resolves definitions through the static definitions index (exactTermsByDocument / allDefinitions) and only consults the operative state for the candidate's own anchor node (operativeSourceTextFor / deriveOperativeLineage).
+- **acceptance**: With a resolved definition amendment, the definition item text equals the operative text and the item records its lineage; invariant:INV-05:F1/F3 bundle-definition-current pass.
+- **signatures**: `pkg-a-basic-credit-agreement` → `invariant:INV-05:F1:bundle-definition-current`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F3:bundle-definition-current`
 
 ## Observations (not defects)
 

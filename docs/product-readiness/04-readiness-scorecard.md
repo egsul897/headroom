@@ -12,7 +12,8 @@ packages, offline, model stages mocked (see `02-acceptance-matrix.md`); refreshe
 | Parse enumerations with a dropped letter | UNSUPPORTED (silent) | G: (d) merged into (b) | IPV-07 |
 | Definitions index (quoted "Term" means …) | PARTIALLY_VERIFIED | all packages resolve the declared terms; inline (i)/(ii)/(A)/(B) inside a definition mis-sources following definitions (H, E); exhibit "Term:" lines indexed (G) | IPV-06, IPV-08 |
 | Package graph: classify documents, resolve "Amendment No. N to the Credit Agreement dated …" | PARTIALLY_VERIFIED | C resolves both amendments; H "FIRST AMENDMENT … to the ABL Credit Agreement" and the intercreditor relation are UNRESOLVED | IPV-05 |
-| Deterministic amendment effects (restate / delete, explicit effective dates) | VERIFIED_ON_TESTED_SCOPE | C: RESOLVED effects with the right dates; G stale amendment UNRESOLVED (correct) | — |
+| Deterministic amendment effects (section restate / delete, explicit effective dates) | VERIFIED_ON_TESTED_SCOPE | C: RESOLVED effects with the right dates; G stale amendment UNRESOLVED (correct); MUT-05/11; INV-06 conditional effectiveness held back (correct) | — |
+| Amendment of a DEFINITION ('the definition of X in Section 1.01 is hereby amended and restated …') | UNSUPPORTED (wrong) | INV-05: resolved as REPLACE_TEXT of the whole of Section 1.01 (1,537 → 243 chars); the compiler still receives the old definition | IPV-19, IPV-20 |
 | Operative state per as-of date (clause-level) | VERIFIED_ON_TESTED_SCOPE | C: 7/7 across three dates incl. historical, superseded and deleted | — |
 | Operative state honesty when an amendment cannot be attached | UNSUPPORTED | H: RESOLVED with zero unattached effects while the pipeline holds an UNRESOLVED effect | IPV-05 |
 | Operative state when a side letter / waiver overrides a covenant | UNSUPPORTED (silent) | MUT-08/MUT-12: zero effects, instrument RESOLVED on the base text; tightening direction is a false permission | IPV-16 |
