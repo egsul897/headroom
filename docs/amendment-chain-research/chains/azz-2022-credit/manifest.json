@@ -11,7 +11,8 @@
     "governingLawNote": "See filed exhibits.",
     "identityNotes": [
       "Fourth Amendment preamble enumerates First (Aug 17, 2023), Second (Dec 20, 2023), and Third (Mar 20, 2024) Amendments.",
-      "Applicable Margin definition in Fourth Amendment encodes the multi-amendment pricing history in a single definition — adversarial multi-amend-same-definition pattern."
+      "Applicable Rate definition in Fourth Amendment encodes the multi-amendment pricing history in a single definition — adversarial multi-amend-same-definition pattern.",
+      "Recital uses colloquial 'Applicable Margin' once; operative amend targets Applicable Rate."
     ]
   },
   "documents": [
@@ -25,7 +26,7 @@
       "exhibit": "EX-10.1",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894722000056/ex101pegasus-creditagreeme.htm",
       "localFixturePath": null,
-      "retrievalStatus": "RETRIEVED",
+      "retrievalStatus": "BODY_ACQUIRED",
       "effectiveDateProvision": {
         "status": "INFERRED_FROM_EXECUTION_DATE",
         "namedEffectiveDate": "2022-05-13",
@@ -34,7 +35,16 @@
       },
       "amendsInstrumentId": null,
       "amendsDocIds": [],
-      "notes": []
+      "notes": [],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 1/Phase 3: body acquired per research retrieval; non-pricing Am2 effects not inferred."
+        ]
+      }
     },
     {
       "docId": "azz-am1",
@@ -46,7 +56,7 @@
       "exhibit": "EX-10.1",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000145/firstamendment-repricing.htm",
       "localFixturePath": null,
-      "retrievalStatus": "RETRIEVED",
+      "retrievalStatus": "BODY_ACQUIRED",
       "effectiveDateProvision": {
         "status": "CONDITIONAL_UNRESOLVED",
         "namedEffectiveDate": null,
@@ -54,8 +64,19 @@
         "evidenceQuote": "Instrument uses 'First Amendment Effective Date'."
       },
       "amendsInstrumentId": "azz-ca-2022-05-13",
-      "amendsDocIds": ["azz-ca-orig"],
-      "notes": []
+      "amendsDocIds": [
+        "azz-ca-orig"
+      ],
+      "notes": [],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 1/Phase 3: body acquired per research retrieval; non-pricing Am2 effects not inferred."
+        ]
+      }
     },
     {
       "docId": "azz-am2",
@@ -67,7 +88,7 @@
       "exhibit": "EX-10.1",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000162/secondamendmenttocreditagr.htm",
       "localFixturePath": null,
-      "retrievalStatus": "RETRIEVED",
+      "retrievalStatus": "BODY_ACQUIRED",
       "effectiveDateProvision": {
         "status": "CONDITIONAL_UNRESOLVED",
         "namedEffectiveDate": null,
@@ -75,8 +96,19 @@
         "evidenceQuote": "Fourth Amendment preamble: Second Amendment dated as of December 20, 2023."
       },
       "amendsInstrumentId": "azz-ca-2022-05-13",
-      "amendsDocIds": ["azz-am1"],
-      "notes": []
+      "amendsDocIds": [
+        "azz-am1"
+      ],
+      "notes": [],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 1/Phase 3: body acquired per research retrieval; non-pricing Am2 effects not inferred."
+        ]
+      }
     },
     {
       "docId": "azz-am3",
@@ -88,16 +120,27 @@
       "exhibit": "EX-10.1",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000029/a3rdamendmenttocreditagree.htm",
       "localFixturePath": null,
-      "retrievalStatus": "RETRIEVED",
+      "retrievalStatus": "BODY_ACQUIRED",
       "effectiveDateProvision": {
         "status": "CONDITIONAL_UNRESOLVED",
         "namedEffectiveDate": null,
-        "conditionsSummary": "Third Amendment Effective Date named in Fourth Amendment Applicable Margin grid.",
-        "evidenceQuote": "Fourth Amendment Applicable Margin clause references 'Third Amendment Effective Date'."
+        "conditionsSummary": "Third Amendment Effective Date named in Fourth Amendment Applicable Rate grid.",
+        "evidenceQuote": "Fourth Amendment Applicable Rate clause references 'Third Amendment Effective Date'."
       },
       "amendsInstrumentId": "azz-ca-2022-05-13",
-      "amendsDocIds": ["azz-am2"],
-      "notes": []
+      "amendsDocIds": [
+        "azz-am2"
+      ],
+      "notes": [],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 1/Phase 3: body acquired per research retrieval; non-pricing Am2 effects not inferred."
+        ]
+      }
     },
     {
       "docId": "azz-am4",
@@ -109,7 +152,7 @@
       "exhibit": "EX-10.1",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000205/fourthamendmenttocreditagr.htm",
       "localFixturePath": null,
-      "retrievalStatus": "RETRIEVED",
+      "retrievalStatus": "BODY_ACQUIRED",
       "effectiveDateProvision": {
         "status": "CONDITIONAL_UNRESOLVED",
         "namedEffectiveDate": null,
@@ -117,16 +160,31 @@
         "evidenceQuote": "WHEREAS... Consent Deadline... Fourth Amendment Effective Date. Each Existing Term Loan Lender that does not execute... Departing Term Loan Lender... mandatory assignment."
       },
       "amendsInstrumentId": "azz-ca-2022-05-13",
-      "amendsDocIds": ["azz-am3"],
-      "notes": ["Primary research value: multi-era Applicable Margin definition."]
+      "amendsDocIds": [
+        "azz-am3"
+      ],
+      "notes": [
+        "Primary research value: multi-era Applicable Rate definition.",
+        "ED CONDITIONAL_UNRESOLVED."
+      ],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: Am4 Applicable Rate clause (a)(ii) eras A–D extracted; sha256 4cc27f8f..."
+        ]
+      }
     }
   ],
   "authorityPolicy": {
     "noInferenceWithoutSource": true,
     "waiversSeparateFromAmendments": true,
     "notes": [
-      "Applicable Margin after-text is SOURCE_BACKED from Fourth Amendment.",
-      "Per-amendment intermediate before-text for Am1/Am3 pricing relies on the Fourth Amendment's own historical recounting in the restated definition (incorporation of history into current definition text)."
+      "Applicable Rate after-text is SOURCE_BACKED from Fourth Amendment (not Applicable Margin).",
+      "Per-amendment intermediate before-text for Am1/Am3 pricing relies on the Fourth Amendment's own historical recounting in the restated definition — caveated for contemporaneous as-of.",
+      "Do not infer missing Am2 non-pricing effects."
     ]
   },
   "adversarialTags": [

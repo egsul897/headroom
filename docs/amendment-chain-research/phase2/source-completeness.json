@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:32:25Z",
+  "generatedAt": "2026-10-08T23:10:00Z",
   "chains": [
     {
       "chainId": "cohr-2022-07-01-credit-agreement",
@@ -7,7 +7,7 @@
       "acquired": "orig+Am1-5",
       "gaps": [
         "Effective Date condition satisfaction calendar dates not proven",
-        "\u00a76.01(p) cross-ref not re-extracted"
+        "§6.01(p) cross-ref not re-extracted"
       ]
     },
     {
@@ -15,17 +15,18 @@
       "status": "SOURCE_COMPLETE_AM1_THROUGH_AM6",
       "acquired": "base+Am1-Am6",
       "gaps": [
-        "Am1\u2013Am6 Effective Date condition calendars unresolved",
+        "Am1–Am6 Effective Date condition calendars unresolved",
         "Full Interest Coverage / Temporary Senior Leverage Increase Period mechanics pending independent review"
       ]
     },
     {
       "chainId": "azz-2022-05-13-credit-agreement",
-      "status": "SOURCE_COMPLETE_PHASE1_BODIES",
-      "acquired": "orig+Am1-4 (phase1)",
+      "status": "BODY_ACQUIRED_ORIG_THROUGH_AM4_HASHED",
+      "acquired": "orig+Am1-4 (Phase 3 hashed)",
       "gaps": [
-        "Effective Date condition satisfaction not proven",
-        "Am2 non-pricing targets not fully logged"
+        "Effective Date condition satisfaction not proven (CONDITIONAL_UNRESOLVED)",
+        "Am2 non-pricing targets not fully logged (not inferred)",
+        "amendmentEffectApplied=false; independentlyLegallyVerified=false"
       ]
     },
     {
@@ -34,25 +35,33 @@
       "acquired": "Am1+Am2(image)+Am2-10Q+fixture Am3+Am4+Second A&R",
       "gaps": [
         "Am2 text wrapper MISSING (image EX-10.1; 10-Q narrative not operative)",
-        "prior \u00a76.08(a)(v) text not extracted"
+        "§6.08(a)(v) before-text now SOURCE_BACKED from Doc B ($10M) — Phase 3"
       ]
     },
     {
       "chainId": "cnmd-seventh-ar-to-eighth-ar",
-      "status": "SOURCE_COMPLETE_FOR_SEVENTH_ERA_DEFINITION_CHAIN",
-      "acquired": "Seventh A&R+Am1+Am2+Eighth curated+Omnibus raw (embedded blacklines)",
+      "status": "BODY_ACQUIRED_SEVENTH_ERA_PLUS_OMNIBUS",
+      "acquired": "Seventh A&R+Am1+Am2+Eighth curated+Omnibus raw",
       "gaps": [
-        "Eighth full raw not re-hashed in ledger this pass (fixture present)",
-        "Omnibus Effective Date conditions not proven satisfied"
+        "Am1/Am2/Omnibus Effective Date condition calendars CONDITIONAL_UNRESOLVED",
+        "amendmentEffectApplied=false; independentlyLegallyVerified=false"
       ]
     },
     {
       "chainId": "inap-2017-04-06-credit-agreement",
-      "status": "SOURCE_COMPLETE_AM1_THROUGH_AM7",
-      "acquired": "orig+Am1-Am7",
+      "status": "BODY_ACQUIRED_AM1_THROUGH_AM7_EFFECT_APPLICATION_PARTIAL",
+      "acquired": "orig+Am1-Am7 bodies",
       "gaps": [
-        "Per-amendment before/after diffs beyond Am7 not exhaustively extracted this phase"
+        "Exhaustive Am1–Am6 provision propagation UNRESOLVED_EFFECT_APPLICATION",
+        "Immediate pre-Am7 basket state PARTIAL despite orig before-text SOURCE_BACKED",
+        "Am7 ED CONDITIONAL_UNRESOLVED"
       ]
     }
-  ]
+  ],
+  "modelingDiscipline": {
+    "bodyAcquired": "bytes/identity present",
+    "textExtracted": "challenged spans quoted",
+    "amendmentEffectApplied": "engine/legal apply of amendment ops — still false across corpus",
+    "independentlyLegallyVerified": "challenger re-review — still false; PENDING_INDEPENDENT_REVIEW"
+  }
 }

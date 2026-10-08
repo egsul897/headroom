@@ -4,7 +4,7 @@
   "generatedAt": "2026-10-08T22:24:33Z",
   "sourceAuthorExpectation": {
     "purpose": "Multi-covenant-family permission-narrowing amendment: investments, foreign-sub debt, and leverage/ICR tables change together; missing prior docs force honest PARTIAL before-text.",
-    "expectedFailClosedBehavior": "After-text from Seventh Amendment may be verified in-source; before-text for baskets must remain MISSING_PRIOR_TEXT / UNRESOLVED without inventing prior levels from 8-K narrative as if it were operative contract text.",
+    "expectedFailClosedBehavior": "After-text from Seventh Amendment may be verified in-source. Original-agreement before-text for §6.04(m)/§6.01(k) is SOURCE_BACKED from orig CA EX-10.1. Do not invent prior levels from 8-K narrative as if it were operative contract text. Immediate pre-Am7 parent state remains PARTIAL until Am1–Am6 propagation is applied and checked. Seventh Amendment Effective Date remains CONDITIONAL_UNRESOLVED.",
     "queryDates": [
       "2019-10-28",
       "2019-10-29",
@@ -17,6 +17,12 @@
     ],
     "sourcePointers": [
       {
+        "docId": "inap-ca-orig",
+        "accession": "0001571049-17-003250",
+        "localFixturePath": null,
+        "quote": "other Investments ... greater of (x) $25,000,000 and (y) 30% of Consolidated EBITDA"
+      },
+      {
         "docId": "inap-am7",
         "accession": "0001140361-19-019513",
         "localFixturePath": null,
@@ -27,7 +33,7 @@
       {
         "scenarioId": "INAP-S3",
         "asOf": "2019-10-29",
-        "expect": "If Seventh Amendment Effective Date satisfied: narrowed baskets + new \u00a76.10 tables",
+        "expect": "If Seventh Amendment Effective Date satisfied: narrowed baskets + new §6.10 tables",
         "status": "CONDITIONAL",
         "vc": "VC-008"
       }
@@ -39,7 +45,7 @@
     "reviewer": null,
     "reviewedAt": null,
     "disposition": null,
-    "notes": "Source-author expectations above are NOT independently reviewed legal ground truth. Reserved for independent legal challenger."
+    "notes": "Phase 3 remediated Internap before-text / MISSING dual-truth. Source-author expectations are NOT independently reviewed legal ground truth. Reserved for independent re-review."
   },
   "replay": {
     "portable": true,

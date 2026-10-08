@@ -2,16 +2,28 @@
   "chainId": "inap-2017-04-06-credit-agreement",
   "cases": [
     {
+      "id": "inap-ua-0",
+      "topic": "Original CA + Am1–Am6 bodies",
+      "status": "BODY_ACQUIRED",
+      "detail": "Phase 2 ledger ACQUIRED; Phase 3 manifest reconciled from stale MISSING. Body acquired ≠ effect applied."
+    },
+    {
       "id": "inap-ua-1",
-      "topic": "Exhaustive before/after diffs for Am1\u2013Am6",
-      "status": "PARTIAL",
-      "detail": "Bodies acquired in Phase 2; per-provision diffs beyond Am7 specimen not fully extracted."
+      "topic": "Exhaustive Am1–Am6 provision-level propagation into Am7 parent state",
+      "status": "UNRESOLVED_EFFECT_APPLICATION",
+      "detail": "Bodies acquired; per-provision diffs and definition propagation beyond Am7 specimen not applied/checked. Do not infer missing amendment effects."
     },
     {
       "id": "inap-ua-2",
       "topic": "Seventh Amendment Effective Date condition satisfaction calendar date",
       "status": "CONDITIONAL_UNRESOLVED",
-      "detail": "Conditions present; satisfaction date not proven from text alone."
+      "detail": "Conditions present; satisfaction date not proven from execution/filing date."
+    },
+    {
+      "id": "inap-ua-3",
+      "topic": "Immediate pre-Am7 basket levels after Am1–Am6",
+      "status": "PARTIAL",
+      "detail": "Orig CA before-text for §6.04(m)/§6.01(k) is SOURCE_BACKED; whether Am1–Am6 restated those baskets before Am7 is unchecked."
     }
   ]
 }

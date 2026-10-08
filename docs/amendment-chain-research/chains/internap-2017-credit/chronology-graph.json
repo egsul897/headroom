@@ -1,0 +1,109 @@
+{
+  "chainId": "inap-2017-04-06-credit-agreement",
+  "nodes": [
+    {
+      "id": "inap-ca-orig",
+      "date": "2017-04-06",
+      "label": "Original CA (BODY_ACQUIRED)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "inap-am1",
+      "date": "2017-08-09",
+      "label": "Am1 (BODY_ACQUIRED; effect application unresolved)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "inap-am2",
+      "date": "2018-02-06",
+      "label": "Am2 (BODY_ACQUIRED; effect application unresolved)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "inap-am3",
+      "date": "2018-03-19",
+      "label": "Am3 (BODY_ACQUIRED; effect application unresolved)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "inap-am4",
+      "date": "2018-05-04",
+      "label": "Am4 (BODY_ACQUIRED; effect application unresolved)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "inap-am5",
+      "date": "2018-10-09",
+      "label": "Am5 (BODY_ACQUIRED; effect application unresolved)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "inap-am6",
+      "date": "2019-03-18",
+      "label": "Am6 (BODY_ACQUIRED; effect application unresolved)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "inap-am7",
+      "date": "2019-10-29",
+      "label": "Am7 (BODY_ACQUIRED; after-text extracted)",
+      "status": "BODY_ACQUIRED"
+    }
+  ],
+  "edges": [
+    {
+      "from": "inap-ca-orig",
+      "to": "inap-am1",
+      "kind": "AMENDS",
+      "authority": "SOURCE_BACKED",
+      "effectApplication": "UNRESOLVED"
+    },
+    {
+      "from": "inap-am1",
+      "to": "inap-am2",
+      "kind": "AMENDS",
+      "authority": "RECITAL_BACKED",
+      "effectApplication": "UNRESOLVED"
+    },
+    {
+      "from": "inap-am2",
+      "to": "inap-am3",
+      "kind": "AMENDS",
+      "authority": "RECITAL_BACKED",
+      "effectApplication": "UNRESOLVED"
+    },
+    {
+      "from": "inap-am3",
+      "to": "inap-am4",
+      "kind": "AMENDS",
+      "authority": "RECITAL_BACKED",
+      "effectApplication": "UNRESOLVED"
+    },
+    {
+      "from": "inap-am4",
+      "to": "inap-am5",
+      "kind": "AMENDS",
+      "authority": "RECITAL_BACKED",
+      "effectApplication": "UNRESOLVED"
+    },
+    {
+      "from": "inap-am5",
+      "to": "inap-am6",
+      "kind": "AMENDS",
+      "authority": "RECITAL_BACKED",
+      "effectApplication": "UNRESOLVED"
+    },
+    {
+      "from": "inap-am6",
+      "to": "inap-am7",
+      "kind": "AMENDS",
+      "authority": "RECITAL_BACKED",
+      "effectApplication": "AFTER_TEXT_EXTRACTED_NOT_ENGINE_APPLIED"
+    }
+  ],
+  "notes": [
+    "Ordering Am1–Am7 is recital-backed from successive amendments.",
+    "Am1–Am6: bodies acquired; amendmentEffectApplied remains false.",
+    "Do not convert execution/filing dates into satisfied Effective Dates."
+  ]
+}

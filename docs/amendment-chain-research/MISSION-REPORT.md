@@ -22,7 +22,7 @@ No peer cloud agent named “Amendment Intelligence” was found. Coordination i
 |---|---|---|
 | Coherent 2022 CA | Am1–Am5 | Same-day Am4+Am5; basket/ratio reset; §6.11(i)→(a) |
 | Matthews Third A&R | Am1–Am6 | Restatement then targeted narrowing of §6.01(j) |
-| AZZ 2022 CA | Am1–Am4 | Multi-era Applicable Margin in one definition |
+| AZZ 2022 CA | Am1–Am4 | Multi-era Applicable Rate in one definition |
 | DSGR 2022 A&R lineage | Am3, Am4, Second A&R | Deemed retroactive effect; restatement after targeted amends |
 | CONMED Seventh→Eighth | Am2, Eighth A&R, Omnibus | Wrong-parent risk; multi-definition; incorporation by reference |
 

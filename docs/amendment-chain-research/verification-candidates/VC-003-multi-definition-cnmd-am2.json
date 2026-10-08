@@ -1,10 +1,20 @@
 {
   "candidateId": "VC-003",
   "chainId": "cnmd-seventh-ar-to-eighth-ar",
-  "purpose": "Multiple amendments to related definitions in one instrument (CSSLR, CTLR, Indebtedness) plus ratio schedule restatement; also tests missing-parent fail-closed when Seventh A&R is absent.",
-  "mapsToProductionModules": ["deterministic-parser", "chain", "operative-state", "independent-verification"],
-  "expectedFailClosedBehavior": "Without Seventh A&R in package, targetResolutionStatus for definition targets must not claim UNIQUE against Eighth A&R; out-of-package parent must remain unresolved. Independent verification must not confirm RESOLVED effects against the wrong base document.",
-  "queryDates": ["2022-07-31", "2022-08-01", "2022-08-02", "2025-06-10"],
+  "purpose": "Multiple amendments to related definitions in one instrument (CSSLR, CTLR, Indebtedness) plus ratio schedule restatement; tests correct Seventh-era parent/intermediate-state ordering (WP-003) and Eighth restatement separation.",
+  "mapsToProductionModules": [
+    "deterministic-parser",
+    "chain",
+    "operative-state",
+    "independent-verification"
+  ],
+  "expectedFailClosedBehavior": "Am2 must attach to Seventh A&R post-Am1 intermediate state ($75M), not unamended Seventh ($25M) and not Eighth A&R. If Seventh A&R body is absent from a package, targetResolutionStatus must not claim UNIQUE against Eighth A&R. Independent verification must not confirm RESOLVED effects against the wrong base document. Am1/Am2 Effective Dates remain CONDITIONAL_UNRESOLVED.",
+  "queryDates": [
+    "2022-07-31",
+    "2022-08-01",
+    "2022-08-02",
+    "2025-06-10"
+  ],
   "sourcePointers": [
     {
       "docId": "cnmd-second-am-2022",
@@ -20,5 +30,9 @@
     }
   ],
   "relatedBeforeAfter": "docs/amendment-chain-research/before-after/cnmd-am2-definitions-and-ratio.json",
-  "notAProductionPatch": true
+  "notAProductionPatch": true,
+  "phase3Notes": [
+    "Phase 3: Seventh A&R BODY_ACQUIRED; stale MISSING manifest corrected.",
+    "Independently legally verified remains false."
+  ]
 }

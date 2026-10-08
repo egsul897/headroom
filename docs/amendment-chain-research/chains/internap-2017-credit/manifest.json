@@ -11,8 +11,9 @@
     "governingLawNote": "See filed exhibits.",
     "identityNotes": [
       "Seventh Amendment is a high-signal permission-narrowing + ratio-reset example.",
-      "Amendments 1–6 not retrieved in this pass — chain completeness UNRESOLVED beyond Seventh Amendment's own 'Existing Credit Agreement' reference.",
-      "Included as adversarial basket-narrowing / multi-covenant-family specimen, not as a complete six-prior-amendment reconstruction."
+      "Phase 3: orig + Am1–Am7 bodies BODY_ACQUIRED. Body acquired ≠ Am1–Am6 effects applied.",
+      "Recital-backed ordering Am1→Am7 preserved. Exhaustive Am1–Am6 definition/basket propagation remains UNRESOLVED.",
+      "Original-agreement before-text for challenged Am7 baskets is SOURCE_BACKED; 8-K narrative is corroboration only."
     ]
   },
   "documents": [
@@ -22,20 +23,235 @@
       "title": "Credit Agreement",
       "executionDate": "2017-04-06",
       "filingDate": null,
-      "accession": "UNKNOWN",
-      "exhibit": "UNKNOWN",
-      "sourceUrl": "",
+      "accession": "0001571049-17-003250",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000157104917003250/t1700214_ex10-1.htm",
       "localFixturePath": null,
-      "retrievalStatus": "MISSING",
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: body acquired; §6.04(m)/§6.01(k) before-text extracted for Am7 challenge."
+        ]
+      },
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
+        "status": "EXPLICIT_EFFECTIVE_DATE",
         "namedEffectiveDate": "2017-04-06",
         "conditionsSummary": null,
-        "evidenceQuote": "Seventh Amendment / 8-K: Credit Agreement, dated as of April 6, 2017"
+        "evidenceQuote": "Credit Agreement, dated as of April 6, 2017"
       },
       "amendsInstrumentId": null,
       "amendsDocIds": [],
-      "notes": ["MISSING for before-text of baskets; after-text of Seventh Amendment is SOURCE_BACKED."]
+      "notes": [
+        "BODY_ACQUIRED; amendmentEffectApplied=false until operative changes applied and checked."
+      ]
+    },
+    {
+      "docId": "inap-am1",
+      "role": "AMENDMENT",
+      "title": "First Amendment to Credit Agreement",
+      "executionDate": "2017-08-09",
+      "filingDate": null,
+      "accession": "0001628280-17-008032",
+      "exhibit": "EX-10.9",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000162828017008032/exhibit109firstamendmentto.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: body acquired in Phase 2 ledger; per-provision effect application for Am1–Am6 remains unresolved."
+        ]
+      },
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions not proven satisfied; not collapsed to execution/filing date.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-ca-orig"
+      ],
+      "notes": [
+        "BODY_ACQUIRED; amendmentEffectApplied=false until operative changes applied and checked."
+      ]
+    },
+    {
+      "docId": "inap-am2",
+      "role": "AMENDMENT",
+      "title": "Second Amendment to Credit Agreement",
+      "executionDate": "2018-02-06",
+      "filingDate": null,
+      "accession": "0001140361-18-005437",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118005437/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: body acquired in Phase 2 ledger; per-provision effect application for Am1–Am6 remains unresolved."
+        ]
+      },
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions not proven satisfied; not collapsed to execution/filing date.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am1"
+      ],
+      "notes": [
+        "BODY_ACQUIRED; amendmentEffectApplied=false until operative changes applied and checked."
+      ]
+    },
+    {
+      "docId": "inap-am3",
+      "role": "AMENDMENT",
+      "title": "Third Amendment to Credit Agreement",
+      "executionDate": "2018-03-19",
+      "filingDate": null,
+      "accession": "0001140361-18-011053",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118011053/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: body acquired in Phase 2 ledger; per-provision effect application for Am1–Am6 remains unresolved."
+        ]
+      },
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions not proven satisfied; not collapsed to execution/filing date.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am2"
+      ],
+      "notes": [
+        "BODY_ACQUIRED; amendmentEffectApplied=false until operative changes applied and checked."
+      ]
+    },
+    {
+      "docId": "inap-am4",
+      "role": "AMENDMENT",
+      "title": "Fourth Amendment to Credit Agreement",
+      "executionDate": "2018-05-04",
+      "filingDate": null,
+      "accession": "0001140361-18-018015",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118018015/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: body acquired in Phase 2 ledger; per-provision effect application for Am1–Am6 remains unresolved."
+        ]
+      },
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions not proven satisfied; not collapsed to execution/filing date.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am3"
+      ],
+      "notes": [
+        "BODY_ACQUIRED; amendmentEffectApplied=false until operative changes applied and checked."
+      ]
+    },
+    {
+      "docId": "inap-am5",
+      "role": "AMENDMENT",
+      "title": "Fifth Amendment to Credit Agreement",
+      "executionDate": "2018-10-09",
+      "filingDate": null,
+      "accession": "0001140361-18-037610",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118037610/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: body acquired in Phase 2 ledger; per-provision effect application for Am1–Am6 remains unresolved."
+        ]
+      },
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions not proven satisfied; not collapsed to execution/filing date.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am4"
+      ],
+      "notes": [
+        "BODY_ACQUIRED; amendmentEffectApplied=false until operative changes applied and checked."
+      ]
+    },
+    {
+      "docId": "inap-am6",
+      "role": "AMENDMENT",
+      "title": "Sixth Amendment to Credit Agreement",
+      "executionDate": "2019-03-18",
+      "filingDate": null,
+      "accession": "0001140361-19-008719",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036119008719/nc10001703x2_ex10-1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3: body acquired in Phase 2 ledger; per-provision effect application for Am1–Am6 remains unresolved."
+        ]
+      },
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions not proven satisfied; not collapsed to execution/filing date.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am5"
+      ],
+      "notes": [
+        "BODY_ACQUIRED; amendmentEffectApplied=false until operative changes applied and checked."
+      ]
     },
     {
       "docId": "inap-am7",
@@ -47,7 +263,7 @@
       "exhibit": "EX-10.1",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036119019513/ex10_1.htm",
       "localFixturePath": null,
-      "retrievalStatus": "RETRIEVED",
+      "retrievalStatus": "BODY_ACQUIRED",
       "effectiveDateProvision": {
         "status": "CONDITIONAL_UNRESOLVED",
         "namedEffectiveDate": null,
@@ -55,20 +271,34 @@
         "evidenceQuote": "This Amendment and the amendments to the Credit Agreement contained herein shall be legal, valid and binding on the date on which the following conditions precedent are satisfied (the date of such satisfaction, the \"Seventh Amendment Effective Date\")"
       },
       "amendsInstrumentId": "inap-ca-2017-04-06",
-      "amendsDocIds": ["inap-ca-orig"],
+      "amendsDocIds": [
+        "inap-ca-orig"
+      ],
       "notes": [
         "Resets Total Net Leverage Ratio and Consolidated Interest Coverage Ratio tables.",
         "Narrows multiple baskets (investments, foreign subsidiary debt, etc.).",
-        "8-K Item 1.01 summarizes prior basket levels — used only as corroboration pointers; operative after-text taken from EX-10.1."
-      ]
+        "Phase 3: original-agreement before-text for §6.04(m)/§6.01(k) is SOURCE_BACKED from orig CA — not 8-K narrative.",
+        "Exhaustive Am1–Am6 propagation still UNRESOLVED — orig before-text is not asserted as proven immediate pre-Am7 state.",
+        "Chronological parent state for application is post-Am6; recital-backed Am1–Am6 ordering preserved."
+      ],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Am7 after-text extracted for VC-008 baskets/ratios; ED CONDITIONAL_UNRESOLVED."
+        ]
+      }
     }
   ],
   "authorityPolicy": {
     "noInferenceWithoutSource": true,
     "waiversSeparateFromAmendments": true,
     "notes": [
-      "Before-text for narrowed baskets is PARTIAL: 8-K narrative states prior levels; original CA / Am1–6 exhibits not retrieved here.",
-      "After-text from Seventh Amendment exhibit is SOURCE_BACKED."
+      "Orig CA §6.04(m)/§6.01(k) before-text SOURCE_BACKED (Phase 3). Do not invent levels from 8-K alone.",
+      "Immediate pre-Am7 operative state for those baskets remains PARTIAL until Am1–Am6 propagation is applied and checked.",
+      "After-text from Seventh Amendment exhibit is SOURCE_BACKED. ED CONDITIONAL_UNRESOLVED."
     ]
   },
   "adversarialTags": [
@@ -76,7 +306,6 @@
     "BASKET_AMOUNT_CHANGE",
     "RATIO_CHANGE",
     "MULTI_COVENANT_FAMILY",
-    "CONDITIONAL_EFFECTIVENESS",
-    "MISSING_DOCUMENT"
+    "CONDITIONAL_EFFECTIVENESS"
   ]
 }

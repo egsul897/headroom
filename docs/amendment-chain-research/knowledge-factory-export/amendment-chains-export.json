@@ -1,7 +1,7 @@
 {
   "schemaVersion": "knowledge-factory.amendment-chain-research-export.v1",
-  "generatedAt": "2026-10-08T22:32:25Z",
-  "idempotencyKey": "amendment-chain-research-phase2-550e1da3f4fb6512",
+  "generatedAt": "2026-10-08T23:10:00Z",
+  "idempotencyKey": "amendment-chain-research-phase3-remediation-550e1da3",
   "importContract": {
     "consumer": "WS-CKF lib/knowledge-factory",
     "mode": "UPSERT_BY_sourceId",
@@ -9,10 +9,13 @@
     "notes": [
       "Uses CKF-aligned sourceId/relationship kind vocabulary without modifying CKF code.",
       "Bytes remain in .local-amendment-research or CKF .local-knowledge-corpus after CKF claims acquisition queue items.",
-      "Do not infer legal effectiveness from filing chronology."
+      "Do not infer legal effectiveness from filing chronology.",
+      "Phase 3: bodyAcquired ≠ amendmentEffectApplied ≠ independentlyLegallyVerified.",
+      "verificationStatus remains PENDING_INDEPENDENT_REVIEW — do not promote to independently legally verified."
     ]
   },
   "chainIdentities": [
+    "azz-2022-05-13-credit-agreement",
     "cnmd-seventh-ar-to-eighth-ar",
     "cohr-2022-07-01-credit-agreement",
     "dsgr-2022-04-01-ar-credit",
@@ -32,7 +35,13 @@
       "originalBytesHash": "c0c901d6e22b2daae3cc970aa3b670721ad0225730f98e45fe2ecbd656b6b8f9",
       "byteLength": 844317,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Seventh Amended and Restated Credit Agreement (EX-10.1)"
+      "title": "Seventh Amended and Restated Credit Agreement (EX-10.1)",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000063296-22-000060:secondamendmenttothirdamen.htm",
@@ -46,7 +55,13 @@
       "originalBytesHash": "9687f746e5e566e27babe7185ac47eab6602b18f46a8bf0b8a6e2d0e62accaca",
       "byteLength": 1094036,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Second Amendment to Third A&R Loan Agreement"
+      "title": "Second Amendment to Third A&R Loan Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-23-163984:d511994dex101.htm",
@@ -60,7 +75,13 @@
       "originalBytesHash": "258487b1679b2d8ecb5b18a03d341ba384a15d7b315483ba7ff26f6b69b5b2a8",
       "byteLength": 1544591,
       "acquisitionStatus": "ACQUIRED",
-      "title": "First Amendment to Amended and Restated Credit Agreement"
+      "title": "First Amendment to Amended and Restated Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000703604-24-000079:dsg-secondamendmenttocre.htm",
@@ -74,7 +95,13 @@
       "originalBytesHash": "2a6dde882b695a067b90ef7c268057dd9743de8e1756df82d0fa4c04eaac430d",
       "byteLength": 787748,
       "acquisitionStatus": "ACQUIRED_CONFORMED_EXHIBIT_A",
-      "title": "Second Amendment to Amended and Restated Credit Agreement"
+      "title": "Second Amendment to Amended and Restated Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-22-186770:d307343dex101.htm",
@@ -88,7 +115,13 @@
       "originalBytesHash": "3b4579129d311538c51f72e2974cee766ef8ca69dd654651daafb69d927fbe7e",
       "byteLength": 1299459,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Credit Agreement dated July 1, 2022"
+      "title": "Credit Agreement dated July 1, 2022",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000820318-23-000009:ex1001-amendmentno1tocredi.htm",
@@ -102,7 +135,13 @@
       "originalBytesHash": "8bc68f235a45d28f203d9ceccbadf88bbae00c3a81a16fbe538f33afc60bdf9a",
       "byteLength": 2320949,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Amendment No. 1 to Credit Agreement"
+      "title": "Amendment No. 1 to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-24-085009:d794721dex101.htm",
@@ -116,7 +155,13 @@
       "originalBytesHash": "42a3d3e209a321e44fd306a139b5c090b34864b7d27dad914fc7f9684ebed27f",
       "byteLength": 1376924,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Amendment No. 2 to Credit Agreement"
+      "title": "Amendment No. 2 to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-25-002808:d891952dex101.htm",
@@ -130,7 +175,13 @@
       "originalBytesHash": "fff2289c93152562664795614f3d7d2efbe38fbff8a3e787fef1cecbff5467c7",
       "byteLength": 1509414,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Amendment No. 3 to Credit Agreement"
+      "title": "Amendment No. 3 to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-25-220656:d854664dex101.htm",
@@ -144,7 +195,13 @@
       "originalBytesHash": "4f3f69a6489af0cf7f61825c3b0f9cfd710379403137cdf05ba9f00c44831f77",
       "byteLength": 2256656,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Amendment No. 4"
+      "title": "Amendment No. 4",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-25-220656:d854664dex102.htm",
@@ -158,7 +215,13 @@
       "originalBytesHash": "114300efeef9819e822ab016382d455654037ae2c8cfbcb104c95a49e995df9b",
       "byteLength": 1477074,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Amendment No. 5"
+      "title": "Amendment No. 5",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001571049-17-003250:t1700214_ex10-1.htm",
@@ -172,7 +235,13 @@
       "originalBytesHash": "c600780b554a76b3610728a6c060b438b5dd0c8b4983534b1cd0c6f639c6b3e7",
       "byteLength": 2071212,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Credit Agreement dated April 6, 2017 (EX-10.1)"
+      "title": "Credit Agreement dated April 6, 2017 (EX-10.1)",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001628280-17-008032:exhibit109firstamendmentto.htm",
@@ -186,7 +255,13 @@
       "originalBytesHash": "543d090ec79f317205acfd17ef8b13cad187d2da3443c27d5466f2adf66757ca",
       "byteLength": 111547,
       "acquisitionStatus": "ACQUIRED",
-      "title": "First Amendment to Credit Agreement"
+      "title": "First Amendment to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001140361-19-019513:ex10_1.htm",
@@ -200,7 +275,13 @@
       "originalBytesHash": "fa49d4d82cdd9ab27dc5e754ce52982232fed98b0b4934122965cb9769a6bbed",
       "byteLength": 62170,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Seventh Amendment to Credit Agreement"
+      "title": "Seventh Amendment to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000063296-20-000040:ex101loanagreement.htm",
@@ -214,7 +295,13 @@
       "originalBytesHash": "61bb92243ddc8a72d85466dd231d7fa0bc54e797e9b39e5dc27ee7f92358cb77",
       "byteLength": 887845,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Third Amended and Restated Loan Agreement"
+      "title": "Third Amended and Restated Loan Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-24-224129:d872508dex102.htm",
@@ -228,7 +315,13 @@
       "originalBytesHash": "d0b465d138f5ef09d05138dea8b9dbc9cfe97942049e69dfed832111de08353f",
       "byteLength": 97933,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Sixth Amendment"
+      "title": "Sixth Amendment",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
@@ -242,7 +335,13 @@
       "originalBytesHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
       "byteLength": 1268135,
       "acquisitionStatus": "FIXTURE_RAW_PRESENT",
-      "title": "First Omnibus Amendment (includes embedded Amended CA / GCA blackline exhibits)"
+      "title": "First Omnibus Amendment (includes embedded Amended CA / GCA blackline exhibits)",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-22-209154:d220699dex102.htm",
@@ -256,7 +355,13 @@
       "originalBytesHash": "45f8abcacf2f0bc0fd0b06b2f4a974b5bb395ebf18a0b667c30e2ac5f5d0851a",
       "byteLength": 37209,
       "acquisitionStatus": "FIXTURE_RAW_PRESENT",
-      "title": "Second Amendment to Seventh A&R"
+      "title": "Second Amendment to Seventh A&R",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-21-217426:d170717dex102.htm",
@@ -270,7 +375,13 @@
       "originalBytesHash": "653e1e85440d0438a28ab351273e219705d3b7fb503b9e2b4e572defb70e5bd8",
       "byteLength": 24847,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Fifth Amendment to Guarantee and Collateral Agreement (same-day as Seventh A&R)"
+      "title": "Fifth Amendment to Guarantee and Collateral Agreement (same-day as Seventh A&R)",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001140361-18-005437:ex10_1.htm",
@@ -284,7 +395,13 @@
       "originalBytesHash": "c72f9755499f5450997229cef02e98b77a4a488f9d3f0911d0260285fbdcf343",
       "byteLength": 95518,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Second Amendment to Credit Agreement"
+      "title": "Second Amendment to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001140361-18-011053:ex10_1.htm",
@@ -298,7 +415,13 @@
       "originalBytesHash": "9e7297882ad63fd3c5c504f7363584a14293461c1330caab519dda8815a8cb74",
       "byteLength": 77324,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Third Amendment to Credit Agreement"
+      "title": "Third Amendment to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001140361-18-018015:ex10_1.htm",
@@ -312,7 +435,13 @@
       "originalBytesHash": "fdfb207d2fbe9d6123f3959cbc46d19e7849eaf9795060713002d649580d92e1",
       "byteLength": 68321,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Fourth Amendment to Credit Agreement"
+      "title": "Fourth Amendment to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001140361-18-037610:ex10_1.htm",
@@ -326,7 +455,13 @@
       "originalBytesHash": "de38883079dee74d94c033078c932297d39d71cfedae34de0df2aa1ce3e45ecd",
       "byteLength": 105121,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Fifth Amendment to Credit Agreement"
+      "title": "Fifth Amendment to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001140361-19-008719:nc10001703x2_ex10-1.htm",
@@ -340,7 +475,13 @@
       "originalBytesHash": "6339114072ed67b1d28f3c16e0359f63f48611825ad2e31836546ed3dda05f36",
       "byteLength": 131950,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Sixth Amendment to Credit Agreement"
+      "title": "Sixth Amendment to Credit Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0001193125-22-169336:d320648dex1025.htm",
@@ -354,7 +495,13 @@
       "originalBytesHash": "14f18fad454065923c06b0b5516b846991e5159569ef85285d1e0109762f0e6b",
       "byteLength": 39083,
       "acquisitionStatus": "ACQUIRED",
-      "title": "First Amendment to Seventh A&R Credit Agreement (dated June 6, 2022)"
+      "title": "First Amendment to Seventh A&R Credit Agreement (dated June 6, 2022)",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000063296-21-000048:firstamendmenttothirdamend.htm",
@@ -368,7 +515,13 @@
       "originalBytesHash": "96100188c046d1d3d9fd6c8eb60ced979089c76f8fc774f2155aebbf4e598817",
       "byteLength": 231260,
       "acquisitionStatus": "ACQUIRED",
-      "title": "First Amendment to Third A&R Loan Agreement"
+      "title": "First Amendment to Third A&R Loan Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000063296-22-000099:thirdamendmenttothirdamend.htm",
@@ -382,7 +535,13 @@
       "originalBytesHash": "a67d1924939f7b5988efb5dd1a877ed59bd5bd99fb6602e663ee96c0be3f8307",
       "byteLength": 80597,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Third Amendment to Third A&R Loan Agreement"
+      "title": "Third Amendment to Third A&R Loan Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000063296-23-000044:fourthamendmenttothirdamen.htm",
@@ -396,7 +555,13 @@
       "originalBytesHash": "f78c812b6e5a5533f09b037822478a252ab466241e19aff822d8be6136ddd181",
       "byteLength": 1230726,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Fourth Amendment to Third A&R Loan Agreement"
+      "title": "Fourth Amendment to Third A&R Loan Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000063296-24-000010:fifthamendmenttothirdamend.htm",
@@ -410,7 +575,13 @@
       "originalBytesHash": "46f928b51ed1f18f56fd0aa098d97f0c62ac4ac1090f60b4bd493c4e8b3bf3c6",
       "byteLength": 1199691,
       "acquisitionStatus": "ACQUIRED",
-      "title": "Fifth Amendment to Third A&R Loan Agreement"
+      "title": "Fifth Amendment to Third A&R Loan Agreement",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "sourceId": "edgar:0000703604-24-000079:dsgr-20240630.htm",
@@ -425,7 +596,128 @@
       "byteLength": 1883057,
       "acquisitionStatus": "ACQUIRED",
       "title": "10-Q body accompanying Second Amendment exhibit filing",
-      "notes": "Narrative summary only; not treated as operative amendment text. EX-10.1 remains image-based conformed CA."
+      "notes": "Narrative summary only; not treated as operative amendment text. EX-10.1 remains image-based conformed CA.",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-22-000056:ex101pegasus-creditagreeme.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-22-000056",
+      "filename": "ex101pegasus-creditagreeme.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894722000056/ex101pegasus-creditagreeme.htm",
+      "documentClass": "ORIGINAL",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-ca-orig",
+      "originalBytesHash": "46d3397a77745b393e11859f5d276a7af51b92009a8d6b5b6d308522094b6ea2",
+      "byteLength": 1998999,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "AZZ azz-ca-orig",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3 export restore. Do not infer missing Am2 non-pricing effects."
+        ]
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-23-000145:firstamendment-repricing.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-23-000145",
+      "filename": "firstamendment-repricing.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000145/firstamendment-repricing.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am1",
+      "originalBytesHash": "c459c07de1d98389af344d679ed7ab17ebabbd674d64293e765c833957e24ee8",
+      "byteLength": 69456,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "AZZ azz-am1",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3 export restore. Do not infer missing Am2 non-pricing effects."
+        ]
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-23-000162:secondamendmenttocreditagr.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-23-000162",
+      "filename": "secondamendmenttocreditagr.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000162/secondamendmenttocreditagr.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am2",
+      "originalBytesHash": "81a1d687cb3438e93f5ed1b4d94fc3f577570fb788209770d87ee23e12e504f9",
+      "byteLength": 74441,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "AZZ azz-am2",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3 export restore. Do not infer missing Am2 non-pricing effects."
+        ]
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-24-000029:a3rdamendmenttocreditagree.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-24-000029",
+      "filename": "a3rdamendmenttocreditagree.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000029/a3rdamendmenttocreditagree.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am3",
+      "originalBytesHash": "2e5490c69ec8b2c6f3874213afd4de4a3ae46446ed8a178786495979bdac38ec",
+      "byteLength": 69338,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "AZZ azz-am3",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": false,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3 export restore. Do not infer missing Am2 non-pricing effects."
+        ]
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-24-000205:fourthamendmenttocreditagr.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-24-000205",
+      "filename": "fourthamendmenttocreditagr.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000205/fourthamendmenttocreditagr.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am4",
+      "originalBytesHash": "4cc27f8f6ead0caeb714b6109e75dcd5581e25024decded2d2d8d22091351471",
+      "byteLength": 63797,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "AZZ azz-am4",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Phase 3 export restore. Do not infer missing Am2 non-pricing effects."
+        ]
+      }
     }
   ],
   "parentChildAuthorityLinks": [
@@ -446,18 +738,21 @@
     },
     {
       "sourceId": "edgar:0001193125-22-209154:d220699dex102.htm",
-      "targetId": "edgar:0001193125-22-169336:d320648dex1025.htm",
+      "targetId": "edgar:0001193125-21-217426:d170717dex101.htm",
       "kind": "AGREEMENT_AMENDMENT",
       "evidenceStatus": "AUTHENTICATED",
       "confidenceDocIds": {
         "child": "cnmd-second-am-2022",
-        "parent": "cnmd-am1-2022"
+        "parent": "cnmd-seventh-ar",
+        "requiredIntermediateState": "post-cnmd-am1-2022"
       },
       "confidenceChainId": "cnmd-seventh-ar-to-eighth-ar",
       "confidenceEffectiveDate": {
         "status": "CONDITIONAL_UNRESOLVED",
         "conditionsVerified": false
-      }
+      },
+      "parentInstrumentIdentity": "cnmd-seventh-ar",
+      "note": "Parent instrument is Seventh A&R; Am2 delete/substitute token matches post-Am1 ($75M) intermediate state (WP-003)."
     },
     {
       "sourceId": "edgar:0000703604-24-000079:dsg-secondamendmenttocre.htm",
@@ -687,6 +982,94 @@
       "kind": "FILING_BODY_FOR",
       "authorityStatus": "NOT_OPERATIVE",
       "note": "10-Q narrative must not be imported as amendment operative text"
+    },
+    {
+      "sourceId": "edgar:0000008947-23-000145:firstamendment-repricing.htm",
+      "targetId": "edgar:0000008947-22-000056:ex101pegasus-creditagreeme.htm",
+      "kind": "AGREEMENT_AMENDMENT",
+      "evidenceStatus": "PHASE1_BODY",
+      "confidenceDocIds": {
+        "child": "azz-am1",
+        "parent": "azz-ca-orig",
+        "parentInstrument": "azz-ca-orig"
+      },
+      "confidenceChainId": "azz-2022-05-13-credit-agreement",
+      "confidenceEffectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false,
+        "named": "First Amendment Effective Date"
+      },
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-23-000162:secondamendmenttocreditagr.htm",
+      "targetId": "edgar:0000008947-23-000145:firstamendment-repricing.htm",
+      "kind": "AGREEMENT_AMENDMENT",
+      "evidenceStatus": "PHASE1_BODY",
+      "confidenceDocIds": {
+        "child": "azz-am2",
+        "parent": "azz-am1",
+        "parentInstrument": "azz-ca-orig"
+      },
+      "confidenceChainId": "azz-2022-05-13-credit-agreement",
+      "confidenceEffectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false,
+        "named": "Second Amendment Effective Date"
+      },
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-24-000029:a3rdamendmenttocreditagree.htm",
+      "targetId": "edgar:0000008947-23-000162:secondamendmenttocreditagr.htm",
+      "kind": "AGREEMENT_AMENDMENT",
+      "evidenceStatus": "PHASE1_BODY",
+      "confidenceDocIds": {
+        "child": "azz-am3",
+        "parent": "azz-am2",
+        "parentInstrument": "azz-ca-orig"
+      },
+      "confidenceChainId": "azz-2022-05-13-credit-agreement",
+      "confidenceEffectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false,
+        "named": "Third Amendment Effective Date"
+      },
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
+    },
+    {
+      "sourceId": "edgar:0000008947-24-000205:fourthamendmenttocreditagr.htm",
+      "targetId": "edgar:0000008947-24-000029:a3rdamendmenttocreditagree.htm",
+      "kind": "AGREEMENT_AMENDMENT",
+      "evidenceStatus": "AUTHENTICATED",
+      "confidenceDocIds": {
+        "child": "azz-am4",
+        "parent": "azz-am3",
+        "parentInstrument": "azz-ca-orig"
+      },
+      "confidenceChainId": "azz-2022-05-13-credit-agreement",
+      "confidenceEffectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false,
+        "named": "Fourth Amendment Effective Date"
+      },
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     }
   ],
   "effectiveDateEvidencePath": "docs/amendment-chain-research/authority-layers/",
@@ -699,7 +1082,8 @@
     {
       "chainId": "dsgr-2022-04-01-ar-credit",
       "item": "dsgr-am2-wrapper-text",
-      "status": "MISSING_DOCUMENT"
+      "status": "MISSING_DOCUMENT",
+      "note": "10-Q narrative must not substitute for operative amendment wrapper"
     },
     {
       "chainId": "matw-2020-03-27-third-ar-loan",
@@ -710,7 +1094,35 @@
       "chainId": "cohr-2022-07-01-credit-agreement",
       "item": "am4-am5-effective-date-calendars",
       "status": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "item": "first-third-fourth-effective-date-calendars",
+      "status": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "item": "am2-non-pricing-change-log",
+      "status": "PARTIAL_NOT_INFERRED"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "item": "am1-am6-provision-propagation",
+      "status": "UNRESOLVED_EFFECT_APPLICATION",
+      "note": "Bodies BODY_ACQUIRED; effects not applied/checked"
+    },
+    {
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "item": "am1-am2-omnibus-effective-date-calendars",
+      "status": "CONDITIONAL_UNRESOLVED"
     }
   ],
-  "verificationStatus": "PENDING_INDEPENDENT_REVIEW"
+  "verificationStatus": "PENDING_INDEPENDENT_REVIEW",
+  "phase3Remediation": {
+    "challengerPr": 156,
+    "challengerSha": "a66c6466f218b79886a990bed3075fdffb0722b3",
+    "startingResearchSha": "ce07b1525972d1dea00792a2058900fa56291163",
+    "promotedToIndependentlyLegallyVerified": false,
+    "failClosedEffectivenessPreserved": true
+  }
 }

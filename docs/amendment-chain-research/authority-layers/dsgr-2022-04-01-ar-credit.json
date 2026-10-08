@@ -1,6 +1,6 @@
 {
   "chainId": "dsgr-2022-04-01-ar-credit",
-  "generatedAt": "2026-10-08T22:32:25Z",
+  "generatedAt": "2026-10-08T23:10:00Z",
   "discipline": {
     "recitalIsNotOperativeText": true,
     "eightKSummaryIsNotOperativeText": true,
@@ -64,8 +64,13 @@
         "conditionsVerified": false
       },
       "afterText": "SOURCE_BACKED",
-      "beforeText": "MISSING_PRIOR_EXTRACTION",
-      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+      "beforeText": "SOURCE_BACKED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "beforeTextSource": {
+        "docId": "dsgr-doc-b",
+        "accession": "0001193125-24-202196",
+        "quote": "not to exceed $10,000,000 during any fiscal year of the Company"
+      }
     },
     {
       "docId": "dsgr-doc-d",
@@ -84,5 +89,9 @@
       "operativeAuthority": false,
       "independentReview": "PENDING_INDEPENDENT_REVIEW"
     }
+  ],
+  "phase3Notes": [
+    "§6.08(a)(v) before-text SOURCE_BACKED from Doc B ($10M).",
+    "Am2 wrapper still MISSING; do not substitute 10-Q."
   ]
 }

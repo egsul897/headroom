@@ -38,3 +38,7 @@ No peer cloud agent is currently titled “Amendment Intelligence.” This corpu
 ## Phase 2
 
 See `MISSION-REPORT-PHASE2.md`, `phase2/`, `authority-layers/`, `as-of-scenarios/`, `test-specs/`, `knowledge-factory-export/`, and `independent-review-handoff/`.
+
+## Phase 3
+
+See `MISSION-REPORT-PHASE3.md` and `tests/amendment-chain-research/phase3-export-consistency.test.ts`. Challenger PR #156 was not edited.

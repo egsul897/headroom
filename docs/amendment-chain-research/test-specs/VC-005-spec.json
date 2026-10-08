@@ -3,8 +3,8 @@
   "schemaVersion": "amendment-chain-research.test-spec.v1",
   "generatedAt": "2026-10-08T22:24:33Z",
   "sourceAuthorExpectation": {
-    "purpose": "Single Applicable Margin definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates \u2014 multi-amendment same definition with query-date sensitivity.",
-    "expectedFailClosedBehavior": "Operative margin for a query date must select the correct era subclause (A)/(B)/(C)/(D). If a referenced Amendment Effective Date is CONDITIONAL_UNRESOLVED, the engine must not invent which subclause applies.",
+    "purpose": "Single Applicable Rate definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates — multi-amendment same definition with query-date sensitivity.",
+    "expectedFailClosedBehavior": "Operative Applicable Rate for a query date must select the correct era subclause (A)/(B)/(C)/(D). If a referenced Amendment Effective Date is CONDITIONAL_UNRESOLVED, the engine must not invent which subclause applies. Do not treat recital 'Applicable Margin' as the defined term.",
     "queryDates": [
       "2023-08-01",
       "2023-08-17",
@@ -28,8 +28,8 @@
       {
         "scenarioId": "AZZ-S1",
         "asOf": "2023-08-01",
-        "expect": "Applicable Margin era A (pre-First): SOFR 4.25% / Base 3.25%",
-        "status": "SOURCE_BACKED_FROM_AM4_HISTORICAL_GRID",
+        "expect": "Applicable Rate era A (pre-First) as recounted in post-Am4 restated definition: SOFR 4.25% / Base 3.25% — methodological caveat: prefer contemporaneous Am1/Am3 text for true pre-Am4 as-of when available; ED CONDITIONAL_UNRESOLVED blocks silent era selection",
+        "status": "SOURCE_BACKED_FROM_AM4_HISTORICAL_GRID_WITH_CAVEAT",
         "vc": "VC-005"
       }
     ],
@@ -40,7 +40,7 @@
     "reviewer": null,
     "reviewedAt": null,
     "disposition": null,
-    "notes": "Source-author expectations above are NOT independently reviewed legal ground truth. Reserved for independent legal challenger."
+    "notes": "Phase 3 remediated Applicable Rate labeling and restored AZZ export coverage. Source-author expectations are NOT independently reviewed legal ground truth. Reserved for independent re-review."
   },
   "replay": {
     "portable": true,

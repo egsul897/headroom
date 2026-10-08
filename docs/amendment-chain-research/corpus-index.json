@@ -48,7 +48,13 @@
   "missionTaskCoverage": {
     "1_identify_originals_with_3plus_amendments": {
       "status": "DONE",
-      "chains": ["cohr-2022-07-01-credit-agreement", "matw-2020-03-27-third-ar-loan", "azz-2022-05-13-credit-agreement", "dsgr-2022-04-01-ar-credit", "cnmd-seventh-ar-to-eighth-ar"]
+      "chains": [
+        "cohr-2022-07-01-credit-agreement",
+        "matw-2020-03-27-third-ar-loan",
+        "azz-2022-05-13-credit-agreement",
+        "dsgr-2022-04-01-ar-credit",
+        "cnmd-seventh-ar-to-eighth-ar"
+      ]
     },
     "2_retrieve_original_and_amendments": {
       "status": "PARTIAL",
@@ -64,31 +70,54 @@
     },
     "5_definition_level_changes": {
       "status": "DONE",
-      "examples": ["ba-azz-am4-applicable-margin", "ba-cnmd-am2-defs-ratio", "ba-cohr-am4 Incremental Amount"]
+      "examples": [
+        "ba-azz-am4-applicable-rate",
+        "ba-cnmd-am2-defs-ratio",
+        "ba-cohr-am4 Incremental Amount"
+      ]
     },
     "6_covenant_level_changes": {
       "status": "DONE",
-      "examples": ["ba-dsgr-am4-rp", "ba-matw-am6-601j", "ba-cnmd-am2 §7.1(b)"]
+      "examples": [
+        "ba-dsgr-am4-rp",
+        "ba-matw-am6-601j",
+        "ba-cnmd-am2 §7.1(b)"
+      ]
     },
     "7_basket_amount_changes": {
       "status": "DONE",
-      "examples": ["ba-cohr-am4-baskets-and-ratio", "ba-inap-am7-baskets-and-ratios"]
+      "examples": [
+        "ba-cohr-am4-baskets-and-ratio",
+        "ba-inap-am7-baskets-and-ratios"
+      ]
     },
     "8_financial_ratio_changes": {
       "status": "DONE",
-      "examples": ["ba-cohr-am4 §6.11", "ba-cnmd-am2 §7.1(b)", "ba-inap-am7 §6.10"]
+      "examples": [
+        "ba-cohr-am4 §6.11",
+        "ba-cnmd-am2 §7.1(b)",
+        "ba-inap-am7 §6.10"
+      ]
     },
     "9_narrowing_permissions": {
       "status": "DONE",
-      "examples": ["ba-matw-am6-601j", "ba-inap-am7"]
+      "examples": [
+        "ba-matw-am6-601j",
+        "ba-inap-am7"
+      ]
     },
     "10_waivers_consents_separate": {
       "status": "DONE",
-      "examples": ["VC-007", "CNMD/DSGR non-waiver clauses tracked separately"]
+      "examples": [
+        "VC-007",
+        "CNMD/DSGR non-waiver clauses tracked separately"
+      ]
     },
     "11_missing_docs_uncertain_authority": {
       "status": "DONE",
-      "paths": ["chains/*/unresolved-authority.json"]
+      "paths": [
+        "chains/*/unresolved-authority.json"
+      ]
     },
     "12_before_after_legal_text": {
       "status": "DONE",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:24:33Z",
+  "generatedAt": "2026-10-08T23:15:00Z",
   "addressee": "Independent legal challenger (peer agent or human reviewer)",
   "coordinationNote": "No concurrent agent titled Independent Legal Challenger was found in the fleet at Phase 2 start. This package is the handoff surface.",
   "doNotEdit": [
@@ -66,7 +66,8 @@
         "Confirm as-of-date expected status",
         "Mark disposition: AFFIRM / REVISE / REJECT / UNRESOLVED",
         "Do not promote source-author expectations to ground truth without review"
-      ]
+      ],
+      "notes": "Phase 3: Applicable Rate remediation; relatedBeforeAfter azz-am4-applicable-rate.json"
     },
     {
       "packetId": "VC-006-packet",
@@ -102,7 +103,8 @@
         "Confirm as-of-date expected status",
         "Mark disposition: AFFIRM / REVISE / REJECT / UNRESOLVED",
         "Do not promote source-author expectations to ground truth without review"
-      ]
+      ],
+      "notes": "Phase 3: orig before-text SOURCE_BACKED; Am1-6 propagation unresolved"
     }
   ],
   "priorityAdversarialPackets": [
@@ -112,9 +114,42 @@
     "VC-002",
     "VC-006"
   ],
-  "updatedAt": "2026-10-08T22:32:25Z",
+  "updatedAt": "2026-10-08T23:15:00Z",
   "phase2ResidualClosures": [
-    "Matthews Am1/Am3/Am4/Am5 acquired; \u00a75.14 numeric caps verified unchanged; Am5 date-era blackline logged",
+    "Matthews Am1/Am3/Am4/Am5 acquired; §5.14 numeric caps verified unchanged; Am5 date-era blackline logged",
     "DSGR Am2 10-Q acquired; wrapper text still MISSING (image exhibit)"
-  ]
+  ],
+  "phase": "phase3-challenger-defect-remediation",
+  "priorChallenger": {
+    "pr": 156,
+    "sha": "a66c6466f218b79886a990bed3075fdffb0722b3",
+    "doNotEdit": true
+  },
+  "startingResearchSha": "ce07b1525972d1dea00792a2058900fa56291163",
+  "phase3ResidualClosures": [
+    "CONMED Seventh + Internap orig/Am1-6 manifests reconciled BODY_ACQUIRED (stale MISSING removed)",
+    "AZZ Applicable Rate labeling + export coverage restored (Am0-Am4 hashed)",
+    "Internap orig before-text SOURCE_BACKED for §6.04(m)/§6.01(k); Am1-6 propagation still UNRESOLVED_EFFECT_APPLICATION",
+    "DSGR §6.08(a)(v) $10M before-text SOURCE_BACKED; Am2 wrapper still MISSING_DOCUMENT; 10-Q NOT_OPERATIVE",
+    "All ED calendars remain CONDITIONAL_UNRESOLVED; independentlyLegallyVerified=false"
+  ],
+  "requiredReReview": {
+    "status": "PENDING_INDEPENDENT_REVIEW",
+    "doNotPromoteSourceAuthorExpectations": true,
+    "priorityPackets": [
+      "VC-005",
+      "VC-008",
+      "WP-003",
+      "VC-003",
+      "VC-002"
+    ],
+    "instructions": [
+      "Re-review after Phase 3 remediation without editing challenger PR #156.",
+      "Confirm Applicable Rate (not Margin) on VC-005.",
+      "Confirm Internap orig before-text SCOPE (orig vs immediate pre-Am7).",
+      "Confirm dual-truth MISSING labels are gone.",
+      "Do not convert CONDITIONAL_UNRESOLVED ED to satisfied from execution/filing dates.",
+      "Do not promote to independently legally verified without fresh disposition."
+    ]
+  }
 }

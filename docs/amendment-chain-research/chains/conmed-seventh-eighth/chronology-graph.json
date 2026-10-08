@@ -4,8 +4,14 @@
     {
       "id": "cnmd-seventh-ar",
       "date": "2021-07-16",
-      "label": "Seventh A&R (ACQUIRED EX-10.1)",
-      "status": "ACQUIRED"
+      "label": "Seventh A&R (BODY_ACQUIRED EX-10.1)",
+      "status": "BODY_ACQUIRED"
+    },
+    {
+      "id": "cnmd-am1-2022",
+      "date": "2022-06-06",
+      "label": "First Amendment to Seventh A&R",
+      "status": "BODY_ACQUIRED"
     },
     {
       "id": "cnmd-second-am-2022",
@@ -31,16 +37,26 @@
   "edges": [
     {
       "from": "cnmd-seventh-ar",
+      "to": "cnmd-am1-2022",
+      "kind": "AMENDS",
+      "authority": "SOURCE_BACKED",
+      "parentInstrument": "cnmd-seventh-ar"
+    },
+    {
+      "from": "cnmd-seventh-ar",
       "to": "cnmd-second-am-2022",
       "kind": "AMENDS",
-      "authority": "SOURCE_BACKED"
+      "authority": "SOURCE_BACKED",
+      "parentInstrument": "cnmd-seventh-ar",
+      "requiredIntermediateState": "post-cnmd-am1-2022",
+      "warning": "WP-003: Am2 $75→$100 token matches post-Am1 state, not unamended Seventh $25M"
     },
     {
       "from": "cnmd-seventh-ar",
       "to": "cnmd-eighth-ar",
       "kind": "RESTATES",
-      "authority": "INFERRED_FROM_TITLES",
-      "warning": "Do not auto-apply Second Amendment onto Eighth A&R"
+      "authority": "SOURCE_BACKED",
+      "warning": "Do not auto-apply Seventh-era Am1/Am2 onto Eighth A&R"
     },
     {
       "from": "cnmd-eighth-ar",

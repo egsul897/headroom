@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:32:25Z",
+  "generatedAt": "2026-10-08T23:10:00Z",
   "chains": {
     "cohr-2022-07-01-credit-agreement": [
       {
@@ -7,7 +7,7 @@
         "asOf": "2025-09-25",
         "expect": "Am4/Am5 not effective (pre same-day cluster)",
         "status": "OPERATIVE_PRE_AM4",
-        "authority": "Am4/Am5 Effective Dates CONDITIONAL_UNRESOLVED \u2014 if unresolved, REVIEW_REQUIRED rather than inventing pre/post"
+        "authority": "Am4/Am5 Effective Dates CONDITIONAL_UNRESOLVED — if unresolved, REVIEW_REQUIRED rather than inventing pre/post"
       },
       {
         "scenarioId": "COHR-S2",
@@ -45,19 +45,19 @@
       {
         "scenarioId": "CNMD-S3",
         "asOf": "2022-07-31",
-        "expect": "$75M (post-Am1, pre-Am2) \u2014 NOT $100M and NOT apply Am2 against $25M parent",
+        "expect": "$75M (post-Am1, pre-Am2) — NOT $100M and NOT apply Am2 against $25M parent",
         "status": "SOURCE_BACKED_IF_AM1_EFFECTIVE"
       },
       {
         "scenarioId": "CNMD-S4",
         "asOf": "2022-08-01",
-        "expect": "If Am2 Effective Date satisfied: $100M; \u00a77.1(b) restated schedule",
+        "expect": "If Am2 Effective Date satisfied: $100M; §7.1(b) restated schedule",
         "status": "CONDITIONAL"
       },
       {
         "scenarioId": "CNMD-S5",
         "asOf": "2025-06-10",
-        "expect": "Eighth A&R restatement \u2014 Seventh-era Am1/Am2 effects must not silently attach without Eighth text authority",
+        "expect": "Eighth A&R restatement — Seventh-era Am1/Am2 effects must not silently attach without Eighth text authority",
         "status": "WRONG_PARENT_GUARD",
         "vc": "VC-003"
       },
@@ -73,14 +73,14 @@
       {
         "scenarioId": "DSGR-S0",
         "asOf": "2024-06-28",
-        "expect": "CDOR\u2192CORRA replacement referenced in 10-Q narrative; do NOT treat 10-Q as operative amendment body; Am2 wrapper text MISSING",
+        "expect": "CDOR→CORRA replacement referenced in 10-Q narrative; do NOT treat 10-Q as operative amendment body; Am2 wrapper text MISSING",
         "status": "REVIEW_REQUIRED_MISSING_WRAPPER",
         "authority": "dsgr-am2-10q narrative + image EX-10.1; MISSING_DOCUMENT for wrapper"
       },
       {
         "scenarioId": "DSGR-S1",
         "asOf": "2024-12-31",
-        "expect": "\u00a76.08(a)(v) pre-Fourth Amendment",
+        "expect": "§6.08(a)(v) pre-Fourth Amendment",
         "status": "PRIOR_TEXT_PARTIAL"
       },
       {
@@ -93,7 +93,7 @@
       {
         "scenarioId": "DSGR-S3",
         "asOf": "2025-03-30",
-        "expect": "Same as S2 \u2014 execution not yet; deemed clause is the only path",
+        "expect": "Same as S2 — execution not yet; deemed clause is the only path",
         "status": "DEEMED_RETROACTIVE"
       },
       {
@@ -114,7 +114,7 @@
       {
         "scenarioId": "AZZ-S1",
         "asOf": "2023-08-01",
-        "expect": "Applicable Margin era A (pre-First): SOFR 4.25% / Base 3.25%",
+        "expect": "Applicable Rate era A (pre-First): SOFR 4.25% / Base 3.25%",
         "status": "SOURCE_BACKED_FROM_AM4_HISTORICAL_GRID",
         "vc": "VC-005"
       },
@@ -141,23 +141,23 @@
       {
         "scenarioId": "MATW-S1",
         "asOf": "2021-03-29",
-        "expect": "\u00a75.14 base leverage caps; Am1 not yet effective",
+        "expect": "§5.14 base leverage caps; Am1 not yet effective",
         "status": "SOURCE_BACKED",
-        "authority": "Third A&R EX-10.1 \u00a75.14"
+        "authority": "Third A&R EX-10.1 §5.14"
       },
       {
         "scenarioId": "MATW-S2",
         "asOf": "2021-12-28",
-        "expect": "If Am2 Effective Date satisfied: blackline-embedded CA operative; \u00a75.14 numeric caps unchanged",
+        "expect": "If Am2 Effective Date satisfied: blackline-embedded CA operative; §5.14 numeric caps unchanged",
         "status": "CONDITIONAL_UNRESOLVED_EFFECTIVENESS",
         "authority": "matw-am2 accession 0000063296-22-000060"
       },
       {
         "scenarioId": "MATW-S3",
         "asOf": "2024-01-31",
-        "expect": "If Am5 Effective Date satisfied: \u00a75.14 final Leverage tier schedule uses December 31, 2023 start; ratios still 4.50/3.50 \u2014 not invent new ratio levels",
+        "expect": "If Am5 Effective Date satisfied: §5.14 final Leverage tier schedule uses December 31, 2023 start; ratios still 4.50/3.50 — not invent new ratio levels",
         "status": "SOURCE_BACKED_IF_EFFECTIVE",
-        "authority": "matw-am5 blackline \u00a75.14",
+        "authority": "matw-am5 blackline §5.14",
         "tests": [
           "DEFINITION_LEVEL_REPLACEMENT",
           "SCHEDULE_ERA"
@@ -166,14 +166,14 @@
       {
         "scenarioId": "MATW-S4",
         "asOf": "2024-09-22",
-        "expect": "Pre-Am6: \u00a76.01(j) general secured-lien basket still broad form",
+        "expect": "Pre-Am6: §6.01(j) general secured-lien basket still broad form",
         "status": "SOURCE_BACKED",
         "authority": "base / pre-Am6 text"
       },
       {
         "scenarioId": "MATW-S5",
         "asOf": "2024-09-24",
-        "expect": "If Am6 Effective Date satisfied: \u00a76.01(j) narrowed to Notes-only subordinate lien; \u00a75.14 unchanged by Am6",
+        "expect": "If Am6 Effective Date satisfied: §6.01(j) narrowed to Notes-only subordinate lien; §5.14 unchanged by Am6",
         "status": "CONDITIONAL_UNRESOLVED_EFFECTIVENESS",
         "vc": "VC-004",
         "tests": [
@@ -192,13 +192,13 @@
       {
         "scenarioId": "INAP-S2",
         "asOf": "2019-10-28",
-        "expect": "Pre-Seventh Amendment basket/ratio levels from Am6 state (chain Am1\u2013Am6 acquired)",
+        "expect": "Pre-Seventh Amendment basket/ratio levels from Am6 state (chain Am1–Am6 acquired)",
         "status": "CHAIN_AVAILABLE_FOR_DIFF"
       },
       {
         "scenarioId": "INAP-S3",
         "asOf": "2019-10-29",
-        "expect": "If Seventh Amendment Effective Date satisfied: narrowed baskets + new \u00a76.10 tables",
+        "expect": "If Seventh Amendment Effective Date satisfied: narrowed baskets + new §6.10 tables",
         "status": "CONDITIONAL",
         "vc": "VC-008"
       }

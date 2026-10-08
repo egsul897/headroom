@@ -21,21 +21,68 @@
       "role": "RESTATEMENT",
       "title": "Seventh Amended and Restated Credit Agreement",
       "executionDate": "2021-07-16",
-      "filingDate": null,
-      "accession": "UNKNOWN",
-      "exhibit": "UNKNOWN",
-      "sourceUrl": "",
+      "filingDate": "2021-07-16",
+      "accession": "0001193125-21-217426",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312521217426/d170717dex101.htm",
       "localFixturePath": null,
-      "retrievalStatus": "MISSING",
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Body acquired Phase 2 (sha256 c0c901d6...). Cash-netting and §7.1(b) before-text extracted for Am1/Am2 chain.",
+          "Independently legally verified remains false pending re-review after Phase 3 remediation."
+        ]
+      },
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
+        "status": "EXPLICIT_EFFECTIVE_DATE",
         "namedEffectiveDate": "2021-07-16",
-        "conditionsSummary": "Referenced as parent of Second Amendment; full exhibit not in Phase 2F package.",
-        "evidenceQuote": "Second Amendment preamble: Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021"
+        "conditionsSummary": "Closing Date of Seventh A&R; used as parent dating for Am1/Am2. Do not invent later ED satisfaction from this date.",
+        "evidenceQuote": "Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021"
       },
       "amendsInstrumentId": null,
       "amendsDocIds": [],
-      "notes": ["MISSING base for Doc C effects — unresolved authority by design in fixture."]
+      "notes": [
+        "CORRECTED Phase 3: was stale MISSING; ledger ACQUIRED EX-10.1 (not EX-10.2 GCA amendment).",
+        "Parent instrument for Am1 and Am2 (Am2 attaches to post-Am1 intermediate state)."
+      ]
+    },
+    {
+      "docId": "cnmd-am1-2022",
+      "role": "AMENDMENT",
+      "title": "First Amendment to Seventh A&R Credit Agreement",
+      "executionDate": "2022-06-06",
+      "filingDate": null,
+      "accession": "0001193125-22-169336",
+      "exhibit": "EX-10.25",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312522169336/d320648dex1025.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "BODY_ACQUIRED",
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Cash-netting $25M→$75M extracted; ED CONDITIONAL_UNRESOLVED."
+        ]
+      },
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "First Amendment Effective Date = satisfaction of conditions; not collapsed to execution/filing date.",
+        "evidenceQuote": "First Amendment Effective Date"
+      },
+      "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
+      "amendsDocIds": [
+        "cnmd-seventh-ar"
+      ],
+      "notes": [
+        "Amends CSSLR/CTLR cash-netting figures only (WP-001)."
+      ]
     },
     {
       "docId": "cnmd-second-am-2022",
@@ -55,12 +102,22 @@
         "evidenceQuote": "The amendments set forth in this Amendment shall become effective on the date (the \"Second Amendment Effective Date\") on which the following conditions precedent have been satisfied"
       },
       "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
-      "amendsDocIds": ["cnmd-seventh-ar"],
+      "amendsDocIds": [
+        "cnmd-seventh-ar"
+      ],
       "notes": [
         "Amends definitions Consolidated Senior Secured Leverage Ratio, Consolidated Total Leverage Ratio, Indebtedness.",
         "Restates §7.1(b) Consolidated Total Leverage Ratio schedule + Material Acquisition step-up.",
-        "Explicit non-waiver language in Section 5."
-      ]
+        "Explicit non-waiver language in Section 5.",
+        "Phase 3: parent instrument remains Seventh A&R; intermediate state must be post-Am1 ($75M) for delete/substitute token match (WP-003).",
+        "Body FIXTURE_RAW_PRESENT / curated text extracted; amendmentEffectApplied false until engine apply; independentlyLegallyVerified false."
+      ],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false
+      }
     },
     {
       "docId": "cnmd-eighth-ar",
@@ -80,8 +137,21 @@
         "evidenceQuote": "date on which the conditions precedent set forth in Section 5.1 shall have been satisfied, which date is June 10, 2025."
       },
       "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
-      "amendsDocIds": ["cnmd-seventh-ar"],
-      "notes": ["Superseding restatement; Seventh-era Second Amendment must not auto-apply."]
+      "amendsDocIds": [
+        "cnmd-seventh-ar"
+      ],
+      "notes": [
+        "Superseding restatement; Seventh-era Second Amendment must not auto-apply."
+      ],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Superseding restatement; do not overlay Seventh-era Am1/Am2."
+        ]
+      }
     },
     {
       "docId": "cnmd-gca",
@@ -122,20 +192,33 @@
         "evidenceQuote": "shall become effective as of the date (the \"First Amendment Effective Date\") on which each of the following conditions precedent shall have been satisfied"
       },
       "amendsInstrumentId": "cnmd-credit-lineage-2021-2026",
-      "amendsDocIds": ["cnmd-eighth-ar", "cnmd-gca"],
+      "amendsDocIds": [
+        "cnmd-eighth-ar",
+        "cnmd-gca"
+      ],
       "notes": [
         "Amends BOTH Credit Agreement and Guarantee/Collateral Agreement via blackline exhibits (incorporation by reference).",
         "Adds Term A-2 Commitments to Schedule 1 (schedule modification).",
         "Consenting Lenders / Required Lenders consent language — consent distinct from permanent text change mechanism."
-      ]
+      ],
+      "modelingStatus": {
+        "bodyAcquired": true,
+        "textExtracted": true,
+        "amendmentEffectApplied": false,
+        "independentlyLegallyVerified": false,
+        "notes": [
+          "Curated omits blackline exhibits; raw embeds them. Fail closed if package lacks exhibit pages."
+        ]
+      }
     }
   ],
   "authorityPolicy": {
     "noInferenceWithoutSource": true,
     "waiversSeparateFromAmendments": true,
     "notes": [
-      "Seventh A&R body MISSING — definition/ratio before-text for Second Amendment only partially reconstructable from amendment's own delete/substitute instructions.",
-      "Omnibus blackline exhibits curated out of fixture — INCORPORATION_BY_REFERENCE / incomplete exhibit authority for full after-text of Eighth A&R as amended."
+      "Seventh A&R body BODY_ACQUIRED (Phase 2 ledger). Definition/ratio before-text for Am1/Am2 is SOURCE_BACKED from Seventh + Am1.",
+      "Omnibus blackline exhibits embedded in raw EX-10.1; curated short text omits pages — engines loading only curated text must fail closed.",
+      "Body acquired ≠ amendment effect applied ≠ independently legally verified."
     ]
   },
   "adversarialTags": [
@@ -146,7 +229,6 @@
     "INCORPORATION_BY_REFERENCE",
     "MULTI_COVENANT_FAMILY",
     "RATIO_CHANGE",
-    "MISSING_DOCUMENT",
     "WAIVER_OR_CONSENT_SEPARATE"
   ]
 }
