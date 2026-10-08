@@ -23,7 +23,20 @@ Peers should include these fields in boxed mission reports:
 
 ```ts
 type ParallelAgentMissionReport = {
-  workstreamId: "WS-PAR" | "WS-CKF" | "WS-VIC" | "WS-CCA" | string;
+  workstreamId:
+    | "WS-PAR"
+    | "WS-CKF"
+    | "WS-VIC"
+    | "WS-CCA"
+    | "WS-EHB"
+    | "WS-CKB"
+    | "WS-RCD"
+    | "WS-NED"
+    | "WS-CDA"
+    | "WS-BFL"
+    | "WS-DEF"
+    | "WS-PCI"
+    | string;
   baseMainSha: string;
   branchName: string;
   branchTipSha: string;
@@ -37,6 +50,15 @@ type ParallelAgentMissionReport = {
 ```
 
 No runtime dependency required; this is a reporting contract only.
+
+### 1.3 Ownership boundary checker
+
+```bash
+git diff --name-only origin/main...HEAD \
+  | npx tsx scripts/parallel-agents/check-ownership-boundaries.ts --workstream WS-CKF --stdin
+```
+
+Exit `0` if all listed paths are within the workstream’s boundaries; exit `1` on violation.
 
 ---
 

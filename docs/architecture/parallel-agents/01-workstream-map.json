@@ -1,9 +1,10 @@
 {
   "artifact": "parallel-agent-workstream-map",
-  "version": 1,
+  "version": 2,
   "status": "DRAFT_CONTRACT",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
   "baseMainFetchedAt": "2026-10-08T22:00:00Z",
+  "mapAmendedAt": "2026-10-08T22:05:00Z",
   "coordinator": {
     "workstreamId": "WS-PAR",
     "name": "Parallel Agent Operating Rules",
@@ -12,9 +13,10 @@
     "url": "https://cursor.com/agents/bc-01a11d87-7950-77b8-8141-e448c7e00e3f"
   },
   "notes": [
-    "Exclusive ownership below is a published coordination contract for this concurrent fleet. Peers may amend their exclusive trees only by appending a ledger entry and updating this JSON via a WS-PAR PR, or by opening their own docs amendment that WS-PAR reconciles without silently rewriting peer contracts.",
-    "Existing production files listed as 'consumeReadOnly' or 'extendViaNewSiblingOnly' must not be rewritten unless the owning workstream's mission explicitly requires a minimal adapter hook; prefer new sibling modules.",
-    "Agents 5–6 were referenced by the operating mandate but were not yet present with distinct missions at map authorship; reserved slots stay unowned until assigned."
+    "Exclusive ownership is a published coordination contract. Peers amend exclusive trees via WS-PAR reconciliation or their own docs amendment that WS-PAR merges without silently rewriting peer contracts.",
+    "Existing production files listed as extendViaNewSiblingOnly must not be rewritten in place; prefer new sibling modules.",
+    "v1 reserved slots 5–6 are superseded: founder dispatched a larger concurrent fleet. v2 assigns exclusive trees for all known mobile missions at amendment time.",
+    "Knowledge-corpus workstreams (DEF/BFL/NED/CDA/RCD/PCI/CKB/EHB) must not invent a second covenant engine or rewrite Phase-3 IR / capacity engines."
   ],
   "sharedHardExclusions": [
     "docs/**/sealed*/**",
@@ -22,17 +24,21 @@
     "docs/phase-3*/** certification status boards claiming CERTIFIED without founder auth",
     "Claude-owned independent acceptance fixtures under tests/ and docs/ explicitly marked independent product validation / Claude-owned",
     "Paid provider calls and paid infrastructure provisioning without founder authorization",
-    "Silent certification of AI-generated legal interpretations"
+    "Silent certification of AI-generated legal interpretations",
+    "lib/contract-model/ir/**",
+    "lib/contract-model/phase3-certification/**",
+    "lib/covenant-engine.ts"
   ],
   "workstreams": [
     {
       "workstreamId": "WS-PAR",
       "name": "Parallel Agent Operating Rules / fleet coordination",
       "bcId": "bc-01a11d87-7950-77b8-8141-e448c7e00e3f",
-      "missionSummary": "Publish operating rules, exclusive ownership map, interface contracts, and append-only progress ledger for the concurrent fleet.",
+      "missionSummary": "Publish operating rules, exclusive ownership map, interface contracts, ownership checker, and append-only progress ledger for the concurrent fleet.",
       "exclusiveOwn": [
         "docs/architecture/parallel-agents/**",
-        "tests/architecture/parallel-agents/**"
+        "tests/architecture/parallel-agents/**",
+        "scripts/parallel-agents/**"
       ],
       "mustNotTouch": [
         "lib/connectors/**",
@@ -48,7 +54,8 @@
       ],
       "publishesContracts": [
         "docs/architecture/parallel-agents/01-workstream-map.json",
-        "docs/architecture/parallel-agents/02-interface-contracts.md"
+        "docs/architecture/parallel-agents/02-interface-contracts.md",
+        "scripts/parallel-agents/check-ownership-boundaries.ts"
       ]
     },
     {
@@ -71,25 +78,18 @@
       ],
       "mustNotTouch": [
         "docs/architecture/parallel-agents/**",
-        "lib/extraction/vercel-ai-gateway-provider.ts",
         "lib/extraction/providers/**",
         "docs/vercel-independent-compilation/**",
         "scripts/compute-assessment/**",
         "docs/compute-assessment/**",
-        "lib/contract-model/ir/**",
-        "lib/contract-model/phase3-certification/**"
-      ],
-      "consumesContracts": [
-        "lib/connectors/types.ts SourceConnector",
-        "WS-PAR workstream map",
-        "North Star v2 contractual-truth boundaries"
+        "docs/edgar-historical-backfill/**",
+        "lib/edgar-historical-backfill/**"
       ],
       "softGates": [
         "Do not build a parallel covenant engine",
         "Do not use paid AI providers",
         "Do not modify sealed evidence or certification gates",
-        "Do not interfere with Claude-owned independent acceptance tests",
-        "Avoid coupling to unresolved parser branches"
+        "Do not interfere with Claude-owned independent acceptance tests"
       ]
     },
     {
@@ -114,23 +114,13 @@
         "docs/architecture/parallel-agents/**",
         "lib/covenant-knowledge/**",
         "docs/covenant-knowledge-factory/**",
-        "scripts/covenant-knowledge-factory/**",
         "scripts/compute-assessment/**",
-        "docs/compute-assessment/**",
-        "lib/contract-model/ir/**",
-        "lib/contract-model/phase3-certification/**"
-      ],
-      "consumesContracts": [
-        "lib/extraction/provider.ts ContractExtractionProvider",
-        "Existing analyzer provider interface",
-        "WS-PAR workstream map"
+        "docs/compute-assessment/**"
       ],
       "softGates": [
         "Do not unnecessarily rewrite the existing compiler",
         "Do not modify Claude-owned acceptance fixtures",
-        "No paid provider calls without founder authorization",
-        "Preserve certification gates and phase-gate semantics",
-        "All adapters share validated I/O contracts and provenance fields"
+        "No paid provider calls without founder authorization"
       ]
     },
     {
@@ -147,47 +137,197 @@
       "mustNotTouch": [
         "docs/architecture/parallel-agents/**",
         "lib/covenant-knowledge/**",
-        "docs/covenant-knowledge-factory/**",
         "lib/extraction/providers/**",
-        "docs/vercel-independent-compilation/**",
-        "lib/contract-model/ir/**",
-        "lib/contract-model/phase3-certification/**"
-      ],
-      "consumesContracts": [
-        "Existing connectors + structural compilation entrypoints (read/call only)",
-        "WS-PAR workstream map",
-        "Optional GPU-worker interface published under lib/compute-assessment/"
+        "docs/vercel-independent-compilation/**"
       ],
       "softGates": [
         "No paid infrastructure or model calls without authorization",
         "Do not provision or pay for GPUs",
-        "Persist benchmark results to durable external store when available; never claim durability from VM-only paths alone",
         "Report measured results, not estimates"
       ]
     },
     {
-      "workstreamId": "WS-RESERVE-5",
-      "name": "Reserved concurrent slot 5",
-      "bcId": null,
-      "missionSummary": "Unassigned. Do not claim exclusive paths until a founder-dispatched mission names this slot.",
-      "exclusiveOwn": [],
-      "mustNotTouch": [],
-      "status": "UNASSIGNED"
+      "workstreamId": "WS-EHB",
+      "name": "Edgar historical backfill engine",
+      "bcId": "bc-01a11d8b-4342-7f20-8183-2aa3b387c45c",
+      "missionSummary": "Historical EDGAR discovery, manifests, IBR resolution, dedupe, coverage metrics, and durable backfill queue coordinating with WS-CKF (no second downloader/registry).",
+      "exclusiveOwn": [
+        "docs/edgar-historical-backfill/**",
+        "lib/edgar-historical-backfill/**",
+        "scripts/edgar-historical-backfill/**",
+        "tests/edgar-historical-backfill/**"
+      ],
+      "mustNotTouch": [
+        "docs/covenant-knowledge-factory/**",
+        "lib/covenant-knowledge/**",
+        "lib/connectors/edgar-connector.ts",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "softGates": [
+        "Do not duplicate CKF downloader or source registry",
+        "Metadata-first; no blind bulk download",
+        "Respect SEC fair-access; no evasion",
+        "No paid calls / merges / cert changes"
+      ]
     },
     {
-      "workstreamId": "WS-RESERVE-6",
-      "name": "Reserved concurrent slot 6",
-      "bcId": null,
-      "missionSummary": "Unassigned. Do not claim exclusive paths until a founder-dispatched mission names this slot.",
-      "exclusiveOwn": [],
-      "mustNotTouch": [],
-      "status": "UNASSIGNED"
+      "workstreamId": "WS-CKB",
+      "name": "Headroom covenant knowledge benchmark",
+      "bcId": "bc-01a11d89-6f87-7266-bd40-11aa0ed97f51",
+      "missionSummary": "Independent held-out generalization benchmark (recall/accuracy/false-permission/provenance/cost) separate from Claude-owned acceptance fixtures.",
+      "exclusiveOwn": [
+        "docs/covenant-knowledge-benchmark/**",
+        "lib/covenant-knowledge-benchmark/**",
+        "scripts/covenant-knowledge-benchmark/**",
+        "tests/covenant-knowledge-benchmark/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/covenant-knowledge/**",
+        "docs/covenant-knowledge-factory/**"
+      ],
+      "softGates": [
+        "Do not modify Claude-owned acceptance tests/fixtures",
+        "Held-outs must not be used for prompt/rule tuning",
+        "Do not mark model labels as verified ground truth"
+      ]
+    },
+    {
+      "workstreamId": "WS-RCD",
+      "name": "Rare covenant drafting discovery",
+      "bcId": "bc-01a11d89-4dd9-7f7c-a9b5-546d264e553e",
+      "missionSummary": "Deterministic novelty detection + reviewer queue for rare drafting that risks false permissions / missing restrictions.",
+      "exclusiveOwn": [
+        "docs/rare-covenant-drafting-discovery/**",
+        "lib/drafting-novelty/**",
+        "scripts/rare-covenant-drafting-discovery/**",
+        "tests/rare-covenant-drafting-discovery/**",
+        "tests/drafting-novelty/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/covenant-knowledge/**",
+        "lib/contract-model/compiler/**"
+      ],
+      "softGates": [
+        "No production legal-rule edits",
+        "No semantic equivalence from embedding/text similarity alone"
+      ]
+    },
+    {
+      "workstreamId": "WS-NED",
+      "name": "Covenant exceptions database",
+      "bcId": "bc-01a11d89-2cbb-7755-ad0d-5ed83ae921b5",
+      "missionSummary": "Source-backed exception/proviso/carve-out database for negative covenants with hierarchy, conditions, and hanging provisos.",
+      "exclusiveOwn": [
+        "docs/negative-covenant-exception-database/**",
+        "lib/negative-covenant-exceptions/**",
+        "scripts/negative-covenant-exception-database/**",
+        "tests/negative-covenant-exception-database/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/covenant-knowledge/**",
+        "lib/covenant-engine.ts"
+      ],
+      "softGates": [
+        "Do not treat exceptions as unconditional capacity",
+        "No production legal-engine modifications"
+      ]
+    },
+    {
+      "workstreamId": "WS-CDA",
+      "name": "Covenant dependency atlas",
+      "bcId": "bc-01a11d89-0957-74e7-9d95-6d3bae385021",
+      "missionSummary": "Directed typed dependency edges among covenants/defs/conditions/exceptions/amendments/baskets; diamonds/cycles; completeness reports.",
+      "exclusiveOwn": [
+        "docs/covenant-dependency-atlas/**",
+        "lib/covenant-dependency-atlas/**",
+        "scripts/covenant-dependency-atlas/**",
+        "tests/covenant-dependency-atlas/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/contract-model/compiler/**",
+        "lib/covenant-knowledge/**"
+      ],
+      "softGates": [
+        "Do not alter production dependency resolver/compiler",
+        "No legal dependency asserted from textual similarity alone"
+      ]
+    },
+    {
+      "workstreamId": "WS-BFL",
+      "name": "Covenant basket formula library",
+      "bcId": "bc-01a11d88-e563-798e-a07e-2cdcd60dae51",
+      "missionSummary": "Source-backed basket/capacity formula corpus + taxonomy (growers, builders, shared/reclass/anti-double-count) with adversarial cases.",
+      "exclusiveOwn": [
+        "docs/covenant-basket-capacity-formula-library/**",
+        "lib/basket-formula-corpus/**",
+        "datasets/basket-capacity-formulas/**",
+        "scripts/covenant-basket-capacity-formula-library/**",
+        "tests/basket-formula-corpus/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/covenant-engine.ts",
+        "lib/covenant-knowledge/**"
+      ],
+      "softGates": [
+        "No amounts→permissions without source semantics",
+        "No capacity calc with missing inputs",
+        "Do not modify production capacity engine"
+      ]
+    },
+    {
+      "workstreamId": "WS-DEF",
+      "name": "Debt definitions encyclopedia",
+      "bcId": "bc-01a11d88-c6c6-7e7e-bccf-657370092a50",
+      "missionSummary": "Source-backed definition encyclopedia (EBITDA, leverage, Available Amount, subsidiaries, etc.) with dependency graph and amendment variants.",
+      "exclusiveOwn": [
+        "docs/definition-encyclopedia/**",
+        "lib/definition-encyclopedia/**",
+        "scripts/definition-encyclopedia/**",
+        "tests/definition-encyclopedia/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/covenant-knowledge/**",
+        "lib/contract-model/compiler/**"
+      ],
+      "softGates": [
+        "Never assume alternate formulations are legally equivalent",
+        "Do not modify another agent’s schema"
+      ]
+    },
+    {
+      "workstreamId": "WS-PCI",
+      "name": "Precedent comparison intelligence",
+      "bcId": "bc-01a11d8b-6a0d-7a0a-8aa8-74fd087f616b",
+      "missionSummary": "Source-backed precedent comparison across covenant families/definitions/scope/amendments; distinguish textual vs structural vs semantic vs verified legal difference.",
+      "exclusiveOwn": [
+        "docs/precedent-comparison/**",
+        "lib/precedent-comparison/**",
+        "scripts/precedent-comparison/**",
+        "tests/precedent-comparison/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/covenant-knowledge/**",
+        "lib/covenant-engine.ts"
+      ],
+      "softGates": [
+        "No production legal-engine edits",
+        "No competing DB schema",
+        "Do not label model summaries as reviewed precedent"
+      ]
     }
   ],
   "ownershipInvariants": [
     "No two assigned workstreams may share an exclusiveOwn glob that can match the same path.",
     "Production files outside exclusiveOwn are either consumeReadOnly, extendViaNewSiblingOnly, or forbidden.",
     "Integration conflicts are resolved by publishing adapters/mocks, not by rewriting another workstream's contract.",
-    "NS-4 store work remains a separate authorized track under docs/architecture/NS-4-*; this fleet does not absorb or reopen it."
+    "NS-4 store work remains a separate authorized track under docs/architecture/NS-4-*; this fleet does not absorb or reopen it.",
+    "WS-EHB must coordinate with WS-CKF interfaces; it must not invent a second EDGAR downloader or source registry."
   ]
 }

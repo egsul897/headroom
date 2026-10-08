@@ -46,14 +46,14 @@ describe("parallel-agent workstream map", () => {
 
   it("has required top-level identity fields", () => {
     expect(map.artifact).toBe("parallel-agent-workstream-map");
-    expect(map.version).toBeGreaterThanOrEqual(1);
+    expect(map.version).toBeGreaterThanOrEqual(2);
     expect(map.status).toBe("DRAFT_CONTRACT");
     expect(map.baseMainSha).toMatch(/^[0-9a-f]{40}$/);
-    expect(map.workstreams.length).toBeGreaterThanOrEqual(4);
+    expect(map.workstreams.length).toBeGreaterThanOrEqual(12);
     expect(map.ownershipInvariants.length).toBeGreaterThan(0);
   });
 
-  it("includes the four dispatched fleet workstreams plus two reserved slots", () => {
+  it("includes the core and expanded fleet workstreams", () => {
     const ids = map.workstreams.map((w) => w.workstreamId);
     expect(ids).toEqual(
       expect.arrayContaining([
@@ -61,20 +61,27 @@ describe("parallel-agent workstream map", () => {
         "WS-CKF",
         "WS-VIC",
         "WS-CCA",
-        "WS-RESERVE-5",
-        "WS-RESERVE-6",
+        "WS-EHB",
+        "WS-CKB",
+        "WS-RCD",
+        "WS-NED",
+        "WS-CDA",
+        "WS-BFL",
+        "WS-DEF",
+        "WS-PCI",
       ]),
     );
+    expect(ids).not.toEqual(expect.arrayContaining(["WS-RESERVE-5", "WS-RESERVE-6"]));
   });
 
-  it("assigns known bcIds to the four live workstreams", () => {
+  it("assigns known bcIds to live workstreams", () => {
     const byId = Object.fromEntries(map.workstreams.map((w) => [w.workstreamId, w]));
     expect(byId["WS-PAR"].bcId).toBe("bc-01a11d87-7950-77b8-8141-e448c7e00e3f");
     expect(byId["WS-CKF"].bcId).toBe("bc-01a11d83-6b3f-71e1-9438-3e157bb27327");
     expect(byId["WS-VIC"].bcId).toBe("bc-01a11d85-2531-7ae2-a5d5-cf7360ca6d1d");
     expect(byId["WS-CCA"].bcId).toBe("bc-01a11d86-98d9-7d04-9776-41cf098c3334");
-    expect(byId["WS-RESERVE-5"].bcId).toBeNull();
-    expect(byId["WS-RESERVE-6"].bcId).toBeNull();
+    expect(byId["WS-EHB"].bcId).toBe("bc-01a11d8b-4342-7f20-8183-2aa3b387c45c");
+    expect(byId["WS-PCI"].bcId).toBe("bc-01a11d8b-6a0d-7a0a-8aa8-74fd087f616b");
   });
 
   it("keeps exclusiveOwn globs non-overlapping across assigned workstreams", () => {
@@ -102,6 +109,7 @@ describe("parallel-agent workstream map", () => {
     expect(par?.exclusiveOwn).toEqual([
       "docs/architecture/parallel-agents/**",
       "tests/architecture/parallel-agents/**",
+      "scripts/parallel-agents/**",
     ]);
   });
 
@@ -113,6 +121,16 @@ describe("parallel-agent workstream map", () => {
         "lib/extraction/**",
         "lib/covenant-knowledge/**",
         "scripts/compute-assessment/**",
+      ]),
+    );
+  });
+
+  it("keeps WS-EHB from claiming WS-CKF exclusive trees", () => {
+    const ehb = map.workstreams.find((w) => w.workstreamId === "WS-EHB");
+    expect(ehb?.mustNotTouch).toEqual(
+      expect.arrayContaining([
+        "docs/covenant-knowledge-factory/**",
+        "lib/covenant-knowledge/**",
       ]),
     );
   });

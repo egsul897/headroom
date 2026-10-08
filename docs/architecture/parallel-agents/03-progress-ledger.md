@@ -28,3 +28,31 @@
 - Published `02-interface-contracts.md` so peers can depend on coordination contracts and know which SPI to reuse (`SourceConnector`, extraction/analyzer provider interfaces, frozen 4B).
 - WS-PAR exclusive trees: `docs/architecture/parallel-agents/**`, `tests/architecture/parallel-agents/**` only.
 - Explicit non-goals: no merge, no certification edits, no paid calls, no Phase-3 IR / sealed evidence edits, no absorption of NS-4.
+
+---
+
+## 2026-10-08T22:03:52Z — focused tests + draft PR
+
+- **branchTipSha (pre-v2):** `bb294e142895178198ccf40e5f891ae08b8af86a`
+- **draft PR:** https://github.com/egsul897/headroom/pull/138
+- **focusedTests:** `npx vitest run tests/architecture/parallel-agents/workstream-map.test.ts` → 6 passed / 0 failed
+- **ciStatus:** pending (Vercel running at PR open); subscribed via cursor-subscriptions
+- **ownershipViolations:** []
+
+---
+
+## 2026-10-08T22:05:00Z — map v2 for expanded fleet
+
+- Founder dispatched additional concurrent mobile agents beyond the original four product missions.
+- Superseded `WS-RESERVE-5` / `WS-RESERVE-6` with assigned exclusive trees for:
+  - `WS-EHB` Edgar historical backfill
+  - `WS-CKB` Covenant knowledge benchmark
+  - `WS-RCD` Rare covenant drafting discovery
+  - `WS-NED` Covenant exceptions database
+  - `WS-CDA` Covenant dependency atlas
+  - `WS-BFL` Basket formula library
+  - `WS-DEF` Debt definitions encyclopedia
+  - `WS-PCI` Precedent comparison intelligence
+- Added `scripts/parallel-agents/check-ownership-boundaries.ts` to WS-PAR exclusiveOwn.
+- Map version bumped to **2**; non-overlap invariant retained.
+- Soft gate reminder: WS-EHB must not invent a second EDGAR downloader/registry vs WS-CKF.

@@ -15,10 +15,11 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | Path | Role |
 | --- | --- |
 | `00-operating-rules.md` | Binding operating rules for this fleet |
-| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map |
+| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v2) |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |
 | `README.md` | This index |
+| `scripts/parallel-agents/check-ownership-boundaries.ts` | CLI ownership checker (WS-PAR exclusive) |
 
 ## Soft gates (FAIL for this workstream)
 
