@@ -1,0 +1,119 @@
+{
+  "knowledgeFactory": {
+    "peer": "WS-CKF",
+    "availability": "UNAVAILABLE",
+    "pathTried": [
+      "/workspace/tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.json",
+      "/workspace/docs/knowledge-factory/export/corpus.json",
+      "/workspace/lib/knowledge-factory/export/corpus.json",
+      "/workspace/lib/precedent-comparison/adapters/fixtures/knowledge-factory.sample.json",
+      "/workspace/docs/knowledge-factory/manifests/corpus-stats.json",
+      "/workspace/docs/knowledge-factory/manifests/fixture-ingest-report.json"
+    ],
+    "data": null,
+    "note": "Knowledge Factory corpus export not present — PCI expands from local authentic fixtures only",
+    "legallyVerified": false,
+    "sufficientForExecutable": false
+  },
+  "definitionEncyclopedia": {
+    "peer": "WS-DEF",
+    "availability": "UNAVAILABLE",
+    "pathTried": [
+      "/workspace/docs/definition-encyclopedia/definitions.json",
+      "/workspace/docs/definition-encyclopedia/knowledge-factory-export.json",
+      "/workspace/lib/precedent-comparison/adapters/fixtures/definitions.sample.json"
+    ],
+    "data": null,
+    "note": "loaded 1 definitions from lib/precedent-comparison/adapters/fixtures/definitions.sample.json — sample fixture only; not a published peer export",
+    "legallyVerified": false
+  },
+  "dependencyAtlas": {
+    "peer": "WS-CDA",
+    "availability": "UNAVAILABLE",
+    "pathTried": [
+      "/workspace/tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json",
+      "/workspace/docs/covenant-dependency-atlas/export/atlas-dataset.json",
+      "/workspace/tests/fixtures/covenant-dependency-atlas/export/atlas-dataset.json",
+      "/workspace/docs/covenant-dependency-atlas/export/atlas-dataset.json",
+      "/workspace/tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json",
+      "/workspace/lib/precedent-comparison/adapters/fixtures/atlas-dataset.sample.json"
+    ],
+    "data": null,
+    "note": "loaded 2 edges from lib/precedent-comparison/adapters/fixtures/atlas-dataset.sample.json — sample fixture only; not a published peer export",
+    "legallyVerified": false
+  },
+  "negativeCovenantExceptionDatabase": {
+    "peer": "WS-NCED",
+    "availability": "AVAILABLE",
+    "pathTried": [
+      "/workspace/docs/negative-covenant-exception-database/phase-4/knowledge-factory-export.json"
+    ],
+    "data": {
+      "schemaVersion": "nced",
+      "exceptionCount": 21,
+      "path": "docs/negative-covenant-exception-database/phase-4/knowledge-factory-export.json"
+    },
+    "note": "NCED export visible at docs/negative-covenant-exception-database/phase-4/knowledge-factory-export.json",
+    "legallyVerified": false
+  },
+  "financialDefinitionsPrecedent": {
+    "peer": "WS-FDP",
+    "availability": "AVAILABLE",
+    "pathTried": [
+      "/workspace/docs/financial-definitions-precedent/10-dataset-export.json"
+    ],
+    "data": {
+      "schemaVersion": "fdp.v1",
+      "recordCount": 67,
+      "path": "docs/financial-definitions-precedent/10-dataset-export.json"
+    },
+    "note": "FDP export visible (67 records) at docs/financial-definitions-precedent/10-dataset-export.json",
+    "legallyVerified": false
+  },
+  "amendmentAuthority": {
+    "peer": "WS-ACR",
+    "availability": "AVAILABLE",
+    "pathTried": [
+      "/workspace/docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json"
+    ],
+    "data": {
+      "schemaVersion": "knowledge-factory.amendment-chain-research-export.v1",
+      "chainCount": 0,
+      "beforeAfterCount": 0,
+      "path": "docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json"
+    },
+    "note": "ACR export visible at docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json",
+    "legallyVerified": false
+  },
+  "legalCore": {
+    "peer": "LEGAL_CORE",
+    "availability": "INTERFACE_ONLY",
+    "legallyVerified": false,
+    "note": "Legal Core verifier is not modified and has not certified basket-formula candidates."
+  },
+  "epistemicNote": "Discoverable peer exports ≠ source-backed candidate bindings ≠ legally verified ≠ sufficient for executable capacity.",
+  "competingSourceRegistry": false,
+  "blockers": [
+    {
+      "peer": "WS-CKF",
+      "blocker": "KNOWLEDGE_FACTORY_CORPUS_EXPORT_UNAVAILABLE_OR_UNVERIFIED",
+      "owner": "Covenant Knowledge Factory"
+    },
+    {
+      "peer": "WS-DEF",
+      "blocker": "DEFINITION_ENCYCLOPEDIA_EXPORT_UNAVAILABLE",
+      "owner": "Definition Encyclopedia"
+    },
+    {
+      "peer": "WS-CDA",
+      "blocker": "DEPENDENCY_ATLAS_EXPORT_UNAVAILABLE",
+      "owner": "Dependency Atlas"
+    },
+    {
+      "peer": "LEGAL_CORE",
+      "blocker": "LEGAL_CORE_NOT_BOUND_FOR_BASKET_FORMULA_PROMOTION",
+      "owner": "Architecture Remediation / Legal Core"
+    }
+  ],
+  "importContract": "knowledge-factory-import.basket-formula.v1"
+}
