@@ -55,7 +55,14 @@ Corpus default for all public excerpts: `reviewStatus: SOURCE_ONLY`. The corpus 
 
 ## E. Public corpus
 
-26 source-backed excerpts from existing Headroom fixtures (CONMED 2025, FWRG 2021, LSB 2023), sliced from curated article/definition files already in `tests/fixtures/unseen-packages/**`. Every row carries `sourcePath`, `charStart`/`charEnd`, and verbatim `sourceText`. No invented operative language.
+27 source-backed excerpts from existing Headroom fixtures (CONMED 2025, FWRG 2021, LSB 2023), sliced from curated article/definition files already in `tests/fixtures/unseen-packages/**`. Every row carries `sourcePath`, `charStart`/`charEnd`, and verbatim `sourceText`. No invented operative language.
+
+Corpus alignment notes (post-exploration cleanup):
+
+- `fwrg-2021:6.07` is `FUNDAMENTAL_CHANGES` (header: Fundamental Changes; Disposition of Assets), tagged for asset dispositions — not a pure asset-sale basket.
+- `fwrg-2021:6.08` is `QUALITATIVE_NEGATIVE_COVENANTS` (Restricted Debt amendment/waiver), not mandatory prepayment.
+- Junior-debt-prepayment coverage uses `fwrg-2021:6.04b` (voluntary prepayment of Restricted Debt), `conmed-2025:7.9`, and `lsb-2023:6.08`.
+- Pure `ASSET_SALES` comparison remains anchored on `conmed-2025:7.5`.
 
 ## F. Tests
 
