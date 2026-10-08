@@ -88,6 +88,17 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Live population denominator: empty operative text 0, attemptable 135. Bands SHORT 105, MID 17, LONG 13. `7.4(a)(iii)` is MID (1,347 chars). `7.4(a)(iv)` is LONG (2,343 chars). The sealed calibration file still records attemptable 133. The recommended spend ceiling assertion still matches the existing constant. Sealed run plans still list the historical empty skips.
 - Tests: `tests/contract-model/comma-clause-marker.test.ts` 4 passed. Clause hierarchy, F-2 (including Chewy 6.08), definition enumerations, phase-2f1 robustness 31, offline maps 2 passed. Resume denominator assertion updated for the live counts. Dry-run plan still requires `/tmp/claude-0/pilot/models.json`, which is absent here. `npx tsc --noEmit -p .` clean.
 
+## CI regression on `9fa6018` — stratified-cert
+
+- Status: parser narrowed locally. `stratified-cert` on `9fa6018` failed four assertions (run 37832679453). `12c858e` is the last green baseline: Gibraltar 901 candidates / 1978 nodes.
+- IPV-06 (`1b19520`) suppressed markers from a definition declaration through later lines. That deleted Gibraltar `1.01(1)`–`1.01(34)` and reparented Section 8.01 under `8.01(ii)` because the chapeau says `constitute an "Event of Default":`. Node count 1978 → 1590. The swallow fix that remains is attribution: a dictionary entry that opens its own line is sourced to the enclosing section, not to an earlier inline list. Line-start definition lists stay structural.
+- The comma rule (`ca7937a`) admitted every comma-space marker with clause bodies on both sides. Chewy `6.05(a)(2)(c)` became `6.05(a)(2)(ii)(c)` because `Swap, (i)` started a roman list. Gibraltar identities shifted the same way (`10.05(i)` → `10.05(iii)`, `7.05(b)(21)(a)(1)` → `7.05(b)(21)(b)(1)`).
+- Narrow comma rule: admit `), (next)` only when it continues the preceding structural marker, a depth-0 raw label continues it, and proviso `(1)` follows that label before the next non-continuing line-start item. CONMED `7.4(a)(iii)` / `7.4(a)(iv)` / `7.4(a)(iv)(1)` / `7.4(a)(iv)(2)` return. `7.4(a)(ii)(1)` is gone. Gibraltar's extracted-text node multiset matches `12c858e` (1978). Chewy `6.05(a)(2)(c)` matches the baseline path.
+- Section 7.14 exceptions stay `7.14(a)(i)`, the baseline parent. Promoting them onto the section requires admitting `(b)` and `(c)`, and that admission is the same comma pattern that reparented Gibraltar. No separate safe rule.
+- Live CONMED denominator stays attemptable 135, empty 0. Bands are SHORT 102 / MID 20 / LONG 13. The sealed calibration file still records attemptable 133. `7.13`, `7.14`, and `7.16` are MID again because `(b)`/`(c)` are not split out.
+- Local `npx vitest run tests/stratified-cert`: Gibraltar 901/1978 passed. Chewy `6.05(a)(2)(c)` pin passed. CONMED `7.8(d)` operative sha `4e5b6f9b…` and 389 chars passed. `00-preflight.json` still differs in one field: `inputs.rehydrationUnresolved` is 0, canonical pin is 2. At `12c858e` those two unresolved rows are `7.4(a)(iii)` and `7.4(a)(iv)` `NOT_FOUND`. The pin file was not rewritten.
+- `npx tsc --noEmit -p .` clean. Paid spend $0.
+
 ## Queue
 
 | Id | Severity | Status | Next action |
@@ -102,11 +113,12 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | A1 failed definition splice returns base section | P0 | PUSHED `f0bc31e` | Unspliceable definition amendment withholds the section |
 | A2 parent/child amendment precedence | P0 | PUSHED `f0bc31e` | Later or same-day child amendment withholds the parent text |
 | IPV-08 exhibit term sheet as a definition | P0 | PUSHED `12c858e` | Non-operative summary does not supply definitions |
-| IPV-06 inline definition enumeration | P0 | PUSHED `1b19520` | Definition-internal markers do not swallow the next term |
-| B3 comma-separated clause vs citation | P0 | VERIFIED locally | 7.4(a)(iii) and (iv) parse; bare citations do not |
+| IPV-06 inline definition enumeration | P0 | NARROWED | Later line-start terms stay on the section. Definition lists stay in the certified tree |
+| B3 comma-separated clause vs citation | P0 | NARROWED | 7.4(a)(iii)/(iv) only when they bridge proviso (1). Chewy 6.05(a)(2)(c) restored |
+| stratified-cert 7.8(d) preflight | P0 | OPEN | Canonical `rehydrationUnresolved` is 2 because 7.4(iii)/(iv) were missing. Pin not rewritten |
 | P0-D IPV-02 / IPV-03 | P0 | VERIFIED on `bb9bfd4` | Re-check only if those files change |
 | P0-E source authentication | P0 | VERIFIED on `bb9bfd4` | Do not reopen |
 
 ## Blockers
 
-None for the queued P0 items. Do not merge. Do not spend. Do not edit Claude-owned fixtures.
+CONMED `7.8(d)` `00-preflight.json` byte pin still records `rehydrationUnresolved: 2`. The corrected parser resolves `7.4(a)(iii)` and `7.4(a)(iv)`, so the emitted count is 0. Operative text of `7.8(d)` is unchanged. Section 7.14 exceptions remain under `7.14(a)`. Do not merge. Do not spend. Do not edit Claude-owned fixtures. Do not rewrite the canonical pin.

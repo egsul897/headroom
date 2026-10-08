@@ -20,8 +20,6 @@
  * limitation, not a silent guess.
  */
 
-import { definitionDeclarationSpans } from "./structural-definitions";
-
 export type MarkerSequenceKind = "LOWER_ALPHA" | "LOWER_ROMAN" | "UPPER_ALPHA" | "UPPER_ROMAN" | "NUMERIC";
 
 /** DocumentNodeType values this parser can produce beneath a SECTION - clamped at SUBCLAUSE for any depth beyond 3, since the schema has no deeper first-class level; ancestry beyond that point is still exact (via nodeKey chaining), just represented with a repeated nodeType. */
@@ -107,18 +105,22 @@ export interface RawMarkerOccurrence {
  * sequence check, so over-detecting candidates here costs nothing.
  */
 // The default scan excludes a marker immediately preceded by ", " (comma-space).
-// A bare citation list ("permitted under clauses (a), (b) and (c) of this Section",
-// or "(a) , (i) , (j) , (m)") has no clause body between the markers. A genuine
-// comma-separated item ("Person), (iii) any Subsidiary may...") has a clause body
-// on both sides and is admitted by admittedCommaClauseMarkers. The exclusion stays
-// in this regex so findRawMarkerOccurrences itself never promotes a citation.
+// admittedCommaClauseMarkers may add back a "), (next)" item when it fills a gap
+// before a raw successor that introduces proviso (1). findRawMarkerOccurrences
+// itself never promotes a citation.
 /**
  * F-2: the comma exclusion targets INLINE enumeration ("..., (b) the declaration ...") and is limited to
  * horizontal whitespace; a label that begins a new line after a lead-in ending in a comma
  * ("in each case without duplication,\n(a) franchise ...") is a list item, never an inline reference.
  */
 const MARKER_OCCURRENCE = /(?<!,[ \t])(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
-/** A comma-space marker is scanned separately and admitted only when both neighboring spans are clause bodies. A bare citation ("clauses (a), (b) and (c)") has no body between the markers and stays excluded. */
+/**
+ * A comma-space marker is scanned separately. It is admitted only when the comma
+ * closes a parenthetical item ("), (iii)"), both neighboring spans are clause bodies,
+ * and the token continues the preceding structural marker's sequence. A lead-in
+ * such as "except in the case of a Swap, (i)" does not continue "(2)" and stays
+ * a citation, so the following line-start "(a)/(b)/(c)" list is not pulled under "(ii)".
+ */
 const COMMA_CLAUSE_MARKER = /,[ \t]\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
 
 export function findRawMarkerOccurrences(text: string): RawMarkerOccurrence[] {
@@ -166,93 +168,58 @@ export function isInlineReferenceMarker(text: string, occ: RawMarkerOccurrence):
   return false;
 }
 
-/**
- * A definition's own (a)/(i)/(A) list is not a covenant clause. The list runs from the
- * declaration through later lines that continue it, and stops before the next definition
- * or before a line-start marker that does not continue that list. A covenant list with
- * no definition declaration in front of it is unchanged.
- */
-function definitionEnumerationRanges(text: string): { start: number; end: number }[] {
-  const decls = definitionDeclarationSpans(text);
-  const ranges: { start: number; end: number }[] = [];
-  for (let i = 0; i < decls.length; i++) {
-    const decl = decls[i]!;
-    const limit = decls[i + 1]?.charStart ?? text.length;
-    const end = endOfDefinitionEnumeration(text, decl.declarationEnd, limit);
-    if (end > decl.declarationEnd) ranges.push({ start: decl.declarationEnd, end });
-  }
-  return ranges;
+function markerAtLineStart(text: string, charStart: number): boolean {
+  return /(?:^|\n)[ \t]*$/.test(text.slice(Math.max(0, charStart - 8), charStart));
 }
 
-function continueDefinitionSequence(sequences: { kind: MarkerSequenceKind; index: number }[], candidates: MarkerCandidate[]): boolean {
-  for (let i = sequences.length - 1; i >= 0; i--) {
-    const seq = sequences[i]!;
-    const hit = candidates.find((c) => c.kind === seq.kind && c.index === seq.index + 1);
-    if (hit) {
-      seq.index = hit.index;
-      return true;
+/** True when nextToken is the immediate successor of previousToken in any shared sequence kind. */
+function markerContinues(previousToken: string, nextToken: string): boolean {
+  const previous = classifyMarker(previousToken);
+  const next = classifyMarker(nextToken);
+  return next.some((candidate) => previous.some((open) => open.kind === candidate.kind && candidate.index === open.index + 1));
+}
+
+/**
+ * "), (iii) ... and (iv) ... (1)" is one broken list: (iv) is already a raw label, and the
+ * numeric proviso (1) follows it before the next line-start item. Admitting (iii) puts (1)
+ * under (iv). A "), (b) ... and (c)" pair with no following proviso is left excluded, because
+ * admitting it reparents later line-start clauses in a definitions section.
+ */
+function commaBridgesFollowingRaw(text: string, comma: RawMarkerOccurrence, raws: RawMarkerOccurrence[]): boolean {
+  const following = raws.filter((raw) => raw.charStart > comma.charStart);
+  let depth = 0;
+  let rawIndex = 0;
+  let successor: RawMarkerOccurrence | null = null;
+  for (let i = comma.charEnd; i < text.length && rawIndex < following.length && successor === null; i++) {
+    const raw = following[rawIndex]!;
+    if (i === raw.charStart) {
+      if (depth === 0) {
+        if (markerContinues(comma.token, raw.token)) successor = raw;
+        else if (markerAtLineStart(text, raw.charStart)) return false;
+      }
+      rawIndex++;
     }
+    const ch = text[i]!;
+    if (ch === "(") depth++;
+    else if (ch === ")" && depth > 0) depth--;
+  }
+  if (successor === null) return false;
+  depth = 0;
+  rawIndex = following.findIndex((raw) => raw.charStart === successor.charStart) + 1;
+  for (let i = successor.charEnd; i < text.length && rawIndex < following.length; i++) {
+    const raw = following[rawIndex]!;
+    if (i === raw.charStart) {
+      if (depth === 0) {
+        if (raw.token === "1") return true;
+        if (markerAtLineStart(text, raw.charStart) && !markerContinues(successor.token, raw.token)) return false;
+      }
+      rawIndex++;
+    }
+    const ch = text[i]!;
+    if (ch === "(") depth++;
+    else if (ch === ")" && depth > 0) depth--;
   }
   return false;
-}
-
-/** A sentence period, not a decimal ("1.00") and not the dot inside a section number ("6.01."). */
-function lastSentenceEnd(text: string, from: number, markerAt: number): number {
-  const between = text.slice(from, markerAt);
-  for (let i = between.length - 1; i >= 0; i--) {
-    if (between[i] !== ".") continue;
-    const after = between[i + 1];
-    const before = between[i - 1];
-    if (before && /\d/.test(before) && after !== undefined && /\d/.test(after)) continue;
-    if (after === undefined || /[\s"”']/.test(after)) return from + i;
-  }
-  return -1;
-}
-
-function endOfDefinitionEnumeration(text: string, from: number, limit: number): number {
-  let pos = from;
-  const sequences: { kind: MarkerSequenceKind; index: number }[] = [];
-  let prevUnfinished = true;
-  let prevLeadIn = false;
-  let started = false;
-  while (pos < limit) {
-    const lineEnd = text.indexOf("\n", pos);
-    const end = lineEnd === -1 || lineEnd > limit ? limit : lineEnd;
-    const line = text.slice(pos, end);
-    const trimmed = line.trim();
-    if (trimmed.length === 0) {
-      pos = end >= limit ? limit : end + 1;
-      continue;
-    }
-    if (started) {
-      const markerMatch = /^\(([A-Za-z]{1,7}|\d{1,3})\)/.exec(trimmed);
-      if (markerMatch) {
-        const candidates = classifyMarker(markerMatch[1]!);
-        const continues = candidates.some((c) => sequences.some((s) => s.kind === c.kind && c.index === s.index + 1));
-        const nestedStart = candidates.some((c) => c.index === 1) && (prevLeadIn || prevUnfinished);
-        if (!continues && !nestedStart) return pos;
-      } else if (!/^(?:provided\b|and\b|or\b|plus\b|minus\b|including\b|less\b|without\b|in each case\b)/i.test(trimmed) && !/^[a-z]/.test(trimmed)) {
-        return pos;
-      }
-    }
-    started = true;
-    for (const marker of findRawMarkerOccurrences(line)) {
-      const abs = pos + marker.charStart;
-      if (abs < from) continue;
-      const candidates = classifyMarker(marker.token);
-      const continues = candidates.some((c) => sequences.some((s) => s.kind === c.kind && c.index === s.index + 1));
-      if (sequences.length > 0 && lastSentenceEnd(text, from, abs) >= 0 && !continues) return abs;
-      if (!continueDefinitionSequence(sequences, candidates)) {
-        const start = candidates.find((c) => c.index === 1);
-        if (start) sequences.push({ kind: start.kind, index: 1 });
-      }
-    }
-    prevLeadIn = /:\s*$/.test(trimmed) || /\b(?:following|as follows|below)\s*:?\s*$/i.test(trimmed);
-    const incomplete = /,\s*$/.test(trimmed) || /\b(?:and|or|of|that|plus|minus)\s*$/i.test(trimmed);
-    prevUnfinished = prevLeadIn || incomplete;
-    pos = end >= limit ? limit : end + 1;
-  }
-  return limit;
 }
 
 const CLAUSE_BODY_GLUE = new Set(["and", "or", "andor", "through", "thru", "to", "of", "this", "the", "section", "sections", "clause", "clauses", "paragraph", "paragraphs", "subsection", "subsections", "above", "below", "hereof", "thereof", "such", "any", "its", "under", "pursuant", "with", "that", "for", "from"]);
@@ -282,13 +249,25 @@ function commaSeparatedClauseMarkers(text: string): RawMarkerOccurrence[] {
   return out;
 }
 
+/** The comma of a "), (iii)" item, not a bare ", (i)" lead-in. */
+function closesParentheticalItem(text: string, markerStart: number): boolean {
+  let index = markerStart - 1;
+  while (index >= 0 && /[ \t]/.test(text[index] ?? "")) index--;
+  if (text[index] !== ",") return false;
+  index--;
+  while (index >= 0 && /[ \t]/.test(text[index] ?? "")) index--;
+  return text[index] === ")";
+}
+
 /**
  * Comma-space markers are citations when either neighbor is only glue ("(a), (b) and (c)").
- * They are list items when the previous marker's clause and this marker's own clause both have a body
- * ("Person), (iii) any Subsidiary may..."). A marker chained to an inline reference stays a citation.
+ * They are list items when a completed parenthetical item is followed by the next token of the
+ * same sequence and both sides are clause bodies ("Person), (iii) any Subsidiary may...").
+ * A marker chained to an inline reference stays a citation. Sequence continuation is applied
+ * by structuralMarkerOccurrences, which knows the preceding structural label.
  */
 function admittedCommaClauseMarkers(text: string): RawMarkerOccurrence[] {
-  const commas = commaSeparatedClauseMarkers(text);
+  const commas = commaSeparatedClauseMarkers(text).filter((occ) => closesParentheticalItem(text, occ.charStart));
   if (commas.length === 0) return [];
   const neighbors = [...findRawMarkerOccurrences(text), ...commas].sort((a, b) => a.charStart - b.charStart);
   const admitted: RawMarkerOccurrence[] = [];
@@ -308,20 +287,27 @@ function admittedCommaClauseMarkers(text: string): RawMarkerOccurrence[] {
 
 /** The marker occurrences that are structural labels: every occurrence minus inline references, where reference status propagates along a comma/conjunction/range chain ("clauses (9) or (10)"). */
 export function structuralMarkerOccurrences(text: string): RawMarkerOccurrence[] {
-  const all = [...findRawMarkerOccurrences(text), ...admittedCommaClauseMarkers(text)].sort((a, b) => a.charStart - b.charStart);
-  const definitionRanges = definitionEnumerationRanges(text);
+  const raw = findRawMarkerOccurrences(text);
+  const rawStarts = new Set(raw.map((occ) => occ.charStart));
+  const all = [...raw, ...admittedCommaClauseMarkers(text)].sort((a, b) => a.charStart - b.charStart);
   const out: RawMarkerOccurrence[] = [];
   let prev: RawMarkerOccurrence | null = null;
   let prevWasReference = false;
+  let lastStructural: RawMarkerOccurrence | null = null;
   for (const occ of all) {
-    if (definitionRanges.some((range) => occ.charStart >= range.start && occ.charStart < range.end)) {
+    const chained: boolean = prev !== null && prevWasReference && REFERENCE_CHAIN_JOIN.test(text.slice(prev.charEnd, occ.charStart));
+    const isReference: boolean = chained || isInlineReferenceMarker(text, occ);
+    const commaItem = !rawStarts.has(occ.charStart);
+    const continuesStructural = lastStructural !== null && markerContinues(lastStructural.token, occ.token);
+    if (!isReference && commaItem && (!continuesStructural || !commaBridgesFollowingRaw(text, occ, raw))) {
       prev = occ;
       prevWasReference = false;
       continue;
     }
-    const chained: boolean = prev !== null && prevWasReference && REFERENCE_CHAIN_JOIN.test(text.slice(prev.charEnd, occ.charStart));
-    const isReference: boolean = chained || isInlineReferenceMarker(text, occ);
-    if (!isReference) out.push(occ);
+    if (!isReference) {
+      out.push(occ);
+      lastStructural = occ;
+    }
     prev = occ;
     prevWasReference = isReference;
   }

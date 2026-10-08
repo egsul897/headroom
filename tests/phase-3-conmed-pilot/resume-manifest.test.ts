@@ -63,7 +63,7 @@ describe("the real denominator (offline, from the sealed population through the 
   it("is 163 discovered -> 135 exact-dedup -> 135 attemptable; the sealed calibration file still records the earlier 133", async () => {
     const d = await denominator();
     expect(d).toMatchObject({ discovered: 163, eligible: 163, exactDuplicatesRemoved: 28, dedupDenominator: 135, emptyOperativeText: 0, attemptable: 135 });
-    expect(d.bands).toEqual({ SHORT: 105, MID: 17, LONG: 13 });
+    expect(d.bands).toEqual({ SHORT: 102, MID: 20, LONG: 13 });
     expect(calibrationFile.denominator).toMatchObject({ discovered: 163, dedupDenominator: 135, attemptable: 133 });
     expect(calibrationFile.candidates).toHaveLength(135);
     expect(d.rows.filter((r) => r.band === "EMPTY").map((r) => r.ref)).toEqual([]);

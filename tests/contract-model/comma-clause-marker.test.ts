@@ -1,7 +1,7 @@
 /**
- * A comma-separated marker is a clause when both sides are clause bodies.
- * A bare citation list stays a citation. Synthetic text, plus the CONMED
- * Section 7.4 list whose (iii) and (iv) were dropped by the citation exclusion.
+ * A "), (iii) ... and (iv) ... (1)" gap is one clause list. A bare citation stays a
+ * citation. A comma lead-in that does not bridge a following proviso stays a citation,
+ * so a later line-start (a)/(b)/(c) list keeps its parent. Synthetic text, plus CONMED 7.4.
  */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -12,8 +12,8 @@ const refs = (text: string) => buildClauseTree(text).map((n) => [...n.parentMark
 
 describe("comma-separated clause markers", () => {
   it("continues a list when the comma joins two clause bodies", () => {
-    const text = "(a) (i) any Subsidiary may merge into the Parent Borrower (provided that the Parent Borrower survives); (ii) any other Subsidiary may merge into a Guarantor (provided that the Guarantor survives), (iii) any limited liability company Subsidiary may consummate a Division if the successors could have received the assets under Section 7.5 and (iv) the Parent Borrower may merge into a Subsidiary provided that the survivor assumes the obligations.";
-    expect(refs(text)).toEqual(["(a)", "(a)(i)", "(a)(ii)", "(a)(iii)", "(a)(iv)"]);
+    const text = "(a) (i) any Subsidiary may merge into the Parent Borrower (provided that the Parent Borrower survives); (ii) any other Subsidiary may merge into a Guarantor (provided that the Guarantor survives), (iii) any limited liability company Subsidiary may consummate a Division if the successors could have received the assets under Section 7.5 and (iv) the Parent Borrower may merge into a Subsidiary provided further that (1) no Event of Default exists and (2) the survivor assumes the obligations.";
+    expect(refs(text)).toEqual(["(a)", "(a)(i)", "(a)(ii)", "(a)(iii)", "(a)(iv)", "(a)(iv)(1)", "(a)(iv)(2)"]);
   });
 
   it("does not turn a bare citation list into clauses", () => {
@@ -24,6 +24,14 @@ describe("comma-separated clause markers", () => {
   it("does not treat a parenthetical gloss between citations as a clause body", () => {
     const text = "(a) first item, including the baskets in clauses (a) (general basket), (b) (ratio basket) and (c) (builder basket).\n(b) second item.";
     expect(refs(text)).toEqual(["(a)", "(b)"]);
+  });
+
+  it("does not let a comma lead-in start a list that reparents the following line-start clauses", () => {
+    const text = "(a) The Borrowers shall not consummate an Asset Sale, unless:\n(1) consideration is received; and\n(2) except in the case of a Permitted Asset Swap, (i) at least 50% of the consideration is cash and (ii) at least 75% of the consideration is cash; provided that the amount of:\n(a) assumed liabilities;\n(b) securities converted into cash; and\n(c) Designated Non-cash Consideration;\nshall be deemed cash.";
+    const tree = refs(text);
+    expect(tree).toContain("(a)(2)(c)");
+    expect(tree).not.toContain("(a)(2)(ii)(c)");
+    expect(tree).not.toContain("(a)(2)(i)");
   });
 
   it("parses CONMED Section 7.4(a)(iii) and (iv) without keeping the successor proviso under (ii)", () => {

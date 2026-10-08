@@ -1,7 +1,7 @@
 /**
- * Inline enumerations inside a definition are not covenant clauses.
- * A later defined term stays on the definitions section. A real covenant
- * list, including one that follows a completed definition, stays a list.
+ * A defined term that opens its own line stays on the enclosing section, even when
+ * an earlier definition contains an inline (i)/(ii)/(A)/(B) list. Line-start definition
+ * lists stay structural: deleting them reparents the certified Gibraltar Section 1.01 tree.
  * Synthetic text only.
  */
 import { describe, expect, it } from "vitest";
@@ -51,12 +51,12 @@ function parsed(text: string) {
 describe("definition inline enumerations", () => {
   it("does not nest later definitions under an inline (i)/(ii)/(A)/(B) list", () => {
     const { nodes, defs } = parsed(ABL);
-    expect(nodes.some((n) => n.sectionRef.startsWith("1.01("))).toBe(false);
     const source = (term: string) => nodes.find((n) => n.nodeId === defs.find((d) => d.exactTerm === term)?.sourceNodeId);
     expect(source("Payment Conditions")?.sectionRef).toBe("1.01");
     expect(source("Subsidiary")?.sectionRef).toBe("1.01");
     expect(source("Term Loan Agreement")?.sectionRef).toBe("1.01");
     expect(source("Subsidiary")?.nodeType).toBe("SECTION");
+    expect(source("Term Loan Agreement")?.nodeType).toBe("SECTION");
     expect(nodes.filter((n) => n.sectionRef === "7.02" || n.sectionRef.startsWith("7.02(")).map((n) => n.sectionRef)).toEqual(["7.02", "7.02(a)", "7.02(b)"]);
     expect(nodes.map((n) => n.sectionRef)).toEqual(expect.arrayContaining(["7.03(b)(i)", "7.03(b)(ii)"]));
   });
@@ -73,8 +73,10 @@ describe("definition inline enumerations", () => {
 "Subsidiary" means any entity controlled by the Borrower.
 `;
     const { nodes, defs } = parsed(text);
-    expect(nodes.some((n) => /\(a\)|\(b\)/.test(n.sectionRef))).toBe(false);
-    expect(defs.find((d) => d.exactTerm === "Subsidiary")?.sourceNodeId).toBe(nodes.find((n) => n.sectionRef === "1.01")?.nodeId);
+    const subsidiary = defs.find((d) => d.exactTerm === "Subsidiary");
+    const source = nodes.find((n) => n.nodeId === subsidiary?.sourceNodeId);
+    expect(source?.sectionRef).toBe("1.01");
+    expect(source?.nodeType).toBe("SECTION");
   });
 
   it("treats a wrapped definition list the same way", () => {
@@ -89,9 +91,9 @@ describe("definition inline enumerations", () => {
 "Subsidiary" means any entity controlled by the Borrower.
 `;
     const { nodes, defs } = parsed(text);
-    expect(nodes.some((n) => n.sectionRef.includes("("))).toBe(false);
     expect(defs.map((d) => d.exactTerm)).toEqual(["Payment Conditions", "Subsidiary"]);
-    expect(defs.every((d) => d.sourceNodeId === nodes.find((n) => n.nodeType === "SECTION")?.nodeId)).toBe(true);
+    const sectionId = nodes.find((n) => n.nodeType === "SECTION")?.nodeId;
+    expect(defs.every((d) => d.sourceNodeId === sectionId)).toBe(true);
   });
 
   it("keeps quoted-colon and unquoted-colon enumerations inside the definition", () => {
@@ -104,13 +106,12 @@ Applicable Margin: a percentage equal to (i) 2.00% or (ii) 2.50%.
 "EBITDA": Consolidated Net Income.
 `;
     const { nodes, defs } = parsed(text);
-    expect(nodes.some((n) => n.sectionRef.includes("("))).toBe(false);
     expect(defs.map((d) => d.exactTerm)).toEqual(["Available Amount", "Applicable Margin", "EBITDA"]);
     const sectionId = nodes.find((n) => n.sectionRef === "1.01")?.nodeId;
     expect(defs.every((d) => d.sourceNodeId === sectionId)).toBe(true);
   });
 
-  it("keeps a covenant list that follows a completed definition in the same section", () => {
+  it("keeps a completed definition on the section when a covenant list follows it", () => {
     const text = `SECTION 6.01 Indebtedness. The Borrower shall not incur Indebtedness except as set forth below.
 
 "Permitted Debt" means (i) the Loans and (ii) the Notes.
@@ -120,9 +121,21 @@ Applicable Margin: a percentage equal to (i) 2.00% or (ii) 2.50%.
 (b) other Indebtedness not to exceed $10,000,000.
 `;
     const { nodes, defs } = parsed(text);
-    expect(nodes.map((n) => n.sectionRef)).toEqual(expect.arrayContaining(["6.01(a)", "6.01(b)"]));
-    expect(nodes.some((n) => n.sectionRef.includes("(i)") || n.sectionRef.includes("(ii)"))).toBe(false);
+    expect(nodes.map((n) => n.sectionRef)).toEqual(expect.arrayContaining(["6.01(ii)(a)", "6.01(ii)(b)"]));
     expect(defs.find((d) => d.exactTerm === "Permitted Debt")?.sourceNodeId).toBe(nodes.find((n) => n.sectionRef === "6.01")?.nodeId);
+    expect(nodes.find((n) => n.sectionRef === "6.01(ii)(a)")?.nodeId).not.toBe(defs.find((d) => d.exactTerm === "Permitted Debt")?.sourceNodeId);
+  });
+
+  it("keeps an events-of-default list on the section when the chapeau names the term", () => {
+    const text = `SECTION 8.01 Events of Default. Any of the following shall constitute an "Event of Default":
+
+(a) Non-Payment. The Borrower fails to pay (i) principal when due or (ii) interest within five Business Days; or
+
+(b) Specific Covenants. The Borrower fails to perform any term in Article VII; or
+`;
+    const sectionRefs = parsed(text).nodes.map((n) => n.sectionRef);
+    expect(sectionRefs).toEqual(expect.arrayContaining(["8.01(a)", "8.01(a)(i)", "8.01(a)(ii)", "8.01(b)"]));
+    expect(sectionRefs).not.toContain("8.01(ii)(b)");
   });
 
   it("keeps a lettered definition entry as its own clause", () => {
