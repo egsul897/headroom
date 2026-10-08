@@ -41,10 +41,17 @@ describe("canonical identity contract", () => {
 
   it("maps core document identities onto existing schema paths", () => {
     const byId = Object.fromEntries(contract.identities.map((i) => [i.logicalId, i]));
-    expect(JSON.stringify(byId.source_document_id.mapsTo)).toContain("Document.id");
-    expect(JSON.stringify(byId.structural_provision_id.mapsTo)).toContain("DocumentNode");
-    expect(JSON.stringify(byId.definition_id.mapsTo)).toContain("DefinedTermNode");
-    expect(JSON.stringify(byId.instrument_id.mapsTo)).toContain("DebtInstrument");
+    const requireId = (id: string) => {
+      const row = byId[id];
+      if (!row) throw new Error(`missing identity ${id}`);
+      return row;
+    };
+    expect(JSON.stringify(requireId("source_document_id").mapsTo)).toContain("Document.id");
+    expect(JSON.stringify(requireId("structural_provision_id").mapsTo)).toContain(
+      "DocumentNode",
+    );
+    expect(JSON.stringify(requireId("definition_id").mapsTo)).toContain("DefinedTermNode");
+    expect(JSON.stringify(requireId("instrument_id").mapsTo)).toContain("DebtInstrument");
   });
 
   it("lists anti-patterns blocking incompatible replacements", () => {

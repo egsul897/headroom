@@ -38,8 +38,11 @@ function parseArgs(argv: string[]): {
       workstreamId = argv[++i] ?? "";
     } else if (arg === "--files") {
       // remaining until next flag
-      while (i + 1 < argv.length && !argv[i + 1].startsWith("--")) {
-        files.push(argv[++i]);
+      while (i + 1 < argv.length) {
+        const next = argv[i + 1];
+        if (next === undefined || next.startsWith("--")) break;
+        files.push(next);
+        i += 1;
       }
     } else if (arg === "--stdin") {
       stdin = true;

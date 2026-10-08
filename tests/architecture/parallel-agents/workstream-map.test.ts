@@ -41,6 +41,15 @@ function globsOverlap(a: string, b: string): boolean {
   return na.startsWith(`${nb}/`) || nb.startsWith(`${na}/`);
 }
 
+function requireWorkstream(
+  byId: Record<string, Workstream>,
+  id: string,
+): Workstream {
+  const ws = byId[id];
+  if (!ws) throw new Error(`missing workstream ${id}`);
+  return ws;
+}
+
 describe("parallel-agent workstream map", () => {
   const map = loadMap();
 
@@ -81,12 +90,24 @@ describe("parallel-agent workstream map", () => {
 
   it("assigns known bcIds to live workstreams", () => {
     const byId = Object.fromEntries(map.workstreams.map((w) => [w.workstreamId, w]));
-    expect(byId["WS-PAR"].bcId).toBe("bc-01a11d87-7950-77b8-8141-e448c7e00e3f");
-    expect(byId["WS-CKF"].bcId).toBe("bc-01a11d83-6b3f-71e1-9438-3e157bb27327");
-    expect(byId["WS-VIC"].bcId).toBe("bc-01a11d85-2531-7ae2-a5d5-cf7360ca6d1d");
-    expect(byId["WS-CCA"].bcId).toBe("bc-01a11d86-98d9-7d04-9776-41cf098c3334");
-    expect(byId["WS-EHB"].bcId).toBe("bc-01a11d8b-4342-7f20-8183-2aa3b387c45c");
-    expect(byId["WS-PCI"].bcId).toBe("bc-01a11d8b-6a0d-7a0a-8aa8-74fd087f616b");
+    expect(requireWorkstream(byId, "WS-PAR").bcId).toBe(
+      "bc-01a11d87-7950-77b8-8141-e448c7e00e3f",
+    );
+    expect(requireWorkstream(byId, "WS-CKF").bcId).toBe(
+      "bc-01a11d83-6b3f-71e1-9438-3e157bb27327",
+    );
+    expect(requireWorkstream(byId, "WS-VIC").bcId).toBe(
+      "bc-01a11d85-2531-7ae2-a5d5-cf7360ca6d1d",
+    );
+    expect(requireWorkstream(byId, "WS-CCA").bcId).toBe(
+      "bc-01a11d86-98d9-7d04-9776-41cf098c3334",
+    );
+    expect(requireWorkstream(byId, "WS-EHB").bcId).toBe(
+      "bc-01a11d8b-4342-7f20-8183-2aa3b387c45c",
+    );
+    expect(requireWorkstream(byId, "WS-PCI").bcId).toBe(
+      "bc-01a11d8b-6a0d-7a0a-8aa8-74fd087f616b",
+    );
   });
 
   it("keeps exclusiveOwn globs non-overlapping across assigned workstreams", () => {
@@ -132,29 +153,32 @@ describe("parallel-agent workstream map", () => {
 
   it("reconciles CKF/CCA/VIC exclusive trees to peer-shipped paths", () => {
     const byId = Object.fromEntries(map.workstreams.map((w) => [w.workstreamId, w]));
-    expect(byId["WS-CKF"].exclusiveOwn).toEqual(
+    const ckf = requireWorkstream(byId, "WS-CKF");
+    const cca = requireWorkstream(byId, "WS-CCA");
+    const vic = requireWorkstream(byId, "WS-VIC");
+    expect(ckf.exclusiveOwn).toEqual(
       expect.arrayContaining([
         "docs/knowledge-factory/**",
         "lib/knowledge-factory/**",
       ]),
     );
-    expect(byId["WS-CCA"].exclusiveOwn).toEqual(
+    expect(cca.exclusiveOwn).toEqual(
       expect.arrayContaining([
         "docs/cursor-cloud-compute/**",
         "lib/cursor-cloud-compute/**",
       ]),
     );
-    expect(byId["WS-VIC"].exclusiveOwn).toEqual(
+    expect(vic.exclusiveOwn).toEqual(
       expect.arrayContaining([
         "lib/contract-model/compiler/inference/**",
         "docs/vercel-independent-covenant-compilation/**",
       ]),
     );
     // Duplicate KF store on VIC PR must not be granted
-    expect(byId["WS-VIC"].exclusiveOwn.join("\n")).not.toContain(
+    expect((vic.exclusiveOwn ?? []).join("\n")).not.toContain(
       "lib/contract-model/covenant-knowledge",
     );
-    expect(byId["WS-VIC"].mustNotTouch).toEqual(
+    expect(vic.mustNotTouch).toEqual(
       expect.arrayContaining(["lib/contract-model/covenant-knowledge/**"]),
     );
   });

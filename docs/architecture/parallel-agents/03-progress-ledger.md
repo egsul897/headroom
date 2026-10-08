@@ -149,3 +149,12 @@
 - EDGAR bulk live corpus in open PRs: still **0**; CKF/EHB capable; others fixture/research/synthetic/held-out.
 - Schema owner: PAR=import/identity contracts; CKF=KF Prisma+ingest+SEC scheduler.
 - No merges, no paid calls, no sealed-evidence / Claude-fixture edits.
+
+---
+
+## 2026-10-08T22:25:00Z — Vercel CI root cause fixed
+
+- Vercel failed on tip `9ca7735` because `next build` typechecks `scripts/**/*.ts`.
+- Root cause: `noUncheckedIndexedAccess` error in `check-ownership-boundaries.ts` (`argv[i+1]` possibly undefined).
+- Fixed parse loop; cleaned strict TS in parallel-agents tests.
+- Local `npm run build` green after fix.
