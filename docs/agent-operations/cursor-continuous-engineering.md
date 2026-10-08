@@ -160,12 +160,43 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 
 ## Remaining false-permission risks after the clause-boundary rule
 
-- A ceiling-only basket has no affirmative permission or exception in its own clause. Section 7.04 of the xref fixture (`The aggregate principal amount … shall not at any time exceed the greater of $123,000,000`) is `PROHIBITION_THRESHOLD`, capacity false, and the candidate is `MAPPED_WITH_REVIEW` / `REVIEW_REQUIRED`. The certification suite still expects that candidate `CERTIFIED`. That expectation was not edited.
+- A ceiling-only basket has no affirmative permission or exception in its own clause. Section 7.04 of the xref fixture (`The aggregate principal amount … shall not at any time exceed the greater of $123,000,000`) is `PROHIBITION_THRESHOLD`, capacity false, and the candidate is `MAPPED_WITH_REVIEW` / `REVIEW_REQUIRED`. The certification suite still expects that candidate `CERTIFIED`. That expectation was not edited. The representation gap and the exact migration are in the §7.04 section below. Non-frozen coverage is `tests/contract-model/aggregate-ceiling-limit.test.ts`.
 - A condition word before the dollar refuses capacity even when the same clause also says `may` and `not to exceed`. `The Borrower may incur Indebtedness, if no Default has occurred, not to exceed $X` stays capacity false. That is a false refusal, and it is the conservative side of the rule.
 - An exception basket whose operative window is only the clause, and whose `except:` lives only in a parent the figure-role pass does not read, stays capacity false. Golden 7.01 passes because the operative text includes the chapeau.
 - CONMED `7.2(h)` is disclosed again as `UNVERIFIED_SIBLING_SIGNAL`. An ordinary aggregate ceiling is not typed `SHARED_CAP`. Gibraltar Pass A stays 901: `aggregate principal` / `aggregate outstanding` alone does not create a candidate.
 - Exotic shared-pool phrasing outside the LCQG relationship regex under-recalls to `aggregate_amount`. A real pool that is only a ceiling is not an independent basket.
 - An unclassified override does not invent the side-letter amount. The last authoritative text stays, with `REVIEW_REQUIRED`. A genuine deletion still clears the text.
+
+## §7.04 — the IR cannot verify an aggregate limit that is not capacity
+
+Adjudication at `ad7955c`: `CURRENT_REVIEW_REQUIRED_BEHAVIOR_CORRECT`. §7.02(c) is the INCUR_DEBT permission. §7.04 is the aggregate MAX ceiling. The scripted `QUANTITATIVE_PERMISSION` / `PERMISSION` / `COMPLETE` rule is unsupported. Figure-role and the certification gate were not changed. No certification was advanced. This is separate from IPV-16.
+
+Existing pieces, none of which is a verified non-permission limit:
+
+- `QUANTITATIVE_RESTRICTION` plus posture `PROHIBITION` already exists. Ground truth uses it for a greater-of restriction. It is not a new rule type.
+- `MAX(MONEY, MULTIPLY(PERCENT, DEFINED_TERM_REFERENCE))` is the ceiling arithmetic.
+- `LIMITED_BY` is the relationship §7.02(c) already emits. The capacity graph records it as `LEGAL_RELATIONSHIP` and only when both rules have capacity nodes (`runtime/capacity/graph.ts`). The evaluator does not follow that edge. Verified execution refuses `LIMITED_BY` as `CROSS_RULE_GATE_NOT_EXECUTABLE`.
+- `IRSharedCapacity` is a pool shared by member permissions. This ceiling is one section limiting one permission, not a shared pool.
+
+Gap:
+
+- `capacityExpression` is available capacity. `buildCapacityGraph` emits `RULE_CAPACITY` for every non-null `capacityExpression`, with no posture or rule-type filter. Figure-role walks that slot as capacity and emits `THRESHOLD_AS_CAPACITY` / `WRONG_AMOUNT` when the figure's own clause is not a permission or exception. Putting the MAX on a `QUANTITATIVE_RESTRICTION` still creates a second executable capacity and stays `MATERIAL_DISCREPANCY`.
+- There is no operand for "the aggregate principal amount incurred under this section" that is not itself a capacity reference (`RULE_REFERENCE`, `LEDGER_USAGE_REFERENCE`). A condition may hold the MAX with `capacityExpression` null. That creates no capacity node, draws no `LIMITED_BY` edge, and emits no `WRONG_AMOUNT`. Empty findings are not a verification that the number is the ceiling. Sufficiency on that shape is not `COMPLETE`.
+- No schema field was added. A new rule type was not added.
+
+Frozen-expectation migration, not applied. File `tests/contract-model/certified/xref-fixtures.test.ts`. Do not edit the scripted submission in `xref-harness.ts` to a different COMPLETE shape.
+
+Observed on this SHA, scripted submission unchanged:
+
+- Lines 32–34: §7.04 is `MAPPED_WITH_REVIEW` / `REVIEW_REQUIRED`. The other nine candidates stay `MAPPED` / `CERTIFIED`. §7.04 verification is `MATERIAL_DISCREPANCY`. Its only material finding is `WRONG_AMOUNT` with signals `THRESHOLD_AS_CAPACITY` and `PROHIBITION_THRESHOLD`. Candidate blockers are `VERIFICATION_NOT_CLEAN` and `OPEN_MATERIAL_OR_UNCERTAIN_FINDING`. Line 34's empty-material-findings loop holds for the other nine only.
+- Line 35: package status is `REVIEW_REQUIRED`. Blocker codes: `CANDIDATE_REVIEW_REQUIRED`, `REVIEW_ONLY_EXECUTABLE_DEPENDENCY` three times, `REVIEW_UNRESOLVED_ITEM` (`CANDIDATE_VERIFICATION_NOT_PASSED` at 7.04), `UNBOUND_EXECUTABLE_BINDING` twice.
+- Line 36: counts become `{ total: 12, bound: 12, executable: 10, notInTargetSet: 0, notCompiled: 0, unitNotFound: 0, unknown: 0, reviewRequired: 0, oneToMany: 0, selectorReview: 0, qualifiedOneToMany: 2 }`. The two non-executable bindings are both `BOUND` to Section 7.04: `conditions[0].referencesRuleTargets[0]` and `sourceDependencies[0]` `LIMITED_BY`.
+- Line 58: the untouched package is `REVIEW_REQUIRED`.
+- Lines 117–120: the §7.02(c) `LIMITED_BY` binding still names the §7.04 rule, status `BOUND`, `executable` false.
+- Lines 127–130: of six `IR_SOURCE_DEPENDENCY` edges, five stay `CERTIFIED_SEMANTIC` and the §7.02(c) → §7.04 `RULE_DEPENDS_ON_RULE` edge is `REVIEW_ONLY`. Two further edges are `REVIEW_ONLY` under other derivations: `RULE_SUBJECT_TO_CONDITION` from 7.02(c) to 7.04, and `RULE_USES_DEFINITION` from 7.04 to 1.01 (Total Assets).
+- Lines 84–89 stay: §7.02(c) must not carry `$123,000,000` or `17%`.
+
+Until a separately authorized non-capacity limit slot exists, §7.04 remains `REVIEW_REQUIRED` and the package remains uncertified.
 
 ## Queue
 
@@ -177,6 +208,7 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | P0-C IPV-16 notwithstanding side letter | P0 | PRODUCT assertions pass on replay | Override stays REVIEW_REQUIRED and does not erase authoritative text. Five GAP kill predictions are now KILLED. Expectations were not edited. Next owner: challenger harness |
 | IPV-21 false definition cycle | P0 | FIXED, indenture control disagreed | Spans prove one direction only. `true-cycle-still-reported` and `genuine-cycles-reported` still fail. Expectations were not edited. Next owner: challenger expectation author |
 | IPV-22 comparator as capacity | P0 | CLAUSE BOUNDARY | Capacity requires the figure's own permission or exception. xref 7.04 ceiling stays REVIEW_REQUIRED. L-P2, H-T2, A-T1, and B-T1 refuse |
+| §7.04 aggregate limit slot | P0 | GAP, expectation not edited | No non-capacity limit slot. Scripted PERMISSION stays REVIEW_REQUIRED. Frozen CERTIFIED migration is recorded and not applied |
 | IPV-04 section candidate compiles superseded clauses | P0 | PUSHED `c2a913b` | Parent operative text splices resolved clause replacements and deletions |
 | IPV-05 ABL amendment target unresolved | P0 | PUSHED `70023f7` | CI 9 checks passed on that SHA |
 | A1 failed definition splice returns base section | P0 | VERIFIED locally | Unspliceable definition amendment withholds the section |
