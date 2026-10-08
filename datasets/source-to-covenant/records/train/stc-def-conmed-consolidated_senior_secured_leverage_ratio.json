@@ -1,0 +1,201 @@
+{
+  "exampleId": "stc-def-conmed-consolidated_senior_secured_leverage_ratio",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+    "cik": "0000816956"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Consolidated Senior Secured Leverage Ratio",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Consolidated Senior Secured Leverage Ratio of the Parent\nBorrower and its Subsidiaries, computed on a pro forma basis as at the last day of the most recently ended fiscal quarter of the\nParent Borrower and its Subsidiaries for which financial statements are available as if such acquisition and related financings or other\ntransactions (without regard to the making of any earn-out payments) had occurred on the first day of the relevant period for testing\nsuch compliance, is no greater than the Consolidated Senior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured\nLeverage Ratio in effect for such fiscal quarter under Section 7.1(a) and, if the amount of such investment or series of related investments\nexceeds $125,000,000 (without regard to the making of any earn-out payments), then the Parent Borrower shall have delivered to the Administrative\nAgent an officers' certificate to such effect, together with all relevant financial information for such Subsidiary or assets, and\n(ii) any acquired or newly formed Subsidiary shall not be liable for any Indebtedness (except for Indebtedness permitted by Section\n7.2).\n\n\"Permitted Refinancing\": any Refinancing, provided that:\n30\n(i)\nthe principal amount (or accreted value, if applicable) of Indebtedness of the Parent Borrower or any of its Subsidiaries issued to Refinance\nother Indebtedness of the Parent Borrower or any of its Subsidiaries (\" Permitted Refinancing Indebtedness \") does not\nexceed the principal amount (or accreted value, if applicable) of the Indebtedness being Refinanced ( plus all accrued interest\non such Indebtedness and the amount of all fees, underwriting discounts, premiums (including tender premiums) and other costs and expenses\n(including original issue discount, upfront fees or similar fees) incurred in connection therewi",
+    "charStartInFixture": 31455,
+    "charEndInFixture": 33297,
+    "sourceTextSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+    "windowSha256": "1b4a308e6f4c52536de6467ce1c50763e40ca5405c34f39d72e5a83305724e2b",
+    "definitions": {
+      "Consolidated Senior Secured Leverage Ratio": "Consolidated Senior Secured Leverage Ratio of the Parent\nBorrower and its Subsidiaries, computed on a pro forma basis as at the last day of the most recently ended fiscal quarter of the\nParent Borrower and its Subsidiaries for which financial statements are available as if such acquisition and related financings or other\ntransactions (without regard to the making of any earn-out payments) had occurred on the first day of the relevant period for testing\nsuch compliance, is no greater than the Consolidated Senior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured\nLeverage Ratio in effect for such fiscal quarter under Section 7.1(a) and, if the amount of such investment or series of related investments\nexceeds $125,000,000 (without regard to the making of any earn-out payments), then the Parent Borrower shall have delivered to the Administrative\nAgent an officers' certificate to such effect, together with all relevant financial information for such Subsidiary or assets, and\n(ii) any acquired or newly formed Subsidiary shall not be liable for any Indebtedness (except for Indebtedness permitted by Section\n7.2).\n\n\"Permitted Refinancing\": any Refinancing, provided that:\n30\n(i)\nthe principal amount (or accreted value, if applicable) of Indebtedness of the Parent Borrower or any of its Subsidiaries issued to Refinance\nother Indebtedness of the Parent Borrower or any of its Subsidiaries (\" Permitted Refinancing Indebtedness \") does not\nexceed the principal amount (or accreted value, if applicable) of the Indebtedness being Refinanced ( plus all accrued interest\non such Indebtedness and the amount of all fees, underwriting discounts, premiums (including tender premiums) and other costs and expenses\n(including original issue discount, upfront fees or similar fees) incurred in connection therewi"
+    },
+    "definitionSourceSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "DEFINITION",
+      "description": "Definition excerpt for Consolidated Senior Secured Leverage Ratio — hypothesis mapping only.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Definition excerpt may truncate full term"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic definition excerpt. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "windowSha256=1b4a308e6f4c52536de6467ce1c50763e40ca5405c34f39d72e5a83305724e2b",
+      "sectionRef=1.01/Consolidated Senior Secured Leverage Ratio"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Consolidated Senior Secured Leverage Ratio",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Definition excerpt for Consolidated Senior Secured Leverage Ratio — hypothesis mapping only.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "1b4a308e6f4c52536de6467ce1c50763e40ca5405c34f39d72e5a83305724e2b",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

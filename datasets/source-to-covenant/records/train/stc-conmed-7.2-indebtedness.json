@@ -1,6 +1,6 @@
 {
   "exampleId": "stc-conmed-7.2-indebtedness",
-  "schemaVersion": "source-to-covenant-dataset.v1",
+  "schemaVersion": "source-to-covenant-dataset.v2",
   "polarity": "POSITIVE",
   "role": "OPERATIVE_COVENANT",
   "split": "train",
@@ -67,7 +67,7 @@
         "Chapeau clear; exception economics require per-limb analysis"
       ]
     },
-    "verificationStatus": "HUMAN_SOURCE_VERIFIED",
+    "verificationStatus": "HUMAN_HYPOTHESIS",
     "labelNotes": "Verified from CONMED curated Article VII §7.2."
   },
   "toolVersions": {
@@ -89,5 +89,131 @@
     "usageRightsReviewRequiredBeforeSft": true
   },
   "authoredAt": "2026-10-08T00:00:00.000Z",
-  "authoringMethod": "HUMAN_SOURCE_READING"
+  "authoringMethod": "HUMAN_SOURCE_READING",
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": "No independent review scope recorded. Catalog author checked the cited source window while generating the candidate label.",
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "windowSha256=de732942e7dde586bd40669e7fa3ed676f496cf8d7219b365d84e23da9b72a1b",
+      "sectionRef=7.2"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity."
+  },
+  "verificationHistory": [
+    {
+      "at": "2026-10-08T22:30:00.000Z",
+      "fromStatus": "HUMAN_SOURCE_VERIFIED",
+      "toStatus": "HUMAN_HYPOTHESIS",
+      "reason": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity.",
+      "actor": "PHASE2_INTEGRITY_AUDIT"
+    }
+  ],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Create, incur, assume or suffer to exist any Indebtedness, except:",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cited terms without pulled definitions: Loan Documents, Early Maturing Debt"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "Parent Borrower and its Subsidiaries; Loan Party distinctions in exceptions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Reclassification language in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "DEFINED_TERM:(none pulled)",
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: DEFINED_TERM:(none pulled); REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "CONMED §7.2 Limitation on Indebtedness — general prohibition with lettered exceptions.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "de732942e7dde586bd40669e7fa3ed676f496cf8d7219b365d84e23da9b72a1b",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
 }

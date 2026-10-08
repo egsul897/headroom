@@ -1,6 +1,6 @@
 {
   "exampleId": "stc-lsb-6.11-restricted-payments",
-  "schemaVersion": "source-to-covenant-dataset.v1",
+  "schemaVersion": "source-to-covenant-dataset.v2",
   "polarity": "POSITIVE",
   "role": "OPERATIVE_COVENANT",
   "split": "dev",
@@ -85,7 +85,7 @@
         "Multiple exception limbs; not every dollar figure isolated in this window alone"
       ]
     },
-    "verificationStatus": "HUMAN_SOURCE_VERIFIED",
+    "verificationStatus": "HUMAN_HYPOTHESIS",
     "labelNotes": "Dev-split example; family/prohibition posture verified from §6.11 source."
   },
   "toolVersions": {
@@ -107,5 +107,129 @@
     "usageRightsReviewRequiredBeforeSft": true
   },
   "authoredAt": "2026-10-08T00:00:00.000Z",
-  "authoringMethod": "HUMAN_SOURCE_READING"
+  "authoringMethod": "HUMAN_SOURCE_READING",
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": "No independent review scope recorded. Catalog author checked the cited source window while generating the candidate label.",
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=1c8104d3557ae3e7fe48d010246b35a3dcd3d1d7bdd675f15f8f2a0958da577a",
+      "sectionRef=6.11"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity."
+  },
+  "verificationHistory": [
+    {
+      "at": "2026-10-08T22:30:00.000Z",
+      "fromStatus": "HUMAN_SOURCE_VERIFIED",
+      "toStatus": "HUMAN_HYPOTHESIS",
+      "reason": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity.",
+      "actor": "PHASE2_INTEGRITY_AUDIT"
+    }
+  ],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Make any distribution or declare or pay any dividends ... or purchase, acquire, redeem, or retire any of any Loan Party'",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Payment Conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "Loan Parties",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "General Restricted Payment prohibition with enumerated exceptions; some exceptions gated by Payment Conditions.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "1c8104d3557ae3e7fe48d010246b35a3dcd3d1d7bdd675f15f8f2a0958da577a",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
 }

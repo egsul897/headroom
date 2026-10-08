@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "startingSha": "66f8164ac85eb6aec37f3a7cb60451d614079a4f",
+  "auditedAt": "2026-10-08T22:25:02.880Z",
+  "verificationClaims": {
+    "previouslyClaimedHumanSourceVerified": 13,
+    "independentlyVerifiedAfterAudit": 0,
+    "lackingIndependentReview": 229,
+    "demotedExampleIds": [
+      "stc-lsb-6.01-chapeau-ratio-gated",
+      "stc-lsb-6.01-i-greater-of-assets",
+      "stc-lsb-6.02-liens-prohibition",
+      "stc-lsb-6.11-restricted-payments",
+      "stc-lsb-payment-conditions-definition",
+      "stc-fwrg-6.01-chapeau-prohibition",
+      "stc-fwrg-6.01-g-i-guaranty-grower",
+      "stc-fwrg-6.04-a-x-rp-grower",
+      "stc-fwrg-6.04-a-xi-ratio-unlimited",
+      "stc-conmed-7.2-indebtedness",
+      "stc-conmed-7.8-investments",
+      "stc-dsgr-fourth-amd-6.08-restatement",
+      "stc-lsb-6.02-liens-prohibition-near-dup-probe"
+    ]
+  },
+  "controllingContext": {
+    "sourceWindowPresent": 229,
+    "controllingContextComplete": 80,
+    "contextIncomplete": 141
+  },
+  "duplicates": {
+    "exactDuplicatePairs": 6,
+    "decisions": [
+      {
+        "exampleId": "stc-lsb-6.01-chapeau-ratio-gated",
+        "pairedExampleIds": [
+          "stc-lsb-6.01-i-greater-of-assets"
+        ],
+        "classification": "LEGITIMATE_SHARED_CONTEXT",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+      },
+      {
+        "exampleId": "stc-lsb-6.01-i-greater-of-assets",
+        "pairedExampleIds": [
+          "stc-lsb-6.01-chapeau-ratio-gated"
+        ],
+        "classification": "LEGITIMATE_SHARED_CONTEXT",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+      },
+      {
+        "exampleId": "stc-lsb-6.01-i-model-hypothesis-contrast",
+        "pairedExampleIds": [
+          "stc-lsb-6.01-chapeau-ratio-gated"
+        ],
+        "classification": "LEGITIMATE_SHARED_CONTEXT",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+      },
+      {
+        "exampleId": "stc-lsb-6.02-liens-prohibition",
+        "pairedExampleIds": [
+          "stc-lsb-6.02-liens-prohibition-near-dup-probe"
+        ],
+        "classification": "INTENTIONAL_DEDUP_PROBE",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Exact shared window retained to exercise duplicate detection. Excluded from training observations."
+      },
+      {
+        "exampleId": "stc-lsb-6.02-liens-prohibition-near-dup-probe",
+        "pairedExampleIds": [
+          "stc-lsb-6.02-liens-prohibition"
+        ],
+        "classification": "INTENTIONAL_DEDUP_PROBE",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Exact shared window retained to exercise duplicate detection. Excluded from training observations."
+      },
+      {
+        "exampleId": "stc-chwy-6.01-indebtedness-heldout",
+        "pairedExampleIds": [
+          "stc-sec-chewy-6_01"
+        ],
+        "classification": "DUPLICATE_TRAINING_OBSERVATION",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Exact windowSha256 collision — document and exclude from training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-sec-chewy-6_01",
+        "pairedExampleIds": [
+          "stc-chwy-6.01-indebtedness-heldout"
+        ],
+        "classification": "DUPLICATE_TRAINING_OBSERVATION",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Exact windowSha256 collision — document and exclude from training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-exp-conmed-7.8-j-ratio-gated-investments",
+        "pairedExampleIds": [
+          "stc-exp-conmed-7.8-l-general-investments-basket"
+        ],
+        "classification": "LEGITIMATE_SHARED_CONTEXT",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+      },
+      {
+        "exampleId": "stc-exp-conmed-7.8-l-general-investments-basket",
+        "pairedExampleIds": [
+          "stc-exp-conmed-7.8-j-ratio-gated-investments"
+        ],
+        "classification": "LEGITIMATE_SHARED_CONTEXT",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+      },
+      {
+        "exampleId": "stc-dsgr-fourth-amd-6.08-restatement",
+        "pairedExampleIds": [
+          "stc-sec-dsgr-6_08",
+          "stc-sec-dsgr-6_08_a_v_amd"
+        ],
+        "classification": "AMENDMENT_LINEAGE_OVERLAP",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Amendment-related example overlaps section family with base-agreement examples; retain with lineage tags, block SFT until review."
+      }
+    ]
+  },
+  "eligibility": {
+    "trainingEligibleCount": 0,
+    "evaluationEligibleCount": 227,
+    "sftExportBlocked": true,
+    "sftExportRecordCount": 0
+  },
+  "expansion": {
+    "priorRecordCount": 21,
+    "authenticExamplesAdded": 208,
+    "totalRecords": 229,
+    "distinctIssuers": 7,
+    "issuerTarget": 50,
+    "issuerTargetMet": false,
+    "issuerGapReason": "Only 7 distinct issuers available in acquired repo fixtures; EDGAR Historical Backfill has not yet delivered ≥50 acquired document packages into this workspace. Expansion prioritized depth across authentic acquired packages rather than inventing issuers or synthetic text."
+  },
+  "evaluationBenchmark": {
+    "caseCount": 147,
+    "compilerOrModelExecuted": false,
+    "performanceMetricsReported": false,
+    "reason": "No compiler or model was executed against this benchmark in Phase 2. Metrics withheld by policy."
+  },
+  "importResults": {
+    "adapter": "corpus-dataset-delivery-contract.v1",
+    "recordsPrepared": 229,
+    "recordsAcceptedForImport": 0,
+    "blocked": 229
+  }
+}

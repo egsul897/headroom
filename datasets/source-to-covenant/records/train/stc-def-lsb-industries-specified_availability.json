@@ -1,0 +1,201 @@
+{
+  "exampleId": "stc-def-lsb-industries-specified_availability",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+    "cik": "0000060714"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Specified Availability",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Specified Availability calculated on a pro forma basis after giving effect to such Payment Condition Transaction of not less than the greater of (1) 20% of the\nRevolving Commitment and (2) $13,000,000; and (c) the Borrower Representative shall have delivered to the Administrative\nAgent a certificate in form and substance reasonably satisfactory to the Administrative Agent certifying as to the items described in (a) and (b) above and attaching calculations for item (b) (provided, that the Administrative Agent may waive\nthe requirement to attach calculations under this sub-clause (ii) in its sole discretion). \n Notwithstanding the foregoing, with respect to Payment Condition Transactions that are Restricted Payments made pursuant to clause\n(ii)  of Section  6.11(c) and the proceeds of such Restricted Payments are used to repurchase, retire, or redeem the Parent’s Stock, the certificate described in clause (c) of this definition shall not be\nrequired to be delivered to the Administrative Agent; provided that (i) each certificate delivered pursuant to (x)  Section  5.03(a)(ii) (to the extent a Monthly Financial Reporting Period exists) and\n(y)  Section  5.03(b) , and (ii) each Compliance Certificate (if delivered pursuant to Section  5.03(a) in lieu of the certificate described in subclause (x) of the immediately preceding\nclause (i)), shall contain (A) the certifications set forth in clause (c) of this definition with respect to, and (B) a certification of the aggregate amount of, all such Restricted Payments made during the period covered by t\n\n“ ABL Priority Collateral ” shall have the meaning set forth in the Intercreditor Agreement.\n\n“ Notes Priority Collateral ” has the meaning set forth in the Intercreditor\nAgreement. “ NYFRB ” means the Federal Reserve Bank of New York.\n\n“ Permitted Lien",
+    "charStartInFixture": 3250,
+    "charEndInFixture": 5072,
+    "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+    "windowSha256": "d037a2533ffedd09895f93812c864447ef7fd79a67e382e0652fd3c514bd5981",
+    "definitions": {
+      "Specified Availability": "Specified Availability calculated on a pro forma basis after giving effect to such Payment Condition Transaction of not less than the greater of (1) 20% of the\nRevolving Commitment and (2) $13,000,000; and (c) the Borrower Representative shall have delivered to the Administrative\nAgent a certificate in form and substance reasonably satisfactory to the Administrative Agent certifying as to the items described in (a) and (b) above and attaching calculations for item (b) (provided, that the Administrative Agent may waive\nthe requirement to attach calculations under this sub-clause (ii) in its sole discretion). \n Notwithstanding the foregoing, with respect to Payment Condition Transactions that are Restricted Payments made pursuant to clause\n(ii)  of Section  6.11(c) and the proceeds of such Restricted Payments are used to repurchase, retire, or redeem the Parent’s Stock, the certificate described in clause (c) of this definition shall not be\nrequired to be delivered to the Administrative Agent; provided that (i) each certificate delivered pursuant to (x)  Section  5.03(a)(ii) (to the extent a Monthly Financial Reporting Period exists) and\n(y)  Section  5.03(b) , and (ii) each Compliance Certificate (if delivered pursuant to Section  5.03(a) in lieu of the certificate described in subclause (x) of the immediately preceding\nclause (i)), shall contain (A) the certifications set forth in clause (c) of this definition with respect to, and (B) a certification of the aggregate amount of, all such Restricted Payments made during the period covered by t\n\n“ ABL Priority Collateral ” shall have the meaning set forth in the Intercreditor Agreement.\n\n“ Notes Priority Collateral ” has the meaning set forth in the Intercreditor\nAgreement. “ NYFRB ” means the Federal Reserve Bank of New York.\n\n“ Permitted Lien"
+    },
+    "definitionSourceSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "DEFINITION",
+      "description": "Definition excerpt for Specified Availability — hypothesis mapping only.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Definition excerpt may truncate full term"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic definition excerpt. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "windowSha256=d037a2533ffedd09895f93812c864447ef7fd79a67e382e0652fd3c514bd5981",
+      "sectionRef=1.01/Specified Availability"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Specified Availability",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Definition excerpt for Specified Availability — hypothesis mapping only.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "d037a2533ffedd09895f93812c864447ef7fd79a67e382e0652fd3c514bd5981",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "exampleId": "stc-bkt-gib-available-amount-builder-pointer",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "gibraltar",
+    "issuerName": "Gibraltar Industries, Inc.",
+    "instrumentKey": "gibraltar-2026-credit-agreement",
+    "documentId": "gibraltar-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+    "cik": "0000912562"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "gibraltar-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Definitions — Available Amount Builder Basket → §7.05(a)(y)",
+  "input": {
+    "exactText": " Agent.\n\n“ Associate ” means (i) any Person engaged in a Similar Business of which the\nBorrower or its Restricted Subsidiaries are the legal and beneficial owners of between 20% and 50% of all outstanding Voting Stock and (ii) any joint venture entered into by the Borrower or any Restricted Subsidiary.\n\n“ Auto-Extension   Letter   of   Credit ” has the meaning specified in Section\n2.03(c)(iii) .\n\n“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) .\n\n“ Available Tenor ” means, as of any date of determination and with respect to\nthe then-current Benchmark, as applicable, any tenor for such Benchmark (or component thereof) or payment period for interest calculated with reference to such Benchmark (or component thereof), as applicable, that is or may be used for determining\nthe length of an Interest Period for any term rate or otherwise, for determining any frequency of making payments of interest calculated pursuant to this Agreement as of such date and not including, for the avoidance of doubt, any tenor for such\nBenchmark that is then-removed from the definition of “Interest Period” pursuant to clause (e) of Section 3.04 .\n\n“ Bail-In   Action ” means the exercise of any Write-Down and Conversion Powers by the applicable Resolution Authority in respect of any liability of an Affected Financial Institution.\n\n10\n\n“ Bail-In   Legislation ” means (a) with respect to any EEA Member Country implementing Article 55 of Directive\n\n2014/59/EU of the European Parliament and of the Council of the European Union, the implementing law for such EEA Member Country from time to time which is described in the EU Bail-In Legislation Schedule, and (b) with respect to the United\nKingdom, Part I of the United Kingdom Banking Act 2009 (as amended from time to time) and any other law, regulation or rule applicable in the United Kingdom relating to the resolution of\nunsound or failing banks, investment firms or other financial institutions or their affiliates ",
+    "charStartInFixture": 36816,
+    "charEndInFixture": 38816,
+    "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+    "windowSha256": "cbbbcbccef7bde7b57c56bb59e261ae60e27c8ba14feaa0840838bbcb7a502ed",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [
+      "\"operative formula is in the cross-referenced section\""
+    ],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"as specified in §7.05\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (gib-available-amount-builder-pointer). Not independently reviewed.",
+      "figures": [
+        "Available Amount Builder Basket defined by cross-reference to §7.05(a)(y)"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "§7.05 Restricted Payments / Permitted Payments",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "this span is only a cross-reference pointer; §7.05(a)(y) builder components are required before any capacity figure can be stated"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "gibraltar-2026-credit-agreement",
+    "operativeVersion": "gibraltar-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "windowSha256=cbbbcbccef7bde7b57c56bb59e261ae60e27c8ba14feaa0840838bbcb7a502ed",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Definitions — Available Amount Builder Basket → §7.05(a)(y)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"as specified in §7.05\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-available-amount-builder-pointer). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "cbbbcbccef7bde7b57c56bb59e261ae60e27c8ba14feaa0840838bbcb7a502ed",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

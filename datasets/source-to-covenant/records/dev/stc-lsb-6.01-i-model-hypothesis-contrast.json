@@ -1,6 +1,6 @@
 {
   "exampleId": "stc-lsb-6.01-i-model-hypothesis-contrast",
-  "schemaVersion": "source-to-covenant-dataset.v1",
+  "schemaVersion": "source-to-covenant-dataset.v2",
   "polarity": "POSITIVE",
   "role": "EXCEPTION_BASKET",
   "split": "dev",
@@ -91,5 +91,130 @@
     "usageRightsReviewRequiredBeforeSft": true
   },
   "authoredAt": "2026-10-08T00:00:00.000Z",
-  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG"
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+      "sectionRef=6.01(i)"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Create, incur, assume, permit, guarantee, or otherwise become or remain liable with respect to any Indebtedness",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "Loan Parties and their Subsidiaries",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_DUPLICATE_OBSERVATION",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": {
+    "exampleId": "stc-lsb-6.01-i-model-hypothesis-contrast",
+    "pairedExampleIds": [
+      "stc-lsb-6.01-chapeau-ratio-gated"
+    ],
+    "classification": "LEGITIMATE_SHARED_CONTEXT",
+    "keepInCorpus": true,
+    "trainingEligible": false,
+    "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+  },
+  "datasetAuthorExpectation": "MODEL HYPOTHESIS (intentionally not approved): treats the 5.5% limb as % of EBITDA rather than total consolidated assets.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_DUPLICATE_OBSERVATION",
+      "usage_rights_review_required"
+    ]
+  }
 }

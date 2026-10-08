@@ -1,15 +1,10 @@
 {
   "status": "REVIEW_REQUIRED_BEFORE_SFT_OR_DISTILLATION",
-  "sourceClass": "PUBLIC_SEC_EDGAR_FILINGS_VIA_REPO_FIXTURES",
+  "sftExportBlocked": true,
+  "independentlyVerifiedLabelCount": 0,
   "notes": [
-    "Exact legal text is excerpted from authentic SEC EDGAR financing documents already stored as repository fixtures.",
-    "Export rows are suitable for future supervised fine-tuning or distillation only after provenance and usage-rights review.",
-    "Do not ingest into Claude independent acceptance corpora, verifier few-shots, or compiler prompt few-shots.",
-    "Compiler/verifier version pins are provenance only and are not label authority."
-  ],
-  "contaminationRestrictions": {
-    "excludeFromClaudeAcceptanceCorpus": true,
-    "excludeFromVerifierFewShots": true,
-    "excludeFromCompilerPromptFewShots": true
-  }
+    "Phase 2: no independently reviewed verification_record_id exists for any label.",
+    "SFT-ready export is intentionally empty.",
+    "Do not fine-tune or download model weights without authorization."
+  ]
 }

@@ -47,14 +47,26 @@ export function buildQualityReport(
     detail: hasUnresolved ? "unresolved/unsupported examples present" : "missing unresolved/unsupported examples",
   });
 
-  const verified = records.filter((r) => r.output.verificationStatus === "HUMAN_SOURCE_VERIFIED");
+  const independentlyVerified = records.filter((r) => r.output.verificationStatus === "HUMAN_SOURCE_VERIFIED");
   const hypotheses = records.filter((r) =>
     r.output.verificationStatus === "HUMAN_HYPOTHESIS" || r.output.verificationStatus === "MODEL_HYPOTHESIS",
   );
+  // Phase 2 integrity: do NOT require HUMAN_SOURCE_VERIFIED counts. Require that
+  // hypothesis/unresolved labels exist and that any HUMAN_SOURCE_VERIFIED claim
+  // would need independent evidence (enforced in phase2 promote; here we only
+  // assert hypotheses are present and we do not silently equate author checks to VERIFIED).
   checks.push({
     id: "verified-vs-hypothesis-distinction",
-    status: verified.length > 0 && hypotheses.length > 0 ? "PASS" : "FAIL",
-    detail: `verified=${verified.length} hypotheses=${hypotheses.length}`,
+    status: hypotheses.length > 0 ? "PASS" : "FAIL",
+    detail: `independentlyClaimedVerified=${independentlyVerified.length} hypotheses=${hypotheses.length} (Phase-2: independent VERIFIED requires verification_record_id; author source-checks are hypotheses)`,
+  });
+  checks.push({
+    id: "no-unearned-independent-verified",
+    status: independentlyVerified.length === 0 ? "PASS" : "WARN",
+    detail:
+      independentlyVerified.length === 0
+        ? "no HUMAN_SOURCE_VERIFIED claims without demonstrated independent review"
+        : `${independentlyVerified.length} HUMAN_SOURCE_VERIFIED remain — confirm verificationEvidence.verificationRecordId before treating as GT`,
   });
 
   const heldOutIssuers = new Set(records.filter((r) => r.split === "eval-heldout").map((r) => r.document.issuerId));
@@ -105,7 +117,7 @@ export function buildQualityReport(
     checks,
     summary: {
       totalRecords: records.length,
-      verifiedLabelCount: verified.length,
+      verifiedLabelCount: independentlyVerified.length,
       hypothesisLabelCount: hypotheses.length,
       unresolvedOrUnsupportedCount: records.filter((r) =>
         r.output.verificationStatus === "UNRESOLVED" ||

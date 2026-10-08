@@ -1,7 +1,7 @@
 {
   "schemaVersion": "source-to-covenant-dataset.v1",
   "datasetBuilderVersion": "source-to-covenant-builder.v1",
-  "builtAt": "2026-10-08T22:11:55.506Z",
+  "builtAt": "2026-10-08T22:25:02.882Z",
   "toolVersions": {
     "irSchemaVersion": "headroom-covenant-ir.v1",
     "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
@@ -100,21 +100,20 @@
     }
   ],
   "recordCounts": {
-    "total": 21,
+    "total": 229,
     "bySplit": {
-      "train": 12,
-      "dev": 6,
-      "eval-heldout": 3
+      "train": 180,
+      "dev": 14,
+      "eval-heldout": 35
     },
     "byPolarity": {
-      "POSITIVE": 19,
+      "POSITIVE": 227,
       "NEGATIVE": 2
     },
     "byVerificationStatus": {
-      "HUMAN_SOURCE_VERIFIED": 13,
-      "HUMAN_HYPOTHESIS": 2,
+      "HUMAN_HYPOTHESIS": 215,
       "NOT_APPLICABLE": 1,
-      "UNRESOLVED": 3,
+      "UNRESOLVED": 11,
       "UNSUPPORTED": 1,
       "MODEL_HYPOTHESIS": 1
     }
@@ -266,6 +265,1468 @@
       "sourceTextSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
       "windowSha256": "767a594df2f3b38bb0091e14d32a95bc405359dce880f2e1e62728aa65e91595",
       "amendmentIdentity": "riot-second-amended-restated-2026-04-21"
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "448d2dad0250126769574517f5f893570a74a194efd0d99c6446204daccbd055",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.2-d-finance-leases-greater-of",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "0f4fe1a4f8f3063b52e0e0bd2515c4e76e0495409500eece1e64c4b1116b34ee",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.2-k-foreign-sub-debt",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "7cf80888871c0875599197ac228461e90ea29e95a1e5aeeeab6a290b62bb3d5d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.2-l-permitted-unsecured",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "73f9de3fe36ccb30fba373dfa05bad8417697953cbaacf4adc3456dac4c2dab3",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.2-trailing-classify-reclassify",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "8e221c9507200aac0a4e4a3058c589eed6078ddcc4b6b2682ef7631465583892",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.3-g-purchase-money-liens",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "8987082350e28b6189d36043c000ffe4339e7d9cebe460b91aaa1e966a084e30",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.3-m-general-liens-basket",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "371c152af13d9d0a9f6b080b6297d50b9d61f3ffa5b41c78327866a69e846f97",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.5-a-obsolete-ordinary-course",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "5ae805b9b7ce701b3aab1d62f15333f2bc37d622649ecb3958f45c43a45038f1",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.5-f-asset-sale-dual-caps",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "510fdbb87ee8ce6d3365f601a34109f7a97aa318faee9db844ac136f45ce2ce3",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.4-a-intercompany-merger",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "d65eeed7e0e01193561099d462015aaef5220d71502662536ae40b22d39e2cf2",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.6-e-ratio-gated-unlimited-rp",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "79125969d84a679f8c67091ad6c989128b25f83e57fd6f79d79d1aae5f4233e8",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.6-d-annual-flat-rp",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "a4c45b82c106c63e94514b4de7b77751c12fb59f710191a83c9491bc88826890",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.8-i-foreign-advances-depend-7.2k",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "173a66c645e177aff6b00cc5af85fded90b27d3c06ee6222371e58e64104e865",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.8-j-ratio-gated-investments",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "e5bef362d742b9a52fef3640b6a7a61c5bcc1867eb38db9e744d245ffbb2eae9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.8-l-general-investments-basket",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "e5bef362d742b9a52fef3640b6a7a61c5bcc1867eb38db9e744d245ffbb2eae9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.9-a-optional-prepay-junior-unsecured",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "d2333a55c447194697506973e6223400bf416c3c562519440af84eaccad128db",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "0342205eb1cee7f6802e022f129f1dfc090a99615206e33e793b0801c2547737",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.13-negative-pledge-exceptions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "9f9409dc01b83d04dc1fe5d186535632ae504862b0a6f9cb01ee294fe6022d46",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.14-subsidiary-distribution-restrictions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "bd8b69546c494b3d284113c2cefe11374668aa4d2c4da9bb95430f07806ac11f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.01-chapeau-ratio-and-payment-conditions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "8d98593e6f0f510cbd6c5236943dc02cbb8ca5d8b24910984bbe8af4d747bddf",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.01-i-greater-of-flat-assets",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "215ea1d61755b32d2dc8ad9d0fe7448fd839fa14e3bcd86b32dbd7f6d4cb84a9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.11-c-rp-payment-conditions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "50beb86cb81f0f6071d6c6c1faa90bacd4197a9805ce55db8c9e7517402b67ec",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.11-d-residual-last-resort-rp",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "df10facf736d210482a0db7d14cd96648ce28d9d9fa2a7f525edfd6f85c18fa8",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.08-a-v-debt-payments-payment-conditions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "4d584300eac86780bf58e3d3d9dfe5f551c1f29f59c2ff46c54f2b82a169b8f9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.13-k-investments-payment-conditions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "199b1963b9ae29ab1614444da5e3a1103f391a0d27d22281c4a82bf3d7c46575",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.04-b-notes-priority-notwithstanding",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "a634438f89e6abe297aa235c2bc41955fcebcfaf0184a7e8d354a7648598ec42",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.03-fundamental-changes-carveouts",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "dd70fc51d079d003a72e5f8edc65509ee07492a64b84b2450665409e8e50408c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-lsb-6.14-affiliate-transactions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "9470e0b36f52fdbe1470aa1d9138d4ad184d62bebf45bc1a4d0c0309eea5b54d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-fwrg-6.04-a-iii-available-amount-rp",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "a958271347030a2a7d4e39c95d680ed7b3186dbbbcef7969ec9faa615b813995",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-fwrg-6.04-b-iv-rdp-cross-basket-offset",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "1635e2c1a4edd3ed47ab212a75573dc7f440be4c9995497ee87d98354da20730",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-fwrg-6.05-burdensome-agreements",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "843d0f449f95613ab36ad895c735a947f31a8282dafb4e7853bdab962063db8b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-fwrg-6.01-j-non-loan-party-debt-entity-scope",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "4ee4c07f228dab681fb260560c0355bcaee1eea24acefc4a51665d87d82cffee",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-fwrg-6.04-a-xi-ratio-unlimited-rp",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "4d5024133859417497d0da86e5c8dd4aee71470b6a96f69b9c6d793a8904d75f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-exp-fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "c317d042cfdfbe4b58ef5e5ec9d452caa99450f05b061c36fc8f5c9f23f5d978",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-fixed-incremental-amount",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "d608709ea616fbdd9653d1fae8ce169d6eb3b777719ddd21278845a4337227de",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-incremental-cap",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "29eef4eb46dad29dce629d1825ab101f267d42b35523d7792120f88df30120d4",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-ratio-incremental-amount",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "bb2482918fdc407795d324f2daef16410c0b0bda3a6994f0fa88f6d5a700683e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-available-amount-builder",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "1f4bbb7030c59b51906dda68efe6524a16248e487c57485d6e9aa96a638727ea",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-available-amount-starter-grower",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "b1b65e832b5b3c9b55c050f07755e53f3a616ee337a4ca3325f05f024997fa50",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-equity-contribution-builder-leg",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "1d51dd7dc1ca066aae9941d9beac44f7c5753c471272b93bd01d8f8bb132c3cd",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-general-lien-basket",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "2892d09de4a21214b3dbe3234961d9dd70c721c10b3b48a2fef1f6459c577ab6",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-general-lien-reallocated-amount",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "cce5be8a282f5ff45477794e821061e41010ee3af4ff986a39f54dd9cf27da11",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-debt-reclassification",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "1e940064b7e4022266e8441938d89e93d8db35b1d711dccb277f4cbe940d78fd",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-automatic-fixed-to-incurrence-reclass",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "6fa13eabcbb9d91c7f31b980d83d98d67d068934ef89b7b2e35dfc92c0a02d30",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-basket-replenishment-return-of-capital",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "b0846113fcca0dd030674b58ee093365162a6ffc3a982694b37d0257fdb40ee7",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-annual-carry-forward",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "0f5b0991c0ed0d15040d832b56fbd079f52c6d12cd7f5ea0801dd6033d507b26",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-anti-double-count-available-amount-transactions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "c235c19c3e0bfc930a4b6eefe90482cc9aab1ccdf87664c9beccb18f2585e882",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-cross-covenant-rp-capacity-reduction",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "18788344c5dd433272a0700631e2c2abc4957d7912cb6f848cec7634ec4d26fe",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-voluntary-prepayment-incremental",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "041523ff0b7d079c14048f5cc5203ff107bd63a4ce1e5caf9400ffee1643a635",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-refinancing-premiums-addon",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "3e2e30aaee44672035c4c440546f84402e495457069a8ddaf70b09d7d3a81810",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-gib-non-guarantor-debt-grower",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "a90a44706d35c4bcaf9a95e57c0d1456ebf4df1893c19a9b1105bc05ed630962",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-gib-general-debt-with-rp-reallocation",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "d6af53a63d5fd95e6467f6a5ce3ea2938a34dabd318697491a99e06fec3ca982",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-gib-investment-grower-with-returns",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "9e99a8f26a2234a3974949beceaafa317bf9760d3be09f90e0b3dccc21266b44",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-gib-asset-disposition-reclassification",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "4317b018bec487b2174e6fd0e791524e332e6689f12aa4b468b9edad616f47c1",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-gib-available-amount-builder-pointer",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "cbbbcbccef7bde7b57c56bb59e261ae60e27c8ba14feaa0840838bbcb7a502ed",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-gib-anti-duplication-investment-returns",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "3d60d4210a0b2f93d15d68ccb1d8e18564357c1b0930314ce3e64d62aae2a0ad",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-lsb-general-debt-total-assets-grower",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "385f7140e14a31e1750302106efee4eccae158cf7ef286bfb621a3ccde515b02",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-lsb-ratio-gated-unlimited-debt",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "079980881d7ef07c5c60158b0bed2cc1dac4de033df359fb8864b37ad5d7e881",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-lsb-refinancing-basket",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "855f0e020119c1e0687069e8049f81ed96f2684e5d33641de9dbf8e61e803a03",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-lsb-asset-sale-annual-grower",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "1c954d97e79dede32c9991da62dc94bfeeef0f93c3239023350074903a3d78a3",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-lsb-fixed-dollar-card-basket",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "c1ab16e98a73803de0c2d03745244dc14be87752b791354996fa4e14a51cc426",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-fwrg-purchase-money-grower",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "6838e708c5bdbdba159e802d6d555c9a91a63ef66c3b4de3cebb6a43fcae358c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-fwrg-available-amount-and-excluded-contribution",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "7073f5530a01a2ec4ccab5874b8ff2e38daf9abdf2a4692bb10ea5036e94df9f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-fwrg-anti-double-counting-incremental",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "4fb3a47c17cadf24780f9a1b11828b56c29687f773971639b4c1f0a68633efa6",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-builder-returns-without-duplication",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "70deb09f6658c5820dfae029cd80a0089c27e574d6b345a42763308b9f09ce13",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-bkt-chwy-cumulative-retained-ecf-pointer",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "096b9869c7fe098df51c9117091c5827339a78824dbd018b729ab1282a37c4b6",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-dsgr-6_01",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "windowSha256": "209f11fe49e67e8a38d37e05cc427d63cc584dff4806587410dbcf3460b57c34",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-dsgr-6_02",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "windowSha256": "6bd630851c5e29d2d9e72a65c37f4f48a6e8537188f4e1c0bf2eb0b5063bb91e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-dsgr-6_08",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "windowSha256": "19a47aa8c0c017abd9181bc40bb30743c58ca4ebb006a945edc711f42d65f77b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-conmed-7_1",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "2f13484ecf26ca7c0ec9ecf5cd8b8abdd6fa737ab2e51f19c75099e667209598",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-conmed-7_3",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "25fe6c9bb5d6e9616d073925987f1b8804fead803ae36e6d5046f74cddfd5abe",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-conmed-7_5",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "a479dd725ace6c245edaaf303b20b79895af756b0d0c6bb5231ba8ca140804c7",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-conmed-7_6",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "da429eb7922dd1268a516b8ccd00eb33953f1955939a8998413d5d94fedc7af5",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-lsb-industries-6_04",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "729b4ac47c5883a6e1d023e3a93e96a19ca6c800515612617d1ab951e1c5b47f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-lsb-industries-6_08",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "d751a2363b9ed56488810a0dc3fe9ea73279cff4e3bd948713d0fad48145ff56",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-chewy-6_01",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-riot-platforms-Article_VI",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "windowSha256": "9aecf84e3b3303bca6a473ca62793d7ded82ca48c10cd12a87a9b6f40431e6d6",
+      "amendmentIdentity": "riot-second-amended-restated-2026-04-21"
+    },
+    {
+      "exampleId": "stc-sec-gibraltar-7_01",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "1bb0eff05dfc00d3bf8bf1b9b6c45c9a04339f62a60b25449e559c9e86599df6",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-dsgr-6_01_doc_a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+      "windowSha256": "997f4af57906ecfc60ef850df1e6d5b390159afc29482b979598c2897563ab9c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-dsgr-6_04_doc_a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+      "windowSha256": "587f1dd96b3fb5898be506ebe640d920fcc6172de8055e8ec9a5e2b9f1d367f1",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-dsgr-6_08_a_v_amd",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "sourceTextSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "windowSha256": "907a0d6f3fb601e202a9ebe4315819a3fa787eddb74522c975492786457ea794",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-riot-platforms-Article_VI_doc_a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt",
+      "sourceTextSha256": "4e5556efb11626b7f207b0c1e7b9953329048fad22ddd0d4f2eda6a1e6e7ba2b",
+      "windowSha256": "c7cb33ce4f0bcc672f3cef62b1d4699beb10d557a022c7848a50372300f4f241",
+      "amendmentIdentity": "riot-second-amended-restated-2026-04-21"
+    },
+    {
+      "exampleId": "stc-sec-riot-platforms-Article_VI_doc_b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "9c21d9ea414260804cdc3bbf1bc1b697f9320bcbe69677f311b68be0da722762",
+      "windowSha256": "3b4ea1e6598439f81dc2e02bde2a3ed42a4aabbce8bc49fa74cf8c20bab058f1",
+      "amendmentIdentity": "riot-second-amended-restated-2026-04-21"
+    },
+    {
+      "exampleId": "stc-sec-chewy-6_02",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "c5e37faeb9d41fc26310b3fa48dfc52fba932053a73814645816826878274d88",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-chewy-6_04",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "ea4977d1f3f94841871d7dd7916e6658059b4556b6f26ddd63763b0d944a3150",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-gibraltar-7_02",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "23c6706097786729a8f5a91ee5dc6319f3e07c3176c6e0027b4426756581a73d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-conmed-omnibus_2026",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+      "sourceTextSha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+      "windowSha256": "947cbc4e456dd04183530e4e7033dbf3027c0f1bb02c6257f2a131e85e7339d9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-lsb-industries-6_03",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "c51d5dfc8fc7d3b40b8c8e46430034ca6fb2f7b36ec99aa817c6dfa59fa4c105",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-lsb-industries-6_12",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "1aee00c9292cc0f44c6a96fed268699a89c47069da1615db1680b8689b94bebb",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-fwrg-6_02",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "4c7c383a028cf3a278621b10bbcc70154c15c6651b6660361dbedd976675bcfb",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-fwrg-6_04",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "9cb45bea8716d252d7376887ad6f89f28756cd23277cca948d7f165a07cc9e11",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-sec-fwrg-6_06",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "80e998918ff6a1b33ef86abee8f6f8159e791854369ab928cd76bbc0da9defe9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "70b5c90b975852d9c1e141edcff19b1c57176b540600679f81046e6cef5f0b4e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "67a8c86ac59876fdf415c13a83a900368a379aa20487e0ee9be10d870aaf9c4b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-c",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "cfa67686bd30a82156e21dbc4efe33dfaa7588adc786478c5eaa89669313792e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-d",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "049c337f5f88c14b6cdac5c6dad2bbc64f5ad5fdd3641c43f463a4713051ec38",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-e",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "c59fce231bb910fdbf9c3d4f70ac103819a76fd195c2d8e02413b029310a4c45",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-f",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "f25cf9416b1c761d3fbddd533bd194cc4546b63fce1594f6a652d7cad1147631",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-g",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "6c66b8729a0f19edf777cd1094960a8395b1dba90529727fbdc88d6354f65a72",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-h",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "0d5e80cd95e0e55fdfdb12e6b06fb2366517632733b0ae8a8577d58644f65b4e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-i",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "4fd493dd014e0652ebf0cb2ce76baf0ba3e2f386359a287995645a68f06379d5",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-j",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "947ba241a61c4f7ad8d19d6c23d32c7b50744163a363ac452148d39901a9b412",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-k",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "fe31a4199c8361e2c95d7c9a51db13ef3cd2bb43e6a54669517f461760c8cddb",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-l",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "75e291fbc275ad1e92673b627845bdf392056f22ec52d1900078ba96dcf8ca63",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-m",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "2777d41ae44a42720deb446ddea59a1fe655ea71ad6796d89a035eeeb5806d57",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-n",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "d100b7c60fe74a0fde8f9a09623ece5dec480eecda189f8ad1e07ef522317815",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-o",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "65bec6cdc47c92127fc17b5c6b6528736d191865ca0e3c7abab06d2631496491",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-p",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "e80562134dd88db31cf434511820e20fdc2aa3effde0f4523b300e05d49ad181",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_2-q",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "a4bc494ef9b6a911c1c0c3cba5686f1adac53ebad81fe614094437b31d840d45",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-available_amount",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "c2f2076f14dc7230364bb98fcec8ac49b41ec9c224895f159504f0a4126df83a",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-consolidated_adjusted_ebitda",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "a8c03a0f7f7b01d72d7f9f125acc2f523737b3570d0de483e17b55dedec63459",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-restricted_subsidiary",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "759ab84c7a7fc0acd360eba8d2c95334000589d25e38c26d6af12a8c5f9621ff",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-loan_party",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "85c744c7a74669d701272e34317ead29d099533b409508b9b606bacad867b87d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-fixed_charge_coverage_ratio",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "702062ecf3386994575292e2bfefa3c4368871e23c4332c137c44731940784c3",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-cni_growth_amount",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "edc6a92b6f734b7ef84a801701d3d8f67c5c4578fb099e52229af295e8d17f05",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-available_excluded_contribution_amount",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "e4e0906443f7889530cc6e30de3569cd746d4572fd4224bc592aa8e9bc00b924",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-total_rent_adjusted_net_leverage_ratio",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "654dabd701912b3ed7869dd9447b54477a325a3f3ef1225b9942af60714890fd",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-secured_obligations",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "5055435a0a52d38f9b9c969c9fdbc02ea2525d7831a1029ede9f3a83c379ca96",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-fwrg-cure_amount",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "9f0d48665ba916eef87d5f5fa4db4226e01987ced21f4b35367d7376f65eff0c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-lsb-industries-payment_conditions",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "windowSha256": "2b8c0a5ecd9cc831d655e747722ad1700321f48acda68a24817eb8574d2be163",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-lsb-industries-specified_availability",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "windowSha256": "d037a2533ffedd09895f93812c864447ef7fd79a67e382e0652fd3c514bd5981",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-lsb-industries-permitted_liens",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "windowSha256": "7172f25fe95a68c70cf948a142a72672cd377f532e931b930846a65cb5cd870e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-lsb-industries-permitted_investments",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "windowSha256": "52a52b15cbfe5af5f3fc22310f4973d9f17a37fe5ac7986443ab6c34e5b7c4e5",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-lsb-industries-secured_notes",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "windowSha256": "79dd85424a403f9c0e9796ee37062815e19a2b8f7626687e47e1b9f1a00b3918",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-lsb-industries-fixed_charge_coverage_ratio",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "windowSha256": "e531758b7ea109855ec932bf3483796bd4a970772906f5428e59e1493cdbcc0a",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-conmed-consolidated_ebitda",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "sourceTextSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+      "windowSha256": "d7c991cd28b6b992a49aafcec4eadeb03d92f7a25876551b17607e8948ae082f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-conmed-consolidated_senior_secured_leverage_ratio",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "sourceTextSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+      "windowSha256": "1b4a308e6f4c52536de6467ce1c50763e40ca5405c34f39d72e5a83305724e2b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-def-conmed-loan_party",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "sourceTextSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+      "windowSha256": "bdbaa356c8f7c7608c973d1baed139710db8135c711f45507404de7b653d6252",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "287be71fa360f1449ef15db245b9e59f2b0f9a48b368c834f9c9529900b38bd5",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-d",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "90bb7cb77c7d078e017d61b31023c4f90204b1408c9c36a0584853db1c20cbcd",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-e",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "7c7a658f00783ea9996f0fdf4204603ae58ebe1197b3d5277320258b161dde33",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-f",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "0e65f0a42e107e109308d554bc6d565963669775be2bcc4eb862009b549f2420",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-g",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "cba87b50f8ebab4327ac611ccdd50d5cc3feb97970c72e7d4ae0eff947f2c7c8",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-h",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "118696c44100f047d87ed2b27dabfe1eae7a2e40c8adff1e0052d17b8b3e0d23",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-i",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "9422389bf2b2d1ffb6a4652ebbadcaeb9ba5d16d8ede1a5c266ace2e5eda515c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-j",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "e167e3da91495d2e49b176cf68edbc2f9d3b4a007770b561ef7b3ddd3ce7782d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-k",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "4eebe27bfa166fb32c943a5dd547df837cdd6581961ecdd45e3b0ee325a3b3b6",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-l",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "af9f34b72abb36056c4843b4fac33997659a9bb61b02d9f25ff5c335f39d51e7",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-m",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "73e67577cf56a2d272697c12878d57254dc111bd62733a0fe71997778eed3b72",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-n",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "b6e520ebbcc1fb92aa6675040232ff30f1291034024668e214ffd931ce7ae005",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-o",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "a628a5b2748b17da8473281adab87a24e862d8af3b6e5e38401ddb5652c8c50c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-p",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "594c1697322ed3501f1e06efe3b21668231ddf306360f4b4dd3667197c0b49f5",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6_01-z",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "e64fa1764bd62e6c2f1acf64c1042a03bc4073df0cdc76e48dcffd53168c5740",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "cddd136893781aca3bc05a54a6acfa9d7a68a18adc72e76026b5e5e22fb22d0f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "17415ae1cdd02dd05ebe0ca62033b949bb00b4ed58c0c55f9f39650ce321c773",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-c",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "0ba64b33cd74857207ebfaf5c88ad15ff2796e8a7fafe66c212a5c6deea250ce",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-d",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "b749efc0d0873ee11a084637c61806258f5472602d42b665c1fd2a8ada8a2c54",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-f",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "9899e99d485395d635df6ac34ec7d0176711c4d24a0cc9a39c190812e6d706bf",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-g",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "34bf5d8c453e463e88b7ed371b520c10e03ab4602f1a0bb551e9b944a8eb5827",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-i",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "9d8c869514ea80f2975fed905a5bf1486d75e33fd30a61b3c12e82a27a5ffa08",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-j",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "39f8271d3f74937078628a41d3bfae34dcc2d3454fdab07a2a626f29de1678d1",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-l",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "058410a1794b526edbd68baf432817ab85cfd282abeda2a097ab18a17da204b0",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-m",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "f0892afbe5013d66ab985845ac567c5ef22598480b7beaf096b018d8c34dd7c8",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-n",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "26cd177e9c5be09ff2f5ba7358d7988c02a708b420e414d28770d479b8687800",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-p",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "85a017b5fb67224dc63058a07c0add9c8d18ad0fee38354beabd597297e4493d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-q",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "b55ada1b67788b84fdb1783cff87313e45af229aaa942a33df06d53da603c758",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-r",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "59a8b4b12d8771ab5b8772b3e3fb95ba8406a3836730b73df6491e909895e872",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-s",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "1a8f1bd7d5d4ee90f57a67711cc17d0571d5edc945b2ca6fcb3e409fe4e75b8b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6_01-t",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "887f1c0e49e2245a7f12c98b7470e520dd0584f1d677dc1dd381017e2e4b7eb6",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "bac60dbc8eb85875157673353b47fb990823c147a1f339705335b49a6eb6e6b8",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "9940159f3192f69d85563eaa4f4fbc58a11bde06f6ddb9739863fe2ed5613960",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-c",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "7499b2c8af4be4c858177631521caec46af5b74fbd7bc8425ea52ce025c97a8e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-d",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "4ef1f4df53080b00d7547c6cac26e77ba37efca12a410718bb736d95e9c2759e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-e",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "9ab1c4b5b1361729d98e022cb5b381a714a4c6ec8758e9a11256de3908aa78d3",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-f",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "f9968f9b4987a7016ebd1d93e3f8644edecadd126cb71c9e0a482668292f0a5c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-g",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "2fb31f873b2a8c72ae75a7bc44659d43b4cc908ec95173ad6134f60ecd21e6e8",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-h",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "09b848ea93d2d6702b3c8a260472911216949136905c3204407553c3ab1204c9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-i",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "ad79c4e371c03a5e8593895e76761019ce26a88d8220fe32a75c681394f3f42e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-j",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "c0066034d1f343ff72862772a30498bbb21df8fb90560f04cfcf2e774388214f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-k",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "11fae2a67edd8054ab4d24c82e63e93aed02e381ba5ae60ea62274fe82a2d689",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-l",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "af1e1a95965bf14f45c7a6d326a31cd57be9edf2eb05f17fb9d501712cd9efc4",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-m",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "f3592673d6d3fcb4d7589bc9d824bbcb895cd0779f4c04c38156780e884c14dd",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-n",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "b986874e3ba46d24765ffb7fc19e03a18fd2f344e251a7da3818a7ee96388837",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-o",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "3d64f11efbbb010d17536e6d6c953e572a182d052259245a3b96eaf76e6acc0b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-p",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "ca935e489d2a840fcd76baa459dd3a287bfec002644e26d76221ed165eb47da4",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_3-q",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "4c20d9b4b8264d6282effdb7691157d10e8eeed14ba7300378e75d074dedce75",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "ba19afd93ea8be7533a2a0572c8104bdb3044a514215d4d44ff30c9221347a0c",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "c26f8bbfe177203824d6b2695cce4c4c51f7ae934329a71468439db454ef7130",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-c",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "c71b573e8f9b7c32ace3c420dabd80162fb5156fc5fec0e9f5babca65a9bc29e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-d",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "4e5b6f9baa7708af8be1b7cda27ede79dfd2a501e69f82a8312c16fd6f95753b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-e",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "763053d9b94187d463922d95320a873b08f6a516043b64bdfabae74f84fc48e1",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-f",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "d9bac22312d205a2e092834eed1b2e94a61e2c820a0fc2a4441d6a7e36b210ff",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-g",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "47d3ffac573ce34264b08b05df72b4d610f1a035e48bca0d074c906ccee9f439",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-h",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "b0b67a378d8c68eddcf67c271e7b95fb73c1713da5b22987e05f48482639e20f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-i",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "31ab7be916f0344d100377b622b8f1f7ce05d22c64faed1d2754705b319b3bed",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-j",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "298a7bb466ed442b136192d5d229f4a72e655db94507f51cf949cb2431ccb718",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-k",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "0c5b189a1624e327c381338026319fbc0f0c965c9629d5524a600957598c8a02",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_8-l",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "4fb91f3236c9d0132988699f692331fdb337186713290d220700bd1f9ec5de68",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "b5234392b81353005e573fd482a18db182ad460c0a2235fc77e9d240418014a0",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "19ae28176d2859feec17713875cdb21897501d4e90fc5dae9a12a99870519535",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-c",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "64b8c4df5dc809e3b183579a01212068812b6b1e0aa7963fd1e81d143840fc67",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-d",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "19f6ea981c038641de3f32d7306ced8b0ee77e870954c457448d14399c572db6",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-e",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "eaca28dd985990fa2c39329602890c51952b28b79643c9b1b186a634a985d3e9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-f",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "2e8c5dc79814b6a801154095a2dc0ff867900da6b3211ace2fe529c1829b7e87",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-g",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "86b36d224b04343cd17bdebc3cb054c694eb40dca71b74159c96b26a71098b35",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-h",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "fe4065c5182db7f001acb5e25600ea099e5f67c035ed29d0343e60b6a65b0281",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-i",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "ed0d8d72d9146a6ca9257aa11291ae588ea3348a6d1fdce1090d295deda9138d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-j",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "8d1c29327e0160779376dd6cabcded250db8779bd762cf9586d7603f43270cae",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-k",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "4ee9d11098da9e681c458d092ee297e1b9cf6b8adc7a1afb9edda96938f97fe7",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_5-l",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "f10dc069efde3c1c5b58468117ec2710b211254eb42f76a936cfc5f3cae9f549",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-a",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "480164bc18e4f42b1e670da830275f68726c697f8939cc7a16a025ef6db63e0f",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-b",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "3b7c2ccafd6bf163c79bcc03947ece51e648111679b8302e79d37fe209488d0b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-c",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "d7a57ccba9daf8fa6b170e33a48c137053126a3dbfc67670e6855f3a76bbf552",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-d",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "f05abb8e96bd0e07bf402a5be904232ddaccbfe994e3594d36bc4acde59669e9",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-e",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "6190dccbf6351267db8e576cf6b3a7150b836f820b2899923e687a6403040914",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-f",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "1dc2f388352b4f0cc29744bf76c40aefe8dfb928540667def57c9588a4f0f9ae",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-g",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "c0b8b28b86238454cfb356f6c9f5a462f192097b64ee7076e71cf01ebf87db7d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7_6-i",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "86648bec5ae23454ffff0c2885621db5e6bb6c243025f720bddf0dc31ffa44ac",
+      "amendmentIdentity": null
     }
-  ]
+  ],
+  "phase2": {
+    "schemaVersion": "source-to-covenant-dataset.v2",
+    "builderVersion": "source-to-covenant-builder.v2",
+    "independentlyVerifiedLabels": 0,
+    "sftExportBlocked": true
+  }
 }

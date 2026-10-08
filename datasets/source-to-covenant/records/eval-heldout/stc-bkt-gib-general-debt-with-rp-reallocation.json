@@ -1,0 +1,222 @@
+{
+  "exampleId": "stc-bkt-gib-general-debt-with-rp-reallocation",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "gibraltar",
+    "issuerName": "Gibraltar Industries, Inc.",
+    "instrumentKey": "gibraltar-2026-credit-agreement",
+    "documentId": "gibraltar-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+    "cik": "0000912562"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "gibraltar-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "§7.01(14) general debt basket with RP reallocation",
+  "input": {
+    "exactText": "ons, any Investment or any acquisition (by merger, consolidation, amalgamation or otherwise);\n\n(13)         Indebtedness of the Borrower or any of its Restricted Subsidiaries consisting of (i) the financing of insurance premiums or (ii) take-or-pay obligations contained in supply\narrangements, in each case incurred in the ordinary course of business or consistent with past practice;\n\n(14)         Indebtedness in an aggregate outstanding principal amount which, when taken together with the principal amount of all other Indebtedness incurred\npursuant to this clause (14) and then outstanding, will not exceed the sum of (x) the greater of (i) $344,000,000 and (ii) 100.0% of LTM EBITDA plus (y) the Restricted Payment Reallocated Amount, and any Refinancing Indebtedness in\nrespect thereof;   provided that available amounts under this clause (14) shall be reduced by the then-outstanding amount of any Indebtedness incurred pursuant to the\nGeneral Debt Basket Reallocated Amount and reallocated to the Incremental Amount;\n\n(15)          Indebtedness in respect of any Qualified Securitization Financing or any Receivables Facility in an aggregate outstanding principal amount which, when taken together with the\nprincipal amount of all other Indebtedness incurred pursuant to this clause (15) and then outstanding, does not exceed the greater of (i) $172,000,000 and (ii) 50.0% of LTM EBITDA and any Refinancing\nIndebtedness in respect thereof;\n\n(16)         any obligation, or guaranty of any obligation, of the Borrower or any Restricted Subsidiary to reimburse or indemnify a Person extending credit to customers of the Borrower or a\nRestricted Subsidiary incurred in the ordinary course of business or consistent with past practice for all or any portion of the amounts payable by such customers to the Person extending such credit;\n\n(17)          Indebtedness to a customer to finance the acquisition of any equipment necessary to perform services for such customer; provided that the terms",
+    "charStartInFixture": 752049,
+    "charEndInFixture": 754049,
+    "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+    "windowSha256": "d6af53a63d5fd95e6467f6a5ce3ea2938a34dabd318697491a99e06fec3ca982",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [
+      "\"available amounts reduced by General Debt Basket Reallocated Amount outstanding moved to Incremental Amount\""
+    ],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Borrower / Restricted Subsidiaries per §7.01\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (gib-general-debt-with-rp-reallocation). Not independently reviewed.",
+      "figures": [
+        "max($344,000,000, 100% LTM EBITDA) + Restricted Payment Reallocated Amount − amounts moved out via General Debt Basket Reallocated Amount to Incremental Amount"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Restricted Payment Reallocated Amount",
+        "description": "Shared capacity dependency from basket corpus"
+      },
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Incremental Amount",
+        "description": "Shared capacity dependency from basket corpus"
+      },
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Refinancing Indebtedness in respect thereof",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "LTM EBITDA and reallocation ledgers not supplied"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "gibraltar-2026-credit-agreement",
+    "operativeVersion": "gibraltar-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "windowSha256=d6af53a63d5fd95e6467f6a5ce3ea2938a34dabd318697491a99e06fec3ca982",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "§7.01(14) general debt basket with RP reallocation",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Borrower / Restricted Subsidiaries per §7.01\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-general-debt-with-rp-reallocation). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "d6af53a63d5fd95e6467f6a5ce3ea2938a34dabd318697491a99e06fec3ca982",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

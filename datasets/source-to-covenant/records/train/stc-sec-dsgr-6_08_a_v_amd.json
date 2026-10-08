@@ -1,0 +1,201 @@
+{
+  "exampleId": "stc-sec-dsgr-6_08_a_v_amd",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "train",
+  "document": {
+    "issuerId": "dsgr",
+    "issuerName": "Distribution Solutions Group, Inc.",
+    "instrumentKey": "dsgr-2022-2025-credit-facility",
+    "documentId": "dsgr-doc-d-second-ar-2025",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "dsgr-doc-d-second-ar-2025",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": true
+  },
+  "structural": {
+    "sectionRef": "6.08(a)(v)-amd",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Section 6.08(a)(v) is hereby amended and restated in its entirety as follows:\n\n“(v) the Company may make Restricted Payments not otherwise permitted to be made by this Section 6.08 in an aggregate amount\nnot to exceed $25,000,000 during any fiscal year of the Company so long as, in each case, all of the following conditions are satisfied: (x) no Default shall exist immediately prior to or immediately after giving effect to any such Restricted\nPayment, and (y) after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith, on a pro forma basis, the Company is in compliance with the covenants set forth in Section 6.12 (without\ngiving effect to any applicable Total Net Leverage Ratio Adjustment); provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing\n\ndollar limitation if, after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith (including on a pro forma basis), the Total Net Leverage\nRatio is not greater than the lesser of (A) 2.5 to 1.00 and (B) the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12.”\n\n3. Conditions of Effectiveness . The effectiveness of this Amendment is subject to the satisfaction of the following conditions\nprecedent (the date on which such conditions precedent are satisfied (or waived by the Administrative Agent and the Required Lenders), the “ Fourth Amendment Effective Date ”):\n\n(a) the Administrative Agent shall have received counterparts of this Amendment duly executed by (i) each Borrower and each other Loan\nParty, (ii) the Required Lenders and (iii) the Administrative Agent;\n\n(b) immediately after giving effect to this Amendment, the\nrepresentations and warranties contained in Article III of the Credit Agreement and in the other Loan Documents shall be true and correct in all material respects (or in all respects in the case of any representation or warranty qualified by\nmateriality or Material Adverse Effect), except to the extent that such representations and warranties specifically refer to an earlier date, in which case they shall be true and correct in all material respects (or in all respects in the case of\nany representation or warranty qualified by materiality or Material Adverse Effect) as of such earlier date;\n\n(c) immediately after giving\neffect to this Amendment, no Default or Event of Default shall exist; an",
+    "charStartInFixture": 2611,
+    "charEndInFixture": 5111,
+    "sourceTextSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+    "windowSha256": "907a0d6f3fb601e202a9ebe4315819a3fa787eddb74522c975492786457ea794",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "RESTRICTED_PAYMENTS",
+    "candidatePermissionProhibitionClass": "UNRESOLVED",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Per-limb economics",
+      "Definition pack"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Section sweep expansion; unresolved semantics"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC section window from fixture sweep. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "dsgr-2022-2025-credit-facility",
+    "operativeVersion": "dsgr-doc-d-second-ar-2025",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "windowSha256=907a0d6f3fb601e202a9ebe4315819a3fa787eddb74522c975492786457ea794",
+      "sectionRef=6.08(a)(v)-amd"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "907a0d6f3fb601e202a9ebe4315819a3fa787eddb74522c975492786457ea794",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

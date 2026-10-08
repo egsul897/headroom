@@ -1,6 +1,6 @@
 {
   "schemaVersion": "source-to-covenant-dataset.v1",
-  "builtAt": "2026-10-08T22:11:55.586Z",
+  "builtAt": "2026-10-08T22:25:07.365Z",
   "checks": [
     {
       "id": "schema-validation",
@@ -10,12 +10,12 @@
     {
       "id": "exact-duplicates",
       "status": "WARN",
-      "detail": "4 exact duplicate pair(s) recorded"
+      "detail": "6 exact duplicate pair(s) recorded"
     },
     {
       "id": "near-duplicates",
       "status": "PASS",
-      "detail": "0 near-duplicate cluster(s) detected and tracked"
+      "detail": "4 near-duplicate cluster(s) detected and tracked"
     },
     {
       "id": "heldout-issuer-separation",
@@ -35,7 +35,12 @@
     {
       "id": "verified-vs-hypothesis-distinction",
       "status": "PASS",
-      "detail": "verified=13 hypotheses=3"
+      "detail": "independentlyClaimedVerified=0 hypotheses=216 (Phase-2: independent VERIFIED requires verification_record_id; author source-checks are hypotheses)"
+    },
+    {
+      "id": "no-unearned-independent-verified",
+      "status": "PASS",
+      "detail": "no HUMAN_SOURCE_VERIFIED claims without demonstrated independent review"
     },
     {
       "id": "heldout-issuer-set",
@@ -64,19 +69,19 @@
     },
     {
       "id": "complete-controlling-context",
-      "status": "PASS",
-      "detail": "windows meet minimum controlling-context length"
+      "status": "WARN",
+      "detail": "one or more windows may be too short"
     }
   ],
   "summary": {
-    "totalRecords": 21,
-    "verifiedLabelCount": 13,
-    "hypothesisLabelCount": 3,
-    "unresolvedOrUnsupportedCount": 4,
+    "totalRecords": 229,
+    "verifiedLabelCount": 0,
+    "hypothesisLabelCount": 216,
+    "unresolvedOrUnsupportedCount": 12,
     "negativeExampleCount": 2,
     "heldOutIssuerCount": 3,
-    "exactDuplicateCount": 4,
-    "nearDuplicateClusterCount": 0,
+    "exactDuplicateCount": 6,
+    "nearDuplicateClusterCount": 4,
     "readyForImport": true
   }
 }

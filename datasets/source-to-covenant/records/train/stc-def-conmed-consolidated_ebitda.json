@@ -1,0 +1,201 @@
+{
+  "exampleId": "stc-def-conmed-consolidated_ebitda",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+    "cik": "0000816956"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Consolidated EBITDA",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Consolidated EBITDA\": for any period, Consolidated Net Income for such period plus , without duplication and to the extent reflected as a charge in the\nstatement of such Consolidated Net Income for such period, the sum of (a) income tax expense, (b) Consolidated Interest Expense, amortization\nor write-off of debt discount and debt issuance costs and commissions (including any early extinguishment of debt costs and debt conversion\ncosts), discounts and other fees and charges associated with Indebtedness (including the Loans), (c) depreciation and amortization expense,\n(d) amortization of intangibles (including goodwill) and organization costs, (e) any extraordinary, unusual or non-recurring expenses\nor losses (including, whether or not otherwise includable as a separate item in the statement of such Consolidated Net Income for such\nperiod, losses on sales of assets outside of the ordinary course of business), (f) any other non-cash charges (including expenses relating\nto equity compensation), (g) costs and expenses related to the Transactions or any Material Acquisition in an aggregate amount not to\nexceed $30,000,000, (h) proceeds from business interruption insurance (to the extent actually received and to the extent not reflected\nas revenue or income of the Parent Borrower or its Subsidiaries) and (i) Pro Forma Adjustments in connection with any Material Acquisition\nconsummated during such period ( provided that (x) such Pro Forma Adjustments shall be calculated net of the amount of actual benefits\nrealized and (y) the aggregate amount of all amounts under this clause (i) that increase Consolidated EBITDA in any period of four consecutive\nfiscal quarters shall not exceed, and shall be limited to, 15% of Consolidated EBITDA in respect of such period of four consecutive fiscal\nquarters (ca",
+    "charStartInFixture": 6519,
+    "charEndInFixture": 8338,
+    "sourceTextSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+    "windowSha256": "d7c991cd28b6b992a49aafcec4eadeb03d92f7a25876551b17607e8948ae082f",
+    "definitions": {
+      "Consolidated EBITDA": "Consolidated EBITDA\": for any period, Consolidated Net Income for such period plus , without duplication and to the extent reflected as a charge in the\nstatement of such Consolidated Net Income for such period, the sum of (a) income tax expense, (b) Consolidated Interest Expense, amortization\nor write-off of debt discount and debt issuance costs and commissions (including any early extinguishment of debt costs and debt conversion\ncosts), discounts and other fees and charges associated with Indebtedness (including the Loans), (c) depreciation and amortization expense,\n(d) amortization of intangibles (including goodwill) and organization costs, (e) any extraordinary, unusual or non-recurring expenses\nor losses (including, whether or not otherwise includable as a separate item in the statement of such Consolidated Net Income for such\nperiod, losses on sales of assets outside of the ordinary course of business), (f) any other non-cash charges (including expenses relating\nto equity compensation), (g) costs and expenses related to the Transactions or any Material Acquisition in an aggregate amount not to\nexceed $30,000,000, (h) proceeds from business interruption insurance (to the extent actually received and to the extent not reflected\nas revenue or income of the Parent Borrower or its Subsidiaries) and (i) Pro Forma Adjustments in connection with any Material Acquisition\nconsummated during such period ( provided that (x) such Pro Forma Adjustments shall be calculated net of the amount of actual benefits\nrealized and (y) the aggregate amount of all amounts under this clause (i) that increase Consolidated EBITDA in any period of four consecutive\nfiscal quarters shall not exceed, and shall be limited to, 15% of Consolidated EBITDA in respect of such period of four consecutive fiscal\nquarters (ca"
+    },
+    "definitionSourceSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "DEFINITION",
+      "description": "Definition excerpt for Consolidated EBITDA — hypothesis mapping only.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Definition excerpt may truncate full term"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic definition excerpt. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "windowSha256=d7c991cd28b6b992a49aafcec4eadeb03d92f7a25876551b17607e8948ae082f",
+      "sectionRef=1.01/Consolidated EBITDA"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Consolidated EBITDA",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Definition excerpt for Consolidated EBITDA — hypothesis mapping only.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "d7c991cd28b6b992a49aafcec4eadeb03d92f7a25876551b17607e8948ae082f",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

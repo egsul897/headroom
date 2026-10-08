@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "source-to-covenant-dataset.v1",
+  "schemaVersion": "source-to-covenant-dataset.v2",
   "exactDuplicatePairs": [
     {
       "a": "stc-lsb-6.01-chapeau-ratio-gated",
@@ -20,8 +20,160 @@
       "a": "stc-lsb-6.02-liens-prohibition",
       "b": "stc-lsb-6.02-liens-prohibition-near-dup-probe",
       "windowSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b"
+    },
+    {
+      "a": "stc-chwy-6.01-indebtedness-heldout",
+      "b": "stc-sec-chewy-6_01",
+      "windowSha256": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a"
+    },
+    {
+      "a": "stc-exp-conmed-7.8-j-ratio-gated-investments",
+      "b": "stc-exp-conmed-7.8-l-general-investments-basket",
+      "windowSha256": "e5bef362d742b9a52fef3640b6a7a61c5bcc1867eb38db9e744d245ffbb2eae9"
     }
   ],
-  "nearDuplicateClusters": [],
-  "heldOutContamination": []
+  "nearDuplicateClusters": [
+    {
+      "clusterId": "near-dup-001",
+      "exampleIds": [
+        "stc-exp-lsb-6.11-c-rp-payment-conditions",
+        "stc-exp-lsb-6.11-d-residual-last-resort-rp"
+      ],
+      "method": "token-jaccard>=0.92",
+      "similarity": 0.959
+    },
+    {
+      "clusterId": "near-dup-002",
+      "exampleIds": [
+        "stc-bkt-gib-investment-grower-with-returns",
+        "stc-bkt-gib-anti-duplication-investment-returns"
+      ],
+      "method": "token-jaccard>=0.92",
+      "similarity": 0.9778
+    },
+    {
+      "clusterId": "near-dup-003",
+      "exampleIds": [
+        "stc-sec-riot-platforms-Article_VI",
+        "stc-sec-riot-platforms-Article_VI_doc_a",
+        "stc-sec-riot-platforms-Article_VI_doc_b"
+      ],
+      "method": "token-jaccard>=0.92",
+      "similarity": 0.9963
+    },
+    {
+      "clusterId": "near-dup-004",
+      "exampleIds": [
+        "stc-def-fwrg-restricted_subsidiary",
+        "stc-def-fwrg-available_excluded_contribution_amount",
+        "stc-def-fwrg-cure_amount"
+      ],
+      "method": "token-jaccard>=0.92",
+      "similarity": 1
+    }
+  ],
+  "heldOutContamination": [],
+  "decisions": [
+    {
+      "exampleId": "stc-lsb-6.01-chapeau-ratio-gated",
+      "pairedExampleIds": [
+        "stc-lsb-6.01-i-greater-of-assets"
+      ],
+      "classification": "LEGITIMATE_SHARED_CONTEXT",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+    },
+    {
+      "exampleId": "stc-lsb-6.01-i-greater-of-assets",
+      "pairedExampleIds": [
+        "stc-lsb-6.01-chapeau-ratio-gated"
+      ],
+      "classification": "LEGITIMATE_SHARED_CONTEXT",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+    },
+    {
+      "exampleId": "stc-lsb-6.01-i-model-hypothesis-contrast",
+      "pairedExampleIds": [
+        "stc-lsb-6.01-chapeau-ratio-gated"
+      ],
+      "classification": "LEGITIMATE_SHARED_CONTEXT",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+    },
+    {
+      "exampleId": "stc-lsb-6.02-liens-prohibition",
+      "pairedExampleIds": [
+        "stc-lsb-6.02-liens-prohibition-near-dup-probe"
+      ],
+      "classification": "INTENTIONAL_DEDUP_PROBE",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Exact shared window retained to exercise duplicate detection. Excluded from training observations."
+    },
+    {
+      "exampleId": "stc-lsb-6.02-liens-prohibition-near-dup-probe",
+      "pairedExampleIds": [
+        "stc-lsb-6.02-liens-prohibition"
+      ],
+      "classification": "INTENTIONAL_DEDUP_PROBE",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Exact shared window retained to exercise duplicate detection. Excluded from training observations."
+    },
+    {
+      "exampleId": "stc-chwy-6.01-indebtedness-heldout",
+      "pairedExampleIds": [
+        "stc-sec-chewy-6_01"
+      ],
+      "classification": "DUPLICATE_TRAINING_OBSERVATION",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Exact windowSha256 collision — document and exclude from training until spans are differentiated."
+    },
+    {
+      "exampleId": "stc-sec-chewy-6_01",
+      "pairedExampleIds": [
+        "stc-chwy-6.01-indebtedness-heldout"
+      ],
+      "classification": "DUPLICATE_TRAINING_OBSERVATION",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Exact windowSha256 collision — document and exclude from training until spans are differentiated."
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.8-j-ratio-gated-investments",
+      "pairedExampleIds": [
+        "stc-exp-conmed-7.8-l-general-investments-basket"
+      ],
+      "classification": "LEGITIMATE_SHARED_CONTEXT",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+    },
+    {
+      "exampleId": "stc-exp-conmed-7.8-l-general-investments-basket",
+      "pairedExampleIds": [
+        "stc-exp-conmed-7.8-j-ratio-gated-investments"
+      ],
+      "classification": "LEGITIMATE_SHARED_CONTEXT",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Multiple catalog examples share one extracted controlling window (e.g. full §6.01 for chapeau and limb). Keep both for evaluation of scope labeling; treat as duplicate training observations until span-narrowed."
+    },
+    {
+      "exampleId": "stc-dsgr-fourth-amd-6.08-restatement",
+      "pairedExampleIds": [
+        "stc-sec-dsgr-6_08",
+        "stc-sec-dsgr-6_08_a_v_amd"
+      ],
+      "classification": "AMENDMENT_LINEAGE_OVERLAP",
+      "keepInCorpus": true,
+      "trainingEligible": false,
+      "rationale": "Amendment-related example overlaps section family with base-agreement examples; retain with lineage tags, block SFT until review."
+    }
+  ]
 }

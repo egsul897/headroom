@@ -1,67 +1,41 @@
-# Source-to-Covenant Compilation Dataset
+# Source-to-Covenant Compilation Dataset (Phase 2)
 
 Reusable dataset connecting **authentic SEC financing-document language** to
-**structured covenant representation candidates**.
+**structured covenant representation candidates**, with explicit ground-truth
+integrity controls.
 
 This is a **data and evaluation workstream**, not a replacement compiler.
 
-## What each record preserves
+## Phase 2 integrity rules
 
-**INPUT**
-
-- Exact legal text (controlling context window)
-- Document identity (issuer, instrument, fixture path, filing metadata)
-- Operative version / amendment identity
-- Structural identity (section / article / role)
-- Governing prohibition
-- Definitions, exceptions, conditions, cross-references
-- Entity-scope notes
-- Source text SHA-256 and window SHA-256
-
-**OUTPUT**
-
-- Candidate covenant family
-- Candidate permission / prohibition classification
-- Proposed formula or capacity structure
-- Proposed conditions
-- Proposed dependency edges
-- Missing inputs
-- Uncertainty
-- Verification status (`HUMAN_SOURCE_VERIFIED` | `HUMAN_HYPOTHESIS` |
-  `MODEL_HYPOTHESIS` | `UNRESOLVED` | `UNSUPPORTED` | `NOT_APPLICABLE`)
-
-## Safety invariants
-
-1. Ground truth is **not** created by copying the current compiler’s answers.
-2. Semantic representations are **not** automatically approved.
-3. Records are **excluded** from Claude’s independent acceptance corpus and
-   from verifier / compiler few-shot prompts.
-4. No paid inference is used to build this dataset.
-5. SFT / distillation export requires provenance and usage-rights review
-   (`provenance/usage-rights.json`).
+- Verification status ≠ training eligibility.
+- `HUMAN_SOURCE_VERIFIED` / delivery `VERIFIED` requires an independent
+  reviewer + `verification_record_id`. Catalog-author source checks are
+  **hypotheses**.
+- `SOURCE_WINDOW_PRESENT` ≠ `CONTROLLING_CONTEXT_COMPLETE`.
+- SFT export is **blocked** until independent verification + usage-rights review.
+- No synthetic examples in the real-source training subset.
+- Held-out issuers: Chewy, Gibraltar, Riot Platforms.
 
 ## Layout
 
 | Path | Purpose |
 |---|---|
-| `records/{train,dev,eval-heldout}/` | Per-example JSON records |
+| `records/{train,dev,eval-heldout}/` | Per-example JSON (schema v2) |
 | `provenance/` | Corpus manifest, version pins, usage-rights |
-| `exports/importable-records.json` | Single importable package |
-| `exports/sft-ready.jsonl` | Future SFT/distillation rows (review-gated) |
-| `reports/` | Quality, duplicate, and split reports |
-
-## Splits
-
-- **train / dev** issuers: LSB Industries, First Watch (FWRG), CONMED,
-  Distribution Solutions Group (DSGR)
-- **eval-heldout** issuers (reserved): Chewy, Gibraltar Industries, Riot Platforms
+| `exports/importable-records.json` | Full package |
+| `exports/knowledge-factory-import.json` | WS-PAR delivery-contract adapter |
+| `exports/sft-ready.jsonl` | Intentionally empty while blocked |
+| `exports/sft-export-block.json` | Block notice |
+| `benchmark/evaluation-benchmark.json` | Independent eval scaffold (no metrics yet) |
+| `reports/phase2-integrity-report.json` | Integrity audit |
+| `peer-inputs/` | Read-only copies of peer corpus exports used for expansion |
 
 ## Rebuild
 
 ```bash
-npx tsx scripts/source-to-covenant/build-dataset.ts
-npx vitest run tests/source-to-covenant-dataset/dataset.test.ts
+npm run dataset:source-to-covenant
+npx vitest run tests/source-to-covenant-dataset/
 ```
 
-Library entrypoint: `lib/source-to-covenant-dataset/`.
-Catalog of human-authored labels: `lib/source-to-covenant-dataset/catalog.ts`.
+Library: `lib/source-to-covenant-dataset/` (Phase-2 entry: `phase2-build.ts`).

@@ -136,7 +136,8 @@ export interface CandidateOutput {
 
 export interface SourceToCovenantRecord {
   exampleId: string;
-  schemaVersion: typeof DATASET_SCHEMA_VERSION;
+  /** v1 or v2 (Phase-2 integrity extensions). */
+  schemaVersion: typeof DATASET_SCHEMA_VERSION | "source-to-covenant-dataset.v2";
   polarity: ExamplePolarity;
   role: ExampleRole;
   split: SplitBucket;

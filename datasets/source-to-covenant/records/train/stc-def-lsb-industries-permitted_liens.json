@@ -1,0 +1,201 @@
+{
+  "exampleId": "stc-def-lsb-industries-permitted_liens",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+    "cik": "0000060714"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Permitted Liens",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Permitted Liens ” means (a) Liens held by\nthe Administrative Agent for the benefit of the Administrative Agent and the Secured Parties, (b) Liens for unpaid taxes that either (i) are not yet delinquent, or (ii) do not constitute an Event of Default hereunder and are the\nsubject of Permitted Protests, (c) Liens set forth on Schedule 6.02 , (d) the interests of lessors under operating leases, (e) purchase money Liens or the interests of lessors under Capital Leases to the extent that such Liens or\ninterests secure Permitted Purchase Money Indebtedness and so long as such Lien attaches only to the asset purchased or acquired and the proceeds thereof, (f) Liens arising by operation of law in favor of warehousemen, landlords, carriers,\nmechanics, materialmen, laborers, or suppliers, incurred in the ordinary course of Loan Parties’ business and not in connection with the borrowing of money, and which Liens either (i) are for sums not yet delinquent, or (ii) are the\nsubject of Permitted Protests, (g) Liens arising from deposits made in connection with obtaining worker’s compensation or other unemployment insurance, social security and other similar laws, (h) Liens or deposits to secure\nperformance of bids, tenders, or leases incurred in the ordinary course of Loan Parties’ business and not in connection with the borrowing of money, (i) Liens granted as security for surety, payment, performance or appeal bonds in\nconnection with obtaining such bonds in the ordinary course of Loan Parties’ business, (j) Liens resulting from any judgment or award that is not an Event of Default hereunder, (k) with respect to any real property, easements,\nexceptions, reservations, encroachments, restrictions, rights of way, zoning restrictions and other similar title policy exceptions or encumbrances that do not",
+    "charStartInFixture": 5058,
+    "charEndInFixture": 6873,
+    "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+    "windowSha256": "7172f25fe95a68c70cf948a142a72672cd377f532e931b930846a65cb5cd870e",
+    "definitions": {
+      "Permitted Liens": "Permitted Liens ” means (a) Liens held by\nthe Administrative Agent for the benefit of the Administrative Agent and the Secured Parties, (b) Liens for unpaid taxes that either (i) are not yet delinquent, or (ii) do not constitute an Event of Default hereunder and are the\nsubject of Permitted Protests, (c) Liens set forth on Schedule 6.02 , (d) the interests of lessors under operating leases, (e) purchase money Liens or the interests of lessors under Capital Leases to the extent that such Liens or\ninterests secure Permitted Purchase Money Indebtedness and so long as such Lien attaches only to the asset purchased or acquired and the proceeds thereof, (f) Liens arising by operation of law in favor of warehousemen, landlords, carriers,\nmechanics, materialmen, laborers, or suppliers, incurred in the ordinary course of Loan Parties’ business and not in connection with the borrowing of money, and which Liens either (i) are for sums not yet delinquent, or (ii) are the\nsubject of Permitted Protests, (g) Liens arising from deposits made in connection with obtaining worker’s compensation or other unemployment insurance, social security and other similar laws, (h) Liens or deposits to secure\nperformance of bids, tenders, or leases incurred in the ordinary course of Loan Parties’ business and not in connection with the borrowing of money, (i) Liens granted as security for surety, payment, performance or appeal bonds in\nconnection with obtaining such bonds in the ordinary course of Loan Parties’ business, (j) Liens resulting from any judgment or award that is not an Event of Default hereunder, (k) with respect to any real property, easements,\nexceptions, reservations, encroachments, restrictions, rights of way, zoning restrictions and other similar title policy exceptions or encumbrances that do not"
+    },
+    "definitionSourceSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "DEFINITION",
+      "description": "Definition excerpt for Permitted Liens — hypothesis mapping only.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Definition excerpt may truncate full term"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic definition excerpt. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "windowSha256=7172f25fe95a68c70cf948a142a72672cd377f532e931b930846a65cb5cd870e",
+      "sectionRef=1.01/Permitted Liens"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Permitted Liens",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Definition excerpt for Permitted Liens — hypothesis mapping only.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "7172f25fe95a68c70cf948a142a72672cd377f532e931b930846a65cb5cd870e",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "exampleId": "stc-sec-gibraltar-7_01",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "gibraltar",
+    "issuerName": "Gibraltar Industries, Inc.",
+    "instrumentKey": "gibraltar-2026-credit-agreement",
+    "documentId": "gibraltar-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+    "cik": "0000912562"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "gibraltar-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "7.01",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Section 7.01(b) ), (23) , (25) , (26) (solely to the extent the Lien of\nthe Collateral Agent on such property is not, pursuant to such agreements, permitted), (27) , (28) (other than with respect to self-insurance arrangements), (29) (only for so long as required to be secured for such letter of\nintent or investment), (30) , (34) , (35) , (40) and (41) of the definition thereof;\n\n(c)           that any Guarantor shall be automatically released from its obligations under the applicable Guaranty, Collateral Document or hereunder, as applicable (and following such\nautomatic release the Administrative Agent or Collateral Agent shall execute any appropriate documentation to document or evidence such release and/or subordination at the Borrower’s reasonable request and sole expense):\n\n(i)           if in the case of any Subsidiary, such Person ceases to be a Restricted Subsidiary or otherwise becomes an Excluded Subsidiary as a result of a transaction or designation permitted\nhereunder ( other than upon the basis of such Subsidiary becoming a non-Wholly Owned Subsidiary solely as a result of the sale of its Equity Interests to a Person that is an Affiliate of the Borrower that is\nnot bona fide or is made with the sole intention of causing the release of such Subsidiary from its Guarantee of the Obligations) ;\n\n(ii)          upon termination of the Aggregate Commitments and payment in full of all Obligations in cash and in immediately available funds (other than any Remaining Obligations) and the\nexpiration without any pending drawing or termination of all Letters of Credit (other than any Remaining Obligations); or\n\n267\n\n(iii)         if such Guarantor was designated as such pursuant to the last sentence of Section 6.12 , if the Borrower so elects, so long as any\nIndebtedness of such Subsidiary then outstanding could have been incurred by such Subsidiary (either (x) when so incurred or (y) at the time of the release of such Guarantee) and such Subsidiary is not otherwise required to be a Guarantor at\nthe time of such release in accordance with the provisions of this Agreement or the other Loan Documents; and\n\n(d)          that they shall establish, enter into (or amend, renew, extend, supplement, restate, waive or otherwise modify) intercreditor arrangements as expressly contemplated by this Agreement (including, without\nlimitation, those consistent with either (x) the terms of Exhibit F‑1 or F-2 (which shall be deemed satisfactory to the Administrative Agent and Collateral Agent) or (y) any other terms set forth in this Agreement, in each case, to\nthe extent the Indebtedness being incurred and secured in connection therewith is not prohibited from being incurred under Sections 7.01 and 7.02 of this Agreement, which the Administrative Agent and Collateral Agent shall be\nrequired to enter into upon the delivery of a certificate described in the following paragraph).\n\nIn each case as specified in this Section 9.11 , the applicable Agent will (and each Lender irrevocably authorizes the applicable Agent to), at the Borrower’s expense, execute and deliver to the applicable Loan\nParty such documents as such Loan Party may reasonably request to evidence the release or subordination of such item of Collateral from the assignment and security interest granted under the Collateral Documents, or to evidence the release of such\nGuarantor from its obligations under the Guaranty or Collateral Documents, in each case in accordance with the terms of the Loan Documents and this Section 9.11 .\n\nAdditionally, upon reasonable request of the Borrower, the Collateral Agent will return possessory Collateral held by it that is released from the security interests created by the Collateral Documents pursuant to this\nSection 9.11 ; provided that in each case of this Section 9.11 , prior to the Administrative Agent’s or Collateral Agent’s execution of any release or intercreditor documentation (but without\neffecting the releases and/or subordinations describe",
+    "charStartInFixture": 886224,
+    "charEndInFixture": 890224,
+    "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+    "windowSha256": "1bb0eff05dfc00d3bf8bf1b9b6c45c9a04339f62a60b25449e559c9e86599df6",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "REPORTING_INFORMATION",
+    "candidatePermissionProhibitionClass": "UNRESOLVED",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Per-limb economics",
+      "Definition pack"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Section sweep expansion; unresolved semantics"
+      ]
+    },
+    "verificationStatus": "UNRESOLVED",
+    "labelNotes": "Authentic SEC section window from fixture sweep. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "REVIEW_REQUIRED",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "gibraltar-2026-credit-agreement",
+    "operativeVersion": "gibraltar-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "windowSha256=1bb0eff05dfc00d3bf8bf1b9b6c45c9a04339f62a60b25449e559c9e86599df6",
+      "sectionRef=7.01"
+    ],
+    "reviewerIndependentOfLabelGeneration": null,
+    "verificationRecordId": null,
+    "independenceGap": "Status UNRESOLVED — no verified legal interpretation asserted."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "1bb0eff05dfc00d3bf8bf1b9b6c45c9a04339f62a60b25449e559c9e86599df6",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

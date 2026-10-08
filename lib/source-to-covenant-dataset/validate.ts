@@ -20,8 +20,8 @@ export function validateRecord(record: SourceToCovenantRecord): ValidationProble
   const id = record.exampleId || "(missing-id)";
 
   if (!record.exampleId) problems.push({ exampleId: id, code: "MISSING_ID", message: "exampleId required" });
-  if (record.schemaVersion !== DATASET_SCHEMA_VERSION) {
-    problems.push({ exampleId: id, code: "SCHEMA_VERSION", message: `expected ${DATASET_SCHEMA_VERSION}` });
+  if (record.schemaVersion !== DATASET_SCHEMA_VERSION && record.schemaVersion !== "source-to-covenant-dataset.v2") {
+    problems.push({ exampleId: id, code: "SCHEMA_VERSION", message: `expected ${DATASET_SCHEMA_VERSION} or source-to-covenant-dataset.v2` });
   }
   if (!record.input?.exactText || record.input.exactText.trim().length < 20) {
     problems.push({ exampleId: id, code: "EMPTY_OR_TINY_WINDOW", message: "controlling context must be complete, not a tiny snippet" });

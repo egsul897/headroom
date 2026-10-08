@@ -1,0 +1,200 @@
+{
+  "exampleId": "stc-def-lsb-industries-fixed_charge_coverage_ratio",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+    "cik": "0000060714"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Fixed Charge Coverage Ratio",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Fixed Charge Coverage Ratio ” means, for any period, the ratio of (i) EBITDA for such period minus Capital\nExpenditures made (to the extent not already incurred in a prior period) or incurred during such period, to (ii) the sum of (A) all principal of Indebtedness of Parent and its Subsidiaries scheduled to be paid during such period (not\nincluding (w) the final scheduled payment of the Obligations at the Maturity Date, (x) the Secured Notes at the final maturity date applicable thereto, (y) [ reserved ], or (z) Indebtedness consisting of the financing of\ninsurance premiums in the ordinary course of business not in excess of the amount of such premiums to the extent that such amounts are expensed and therefor reduce EBITDA), plus (B) Consolidated Net Interest Expense of Parent and its\nSubsidiaries for such period, plus (C) all amounts required to be paid by Parent and its Subsidiaries on Capitalized Lease Obligations having a scheduled due date during such period.\n\n“ Payment Conditions ” shall be deemed to be satisfied in connection with any Payment Condition Transaction if: \n (a) no Default has occurred and is continuing or would result immediately after giving effect to such Payment Condition\nTransaction; (b) immediately after giving effect to, and at all times during the thirty (30) consecutive day period\nimmediately preceding, the Payment Condition Transaction, the Borrowers shall have Specified Availability calculated on a pro forma basis after giving effect to such Payment Condition Transaction of not less than the greater of (1) 20% of the\nRevolving Commitment and (2) $13,000,000; and (c) the Borrower Representative shall have delivered to the Administrative\nAgent a certificate in form and substance reasonably satisfactory to the Administrative Agent certifying as to the items described in",
+    "charStartInFixture": 1837,
+    "charEndInFixture": 3664,
+    "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+    "windowSha256": "e531758b7ea109855ec932bf3483796bd4a970772906f5428e59e1493cdbcc0a",
+    "definitions": {
+      "Fixed Charge Coverage Ratio": "Fixed Charge Coverage Ratio ” means, for any period, the ratio of (i) EBITDA for such period minus Capital\nExpenditures made (to the extent not already incurred in a prior period) or incurred during such period, to (ii) the sum of (A) all principal of Indebtedness of Parent and its Subsidiaries scheduled to be paid during such period (not\nincluding (w) the final scheduled payment of the Obligations at the Maturity Date, (x) the Secured Notes at the final maturity date applicable thereto, (y) [ reserved ], or (z) Indebtedness consisting of the financing of\ninsurance premiums in the ordinary course of business not in excess of the amount of such premiums to the extent that such amounts are expensed and therefor reduce EBITDA), plus (B) Consolidated Net Interest Expense of Parent and its\nSubsidiaries for such period, plus (C) all amounts required to be paid by Parent and its Subsidiaries on Capitalized Lease Obligations having a scheduled due date during such period.\n\n“ Payment Conditions ” shall be deemed to be satisfied in connection with any Payment Condition Transaction if: \n (a) no Default has occurred and is continuing or would result immediately after giving effect to such Payment Condition\nTransaction; (b) immediately after giving effect to, and at all times during the thirty (30) consecutive day period\nimmediately preceding, the Payment Condition Transaction, the Borrowers shall have Specified Availability calculated on a pro forma basis after giving effect to such Payment Condition Transaction of not less than the greater of (1) 20% of the\nRevolving Commitment and (2) $13,000,000; and (c) the Borrower Representative shall have delivered to the Administrative\nAgent a certificate in form and substance reasonably satisfactory to the Administrative Agent certifying as to the items described in"
+    },
+    "definitionSourceSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "DEFINITION",
+      "description": "Definition excerpt for Fixed Charge Coverage Ratio — hypothesis mapping only.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Definition excerpt may truncate full term"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic definition excerpt. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "windowSha256=e531758b7ea109855ec932bf3483796bd4a970772906f5428e59e1493cdbcc0a",
+      "sectionRef=1.01/Fixed Charge Coverage Ratio"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTROLLING_CONTEXT_COMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Fixed Charge Coverage Ratio",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "No required dependency gaps flagged under Phase-2 heuristics; not a certification of legal completeness.",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_DEV_DIAGNOSTIC",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Definition excerpt for Fixed Charge Coverage Ratio — hypothesis mapping only.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "e531758b7ea109855ec932bf3483796bd4a970772906f5428e59e1493cdbcc0a",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

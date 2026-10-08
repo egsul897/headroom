@@ -1,0 +1,208 @@
+{
+  "exampleId": "stc-bkt-fwrg-anti-double-counting-incremental",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "fwrg",
+    "issuerName": "First Watch Restaurant Group, Inc.",
+    "instrumentKey": "fwrg-2021-credit-agreement",
+    "documentId": "fwrg-doc-a-credit-agreement-2021",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+    "cik": "0001789940"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "fwrg-doc-a-credit-agreement-2021",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "§6.01 Fixed Incremental / related clauses — without duplication",
+  "input": {
+    "exactText": "en-existing Revolving Facility but not any then-existing Term Facility); (iv) in the case of Refinancing Indebtedness with respect to Indebtedness permitted under clauses (j) , (m) , (n)(ii)(C) , (u) , (w) (solely as it relates to the Fixed Incremental Amount), (y) , (z) (solely as it relates to the Fixed Incremental Amount), (ii) and/or (jj) of this Section 6.01 , the incurrence thereof shall be without duplication of any amount outstanding in reliance on the relevant clause such that the amount available under the relevant clause shall be reduced by the amount of the applicable Refinancing Indebtedness; 144 (v) except in the case of Refinancing Indebtedness constituting Replacement Debt, (A)(1) such Indebtedness, if secured, is secured only by Permitted Liens at the time of such refinancing, refunding or replacement (it being understood that secured Indebtedness may be refinanced with unsecured Indebtedness), and (2) either (x) if the Liens securing such Indebtedness were originally contractually subordinated to the Liens on the Collateral securing the Initial Term Loans, the Liens securing such Indebtedness are subordinated to the Liens on the Collateral securing the Initial Term Loans on terms not materially less favorable (as determined by the Borrower in good faith), taken as a whole, to the Lenders than those (I) applicable to the Liens securing the Indebtedness being refinanced, refunded or replaced, taken as a whole, or (II) set forth in any relevant Intercreditor Agreement or (y) the purchase, defeasance, redemption, repurchase, repayment, refinancing or other acquisition or retirement of such Indebtedness is permitted under Section 6.04(b) (other than Section 6.04(b)(i) ); it being understood that the proceeds of any such Refinancing Indebtedness may be funded into Escrow pursuant to customary (in the good faith determination of the Borrower) escrow arrangements, (B) such Indebtedness is incurred by the obligor or obligors in respect of the Indebtedness b",
+    "charStartInFixture": 10024,
+    "charEndInFixture": 12024,
+    "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+    "windowSha256": "4fb3a47c17cadf24780f9a1b11828b56c29687f773971639b4c1f0a68633efa6",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Borrower incremental / §6.01 usage\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (fwrg-anti-double-counting-incremental). Not independently reviewed.",
+      "figures": [
+        "incurrence under Fixed Incremental / listed clauses without duplication of amounts outstanding in reliance on the relevant clause"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Fixed Incremental Amount and cross-referenced §6.01 clauses in surrounding text",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "anti-duplication constraint; still needs clause balances"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "fwrg-2021-credit-agreement",
+    "operativeVersion": "fwrg-doc-a-credit-agreement-2021",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=4fb3a47c17cadf24780f9a1b11828b56c29687f773971639b4c1f0a68633efa6",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTROLLING_CONTEXT_COMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "§6.01 Fixed Incremental / related clauses — without duplication",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Borrower incremental / §6.01 usage\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Not required for this record"
+      }
+    ],
+    "missingRequiredDependencies": [],
+    "auditNotes": "No required dependency gaps flagged under Phase-2 heuristics; not a certification of legal completeness.",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_DEV_DIAGNOSTIC",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (fwrg-anti-double-counting-incremental). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "4fb3a47c17cadf24780f9a1b11828b56c29687f773971639b4c1f0a68633efa6",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}
