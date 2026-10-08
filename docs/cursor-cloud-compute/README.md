@@ -67,6 +67,10 @@ npm run compute:phase2-real-edgar -- \
 Consumes WS-EHB manifests (no competing registry). Downloads via peer SEC transport.
 Raw corpora stay under gitignored `data/`.
 
+## Integration handoff
+
+See [`integration-handoff.md`](./integration-handoff.md) for WS-PAR merge-order, peer overlap, and promotion-safety gates.
+
 ## Phase 3 — durable handoff + failure forensics
 
 See [`measured-results-phase3.md`](./measured-results-phase3.md).

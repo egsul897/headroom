@@ -310,6 +310,9 @@ export async function processQueueItem(params: {
         hierarchyDepthMax,
         compiler: "deterministic-structure+passA",
         verificationStatus: "SOURCE_ONLY",
+        // Soft gate: never promote compute/structure outputs to legal verification.
+        legalPromotionBlocked: true,
+        certificationClaimed: false,
       };
       const mp = metaPath(corpusRoot, item.source.sourceDocumentId);
       fs.mkdirSync(path.dirname(mp), { recursive: true });

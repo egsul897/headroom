@@ -31,6 +31,12 @@ export {
 } from "./phase3/handoff-contract";
 export { evaluateFleetSecGate, resolveAuthorizedUserAgent } from "./phase3/fleet-sec";
 export { runIndependentQualitySample } from "./phase3/quality-sample";
+export {
+  assertCannotPromoteIncompleteStructure,
+  assertComputeOutputRemainsSourceOnly,
+  structureSuccessIsNotLegalVerification,
+} from "./promotion-guards";
+export { toCkfCompatibleSourceView, summarizeHandoffForCkf } from "./phase3/ckf-compat";
 export type {
   ComputeAssessmentReport,
   VmResourceSnapshot,

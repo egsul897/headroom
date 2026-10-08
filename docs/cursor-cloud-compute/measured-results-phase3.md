@@ -6,7 +6,9 @@ No paid GPU or model calls. Raw EDGAR bodies are **not** in git (`data/` gitigno
 **PR:** https://github.com/egsul897/headroom/pull/141  
 **Starting SHA:** `bc1abd6934f4ee037ada161695f906506dd6f13d`  
 **Checkpoint:** `phase3-2026-10-08T22-52-47-268Z-e49360ba`  
-**Portable JSON:** `docs/cursor-cloud-compute/results/phase3-phase3-2026-10-08T22-52-47-268Z-e49360ba.json`
+**Portable JSON:** `docs/cursor-cloud-compute/results/phase3-phase3-2026-10-08T22-52-47-268Z-e49360ba.json`  
+**Handoff checksums (155 docs):** `docs/cursor-cloud-compute/results/phase3-handoff-checksums-e49360ba.jsonl`  
+**Research quarantine:** `docs/cursor-cloud-compute/results/RESEARCH_ARTIFACTS.md`
 
 ## Coordination
 
@@ -42,7 +44,7 @@ WS-CCA did **not** launch discovery. 1,000-doc target is **blocked on EHB covera
 
 - Recoverable parser failures: **38**
 - Genuinely unsupported / non-recoverable selection-or-class: **4**
-- Full per-document evidence: `docs/cursor-cloud-compute/results/phase3-forensic-classification.json`
+- Per-document forensic JSON quarantined from infra merge (see `results/RESEARCH_ARTIFACTS.md`; recoverable from branch history + artifact CAS)
 
 Zero-node outcomes are quality failures even when download/parse did not throw.
 
@@ -66,7 +68,7 @@ Zero-node outcomes are quality failures even when download/parse did not throw.
 | Documents in package | 155 (154 distinct source hashes) |
 | Artifact tarball | `/opt/cursor/artifacts/cursor-cloud-compute/handoff-phase3-…e49360ba.tar.gz` (7.9 MiB) |
 | Tarball sha256 | `c2cb47e331e39f1ae35f7cb848b98ea7cb364108fdbd3301ba139668a523222b` |
-| Git-tracked index | `docs/cursor-cloud-compute/results/phase3-handoff-index-….json` (hashes + provenance; **not** corpus durability alone) |
+| Git-tracked checksums | `docs/cursor-cloud-compute/results/phase3-handoff-checksums-e49360ba.jsonl` (155 content hashes; **not** corpus durability alone) |
 | Independent reconstruct proof | **proved** — 155/155 source + structural hash matches from tarball into fresh temp root |
 | SEC refetch hash sample | **5/5** match via WS-EHB transport |
 
