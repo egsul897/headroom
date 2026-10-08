@@ -1,0 +1,34 @@
+{
+  "artifact": "99-phase-3-verdict",
+  "datasetVersion": "ncedb.phase3.v1",
+  "unconditionalAudit": {
+    "audited": 4,
+    "downgraded": 4,
+    "surviving": 0
+  },
+  "negativeControls": {
+    "LOCAL_CONDITIONS": 2,
+    "REMOTE_CONDITIONS": 2,
+    "NO_ADDITIONAL_CONDITIONS": 3,
+    "AMBIGUOUS_CONDITION_SCOPE": 8,
+    "PROHIBITION_NO_EXCEPTION": 2,
+    "NUMERIC_THRESHOLD_NOT_PERMISSION": 4,
+    "CONSTRAINED_BY_OTHER_DOCUMENT": 1
+  },
+  "authenticBatchAdded": 25,
+  "qualityMetricsStatus": "MEASURED_HELD_OUT",
+  "importStatus": "ALIGNED_FOR_REVIEW",
+  "sourceSpanFailures": 0,
+  "productionCapacityConclusions": false,
+  "readyForMerge": false,
+  "exactSha": "93adfd93247f14378e096a5a5e7b6adeca43e4b8",
+  "tests": {
+    "command": "npx vitest run tests/negative-covenant-exception-database/phase2-catalog.test.ts tests/negative-covenant-exception-database/phase3-catalog.test.ts",
+    "local": "16/16 passed"
+  },
+  "pr": {
+    "number": 143,
+    "status": "draft open",
+    "url": "https://github.com/egsul897/headroom/pull/143"
+  }
+}

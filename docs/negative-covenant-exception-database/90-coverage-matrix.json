@@ -1,0 +1,100 @@
+{
+  "artifact": "90-coverage-matrix",
+  "priorityFamilies": {
+    "DEBT_INCURRENCE": [
+      "conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+      "conmed-7.2-d-finance-leases-greater-of",
+      "conmed-7.2-k-foreign-sub-debt",
+      "conmed-7.2-l-permitted-unsecured",
+      "conmed-7.2-trailing-classify-reclassify",
+      "lsb-6.01-chapeau-ratio-and-payment-conditions",
+      "lsb-6.01-i-greater-of-flat-assets",
+      "fwrg-6.01-j-non-loan-party-debt-entity-scope"
+    ],
+    "LIENS": [
+      "conmed-7.3-g-purchase-money-liens",
+      "conmed-7.3-m-general-liens-basket"
+    ],
+    "RESTRICTED_PAYMENTS": [
+      "conmed-7.6-e-ratio-gated-unlimited-rp",
+      "conmed-7.6-d-annual-flat-rp",
+      "lsb-6.11-c-rp-payment-conditions",
+      "lsb-6.11-d-residual-last-resort-rp",
+      "fwrg-6.04-a-iii-available-amount-rp",
+      "fwrg-6.04-a-xi-ratio-unlimited-rp"
+    ],
+    "INVESTMENTS": [
+      "conmed-7.8-i-foreign-advances-depend-7.2k",
+      "conmed-7.8-j-ratio-gated-investments",
+      "conmed-7.8-l-general-investments-basket",
+      "lsb-6.13-k-investments-payment-conditions",
+      "fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments"
+    ],
+    "ASSET_SALES": [
+      "conmed-7.5-a-obsolete-ordinary-course",
+      "conmed-7.5-f-asset-sale-dual-caps",
+      "lsb-6.04-b-notes-priority-notwithstanding"
+    ],
+    "AFFILIATE_TRANSACTIONS": [
+      "conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+      "lsb-6.14-affiliate-transactions"
+    ],
+    "FUNDAMENTAL_CHANGES": [
+      "conmed-7.4-a-intercompany-merger",
+      "lsb-6.03-fundamental-changes-carveouts"
+    ],
+    "JUNIOR_DEBT_PREPAYMENTS": [
+      "conmed-7.9-a-optional-prepay-junior-unsecured",
+      "lsb-6.08-a-v-debt-payments-payment-conditions",
+      "fwrg-6.04-b-iv-rdp-cross-basket-offset"
+    ],
+    "SUBSIDIARY_RESTRICTIONS": [
+      "conmed-7.13-negative-pledge-exceptions",
+      "conmed-7.14-subsidiary-distribution-restrictions",
+      "fwrg-6.05-burdensome-agreements"
+    ]
+  },
+  "allFamiliesCovered": true,
+  "remoteConditionCoverage": [
+    "conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+    "conmed-7.2-d-finance-leases-greater-of",
+    "conmed-7.2-k-foreign-sub-debt",
+    "conmed-7.2-l-permitted-unsecured",
+    "conmed-7.2-trailing-classify-reclassify",
+    "conmed-7.3-g-purchase-money-liens",
+    "conmed-7.3-m-general-liens-basket",
+    "conmed-7.5-a-obsolete-ordinary-course",
+    "conmed-7.5-f-asset-sale-dual-caps",
+    "conmed-7.4-a-intercompany-merger",
+    "conmed-7.6-e-ratio-gated-unlimited-rp",
+    "conmed-7.6-d-annual-flat-rp",
+    "conmed-7.8-i-foreign-advances-depend-7.2k",
+    "conmed-7.8-j-ratio-gated-investments",
+    "conmed-7.8-l-general-investments-basket",
+    "conmed-7.9-a-optional-prepay-junior-unsecured",
+    "conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+    "conmed-7.13-negative-pledge-exceptions",
+    "conmed-7.14-subsidiary-distribution-restrictions",
+    "lsb-6.01-chapeau-ratio-and-payment-conditions",
+    "lsb-6.01-i-greater-of-flat-assets",
+    "lsb-6.11-c-rp-payment-conditions",
+    "lsb-6.11-d-residual-last-resort-rp",
+    "lsb-6.08-a-v-debt-payments-payment-conditions",
+    "lsb-6.13-k-investments-payment-conditions",
+    "lsb-6.04-b-notes-priority-notwithstanding",
+    "lsb-6.03-fundamental-changes-carveouts",
+    "lsb-6.14-affiliate-transactions",
+    "fwrg-6.04-a-iii-available-amount-rp",
+    "fwrg-6.04-b-iv-rdp-cross-basket-offset",
+    "fwrg-6.05-burdensome-agreements",
+    "fwrg-6.01-j-non-loan-party-debt-entity-scope",
+    "fwrg-6.04-a-xi-ratio-unlimited-rp",
+    "fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments"
+  ],
+  "hangingProvisoCoverage": [
+    "conmed-7.2-trailing-classify-reclassify",
+    "conmed-7.8-l-general-investments-basket",
+    "lsb-6.03-fundamental-changes-carveouts"
+  ],
+  "adversarialCaseCount": 15
+}

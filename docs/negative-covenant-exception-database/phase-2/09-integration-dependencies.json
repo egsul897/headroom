@@ -1,0 +1,20 @@
+{
+  "artifact": "09-integration-dependencies",
+  "canonicalSchemaOwner": "WS-CKF (lib/knowledge-factory) + WS-PAR delivery/identity contracts",
+  "deliveryContract": "docs/architecture/parallel-agents/06-dataset-delivery-contract.json (sibling PR #138)",
+  "identityContract": "docs/architecture/parallel-agents/04-canonical-identity-contract.json (sibling PR #138)",
+  "importAdapter": "lib/negative-covenant-exceptions/import-adapter.ts",
+  "importReady": "ALIGNED_FOR_REVIEW",
+  "doesNotWrite": [
+    "Permission",
+    "SharedCapacityConstraint",
+    "lib/contract-model IR",
+    "Phase-3 certification pins"
+  ],
+  "peers": {
+    "WS-EHB": "https://github.com/egsul897/headroom/pull/142",
+    "WS-CKF": "branch cursor/covenant-knowledge-factory-7327",
+    "WS-PAR": "https://github.com/egsul897/headroom/pull/138",
+    "WS-CKB": "held-out benchmark \u2014 do not contaminate"
+  }
+}
