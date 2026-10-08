@@ -1,0 +1,241 @@
+{
+  "artifact": "parallel-agent-integration-queue",
+  "version": 1,
+  "status": "ACTIVE_LEDGER",
+  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "updatedAt": "2026-10-08T22:14:30Z",
+  "items": [
+    {
+      "id": "IQ-001",
+      "workstreamId": "WS-PAR",
+      "deliverable": "Operating rules, ownership map v2+, identity/SEC/dataset/gate contracts, ownership checker",
+      "branch": "cursor/parallel-agent-operating-rules-0e3f",
+      "pr": "https://github.com/egsul897/headroom/pull/138",
+      "tipSha": "a8e5d8859764af0905f6aa26e37f37d4c5f26fc3",
+      "status": "IN_PROGRESS",
+      "blockers": [],
+      "dependsOn": []
+    },
+    {
+      "id": "IQ-002",
+      "workstreamId": "WS-CKF",
+      "deliverable": "Acquisition + corpus registry + production SEC scheduler implementing 05-contract",
+      "branch": "cursor/covenant-knowledge-factory-7327",
+      "pr": null,
+      "tipSha": "252f91fbdf3381df536017c32be7d26980bf2815",
+      "status": "BRANCH_NO_PR",
+      "blockers": [
+        "Draft PR not opened",
+        "Must expose SecRequestScheduler fa\u00e7ade over lib/knowledge-factory/edgar/*"
+      ],
+      "dependsOn": [
+        "IQ-001"
+      ]
+    },
+    {
+      "id": "IQ-003",
+      "workstreamId": "WS-VIC",
+      "deliverable": "Provider-independent adapters + offline/deterministic compilation path",
+      "branch": "cursor/vercel-independent-covenant-compilation-6d1d",
+      "pr": "https://github.com/egsul897/headroom/pull/146",
+      "tipSha": "3878e099e81bc96743b76257e2bac3aae0e01834",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [
+        "C-DUP-KF: remove or thin-client lib/contract-model/covenant-knowledge/** to WS-CKF"
+      ],
+      "dependsOn": [
+        "IQ-001"
+      ]
+    },
+    {
+      "id": "IQ-004",
+      "workstreamId": "WS-CCA",
+      "deliverable": "Cursor Cloud compute benchmark measurements (no paid provisioning)",
+      "branch": "cursor/maximize-cursor-cloud-compute-3334",
+      "pr": "https://github.com/egsul897/headroom/pull/141",
+      "tipSha": "7180ae820a87d56765e90bd25be695290f85792e",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001"
+      ]
+    },
+    {
+      "id": "IQ-005",
+      "workstreamId": "WS-GIB",
+      "deliverable": "Gibraltar Pass B cheapest-path cost analysis without launching paid inference",
+      "branch": null,
+      "pr": null,
+      "tipSha": null,
+      "status": "AWAITING_AGENT",
+      "blockers": [
+        "Dedicated Pass B cost-analysis agent not visible; #128/#135 are Track D/Haiku compile, not this role"
+      ],
+      "dependsOn": [
+        "IQ-001"
+      ]
+    },
+    {
+      "id": "IQ-006",
+      "workstreamId": "WS-EHB",
+      "deliverable": "Historical EDGAR backfill queue using centralized scheduler",
+      "branch": "cursor/edgar-historical-backfill-c45c",
+      "pr": "https://github.com/egsul897/headroom/pull/142",
+      "tipSha": "2cc7b013982258ae7e63b27dff3363d3f84a3fb9",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [
+        "Must route sec-access through CKF SecRequestScheduler or PAR mock \u2014 no parallel SEC flood"
+      ],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
+    },
+    {
+      "id": "IQ-007",
+      "workstreamId": "WS-DEF",
+      "deliverable": "Definition encyclopedia corpus + KF export",
+      "branch": "cursor/definition-encyclopedia-2a50",
+      "pr": "https://github.com/egsul897/headroom/pull/139",
+      "tipSha": "8a7d9615ef75e98481b3bbb86ec31d5265627b42",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [
+        "Align export to 06-dataset-delivery-contract",
+        "package.json collision risk"
+      ],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
+    },
+    {
+      "id": "IQ-008",
+      "workstreamId": "WS-CDA",
+      "deliverable": "Dependency atlas dataset + KF export",
+      "branch": "cursor/covenant-dependency-atlas-5021",
+      "pr": "https://github.com/egsul897/headroom/pull/140",
+      "tipSha": "1e36be14c94dbd40112c3c341ecccd7acec0bc2c",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
+    },
+    {
+      "id": "IQ-009",
+      "workstreamId": "WS-NED",
+      "deliverable": "Negative covenant exception database",
+      "branch": "cursor/negative-covenant-exception-db-21b5",
+      "pr": "https://github.com/egsul897/headroom/pull/143",
+      "tipSha": "e2d7d20768fe4842c1b5be03c540443dc29588cd",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
+    },
+    {
+      "id": "IQ-010",
+      "workstreamId": "WS-PCI",
+      "deliverable": "Precedent comparison intelligence corpus",
+      "branch": "cursor/precedent-comparison-intelligence-616b",
+      "pr": "https://github.com/egsul897/headroom/pull/144",
+      "tipSha": "9f4562c4cd9850d43de69c11049c47bd25e8d3f8",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
+    },
+    {
+      "id": "IQ-011",
+      "workstreamId": "WS-CKB",
+      "deliverable": "Independent covenant knowledge generalization benchmark",
+      "branch": "cursor/covenant-knowledge-generalization-bench-7f51",
+      "pr": "https://github.com/egsul897/headroom/pull/145",
+      "tipSha": "a8731bbcf687a70c9ae4bfa13c5b5fc91c6fe1b5",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [
+        "Must remain isolated from tuning (G6)"
+      ],
+      "dependsOn": [
+        "IQ-001"
+      ]
+    },
+    {
+      "id": "IQ-012",
+      "workstreamId": "WS-RCD",
+      "deliverable": "Rare drafting novelty discovery",
+      "branch": "cursor/rare-covenant-drafting-discovery-553e",
+      "pr": "https://github.com/egsul897/headroom/pull/147",
+      "tipSha": "6c9e8a65c9cbac50c922c0d4ec4a91611957fdbb",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "C-001",
+      "summary": "CKF and EHB both contain SEC access code paths",
+      "resolution": "CKF scheduler is sole production HTTP; EHB must call it or PAR mock",
+      "status": "PROPOSED"
+    },
+    {
+      "id": "C-002",
+      "summary": "package.json edited by multiple fleet branches",
+      "resolution": "Additive script keys only; rebase; no deletions of peer scripts",
+      "status": "PROPOSED"
+    },
+    {
+      "id": "C-003",
+      "summary": "Map path drift for CKF/CCA vs coordinator proposals",
+      "resolution": "Map v4 adopts peer-shipped paths",
+      "status": "RESOLVED_IN_MAP_V4"
+    },
+    {
+      "id": "C-005",
+      "summary": "CKB path drift vs earlier map",
+      "resolution": "Map v5 adopts generalization-benchmark + lib/evaluation/ckg-benchmark",
+      "status": "RESOLVED_IN_MAP_V5"
+    },
+    {
+      "id": "C-DUP-KF",
+      "summary": "VIC #146 lib/contract-model/covenant-knowledge/** duplicates WS-CKF knowledge factory",
+      "resolution": "VIC removes store or makes thin-client to CKF; not granted in map exclusiveOwn",
+      "status": "OPEN_BLOCKER_FOR_INTEGRATION"
+    },
+    {
+      "id": "C-004",
+      "summary": "WS-GIB still awaiting dedicated agent",
+      "resolution": "Keep exclusive tree reserved",
+      "status": "OPEN"
+    }
+  ],
+  "proposedResolutions": [
+    {
+      "id": "C-001",
+      "summary": "CKF and EHB both contain SEC access code paths",
+      "resolution": "CKF scheduler is sole production HTTP; EHB must call it or PAR mock",
+      "status": "PROPOSED"
+    },
+    {
+      "id": "C-002",
+      "summary": "package.json edited by multiple fleet branches",
+      "resolution": "Additive script keys only; rebase; no deletions of peer scripts",
+      "status": "PROPOSED"
+    },
+    {
+      "id": "C-003",
+      "summary": "Map path drift for CKF/CCA vs coordinator proposals",
+      "resolution": "Map v4 adopts peer-shipped paths",
+      "status": "RESOLVED_IN_MAP_V4"
+    }
+  ]
+}
