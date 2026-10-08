@@ -1,0 +1,72 @@
+{
+  "artifact": "financial-definitions-precedent.schema",
+  "version": "fdp.v1",
+  "status": "DRAFT_DATASET",
+  "workstreamId": "WS-FDP",
+  "purpose": "Source-backed precedent atlas for financial definitions, leverage tests, and covenant calculation mechanics. Does not invent financial results or claim legal equivalence across instruments.",
+  "entryKinds": [
+    "FINANCIAL_DEFINITION",
+    "LEVERAGE_OR_COVERAGE_TEST",
+    "BUILDER_OR_POOL",
+    "ADJUSTMENT_MECHANIC",
+    "CURE_RIGHT",
+    "STEP_CHANGE_TEST",
+    "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+    "MISSING_INPUT_SPEC"
+  ],
+  "requiredFields": [
+    "id",
+    "kind",
+    "termLabel",
+    "sourceId",
+    "sourcePath",
+    "excerpt",
+    "excerptSha256",
+    "charStart",
+    "charEnd",
+    "units",
+    "measurementPeriod",
+    "entityScope",
+    "formulaSketch",
+    "dependencies",
+    "adjustments",
+    "caps",
+    "amendments",
+    "verificationStatus",
+    "notes"
+  ],
+  "verificationStatusEnum": [
+    "SOURCE_SPAN_VERIFIED",
+    "SOURCE_SPAN_PARTIAL",
+    "CROSS_REF_ONLY",
+    "UNRESOLVED_INTERPRETATION",
+    "NEGATIVE_EXAMPLE"
+  ],
+  "missingInputRepresentation": {
+    "pattern": "MISSING_INPUT:<inputKey>",
+    "rule": "Any calculation that requires an input not present in the attested financial fact set must surface MISSING_INPUT explicitly and must not invent a numeric result."
+  },
+  "nonGoals": [
+    "Do not certify legal interpretations",
+    "Do not claim term-label equality implies calculation equivalence",
+    "Do not modify Definition Encyclopedia or Basket Formula Library owned production files",
+    "No paid provider calls"
+  ],
+  "coordination": {
+    "definitionEncyclopedia": {
+      "agent": "Debt definitions encyclopedia",
+      "bcId": "bc-01a11d88-c6c6-7e7e-bccf-657370092a50",
+      "boundary": "Encyclopedia owns general defined-term corpus and term identity. WS-FDP owns calculation mechanics, add-back taxonomy, leverage/coverage tests, missing-input rules, and negative condition-vs-capacity examples for financial metrics."
+    },
+    "basketFormulaLibrary": {
+      "agent": "Covenant basket formula library",
+      "bcId": "bc-01a11d88-e563-798e-a07e-2cdcd60dae51",
+      "boundary": "Basket library owns capacity/basket formula taxonomy and permission semantics. WS-FDP records Available Amount / Excess Cash Flow as financial calculation objects and hands capacity-utilization framing to the basket library via published interfaces."
+    },
+    "covenantKnowledgeFactory": {
+      "agent": "Covenant knowledge factory",
+      "bcId": "bc-01a11d83-6b3f-71e1-9438-3e157bb27327",
+      "boundary": "Factory owns corpus acquisition. WS-FDP consumes in-repo fixtures only in this draft; future factory document IDs can be linked via sourceId without schema fork."
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "artifact": "financial-definitions-precedent.regression-candidates",
+  "version": "fdp.v1",
+  "note": "Candidates only \u2014 not certified golden tests. No certification status changes in this PR.",
+  "candidates": [
+    {
+      "id": "REG-FDP-001",
+      "title": "Same label Consolidated EBITDA must not share formula across CHWY and CONMED",
+      "assertion": "Compiler/evaluator treats CHWY and CONMED Consolidated EBITDA as distinct calculation graphs (different caps/add-backs).",
+      "fixtures": [
+        "CHWY-2026-CA::def::Consolidated_EBITDA",
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ],
+      "severityClass": "FALSE_EQUIVALENCE"
+    },
+    {
+      "id": "REG-FDP-002",
+      "title": "FCCR formula divergence FWRG vs LSB",
+      "assertion": "Retriever/compiler must not reuse FWRG FCCR arithmetic for LSB Payment Conditions gates.",
+      "fixtures": [
+        "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+        "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio"
+      ],
+      "failureClass": "FALSE_EQUIVALENCE"
+    },
+    {
+      "id": "REG-FDP-003",
+      "title": "Maintenance ratio thresholds are not baskets",
+      "assertion": "CONMED \u00a77.1 3.75x/5.50x/2.75x must classify as conditions/obligations, never FIXED_DOLLAR or grower capacity.",
+      "fixtures": [
+        "NEG-CONMED-7_1-SSLR-3_75",
+        "NEG-CONMED-7_1-ICR-2_75"
+      ],
+      "failureClass": "CONDITION_AS_CAPACITY"
+    },
+    {
+      "id": "REG-FDP-004",
+      "title": "Missing financial inputs fail closed",
+      "assertion": "Evaluating Total Leverage without attested covenant EBITDA and CTD components yields MISSING_INPUT, not a numeric ratio.",
+      "fixtures": [
+        "missing_inputs.consolidated_ebitda_covenant_defined",
+        "CHWY-2026-CA::ratio::Total_Leverage_Ratio"
+      ],
+      "failureClass": "INVENTED_FINANCIAL_RESULT"
+    },
+    {
+      "id": "REG-FDP-005",
+      "title": "Cash netting cap amendment changes identity",
+      "assertion": "CONMED leverage cash netting $75M vs $100M must version-bind; post-amendment math must not silently use pre-amendment cap.",
+      "fixtures": [
+        "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100"
+      ],
+      "failureClass": "STALE_DEFINITION_VERSION"
+    },
+    {
+      "id": "REG-FDP-006",
+      "title": "Anti-duplication of add-backs",
+      "assertion": "CHWY \u00a71.08(d)(ii) prevents double counting Expected Run Rate / pro forma amounts already in Consolidated EBITDA.",
+      "fixtures": [
+        "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii"
+      ],
+      "failureClass": "DOUBLE_COUNT_ADD_BACK"
+    },
+    {
+      "id": "REG-FDP-007",
+      "title": "Available Amount builder \u2260 grower basket threshold",
+      "assertion": "CHWY Asset Sale 75% Consolidated EBITDA exception threshold must not be merged into Available Amount builder capacity.",
+      "fixtures": [
+        "NEG-CHWY-AssetSale-75pct-EBITDA-cap-is-exception-not-RP-capacity",
+        "CHWY-2026-CA::builder::Available_Amount"
+      ],
+      "failureClass": "CONDITION_AS_CAPACITY"
+    },
+    {
+      "id": "REG-FDP-008",
+      "title": "Step-up frequency and TLR ceiling",
+      "assertion": "CONMED Material Acquisition step-up cannot be applied more than twice or without two-quarter gap; TLR step-up cannot push required ratio above 6.00x.",
+      "fixtures": [
+        "CONMED-2025-CA::test::Financial_Covenants_7_1"
+      ],
+      "failureClass": "STEP_UP_CONSTRAINT_DROP"
+    }
+  ]
+}

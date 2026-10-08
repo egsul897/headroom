@@ -1,0 +1,91 @@
+{
+  "artifact": "financial-definitions-precedent.negative-examples",
+  "version": "fdp.v1",
+  "count": 6,
+  "examples": [
+    {
+      "id": "NEG-CONMED-7_1-SSLR-3_75",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Consolidated Senior Secured Leverage Ratio \u2264 3.75 to 1.00",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "excerpt": "r consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consu",
+      "excerptSha256": "21cb75130270faa61b878ca4e388679099cf63653fddd163e08fcffc86b761eb",
+      "charStart": 525,
+      "charEnd": 745,
+      "whyNotCapacity": "Numerical ratio is a maintenance financial covenant maximum. It does not create borrow/lien/RP capacity. Modeling it as a basket would invent permission.",
+      "correctClassification": "MAINTENANCE_FINANCIAL_COVENANT_CONDITION",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-CONMED-7_1-ICR-2_75",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Interest Coverage Ratio \u2265 2.75 to 1.00",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "excerpt": "rrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.\n(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of t",
+      "excerptSha256": "66f16c6cb3db024be42e4afa59b2c59aa22627473d0b4b6c3bd97d7525e6aa94",
+      "charStart": 3121,
+      "charEnd": 3321,
+      "whyNotCapacity": "Minimum coverage ratio condition under \u00a77.1(c). Not a capacity formula.",
+      "correctClassification": "MAINTENANCE_FINANCIAL_COVENANT_CONDITION",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-CONMED-7_2c-PF_COMPLIANCE_GATE",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Pro forma compliance with \u00a77.1 financial covenants (debt incurrence gate)",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "excerpt": "t Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for te",
+      "excerptSha256": "3b33a9b1e6a24ba6fd2e3dde1ce1d6cb0877176890a777c19d1ed1b99f55f9c6",
+      "charStart": 4011,
+      "charEnd": 4431,
+      "whyNotCapacity": "Pro forma financial-covenant compliance is an eligibility gate for a debt carve-out. The dollar capacity, if any, lives elsewhere; the ratio recomputation is a condition.",
+      "correctClassification": "INCURRENCE_CONDITION_GATE",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-CHWY-Numerical_Permission_Definition",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Numerical Permission (definitional classifier)",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "excerpt": "Numerical Permission \u201d means any financial ratios, basket, threshold, tests or other metrics (including Consolidated EBITDA, the First Lien\nLeverage Ratio, the Total Leverage Ratio and the Interest Coverage Ratio and any financial definition or component thereof) that is determined by reference to a fixed amount.\n\n\u201c NY",
+      "excerptSha256": "88b62541948169ad4ac0de1484976e648e85c77ad9ab09ab6f005a49eb75618b",
+      "charStart": 235883,
+      "charEnd": 236203,
+      "whyNotCapacity": "Instrument itself distinguishes metrics determined by reference to a fixed amount. Presence of a number inside a financial definition/ratio is not affirmative basket capacity without an operative permission rule.",
+      "correctClassification": "DEFINITIONAL_CLASSIFIER",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-CHWY-AssetSale-75pct-EBITDA-cap-is-exception-not-RP-capacity",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Asset Sale exception \u2264 greater of $540.0 million and 75% of Consolidated EBITDA",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "excerpt": "nd sales of Equity Interests for an aggregate Fair Market Value not to exceed the greater of (x)\n$540.0 million and (y) 75% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, during the term of the Initial Term Loans; and\n\n(ff) any on",
+      "excerptSha256": "42367316bf4055e1b42e16100d5bc02033166c0806e66cd78fa622b06560c218",
+      "charStart": 33414,
+      "charEnd": 33694,
+      "whyNotCapacity": "This numerical EBITDA grower limits which dispositions are excluded from Asset Sale treatment. It is not Available Amount capacity and not a restricted-payment basket. Basket Formula Library owns whether/when it is affirmative capacity for Asset Sales.",
+      "correctClassification": "DEFINITIONAL_OR_EXCEPTION_THRESHOLD",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-LSB-Payment_Conditions_FCCR_2_0",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Fixed Charge Coverage Ratio > 2.0 to 1.0 (Payment Conditions)",
+      "sourceId": "LSB-2023-ABL",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "excerpt": "ce of such Indebtedness, (i) after giving effect to the incurrence thereof, the Fixed Charge Coverage Ratio of the Parent and its Subsidiaries for the most recently ended four full fiscal quarter period is greater than 2.0 to 1.0 and\n(ii) the Payment Conditions are satisfied with respect to such incurrence . The forego",
+      "excerptSha256": "7a3e44338379f6d3769d2fb59b175ec53e2b949164727d8e263328a5c66751fd",
+      "charStart": 704,
+      "charEnd": 1024,
+      "whyNotCapacity": "FCCR threshold is a Payment Conditions gate for certain transactions, not a dollar basket.",
+      "correctClassification": "PAYMENT_CONDITIONS_GATE",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    }
+  ]
+}

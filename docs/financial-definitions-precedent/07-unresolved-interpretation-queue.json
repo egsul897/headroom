@@ -1,0 +1,67 @@
+{
+  "artifact": "financial-definitions-precedent.unresolved-interpretation-queue",
+  "version": "fdp.v1",
+  "items": [
+    {
+      "id": "UQ-001",
+      "topic": "CHWY Interest Coverage Ratio definition locus",
+      "severity": "Interest Coverage Ratio is heavily referenced (including Numerical Permission and \u00a71.08(g)) but a standalone \u201cInterest Coverage Ratio\u201d means-definition was not located in the extracted-text sweep used for this draft.",
+      "blockingFor": [
+        "interest coverage calculation executability for CHWY"
+      ],
+      "neededEvidence": "Full definition headword or section assigning meaning; confirm if defined via ABL CA or another construct",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-002",
+      "topic": "CHWY ABL Cure Amount mechanics",
+      "severity": "Term loan CA cross-references Cure Amount to ABL Credit Agreement; ABL CA not in chwy-2026 package extracted-text set used here.",
+      "blockingFor": [
+        "cure rights calculation",
+        "Available Amount equity prong exclusions"
+      ],
+      "neededEvidence": "ABL Credit Agreement cure section",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-003",
+      "topic": "FWRG Section 6.10 equity cure operative rules",
+      "severity": "Definitions excerpt excludes Cure Amount from Available Amount builders; frequency/amount/EBITDA-deeming rules for the cure right itself are not in the curated excerpt.",
+      "blockingFor": [
+        "cure right modeling"
+      ],
+      "neededEvidence": "Article VI financial covenant cure text",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-004",
+      "topic": "CONMED Consolidated Senior Secured Funded Debt full definition",
+      "severity": "SSLR numerator references Consolidated Senior Secured Funded Debt; capture of that headword's full text should be completed beyond the SSLR excerpt window for executor use.",
+      "blockingFor": [
+        "secured leverage executability"
+      ],
+      "neededEvidence": "Full \u201cConsolidated Senior Secured Funded Debt\u201d definition span",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-005",
+      "topic": "Whether CHWY Fixed Charges implies an FCCR test anywhere",
+      "severity": "Fixed Charges is defined, but no Fixed Charge Coverage Ratio definition was found; unclear if Fixed Charges is only a component for other uses.",
+      "blockingFor": [
+        "FCCR research target completeness for CHWY"
+      ],
+      "neededEvidence": "Operative uses of Fixed Charges",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-006",
+      "topic": "Interaction of CHWY Available Amount builder floors with Pro Forma Basis",
+      "severity": "Clause (a) says CNI/Retained ECF/EBITDA\u2212interest amounts are calculated on a Pro Forma Basis and also floors quarterly negatives at zero \u2014 order of operations between pro forma restatement and zero-floor is not explicitly sequenced in the excerpted sentence.",
+      "blockingFor": [
+        "Available Amount numeric evaluation"
+      ],
+      "neededEvidence": "Counsel-reviewed interpretation or additional clarifying drafting elsewhere in CA",
+      "status": "OPEN_NO_LEGAL_EQUIVALENCE_CLAIM"
+    }
+  ]
+}

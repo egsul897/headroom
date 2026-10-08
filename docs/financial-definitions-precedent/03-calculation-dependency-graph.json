@@ -1,0 +1,1096 @@
+{
+  "artifact": "financial-definitions-precedent.calculation-dependency-graph",
+  "version": "fdp.v1",
+  "nodeCount": 87,
+  "edgeCount": 94,
+  "nodes": [
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "label": "Consolidated EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Consolidated Net Income",
+      "label": "Consolidated Net Income",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Test Period",
+      "label": "Test Period",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Expected Run Rate Benefit",
+      "label": "Expected Run Rate Benefit",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Pro Forma Basis",
+      "label": "Pro Forma Basis",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Consolidated Interest Expense",
+      "label": "Consolidated Interest Expense",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
+      "label": "Expected Run Rate Benefit",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Consolidated EBITDA",
+      "label": "Consolidated EBITDA",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_Net_Income",
+      "label": "Consolidated Net Income",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::GAAP",
+      "label": "GAAP",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "label": "Consolidated Total Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Cash Equivalents",
+      "label": "Cash Equivalents",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Restricted (cash)",
+      "label": "Restricted (cash)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Indebtedness concepts (borrowed money)",
+      "label": "Indebtedness concepts (borrowed money)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_First_Lien_Debt",
+      "label": "Consolidated First Lien Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Consolidated Total Debt",
+      "label": "Consolidated Total Debt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_Senior_Secured_Debt",
+      "label": "Consolidated Senior Secured Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+      "label": "First Lien Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Consolidated First Lien Debt",
+      "label": "Consolidated First Lien Debt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Excluded Revolving Loans",
+      "label": "Excluded Revolving Loans",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+      "label": "Senior Secured Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Consolidated Senior Secured Debt",
+      "label": "Consolidated Senior Secured Debt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "label": "Total Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "CHWY-2026-CA::def::Fixed_Charges",
+      "label": "Fixed Charges",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "CHWY-2026-CA::def::Excess_Cash_Flow",
+      "label": "Excess Cash Flow",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Consolidated Working Capital",
+      "label": "Consolidated Working Capital",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Calculation Period",
+      "label": "Calculation Period",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
+      "label": "Retained Excess Cash Flow",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Excess Cash Flow",
+      "label": "Excess Cash Flow",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Retained Excess Cash Flow Percentage",
+      "label": "Retained Excess Cash Flow Percentage",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Section 2.09(c)",
+      "label": "Section 2.09(c)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::builder::Available_Amount",
+      "label": "Available Amount",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Retained Excess Cash Flow",
+      "label": "Retained Excess Cash Flow",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Not Otherwise Applied",
+      "label": "Not Otherwise Applied",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::adj::Pro_Forma_Basis",
+      "label": "Pro Forma Basis / Pro Forma Compliance / Pro Forma Effect",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Pro Forma Adjustment",
+      "label": "Pro Forma Adjustment",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Specified Transaction",
+      "label": "Specified Transaction",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+      "label": "Anti-duplication of pro forma add-backs (Section 1.08(d)(ii))",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Section 1.08(d)",
+      "label": "Section 1.08(d)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF",
+      "label": "Cure Amount (ABL Credit Agreement cross-reference)",
+      "kind": "CURE_RIGHT",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::ABL Credit Agreement",
+      "label": "ABL Credit Agreement",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CHWY-2026-CA::def::Test_Period",
+      "label": "Test Period",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CHWY-2026-CA"
+    },
+    {
+      "id": "TERM::Section 5.01(a)",
+      "label": "Section 5.01(a)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Section 5.01(b)",
+      "label": "Section 5.01(b)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "label": "Consolidated EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "TERM::Pro Forma Adjustments",
+      "label": "Pro Forma Adjustments",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Material Acquisition",
+      "label": "Material Acquisition",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Material Disposition",
+      "label": "Material Disposition",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Net_Income",
+      "label": "Consolidated Net Income",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Funded_Debt",
+      "label": "Consolidated Funded Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "TERM::Funded Debt",
+      "label": "Funded Debt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Indebtedness clauses (a)-(e)",
+      "label": "Indebtedness clauses (a)-(e)",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+      "label": "Consolidated Senior Secured Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "TERM::Consolidated Senior Secured Funded Debt",
+      "label": "Consolidated Senior Secured Funded Debt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Receivables Transfer Program",
+      "label": "Receivables Transfer Program",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+      "label": "Consolidated Total Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "TERM::Consolidated Funded Debt",
+      "label": "Consolidated Funded Debt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CONMED-2025-CA::def::Interest_Coverage_Ratio",
+      "label": "Interest Coverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "CONMED-2025-CA::def::Funded_Debt",
+      "label": "Funded Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "TERM::Indebtedness",
+      "label": "Indebtedness",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "label": "Section 7.1 Financial Condition Covenants (maintenance + Material Acquisition step-up)",
+      "kind": "STEP_CHANGE_TEST",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "TERM::Consolidated Senior Secured Leverage Ratio",
+      "label": "Consolidated Senior Secured Leverage Ratio",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Consolidated Total Leverage Ratio",
+      "label": "Consolidated Total Leverage Ratio",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Interest Coverage Ratio",
+      "label": "Interest Coverage Ratio",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Liquidity",
+      "label": "Liquidity",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Early Maturing Debt",
+      "label": "Early Maturing Debt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Convertible Notes",
+      "label": "Convertible Notes",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
+      "label": "Amendment changing leverage cash-netting cap $75M \u2192 $100M",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "CONMED-2025-CA"
+    },
+    {
+      "id": "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
+      "label": "Consolidated Adjusted EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "FWRG-2021-CA"
+    },
+    {
+      "id": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "label": "Fixed Charge Coverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "FWRG-2021-CA"
+    },
+    {
+      "id": "TERM::Consolidated Adjusted EBITDAR",
+      "label": "Consolidated Adjusted EBITDAR",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Maintenance Capital Expenditures",
+      "label": "Maintenance Capital Expenditures",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Consolidated Adjusted EBITDA",
+      "label": "Consolidated Adjusted EBITDA",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Consolidated Fixed Charges",
+      "label": "Consolidated Fixed Charges",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "FWRG-2021-CA::builder::Available_Amount",
+      "label": "Available Amount",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "FWRG-2021-CA"
+    },
+    {
+      "id": "TERM::CNI Growth Amount",
+      "label": "CNI Growth Amount",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Total Rent Adjusted Net Leverage Ratio",
+      "label": "Total Rent Adjusted Net Leverage Ratio",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Cure Amount",
+      "label": "Cure Amount",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Available Excluded Contribution Amount",
+      "label": "Available Excluded Contribution Amount",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+      "label": "Cure Amount (excluded from Available Amount equity prongs)",
+      "kind": "CURE_RIGHT",
+      "sourceId": "FWRG-2021-CA"
+    },
+    {
+      "id": "TERM::Available Amount",
+      "label": "Available Amount",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Section 6.10 (cure) \u2014 MISSING in this excerpt",
+      "label": "Section 6.10 (cure) \u2014 MISSING in this excerpt",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "label": "Fixed Charge Coverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "LSB-2023-ABL"
+    },
+    {
+      "id": "TERM::EBITDA",
+      "label": "EBITDA",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Capital Expenditures",
+      "label": "Capital Expenditures",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Consolidated Net Interest Expense",
+      "label": "Consolidated Net Interest Expense",
+      "kind": "TERM_REF",
+      "sourceId": null
+    },
+    {
+      "id": "TERM::Capitalized Lease Obligations",
+      "label": "Capitalized Lease Obligations",
+      "kind": "TERM_REF",
+      "sourceId": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Consolidated Net Income",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Test Period",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Expected Run Rate Benefit",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Pro Forma Basis",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Consolidated Interest Expense",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
+      "to": "TERM::Pro Forma Basis",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_Net_Income",
+      "to": "TERM::GAAP",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "to": "TERM::Cash Equivalents",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "to": "TERM::Restricted (cash)",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "to": "TERM::Indebtedness concepts (borrowed money)",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_First_Lien_Debt",
+      "to": "TERM::Consolidated Total Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_Senior_Secured_Debt",
+      "to": "TERM::Consolidated Total Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+      "to": "TERM::Consolidated First Lien Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+      "to": "TERM::Test Period",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+      "to": "TERM::Excluded Revolving Loans",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+      "to": "TERM::Consolidated Senior Secured Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+      "to": "TERM::Test Period",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+      "to": "TERM::Excluded Revolving Loans",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "to": "TERM::Consolidated Total Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "to": "TERM::Test Period",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "to": "TERM::Excluded Revolving Loans",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Fixed_Charges",
+      "to": "TERM::Consolidated Interest Expense",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Excess_Cash_Flow",
+      "to": "TERM::Consolidated Net Income",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Excess_Cash_Flow",
+      "to": "TERM::Consolidated Working Capital",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Excess_Cash_Flow",
+      "to": "TERM::Calculation Period",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
+      "to": "TERM::Excess Cash Flow",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
+      "to": "TERM::Retained Excess Cash Flow Percentage",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
+      "to": "TERM::Section 2.09(c)",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::builder::Available_Amount",
+      "to": "TERM::Consolidated Net Income",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::builder::Available_Amount",
+      "to": "TERM::Retained Excess Cash Flow",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::builder::Available_Amount",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::builder::Available_Amount",
+      "to": "TERM::Consolidated Interest Expense",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::builder::Available_Amount",
+      "to": "TERM::Not Otherwise Applied",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::adj::Pro_Forma_Basis",
+      "to": "TERM::Pro Forma Adjustment",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::adj::Pro_Forma_Basis",
+      "to": "TERM::Specified Transaction",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::adj::Pro_Forma_Basis",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+      "to": "TERM::Section 1.08(d)",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF",
+      "to": "TERM::ABL Credit Agreement",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Test_Period",
+      "to": "TERM::Section 5.01(a)",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Test_Period",
+      "to": "TERM::Section 5.01(b)",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Consolidated Net Income",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Consolidated Interest Expense",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Pro Forma Adjustments",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Material Acquisition",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "to": "TERM::Material Disposition",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Net_Income",
+      "to": "TERM::GAAP",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Funded_Debt",
+      "to": "TERM::Funded Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Funded_Debt",
+      "to": "TERM::Indebtedness clauses (a)-(e)",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+      "to": "TERM::Consolidated Senior Secured Funded Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+      "to": "TERM::Receivables Transfer Program",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+      "to": "TERM::Consolidated Funded Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+      "to": "TERM::Receivables Transfer Program",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Interest_Coverage_Ratio",
+      "to": "TERM::Consolidated EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Interest_Coverage_Ratio",
+      "to": "TERM::Consolidated Interest Expense",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::def::Funded_Debt",
+      "to": "TERM::Indebtedness",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "to": "TERM::Consolidated Senior Secured Leverage Ratio",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "to": "TERM::Consolidated Total Leverage Ratio",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "to": "TERM::Interest Coverage Ratio",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "to": "TERM::Liquidity",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "to": "TERM::Material Acquisition",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "to": "TERM::Early Maturing Debt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "to": "TERM::Convertible Notes",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
+      "to": "TERM::Consolidated Senior Secured Leverage Ratio",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
+      "to": "TERM::Consolidated Total Leverage Ratio",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
+      "to": "TERM::Consolidated Net Income",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
+      "to": "TERM::Consolidated Interest Expense",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Consolidated Adjusted EBITDAR",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Maintenance Capital Expenditures",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Consolidated Adjusted EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Consolidated Fixed Charges",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Test Period",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::builder::Available_Amount",
+      "to": "TERM::CNI Growth Amount",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::builder::Available_Amount",
+      "to": "TERM::Total Rent Adjusted Net Leverage Ratio",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::builder::Available_Amount",
+      "to": "TERM::Cure Amount",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::builder::Available_Amount",
+      "to": "TERM::Available Excluded Contribution Amount",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::builder::Available_Amount",
+      "to": "TERM::Not Otherwise Applied",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+      "to": "TERM::Available Amount",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+      "to": "TERM::Section 6.10 (cure) \u2014 MISSING in this excerpt",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::EBITDA",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Capital Expenditures",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Consolidated Net Interest Expense",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "TERM::Capitalized Lease Obligations",
+      "edgeType": "USES",
+      "note": "Entry calculation/drafting depends on this term or section"
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "to": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "edgeType": "SAME_LABEL_NOT_EQUIVALENT",
+      "note": "Both labeled Consolidated EBITDA; different add-back stacks, caps, entity scope, and pro forma mechanics."
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "to": "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
+      "edgeType": "RELATED_LABEL_NOT_EQUIVALENT",
+      "note": "Adjusted vs unadjusted label; different component stack."
+    },
+    {
+      "from": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "to": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "edgeType": "SAME_LABEL_NOT_EQUIVALENT",
+      "note": "Both FCCR; FWRG uses Adjusted EBITDAR\u2212maintenance capex\u2212taxes\u2212selected RPs over Fixed Charges; LSB uses EBITDA\u2212Capex over scheduled principal+interest+capital leases."
+    },
+    {
+      "from": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "to": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+      "edgeType": "CASH_NETTING_MECHANICS_DIFFER",
+      "note": "CHWY nets unrestricted cash inside CTD with no $ cap in the excerpted definition; CONMED nets min($100M, unrestricted cash) in the leverage ratio numerator."
+    },
+    {
+      "from": "CHWY-2026-CA::builder::Available_Amount",
+      "to": "FWRG-2021-CA::builder::Available_Amount",
+      "edgeType": "SAME_LABEL_NOT_EQUIVALENT",
+      "note": "Both Available Amount builders; CHWY greater-of CNI/Retained ECF/EBITDA\u2212interest vs FWRG CNI Growth Amount + equity contributions with ratio gate."
+    }
+  ]
+}

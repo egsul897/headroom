@@ -1,0 +1,54 @@
+{
+  "artifact": "financial-definitions-precedent.mechanic-divergences",
+  "version": "fdp.v1",
+  "pairs": [
+    {
+      "termLabel": "Consolidated EBITDA",
+      "left": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "right": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "differences": [
+        "CHWY: extensive elected add-back stack including Expected Run Rate Benefit with 36-month lookforward",
+        "CONMED: shorter stack; Material Acquisition/Transaction costs capped at $30M; Pro Forma Adjustments capped at 15% of EBITDA net of benefits realized",
+        "Entity scope: Restricted Parties (CHWY) vs Parent Borrower and Subsidiaries (CONMED)"
+      ]
+    },
+    {
+      "termLabel": "Cash netting / net debt",
+      "left": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "right": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+      "differences": [
+        "CHWY nets unrestricted cash inside Consolidated Total Debt definition (no $ cap in excerpt)",
+        "CONMED applies min($100M, unrestricted cash) inside leverage ratio numerator; debt definition (Funded Debt) is gross"
+      ]
+    },
+    {
+      "termLabel": "Fixed Charge Coverage Ratio",
+      "left": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "right": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "differences": [
+        "Numerator metric: Consolidated Adjusted EBITDAR vs EBITDA",
+        "Numerator deductions differ (maintenance capex+taxes+selected RPs vs Capex)",
+        "Denominator: Consolidated Fixed Charges vs scheduled principal + net interest + capital leases"
+      ]
+    },
+    {
+      "termLabel": "Available Amount",
+      "left": "CHWY-2026-CA::builder::Available_Amount",
+      "right": "FWRG-2021-CA::builder::Available_Amount",
+      "differences": [
+        "CHWY builder opens with greater-of CNI / Retained ECF / EBITDA\u2212140% interest",
+        "FWRG opens with CNI Growth Amount gated by Total Rent Adjusted Net Leverage Ratio \u2264 4.50x plus equity contribution prongs",
+        "Cure Amount exclusion appears in both families but via different surrounding builder architecture"
+      ]
+    },
+    {
+      "termLabel": "First-lien / secured leverage",
+      "left": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+      "right": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+      "differences": [
+        "Same instrument: First Lien Debt requires equal/senior priority vs Secured Obligations; Senior Secured Debt requires security on material Collateral without that equal/senior filter",
+        "Both exclude Excluded Revolving Loans and inherit CTD cash netting"
+      ]
+    }
+  ]
+}
