@@ -1,0 +1,3024 @@
+{
+  "summary": {
+    "sha": "ade5386ddd7a3a1d09a1259fd8ae61ce52c0784f",
+    "generatedAt": "2026-10-08T21:55:16.172Z",
+    "corpus": {
+      "packages": [
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "manifestSha256": "a3fc768ee6440f5f1d5f749b256fb97b751b3676e4b0e0ef253246b57a6eb7d9",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "77551de27abad59c20d695abe4b435757c488eb860a89161712c10e1918b6bb3"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-b-multi-document",
+          "manifestSha256": "2269223b8d7f4e55fb7fd7bbed427a185fad7be4d72d9deda7dff951ffddc4dc",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "893d3283043eeef5bcb624445657f4593e80ab99c2df4a819f351afbc49bba0d"
+            },
+            {
+              "documentId": "indenture",
+              "sha256": "5a3dc3e31a86a6f7a5f83f0a080d3672b99d9050c78b08084a2801b87bc6175b"
+            },
+            {
+              "documentId": "supplemental-indenture-1",
+              "sha256": "c26f491bd1cb0bd1f51605be15fcc5746117b52bcea35307979afb6ddae49c3a"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-c-amendment-supersession",
+          "manifestSha256": "9cc2ff16005b13df4e5d501557c68aa48320a1028adec788ba640202b4ce90b7",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "75e5e6fa507ca3c06c1a5ba2ac83f6dc1dca870132029b937b2117d2adaa0a88"
+            },
+            {
+              "documentId": "amendment-1",
+              "sha256": "895b5394ce0f01668a81b87b0df03312faa053e606ac05256a522944b538d5d2"
+            },
+            {
+              "documentId": "amendment-2",
+              "sha256": "9fa0e19021c84dc30364d07aa30791d515c41044f37f43a294a7ae273e8567b1"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-d-qualitative-restrictions",
+          "manifestSha256": "f00e1a8b18056a9e5b7087eb0c5c23c3c392b1f49ddb85e9140e04fe57b503d0",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "0d1a9c37e1079cf0bb21a91b3a1ad6a97c452b353cf96bca117fedf40a563004"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-e-structural-ambiguity",
+          "manifestSha256": "7d121d26946c397cb47e91d5b473e78043229216c462565d2f667aafce5282b6",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "d395730797a31ccded9be230d90e19ab2e2bea6c1a608857fc1313add853fb01"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-f-capacity-ledger-honesty",
+          "manifestSha256": "447e2646c79c0134e030bf1313e56713243c95cad7ffb5043cc3449a8343f164",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "4d51d256f166a8469a73e92b7b6442153f27328fdf55230b8933bfdb1c6ab999"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-g-adversarial-evidence",
+          "manifestSha256": "1a94572c1a239f30041aa9f31df9700f1f578e3aa5a2486dde3427134d8dc472",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "b7c57500cdf28aa47f636722b1a9ad6f8516dfd35e69161dcc3a3759c2abf827"
+            },
+            {
+              "documentId": "stale-amendment",
+              "sha256": "7176ab87c2af09821a8ebfb47770f80c675f547ef35f2f0ec9e5bf09d4d849dd"
+            },
+            {
+              "documentId": "exhibit-summary-of-terms",
+              "sha256": "1ce1987e0c2d913abfaf0cb622eb1879ed0c8f223300e80c26854bc7297d48eb"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-h-unseen-composition",
+          "manifestSha256": "75e52b04615cfcc652e0f7591b8c584111e4ee8a08fe063a4f68bb1b6980ce06",
+          "documents": [
+            {
+              "documentId": "abl-credit-agreement",
+              "sha256": "471c096368cb16076422196a8ab44d50c561d945aa58a5230c8ec37bda30eebb"
+            },
+            {
+              "documentId": "intercreditor-agreement",
+              "sha256": "8dcf8106fb9fe2f06dcdbbb6da733b313d6ce2c72815454cf86c4da7f1332634"
+            },
+            {
+              "documentId": "amendment-1",
+              "sha256": "c2b82f5b40863d2a61a8613f4b07a26c087120162f5b35dc377bfc206eee8931"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "manifestSha256": "1c73c7ca10e7b2c30529beeac638982e579b05e749eb05e24d3732b3a073bebc",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "a878dd44f5bc36edc5f895dcc24d1d3bd89eca26ccd1d7bc7868f59be9156994"
+            },
+            {
+              "documentId": "amendment-1",
+              "sha256": "05a482e2bd325d6da83803d94216088455389a21a64283cf06a3f15e432ae15c"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-j-restricted-payments-builder",
+          "manifestSha256": "2df15291a205f875fb792d25df80b724df70a3718856a739a942fa207085f58b",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "f1e524edd21271efa806bd03acdaab9d0f29f9a42afbbe7df2306dcdf9143921"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "manifestSha256": "6c23f2cb9e04efe2aba26174963328d9f14a2898e82a45ef667ae773def8a0b6",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "be33db8820f38773520069f82be415528fcf8a725258af53e37426ae0e8ba84a"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-l-affiliate-transactions",
+          "manifestSha256": "209170992fa8231b2ae4f1fd2388605a416f055526a70c9ed3ec9e0843b425f3",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "3fad147c066aef22a2d98bece25ede360057133f9fbfabf498227e5e8dbbd08f"
+            }
+          ]
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "manifestSha256": "6fdd9bfdaf066bfac77dca0cd287522538328ea4d19c3e5776d5efb0fe22fb2d",
+          "documents": [
+            {
+              "documentId": "credit-agreement",
+              "sha256": "e6c435e8ff18a7ec43575906519b4d361d8b91c705e37c97381e5081cdba75e4"
+            },
+            {
+              "documentId": "amendment-1",
+              "sha256": "01d473007ab58782262be18fc9da7f3d5d94d75945d55b281f94ae5a30e1b158"
+            },
+            {
+              "documentId": "side-letter",
+              "sha256": "fe4826431150081258cc5a4d06f0e20814ea9ded094df4cd94013bf6ce25fedb"
+            }
+          ]
+        }
+      ],
+      "corpusSha256": "aa923dfda024f86e599b947fb9800a7d67a4fc182e9bc7461438e8e4f82150f0"
+    },
+    "mutations": 20,
+    "killed": 13,
+    "survived": [
+      "MUT-08 (GAP)",
+      "MUT-09 (EQUIVALENT)",
+      "MUT-12 (GAP)",
+      "MUT-13 (GAP)",
+      "MUT-14 (GAP)",
+      "MUT-15 (GAP)",
+      "MUT-16 (GAP)"
+    ],
+    "predictionsHeld": 20,
+    "harnessVerdicts": {
+      "pass": 154,
+      "fail": 0
+    },
+    "productVerdicts": {
+      "pass": 14,
+      "fail": [
+        "mutation:MUT-08:instrument-status:2026-06-30 [UNSUPPORTED_AS_COMPLETE]",
+        "mutation:MUT-08:effects:side-letter [MISSING_DEPENDENCY]",
+        "mutation:MUT-12:instrument-status:2026-06-30 [CRITICAL_FALSE_PERMISSION]",
+        "mutation:MUT-12:effects:side-letter [MISSING_DEPENDENCY]",
+        "mutation:MUT-13:instrument-status:2026-06-30 [CRITICAL_FALSE_PERMISSION]",
+        "mutation:MUT-13:effects:side-letter [MISSING_DEPENDENCY]",
+        "mutation:MUT-14:instrument-status:2026-06-30 [CRITICAL_FALSE_PERMISSION]",
+        "mutation:MUT-14:effects:side-letter [MISSING_DEPENDENCY]",
+        "mutation:MUT-15:instrument-status:2027-03-31 [CRITICAL_FALSE_PERMISSION]",
+        "mutation:MUT-15:effects:side-letter [MISSING_DEPENDENCY]",
+        "mutation:MUT-16:instrument-status:2026-12-31 [UNSUPPORTED_AS_COMPLETE]",
+        "mutation:MUT-16:effects:consent [MISSING_DEPENDENCY]",
+        "mutation:MUT-17:ocr:7.02 [SOURCE_PROVENANCE_FAILURE]",
+        "mutation:MUT-18:ocr:7.01 [SOURCE_PROVENANCE_FAILURE]",
+        "mutation:MUT-19:ocr:7.01(c) [SOURCE_PROVENANCE_FAILURE]"
+      ]
+    },
+    "identity": [
+      {
+        "id": "MUT-01",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 9
+      },
+      {
+        "id": "MUT-02",
+        "total": 10,
+        "survived": 8,
+        "shifted": 2,
+        "textHashSurvived": 9
+      },
+      {
+        "id": "MUT-03",
+        "total": 20,
+        "survived": 20,
+        "shifted": 0,
+        "textHashSurvived": 19
+      },
+      {
+        "id": "MUT-04",
+        "total": 8,
+        "survived": 2,
+        "shifted": 6,
+        "textHashSurvived": 7
+      },
+      {
+        "id": "MUT-05",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      {
+        "id": "MUT-06",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 9
+      },
+      {
+        "id": "MUT-07",
+        "total": 15,
+        "survived": 6,
+        "shifted": 9,
+        "textHashSurvived": 14
+      },
+      {
+        "id": "MUT-08",
+        "total": 8,
+        "survived": 8,
+        "shifted": 0,
+        "textHashSurvived": 8
+      },
+      {
+        "id": "MUT-09",
+        "total": 10,
+        "survived": 9,
+        "shifted": 1,
+        "textHashSurvived": 10
+      },
+      {
+        "id": "MUT-10",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 9
+      },
+      {
+        "id": "MUT-11",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      {
+        "id": "MUT-12",
+        "total": 8,
+        "survived": 8,
+        "shifted": 0,
+        "textHashSurvived": 8
+      },
+      {
+        "id": "MUT-13",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      {
+        "id": "MUT-14",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      {
+        "id": "MUT-15",
+        "total": 21,
+        "survived": 21,
+        "shifted": 0,
+        "textHashSurvived": 21
+      },
+      {
+        "id": "MUT-16",
+        "total": 15,
+        "survived": 15,
+        "shifted": 0,
+        "textHashSurvived": 15
+      },
+      {
+        "id": "MUT-17",
+        "total": 9,
+        "survived": 8,
+        "shifted": 1,
+        "textHashSurvived": 8
+      },
+      {
+        "id": "MUT-18",
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 6
+      },
+      {
+        "id": "MUT-19",
+        "total": 9,
+        "survived": 9,
+        "shifted": 0,
+        "textHashSurvived": 8
+      },
+      {
+        "id": "MUT-20",
+        "total": 10,
+        "survived": 7,
+        "shifted": 3,
+        "textHashSurvived": 9
+      }
+    ]
+  },
+  "observations": [
+    {
+      "mutationId": "MUT-01",
+      "kind": "CHANGED_THRESHOLD",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.01(b)": {
+          "before": "8c8735fd1eb77d46",
+          "after": "46b9be90e8f615bf"
+        },
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "e1de3e532a1041db"
+        },
+        "7.01(c)": {
+          "before": "b5fa55823fc96ae6",
+          "after": "b5fa55823fc96ae6"
+        },
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        },
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        },
+        "1.01": {
+          "before": "4b388c298e7aecbe",
+          "after": "4b388c298e7aecbe"
+        }
+      },
+      "nodeIds": {
+        "7.01(b)": {
+          "before": "structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "after": "structural-node:31bf7e885d8c7cdeb59bf2b6"
+        },
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        },
+        "7.01(c)": {
+          "before": "structural-node:7722a548663df77e26cd0010",
+          "after": "structural-node:7722a548663df77e26cd0010"
+        },
+        "7.02": {
+          "before": "structural-node:4872f810a1b61d6565e525b6",
+          "after": "structural-node:4872f810a1b61d6565e525b6"
+        },
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:9992ee8ba513ea6077d1b881"
+        },
+        "1.01": {
+          "before": "structural-node:0300a1239f09bf858ff7e35f",
+          "after": "structural-node:0300a1239f09bf858ff7e35f"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 9
+      },
+      "operativeState": {},
+      "closure": {
+        "units": [
+          "credit-agreement#7.01",
+          "credit-agreement#7.02",
+          "credit-agreement#7.03"
+        ],
+        "unresolved": [
+          "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+          "UNRESOLVED_DEFINED_TERM: Fundamental Changes"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:credit-agreement#7.01(b)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "own text lacks \"$30,000,000\""
+          },
+          {
+            "ref": "structure:text:A-7.01",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "e1de3e532a10: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "structure:text:A-7.01(b)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "46b9be90e8f6: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "operative:2026-06-30:credit-agreement#7.01(b)",
+            "stage": "OPERATIVE_STATE",
+            "severity": "WRONG_OPERATIVE_SOURCE",
+            "actual": "operative text lacks \"$30,000,000\" (provision absent; node supersession=CURRENT_OPERATIVE)"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 7.01(b)",
+          "ok": true,
+          "detail": "8c8735fd1eb77d46 → 46b9be90e8f615bf",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text changes: 7.01",
+          "ok": true,
+          "detail": "34a67ec0e7f0c2f5 → e1de3e532a1041db",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(c)",
+          "ok": true,
+          "detail": "b5fa55823fc96ae6 → b5fa55823fc96ae6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 1.01",
+          "ok": true,
+          "detail": "4b388c298e7aecbe → 4b388c298e7aecbe",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:31bf7e885d8c7cdeb59bf2b6 → structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(c)",
+          "ok": true,
+          "detail": "structural-node:7722a548663df77e26cd0010 → structural-node:7722a548663df77e26cd0010",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02",
+          "ok": true,
+          "detail": "structural-node:4872f810a1b61d6565e525b6 → structural-node:4872f810a1b61d6565e525b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.03",
+          "ok": true,
+          "detail": "structural-node:9992ee8ba513ea6077d1b881 → structural-node:9992ee8ba513ea6077d1b881",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#7.01",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, credit-agreement#7.03",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#7.02",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, credit-agreement#7.03",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:credit-agreement#7.01(b), STRUCTURE:structure:text:A-7.01, STRUCTURE:structure:text:A-7.01(b), OPERATIVE_STATE:operative:2026-06-30:credit-agreement#7.01(b)",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-02",
+      "kind": "ADDED_CONDITION",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.01(c)": {
+          "before": "b5fa55823fc96ae6",
+          "after": "d1e21418c5c6b116"
+        },
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "1496bb70d9d5f877"
+        },
+        "7.01(b)": {
+          "before": "8c8735fd1eb77d46",
+          "after": "8c8735fd1eb77d46"
+        },
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        },
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        },
+        "1.01": {
+          "before": "4b388c298e7aecbe",
+          "after": "4b388c298e7aecbe"
+        }
+      },
+      "nodeIds": {
+        "7.01(c)": {
+          "before": "structural-node:7722a548663df77e26cd0010",
+          "after": "structural-node:7722a548663df77e26cd0010"
+        },
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        },
+        "7.01(b)": {
+          "before": "structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "after": "structural-node:31bf7e885d8c7cdeb59bf2b6"
+        },
+        "7.02": {
+          "before": "structural-node:4872f810a1b61d6565e525b6",
+          "after": "structural-node:da6a1dd82d0ba1d05e754b16"
+        },
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:1d18d824aace5649b2163100"
+        },
+        "1.01": {
+          "before": "structural-node:0300a1239f09bf858ff7e35f",
+          "after": "structural-node:0300a1239f09bf858ff7e35f"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 8,
+        "shifted": 2,
+        "textHashSurvived": 9
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:text:A-7.01",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "1496bb70d9d5: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "structure:text:A-7.01(c)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "d1e21418c5c6: the parsed clause text differs from the pinned text"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 7.01(c)",
+          "ok": true,
+          "detail": "b5fa55823fc96ae6 → d1e21418c5c6b116",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text changes: 7.01",
+          "ok": true,
+          "detail": "34a67ec0e7f0c2f5 → 1496bb70d9d5f877",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(b)",
+          "ok": true,
+          "detail": "8c8735fd1eb77d46 → 8c8735fd1eb77d46",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 1.01",
+          "ok": true,
+          "detail": "4b388c298e7aecbe → 4b388c298e7aecbe",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:31bf7e885d8c7cdeb59bf2b6 → structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(c)",
+          "ok": true,
+          "detail": "structural-node:7722a548663df77e26cd0010 → structural-node:7722a548663df77e26cd0010",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.02",
+          "ok": true,
+          "detail": "structural-node:4872f810a1b61d6565e525b6 → structural-node:da6a1dd82d0ba1d05e754b16",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.03",
+          "ok": true,
+          "detail": "structural-node:9992ee8ba513ea6077d1b881 → structural-node:1d18d824aace5649b2163100",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:text:A-7.01, STRUCTURE:structure:text:A-7.01(c)",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-03",
+      "kind": "REMOVED_EXCEPTION",
+      "packageId": "pkg-d-qualitative-restrictions",
+      "sectionHashes": {
+        "7.05": {
+          "before": "de832a265e55f6f3",
+          "after": "ac5f09212418ecdb"
+        },
+        "7.05(k)": {
+          "before": "9aa474d4131a950a",
+          "after": "c4a6cd33dd79e985"
+        },
+        "7.05(j)": {
+          "before": "7ecb7336efd7fea0",
+          "after": "7ecb7336efd7fea0"
+        },
+        "2.05": {
+          "before": "a3d522719907353a",
+          "after": "a3d522719907353a"
+        },
+        "1.01": {
+          "before": "de120535bbd00214",
+          "after": "de120535bbd00214"
+        }
+      },
+      "nodeIds": {
+        "7.05": {
+          "before": "structural-node:6b82919768475d5d90e6c093",
+          "after": "structural-node:6b82919768475d5d90e6c093"
+        },
+        "7.05(k)": {
+          "before": "structural-node:7f17f3fd2293cf8ab19994b9",
+          "after": "structural-node:7f17f3fd2293cf8ab19994b9"
+        },
+        "7.05(j)": {
+          "before": "structural-node:b7f1b49e9f44e25fc735204e",
+          "after": "structural-node:b7f1b49e9f44e25fc735204e"
+        },
+        "2.05": {
+          "before": "structural-node:a91707512b9e728e30400a5f",
+          "after": "structural-node:a91707512b9e728e30400a5f"
+        },
+        "1.01": {
+          "before": "structural-node:50ed6823d590d55c275db667",
+          "after": "structural-node:50ed6823d590d55c275db667"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 20,
+        "survived": 20,
+        "shifted": 0,
+        "textHashSurvived": 19
+      },
+      "operativeState": {},
+      "closure": {
+        "units": [
+          "credit-agreement#7.05",
+          "credit-agreement#2.05"
+        ],
+        "unresolved": [
+          "UNRESOLVED_DEFINED_TERM: Dispositions of",
+          "UNRESOLVED_DEFINED_TERM: Disposition of",
+          "UNRESOLVED_DEFINED_TERM: Net Cash Proceeds of",
+          "UNRESOLVED_DEFINED_TERM: Business Days of"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:credit-agreement#7.05(l)",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "structure:text:D-7.05",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "ac5f09212418: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "structure:text:D-7.05(k)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "c4a6cd33dd79: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "discovery:pass-a-coverage",
+            "stage": "DISCOVERY_PASS_A",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "uncovered: D-7.05(l) (no node)"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 7.05",
+          "ok": true,
+          "detail": "de832a265e55f6f3 → ac5f09212418ecdb",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text changes: 7.05(k)",
+          "ok": true,
+          "detail": "9aa474d4131a950a → c4a6cd33dd79e985",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.05(j)",
+          "ok": true,
+          "detail": "7ecb7336efd7fea0 → 7ecb7336efd7fea0",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 2.05",
+          "ok": true,
+          "detail": "a3d522719907353a → a3d522719907353a",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 1.01",
+          "ok": true,
+          "detail": "de120535bbd00214 → de120535bbd00214",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.05(j)",
+          "ok": true,
+          "detail": "structural-node:b7f1b49e9f44e25fc735204e → structural-node:b7f1b49e9f44e25fc735204e",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.05(k)",
+          "ok": true,
+          "detail": "structural-node:7f17f3fd2293cf8ab19994b9 → structural-node:7f17f3fd2293cf8ab19994b9",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 2.05",
+          "ok": true,
+          "detail": "structural-node:a91707512b9e728e30400a5f → structural-node:a91707512b9e728e30400a5f",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#7.05",
+          "ok": true,
+          "detail": "credit-agreement#7.05, credit-agreement#2.05",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#2.05",
+          "ok": true,
+          "detail": "credit-agreement#7.05, credit-agreement#2.05",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:credit-agreement#7.05(l), STRUCTURE:structure:text:D-7.05, STRUCTURE:structure:text:D-7.05(k), DISCOVERY_PASS_A:discovery:pass-a-coverage",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-04",
+      "kind": "REVISED_DEFINITION",
+      "packageId": "pkg-b-multi-document",
+      "sectionHashes": {
+        "1.01": {
+          "before": "6749a02fbee9aff8",
+          "after": "1e05dad8d85c35f2"
+        },
+        "7.01": {
+          "before": "6140ffb592960ddb",
+          "after": "6140ffb592960ddb"
+        },
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        }
+      },
+      "nodeIds": {
+        "1.01": {
+          "before": "structural-node:33d1230e354a977ec7f10b1b",
+          "after": "structural-node:33d1230e354a977ec7f10b1b"
+        },
+        "7.01": {
+          "before": "structural-node:8b4d639a2a6e0014277916c2",
+          "after": "structural-node:8cf6f06297a285b421def617"
+        },
+        "7.02": {
+          "before": "structural-node:0fb98d56b2f2c3adf9ee6a7f",
+          "after": "structural-node:dcd9594ac2e789faebc7cc40"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 8,
+        "survived": 2,
+        "shifted": 6,
+        "textHashSurvived": 7
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "definition:credit-agreement#Consolidated EBITDA",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "definition text lacks \"non-cash stock compensation expense\""
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 1.01",
+          "ok": true,
+          "detail": "6749a02fbee9aff8 → 1e05dad8d85c35f2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "6140ffb592960ddb → 6140ffb592960ddb",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 1.01",
+          "ok": true,
+          "detail": "structural-node:33d1230e354a977ec7f10b1b → structural-node:33d1230e354a977ec7f10b1b",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.01",
+          "ok": true,
+          "detail": "structural-node:8b4d639a2a6e0014277916c2 → structural-node:8cf6f06297a285b421def617",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.02",
+          "ok": true,
+          "detail": "structural-node:0fb98d56b2f2c3adf9ee6a7f → structural-node:dcd9594ac2e789faebc7cc40",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:definition:credit-agreement#Consolidated EBITDA",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-05",
+      "kind": "NEW_AMENDMENT",
+      "packageId": "pkg-c-amendment-supersession",
+      "sectionHashes": {
+        "7.01": {
+          "before": "60c1f13619be3b55",
+          "after": "60c1f13619be3b55"
+        },
+        "7.01(d)": {
+          "before": "aeb9aeff4fd96ab5",
+          "after": "aeb9aeff4fd96ab5"
+        },
+        "7.02": {
+          "before": "c2c029ea130035b1",
+          "after": "c2c029ea130035b1"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:46c093f47f3d52f1fe48def4",
+          "after": "structural-node:46c093f47f3d52f1fe48def4"
+        },
+        "7.01(d)": {
+          "before": "structural-node:2a738b7424281b41e0e9f8cb",
+          "after": "structural-node:2a738b7424281b41e0e9f8cb"
+        },
+        "7.02": {
+          "before": "structural-node:01c40a8e873b78b3602e0368",
+          "after": "structural-node:01c40a8e873b78b3602e0368"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      "operativeState": {
+        "2026-06-30:7.01(d)": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-3); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+        "2025-12-31:7.01(d)": "CURRENT (OPERATIVE_STATE_RESOLVED, applied 0, source credit-agreement); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+        "2026-06-30:7.01(b)": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-1); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+        "2026-06-30:7.01(e)": "DELETED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-2); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": {
+        "units": [
+          "credit-agreement#7.01",
+          "credit-agreement#7.02",
+          "amendment-1#1",
+          "amendment-2#1",
+          "amendment-3#1",
+          "amendment-1#2",
+          "amendment-2#2",
+          "amendment-3#2"
+        ],
+        "unresolved": [
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b)",
+          "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(e)",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(d)"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "operative:2026-06-30:credit-agreement#7.01(d)",
+            "stage": "OPERATIVE_STATE",
+            "severity": "WRONG_OPERATIVE_SOURCE",
+            "actual": "1 effect(s) applied at 2026-06-30 although none expected; supersession status KNOWN_SUPERSEDED; operative text lacks \"$5,000,000\" (provision OPERATIVE_STATE_RESOLVED, applied=1, source=amendment-3; no"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "60c1f13619be3b55 → 60c1f13619be3b55",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(d)",
+          "ok": true,
+          "detail": "aeb9aeff4fd96ab5 → aeb9aeff4fd96ab5",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "c2c029ea130035b1 → c2c029ea130035b1",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:46c093f47f3d52f1fe48def4 → structural-node:46c093f47f3d52f1fe48def4",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(d)",
+          "ok": true,
+          "detail": "structural-node:2a738b7424281b41e0e9f8cb → structural-node:2a738b7424281b41e0e9f8cb",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02",
+          "ok": true,
+          "detail": "structural-node:01c40a8e873b78b3602e0368 → structural-node:01c40a8e873b78b3602e0368",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.01(d)@2026-06-30 = SUPERSEDED from amendment-3",
+          "ok": true,
+          "detail": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-3); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-05:operative:2026-06-30:7.01(d)",
+          "severity": "INCORRECT_AMENDMENT_PRECEDENCE"
+        },
+        {
+          "check": "operative 7.01(d)@2025-12-31 = CURRENT",
+          "ok": true,
+          "detail": "CURRENT (OPERATIVE_STATE_RESOLVED, applied 0, source credit-agreement); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-05:operative:2025-12-31:7.01(d)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "check": "operative 7.01(b)@2026-06-30 = SUPERSEDED from amendment-1",
+          "ok": true,
+          "detail": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-1); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-05:operative:2026-06-30:7.01(b)",
+          "severity": "INCORRECT_AMENDMENT_PRECEDENCE"
+        },
+        {
+          "check": "operative 7.01(e)@2026-06-30 = DELETED from amendment-2",
+          "ok": true,
+          "detail": "DELETED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-2); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-05:operative:2026-06-30:7.01(e)",
+          "severity": "INCORRECT_AMENDMENT_PRECEDENCE"
+        },
+        {
+          "check": "closure contains credit-agreement#7.01",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, amendment-1#1, amendment-2#1, amendment-3#1, amendment-1#2, amendment-2#2, amendment-3#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains amendment-3#1",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, amendment-1#1, amendment-2#1, amendment-3#1, amendment-1#2, amendment-2#2, amendment-3#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: OPERATIVE_STATE:operative:2026-06-30:credit-agreement#7.01(d)",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-06",
+      "kind": "MOVED_COVENANT",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "34a67ec0e7f0c2f5"
+        },
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        },
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:9992ee8ba513ea6077d1b881"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 9
+      },
+      "operativeState": {},
+      "closure": {
+        "units": [
+          "credit-agreement#7.04",
+          "credit-agreement#7.01"
+        ],
+        "unresolved": [
+          "UNRESOLVED_DEFINED_TERM: Indebtedness of"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:credit-agreement#7.02",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "discovery:pass-a-coverage",
+            "stage": "DISCOVERY_PASS_A",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "uncovered: A-7.02 (no node)"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "34a67ec0e7f0c2f5 → 34a67ec0e7f0c2f5",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:30229784fda7b97c12644917 → structural-node:30229784fda7b97c12644917",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.03",
+          "ok": true,
+          "detail": "structural-node:9992ee8ba513ea6077d1b881 → structural-node:9992ee8ba513ea6077d1b881",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#7.04",
+          "ok": true,
+          "detail": "credit-agreement#7.04, credit-agreement#7.01",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#7.01",
+          "ok": true,
+          "detail": "credit-agreement#7.04, credit-agreement#7.01",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:credit-agreement#7.02, DISCOVERY_PASS_A:discovery:pass-a-coverage",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-07",
+      "kind": "CHANGED_ENTITY_SCOPE",
+      "packageId": "pkg-i-secured-debt-lien",
+      "sectionHashes": {
+        "7.01(b)": {
+          "before": "675b1c21c49f6c69",
+          "after": "acedcd099a1f53e3"
+        },
+        "7.01": {
+          "before": "22e05931fc5ee017",
+          "after": "ef292d37ed52b30c"
+        },
+        "7.01(c)": {
+          "before": "3896182233a77e01",
+          "after": "3896182233a77e01"
+        },
+        "7.02": {
+          "before": "5c2666d1d4888042",
+          "after": "5c2666d1d4888042"
+        },
+        "9.15": {
+          "before": "decc64ffb55f61ad",
+          "after": "decc64ffb55f61ad"
+        },
+        "1.01": {
+          "before": "491c6a0721063951",
+          "after": "491c6a0721063951"
+        }
+      },
+      "nodeIds": {
+        "7.01(b)": {
+          "before": "structural-node:a7312e2877531aee47fb7331",
+          "after": "structural-node:a7312e2877531aee47fb7331"
+        },
+        "7.01": {
+          "before": "structural-node:3fa66f54aab4925c4e534e4f",
+          "after": "structural-node:3fa66f54aab4925c4e534e4f"
+        },
+        "7.01(c)": {
+          "before": "structural-node:e50bd7a1fbcd38b079ed7327",
+          "after": "structural-node:7aa371c4c5d7e49f14654cf1"
+        },
+        "7.02": {
+          "before": "structural-node:f0610fbb76a2d044a1d17aee",
+          "after": "structural-node:63894c91b79d96942cbc9cfb"
+        },
+        "9.15": {
+          "before": "structural-node:68249f897465e5d0f02ff070",
+          "after": "structural-node:05324d48706cedb3b851f35f"
+        },
+        "1.01": {
+          "before": "structural-node:0300a1239f09bf858ff7e35f",
+          "after": "structural-node:0300a1239f09bf858ff7e35f"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 15,
+        "survived": 6,
+        "shifted": 9,
+        "textHashSurvived": 14
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:credit-agreement#7.01(b)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "own text lacks \"Borrower and the Guarantors\""
+          },
+          {
+            "ref": "structure:text:I-7.01",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "ef292d37ed52: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "structure:text:I-7.01(b)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "acedcd099a1f: the parsed clause text differs from the pinned text"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 7.01(b)",
+          "ok": true,
+          "detail": "675b1c21c49f6c69 → acedcd099a1f53e3",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text changes: 7.01",
+          "ok": true,
+          "detail": "22e05931fc5ee017 → ef292d37ed52b30c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(c)",
+          "ok": true,
+          "detail": "3896182233a77e01 → 3896182233a77e01",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "5c2666d1d4888042 → 5c2666d1d4888042",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 9.15",
+          "ok": true,
+          "detail": "decc64ffb55f61ad → decc64ffb55f61ad",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 1.01",
+          "ok": true,
+          "detail": "491c6a0721063951 → 491c6a0721063951",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:a7312e2877531aee47fb7331 → structural-node:a7312e2877531aee47fb7331",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.01(c)",
+          "ok": true,
+          "detail": "structural-node:e50bd7a1fbcd38b079ed7327 → structural-node:7aa371c4c5d7e49f14654cf1",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.02",
+          "ok": true,
+          "detail": "structural-node:f0610fbb76a2d044a1d17aee → structural-node:63894c91b79d96942cbc9cfb",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 9.15",
+          "ok": true,
+          "detail": "structural-node:68249f897465e5d0f02ff070 → structural-node:05324d48706cedb3b851f35f",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:credit-agreement#7.01(b), STRUCTURE:structure:text:I-7.01, STRUCTURE:structure:text:I-7.01(b)",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-08",
+      "kind": "CONFLICTING_DOCUMENT",
+      "packageId": "pkg-b-multi-document",
+      "sectionHashes": {
+        "7.01": {
+          "before": "6140ffb592960ddb",
+          "after": "6140ffb592960ddb"
+        },
+        "7.01(b)": {
+          "before": "6d0bc7a1df156e0a",
+          "after": "6d0bc7a1df156e0a"
+        },
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:8b4d639a2a6e0014277916c2",
+          "after": "structural-node:8b4d639a2a6e0014277916c2"
+        },
+        "7.01(b)": {
+          "before": "structural-node:a3f272bc4c79b3960177a92d",
+          "after": "structural-node:a3f272bc4c79b3960177a92d"
+        },
+        "7.02": {
+          "before": "structural-node:0fb98d56b2f2c3adf9ee6a7f",
+          "after": "structural-node:0fb98d56b2f2c3adf9ee6a7f"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 8,
+        "survived": 8,
+        "shifted": 0,
+        "textHashSurvived": 8
+      },
+      "operativeState": {
+        "2026-06-30:7.01(b)": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": {
+        "units": [
+          "credit-agreement#7.01",
+          "credit-agreement#7.02",
+          "indenture#4.09",
+          "side-letter#1",
+          "supplemental-indenture-1#1",
+          "supplemental-indenture-1#2"
+        ],
+        "unresolved": [
+          "Section 7.01(b) from 1 → NOT_FOUND",
+          "DEFINITION_CYCLE: Restricted Subsidiary",
+          "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+          "UNRESOLVED_DEFINED_TERM: Issue Date",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b)",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 4.09(c)"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [],
+        "vanishedFailures": [],
+        "verdict": "SURVIVED",
+        "predicted": "GAP",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "6140ffb592960ddb → 6140ffb592960ddb",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(b)",
+          "ok": true,
+          "detail": "6d0bc7a1df156e0a → 6d0bc7a1df156e0a",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:8b4d639a2a6e0014277916c2 → structural-node:8b4d639a2a6e0014277916c2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:a3f272bc4c79b3960177a92d → structural-node:a3f272bc4c79b3960177a92d",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.01(b)@2026-06-30 = CURRENT",
+          "ok": true,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-08:operative:2026-06-30:7.01(b)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "check": "instrument status @2026-06-30 is not OPERATIVE_STATE_RESOLVED",
+          "ok": false,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-08:instrument-status:2026-06-30",
+          "severity": "UNSUPPORTED_AS_COMPLETE"
+        },
+        {
+          "check": "amendment pipeline surfaces side-letter as an effect (resolved or unresolved)",
+          "ok": false,
+          "detail": "0 effect(s), 0 unattached, interpreter calls 0; cross-document leads from side-letter: the Credit Agreement→credit-agreement REVIEW_REQUIRED",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-08:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY"
+        },
+        {
+          "check": "closure contains credit-agreement#7.01",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, indenture#4.09, side-letter#1, supplemental-indenture-1#1, supplemental-indenture-1#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains side-letter#1",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, indenture#4.09, side-letter#1, supplemental-indenture-1#1, supplemental-indenture-1#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (GAP) holds",
+          "ok": true,
+          "detail": "SURVIVED: no new deterministic failure",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-09",
+      "kind": "REORDERED_HIERARCHY",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "34a67ec0e7f0c2f5"
+        },
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        },
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        },
+        "1.01": {
+          "before": "4b388c298e7aecbe",
+          "after": "4b388c298e7aecbe"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        },
+        "7.02": {
+          "before": "structural-node:4872f810a1b61d6565e525b6",
+          "after": "structural-node:50ed3d6cb5f4323852d005f8"
+        },
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:4872f810a1b61d6565e525b6"
+        },
+        "1.01": {
+          "before": "structural-node:0300a1239f09bf858ff7e35f",
+          "after": "structural-node:0300a1239f09bf858ff7e35f"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 9,
+        "shifted": 1,
+        "textHashSurvived": 10
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [],
+        "vanishedFailures": [],
+        "verdict": "SURVIVED",
+        "predicted": "EQUIVALENT",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "34a67ec0e7f0c2f5 → 34a67ec0e7f0c2f5",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 1.01",
+          "ok": true,
+          "detail": "4b388c298e7aecbe → 4b388c298e7aecbe",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:30229784fda7b97c12644917 → structural-node:30229784fda7b97c12644917",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 1.01",
+          "ok": true,
+          "detail": "structural-node:0300a1239f09bf858ff7e35f → structural-node:0300a1239f09bf858ff7e35f",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.02",
+          "ok": true,
+          "detail": "structural-node:4872f810a1b61d6565e525b6 → structural-node:50ed3d6cb5f4323852d005f8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id shifts (positional identity): 7.03",
+          "ok": true,
+          "detail": "structural-node:9992ee8ba513ea6077d1b881 → structural-node:4872f810a1b61d6565e525b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (EQUIVALENT) holds",
+          "ok": true,
+          "detail": "SURVIVED: no new deterministic failure",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-10",
+      "kind": "MISSING_REFERENCED_PROVISION",
+      "packageId": "pkg-c-amendment-supersession",
+      "sectionHashes": {
+        "7.02": {
+          "before": "c2c029ea130035b1",
+          "after": "f533cfa9911da7bd"
+        },
+        "7.01": {
+          "before": "60c1f13619be3b55",
+          "after": "60c1f13619be3b55"
+        },
+        "7.01(d)": {
+          "before": "aeb9aeff4fd96ab5",
+          "after": "aeb9aeff4fd96ab5"
+        },
+        "1.01": {
+          "before": "418cb22ef822e4da",
+          "after": "418cb22ef822e4da"
+        }
+      },
+      "nodeIds": {
+        "7.02": {
+          "before": "structural-node:01c40a8e873b78b3602e0368",
+          "after": "structural-node:01c40a8e873b78b3602e0368"
+        },
+        "7.01": {
+          "before": "structural-node:46c093f47f3d52f1fe48def4",
+          "after": "structural-node:46c093f47f3d52f1fe48def4"
+        },
+        "7.01(d)": {
+          "before": "structural-node:2a738b7424281b41e0e9f8cb",
+          "after": "structural-node:2a738b7424281b41e0e9f8cb"
+        },
+        "1.01": {
+          "before": "structural-node:148f43782464b17908f1824f",
+          "after": "structural-node:148f43782464b17908f1824f"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 9
+      },
+      "operativeState": {},
+      "closure": {
+        "units": [
+          "credit-agreement#7.02",
+          "credit-agreement#7.01",
+          "amendment-1#1",
+          "amendment-2#1",
+          "amendment-1#2",
+          "amendment-2#2"
+        ],
+        "unresolved": [
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(f)",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b)",
+          "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(e)"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:text:C-7.02",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "f533cfa9911d: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "context:C-7.02:cross-references",
+            "stage": "CONTEXT_RETRIEVAL",
+            "severity": "MISSING_DEPENDENCY",
+            "actual": "no structural reference to 7.01(d) from 7.02 and no CROSS_REFERENCE bundle item for it (refs seen: SECTION 7.02→ok, Section 7.01(f)→no SECTION node with ref \"7.01(f)\" exists among this document's own "
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 7.02",
+          "ok": true,
+          "detail": "c2c029ea130035b1 → f533cfa9911da7bd",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "60c1f13619be3b55 → 60c1f13619be3b55",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(d)",
+          "ok": true,
+          "detail": "aeb9aeff4fd96ab5 → aeb9aeff4fd96ab5",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 1.01",
+          "ok": true,
+          "detail": "418cb22ef822e4da → 418cb22ef822e4da",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:46c093f47f3d52f1fe48def4 → structural-node:46c093f47f3d52f1fe48def4",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(d)",
+          "ok": true,
+          "detail": "structural-node:2a738b7424281b41e0e9f8cb → structural-node:2a738b7424281b41e0e9f8cb",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02",
+          "ok": true,
+          "detail": "structural-node:01c40a8e873b78b3602e0368 → structural-node:01c40a8e873b78b3602e0368",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#7.02",
+          "ok": true,
+          "detail": "credit-agreement#7.02, credit-agreement#7.01, amendment-1#1, amendment-2#1, amendment-1#2, amendment-2#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#7.01",
+          "ok": true,
+          "detail": "credit-agreement#7.02, credit-agreement#7.01, amendment-1#1, amendment-2#1, amendment-1#2, amendment-2#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure flags \"7.01(f)\"",
+          "ok": true,
+          "detail": "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(f) | AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b) | UNRESOLVED_DEFINED_TERM: Credit Agreement | AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(e)",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-10:closure-flag:7.01(f)",
+          "severity": "MISSING_DEPENDENCY"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:text:C-7.02, CONTEXT_RETRIEVAL:context:C-7.02:cross-references",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-11",
+      "kind": "CHANGED_THRESHOLD",
+      "packageId": "pkg-c-amendment-supersession",
+      "sectionHashes": {
+        "7.01": {
+          "before": "60c1f13619be3b55",
+          "after": "60c1f13619be3b55"
+        },
+        "7.01(b)": {
+          "before": "ffdfe828e4b08dc9",
+          "after": "ffdfe828e4b08dc9"
+        },
+        "7.02": {
+          "before": "c2c029ea130035b1",
+          "after": "c2c029ea130035b1"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:46c093f47f3d52f1fe48def4",
+          "after": "structural-node:46c093f47f3d52f1fe48def4"
+        },
+        "7.01(b)": {
+          "before": "structural-node:7b44ed5adc3a7d1db6ff37c5",
+          "after": "structural-node:7b44ed5adc3a7d1db6ff37c5"
+        },
+        "7.02": {
+          "before": "structural-node:01c40a8e873b78b3602e0368",
+          "after": "structural-node:01c40a8e873b78b3602e0368"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      "operativeState": {
+        "2025-12-31:7.01(b)": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-1); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+        "2025-06-30:7.01(b)": "CURRENT (OPERATIVE_STATE_RESOLVED, applied 0, source credit-agreement); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:amendment-1#1",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "own text lacks \"$40,000,000\""
+          },
+          {
+            "ref": "operative:2025-12-31:credit-agreement#7.01(b)",
+            "stage": "OPERATIVE_STATE",
+            "severity": "WRONG_OPERATIVE_SOURCE",
+            "actual": "current text lacks \"$40,000,000\" (provision OPERATIVE_STATE_RESOLVED, applied=1, source=amendment-1; node supersession=KNOWN_SUPERSEDED)"
+          },
+          {
+            "ref": "operative:2026-06-30:credit-agreement#7.01(b)",
+            "stage": "OPERATIVE_STATE",
+            "severity": "WRONG_OPERATIVE_SOURCE",
+            "actual": "current text lacks \"$40,000,000\" (provision OPERATIVE_STATE_RESOLVED, applied=1, source=amendment-1; node supersession=KNOWN_SUPERSEDED)"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "60c1f13619be3b55 → 60c1f13619be3b55",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(b)",
+          "ok": true,
+          "detail": "ffdfe828e4b08dc9 → ffdfe828e4b08dc9",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "c2c029ea130035b1 → c2c029ea130035b1",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:46c093f47f3d52f1fe48def4 → structural-node:46c093f47f3d52f1fe48def4",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:7b44ed5adc3a7d1db6ff37c5 → structural-node:7b44ed5adc3a7d1db6ff37c5",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02",
+          "ok": true,
+          "detail": "structural-node:01c40a8e873b78b3602e0368 → structural-node:01c40a8e873b78b3602e0368",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.01(b)@2025-12-31 = SUPERSEDED from amendment-1",
+          "ok": true,
+          "detail": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-1); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-11:operative:2025-12-31:7.01(b)",
+          "severity": "INCORRECT_AMENDMENT_PRECEDENCE"
+        },
+        {
+          "check": "operative 7.01(b)@2025-06-30 = CURRENT",
+          "ok": true,
+          "detail": "CURRENT (OPERATIVE_STATE_RESOLVED, applied 0, source credit-agreement); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-11:operative:2025-06-30:7.01(b)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:amendment-1#1, OPERATIVE_STATE:operative:2025-12-31:credit-agreement#7.01(b), OPERATIVE_STATE:operative:2026-06-30:credit-agreement#7.01(b)",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-12",
+      "kind": "CONFLICTING_DOCUMENT",
+      "packageId": "pkg-b-multi-document",
+      "sectionHashes": {
+        "7.01": {
+          "before": "6140ffb592960ddb",
+          "after": "6140ffb592960ddb"
+        },
+        "7.01(b)": {
+          "before": "6d0bc7a1df156e0a",
+          "after": "6d0bc7a1df156e0a"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:8b4d639a2a6e0014277916c2",
+          "after": "structural-node:8b4d639a2a6e0014277916c2"
+        },
+        "7.01(b)": {
+          "before": "structural-node:a3f272bc4c79b3960177a92d",
+          "after": "structural-node:a3f272bc4c79b3960177a92d"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 8,
+        "survived": 8,
+        "shifted": 0,
+        "textHashSurvived": 8
+      },
+      "operativeState": {
+        "2026-06-30:7.01(b)": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": {
+        "units": [
+          "credit-agreement#7.01",
+          "credit-agreement#7.02",
+          "indenture#4.09",
+          "side-letter#1",
+          "supplemental-indenture-1#1",
+          "supplemental-indenture-1#2"
+        ],
+        "unresolved": [
+          "Section 7.01(b) from 1 → NOT_FOUND",
+          "DEFINITION_CYCLE: Restricted Subsidiary",
+          "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+          "UNRESOLVED_DEFINED_TERM: Issue Date",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b)",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 4.09(c)"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [],
+        "vanishedFailures": [],
+        "verdict": "SURVIVED",
+        "predicted": "GAP",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "6140ffb592960ddb → 6140ffb592960ddb",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(b)",
+          "ok": true,
+          "detail": "6d0bc7a1df156e0a → 6d0bc7a1df156e0a",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:8b4d639a2a6e0014277916c2 → structural-node:8b4d639a2a6e0014277916c2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:a3f272bc4c79b3960177a92d → structural-node:a3f272bc4c79b3960177a92d",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.01(b)@2026-06-30 = CURRENT",
+          "ok": true,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-12:operative:2026-06-30:7.01(b)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "check": "instrument status @2026-06-30 is not OPERATIVE_STATE_RESOLVED",
+          "ok": false,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-12:instrument-status:2026-06-30",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "check": "amendment pipeline surfaces side-letter as an effect (resolved or unresolved)",
+          "ok": false,
+          "detail": "0 effect(s), 0 unattached, interpreter calls 0; cross-document leads from side-letter: the Credit Agreement→credit-agreement REVIEW_REQUIRED, the Credit Agreement→credit-agreement REVIEW_REQUIRED",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-12:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY"
+        },
+        {
+          "check": "closure contains credit-agreement#7.01",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, indenture#4.09, side-letter#1, supplemental-indenture-1#1, supplemental-indenture-1#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains side-letter#1",
+          "ok": true,
+          "detail": "credit-agreement#7.01, credit-agreement#7.02, indenture#4.09, side-letter#1, supplemental-indenture-1#1, supplemental-indenture-1#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (GAP) holds",
+          "ok": true,
+          "detail": "SURVIVED: no new deterministic failure",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-13",
+      "kind": "CONFLICTING_DOCUMENT",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "34a67ec0e7f0c2f5"
+        },
+        "7.01(b)": {
+          "before": "8c8735fd1eb77d46",
+          "after": "8c8735fd1eb77d46"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        },
+        "7.01(b)": {
+          "before": "structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "after": "structural-node:31bf7e885d8c7cdeb59bf2b6"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      "operativeState": {
+        "2026-06-30:7.01(b)": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": null,
+      "kill": {
+        "newFailures": [],
+        "vanishedFailures": [],
+        "verdict": "SURVIVED",
+        "predicted": "GAP",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "34a67ec0e7f0c2f5 → 34a67ec0e7f0c2f5",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(b)",
+          "ok": true,
+          "detail": "8c8735fd1eb77d46 → 8c8735fd1eb77d46",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:30229784fda7b97c12644917 → structural-node:30229784fda7b97c12644917",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:31bf7e885d8c7cdeb59bf2b6 → structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.01(b)@2026-06-30 = CURRENT",
+          "ok": true,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-13:operative:2026-06-30:7.01(b)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "check": "instrument status @2026-06-30 is not OPERATIVE_STATE_RESOLVED",
+          "ok": false,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-13:instrument-status:2026-06-30",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "check": "amendment pipeline surfaces side-letter as an effect (resolved or unresolved)",
+          "ok": false,
+          "detail": "0 effect(s), 0 unattached, interpreter calls 0; cross-document leads from side-letter: the Credit Agreement→credit-agreement REVIEW_REQUIRED, the Credit Agreement→credit-agreement REVIEW_REQUIRED",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-13:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY"
+        },
+        {
+          "check": "kill prediction (GAP) holds",
+          "ok": true,
+          "detail": "SURVIVED: no new deterministic failure",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-14",
+      "kind": "CONFLICTING_DOCUMENT",
+      "packageId": "pkg-c-amendment-supersession",
+      "sectionHashes": {
+        "7.01": {
+          "before": "60c1f13619be3b55",
+          "after": "60c1f13619be3b55"
+        },
+        "7.01(b)": {
+          "before": "ffdfe828e4b08dc9",
+          "after": "ffdfe828e4b08dc9"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:46c093f47f3d52f1fe48def4",
+          "after": "structural-node:46c093f47f3d52f1fe48def4"
+        },
+        "7.01(b)": {
+          "before": "structural-node:7b44ed5adc3a7d1db6ff37c5",
+          "after": "structural-node:7b44ed5adc3a7d1db6ff37c5"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 10
+      },
+      "operativeState": {
+        "2026-06-30:7.01(b)": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-1); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": null,
+      "kill": {
+        "newFailures": [],
+        "vanishedFailures": [],
+        "verdict": "SURVIVED",
+        "predicted": "GAP",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.01",
+          "ok": true,
+          "detail": "60c1f13619be3b55 → 60c1f13619be3b55",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.01(b)",
+          "ok": true,
+          "detail": "ffdfe828e4b08dc9 → ffdfe828e4b08dc9",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:46c093f47f3d52f1fe48def4 → structural-node:46c093f47f3d52f1fe48def4",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:7b44ed5adc3a7d1db6ff37c5 → structural-node:7b44ed5adc3a7d1db6ff37c5",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.01(b)@2026-06-30 = SUPERSEDED from amendment-1",
+          "ok": true,
+          "detail": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-1); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-14:operative:2026-06-30:7.01(b)",
+          "severity": "INCORRECT_AMENDMENT_PRECEDENCE"
+        },
+        {
+          "check": "instrument status @2026-06-30 is not OPERATIVE_STATE_RESOLVED",
+          "ok": false,
+          "detail": "SUPERSEDED (OPERATIVE_STATE_RESOLVED, applied 1, source amendment-1); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-14:instrument-status:2026-06-30",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "check": "amendment pipeline surfaces side-letter as an effect (resolved or unresolved)",
+          "ok": false,
+          "detail": "0 effect(s), 0 unattached, interpreter calls 0; cross-document leads from side-letter: the Credit Agreement→credit-agreement REVIEW_REQUIRED",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-14:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY"
+        },
+        {
+          "check": "kill prediction (GAP) holds",
+          "ok": true,
+          "detail": "SURVIVED: no new deterministic failure",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-15",
+      "kind": "CONFLICTING_DOCUMENT",
+      "packageId": "pkg-h-unseen-composition",
+      "sectionHashes": {
+        "7.02": {
+          "before": "742b318ac35e3f43",
+          "after": "742b318ac35e3f43"
+        },
+        "7.02(d)": {
+          "before": "8e12dc55fa97a1f4",
+          "after": "8e12dc55fa97a1f4"
+        }
+      },
+      "nodeIds": {
+        "7.02": {
+          "before": "structural-node:10d2dcb6371544e8e2cc716a",
+          "after": "structural-node:10d2dcb6371544e8e2cc716a"
+        },
+        "7.02(d)": {
+          "before": "structural-node:6476d0281b3e3b6f6cf04197",
+          "after": "structural-node:6476d0281b3e3b6f6cf04197"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 21,
+        "survived": 21,
+        "shifted": 0,
+        "textHashSurvived": 21
+      },
+      "operativeState": {
+        "2027-03-31:7.02(d)": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": null,
+      "kill": {
+        "newFailures": [],
+        "vanishedFailures": [],
+        "verdict": "SURVIVED",
+        "predicted": "GAP",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "742b318ac35e3f43 → 742b318ac35e3f43",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02(d)",
+          "ok": true,
+          "detail": "8e12dc55fa97a1f4 → 8e12dc55fa97a1f4",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02",
+          "ok": true,
+          "detail": "structural-node:10d2dcb6371544e8e2cc716a → structural-node:10d2dcb6371544e8e2cc716a",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02(d)",
+          "ok": true,
+          "detail": "structural-node:6476d0281b3e3b6f6cf04197 → structural-node:6476d0281b3e3b6f6cf04197",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.02(d)@2027-03-31 = CURRENT",
+          "ok": true,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-15:operative:2027-03-31:7.02(d)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "check": "instrument status @2027-03-31 is not OPERATIVE_STATE_RESOLVED",
+          "ok": false,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-15:instrument-status:2027-03-31",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "check": "amendment pipeline surfaces side-letter as an effect (resolved or unresolved)",
+          "ok": false,
+          "detail": "0 effect(s), 0 unattached, interpreter calls 0; cross-document leads from side-letter: none",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-15:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY"
+        },
+        {
+          "check": "kill prediction (GAP) holds",
+          "ok": true,
+          "detail": "SURVIVED: no new deterministic failure",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-16",
+      "kind": "CONFLICTING_DOCUMENT",
+      "packageId": "pkg-i-secured-debt-lien",
+      "sectionHashes": {
+        "7.02": {
+          "before": "5c2666d1d4888042",
+          "after": "5c2666d1d4888042"
+        },
+        "7.02(b)": {
+          "before": "cf766ed68be2eb31",
+          "after": "cf766ed68be2eb31"
+        },
+        "9.15": {
+          "before": "decc64ffb55f61ad",
+          "after": "decc64ffb55f61ad"
+        }
+      },
+      "nodeIds": {
+        "7.02": {
+          "before": "structural-node:f0610fbb76a2d044a1d17aee",
+          "after": "structural-node:f0610fbb76a2d044a1d17aee"
+        },
+        "7.02(b)": {
+          "before": "structural-node:c2adf4789ac8875281851207",
+          "after": "structural-node:c2adf4789ac8875281851207"
+        },
+        "9.15": {
+          "before": "structural-node:68249f897465e5d0f02ff070",
+          "after": "structural-node:68249f897465e5d0f02ff070"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 15,
+        "survived": 15,
+        "shifted": 0,
+        "textHashSurvived": 15
+      },
+      "operativeState": {
+        "2026-12-31:7.02(b)": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0"
+      },
+      "closure": {
+        "units": [
+          "credit-agreement#7.02",
+          "credit-agreement#9.15",
+          "credit-agreement#7.01",
+          "credit-agreement#1.01",
+          "consent#1",
+          "amendment-1#1",
+          "amendment-1#2"
+        ],
+        "unresolved": [
+          "DEFINITION_CYCLE: Subsidiary",
+          "UNRESOLVED_DEFINED_TERM: Secured Indebtedness",
+          "UNRESOLVED_DEFINED_TERM: Article VII",
+          "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+          "UNRESOLVED_DEFINED_TERM: Borrower and",
+          "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+          "OTHER: 7.02(a)",
+          "OTHER: 7.02(c)",
+          "UNRESOLVED_DEFINED_TERM: Defined Terms",
+          "UNRESOLVED_DEFINED_TERM: Event of Default",
+          "UNRESOLVED_DEFINED_TERM: United States of America",
+          "UNRESOLVED_DEFINED_TERM: Notes and",
+          "UNRESOLVED_DEFINED_TERM: Security Documents",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b)",
+          "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.02(b)",
+          "UNRESOLVED_DEFINED_TERM: Required Lenders",
+          "UNRESOLVED_DEFINED_TERM: Borrower of Liens",
+          "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+          "cross-document lead \"Credit Agreement\" UNRESOLVED: 2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+        ],
+        "missingDocuments": [],
+        "flags": []
+      },
+      "kill": {
+        "newFailures": [],
+        "vanishedFailures": [],
+        "verdict": "SURVIVED",
+        "predicted": "GAP",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "5c2666d1d4888042 → 5c2666d1d4888042",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02(b)",
+          "ok": true,
+          "detail": "cf766ed68be2eb31 → cf766ed68be2eb31",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 9.15",
+          "ok": true,
+          "detail": "decc64ffb55f61ad → decc64ffb55f61ad",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02",
+          "ok": true,
+          "detail": "structural-node:f0610fbb76a2d044a1d17aee → structural-node:f0610fbb76a2d044a1d17aee",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02(b)",
+          "ok": true,
+          "detail": "structural-node:c2adf4789ac8875281851207 → structural-node:c2adf4789ac8875281851207",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 9.15",
+          "ok": true,
+          "detail": "structural-node:68249f897465e5d0f02ff070 → structural-node:68249f897465e5d0f02ff070",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "operative 7.02(b)@2026-12-31 = CURRENT",
+          "ok": true,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-16:operative:2026-12-31:7.02(b)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "check": "instrument status @2026-12-31 is not OPERATIVE_STATE_RESOLVED",
+          "ok": false,
+          "detail": "CURRENT (no provision view); instrument OPERATIVE_STATE_RESOLVED, unattached 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-16:instrument-status:2026-12-31",
+          "severity": "UNSUPPORTED_AS_COMPLETE"
+        },
+        {
+          "check": "amendment pipeline surfaces consent as an effect (resolved or unresolved)",
+          "ok": false,
+          "detail": "0 effect(s), 0 unattached, interpreter calls 0; cross-document leads from consent: the Credit Agreement→credit-agreement REVIEW_REQUIRED, the Credit Agreement→credit-agreement REVIEW_REQUIRED",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-16:effects:consent",
+          "severity": "MISSING_DEPENDENCY"
+        },
+        {
+          "check": "closure contains credit-agreement#7.02",
+          "ok": true,
+          "detail": "credit-agreement#7.02, credit-agreement#9.15, credit-agreement#7.01, credit-agreement#1.01, consent#1, amendment-1#1, amendment-1#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains credit-agreement#9.15",
+          "ok": true,
+          "detail": "credit-agreement#7.02, credit-agreement#9.15, credit-agreement#7.01, credit-agreement#1.01, consent#1, amendment-1#1, amendment-1#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "closure contains consent#1",
+          "ok": true,
+          "detail": "credit-agreement#7.02, credit-agreement#9.15, credit-agreement#7.01, credit-agreement#1.01, consent#1, amendment-1#1, amendment-1#2",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "kill prediction (GAP) holds",
+          "ok": true,
+          "detail": "SURVIVED: no new deterministic failure",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-17",
+      "kind": "OCR_NOISE",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        },
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "390eb452d686e2c3"
+        }
+      },
+      "nodeIds": {
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:ea703ac7dfcb874349b2e1f6"
+        },
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 9,
+        "survived": 8,
+        "shifted": 1,
+        "textHashSurvived": 8
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:credit-agreement#7.02",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "structure:text:A-7.01",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "390eb452d686: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "structure:text:A-7.01(c)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "91afe918e6ba: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "discovery:pass-a-coverage",
+            "stage": "DISCOVERY_PASS_A",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "uncovered: A-7.02 (no node)"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01",
+          "ok": true,
+          "detail": "structural-node:30229784fda7b97c12644917 → structural-node:30229784fda7b97c12644917",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "OCR: 7.02 is intact or absent-with-diagnostics, never silently absorbed",
+          "ok": false,
+          "detail": "0 node(s) for 7.02; intact false; absorbed by SUBSECTION 7.01(c); health diagnostics 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-17:ocr:7.02",
+          "severity": "SOURCE_PROVENANCE_FAILURE"
+        },
+        {
+          "check": "OCR: the distinctive phrase of 7.02 now lives inside another node (silent merge)",
+          "ok": false,
+          "detail": "SUBSECTION 7.01(c)",
+          "kind": "OBSERVATION"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:credit-agreement#7.02, STRUCTURE:structure:text:A-7.01, STRUCTURE:structure:text:A-7.01(c), DISCOVERY_PASS_A:discovery:pass-a-coverage",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-18",
+      "kind": "OCR_NOISE",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        },
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        }
+      },
+      "nodeIds": {
+        "7.02": {
+          "before": "structural-node:4872f810a1b61d6565e525b6",
+          "after": "structural-node:4872f810a1b61d6565e525b6"
+        },
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:9992ee8ba513ea6077d1b881"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 10,
+        "shifted": 0,
+        "textHashSurvived": 6
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:credit-agreement#7.01",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "structure:credit-agreement#7.01(a)",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "structure:credit-agreement#7.01(b)",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "structure:credit-agreement#7.01(c)",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "operative:2026-06-30:credit-agreement#7.01(b)",
+            "stage": "OPERATIVE_STATE",
+            "severity": "WRONG_OPERATIVE_SOURCE",
+            "actual": "operative text lacks \"$30,000,000\"; operative text lacks \"no Default has occurred\" (provision absent; node supersession=N/A)"
+          },
+          {
+            "ref": "operative:2026-06-30:credit-agreement#7.01(c)",
+            "stage": "OPERATIVE_STATE",
+            "severity": "WRONG_OPERATIVE_SOURCE",
+            "actual": "operative text lacks \"3.50 to 1.00\"; operative text lacks \"Consolidated Total Leverage Ratio\" (provision absent; node supersession=N/A)"
+          },
+          {
+            "ref": "discovery:pass-a-coverage",
+            "stage": "DISCOVERY_PASS_A",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "uncovered: A-7.01 (no node), A-7.01(a) (no node), A-7.01(b) (no node), A-7.01(c) (no node)"
+          },
+          {
+            "ref": "context:A-7.02:cross-references",
+            "stage": "CONTEXT_RETRIEVAL",
+            "severity": "MISSING_DEPENDENCY",
+            "actual": "reference to 7.01(b) does not resolve into credit-agreement (Section 7.01(b): no SECTION node with ref \"7.01(b)\" exists among this document's own structural nodes)"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.02",
+          "ok": true,
+          "detail": "structural-node:4872f810a1b61d6565e525b6 → structural-node:4872f810a1b61d6565e525b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.03",
+          "ok": true,
+          "detail": "structural-node:9992ee8ba513ea6077d1b881 → structural-node:9992ee8ba513ea6077d1b881",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "OCR: 7.01 is intact or absent-with-diagnostics, never silently absorbed",
+          "ok": false,
+          "detail": "0 node(s) for 7.01; intact false; absorbed by SECTION 7.0; health diagnostics 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-18:ocr:7.01",
+          "severity": "SOURCE_PROVENANCE_FAILURE"
+        },
+        {
+          "check": "OCR: the distinctive phrase of 7.01 now lives inside another node (silent merge)",
+          "ok": false,
+          "detail": "SECTION 7.0",
+          "kind": "OBSERVATION"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:credit-agreement#7.01, STRUCTURE:structure:credit-agreement#7.01(a), STRUCTURE:structure:credit-agreement#7.01(b), STRUCTURE:structure:credit-agreement#7.01(c), OPERATIVE_STATE:operative:2026-06-30:credit-agreement#7.01(b), OPERATIVE_STATE:operative:2026-06-30:credit-agreement#7.01(c), DISCOVERY_PASS_A:discovery:pass-a-coverage, CONTEXT_RETRIEVAL:context:A-7.02:cross-references",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-19",
+      "kind": "OCR_NOISE",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "80c7cd5858946490"
+        },
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        },
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        },
+        "7.01(b)": {
+          "before": "8c8735fd1eb77d46",
+          "after": "a6e8f11a88955188"
+        }
+      },
+      "nodeIds": {
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        },
+        "7.02": {
+          "before": "structural-node:4872f810a1b61d6565e525b6",
+          "after": "structural-node:4872f810a1b61d6565e525b6"
+        },
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:9992ee8ba513ea6077d1b881"
+        },
+        "7.01(b)": {
+          "before": "structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "after": "structural-node:31bf7e885d8c7cdeb59bf2b6"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 9,
+        "survived": 9,
+        "shifted": 0,
+        "textHashSurvived": 8
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:credit-agreement#7.01(c)",
+            "stage": "STRUCTURE",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "NOT_FOUND (0 occurrence(s))"
+          },
+          {
+            "ref": "structure:text:A-7.01",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "80c7cd585894: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "structure:text:A-7.01(b)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "a6e8f11a8895: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "operative:2026-06-30:credit-agreement#7.01(c)",
+            "stage": "OPERATIVE_STATE",
+            "severity": "WRONG_OPERATIVE_SOURCE",
+            "actual": "operative text lacks \"3.50 to 1.00\"; operative text lacks \"Consolidated Total Leverage Ratio\" (provision absent; node supersession=N/A)"
+          },
+          {
+            "ref": "discovery:pass-a-coverage",
+            "stage": "DISCOVERY_PASS_A",
+            "severity": "MISSING_REQUIRED_COVENANT",
+            "actual": "uncovered: A-7.01(c) (no node)"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 7.01",
+          "ok": true,
+          "detail": "34a67ec0e7f0c2f5 → 80c7cd5858946490",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:31bf7e885d8c7cdeb59bf2b6 → structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "OCR: 7.01(c) is intact or absent-with-diagnostics, never silently absorbed",
+          "ok": false,
+          "detail": "0 node(s) for 7.01(c); intact false; absorbed by SUBSECTION 7.01(b); health diagnostics 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-19:ocr:7.01(c)",
+          "severity": "SOURCE_PROVENANCE_FAILURE"
+        },
+        {
+          "check": "OCR: the distinctive phrase of 7.01(c) now lives inside another node (silent merge)",
+          "ok": false,
+          "detail": "SUBSECTION 7.01(b)",
+          "kind": "OBSERVATION"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:credit-agreement#7.01(c), STRUCTURE:structure:text:A-7.01, STRUCTURE:structure:text:A-7.01(b), OPERATIVE_STATE:operative:2026-06-30:credit-agreement#7.01(c), DISCOVERY_PASS_A:discovery:pass-a-coverage",
+          "kind": "HARNESS"
+        }
+      ]
+    },
+    {
+      "mutationId": "MUT-20",
+      "kind": "OCR_NOISE",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "sectionHashes": {
+        "7.01(b)": {
+          "before": "8c8735fd1eb77d46",
+          "after": "4456a500f6d9c3d4"
+        },
+        "7.01": {
+          "before": "34a67ec0e7f0c2f5",
+          "after": "5b1d670fc0eae917"
+        },
+        "7.02": {
+          "before": "629aaa7d62651de8",
+          "after": "629aaa7d62651de8"
+        },
+        "7.03": {
+          "before": "7290438c6ead703c",
+          "after": "7290438c6ead703c"
+        }
+      },
+      "nodeIds": {
+        "7.01(b)": {
+          "before": "structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "after": "structural-node:31bf7e885d8c7cdeb59bf2b6"
+        },
+        "7.01": {
+          "before": "structural-node:30229784fda7b97c12644917",
+          "after": "structural-node:30229784fda7b97c12644917"
+        },
+        "7.02": {
+          "before": "structural-node:4872f810a1b61d6565e525b6",
+          "after": "structural-node:eced430800f4b1d4a3f287b8"
+        },
+        "7.03": {
+          "before": "structural-node:9992ee8ba513ea6077d1b881",
+          "after": "structural-node:7a5f47a44c4ac6ed1dea7a7e"
+        }
+      },
+      "nodeIdSurvival": {
+        "total": 10,
+        "survived": 7,
+        "shifted": 3,
+        "textHashSurvived": 9
+      },
+      "operativeState": {},
+      "closure": null,
+      "kill": {
+        "newFailures": [
+          {
+            "ref": "structure:text:A-7.01",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "5b1d670fc0ea: the parsed clause text differs from the pinned text"
+          },
+          {
+            "ref": "structure:text:A-7.01(b)",
+            "stage": "STRUCTURE",
+            "severity": "SOURCE_PROVENANCE_FAILURE",
+            "actual": "4456a500f6d9: the parsed clause text differs from the pinned text"
+          }
+        ],
+        "vanishedFailures": [],
+        "verdict": "KILLED",
+        "predicted": "KILLED",
+        "predictionHeld": true
+      },
+      "verdicts": [
+        {
+          "check": "text changes: 7.01(b)",
+          "ok": true,
+          "detail": "8c8735fd1eb77d46 → 4456a500f6d9c3d4",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text changes: 7.01",
+          "ok": true,
+          "detail": "34a67ec0e7f0c2f5 → 5b1d670fc0eae917",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.02",
+          "ok": true,
+          "detail": "629aaa7d62651de8 → 629aaa7d62651de8",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "text stable: 7.03",
+          "ok": true,
+          "detail": "7290438c6ead703c → 7290438c6ead703c",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "node id survives: 7.01(b)",
+          "ok": true,
+          "detail": "structural-node:31bf7e885d8c7cdeb59bf2b6 → structural-node:31bf7e885d8c7cdeb59bf2b6",
+          "kind": "HARNESS"
+        },
+        {
+          "check": "OCR: 7.01(b) is intact or absent-with-diagnostics, never silently absorbed",
+          "ok": true,
+          "detail": "1 node(s) for 7.01(b); intact true; absorbed by nobody; health diagnostics 0",
+          "kind": "PRODUCT",
+          "ref": "mutation:MUT-20:ocr:7.01(b)",
+          "severity": "SOURCE_PROVENANCE_FAILURE"
+        },
+        {
+          "check": "kill prediction (KILLED) holds",
+          "ok": true,
+          "detail": "KILLED: STRUCTURE:structure:text:A-7.01, STRUCTURE:structure:text:A-7.01(b)",
+          "kind": "HARNESS"
+        }
+      ]
+    }
+  ]
+}
