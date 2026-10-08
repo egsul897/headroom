@@ -35,3 +35,7 @@ npx vitest run tests/basket-formula-corpus/corpus-validation.test.ts
 ## Record fields
 
 Every basket candidate records: exact source span, governing covenant, basket family, amount/formula candidate, measurement date, financial inputs, entity scope, conditions, shared-capacity dependencies, reclassification rights, source version, and verification status.
+
+## Phase 2
+
+Legal-formula validation, provenance hardening, typed IR, dependency coordination, adversarial scenarios, EDGAR expansion, and knowledge-factory import contract live under [`phase-2/`](./phase-2/).

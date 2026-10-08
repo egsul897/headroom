@@ -1,0 +1,107 @@
+{
+  "startingPR": 148,
+  "startingSHA": "26e21e46391cf00948bd4de0972662feb1598b5d",
+  "generatedAt": "2026-10-08T22:31:11.621319+00:00",
+  "newDistinctDocuments": 24,
+  "newDistinctIssuers": 19,
+  "edgarDocumentsAcquired": 13,
+  "edgarDistinctIssuers": 13,
+  "formulaCandidatesByFamily": {
+    "INCREMENTAL_DEBT": 3,
+    "RATIO_BASED": 37,
+    "AVAILABLE_AMOUNT_BUILDER": 7,
+    "GROWER": 1,
+    "EQUITY_CONTRIBUTION": 2,
+    "GENERAL_LIEN": 2,
+    "RECLASSIFICATION": 31,
+    "BASKET_REPLENISHMENT": 3,
+    "ANTI_DOUBLE_COUNTING": 49,
+    "CROSS_COVENANT_CAPACITY_RESTRICTION": 1,
+    "REFINANCING": 4,
+    "PURCHASE_MONEY": 28,
+    "GENERAL_DEBT": 4,
+    "RESTRICTED_PAYMENT": 34,
+    "INVESTMENT": 40,
+    "ASSET_SALE_REINVESTMENT": 2,
+    "SHARED": 1,
+    "GREATER_OF_FIXED_AND_PERCENTAGE": 103,
+    "FIXED_DOLLAR": 37,
+    "CUMULATIVE_CREDIT": 1
+  },
+  "totalFormulaCandidates": 390,
+  "phase1CandidatesRetained": 55,
+  "independentlyReviewedClassifications": 30,
+  "falseAffirmativeCapacityClassifications": 14,
+  "falseAffirmativeRateInSample": 0.4827586206896552,
+  "falseAffirmativeIds": [
+    "chwy-available-amount-starter-grower",
+    "chwy-anti-double-count-available-amount-transactions",
+    "gib-anti-duplication-investment-returns",
+    "fwrg-anti-double-counting-incremental",
+    "chwy-debt-reclassification",
+    "conmed-debt-reclassification",
+    "sup-debt-reclassification",
+    "sup-lien-reclassification",
+    "gib-asset-disposition-reclassification",
+    "conmed-rp-ratio-unlimited",
+    "chwy-ratio-incremental-amount",
+    "chwy-voluntary-prepayment-incremental",
+    "fwrg-available-amount-and-excluded-contribution",
+    "chwy-cross-covenant-rp-capacity-reduction"
+  ],
+  "sourceProvenance": {
+    "normalizationVersion": "whitespace-collapse.v1",
+    "matchKindCountsPhase1": {
+      "BYTE_EXACT": 55
+    },
+    "byteExactNeverUsedForWhitespaceEquivalent": true
+  },
+  "typedFormulaCoverage": {
+    "phase1": {
+      "REPRESENTED": 25,
+      "REVIEW_REQUIRED": 22,
+      "UNSUPPORTED": 8
+    },
+    "all": {
+      "REPRESENTED": 205,
+      "REVIEW_REQUIRED": 70,
+      "UNSUPPORTED": 115
+    },
+    "executable": 0
+  },
+  "unresolvedDependencies": {
+    "systemsMissing": [
+      "DEFINITION_ENCYCLOPEDIA",
+      "DEPENDENCY_ATLAS",
+      "NEGATIVE_COVENANT_EXCEPTION_DATABASE",
+      "COVENANT_KNOWLEDGE_FACTORY"
+    ],
+    "entryCount": 795,
+    "executableFormulas": 0
+  },
+  "adversarialScenarioResults": {
+    "count": 12,
+    "allPassLegalModel": true,
+    "ids": [
+      "sc-fixed-vs-incurrence",
+      "sc-auto-vs-elected-reclass",
+      "sc-shared-double-spend",
+      "sc-available-amount-depletion",
+      "sc-builder-replenishment",
+      "sc-ratio-test-failure",
+      "sc-missing-ebitda",
+      "sc-currency-mismatch",
+      "sc-measurement-date-mismatch",
+      "sc-negative-capacity",
+      "sc-conditional-permission",
+      "sc-amendment-changes-formula"
+    ]
+  },
+  "constraints": {
+    "paidInference": false,
+    "merges": false,
+    "certificationChanges": false,
+    "productionCapacityEngineEdits": false,
+    "claudeOwnedFixtureModifications": false
+  }
+}
