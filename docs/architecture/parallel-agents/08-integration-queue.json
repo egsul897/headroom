@@ -3,8 +3,8 @@
   "version": 2,
   "status": "ACTIVE_LEDGER",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "currentMainSha": "64e5b5c23d153714a78659c408f3078227084a49",
-  "updatedAt": "2026-10-08T23:14:00Z",
+  "currentMainSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
+  "updatedAt": "2026-10-08T23:25:35Z",
   "dashboard": "14-continuous-main-integration-dashboard.json",
   "items": [
     {
@@ -135,13 +135,17 @@
       "deliverable": "Negative covenant exception database",
       "branch": "cursor/negative-covenant-exception-db-21b5",
       "pr": "https://github.com/egsul897/headroom/pull/143",
-      "tipSha": "e2d7d20768fe4842c1b5be03c540443dc29588cd",
-      "status": "DRAFT_PR_OPEN",
+      "tipSha": "merged",
+      "status": "MERGED",
       "blockers": [],
       "dependsOn": [
         "IQ-001",
         "IQ-002"
-      ]
+      ],
+      "mergedAt": "2026-10-08T23:25:35Z",
+      "mergeCommit": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
+      "reviewedHead": "ed2216ab21dc3813b81f8629b1ae5a342687046c",
+      "notes": "Merged intact as non-promoting research overlay; CKF wiring remains a promotion blocker only."
     },
     {
       "id": "IQ-010",

@@ -1,8 +1,8 @@
 {
   "artifact": "live-integration-inventory",
   "version": 2,
-  "asOf": "2026-10-08T22:14:30Z",
-  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "asOf": "2026-10-08T23:25:35Z",
+  "baseMainSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
   "mandate": "PARALLEL KNOWLEDGE PRODUCTION CONTROL",
   "schemaOwner": {
     "canonicalImportContract": "WS-PAR (06-dataset-delivery-contract.json + 04-canonical-identity-contract.json)",
@@ -197,7 +197,7 @@
     {
       "workstreamId": "WS-NED",
       "branch": "cursor/negative-covenant-exception-db-21b5",
-      "headSha": "e2d7d20768fe4842c1b5be03c540443dc29588cd",
+      "headSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
       "pr": "https://github.com/egsul897/headroom/pull/143",
       "scope": "offline negative-covenant exception research DB",
       "ownedFiles": [
@@ -213,12 +213,14 @@
         "06-contract",
         "do not treat as capacity"
       ],
-      "testsAndCi": "draft PR #143; CI=success",
+      "testsAndCi": "PR #143 MERGED; CI=success at reviewed head ed2216a",
       "integrationConflicts": [
         "must not imply unconditional capacity"
       ],
-      "nextExecutableTask": "06-align; keep verificationStatus \u2264 REVIEW_REQUIRED",
-      "dataClass": "RESEARCH_DATASET_OFFLINE"
+      "nextExecutableTask": "Hold Phase 5; no capacity promotion until CKF wire-up + human review",
+      "dataClass": "RESEARCH_DATASET_OFFLINE",
+      "prStatus": "MERGED",
+      "integrationStatus": "MERGED_NON_PROMOTING_RESEARCH_OVERLAY"
     },
     {
       "workstreamId": "WS-PCI",

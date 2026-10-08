@@ -190,3 +190,12 @@
 - Conflict files only: `.gitignore`, `tests/financial-definitions-precedent/dataset-integrity.test.ts` (overlap with main #159/#128-era ignore + FDP strict-null fix).
 - **Follow-up (non-blocking):** improve CI path-filter coverage so shared-file TypeScript/test fixes (e.g. `tests/financial-definitions-precedent/**`) and infra packages like `lib/cursor-cloud-compute/**` reliably trigger the same required checks that catch `noUncheckedIndexedAccess` / merge-tree breakage before Integration Lead gates — not a blocker for #141 once rebased.
 
+## 2026-10-08 — IQ-009 / PR #143 MERGED (WS-NED)
+
+- Reviewed head: `ed2216ab21dc3813b81f8629b1ae5a342687046c`
+- Merge commit / main tip: `b2740f7df07a22cdaa336e92b67bd3e3f2a52802`
+- Disposition: **MERGED_INTACT_AS_NON_PROMOTING_RESEARCH_OVERLAY**
+- Removed from active integration queue (`IQ-009` → `MERGED`); removed from dashboard `blockedOpenPrs`
+- Explicit non-split: incomplete CKF wiring blocks legal promotion only, not this research overlay
+- No Phase 5 / paid inference / certification in merge action
+
