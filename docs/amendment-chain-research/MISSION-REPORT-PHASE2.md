@@ -60,4 +60,7 @@ Handoff packet: `independent-review-handoff/HANDOFF.json` (no Independent Legal 
 
 ## 8. SHA / PR / tests / CI
 
-Recorded at end of Phase 2 turn after commit/push.
+- **SHA:** `a7b6e146cf32a909c0a26415abf7749b4f78e8c5`
+- **PR:** https://github.com/egsul897/headroom/pull/150 (draft; not merged)
+- **Tests:** `npx vitest run tests/amendment-chain-research/phase2-corpus-integrity.test.ts` — 6 passed
+- **CI:** see PR checks after push
