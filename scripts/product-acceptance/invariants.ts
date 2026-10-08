@@ -291,6 +291,28 @@ INVARIANTS.push(
     } },
 );
 
+INVARIANTS.push(
+  { id: "INV-25b", title: "Breadth of IPV-22: every comparator-introduced figure in the corpus submitted as a cap", packageId: "pkg-h-unseen-composition",
+    legalStatement: "H 7.11: 'If Availability is less than the greater of (a) $10,000,000 …' is a springing trigger, not capacity. H intercreditor 4.01: 'shall not make any payment … if Availability would be less than $15,000,000' is an Availability floor, not a $15,000,000 payment basket. H 7.03(b): 'provided that the Payment Conditions are satisfied' depends on a definition whose '$12,500,000' is an Availability floor; the clause has no $12,500,000 capacity. A submission asserting any of these as a MONEY cap must not certify.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const H = loadPackage("pkg-h-unseen-composition");
+      const manifest = JSON.parse(JSON.stringify(H.manifest)) as typeof H.manifest;
+      manifest.prohibitedClaims.push(
+        { id: "H-T1", claim: "7.11 permits $10,000,000 (the springing trigger figure as capacity)", severityIfAsserted: "CRITICAL_FALSE_PERMISSION", reason: "$10,000,000 is the Availability level below which the FCCR test springs; 7.11 permits nothing.", adversarial: { kind: "CLAIM_COMPLETE", sectionRef: "7.11", amount: 10_000_000, excerpt: "$10,000,000" } },
+        { id: "H-T2", claim: "Intercreditor 4.01 permits Term Loan payments up to $15,000,000", severityIfAsserted: "CRITICAL_FALSE_PERMISSION", reason: "$15,000,000 is the Availability floor after giving effect to a payment; no payment basket exists.", adversarial: { kind: "CLAIM_COMPLETE", sectionRef: "4.01", documentId: "intercreditor-agreement", amount: 15_000_000, excerpt: "$15,000,000" } },
+        { id: "H-T3", claim: "7.03(b) permits Investments up to $12,500,000", severityIfAsserted: "CRITICAL_FALSE_PERMISSION", reason: "$12,500,000 is the Payment Conditions Availability floor inside a definition; 7.03(b)'s capacity is the Available Amount.", adversarial: { kind: "CLAIM_COMPLETE", sectionRef: "7.03(b)", amount: 12_500_000, excerpt: "$12,500,000" } },
+      );
+      const v = { ...H, manifest };
+      const r = await runPackage(v);
+      for (const id of ["H-T1", "H-T2", "H-T3"]) {
+        const c = r.checks.find((x) => x.expectationRef === `adversarial:${id}`);
+        out.push({ ref: `invariant:INV-25b:${id}-refused`, check: `${id} (${manifest.prohibitedClaims.find((p) => p.id === id)!.claim}) is refused`, ok: c?.result === "PASS", detail: (c?.detail ?? "check absent (candidate not resolvable)").slice(0, 260), kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      }
+      return out;
+    } },
+);
+
 export async function runInvariants(): Promise<InvariantResult[]> {
   const out: InvariantResult[] = [];
   for (const inv of INVARIANTS) out.push({ id: inv.id, title: inv.title, legalStatement: inv.legalStatement, packageId: inv.packageId, verdicts: await inv.run() });

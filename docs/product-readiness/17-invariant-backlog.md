@@ -36,7 +36,7 @@ NOT_STARTED. Verdicts come from the committed runs (`acceptance-runs/`, `benchma
 | 25 | Ambiguous qualitative gates | CHECKED | D 7.05(k) gates, H Payment Conditions; INV-25 (L 7.07(d) board-approval gate with an 'in excess of $5,000,000' threshold, run on an L variant without the IPV-21 diamond) | IPV-13 ontology misreads; H-P3 lineage-on-rule certifies (IPV-03); **IPV-22**: the gate's threshold is certified as a $5,000,000 cap; L-P1 (both variants) and L-P3 are refused once unmasked |
 | 26 | Missing provisos | COVERED | A-P1, C-P4, D-P1, H-P3/4/5, MUT-02 (added proviso now killed by text hash) | IPV-03 |
 | 27 | Independent restrictions | COVERED | D 7.05(k)(i)–(iii) independent conditions, BM-09 | ✅ in closure; semantic only mocked |
-| 28 | Incorrect unlimited capacity | COVERED | E-P3, G-P5 (refused ✅); INV-25 L-P2 (threshold certified as capacity ❌ IPV-22) | the deterministic gates verify figures and excerpts, not the comparator or the role of a figure |
+| 28 | Incorrect unlimited capacity | COVERED | E-P3, G-P5 (refused ✅); INV-25 L-P2 and INV-25b H-T2 (thresholds certified as capacity ❌ IPV-22); H-T1/H-T3 refused for accountability reasons | the deterministic gates verify figures and excerpts, not the comparator or the role of a figure: 2 of the 5 comparator-introduced dollar figures in the corpus certify as caps |
 | 29 | Missing financial inputs | COVERED | F-R3, F-R2c, INV-09 (greater-of without the metric → NEEDS_INPUT, never the floor as a figure) | NEEDS_INPUT ✅ |
 | 30 | FX mismatch | COVERED | F 7.01(f) EUR, F-P4 refused, runtime 'EUR not converted' | ✅ |
 | 31 | Historical ledger usage | COVERED | F-R1 (ledger subtraction), duplicate-usage quarantine | ✅ |
@@ -63,13 +63,14 @@ NOT_STARTED. Verdicts come from the committed runs (`acceptance-runs/`, `benchma
 | INV-19 | diamond dependency is not a cycle; a true cycle still is | A-variation, I, L, B | ❌ A/I/L report a false DEFINITION_CYCLE (**IPV-21**); B true cycle ✅ |
 | INV-19b | breadth of IPV-21 across the corpus | all 12 | ❌ 4 of 33 section-level candidates carry a false cycle (I 7.01/7.02/7.04, L 7.07); 1 genuine (B) ✅ |
 | INV-25 | a gate threshold is never a cap | L variant | ❌ L-P2 CERTIFIED (**IPV-22**); L-P1 ×2, L-P3 refused ✅ |
+| INV-25b | IPV-22 breadth: every comparator-introduced figure submitted as a cap | H | ❌ intercreditor 4.01 Availability floor certified as a $15m payment basket; 7.11 trigger and 7.03(b) definition floor refused (accountability, not comparator) |
 | INV-16 | designation resolution recognised as acting on the indenture | B variant | observations only (standalone instrument; not in the closure) |
 | INV-09 | 'greater of $X and Y% of metric' | F fixture IR | ✅ 3/3 |
 | INV-34 | reserved transaction effect refused explicitly | F fixture IR | ✅ 4/4 (2 observations) |
 | INV-05b | definition amendment removing an add-back; definition amendment layered on two section amendments | A, C | ❌ A: mis-targeted (IPV-19) and the compiler keeps the larger definition (IPV-20, CRITICAL_FALSE_PERMISSION direction); C: prior section amendments intact ✅, definition amendment mis-targeted ❌ |
 
 Batches 2–4 done: 5b, 7 (package L), 9, 16 (observations), 19 (IPV-21 + breadth), 25/28 (IPV-22), 34, 35.
-Next batch: comparator-direction adversarial cases on every package with an 'in excess of' / 'not less than' figure
-(IPV-22 breadth); a definition amendment by 'replacing the words' routed through the interpreter once a model run is
-authorised; designation entity-scope effects at the semantic stage (mocked plan with an excluded entity); product
-workflow criteria (doc 05 §6) tied to the artefacts.
+Batch 5 done: IPV-22 breadth (INV-25b). Declarative adversarial cases (`prohibitedClaims[].adversarial`) now let any
+manifest or in-memory variation submit a case without a switch entry. Next: ratio-direction cases (B 4.09 'at least
+2.00 to 1.00' submitted with the comparator flipped - needs a SET_RATIO mutation kind); designation entity scope at
+the semantic stage; a definition amendment by 'replacing the words' once a model run is authorised.

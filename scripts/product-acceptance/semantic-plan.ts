@@ -266,5 +266,15 @@ export function adversarialCases(m: ExpectationsManifest, specs: CandidateSpec[]
       add("K-P2", { kind: "DROP_CONDITIONS", sectionRef: "7.09(b)" }, sec("7.09(b)"));
       break;
   }
+  // declarative cases (manifest prohibitedClaims[].adversarial) - used by in-memory variations and by any package without a switch entry
+  for (const pc of m.prohibitedClaims) {
+    const a = pc.adversarial; if (!a || out.some((o) => o.prohibitedClaimId === pc.id)) continue;
+    const mutation: Mutation = a.kind === "DROP_CONDITIONS" ? { kind: "DROP_CONDITIONS", sectionRef: a.sectionRef }
+      : a.kind === "SET_AMOUNT" ? { kind: "SET_AMOUNT", sectionRef: a.sectionRef, amount: a.amount ?? 0, excerpt: a.excerpt ?? "" }
+      : a.kind === "SET_SCOPE" ? { kind: "SET_SCOPE", sectionRef: a.sectionRef, entityScope: a.entityScope ?? ["BORROWER"] }
+      : a.kind === "CLAIM_COMPLETE" ? { kind: "CLAIM_COMPLETE", sectionRef: a.sectionRef, amount: a.amount, excerpt: a.excerpt }
+      : { kind: "DROP_SHARED_CAPS" };
+    add(pc.id, mutation, sec(a.sectionRef, a.documentId));
+  }
   return out;
 }
