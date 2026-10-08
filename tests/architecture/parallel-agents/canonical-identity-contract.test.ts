@@ -75,6 +75,47 @@ describe("dataset delivery + integration queue contracts", () => {
       expect.arrayContaining(["WS-PAR", "WS-CKF", "WS-VIC", "WS-CCA", "WS-GIB", "WS-EHB"]),
     );
   });
+
+  it("publishes a shared corpus manifest covering all 13 identities", () => {
+    const manifest = JSON.parse(
+      readFileSync(
+        resolve(process.cwd(), "docs/architecture/parallel-agents/13-shared-corpus-manifest.json"),
+        "utf8",
+      ),
+    ) as {
+      requiredLogicalIdentities: string[];
+      requiredDatasetFields: string[];
+      secAccessPolicy: { singleSchedulerOwner: string };
+    };
+    expect(manifest.requiredLogicalIdentities).toHaveLength(13);
+    expect(manifest.requiredDatasetFields).toHaveLength(10);
+    expect(manifest.secAccessPolicy.singleSchedulerOwner).toBe("WS-CKF");
+  });
+
+  it("publishes a daily integration summary with required headline fields", () => {
+    const daily = JSON.parse(
+      readFileSync(
+        resolve(
+          process.cwd(),
+          "docs/architecture/parallel-agents/daily/2026-10-08-integration-summary.json",
+        ),
+        "utf8",
+      ),
+    ) as {
+      cloudCostsUsd: number;
+      corpusGrowth: unknown;
+      verifiedKnowledgeGrowth: { verificationStatusVerifiedCount: number };
+      highRiskDefects: unknown[];
+      conflicts: unknown[];
+      ci: unknown;
+    };
+    expect(daily.cloudCostsUsd).toBe(0);
+    expect(daily.verifiedKnowledgeGrowth.verificationStatusVerifiedCount).toBe(0);
+    expect(daily.highRiskDefects.length).toBeGreaterThan(0);
+    expect(daily.conflicts.length).toBeGreaterThan(0);
+    expect(daily.ci).toBeTruthy();
+    expect(daily.corpusGrowth).toBeTruthy();
+  });
 });
 
 describe("MockSecRequestScheduler", () => {

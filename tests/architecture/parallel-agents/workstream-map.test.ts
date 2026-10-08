@@ -46,7 +46,7 @@ describe("parallel-agent workstream map", () => {
 
   it("has required top-level identity fields", () => {
     expect(map.artifact).toBe("parallel-agent-workstream-map");
-    expect(map.version).toBeGreaterThanOrEqual(4);
+    expect(map.version).toBeGreaterThanOrEqual(5);
     expect(map.status).toBe("DRAFT_CONTRACT");
     expect(map.baseMainSha).toMatch(/^[0-9a-f]{40}$/);
     expect(map.workstreams.length).toBeGreaterThanOrEqual(16);

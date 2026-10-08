@@ -3,7 +3,7 @@
   "version": 1,
   "status": "ACTIVE_LEDGER",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "updatedAt": "2026-10-08T22:12:30Z",
+  "updatedAt": "2026-10-08T22:13:30Z",
   "items": [
     {
       "id": "IQ-001",
@@ -127,9 +127,9 @@
       "workstreamId": "WS-NED",
       "deliverable": "Negative covenant exception database",
       "branch": "cursor/negative-covenant-exception-db-21b5",
-      "pr": null,
+      "pr": "https://github.com/egsul897/headroom/pull/143",
       "tipSha": "e2d7d20768fe4842c1b5be03c540443dc29588cd",
-      "status": "BRANCH_NO_PR",
+      "status": "DRAFT_PR_OPEN",
       "blockers": [],
       "dependsOn": [
         "IQ-001",
@@ -141,13 +141,28 @@
       "workstreamId": "WS-PCI",
       "deliverable": "Precedent comparison intelligence corpus",
       "branch": "cursor/precedent-comparison-intelligence-616b",
-      "pr": null,
-      "tipSha": "9d1c55fc6596d3eff294fcbe9c133c15f0dc6d39",
-      "status": "BRANCH_NO_PR",
+      "pr": "https://github.com/egsul897/headroom/pull/144",
+      "tipSha": "9f4562c4cd9850d43de69c11049c47bd25e8d3f8",
+      "status": "DRAFT_PR_OPEN",
       "blockers": [],
       "dependsOn": [
         "IQ-001",
         "IQ-002"
+      ]
+    },
+    {
+      "id": "IQ-011",
+      "workstreamId": "WS-CKB",
+      "deliverable": "Independent covenant knowledge generalization benchmark",
+      "branch": "cursor/covenant-knowledge-generalization-bench-7f51",
+      "pr": "https://github.com/egsul897/headroom/pull/145",
+      "tipSha": "a8731bbcf687a70c9ae4bfa13c5b5fc91c6fe1b5",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [
+        "Must remain isolated from tuning (G6)"
+      ],
+      "dependsOn": [
+        "IQ-001"
       ]
     }
   ],
@@ -175,6 +190,12 @@
       "summary": "WS-VIC and WS-GIB named in core-four coordination mandate but lack dedicated origin deliverables",
       "resolution": "Keep exclusiveOwn reserved; VIC/GIB proceed independently when branches appear; do not reassign their roles to CKF/CCA",
       "status": "OPEN"
+    },
+    {
+      "id": "C-005",
+      "summary": "CKB path drift vs earlier map",
+      "resolution": "Map v5 adopts generalization-benchmark + lib/evaluation/ckg-benchmark",
+      "status": "RESOLVED_IN_MAP_V5"
     }
   ],
   "proposedResolutions": [

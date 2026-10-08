@@ -1,10 +1,10 @@
 {
   "artifact": "parallel-agent-workstream-map",
-  "version": 4,
+  "version": 5,
   "status": "DRAFT_CONTRACT",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
   "baseMainFetchedAt": "2026-10-08T22:00:00Z",
-  "mapAmendedAt": "2026-10-08T22:10:30Z",
+  "mapAmendedAt": "2026-10-08T22:13:30Z",
   "coordinator": {
     "workstreamId": "WS-PAR",
     "name": "Parallel Agent Operating Rules",
@@ -18,7 +18,8 @@
     "v1 reserved slots 5\u20136 are superseded: founder dispatched a larger concurrent fleet. v2 assigns exclusive trees for all known mobile missions at amendment time.",
     "Knowledge-corpus workstreams (DEF/BFL/NED/CDA/RCD/PCI/CKB/EHB) must not invent a second covenant engine or rewrite Phase-3 IR / capacity engines.",
     "v3 adds WS-GIB and later corpus agents (SCR/FDP/RAC/CRI) from founder coordination follow-ups; coordinator publishes contracts only.",
-    "v4 reconciles exclusiveOwn to peer-shipped path claims (CKF\u2192knowledge-factory/*, CCA\u2192cursor-cloud-compute/*) without forcing peer rewrites. Prior v2/v3 proposed paths remain aliases only if unused."
+    "v4 reconciles exclusiveOwn to peer-shipped path claims (CKF\u2192knowledge-factory/*, CCA\u2192cursor-cloud-compute/*) without forcing peer rewrites. Prior v2/v3 proposed paths remain aliases only if unused.",
+    "v5 reconciles WS-CKB to peer-shipped covenant-knowledge-generalization-benchmark + lib/evaluation/ckg-benchmark; WS-PCI docs path to precedent-comparison-intelligence.md / docs/precedent-comparison-intelligence/** if present."
   ],
   "sharedHardExclusions": [
     "docs/**/sealed*/**",
@@ -204,10 +205,10 @@
       "bcId": "bc-01a11d89-6f87-7266-bd40-11aa0ed97f51",
       "missionSummary": "Independent held-out generalization benchmark (recall/accuracy/false-permission/provenance/cost) separate from Claude-owned acceptance fixtures.",
       "exclusiveOwn": [
-        "docs/covenant-knowledge-benchmark/**",
-        "lib/covenant-knowledge-benchmark/**",
-        "scripts/covenant-knowledge-benchmark/**",
-        "tests/covenant-knowledge-benchmark/**"
+        "docs/covenant-knowledge-generalization-benchmark/**",
+        "lib/evaluation/ckg-benchmark/**",
+        "scripts/covenant-knowledge-generalization-benchmark/**",
+        "tests/covenant-knowledge-generalization-benchmark/**"
       ],
       "mustNotTouch": [
         "docs/architecture/parallel-agents/**",
@@ -218,7 +219,12 @@
         "Do not modify Claude-owned acceptance tests/fixtures",
         "Held-outs must not be used for prompt/rule tuning",
         "Do not mark model labels as verified ground truth"
-      ]
+      ],
+      "notes": [
+        "Peer-shipped under covenant-knowledge-generalization-benchmark + lib/evaluation/ckg-benchmark (map v5)."
+      ],
+      "branch": "cursor/covenant-knowledge-generalization-bench-7f51",
+      "pr": "https://github.com/egsul897/headroom/pull/145"
     },
     {
       "workstreamId": "WS-RCD",
@@ -261,7 +267,9 @@
       "softGates": [
         "Do not treat exceptions as unconditional capacity",
         "No production legal-engine modifications"
-      ]
+      ],
+      "branch": "cursor/negative-covenant-exception-db-21b5",
+      "pr": "https://github.com/egsul897/headroom/pull/143"
     },
     {
       "workstreamId": "WS-CDA",
@@ -338,6 +346,7 @@
       "bcId": "bc-01a11d8b-6a0d-7a0a-8aa8-74fd087f616b",
       "missionSummary": "Source-backed precedent comparison across covenant families/definitions/scope/amendments; distinguish textual vs structural vs semantic vs verified legal difference.",
       "exclusiveOwn": [
+        "docs/precedent-comparison-intelligence.md",
         "docs/precedent-comparison/**",
         "lib/precedent-comparison/**",
         "scripts/precedent-comparison/**",
@@ -352,7 +361,12 @@
         "No production legal-engine edits",
         "No competing DB schema",
         "Do not label model summaries as reviewed precedent"
-      ]
+      ],
+      "notes": [
+        "Peer uses docs/precedent-comparison-intelligence.md + lib/precedent-comparison/**."
+      ],
+      "branch": "cursor/precedent-comparison-intelligence-616b",
+      "pr": "https://github.com/egsul897/headroom/pull/144"
     },
     {
       "workstreamId": "WS-GIB",

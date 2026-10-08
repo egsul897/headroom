@@ -125,3 +125,15 @@
 - VIC: still no origin branch. GIB cost-analysis: still awaiting dedicated agent (do not conflate with #128/#135).
 - CI on tip `f5e700d…`: Vercel pending; earlier tip Vercel flakes noted, docs-only pack — monitoring.
 - ownershipViolations: []
+
+---
+
+## 2026-10-08T22:13:30Z — CENTRAL COVENANT KNOWLEDGE COORDINATION mandate
+
+- Confirmed 13/13 logical identities already in `04-canonical-identity-contract.json` (reuse existing schema; no incompatible replacements).
+- Confirmed 10/10 dataset delivery fields in `06-*`; gates G1–G10; SEC scheduler contract+mock; integration queue.
+- Published `13-shared-corpus-manifest.json` and first daily summary under `daily/2026-10-08-integration-summary.*`.
+- Map **v5**: CKB → `docs/covenant-knowledge-generalization-benchmark/**` + `lib/evaluation/ckg-benchmark/**`; PCI docs file claim reconciled.
+- New draft PRs: NED #143, PCI #144, CKB #145. Queue refreshed.
+- Honest counts: live EDGAR accession-backed growth = 0; verified knowledge growth = 0; cloud cost = $0.
+- ownershipViolations: []
