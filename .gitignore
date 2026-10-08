@@ -9,3 +9,6 @@ coverage
 .claude/worktrees/
 # LocalFilesystemStorageProvider's dev/test fallback (lib/document-storage/local-fs-provider.ts)
 .local-blob-storage/
+# EDGAR historical backfill runtime artifacts + SEC fair-access cache
+data/edgar-historical-backfill/
+.cache/sec-edgar/
