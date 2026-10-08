@@ -13,7 +13,7 @@
 
 | Item | Value |
 |---|---|
-| PR | https://github.com/egsul897/headroom/pull/NEW |
+| PR | https://github.com/egsul897/headroom/pull/170 |
 | Base | `main` |
 | Merge recommendation | Merge when CI green — non-promoting library completion; no executable-capacity claims |
 
