@@ -6,7 +6,7 @@
   "startingShaReviewedByChallenger": "ce07b1525972d1dea00792a2058900fa56291163",
   "interveningShaBeforeRemediation": "b2074fb60ff272a107032551e267b39df884815c",
   "interveningNote": "Tip advanced after reviewed SHA with Vercel typecheck fix (effectiveDate null\u2192undefined) before Phase 3 remediation; reconciled rather than overwritten.",
-  "endingSha": "8f477fe59d33211768677c83f488ef3730308c76",
+  "endingSha": "4da4f65b10d65aa89f0d8e32596596cd09f3d315",
   "promotionStatus": "NOT_INDEPENDENTLY_LEGALLY_VERIFIED",
   "mergeReady": false,
   "legallyVerified": false,
@@ -105,6 +105,7 @@
     "tests/amendment-chain-research/phase2-corpus-integrity.test.ts",
     "tests/amendment-chain-research/phase3-challenger-remediation.test.ts"
   ],
-  "currentHeadCi": "PENDING_PUSH_SUBSCRIPTION",
-  "filesChangedNote": "See git diff / PR #150 files list at endingSha"
+  "currentHeadCi": "SUCCESS",
+  "filesChangedNote": "See git diff / PR #150 files list at endingSha",
+  "ciNote": "Vercel + Vercel Preview Comments green on tip 4da4f65 (2026-10-08)"
 }
