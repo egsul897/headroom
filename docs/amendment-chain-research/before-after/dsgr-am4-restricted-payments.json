@@ -5,22 +5,42 @@
   "comparisons": [
     {
       "changeClass": "COVENANT",
-      "target": { "kind": "SECTION", "sectionRef": "6.08(a)(v)", "covenantFamily": "RESTRICTED_PAYMENTS" },
-      "label": "General Restricted Payments basket restated",
-      "beforeText": null,
+      "target": {
+        "kind": "SECTION",
+        "sectionRef": "6.08(a)(v)",
+        "covenantFamily": "RESTRICTED_PAYMENTS"
+      },
+      "label": "General Restricted Payments basket restated ($10M \u2192 $25M)",
+      "beforeText": "otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $10,000,000 during any fiscal year of the Company so long as, in each case, all of the following conditions are satisfied: (x) no Default shall exist immediately prior to or immediately after giving effect to...",
       "afterText": "(v) the Company may make Restricted Payments not otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $25,000,000 during any fiscal year of the Company so long as... (x) no Default... (y) ... compliance with the covenants set forth in Section 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment); provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if... the Total Net Leverage Ratio is not greater than the lesser of (A) 2.5 to 1.00 and (B) the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12.",
       "authority": {
-        "status": "PARTIAL",
-        "accession": "0001193125-25-070858",
-        "exhibit": "EX-10.1",
-        "quote": "Section 6.08(a)(v) is hereby amended and restated in its entirety as follows: [afterText]",
-        "gapReason": "Prior §6.08(a)(v) text not extracted from Doc A/B in this pass; after-text SOURCE_BACKED from Doc C fixture."
+        "status": "SOURCE_BACKED",
+        "after": {
+          "accession": "0001193125-25-070858",
+          "exhibit": "EX-10.1",
+          "docId": "dsgr-doc-c",
+          "quote": "Section 6.08(a)(v) is hereby amended and restated in its entirety as follows: [afterText $25,000,000]"
+        },
+        "before": {
+          "status": "SOURCE_BACKED",
+          "docId": "dsgr-doc-b",
+          "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+          "quote": "otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $10,000,000 during any fiscal year of the Company so long as, in each case, all of the following conditions are satisfied: (x) no Default shall exist"
+        }
       },
-      "adversarialTags": ["DEEMED_RETROACTIVE_EFFECT", "RATIO_CHANGE", "MULTI_COVENANT_FAMILY"]
+      "adversarialTags": [
+        "DEEMED_RETROACTIVE_EFFECT",
+        "RATIO_CHANGE",
+        "MULTI_COVENANT_FAMILY"
+      ]
     },
     {
       "changeClass": "OTHER",
-      "target": { "kind": "SECTION", "sectionRef": "3.17", "covenantFamily": "OTHER" },
+      "target": {
+        "kind": "SECTION",
+        "sectionRef": "3.17",
+        "covenantFamily": "OTHER"
+      },
       "label": "Margin regulations representation restated",
       "beforeText": null,
       "afterText": "No Loan Party is engaged and will not engage, principally or as one of its important activities, in the business of purchasing or carrying Margin Stock...",
@@ -36,7 +56,10 @@
     "executionDate": "2025-03-31",
     "deemedEffectDate": "2025-01-01",
     "evidenceQuote": "agreeing to give deemed effect to the amendments described in clauses (a) and (b) below as of January 1, 2025",
-    "adversarialTags": ["DEEMED_RETROACTIVE_EFFECT", "SAME_DAY_OR_OVERLAPPING_EFFECTIVENESS"]
+    "adversarialTags": [
+      "DEEMED_RETROACTIVE_EFFECT",
+      "SAME_DAY_OR_OVERLAPPING_EFFECTIVENESS"
+    ]
   },
   "waiverSeparation": {
     "isWaiverOrConsentOnly": false,

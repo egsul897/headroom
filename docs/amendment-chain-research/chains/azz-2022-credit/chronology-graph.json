@@ -1,20 +1,60 @@
 {
   "chainId": "azz-2022-05-13-credit-agreement",
   "nodes": [
-    { "id": "azz-ca-orig", "date": "2022-05-13", "label": "Original CA" },
-    { "id": "azz-am1", "date": "2023-08-17", "label": "First Amendment (repricing)" },
-    { "id": "azz-am2", "date": "2023-12-20", "label": "Second Amendment" },
-    { "id": "azz-am3", "date": "2024-03-20", "label": "Third Amendment" },
-    { "id": "azz-am4", "date": "2024-09-24", "label": "Fourth Amendment" }
+    {
+      "id": "azz-ca-orig",
+      "date": "2022-05-13",
+      "label": "Original CA"
+    },
+    {
+      "id": "azz-am1",
+      "date": "2023-08-17",
+      "label": "First Amendment (repricing)"
+    },
+    {
+      "id": "azz-am2",
+      "date": "2023-12-20",
+      "label": "Second Amendment"
+    },
+    {
+      "id": "azz-am3",
+      "date": "2024-03-20",
+      "label": "Third Amendment"
+    },
+    {
+      "id": "azz-am4",
+      "date": "2024-09-24",
+      "label": "Fourth Amendment"
+    }
   ],
   "edges": [
-    { "from": "azz-ca-orig", "to": "azz-am1", "kind": "AMENDS" },
-    { "from": "azz-am1", "to": "azz-am2", "kind": "AMENDS" },
-    { "from": "azz-am2", "to": "azz-am3", "kind": "AMENDS" },
-    { "from": "azz-am3", "to": "azz-am4", "kind": "AMENDS" }
+    {
+      "from": "azz-ca-orig",
+      "to": "azz-am1",
+      "kind": "AMENDS"
+    },
+    {
+      "from": "azz-am1",
+      "to": "azz-am2",
+      "kind": "AMENDS"
+    },
+    {
+      "from": "azz-am2",
+      "to": "azz-am3",
+      "kind": "AMENDS"
+    },
+    {
+      "from": "azz-am3",
+      "to": "azz-am4",
+      "kind": "AMENDS"
+    }
   ],
   "definitionLineage": {
-    "Applicable Margin": ["azz-am1", "azz-am3", "azz-am4"],
+    "Applicable Rate": [
+      "azz-am1",
+      "azz-am3",
+      "azz-am4"
+    ],
     "note": "Am4 restated definition encodes eras keyed to Am1/Am3/Am4 Effective Dates; Am2 not a pricing breakpoint in that clause."
   }
 }

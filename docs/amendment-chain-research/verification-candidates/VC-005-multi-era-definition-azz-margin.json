@@ -1,10 +1,19 @@
 {
   "candidateId": "VC-005",
   "chainId": "azz-2022-05-13-credit-agreement",
-  "purpose": "Single Applicable Margin definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates — multi-amendment same definition with query-date sensitivity.",
-  "mapsToProductionModules": ["effective-date", "chain", "operative-state"],
-  "expectedFailClosedBehavior": "Operative margin for a query date must select the correct era subclause (A)/(B)/(C)/(D). If a referenced Amendment Effective Date is CONDITIONAL_UNRESOLVED, the engine must not invent which subclause applies.",
-  "queryDates": ["2023-08-01", "2023-08-17", "2024-03-20", "2024-09-24"],
+  "purpose": "Single Applicable Rate definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates \u2014 multi-amendment same definition with query-date sensitivity. Recital colloquial \"Applicable Margin\" is non-controlling.",
+  "mapsToProductionModules": [
+    "effective-date",
+    "chain",
+    "operative-state"
+  ],
+  "expectedFailClosedBehavior": "Operative Applicable Rate for a query date must select the correct era subclause (A)/(B)/(C)/(D). If a referenced Amendment Effective Date is CONDITIONAL_UNRESOLVED, the engine must not invent which subclause applies. Do not substitute the recital term Applicable Margin for the defined term Applicable Rate.",
+  "queryDates": [
+    "2023-08-01",
+    "2023-08-17",
+    "2024-03-20",
+    "2024-09-24"
+  ],
   "sourcePointers": [
     {
       "docId": "azz-am4",
@@ -13,6 +22,8 @@
       "quote": "(D) at any time on or following the Fourth Amendment Effective Date, (x) for any Adjusted Term SOFR Loan, 2.50% per annum, and (y) for any Base Rate Loan, 1.50% per annum"
     }
   ],
-  "relatedBeforeAfter": "docs/amendment-chain-research/before-after/azz-am4-applicable-margin.json",
-  "notAProductionPatch": true
+  "relatedBeforeAfter": "docs/amendment-chain-research/before-after/azz-am4-applicable-rate.json",
+  "notAProductionPatch": true,
+  "definedTerm": "Applicable Rate",
+  "definedTermNote": "Signed amend targets definition of Applicable Rate; recital Applicable Margin is colloquial only."
 }

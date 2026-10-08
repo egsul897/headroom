@@ -1,7 +1,7 @@
 {
   "schemaVersion": "knowledge-factory.amendment-chain-research-export.v1",
-  "generatedAt": "2026-10-08T22:32:25Z",
-  "idempotencyKey": "amendment-chain-research-phase2-550e1da3f4fb6512",
+  "generatedAt": "2026-10-08T22:54:05Z",
+  "idempotencyKey": "amendment-chain-research-phase3-c1a0ce552ac4244f",
   "importContract": {
     "consumer": "WS-CKF lib/knowledge-factory",
     "mode": "UPSERT_BY_sourceId",
@@ -13,6 +13,7 @@
     ]
   },
   "chainIdentities": [
+    "azz-2022-05-13-credit-agreement",
     "cnmd-seventh-ar-to-eighth-ar",
     "cohr-2022-07-01-credit-agreement",
     "dsgr-2022-04-01-ar-credit",
@@ -426,6 +427,92 @@
       "acquisitionStatus": "ACQUIRED",
       "title": "10-Q body accompanying Second Amendment exhibit filing",
       "notes": "Narrative summary only; not treated as operative amendment text. EX-10.1 remains image-based conformed CA."
+    },
+    {
+      "sourceId": "edgar:0000008947-24-000205:fourthamendmenttocreditagr.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-24-000205",
+      "filename": "fourthamendmenttocreditagr.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000205/fourthamendmenttocreditagr.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am4",
+      "originalBytesHash": "4cc27f8f6ead0caeb714b6109e75dcd5581e25024decded2d2d8d22091351471",
+      "byteLength": 63797,
+      "acquisitionStatus": "ACQUIRED",
+      "title": "Fourth Amendment to Credit Agreement (Applicable Rate multi-era grid)",
+      "definedTermAmended": "Applicable Rate",
+      "definedTermRecitalColloquial": "Applicable Margin",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "sourceId": "edgar:0000008947-22-000056:ex101pegasus-creditagreeme.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-22-000056",
+      "filename": "ex101pegasus-creditagreeme.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894722000056/ex101pegasus-creditagreeme.htm",
+      "documentClass": "ORIGINAL",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-ca-orig",
+      "originalBytesHash": null,
+      "byteLength": null,
+      "acquisitionStatus": "PHASE1_RETRIEVED_HASH_PENDING",
+      "title": "Credit Agreement",
+      "effectiveDateStatus": "INFERRED_FROM_EXECUTION_DATE",
+      "notes": "Phase-1 retrieval claimed; Am4 hashed in Phase 3. Hash pending re-fetch \u2014 do not invent.",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "sourceId": "edgar:0000008947-23-000145:firstamendment-repricing.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-23-000145",
+      "filename": "firstamendment-repricing.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000145/firstamendment-repricing.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am1",
+      "originalBytesHash": null,
+      "byteLength": null,
+      "acquisitionStatus": "PHASE1_RETRIEVED_HASH_PENDING",
+      "title": "First Amendment (repricing)",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "notes": "Phase-1 retrieval claimed; Am4 hashed in Phase 3. Hash pending re-fetch \u2014 do not invent.",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "sourceId": "edgar:0000008947-23-000162:secondamendmenttocreditagr.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-23-000162",
+      "filename": "secondamendmenttocreditagr.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000162/secondamendmenttocreditagr.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am2",
+      "originalBytesHash": null,
+      "byteLength": null,
+      "acquisitionStatus": "PHASE1_RETRIEVED_HASH_PENDING",
+      "title": "Second Amendment",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "notes": "Phase-1 retrieval claimed; Am4 hashed in Phase 3. Hash pending re-fetch \u2014 do not invent.",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "sourceId": "edgar:0000008947-24-000029:a3rdamendmenttocreditagree.htm",
+      "cik": "0000008947",
+      "accessionNumber": "0000008947-24-000029",
+      "filename": "a3rdamendmenttocreditagree.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000029/a3rdamendmenttocreditagree.htm",
+      "documentClass": "AMENDMENT",
+      "instrumentIdentity": "azz-2022-05-13-credit-agreement",
+      "researchDocId": "azz-am3",
+      "originalBytesHash": null,
+      "byteLength": null,
+      "acquisitionStatus": "PHASE1_RETRIEVED_HASH_PENDING",
+      "title": "Third Amendment",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "notes": "Phase-1 retrieval claimed; Am4 hashed in Phase 3. Hash pending re-fetch \u2014 do not invent.",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     }
   ],
   "parentChildAuthorityLinks": [
@@ -687,6 +774,118 @@
       "kind": "FILING_BODY_FOR",
       "authorityStatus": "NOT_OPERATIVE",
       "note": "10-Q narrative must not be imported as amendment operative text"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "child": "azz-am1",
+      "parent": "azz-ca-orig",
+      "parentInstrument": "azz-ca-2022-05-13",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_SEQUENCE",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "note": "Prior-amendment doc encodes sequence; parent instrument identity remains azz-ca-2022-05-13"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "child": "azz-am2",
+      "parent": "azz-am1",
+      "parentInstrument": "azz-ca-2022-05-13",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_SEQUENCE",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "note": "Prior-amendment doc encodes sequence; parent instrument identity remains azz-ca-2022-05-13"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "child": "azz-am3",
+      "parent": "azz-am2",
+      "parentInstrument": "azz-ca-2022-05-13",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_SEQUENCE",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "note": "Prior-amendment doc encodes sequence; parent instrument identity remains azz-ca-2022-05-13"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "child": "azz-am4",
+      "parent": "azz-am3",
+      "parentInstrument": "azz-ca-2022-05-13",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_SEQUENCE",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "note": "Prior-amendment doc encodes sequence; parent instrument identity remains azz-ca-2022-05-13"
+    },
+    {
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "child": "cnmd-second-am-2022",
+      "parent": "cnmd-seventh-ar",
+      "intermediateState": "cnmd-am1-2022",
+      "kind": "AMENDS",
+      "authorityStatus": "SOURCE_BACKED_PARENT_INSTRUMENT",
+      "note": "Requires post-Am1 $75M state; wrong-parent if applied to unamended $25M Seventh text"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "child": "inap-am1",
+      "parent": "inap-ca-orig",
+      "parentInstrument": "inap-ca-orig",
+      "kind": "AMENDS",
+      "authorityStatus": "RECITAL_SUPPORTED_SEQUENCE",
+      "note": "Sequence \u2260 complete operative application of intervening amendments"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "child": "inap-am2",
+      "parent": "inap-am1",
+      "parentInstrument": "inap-ca-orig",
+      "kind": "AMENDS",
+      "authorityStatus": "RECITAL_SUPPORTED_SEQUENCE",
+      "note": "Sequence \u2260 complete operative application of intervening amendments"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "child": "inap-am3",
+      "parent": "inap-am2",
+      "parentInstrument": "inap-ca-orig",
+      "kind": "AMENDS",
+      "authorityStatus": "RECITAL_SUPPORTED_SEQUENCE",
+      "note": "Sequence \u2260 complete operative application of intervening amendments"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "child": "inap-am4",
+      "parent": "inap-am3",
+      "parentInstrument": "inap-ca-orig",
+      "kind": "AMENDS",
+      "authorityStatus": "RECITAL_SUPPORTED_SEQUENCE",
+      "note": "Sequence \u2260 complete operative application of intervening amendments"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "child": "inap-am5",
+      "parent": "inap-am4",
+      "parentInstrument": "inap-ca-orig",
+      "kind": "AMENDS",
+      "authorityStatus": "RECITAL_SUPPORTED_SEQUENCE",
+      "note": "Sequence \u2260 complete operative application of intervening amendments"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "child": "inap-am6",
+      "parent": "inap-am5",
+      "parentInstrument": "inap-ca-orig",
+      "kind": "AMENDS",
+      "authorityStatus": "RECITAL_SUPPORTED_SEQUENCE",
+      "note": "Sequence \u2260 complete operative application of intervening amendments"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "child": "inap-am7",
+      "parent": "inap-am6",
+      "parentInstrument": "inap-ca-orig",
+      "kind": "AMENDS",
+      "authorityStatus": "RECITAL_SUPPORTED_SEQUENCE",
+      "note": "Sequence \u2260 complete operative application of intervening amendments"
     }
   ],
   "effectiveDateEvidencePath": "docs/amendment-chain-research/authority-layers/",
@@ -710,7 +909,72 @@
       "chainId": "cohr-2022-07-01-credit-agreement",
       "item": "am4-am5-effective-date-calendars",
       "status": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "item": "am1-am3-am4-effective-date-calendars",
+      "status": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "item": "am1-am6-basket-propagation",
+      "status": "UNRESOLVED_DEPENDENCY"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "item": "am7-effective-date-calendar",
+      "status": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "item": "azz-orig-am1-am2-am3-byte-hashes",
+      "status": "HASH_PENDING"
     }
   ],
-  "verificationStatus": "PENDING_INDEPENDENT_REVIEW"
+  "verificationStatus": "PENDING_INDEPENDENT_REVIEW",
+  "provisionLevelOperations": [
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "docId": "azz-am4",
+      "target": "Applicable Rate",
+      "op": "RESTATE_DEFINITION_CLAUSE",
+      "beforeStatus": "HISTORICAL_RECOUNT_IN_AM4",
+      "afterStatus": "SOURCE_BACKED",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "docId": "inap-am7",
+      "target": "6.04(m)",
+      "op": "RESTATE_SECTION",
+      "beforeStatus": "SOURCE_BACKED_ORIG_ERA",
+      "afterStatus": "SOURCE_BACKED",
+      "interveningAm1Am6": "UNRESOLVED_DEPENDENCY",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "docId": "inap-am7",
+      "target": "6.01(k)",
+      "op": "RESTATE_SECTION",
+      "beforeStatus": "SOURCE_BACKED_ORIG_ERA",
+      "afterStatus": "SOURCE_BACKED",
+      "interveningAm1Am6": "UNRESOLVED_DEPENDENCY",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "docId": "dsgr-doc-c",
+      "target": "6.08(a)(v)",
+      "op": "RESTATE_SECTION",
+      "beforeStatus": "SOURCE_BACKED_$10M_DOC_B",
+      "afterStatus": "SOURCE_BACKED_$25M",
+      "deemedEffectDate": "2025-01-01",
+      "effectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ]
 }

@@ -84,6 +84,18 @@ const TARGETS: Target[] = [
     title: "10-Q body accompanying Second Amendment exhibit filing",
     notes: "Narrative summary only; not treated as operative amendment text. EX-10.1 remains image-based conformed CA.",
   },
+  // AZZ Am4 (VC-005 / KF export) — Phase 3 challenger remediation
+  {
+    chainId: "azz-2022-05-13-credit-agreement",
+    docId: "azz-am4",
+    cik: "0000008947",
+    accession: "0000008947-24-000205",
+    filename: "fourthamendmenttocreditagr.htm",
+    sourceUri:
+      "https://www.sec.gov/Archives/edgar/data/8947/000000894724000205/fourthamendmenttocreditagr.htm",
+    role: "AMENDMENT",
+    title: "Fourth Amendment to Credit Agreement (Applicable Rate multi-era grid)",
+  },
 ];
 
 function sleep(ms: number) {
@@ -108,12 +120,14 @@ async function acquireOne(t: Target) {
     const hash = createHash("sha256").update(buf).digest("hex");
     return {
       ...t,
-      acquisitionStatus: "CACHED" as const,
+      // Cache hit is still an acquired source body (idempotent re-run).
+      acquisitionStatus: "ACQUIRED" as const,
       bytePath: dest,
       byteLength: buf.length,
       sha256: hash,
       contentHashFromConnector: null as string | null,
       error: null as string | null,
+      notes: [t.notes, "byte-cache hit on re-run"].filter(Boolean).join("; ") || undefined,
     };
   }
   let lastError: string | null = null;

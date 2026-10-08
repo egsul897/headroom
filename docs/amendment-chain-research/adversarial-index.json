@@ -4,87 +4,168 @@
     {
       "tag": "MULTI_AMEND_SAME_DEFINITION",
       "examples": [
-        { "chainId": "azz-2022-05-13-credit-agreement", "record": "ba-azz-am4-applicable-margin", "note": "Applicable Margin eras A–D across Am1/Am3/Am4" },
-        { "chainId": "cnmd-seventh-ar-to-eighth-ar", "record": "ba-cnmd-am2-defs-ratio", "note": "CSSLR + CTLR + Indebtedness in one Second Amendment" }
+        {
+          "chainId": "azz-2022-05-13-credit-agreement",
+          "record": "ba-azz-am4-applicable-rate",
+          "note": "Applicable Rate eras A\u2013D across Am1/Am3/Am4"
+        },
+        {
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "record": "ba-cnmd-am2-defs-ratio",
+          "note": "CSSLR + CTLR + Indebtedness in one Second Amendment"
+        }
       ]
     },
     {
       "tag": "RESTATEMENT_THEN_TARGETED",
       "examples": [
-        { "chainId": "matw-2020-03-27-third-ar-loan", "note": "Third A&R then six targeted amendments; Am6 narrows §6.01(j)" },
-        { "chainId": "dsgr-2022-04-01-ar-credit", "note": "2022 A&R → targeted Am3/Am4 → 2025 Second A&R restatement" },
-        { "chainId": "cnmd-seventh-ar-to-eighth-ar", "note": "Seventh A&R → Second Amendment → Eighth A&R restatement → Omnibus" }
+        {
+          "chainId": "matw-2020-03-27-third-ar-loan",
+          "note": "Third A&R then six targeted amendments; Am6 narrows \u00a76.01(j)"
+        },
+        {
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "note": "2022 A&R \u2192 targeted Am3/Am4 \u2192 2025 Second A&R restatement"
+        },
+        {
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "note": "Seventh A&R \u2192 Second Amendment \u2192 Eighth A&R restatement \u2192 Omnibus"
+        }
       ]
     },
     {
       "tag": "SAME_DAY_OR_OVERLAPPING_EFFECTIVENESS",
       "examples": [
-        { "chainId": "cohr-2022-07-01-credit-agreement", "note": "Am4 and Am5 both dated/filed 2025-09-26", "vc": "VC-001" }
+        {
+          "chainId": "cohr-2022-07-01-credit-agreement",
+          "note": "Am4 and Am5 both dated/filed 2025-09-26",
+          "vc": "VC-001"
+        }
       ]
     },
     {
       "tag": "CONDITIONAL_EFFECTIVENESS",
       "examples": [
-        { "chainId": "cnmd-seventh-ar-to-eighth-ar", "vc": "VC-003" },
-        { "chainId": "dsgr-2022-04-01-ar-credit", "vc": "VC-002" },
-        { "chainId": "azz-2022-05-13-credit-agreement", "vc": "VC-005" },
-        { "chainId": "inap-2017-04-06-credit-agreement", "vc": "VC-008" }
+        {
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "vc": "VC-003"
+        },
+        {
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "vc": "VC-002"
+        },
+        {
+          "chainId": "azz-2022-05-13-credit-agreement",
+          "vc": "VC-005"
+        },
+        {
+          "chainId": "inap-2017-04-06-credit-agreement",
+          "vc": "VC-008"
+        }
       ]
     },
     {
       "tag": "DEEMED_RETROACTIVE_EFFECT",
       "examples": [
-        { "chainId": "dsgr-2022-04-01-ar-credit", "note": "Deemed effect as of 2025-01-01 for Am4 clauses", "vc": "VC-002" }
+        {
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "note": "Deemed effect as of 2025-01-01 for Am4 clauses",
+          "vc": "VC-002"
+        }
       ]
     },
     {
       "tag": "PARENT_CHILD_CONFLICT_RISK",
       "examples": [
-        { "chainId": "cnmd-seventh-ar-to-eighth-ar", "note": "Seventh-era amendment vs Eighth A&R restatement", "vc": "VC-003" },
-        { "chainId": "cohr-2022-07-01-credit-agreement", "note": "Erroneous §6.11(i) cross-ref corrected to §6.11(a)" }
+        {
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "note": "Seventh-era amendment vs Eighth A&R restatement",
+          "vc": "VC-003"
+        },
+        {
+          "chainId": "cohr-2022-07-01-credit-agreement",
+          "note": "Erroneous \u00a76.11(i) cross-ref corrected to \u00a76.11(a)"
+        }
       ]
     },
     {
       "tag": "INCORPORATION_BY_REFERENCE",
       "examples": [
-        { "chainId": "cnmd-seventh-ar-to-eighth-ar", "note": "Omnibus blackline exhibits", "vc": "VC-006" },
-        { "chainId": "dsgr-2022-04-01-ar-credit", "note": "Third Amendment embeds large restated article blocks" }
+        {
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "note": "Omnibus blackline exhibits",
+          "vc": "VC-006"
+        },
+        {
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "note": "Third Amendment embeds large restated article blocks"
+        }
       ]
     },
     {
       "tag": "SIDE_LETTER_RESTRICTION",
       "examples": [],
       "status": "NONE_LOCATED_THIS_PASS",
-      "note": "No authentic side-letter restriction exhibit retrieved with sufficient chain linkage in this research pass. Explicitly unresolved — not asserted absent."
+      "note": "No authentic side-letter restriction exhibit retrieved with sufficient chain linkage in this research pass. Explicitly unresolved \u2014 not asserted absent."
     },
     {
       "tag": "MULTI_COVENANT_FAMILY",
       "examples": [
-        { "chainId": "cohr-2022-07-01-credit-agreement", "note": "Am4 touches Incremental Amount, §6.01(k), §6.02(kk), §6.11, Priority Debt" },
-        { "chainId": "inap-2017-04-06-credit-agreement", "note": "Am7 touches Investments, Indebtedness, Financial Covenants together" }
+        {
+          "chainId": "cohr-2022-07-01-credit-agreement",
+          "note": "Am4 touches Incremental Amount, \u00a76.01(k), \u00a76.02(kk), \u00a76.11, Priority Debt"
+        },
+        {
+          "chainId": "inap-2017-04-06-credit-agreement",
+          "note": "Am7 touches Investments, Indebtedness, Financial Covenants together"
+        }
       ]
     },
     {
       "tag": "PERMISSION_NARROWING",
       "examples": [
-        { "chainId": "matw-2020-03-27-third-ar-loan", "vc": "VC-004" },
-        { "chainId": "inap-2017-04-06-credit-agreement", "vc": "VC-008" }
+        {
+          "chainId": "matw-2020-03-27-third-ar-loan",
+          "vc": "VC-004"
+        },
+        {
+          "chainId": "inap-2017-04-06-credit-agreement",
+          "vc": "VC-008"
+        }
       ]
     },
     {
       "tag": "WAIVER_OR_CONSENT_SEPARATE",
       "examples": [
-        { "chainId": "dsgr-2022-04-01-ar-credit", "vc": "VC-007" },
-        { "chainId": "cnmd-seventh-ar-to-eighth-ar", "note": "Consenting Lenders vs non-waiver clauses" }
+        {
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "vc": "VC-007"
+        },
+        {
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "note": "Consenting Lenders vs non-waiver clauses"
+        }
       ]
     },
     {
       "tag": "MISSING_DOCUMENT",
       "examples": [
-        { "chainId": "matw-2020-03-27-third-ar-loan", "note": "Second Amendment exhibit" },
-        { "chainId": "cnmd-seventh-ar-to-eighth-ar", "note": "Seventh A&R body" },
-        { "chainId": "inap-2017-04-06-credit-agreement", "note": "Original + Am1–6" },
-        { "chainId": "dsgr-2022-04-01-ar-credit", "note": "Implied First/Second Amendments" }
+        {
+          "chainId": "matw-2020-03-27-third-ar-loan",
+          "note": "Second Amendment exhibit"
+        },
+        {
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "note": "Seventh A&R body"
+        },
+        {
+          "chainId": "inap-2017-04-06-credit-agreement",
+          "note": "Original + Am1\u20136"
+        },
+        {
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "note": "Implied First/Second Amendments"
+        }
       ]
     }
   ]

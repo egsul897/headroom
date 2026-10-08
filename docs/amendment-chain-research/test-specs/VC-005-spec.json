@@ -3,7 +3,7 @@
   "schemaVersion": "amendment-chain-research.test-spec.v1",
   "generatedAt": "2026-10-08T22:24:33Z",
   "sourceAuthorExpectation": {
-    "purpose": "Single Applicable Margin definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates \u2014 multi-amendment same definition with query-date sensitivity.",
+    "purpose": "Single Applicable Rate definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates \u2014 multi-amendment same definition with query-date sensitivity.",
     "expectedFailClosedBehavior": "Operative margin for a query date must select the correct era subclause (A)/(B)/(C)/(D). If a referenced Amendment Effective Date is CONDITIONAL_UNRESOLVED, the engine must not invent which subclause applies.",
     "queryDates": [
       "2023-08-01",
@@ -28,7 +28,7 @@
       {
         "scenarioId": "AZZ-S1",
         "asOf": "2023-08-01",
-        "expect": "Applicable Margin era A (pre-First): SOFR 4.25% / Base 3.25%",
+        "expect": "Applicable Rate era A (pre-First): SOFR 4.25% / Base 3.25%",
         "status": "SOURCE_BACKED_FROM_AM4_HISTORICAL_GRID",
         "vc": "VC-005"
       }
@@ -53,5 +53,7 @@
       "byteCache": ".local-amendment-research/bytes/ (gitignored; reconstruct via EdgarConnector using ledger URIs)"
     }
   },
-  "notAProductionPatch": true
+  "notAProductionPatch": true,
+  "purpose": "Single Applicable Rate definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates \u2014 multi-amendment same definition with query-date sensitivity. Recital colloquial \"Applicable Margin\" is non-controlling.",
+  "expectedFailClosedBehavior": "Operative Applicable Rate for a query date must select the correct era subclause (A)/(B)/(C)/(D). If a referenced Amendment Effective Date is CONDITIONAL_UNRESOLVED, the engine must not invent which subclause applies. Do not substitute the recital term Applicable Margin for the defined term Applicable Rate."
 }

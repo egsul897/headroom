@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:29:36.208Z",
+  "generatedAt": "2026-10-08T22:50:52.894Z",
   "acquisitionMethod": "EdgarConnector.fetch (lib/connectors/edgar-connector.ts) + existing fixture raw for CONMED omnibus/Am2",
   "competingRegistryCreated": false,
   "byteRoot": ".local-amendment-research/bytes",
@@ -390,7 +390,7 @@
       "sourceUri": "https://www.sec.gov/Archives/edgar/data/816956/000119312522169336/d320648dex1025.htm",
       "role": "AMENDMENT",
       "title": "First Amendment to Seventh A&R Credit Agreement (dated June 6, 2022)",
-      "notes": "Critical intervening amendment: CSSLR/CTLR cash-netting $25M→$75M. Explains Second Amendment $75M→$100M instruction.",
+      "notes": "Critical intervening amendment: CSSLR/CTLR cash-netting $25M\u2192$75M. Explains Second Amendment $75M\u2192$100M instruction.",
       "acquisitionStatus": "ACQUIRED",
       "bytePath": ".local-amendment-research/bytes/cnmd-seventh-ar-to-eighth-ar/cnmd-am1-2022__d320648dex1025.htm",
       "byteLength": 39083,
@@ -411,7 +411,7 @@
       "bytePath": ".local-amendment-research/bytes/matw-2020-03-27-third-ar-loan/matw-am1__firstamendmenttothirdamend.htm",
       "byteLength": 231260,
       "sha256": "96100188c046d1d3d9fd6c8eb60ced979089c76f8fc774f2155aebbf4e598817",
-      "contentHashFromConnector": "96100188c046d1d3d9fd6c8eb60ced979089c76f8fc774f2155aebbf4e598817",
+      "contentHashFromConnector": null,
       "error": null
     },
     {
@@ -427,7 +427,7 @@
       "bytePath": ".local-amendment-research/bytes/matw-2020-03-27-third-ar-loan/matw-am3__thirdamendmenttothirdamend.htm",
       "byteLength": 80597,
       "sha256": "a67d1924939f7b5988efb5dd1a877ed59bd5bd99fb6602e663ee96c0be3f8307",
-      "contentHashFromConnector": "a67d1924939f7b5988efb5dd1a877ed59bd5bd99fb6602e663ee96c0be3f8307",
+      "contentHashFromConnector": null,
       "error": null
     },
     {
@@ -443,7 +443,7 @@
       "bytePath": ".local-amendment-research/bytes/matw-2020-03-27-third-ar-loan/matw-am4__fourthamendmenttothirdamen.htm",
       "byteLength": 1230726,
       "sha256": "f78c812b6e5a5533f09b037822478a252ab466241e19aff822d8be6136ddd181",
-      "contentHashFromConnector": "f78c812b6e5a5533f09b037822478a252ab466241e19aff822d8be6136ddd181",
+      "contentHashFromConnector": null,
       "error": null
     },
     {
@@ -459,7 +459,7 @@
       "bytePath": ".local-amendment-research/bytes/matw-2020-03-27-third-ar-loan/matw-am5__fifthamendmenttothirdamend.htm",
       "byteLength": 1199691,
       "sha256": "46f928b51ed1f18f56fd0aa098d97f0c62ac4ac1090f60b4bd493c4e8b3bf3c6",
-      "contentHashFromConnector": "46f928b51ed1f18f56fd0aa098d97f0c62ac4ac1090f60b4bd493c4e8b3bf3c6",
+      "contentHashFromConnector": null,
       "error": null
     },
     {
@@ -476,7 +476,23 @@
       "bytePath": ".local-amendment-research/bytes/dsgr-2022-04-01-ar-credit/dsgr-am2-10q__dsgr-20240630.htm",
       "byteLength": 1883057,
       "sha256": "a22fcd1dff0023074d75d6ba56e4a867ca7b8f1b577f8484b7a73dcd040da796",
-      "contentHashFromConnector": "a22fcd1dff0023074d75d6ba56e4a867ca7b8f1b577f8484b7a73dcd040da796",
+      "contentHashFromConnector": null,
+      "error": null
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "docId": "azz-am4",
+      "cik": "0000008947",
+      "accession": "0000008947-24-000205",
+      "filename": "fourthamendmenttocreditagr.htm",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000205/fourthamendmenttocreditagr.htm",
+      "role": "AMENDMENT",
+      "title": "Fourth Amendment to Credit Agreement (Applicable Rate multi-era grid)",
+      "acquisitionStatus": "ACQUIRED",
+      "bytePath": ".local-amendment-research/bytes/azz-2022-05-13-credit-agreement/azz-am4__fourthamendmenttocreditagr.htm",
+      "byteLength": 63797,
+      "sha256": "4cc27f8f6ead0caeb714b6109e75dcd5581e25024decded2d2d8d22091351471",
+      "contentHashFromConnector": "4cc27f8f6ead0caeb714b6109e75dcd5581e25024decded2d2d8d22091351471",
       "error": null
     }
   ],
@@ -484,6 +500,8 @@
     "cnmd-seventh-ar identity corrected to EX-10.1",
     "internap Am2-Am6 acquired",
     "cnmd-am1-2022 acquired; multi-amend same definition chain now complete for cash-netting thresholds",
+    "matw-am1/am3/am4/am5 acquired (Phase 2 residual gap close)",
+    "dsgr-am2-10q filing body acquired for wrapper discovery (not operative text)",
     "matw-am1/am3/am4/am5 acquired (Phase 2 residual gap close)",
     "dsgr-am2-10q filing body acquired for wrapper discovery (not operative text)",
     "matw-am1/am3/am4/am5 acquired (Phase 2 residual gap close)",

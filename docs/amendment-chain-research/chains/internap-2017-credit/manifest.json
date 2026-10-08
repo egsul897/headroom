@@ -11,8 +11,8 @@
     "governingLawNote": "See filed exhibits.",
     "identityNotes": [
       "Seventh Amendment is a high-signal permission-narrowing + ratio-reset example.",
-      "Amendments 1–6 not retrieved in this pass — chain completeness UNRESOLVED beyond Seventh Amendment's own 'Existing Credit Agreement' reference.",
-      "Included as adversarial basket-narrowing / multi-covenant-family specimen, not as a complete six-prior-amendment reconstruction."
+      "Orig + Am1\u2013Am7 bodies SOURCE_ACQUIRED in Phase 2 ledger. Recital-supported ordering Am1\u2013Am7.",
+      "Do NOT claim complete Am1\u2013Am6 definition-propagation / operative-state reconstruction merely because bodies are present."
     ]
   },
   "documents": [
@@ -22,20 +22,222 @@
       "title": "Credit Agreement",
       "executionDate": "2017-04-06",
       "filingDate": null,
-      "accession": "UNKNOWN",
-      "exhibit": "UNKNOWN",
-      "sourceUrl": "",
+      "accession": "0001571049-17-003250",
+      "exhibit": "t1700214_ex10-1.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000157104917003250/t1700214_ex10-1.htm",
       "localFixturePath": null,
-      "retrievalStatus": "MISSING",
+      "retrievalStatus": "RETRIEVED",
       "effectiveDateProvision": {
-        "status": "UNKNOWN",
+        "status": "INFERRED_FROM_EXECUTION_DATE",
         "namedEffectiveDate": "2017-04-06",
         "conditionsSummary": null,
-        "evidenceQuote": "Seventh Amendment / 8-K: Credit Agreement, dated as of April 6, 2017"
+        "evidenceQuote": "Credit Agreement dated as of April 6, 2017 (EX-10.1 accession 0001571049-17-003250)."
       },
       "amendsInstrumentId": null,
       "amendsDocIds": [],
-      "notes": ["MISSING for before-text of baskets; after-text of Seventh Amendment is SOURCE_BACKED."]
+      "notes": [
+        "SOURCE_ACQUIRED; basket before-text for \u00a76.04(m)/\u00a76.01(k) TEXT_EXTRACTED from EX-10.1.",
+        "sha256 c600780b\u2026"
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "inap-am1",
+      "role": "AMENDMENT",
+      "title": "First Amendment to Credit Agreement",
+      "executionDate": null,
+      "filingDate": null,
+      "accession": "0001628280-17-008032",
+      "exhibit": "exhibit109firstamendmentto.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000162828017008032/exhibit109firstamendmentto.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions present for amendments; calendar satisfaction not proven.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-ca-orig"
+      ],
+      "notes": [
+        "SOURCE_ACQUIRED. TEXT_EXTRACTED/AMENDMENT_EFFECT_MODELED incomplete this pass \u2014 do not invent basket propagation."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "inap-am2",
+      "role": "AMENDMENT",
+      "title": "Second Amendment to Credit Agreement",
+      "executionDate": null,
+      "filingDate": null,
+      "accession": "0001140361-18-005437",
+      "exhibit": "ex10_1.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118005437/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions present for amendments; calendar satisfaction not proven.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am1"
+      ],
+      "notes": [
+        "SOURCE_ACQUIRED. TEXT_EXTRACTED/AMENDMENT_EFFECT_MODELED incomplete this pass \u2014 do not invent basket propagation."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "inap-am3",
+      "role": "AMENDMENT",
+      "title": "Third Amendment to Credit Agreement",
+      "executionDate": null,
+      "filingDate": null,
+      "accession": "0001140361-18-011053",
+      "exhibit": "ex10_1.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118011053/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions present for amendments; calendar satisfaction not proven.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am2"
+      ],
+      "notes": [
+        "SOURCE_ACQUIRED. TEXT_EXTRACTED/AMENDMENT_EFFECT_MODELED incomplete this pass \u2014 do not invent basket propagation."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "inap-am4",
+      "role": "AMENDMENT",
+      "title": "Fourth Amendment to Credit Agreement",
+      "executionDate": null,
+      "filingDate": null,
+      "accession": "0001140361-18-018015",
+      "exhibit": "ex10_1.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118018015/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions present for amendments; calendar satisfaction not proven.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am3"
+      ],
+      "notes": [
+        "SOURCE_ACQUIRED. TEXT_EXTRACTED/AMENDMENT_EFFECT_MODELED incomplete this pass \u2014 do not invent basket propagation."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "inap-am5",
+      "role": "AMENDMENT",
+      "title": "Fifth Amendment to Credit Agreement",
+      "executionDate": null,
+      "filingDate": null,
+      "accession": "0001140361-18-037610",
+      "exhibit": "ex10_1.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036118037610/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions present for amendments; calendar satisfaction not proven.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am4"
+      ],
+      "notes": [
+        "SOURCE_ACQUIRED. TEXT_EXTRACTED/AMENDMENT_EFFECT_MODELED incomplete this pass \u2014 do not invent basket propagation."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
+    },
+    {
+      "docId": "inap-am6",
+      "role": "AMENDMENT",
+      "title": "Sixth Amendment to Credit Agreement",
+      "executionDate": null,
+      "filingDate": null,
+      "accession": "0001140361-19-008719",
+      "exhibit": "nc10001703x2_ex10-1.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036119008719/nc10001703x2_ex10-1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Named Effective Date conditions present for amendments; calendar satisfaction not proven.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": [
+        "inap-am5"
+      ],
+      "notes": [
+        "SOURCE_ACQUIRED. TEXT_EXTRACTED/AMENDMENT_EFFECT_MODELED incomplete this pass \u2014 do not invent basket propagation."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
     },
     {
       "docId": "inap-am7",
@@ -44,31 +246,40 @@
       "executionDate": "2019-10-29",
       "filingDate": "2019-10-30",
       "accession": "0001140361-19-019513",
-      "exhibit": "EX-10.1",
+      "exhibit": "ex10_1.htm",
       "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036119019513/ex10_1.htm",
       "localFixturePath": null,
       "retrievalStatus": "RETRIEVED",
       "effectiveDateProvision": {
         "status": "CONDITIONAL_UNRESOLVED",
         "namedEffectiveDate": null,
-        "conditionsSummary": "Seventh Amendment Effective Date = satisfaction of conditions precedent (execution, etc.).",
+        "conditionsSummary": "Seventh Amendment Effective Date = satisfaction of conditions precedent.",
         "evidenceQuote": "This Amendment and the amendments to the Credit Agreement contained herein shall be legal, valid and binding on the date on which the following conditions precedent are satisfied (the date of such satisfaction, the \"Seventh Amendment Effective Date\")"
       },
       "amendsInstrumentId": "inap-ca-2017-04-06",
-      "amendsDocIds": ["inap-ca-orig"],
+      "amendsDocIds": [
+        "inap-am6"
+      ],
       "notes": [
-        "Resets Total Net Leverage Ratio and Consolidated Interest Coverage Ratio tables.",
-        "Narrows multiple baskets (investments, foreign subsidiary debt, etc.).",
-        "8-K Item 1.01 summarizes prior basket levels — used only as corroboration pointers; operative after-text taken from EX-10.1."
-      ]
+        "After-text SOURCE_BACKED for baskets/ratios. Before-text from orig CA SOURCE_BACKED for orig-era levels.",
+        "Am1\u2013Am6 intervening basket changes NOT exhaustively modeled \u2014 OPERATIVE_STATE_RESOLVED remains false."
+      ],
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": true,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      }
     }
   ],
   "authorityPolicy": {
     "noInferenceWithoutSource": true,
     "waiversSeparateFromAmendments": true,
     "notes": [
-      "Before-text for narrowed baskets is PARTIAL: 8-K narrative states prior levels; original CA / Am1–6 exhibits not retrieved here.",
-      "After-text from Seventh Amendment exhibit is SOURCE_BACKED."
+      "Bodies ACQUIRED \u2260 Am1\u2013Am7 operative propagation complete.",
+      "Before-text for Am7 baskets uses orig CA levels as SOURCE_BACKED starting point; intervening Am1\u2013Am6 effects remain UNRESOLVED_DEPENDENCY.",
+      "Am7 ED CONDITIONAL_UNRESOLVED \u2014 fail closed on as-of without condition proof."
     ]
   },
   "adversarialTags": [
@@ -76,7 +287,6 @@
     "BASKET_AMOUNT_CHANGE",
     "RATIO_CHANGE",
     "MULTI_COVENANT_FAMILY",
-    "CONDITIONAL_EFFECTIVENESS",
-    "MISSING_DOCUMENT"
+    "CONDITIONAL_EFFECTIVENESS"
   ]
 }

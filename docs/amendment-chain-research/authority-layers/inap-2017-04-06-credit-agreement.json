@@ -1,6 +1,6 @@
 {
   "chainId": "inap-2017-04-06-credit-agreement",
-  "generatedAt": "2026-10-08T22:22:47Z",
+  "generatedAt": "2026-10-08T22:54:05Z",
   "discipline": {
     "recitalIsNotOperativeText": true,
     "eightKSummaryIsNotOperativeText": true,
@@ -19,56 +19,135 @@
   "events": [
     {
       "docId": "inap-ca-orig",
+      "discoveredEvent": false,
       "acquiredBody": "ACQUIRED",
-      "afterText": "SOURCE_BACKED"
+      "parent": null,
+      "parentInstrument": null,
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "beforeText": "SOURCE_BACKED_FOR_604m_601k"
     },
     {
       "docId": "inap-am1",
+      "discoveredEvent": true,
       "acquiredBody": "ACQUIRED",
-      "parent": "inap-ca-orig"
+      "parent": "inap-ca-orig",
+      "parentInstrument": "inap-ca-orig",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "inap-am2",
+      "discoveredEvent": true,
       "acquiredBody": "ACQUIRED",
-      "parent": "inap-am1"
+      "parent": "inap-am1",
+      "parentInstrument": "inap-ca-orig",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "inap-am3",
+      "discoveredEvent": true,
       "acquiredBody": "ACQUIRED",
-      "parent": "inap-am2"
+      "parent": "inap-am2",
+      "parentInstrument": "inap-ca-orig",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "inap-am4",
+      "discoveredEvent": true,
       "acquiredBody": "ACQUIRED",
-      "parent": "inap-am3"
+      "parent": "inap-am3",
+      "parentInstrument": "inap-ca-orig",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "inap-am5",
+      "discoveredEvent": true,
       "acquiredBody": "ACQUIRED",
-      "parent": "inap-am4"
+      "parent": "inap-am4",
+      "parentInstrument": "inap-ca-orig",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "inap-am6",
+      "discoveredEvent": true,
       "acquiredBody": "ACQUIRED",
-      "parent": "inap-am5"
+      "parent": "inap-am5",
+      "parentInstrument": "inap-ca-orig",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": false,
+        "AMENDMENT_EFFECT_MODELED": false,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
     },
     {
       "docId": "inap-am7",
+      "discoveredEvent": true,
       "acquiredBody": "ACQUIRED",
       "parent": "inap-am6",
+      "parentInstrument": "inap-ca-orig",
+      "authorityLayerStates": {
+        "SOURCE_ACQUIRED": true,
+        "TEXT_EXTRACTED": true,
+        "AMENDMENT_EFFECT_MODELED": true,
+        "OPERATIVE_STATE_RESOLVED": false,
+        "INDEPENDENTLY_LEGALLY_VERIFIED": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
       "targetsVerified": [
         "6.04(m)",
         "6.01(k)",
-        "6.10(a)",
-        "6.10(b)"
+        "6.10"
       ],
-      "beforeText": "NOW_EXTRACTABLE_FROM_PRIOR_CHAIN",
       "afterText": "SOURCE_BACKED",
+      "beforeText": "SOURCE_BACKED_ORIG_ERA_WITH_INTERVENING_GAP",
       "effectiveDate": {
         "status": "CONDITIONAL_UNRESOLVED",
         "conditionsVerified": false
-      },
-      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+      }
     }
   ]
 }
