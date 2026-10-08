@@ -16,6 +16,7 @@
 import { normalizeDefinedTermRef } from "../amendment/operative-state";
 import { computeSourceContentHash, hashParts } from "../hashing";
 import { buildShardDependencyCertificate, deriveRequiredDependencies, DEFAULT_REQUIRED_DEPENDENCY_BUDGET, NEEDS_NO_REQUIRED_ENTRY, REQUIRED_DEPENDENCY_MODEL_VERSION, type RequiredDependency, type RequiredDependencyBudget, type ShardDependencyCertificate } from "./required-dependencies";
+import { classifyStructuralOccurrence } from "../operative-authority";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import { partitionSourceSlots } from "../semantic-accountability/slots";
 import { independentSegmentBounds } from "../semantic-accountability/source-coverage";
@@ -518,7 +519,9 @@ function collectContextCandidates(shardUnits: SemanticSourceUnit[], allUnits: Se
     if (!index) { notFound.push({ kind: "REFERENCED_SECTION", key, reason: "NOT_FOUND", detail: "no structural index", requiredBy: e.requiredBy }); continue; }
     const referrerUnit = e.requiredBy.map((id) => itemOwnerUnit.get(id)).map((k) => (k ? unitByKey.get(k) : undefined)).find((u) => u?.sourceNodeId);
     const r = resolveReferenceTarget(index, documentId, key, { fromNodeId: referrerUnit?.sourceNodeId ?? null });
-    if (r.node) {
+    if (r.node && classifyStructuralOccurrence(r.node, index) === "CONTENTS_LISTING") {
+      notFound.push({ kind: "REFERENCED_SECTION", key, reason: "NOT_FOUND", detail: `section ${e.ref} resolves only to a contents listing. It is not the operative section.`, requiredBy: e.requiredBy });
+    } else if (r.node) {
       const ownedNode = shardUnits.some((u) => u.sourceNodeId === r.node!.nodeId);
       if (ownedNode) continue;
       const text = index.getNodeText(r.node.nodeId, "DESCENDANTS");

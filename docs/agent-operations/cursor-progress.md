@@ -107,12 +107,12 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 
 ## NEXT_TASK
 
-- Objective: find callers of `resolveReferenceTarget` that still treat status `UNIQUE` as operative when `pick()` short-circuits on a single contents listing.
-- Relevant files: `lib/contract-model/compiler/semantic-accountability/reference-resolver.ts` (`pick`, the `matches.length === 1` return). `source-context.ts`, `reference-context.ts`, and `tools.ts` already refuse that node. Other callers may not.
-- First step: grep `resolveReferenceTarget`. For each caller, record whether a sole contents listing can be returned as operative text.
-- Expected output: a caller list. Change a caller only when that read shows it expands or returns the contents text. Do not change `pick()` until every caller is classified.
-- Acceptance: existing resolver and source-context tests pass. No provider call. Two operative bodies stay `AMBIGUOUS`.
-- Dependency: do not raise the semantic-review timeout. Do not wire `package-compile.ts` to the question closure.
+- Objective: decide whether `compileCovenantToIR` can consult a complete evidence-engine record before a model call without treating a cache hit as correctness.
+- Relevant files: `lib/contract-model/compiler/semantic/compile.ts` (the cache lookup after the operative-authority gate) and `lib/contract-model/compiler/evidence-engine/`.
+- First step: read the compile cache key and the evidence-engine identity. List every field that must match. Do not wire the store into `package-compile.ts`. Do not dispatch a paid call.
+- Expected output: either a refusal to wire because an identity field is missing, or a bounded lookup that returns the stored result only on COMPLETE plus a matching payload hash and never sets `advancesCertification`.
+- Acceptance: existing evidence-engine tests pass. A contents listing and a missing anchor still refuse before any lookup. No provider call.
+- Dependency: do not raise the semantic-review timeout. Do not merge `origin/main`.
 
 ## Milestone
 

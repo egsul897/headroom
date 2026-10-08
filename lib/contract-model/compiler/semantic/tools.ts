@@ -118,7 +118,9 @@ function followForwardingDefinition(access: SemanticToolAccess, supersessionInde
   if (remaining <= 0) return { payload: { kind: target.kind, ref: target.ref, served: false, reason: "additional-source character budget exhausted before the forwarding target could be read" }, summary: `forwarding target ${target.kind} ${target.ref} not read (budget)`, chars: 0, evidenceUnresolved: false, truncated: false };
   if (target.kind === "SECTION") {
     const resolution = resolveReferenceTarget(access.structuralIndex, documentId, target.ref);
-    if (!resolution.node) return { payload: { kind: "SECTION", ref: target.ref, served: false, resolution: resolution.status, reason: resolution.note, candidateNodeIds: resolution.candidateNodeIds }, summary: `forwarding target Section ${target.ref} ${resolution.status}`, chars: 0, evidenceUnresolved: false, truncated: false };
+    if (!resolution.node || classifyStructuralOccurrence(resolution.node, access.structuralIndex) === "CONTENTS_LISTING") {
+      return { payload: { kind: "SECTION", ref: target.ref, served: false, resolution: resolution.status, reason: resolution.node ? "The resolved target is a contents listing. It is not the operative section." : resolution.note, candidateNodeIds: resolution.candidateNodeIds }, summary: `forwarding target Section ${target.ref} ${resolution.node ? "CONTENTS_LISTING" : resolution.status}`, chars: 0, evidenceUnresolved: false, truncated: false };
+    }
     const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, resolution.node);
     const display = legacySupersessionDisplay(resolved);
     const { text, truncated } = truncate(resolved.text);
