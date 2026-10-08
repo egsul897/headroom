@@ -13,11 +13,13 @@
  *     containing clause, not a dedicated node.
  *  3. DEGENERATE DUPLICATE OCCURRENCE: a table-of-contents entry is indexed
  *     as a second SECTION occurrence sharing the body section's label. When
- *     exactly one candidate is SUBSTANTIVE (has children or non-trivial text)
- *     and every other candidate is degenerate (no children AND tiny text),
- *     the substantive one is returned as UNIQUE_AFTER_DEGENERATE_EXCLUSION
- *     with the excluded occurrences listed. Two substantive occurrences stay
- *     AMBIGUOUS - never guessed (mission §15).
+ *     exactly one candidate is SUBSTANTIVE (operative text, or a non-contents
+ *     span with children or non-trivial text) and every other candidate is
+ *     degenerate (a contents listing, or no children AND tiny text), the
+ *     substantive one is returned as UNIQUE_AFTER_DEGENERATE_EXCLUSION with
+ *     the excluded occurrences listed. Length is not authority: a long
+ *     contents title does not outrank a shorter operative body. Two
+ *     substantive occurrences stay AMBIGUOUS - never guessed (mission §15).
  *
  *  4. RESTARTED ENUMERATION (PHASE 3 / 6.01 remediation): a parent whose children restart their numbering ("(1) ...
  *     (33) ... For purposes of determining compliance: (1) ... (2) ...") indexes several SUBSTANTIVE occurrences of
@@ -29,6 +31,7 @@
  * No package/section-specific logic: every rule above is a structural
  * property of any indexed document.
  */
+import { classifyStructuralOccurrence } from "../operative-authority";
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
 import type { ReferenceResolutionStatus } from "./types";
@@ -45,7 +48,7 @@ export interface ResolvedReference {
   note: string;
 }
 
-/** Text shorter than this, with no children, is a heading-only (degenerate) occurrence when a substantive sibling occurrence exists. Generic: a real operative section carries operative prose; a table-of-contents line does not. */
+/** Text shorter than this, with no children and no operative predicate, is a heading-only occurrence when a substantive sibling exists. A contents listing is degenerate at any length. */
 const DEGENERATE_TEXT_CHARS = 200;
 
 /** Strips a leading "Section"/"Sections"/"Sec."/"§"/"Article"/"Clause" label and surrounding whitespace/punctuation, leaving the bare legal ref the structural index keys on. */
@@ -58,6 +61,9 @@ export function normalizeReferenceQuery(ref: string): string {
 }
 
 function isSubstantive(index: StructuralIndex, node: StructuralNode): boolean {
+  const kind = classifyStructuralOccurrence(node, index);
+  if (kind === "CONTENTS_LISTING") return false;
+  if (kind === "OPERATIVE_OCCURRENCE") return true;
   if (index.getChildren(node.nodeId).length > 0) return true;
   return index.getNodeText(node.nodeId, "DESCENDANTS").trim().length >= DEGENERATE_TEXT_CHARS;
 }
@@ -109,7 +115,7 @@ function pick(index: StructuralIndex, matches: StructuralNode[], requestedRef: s
   const substantive = matches.filter((n) => isSubstantive(index, n));
   const degenerate = matches.filter((n) => !isSubstantive(index, n));
   if (substantive.length === 1 && degenerate.length === matches.length - 1) {
-    return { status: viaEnclosing ? "RESOLVED_VIA_ENCLOSING_NODE" : "UNIQUE_AFTER_DEGENERATE_EXCLUSION", node: substantive[0]!, normalizedRef: lookedUp, requestedRef, candidateNodeIds, excludedDegenerateNodeIds: degenerate.map((n) => n.nodeId), note: `${matches.length} occurrences share "${lookedUp}"; ${degenerate.length} are heading-only (no children, <${DEGENERATE_TEXT_CHARS} chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken${viaEnclosing ? ` as the enclosing node of "${requestedRef}"` : ""}` };
+    return { status: viaEnclosing ? "RESOLVED_VIA_ENCLOSING_NODE" : "UNIQUE_AFTER_DEGENERATE_EXCLUSION", node: substantive[0]!, normalizedRef: lookedUp, requestedRef, candidateNodeIds, excludedDegenerateNodeIds: degenerate.map((n) => n.nodeId), note: `${matches.length} occurrences share "${lookedUp}"; ${degenerate.length} are contents listings or heading-only (no children, <${DEGENERATE_TEXT_CHARS} chars) and were excluded; the single substantive occurrence was taken${viaEnclosing ? ` as the enclosing node of "${requestedRef}"` : ""}` };
   }
   if (fromNodeId) {
     const run = disambiguateWithinEnumerationRun(index, substantive, fromNodeId);

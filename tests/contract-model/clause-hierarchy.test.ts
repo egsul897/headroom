@@ -64,4 +64,89 @@ describe("buildClauseTree", () => {
     expect(b.nodeType).toBe("SUBSECTION");
     expect(tree.filter((n) => n.depth === 2)).toHaveLength(2);
   });
+
+  it("keeps (x) and (y) as letters after (a) through (w)", () => {
+    const letters = "abcdefghijklmnopqrstuvw".split("");
+    const text = `${letters.map((letter) => `(${letter}) item ${letter}.`).join("\n")}\n(x) item x.\n(y) item y.`;
+    const tree = buildClauseTree(text);
+    expect(tree.map((n) => n.marker)).toEqual([...letters.map((letter) => `(${letter})`), "(x)", "(y)"]);
+    expect(tree.every((n) => n.parentMarkerPath.length === 0)).toBe(true);
+  });
+
+  it("resumes an outer letter list at (x)/(y) instead of consuming (x) as roman ten", () => {
+    const letters = "abcdefghijklmnopqrstuvw".split("");
+    const romans = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix"];
+    const text = [
+      ...letters.map((letter) => `(${letter}) item ${letter}.`),
+      ...romans.map((roman) => `(${roman}) roman ${roman}.`),
+      "(x) item x.",
+      "(y) item y.",
+    ].join("\n");
+    const tree = buildClauseTree(text);
+    const x = tree.find((n) => n.marker === "(x)")!;
+    const y = tree.find((n) => n.marker === "(y)")!;
+    const ix = tree.find((n) => n.marker === "(ix)")!;
+    expect(x.parentMarkerPath).toEqual([]);
+    expect(y.parentMarkerPath).toEqual([]);
+    expect(ix.parentMarkerPath).toEqual(["(w)"]);
+    expect(tree.filter((n) => n.marker === "(i)").every((n) => n.parentMarkerPath.includes("(w)") || n.marker === "(i)")).toBe(true);
+  });
+
+  it("keeps (x) then (xi) on the roman sequence", () => {
+    const romans = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi"];
+    const text = romans.map((roman) => `(${roman}) roman ${roman}.`).join("\n");
+    const tree = buildClauseTree(text);
+    expect(tree.map((n) => n.marker)).toEqual(romans.map((roman) => `(${roman})`));
+    expect(tree.every((n) => n.parentMarkerPath.length === 0)).toBe(true);
+  });
+
+  it("does not drop (i) after (h) when the deepest list is already that letter list", () => {
+    const tree = buildClauseTree("(a) a.\n(b) b.\n(c) c.\n(d) d.\n(e) e.\n(f) f.\n(g) g.\n(h) h.\n(i) i.\n(j) j.");
+    expect(tree.map((n) => n.marker)).toEqual(["(a)", "(b)", "(c)", "(d)", "(e)", "(f)", "(g)", "(h)", "(i)", "(j)"]);
+    expect(tree.find((n) => n.marker === "(i)")?.parentMarkerPath).toEqual([]);
+    expect(tree.find((n) => n.marker === "(j)")?.parentMarkerPath).toEqual([]);
+  });
+
+  it("starts a restarted letter run at (x) then (y) when no sequence is open", () => {
+    const tree = buildClauseTree("(x) item x.\n(y) item y.");
+    expect(tree.map((n) => n.marker)).toEqual(["(x)", "(y)"]);
+    expect(tree.every((n) => n.parentMarkerPath.length === 0)).toBe(true);
+  });
+
+  it("leaves a lone (x) unparsed", () => {
+    expect(buildClauseTree("(x) item x only.")).toEqual([]);
+  });
+
+  it("does not nest a repeated line-start letter under a cross-reference that already continued the list", () => {
+    const text = [
+      "(a) first item referring to Section 6.1(a) or (b) in the fiscal quarter.",
+      "(b) second item.",
+      "(c) third item.",
+      "(d) fourth item.",
+    ].join("\n");
+    const paths = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
+    expect(paths).toEqual(["(a)", "(b)", "(c)", "(d)"]);
+  });
+
+  it("does not invent a restarted letter run when (x) is followed by (xi)", () => {
+    const tree = buildClauseTree("(x) item x.\n(xi) item xi.");
+    expect(tree.map((n) => n.marker)).not.toContain("(y)");
+    expect(tree.some((n) => n.marker === "(x)" && n.parentMarkerPath.length === 0 && tree.some((next) => next.marker === "(y)"))).toBe(false);
+  });
+
+  it("does not pop an inner list that resumes after a hanging paragraph", () => {
+    const text = [
+      "(a) outer item:",
+      "(1) numeric child.",
+      "",
+      "This hanging prose is not a label.",
+      "",
+      "(i) first roman under the numeric child.",
+      "(ii) second roman.",
+      "(2) numeric sibling resumes.",
+      "(b) outer sibling.",
+    ].join("\n");
+    const refs = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
+    expect(refs).toEqual(["(a)", "(a)(1)", "(a)(1)(i)", "(a)(1)(ii)", "(a)(2)", "(b)"]);
+  });
 });

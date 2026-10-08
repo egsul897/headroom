@@ -4,12 +4,12 @@
  */
 import { describe, expect, it } from "vitest";
 import { BudgetLedger } from "../../scripts/p3-conmed-pilot/timeout-policy";
-import { compileReservationUsd, verifyReservationUsd } from "../../scripts/p3-conmed-pilot/reservation-policy";
+import { compileReservationUsd, compileShape, shapeExceeded, verifyReservationUsd } from "../../scripts/p3-conmed-pilot/reservation-policy";
 import { DEFAULT_CANDIDATE_TIMEOUT_MS } from "../../scripts/p3-conmed-pilot/timeout-policy";
+import { readFileSync } from "node:fs";
 import {
   HAIKU_MODEL_ID,
   SHOWN_HAIKU_VERIFICATION_CEILING_USD,
-  gibraltarShapeStop,
   haikuGatewayModel,
   verificationDispatchRank,
 } from "../../scripts/p3-development-pipeline/verify-gibraltar";
@@ -52,8 +52,15 @@ describe("Gibraltar Haiku verification ceiling", () => {
     expect(rank("7.05(c)", [])).toBeLessThan(rank("6.01", []));
   });
 
-  it("records a CONMED conversation-cap miss and does not treat it as a stop", () => {
-    expect(gibraltarShapeStop(["conversations 11 > reserved 5"])).toEqual([]);
-    expect(gibraltarShapeStop(["input tokens 20000000 > reserved 1000"])).toEqual(["input tokens 20000000 > reserved 1000"]);
+  it("keeps a conversation-shape miss as a stop for every document", () => {
+    const model = haikuGatewayModel();
+    const shape = compileShape(model, 2_000, DEFAULT_CANDIDATE_TIMEOUT_MS);
+    const reasons = shapeExceeded({ attemptCount: 11, inputTokens: 1, outputTokens: 1 }, shape);
+    expect(reasons.some((reason) => reason.startsWith("conversations 11 > reserved"))).toBe(true);
+    const narrow = shapeExceeded({ attemptCount: 3, inputTokens: 1, outputTokens: 1 }, { ...shape, conversations: 2 });
+    expect(narrow).toEqual(["conversations 3 > reserved 2"]);
+    const source = readFileSync("scripts/p3-development-pipeline/verify-gibraltar.ts", "utf8");
+    expect(source).not.toContain("gibraltarShapeStop");
+    expect(source).not.toContain("conversations ");
   });
 });

@@ -21,6 +21,7 @@ import { buildNodeSupersessionIndex, getNodeSupersessionStatus, getOperativeDefi
 import type { DefinitionEvidenceFound } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import { computeSourceContentHash } from "../hashing";
+import { classifyStructuralOccurrence } from "../operative-authority";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import { findDefinedTermVariant } from "../structural-index";
 import type { RetrievedSourceRecord, SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
@@ -117,7 +118,9 @@ function followForwardingDefinition(access: SemanticToolAccess, supersessionInde
   if (remaining <= 0) return { payload: { kind: target.kind, ref: target.ref, served: false, reason: "additional-source character budget exhausted before the forwarding target could be read" }, summary: `forwarding target ${target.kind} ${target.ref} not read (budget)`, chars: 0, evidenceUnresolved: false, truncated: false };
   if (target.kind === "SECTION") {
     const resolution = resolveReferenceTarget(access.structuralIndex, documentId, target.ref);
-    if (!resolution.node) return { payload: { kind: "SECTION", ref: target.ref, served: false, resolution: resolution.status, reason: resolution.note, candidateNodeIds: resolution.candidateNodeIds }, summary: `forwarding target Section ${target.ref} ${resolution.status}`, chars: 0, evidenceUnresolved: false, truncated: false };
+    if (!resolution.node || classifyStructuralOccurrence(resolution.node, access.structuralIndex) === "CONTENTS_LISTING") {
+      return { payload: { kind: "SECTION", ref: target.ref, served: false, resolution: resolution.status, reason: resolution.node ? "The resolved target is a contents listing. It is not the operative section." : resolution.note, candidateNodeIds: resolution.candidateNodeIds }, summary: `forwarding target Section ${target.ref} ${resolution.node ? "CONTENTS_LISTING" : resolution.status}`, chars: 0, evidenceUnresolved: false, truncated: false };
+    }
     const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, resolution.node);
     const display = legacySupersessionDisplay(resolved);
     const { text, truncated } = truncate(resolved.text);
@@ -632,6 +635,9 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         } else {
           node = resolution.node;
         }
+        if (classifyStructuralOccurrence(node, access.structuralIndex) === "CONTENTS_LISTING") {
+          return refuse(`section reference "${sectionRef}" resolves to a contents listing, not an operative covenant`);
+        }
         const fullNodeText = access.structuralIndex.getNodeText(node.nodeId, "OWN");
         const { text, truncated } = truncate(fullNodeText);
         charsUsedRef.current += text.length;
@@ -933,7 +939,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
             // the candidates. The pre-fix early refusal made "Section 2.18" unretrievable from its own citing clause.
             if (found?.resolved && found.targetNodeId && !found.targetAmbiguous) {
               const targetNode = access.structuralIndex.getNode(found.targetNodeId);
-              if (targetNode) {
+              if (targetNode && classifyStructuralOccurrence(targetNode, access.structuralIndex) !== "CONTENTS_LISTING") {
                 // Phase 3F.1.6.R BLOCKER-5 fix (SUPER-5): previously read
                 // raw structural text unconditionally, with no
                 // operative-state check at all, despite this tool's own
@@ -980,6 +986,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // the model can disambiguate deliberately via getSourceSpan(nodeId)
         // on real evidence, instead of this code ever guessing (mission §15).
         const ambiguousCandidates: { documentId: string; nodeId: string; sectionRef: string; charStart: number; heading: string }[] = [];
+        let sawContentsListing = false;
         for (const documentId of allowedDocs) {
           const resolution = resolveReferenceTarget(access.structuralIndex, documentId, ref, { fromNodeId });
           if (resolution.status === "AMBIGUOUS") {
@@ -987,6 +994,10 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
               const n = access.structuralIndex.getNodeById(nodeId);
               if (n) ambiguousCandidates.push({ documentId, nodeId, sectionRef: n.sectionRef, charStart: n.charStart, heading: n.heading.slice(0, 80) });
             }
+            continue;
+          }
+          if (resolution.node && classifyStructuralOccurrence(resolution.node, access.structuralIndex) === "CONTENTS_LISTING") {
+            sawContentsListing = true;
             continue;
           }
           if (resolution.node) {
@@ -1007,6 +1018,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           }
         }
         if (ambiguousCandidates.length > 0) return refuse(`reference "${ref}"${fromNodeId ? ` (from node "${fromNodeId}")` : ""} matches ${ambiguousCandidates.length} substantive physical locations within this instrument's documents - ambiguous, not resolved (never guessed). Candidates: ${JSON.stringify(ambiguousCandidates)}. ${fromNodeId ? "Call" : "Provide a fromNodeId for context-scoped resolution, or call"} getSourceSpan on the specific candidate nodeId your evidence supports.`);
+        if (sawContentsListing) return refuse(`section reference "${ref}" resolves to a contents listing, not an operative covenant`);
         return refuse(`reference "${ref}" did not resolve to any section (or any enclosing section) within this instrument's documents`);
       },
     },

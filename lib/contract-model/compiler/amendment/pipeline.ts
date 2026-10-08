@@ -19,6 +19,7 @@ import type { PackageDocumentInput, PackageGraphResult } from "../package-graph/
 import type { StageCaller } from "../llm-caller";
 import { resolveEffectiveDate } from "./effective-date";
 import { parseDeterministicAmendmentEffects } from "./deterministic-parser";
+import { detectUnclassifiedOverrides } from "./unclassified-override";
 import { detectMarkupExhibitEffects, type MarkupExhibitResolutionCandidate } from "./markup-exhibit";
 import { detectScheduleModificationEffects, type ScheduleModificationResolutionCandidate } from "./schedule-modification";
 import { interpretAmendmentClause, AMENDMENT_INTERPRETATION_PROMPT_VERSION } from "./semantic-interpreter";
@@ -64,7 +65,7 @@ export interface AmendmentPipelineInput {
 
 /** Task §35 - counts how many semantic calls WOULD be made, before any are, so a caller can estimate cost first. Pure, zero-cost. */
 export function countAmbiguousEffectsNeedingInterpretation(input: AmendmentPipelineInput): number {
-  return runDeterministicPass(input).filter((e) => AMBIGUOUS_OPERATIONS.has(e.operation) && e.target.targetSectionRef !== null && e.status !== "UNRESOLVED").length;
+  return runDeterministicPass(input).filter((e) => AMBIGUOUS_OPERATIONS.has(e.operation) && e.target.targetSectionRef !== null && e.status !== "UNRESOLVED" && !e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:")).length;
 }
 
 function instrumentKeyForDocument(packageGraph: PackageGraphResult, documentId: string | null): string | null {
@@ -179,6 +180,16 @@ function runDeterministicPass(input: AmendmentPipelineInput): AmendmentEffectCan
     );
   }
 
+  for (const doc of documents) {
+    results.push(...detectUnclassifiedOverrides({
+      document: doc,
+      documents,
+      index: input.index,
+      instrumentKeyForDocument: (targetDocId) => instrumentKeyForDocument(packageGraph, targetDocId),
+      effectiveDate: resolveEffectiveDate({ amendmentText: doc.text, executionDate: identityById.get(doc.documentId)?.executionDate ?? null }),
+    }));
+  }
+
   return results;
 }
 
@@ -268,7 +279,7 @@ export async function runAmendmentPipeline(caller: StageCaller, input: Amendment
 
   const finalEffects: AmendmentEffectCandidate[] = [];
   for (const effect of deterministicEffects) {
-    const needsInterpretation = AMBIGUOUS_OPERATIONS.has(effect.operation) && (effect.target.targetSectionRef !== null || effect.target.targetDefinedTermRef !== null) && effect.status !== "UNRESOLVED";
+    const needsInterpretation = AMBIGUOUS_OPERATIONS.has(effect.operation) && (effect.target.targetSectionRef !== null || effect.target.targetDefinedTermRef !== null) && effect.status !== "UNRESOLVED" && !effect.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:");
     if (!needsInterpretation) {
       finalEffects.push(effect);
       continue;

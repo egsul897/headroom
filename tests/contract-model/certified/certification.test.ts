@@ -158,7 +158,8 @@ describe("semantic source contract: relied-upon context invalidates, unrelated c
     expect(r.semanticSourceContract!.attributionMode).toBe("RELIED_UPON");
     // 7.01 USES Consolidated EBITDA; the definition's own dependency chain (CNI, Interest Expense) is relied upon transitively through the bundle's DEPENDS_ON_DEFINITION edges
     expect(r.semanticSourceContract!.reliedUpon.definedTerms).toEqual(["consolidated ebitda"]);
-    expect(r.semanticSourceContract!.reliedUpon.contextItems.map((i) => `${i.type}:${i.normalizedRef}`).sort()).toEqual(["AMENDMENT_LEAD:7.02", "DEFINITION:Consolidated EBITDA", "DEFINITION_DEPENDENCY:Consolidated Net Income", "DEFINITION_DEPENDENCY:Interest Expense", "OPERATIVE_SOURCE:7.01"]);
+    // The amendment of Section 7.02 is not context for 7.01. It used to appear because the last definition's span ran to the end of the document and swallowed the later section heading.
+    expect(r.semanticSourceContract!.reliedUpon.contextItems.map((i) => `${i.type}:${i.normalizedRef}`).sort()).toEqual(["DEFINITION:Consolidated EBITDA", "DEFINITION_DEPENDENCY:Consolidated Net Income", "DEFINITION_DEPENDENCY:Interest Expense", "OPERATIVE_SOURCE:7.01"]);
     expect(r.compilation!.definitions).toEqual([]); // definitions are owned by the 1.01 candidate
     for (const u of [...r.compilation!.rules, ...r.compilation!.definitions]) expect(u.sourceContentVersion).toBe(r.semanticSourceContract!.version);
     // the contract never binds model output, verification or cost: the same input yields the same version

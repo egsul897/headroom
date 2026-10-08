@@ -199,6 +199,8 @@ export function buildCapacityGraph(args: BuildCapacityGraphArgs): CapacityGraph 
   const addEdge = (from: string, to: string, kind: CapacityEdgeKind, sourceRelationship: string | null, description: string | null) => { edges.push({ from, to, kind, sourceRelationship, description }); };
 
   // --- rule capacity nodes -------------------------------------------------
+  // governingLimit is unread. A ceiling on separately authorized indebtedness
+  // is not available capacity and must not emit RULE_CAPACITY.
   for (const rule of rules) {
     if (!rule.capacityExpression) continue;
     const id = ruleNodeId(rule.ruleId);

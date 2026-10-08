@@ -23,6 +23,7 @@
  * the tool's own real runtime behavior for a representative case.
  */
 import { describe, expect, it } from "vitest";
+import type { DetectedReference } from "../../lib/contract-model/compiler/structural-references";
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import { buildToolSet, type ToolOperativeStateDiscipline } from "../../lib/contract-model/compiler/semantic/tools";
 import { DEFAULT_TOOL_BUDGET } from "../../lib/contract-model/compiler/semantic/types";
@@ -431,5 +432,72 @@ describe("BLOCKER-5 permanent enforcement: every registered LLM-facing evidence 
         expect(outcome.evidenceUnresolved, `${name} (UNRESOLVED case) expected evidenceUnresolved TRUE - a real, on-file but not-yet-superseded conflicted view must never be reported safe`).toBe(true);
       }
     });
+  });
+});
+
+describe("getReferencedProvision does not follow a reference edge into a contents listing", () => {
+  function reference(sourceNodeId: string, targetNodeId: string): DetectedReference {
+    return {
+      documentId: TEST_DOCUMENT_ID,
+      sourceNodeKey: null,
+      sourceNodeId,
+      referenceText: "Section 6.01",
+      targetKind: "SECTION",
+      normalizedTarget: "6.01",
+      targetNodeKey: null,
+      targetNodeId,
+      targetAmbiguous: false,
+      resolved: true,
+      unresolvedReason: null,
+      charStart: 0,
+      charEnd: 13,
+    };
+  }
+
+  it("returns the operative body when the stored target id is the contents row", () => {
+    const toc = "Section 6.01 Minimum Liquidity of $50,000,000 225\n";
+    const body = "Section 6.01 Payments. The Borrower shall pay.\n";
+    const citer = "See Section 6.01.\n";
+    const text = citer + toc + body;
+    const citeNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "CLAUSE", heading: "", sectionRef: "7.01(a)", nodeKey: `${TEST_DOCUMENT_ID}::7.01(a)`, nodeId: "cite", charStart: 0, charEnd: citer.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
+    const tocNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Minimum Liquidity", sectionRef: "6.01", nodeKey: `${TEST_DOCUMENT_ID}::6.01-toc`, nodeId: "toc", charStart: citer.length, charEnd: citer.length + toc.length, ordinal: 1, parentSectionRef: null, parentNodeId: null };
+    const bodyNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Payments", sectionRef: "6.01", nodeKey: `${TEST_DOCUMENT_ID}::6.01-body`, nodeId: "body", charStart: citer.length + toc.length, charEnd: text.length, ordinal: 2, parentSectionRef: null, parentNodeId: null };
+    const index = buildStructuralIndex(new Map([[TEST_DOCUMENT_ID, { text, nodes: [citeNode, tocNode, bodyNode] }]]), [], [reference("cite", "toc")]);
+    const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
+    const outcome = tools.find((tool) => tool.name === "getReferencedProvision")!.execute({ ref: "Section 6.01", fromNodeId: "cite" });
+    expect(outcome.ok).toBe(true);
+    expect(JSON.stringify(outcome.result)).toContain("shall pay");
+    expect(JSON.stringify(outcome.result)).not.toContain("225");
+  });
+
+  it("refuses a reference whose only target is a contents row", () => {
+    const toc = "Section 6.01 Minimum Liquidity of $50,000,000 225\n";
+    const citer = "See Section 6.01.\n";
+    const text = citer + toc;
+    const citeNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "CLAUSE", heading: "", sectionRef: "7.01(a)", nodeKey: `${TEST_DOCUMENT_ID}::7.01(a)`, nodeId: "cite", charStart: 0, charEnd: citer.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
+    const tocNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Minimum Liquidity", sectionRef: "6.01", nodeKey: `${TEST_DOCUMENT_ID}::6.01`, nodeId: "toc", charStart: citer.length, charEnd: text.length, ordinal: 1, parentSectionRef: null, parentNodeId: null };
+    const index = buildStructuralIndex(new Map([[TEST_DOCUMENT_ID, { text, nodes: [citeNode, tocNode] }]]), [], [reference("cite", "toc")]);
+    const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
+    const outcome = tools.find((tool) => tool.name === "getReferencedProvision")!.execute({ ref: "Section 6.01", fromNodeId: "cite" });
+    expect(outcome.ok).toBe(false);
+    expect(JSON.stringify(outcome.result)).toContain("contents listing");
+  });
+});
+
+describe("getOperativeProvision does not serve a contents listing as the section", () => {
+  it("refuses a label whose only node is a contents row and still returns a unique operative body", () => {
+    const toc = "Section 6.01 Minimum Liquidity of $50,000,000 225\n";
+    const body = "Section 6.03 Insurance. The Borrower shall maintain insurance.\n";
+    const text = toc + body;
+    const tocNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Minimum Liquidity", sectionRef: "6.01", nodeKey: `${TEST_DOCUMENT_ID}::6.01`, nodeId: "toc-6.01", charStart: 0, charEnd: toc.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
+    const bodyNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Insurance", sectionRef: "6.03", nodeKey: `${TEST_DOCUMENT_ID}::6.03`, nodeId: "body-6.03", charStart: toc.length, charEnd: text.length, ordinal: 1, parentSectionRef: null, parentNodeId: null };
+    const index = buildStructuralIndex(new Map([[TEST_DOCUMENT_ID, { text, nodes: [tocNode, bodyNode] }]]), [], []);
+    const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
+    const contents = tools.find((tool) => tool.name === "getOperativeProvision")!.execute({ sectionRef: "6.01" });
+    expect(contents.ok).toBe(false);
+    expect(JSON.stringify(contents.result)).toContain("contents listing");
+    const operative = tools.find((tool) => tool.name === "getOperativeProvision")!.execute({ sectionRef: "6.03" });
+    expect(operative.ok).toBe(true);
+    expect(JSON.stringify(operative.result)).toContain("shall maintain insurance");
   });
 });

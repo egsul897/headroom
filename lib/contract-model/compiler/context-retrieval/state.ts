@@ -95,6 +95,13 @@ export function resolveDefinitionEvidenceState(state: RetrievalState, index: Str
   return evidenceStateFromResolution(resolveOperativeDefinitionEvidence({ index, operativeState: state.operativeState, term, searchDocumentIds: [documentId], supersessionIndex: state.supersessionIndex }));
 }
 
+/** The text a definition item may carry. A resolved amendment's operative text replaces the base definition. The base text is kept when there is no operative replacement. */
+export function operativeDefinitionText(state: RetrievalState, index: StructuralIndex, documentId: string, term: string, baseText: string): string {
+  const resolution = resolveOperativeDefinitionEvidence({ index, operativeState: state.operativeState, term, searchDocumentIds: [documentId], supersessionIndex: state.supersessionIndex });
+  if (resolution.outcome === "FOUND" && resolution.text && (resolution.source === "amended" || resolution.isCurrentTruth)) return resolution.text;
+  return baseText;
+}
+
 /** True if this add would land within budget; records the BUDGET_EXCEEDED stop reason and returns false otherwise - callers must check before adding, never truncate silently (task §24). */
 export function withinBudget(state: RetrievalState, additionalChars: number): boolean {
   if (state.items.size >= state.budget.maxItems) {

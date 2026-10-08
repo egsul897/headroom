@@ -54,8 +54,12 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(result.verificationReservation.haikuListScaledUsd).toBe(0);
     expect(result.passB.executed).toBe(false);
     expect(result.passB.terminal).toBe("PROVIDER_EXECUTION_REQUIRED");
-    expect(result.offline.passACandidates).toBe(946);
-    expect(result.offline.totalNodes).toBe(2087);
+    // Sealed execution.json stays 946 candidates and 2087 nodes. The live parser
+    // count is the letter-run guard in clause-hierarchy.ts (8590be6): 55 false
+    // definition-tree candidates leave, and 10 swallowed operative clauses return.
+    // Comparison: docs/agent-operations/gibraltar-pass-a-delta.md
+    expect(result.offline.passACandidates).toBe(901);
+    expect(result.offline.totalNodes).toBe(1978);
     expect(result.offline.htmlBodyMatchesProvenance).toBe(true);
     expect(result.offline.extractedTextMatchesProvenance).toBe(true);
 
@@ -68,9 +72,13 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(escalation?.expectedMaxCostUsd).toBe(181.67);
     expect(escalation?.command).toContain("scripts/p3-development-pipeline/execute-gibraltar.ts");
 
-    expect(result.investigations.builderBasket.citedRefResolution).toBe("NOT_FOUND");
+    // 7.05(a)(y) is a real clause after the letter-run restart guard. The prior
+    // NOT_FOUND result, and the owner path 7.05(a)(4)(ii)(vi)(B), were the
+    // swallowed letter run. The same sentence is now 7.05(a)(y)(vi)(B).
+    // docs/agent-operations/gibraltar-pass-a-delta.md
+    expect(result.investigations.builderBasket.citedRefResolution).toBe("UNIQUE");
     expect(result.investigations.builderBasket.discoveryId).toBeNull();
-    expect(result.investigations.builderBasket.owningNodes.map((node) => node.sectionRef)).toContain("7.05(a)(4)(ii)(vi)(B)");
+    expect(result.investigations.builderBasket.owningNodes.map((node) => node.sectionRef)).toContain("7.05(a)(y)(vi)(B)");
     expect(result.investigations.reclass.edgeWritten).toBe(false);
     expect(result.investigations.reclass.categoryToTargetRuleIdInvented).toBe(false);
     expect(result.investigations.reclass.windows.map((window) => window.sectionRef)).toContain("7.01(b)(a)");

@@ -30,6 +30,7 @@
  * document, and no term, section, company or instrument name appears in this file.
  */
 import { computeSourceContentHash } from "../hashing";
+import { classifyStructuralOccurrence } from "../operative-authority";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import type { FrozenSemanticInventory, SemanticInventoryItem, SourceContextResult } from "../semantic-accountability/types";
 import { findDefinedTermVariant, type StructuralIndex } from "../structural-index";
@@ -530,6 +531,10 @@ export function deriveRequiredDependencies(input: DeriveRequiredDependenciesInpu
     if (region) { record({ key: `section:${key}`, kind: "REQUIRED_REFERENCED_SECTION", target: ref, documentId: region.documentId, sourceNodeId: region.sourceNodeId ?? null, absCharStart: region.charStart, absCharEnd: region.charEnd, fullText: region.text, evidence: [evidence], requiredBy, closureDepth: depth, viaKey }); return; }
     const referrerNodeId = input.shardUnits.find((u) => u.sourceNodeId)?.sourceNodeId ?? null;
     const r = resolveReferenceTarget(index, documentId, key, { fromNodeId: referrerNodeId });
+    if (r.node && classifyStructuralOccurrence(r.node, index) === "CONTENTS_LISTING") {
+      record({ key: `section:${key}`, kind: "REQUIRED_REFERENCED_SECTION", target: ref, documentId, sourceNodeId: null, absCharStart: null, absCharEnd: null, fullText: "", evidence: [evidence], requiredBy, closureDepth: depth, viaKey, disposition: "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED", dispositionReason: `section ${ref} resolves only to a contents listing. It is not the operative section.` });
+      return;
+    }
     if (r.node) {
       if (ownedNodeIds.has(r.node.nodeId)) return;
       const text = index.getNodeText(r.node.nodeId, "DESCENDANTS");

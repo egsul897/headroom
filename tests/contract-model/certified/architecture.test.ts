@@ -24,11 +24,12 @@ describe("one operative-source builder", () => {
     // the construction signature of a compiler input for a candidate: operativeSourceText + toolPolicyVersion in one literal
     const constructors = [...LIB, ...walk("scripts/p3-conmed-pilot")].filter((f) => { const s = read(f); return /operativeSourceText:\s/.test(s) && /toolPolicyVersion:\s/.test(s) && /toolAccess: \{/.test(s); });
     expect(constructors.map((f) => f.replace(/\\/g, "/")).sort()).toEqual(["lib/contract-model/covenant-map/candidate-input.ts"]);
-    // no other module reads a candidate anchor's DESCENDANTS text to make operative text
     // no other module turns a candidate's anchor (structuralNodeIds[0]) into operative text via getNodeText
     const descendantsReaders = LIB.filter((f) => { const s = read(f); return /structuralNodeIds\[0\]/.test(s) && /getNodeText\([^\n]*"DESCENDANTS"\)/.test(s); });
-    // context-retrieval/pipeline.ts reads the anchor's text for the OPERATIVE_SOURCE context ITEM (an excerpt in the bundle), never as compiler input
-    expect(descendantsReaders.sort()).toEqual(["lib/contract-model/compiler/candidate-span.ts", "lib/contract-model/compiler/context-retrieval/pipeline.ts"]);
+    // Context retrieval calls resolveOperativeSource. It does not read the anchor's raw descendants as operative text.
+    expect(descendantsReaders.sort()).toEqual(["lib/contract-model/compiler/candidate-span.ts"]);
+    expect(read("lib/contract-model/compiler/context-retrieval/pipeline.ts")).toMatch(/resolveOperativeSource\(/);
+    expect(read("lib/contract-model/compiler/context-retrieval/structural-context.ts")).toMatch(/resolveOperativeSource\(/);
     // and the operative-source functions are defined exactly once
     const definers = LIB.filter((f) => /export function (resolveOperativeSource|operativeSourceTextFor)\(/.test(read(f)));
     expect(definers).toEqual(["lib/contract-model/compiler/candidate-span.ts"]);
@@ -48,6 +49,16 @@ describe("one operative-source builder", () => {
     // a PARTIAL / REVIEW_REQUIRED provision never substitutes its text
     const partial = { ...(state as { provisions: object[] }), provisions: [{ ...(state as { provisions: Record<string, unknown>[] }).provisions[0], status: "OPERATIVE_STATE_REVIEW_REQUIRED" }] } as never;
     expect(resolveOperativeSource(candidate, index, partial).origin).toBe("STRUCTURAL_NODE");
+  });
+});
+
+describe("operative identity is not waived in production source", () => {
+  it("only the semantic-compiler test helper assigns syntheticRawTextFixture: true", () => {
+    const production = [...walk("lib"), ...walk("scripts")].filter((f) => /syntheticRawTextFixture:\s*true\b/.test(read(f)));
+    expect(production).toEqual([]);
+    expect(read("tests/contract-model/semantic-compiler/test-helpers.ts")).toMatch(/syntheticRawTextFixture:\s*true\b/);
+    expect(read("lib/contract-model/compiler/semantic/compile.ts")).toMatch(/syntheticRawTextFixture: input\.syntheticRawTextFixture === true/);
+    expect(read("lib/contract-model/covenant-map/candidate-input.ts")).not.toMatch(/syntheticRawTextFixture/);
   });
 });
 

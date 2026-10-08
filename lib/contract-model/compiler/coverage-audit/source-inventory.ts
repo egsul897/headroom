@@ -39,7 +39,9 @@ function probableRole(signals: SignalHit[], node: StructuralNode, hasUnrepresent
   // phrasing that would otherwise always mask the more specific
   // SHARED_CAP/BUILDER_GROWER/RATIO_TEST role beneath a generic prohibition.
   if (names.has("grower_basket") || names.has("builder_basket")) return "BUILDER_GROWER_CANDIDATE";
-  if (names.has("shared_cap") || names.has("aggregate_amount")) return "SHARED_CAP_CANDIDATE";
+  // Bare aggregate_amount is a single-basket / threshold economic signal —
+  // never SHARED_CAP_CANDIDATE without an independent shared_cap relationship hit.
+  if (names.has("shared_cap")) return "SHARED_CAP_CANDIDATE";
   if (names.has("ratio_expression") || names.has("leverage_threshold") || names.has("coverage_threshold") || names.has("ratio_basket")) return "RATIO_TEST_CANDIDATE";
   if (names.has("shall_not") || names.has("may_not") || names.has("will_not") || names.has("shall_not_permit")) return "GENERAL_PROHIBITION_CANDIDATE";
   if (names.has("except") || names.has("provided_that") || names.has("notwithstanding")) return "EXCEPTION_CANDIDATE";

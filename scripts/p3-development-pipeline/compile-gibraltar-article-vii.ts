@@ -24,6 +24,9 @@ import { DISCOVERY_ROLES, type DiscoveredCandidate, type DiscoveryRole } from ".
 import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../../lib/contract-model/compiler/amendment/operative-state";
 import { buildPackageGraph } from "../../lib/contract-model/compiler/package-graph/pipeline";
 import { operativeSourceTextFor } from "../../lib/contract-model/compiler/candidate-span";
+import { authenticateStructuralOccurrence, selectAuthenticatedSectionBodies, type StructuralOccurrenceKind } from "../../lib/contract-model/compiler/operative-authority";
+import type { NodeSupersessionStatus } from "../../lib/contract-model/compiler/amendment/types";
+import { mayDispatchUnderSpendingTarget, settleListedSpend } from "./spending-target";
 import { isEligibleForSemanticCompilation } from "../../lib/contract-model/compiler/semantic/package-compile";
 import { compileCovenantToIR } from "../../lib/contract-model/compiler/semantic/compile";
 import { InMemorySemanticCompilationCache } from "../../lib/contract-model/compiler/semantic/cache";
@@ -37,8 +40,14 @@ import { COMPANY_ID, DOCUMENT_ID, HAIKU_MODEL_ID, INSTRUMENT_KEY, PACKAGE_KEY } 
 export const ARTICLE_VII_BODY_REFS = ["7.02", "7.08", "7.03", "7.06", "7.01", "7.05"] as const;
 /** One reply at this size is $0.12288 of Haiku output. Unused room is not billed. */
 export const ARTICLE_VII_MAX_OUTPUT_TOKENS = 24_576;
-/** New spend only. Leaves a buffer under the $19.97 gateway balance. */
-export const ARTICLE_VII_CEILING_USD = 12;
+/**
+ * Development spending target for this diagnostic run. It left a buffer under
+ * the gateway balance stated for that run. It is not an owner-grant hard ceiling
+ * and it does not reserve the worst case of the next call.
+ */
+export const ARTICLE_VII_SPENDING_TARGET_USD = 12;
+/** @deprecated Use ARTICLE_VII_SPENDING_TARGET_USD. The historical name said "ceiling"; the contract is a spending target. */
+export const ARTICLE_VII_CEILING_USD = ARTICLE_VII_SPENDING_TARGET_USD;
 const HAIKU_INPUT_PER_TOKEN = 1 / 1_000_000;
 const HAIKU_OUTPUT_PER_TOKEN = 5 / 1_000_000;
 const PACKAGE_DIR = "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement";
@@ -54,22 +63,19 @@ export interface ArticleSevenRow {
   normalizedSourceRef: string;
   operativeChars: number;
   role: string;
+  structuralKind: StructuralOccurrenceKind | "MISSING";
+  supersessionStatus: NodeSupersessionStatus;
+  sourceHashOk: boolean;
+  occurrenceId: string | null;
 }
 
 export function haikuListUsd(inputTokens: number, outputTokens: number): number {
   return Number((inputTokens * HAIKU_INPUT_PER_TOKEN + outputTokens * HAIKU_OUTPUT_PER_TOKEN).toFixed(6));
 }
 
-/** One row per exact section ref: the longest operative text. Child refs and 7.04 are not selected. */
+/** One diagnostic body per exact section ref. Length is not a vote. Child refs and 7.04 are not in the ref list. */
 export function selectArticleSevenBodies<T extends ArticleSevenRow>(rows: readonly T[], refs: readonly string[] = ARTICLE_VII_BODY_REFS): T[] {
-  const selected: T[] = [];
-  for (const ref of refs) {
-    const matches = rows.filter((row) => row.normalizedSourceRef === ref);
-    if (matches.length === 0) continue;
-    const best = [...matches].sort((a, b) => b.operativeChars - a.operativeChars)[0]!;
-    selected.push(best);
-  }
-  return selected;
+  return selectAuthenticatedSectionBodies(rows, refs);
 }
 
 interface PersistedRow {
@@ -161,7 +167,8 @@ interface AttemptRecord {
   outputTokens: number | null;
   conversations: number | null;
   refinements: number | null;
-  costUsd: number;
+  costUsd: number | null;
+  costStatus?: "EXACT" | "UNKNOWN";
   wallClockMs: number;
   certified: false;
   pinnedOffline: false;
@@ -189,7 +196,20 @@ async function main(): Promise<void> {
     seen.add(row.discoveryId);
     const built = candidateFor(row, loaded.index);
     if (!built) continue;
-    prepared.push({ discoveryId: row.discoveryId, normalizedSourceRef: row.normalizedSourceRef, operativeChars: built.operativeChars, role: row.role, candidate: built.candidate });
+    const anchorId = built.candidate.structuralNodeIds[0] ?? null;
+    const anchor = anchorId ? loaded.index.getNodeById(anchorId) : undefined;
+    const authority = anchor ? authenticateStructuralOccurrence({ node: anchor, index: loaded.index, supersessionStatus: built.candidate.supersessionStatus }) : null;
+    prepared.push({
+      discoveryId: row.discoveryId,
+      normalizedSourceRef: row.normalizedSourceRef,
+      operativeChars: built.operativeChars,
+      role: row.role,
+      structuralKind: authority?.structuralKind ?? "MISSING",
+      supersessionStatus: built.candidate.supersessionStatus,
+      sourceHashOk: authority ? !authority.reason.startsWith("SOURCE_HASH_MISMATCH") : false,
+      occurrenceId: anchor?.nodeId ?? null,
+      candidate: built.candidate,
+    });
   }
   const selected = selectArticleSevenBodies(prepared);
   if (dry) {
@@ -209,7 +229,12 @@ async function main(): Promise<void> {
   const prior = loadPrior();
   const attempts: AttemptRecord[] = [...prior];
   const done = new Set(prior.filter((attempt) => (attempt.inputTokens ?? 0) > 0 || attempt.rules > 0).map((attempt) => attempt.discoveryId));
-  let spent = prior.reduce((sum, attempt) => sum + attempt.costUsd, 0);
+  let spent = 0;
+  let unknownDispatches = 0;
+  for (const attempt of prior) {
+    if (attempt.costStatus === "UNKNOWN" || attempt.costUsd == null) unknownDispatches += 1;
+    else spent += attempt.costUsd;
+  }
   let stop: { reason: string; detail: string | null } | null = null;
 
   const flush = () => {
@@ -225,8 +250,11 @@ async function main(): Promise<void> {
       inventory: false,
       verifier: false,
       maxOutputTokens: ARTICLE_VII_MAX_OUTPUT_TOKENS,
+      spendingAuthorization: "DEVELOPMENT_TARGET_NOT_HARD_CEILING",
+      spendingTargetUsd: ARTICLE_VII_SPENDING_TARGET_USD,
       ceilingUsd: ARTICLE_VII_CEILING_USD,
-      priceBasis: "Haiku list $1 input and $5 output per million tokens. priceUsage has no Haiku card.",
+      unknownDispatches,
+      priceBasis: "Haiku list $1 input and $5 output per million tokens. priceUsage has no Haiku card. Missing tokens are UNKNOWN, not $0.",
       manner: "One Article VII section body each. 7.04 skipped (already compiled). No child rows, no table-of-contents lines, no inventory pass, no verifier, no 12-turn loop.",
       attempts,
       spentUsd: Number(spent.toFixed(6)),
@@ -237,8 +265,9 @@ async function main(): Promise<void> {
 
   for (const item of selected) {
     if (done.has(item.discoveryId)) continue;
-    if (spent >= ARTICLE_VII_CEILING_USD) {
-      stop = { reason: "BUDGET_STOP", detail: `spent ${spent.toFixed(4)} has reached the $${ARTICLE_VII_CEILING_USD} ceiling` };
+    const targetDecision = mayDispatchUnderSpendingTarget({ knownSpentUsd: spent, unknownDispatches, targetUsd: ARTICLE_VII_SPENDING_TARGET_USD });
+    if (!targetDecision.allowed) {
+      stop = { reason: targetDecision.reason, detail: targetDecision.detail };
       break;
     }
     const started = Date.now();
@@ -265,8 +294,9 @@ async function main(): Promise<void> {
     const extra = telemetry as { semanticConversations?: number; refinementConversations?: number } | null;
     const inputTokens = telemetry?.inputTokens ?? null;
     const outputTokens = telemetry?.outputTokens ?? null;
-    const costUsd = inputTokens != null && outputTokens != null ? haikuListUsd(inputTokens, outputTokens) : 0;
-    spent += costUsd;
+    const settlement = settleListedSpend(inputTokens, outputTokens, haikuListUsd);
+    if (settlement.status === "UNKNOWN") unknownDispatches += 1;
+    else spent += settlement.knownUsd ?? 0;
     const credit = detectCreditExhaustionInError(thrown) ?? detectCreditExhaustionInResult(result);
     const attempt: AttemptRecord = {
       discoveryId: item.discoveryId,
@@ -280,14 +310,15 @@ async function main(): Promise<void> {
       outputTokens,
       conversations: extra?.semanticConversations ?? null,
       refinements: extra?.refinementConversations ?? null,
-      costUsd,
+      costUsd: settlement.knownUsd,
+      costStatus: settlement.status,
       wallClockMs: Date.now() - started,
       certified: false,
       pinnedOffline: false,
       eligibleClaimed: false,
     };
     attempts.push(attempt);
-    process.stdout.write(`${item.normalizedSourceRef} status=${attempt.status ?? "THROWN"} rules=${attempt.rules} in=${inputTokens ?? 0} out=${outputTokens ?? 0} usd=${costUsd.toFixed(4)} spent=${spent.toFixed(4)}\n`);
+    process.stdout.write(`${item.normalizedSourceRef} status=${attempt.status ?? "THROWN"} rules=${attempt.rules} in=${inputTokens ?? "unknown"} out=${outputTokens ?? "unknown"} usd=${settlement.knownUsd ?? "UNKNOWN"} spent=${spent.toFixed(4)} unknownDispatches=${unknownDispatches}\n`);
     flush();
     if (credit || (thrown && !result)) {
       stop = { reason: credit ? "GATEWAY_CREDIT_EXHAUSTED" : "PROVIDER_FAILURE", detail: credit?.errorType ?? (thrown instanceof Error ? thrown.message.slice(0, 240) : "no result"), };

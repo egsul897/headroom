@@ -14,6 +14,15 @@
  * not a property-character test. A single manner with no separate object class
  * is left as the emitter wrote it.
  *
+ * A pre-existing condition is removed only when every non-empty surface is
+ * redundant with the two gates. Substring containment is not equivalence: a
+ * third independent qualifier is kept. An exact gate whose description only
+ * narrates both gates is narrowed to the gate its excerpt already states. A
+ * description that also states an independent qualifier is left as written.
+ * An operative pair that cannot be uniquely attributed is not copied onto a
+ * sibling, and sufficiency is AMBIGUOUS. Unknown attribution is not COMPLETE.
+ * A capitalized act name is not synthesized into a DEFINED_TERM_REFERENCE.
+ *
  * Soft gate. invent-absence forever. IMPLEMENTED ≠ CERTIFIED.
  */
 import { withExpressionId } from "../../ir/identity";
@@ -22,7 +31,13 @@ import type { IRCapacityExpression, IRCondition, IRExpression, IRUnsupportedExpr
 export const UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON =
   "QUALITATIVE_GATE_NO_CLOSED_CONDITION_TYPE: an unlimited carve-out states a property-character object class and an ordinary-course manner; neither has a licensed computable condition type, so each gate is UNSUPPORTED, composed with AND on gatedBy, and sufficiency is PARTIAL (invent-absence; not a certification)";
 
+export const UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON =
+  "QUALITATIVE_GATE_ATTRIBUTION_AMBIGUOUS: the operative window states a property-character object class and an ordinary-course manner, but this unlimited rule cannot be uniquely attributed that clause; the gates are not copied onto a sibling by guess, and unknown attribution is AMBIGUOUS rather than COMPLETE (invent-absence; not a certification)";
+
 const FUNCTION_WORDS = new Set(["a", "an", "the", "any", "its", "such", "other", "all", "of", "or", "and", "to", "for", "by", "with", "from", "on", "in", "at", "as"]);
+
+/** Framing words a restatement uses around the two gates. An independent qualifier is a token outside this list. */
+const RESTATEMENT_WORDS = new Set(["exception", "exceptions", "transfer", "transfers", "transferred", "transferring", "applies", "apply", "applied", "applying", "only", "occurs", "occur", "occurring", "occurred", "when", "provided", "that", "this", "carve", "out", "unlimited", "permission", "permitted", "does", "do", "be", "is", "are", "was", "were", "which", "shall", "must", "may", "will"]);
 
 /** Lowercase object phrase, then the ordinary-course manner, in one clause. Defined-term capitals do not match. Fresh each call so lastIndex cannot leak. */
 function dualQualitativePattern(): RegExp {
@@ -46,6 +61,8 @@ export interface UnlimitedCarveOutHonestyResult {
   capacity: IRCapacityExpression | null;
   conditions: IRCondition[];
   applied: boolean;
+  /** True when the operative pair exists and this rule cannot be uniquely attributed it. Sufficiency must not stay COMPLETE. */
+  ambiguousAttribution: boolean;
   reason: string | null;
 }
 
@@ -79,13 +96,14 @@ function findPairs(operativeText: string): QualitativePair[] {
   return pairs;
 }
 
-function selectPair(pairs: QualitativePair[], anchors: readonly (string | null | undefined)[], soleUnlimited: boolean): QualitativePair | null {
+function selectPair(pairs: QualitativePair[], anchors: readonly (string | null | undefined)[], soleUnlimited: boolean): { kind: "absent" } | { kind: "ambiguous" } | { kind: "selected"; pair: QualitativePair } {
+  if (pairs.length === 0) return { kind: "absent" };
   const usable = anchors.filter((anchor): anchor is string => typeof anchor === "string" && anchor.trim().length > 0);
   const named = pairs.filter((pair) => usable.some((anchor) => norm(anchor).includes(norm(pair.objectExcerpt))));
-  if (named.length === 1) return named[0]!;
-  if (named.length > 1) return null;
-  if (pairs.length === 1 && soleUnlimited) return pairs[0]!;
-  return null;
+  if (named.length === 1) return { kind: "selected", pair: named[0]! };
+  if (named.length > 1) return { kind: "ambiguous" };
+  if (pairs.length === 1 && soleUnlimited) return { kind: "selected", pair: pairs[0]! };
+  return { kind: "ambiguous" };
 }
 
 function excerptOf(condition: IRCondition): string | null {
@@ -96,12 +114,29 @@ function isExactGate(condition: IRCondition, excerpt: string): boolean {
   return condition.conditionType === "UNSUPPORTED" && excerptOf(condition) !== null && norm(excerptOf(condition)!) === norm(excerpt);
 }
 
-function isFoldedQualitative(condition: IRCondition, objectExcerpt: string, mannerExcerpt: string): boolean {
+function hasIndependentQualifier(surface: string, objectExcerpt: string, mannerExcerpt: string): boolean {
+  let rest = norm(surface);
+  const objectN = norm(objectExcerpt);
+  const mannerN = norm(mannerExcerpt);
+  if (objectN) rest = rest.split(objectN).join(" ");
+  if (mannerN) rest = rest.split(mannerN).join(" ");
+  const tokens = rest.split(/[^a-z0-9-]+/).filter((token) => token.length > 0 && !FUNCTION_WORDS.has(token) && !RESTATEMENT_WORDS.has(token));
+  return tokens.length > 0;
+}
+
+/**
+ * Redundant only when every non-empty surface, after the two gate phrases are
+ * removed, has no remaining qualifier. An exact gate is kept. A surface that
+ * merely contains a gate phrase is not redundant.
+ */
+function isQualitativelyRedundant(condition: IRCondition, objectExcerpt: string, mannerExcerpt: string): boolean {
   if (condition.conditionType !== "UNSUPPORTED") return false;
   if (isExactGate(condition, objectExcerpt) || isExactGate(condition, mannerExcerpt)) return false;
-  const blob = `${excerptOf(condition) ?? ""}\n${condition.description}`;
-  const folded = norm(blob);
-  return folded.includes(norm(objectExcerpt)) || folded.includes(norm(mannerExcerpt));
+  const surfaces = [norm(excerptOf(condition) ?? ""), norm(condition.description ?? "")].filter((surface) => surface.length > 0);
+  if (surfaces.length === 0) return false;
+  const mentionsGate = surfaces.some((surface) => surface.includes(norm(objectExcerpt)) || surface.includes(norm(mannerExcerpt)));
+  if (!mentionsGate) return false;
+  return surfaces.every((surface) => !hasIndependentQualifier(surface, objectExcerpt, mannerExcerpt));
 }
 
 function visitUnsupported(expr: IRExpression | null, visit: (node: IRUnsupportedExpression) => void): void {
@@ -130,6 +165,46 @@ function objectDescription(excerpt: string): string {
 
 function mannerDescription(excerpt: string): string {
   return `The unlimited carve-out applies only when it is ${excerpt.replace(/\s+/g, " ").trim()}. This manner test has no licensed computable condition type.`;
+}
+
+/** Sentence glue around the two gate phrases. An independent qualifier is any other word. */
+const DESCRIPTION_GLUE = new Set(["a", "an", "the", "of", "for", "or", "and", "if", "in", "to", "on", "by", "with", "only", "applies", "apply", "applied", "exception", "occurs", "occur", "occurring", "when", "that", "this", "such", "its", "it", "is", "be", "may", "shall"]);
+
+function actTokenBefore(operativeText: string, objectExcerpt: string): string | null {
+  const text = operativeText.replace(/\s+/g, " ");
+  const objectNorm = norm(objectExcerpt);
+  const idx = norm(text).indexOf(objectNorm);
+  if (idx < 0) return null;
+  const before = text.slice(0, idx);
+  const match = before.match(/\b([A-Za-z]+)\s+of\s*$/);
+  return match?.[1] ?? null;
+}
+
+/** Words left after the two gate phrases and the act token are removed. Empty means the description narrates the pair and nothing else. */
+function qualifiersBeyondPair(description: string, objectExcerpt: string, mannerExcerpt: string, actToken: string | null): string[] {
+  let text = norm(description);
+  for (const phrase of [norm(objectExcerpt), norm(mannerExcerpt)].sort((a, b) => b.length - a.length)) {
+    if (phrase.length > 0) text = text.split(phrase).join(" ");
+  }
+  const act = actToken ? norm(actToken) : null;
+  return text.split(/[^a-z0-9]+/).filter((token) => token.length > 0 && !DESCRIPTION_GLUE.has(token) && token !== act);
+}
+
+/**
+ * An exact object or manner gate whose description also narrates the other
+ * gate, and no independent qualifier, is restated as that one gate. A
+ * description with any other word is returned unchanged so the qualifier stays.
+ */
+function narrowExactGateDescription(condition: IRCondition, pair: QualitativePair, operativeText: string): IRCondition {
+  const exactObject = isExactGate(condition, pair.objectExcerpt);
+  const exactManner = isExactGate(condition, pair.mannerExcerpt);
+  if (exactObject === exactManner) return condition;
+  const other = exactObject ? pair.mannerExcerpt : pair.objectExcerpt;
+  if (!norm(condition.description).includes(norm(other))) return condition;
+  const act = actTokenBefore(operativeText, pair.objectExcerpt);
+  if (qualifiersBeyondPair(condition.description, pair.objectExcerpt, pair.mannerExcerpt, act).length > 0) return condition;
+  const description = exactObject ? objectDescription(pair.objectExcerpt) : mannerDescription(pair.mannerExcerpt);
+  return description === condition.description ? condition : { ...condition, description };
 }
 
 function qualitativeLeaf(excerpt: string, description: string, provenance: SourceProvenance | null): IRExpression {
@@ -166,34 +241,53 @@ function composeGate(existing: IRExpression | null, objectLeaf: IRExpression, ma
 }
 
 function unchanged(input: UnlimitedCarveOutHonestyInput): UnlimitedCarveOutHonestyResult {
-  return { capacity: input.capacity, conditions: input.conditions, applied: false, reason: null };
+  return { capacity: input.capacity, conditions: input.conditions, applied: false, ambiguousAttribution: false, reason: null };
+}
+
+function ambiguousAttribution(input: UnlimitedCarveOutHonestyInput): UnlimitedCarveOutHonestyResult {
+  return { capacity: input.capacity, conditions: input.conditions, applied: false, ambiguousAttribution: true, reason: UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON };
 }
 
 /**
  * Materializes both qualitative gates on an unlimited carve-out when the
  * operative clause states them and the compiled rule does not already carry
  * each one as its own UNSUPPORTED condition and as an operand of gatedBy AND.
- * Returns the input unchanged when the pattern is absent, ambiguous across
- * sibling rules, or the source slice cannot be bound.
+ * Returns the input unchanged when the pattern is absent or the source slice
+ * cannot be bound. An unattributable pair leaves the gates uncopied and sets
+ * ambiguousAttribution so sufficiency cannot stay COMPLETE.
  */
 export function applyUnlimitedCarveOutQualitativeGates(input: UnlimitedCarveOutHonestyInput): UnlimitedCarveOutHonestyResult {
   const capacity = input.capacity;
   if (!capacity || capacity.kind !== "UNLIMITED_CAPACITY") return unchanged(input);
-  const pair = selectPair(findPairs(input.operativeText), input.anchors, input.soleUnlimited);
-  if (!pair) return unchanged(input);
+  const selection = selectPair(findPairs(input.operativeText), input.anchors, input.soleUnlimited);
+  if (selection.kind === "absent") return unchanged(input);
+  if (selection.kind === "ambiguous") return ambiguousAttribution(input);
+  const pair = selection.pair;
 
-  const folded = input.conditions.some((condition) => isFoldedQualitative(condition, pair.objectExcerpt, pair.mannerExcerpt));
+  const redundant = input.conditions.some((condition) => isQualitativelyRedundant(condition, pair.objectExcerpt, pair.mannerExcerpt));
   const hasObjectCondition = input.conditions.some((condition) => isExactGate(condition, pair.objectExcerpt));
   const hasMannerCondition = input.conditions.some((condition) => isExactGate(condition, pair.mannerExcerpt));
   const gated = capacity.gatedBy ?? null;
   const composed = gated?.kind === "AND" && hasEvidence(gated, pair.objectExcerpt) && hasEvidence(gated, pair.mannerExcerpt);
-  if (!folded && hasObjectCondition && hasMannerCondition && composed) return unchanged(input);
+  if (!redundant && hasObjectCondition && hasMannerCondition && composed) {
+    const narrowed = input.conditions.map((condition) => narrowExactGateDescription(condition, pair, input.operativeText));
+    if (narrowed.every((condition, index) => condition === input.conditions[index])) return unchanged(input);
+    return {
+      capacity: input.capacity,
+      conditions: narrowed.map((condition, index) => ({ ...condition, conditionId: `${input.scopePath}.condition[${index}]` })),
+      applied: true,
+      ambiguousAttribution: false,
+      reason: UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON,
+    };
+  }
 
   const objectProvenance = input.bindExcerpt(pair.objectExcerpt);
   const mannerProvenance = input.bindExcerpt(pair.mannerExcerpt);
   if (!objectProvenance?.excerpt || !mannerProvenance?.excerpt) return unchanged(input);
 
-  const kept = input.conditions.filter((condition) => !isFoldedQualitative(condition, pair.objectExcerpt, pair.mannerExcerpt));
+  const kept = input.conditions
+    .filter((condition) => !isQualitativelyRedundant(condition, pair.objectExcerpt, pair.mannerExcerpt))
+    .map((condition) => narrowExactGateDescription(condition, pair, input.operativeText));
   const next: IRCondition[] = [...kept];
   if (!next.some((condition) => isExactGate(condition, pair.objectExcerpt))) {
     next.push({
@@ -229,6 +323,7 @@ export function applyUnlimitedCarveOutQualitativeGates(input: UnlimitedCarveOutH
     capacity: { ...unlimited, gatedBy },
     conditions,
     applied: true,
+    ambiguousAttribution: false,
     reason: UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON,
   };
 }

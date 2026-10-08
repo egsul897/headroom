@@ -173,11 +173,19 @@ export function xrefSubmissionFor(user: string): unknown {
     return { rules: [ratioTest("7.01(a)", "Leverage Ratio", "LTE", 4.25, X.fc_a, [...a, ...chapeau]), ratioTest("7.01(b)", "Interest Coverage Ratio", "GTE", 2.5, X.fc_b, [...b, ...chapeau])], definitions: [], ...empty };
   }
   if (allTagged(user, "7.02-chapeau").length > 0) {
-    // the PARENT candidate owns the prohibition; the children own their permissions (exceptions here are relationships, not units)
+    // the PARENT candidate owns the prohibition; the children own their permissions (exceptions here are relationships, not units).
+    // Condition items that the section text also inventories are consumed by the exception's condition nodes. Citing them
+    // only on the exception node does not preserve the condition.
     const chapeau = ids(user, "7.02-chapeau", "general prohibition");
-    const exc = (tag: string, description: string, excerpt: string) => ({ description, permissionRef: null, conditions: [], citation: tag, excerpt, inventoryItemIds: allTagged(user, tag) });
+    const gate = (description: string, excerpt: string, inventoryItemIds: string[]) => ({ conditionType: "OTHER_RULE_SATISFIED", expression: null, description, citation: "7.02(a)", excerpt, inventoryItemIds });
+    const aGates = [
+      gate("pro forma compliance with the financial covenants in Section 7.01", X.a_proviso, ids(user, "7.02(a)", "pro forma compliance")),
+      gate("testing date basis", X.a_testing, ids(user, "7.02(a)", "testing date basis")),
+      gate("transaction timing assumption", X.a_timing, ids(user, "7.02(a)", "transaction timing")),
+    ].filter((condition) => condition.inventoryItemIds.length > 0);
+    const exc = (tag: string, description: string, excerpt: string, conditions: unknown[] = []) => ({ description, permissionRef: null, conditions, citation: tag, excerpt, inventoryItemIds: allTagged(user, tag) });
     return { rules: [{ localRef: "r0", sourceSectionRef: "7.02", covenantFamily: "INDEBTEDNESS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "INCUR_DEBT", entityScope: ["BORROWER"], capacityExpression: null, conditions: [],
-      exceptions: [exc("7.02(a)", "clause (a): Indebtedness secured by permitted Liens, gated on pro forma covenant compliance", X.a_permission), exc("7.02(b)", "clause (b): Subsidiary Indebtedness subject to the Payment Conditions", X.b_permission), exc("7.02(c)", "clause (c): other Indebtedness subject to Section 7.04", X.c_permission)],
+      exceptions: [exc("7.02(a)", "clause (a): Indebtedness secured by permitted Liens, gated on pro forma covenant compliance", X.a_permission, aGates), exc("7.02(b)", "clause (b): Subsidiary Indebtedness subject to the Payment Conditions", X.b_permission), exc("7.02(c)", "clause (c): other Indebtedness subject to Section 7.04", X.c_permission)],
       dependsOn: [], sufficiency: "COMPLETE", citation: "7.02", excerpt: X.debt_chapeau, inventoryItemIds: chapeau }], definitions: [], ...empty };
   }
   if (allTagged(user, "7.02(a)").length > 0) {

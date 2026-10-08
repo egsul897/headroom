@@ -115,6 +115,13 @@ export function validateRule(rule: IRRule): ValidationReport {
       if (rule.capacityExpression.gatedBy) ownedExpressions.push({ label: "capacityExpression.gatedBy", expr: rule.capacityExpression.gatedBy });
     } else ownedExpressions.push({ label: "capacityExpression", expr: rule.capacityExpression });
   }
+  if (rule.governingLimit) {
+    const ceiling = rule.governingLimit.ceilingExpression;
+    const typeIssues = validateExpressionTypes(ceiling);
+    issues.push(...typeIssuesToValidationIssues(rule.ruleId, typeIssues));
+    allReferences.push(...collectReferences(ceiling));
+    ownedExpressions.push({ label: "governingLimit.ceilingExpression", expr: ceiling });
+  }
   rule.conditions.forEach((condition, i) => {
     if (condition.expression) {
       const typeIssues = validateExpressionTypes(condition.expression);

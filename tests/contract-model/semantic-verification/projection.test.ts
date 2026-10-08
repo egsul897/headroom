@@ -169,10 +169,10 @@ describe("VP10 exhaustive field classification - a new IR field cannot silently 
     for (const k of Object.keys(maximalRule())) expect(classes).toContain(RULE_FIELD_CLASSIFICATION[k as keyof IRRule]);
     for (const k of Object.keys(maximalDefinition)) expect(classes).toContain(DEFINITION_FIELD_CLASSIFICATION[k as keyof IRDefinition]);
     for (const k of Object.keys(sharedCap(1))) expect(classes).toContain(SHARED_CAPACITY_FIELD_CLASSIFICATION[k as keyof IRSharedCapacity]);
-    expect(Object.keys(RULE_FIELD_CLASSIFICATION).length).toBe(29); expect(Object.keys(DEFINITION_FIELD_CLASSIFICATION).length).toBe(15); expect(Object.keys(SHARED_CAPACITY_FIELD_CLASSIFICATION).length).toBe(11);
+    expect(Object.keys(RULE_FIELD_CLASSIFICATION).length).toBe(30); expect(Object.keys(DEFINITION_FIELD_CLASSIFICATION).length).toBe(15); expect(Object.keys(SHARED_CAPACITY_FIELD_CLASSIFICATION).length).toBe(11);
   });
   it("the legally material rule fields are REVIEW_SEMANTIC; identity/version machinery is EXCLUDE_INTERNAL_METADATA", () => {
-    for (const f of ["ruleId", "sourceSectionRef", "covenantFamily", "ruleType", "posture", "action", "entityScope", "entityScopeExcluded", "transactionScope", "capacityExpression", "conditions", "exceptions", "dependsOn", "unresolvedDependencies", "sourceDependencies", "inheritedAttributes", "sufficiency", "sufficiencyReasons"] as const) expect(RULE_FIELD_CLASSIFICATION[f]).toBe("REVIEW_SEMANTIC");
+    for (const f of ["ruleId", "sourceSectionRef", "covenantFamily", "ruleType", "posture", "action", "entityScope", "entityScopeExcluded", "transactionScope", "capacityExpression", "governingLimit", "conditions", "exceptions", "dependsOn", "unresolvedDependencies", "sourceDependencies", "inheritedAttributes", "sufficiency", "sufficiencyReasons"] as const) expect(RULE_FIELD_CLASSIFICATION[f]).toBe("REVIEW_SEMANTIC");
     for (const f of ["irSchemaVersion", "companyId", "instrumentKey", "compilerVersion", "sourceContentVersion"] as const) expect(RULE_FIELD_CLASSIFICATION[f]).toBe("EXCLUDE_INTERNAL_METADATA");
     for (const f of ["entityScopeAudit", "operativeLineage", "provenance", "inventoryItemIds", "sourceDocumentId"] as const) expect(RULE_FIELD_CLASSIFICATION[f]).toBe("REVIEW_CONTEXTUAL");
   });

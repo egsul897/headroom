@@ -100,6 +100,7 @@ export function testCompilerInput(overrides: Partial<SemanticCompilerInput> = {}
     compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION,
     compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION,
     toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION,
+    syntheticRawTextFixture: true,
     ...overrides,
   };
 }

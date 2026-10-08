@@ -11,6 +11,10 @@
  *
  * No company/package/family-specific keyword appears here (task §7/§20) -
  * every pattern is a generic legal-drafting construction.
+ *
+ * Shared-capacity relationship language is authored here independently of
+ * discovery/pass-a-signals.ts (independence allowlist). Keep semantically
+ * aligned with compiler/shared-capacity-signals.ts.
  */
 
 export interface SignalHit {
@@ -65,7 +69,10 @@ const MECHANIC: SignalDef[] = [
   { name: "grower_basket", category: "MECHANIC", re: /\bgreater of\s+\$[\d,]+.{0,40}%\s+of\b/i },
   { name: "builder_basket", category: "MECHANIC", re: /\bRetained (?:Excess )?Cash Flow\b/i },
   { name: "ratio_basket", category: "MECHANIC", re: /\bpro forma\b.{0,80}\bratio\b/i },
-  { name: "shared_cap", category: "MECHANIC", re: /\b(?:combined|shared)\s+(?:with|capacity|basket)\b/i },
+  // Shared-capacity MECHANIC requires multi-permission relationship language.
+  // Ordinary "aggregate amount" stays in ECONOMIC aggregate_amount above.
+  // No trailing \\b — clause-cite arms end in `)`.
+  { name: "shared_cap", category: "MECHANIC", re: /\b(?:combined(?:\s+with)?\s+(?:with|capacity|basket)|shared\s+(?:capacity|basket|pool)|in\s+the\s+aggregate\s+(?:with|under)|together\s+with\b[^.]{0,240}?\b(?:pursuant\s+to|under)\s+(?:Sections?|§|Articles?|Clauses?)|when\s+combined\s+with|(?:this\s+)?clause\s*\([a-z0-9]+\)[^.]{0,80}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|(?:made\s+)?in\s+reliance\s+on\s+this\s+clause\s*\([a-z0-9]+\)[^.]{0,120}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|without\s+duplication\b[^.]{0,160}?\b(?:together\s+with|combined\s+with|in\s+the\s+aggregate\s+with))/i },
   { name: "anti_duplication", category: "MECHANIC", re: /\b(?:without duplication|anti.?duplication)\b/i },
   { name: "reclassification", category: "MECHANIC", re: /\breclassif(?:y|ied|ication)\b/i },
   { name: "redesignation", category: "MECHANIC", re: /\bredesignat(?:e|ed|ion)\b/i },

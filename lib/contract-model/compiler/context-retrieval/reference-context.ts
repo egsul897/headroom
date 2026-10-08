@@ -6,8 +6,10 @@
  * §14 - "administrative references... may be irrelevant... use relevance
  * gating").
  */
+import { classifyStructuralOccurrence } from "../operative-authority";
 import type { StructuralIndex } from "../structural-index";
 import type { PackageGraphResult } from "../package-graph/types";
+import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import { detectAbsoluteReferenceMentions } from "../structural-references";
 import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { expandReferencedRegion } from "./region-expansion";
@@ -22,6 +24,16 @@ import { retrieveAmendmentLeadsForSection } from "./cross-document-context";
 // five target findings, but is a real, generalized, low-risk gap-closer
 // this task explicitly requires auditing for - task §8).
 const CALCULATION_SIGNAL = /\b(calculat|pro forma|interpretation|accounting principles|Test Period|determination of|deemed to have occurred|deemed (?:to be )?incurred|giving effect to|methodology|consolidated basis|ratio calculation date)\b/i;
+
+/** The operative body when every other occurrence of the label is a contents listing. Two operative bodies return null. */
+function operativeBodyBesideContents(index: StructuralIndex, documentId: string, normalizedTarget: string) {
+  const generic = resolveReferenceTarget(index, documentId, normalizedTarget);
+  if (generic.status !== "UNIQUE_AFTER_DEGENERATE_EXCLUSION" || !generic.node) return null;
+  if (classifyStructuralOccurrence(generic.node, index) !== "OPERATIVE_OCCURRENCE") return null;
+  const excluded = generic.excludedDegenerateNodeIds.map((id) => index.getNodeById(id));
+  if (excluded.length === 0 || excluded.some((node) => !node || classifyStructuralOccurrence(node, index) !== "CONTENTS_LISTING")) return null;
+  return generic.node;
+}
 
 function classifyReferencedProvision(text: string): "CALCULATION_PROVISION" | "CROSS_REFERENCE" {
   return CALCULATION_SIGNAL.test(text) ? "CALCULATION_PROVISION" : "CROSS_REFERENCE";
@@ -91,10 +103,13 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
 
   const references = index.findReferencesFrom(nodeId, includeDescendants);
   for (const ref of references) {
-    if (ref.targetAmbiguous) {
+    const besideContents = ref.targetAmbiguous ? operativeBodyBesideContents(index, documentId, ref.normalizedTarget) : null;
+    const resolvedTargetId = besideContents?.nodeId ?? ref.targetNodeId;
+    if (ref.targetAmbiguous && !besideContents) {
       // Phase 3F.1.2 (task §11): a reference that matched more than one
       // physical occurrence is reported as its own explicit unresolved
       // category, never silently resolved to an arbitrary candidate.
+      // A contents listing is not that second operative body.
       state.unresolved.push({
         originatingNodeKey: nodeId,
         dependencyType: "AMBIGUOUS_RELATIVE_REFERENCE",
@@ -107,7 +122,7 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
       });
       continue;
     }
-    if (!ref.resolved || !ref.targetNodeId) {
+    if (!besideContents && (!ref.resolved || !resolvedTargetId)) {
       state.unresolved.push({
         originatingNodeKey: nodeId,
         dependencyType: targetKindToUnresolvedType(ref.targetKind),
@@ -125,8 +140,21 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
       });
       continue;
     }
-    const targetNode = index.getNodeById(ref.targetNodeId);
-    if (!targetNode) continue;
+    const targetNode = resolvedTargetId ? index.getNodeById(resolvedTargetId) : undefined;
+    if (!resolvedTargetId || !targetNode) continue;
+    if (classifyStructuralOccurrence(targetNode, index) === "CONTENTS_LISTING") {
+      state.unresolved.push({
+        originatingNodeKey: nodeId,
+        dependencyType: targetKindToUnresolvedType(ref.targetKind),
+        sourceText: ref.referenceText,
+        attemptedResolution: `The only node for "${ref.normalizedTarget}" is a contents listing.`,
+        reason: "The resolved target is a contents listing. It is not the operative section.",
+        candidateTargets: [ref.normalizedTarget],
+        citation: `${ref.referenceText} [${ref.normalizedTarget}]`,
+        severity: "HIGH",
+      });
+      continue;
+    }
 
     // Referenced-region expansion (Phase 2E.1 §5/§7): a reference's own
     // target node identity is not the same as complete target context -
@@ -138,16 +166,16 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     // ancestors ("this Article VII") is not a dependency - that text is already the operative source / its parent
     // scope. Expanding it duplicated the operative text as a CROSS_REFERENCE region (14 of 104 preserved CONMED
     // bundles carried a self cross-reference) and made every such candidate look multi-region to the shard planner.
-    if (ref.targetNodeId === nodeId || index.getAncestors(nodeId).some((a) => a.nodeId === ref.targetNodeId)) continue;
+    if (resolvedTargetId === nodeId || index.getAncestors(nodeId).some((a) => a.nodeId === resolvedTargetId)) continue;
 
-    const expansion = expandReferencedRegion(index, ref.targetNodeId);
+    const expansion = expandReferencedRegion(index, resolvedTargetId);
     const targetText = expansion.text;
     if (targetText.trim().length === 0) continue;
     if (!withinBudget(state, targetText.length)) return;
 
     const itemType = classifyReferencedProvision(targetText);
     const targetEvidenceState = resolveSectionEvidenceState(state, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
-    const item = addItem(state, makeItemInput(itemType, documentId, ref.targetNodeKey, ref.targetNodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
+    const item = addItem(state, makeItemInput(itemType, documentId, besideContents?.nodeKey ?? ref.targetNodeKey, resolvedTargetId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${ref.referenceText}"`);
 
     // CTX-01 fix: this cross-referenced target's own retrieved text is
@@ -171,7 +199,7 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
         const excludedNode = index.getNodeById(excludedId);
         if (!excludedNode) continue;
         state.unresolved.push({
-          originatingNodeKey: ref.targetNodeId,
+          originatingNodeKey: resolvedTargetId,
           dependencyType: "OTHER",
           sourceText: excludedNode.sectionRef,
           attemptedResolution: `${targetNode.sectionRef} has multiple child clauses; ${excludedNode.sectionRef}'s own text showed no operative/economic signal and was excluded from the retrieved region.`,
@@ -198,13 +226,13 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     // tree is that candidate's job. Stop here, deterministically, without touching the budget or sufficiency: this is
     // delegation to a separately-owned certified semantic unit, not missing context. Recorded for every owned target,
     // whatever its classification, so the package graph can see the boundary.
-    const owners = ownersOf(state, index, ref.targetNodeId);
+    const owners = ownersOf(state, index, resolvedTargetId);
     if (owners.length > 0) {
-      state.retrievalStops.push({ reason: "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT", fromNodeId: nodeId, targetNodeId: ref.targetNodeId, targetSectionRef: targetNode.sectionRef, owningCandidateRefs: owners, depth, detail: `${targetNode.sectionRef} is owned by candidate(s) ${owners.join(", ")}; its dependency tree is delegated to that unit` });
+      state.retrievalStops.push({ reason: "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT", fromNodeId: nodeId, targetNodeId: resolvedTargetId, targetSectionRef: targetNode.sectionRef, owningCandidateRefs: owners, depth, detail: `${targetNode.sectionRef} is owned by candidate(s) ${owners.join(", ")}; its dependency tree is delegated to that unit` });
       continue;
     }
     if (itemType === "CALCULATION_PROVISION") {
-      retrieveCrossReferencesFromNode(state, index, documentId, ref.targetNodeId, item.itemId, depth + 1, false, packageGraph, expandedFromHere);
+      retrieveCrossReferencesFromNode(state, index, documentId, resolvedTargetId, item.itemId, depth + 1, false, packageGraph, expandedFromHere);
     }
   }
 }
@@ -229,17 +257,22 @@ export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState,
     return;
   }
   for (const mention of mentions) {
-    // Phase 3F.1.2: cardinality-aware resolution - a mention matching more
-    // than one physical occurrence is reported as ambiguous, never guessed.
-    const resolution = mention.targetKind === "SECTION" || mention.targetKind === "ARTICLE" ? index.resolveUniqueNodeByRef(documentId, mention.normalizedTarget) : { status: "NOT_FOUND" as const };
-    if (resolution.status !== "UNIQUE") {
+    // A contents listing that shares a label is not a second operative body.
+    // resolveReferenceTarget excludes it. Two operative bodies stay unresolved.
+    const strict = mention.targetKind === "SECTION" || mention.targetKind === "ARTICLE" ? index.resolveUniqueNodeByRef(documentId, mention.normalizedTarget) : { status: "NOT_FOUND" as const };
+    let targetNode = strict.status === "UNIQUE" ? strict.node : null;
+    if (!targetNode && strict.status === "AMBIGUOUS") {
+      const generic = resolveReferenceTarget(index, documentId, mention.normalizedTarget);
+      if (generic.node && classifyStructuralOccurrence(generic.node, index) !== "CONTENTS_LISTING" && (generic.status === "UNIQUE" || generic.status === "UNIQUE_AFTER_DEGENERATE_EXCLUSION")) targetNode = generic.node;
+    }
+    if (!targetNode || classifyStructuralOccurrence(targetNode, index) === "CONTENTS_LISTING") {
       if (mention.targetKind === "SECTION" || mention.targetKind === "ARTICLE") {
         state.unresolved.push({
           originatingNodeKey: null,
           dependencyType: targetKindToUnresolvedType(mention.targetKind),
           sourceText: mention.referenceText,
           attemptedResolution: `Looked for a ${mention.targetKind} node with ref "${mention.normalizedTarget}" in this document's own structural index.`,
-          reason: resolution.status === "AMBIGUOUS" ? `Ambiguous - ${resolution.candidates.length} physical occurrences share this reference; never guessed.` : "Reference inside a definition's own text could not be resolved to a real structural node.",
+          reason: targetNode ? "The only structural occurrence is a contents listing. It is not the operative section." : strict.status === "AMBIGUOUS" ? `Ambiguous - ${strict.candidates.length} physical occurrences share this reference; never guessed.` : "Reference inside a definition's own text could not be resolved to a real structural node.",
           candidateTargets: [],
           citation: mention.referenceText,
           severity: "MEDIUM",
@@ -247,7 +280,6 @@ export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState,
       }
       continue;
     }
-    const targetNode = resolution.node;
     const targetText = index.getNodeText(targetNode.nodeId, "OWN");
     if (targetText.trim().length === 0) continue;
     if (!withinBudget(state, targetText.length)) return;

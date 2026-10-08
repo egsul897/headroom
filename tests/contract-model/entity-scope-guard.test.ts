@@ -198,6 +198,59 @@ describe("entity-scope guard - §10 do not over-guard (tests 3, 4)", () => {
     expect(g.entityScopeAudit!.safeToRely).toBe(false);
   });
 
+  it("a permission that does not name obligors does not inherit the prohibition's wider set", () => {
+    const prohibition = "The Borrower shall not, and shall not permit any Restricted Subsidiary to, incur any Indebtedness, except:";
+    const basket = "with respect to any Indebtedness secured on a pari passu basis, the First Lien Leverage Ratio does not exceed 4.00 to 1.00";
+    const submitted = rule({ posture: "PERMISSION", sourceSectionRef: "6.01(a)", entityScope: ["BORROWER"], excerpt: basket });
+    const g = applyEntityScopeGuard(submitted, { ownExcerpt: basket, citedUnitLeadIn: prohibition, operativeText: `${prohibition}\n(1) ${basket}` }, noTags);
+    expect(g.entityScope).toEqual([]);
+    expect(g.entityScopeAudit!.status).toBe("UNDERINCLUSIVE_VS_SOURCE");
+    expect(g.sufficiency).toBe("PARTIAL");
+    expect(g.entityScopeAudit!.safeToRely).toBe(false);
+    expect(g.entityScopeAudit!.modelDiscrepancy).toMatchObject({ relation: "MODEL_NARROWER", modelScope: ["BORROWER"] });
+    const again = applyEntityScopeGuard(g, { ownExcerpt: basket, citedUnitLeadIn: prohibition, operativeText: `${prohibition}\n(1) ${basket}` }, noTags);
+    expect(again.entityScope).toEqual([]);
+    expect(again.sufficiency).toBe("PARTIAL");
+    expect(again.entityScope).not.toContain("GUARANTOR_RS");
+    expect(again.entityScope).not.toContain("NON_GUARANTOR_RS");
+  });
+
+  it("a submitted scope that names a different class is not replaced by the prohibition's set", () => {
+    const prohibition = "The Borrower shall not, and shall not permit any Restricted Subsidiary to, incur any Indebtedness, except:";
+    const basket = "with respect to any Indebtedness secured on a pari passu basis, the First Lien Leverage Ratio does not exceed 4.00 to 1.00";
+    const submitted = rule({ posture: "PERMISSION", sourceSectionRef: "6.01(a)", entityScope: ["UNRESTRICTED_SUB"], excerpt: basket });
+    const g = applyEntityScopeGuard(submitted, { ownExcerpt: basket, citedUnitLeadIn: prohibition, operativeText: `${prohibition}\n(1) ${basket}` }, noTags);
+    expect(g.entityScope).toEqual([]);
+    expect(g.entityScopeAudit!.status).toBe("UNDERINCLUSIVE_VS_SOURCE");
+    expect(g.entityScopeAudit!.safeToRely).toBe(false);
+    expect(g.sufficiency).toBe("PARTIAL");
+    expect(g.entityScopeAudit!.modelDiscrepancy).toMatchObject({ relation: "MODEL_DIFFERENT", modelScope: ["UNRESTRICTED_SUB"] });
+  });
+
+  it("the same permission stays confirmed when the submitted scope already covers the prohibition", () => {
+    const prohibition = "The Borrower shall not, and shall not permit any Restricted Subsidiary to, incur any Indebtedness, except:";
+    const basket = "with respect to any Indebtedness secured on a pari passu basis, the First Lien Leverage Ratio does not exceed 4.00 to 1.00";
+    const submitted = rule({ posture: "PERMISSION", sourceSectionRef: "6.01(a)", entityScope: ["BORROWER", "GUARANTOR_RS", "NON_GUARANTOR_RS"], excerpt: basket });
+    const g = applyEntityScopeGuard(submitted, { ownExcerpt: basket, citedUnitLeadIn: prohibition, operativeText: `${prohibition}\n(1) ${basket}` }, noTags);
+    expect(g.entityScope).toEqual(["BORROWER", "GUARANTOR_RS", "NON_GUARANTOR_RS"]);
+    expect(g.entityScopeAudit!.status).toBe("SOURCE_MATCH_CONFIRMED");
+    expect(g.sufficiency).toBe("COMPLETE");
+  });
+
+  it("a clause that names only the Borrower does not keep a scope widened to the governing section", () => {
+    const clause = "Indebtedness of the Borrower, so long as on the date of incurrence the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00.";
+    const sectionLeadIn = "The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:";
+    const submitted = rule({ sourceSectionRef: "7.01(c)", entityScope: ["BORROWER", "ANY_SUBSIDIARY"], excerpt: clause });
+    const g = applyEntityScopeGuard(submitted, { ownExcerpt: clause, citedUnitLeadIn: clause, parentScopeLeadIn: sectionLeadIn, operativeText: `${sectionLeadIn}\n(c) ${clause}` }, noTags);
+    expect(g.entityScope).toEqual(["BORROWER"]);
+    expect(g.entityScope).not.toContain("ANY_SUBSIDIARY");
+    expect(g.entityScopeAudit!.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(g.entityScopeAudit!.precedence).toBe("OWN_OPERATIVE_LANGUAGE");
+    expect(g.entityScopeAudit!.modelDiscrepancy).toMatchObject({ relation: "MODEL_WIDER", modelScope: ["BORROWER", "ANY_SUBSIDIARY"], governingScope: ["BORROWER"] });
+    expect(g.sufficiency).toBe("PARTIAL");
+    expect(g.sufficiencyReasons.some((s) => s.startsWith("ENTITY_SCOPE_SOURCE_DERIVED:"))).toBe(true);
+  });
+
   it("an empty scope claims nothing: UNSPECIFIED, untouched", () => {
     const g = guard(rule({ entityScope: [], excerpt: "The Borrower shall not permit any Restricted Subsidiary to incur Indebtedness." }));
     expect(g.entityScope).toEqual([]);

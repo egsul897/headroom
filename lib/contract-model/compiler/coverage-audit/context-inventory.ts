@@ -19,7 +19,12 @@ import type { PackageGraphResult, ModificationCandidate, CrossDocumentReferenceL
 const PROVISO_LIKE = [/\bprovided(?:,?\s+(?:that|further|however))\b/i, /\bnotwithstanding\b/i];
 const EXCEPTION_LIKE = [/\bexcept(?:\s+that|\s+as)?\b/i, /\bother than\b/i];
 const CONDITION_LIKE = [/\bin each case\b/i, /\bsubject to\b/i, /\bno (?:Default|Event of Default)\b/i, /\bso long as\b/i];
-const SHARED_CAP_LIKE = [/\baggregate(?:d)?\s+(?:amount|cap|limit)\b/i, /\b(?:combined|shared)\s+(?:with|capacity|basket)\b/i, /\banti.?duplication\b/i];
+// Bare aggregate amount is not a shared-capacity sibling role. Relationship
+// language (combined/shared/aggregate-with/multi-clause) is required.
+const SHARED_CAP_LIKE = [
+  /\b(?:combined(?:\s+with)?\s+(?:with|capacity|basket)|shared\s+(?:capacity|basket|pool)|in\s+the\s+aggregate\s+(?:with|under)|together\s+with\b[^.]{0,240}?\b(?:pursuant\s+to|under)\s+(?:Sections?|§|Articles?|Clauses?)|when\s+combined\s+with|(?:this\s+)?clause\s*\([a-z0-9]+\)[^.]{0,80}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|(?:made\s+)?in\s+reliance\s+on\s+this\s+clause\s*\([a-z0-9]+\)[^.]{0,120}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|without\s+duplication\b[^.]{0,160}?\b(?:together\s+with|combined\s+with|in\s+the\s+aggregate\s+with))/i,
+  /\banti.?duplication\b/i,
+];
 const CALCULATION_LIKE = [/\bcalculat/i, /\bpro forma\b/i, /\binterpretation\b/i, /\baccounting principles\b/i, /\bTest Period\b/, /\bdetermination of\b/i, /\bmethodology\b/i];
 // A bare mention of "Restricted Subsidiary"/"Loan Party" etc. is nearly
 // universal in real credit-agreement covenant text and, tried alone,

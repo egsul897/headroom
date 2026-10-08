@@ -48,6 +48,7 @@ import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-a
 import { resolveGoverningScope, type GoverningSemanticContext } from "./governing-scope";
 import type { SemanticCompileCallOptions } from "./caller";
 import { certifiedConfigIdentity, type CertifiedCompilerConfig } from "../certified-config";
+import { operativeModelDispatchBlock } from "../operative-authority";
 
 // The helpers below moved to bounded-composition.ts (F-7C) so the monolithic
 // unit and every shard share ONE implementation; re-exported here so existing
@@ -194,6 +195,35 @@ function aggregateTelemetry(caller: SemanticCaller, results: ShardExecutionResul
 }
 
 export async function compileCovenantToIR(input: SemanticCompilerInput, options: CompileOptions = {}): Promise<SemanticCompilationResult> {
+  const evidenceFlags = contextBundleEvidenceFlags(input);
+  const authorityBlock = operativeModelDispatchBlock({
+    index: input.toolAccess?.structuralIndex,
+    anchorNodeId: input.contextBundle?.originatingStructuralNodeIds?.[0] ?? null,
+    supersessionStatus: input.contextBundle?.originatingSupersessionStatus ?? null,
+    operativeSourceOrigin: input.operativeSourceOrigin,
+    expectedSha256: input.expectedOperativeSourceSha256,
+    syntheticRawTextFixture: input.syntheticRawTextFixture === true,
+  });
+  if (authorityBlock?.refuseModelDispatch) {
+    return {
+      status: "FAILED",
+      failureReasons: ["OPERATIVE_AUTHORITY_REFUSED"],
+      errorDetail: null,
+      rules: [], definitions: [], sharedCapacities: [], irExtensionCandidates: [],
+      unresolvedIssues: [`[operative-authority] ${authorityBlock.reason}`],
+      toolCallLog: [],
+      ...evidenceFlags,
+      definitionCompletenessCheck: null,
+      sourceContext: null, frozenInventory: null, inventoryMode: null, inventoryPasses: null,
+      accountability: null,
+      rawModelOutput: null,
+      provider: "none", model: "none",
+      telemetry: null,
+      cacheKey: "operative-authority-refused",
+      compiledAt: new Date().toISOString(),
+      execution: null,
+    };
+  }
   const caller = options.caller ?? getSemanticCaller();
   const cache = options.cache ?? defaultCache;
   // F-5.3B: the inventory mode is part of the compile's identity - a single-pass result must never be served from cache
@@ -202,7 +232,6 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   const inventoryMode: SemanticInventoryMode | null = options.accountability !== false ? (options.certified ? options.certified.inventoryMode : resolveSemanticInventoryMode(options.inventoryMode)) : null;
   const providerIdentity = `${caller.providerName}::${caller.model}${inventoryMode ? `::inventory=${inventoryMode}` : ""}${options.certified ? `::${certifiedConfigIdentity(options.certified)}` : ""}`;
   const callOptions: SemanticCompileCallOptions = options.callOptions ?? {};
-  const evidenceFlags = contextBundleEvidenceFlags(input);
 
   // F-7C.1: the CURRENT source context is resolved before the cache lookup. It is deterministic and free, and its
   // identity (computeSourceContextHash - every region's id/document/offsets/text plus the sufficiency state, the

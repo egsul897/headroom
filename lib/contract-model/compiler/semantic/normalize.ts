@@ -18,14 +18,14 @@
  */
 import { CovenantFamily, ContractRuleType, ContractRulePosture, ContractRuleRelationshipType, EntityClassTag } from "@prisma/client";
 import { CONTRACT_ACTIONS, CONTRACT_CONDITION_TYPES } from "../../types";
-import { withExpressionId, computeRuleId, computeDefinitionId, computeSharedCapId } from "../../ir/identity";
+import { withExpressionId, computeRuleId, computeDefinitionId, computeSharedCapId, computeGoverningLimitId } from "../../ir/identity";
 import { hashParts } from "../hashing";
 import { analyzeType, inferType } from "../../ir/type-check";
-import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRConditionEvaluationBasis, type IRDefinition, type IRException, type IRExpression, type IRInheritedAttribute, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRSourceDependency, type IRSourceTargetRef, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
+import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRConditionEvaluationBasis, type IRDefinition, type IRException, type IRExpression, type IRGoverningLimit, type IRInheritedAttribute, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRSourceDependency, type IRSourceTargetRef, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
 import { describeSourceDependency, figureStatedInText, normalizeReferenceText, numericFiguresInProse, resolveSourceTarget, type OwnershipIndexCandidate } from "./source-reference";
 import { classifyDefinitionOwnership, classifyUnitOwnership, type ContextOnlyUnitEmission, type OwnershipScope } from "./unit-ownership";
 import type { StructuralIndex } from "../structural-index";
-import { findIllegalInventoryDispositions, type SubmitCompilationInput, type WireCondition, type WireDefinition, type WireException, type WireExpression, type WireRule, type WireSharedCapacity } from "./wire-schema";
+import { findIllegalInventoryDispositions, type SubmitCompilationInput, type WireCondition, type WireDefinition, type WireException, type WireExpression, type WireGoverningLimit, type WireRule, type WireSharedCapacity } from "./wire-schema";
 import type { ModelContractViolationDiagnostic } from "../semantic-accountability/types";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
 import { applyEntityScopeGuard, classifyEntityTag, entityScopeWitnessFor, normalizeEntityTags } from "./entity-scope-guard";
@@ -556,6 +556,38 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
   }
 }
 
+/**
+ * A governing ceiling is attached beside capacityExpression and is never folded
+ * into it. A permission posture, a missing measurement, or a ceiling that is
+ * also claimed as capacity downgrades COMPLETE to PARTIAL. The limit stays on
+ * the rule so the runtime and figure-role can refuse it. This function does
+ * not rewrite a capacity MAX into a governing limit.
+ */
+function normalizeGoverningLimit(wire: WireGoverningLimit | null | undefined, ctx: NormCtx, posture: string, ruleType: string, capacityExpression: IRCapacityExpression | null, companyId: string, instrumentKey: string, sourceSectionRef: string): IRGoverningLimit | null {
+  if (!wire) return null;
+  const ceilingCtx: NormCtx = { ...ctx, inheritedCitation: wire.ceilingExpression?.citation ?? wire.citation ?? ctx.inheritedCitation, scopePath: `${ctx.scopePath}.governingLimit.ceilingExpression` };
+  const ceilingExpression = normalizeExpression(wire.ceilingExpression, ceilingCtx, "MONEY");
+  const basis = (wire.measuredAggregate?.measurementBasis ?? "").trim();
+  const sectionRef = (wire.measuredAggregate?.governingSectionRef ?? "").trim();
+  if (capacityExpression) limitRule(ctx, "GOVERNING_LIMIT_DUPLICATE_CAPACITY: the ceiling is also capacityExpression; a governing limit is not available capacity and must not be counted twice");
+  if (posture === "PERMISSION" || ruleType === "QUANTITATIVE_PERMISSION") limitRule(ctx, "GOVERNING_LIMIT_NOT_PERMISSION: a governing aggregate limit does not authorize incurrence");
+  if (!basis) limitRule(ctx, "GOVERNING_LIMIT_MEASUREMENT_BASIS_MISSING: the aggregate measured under the governing provision is not stated");
+  if (!sectionRef) limitRule(ctx, "GOVERNING_LIMIT_SECTION_MISSING: the governing provision is not identified");
+  if (inferType(ceilingExpression) === UNSUPPORTED_TYPE) limitRule(ctx, "GOVERNING_LIMIT_CEILING_UNSUPPORTED: the ceiling expression is not a supported formula");
+  return {
+    limitId: computeGoverningLimitId(companyId, instrumentKey, sourceSectionRef, basis || sectionRef || "unspecified"),
+    ceilingExpression,
+    measuredAggregate: {
+      kind: "PROVISION_AGGREGATE",
+      governingSectionRef: sectionRef,
+      measurementBasis: basis,
+      provenance: provenanceFor(ctx, wire.measuredAggregate?.citation ?? wire.citation, wire.measuredAggregate?.excerpt ?? null) ?? null,
+    },
+    provenance: provenanceFor(ctx, wire.citation, wire.excerpt) ?? null,
+    ...(wire.inventoryItemIds ? { inventoryItemIds: wire.inventoryItemIds } : {}),
+  };
+}
+
 export function normalizeCapacityExpression(wire: WireExpression | null | undefined, ctx: NormCtx): IRCapacityExpression | null {
   if (!wire) return null;
   if (wire.kind === "UNLIMITED_CAPACITY") {
@@ -820,6 +852,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       conditions,
       bindExcerpt: (excerpt) => provenanceFor(ctx, wireRule.citation, excerpt) ?? null,
     });
+    if (honestGates.ambiguousAttribution && honestGates.reason) warn(ctx, honestGates.reason, "SUFFICIENCY");
     if (honestGates.applied && honestGates.reason) limitRule(ctx, honestGates.reason);
     capacityExpression = honestGates.capacity;
     conditions = honestGates.conditions;
@@ -863,8 +896,11 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       if (compat.compatibility === "INCOMPATIBLE") limitRule(ctx, `ACTION_INCONSISTENT_WITH_SOURCE_ACT: action ${action} - ${compat.detail} (${actionBasis.sourceAuthority}${actionBasis.sourceSectionRef ? ` ${actionBasis.sourceSectionRef}` : ""}); the canonical action is not re-mapped by guess`);
     }
 
+    const governingLimit = normalizeGoverningLimit(wireRule.governingLimit, ctx, posture, ruleType, capacityExpression, companyId, instrumentKey, wireRule.sourceSectionRef);
     const rawSufficiency = matchEnum(wireRule.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
     const consistent = enforceSufficiencyConsistency(rawSufficiency, wireRule.sufficiencyReasons, capacityExpression, input.operativeLineage);
+    // Unknown attribution of a material qualitative pair is not a complete representation.
+    if (honestGates.ambiguousAttribution && (consistent.sufficiency === "COMPLETE" || consistent.sufficiency === "PARTIAL")) consistent.sufficiency = "AMBIGUOUS";
     // deterministic limits raised under this rule (invented references, unverifiable references, incompatible action) downgrade a COMPLETE claim
     if (ctx.limits.length > 0 && consistent.sufficiency === "COMPLETE") { consistent.sufficiency = "PARTIAL"; consistent.reasons.push(`deterministic post-processing: ${ctx.limits.length} limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL`); }
     const sufficiencyWarnings = warnings.filter((w) => w.scope.startsWith(ctx.scopePath) && (w.kind ?? "SUFFICIENCY") === "SUFFICIENCY").map((w) => w.message);
@@ -890,6 +926,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       entityScopeExcluded,
       transactionScope: null,
       capacityExpression,
+      ...(governingLimit ? { governingLimit } : {}),
       conditions,
       exceptions,
       dependsOn,

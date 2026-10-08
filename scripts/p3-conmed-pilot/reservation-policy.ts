@@ -21,11 +21,14 @@
  *     everything the loop can add to the context afterwards - retrieved source bounded by
  *     DEFAULT_TOOL_BUDGET.maxAdditionalSourceChars (20,000 chars) and the assistant's own prior turns,
  *     bounded by the candidate's total output (below);
- *   - conversations per compile: the runner has NO cap - the certified planner decides the shard count
+ *   - conversations per compile: the runner has NO legal cap - the certified planner decides the shard count
  *     from the frozen inventory and a shard may be re-executed once on SHARD_PROVIDER_FAILURE. The
- *     harness therefore DECLARES a cap (MAX_RESERVED_CONVERSATIONS = 5, the population's observed
- *     maximum over 72 billed compiles, retries included) and ENFORCES it: a compile whose telemetry
- *     exceeds the reserved shape stops the run (RESERVATION_SHAPE_EXCEEDED) before another dispatch;
+ *     harness therefore DECLARES the shape it priced (MAX_RESERVED_CONVERSATIONS = 5, a CONMED population
+ *     observation over 72 billed compiles, retries included) and ENFORCES that declaration for every
+ *     document: a compile whose telemetry exceeds the reserved shape stops the run
+ *     (RESERVATION_SHAPE_EXCEEDED) before another dispatch. Five is the priced shape, not a covenant
+ *     invariant and not an issuer exception. A caller must not drop the conversation reason to keep a
+ *     fixture inside the hold it did not reserve;
  *   - Pass A inventory calls: 2 x ceil(operativeChars / 6000) (one first-pass batch per 6,000 source
  *     chars, plus at most as many gap-pass batches), each bounded by the same first-turn capacity;
  *   - output per candidate: the wall-clock ceiling x the fastest observed sustained output rate

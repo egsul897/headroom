@@ -83,8 +83,14 @@ Section 6.04 Limitation on Distributions . A duplicated real heading, drafting e
 `.trim();
     const { index } = buildFor(DOC(1), text);
     assertCoreInvariants(index, "duplicate-sections");
-    expect(index.findNodesByRef(DOC(1), "6.04")).toHaveLength(2);
+    const duplicates = index.findNodesByRef(DOC(1), "6.04");
+    expect(duplicates).toHaveLength(2);
     expect(index.resolveUniqueNodeByRef(DOC(1), "6.04").status).toBe("AMBIGUOUS");
+    const firstText = index.getNodeText(duplicates[0]!.nodeId, "DESCENDANTS");
+    const secondText = index.getNodeText(duplicates[1]!.nodeId, "DESCENDANTS");
+    expect(firstText).toMatch(/Restricted Payment/);
+    expect(secondText).toMatch(/second, distinct/);
+    expect(firstText).not.toBe(secondText);
   });
 });
 

@@ -94,6 +94,11 @@ export function computeSharedCapId(companyId: string, instrumentKey: string, dis
   return computeStableKey("ir-sharedcap", companyId, instrumentKey, discriminator);
 }
 
+/** One governing ceiling for a section and a measurement basis. Not a capacity id and not a shared-cap id. */
+export function computeGoverningLimitId(companyId: string, instrumentKey: string, sourceSectionRef: string | null, measurementBasis: string): string {
+  return computeStableKey("ir-governing-limit", companyId, instrumentKey, sourceSectionRef ?? "(no-section)", measurementBasis.trim().toLowerCase());
+}
+
 /** Round-trip check (task §44): construct -> serialize -> deserialize -> re-serialize must produce byte-identical canonical output. Callers pass plain JSON.parse(JSON.stringify(x)) as `deserialized` to prove no non-JSON-safe value (e.g. a Date object, a class instance) silently entered the tree. */
 export function isRoundTripStable(original: unknown, deserialized: unknown): boolean {
   return canonicalStringify(original) === canonicalStringify(deserialized);

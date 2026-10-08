@@ -495,7 +495,9 @@ export type IrInventoryItemKind =
   /** ir-inventory v2: the presence/shape of a condition's evaluation basis (pro forma / as-of / deemed-effective / testing period). */
   | "EVALUATION_BASIS"
   /** ir-inventory v2: an inherited semantic attribute (governing prohibition / applicability / action) with its canonical value. */
-  | "INHERITED_ATTRIBUTE";
+  | "INHERITED_ATTRIBUTE"
+  /** A governing aggregate ceiling and the provision aggregate it measures. Not a capacity amount. */
+  | "GOVERNING_LIMIT";
 
 export interface IrInventoryItem {
   itemId: string;

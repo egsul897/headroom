@@ -150,10 +150,17 @@ const UNQUOTED_COLON_DEFINITION = /^([A-Z][a-z][A-Za-z'-]*(?:\s+(?:[A-Z][a-z][A-
 const EXCERPT_LENGTH = 200;
 
 /**
- * Scans one document's text for defined-term declarations and attributes
- * each to its enclosing structural node. `nodes` must be this document's
- * own structural nodes only.
+ * A summary, term sheet, or exhibit that says it is not an operative provision
+ * is not a source of controlling definitions. A headings-convenience clause
+ * ("section headings are for convenience of reference only") does not match:
+ * the subject has to be the summary or exhibit itself.
  */
+const NON_OPERATIVE_SUMMARY_RE = /\b(?:this\s+(?:summary|exhibit|annex|term\s+sheet)|summary\s+of\s+principal\s+terms)\b[\s\S]{0,500}\b(?:not\s+an?\s+operative|for\s+convenience(?:\s+of\s+reference)?\s+only|does\s+not\s+amend|shall\s+not\s+(?:amend|constitute\s+a\s+part))\b/i;
+
+export function documentDisclaimsOperativeDefinitions(text: string): boolean {
+  return NON_OPERATIVE_SUMMARY_RE.test(text.slice(0, 2500));
+}
+
 function scanPattern(pattern: RegExp, text: string, minTermLength: number, maxTermLength: number): RegExpExecArray[] {
   const re = new RegExp(pattern.source, pattern.flags);
   const out: RegExpExecArray[] = [];
@@ -193,8 +200,35 @@ function dedupeByOverlap(all: RegExpExecArray[]): RegExpExecArray[] {
  * each to its enclosing structural node. `nodes` must be this document's
  * own structural nodes only.
  */
+/** True when this span contains a declaration the structural definition grammar already recognizes. */
+export function spanContainsDefinitionDeclaration(text: string): boolean {
+  return scanPattern(DEFINITION_DECLARATION, text, 1, 100).length > 0
+    || scanPattern(QUOTED_COLON_DEFINITION, text, 1, 100).length > 0
+    || scanPattern(UNQUOTED_COLON_DEFINITION, text, 4, 60).length > 0;
+}
+
+/**
+ * A defined term that opens its own line is the next dictionary entry, not the body of an
+ * earlier inline enumeration. "(B) 12.5% of the Borrowing Base." must not become the source
+ * of the following `"Subsidiary" means`. A lettered entry stays on its clause when the marker
+ * and the declaration share a line: `(a) "Availability" means`.
+ */
+function definitionSourceNode(text: string, charStart: number, enclosing: StructuralNode | null, nodesById: Map<string, StructuralNode>): StructuralNode | null {
+  if (!enclosing) return null;
+  const lineStart = text.lastIndexOf("\n", Math.max(0, charStart - 1)) + 1;
+  const prefix = text.slice(lineStart, charStart);
+  if (!/^\s*$/.test(prefix)) return enclosing;
+  let node: StructuralNode | null = enclosing;
+  while (node && node.nodeType !== "SECTION" && node.nodeType !== "ARTICLE" && node.charStart < lineStart) {
+    node = node.parentNodeId ? nodesById.get(node.parentNodeId) ?? null : null;
+  }
+  return node;
+}
+
 export function detectStructuralDefinitions(documentId: string, text: string, nodes: StructuralNode[]): DetectedDefinition[] {
+  if (documentDisclaimsOperativeDefinitions(text)) return [];
   const sorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
+  const nodesById = new Map(nodes.map((node) => [node.nodeId, node]));
 
   const meansMatches = scanPattern(DEFINITION_DECLARATION, text, 1, 100);
   const quotedColonMatches = scanPattern(QUOTED_COLON_DEFINITION, text, 1, 100);
@@ -209,7 +243,7 @@ export function detectStructuralDefinitions(documentId: string, text: string, no
     if (exactTerm.length === 0) continue;
     const charStart = m.index;
     const charEnd = m.index + m[0].length;
-    const enclosing = findEnclosingNode(charStart, sorted);
+    const enclosing = definitionSourceNode(text, charStart, findEnclosingNode(charStart, sorted), nodesById);
     const forwardingTarget = meansSet.has(m) ? parseForwardingTarget(m[0]!, text.slice(charEnd, charEnd + 160)) : null;
     const declarationKind: DefinitionDeclarationKind = forwardingTarget ? "FORWARDING" : meansSet.has(m) ? "MEANS" : quotedColonSet.has(m) ? "QUOTED_COLON" : "UNQUOTED_COLON";
     results.push({
