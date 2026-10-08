@@ -30,7 +30,8 @@ Cursor work. Provider calls: none in this workstream.
 | 20 | milestone report 3; INV-32 reclassification (holds), INV-09b comparator breadth (1 clean path certifies, 3 masked), self-replenishing pass 3 (U1–U4); `invariant-runs/` at `091a105` | done (`091a105` + this commit) |
 | 21 | U1 package N (IPV-22/IPV-01 on a second clean path, IPV-24 new); U4 four manifest-independent structural cards (G/H signatures, kill MUT-17/18/19/21/22); U2 MUT-21/22 on H; DROP_GATE control; runs at `291855ce3f9b` (754: 664/71/19; 22 mutants 15 killed; 18 invariants) | done (`291855c` + this commit) |
 | 22 | V1 INV-05c scan noise × amendment targeting (fail-closed, holds); V2 IPV-24 breadth (B 4.09 / H 7.11 masked, 2/2 clean paths); V3 criterion D13 | done (`514f396` + this commit) |
-| 23 | W1 cross-instrument definition amendment; W2 IPV-24 inverse; W3 card precision on real layouts; W4 IPV-19 × IPV-06 composition | next |
+| 23 | Cross-branch parser audit of PR #132 / #128 / #136 (doc 21): trees reconciled, Chewy/CONMED/Gibraltar verified, hybrid experiment, integration sequence and gates | done (this commit) |
+| 24 | Doc 21 §11 harness corrections (INV-04, INV-19/IPV-12, shared-cap plan, real-fixture IPV rows); then W1–W4 | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".
