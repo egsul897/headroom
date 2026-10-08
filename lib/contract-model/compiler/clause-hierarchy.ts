@@ -20,6 +20,8 @@
  * limitation, not a silent guess.
  */
 
+import { definitionDeclarationSpans } from "./structural-definitions";
+
 export type MarkerSequenceKind = "LOWER_ALPHA" | "LOWER_ROMAN" | "UPPER_ALPHA" | "UPPER_ROMAN" | "NUMERIC";
 
 /** DocumentNodeType values this parser can produce beneath a SECTION - clamped at SUBCLAUSE for any depth beyond 3, since the schema has no deeper first-class level; ancestry beyond that point is still exact (via nodeKey chaining), just represented with a repeated nodeType. */
@@ -165,13 +167,108 @@ export function isInlineReferenceMarker(text: string, occ: RawMarkerOccurrence):
   return false;
 }
 
+/**
+ * A definition's own (a)/(i)/(A) list is not a covenant clause. The list runs from the
+ * declaration through later lines that continue it, and stops before the next definition
+ * or before a line-start marker that does not continue that list. A covenant list with
+ * no definition declaration in front of it is unchanged.
+ */
+function definitionEnumerationRanges(text: string): { start: number; end: number }[] {
+  const decls = definitionDeclarationSpans(text);
+  const ranges: { start: number; end: number }[] = [];
+  for (let i = 0; i < decls.length; i++) {
+    const decl = decls[i]!;
+    const limit = decls[i + 1]?.charStart ?? text.length;
+    const end = endOfDefinitionEnumeration(text, decl.declarationEnd, limit);
+    if (end > decl.declarationEnd) ranges.push({ start: decl.declarationEnd, end });
+  }
+  return ranges;
+}
+
+function continueDefinitionSequence(sequences: { kind: MarkerSequenceKind; index: number }[], candidates: MarkerCandidate[]): boolean {
+  for (let i = sequences.length - 1; i >= 0; i--) {
+    const seq = sequences[i]!;
+    const hit = candidates.find((c) => c.kind === seq.kind && c.index === seq.index + 1);
+    if (hit) {
+      seq.index = hit.index;
+      return true;
+    }
+  }
+  return false;
+}
+
+/** A sentence period, not a decimal ("1.00") and not the dot inside a section number ("6.01."). */
+function lastSentenceEnd(text: string, from: number, markerAt: number): number {
+  const between = text.slice(from, markerAt);
+  for (let i = between.length - 1; i >= 0; i--) {
+    if (between[i] !== ".") continue;
+    const after = between[i + 1];
+    const before = between[i - 1];
+    if (before && /\d/.test(before) && after !== undefined && /\d/.test(after)) continue;
+    if (after === undefined || /[\s"”']/.test(after)) return from + i;
+  }
+  return -1;
+}
+
+function endOfDefinitionEnumeration(text: string, from: number, limit: number): number {
+  let pos = from;
+  const sequences: { kind: MarkerSequenceKind; index: number }[] = [];
+  let prevUnfinished = true;
+  let prevLeadIn = false;
+  let started = false;
+  while (pos < limit) {
+    const lineEnd = text.indexOf("\n", pos);
+    const end = lineEnd === -1 || lineEnd > limit ? limit : lineEnd;
+    const line = text.slice(pos, end);
+    const trimmed = line.trim();
+    if (trimmed.length === 0) {
+      pos = end >= limit ? limit : end + 1;
+      continue;
+    }
+    if (started) {
+      const markerMatch = /^\(([A-Za-z]{1,7}|\d{1,3})\)/.exec(trimmed);
+      if (markerMatch) {
+        const candidates = classifyMarker(markerMatch[1]!);
+        const continues = candidates.some((c) => sequences.some((s) => s.kind === c.kind && c.index === s.index + 1));
+        const nestedStart = candidates.some((c) => c.index === 1) && (prevLeadIn || prevUnfinished);
+        if (!continues && !nestedStart) return pos;
+      } else if (!/^(?:provided\b|and\b|or\b|plus\b|minus\b|including\b|less\b|without\b|in each case\b)/i.test(trimmed) && !/^[a-z]/.test(trimmed)) {
+        return pos;
+      }
+    }
+    started = true;
+    for (const marker of findRawMarkerOccurrences(line)) {
+      const abs = pos + marker.charStart;
+      if (abs < from) continue;
+      const candidates = classifyMarker(marker.token);
+      const continues = candidates.some((c) => sequences.some((s) => s.kind === c.kind && c.index === s.index + 1));
+      if (sequences.length > 0 && lastSentenceEnd(text, from, abs) >= 0 && !continues) return abs;
+      if (!continueDefinitionSequence(sequences, candidates)) {
+        const start = candidates.find((c) => c.index === 1);
+        if (start) sequences.push({ kind: start.kind, index: 1 });
+      }
+    }
+    prevLeadIn = /:\s*$/.test(trimmed) || /\b(?:following|as follows|below)\s*:?\s*$/i.test(trimmed);
+    const incomplete = /,\s*$/.test(trimmed) || /\b(?:and|or|of|that|plus|minus)\s*$/i.test(trimmed);
+    prevUnfinished = prevLeadIn || incomplete;
+    pos = end >= limit ? limit : end + 1;
+  }
+  return limit;
+}
+
 /** The marker occurrences that are structural labels: every occurrence minus inline references, where reference status propagates along a comma/conjunction/range chain ("clauses (9) or (10)"). */
 export function structuralMarkerOccurrences(text: string): RawMarkerOccurrence[] {
   const all = findRawMarkerOccurrences(text);
+  const definitionRanges = definitionEnumerationRanges(text);
   const out: RawMarkerOccurrence[] = [];
   let prev: RawMarkerOccurrence | null = null;
   let prevWasReference = false;
   for (const occ of all) {
+    if (definitionRanges.some((range) => occ.charStart >= range.start && occ.charStart < range.end)) {
+      prev = occ;
+      prevWasReference = false;
+      continue;
+    }
     const chained: boolean = prev !== null && prevWasReference && REFERENCE_CHAIN_JOIN.test(text.slice(prev.charEnd, occ.charStart));
     const isReference: boolean = chained || isInlineReferenceMarker(text, occ);
     if (!isReference) out.push(occ);

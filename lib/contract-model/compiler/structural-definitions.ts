@@ -188,6 +188,17 @@ function scanPattern(pattern: RegExp, text: string, minTermLength: number, maxTe
  * any pathological edge case rather than relying on that argument alone.
  * Earliest-starting match at a given position wins.
  */
+/** Start of each recognized definition declaration, earliest first. Shared with the clause parser so a definition's own enumeration is not a second grammar. */
+export function definitionDeclarationSpans(text: string): { charStart: number; declarationEnd: number }[] {
+  const meansMatches = scanPattern(DEFINITION_DECLARATION, text, 1, 100);
+  const quotedColonMatches = scanPattern(QUOTED_COLON_DEFINITION, text, 1, 100);
+  const unquotedColonMatches = scanPattern(UNQUOTED_COLON_DEFINITION, text, 4, 60);
+  return dedupeByOverlap([...meansMatches, ...quotedColonMatches, ...unquotedColonMatches]).map((m) => ({
+    charStart: m.index,
+    declarationEnd: m.index + m[0].length,
+  }));
+}
+
 function dedupeByOverlap(all: RegExpExecArray[]): RegExpExecArray[] {
   const sorted = [...all].sort((a, b) => a.index - b.index);
   const kept: RegExpExecArray[] = [];
