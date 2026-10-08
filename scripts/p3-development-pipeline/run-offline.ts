@@ -28,6 +28,8 @@ import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../../lib/c
 import { observeDeterministicCrossCutText } from "../stratified-cert/lib/cross-cuts";
 import { DEFAULT_GATEWAY_ANALYZER_MODEL, DEFAULT_MAX_TOKENS, reservedMaxInputTokens } from "../../lib/contract-model/analyzer/anthropic-analyzer";
 import { maxCostOfRequestUsd, PRICING_TABLE_VERSION } from "../../lib/contract-model/analyzer/pricing";
+import { resolveReferenceTarget } from "../../lib/contract-model/compiler/semantic-accountability/reference-resolver";
+import type { ReferenceResolutionStatus } from "../../lib/contract-model/compiler/semantic-accountability/types";
 
 export const DEVELOPMENT_BANNER = "DEVELOPMENT ≠ CERTIFIED ≠ PINNED_OFFLINE";
 
@@ -175,7 +177,7 @@ export interface DevelopmentPipelineResult {
     builderBasket: {
       phrase: "Available Amount Builder Basket";
       citedRef: "7.05(a)(y)";
-      citedRefResolution: "UNIQUE" | "AMBIGUOUS" | "NOT_FOUND";
+      citedRefResolution: ReferenceResolutionStatus;
       citedRefCandidateCount: number;
       owningNodes: Array<{ sectionRef: string; nodeId: string; ownChars: number; excerpt: string }>;
       discoveryId: null;
@@ -188,8 +190,10 @@ export interface DevelopmentPipelineResult {
     };
     assetDispositions704: {
       sectionRef: "7.04";
-      resolution: "UNIQUE" | "AMBIGUOUS" | "NOT_FOUND";
+      resolution: ReferenceResolutionStatus;
       selected: false;
+      resolvedNodeId: string | null;
+      excludedDegenerateNodeIds: string[];
       candidates: Array<{ nodeId: string; heading: string; charStart: number; charEnd: number; ownedChars: number }>;
     };
   };
@@ -398,6 +402,8 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
     const descendantIds = index.getDescendants(section.nodeId).map((descendant) => descendant.nodeId);
     const hasCandidate = candidateIds.has(section.nodeId) || descendantIds.some((id) => candidateIds.has(id));
     if (!hasCandidate) continue;
+    const sectionResolution = resolveReferenceTarget(index, input.documentId, section.sectionRef);
+    if (sectionResolution.status === "UNIQUE_AFTER_DEGENERATE_EXCLUSION" && sectionResolution.excludedDegenerateNodeIds.includes(section.nodeId)) continue;
     const passAHints = [section.nodeId, ...descendantIds]
       .filter((id) => candidateIds.has(id))
       .map((id) => index.getNodeById(id)?.sectionRef ?? id)
@@ -425,7 +431,7 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
 
   const basketPhrase = "Available Amount Builder Basket";
   const citedRef = "7.05(a)(y)";
-  const citedResolved = index.resolveUniqueNodeByRef(input.documentId, citedRef);
+  const citedResolved = resolveReferenceTarget(index, input.documentId, citedRef);
   const owningNodes = index
     .allNodes()
     .filter((node) => node.documentId === input.documentId && index.getNodeText(node.nodeId, "OWN").includes(basketPhrase))
@@ -448,8 +454,10 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
       excerpt: row.excerpt,
     };
   });
-  const asset704 = index.resolveUniqueNodeByRef(input.documentId, "7.04");
-  const assetCandidates = asset704.status === "UNIQUE" ? [asset704.node] : asset704.status === "AMBIGUOUS" ? asset704.candidates : [];
+  const asset704 = resolveReferenceTarget(index, input.documentId, "7.04");
+  const assetCandidates = asset704.candidateNodeIds
+    .map((nodeId) => index.getNodeById(nodeId))
+    .filter((node): node is NonNullable<typeof node> => node !== null);
 
   const provider = realProvider();
   let passB: DevelopmentPipelineResult["passB"];
@@ -572,7 +580,7 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
         phrase: basketPhrase,
         citedRef,
         citedRefResolution: citedResolved.status,
-        citedRefCandidateCount: citedResolved.status === "AMBIGUOUS" ? citedResolved.candidates.length : citedResolved.status === "UNIQUE" ? 1 : 0,
+        citedRefCandidateCount: citedResolved.candidateNodeIds.length,
         owningNodes,
         discoveryId: null,
         sealedRole: null,
@@ -586,6 +594,8 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
         sectionRef: "7.04",
         resolution: asset704.status,
         selected: false,
+        resolvedNodeId: asset704.node?.nodeId ?? null,
+        excludedDegenerateNodeIds: asset704.excludedDegenerateNodeIds,
         candidates: assetCandidates.map((node) => ({
           nodeId: node.nodeId,
           heading: node.heading,

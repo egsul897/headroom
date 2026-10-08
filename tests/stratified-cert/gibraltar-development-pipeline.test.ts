@@ -54,8 +54,8 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(result.verificationReservation.haikuListScaledUsd).toBe(0);
     expect(result.passB.executed).toBe(false);
     expect(result.passB.terminal).toBe("PROVIDER_EXECUTION_REQUIRED");
-    expect(result.offline.passACandidates).toBe(946);
-    expect(result.offline.totalNodes).toBe(2087);
+    expect(result.offline.passACandidates).toBe(938);
+    expect(result.offline.totalNodes).toBe(2064);
     expect(result.offline.htmlBodyMatchesProvenance).toBe(true);
     expect(result.offline.extractedTextMatchesProvenance).toBe(true);
 
@@ -64,19 +64,27 @@ describe("Gibraltar DEVELOPMENT pipeline execution", () => {
     expect(escalation?.provider).toBe("VERCEL_AI_GATEWAY");
     expect(escalation?.model).toBe("anthropic/claude-sonnet-5");
     expect(escalation?.pipelineStageUnlocked).toBe("PASS_B_SEMANTIC_CLASSIFICATION");
-    expect(escalation?.sectionsToCall).toBe(141);
-    expect(escalation?.expectedMaxCostUsd).toBe(181.67);
+    expect(escalation?.sectionsToCall).toBe(121);
+    expect(escalation?.expectedMaxCostUsd).toBe(156.01);
     expect(escalation?.command).toContain("scripts/p3-development-pipeline/execute-gibraltar.ts");
 
-    expect(result.investigations.builderBasket.citedRefResolution).toBe("NOT_FOUND");
+    expect(result.investigations.builderBasket.citedRefResolution).toBe("UNIQUE");
+    expect(result.investigations.builderBasket.citedRefCandidateCount).toBe(1);
     expect(result.investigations.builderBasket.discoveryId).toBeNull();
-    expect(result.investigations.builderBasket.owningNodes.map((node) => node.sectionRef)).toContain("7.05(a)(4)(ii)(vi)(B)");
+    expect(result.investigations.builderBasket.owningNodes.map((node) => node.sectionRef)).toEqual(
+      expect.arrayContaining(["7.05(a)(y)(vi)(B)", "1.01(3)(31)(ii)"]),
+    );
     expect(result.investigations.reclass.edgeWritten).toBe(false);
     expect(result.investigations.reclass.categoryToTargetRuleIdInvented).toBe(false);
     expect(result.investigations.reclass.windows.map((window) => window.sectionRef)).toContain("7.01(b)(a)");
-    expect(result.investigations.assetDispositions704.resolution).toBe("AMBIGUOUS");
+    expect(result.investigations.assetDispositions704.resolution).toBe("UNIQUE_AFTER_DEGENERATE_EXCLUSION");
     expect(result.investigations.assetDispositions704.selected).toBe(false);
-    expect(result.investigations.assetDispositions704.candidates).toHaveLength(2);
+    expect(result.investigations.assetDispositions704.resolvedNodeId).toBe("structural-node:a80b8b3639f39c55e5617fd7");
+    expect(result.investigations.assetDispositions704.excludedDegenerateNodeIds).toEqual(["structural-node:a744dbebadfcae7ddeac6525"]);
+    expect(result.investigations.assetDispositions704.candidates).toEqual([
+      expect.objectContaining({ nodeId: "structural-node:a744dbebadfcae7ddeac6525", charStart: 5496, ownedChars: 39 }),
+      expect.objectContaining({ nodeId: "structural-node:a80b8b3639f39c55e5617fd7", charStart: 768425, ownedChars: 5767 }),
+    ]);
 
     const matrix = fs.readFileSync("docs/phase-3-reliability-stratified-certification/01-pin-matrix.json", "utf8");
     expect(matrix.toLowerCase()).not.toContain("gibraltar");
