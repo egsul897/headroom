@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `731f34e` + this commit | T3 package M (definition amendment + side letter + Guarantor/Subsidiary): IPV-19's fail-closed REVIEW masks IPV-16 and IPV-20 false permissions; IPV-21 does not fire (plural 'Guarantors', IPV-09); first acceptance-run signatures for IPV-16 and IPV-20; artefacts `acceptance-runs/731f34e2f9ae` (657: 577/62/18), invariant/mutation/benchmark runs | `npx vitest run tests/product-acceptance` → 193 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `dcfd931` + this commit | T4 First Supplemental Indenture on B (second-instrument amendment resolves ✅; indenture::4.09 stale text → IPV-04 breadth), T5 prompt-size measurement (≈8,400 user-content tokens per unit median; doc 08 estimates low ≈2–3× on input), T6 onboarding doc 19; artefacts `acceptance-runs/dcfd931004c6` (614: 543/54/17), invariant/mutation/benchmark runs | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `4400694` + this commit | T1: package I on-disk definition amendment (IPV-19 now in the acceptance run incl. the 1.01 definitions candidate losing every other definition); F amendment tried and reverted (masked IPV-02); definition-currency audit (IPV-05 consequence on H); T2: SET_POSTURE / SET_PERCENT, INV-28b refused ×2; artefacts `acceptance-runs/440069481941` (609: 539/53/17), `invariant-runs/…` (16 invariants, 33/16), `mutation-runs/…`, `benchmark-runs/…` (410/270 calls) | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | this commit | doc 18 workflow analyses (four workflows, assumptions labelled, every Headroom claim cites an artefact or register id); self-replenishing backlog pass in doc 16 → T1–T6 | docs only; suite unchanged (186 pass / 28 skipped) |
@@ -30,7 +31,7 @@
 
 ## Current task
 
-T3 triple-composition package M (task 6 below). T1/T2/T4/T5/T6 complete. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
+Second self-replenishing pass (task 6 below). T1–T6 complete at `731f34e`. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -67,10 +68,10 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: T3 — package M (`pkg-m-composed-p0`, synthetic issuer): base credit agreement whose 7.01 names Subsidiaries and Guarantors with 'Guarantor' defined as 'each Subsidiary that has executed the Guarantee' (diamond, IPV-21), a ratio basket 7.01(c) on Consolidated Total Leverage Ratio → Consolidated EBITDA, Amendment No. 1 restating 'Consolidated EBITDA' (IPV-19/20), and a side letter tightening 7.01(b) (IPV-16). Manifest expectations state the legally correct state at one as-of date after both documents (definition SUPERSEDED, 7.01(b) governed by the side letter, 1.01 other definitions intact, no cycle) and the prohibited claims (7.01(b) at the base cap; 7.01(c) on the old EBITDA). Expected product result: operative state RESOLVED on the base text (IPV-16), Section 1.01 replaced (IPV-19), 7.01 compile blocked by the false cycle (IPV-21) so that the IPV-16/19/20 false permissions never reach certification — the composition finding is that a fail-closed defect currently masks three P0 defects, and that fixing IPV-21 first would expose them. Register every row under the existing entries; add the composition note to doc 12 and doc 16.
-- Files: `tests/fixtures/product-acceptance/packages/pkg-m-composed-p0/` (three documents + manifest), tests package count (13), register signatures, matrix, ledger row "new adversarial compositions", checkpoint.
-- First step: author the three documents (short: definitions, 7.01 with (a)–(c), 7.02; amendment-1 F1 form; side letter 'notwithstanding Section 7.01(b)'), the manifest (structure, definitions, operativeState rows incl. definitionTerm, covenants with textSha256 via pin-corpus, prohibitedClaims with declarative adversarial cases), pin, run-all to scratch, classify every finding.
-- Expected output: package M on disk; findings registered; composition note; refreshed artefacts.
+- Objective: (a) IPV-09 breadth, now load-bearing: a corpus-wide invariant (INV-18) that, for every covenant whose own text uses a defined term in plural / possessive form ("Guarantors", "Subsidiaries", "Investments", "Liens", "Restricted Payments", "Affiliate of"), checks that the bundle carries the definition; count the misses; record which other findings they suppress (M: IPV-21). (b) an OCR-noise variation (in memory, mutation kind OCR_NOISE on package A: ligatures, broken line wraps inside section headings, "S E C T I O N 7.01", "7 .01(b)") with expectations that structure either survives or fails closed (never silently merges clauses) — ledger #23/#24 breadth and doc 19 assumption 1. (c) directive product backlog 5–6: `20-covenant-inventory-and-citation-spec.md` — the covenant inventory data contract (fields the acceptance report already carries per unit) and the evidence-citation interface requirements (what a citation must show: document, section, occurrence, char span, lineage, as-of), tied to W7–W9.
+- Files: `scripts/product-acceptance/invariants.ts` (INV-18), `scripts/product-acceptance/mutations.ts` (OCR_NOISE mutants MUT-17…), `docs/product-readiness/20-covenant-inventory-and-citation-spec.md`, ledger, register, checkpoint.
+- First step: INV-18 — iterate all manifest covenants, regex the own text for defined-term plurals/possessives, compare with the bundle's DEFINITION items; print the miss table.
+- Expected output: IPV-09 breadth number with the suppressed-finding note; OCR mutants with verdicts (new structural finding if a clause merges silently); doc 20.
 - Acceptance: suite green; pin-check clean; commit + push; checkpoint updated.
 - Dependencies: none (offline).
 

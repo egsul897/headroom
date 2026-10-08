@@ -25,7 +25,8 @@ Cursor work. Provider calls: none in this workstream.
 | 15 | `18-workflow-analyses.md` (CFO / treasury / in-house legal / outside counsel, tied to artefacts and register ids); self-replenishing backlog pass appended to doc 16 (T1–T6) | done (this commit) |
 | 16 | T1: on-disk definition amendment on I (IPV-19 on disk; F tried and reverted because it masked IPV-02; A kept as the in-memory lab), definition-currency audit (IPV-05 consequence on H); T2: SET_POSTURE / SET_PERCENT kinds, INV-28b (both refused); runs at `440069481941` | done (`4400694` + this commit) |
 | 17 | T4 supplemental indenture on B (resolves on the second instrument; IPV-04 breadth), T5 offline prompt-size measurement (doc 08), T6 `19-onboarding-and-ingestion-assumptions.md`; runs at `dcfd931004c6` | done (`dcfd931` + this commit) |
-| 18 | T3 triple-composition package M (amended definition + side letter + diamond) with refusal-precedence expectations | next |
+| 18 | T3 package M: IPV-19's REVIEW masks IPV-16/IPV-20; IPV-21 suppressed by IPV-09; IPV-16/20 on disk; runs at `731f34e2f9ae` (657: 577/62/18) | done (`731f34e` + this commit) |
+| 19 | second self-replenishing pass: plural-term breadth (IPV-09 is now load-bearing), OCR-noise package (doc 19), covenant inventory spec + evidence citation interface (directive product backlog 5–6) | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

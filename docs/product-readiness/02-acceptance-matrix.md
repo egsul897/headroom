@@ -26,14 +26,14 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/dcfd931004c6/`, repository SHA `dcfd931004c6`, 614 checks: 543 pass · 54 fail · 17 not tested)
+## Matrix (committed run `acceptance-runs/731f34e2f9ae/`, repository SHA `731f34e2f9ae`, 657 checks: 577 pass · 62 fail · 18 not tested)
 
 Earlier committed runs: `8f51e2981bd2` (8 packages, 360: 318/30/12), `00977b674579` (10, 431: 376/41/14),
 `83e6bf1d3ce0` (10 + cross-reference audit, 444: 388/42/14), `2b018f8a6719` (11 + clause-text pins, 571: 508/48/15),
-`f182a679394b` (12, 604: 539/49/16), `440069481941` (I definition amendment, 609: 539/53/17). At `dcfd931`: package B
-gains a First Supplemental Indenture (second-instrument amendment resolves correctly; the section-level 4.09
-candidate still compiles on stale text — IPV-04 breadth). Findings are 54, all registered (IPV-01…IPV-22; IPV-17
-closed).
+`f182a679394b` (12, 604: 539/49/16), `440069481941` (I definition amendment, 609: 539/53/17), `dcfd931004c6` (B
+supplemental indenture, 614: 543/54/17). At `731f34e`: package M composes a definition amendment, a side letter and a
+Guarantor/Subsidiary definition; IPV-16 and IPV-20 gain their first acceptance-run signatures. Findings are 62, all
+registered (IPV-01…IPV-22; IPV-17 closed).
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
@@ -49,10 +49,10 @@ closed).
 | j-restricted-payments-builder | 16/16 | – | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 7/7 | 4/5 (1 F) | – | 35/38 |
 | k-three-way-builder | 18/18 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 5/7 (2 F) | 2/5 (3 F) | – | 35/43 |
 | l-affiliate-transactions | 15/15 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 4/5 (1 F) | – | 31/33 |
+| m-composed-p0 | 17/17 | 3/6 (3 F) | 1/1 | 0/1 (1 NT) | 6/8 (2 F) | 6/7 (1 F) | 1/3 (2 F) | – | 34/43 |
 
-Invariant checks (`invariant-runs/dcfd931004c6/`): 16 invariants, 33 PRODUCT verdicts pass / 16 fail — all sixteen
-are IPV-19/20/21/22. Mutation suite: 16 mutants, 9 killed, 16/16 predictions held. Benchmark: quality unchanged (see
-doc 08 §Re-runs and §Prompt-size measurement).
+Invariant checks (`invariant-runs/731f34e2f9ae/`): 16 invariants, 33 PRODUCT verdicts pass / 16 fail — all sixteen
+are IPV-19/20/21/22. Mutation suite: 16 mutants, 9 killed, 16/16 predictions held. Benchmark: quality unchanged.
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
 
