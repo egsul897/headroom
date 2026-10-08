@@ -1,24 +1,21 @@
 /**
- * Precedent Comparison Intelligence — types.
+ * Precedent Comparison Intelligence — types (Phase 2).
  *
  * Sidecar analysis over public credit-agreement / indenture source text.
  * Does NOT modify the production legal engine, IR compiler, or Prisma schema.
  *
  * Epistemic discipline (mission invariant): similar drafting does not establish
- * identical legal effect. Every comparison claim carries an explicit standing:
+ * identical legal effect. Every comparison claim carries an explicit standing
+ * AND explicit evidence. maxStandingAmongClaims is a rollup only — it never
+ * implies that every claim carries that standing.
  *
- *   TEXTUAL_SIMILARITY              — character/token overlap in source text
- *   STRUCTURAL_SIMILARITY           — shared drafting-feature fingerprint
- *   SEMANTIC_HYPOTHESIS            — model/heuristic reading, NOT reviewed
- *   SOURCE_SUPPORTED_LEGAL_DIFFERENCE — difference grounded in cited source text
- *   REVIEWER_VERIFIED_CONCLUSION   — only when a human review record exists
- *
- * Model-generated summaries are NEVER labeled REVIEWER_VERIFIED_CONCLUSION.
+ * REVIEWER_VERIFIED_CONCLUSION requires a ClaimReviewRecord tied to the
+ * specific claimId + sourceVersionHash — never mere document/provision approval.
  */
 import type { CovenantFamily } from "@prisma/client";
 import type { SemanticSignals } from "../contract-model/evaluation-v2/types";
 
-export const PRECEDENT_COMPARISON_SCHEMA_VERSION = "precedent-comparison.v1";
+export const PRECEDENT_COMPARISON_SCHEMA_VERSION = "precedent-comparison.v2";
 
 /** Epistemic standing of a comparison claim. Ordered from weakest to strongest. */
 export type ComparisonStanding =
@@ -29,15 +26,24 @@ export type ComparisonStanding =
   | "REVIEWER_VERIFIED_CONCLUSION";
 
 /**
- * Whether a provision record has been human-reviewed as precedent.
- * SOURCE_ONLY is the default for corpus excerpts; APPROVED_PRECEDENT is the
- * only status that may elevate a claim to REVIEWER_VERIFIED_CONCLUSION.
+ * Whether a provision record has been human-reviewed as a corpus entry.
+ * SOURCE_ONLY is the default. Provision-level APPROVED_PRECEDENT alone never
+ * elevates individual claims — that requires ClaimReviewRecord.
  */
 export type ProvisionReviewStatus = "SOURCE_ONLY" | "HYPOTHESIS" | "APPROVED_PRECEDENT";
 
 export type DocumentRole = "ORIGINAL" | "AMENDMENT" | "RESTATEMENT" | "DEFINITION";
 
-/** Covenant families this system is required to compare (mission §3–4). */
+export type AgreementType =
+  | "CREDIT_AGREEMENT"
+  | "INDENTURE"
+  | "ABL"
+  | "AMENDMENT"
+  | "GUARANTEE_SECURITY"
+  | "DEFINITIONS_EXCERPT"
+  | "OTHER";
+
+/** Covenant families this system is required to compare. */
 export const COMPARABLE_COVENANT_FAMILIES = [
   "INDEBTEDNESS",
   "LIENS",
@@ -52,11 +58,6 @@ export const COMPARABLE_COVENANT_FAMILIES = [
 
 export type ComparableCovenantFamily = (typeof COMPARABLE_COVENANT_FAMILIES)[number];
 
-/**
- * Drafting features used for retrieval and pattern analysis.
- * Derived from existing evaluation-v2 SemanticSignals (knowledge interface),
- * plus a small set of comparison-specific flags detected from source text.
- */
 export type DraftingFeature =
   | "GREATER_OF_BASKET"
   | "LESSER_OF_BASKET"
@@ -93,32 +94,34 @@ export interface SourceLocator {
   charEnd: number;
 }
 
-/**
- * One source-backed provision available for comparison.
- * `sourceText` is the governing excerpt; summaries never replace it.
- */
 export interface PrecedentProvision {
   provisionId: string;
   covenantFamily: ComparableCovenantFamily | CovenantFamily;
   sourceText: string;
+  /** sha256 of sourceText — binds claim reviews to a specific source version. */
+  sourceVersionHash: string;
   locator: SourceLocator;
   documentRole: DocumentRole;
-  /** When this provision amends another, the target provisionId. */
+  agreementType: AgreementType;
+  /** Distinct issuer key (ticker / package issuer), never inferred legal identity. */
+  issuerId: string;
   amendsProvisionId: string | null;
   tags: string[];
   reviewStatus: ProvisionReviewStatus;
-  /** Optional attributable reviewer id — required for APPROVED_PRECEDENT elevation. */
   reviewedBy: string | null;
   reviewNote: string | null;
+  /** Optional financial-definition term names when this is a definition excerpt. */
+  financialDefinitionTerms: string[];
 }
 
 export interface DraftingFeatureProfile {
   provisionId: string;
   features: DraftingFeature[];
-  /** Existing Headroom knowledge interface output — reused, not reimplemented. */
   signals: SemanticSignals;
   featureEvidence: Partial<Record<DraftingFeature, string>>;
 }
+
+export type DiffAlgorithm = "token-lcs.v1" | "token-lcs-bounded.v1" | "myers-line.v1";
 
 export interface ExactTextDiffHunk {
   kind: "EQUAL" | "INSERT" | "DELETE";
@@ -128,47 +131,85 @@ export interface ExactTextDiffHunk {
 export interface ExactTextDiff {
   leftProvisionId: string;
   rightProvisionId: string;
-  algorithm: "token-lcs.v1";
+  algorithm: DiffAlgorithm;
   leftNormalized: string;
   rightNormalized: string;
   hunks: ExactTextDiffHunk[];
-  /** Character-level Jaccard over whitespace-normalized tokens. */
   tokenJaccard: number;
   identical: boolean;
+  /** Tokens actually compared (may be bounded). */
+  comparedTokenCount: { left: number; right: number };
+  bounded: boolean;
+}
+
+export type ClaimDimension =
+  | "TEXT"
+  | "STRUCTURE"
+  | "CONDITIONS"
+  | "EXCEPTIONS"
+  | "PROVISOS"
+  | "SCOPE"
+  | "SHARED_CAPACITY"
+  | "RECLASSIFICATION"
+  | "ECONOMICS"
+  | "DEFINITIONS"
+  | "AMENDMENT"
+  | "COUNTEREXAMPLE"
+  | "DEPENDENCY";
+
+/** Explicit evidence payload required for elevated standings. */
+export interface ClaimEvidence {
+  /** Verbatim source excerpts with provision ids. */
+  sourceExcerpts: Array<{ provisionId: string; excerpt: string; sourceVersionHash: string }>;
+  /** Optional feature / dependency keys cited. */
+  structuralKeys: string[];
+  /** Why this standing is justified — never empty for elevated standings. */
+  justification: string;
 }
 
 export interface ComparisonClaim {
   claimId: string;
   standing: ComparisonStanding;
-  dimension:
-    | "TEXT"
-    | "STRUCTURE"
-    | "CONDITIONS"
-    | "EXCEPTIONS"
-    | "PROVISOS"
-    | "SCOPE"
-    | "SHARED_CAPACITY"
-    | "RECLASSIFICATION"
-    | "ECONOMICS"
-    | "DEFINITIONS"
-    | "AMENDMENT"
-    | "COUNTEREXAMPLE";
+  dimension: ClaimDimension;
   summary: string;
-  /** Verbatim snippets from source that support the claim (required for SOURCE_SUPPORTED_*). */
+  evidence: ClaimEvidence;
+  /** @deprecated use evidence.sourceExcerpts — retained for Phase-1 readers. */
   sourceEvidence: Array<{ provisionId: string; excerpt: string }>;
-  /** Features present on one side but not the other. */
   featuresOnlyIn: { left: DraftingFeature[]; right: DraftingFeature[] } | null;
+  /**
+   * When standing is REVIEWER_VERIFIED_CONCLUSION, the review record id.
+   * Absent otherwise — never inferred from provision-level approval alone.
+   */
+  claimReviewId: string | null;
 }
 
 /**
- * Source-backed comparison record — the durable unit of this system.
- * Never silently upgrades standing; REVIEWER_VERIFIED requires reviewStatus.
+ * Claim-level reviewer approval. Bound to claimId + both source version hashes.
+ * Document-level or provision-level approval is insufficient.
  */
+export interface ClaimReviewRecord {
+  claimReviewId: string;
+  claimId: string;
+  comparisonId: string;
+  leftProvisionId: string;
+  rightProvisionId: string;
+  leftSourceVersionHash: string;
+  rightSourceVersionHash: string;
+  reviewedBy: string;
+  reviewedAt: string;
+  disposition: "AFFIRM" | "REJECT" | "NARROW";
+  note: string;
+  /** The standing the reviewer affirms (must be a legal-difference or conclusion). */
+  affirmedStanding: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE" | "REVIEWER_VERIFIED_CONCLUSION";
+}
+
 export interface PrecedentComparisonRecord {
   comparisonId: string;
   schemaVersion: typeof PRECEDENT_COMPARISON_SCHEMA_VERSION;
   leftProvisionId: string;
   rightProvisionId: string;
+  leftSourceVersionHash: string;
+  rightSourceVersionHash: string;
   covenantFamily: CovenantFamily | ComparableCovenantFamily;
   textual: ExactTextDiff;
   leftFeatures: DraftingFeatureProfile;
@@ -177,10 +218,14 @@ export interface PrecedentComparisonRecord {
   structuralDivergence: { leftOnly: DraftingFeature[]; rightOnly: DraftingFeature[] };
   claims: ComparisonClaim[];
   /**
-   * Highest standing present among claims. Never REVIEWER_VERIFIED unless at
-   * least one side carries APPROVED_PRECEDENT reviewStatus.
+   * Highest standing among claims. DOES NOT imply every claim has this standing.
+   * Consumers must inspect claims[].standing individually.
    */
+  maxStandingAmongClaims: ComparisonStanding;
+  /** @deprecated alias of maxStandingAmongClaims — retained for Phase-1 callers. */
   maxStanding: ComparisonStanding;
+  standingRollupNote: string;
+  claimReviews: ClaimReviewRecord[];
   disclaimer: string;
   createdAt: string;
 }
@@ -190,17 +235,38 @@ export interface PatternFrequency {
   covenantFamily: CovenantFamily | ComparableCovenantFamily | "*";
   count: number;
   totalInFamily: number;
+  /** Frequency within THIS corpus only. */
+  corpusRate: number;
+  /** @deprecated use corpusRate */
   rate: number;
+  rarityInCorpus: "COMMON_IN_CORPUS" | "UNCOMMON_IN_CORPUS" | "RARE_IN_CORPUS" | "UNIQUE_IN_CORPUS";
+  /** @deprecated use rarityInCorpus */
   rarity: "COMMON" | "UNCOMMON" | "RARE" | "UNIQUE";
   exampleProvisionIds: string[];
+  /** Market prevalence is never asserted from a small research corpus. */
+  marketPrevalence: "NOT_ESTIMATED";
+  sampleSize: number;
+  distinctIssuersInSlice: number;
+  samplingBiasNotes: string[];
 }
 
+export type DependencyLinkKind =
+  | "CROSS_REFERENCE"
+  | "DEFINED_TERM"
+  | "AMENDS"
+  | "SHARED_FEATURE"
+  | "ATLAS_EDGE"
+  | "ENCYCLOPEDIA_TERM"
+  | "UNRESOLVED_CONTEXT";
+
 export interface DependencyLink {
-  kind: "CROSS_REFERENCE" | "DEFINED_TERM" | "AMENDS" | "SHARED_FEATURE";
+  kind: DependencyLinkKind;
   fromProvisionId: string;
   toProvisionId: string | null;
   label: string;
   evidence: string;
+  resolution: "RESOLVED" | "UNRESOLVED" | "AMBIGUOUS" | "REGEX_HEURISTIC";
+  source: "LOCAL_HEURISTIC" | "DEPENDENCY_ATLAS" | "DEFINITION_ENCYCLOPEDIA";
 }
 
 export interface DependencyAwareComparisonView {
@@ -209,6 +275,8 @@ export interface DependencyAwareComparisonView {
   rightLinks: DependencyLink[];
   sharedDependencies: DependencyLink[];
   asymmetricDependencies: { leftOnly: DependencyLink[]; rightOnly: DependencyLink[] };
+  missingOrAmbiguousContext: Array<{ provisionId: string; reason: string }>;
+  closureComplete: boolean;
   note: string;
 }
 
@@ -217,10 +285,15 @@ export interface RetrievalQuery {
   requiredFeatures?: DraftingFeature[];
   anyFeatures?: DraftingFeature[];
   packageIds?: string[];
+  issuerIds?: string[];
   excludeProvisionIds?: string[];
   documentRole?: DocumentRole;
-  /** Free-text search over sourceText / section / tags. */
+  agreementType?: AgreementType;
+  amendmentStatus?: "ORIGINAL_ONLY" | "AMENDMENT_ONLY" | "ANY";
+  /** Match financial-definition term names (definitions family). */
+  financialDefinitionTerms?: string[];
   textContains?: string;
+  reviewStatus?: ProvisionReviewStatus;
   limit?: number;
 }
 
@@ -229,16 +302,15 @@ export interface RetrievalHit {
   features: DraftingFeatureProfile;
   score: number;
   matchedFeatures: DraftingFeature[];
+  /** Ceiling from provision provenance only — not claim standing. */
+  provenanceStatus: ProvisionReviewStatus;
   standingCeiling: ComparisonStanding;
 }
 
 export interface CounterexampleQuery {
-  /** Features the proposed interpretation claims are necessary / always present. */
   claimedNecessaryFeatures?: DraftingFeature[];
-  /** Features the proposed interpretation claims are absent / never present. */
   claimedAbsentFeatures?: DraftingFeature[];
   covenantFamily?: CovenantFamily | ComparableCovenantFamily;
-  /** Optional free-text interpretation under challenge — used only for search, never as authority. */
   proposedInterpretation?: string;
   limit?: number;
 }
@@ -250,8 +322,30 @@ export interface CounterexampleHit {
   standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE" | "STRUCTURAL_SIMILARITY";
 }
 
+export interface CorpusStatistics {
+  provisionCount: number;
+  distinctAgreements: number;
+  distinctIssuers: number;
+  distinctPackages: number;
+  byAgreementType: Record<string, number>;
+  byDocumentRole: Record<string, number>;
+  byFamily: Record<string, number>;
+  targetAgreements: number;
+  targetIssuers: number;
+  targetProvisions: number;
+  targetsMet: { agreements: boolean; issuers: boolean; provisions: boolean };
+  samplingBiasNotes: string[];
+  marketPrevalenceClaim: "FORBIDDEN_WITHOUT_REPRESENTATIVE_SAMPLE";
+}
+
+export const STANDING_ROLLUP_NOTE =
+  "maxStandingAmongClaims is the highest standing present on any single claim. " +
+  "It does not imply that every claim in the record carries that standing. " +
+  "Inspect claims[].standing and claims[].evidence individually.";
+
 export const COMPARISON_DISCLAIMER =
   "Similar drafting does not establish identical legal effect. " +
   "Textual and structural similarity are not legal conclusions. " +
   "Semantic hypotheses are unverified. " +
-  "Only reviewer-verified conclusions may be treated as reviewed precedent.";
+  "Only claim-level reviewer-verified conclusions (ClaimReviewRecord bound to claimId + sourceVersionHash) may be treated as reviewed precedent. " +
+  "Corpus frequency is not market prevalence.";

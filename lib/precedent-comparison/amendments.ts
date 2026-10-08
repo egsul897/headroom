@@ -4,7 +4,9 @@
 import { compareProvisions } from "./compare";
 import type { PrecedentCorpus } from "./corpus";
 import { dependencyAwareView } from "./dependency-view";
+import { evidenceFromExcerpts, makeClaim, maxStandingAmongClaims } from "./epistemic";
 import type { DependencyAwareComparisonView, PrecedentComparisonRecord, PrecedentProvision } from "./types";
+import { STANDING_ROLLUP_NOTE } from "./types";
 
 export interface AmendmentComparisonResult {
   original: PrecedentProvision;
@@ -36,22 +38,28 @@ export function compareOriginalAndAmendment(
   if (!original) throw new Error(`compareOriginalAndAmendment: missing original ${amendment.amendsProvisionId}`);
 
   const comparison = compareProvisions(original, amendment);
-  // Tag amendment-dimension claims explicitly when roles differ
-  const amendmentClaims = [
-    ...comparison.claims,
-    {
-      claimId: `claim_amend_${comparison.comparisonId}`,
-      standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE" as const,
-      dimension: "AMENDMENT" as const,
-      summary: `Right-side provision ${amendment.provisionId} is an AMENDMENT targeting ${original.provisionId} (${original.locator.sourceSectionRef}).`,
-      sourceEvidence: [
-        { provisionId: original.provisionId, excerpt: original.sourceText.slice(0, 160) },
-        { provisionId: amendment.provisionId, excerpt: amendment.sourceText.slice(0, 160) },
+  const amendClaim = makeClaim({
+    standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+    dimension: "AMENDMENT",
+    summary: `Right-side provision ${amendment.provisionId} is an AMENDMENT targeting ${original.provisionId} (${original.locator.sourceSectionRef}).`,
+    evidence: evidenceFromExcerpts(
+      [
+        { provisionId: original.provisionId, excerpt: original.sourceText.slice(0, 160), sourceVersionHash: original.sourceVersionHash },
+        { provisionId: amendment.provisionId, excerpt: amendment.sourceText.slice(0, 160), sourceVersionHash: amendment.sourceVersionHash },
       ],
-      featuresOnlyIn: null,
-    },
-  ];
-  const enriched: PrecedentComparisonRecord = { ...comparison, claims: amendmentClaims };
+      "documentRole=AMENDMENT with amendsProvisionId binding",
+      ["AMENDS"],
+    ),
+  });
+  const amendmentClaims = [...comparison.claims, amendClaim];
+  const maxStanding = maxStandingAmongClaims(amendmentClaims);
+  const enriched: PrecedentComparisonRecord = {
+    ...comparison,
+    claims: amendmentClaims,
+    maxStandingAmongClaims: maxStanding,
+    maxStanding,
+    standingRollupNote: STANDING_ROLLUP_NOTE,
+  };
   return {
     original,
     amendment,

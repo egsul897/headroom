@@ -1,16 +1,46 @@
 /**
- * Common / uncommon drafting-pattern frequency over a corpus slice.
+ * Corpus-frequency drafting-pattern statistics.
+ *
+ * Never describes a pattern as market-common. Reports sample size, issuer
+ * diversity, and sampling bias. Distinguishes corpus frequency from market
+ * prevalence (always NOT_ESTIMATED here).
  */
 import type { CovenantFamily } from "@prisma/client";
 import type { PrecedentCorpus } from "./corpus";
 import { profileProvision } from "./features";
 import type { ComparableCovenantFamily, DraftingFeature, PatternFrequency } from "./types";
 
-function rarityOf(rate: number, count: number): PatternFrequency["rarity"] {
-  if (count <= 1) return "UNIQUE";
-  if (rate < 0.25) return "RARE";
-  if (rate < 0.55) return "UNCOMMON";
-  return "COMMON";
+const MIN_ISSUERS_FOR_COMMON_LABEL = 5;
+const MIN_SAMPLE_FOR_COMMON_LABEL = 20;
+
+function rarityInCorpus(
+  rate: number,
+  count: number,
+  sampleSize: number,
+  distinctIssuers: number,
+): PatternFrequency["rarityInCorpus"] {
+  // Refuse "COMMON_IN_CORPUS" on tiny / single-issuer slices.
+  if (count <= 1) return "UNIQUE_IN_CORPUS";
+  if (sampleSize < MIN_SAMPLE_FOR_COMMON_LABEL || distinctIssuers < MIN_ISSUERS_FOR_COMMON_LABEL) {
+    if (rate < 0.25) return "RARE_IN_CORPUS";
+    return "UNCOMMON_IN_CORPUS";
+  }
+  if (rate < 0.25) return "RARE_IN_CORPUS";
+  if (rate < 0.55) return "UNCOMMON_IN_CORPUS";
+  return "COMMON_IN_CORPUS";
+}
+
+function legacyRarity(r: PatternFrequency["rarityInCorpus"]): PatternFrequency["rarity"] {
+  switch (r) {
+    case "COMMON_IN_CORPUS":
+      return "COMMON";
+    case "UNCOMMON_IN_CORPUS":
+      return "UNCOMMON";
+    case "RARE_IN_CORPUS":
+      return "RARE";
+    case "UNIQUE_IN_CORPUS":
+      return "UNIQUE";
+  }
 }
 
 export function identifyDraftingPatterns(
@@ -20,6 +50,8 @@ export function identifyDraftingPatterns(
   const provisions = family ? corpus.byFamily(family) : corpus.list();
   const total = provisions.length;
   if (total === 0) return [];
+  const distinctIssuers = new Set(provisions.map((p) => p.issuerId)).size;
+  const bias = corpus.statistics().samplingBiasNotes;
 
   const counts = new Map<DraftingFeature, { count: number; examples: string[] }>();
   for (const p of provisions) {
@@ -34,24 +66,31 @@ export function identifyDraftingPatterns(
 
   const out: PatternFrequency[] = [];
   for (const [feature, { count, examples }] of counts) {
-    const rate = count / total;
+    const corpusRate = count / total;
+    const rarityLabel = rarityInCorpus(corpusRate, count, total, distinctIssuers);
     out.push({
       feature,
       covenantFamily: family ?? "*",
       count,
       totalInFamily: total,
-      rate,
-      rarity: rarityOf(rate, count),
+      corpusRate,
+      rate: corpusRate,
+      rarityInCorpus: rarityLabel,
+      rarity: legacyRarity(rarityLabel),
       exampleProvisionIds: examples,
+      marketPrevalence: "NOT_ESTIMATED",
+      sampleSize: total,
+      distinctIssuersInSlice: distinctIssuers,
+      samplingBiasNotes: bias,
     });
   }
-  return out.sort((a, b) => b.rate - a.rate || a.feature.localeCompare(b.feature));
+  return out.sort((a, b) => b.corpusRate - a.corpusRate || a.feature.localeCompare(b.feature));
 }
 
 export function commonPatterns(corpus: PrecedentCorpus, family?: CovenantFamily | ComparableCovenantFamily): PatternFrequency[] {
-  return identifyDraftingPatterns(corpus, family).filter((p) => p.rarity === "COMMON");
+  return identifyDraftingPatterns(corpus, family).filter((p) => p.rarityInCorpus === "COMMON_IN_CORPUS");
 }
 
 export function uncommonPatterns(corpus: PrecedentCorpus, family?: CovenantFamily | ComparableCovenantFamily): PatternFrequency[] {
-  return identifyDraftingPatterns(corpus, family).filter((p) => p.rarity === "UNCOMMON" || p.rarity === "RARE" || p.rarity === "UNIQUE");
+  return identifyDraftingPatterns(corpus, family).filter((p) => p.rarityInCorpus !== "COMMON_IN_CORPUS");
 }

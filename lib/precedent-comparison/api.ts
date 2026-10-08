@@ -1,11 +1,12 @@
 /**
- * Precedent Comparison API — public facade.
- *
- * Pure TypeScript module API (no HTTP routes in this repo). Callers pass an
- * in-memory corpus or use the default public-credit corpus. Zero paid calls.
+ * Precedent Comparison API — public facade (Phase 2).
  */
+import { loadDependencyAtlas } from "./adapters/dependency-atlas";
+import { loadDefinitionEncyclopedia } from "./adapters/definition-encyclopedia";
+import { loadEdgarAcquisitionQueue } from "./adapters/edgar-backfill";
+import { loadKnowledgeFactoryCorpus } from "./adapters/knowledge-factory";
 import { compareOriginalAndAmendment, listAmendmentPairs } from "./amendments";
-import { compareProvisions } from "./compare";
+import { compareProvisions, type CompareOptions } from "./compare";
 import { getDefaultCorpus, PrecedentCorpus, type CorpusFile } from "./corpus";
 import { retrieveCounterexamples } from "./counterexamples";
 import { dependencyAwareView } from "./dependency-view";
@@ -34,13 +35,20 @@ export interface PrecedentComparisonApi {
   patterns(family?: CovenantFamily | ComparableCovenantFamily): ReturnType<typeof identifyDraftingPatterns>;
   commonPatterns(family?: CovenantFamily | ComparableCovenantFamily): ReturnType<typeof commonPatterns>;
   uncommonPatterns(family?: CovenantFamily | ComparableCovenantFamily): ReturnType<typeof uncommonPatterns>;
-  compare(leftProvisionId: string, rightProvisionId: string): PrecedentComparisonRecord;
-  compareRecords(left: PrecedentProvision, right: PrecedentProvision): PrecedentComparisonRecord;
+  compare(leftProvisionId: string, rightProvisionId: string, options?: CompareOptions): PrecedentComparisonRecord;
+  compareRecords(left: PrecedentProvision, right: PrecedentProvision, options?: CompareOptions): PrecedentComparisonRecord;
   dependencyView(comparison: PrecedentComparisonRecord): ReturnType<typeof dependencyAwareView>;
   counterexamples(query: CounterexampleQuery): ReturnType<typeof retrieveCounterexamples>;
   amendmentPairs(): ReturnType<typeof listAmendmentPairs>;
   compareAmendment(amendmentProvisionId: string): ReturnType<typeof compareOriginalAndAmendment>;
   profile(provisionId: string): ReturnType<typeof profileProvision>;
+  statistics(): ReturnType<PrecedentCorpus["statistics"]>;
+  peerStatus(): {
+    dependencyAtlas: ReturnType<typeof loadDependencyAtlas>;
+    definitionEncyclopedia: ReturnType<typeof loadDefinitionEncyclopedia>;
+    edgarBackfill: ReturnType<typeof loadEdgarAcquisitionQueue>;
+    knowledgeFactory: ReturnType<typeof loadKnowledgeFactoryCorpus>;
+  };
 }
 
 export function createPrecedentComparisonApi(corpus?: PrecedentCorpus): PrecedentComparisonApi {
@@ -63,17 +71,23 @@ export function createPrecedentComparisonApi(corpus?: PrecedentCorpus): Preceden
     patterns: (family) => identifyDraftingPatterns(c, family),
     commonPatterns: (family) => commonPatterns(c, family),
     uncommonPatterns: (family) => uncommonPatterns(c, family),
-    compare: (leftId, rightId) => compareProvisions(requireProvision(leftId), requireProvision(rightId)),
-    compareRecords: (left, right) => compareProvisions(left, right),
+    compare: (leftId, rightId, options) => compareProvisions(requireProvision(leftId), requireProvision(rightId), options),
+    compareRecords: (left, right, options) => compareProvisions(left, right, options),
     dependencyView: (comparison) => dependencyAwareView(c, comparison),
     counterexamples: (query) => retrieveCounterexamples(c, query),
     amendmentPairs: () => listAmendmentPairs(c),
     compareAmendment: (id) => compareOriginalAndAmendment(c, id),
     profile: (id) => profileProvision(requireProvision(id)),
+    statistics: () => c.statistics(),
+    peerStatus: () => ({
+      dependencyAtlas: loadDependencyAtlas(),
+      definitionEncyclopedia: loadDefinitionEncyclopedia(),
+      edgarBackfill: loadEdgarAcquisitionQueue(),
+      knowledgeFactory: loadKnowledgeFactoryCorpus(),
+    }),
   };
 }
 
-/** Convenience: compare two families' top retrieval hits for a feature set. */
 export function compareFamilyFeatureSlice(
   api: PrecedentComparisonApi,
   family: CovenantFamily | ComparableCovenantFamily,
