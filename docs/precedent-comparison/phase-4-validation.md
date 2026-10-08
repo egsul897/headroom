@@ -6,7 +6,7 @@
 
 ## Mandatory return
 
-1. **Starting / ending SHAs:** start `86cb255…`; end see tip after push.
+1. **Starting / ending SHAs:** start `86cb255cd0737f94a0fc27766a35657310da8001`; Phase 4 code `5b1e27015efd00bb5153551fa14c65dbbc0704d0`; tip after docs `3f7ec179aca0efcc3a4c1270e99669b5885cc7c6`.
 2. **Context completeness (100 stratified):**
    - Span-heuristic complete rate **64% → 81%** (parent-basket assembly in corpus audit).
    - Dependency-classification incomplete **54 → 52** after peer assembly attempt (mostly unmounted peers; residual gaps → `comparisonQualified`).
