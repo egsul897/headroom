@@ -36,6 +36,37 @@ New bridge: `BridgedSemanticCaller` implements `SemanticCaller` over determinist
 - Context retrieval: `lib/contract-model/compiler/context-retrieval/`
 - Required dependency closure: `lib/contract-model/compiler/semantic/required-dependencies.ts`
 - Verified units: `lib/contract-model/verified-units.ts` (never auto-label model output verified)
+- Candidate assembly: `lib/contract-model/covenant-map/candidate-input.ts`
+- Pilot file evidence persist: `scripts/p3-conmed-pilot/evidence.ts`
+
+### Recommended reuse spine (confirmed by substrate audit)
+
+```
+parseDocumentStructure → defs/refs → buildStructuralIndex
+  → runDiscoveryPipeline (or sealed candidates)
+  → buildPackageGraph → runAmendmentPipeline / computeOperativeContractState
+  → buildCovenantContextBundle → assembleCompilerInput
+  → compileCovenantToIR({ caller: BridgedSemanticCaller | RealSemanticCaller })
+  → verifyCompiledCandidate → buildVerifiedUnitPackage
+  → file or Prisma persist
+```
+
+The vercel-independent layer injects at the `SemanticCaller` boundary and adds
+deterministic inventory / selective planning / knowledge store around that spine.
+It does **not** replace Phase 2A–2G or the certified tool-loop caller.
+
+### IPV failure-mode IDs
+
+`IPV-16` … `IPV-22` **do not exist** as pre-existing repo defect IDs (confirmed
+repo-wide search). Closest historical ID systems: `P0-*`/`P1-*`, `P3-DEFECT-*`,
+`BLOCKER-*`, `F-*`. The model-comparison harness introduces IPV-* labels as
+**harness-local** independent-verification protocol tags for this workstream only;
+they are not Claude-owned acceptance fixtures and do not rewrite historical ledgers.
+
+Engineering defect ledgers to feed (existing):  
+`docs/phase-3f1-6-final-foundation-certification/01-historical-defect-ledger.json`,  
+`docs/phase-3-closure/03-defect-closure-ledger.json`, plus this workstream’s  
+`docs/vercel-independent-covenant-compilation/engineering-ledger.json`.
 
 ## Certification gates
 
