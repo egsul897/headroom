@@ -31,7 +31,7 @@ See `docs/covenant-dependency-atlas/phase-2/00-summary.json` for machine-readabl
 6. **Motif audit:** 7 cycles → 5 textual-reference · 1 structural artifact · 1 genuine semantic; 25 diamond sample · 0 false cycles from shared deps
 7. **Priority coverage (structural):** see `05-priority-coverage.json`
 8. **KF import:** export-ready locally (`knowledge-factory.dependency-dataset.v1`); durable CKF mapping coordinated, not merged
-9. **SHA / PR / tests:** filled at commit time; `npx vitest run tests/covenant-dependency-atlas` → 23 passed
+9. **SHA / PR / tests:** `a099e30be37da06d8b801fc2e8b6b016b36f72f8` · PR #140 · `npx vitest run tests/covenant-dependency-atlas` → 23 passed
 
 ## Completeness semantics (corrected)
 
