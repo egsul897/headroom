@@ -138,7 +138,7 @@ production.
 
 ## Footer (exact identifiers)
 
-- **SHA:** `888d8bd3115ae929434d9f16348abd943aa16714` on `cursor/covenant-precedent-research-3e8f`
+- **SHA (ingest checkpoint commit):** `888d8bd3115ae929434d9f16348abd943aa16714`
+- **Tip SHA:** `30ee0482f932ea65d1ecb3ec0b9d76d229e0a86c` on `cursor/covenant-precedent-research-3e8f`
 - **PR:** https://github.com/egsul897/headroom/pull/152
-- **CI:** see PR checks (provider-free research tests are local; GitHub Actions
-  soft-gates are separate)
+- **CI (tip `30ee048`, all 6 checks):** PASS — P3-R0 soft gate; dashboard/feeds/home-overview invent-absence soft gates; Vercel; Vercel Preview Comments. Zero failures.
