@@ -1,13 +1,15 @@
-# P0 — Chewy §6.08(a)(3)(b) parser remediation (#132)
+# P0 — Chewy §6.08(a)(3)(b) parser remediation (follow-up to merged #132)
 
 Soft gate. **DEVELOPMENT ≠ CERTIFIED.** No paid inference. No certification advancement. Frozen evidence untouched.
+
+**Note:** PR #132 merged at defective tip `348bfedb33725d9a00adbf331131c038aa7d5a22`. This branch is the P0 fix against current `main`. Keep this follow-up PR **draft** until independent replay.
 
 ## SHAs
 
 | Role | SHA |
 |---|---|
-| Starting (defect) | `348bfedb33725d9a00adbf331131c038aa7d5a22` |
-| Ending | `37a14278872b83ae29834b7cd6f9a276b5573017` |
+| Defective #132 merge tip | `348bfedb33725d9a00adbf331131c038aa7d5a22` |
+| This remediation tip | `6760e31f1735f14416efa05bfc59683153e4be10` |
 
 ## Root cause
 
@@ -34,7 +36,7 @@ Pre-existing limitation unchanged: glued `(i)(A)` still does not mint its own no
 
 ## Gibraltar parser-tree drift (for Gibraltar owner / #128)
 
-| Metric | main `9de4e573` | #132 `@348bfed` (before & after this fix) |
+| Metric | main without letter/roman | #132 tip & this fix |
 |---|---:|---:|
 | totalNodes | 2087 | **2064** (unchanged by this Chewy fix) |
 | passACandidates | 946 | **938** (unchanged) |
@@ -57,10 +59,11 @@ treeIdentitySha256 (Gibraltar nodes after fix): `8152ff739ab5e7ed5f57184b154d0b0
 Please replay on the ending SHA:
 
 ```bash
-git checkout <ending-sha>
+git fetch origin cursor/chewy-a3b-span-remediation-aa25
+git checkout 6760e31f1735f14416efa05bfc59683153e4be10
 npx vitest run tests/contract-model/clause-hierarchy.test.ts \
   tests/contract-model/clause-hierarchy-f2-nesting.test.ts --reporter=verbose
 # Expect: 6.08(a)(3)(b) charStart 664123 charEnd 666205; no 6.08(a)(3)(b)(x)/(y)
 ```
 
-Keep #132 **draft** until that replay passes.
+Keep this follow-up PR **draft** until that replay passes.
