@@ -36,7 +36,9 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
    section** while the compiler keeps the old definition (IPV-19/20): ratio baskets would be compiled against a
    pre-amendment EBITDA.
 4. **Real-world formatting breaks the parser**: tables of contents, dropped enumeration letters, inline enumerations
-   inside definitions, exhibit term lists (IPV-06/07/08/11). Two of these fail closed, two fail silently.
+   inside definitions, exhibit term lists (IPV-06/07/08/11), and scan artefacts (a spaced heading or a homoglyph
+   enumerator merges a covenant silently; a mis-read digit mints a bogus section — IPV-23). Two of these fail
+   closed, the rest fail silently. Plural uses of defined terms miss their definition 93% of the time (IPV-09).
 5. **Definition-mediated relationships** (builder baskets netting across sections) are retrieved correctly (J and K
    controls) but have no representation the compiler accepts (IPV-15), and a junior-debt prepayment basket has no
    covenant family at all (IPV-18).

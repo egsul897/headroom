@@ -17,7 +17,7 @@ import { runDeterministicStages, type DeterministicStages } from "./stages";
 import { auditDeterministic, type Ledger } from "./auditor";
 import { hybridScope, type BenchmarkCase } from "./benchmark/strategies";
 
-export type MutationKind = "CHANGED_THRESHOLD" | "ADDED_CONDITION" | "REMOVED_EXCEPTION" | "REVISED_DEFINITION" | "NEW_AMENDMENT" | "MOVED_COVENANT" | "CHANGED_ENTITY_SCOPE" | "CONFLICTING_DOCUMENT" | "REORDERED_HIERARCHY" | "MISSING_REFERENCED_PROVISION";
+export type MutationKind = "CHANGED_THRESHOLD" | "ADDED_CONDITION" | "REMOVED_EXCEPTION" | "REVISED_DEFINITION" | "NEW_AMENDMENT" | "MOVED_COVENANT" | "CHANGED_ENTITY_SCOPE" | "CONFLICTING_DOCUMENT" | "REORDERED_HIERARCHY" | "MISSING_REFERENCED_PROVISION" | "OCR_NOISE";
 export type SurvivalExpectation = "KILLED" | "EQUIVALENT" | "GAP";
 
 export interface Mutation {
@@ -30,6 +30,8 @@ export interface Mutation {
     question?: BenchmarkCase; closureMustContain?: string[]; closureMustFlag?: string[];
     /** Documents that must produce at least one amendment effect (resolved or not) - an override document the pipeline ignores entirely is a dangerous omission. */
     effectsExpectedFrom?: string[];
+    /** OCR-noise contract: the named node is either intact (unique, same text) or absent with the parser failing closed; it must never be silently absorbed into another node (the IPV-07 class). The distinctive phrase is the mutated clause's own wording. */
+    ocr?: { ref: string; distinctivePhrase: string };
     /** Independent prediction of what the unchanged manifest does against the mutant at the deterministic layer. */
     survival: SurvivalExpectation; survivalReason: string; killedByStages?: string[];
   };
@@ -44,7 +46,7 @@ export interface MutationObservation {
   closure: { units: string[]; unresolved: string[]; missingDocuments: string[]; flags: string[] } | null;
   kill: { newFailures: Array<{ ref: string; stage: string; severity: string; actual: string }>; vanishedFailures: string[]; verdict: "KILLED" | "SURVIVED"; predicted: SurvivalExpectation; predictionHeld: boolean };
   /** HARNESS verdicts test the suite's own expectation delta (text/identity/closure/kill prediction); PRODUCT verdicts test Headroom's behaviour on the mutant (operative state, effect surfacing) and a failure is a product finding to register, never a reason to weaken the expectation. */
-  verdicts: Array<{ check: string; ok: boolean; detail: string; kind: "HARNESS" | "PRODUCT"; ref?: string; severity?: Severity }>;
+  verdicts: Array<{ check: string; ok: boolean; detail: string; kind: "HARNESS" | "PRODUCT" | "OBSERVATION"; ref?: string; severity?: Severity }>;
 }
 
 const ws = (s: string) => s.replace(/\s+/g, " ").trim();
@@ -98,7 +100,7 @@ export async function observeMutation(base: CorpusPackage, m: Mutation): Promise
   const survived = afterNodes.filter((n) => beforeIds.has(n.nodeId)).length;
   const textHashSurvived = afterNodes.filter((n) => beforeTextHashes.has(textId(`${n.nodeType}|${n.sectionRef}|${after.index.getNodeText(n.nodeId, "OWN")}`))).length;
   const verdicts: MutationObservation["verdicts"] = [];
-  const v = (check: string, ok: boolean, detail: string, kind: "HARNESS" | "PRODUCT" = "HARNESS", ref?: string, severity?: Severity) => verdicts.push({ check, ok, detail, kind, ...(ref ? { ref } : {}), ...(severity ? { severity } : {}) });
+  const v = (check: string, ok: boolean, detail: string, kind: "HARNESS" | "PRODUCT" | "OBSERVATION" = "HARNESS", ref?: string, severity?: Severity) => verdicts.push({ check, ok, detail, kind, ...(ref ? { ref } : {}), ...(severity ? { severity } : {}) });
   for (const r of m.expect.changedSections) v(`text changes: ${r}`, sectionHashes[r]!.before !== sectionHashes[r]!.after, `${sectionHashes[r]!.before} → ${sectionHashes[r]!.after}`);
   for (const r of m.expect.stableSections) v(`text stable: ${r}`, sectionHashes[r]!.before === sectionHashes[r]!.after && sectionHashes[r]!.before !== null, `${sectionHashes[r]!.before} → ${sectionHashes[r]!.after}`);
   for (const r of m.expect.nodeIdsStableFor) v(`node id survives: ${r}`, nodeIds[r]!.before === nodeIds[r]!.after && nodeIds[r]!.before !== null, `${nodeIds[r]!.before} → ${nodeIds[r]!.after}`);
@@ -125,6 +127,15 @@ export async function observeMutation(base: CorpusPackage, m: Mutation): Promise
     closure = { units: scope.units.map((u) => `${u.documentId}#${u.sectionRef}`), unresolved: scope.unresolvedReferences, missingDocuments: scope.missingDocuments, flags: scope.flags };
     for (const u of m.expect.closureMustContain ?? []) v(`closure contains ${u}`, closure.units.includes(u), closure.units.join(", "));
     for (const f of m.expect.closureMustFlag ?? []) { const hay = [...closure.unresolved, ...closure.missingDocuments, ...closure.flags]; v(`closure flags "${f}"`, hay.some((x) => x.toLowerCase().includes(f.toLowerCase())), hay.join(" | ").slice(0, 300), "PRODUCT", `mutation:${m.id}:closure-flag:${f}`, "MISSING_DEPENDENCY"); }
+  }
+  if (m.expect.ocr) {
+    const o = m.expect.ocr; const nodes = after.index.findNodesByRef(doc, o.ref);
+    // "intact" = the node is still uniquely resolvable (its text may legitimately carry the scan artefact itself)
+    const intact = nodes.length === 1;
+    const absorbedBy = after.index.allNodes().filter((n) => n.documentId === doc && n.sectionRef !== o.ref && !nodes.some((x) => x.nodeId === n.nodeId) && ws(after.index.getNodeText(n.nodeId, "OWN")).includes(ws(o.distinctivePhrase))).map((n) => `${n.nodeType} ${n.sectionRef}`);
+    const health = after.index.healthDiagnostics().length;
+    v(`OCR: ${o.ref} is intact or absent-with-diagnostics, never silently absorbed`, intact || (nodes.length === 0 && absorbedBy.length === 0) || (nodes.length === 0 && health > 0), `${nodes.length} node(s) for ${o.ref}; intact ${intact}; absorbed by ${absorbedBy.join(", ") || "nobody"}; health diagnostics ${health}`, "PRODUCT", `mutation:${m.id}:ocr:${o.ref}`, "SOURCE_PROVENANCE_FAILURE");
+    if (absorbedBy.length > 0) v(`OCR: the distinctive phrase of ${o.ref} now lives inside another node (silent merge)`, false, absorbedBy.join(", "), "OBSERVATION" as never);
   }
   // kill analysis: the ORIGINAL manifest against the mutant through the production deterministic audits
   const baseFails = failures(auditDeterministic(base, before));
@@ -222,6 +233,23 @@ export const MUTATIONS: Mutation[] = [
       operativeState: [{ asOfDate: "2026-12-31", sectionRef: "7.02(b)", status: "CURRENT", instrumentStatusNot: "OPERATIVE_STATE_RESOLVED" }], effectsExpectedFrom: ["consent"],
       question: q("MUT-16-Q", "pkg-i-secured-debt-lien", "LIENS", "May the Borrower grant Liens securing $28,000,000 of general-basket Indebtedness as of 2026-12-31?", [{ documentId: "credit-agreement", sectionRef: "7.02(b)" }], "2026-12-31"), closureMustContain: ["credit-agreement#7.02", "credit-agreement#9.15", "consent#1"],
       survival: "GAP", survivalReason: "a consent is not an amendment drafting form; expected to be invisible to the amendment pipeline like the side letters (IPV-16, loosening direction)" } },
+  // ---- OCR / scan-noise family (doc 19 assumption 1; ledger #23/#24): the parser must stay intact or fail closed, never merge silently ----
+  { id: "MUT-17", kind: "OCR_NOISE", packageId: "pkg-a-basic-credit-agreement", description: "Spaced heading: 'SECTION 7.02 Liens' scanned as 'S E C T I O N 7.02 Liens'.", legalEffect: "None; a scan artefact.",
+    edits: [{ documentId: "credit-agreement", find: "SECTION 7.02 Liens", replace: "S E C T I O N 7.02 Liens" }],
+    expect: { changedSections: [], stableSections: ["7.03"], nodeIdsStableFor: ["7.01"], ocr: { ref: "7.02", distinctivePhrase: "shall not create any Lien on any property" },
+      survival: "KILLED", survivalReason: "the manifest pins a 7.02 node; whether the mutant is killed by NOT_FOUND (fail-closed) or survives with an absorbed clause is the product verdict", killedByStages: ["STRUCTURE"] } },
+  { id: "MUT-18", kind: "OCR_NOISE", packageId: "pkg-a-basic-credit-agreement", description: "Digit/letter confusion in a section number: 'SECTION 7.01' scanned as 'SECTION 7.0l'.", legalEffect: "None; a scan artefact on the debt covenant's heading.",
+    edits: [{ documentId: "credit-agreement", find: "SECTION 7.01 Indebtedness", replace: "SECTION 7.0l Indebtedness" }],
+    expect: { changedSections: [], stableSections: ["7.02", "7.03"], nodeIdsStableFor: ["7.02", "7.03"], ocr: { ref: "7.01", distinctivePhrase: "create, incur or assume any Indebtedness, except" },
+      survival: "KILLED", survivalReason: "the manifest pins 7.01 and its clauses", killedByStages: ["STRUCTURE"] } },
+  { id: "MUT-19", kind: "OCR_NOISE", packageId: "pkg-a-basic-credit-agreement", description: "Enumerator homoglyph: clause '(c)' scanned with a Cyrillic 'с'.", legalEffect: "None; a scan artefact on the ratio basket's enumerator.",
+    edits: [{ documentId: "credit-agreement", find: "(c) Indebtedness of the Borrower, so long as", replace: "(с) Indebtedness of the Borrower, so long as" }],
+    expect: { changedSections: ["7.01"], stableSections: ["7.02", "7.03"], nodeIdsStableFor: ["7.01(b)"], ocr: { ref: "7.01(c)", distinctivePhrase: "Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00" },
+      survival: "KILLED", survivalReason: "the manifest pins 7.01(c) and its text", killedByStages: ["STRUCTURE"] } },
+  { id: "MUT-20", kind: "OCR_NOISE", packageId: "pkg-a-basic-credit-agreement", description: "Hard line wrap inside a clause with a hyphenated break: 'aggregate prin-\ncipal amount'.", legalEffect: "None; a scan artefact inside 7.01(b).",
+    edits: [{ documentId: "credit-agreement", find: "in an aggregate principal amount not to exceed $30,000,000", replace: "in an aggregate prin-\ncipal amount not to exceed $30,000,000" }],
+    expect: { changedSections: ["7.01(b)", "7.01"], stableSections: ["7.02", "7.03"], nodeIdsStableFor: ["7.01(b)"], ocr: { ref: "7.01(b)", distinctivePhrase: "$30,000,000" },
+      survival: "KILLED", survivalReason: "the clause text hash changes", killedByStages: ["STRUCTURE"] } },
 ];
 
 export function renderMutationReport(obs: MutationObservation[], sha: string): string {

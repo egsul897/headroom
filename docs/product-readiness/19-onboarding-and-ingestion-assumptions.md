@@ -23,7 +23,7 @@ about partner practice are labelled; nothing here is customer evidence.
 |---|---|---|---|
 | Clean agreement text (no TOC, contiguous enumeration) | structure, definitions, references exact | A, B, C, D, F, I, J, K, L STRUCTURE rows all pass | load directly |
 | Table of contents present | TOC lines become duplicate nodes; every reference ambiguous; certification impossible | E (IPV-11); PR136-F1 | strip or mark the TOC before load (a triage parser exists off the certified path); otherwise the package is unusable |
-| Dropped enumeration letter | following clause silently merged into the previous one | G (IPV-07) | a structural diff against the partner's own clause list before approval |
+| Dropped enumeration letter; spaced heading; homoglyph enumerator; mis-read section digit | following clause silently merged into the previous one; a bogus section label minted | G (IPV-07), MUT-17/19 (IPV-07), MUT-18 (IPV-23) | a structural diff against the partner's own clause list before approval; no diagnostic exists today |
 | Inline (i)/(ii)/(A)/(B) inside definitions | definitions after the enumeration mis-sourced | H, E (IPV-06) | definitions review pass with the partner's defined-terms list |
 | Exhibit "Term: …" lines | indexed as definitions | G (IPV-08) | mark exhibits non-operative at load; they must never feed definitions |
 | Amendment "Section X … amended and restated to read as follows" / "deleted and replaced with [Reserved]" | resolved, dated, applied at clause level | C 7/7, MUT-05/11 | load as AMENDMENT; confirm effective date card |
@@ -52,8 +52,10 @@ about partner practice are labelled; nothing here is customer evidence.
 
 ## 4. Data-room assumptions that change the design
 
-- If most partners cannot produce a conformed copy, OCR noise becomes the first structural failure class; none of
-  the corpus covers OCR artefacts (ledger: add a package with OCR-style breakage before the first pilot).
+- If most partners cannot produce a conformed copy, OCR noise is the first structural failure class: the scan-noise
+  mutants (MUT-17…20) show a spaced heading or a homoglyph enumerator merges the affected covenant into its neighbour
+  with no diagnostic (IPV-07) and a mis-read digit mints a bogus '7.0' section (IPV-23). Onboarding must therefore run
+  a clause-count diff against the partner's own covenant list on every scanned document.
 - If side letters are common (assumption 3 in doc 18), IPV-16 is pilot-blocking.
 - If the partner's covenant list in the compliance certificate is reliable, it is the recall oracle for the pilot
   (doc 06 §7) and should be ingested as the reviewer's checklist, never as compiler input.

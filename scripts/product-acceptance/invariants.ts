@@ -355,6 +355,34 @@ INVARIANTS.push(
     } },
 );
 
+INVARIANTS.push(
+  { id: "INV-18", title: "A defined term used in plural or possessive form is still that defined term: its definition must reach the compiler", packageId: "pkg-a-basic-credit-agreement",
+    legalStatement: "'Guarantors', 'Subsidiaries', 'Investments', 'Liens', 'Restricted Payments', 'an Affiliate of' are uses of the defined terms Guarantor, Subsidiary, Investment, Lien, Restricted Payment, Affiliate (every corpus agreement carries the usual 'singular and plural forms' construction clause or relies on it). For every covenant whose own text uses a defined term only in such a form, the bundle must still carry the definition.",
+    run: async () => {
+      const out: InvariantVerdict[] = []; const misses: string[] = []; let examined = 0, pluralUses = 0;
+      for (const pkg of loadCorpus()) {
+        const s = await runDeterministicStages(pkg); const m = pkg.manifest; const asOf = m.operativeState.asOfDates[m.operativeState.asOfDates.length - 1]!;
+        const candidatePkg = { companyId: m.companyId, instrumentKey: m.instrumentKey, packageKey: `${pkg.packageId}-package`, index: s.index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: s.operativeStates.get(asOf) ?? null, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(asOf) };
+        const terms = s.index.allDefinitions().map((d) => ({ term: d.exactTerm, doc: d.documentId }));
+        for (const c of m.covenants.filter((c) => c.operative)) {
+          const cand = candidateFor(s.index, c.documentId, c.sectionRef, [c.family as never], c.role as never, c.id, c.occurrence); if (!cand) continue;
+          examined++;
+          const own = s.index.getNodeText(cand.structuralNodeIds[0]!, "OWN");
+          const b = buildCandidateCompilerInput(cand, candidatePkg as never);
+          const retrieved = new Set(items(b).filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY").map((i) => i.normalizedRef.toLowerCase()));
+          for (const t of terms.filter((t) => t.doc === c.documentId)) {
+            const esc = t.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const singular = new RegExp(`\\b${esc}\\b`).test(own);
+            const inflected = new RegExp(`\\b${esc}(?:s|es|'s|’s)\\b`).test(own) || new RegExp(`\\b${esc.replace(/y$/, "")}ies\\b`).test(own);
+            if (!singular && inflected) { pluralUses++; if (!retrieved.has(t.term.toLowerCase())) misses.push(`${pkg.packageId.replace(/^pkg-([a-z])-.*$/, "$1").toUpperCase()} ${c.sectionRef}: "${t.term}"`); }
+          }
+        }
+      }
+      out.push({ ref: "invariant:INV-18:inflected-terms-retrieved", check: `every defined term used only in an inflected form reaches the bundle (${examined} covenants, ${pluralUses} inflected-only uses)`, ok: misses.length === 0, detail: misses.length ? `${misses.length} miss(es): ${misses.join("; ")}` : "none", kind: "PRODUCT", severity: "NONMATERIAL_OMISSION" });
+      return out;
+    } },
+);
+
 export async function runInvariants(): Promise<InvariantResult[]> {
   const out: InvariantResult[] = [];
   for (const inv of INVARIANTS) out.push({ id: inv.id, title: inv.title, legalStatement: inv.legalStatement, packageId: inv.packageId, verdicts: await inv.run() });

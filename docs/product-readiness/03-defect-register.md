@@ -16,7 +16,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 | IPV-06 | SOURCE_PROVENANCE_FAILURE | INCORRECT_RESULT | STRUCTURE | Inline enumerations inside a definition are minted as structural nodes and capture the following definitions | h-unseen-composition, e-structural-ambiguity |
 | IPV-07 | MISSING_REQUIRED_COVENANT | INCORRECT_RESULT | STRUCTURE | A dropped enumeration letter merges the next clause into the previous sibling | g-adversarial-evidence |
 | IPV-08 | SOURCE_PROVENANCE_FAILURE | INCORRECT_RESULT | STRUCTURE | Non-operative exhibit "Term:" lines become definition records with no source node | g-adversarial-evidence |
-| IPV-09 | NONMATERIAL_OMISSION | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Plural use of a defined term is not resolved to its definition | d-qualitative-restrictions, e-structural-ambiguity, f-capacity-ledger-honesty, g-adversarial-evidence, i-secured-debt-lien, k-three-way-builder, m-composed-p0 |
+| IPV-09 | MATERIAL_CONDITION_OMISSION | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Plural use of a defined term is not resolved to its definition | d-qualitative-restrictions, e-structural-ambiguity, f-capacity-ledger-honesty, g-adversarial-evidence, i-secured-debt-lien, k-three-way-builder, m-composed-p0 |
 | IPV-10 | UNSUPPORTED_AS_COMPLETE | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Undefined terms inside a retrieved definition are not reported; the bundle claims SUFFICIENT | h-unseen-composition, j-restricted-payments-builder |
 | IPV-11 | UNSUPPORTED_AS_COMPLETE | CAPABILITY_NOT_IMPLEMENTED | STRUCTURE | Table-of-contents lines are parsed as duplicate ARTICLE/SECTION nodes on the certified path; every covenant becomes ambiguous | e-structural-ambiguity |
 | IPV-12 | NONMATERIAL_OMISSION | CAPABILITY_NOT_IMPLEMENTED | CONTEXT_RETRIEVAL | A self-referential definition trips DEFINITION_CYCLE and blocks certification of every dependent covenant | b-multi-document |
@@ -30,6 +30,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 | IPV-20 | CRITICAL_FALSE_PERMISSION | INCORRECT_RESULT | CONTEXT_RETRIEVAL | Definition retrieval hands the compiler the base-agreement definition text even when the operative state holds a RESOLVED amendment to the section the definition lives in | a-basic-credit-agreement, m-composed-p0 |
 | IPV-21 | UNSUPPORTED_AS_COMPLETE | INCORRECT_RESULT | CONTEXT_RETRIEVAL | A diamond dependency (a covenant names term T and term U, and U's definition names T) is reported as DEFINITION_CYCLE; the context contract then refuses certification of every such covenant (false refusal) | a-basic-credit-agreement, i-secured-debt-lien, l-affiliate-transactions |
 | IPV-22 | CRITICAL_FALSE_PERMISSION | INCORRECT_RESULT | CERTIFICATION | A figure's role and direction are not verified: a comparator-introduced threshold is certified as a basket cap, and a ratio test with its comparator flipped is certified | a-basic-credit-agreement, h-unseen-composition, l-affiliate-transactions |
+| IPV-23 | SOURCE_PROVENANCE_FAILURE | INCORRECT_RESULT | STRUCTURE | A malformed section number ('SECTION 7.0l', scan artefact) mints a node labelled '7.0' that absorbs the whole covenant, with no health diagnostic | a-basic-credit-agreement |
 
 ## IPV-01 — Entity-scope widening is confirmed and certified when the clause narrows the section's governing scope
 
@@ -115,12 +116,12 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 - **failingInput**: 7.03 enumerates (a), (b), (d) - (c) absent (a conformed copy with a dropped letter).
 - **expected**: 7.03(d) is its own node (or an ENUMERATION_GAP ambiguity), carrying the $2,500,000 basket.
-- **actual**: No 7.03(d) node; the (d) text and its $2,500,000 value are absorbed into 7.03(b)'s own text. The deterministic layers then flag the unrepresented value under (b) (REVIEW), so the clause is never attributable to (d).
+- **actual**: No 7.03(d) node; the (d) text and its $2,500,000 value are absorbed into 7.03(b)'s own text. The deterministic layers then flag the unrepresented value under (b) (REVIEW), so the clause is never attributable to (d). SCAN-NOISE BREADTH (mutants on A): a spaced heading 'S E C T I O N 7.02 Liens' makes the whole Liens covenant disappear into 7.01(c) (0 nodes for 7.02, no health diagnostic); a Cyrillic homoglyph in the enumerator '(с)' makes 7.01(c) (the ratio basket) disappear into 7.01(b). Same mechanism as the dropped letter: an unrecognised boundary merges silently.
 - **repro**: resolveUniqueNodeByRef('credit-agreement','7.03(d)') → NOT_FOUND
 - **impact**: A basket attributed to the wrong clause; its cross-references by letter fail silently.
 - **hypothesis**: The enumerator state machine requires contiguous letters and treats a non-successor enumerator as prose continuation.
 - **acceptance**: A non-contiguous enumerator either opens a node (with an ENUMERATION_GAP health finding) or produces an explicit ambiguity; never silent absorption.
-- **signatures**: `pkg-g-adversarial-evidence` → `structure:credit-agreement#7.03(d)`; `pkg-g-adversarial-evidence` → `discovery:pass-a-coverage`
+- **signatures**: `pkg-g-adversarial-evidence` → `structure:credit-agreement#7.03(d)`; `pkg-g-adversarial-evidence` → `discovery:pass-a-coverage`; `pkg-a-basic-credit-agreement` → `mutation:MUT-17:ocr:7.02`; `pkg-a-basic-credit-agreement` → `mutation:MUT-19:ocr:7.01(c)`
 
 ## IPV-08 — Non-operative exhibit "Term:" lines become definition records with no source node
 
@@ -137,16 +138,16 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-09 — Plural use of a defined term is not resolved to its definition
 
-**Status** OPEN · **Severity** NONMATERIAL_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
+**Status** OPEN · **Severity** MATERIAL_CONDITION_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
 
 - **failingInput**: "Dispositions of property …", "Investments in Subsidiaries …", "Restricted Payments in an aggregate amount …" with singular definitions "Disposition", "Investment", "Restricted Payment".
 - **expected**: The singular definition is retrieved as a DEFINITION context item.
-- **actual**: Not retrieved; the singular form in sibling clauses is retrieved. Package I adds: "Guarantors", "Foreign Subsidiaries", "Liens" not resolved to Guarantor / Foreign Subsidiary / Lien.
+- **actual**: Not retrieved; the singular form in sibling clauses is retrieved. Package I adds: "Guarantors", "Foreign Subsidiaries", "Liens" not resolved to Guarantor / Foreign Subsidiary / Lien. BREADTH (INV-18, corpus-wide): of 28 covenant clauses that use a defined term only in an inflected form (Guarantors, Subsidiaries, Investments, Liens, Restricted Payments, Dispositions, Foreign Subsidiaries), 26 do not receive the definition in their bundle (93%). The gap is now load-bearing for other findings: on package M the Guarantor/Subsidiary diamond (IPV-21) does not fire because 'Guarantors' is never matched, and on I the entity-limited baskets compile without the Guarantor / Foreign Subsidiary definitions.
 - **repro**: buildCandidateCompilerInput(candidateFor('credit-agreement','7.05(j)')).bundle.items
-- **impact**: Pass B compiles without the governing definition in context; sufficiency can be overstated.
+- **impact**: Pass B compiles without the governing definition in context; sufficiency can be overstated. Re-rated MATERIAL on breadth: an entity-limited basket ('of the Borrower and the Guarantors') compiled without the Guarantor definition has no way to check its own scope, and a definition that carries a condition (Available Amount kill-switch) is invisible when cited in the plural.
 - **hypothesis**: Term matching is exact-string on the defined term; no inflection normalization.
 - **acceptance**: Regular plural/possessive forms of a defined term resolve to the definition (with the matched form recorded).
-- **signatures**: `pkg-d-qualitative-restrictions` → `context:D-7.05(j):definitions`; `pkg-e-structural-ambiguity` → `context:E-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.08(c):definitions`; `pkg-g-adversarial-evidence` → `context:G-7.03(a):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.01(b):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.01(c):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(a):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(b):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(c):definitions`; `pkg-k-three-way-builder` → `context:K-7.06(c):definitions`; `pkg-k-three-way-builder` → `context:K-7.08(d):definitions`; `pkg-m-composed-p0` → `context:M-7.01(b):definitions`
+- **signatures**: `pkg-d-qualitative-restrictions` → `context:D-7.05(j):definitions`; `pkg-e-structural-ambiguity` → `context:E-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.06(b):definitions`; `pkg-f-capacity-ledger-honesty` → `context:F-7.08(c):definitions`; `pkg-g-adversarial-evidence` → `context:G-7.03(a):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.01(b):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.01(c):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(a):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(b):definitions`; `pkg-i-secured-debt-lien` → `context:I-7.02(c):definitions`; `pkg-k-three-way-builder` → `context:K-7.06(c):definitions`; `pkg-k-three-way-builder` → `context:K-7.08(d):definitions`; `pkg-m-composed-p0` → `context:M-7.01(b):definitions`; `pkg-a-basic-credit-agreement` → `invariant:INV-18:inflected-terms-retrieved`
 
 ## IPV-10 — Undefined terms inside a retrieved definition are not reported; the bundle claims SUFFICIENT
 
@@ -316,6 +317,19 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 - **hypothesis**: semantic-verification/numeric-assertion.ts matches currency amounts by value and the verifier's reconciliation accepts any source figure as accounting for a capacity expression; no check relates the figure's comparator phrase ('in excess of', 'not less than', 'greater than') to the capacity direction. The same gap covers COMPARE operators: numeric-assertion / reconciliation verify that each figure in the IR appears in the source, never that the operator matches the source's comparator phrase.
 - **acceptance**: invariant:INV-25:L-P2-refused passes: a MONEY capacity whose only source figure is introduced by 'in excess of' / 'exceeding' / 'greater than' is refused or forced to REVIEW with a named finding. And: invariant:INV-09b:A-T1-refused passes (a COMPARE operator inconsistent with the clause's comparator phrase is refused or forced to REVIEW).
 - **signatures**: `pkg-l-affiliate-transactions` → `invariant:INV-25:L-P2-refused`; `pkg-h-unseen-composition` → `invariant:INV-25b:H-T2-refused`; `pkg-a-basic-credit-agreement` → `invariant:INV-09b:A-T1-refused`
+
+## IPV-23 — A malformed section number ('SECTION 7.0l', scan artefact) mints a node labelled '7.0' that absorbs the whole covenant, with no health diagnostic
+
+**Status** OPEN · **Severity** SOURCE_PROVENANCE_FAILURE · **Outcome** INCORRECT_RESULT · **Stage** STRUCTURE · **Deterministic** true
+
+- **failingInput**: Package A with 'SECTION 7.01 Indebtedness' scanned as 'SECTION 7.0l Indebtedness' (letter l for digit 1; MUT-18).
+- **expected**: Either 7.01 is still recognised (the parser tolerates the artefact) or the heading is reported as unparseable with a health diagnostic and the section's clauses are not attributed to another label; cross-references to 7.01(b) (from 7.02) then fail closed.
+- **actual**: parseDocumentStructure mints a SECTION node with sectionRef '7.0' whose text holds the entire Indebtedness covenant and its clauses; findNodesByRef('7.01') returns nothing; healthDiagnostics() is empty. The manifest's 7.01 expectations fail (MISSING_REQUIRED_COVENANT) but a consumer that did not pin 7.01 would see a plausible '7.0' covenant and a dangling reference from 7.02.
+- **repro**: npx tsx scripts/product-acceptance/run-mutations.ts → MUT-18 (scripts/product-acceptance/mutations.ts)
+- **impact**: On scanned packages (doc 19 assumption 1) a single mis-read digit relabels a covenant; every cross-reference to it dangles and the debt covenant is reported under a label that exists nowhere in the agreement. Silent (no diagnostic).
+- **hypothesis**: The section-heading grammar accepts 'SECTION <number>' with a lenient numeric token and does not validate the dotted form (major.minor) or flag a trailing non-digit; stage-structure.ts's heading parser.
+- **acceptance**: mutation:MUT-18:ocr:7.01 passes: 7.01 recognised, or a diagnostic names the malformed heading and no node labelled '7.0' is minted.
+- **signatures**: `pkg-a-basic-credit-agreement` → `mutation:MUT-18:ocr:7.01`
 
 ## Observations (not defects)
 
