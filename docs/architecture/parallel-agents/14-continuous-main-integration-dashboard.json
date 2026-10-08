@@ -1,10 +1,10 @@
 {
   "artifact": "continuous-main-integration-dashboard",
   "version": 1,
-  "updatedAt": "2026-10-08T23:14:00Z",
+  "updatedAt": "2026-10-08T23:25:35Z",
   "role": "WS-PAR Integration Lead",
   "startingMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "currentMainSha": "64e5b5c23d153714a78659c408f3078227084a49",
+  "currentMainSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
   "mergeMethod": "merge-commit with --match-head-commit",
   "mergedInOrder": [
     {
@@ -130,6 +130,15 @@
       "band": "FAST_TRACK",
       "mergedBy": "PEER_CONCURRENT",
       "notes": "required #150 on main first"
+    },
+    {
+      "pr": 143,
+      "title": "Offline NCEDB Phases 1\u20134 + current-head integration gate",
+      "headSha": "ed2216ab21dc3813b81f8629b1ae5a342687046c",
+      "mergeSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
+      "band": "FAST_TRACK",
+      "mergedBy": "WS-PAR",
+      "notes": "Non-promoting research overlay; productionCapacityApproved=false; IQ-009 retired from active queue"
     }
   ],
   "postMergeValidation": {
@@ -147,12 +156,8 @@
   },
   "blockedOpenPrs": [
     {
-      "pr": 143,
-      "reason": "NCEDB phase-4 verdict readyForMerge=false; productionCapacityApproved=false; remaining false-permission risks FPR-1..4; evaluate/analyzer RESTRICTED-adjacent"
-    },
-    {
       "pr": 128,
-      "reason": "Owner grant soft-gate DEVELOPMENT≠CERTIFIED; PR body says do not merge; production compiler discovery edits"
+      "reason": "Owner grant soft-gate DEVELOPMENT\u2260CERTIFIED; PR body says do not merge; production compiler discovery edits"
     },
     {
       "pr": 146,
@@ -188,19 +193,19 @@
     },
     {
       "pr": 142,
-      "reason": "DIRTY; EHB EDGAR backfill — rebase"
+      "reason": "DIRTY; EHB EDGAR backfill \u2014 rebase"
     },
     {
       "pr": 147,
-      "reason": "DIRTY; RCD novelty discovery — rebase"
+      "reason": "DIRTY; RCD novelty discovery \u2014 rebase"
     },
     {
       "pr": 149,
-      "reason": "DIRTY; source-to-covenant dataset — rebase"
+      "reason": "DIRTY; source-to-covenant dataset \u2014 rebase"
     },
     {
       "pr": 152,
-      "reason": "DIRTY; precedent research interface — rebase"
+      "reason": "DIRTY; precedent research interface \u2014 rebase"
     },
     {
       "pr": 153,
@@ -225,7 +230,7 @@
     {
       "rank": 3,
       "pr": 152,
-      "action": "Rebase; research interface — confirm no permission-engine wiring"
+      "action": "Rebase; research interface \u2014 confirm no permission-engine wiring"
     },
     {
       "rank": 4,
@@ -249,18 +254,29 @@
       "fail-closed carve-out Track A (#130)"
     ],
     "mustIncorporate": "origin/main @ 64e5b5c23d153714a78659c408f3078227084a49",
-    "rebaseRequired": [141, 142, 146, 147, 149, 152, 153, 154, 135, 139],
+    "rebaseRequired": [
+      141,
+      142,
+      146,
+      147,
+      149,
+      152,
+      153,
+      154,
+      135,
+      139
+    ],
     "doNotDuplicate": [
       "Do not add second KF store under lib/contract-model/covenant-knowledge (C-DUP-KF)",
-      "Do not invent competing basket/FDP canonical schemas — join via published contracts",
+      "Do not invent competing basket/FDP canonical schemas \u2014 join via published contracts",
       "PCI/basket/FDP are research/hypothesis lanes; no auto-promotion into affirmative permissions"
     ]
   },
   "conflictsAndRisks": [
     "C-DUP-KF remains the top structural merge blocker for #146",
-    "Many DIRTY PRs after rapid main advancement — rebase before re-audit",
+    "Many DIRTY PRs after rapid main advancement \u2014 rebase before re-audit",
     "#143/#148-class capacity/exception work must stay non-promoting",
-    "#128/#161 soft-gate DEVELOPMENT≠CERTIFIED",
+    "#128/#161 soft-gate DEVELOPMENT\u2260CERTIFIED",
     "Prisma/DB contract-model suite not runnable in this environment without DATABASE_URL"
   ],
   "actualExternalCostsUsd": 0
