@@ -8,7 +8,7 @@ met and none can be met from offline evidence. Numbers below are gates on the co
 
 | # | gate | measured by | status at `83e6bf1` |
 |---|---|---|---|
-| D1 | Zero false permissions on the acceptance corpus and benchmark cases from the deterministic layers | `known-defects.test.ts`, `benchmark.test.ts` | **not met**: IPV-01, IPV-02, IPV-03 (certification), IPV-16 (operative state), F-R cases pass |
+| D1 | Zero false permissions on the acceptance corpus, benchmark cases, mutants and invariant checks from the deterministic layers | `known-defects.test.ts`, `benchmark.test.ts`, `mutations.test.ts`, `invariants.test.ts` | **not met**: IPV-01, IPV-02, IPV-03, IPV-22 (certification), IPV-16 (operative state), IPV-20 (retrieval); F-R and INV-09/34 runtime cases pass |
 | D2 | Every fail-closed condition surfaces as no-answer with a reason: missing referenced document, unresolved amendment, undefined governing term, ambiguous section label, truncated clause | benchmark C fail-closed 4/4; acceptance G/H/E | met for the four benchmark classes; **not met** for unresolved amendment at instrument level (IPV-05) and override documents (IPV-16) |
 | D3 | Selective closure recall equals broad on every benchmark case | `benchmark.test.ts` | met (18/18, 16/16) |
 | D4 | Omission audit present on every answer, listing signalled-but-unexamined units | hybrid `notExamined` | met in the evaluation model; **not implemented** in product code |
@@ -17,6 +17,7 @@ met and none can be met from offline evidence. Numbers below are gates on the co
 | D7 | Cross-reference closure symmetric through definitions | `context:*:cross-references` | met (J and K controls; IPV-17 closed as a harness false positive) |
 | D8 | Mutation suite: every operator killed or explicitly declared equivalent/gap with a registered product finding | `mutations.test.ts` | met (9 killed, 1 equivalent, 6 gaps registered) |
 | D11 | Definition amendments apply to the definition, and dependent baskets compile against the amended text | `invariants.test.ts` INV-05 | **not met** (IPV-19, IPV-20) |
+| D12 | No false refusal on common definitional drafting (diamond dependencies) | `invariants.test.ts` INV-19/19b | **not met** (IPV-21: 4 of 33 section-level candidates blocked) |
 | D9 | Reviewer workflow shows source text, lineage and every unresolved dependency for each unit before approval | MVP spec §3 steps 5–7 | **not testable offline**; UI not in scope of this branch |
 | D10 | Partner package runs the deterministic stages with zero structural findings of IPV-06/07/08/11 class, or each finding is triaged by a human before any model call | acceptance runner on the partner package | per-partner |
 

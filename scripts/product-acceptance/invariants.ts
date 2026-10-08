@@ -7,11 +7,12 @@
  * measurement with no legal expectation). Nothing under lib/ is modified; fixtures on disk are never changed.
  */
 import type { CorpusPackage, Severity } from "./corpus";
-import { loadPackage } from "./corpus";
+import { loadCorpus, loadPackage } from "./corpus";
 import { runDeterministicStages, type DeterministicStages } from "./stages";
 import { candidateFor } from "./auditor";
 import { applyMutation, type Mutation } from "./mutations";
 import { hybridScope, type BenchmarkCase } from "./benchmark/strategies";
+import { runPackage } from "./runner";
 import { buildCandidateCompilerInput, type CandidateCompilerInputBuild } from "../../lib/contract-model/covenant-map/candidate-input";
 import { computeCacheKey } from "../../lib/contract-model/compiler/semantic/cache";
 import type { IRExpression, IRRule, IRDefinition } from "../../lib/contract-model/ir/types";
@@ -228,6 +229,64 @@ INVARIANTS.push(
         out.push({ ref: `invariant:INV-34:${kind}:not-committable`, check: `${kind}: the commit plan is not committable and is blocked by UNSUPPORTED_TRANSACTION_EFFECT (nothing can be written to the ledger)`, ok: plan.committable === false && plan.blockedBy.includes("UNSUPPORTED_TRANSACTION_EFFECT"), detail: `committable ${plan.committable}; blockedBy ${plan.blockedBy.join(",")}; wouldAppend ${plan.wouldAppendLedgerRecords.length} row(s)`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
         out.push({ ref: `invariant:INV-34:${kind}:partial-evaluation-recorded`, check: `${kind}: the supported CONSUME_CAPACITY effect is still evaluated (SATISFIED) and listed as a would-be ledger row while the transaction is refused (recorded: informational, not committable)`, ok: (sim.capacityEffects as Array<{ outcome?: string }>).every((c) => c.outcome !== "SATISFIED"), detail: `capacityEffects ${(sim.capacityEffects as Array<{ outcome?: string }>).map((c) => c.outcome ?? "?").join(",") || "none"}; path ${sim.selectedPathResult}`, kind: "OBSERVATION" });
       }
+      return out;
+    } },
+);
+
+INVARIANTS.push(
+  { id: "INV-19b", title: "Breadth of the false-cycle refusal across the corpus: only genuinely circular definitions may be reported", packageId: "pkg-b-multi-document",
+    legalStatement: "Across every section-level manifest covenant in the twelve packages, a DEFINITION_CYCLE report is justified only when each definition on the reported path names the next term; any other report is a false refusal (IPV-21).",
+    run: async () => {
+      const out: InvariantVerdict[] = []; let total = 0; const falseRows: string[] = []; const genuineRows: string[] = [];
+      for (const pkg of loadCorpus()) {
+        const s = await runDeterministicStages(pkg); const m = pkg.manifest; const asOf = m.operativeState.asOfDates[m.operativeState.asOfDates.length - 1]!;
+        const candidatePkg = { companyId: m.companyId, instrumentKey: m.instrumentKey, packageKey: `${pkg.packageId}-package`, index: s.index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: s.operativeStates.get(asOf) ?? null, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(asOf) };
+        for (const c of m.covenants.filter((c) => c.operative && !c.sectionRef.includes("("))) {
+          const cand = candidateFor(s.index, c.documentId, c.sectionRef, [c.family as never], c.role as never, c.id, c.occurrence); if (!cand) continue;
+          total++;
+          const b = buildCandidateCompilerInput(cand, candidatePkg as never);
+          for (const cy of cyclesFor(b).map((x) => x.replace("Definition cycle detected: ", ""))) {
+            const terms = cy.split(" -> ");
+            const defText = (t: string) => (s.index.allDefinitions().find((d) => d.normalizedTerm === t || d.exactTerm.toLowerCase() === t)?.definitionExcerpt ?? "").toLowerCase();
+            const genuine = terms.slice(1).every((t, i) => defText(terms[i]!).includes(t.toLowerCase()));
+            (genuine ? genuineRows : falseRows).push(`${pkg.packageId.replace(/^pkg-([a-z])-.*$/, "$1").toUpperCase()} ${c.documentId}#${c.sectionRef}: ${cy}`);
+          }
+        }
+      }
+      out.push({ ref: "invariant:INV-19b:no-false-cycles-corpus-wide", check: `no section-level candidate in the corpus carries a false DEFINITION_CYCLE (${total} candidates examined)`, ok: falseRows.length === 0, detail: falseRows.length ? `${falseRows.length} false cycle(s): ${falseRows.join("; ")}` : "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      out.push({ ref: "invariant:INV-19b:genuine-cycles-reported", check: "genuine cycles are reported (B indenture)", ok: genuineRows.length > 0, detail: genuineRows.join("; ") || "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      return out;
+    } },
+);
+
+INVARIANTS.push(
+  { id: "INV-25", title: "A numeric threshold that triggers a qualitative gate ('in excess of $X … so long as approved') is never a basket cap", packageId: "pkg-l-affiliate-transactions",
+    legalStatement: "7.07(d) permits 'any other transaction with an Affiliate involving aggregate consideration in excess of $5,000,000, so long as such transaction has been approved by a majority of the disinterested members of the board'. $5,000,000 is the floor above which approval is required, not capacity; a representation 'permits Affiliate transactions up to $5,000,000' asserts the opposite of the clause and must not certify. (Run on an in-memory variant of L whose 7.07(b) no longer names Loan Parties, so the IPV-21 false cycle does not mask the outcome.)",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const L = loadPackage("pkg-l-affiliate-transactions");
+      const v = variation(L, "INV-25", [{ documentId: "credit-agreement", find: "(b) transactions between or among the Loan Parties;", replace: "(b) transactions between or among the Borrower and its wholly owned Subsidiaries;" }]);
+      const r = await runPackage(v);
+      const check = (ref: string) => r.checks.find((c) => c.expectationRef === ref);
+      out.push({ ref: "invariant:INV-25:unmasked", check: "with the diamond removed, the faithful 7.07 compile is no longer blocked by a context-contract refusal", ok: !/CONTEXT_CONTRACT_UNACCEPTABLE/.test(check("certification:credit-agreement::7.07")?.detail ?? ""), detail: (check("certification:credit-agreement::7.07")?.detail ?? "").slice(0, 200), kind: "OBSERVATION" });
+      for (const [id, sev] of [["L-P1", "MATERIAL_CONDITION_OMISSION"], ["L-P1:lineage-on-rule", "MATERIAL_CONDITION_OMISSION"], ["L-P2", "CRITICAL_FALSE_PERMISSION"], ["L-P3", "CRITICAL_FALSE_PERMISSION"]] as const) {
+        const c = check(`adversarial:${id}`);
+        out.push({ ref: `invariant:INV-25:${id}-refused`, check: `${id} (${L.manifest.prohibitedClaims.find((p) => p.id === id.split(":")[0])?.claim}) is refused`, ok: c?.result === "PASS", detail: (c?.detail ?? "check absent").slice(0, 240), kind: "PRODUCT", severity: sev });
+      }
+      return out;
+    } },
+  { id: "INV-16", title: "An Unrestricted Subsidiary designation document is recognised as acting on the indenture, not as a new instrument", packageId: "pkg-b-multi-document",
+    legalStatement: "A board resolution designating a Subsidiary as an Unrestricted Subsidiary under the Indenture changes the entity scope of every indenture covenant; the package graph should attach it to the indenture (or flag it unclassified), never treat it as a standalone base instrument. Entity-scope effects are semantic and are not asserted offline.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const B = loadPackage("pkg-b-multi-document");
+      const v = variation(B, "INV-16", [{ addDocument: { documentId: "designation-resolution", label: "Board Resolution", role: "AMENDMENT", text: "RESOLUTIONS OF THE BOARD OF DIRECTORS OF NORTHFIELD COMPONENTS CORP. adopted March 2, 2026.\n\nWHEREAS, Section 1.01 of the Indenture dated as of February 10, 2026 permits the board of directors of the Issuer to designate any Subsidiary as an Unrestricted Subsidiary;\n\nRESOLVED, that Northfield Ventures LLC, a Subsidiary of the Issuer, is hereby designated as an Unrestricted Subsidiary under the Indenture effective as of the date hereof.\n" } }]);
+      const s = await runDeterministicStages(v);
+      const own = s.packageGraph.instruments.find((i) => i.instrumentKey === "instrument:designation-resolution");
+      const lead = s.packageGraph.crossDocumentReferenceLeads.find((l) => l.sourceDocumentId === "designation-resolution");
+      out.push({ ref: "invariant:INV-16:not-a-standalone-instrument", check: "the resolution is not modelled as its own base instrument (recorded: the package graph currently does; fail-safe since no covenant is compiled from it)", ok: !own, detail: `instruments: ${s.packageGraph.instruments.map((i) => i.instrumentKey).join(", ")}; lead: ${lead ? `${lead.referenceText}→${lead.targetDocumentId} ${lead.status}` : "none"}; amendment effects from it: ${(s.amendment?.effects ?? []).filter((e) => e.amendmentDocumentId === "designation-resolution").length}`, kind: "OBSERVATION" });
+      const scope = hybridScope(v, s, q(v.packageId, "INDEBTEDNESS", "May Northfield Ventures LLC incur Indebtedness under the Indenture?", [{ documentId: "indenture", sectionRef: "4.09" }]));
+      out.push({ ref: "invariant:INV-16:closure-sees-designation", check: "the hybrid closure for an indenture debt question includes the designation resolution (evaluation model)", ok: scope.units.some((u) => u.documentId === "designation-resolution") || scope.documents.includes("designation-resolution"), detail: scope.units.map((u) => `${u.documentId}#${u.sectionRef}`).join(", "), kind: "OBSERVATION" });
       return out;
     } },
 );

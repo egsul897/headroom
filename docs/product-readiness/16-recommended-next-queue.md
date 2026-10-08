@@ -13,6 +13,8 @@ collaboration contract: Cursor owns `lib/` remediation; this track owns fixtures
 | 4 | Override / waiver / side-letter documents reach the operative state (at least unattached or REVIEW) | IPV-16 | `mutation:MUT-12:*`, `MUT-08:*` PRODUCT verdicts pass |
 | 5 | Operative-authority gate: TOC-title modal, no-modal covenants, stale descendants | PR136-F1/F2/F4 | `source-authority.test.ts` 28/28 in the PR #136 worktree |
 | 5a | Definition amendments target the definition; definition retrieval reads the operative text | IPV-19, IPV-20 | `invariants.test.ts` INV-05 F1/F3 PRODUCT verdicts pass |
+| 5b | Comparator direction: a figure introduced by 'in excess of' / 'exceeding' / 'not less than' is never accepted as a cap | IPV-22 | `invariants.test.ts` INV-25 L-P2 refused |
+| 5c | Definition-graph traversal: diamond dependencies are not cycles | IPV-21 | INV-19/19b pass; I 7.01/7.02/7.04 and L 7.07 certification rows no longer cite a cycle |
 | 6 | Section-level candidate over amended agreement uses current text with lineage | IPV-04 | C `certification:credit-agreement::7.01` |
 | 7 | Unresolved amendment → instrument not RESOLVED | IPV-05 | H operative-state row |
 | 8 | Definition-level shared capacity representable; a covenant family for restricted debt payments | IPV-15, IPV-18 | J 7.08 certification; K `semantic:K-7.09(b)` and 7.09 certification |

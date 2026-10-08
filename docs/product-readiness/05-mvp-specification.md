@@ -65,9 +65,48 @@ X as of today?" from the contract itself instead of from a spreadsheet.
 4. Package H shows the unresolved First Amendment as a blocking card and the instrument as REVIEW.
 5. "Ask the contract" over package F reproduces F-R1…F-R10 outcomes exactly, with NEEDS_INPUT when no approved
    snapshot exists.
-6. The three deterministic-layer gaps (IPV-01/02/03) are either fixed or their patterns are routed to the review
-   queue by a product-layer rule (scope narrower than lead-in; "together with" / "pursuant to Section" phrases;
-   proviso present in text but no condition on the unit).
+6. The deterministic-layer false-permission gaps (IPV-01/02/03/22) are either fixed or their patterns are routed to
+   the review queue by a product-layer rule (scope narrower than lead-in; "together with" / "pursuant to Section"
+   phrases; proviso present in text but no condition on the unit; a capacity figure introduced by "in excess of" /
+   "exceeding" / "not less than").
+7. Any package document that is not a base agreement, indenture, intercreditor agreement or a parsed amendment (side
+   letters, consents, waivers, board resolutions) is shown as an **unclassified override** card on every section it
+   names, and the operative state for those sections is shown as UNKNOWN until a reviewer disposes of the card
+   (IPV-16, INV-16).
+8. A definition amendment is shown against the definition it names, never against the whole definitions section; the
+   compiler view of every dependent basket shows the amended definition text with its lineage (IPV-19/20).
+9. A "definition cycle" blocker is shown only when the cycle is genuine (each definition names the next); packages I
+   and L must certify their covenants without a cycle card (IPV-21).
+
+### Workflow acceptance criteria (directive product backlog 7, 8, 10; testable against the committed artefacts)
+
+Reviewer approval workflow:
+- W1. A unit cannot be approved while any blocker in its certification record is open; the reviewer sees the blocker
+  code, the source excerpt and the unresolved dependency list (the `blockers`, `unresolvedIssues` and
+  `unresolvedDependencies` fields that `acceptance-runs/<sha>/report.json` already carries per candidate).
+- W2. Approving a unit records who, when, the unit's `sourceContentVersion` and the semantic cache key; a later text
+  change to the clause (textSha256 mismatch, doc 09 §7) invalidates the approval automatically.
+- W3. An adversarial representation of the kinds in `02-acceptance-matrix.md` "Adversarial acceptance" that the
+  deterministic layer refuses never reaches the approval queue as "ready"; one that it accepts (IPV-01/02/03/22
+  patterns) is flagged by the product-layer rules in criterion 6 until those defects close.
+
+Amendment comparison:
+- W4. For any provision with an applied effect, the user can see base text, every applied amendment in date order,
+  and the current text, exactly as `computeOperativeContractState` reports `fullChain` / `appliedChain` (package C at
+  three dates is the fixture).
+- W5. An amendment whose effective date is conditional (INV-06) is shown as pending, never applied; an unresolved
+  amendment (IPV-05, H) blocks the instrument with a card.
+- W6. "What changed since the last compile" is not offered until a cross-version node identity exists (doc 09 §3);
+  until then the comparison is clause-text based (textSha256), never node-id based.
+
+Evidence export:
+- W7. The export of a unit contains: operative text with document id and section ref, the lineage chain, every
+  retrieved definition with its source, the unresolved dependency list, the certification record and its blockers,
+  and the run identity (SHA, corpus identity, versions) — the same fields the acceptance report serialises.
+- W8. A capacity answer exports with the snapshot binding (ids, versions, hash), the ledger rows it subtracted and the
+  explanation trace (`explanations[]`, F-INV-trace), or with NEEDS_INPUT and the named missing input.
+- W9. An export never contains a figure from a non-operative source (G recital, exhibit, stale amendment) as a
+  capacity; those appear only under "non-operative mentions" with their source.
 
 ## 7. Open questions for design partners
 

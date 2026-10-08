@@ -827,15 +827,49 @@
           "packageId": "pkg-l-affiliate-transactions",
           "expectationRef": "certification:credit-agreement::7.07",
           "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-b-multi-document",
+          "expectationRef": "invariant:INV-19b:no-false-cycles-corpus-wide",
+          "severity": "UNSUPPORTED_AS_COMPLETE",
+          "evidence": "INVARIANT"
         }
       ],
       "failingInput": "Minimal reproduction (INV-19, package A in memory): add '\"Guarantor\" means each Subsidiary that has executed the Guarantee.' and make 7.01(b) read 'other Indebtedness of the Borrower and any Guarantor …'. 'Subsidiary' means any corporation or other entity that is controlled by the Borrower (no reference back). Real packages: I 7.01 (Subsidiary/Guarantor), L 7.07 (Loan Parties/Subsidiary).",
       "expected": "No DEFINITION_CYCLE: Subsidiary is reached by two paths (directly and through Guarantor) but no definition refers to itself or to a term that refers back to it. Context contract acceptable. The B indenture's Restricted Subsidiary ↔ Unrestricted Subsidiary pair, which IS circular, keeps being reported (positive control passes).",
       "actual": "buildCandidateCompilerInput → bundle.unresolvedDependencies contains DEFINITION_CYCLE 'guarantor -> subsidiary -> guarantor' (MEDIUM), sufficiency REVIEW_REQUIRED; the same definition without the covenant naming Guarantors reports nothing (control). I 7.01: 'subsidiary -> guarantor -> subsidiary'; L 7.07: 'loan parties -> subsidiary -> loan parties'. Certification of I 7.01/7.02/7.04 and L 7.07 is blocked with CONTEXT_CONTRACT_UNACCEPTABLE. (The acceptance run records the blocked certifications as NONMATERIAL_OMISSION / CAPABILITY_NOT_IMPLEMENTED: fail-closed; the defect-level severity UNSUPPORTED_AS_COMPLETE names the false refusal.)",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-19 (scripts/product-acceptance/invariants.ts)",
-      "impact": "False refusal on the most common definitional drafting in credit agreements ('Guarantor' / 'Loan Party' / 'Restricted Subsidiary' defined in terms of 'Subsidiary'): every covenant naming both terms is uncertifiable. Fail-closed, so no false permission, but it makes a realistic package unusable and masks adversarial evidence (I-P2, L-P1…P3 refusals cite this blocker).",
+      "impact": "False refusal on the most common definitional drafting in credit agreements ('Guarantor' / 'Loan Party' / 'Restricted Subsidiary' defined in terms of 'Subsidiary'): every covenant naming both terms is uncertifiable. Fail-closed, so no false permission, but it makes a realistic package unusable and masks adversarial evidence (I-P2, L-P1…P3 refusals cite this blocker). Breadth (INV-19b): 4 of the 33 section-level manifest covenants across the twelve packages are blocked by a false cycle (I 7.01, 7.02, 7.04; L 7.07); the only genuine cycle in the corpus (B indenture) is reported correctly.",
       "hypothesis": "context-retrieval/definition-graph.ts retrieveDefinitionsRecursive: the reported path 'guarantor -> subsidiary -> guarantor' is only possible if, while expanding Subsidiary (whose own text names no Guarantor), the text being scanned still contains 'Guarantor' - i.e. the candidate's or the parent's sourceText is scanned at depth 2 instead of the newly retrieved definition's text, or pathTermsStack is not popped between sibling expansions. Not traced line by line.",
       "acceptance": "invariant:INV-19:diamond-is-not-a-cycle, no-false-cycle:i:7.01 and no-false-cycle:l:7.07 pass while true-cycle-still-reported keeps passing; I 7.01/7.02/7.04 and L 7.07 certification rows no longer cite CONTEXT_CONTRACT_UNACCEPTABLE for a cycle."
+    },
+    {
+      "id": "IPV-22",
+      "status": "OPEN",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "outcomeClass": "INCORRECT_RESULT",
+      "deterministic": true,
+      "stage": "CERTIFICATION",
+      "title": "A numeric threshold that triggers a qualitative gate ('aggregate consideration in excess of $5,000,000, so long as … approved by … disinterested directors') is certified as a $5,000,000 basket cap",
+      "packages": [
+        "pkg-l-affiliate-transactions"
+      ],
+      "evidence": "INVARIANT",
+      "signatures": [
+        {
+          "packageId": "pkg-l-affiliate-transactions",
+          "expectationRef": "invariant:INV-25:L-P2-refused",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "INVARIANT"
+        }
+      ],
+      "failingInput": "L 7.07(d): '(d) any other transaction with an Affiliate involving aggregate consideration in excess of $5,000,000, so long as such transaction has been approved by a majority of the disinterested members of the board of directors of the Borrower.' Submission (adversarial L-P2, CLAIM_COMPLETE): rule for 7.07(d) with capacityExpression MONEY 5,000,000 (excerpt '$5,000,000', verbatim in the source), one APPROVAL condition, sufficiency COMPLETE. Run on the in-memory L variant without the Loan-Parties diamond so IPV-21 does not mask the result.",
+      "expected": "Not CERTIFIED: the figure is the lower bound of the gate ('in excess of'), not a cap; the clause has no quantitative capacity at all. At minimum REVIEW_REQUIRED with a numeric-direction or 'threshold vs cap' finding.",
+      "actual": "certification CERTIFIED []; verification VERIFIED_NO_MATERIAL_GAP_FOUND []; compilation COMPLETED; the deterministic numeric assertion check finds the $5,000,000 figure in the source and the excerpt is verbatim, so nothing objects. Layer-2 reviewer is mocked (silent); whether a live reviewer would catch it is untested (doc 15 E3).",
+      "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-25 (scripts/product-acceptance/invariants.ts); the same submission on the on-disk package L is refused only because of IPV-21.",
+      "impact": "A treasury user would be told 7.07(d) gives $5,000,000 of Affiliate-transaction room without board approval; the clause gives none. Same class as IPV-01/02/03: the deterministic gates verify figures and excerpts, not the comparator or the role of the figure (threshold vs cap).",
+      "hypothesis": "semantic-verification/numeric-assertion.ts matches currency amounts by value and the verifier's reconciliation accepts any source figure as accounting for a capacity expression; no check relates the figure's comparator phrase ('in excess of', 'not less than', 'greater than') to the capacity direction.",
+      "acceptance": "invariant:INV-25:L-P2-refused passes: a MONEY capacity whose only source figure is introduced by 'in excess of' / 'exceeding' / 'greater than' is refused or forced to REVIEW with a named finding."
     }
   ],
   "observations": [

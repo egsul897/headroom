@@ -30,6 +30,8 @@ packages, offline, model stages mocked (see `02-acceptance-matrix.md`); refreshe
 | Semantic normalizer + accountability + provenance binding on a faithful submission | PARTIALLY_VERIFIED | A/B/C/F/H faithful units certify or review for stated reasons; definitions candidates with embedded numbers review (mock limitation) | mocked model |
 | Refusal of wrong-amount / non-operative-source / truncated / undefined-term claims | VERIFIED_ON_TESTED_SCOPE | 30 of 35 adversarial cases refused (see matrix); I-P2 refused for an unrelated reason | — |
 | Covenant-family vocabulary coverage | PARTIALLY_VERIFIED | K: prepayments of junior debt have no family; relabelled with a 'verify manually' issue (fail-closed) | IPV-18 |
+| Definition dependency graph on common drafting ('Guarantor means each Subsidiary that …') | UNSUPPORTED (false refusal) | INV-19/19b: a diamond dependency is reported as a DEFINITION_CYCLE; 4 of 33 section-level candidates (I, L) uncertifiable for it; B's true cycle reported correctly | IPV-21 |
+| Refusal of a gate threshold represented as a basket cap ('in excess of $5,000,000, so long as approved') | UNSUPPORTED | INV-25: certified as a $5,000,000 basket on the unmasked L variant | IPV-22 |
 | Refusal of a dropped material condition | PARTIALLY_VERIFIED | refused as a pure omission; accepted when the proviso item is cited on the rule (A, H) | IPV-03 |
 | Refusal of a dropped "together with" shared cap | UNSUPPORTED | accepted in both variants (F) | IPV-02 |
 | Refusal of a widened entity scope | UNSUPPORTED | accepted and confirmed by the scope guard (A) | IPV-01 |
@@ -43,7 +45,8 @@ packages, offline, model stages mocked (see `02-acceptance-matrix.md`); refreshe
 | Live end-to-end on a real agreement | NOT_TESTED (this mission) | prior live evidence exists under docs/phase-3-live-validation (immutable); not re-run | — |
 
 Reading: the deterministic substrate (structure, amendments at clause level, operative state, runtime arithmetic) is
-solid on clean input and fails closed on most adversarial input. The four places it does **not** fail closed
-(entity-scope widening, shared-cap omission, lineage-laundered condition omission, side-letter override) are exactly where a reviewer-free
+solid on clean input and fails closed on most adversarial input. The six places it does **not** fail closed
+(entity-scope widening, shared-cap omission, lineage-laundered condition omission, side-letter override, definition
+amendment applied to the wrong unit with stale retrieval, a gate threshold certified as a cap) are exactly where a reviewer-free
 pipeline would show a borrower more room than the contract gives, and the stale-text section candidate (IPV-04) is
 the one place it can verify against the wrong source.

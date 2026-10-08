@@ -24,9 +24,10 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
 
 ## What it demonstrably does not do yet
 
-1. **Three ways to show more room than the contract gives, with the deterministic gates silent**: entity-scope
+1. **Four ways to show more room than the contract gives, with the deterministic gates silent**: entity-scope
    widening certified (IPV-01); a dropped "together with" shared cap certified (IPV-02); a dropped material condition
-   certified when its inventory item is cited on the rule (IPV-03). These are the priority-0 defects.
+   certified when its inventory item is cited on the rule (IPV-03); a board-approval threshold ("in excess of
+   $5,000,000, so long as approved") certified as a $5,000,000 basket (IPV-22). These are the priority-0 defects.
 2. **Override documents are invisible to the operative state** (IPV-16): a side letter that tightens a basket produces
    no effect; the instrument reports RESOLVED on the base text. Any real package with waivers or consents is
    unsafe until this is fixed.
@@ -39,6 +40,9 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
 5. **Definition-mediated relationships** (builder baskets netting across sections) are retrieved correctly (J and K
    controls) but have no representation the compiler accepts (IPV-15), and a junior-debt prepayment basket has no
    covenant family at all (IPV-18).
+8. **Common definitional drafting is refused**: "Guarantor means each Subsidiary that …" plus a covenant naming both
+   terms is reported as a definition cycle (IPV-21); 4 of the 33 section-level covenants in the corpus are
+   uncertifiable for that reason alone. Fail-closed, but it makes realistic packages unusable and hides other evidence.
 6. **Nothing is known about model-stage quality**: discovery Pass B–D, extraction accuracy, Layer-2 reviewer
    effectiveness, cost and latency are unmeasured on this branch.
 7. **No persistence, no application wiring** for Phase 4 (North Star reconciliation).
