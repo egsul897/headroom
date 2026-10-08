@@ -22,7 +22,8 @@ Cursor work. Provider calls: none in this workstream.
 | 12 | invariant batch 4: INV-19b breadth (4/33 blocked by IPV-21), INV-25 unmasked L adversarial (IPV-22: gate threshold certified as a cap), INV-16 designation observations, MVP §6 criteria 7-9 + W1-W9; `invariant-runs/` at `0285d7b` | done (`0285d7b` + this commit) |
 | 13 | invariant batch 5: IPV-22 breadth (INV-25b: 2 of 5 comparator figures certify as caps), declarative adversarial cases; `invariant-runs/` at `f45317f` | done (`f45317f` + this commit) |
 | 14 | milestone report 2; batch 6: SET_RATIO adversarial kind, INV-09b (flipped comparator certified → IPV-22 direction); `invariant-runs/` at `66b868e` | done (`66b868e` + this commit) |
-| 15 | product backlog docs 1–4 (CFO / treasury / in-house legal / outside-counsel workflow analyses tied to artefacts); then self-replenishing backlog review | next |
+| 15 | `18-workflow-analyses.md` (CFO / treasury / in-house legal / outside counsel, tied to artefacts and register ids); self-replenishing backlog pass appended to doc 16 (T1–T6) | done (this commit) |
+| 16 | T1 on-disk definition-amendment fixtures (B, F, I) for IPV-19/20 acceptance-run signatures; T2 posture-flip / percentage-change adversarial kinds | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

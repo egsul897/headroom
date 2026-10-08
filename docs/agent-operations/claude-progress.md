@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | this commit | doc 18 workflow analyses (four workflows, assumptions labelled, every Headroom claim cites an artefact or register id); self-replenishing backlog pass in doc 16 → T1–T6 | docs only; suite unchanged (186 pass / 28 skipped) |
 | 2026-10-08 | `66b868e` + this commit | milestone report 2 delivered; batch 6: SET_RATIO mutation kind, INV-09b — flipped ratio comparator CERTIFIED on A 7.01(c) (IPV-22 extended to direction), raised threshold refused; `invariant-runs/66b868e` (15 invariants) | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `f45317f` + this commit | invariant batch 5: IPV-22 breadth (H intercreditor 4.01 Availability floor certified as a $15m payment basket; 2 of 5 comparator figures certify), declarative adversarial cases in manifests; `invariant-runs/f45317f` (14 invariants) | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `0285d7b` + this commit | invariant batch 4: IPV-21 breadth 4/33 (INV-19b), IPV-22 gate threshold certified as a $5m cap (INV-25 on the unmasked L variant; L-P1/P3 refused), INV-16 designation observations, MVP §6 criteria 7–9 and W1–W9; `invariant-runs/0285d7b` (13 invariants) | `npx vitest run tests/product-acceptance` → 185 pass / 28 skipped; tsc clean; pin-check clean |
@@ -27,7 +28,7 @@
 
 ## Current task
 
-Product backlog docs 1–4 (workflow analyses), then self-replenishing backlog review (task 6 below). Batch 6 complete: IPV-22 extended to ratio direction. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
+T1 (on-disk definition-amendment fixtures for B, F, I) and T2 (posture-flip / percentage-change adversarial kinds) from the self-replenishing pass. Docs 18 and the backlog pass complete. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -64,11 +65,11 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: directive product backlog items 1–4 as one document, `docs/product-readiness/18-workflow-analyses.md`: CFO workflow, treasury workflow, in-house legal review workflow, outside-counsel collaboration — each as (trigger, inputs, steps, decision, evidence the user needs, what Headroom provides today with the artefact that proves it, what is UNSUPPORTED/REVIEW today with the register id, acceptance criterion reference to doc 05 W1–W9 / D-gates). No customer claims; assumptions labelled. Then a self-replenishing backlog pass (directive §SELF-REPLENISHING): list uncovered invariants, missing negative tests, untested interfaces, prior failures without breadth, manifest gaps, new adversarial compositions, cross-document interactions, cost measurement opportunities, workflows lacking criteria → `16-recommended-next-queue.md` refresh.
-- Files: `docs/product-readiness/18-workflow-analyses.md`, `16-recommended-next-queue.md`, checkpoint.
-- First step: enumerate, from `acceptance-runs/f182a679394b/summary.md` and the register, which outputs each workflow would consume (structure/amendment health, operative text + lineage, unit inventory with blockers, capacity answers, refusals) and map them to the four workflows.
-- Expected output: doc 18; refreshed next queue; checkpoint.
-- Acceptance: docs only; commit + push; no fabricated customer evidence.
+- Objective: T1 — add an on-disk Amendment No. 1 that restates a definition to packages B (credit-agreement "Consolidated EBITDA"), F ("Consolidated EBITDA" add-back removed) and I ("Foreign Subsidiary" narrowed), with operativeState.exact rows that pin the DEFINITION-kind expectation (definitionTerm field) at one as-of date after the amendment and the section-level 1.01 expectation that other definitions survive; the acceptance run will then carry IPV-19/20 signatures on disk (expected FAIL rows, registered). Then T2 — adversarial kinds SET_POSTURE (exception → permission) and SET_PERCENT (percentage-of-metric basket with the percentage changed) in `mutate`, declared on F 7.01(c) (20% → 35%) and D 7.05(a) (exception posture flipped); expectations: refused.
+- Files: `tests/fixtures/product-acceptance/packages/pkg-{b,f,i}-*/documents/amendment-1.txt` + manifests (documents[], operativeState.exact, covenants.operativeTextDocumentId where relevant), `scripts/product-acceptance/semantic-plan.ts` (new kinds), `scripts/product-acceptance/corpus.ts` (schema enum), register signatures, matrix rows, mutation catalogue checks (MUT expectations on B/F/I must still hold — re-run), `pin-corpus.ts`.
+- First step: write B's amendment-1 (F1 drafting form), add the manifest rows, `pin-corpus.ts`, run `run-all.ts`, confirm the new OPERATIVE_STATE failures match IPV-19 (register them), and check that MUT-04/MUT-08/MUT-12 predictions still hold (they add a side letter to B; the amendment changes B's baseline failures).
+- Expected output: three on-disk definition amendments; IPV-19/20 with acceptance-run signatures; two new adversarial kinds with outcomes; refreshed acceptance artefacts and matrix.
+- Acceptance: suite green; pin-check clean; commit + push; checkpoint updated.
 - Dependencies: none (offline).
 
 Then (P2): harness strengthening (text-hash pinning per covenant, three-section definition fixture, waiver/side-letter fixture family), then the continuous-loop invariant backlog.

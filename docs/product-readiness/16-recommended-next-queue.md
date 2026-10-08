@@ -43,3 +43,40 @@ collaboration contract: Cursor owns `lib/` remediation; this track owns fixtures
 
 - Authorise doc 15 (≈$0.20 expected, $1.00 ceiling) — E3 first.
 - Decide whether PR #136 is merged before or after F1/F4; this track's recommendation is after.
+
+## Self-replenishing backlog pass (2026-10-08, after invariant batch 6)
+
+Per the directive's §SELF-REPLENISHING BACKLOG, inspected in order:
+
+1. **Uncovered legal invariants** (doc 17): #8 maintenance covenants at runtime (no springing construct in the
+   runtime); #16 designation entity scope (semantic only); #32 reclassification representation / election at runtime;
+   #34 partially (only reserved kinds tested; APPLY_RECLASSIFICATION without an election not yet).
+2. **Missing negative tests**: ratio comparator cases on every ratio clause (masked on B by IPV-12); "not less than"
+   covenant-level floors (none in the corpus besides H); a percentage-of-metric basket submitted with the percentage
+   changed; an exception submitted as a permission (posture flip); a condition moved from one clause to a sibling.
+3. **Untested production interfaces**: discovery Pass B–D (needs a provider); the Layer-2 reviewer; the live
+   interpreter for MODIFY_PROVISION / UNKNOWN_CHANGE (F2/F4 forms); persistence (none exists); the operative-authority
+   gate on main (PR #136 unmerged).
+4. **Prior failures without breadth**: IPV-04 (stale section text) only on C; IPV-05 only on H; IPV-13 ontology only
+   on D/E; IPV-16 has breadth; IPV-19/20 on A and C; IPV-21/22 have breadth.
+5. **Manifest gaps**: packages I/J/K/L have no operativeState.exact rows (single-document, no amendments: nothing to
+   pin); B/E/F/I/J/K/L have no operative-state scenarios at all — a definition amendment fixture per package would
+   add IPV-19 breadth on disk.
+6. **New adversarial compositions**: a package with an amended definition AND a side letter AND a diamond dependency
+   (all three P0 classes at once) to see which refusal wins and whether any false permission survives the others'
+   REVIEW; an amendment that both restates a clause and amends a definition in one document.
+7. **Untested cross-document interactions**: an indenture amendment (supplemental indenture) targeting the indenture
+   while the credit agreement is unchanged; an intercreditor that references a section number that exists in both
+   agreements (ambiguous cross-document reference).
+8. **Cost measurement**: doc 15 E2 is the only route; offline, record the prompt token counts the mocked stage sees
+   per unit (the prompt text exists) to tighten the DETERMINISTIC_ESTIMATE's overhead constant.
+9. **Workflows lacking criteria**: outside-counsel export format (W7 states fields, no format); reviewer notes with
+   citations; onboarding / data-room ingestion assumptions (directive items 11–12).
+
+Next prioritized bounded tasks (this track):
+- T1. On-disk definition-amendment fixtures (one per package B, F, I) so IPV-19/20 carry acceptance-run signatures.
+- T2. Posture-flip and percentage-change adversarial kinds (item 2) via the declarative `adversarial` field.
+- T3. Triple-composition package (item 6) with expectations for refusal precedence.
+- T4. Supplemental-indenture package (item 7).
+- T5. Prompt-token measurement from the mocked stage (item 8) to re-base doc 08's overhead constant.
+- T6. Onboarding / data-room ingestion assumptions doc (directive items 11–12), tied to the structural findings.
