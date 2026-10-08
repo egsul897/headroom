@@ -45,9 +45,15 @@ export function detectUnclassifiedOverrides(input: {
       targetDefinedTermRef: null,
       targetHint: null,
     };
+    const overrideDocumentId = input.document.documentId;
+    const overrideDocumentLabel = (input.document.label ?? "").trim() || overrideDocumentId;
+    const effectId = hashParts(["amendment-effect", overrideDocumentId, "UNCLASSIFIED_OVERRIDE", sectionRef]);
+    // Provenance only: documentId, available label, and effectId. Do not embed
+    // operative body text or dollar amounts in the diagnostic reason.
+    const unresolvedReason = `UNCLASSIFIED_OVERRIDE: override from documentId=${overrideDocumentId} label=${JSON.stringify(overrideDocumentLabel)} effectId=${effectId} names Section ${sectionRef}. Its effect on that provision was not established, so the base text is not the resolved operative text.`;
     return {
-      effectId: hashParts(["amendment-effect", input.document.documentId, "UNCLASSIFIED_OVERRIDE", sectionRef]),
-      amendmentDocumentId: input.document.documentId,
+      effectId,
+      amendmentDocumentId: overrideDocumentId,
       target,
       operation: "UNKNOWN_CHANGE",
       effectiveDate: input.effectiveDate,
@@ -57,7 +63,7 @@ export function detectUnclassifiedOverrides(input: {
       sourceExcerpt: input.document.text.replace(/\s+/g, " ").trim().slice(0, 300),
       confidence: 0.4,
       status: "REVIEW_REQUIRED",
-      unresolvedReason: `UNCLASSIFIED_OVERRIDE: this side letter, consent, or waiver names Section ${sectionRef}. Its effect on that provision was not established, so the base text is not the resolved operative text.`,
+      unresolvedReason,
       resolutionMethod: "DETERMINISTIC_EXPLICIT_PATTERN",
     };
   });

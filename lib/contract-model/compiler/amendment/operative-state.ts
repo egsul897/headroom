@@ -1169,7 +1169,7 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
     // Even a RESOLVED parent view cannot claim CURRENT truth when a nested clause
     // under it still carries an unresolved override / conflict / partial state.
     if (status === "CURRENT") {
-      const nested = unresolvedNestedSectionProvisions(operativeState, node.sectionRef);
+      const nested = unresolvedNestedSectionProvisions(operativeState, documentId, node.sectionRef);
       if (nested.length > 0) {
         return { outcome: "FOUND", status: "OPERATIVE_STATE_UNRESOLVED", text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: nested.flatMap((p) => p.unresolvedIssues), legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED" };
       }
@@ -1181,7 +1181,7 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
   // still carry REVIEW_REQUIRED / CONFLICTED / PARTIAL evidence (side letter on
   // 7.01(b) while the candidate is section 7.01). Never report CURRENT for the
   // parent while that nested material override remains unresolved.
-  const nestedUnresolved = unresolvedNestedSectionProvisions(operativeState, node.sectionRef);
+  const nestedUnresolved = unresolvedNestedSectionProvisions(operativeState, documentId, node.sectionRef);
   if (nestedUnresolved.length > 0) {
     return {
       outcome: "FOUND",
@@ -1212,7 +1212,16 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
   return { outcome: "FOUND", status: "CURRENT", text: null, documentId, source: "base-document", isCurrentTruth: true, unresolvedIssues: [], legacyStatus: "OPERATIVE_STATE_RESOLVED" };
 }
 
-function unresolvedNestedSectionProvisions(operativeState: OperativeContractState | null | undefined, parentSectionRef: string): OperativeProvisionView[] {
+/**
+ * Nested unresolved SECTION provisions under `parentSectionRef` on the same
+ * instrument document identity. V1 OperativeContractState stores every view's
+ * `documentId` as the instrument baseDocumentId, so same-document filtering is
+ * usually a no-op — but the field is part of the view model, and a bare
+ * sectionRef match across documents would be contamination if that ever varies.
+ */
+function unresolvedNestedSectionProvisions(operativeState: OperativeContractState | null | undefined, documentId: string, parentSectionRef: string): OperativeProvisionView[] {
   if (!operativeState) return [];
-  return operativeState.provisions.filter((p) => p.kind === "SECTION" && p.sectionRef != null && isNestedSectionRef(parentSectionRef, p.sectionRef) && p.status !== "OPERATIVE_STATE_RESOLVED");
+  return operativeState.provisions.filter(
+    (p) => p.kind === "SECTION" && p.documentId === documentId && p.sectionRef != null && isNestedSectionRef(parentSectionRef, p.sectionRef) && p.status !== "OPERATIVE_STATE_RESOLVED",
+  );
 }
