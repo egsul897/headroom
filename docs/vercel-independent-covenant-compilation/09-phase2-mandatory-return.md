@@ -2,7 +2,7 @@
 
 **Workstream:** WS-VIC  
 **PR:** https://github.com/egsul897/headroom/pull/146  
-**HEAD:** `3dfe43d3104049de8b29cedd7f7bc722071876d9` (plus follow-up triage commit if present)  
+**HEAD:** `b7a2e995753e426e641933c147bf8979e882d35e`  
 **Label key:** MEASURED = observed this session; UNAVAILABLE = runtime/corpus absent; HISTORICAL = prior gateway-era artifacts (not current VIC accuracy).
 
 ## 1. Actual new authentic documents processed
