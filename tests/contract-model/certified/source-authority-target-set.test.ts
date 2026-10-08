@@ -445,7 +445,7 @@ describe("SA-4 §36-§37 status-neutral dependency prose; the reviewer is never 
     expect(system).toMatch(/never a statement that the target is certified, verified or correct/);
     expect(SEMANTIC_VERIFIER_PROMPT_VERSION).toBe("phase-3c-semantic-verifier-prompt.v4");
     expect(SEMANTIC_VERIFICATION_PROJECTION_VERSION).toBe("phase-3c-verification-projection.v4");
-    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v12", "semantic-accountability-compiler-prompt.v9"]);
+    expect([SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION]).toEqual(["semantic-accountability-compiler.v13", "semantic-accountability-compiler-prompt.v9"]);
   });
 });
 

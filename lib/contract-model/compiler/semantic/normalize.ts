@@ -823,6 +823,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     });
     if (honestGates.applied && honestGates.reason) limitRule(ctx, honestGates.reason);
     if (honestGates.ambiguousAttribution && honestGates.reason) warn(ctx, honestGates.reason, "SUFFICIENCY");
+    if (honestGates.unboundPair && honestGates.reason) warn(ctx, honestGates.reason, "SUFFICIENCY");
     capacityExpression = honestGates.capacity;
     conditions = honestGates.conditions;
     // §17: the rule-level fields when the model supplied them; otherwise the entity-scope tags the rule's own
@@ -871,6 +872,9 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     // existing sufficiency for a reading this pass will not adjudicate. CONFLICTED / MISSING_CONTEXT / UNSUPPORTED
     // already name a different defect and are left as they arrived; the attribution reason is still recorded.
     if (honestGates.ambiguousAttribution && (consistent.sufficiency === "COMPLETE" || consistent.sufficiency === "PARTIAL")) consistent.sufficiency = "AMBIGUOUS";
+    // A selected pair that cannot be bound is not a complete representation. Gates stay uncopied. PARTIAL is the
+    // insufficiency already used for this qualitative pair; COMPLETE is not left standing.
+    if (honestGates.unboundPair && consistent.sufficiency === "COMPLETE") consistent.sufficiency = "PARTIAL";
     // deterministic limits raised under this rule (invented references, unverifiable references, incompatible action) downgrade a COMPLETE claim
     if (ctx.limits.length > 0 && consistent.sufficiency === "COMPLETE") { consistent.sufficiency = "PARTIAL"; consistent.reasons.push(`deterministic post-processing: ${ctx.limits.length} limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL`); }
     const sufficiencyWarnings = warnings.filter((w) => w.scope.startsWith(ctx.scopePath) && (w.kind ?? "SUFFICIENCY") === "SUFFICIENCY").map((w) => w.message);
