@@ -22,6 +22,15 @@ export { loadEhbSourceDocuments } from "./phase2/ehb-manifest-loader";
 export { createProcessingQueue, loadProcessingQueue, nextPendingItem } from "./phase2/processing-queue";
 export { runPhase2ScaleBenchmark, proveResumeInvariants, writePortablePhase2Artifacts } from "./phase2/run-scale-benchmark";
 export { PHASE2_STATUS } from "./phase2/types";
+export {
+  buildHandoffRecord,
+  persistHandoffPackage,
+  proveArtifactReconstruction,
+  HANDOFF_CONTRACT_VERSION,
+  PROCESSING_VERSION,
+} from "./phase3/handoff-contract";
+export { evaluateFleetSecGate, resolveAuthorizedUserAgent } from "./phase3/fleet-sec";
+export { runIndependentQualitySample } from "./phase3/quality-sample";
 export type {
   ComputeAssessmentReport,
   VmResourceSnapshot,

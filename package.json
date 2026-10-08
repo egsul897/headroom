@@ -19,6 +19,8 @@
     "compute:inspect": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=1",
     "compute:bench-100": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=100",
     "compute:phase2-real-edgar": "tsx scripts/cursor-cloud-compute/run-phase2-real-edgar.ts",
+    "compute:phase3": "tsx scripts/cursor-cloud-compute/run-phase3.ts",
+    "compute:phase3-forensic": "tsx scripts/cursor-cloud-compute/phase3-forensic-classify.ts",
     "test:cursor-cloud-compute": "vitest run tests/cursor-cloud-compute"
   },
   "dependencies": {
