@@ -10,6 +10,7 @@ coverage
 # LocalFilesystemStorageProvider's dev/test fallback (lib/document-storage/local-fs-provider.ts)
 .local-blob-storage/
 # WS-CCA local compute caches (includes rare-covenant / EHB SEC byte caches under data/)
+# Also covers WS-DEF acquired EDGAR bodies (docs/definition-encyclopedia/ keeps summaries).
 # EHB runtime manifests/queue/source bytes: data/edgar-historical-backfill/ (EPHEMERAL_WORKSPACE)
 # Default SEC fair-access cache: .cache/sec-edgar/ (covered by .cache/)
 data/
