@@ -1,0 +1,425 @@
+{
+  "reviewedCount": 30,
+  "phase1AffirmativeInSample": 29,
+  "falseAffirmativeCount": 14,
+  "falseAffirmativeRateInSample": 0.4827586206896552,
+  "falseAffirmativeIds": [
+    "chwy-available-amount-starter-grower",
+    "chwy-anti-double-count-available-amount-transactions",
+    "gib-anti-duplication-investment-returns",
+    "fwrg-anti-double-counting-incremental",
+    "chwy-debt-reclassification",
+    "conmed-debt-reclassification",
+    "sup-debt-reclassification",
+    "sup-lien-reclassification",
+    "gib-asset-disposition-reclassification",
+    "conmed-rp-ratio-unlimited",
+    "chwy-ratio-incremental-amount",
+    "chwy-voluntary-prepayment-incremental",
+    "fwrg-available-amount-and-excluded-contribution",
+    "chwy-cross-covenant-rp-capacity-reduction"
+  ],
+  "correctedCandidateIds": [
+    "chwy-ratio-incremental-amount",
+    "chwy-available-amount-starter-grower",
+    "chwy-debt-reclassification",
+    "chwy-anti-double-count-available-amount-transactions",
+    "chwy-cross-covenant-rp-capacity-reduction",
+    "chwy-voluntary-prepayment-incremental",
+    "gib-asset-disposition-reclassification",
+    "gib-anti-duplication-investment-returns",
+    "conmed-rp-ratio-unlimited",
+    "conmed-debt-reclassification",
+    "sup-debt-reclassification",
+    "sup-lien-reclassification",
+    "fwrg-available-amount-and-excluded-contribution",
+    "fwrg-anti-double-counting-incremental"
+  ],
+  "note": "Source grounding is not legal-semantic correctness. Sample is stratified across probe classes, not a random 100% audit of all 55.",
+  "reviews": [
+    {
+      "candidateId": "chwy-general-lien-basket",
+      "family": "GENERAL_LIEN",
+      "probe": "entity-specific / greater-of permission",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Operative Permitted Liens (21) ceiling authorizing other Liens up to greater-of amount \u2014 true permission.",
+      "testsApplied": [
+        "comparator_vs_permission",
+        "proviso_override",
+        "entity_scope"
+      ]
+    },
+    {
+      "candidateId": "dsgr-general-debt-basket",
+      "family": "GENERAL_DEBT",
+      "probe": "fixed vs grower general debt",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "\u00a76.01(r) 'other Indebtedness ... not exceeding' is an affirmative exception basket.",
+      "testsApplied": [
+        "comparator_vs_permission",
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "conmed-fixed-dollar-rp-basket",
+      "family": "FIXED_DOLLAR",
+      "probe": "fixed-dollar RP",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Explicit 'may make Restricted Payments ... not to exceed $40,000,000' \u2014 permission.",
+      "testsApplied": [
+        "exception_framing",
+        "conditions_precedent"
+      ]
+    },
+    {
+      "candidateId": "dsgr-ratio-debt-basket",
+      "family": "RATIO_BASED",
+      "probe": "ratio tests",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Incurrence ratio limb inside \u00a76.01(q) grants residual room \u2014 not a maintenance test.",
+      "testsApplied": [
+        "ratio_tests",
+        "comparator_vs_permission"
+      ]
+    },
+    {
+      "candidateId": "lsb-ratio-gated-unlimited-debt",
+      "family": "RATIO_BASED",
+      "probe": "conditions precedent / Payment Conditions",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Chapeau grants uncapped debt if FCCR and Payment Conditions satisfied \u2014 permission gated by conditions precedent.",
+      "testsApplied": [
+        "conditions_precedent",
+        "ratio_tests"
+      ]
+    },
+    {
+      "candidateId": "dsgr-shared-purchase-money-with-refi",
+      "family": "SHARED",
+      "probe": "shared-capacity sublimits",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "'together with' shared ceiling is affirmative shared capacity, not a mere comparator.",
+      "testsApplied": [
+        "shared_capacity_sublimits"
+      ]
+    },
+    {
+      "candidateId": "chwy-available-amount-builder",
+      "family": "AVAILABLE_AMOUNT_BUILDER",
+      "probe": "builder / forwarding definitions",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "\u00a76.08(a)(3) builder defines Available Amount used as RP permission gate \u2014 affirmative.",
+      "testsApplied": [
+        "forwarding_definitions",
+        "proviso_override"
+      ]
+    },
+    {
+      "candidateId": "gib-available-amount-builder-pointer",
+      "family": "AVAILABLE_AMOUNT_BUILDER",
+      "probe": "forwarding definitions",
+      "phase1Label": "INCOMPLETE_SEMANTICS",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": false,
+      "rationale": "Cross-reference pointer only; Phase-1 correctly did not call this affirmative capacity.",
+      "testsApplied": [
+        "forwarding_definitions"
+      ]
+    },
+    {
+      "candidateId": "chwy-available-amount-starter-grower",
+      "family": "GROWER",
+      "probe": "provisos / component vs permission",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Clause (f) is a builder COMPONENT inside Available Amount, not a standalone permission. Labeling it AFFIRMATIVE_CAPACITY overstates legal permission semantics even though the arithmetic leg is real. Reclassify to INCOMPLETE_SEMANTICS pending builder-context binding.",
+      "testsApplied": [
+        "proviso_override",
+        "forwarding_definitions",
+        "comparator_vs_permission"
+      ]
+    },
+    {
+      "candidateId": "chwy-anti-double-count-available-amount-transactions",
+      "family": "ANTI_DOUBLE_COUNTING",
+      "probe": "anti-double-counting as capacity",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "NOT_CAPACITY",
+      "falseAffirmative": true,
+      "rationale": "\u00a71.09 sequences same-day Available Amount actions; it constrains consumption ordering and does not grant capacity.",
+      "testsApplied": [
+        "comparator_vs_permission",
+        "shared_capacity_sublimits"
+      ]
+    },
+    {
+      "candidateId": "gib-anti-duplication-investment-returns",
+      "family": "ANTI_DOUBLE_COUNTING",
+      "probe": "without-duplication constraint",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "NOT_CAPACITY",
+      "falseAffirmative": true,
+      "rationale": "'without duplication' is a counting constraint bridging investment returns and \u00a77.05(a)(y), not a permission ceiling.",
+      "testsApplied": [
+        "comparator_vs_permission"
+      ]
+    },
+    {
+      "candidateId": "fwrg-anti-double-counting-incremental",
+      "family": "ANTI_DOUBLE_COUNTING",
+      "probe": "without-duplication constraint",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "NOT_CAPACITY",
+      "falseAffirmative": true,
+      "rationale": "Anti-duplication language for incremental clauses is a netting rule, not affirmative capacity.",
+      "testsApplied": [
+        "comparator_vs_permission"
+      ]
+    },
+    {
+      "candidateId": "chwy-debt-reclassification",
+      "family": "RECLASSIFICATION",
+      "probe": "reclassification rights vs capacity",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Divide-and-classify election governs which basket is used; it is not itself a dollar/ratio capacity grant. Permission arises only after election into a concrete basket.",
+      "testsApplied": [
+        "exception_framing",
+        "proviso_override"
+      ]
+    },
+    {
+      "candidateId": "conmed-debt-reclassification",
+      "family": "RECLASSIFICATION",
+      "probe": "reclassification rights",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Same as Chewy reclass \u2014 election mechanic, not capacity quantum.",
+      "testsApplied": [
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "sup-debt-reclassification",
+      "family": "RECLASSIFICATION",
+      "probe": "reclassification rights",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Election mechanic only.",
+      "testsApplied": [
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "sup-lien-reclassification",
+      "family": "RECLASSIFICATION",
+      "probe": "lien reclassification",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Lien classify/reclassify right without a numeric ceiling in-span.",
+      "testsApplied": [
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "gib-asset-disposition-reclassification",
+      "family": "RECLASSIFICATION",
+      "probe": "asset/investment reclass",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Classification election among Asset Disposition / Investment categories \u2014 not a capacity amount.",
+      "testsApplied": [
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "chwy-automatic-fixed-to-incurrence-reclass",
+      "family": "RECLASSIFICATION",
+      "probe": "automatic vs elected reclassification",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Automatic reclass into Incurrence-Based Amounts when ratio later met functionally restores Fixed Amount capacity \u2014 capacity-affecting mechanic with operative effect, retain as affirmative with blockers.",
+      "testsApplied": [
+        "ratio_tests",
+        "proviso_override"
+      ]
+    },
+    {
+      "candidateId": "conmed-rp-ratio-unlimited",
+      "family": "RATIO_BASED",
+      "probe": "provisos overriding apparent permission",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Captured span is only 'make Restricted Payments in an unlimited amount;' \u2014 the leverage gate lives in surrounding prose not in the span. Cannot affirm unlimited permission from this span alone.",
+      "testsApplied": [
+        "proviso_override",
+        "ratio_tests",
+        "forwarding_definitions"
+      ]
+    },
+    {
+      "candidateId": "chwy-ratio-incremental-amount",
+      "family": "RATIO_BASED",
+      "probe": "partial span / forwarding",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Span truncates mid-sentence before completing even the first ratio limb and omits other priority tiers. Source grounding \u2260 complete legal semantics.",
+      "testsApplied": [
+        "ratio_tests",
+        "forwarding_definitions"
+      ]
+    },
+    {
+      "candidateId": "chwy-voluntary-prepayment-incremental",
+      "family": "INCREMENTAL_DEBT",
+      "probe": "forwarding / truncated definition",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Opening fragment of Voluntary Prepayment Incremental Amount; exclusions and eligible debt types continue after span.",
+      "testsApplied": [
+        "forwarding_definitions"
+      ]
+    },
+    {
+      "candidateId": "fwrg-available-amount-and-excluded-contribution",
+      "family": "AVAILABLE_AMOUNT_BUILDER",
+      "probe": "usage pointer vs builder definition",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "INCOMPLETE_SEMANTICS",
+      "falseAffirmative": true,
+      "rationale": "Usage election into Available Amount / Available Excluded Contribution Amount without the builder definitions themselves.",
+      "testsApplied": [
+        "forwarding_definitions"
+      ]
+    },
+    {
+      "candidateId": "gib-non-guarantor-debt-grower",
+      "family": "GREATER_OF_FIXED_AND_PERCENTAGE",
+      "probe": "entity-specific limits",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Entity-scoped (non-Guarantors) grower is still affirmative capacity for that entity class.",
+      "testsApplied": [
+        "entity_scope",
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "dsgr-asset-sale-reinvestment",
+      "family": "ASSET_SALE_REINVESTMENT",
+      "probe": "reinvestment right vs free cash",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Reinvestment option affects mandatory prepayment capacity \u2014 affirmative but narrowly scoped; blockers already note incompleteness of surrounding limbs.",
+      "testsApplied": [
+        "proviso_override",
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "chwy-cross-covenant-rp-capacity-reduction",
+      "family": "CROSS_COVENANT_CAPACITY_RESTRICTION",
+      "probe": "cross-document / cross-covenant restrictions",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "NOT_CAPACITY",
+      "falseAffirmative": true,
+      "rationale": "Reduction rule that depletes RP capacity when debt/liens use shared RP capacity \u2014 a restriction/netting rule, not a grant of capacity.",
+      "testsApplied": [
+        "shared_capacity_sublimits",
+        "cross_document_restrictions"
+      ]
+    },
+    {
+      "candidateId": "lsb-fixed-dollar-card-basket",
+      "family": "FIXED_DOLLAR",
+      "probe": "narrow exception basket",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Ordinary-course card/banking services debt up to $2mm \u2014 true exception permission.",
+      "testsApplied": [
+        "exception_framing",
+        "entity_scope"
+      ]
+    },
+    {
+      "candidateId": "chwy-fixed-incremental-amount",
+      "family": "INCREMENTAL_DEBT",
+      "probe": "shared reallocations / anti-double-count",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Full Fixed Incremental Amount definition with greater-of starter and shared reallocations \u2014 affirmative incremental capacity.",
+      "testsApplied": [
+        "shared_capacity_sublimits",
+        "ratio_tests",
+        "conditions_precedent"
+      ]
+    },
+    {
+      "candidateId": "dsgr-purchase-money-basket",
+      "family": "PURCHASE_MONEY",
+      "probe": "conditions precedent timing window",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Purchase-money/capex basket with 180-day condition and shared refi sublimit \u2014 affirmative.",
+      "testsApplied": [
+        "conditions_precedent",
+        "shared_capacity_sublimits"
+      ]
+    },
+    {
+      "candidateId": "conmed-general-lien-basket",
+      "family": "GENERAL_LIEN",
+      "probe": "dual ceiling proviso",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "General lien grower with dual tests (secured obligations AND asset FMV) \u2014 affirmative.",
+      "testsApplied": [
+        "proviso_override",
+        "exception_framing"
+      ]
+    },
+    {
+      "candidateId": "chwy-builder-returns-without-duplication",
+      "family": "ANTI_DOUBLE_COUNTING",
+      "probe": "replenishment + anti-duplication hybrid",
+      "phase1Label": "AFFIRMATIVE_CAPACITY",
+      "independentVerdict": "AFFIRMATIVE_CAPACITY",
+      "falseAffirmative": false,
+      "rationale": "Builder leg that both credits returns (replenishment) and forbids double counting \u2014 the credit is capacity-affecting; retain affirmative with blockers.",
+      "testsApplied": [
+        "shared_capacity_sublimits",
+        "forwarding_definitions"
+      ]
+    }
+  ]
+}

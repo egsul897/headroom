@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "basket-capacity-formula-corpus.v1",
+  "taxonomyId": "capacity-formula-taxonomy.v1",
+  "note": "Reusable formula taxonomy for corpus labeling. Not a production CalculationRuleKind / FormulaType binding and not wired into the capacity engine.",
+  "entries": [
+    {
+      "formulaKind": "FIXED_DOLLAR_CEILING",
+      "label": "Fixed-dollar ceiling",
+      "description": "A hard dollar aggregate ceiling stated without a percentage grower leg.",
+      "typicalBasketFamilies": ["FIXED_DOLLAR", "RESTRICTED_PAYMENT", "INVESTMENT", "REFINANCING"],
+      "requiredInputs": ["outstanding_or_usage_to_date"],
+      "commonFailureModes": [
+        "Treating a de minimis exclusion threshold as a permission ceiling",
+        "Ignoring per-year vs. at-any-time measurement basis"
+      ]
+    },
+    {
+      "formulaKind": "GREATER_OF_FIXED_OR_PCT_METRIC",
+      "label": "Greater-of fixed or % of metric",
+      "description": "Capacity is the greater of a stated fixed amount and a stated percentage of a financial metric.",
+      "typicalBasketFamilies": ["GREATER_OF_FIXED_AND_PERCENTAGE", "GROWER", "GENERAL_DEBT", "GENERAL_LIEN", "INVESTMENT"],
+      "requiredInputs": ["metric_value_at_measurement_date", "outstanding_or_usage_to_date"],
+      "commonFailureModes": [
+        "Assuming the metric is always Consolidated EBITDA when the source says Total Assets",
+        "Evaluating without the stated measurement date / Test Period"
+      ]
+    },
+    {
+      "formulaKind": "PCT_OF_METRIC_ONLY",
+      "label": "Percentage of metric only",
+      "description": "Ceiling expressed solely as a percentage of a metric (no fixed dollar starter).",
+      "typicalBasketFamilies": ["GROWER", "PURCHASE_MONEY"],
+      "requiredInputs": ["metric_value_at_measurement_date"],
+      "commonFailureModes": ["Inventing a fixed-dollar floor not in the source"]
+    },
+    {
+      "formulaKind": "RATIO_INCURRENCE_ROOM",
+      "label": "Ratio-based incurrence room",
+      "description": "Capacity is residual room under a leverage/coverage ratio test on a pro forma basis.",
+      "typicalBasketFamilies": ["RATIO_BASED", "INCREMENTAL_DEBT"],
+      "requiredInputs": ["ratio_numerator", "ratio_denominator", "ratio_threshold_or_baseline", "pro_forma_adjustments"],
+      "commonFailureModes": [
+        "Treating the ratio threshold itself as a dollar basket",
+        "Confusing maintenance financial covenants with incurrence tests"
+      ]
+    },
+    {
+      "formulaKind": "BUILDER_SUM_COMPONENTS",
+      "label": "Available Amount / builder sum",
+      "description": "Cumulative multi-component builder (starter + CNI/ECF/equity/returns − usages).",
+      "typicalBasketFamilies": ["AVAILABLE_AMOUNT_BUILDER", "CUMULATIVE_CREDIT", "RESTRICTED_PAYMENT"],
+      "requiredInputs": ["each_builder_component_fact", "prior_usages_against_builder", "not_otherwise_applied_flags"],
+      "commonFailureModes": [
+        "Computing a partial builder and presenting it as Available Amount",
+        "Double-counting returns already credited elsewhere"
+      ]
+    },
+    {
+      "formulaKind": "BUILDER_STARTER_PLUS_CUMULATIVE",
+      "label": "Starter grower plus cumulative credits",
+      "description": "Builder that opens with a greater-of starter and then adds cumulative equity/return components.",
+      "typicalBasketFamilies": ["AVAILABLE_AMOUNT_BUILDER", "GROWER", "EQUITY_CONTRIBUTION"],
+      "requiredInputs": ["starter_metric", "cumulative_equity_proceeds", "cumulative_returns", "prior_builder_usage"],
+      "commonFailureModes": ["Dropping the starter or the cumulative legs"]
+    },
+    {
+      "formulaKind": "EQUITY_PROCEEDS_CREDIT",
+      "label": "Equity / contribution credit",
+      "description": "Capacity credit from net cash proceeds of equity issuances or capital contributions.",
+      "typicalBasketFamilies": ["EQUITY_CONTRIBUTION", "AVAILABLE_AMOUNT_BUILDER"],
+      "requiredInputs": ["qualified_equity_proceeds", "excluded_contribution_designations", "prior_application"],
+      "commonFailureModes": ["Crediting Excluded Contributions into the builder when the source excludes them"]
+    },
+    {
+      "formulaKind": "INCREMENTAL_CAP_SUM",
+      "label": "Incremental Cap sum-of-buckets",
+      "description": "Incremental debt capacity as a sum of fixed, voluntary-prepayment, ratio, and extension buckets.",
+      "typicalBasketFamilies": ["INCREMENTAL_DEBT", "SHARED"],
+      "requiredInputs": ["fixed_incremental_unused", "voluntary_prepayment_amount", "ratio_room", "prior_incremental_usage"],
+      "commonFailureModes": ["Collapsing the Incremental Cap into only the Fixed Incremental Amount"]
+    },
+    {
+      "formulaKind": "REFINANCE_PRINCIPAL_PLUS_COSTS",
+      "label": "Refinancing principal + costs",
+      "description": "Refinancing basket sized to original principal plus premiums, interest, and fees.",
+      "typicalBasketFamilies": ["REFINANCING"],
+      "requiredInputs": ["original_principal", "premiums_fees_interest", "maturity_and_lien_constraints"],
+      "commonFailureModes": ["Allowing principal increase beyond the stated exceptions"]
+    },
+    {
+      "formulaKind": "PURCHASE_MONEY_COST_LINKED",
+      "label": "Purchase-money / capex-linked",
+      "description": "Debt/liens incurred to finance acquisition/construction of assets, often within a timing window and aggregate cap.",
+      "typicalBasketFamilies": ["PURCHASE_MONEY"],
+      "requiredInputs": ["asset_cost_or_aggregate_cap", "incurrence_timing_window", "refinancing_overlay"],
+      "commonFailureModes": ["Ignoring the within-N-days timing condition"]
+    },
+    {
+      "formulaKind": "SHARED_AGGREGATE_CEILING",
+      "label": "Shared aggregate ceiling",
+      "description": "One numeric ceiling shared across multiple clauses ('together with' / pooled usage).",
+      "typicalBasketFamilies": ["SHARED", "GENERAL_DEBT", "INVESTMENT"],
+      "requiredInputs": ["usage_by_each_member_clause", "shared_ceiling_expression"],
+      "commonFailureModes": ["Evaluating each member as if it had a private full ceiling"]
+    },
+    {
+      "formulaKind": "REALLOCATION_TRANSFER",
+      "label": "Basket reallocation / reclassification transfer",
+      "description": "Unused capacity moved from one basket to another by election or automatic reclass.",
+      "typicalBasketFamilies": ["RECLASSIFICATION", "INCREMENTAL_DEBT", "GENERAL_LIEN", "CROSS_COVENANT_CAPACITY_RESTRICTION"],
+      "requiredInputs": ["source_basket_unused", "election_record", "destination_basket_rules"],
+      "commonFailureModes": ["Counting reallocated amounts in both source and destination"]
+    },
+    {
+      "formulaKind": "RETURN_OF_CAPITAL_REPLENISHMENT",
+      "label": "Return-of-capital replenishment",
+      "description": "Prior investment/RP usage restored by returns, dividends, or sale proceeds up to original amount.",
+      "typicalBasketFamilies": ["BASKET_REPLENISHMENT", "INVESTMENT", "AVAILABLE_AMOUNT_BUILDER"],
+      "requiredInputs": ["original_investment_amount", "cash_returns_received", "whether_already_reflected"],
+      "commonFailureModes": ["Replenishing above the original investment without source support"]
+    },
+    {
+      "formulaKind": "WITHOUT_DUPLICATION_NETTING",
+      "label": "Anti-double-counting / without duplication",
+      "description": "Additive components or usages must not be counted twice across clauses or builder legs.",
+      "typicalBasketFamilies": ["ANTI_DOUBLE_COUNTING", "AVAILABLE_AMOUNT_BUILDER", "SHARED"],
+      "requiredInputs": ["identity_of_overlapping_amounts"],
+      "commonFailureModes": ["Ignoring without-duplication language when summing components"]
+    },
+    {
+      "formulaKind": "CROSS_BASKET_USAGE_REDUCTION",
+      "label": "Cross-covenant capacity reduction",
+      "description": "Usage under one covenant reduces capacity under another.",
+      "typicalBasketFamilies": ["CROSS_COVENANT_CAPACITY_RESTRICTION", "RESTRICTED_PAYMENT", "INCREMENTAL_DEBT"],
+      "requiredInputs": ["cross_usage_ledger", "classification_election_among_reduced_clauses"],
+      "commonFailureModes": ["Reporting RP capacity without subtracting debt/lien usages that the source requires"]
+    },
+    {
+      "formulaKind": "UNLIMITED_SUBJECT_TO_GATE",
+      "label": "Unlimited subject to gate",
+      "description": "No dollar ceiling; permission is unlimited only while stated gates are satisfied.",
+      "typicalBasketFamilies": ["RATIO_BASED", "GENERAL_DEBT"],
+      "requiredInputs": ["gate_predicates"],
+      "commonFailureModes": ["Inventing a dollar cap; treating gate failure as zero without stating GATE_NOT_SATISFIED"]
+    },
+    {
+      "formulaKind": "CARRY_FORWARD_UNUSED",
+      "label": "Unused annual basket carry-forward",
+      "description": "Unused portion of a period-based metric automatically carries into a later period.",
+      "typicalBasketFamilies": ["BASKET_REPLENISHMENT", "RESTRICTED_PAYMENT"],
+      "requiredInputs": ["period_cap", "period_usage", "carry_forward_election"],
+      "commonFailureModes": ["Assuming carry-forward where the source is silent"]
+    },
+    {
+      "formulaKind": "NON_CAPACITY_COMPARATOR",
+      "label": "Non-capacity comparator",
+      "description": "Numeric greater-of/threshold used only to compare values, not to grant basket capacity.",
+      "typicalBasketFamilies": ["FIXED_DOLLAR"],
+      "requiredInputs": [],
+      "commonFailureModes": ["Promoting interest-rate or ABR greater-of language into a debt basket"]
+    },
+    {
+      "formulaKind": "NON_CAPACITY_MAINTENANCE_TEST",
+      "label": "Non-capacity maintenance test",
+      "description": "Ongoing financial covenant tested periodically; breach is default, not an incurrence capacity grant.",
+      "typicalBasketFamilies": ["RATIO_BASED"],
+      "requiredInputs": [],
+      "commonFailureModes": ["Treating maintenance leverage caps as incremental debt room"]
+    },
+    {
+      "formulaKind": "NON_CAPACITY_APPROVAL_OR_DEFAULT_TRIGGER",
+      "label": "Non-capacity approval/default trigger",
+      "description": "Numeric trigger for consent, Event of Default, or similar process — not affirmative capacity.",
+      "typicalBasketFamilies": ["FIXED_DOLLAR"],
+      "requiredInputs": [],
+      "commonFailureModes": ["Reading Threshold Amount / Material Adverse thresholds as baskets"]
+    },
+    {
+      "formulaKind": "OTHER_SOURCE_STATED",
+      "label": "Other source-stated shape",
+      "description": "Source-backed formula shape that does not cleanly fit the named taxonomy entries.",
+      "typicalBasketFamilies": ["SHARED"],
+      "requiredInputs": ["as_stated_in_source"],
+      "commonFailureModes": ["Forcing an OTHER shape into a named FormulaType without source support"]
+    }
+  ]
+}

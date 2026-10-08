@@ -1,0 +1,1941 @@
+{
+  "schemaVersion": "precedent-comparison-corpus-audit.v1",
+  "generatedAt": "2026-10-08T22:32:05.479Z",
+  "rawProvisionCount": 734,
+  "distinctSourceDocuments": 18,
+  "distinctIssuers": 8,
+  "distinctProvisionSpans": 495,
+  "duplicateOrOverlappingSpanCount": 239,
+  "deduplicatedComparableProvisionCount": 495,
+  "provisionsWithCompleteControllingContext": 370,
+  "provisionsMissingControllingContext": 125,
+  "heldOutProvisionCount": 328,
+  "clusters": [
+    {
+      "clusterId": "hash:e7eb80d2b616",
+      "memberProvisionIds": [
+        "dsgr-2022:2.11(a)",
+        "dsgr-2024:2.11(a)",
+        "dsgr-2025:2.11(a)"
+      ],
+      "representativeProvisionId": "dsgr-2022:2.11(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:36f9e2308dab",
+      "memberProvisionIds": [
+        "dsgr-2022:2.11(c)",
+        "dsgr-2024:2.11(c)",
+        "dsgr-2025:2.11(c)"
+      ],
+      "representativeProvisionId": "dsgr-2022:2.11(c)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:03b5877e8781",
+      "memberProvisionIds": [
+        "dsgr-2022:2.11(i)",
+        "dsgr-2024:2.11(i)",
+        "dsgr-2025:2.11(i)"
+      ],
+      "representativeProvisionId": "dsgr-2022:2.11(i)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:bf87b0247a95",
+      "memberProvisionIds": [
+        "dsgr-2022:2.11(x)",
+        "dsgr-2024:2.11(x)",
+        "dsgr-2025:2.11(x)"
+      ],
+      "representativeProvisionId": "dsgr-2022:2.11(x)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:2ec2c336bcda",
+      "memberProvisionIds": [
+        "dsgr-2022:3.08",
+        "dsgr-2024:3.08"
+      ],
+      "representativeProvisionId": "dsgr-2022:3.08",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:a923237e4200",
+      "memberProvisionIds": [
+        "dsgr-2022:3.08(a)",
+        "dsgr-2024:3.08(a)"
+      ],
+      "representativeProvisionId": "dsgr-2022:3.08(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:d53c796446ee",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01(c)",
+        "dsgr-2024:6.01(c)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01(c)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:c19d8720839b",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01(d)",
+        "dsgr-2024:6.01(d)",
+        "dsgr-2025:6.01(d)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01(d)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:da7193135046",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01(e)",
+        "dsgr-2024:6.01(e)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01(e)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:e555cbe6524d",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01(f)",
+        "dsgr-2024:6.01(f)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01(f)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:0fa073b4fec7",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01(g)",
+        "dsgr-2024:6.01(g)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01(g)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:ba5614d66605",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05(f)",
+        "dsgr-2024:6.05(f)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05(f)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:a73f79ab5fd9",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05(g)",
+        "dsgr-2024:6.05(g)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05(g)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:99de1532b8ee",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05(h)",
+        "dsgr-2024:6.05(h)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05(h)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:b86bf3d5f31d",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05(j)",
+        "dsgr-2024:6.05(j)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05(j)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:09f168c92784",
+      "memberProvisionIds": [
+        "dsgr-2022:6.08(a)",
+        "dsgr-2024:6.08(a)",
+        "dsgr-2025:6.08(a)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.08(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:65913abb578b",
+      "memberProvisionIds": [
+        "dsgr-2022:6.08(i)",
+        "dsgr-2024:6.08(i)",
+        "dsgr-2025:6.08(i)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.08(i)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:c7c056fdf134",
+      "memberProvisionIds": [
+        "dsgr-2022:6.08(x)",
+        "dsgr-2024:6.08(x)",
+        "dsgr-2025:6.08(x)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.08(x)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:da0c89b35190",
+      "memberProvisionIds": [
+        "dsgr-2024:3.08(i)",
+        "dsgr-2025:3.08(i)"
+      ],
+      "representativeProvisionId": "dsgr-2024:3.08(i)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:5e2fb8eca6db",
+      "memberProvisionIds": [
+        "dsgr-2024:3.08(v)",
+        "dsgr-2025:3.08(v)"
+      ],
+      "representativeProvisionId": "dsgr-2024:3.08(v)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:e16cb73ed287",
+      "memberProvisionIds": [
+        "dsgr-2024:6.01(a)",
+        "dsgr-2025:6.01(a)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.01(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:6b0ad23805f1",
+      "memberProvisionIds": [
+        "dsgr-2024:6.01(b)",
+        "dsgr-2025:6.01(b)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.01(b)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:08e441ec6aa4",
+      "memberProvisionIds": [
+        "lsb-2023:6.08(c)",
+        "lsb-2023:6.11(c)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.08(c)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:31c1727d75cc",
+      "memberProvisionIds": [
+        "lsb-2023:6.08(e)",
+        "lsb-2023:6.11(e)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.08(e)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:3d15980818b8",
+      "memberProvisionIds": [
+        "lsb-2023:6.08(f)",
+        "lsb-2023:6.11(f)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.08(f)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:f18a22cd416c",
+      "memberProvisionIds": [
+        "lsb-2023:6.08(g)",
+        "lsb-2023:6.11(g)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.08(g)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:9d1a61d03642",
+      "memberProvisionIds": [
+        "lsb-2023:6.08(h)",
+        "lsb-2023:6.11(h)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.08(h)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:94eabdad2ad0",
+      "memberProvisionIds": [
+        "lsb-2023:6.08(k)",
+        "lsb-2023:6.11(k)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.08(k)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:c43172a90fae",
+      "memberProvisionIds": [
+        "lsb-2023:6.08(l)",
+        "lsb-2023:6.11(l)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.08(l)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:548ac81347a3",
+      "memberProvisionIds": [
+        "riot-2025:2.03(a)",
+        "riot-2025b:2.03(a)",
+        "riot-2026:2.03(a)"
+      ],
+      "representativeProvisionId": "riot-2025:2.03(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:8bc8148a6173",
+      "memberProvisionIds": [
+        "riot-2025:2.03(b)",
+        "riot-2026:2.03(b)"
+      ],
+      "representativeProvisionId": "riot-2025:2.03(b)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:36df042030ad",
+      "memberProvisionIds": [
+        "riot-2025:def:btc-financing",
+        "riot-2026:def:btc-financing"
+      ],
+      "representativeProvisionId": "riot-2025:def:btc-financing",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:59b1ea46e63b",
+      "memberProvisionIds": [
+        "riot-2025:def:first-priority",
+        "riot-2026:def:first-priority"
+      ],
+      "representativeProvisionId": "riot-2025:def:first-priority",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:081a7b438a67",
+      "memberProvisionIds": [
+        "riot-2025:def:interest-period",
+        "riot-2026:def:interest-period"
+      ],
+      "representativeProvisionId": "riot-2025:def:interest-period",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:78713e5a60fc",
+      "memberProvisionIds": [
+        "riot-2025:def:lien",
+        "riot-2026:def:lien"
+      ],
+      "representativeProvisionId": "riot-2025:def:lien",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:50408829ae7d",
+      "memberProvisionIds": [
+        "riot-2025:def:ofac",
+        "riot-2026:def:ofac"
+      ],
+      "representativeProvisionId": "riot-2025:def:ofac",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:ca1730228104",
+      "memberProvisionIds": [
+        "riot-2025:def:permitted-liens",
+        "riot-2026:def:permitted-liens"
+      ],
+      "representativeProvisionId": "riot-2025:def:permitted-liens",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:0e14bfc12539",
+      "memberProvisionIds": [
+        "superior-2022:5.08(a)",
+        "superior-2024:5.08(a)"
+      ],
+      "representativeProvisionId": "superior-2022:5.08(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:0b406e364ad5",
+      "memberProvisionIds": [
+        "superior-2022:6.11(a)",
+        "superior-2024:6.11(a)"
+      ],
+      "representativeProvisionId": "superior-2022:6.11(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:979af7d13345",
+      "memberProvisionIds": [
+        "superior-2022:7.01(a)",
+        "superior-2022:7.02(a)",
+        "superior-2024:7.01(a)",
+        "superior-2024:7.02(a)"
+      ],
+      "representativeProvisionId": "superior-2022:7.01(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:e475e6e157d1",
+      "memberProvisionIds": [
+        "superior-2022:7.02(i)",
+        "superior-2024:7.01(i)",
+        "superior-2024:7.02(i)"
+      ],
+      "representativeProvisionId": "superior-2022:7.02(i)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:d0e2ea03d396",
+      "memberProvisionIds": [
+        "superior-2022:7.04(a)",
+        "superior-2022:7.05(a)",
+        "superior-2024:7.05(a)"
+      ],
+      "representativeProvisionId": "superior-2022:7.04(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:b8a032554cc8",
+      "memberProvisionIds": [
+        "superior-2022:7.05(b)",
+        "superior-2024:7.05(b)"
+      ],
+      "representativeProvisionId": "superior-2022:7.05(b)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:d88cec8a82d7",
+      "memberProvisionIds": [
+        "superior-2022:7.05(c)",
+        "superior-2024:7.05(c)"
+      ],
+      "representativeProvisionId": "superior-2022:7.05(c)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:527b790bb336",
+      "memberProvisionIds": [
+        "superior-2022:7.05(x)",
+        "superior-2024:7.05(x)"
+      ],
+      "representativeProvisionId": "superior-2022:7.05(x)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:b5e5c0e8189d",
+      "memberProvisionIds": [
+        "superior-2022:7.05(y)",
+        "superior-2024:7.05(y)"
+      ],
+      "representativeProvisionId": "superior-2022:7.05(y)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:b5aff9b1d108",
+      "memberProvisionIds": [
+        "superior-2022:7.07(a)",
+        "superior-2024:7.07(a)"
+      ],
+      "representativeProvisionId": "superior-2022:7.07(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:fb34fc784a43",
+      "memberProvisionIds": [
+        "superior-2022:7.07(b)",
+        "superior-2024:7.07(b)"
+      ],
+      "representativeProvisionId": "superior-2022:7.07(b)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:1769481f842e",
+      "memberProvisionIds": [
+        "superior-2022:7.07(c)",
+        "superior-2024:7.07(c)"
+      ],
+      "representativeProvisionId": "superior-2022:7.07(c)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:83129b877e23",
+      "memberProvisionIds": [
+        "superior-2022:7.07(s)",
+        "superior-2024:7.07(s)"
+      ],
+      "representativeProvisionId": "superior-2022:7.07(s)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:f1a72ec145da",
+      "memberProvisionIds": [
+        "superior-2022:7.10(a)",
+        "superior-2024:7.10(a)"
+      ],
+      "representativeProvisionId": "superior-2022:7.10(a)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:46d7bf66ab6c",
+      "memberProvisionIds": [
+        "superior-2022:def:acquired-entity-or-business",
+        "superior-2024:def:acquired-entity-or-business"
+      ],
+      "representativeProvisionId": "superior-2022:def:acquired-entity-or-business",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:f432a51d50f1",
+      "memberProvisionIds": [
+        "superior-2022:def:acquired-indebtedness",
+        "superior-2024:def:acquired-indebtedness"
+      ],
+      "representativeProvisionId": "superior-2022:def:acquired-indebtedness",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:b5619397f9a5",
+      "memberProvisionIds": [
+        "superior-2022:def:adjusted-daily-simple-sofr",
+        "superior-2024:def:adjusted-daily-simple-sofr"
+      ],
+      "representativeProvisionId": "superior-2022:def:adjusted-daily-simple-sofr",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:718f5668163c",
+      "memberProvisionIds": [
+        "superior-2022:def:adjusted-term-sofr-rate",
+        "superior-2024:def:adjusted-term-sofr-rate"
+      ],
+      "representativeProvisionId": "superior-2022:def:adjusted-term-sofr-rate",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:48777158d528",
+      "memberProvisionIds": [
+        "superior-2022:def:affiliated-lender",
+        "superior-2024:def:affiliated-lender"
+      ],
+      "representativeProvisionId": "superior-2022:def:affiliated-lender",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:53f979f00eb6",
+      "memberProvisionIds": [
+        "superior-2022:def:asset-sale",
+        "superior-2024:def:asset-sale"
+      ],
+      "representativeProvisionId": "superior-2022:def:asset-sale",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:cce890924f9d",
+      "memberProvisionIds": [
+        "superior-2022:def:assignee-group",
+        "superior-2024:def:assignee-group"
+      ],
+      "representativeProvisionId": "superior-2022:def:assignee-group",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:2088cd6f940b",
+      "memberProvisionIds": [
+        "superior-2022:def:available-tenor",
+        "superior-2024:def:available-tenor"
+      ],
+      "representativeProvisionId": "superior-2022:def:available-tenor",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:2a9fd4fa75f5",
+      "memberProvisionIds": [
+        "superior-2022:def:base-rate-loan",
+        "superior-2024:def:base-rate-loan"
+      ],
+      "representativeProvisionId": "superior-2022:def:base-rate-loan",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:8a9045b69c3b",
+      "memberProvisionIds": [
+        "superior-2022:def:basket",
+        "superior-2024:def:basket"
+      ],
+      "representativeProvisionId": "superior-2022:def:basket",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:02c61d44c0d4",
+      "memberProvisionIds": [
+        "superior-2022:def:benchmark-replacement-adjustment",
+        "superior-2024:def:benchmark-replacement-adjustment"
+      ],
+      "representativeProvisionId": "superior-2022:def:benchmark-replacement-adjustment",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:0690efa9ea56",
+      "memberProvisionIds": [
+        "superior-2022:def:capital-stock",
+        "superior-2024:def:capital-stock"
+      ],
+      "representativeProvisionId": "superior-2022:def:capital-stock",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:60207728bb0c",
+      "memberProvisionIds": [
+        "superior-2022:def:captive-insurance-subsidiary",
+        "superior-2024:def:captive-insurance-subsidiary"
+      ],
+      "representativeProvisionId": "superior-2022:def:captive-insurance-subsidiary",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:a67e8ad5a4ba",
+      "memberProvisionIds": [
+        "superior-2022:def:casualty-event",
+        "superior-2024:def:casualty-event"
+      ],
+      "representativeProvisionId": "superior-2022:def:casualty-event",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:eb59546d3301",
+      "memberProvisionIds": [
+        "superior-2022:def:consolidated-maintenance-ebitda",
+        "superior-2024:def:consolidated-maintenance-ebitda"
+      ],
+      "representativeProvisionId": "superior-2022:def:consolidated-maintenance-ebitda",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:06a0a6e7325a",
+      "memberProvisionIds": [
+        "superior-2022:def:consolidated-secured-debt",
+        "superior-2024:def:consolidated-secured-debt"
+      ],
+      "representativeProvisionId": "superior-2022:def:consolidated-secured-debt",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:2ca037e8495b",
+      "memberProvisionIds": [
+        "superior-2022:def:controlled-investment-affiliate",
+        "superior-2024:def:controlled-investment-affiliate"
+      ],
+      "representativeProvisionId": "superior-2022:def:controlled-investment-affiliate",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:1b7664670319",
+      "memberProvisionIds": [
+        "superior-2022:def:costa-rican-guarantor",
+        "superior-2024:def:costa-rican-guarantor"
+      ],
+      "representativeProvisionId": "superior-2022:def:costa-rican-guarantor",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:bd7223e73ba7",
+      "memberProvisionIds": [
+        "superior-2022:def:debt-fund-affiliate",
+        "superior-2024:def:debt-fund-affiliate"
+      ],
+      "representativeProvisionId": "superior-2022:def:debt-fund-affiliate",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:b66396abd4d7",
+      "memberProvisionIds": [
+        "superior-2022:def:debt-representative",
+        "superior-2024:def:debt-representative"
+      ],
+      "representativeProvisionId": "superior-2022:def:debt-representative",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:aeefe400de84",
+      "memberProvisionIds": [
+        "superior-2022:def:debtor-relief-laws",
+        "superior-2024:def:debtor-relief-laws"
+      ],
+      "representativeProvisionId": "superior-2022:def:debtor-relief-laws",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:259e880c2d95",
+      "memberProvisionIds": [
+        "superior-2022:def:default-rate",
+        "superior-2024:def:default-rate"
+      ],
+      "representativeProvisionId": "superior-2022:def:default-rate",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:054665751351",
+      "memberProvisionIds": [
+        "superior-2022:def:discharge",
+        "superior-2024:def:discharge"
+      ],
+      "representativeProvisionId": "superior-2022:def:discharge",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:e86c6cc9b506",
+      "memberProvisionIds": [
+        "superior-2022:def:eea-financial-institution",
+        "superior-2024:def:eea-financial-institution"
+      ],
+      "representativeProvisionId": "superior-2022:def:eea-financial-institution",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:8b54d0061b28",
+      "memberProvisionIds": [
+        "superior-2022:def:environmental-claim",
+        "superior-2024:def:environmental-claim"
+      ],
+      "representativeProvisionId": "superior-2022:def:environmental-claim",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:e7a257f5281d",
+      "memberProvisionIds": [
+        "superior-2022:def:equity-interests",
+        "superior-2024:def:equity-interests"
+      ],
+      "representativeProvisionId": "superior-2022:def:equity-interests",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:69be6160eb4a",
+      "memberProvisionIds": [
+        "superior-2022:def:escrowed-proceeds",
+        "superior-2024:def:escrowed-proceeds"
+      ],
+      "representativeProvisionId": "superior-2022:def:escrowed-proceeds",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:1d0dd36e8136",
+      "memberProvisionIds": [
+        "superior-2022:def:floor",
+        "superior-2024:def:floor"
+      ],
+      "representativeProvisionId": "superior-2022:def:floor",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:252eb034b288",
+      "memberProvisionIds": [
+        "superior-2022:def:foreign-subsidiary",
+        "superior-2024:def:foreign-subsidiary"
+      ],
+      "representativeProvisionId": "superior-2022:def:foreign-subsidiary",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:4024eb3ac64e",
+      "memberProvisionIds": [
+        "superior-2022:def:independent-financial-advisor",
+        "superior-2024:def:independent-financial-advisor"
+      ],
+      "representativeProvisionId": "superior-2022:def:independent-financial-advisor",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:002963141704",
+      "memberProvisionIds": [
+        "superior-2022:def:investment-grade-securities",
+        "superior-2024:def:investment-grade-securities"
+      ],
+      "representativeProvisionId": "superior-2022:def:investment-grade-securities",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:19367b29d017",
+      "memberProvisionIds": [
+        "superior-2022:def:lien",
+        "superior-2024:def:lien"
+      ],
+      "representativeProvisionId": "superior-2022:def:lien",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:6419660c1b78",
+      "memberProvisionIds": [
+        "superior-2022:def:loan-parties",
+        "superior-2024:def:loan-parties"
+      ],
+      "representativeProvisionId": "superior-2022:def:loan-parties",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:bd7a11007b41",
+      "memberProvisionIds": [
+        "superior-2024:7.01(x)",
+        "superior-2024:7.02(x)"
+      ],
+      "representativeProvisionId": "superior-2024:7.01(x)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "hash:b9c6daa71181",
+      "memberProvisionIds": [
+        "superior-2024:7.01(y)",
+        "superior-2024:7.02(y)"
+      ],
+      "representativeProvisionId": "superior-2024:7.01(y)",
+      "reason": "IDENTICAL_HASH"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:2.09:chwy-2026:2.09(a)",
+      "memberProvisionIds": [
+        "chwy-2026:2.09",
+        "chwy-2026:2.09(a)"
+      ],
+      "representativeProvisionId": "chwy-2026:2.09",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:2.09:chwy-2026:2.09(e)",
+      "memberProvisionIds": [
+        "chwy-2026:2.09",
+        "chwy-2026:2.09(e)"
+      ],
+      "representativeProvisionId": "chwy-2026:2.09",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:2.09:chwy-2026:2.09(i)",
+      "memberProvisionIds": [
+        "chwy-2026:2.09",
+        "chwy-2026:2.09(i)"
+      ],
+      "representativeProvisionId": "chwy-2026:2.09",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:2.09:chwy-2026:2.09(x)",
+      "memberProvisionIds": [
+        "chwy-2026:2.09",
+        "chwy-2026:2.09(x)"
+      ],
+      "representativeProvisionId": "chwy-2026:2.09",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:2.09:chwy-2026:2.09(y)",
+      "memberProvisionIds": [
+        "chwy-2026:2.09",
+        "chwy-2026:2.09(y)"
+      ],
+      "representativeProvisionId": "chwy-2026:2.09",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:2.09:chwy-2026:2.09(b)",
+      "memberProvisionIds": [
+        "chwy-2026:2.09",
+        "chwy-2026:2.09(b)"
+      ],
+      "representativeProvisionId": "chwy-2026:2.09",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:5.18:chwy-2026:5.18(a)",
+      "memberProvisionIds": [
+        "chwy-2026:5.18",
+        "chwy-2026:5.18(a)"
+      ],
+      "representativeProvisionId": "chwy-2026:5.18",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:5.18:chwy-2026:5.18(y)",
+      "memberProvisionIds": [
+        "chwy-2026:5.18",
+        "chwy-2026:5.18(y)"
+      ],
+      "representativeProvisionId": "chwy-2026:5.18",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:5.18:chwy-2026:5.18(b)",
+      "memberProvisionIds": [
+        "chwy-2026:5.18",
+        "chwy-2026:5.18(b)"
+      ],
+      "representativeProvisionId": "chwy-2026:5.18",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:6.01:chwy-2026:6.01(a)",
+      "memberProvisionIds": [
+        "chwy-2026:6.01",
+        "chwy-2026:6.01(a)"
+      ],
+      "representativeProvisionId": "chwy-2026:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:6.01:chwy-2026:6.01(y)",
+      "memberProvisionIds": [
+        "chwy-2026:6.01",
+        "chwy-2026:6.01(y)"
+      ],
+      "representativeProvisionId": "chwy-2026:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:6.01:chwy-2026:6.01(i)",
+      "memberProvisionIds": [
+        "chwy-2026:6.01",
+        "chwy-2026:6.01(i)"
+      ],
+      "representativeProvisionId": "chwy-2026:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:6.03:chwy-2026:6.02(a)",
+      "memberProvisionIds": [
+        "chwy-2026:6.03",
+        "chwy-2026:6.02(a)"
+      ],
+      "representativeProvisionId": "chwy-2026:6.03",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:6.03:chwy-2026:6.02(i)",
+      "memberProvisionIds": [
+        "chwy-2026:6.03",
+        "chwy-2026:6.02(i)"
+      ],
+      "representativeProvisionId": "chwy-2026:6.03",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:6.03:chwy-2026:6.02(b)",
+      "memberProvisionIds": [
+        "chwy-2026:6.03",
+        "chwy-2026:6.02(b)"
+      ],
+      "representativeProvisionId": "chwy-2026:6.03",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:6.03:chwy-2026:6.02(c)",
+      "memberProvisionIds": [
+        "chwy-2026:6.03",
+        "chwy-2026:6.02(c)"
+      ],
+      "representativeProvisionId": "chwy-2026:6.03",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:9.14:chwy-2026:9.14(a)",
+      "memberProvisionIds": [
+        "chwy-2026:9.14",
+        "chwy-2026:9.14(a)"
+      ],
+      "representativeProvisionId": "chwy-2026:9.14",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:chwy-2026:9.14:chwy-2026:9.14(i)",
+      "memberProvisionIds": [
+        "chwy-2026:9.14",
+        "chwy-2026:9.14(i)"
+      ],
+      "representativeProvisionId": "chwy-2026:9.14",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(a)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(a)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(b)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(b)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(c)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(c)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(d)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(d)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(y)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(y)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(e)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(e)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(f)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(f)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(g)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(g)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.2:conmed-2025:7.2(h)",
+      "memberProvisionIds": [
+        "conmed-2025:7.2",
+        "conmed-2025:7.2(h)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.2",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.3:conmed-2025:7.3(a)",
+      "memberProvisionIds": [
+        "conmed-2025:7.3",
+        "conmed-2025:7.3(a)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.3",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.3:conmed-2025:7.3(b)",
+      "memberProvisionIds": [
+        "conmed-2025:7.3",
+        "conmed-2025:7.3(b)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.3",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.3:conmed-2025:7.3(c)",
+      "memberProvisionIds": [
+        "conmed-2025:7.3",
+        "conmed-2025:7.3(c)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.3",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.3:conmed-2025:7.3(d)",
+      "memberProvisionIds": [
+        "conmed-2025:7.3",
+        "conmed-2025:7.3(d)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.3",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.3:conmed-2025:7.3(e)",
+      "memberProvisionIds": [
+        "conmed-2025:7.3",
+        "conmed-2025:7.3(e)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.3",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.3:conmed-2025:7.3(f)",
+      "memberProvisionIds": [
+        "conmed-2025:7.3",
+        "conmed-2025:7.3(f)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.3",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.3:conmed-2025:7.3(g)",
+      "memberProvisionIds": [
+        "conmed-2025:7.3",
+        "conmed-2025:7.3(g)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.3",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.17:conmed-2025:7.17(a)",
+      "memberProvisionIds": [
+        "conmed-2025:7.17",
+        "conmed-2025:7.17(a)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.17",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.17:conmed-2025:7.17(i)",
+      "memberProvisionIds": [
+        "conmed-2025:7.17",
+        "conmed-2025:7.17(i)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.17",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.17:conmed-2025:7.17(ii)",
+      "memberProvisionIds": [
+        "conmed-2025:7.17",
+        "conmed-2025:7.17(ii)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.17",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:conmed-2025:7.17:conmed-2025:7.17(iii)",
+      "memberProvisionIds": [
+        "conmed-2025:7.17",
+        "conmed-2025:7.17(iii)"
+      ],
+      "representativeProvisionId": "conmed-2025:7.17",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:2.11:dsgr-2022:2.11(e)",
+      "memberProvisionIds": [
+        "dsgr-2022:2.11",
+        "dsgr-2022:2.11(e)"
+      ],
+      "representativeProvisionId": "dsgr-2022:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:2.11:dsgr-2022:2.11(b)",
+      "memberProvisionIds": [
+        "dsgr-2022:2.11",
+        "dsgr-2022:2.11(b)"
+      ],
+      "representativeProvisionId": "dsgr-2022:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.01:dsgr-2022:6.01(a)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01",
+        "dsgr-2022:6.01(a)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.01:dsgr-2022:6.01(b)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01",
+        "dsgr-2022:6.01(b)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.01:dsgr-2022:6.01(i)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.01",
+        "dsgr-2022:6.01(i)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.05:dsgr-2022:6.05(i)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05",
+        "dsgr-2022:6.05(i)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.05:dsgr-2022:6.05(b)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05",
+        "dsgr-2022:6.05(b)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.05:dsgr-2022:6.05(c)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05",
+        "dsgr-2022:6.05(c)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.05:dsgr-2022:6.05(d)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05",
+        "dsgr-2022:6.05(d)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.05:dsgr-2022:6.05(e)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.05",
+        "dsgr-2022:6.05(e)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.05",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.08:dsgr-2022:6.08(y)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.08",
+        "dsgr-2022:6.08(y)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.08",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2022:6.08:dsgr-2022:6.08(v)",
+      "memberProvisionIds": [
+        "dsgr-2022:6.08",
+        "dsgr-2022:6.08(v)"
+      ],
+      "representativeProvisionId": "dsgr-2022:6.08",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:2.11:dsgr-2024:2.11(d)",
+      "memberProvisionIds": [
+        "dsgr-2024:2.11",
+        "dsgr-2024:2.11(d)"
+      ],
+      "representativeProvisionId": "dsgr-2024:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:2.11:dsgr-2024:2.11(b)",
+      "memberProvisionIds": [
+        "dsgr-2024:2.11",
+        "dsgr-2024:2.11(b)"
+      ],
+      "representativeProvisionId": "dsgr-2024:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:2.11:dsgr-2024:2.11(e)",
+      "memberProvisionIds": [
+        "dsgr-2024:2.11",
+        "dsgr-2024:2.11(e)"
+      ],
+      "representativeProvisionId": "dsgr-2024:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:6.01:dsgr-2024:6.01(i)",
+      "memberProvisionIds": [
+        "dsgr-2024:6.01",
+        "dsgr-2024:6.01(i)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:6.05:dsgr-2024:6.05(i)",
+      "memberProvisionIds": [
+        "dsgr-2024:6.05",
+        "dsgr-2024:6.05(i)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:6.05:dsgr-2024:6.05(b)",
+      "memberProvisionIds": [
+        "dsgr-2024:6.05",
+        "dsgr-2024:6.05(b)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:6.05:dsgr-2024:6.05(c)",
+      "memberProvisionIds": [
+        "dsgr-2024:6.05",
+        "dsgr-2024:6.05(c)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:6.05:dsgr-2024:6.05(d)",
+      "memberProvisionIds": [
+        "dsgr-2024:6.05",
+        "dsgr-2024:6.05(d)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:6.08:dsgr-2024:6.08(y)",
+      "memberProvisionIds": [
+        "dsgr-2024:6.08",
+        "dsgr-2024:6.08(y)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.08",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2024:6.08:dsgr-2024:6.08(v)",
+      "memberProvisionIds": [
+        "dsgr-2024:6.08",
+        "dsgr-2024:6.08(v)"
+      ],
+      "representativeProvisionId": "dsgr-2024:6.08",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:2.11:dsgr-2025:2.11(d)",
+      "memberProvisionIds": [
+        "dsgr-2025:2.11",
+        "dsgr-2025:2.11(d)"
+      ],
+      "representativeProvisionId": "dsgr-2025:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:2.11:dsgr-2025:2.11(b)",
+      "memberProvisionIds": [
+        "dsgr-2025:2.11",
+        "dsgr-2025:2.11(b)"
+      ],
+      "representativeProvisionId": "dsgr-2025:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:2.11:dsgr-2025:2.11(e)",
+      "memberProvisionIds": [
+        "dsgr-2025:2.11",
+        "dsgr-2025:2.11(e)"
+      ],
+      "representativeProvisionId": "dsgr-2025:2.11",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.01:dsgr-2025:6.01(i)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.01",
+        "dsgr-2025:6.01(i)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.01:dsgr-2025:6.01(c)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.01",
+        "dsgr-2025:6.01(c)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.05:dsgr-2025:6.05(i)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.05",
+        "dsgr-2025:6.05(i)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.05:dsgr-2025:6.05(b)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.05",
+        "dsgr-2025:6.05(b)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.05:dsgr-2025:6.05(c)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.05",
+        "dsgr-2025:6.05(c)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.05:dsgr-2025:6.05(d)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.05",
+        "dsgr-2025:6.05(d)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.05:dsgr-2025:6.05(j)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.05",
+        "dsgr-2025:6.05(j)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.05:dsgr-2025:6.05(f)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.05",
+        "dsgr-2025:6.05(f)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.05:dsgr-2025:6.05(g)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.05",
+        "dsgr-2025:6.05(g)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.08:dsgr-2025:6.08(y)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.08",
+        "dsgr-2025:6.08(y)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.08",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:dsgr-2025:6.08:dsgr-2025:6.08(v)",
+      "memberProvisionIds": [
+        "dsgr-2025:6.08",
+        "dsgr-2025:6.08(v)"
+      ],
+      "representativeProvisionId": "dsgr-2025:6.08",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.01:fwrg-2021:6.01(i)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.01",
+        "fwrg-2021:6.01(i)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.01:fwrg-2021:6.01(b)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.01",
+        "fwrg-2021:6.01(b)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.01:fwrg-2021:6.01(e)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.01",
+        "fwrg-2021:6.01(e)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.02:fwrg-2021:6.02(a)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.02",
+        "fwrg-2021:6.02(a)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.02",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.02:fwrg-2021:6.02(i)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.02",
+        "fwrg-2021:6.02(i)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.02",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.02:fwrg-2021:6.02(c)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.02",
+        "fwrg-2021:6.02(c)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.02",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.06:fwrg-2021:6.06(a)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.06",
+        "fwrg-2021:6.06(a)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.06",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.06:fwrg-2021:6.06(i)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.06",
+        "fwrg-2021:6.06(i)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.06",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.06:fwrg-2021:6.06(x)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.06",
+        "fwrg-2021:6.06(x)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.06",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.06:fwrg-2021:6.06(y)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.06",
+        "fwrg-2021:6.06(y)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.06",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.07:fwrg-2021:6.07(a)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.07",
+        "fwrg-2021:6.07(a)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.07",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:fwrg-2021:6.07:fwrg-2021:6.07(i)",
+      "memberProvisionIds": [
+        "fwrg-2021:6.07",
+        "fwrg-2021:6.07(i)"
+      ],
+      "representativeProvisionId": "fwrg-2021:6.07",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:5.13:gibraltar-2026:5.13(a)",
+      "memberProvisionIds": [
+        "gibraltar-2026:5.13",
+        "gibraltar-2026:5.13(a)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:5.13",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:6.18:gibraltar-2026:6.18(a)",
+      "memberProvisionIds": [
+        "gibraltar-2026:6.18",
+        "gibraltar-2026:6.18(a)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:6.18",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:6.18:gibraltar-2026:6.18(i)",
+      "memberProvisionIds": [
+        "gibraltar-2026:6.18",
+        "gibraltar-2026:6.18(i)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:6.18",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:6.18:gibraltar-2026:6.18(b)",
+      "memberProvisionIds": [
+        "gibraltar-2026:6.18",
+        "gibraltar-2026:6.18(b)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:6.18",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.01:gibraltar-2026:7.01(a)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.01",
+        "gibraltar-2026:7.01(a)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.01:gibraltar-2026:7.01(i)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.01",
+        "gibraltar-2026:7.01(i)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.01:gibraltar-2026:7.01(x)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.01",
+        "gibraltar-2026:7.01(x)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.01:gibraltar-2026:7.01(z)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.01",
+        "gibraltar-2026:7.01(z)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.01:gibraltar-2026:7.01(b)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.01",
+        "gibraltar-2026:7.01(b)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.01:gibraltar-2026:7.01(w)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.01",
+        "gibraltar-2026:7.01(w)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.01:gibraltar-2026:7.01(y)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.01",
+        "gibraltar-2026:7.01(y)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.02:gibraltar-2026:7.02(e)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.02",
+        "gibraltar-2026:7.02(e)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.02",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.02:gibraltar-2026:7.02(a)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.02",
+        "gibraltar-2026:7.02(a)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.02",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.05:gibraltar-2026:7.05(a)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.05",
+        "gibraltar-2026:7.05(a)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.05:gibraltar-2026:7.05(b)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.05",
+        "gibraltar-2026:7.05(b)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:7.05:gibraltar-2026:7.05(c)",
+      "memberProvisionIds": [
+        "gibraltar-2026:7.05",
+        "gibraltar-2026:7.05(c)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:7.05",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:10.20:gibraltar-2026:10.20(i)",
+      "memberProvisionIds": [
+        "gibraltar-2026:10.20",
+        "gibraltar-2026:10.20(i)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:10.20",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:10.20:gibraltar-2026:10.20(ii)",
+      "memberProvisionIds": [
+        "gibraltar-2026:10.20",
+        "gibraltar-2026:10.20(ii)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:10.20",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:gibraltar-2026:10.20:gibraltar-2026:10.20(iii)",
+      "memberProvisionIds": [
+        "gibraltar-2026:10.20",
+        "gibraltar-2026:10.20(iii)"
+      ],
+      "representativeProvisionId": "gibraltar-2026:10.20",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.01:lsb-2023:6.01(i)",
+      "memberProvisionIds": [
+        "lsb-2023:6.01",
+        "lsb-2023:6.01(i)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.01:lsb-2023:6.01(a)",
+      "memberProvisionIds": [
+        "lsb-2023:6.01",
+        "lsb-2023:6.01(a)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.01:lsb-2023:6.01(b)",
+      "memberProvisionIds": [
+        "lsb-2023:6.01",
+        "lsb-2023:6.01(b)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.01:lsb-2023:6.01(c)",
+      "memberProvisionIds": [
+        "lsb-2023:6.01",
+        "lsb-2023:6.01(c)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.01:lsb-2023:6.01(d)",
+      "memberProvisionIds": [
+        "lsb-2023:6.01",
+        "lsb-2023:6.01(d)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.01",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.01:lsb-2023:6.01(f)",
+      "memberProvisionIds": [
+        "lsb-2023:6.01",
+        "lsb-2023:6.01(f)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.01",
+      "reason": "SAME_PATH_OVERLAP"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.03:lsb-2023:6.02(a)",
+      "memberProvisionIds": [
+        "lsb-2023:6.03",
+        "lsb-2023:6.02(a)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.03",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.03:lsb-2023:6.02(b)",
+      "memberProvisionIds": [
+        "lsb-2023:6.03",
+        "lsb-2023:6.02(b)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.03",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    },
+    {
+      "clusterId": "overlap:lsb-2023:6.03:lsb-2023:6.02(c)",
+      "memberProvisionIds": [
+        "lsb-2023:6.03",
+        "lsb-2023:6.02(c)"
+      ],
+      "representativeProvisionId": "lsb-2023:6.03",
+      "reason": "NEAR_DUPLICATE_TEXT"
+    }
+  ],
+  "spanAudit": {
+    "sampleSize": 100,
+    "exactMatchCount": 100,
+    "exactMatchRate": 1,
+    "contextCompleteCount": 64,
+    "contextCompletenessRate": 0.64,
+    "byIssuer": {
+      "chwy": {
+        "sampled": 16,
+        "exactMatch": 16,
+        "contextComplete": 6
+      },
+      "conmed": {
+        "sampled": 9,
+        "exactMatch": 9,
+        "contextComplete": 7
+      },
+      "dsgr": {
+        "sampled": 17,
+        "exactMatch": 17,
+        "contextComplete": 6
+      },
+      "fwrg": {
+        "sampled": 11,
+        "exactMatch": 11,
+        "contextComplete": 8
+      },
+      "gibraltar": {
+        "sampled": 13,
+        "exactMatch": 13,
+        "contextComplete": 10
+      },
+      "lsb": {
+        "sampled": 11,
+        "exactMatch": 11,
+        "contextComplete": 6
+      },
+      "riot": {
+        "sampled": 4,
+        "exactMatch": 4,
+        "contextComplete": 3
+      },
+      "superior": {
+        "sampled": 19,
+        "exactMatch": 19,
+        "contextComplete": 18
+      }
+    },
+    "byFamily": {
+      "AFFILIATE_TRANSACTIONS": {
+        "sampled": 11,
+        "exactMatch": 11,
+        "contextComplete": 8
+      },
+      "DEFINITIONS_CALCULATION_RULES": {
+        "sampled": 14,
+        "exactMatch": 14,
+        "contextComplete": 14
+      },
+      "FUNDAMENTAL_CHANGES": {
+        "sampled": 6,
+        "exactMatch": 6,
+        "contextComplete": 3
+      },
+      "INDEBTEDNESS": {
+        "sampled": 15,
+        "exactMatch": 15,
+        "contextComplete": 9
+      },
+      "INVESTMENTS": {
+        "sampled": 13,
+        "exactMatch": 13,
+        "contextComplete": 8
+      },
+      "LIENS": {
+        "sampled": 13,
+        "exactMatch": 13,
+        "contextComplete": 4
+      },
+      "MANDATORY_PREPAYMENTS": {
+        "sampled": 7,
+        "exactMatch": 7,
+        "contextComplete": 3
+      },
+      "FINANCIAL_COVENANTS": {
+        "sampled": 8,
+        "exactMatch": 8,
+        "contextComplete": 6
+      },
+      "ASSET_SALES": {
+        "sampled": 6,
+        "exactMatch": 6,
+        "contextComplete": 4
+      },
+      "QUALITATIVE_NEGATIVE_COVENANTS": {
+        "sampled": 1,
+        "exactMatch": 1,
+        "contextComplete": 0
+      },
+      "RESTRICTED_PAYMENTS": {
+        "sampled": 6,
+        "exactMatch": 6,
+        "contextComplete": 5
+      }
+    },
+    "failures": []
+  },
+  "notes": [
+    "Deduplicated count collapses identical hashes and nested/overlapping same-path extracts.",
+    "Exact-match requires normalized equality of file[charStart:charEnd] prefix vs stored sourceText.",
+    "Context-completeness is a heuristic (same-package definitions / amendment links) — not Atlas closure.",
+    "Duplicate extracts are not counted as distinct comparable provisions."
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "artifact": "financial-definitions-precedent.missing-inputs",
+  "version": "fdp.v1",
+  "rule": "Calculations must fail closed with MISSING_INPUT:<key> rather than inventing financial results.",
+  "inputs": [
+    {
+      "key": "consolidated_net_income_by_quarter",
+      "requiredBy": [
+        "CHWY-2026-CA::builder::Available_Amount",
+        "CHWY-2026-CA::def::Excess_Cash_Flow"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "FISCAL_QUARTER",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "consolidated_ebitda_covenant_defined",
+      "requiredBy": [
+        "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+        "CONMED-2025-CA::test::Financial_Covenants_7_1"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "TEST_PERIOD",
+      "status": "MISSING_UNLESS_ATTESTED",
+      "note": "Must be covenant-defined EBITDA for the governing instrument version, not GAAP EBITDA alone."
+    },
+    {
+      "key": "unrestricted_cash_and_cash_equivalents",
+      "requiredBy": [
+        "CHWY-2026-CA::def::Consolidated_Total_Debt",
+        "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "AS_OF",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "consolidated_first_lien_debt_components",
+      "requiredBy": [
+        "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "AS_OF",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "consolidated_interest_expense_cash",
+      "requiredBy": [
+        "CONMED-2025-CA::def::Interest_Coverage_Ratio"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "PERIOD",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "expected_run_rate_benefit_schedule",
+      "requiredBy": [
+        "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "ACTION_DATED",
+      "status": "MISSING_UNLESS_ATTESTED",
+      "note": "Includes action dates for 36-month lookforward test."
+    },
+    {
+      "key": "pro_forma_adjustment_amount_and_benefits_realized",
+      "requiredBy": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "FOUR_QUARTERS",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "material_acquisition_election_and_dates",
+      "requiredBy": [
+        "CONMED-2025-CA::test::Financial_Covenants_7_1"
+      ],
+      "valueType": "BOOLEAN_AND_DATES",
+      "periodicity": "EVENT",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "retained_excess_cash_flow",
+      "requiredBy": [
+        "CHWY-2026-CA::builder::Available_Amount"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "ECF_PERIOD",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "abl_cure_mechanics",
+      "requiredBy": [
+        "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF"
+      ],
+      "valueType": "STRUCTURED",
+      "periodicity": "EVENT",
+      "status": "MISSING_SOURCE_DOCUMENT"
+    },
+    {
+      "key": "section_6_10_cure_mechanics_full_text",
+      "requiredBy": [
+        "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA"
+      ],
+      "valueType": "STRUCTURED",
+      "periodicity": "EVENT",
+      "status": "MISSING_FROM_CURATED_EXCERPT"
+    },
+    {
+      "key": "excluded_revolving_loans_balance",
+      "requiredBy": [
+        "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+        "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+        "CHWY-2026-CA::ratio::Total_Leverage_Ratio"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "AS_OF",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "gib_section_7_05_a_y_builder_components",
+      "requiredBy": [
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket"
+      ],
+      "valueType": "STRUCTURED",
+      "periodicity": "AS_OF",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "dsgr_combined_cap_clause_amounts",
+      "requiredBy": [
+        "DSGR-2024-AMD::adj::Combined_Cap_20pct"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "FOUR_QUARTERS",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "margin_call_ltv_inputs",
+      "requiredBy": [
+        "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+        "RIOT-2026-CA::ratio::Actual_LTV_Ratio"
+      ],
+      "valueType": "STRUCTURED",
+      "periodicity": "EVENT",
+      "status": "MISSING_UNLESS_ATTESTED",
+      "note": "Loan principal, Prevailing Market Value of BTC collateral, BTC price, margin thresholds"
+    }
+  ]
+}
