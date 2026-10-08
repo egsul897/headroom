@@ -1,0 +1,451 @@
+{
+  "covenantFamily": "INVESTMENTS",
+  "count": 5,
+  "exceptionIds": [
+    "conmed-7.8-i-foreign-advances-depend-7.2k",
+    "conmed-7.8-j-ratio-gated-investments",
+    "conmed-7.8-l-general-investments-basket",
+    "lsb-6.13-k-investments-payment-conditions",
+    "fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.8-i-foreign-advances-depend-7.2k",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "INVESTMENTS",
+      "parentProhibition": {
+        "sectionRef": "7.8",
+        "text": "Make any advance, loan, extension of credit ... or make any other investment in, any Person (collectively, \"Investments\"), except:"
+      },
+      "exceptionSectionRef": "7.8(i)",
+      "exactExceptionText": "so long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make advances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness of such Foreign Subsidiary or Foreign Subsidiary Holdco is permitted under Section 7.2(k);",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.8",
+        "Section 7.8(i)"
+      ],
+      "definedTerms": [
+        "Foreign Subsidiary",
+        "Foreign Subsidiary Holdco",
+        "Investments"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "no Default/EOD continuing",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.8(i) so-long-as",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c2",
+          "text": "debtor Indebtedness permitted under Section 7.2(k)",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.2(k)",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower / Subsidiary lender",
+          "Foreign Subsidiary / Holdco borrower"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Investment permission consumes / depends on remaining 7.2(k) debt capacity and its \u00a76.9 gates",
+          "relatedRefs": [
+            "7.2(k)",
+            "6.9"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "provided that Indebtedness permitted under 7.2(k)",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Entire quantitative story is remote."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.2(k)",
+          "role": "remote quantitative + pledge gates"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "No local dollar cap; capacity is entirely the residual of \u00a77.2(k) (itself gated by \u00a76.9)."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Seemingly open investment permission; actual headroom is the \u00a77.2(k) foreign-debt basket plus its remote \u00a76.9 conditions.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.8-j-ratio-gated-investments",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "INVESTMENTS",
+      "parentProhibition": {
+        "sectionRef": "7.8",
+        "text": "Make any ... Investments, except:"
+      },
+      "exceptionSectionRef": "7.8(j)",
+      "exactExceptionText": "in addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred and be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments consist of equity investments ... the requirements of Section 6.9 are satisfied and (y) the Consolidated Senior Secured Leverage Ratio ... is no greater than the Consolidated Senior Secured Leverage Ratio that is 0.25x lower than the Consolidated Senior Secured Leverage Ratio in effect for such fiscal quarter under Section 7.1(a);",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.8",
+        "Section 7.8(j)"
+      ],
+      "definedTerms": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Investments"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "no Default/EOD",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.8(j) so-long-as",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c2",
+          "text": "equity investments satisfy Section 6.9",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.9",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "CSSLR \u2264 (then-applicable 7.1(a) CSSLR \u2212 0.25x)",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.1(a)",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO_BUFFER",
+          "value": "0.25x inside then-applicable \u00a77.1(a) CSSLR"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "provided that (x) \u00a76.9 and (y) CSSLR buffer vs 7.1(a)",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Both gates point outside Investments section."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "6.9",
+          "role": "equity investment collateral requirements"
+        },
+        {
+          "targetRef": "7.1(a)",
+          "role": "moving CSSLR ceiling"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Moving ratio target is defined by \u00a77.1(a), including Material Acquisition step-ups."
+        },
+        {
+          "kind": "NOTWITHSTANDING",
+          "description": "\u00a77.1(a) itself has a notwithstanding step-up that can change the remote target."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Unlimited investment basket whose ratio gate moves with \u00a77.1(a) step-ups \u2014 remote notwithstanding interaction.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.8-l-general-investments-basket",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "INVESTMENTS",
+      "parentProhibition": {
+        "sectionRef": "7.8",
+        "text": "Make any ... Investments, except:"
+      },
+      "exceptionSectionRef": "7.8(l)",
+      "exactExceptionText": "in addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred and be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed the greater of (x) $75,000,000 and (y) 3.5% of Consolidated Total Assets (measured on the date of the making of such Investment) at any time outstanding;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.8",
+        "Section 7.8(l)"
+      ],
+      "definedTerms": [
+        "Consolidated Total Assets",
+        "Investments"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "no Default/EOD",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.8(l) so-long-as",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c2",
+          "text": "valuation/netting rules in \u00a77.8 trailing paragraph",
+          "location": "SECTION_WIDE_PROVISO",
+          "locationRef": "7.8 trailing valuation paragraph",
+          "computableHint": "MONEY"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$75,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "3.5%",
+          "measurementBasis": "Consolidated Total Assets at making"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "section-wide Investment amount definition (cost +/- returns)",
+          "attachment": "SECTION_WIDE",
+          "scopeNote": "Hanging valuation methodology after (m)."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.8 trailing valuation paragraph",
+          "role": "amount methodology"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "HANGING_PROVISO",
+          "description": "Trailing valuation paragraph after last basket applies to all of \u00a77.8."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "General investments basket; outstanding amount is measured by a hanging section-wide valuation rule.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.13-k-investments-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "INVESTMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.13",
+        "text": "Directly or indirectly, make or acquire any Investment ... provided, however, that the foregoing shall not prohibit any of the following:"
+      },
+      "exceptionSectionRef": "6.13(k)",
+      "exactExceptionText": "Investments to the extent the Payment Conditions are satisfied;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.13",
+        "Section 6.13(k)"
+      ],
+      "definedTerms": [
+        "Investments",
+        "Payment Conditions"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Payment Conditions satisfied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions shared across NC families",
+          "relatedRefs": [
+            "6.01",
+            "6.11(c)",
+            "6.08(a)(v)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "remote gate"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Unlimited-looking Investment permission gated only by remote defined term."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Same Payment Conditions pattern as RP and debt payments \u2014 shared remote gate, not local capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "INVESTMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.06",
+        "text": "Investments negative covenant with enumerated exceptions."
+      },
+      "exceptionSectionRef": "6.06(b)(ii)",
+      "exactExceptionText": "Investments by a Loan Party in a non-Loan-Party Restricted Subsidiary, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA (human-ground-truth fwrg-6.06(b)(ii)).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.06",
+        "Section 6.06(b)",
+        "Section 6.06(b)(ii)"
+      ],
+      "definedTerms": [
+        "Loan Party",
+        "Restricted Subsidiary",
+        "Consolidated Adjusted EBITDA"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "investor is Loan Party; investee is non-Loan-Party Restricted Subsidiary",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.06(b)(ii)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "EBITDA remote",
+          "location": "DEFINED_TERM",
+          "locationRef": "Consolidated Adjusted EBITDA",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "GREATER_OF",
+          "value": "fixed dollar and % Consolidated Adjusted EBITDA"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Party investor",
+          "non-Loan-Party Restricted Subsidiary investee"
+        ],
+        "excludes": [
+          "Loan Party investees under this limb"
+        ]
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "BUILDER_ELECTION",
+          "description": "Related Investment limbs may elect Available Amount / RP offsets elsewhere in 6.06",
+          "relatedRefs": [
+            "Available Amount",
+            "6.04(a)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "6.04(a)",
+          "role": "RP/builder interaction in Investments article"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "EBITDA and entity-class definitions constrain the basket."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Entity-scoped investment basket; builder elections elsewhere can further interact with shared pools.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "artifact": "08-ckf-integration",
+  "status": "ALIGNED_FOR_REVIEW",
+  "canonicalSchemaOnBranch": false,
+  "peerBranch": "cursor/covenant-knowledge-factory-7327",
+  "consumes": [
+    "KnowledgeSourceRecord field alignment (source identity, hashes, accession, documentClass)",
+    "promotion-guards: no Permission / SharedCapacityConstraint writes"
+  ],
+  "preserves": [
+    "sourceIdentity",
+    "provenance/sourceSha256",
+    "amendment/version authority fields",
+    "dependencyClosure summaries",
+    "verificationStatus",
+    "productionCapacityApproved:false"
+  ],
+  "doesNotCreateCompetingCanonicalSchema": true,
+  "proofs": {
+    "idempotentReimport": true,
+    "productionCapacityApprovedAlwaysFalse": true,
+    "noPermissionWrites": true
+  },
+  "exportRecordCount": 21
+}

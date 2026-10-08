@@ -1,0 +1,338 @@
+{
+  "summary": {
+    "sha": "f182a679394b0a69579aad8a2952d0080f366dcd",
+    "generatedAt": "2026-10-08T16:39:57.698Z",
+    "invariants": 7,
+    "product": {
+      "pass": 15,
+      "fail": [
+        "pkg-a-basic-credit-agreement|invariant:INV-05:F1:effect-targets-definition [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05:F1:state-section-1.01-not-replaced [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05:F1:bundle-definition-current [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05:F3:effect-targets-definition [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05:F3:state-section-1.01-not-replaced [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05:F3:bundle-definition-current [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05b:A:effect-targets-definition [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05b:A:state-section-1.01-not-replaced [WRONG_OPERATIVE_SOURCE]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05b:A:bundle-definition-current [CRITICAL_FALSE_PERMISSION]",
+        "pkg-a-basic-credit-agreement|invariant:INV-05b:C:definition-amendment-targets-definition [WRONG_OPERATIVE_SOURCE]"
+      ]
+    },
+    "observations": [
+      "invariant:INV-03:clause-bundle-has-override: false",
+      "invariant:INV-04:clause-bundle-has-9.15:7.01(b): false",
+      "invariant:INV-04:clause-bundle-has-9.15:7.02(b): false",
+      "invariant:INV-05:F1:nothing-before-effective-date: true",
+      "invariant:INV-05:F2:nothing-before-effective-date: true",
+      "invariant:INV-05:F3:nothing-before-effective-date: true",
+      "invariant:INV-37:source-content-version-under-upstream-insertion: false"
+    ]
+  },
+  "results": [
+    {
+      "id": "INV-01",
+      "title": "A hanging proviso qualifies every preceding clause of its section",
+      "legalStatement": "7.05's trailing 'provided further that the foregoing shall not permit any Disposition of the Borrower's principal manufacturing facility' qualifies clauses (a)–(l) alike; compiling any clause must see it.",
+      "packageId": "pkg-d-qualitative-restrictions",
+      "verdicts": [
+        {
+          "ref": "invariant:INV-01:proviso-reaches:7.05(a)",
+          "check": "compiling 7.05(a) sees the hanging proviso",
+          "ok": true,
+          "detail": "as PROVISO item sourced from 7.05(l)",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-01:proviso-reaches:7.05(j)",
+          "check": "compiling 7.05(j) sees the hanging proviso",
+          "ok": true,
+          "detail": "as PROVISO item sourced from 7.05(l)",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-01:proviso-reaches:7.05(k)",
+          "check": "compiling 7.05(k) sees the hanging proviso",
+          "ok": true,
+          "detail": "as PROVISO item sourced from 7.05(l)",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-01:proviso-in-section-text",
+          "check": "the section-level operative text carries the proviso",
+          "ok": true,
+          "detail": "operative text 1355 chars",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        }
+      ]
+    },
+    {
+      "id": "INV-03",
+      "title": "A same-document 'notwithstanding Section X' provision governs the section it names",
+      "legalStatement": "A new Section 7.05 reading 'Notwithstanding Section 7.01(b), the aggregate principal amount … shall not exceed $10,000,000 … while any Lien permitted under Section 7.02 is outstanding' restricts 7.01(b); compiling 7.01 and asking about 7.01(b) must bring 7.05 in.",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "verdicts": [
+        {
+          "ref": "invariant:INV-03:section-bundle-has-override",
+          "check": "section-level 7.01 bundle carries 7.05",
+          "ok": true,
+          "detail": "UNVERIFIED_SIBLING_SIGNAL/CROSS_REFERENCE",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-03:closure-has-override",
+          "check": "hybrid closure for a 7.01(b) question includes 7.05",
+          "ok": true,
+          "detail": "7.01,7.02,7.03,7.05",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-03:clause-bundle-has-override",
+          "check": "clause-level 7.01(b) bundle carries 7.05 (production candidates are section-level; recorded only)",
+          "ok": false,
+          "detail": "OPERATIVE_SOURCE:7.01(b), PARENT_SCOPE:7.01, UNVERIFIED_SIBLING_SIGNAL:7.01(c), DEFINITION:Default, DEFINITION:Indebtedness",
+          "kind": "OBSERVATION"
+        }
+      ]
+    },
+    {
+      "id": "INV-04",
+      "title": "A cap outside the covenant article (Article IX 'notwithstanding anything in Article VII') governs",
+      "legalStatement": "9.15 caps all secured Indebtedness at $25,000,000 notwithstanding Article VII; compiling 7.01 or 7.02 must see 9.15.",
+      "packageId": "pkg-i-secured-debt-lien",
+      "verdicts": [
+        {
+          "ref": "invariant:INV-04:section-bundle-has-9.15:7.01",
+          "check": "section-level 7.01 bundle carries 9.15",
+          "ok": true,
+          "detail": "CROSS_REFERENCE",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-04:section-bundle-has-9.15:7.02",
+          "check": "section-level 7.02 bundle carries 9.15",
+          "ok": true,
+          "detail": "CROSS_REFERENCE",
+          "kind": "PRODUCT",
+          "severity": "MATERIAL_CONDITION_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-04:clause-bundle-has-9.15:7.01(b)",
+          "check": "clause-level 7.01(b) bundle carries 9.15 (recorded only)",
+          "ok": false,
+          "detail": "OPERATIVE_SOURCE:7.01(b), PARENT_SCOPE:7.01, DEFINITION:Indebtedness",
+          "kind": "OBSERVATION"
+        },
+        {
+          "ref": "invariant:INV-04:clause-bundle-has-9.15:7.02(b)",
+          "check": "clause-level 7.02(b) bundle carries 9.15 (recorded only)",
+          "ok": false,
+          "detail": "OPERATIVE_SOURCE:7.02(b), PARENT_SCOPE:7.02, DEFINITION:Indebtedness, CROSS_REFERENCE:7.01(b)",
+          "kind": "OBSERVATION"
+        }
+      ]
+    },
+    {
+      "id": "INV-05",
+      "title": "A definition amended by a later amendment changes every dependent provision from the effective date, and nothing else",
+      "legalStatement": "Amendment No. 1 (effective 2026-05-01) restates the definition of 'Consolidated EBITDA' to add a stock-compensation add-back. From that date the ratio basket 7.01(c) must be compiled against the new definition; the other definitions in Section 1.01 are untouched; before that date nothing changes.",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "verdicts": [
+        {
+          "ref": "invariant:INV-05:F1:effect-targets-definition",
+          "check": "F1: the effect targets the definition (DEFINITION kind or definedTermRef), not the whole of Section 1.01",
+          "ok": false,
+          "detail": "effects: SECTION:1.01:REPLACE_TEXT:RESOLVED; instrument OPERATIVE_STATE_RESOLVED",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05:F1:state-section-1.01-not-replaced",
+          "check": "F1: operative Section 1.01 at 2026-06-30 still holds the other definitions and the new EBITDA text",
+          "ok": false,
+          "detail": "1.01 provision OPERATIVE_STATE_RESOLVED, applied 1, currentText 243 chars (base section 1537 chars)",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05:F1:bundle-definition-current",
+          "check": "F1: the Consolidated EBITDA definition handed to the compiler at 2026-06-30 is the amended text",
+          "ok": false,
+          "detail": "DEFINITION_DEPENDENCY: \"\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus,…\"",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05:F1:nothing-before-effective-date",
+          "check": "F1: at 2026-03-31 no effect is applied",
+          "ok": true,
+          "detail": "no state computed for 2026-03-31 (manifest as-of dates only)",
+          "kind": "OBSERVATION"
+        },
+        {
+          "ref": "invariant:INV-05:F2:fail-closed-or-definition-effect",
+          "check": "F2: either a DEFINITION-kind effect or an unresolved/REVIEW effect (never a silent section replacement)",
+          "ok": true,
+          "detail": "effects: SECTION:1.01:UNKNOWN_CHANGE:REVIEW_REQUIRED; instrument OPERATIVE_STATE_REVIEW_REQUIRED",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05:F2:nothing-before-effective-date",
+          "check": "F2: at 2026-03-31 no effect is applied",
+          "ok": true,
+          "detail": "no state computed for 2026-03-31 (manifest as-of dates only)",
+          "kind": "OBSERVATION"
+        },
+        {
+          "ref": "invariant:INV-05:F3:effect-targets-definition",
+          "check": "F3: the effect targets the definition (DEFINITION kind or definedTermRef), not the whole of Section 1.01",
+          "ok": false,
+          "detail": "effects: SECTION:1.01:REPLACE_TEXT:RESOLVED; instrument OPERATIVE_STATE_RESOLVED",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05:F3:state-section-1.01-not-replaced",
+          "check": "F3: operative Section 1.01 at 2026-06-30 still holds the other definitions and the new EBITDA text",
+          "ok": false,
+          "detail": "1.01 provision OPERATIVE_STATE_RESOLVED, applied 1, currentText 243 chars (base section 1537 chars)",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05:F3:bundle-definition-current",
+          "check": "F3: the Consolidated EBITDA definition handed to the compiler at 2026-06-30 is the amended text",
+          "ok": false,
+          "detail": "DEFINITION_DEPENDENCY: \"\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus,…\"",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05:F3:nothing-before-effective-date",
+          "check": "F3: at 2026-03-31 no effect is applied",
+          "ok": true,
+          "detail": "no state computed for 2026-03-31 (manifest as-of dates only)",
+          "kind": "OBSERVATION"
+        }
+      ]
+    },
+    {
+      "id": "INV-05b",
+      "title": "A definition amendment that REMOVES an add-back (false-permission direction), and one layered on a package with two prior amendments",
+      "legalStatement": "Amendment No. 1 (effective 2026-05-01) restates 'Consolidated EBITDA' WITHOUT the income-tax add-back: EBITDA falls, so the ratio basket 7.01(c) must be compiled against the smaller definition from that date. On package C the same form of amendment (No. 3) must coexist with the two resolved section amendments without disturbing them.",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "verdicts": [
+        {
+          "ref": "invariant:INV-05b:A:effect-targets-definition",
+          "check": "A: the removal amendment targets the definition, not the whole of Section 1.01",
+          "ok": false,
+          "detail": "SECTION:1.01:REPLACE_TEXT:RESOLVED",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05b:A:state-section-1.01-not-replaced",
+          "check": "A: operative Section 1.01 keeps its other definitions",
+          "ok": false,
+          "detail": "1.01 provision OPERATIVE_STATE_RESOLVED, applied 1, currentText 186 chars",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "ref": "invariant:INV-05b:A:bundle-definition-current",
+          "check": "A: the compiler receives the smaller (amended) EBITDA definition - the old text would overstate EBITDA",
+          "ok": false,
+          "detail": "DEFINITION_DEPENDENCY: \"\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus, without d…\"",
+          "kind": "PRODUCT",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "ref": "invariant:INV-05b:C:prior-section-amendments-intact",
+          "check": "C: 7.01(b) still SUPERSEDED by amendment-1 and 7.01(e) DELETED by amendment-2 at 2026-06-30",
+          "ok": true,
+          "detail": "7.01(b) amendment-1 applied 1; 7.01(e) amendment-2 applied 1; instrument OPERATIVE_STATE_RESOLVED",
+          "kind": "PRODUCT",
+          "severity": "INCORRECT_AMENDMENT_PRECEDENCE"
+        },
+        {
+          "ref": "invariant:INV-05b:C:definition-amendment-targets-definition",
+          "check": "C: the definition amendment targets 'Indebtedness', not the whole of Section 1.01",
+          "ok": false,
+          "detail": "SECTION:1.01:REPLACE_TEXT:RESOLVED; 1.01 provision applied 1, currentText 153 chars",
+          "kind": "PRODUCT",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        }
+      ]
+    },
+    {
+      "id": "INV-06",
+      "title": "An amendment whose effectiveness is conditional is not applied before the condition is evidenced",
+      "legalStatement": "Amendment No. 3 restates 7.01(d) but becomes effective only on the 'Amendment No. 3 Effective Date' (counterparts received, fee paid). With no evidence of that date, 7.01(d) must not read as amended at 2026-06-30 and the instrument state must not claim RESOLVED.",
+      "packageId": "pkg-c-amendment-supersession",
+      "verdicts": [
+        {
+          "ref": "invariant:INV-06:conditional-effective-date-unresolved",
+          "check": "the effect's effective date is not a concrete date",
+          "ok": true,
+          "detail": "REPLACE_TEXT RESOLVED, effectiveDate \"CONDITIONAL_UNRESOLVED\"",
+          "kind": "PRODUCT",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "ref": "invariant:INV-06:provision-not-applied",
+          "check": "7.01(d) at 2026-06-30 does not read $8,000,000",
+          "ok": true,
+          "detail": "OPERATIVE_STATE_REVIEW_REQUIRED, applied 0, source credit-agreement",
+          "kind": "PRODUCT",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "ref": "invariant:INV-06:instrument-not-resolved",
+          "check": "instrument state at 2026-06-30 is not RESOLVED while the effect is pending",
+          "ok": true,
+          "detail": "instrument OPERATIVE_STATE_REVIEW_REQUIRED",
+          "kind": "PRODUCT",
+          "severity": "UNSUPPORTED_AS_COMPLETE"
+        }
+      ]
+    },
+    {
+      "id": "INV-37",
+      "title": "Cache identity: a compiled unit is reusable when its own text and context are unchanged, and never reused when its text changed",
+      "legalStatement": "Inserting a proviso into 7.01(c) must not invalidate the cached compilation of 7.02 (text unchanged) and must invalidate 7.01's (text changed).",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "verdicts": [
+        {
+          "ref": "invariant:INV-37:cache-key-stable-under-upstream-insertion",
+          "check": "7.02's semantic cache key is unchanged after an insertion earlier in the document",
+          "ok": true,
+          "detail": "key 40c5e3241558 → 40c5e3241558; anchor node id shifted",
+          "kind": "PRODUCT",
+          "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "ref": "invariant:INV-37:source-content-version-under-upstream-insertion",
+          "check": "7.02's sourceContentVersion after the insertion (recorded: it may legitimately embed the positional node id)",
+          "ok": false,
+          "detail": "scv1:91b39b3f041 → scv1:d10cb6ec981",
+          "kind": "OBSERVATION"
+        },
+        {
+          "ref": "invariant:INV-37:cache-key-changes-when-text-changes",
+          "check": "7.01's semantic cache key changes when a clause of 7.01 changes",
+          "ok": true,
+          "detail": "key a14600de3d4d → f28b822f2f9a",
+          "kind": "PRODUCT",
+          "severity": "CRITICAL_FALSE_PERMISSION"
+        }
+      ]
+    }
+  ]
+}

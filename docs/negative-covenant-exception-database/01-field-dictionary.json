@@ -1,0 +1,39 @@
+{
+  "artifact": "01-field-dictionary",
+  "recordFields": [
+    "exceptionId",
+    "sourcePackage",
+    "sourcePath",
+    "sourceSha256",
+    "covenantFamily",
+    "parentProhibition",
+    "exceptionSectionRef",
+    "exactExceptionText",
+    "structuralHierarchy",
+    "definedTerms",
+    "conditions",
+    "amountsAndRatios",
+    "entityScope",
+    "sharedCapacityInteractions",
+    "amendments",
+    "provisos",
+    "crossReferences",
+    "remoteConstraintFlags",
+    "seeminglyPermissiveButConstrained",
+    "unconditionalCapacity",
+    "capacityShape",
+    "verificationStatus",
+    "notes"
+  ],
+  "conditionLocations": [
+    "IN_EXCEPTION_CLAUSE",
+    "PARENT_CHAPEAU",
+    "ARTICLE_LEVEL",
+    "SECTION_WIDE_PROVISO",
+    "HANGING_TRAILING_PROVISO",
+    "CROSS_REFERENCED_SECTION",
+    "DEFINED_TERM",
+    "AMENDMENT"
+  ],
+  "irAlignmentNote": "Reference-only mapping to IRException/DiscoveryRole/ExceptionTag; this dataset does not feed the production IR."
+}

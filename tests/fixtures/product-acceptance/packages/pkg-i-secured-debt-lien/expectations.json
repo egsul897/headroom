@@ -1,0 +1,457 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-i-secured-debt-lien",
+  "title": "Package I — secured debt: a debt basket constrained by a separate lien covenant and an out-of-article secured-debt cap",
+  "issuer": "Granite Peak Fabrication, Inc. (synthetic)",
+  "scenario": "7.01(b) permits $50,000,000 of debt for the Borrower and Guarantors only; 7.02(b) permits Liens securing 7.01(b) debt only up to $20,000,000; Section 9.15 in Article IX (Miscellaneous) caps all secured debt at $25,000,000 notwithstanding Article VII; 7.01(c) is limited to Foreign Subsidiaries; 7.04 forbids non-Guarantor subsidiary guarantees. A debt-only reading of 7.01(b) is a false permission for secured debt. Amendment No. 1 (effective 2026-10-15) restates the definition of Foreign Subsidiary to exclude Canadian Subsidiaries, narrowing who may use the 7.01(c) $15,000,000 basket from that date.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:granite-peak",
+  "instrumentKey": "granite-peak-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "a878dd44f5bc36edc5f895dcc24d1d3bd89eca26ccd1d7bc7868f59be9156994"
+    },
+    {
+      "documentId": "amendment-1",
+      "label": "Amendment No. 1",
+      "file": "documents/amendment-1.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "sha256": "05a482e2bd325d6da83803d94216088455389a21a64283cf06a3f15e432ae15c"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-12-31"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2026-12-31",
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "definitionTerm": "Foreign Subsidiary",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "other than the United States of America or Canada"
+        ],
+        "mustNotContain": [],
+        "supersededBy": "amendment-1"
+      },
+      {
+        "asOfDate": "2026-12-31",
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "\"Guarantor\" means",
+          "\"Permitted Liens\" means",
+          "other than the United States of America or Canada"
+        ],
+        "mustNotContain": [],
+        "supersededBy": "amendment-1"
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$50,000,000",
+          "Borrower and the Guarantors"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "Foreign Subsidiaries",
+          "$15,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.02(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.02",
+        "unique": true,
+        "ownTextContains": [
+          "Section 7.01(b)",
+          "$20,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.04",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "not a Guarantor"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "9.15",
+        "nodeType": "SECTION",
+        "parentSectionRef": "IX",
+        "unique": true,
+        "ownTextContains": [
+          "Notwithstanding anything to the contrary in Article VII",
+          "$25,000,000"
+        ]
+      },
+      {
+        "documentId": "amendment-1",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "\"Foreign Subsidiary\"",
+          "amended and restated"
+        ]
+      }
+    ],
+    "invariants": []
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Permitted Liens",
+        "unique": true,
+        "excerptContains": "Section 7.02"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Guarantor",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Foreign Subsidiary",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Lien",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "I-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "22e05931fc5ee017c3a24db48c0fea8196bcb32860139527ab4ae3291ce5f9a2"
+    },
+    {
+      "id": "I-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": [],
+      "textSha256": "ca81604f99c5270c9dcf5e436fa38658a2a37475d5616d2aafcdf7cfc905d577"
+    },
+    {
+      "id": "I-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$50,000,000",
+        "Borrower and the Guarantors"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 50000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "entityScope": [
+        "BORROWER",
+        "GUARANTOR_RS"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Guarantor"
+      ],
+      "crossReferences": [],
+      "textSha256": "675b1c21c49f6c6978a25f923cb7ca2cb3e3a39f4fce0134dece50248f2f2233"
+    },
+    {
+      "id": "I-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Foreign Subsidiaries",
+        "$15,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 15000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "entityScope": [
+        "FOREIGN_RS"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Foreign Subsidiary",
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "3896182233a77e0136b5ee42404069fa48e100ad7fd625fd6e92f4b56ffc7590"
+    },
+    {
+      "id": "I-7.01(d)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(d)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "owed to the Borrower by any Subsidiary"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "422cb3fdd747e1a7a7e556e36d475f42f48679c2138343e3d04b8a912c5f1c3f"
+    },
+    {
+      "id": "I-7.02",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02",
+      "family": "LIENS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not, and shall not permit any Subsidiary to, create any Lien"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Lien"
+      ],
+      "crossReferences": [],
+      "textSha256": "5c2666d1d4888042c75512e1813ee2cbce9e4545a7b5e8d997c6d2775b3ecaa6"
+    },
+    {
+      "id": "I-7.02(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02(a)",
+      "family": "LIENS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Liens securing the Obligations"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Lien"
+      ],
+      "crossReferences": [],
+      "textSha256": "9b4929015dce6611ccdb5dddae124c7ddbea1d82339721f9e30b67d56b2584ac"
+    },
+    {
+      "id": "I-7.02(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02(b)",
+      "family": "LIENS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Section 7.01(b)",
+        "$20,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 20000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Lien",
+        "Indebtedness"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "mustResolve": true
+        }
+      ],
+      "textSha256": "cf766ed68be2eb316d47da07c8d25bf9339a2b59da7c60a89a4b92d3c78330aa"
+    },
+    {
+      "id": "I-7.02(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02(c)",
+      "family": "LIENS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": false,
+      "mustContain": [
+        "Liens for taxes not yet due"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Lien"
+      ],
+      "crossReferences": [],
+      "textSha256": "2be99efa6e8ce76190b0c5df45f62a1ec9187405e9012fc4e0608a96bb71cdad"
+    },
+    {
+      "id": "I-7.04",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.04",
+      "family": "GUARANTEES",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "not a Guarantor to guarantee any Indebtedness"
+      ],
+      "entityScope": [
+        "NON_GUARANTOR_RS"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Guarantor",
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "7b203e9abf16381e1000c1ea9236fb1f432b6b7ea2e2ba1dc1aad8a2acf84452"
+    },
+    {
+      "id": "I-9.15",
+      "documentId": "credit-agreement",
+      "sectionRef": "9.15",
+      "family": "INDEBTEDNESS",
+      "role": "SHARED_CAP",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "secured by a Lien to exceed $25,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 25000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Lien"
+      ],
+      "crossReferences": [],
+      "textSha256": "decc64ffb55f61ad42cd8b7342b4d73728b0af0f10e37221d52ccfc38e4d47a7"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [],
+  "unsupported": [],
+  "prohibitedClaims": [
+    {
+      "id": "I-P1",
+      "claim": "The Borrower may incur $40,000,000 of secured Indebtedness under 7.01(b)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "7.02(b) caps liens securing 7.01(b) debt at $20,000,000 and 9.15 caps all secured debt at $25,000,000."
+    },
+    {
+      "id": "I-P2",
+      "claim": "A Foreign Subsidiary may incur under 7.01(b)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "7.01(b) is limited to the Borrower and the Guarantors; Foreign Subsidiaries have 7.01(c)."
+    },
+    {
+      "id": "I-P3",
+      "claim": "Article VII is the complete set of debt restrictions",
+      "severityIfAsserted": "MISSING_REQUIRED_COVENANT",
+      "reason": "Section 9.15 in Article IX overrides Article VII for secured debt."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "A secured-debt question must reach 7.02 and 9.15, not only 7.01.",
+    "A Foreign Subsidiary question must reach the entity scope of 7.01(b) and 7.01(c).",
+    "After Amendment No. 1 the operative definition of 'Foreign Subsidiary' is the restated text and every other definition in Section 1.01 is unchanged; dependent baskets compile against the restated definition."
+  ]
+}

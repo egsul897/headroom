@@ -1,0 +1,291 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-n-clean-ratio",
+  "title": "Package N — a clean ratio basket with an unmasked certification path",
+  "issuer": "Oakhurst Dental Group, Inc. (synthetic)",
+  "scenario": "One agreement, one fixed basket, one ratio basket ('Total Net Leverage Ratio does not exceed 3.00 to 1.00'), every term defined, no diamond or cycle among definitions, no amendments, no undefined inputs. Authored so that nothing masks the certification path: adversarial representations are refused or certified on their own merits (IPV-22 comparator direction, IPV-01 scope widening, IPV-03 dropped proviso breadth).",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:oakhurst",
+  "instrumentKey": "oakhurst-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "49cd5d010dd9b4100346efa709e8cd7744f43ada219cac163759399388ca87fa"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-12-31"
+    ],
+    "exact": []
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "shall not, and shall not permit any Subsidiary to"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$25,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "3.00 to 1.00",
+          "pro forma"
+        ]
+      }
+    ],
+    "invariants": []
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated EBITDA",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Total Net Debt",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Total Net Leverage Ratio",
+        "unique": true,
+        "excerptContains": "Total Net Debt"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Subsidiary",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Indebtedness",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "N-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "d79b191efb160ef0102614ca0c3ef2901c832037154f1cdbd95e7d4c9278d85c"
+    },
+    {
+      "id": "N-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "EXCEPTION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": [],
+      "textSha256": "ca81604f99c5270c9dcf5e436fa38658a2a37475d5616d2aafcdf7cfc905d577"
+    },
+    {
+      "id": "N-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$25,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 25000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "c334f3587f4737c4e7226e5e457b5d126339c7cd1d63f351a5ec7956da9c12a7"
+    },
+    {
+      "id": "N-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "RATIO_BASED_PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "3.00 to 1.00",
+        "pro forma"
+      ],
+      "value": {
+        "kind": "RATIO_THRESHOLD",
+        "metric": "Total Net Leverage Ratio",
+        "comparator": "LTE",
+        "numerator": 3,
+        "denominator": 1
+      },
+      "entityScope": [
+        "BORROWER"
+      ],
+      "conditions": [
+        {
+          "kind": "RATIO_TEST",
+          "textContains": "Total Net Leverage Ratio does not exceed 3.00 to 1.00",
+          "independent": true,
+          "material": true
+        },
+        {
+          "kind": "PRO_FORMA",
+          "textContains": "after giving pro forma effect thereto",
+          "independent": false,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Total Net Leverage Ratio",
+        "Total Net Debt",
+        "Consolidated EBITDA"
+      ],
+      "crossReferences": [],
+      "textSha256": "5d3a025952cbd21c5c42db93b489ca0cea782c630c9d74d692c65b74762e8a67"
+    },
+    {
+      "id": "N-7.03",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.03",
+      "family": "FUNDAMENTAL_CHANGES",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not merge or consolidate"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [],
+      "textSha256": "7290438c6ead703c1b87fcee0bf8db8e9bc60a05726b2173e85aa23aca652c5a"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [],
+  "unsupported": [],
+  "prohibitedClaims": [
+    {
+      "id": "N-P1",
+      "claim": "7.01(c) is available when the Total Net Leverage Ratio is at least 3.00 to 1.00 (comparator flipped)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The text says 'does not exceed'.",
+      "adversarial": {
+        "kind": "SET_RATIO",
+        "sectionRef": "7.01(c)",
+        "operator": "GTE"
+      }
+    },
+    {
+      "id": "N-P2",
+      "claim": "7.01(c) is available when the Total Net Leverage Ratio does not exceed 3.50 to 1.00 (threshold raised)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The text says 3.00 to 1.00.",
+      "adversarial": {
+        "kind": "SET_RATIO",
+        "sectionRef": "7.01(c)",
+        "value": 3.5,
+        "excerpt": "3.50 to 1.00"
+      }
+    },
+    {
+      "id": "N-P3",
+      "claim": "7.01(c) is available to any Subsidiary (scope widened)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "7.01(c) reads 'Indebtedness of the Borrower'.",
+      "adversarial": {
+        "kind": "SET_SCOPE",
+        "sectionRef": "7.01(c)",
+        "entityScope": [
+          "BORROWER",
+          "ANY_SUBSIDIARY"
+        ]
+      }
+    },
+    {
+      "id": "N-P4",
+      "claim": "7.01(c) is an unconditional, unlimited debt permission (ratio gate and conditions dropped)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The ratio test is the whole of the permission.",
+      "adversarial": {
+        "kind": "DROP_GATE",
+        "sectionRef": "7.01(c)"
+      }
+    },
+    {
+      "id": "N-P5",
+      "claim": "7.01(c)'s ratio test is measured on actual (not pro forma) figures (condition nodes dropped while the capacity keeps its ratio gate)",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "The text says 'after giving pro forma effect thereto'; the gate alone does not carry the evaluation basis.",
+      "adversarial": {
+        "kind": "DROP_CONDITIONS",
+        "sectionRef": "7.01(c)"
+      }
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "Every adversarial outcome on this package is attributable to the gates alone: no cycle, amendment, override or undefined input masks it."
+  ]
+}

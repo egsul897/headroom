@@ -1,0 +1,111 @@
+{
+  "chainId": "cohr-2022-07-01-credit-agreement",
+  "generatedAt": "2026-10-08T22:22:47Z",
+  "discipline": {
+    "recitalIsNotOperativeText": true,
+    "eightKSummaryIsNotOperativeText": true,
+    "levels": [
+      "DISCOVERED_AMENDMENT_EVENT",
+      "ACQUIRED_AMENDMENT_BODY",
+      "ACQUIRED_INCORPORATED_EXHIBITS",
+      "VERIFIED_PARENT_INSTRUMENT",
+      "VERIFIED_AMENDMENT_TARGET",
+      "VERIFIED_EFFECTIVE_DATE_CONDITIONS",
+      "VERIFIED_BEFORE_TEXT",
+      "VERIFIED_AFTER_TEXT",
+      "INDEPENDENTLY_REVIEWED_LEGAL_EFFECT"
+    ]
+  },
+  "events": [
+    {
+      "docId": "cohr-ca-orig",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": null,
+      "effectiveDate": {
+        "status": "INFERRED_FROM_EXECUTION_DATE",
+        "named": "2022-07-01",
+        "conditionsVerified": false
+      },
+      "beforeText": "N/A",
+      "afterText": "ORIGINAL_BODY",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "cohr-am1",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "cohr-ca-orig",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "named": "Amendment No. 1 Effective Date",
+        "conditionsVerified": false
+      },
+      "beforeText": "REQUIRES_PARENT_DIFF",
+      "afterText": "ACQUIRED_RESTATED_COPY",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "cohr-am2",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "cohr-am1",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "named": "Amendment No. 2 Effective Date",
+        "conditionsVerified": false
+      },
+      "beforeText": "REQUIRES_PARENT_DIFF",
+      "afterText": "ACQUIRED_RESTATED_COPY",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "cohr-am3",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "cohr-am2",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "named": "Amendment No. 3 Effective Date",
+        "conditionsVerified": false
+      },
+      "beforeText": "REQUIRES_PARENT_DIFF",
+      "afterText": "ACQUIRED_RESTATED_COPY",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "cohr-am4",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "cohr-am3",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "named": "Amendment No. 4 Effective Date",
+        "conditionsVerified": false
+      },
+      "targetsVerified": [
+        "Incremental Amount",
+        "6.01(k)",
+        "6.11(a)"
+      ],
+      "beforeText": "SOURCE_BACKED_FROM_ORIG_AND_AM3_RESTATEMENT",
+      "afterText": "SOURCE_BACKED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "cohr-am5",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "cohr-am4",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "named": "Amendment No. 5 Effective Date",
+        "conditionsVerified": false
+      },
+      "sameDayAs": "cohr-am4",
+      "beforeText": "AM4_AFTER",
+      "afterText": "SOURCE_BACKED_CLEAN_RESTATEMENT",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ]
+}

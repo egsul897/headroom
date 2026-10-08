@@ -1,0 +1,1889 @@
+{
+  "artifact": "financial-definitions-precedent.atlas",
+  "version": "fdp.v1",
+  "status": "DRAFT_DATASET",
+  "workstreamId": "WS-FDP",
+  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "generatedAt": "2026-10-08T22:29:35Z",
+  "sourceRegistry": {
+    "CHWY-2026-CA": {
+      "packageId": "chwy-2026-credit-agreement",
+      "instrumentName": "Chewy, Inc. Credit Agreement dated June 23, 2026",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Chewy, Inc.",
+      "asOf": "2026-06-23"
+    },
+    "CONMED-2025-CA": {
+      "packageId": "conmed-2025-credit-facility",
+      "instrumentName": "CONMED Corporation Eighth Amended and Restated Credit Agreement dated June 10, 2025",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+      "curatedPath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "covenantPath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "amendmentPath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+      "sourceKind": "EDGAR_HTML_FIXTURE_PLUS_CURATED",
+      "issuer": "CONMED Corporation",
+      "asOf": "2025-06-10",
+      "normalizedPlainPath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt"
+    },
+    "FWRG-2021-CA": {
+      "packageId": "fwrg-2021-credit-agreement",
+      "instrumentName": "First Watch Restaurant Group 2021 Credit Agreement (definitions excerpt fixture)",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceKind": "CURATED_DEFINITIONS_EXCERPT",
+      "issuer": "First Watch Restaurant Group (fixture package)",
+      "asOf": "2021"
+    },
+    "LSB-2023-ABL": {
+      "packageId": "lsb-2023-abl-credit-agreement",
+      "instrumentName": "LSB Industries 2023 ABL Credit Agreement (definitions excerpt fixture)",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceKind": "CURATED_DEFINITIONS_EXCERPT",
+      "issuer": "LSB Industries (fixture package)",
+      "asOf": "2023"
+    },
+    "GIB-2026-CA": {
+      "packageId": "gibraltar-2026-credit-agreement",
+      "instrumentName": "Gibraltar Industries Credit Agreement (2026 fixture package)",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Gibraltar Industries (fixture package)",
+      "asOf": "2026",
+      "fileSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5"
+    },
+    "DSGR-2024-AMD": {
+      "packageId": "dsgr-2022-2025-credit-facility",
+      "instrumentName": "Distribution Solutions Group Third Amendment 2024 (definitions in restated CA text)",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Distribution Solutions Group (fixture package)",
+      "asOf": "2024"
+    },
+    "RIOT-2026-CA": {
+      "packageId": "riot-2025-2026-credit-facility",
+      "instrumentName": "Riot Platforms Second Amended and Restated Credit Agreement dated April 21, 2026 (BTC margin facility)",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Riot Platforms, Inc.",
+      "asOf": "2026-04-21",
+      "facilityKindNote": "BTC-collateralized margin credit agreement with Coinbase Credit \u2014 not a traditional EBITDA covenant package",
+      "fileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349"
+    },
+    "DSGR-2025-AR2": {
+      "packageId": "dsgr-2022-2025-credit-facility",
+      "instrumentName": "Distribution Solutions Group Second Amended and Restated Credit Agreement (2025) \u2014 doc-d",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Distribution Solutions Group (fixture package)",
+      "asOf": "2025",
+      "fileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f"
+    }
+  },
+  "counts": {
+    "entries": 57,
+    "byKind": {
+      "FINANCIAL_DEFINITION": 20,
+      "ADJUSTMENT_MECHANIC": 8,
+      "LEVERAGE_OR_COVERAGE_TEST": 15,
+      "BUILDER_OR_POOL": 8,
+      "CURE_RIGHT": 4,
+      "STEP_CHANGE_TEST": 2
+    },
+    "bySource": {
+      "CHWY-2026-CA": 17,
+      "CONMED-2025-CA": 9,
+      "FWRG-2021-CA": 4,
+      "LSB-2023-ABL": 1,
+      "GIB-2026-CA": 14,
+      "DSGR-2024-AMD": 4,
+      "RIOT-2026-CA": 5,
+      "DSGR-2025-AR2": 3
+    },
+    "negativeExamples": 10,
+    "missingInputKeys": 15,
+    "unresolvedItems": 10,
+    "regressionCandidates": 11,
+    "divergencePairs": 9,
+    "addbackFamilies": 18
+  },
+  "entries": [
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated EBITDA",
+      "alternateLabels": [
+        "Consolidated Adjusted EBITDA (not used in this instrument \u2014 term is Consolidated EBITDA)"
+      ],
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 79182,
+      "charEnd": 81982,
+      "excerpt": "\u201c Consolidated EBITDA \u201d means, for any\nTest Period, with respect to any Person for any period, the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus:\n\n(a)\nwithout duplication, including without duplication of any exclusion in Consolidated Net Income, the sum of the\nfollowing amounts for such period, in each case, at the election of the Initial Borrower:\n\n(i)\nconsolidated interest expense of such Person for such period, including (A) payments made or losses\nincurred in respect of hedging obligations or other derivative instruments entered into for the purpose of hedging interest rate risk, (B) bank and letter of credit fees and costs of surety bonds in connection with financing activities,\n(C) amortization and write-offs of deferred financing fees, debt issuance costs, commissions, fees and expenses and expensing of bridge, commitment or financing fees and (D) items excluded from the definition of \u201cConsolidated\nInterest Expense\u201d pursuant to clauses (i) through (xii) thereof;\n\n(ii)\ntaxes based on gross receipts, income, profits, revenue or capital, federal, foreign, state, provincial and\nterritorial income, franchise, excise, value added or similar taxes based on income, profits, revenue or capital and foreign withholding taxes, of such Person paid or accrued during such period (including in respect of repatriated funds), including\n(A) penalties, additions to tax and interest relating to such taxes or arising from any tax examinations and (B) Tax Distributions made to any direct or indirect holders of equity interests of such Person in respect of any such taxes;\n\n(iii)\namortization of such Person for such period (including amortization of goodwill, Capitalized Software\nExpenditures, internal labor costs and amortization of deferred financing fees, OID or costs);\n\n(iv)\ndepreciation expense of such Person for such period;\n\n(v)\nnon-cash items of such Person for such period; provided that if\nany such non-cash item represents an accrual or reserve for potential cash items in any future period, (A) the Initial Borrower may determine not to add back such\nnon-cash item in the current period and (B) to the extent the Initial Borrower decides to add back such non-cash expense or charge in the current period, the cash\npayment in respect thereof in such future period will be subtracted from Consolidated EBITDA in such future period to such extent;\n\n(vi)\ncharges and expenses incurred in connection with litigation (including threatened litigation), any\ninvestigation or proceeding (or any threatened investigation or proceeding) by a regulatory, governmental or law enforcement body (including any attorney general);\n\n(vii)\nitems (A) covered by a binding indemnification, reimbursement, guaranty, purchase price adjustment or",
+      "excerptSha256": "ac87b73dae4c9650cb5885be7df52430f7fb7f2e622b9086129b7a5808a4cc8d",
+      "units": "MONEY",
+      "measurementPeriod": "Test Period (four consecutive fiscal quarters or twelve-month period, election)",
+      "entityScope": "Person and its Restricted Subsidiaries / Restricted Parties (as drafted)",
+      "formulaSketch": "Consolidated Net Income + elected add-backs (interest, taxes, D&A, non-cash, litigation, indemnified items, Expected Run Rate Benefit / synergies, pro forma new contracts, etc.) \u2212 future cash on prior non-cash add-backs; subject to Section 1.08 pro forma / anti-duplication rules",
+      "dependencies": [
+        "Consolidated Net Income",
+        "Test Period",
+        "Expected Run Rate Benefit",
+        "Pro Forma Basis",
+        "Consolidated Interest Expense"
+      ],
+      "adjustments": [
+        {
+          "family": "INTEREST_TAX_DA",
+          "direction": "ADD",
+          "note": "interest expense stack, taxes, amortization, depreciation"
+        },
+        {
+          "family": "NON_CASH",
+          "direction": "ADD_WITH_CLAWBACK",
+          "note": "non-cash items; future cash payments subtracted"
+        },
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD",
+          "note": "Expected Run Rate Benefit within 36-month lookforward after period end for clause (b)(i)(y)"
+        },
+        {
+          "family": "PRO_FORMA_REVENUE",
+          "direction": "ADD",
+          "note": "annualized CNI/EBITDA from new/amended contracts, pricing/volume, new markets"
+        },
+        {
+          "family": "RESTRUCTURING_OPTIMIZATION",
+          "direction": "ADD_VIA_CNI_EXCLUSION_AND_ADD",
+          "note": "restructuring / business optimization appear in CNI exclusions and EBITDA add-backs"
+        }
+      ],
+      "caps": [],
+      "lookbackOrLookforward": "36 months after end of relevant period for Expected Run Rate Benefit actions (clause (b)(i)(y))",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Long multi-clause definition; excerpt truncated for atlas size. Full text continues beyond excerptSha256 window \u2014 consumers must re-open sourcePath for complete clause list. Do not treat as equivalent to CONMED Consolidated EBITDA or FWRG Consolidated Adjusted EBITDA.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Expected Run Rate Benefit",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Definition of Consolidated EBITDA (inline defined term)",
+      "charStart": 89524,
+      "charEnd": 91724,
+      "excerpt": "ments, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial\nBorrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the \u201c Expected Run Rate Benefit \u201d), including any synergies,\ncost savings, operating improvements, operating expense reductions, business optimization, revenue enhancements, pricing initiatives, restructuring initiatives and other similar initiatives related to (x) the Transactions (including prior to\nthe Effective Date) and (y) acquisitions, dispositions and other specified transactions, restructurings, cost savings initiatives and other initiatives, or actions or in connection with, or incurred by or on behalf of, any joint venture of any\nRestricted Party (whether accounted for on the financial statements of any such joint venture or the Initial Borrower) (which amounts will be determined by the Initial Borrower in good faith, added to Consolidated EBITDA until fully realized and\ncalculated on a Pro Forma Basis as though amounts had been realized on the first (1st) day of the period for which Consolidated EBITDA is being determined and as if such amounts were realized during the entirety of such period), net of the\namount of actual benefits realized during such period from such actions; provided that the amounts added back pursuant to this clause (b)(i)(y) are expected by the Initial Borrower in good faith to result from actions taken, committed to be\ntaken or planned to be taken (in the good faith determination of the Initial Borrower) within thirty-six (36) months after the end of the relevant period in which any change that is expected to result in\nsuch Expected Run Rate Benefit occurs; (ii) pro forma adjustments for the aggregate amount of annualized Consolidated Net Income and Consolidated EBITDA that is projected by the Initial Borrower to result from (x) new customer contracts or\nthird-party contracts (or\n\n-19-\n\namendments thereto) entered into or booked during such period, (y) increased pricing, volume or scope of ",
+      "excerptSha256": "1550c58b122e71654b4951439a2eba4c83787152d8f09bb173fa98c41dd330f5",
+      "units": "MONEY",
+      "measurementPeriod": "Added until fully realized; calculated on Pro Forma Basis as if realized from first day of period",
+      "entityScope": "Restricted Party / joint ventures as drafted",
+      "formulaSketch": "run-rate synergies, cost savings, opex reductions, operating improvements, business optimization, revenue enhancements/synergies, pricing initiatives, restructuring initiatives expected in good faith from actions taken/committed/expected; net of actual benefits realized; 36-month action lookforward for (b)(i)(y)",
+      "dependencies": [
+        "Consolidated EBITDA",
+        "Pro Forma Basis"
+      ],
+      "adjustments": [
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Inline defined term inside Consolidated EBITDA, not a standalone Article I headword. Distinct from CONMED Pro Forma Adjustments (capped at 15% of Consolidated EBITDA).",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_Net_Income",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Net Income",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 102725,
+      "charEnd": 104925,
+      "excerpt": "\u201c Consolidated Net Income \u201d means, for any period, the net\nincome (loss) of the Restricted Parties for such period determined on a consolidated basis in accordance with GAAP, excluding (and excluding the effect of), without duplication:\n\n(a)\nat the election of the Initial Borrower, extraordinary, exceptional, infrequent, or nonrecurring or unusual\ncharges or losses and any expense charge, cost, accrual, reserve or losses in connection with any single or one-time event (including any unusual or nonrecurring operating expenses directly attributable to the\nimplementation of cost savings initiatives and any accruals or reserves in respect of any extraordinary, nonrecurring or unusual items), severance, relocation costs, integration and facilities\u2019 or offices\u2019 opening costs, start-up costs, and other business optimization expenses (including related to new product or service introductions and other strategic or cost savings initiatives), restructuring charges, accruals or reserves\n(including restructuring and integration costs related to acquisitions consummated on or prior to the Effective Date and adjustments to existing reserves), whether or not classified as restructuring expense on the consolidated financial statements,\nsigning costs, retention or completion bonuses, other recruiting and retention costs, transition costs, costs related to closure/consolidation of facilities or offices and expenses related to any reconstruction, decommissioning, recommissioning or\nreconfiguration of fixed assets for alternative uses, costs in respect of strategic initiatives and curtailments or modifications to pension and post-retirement employee benefit plans (including any settlement of pension liabilities and charges\nresulting from changes in estimates, valuations and judgments) together with the related tax effects, travel and out-of-pocket costs, professional fees for legal,\naccounting and other services, human resources costs (including relocation bonuses), management transition costs, advertising costs, losses associated with temporary decreases in business volume and expenses related to maintaining underutilized\npersonnel, marketing (including rebranding and incremental ",
+      "excerptSha256": "f158b6afd243df3486b55e370d8ca77f62238c6fdfe27e3584004054929964d0",
+      "units": "MONEY",
+      "measurementPeriod": "any period (as used); Available Amount uses quarterly CNI path",
+      "entityScope": "Restricted Parties consolidated per GAAP",
+      "formulaSketch": "GAAP net income (loss) excluding elected extraordinary/unusual/nonrecurring/restructuring/optimization items, cumulative accounting changes, Transaction Expenses, and additional drafted exclusions",
+      "dependencies": [
+        "GAAP"
+      ],
+      "adjustments": [
+        {
+          "family": "RESTRUCTURING_OPTIMIZATION",
+          "direction": "EXCLUDE_FROM_CNI"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "CNI exclusions feed both EBITDA and Excess Cash Flow / Available Amount builder paths \u2014 dependency graph must keep without-duplication edges.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Total Debt",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 114736,
+      "charEnd": 116536,
+      "excerpt": "\u201c Consolidated Total Debt \u201d means, as of any date of determination (i) the outstanding\nprincipal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness), unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date such amount is drawn\n(to the extent not cash collateralized), and third-party Indebtedness obligations evidenced by notes or similar instruments (but excluding surety bonds, performance bonds or other similar instruments) to the extent not paid within ten\n(10) Business Days of becoming due (unless subject to a good faith dispute), in each case of the Restricted Parties on such date, on a consolidated basis and determined in accordance with GAAP (excluding, in any event, the effects of any\ndiscounting of Indebtedness resulting from the application of acquisition method or pushdown accounting in connection with the Transactions or any Permitted Acquisition or other Investment); provided that Consolidated Total Debt will not\ninclude Indebtedness in respect of (a) any Permitted Receivables Financing, (b) any letter of credit or bank guarantees, except to the extent of unreimbursed obligations in respect of drawn letters of credit (including any unreimbursed\namount under any Letter of Credit (as defined in the ABL Credit Agreement)) or bank guarantees that are not reimbursed within five (5) Business Days after such amount is drawn (it being understood that any borrowing, whether automatic or\notherwise, to fund such reimbursement will be counted), (c) Hedging Obligations, (d) performance bonds, surety bonds or any similar instruments, (e) Cash Management Obligations, (f) any lease obligations (including, in respect of\nany capital lease, sale and lease back arrangements o",
+      "excerptSha256": "c70945353b021d2724e4a1e9fccc4a1a57ee5f692c6e629930198275a8cb5a94",
+      "units": "MONEY",
+      "measurementPeriod": "as of any date of determination",
+      "entityScope": "Restricted Parties consolidated",
+      "formulaSketch": "(third-party borrowed money + aged unreimbursed LC drawings + note-like instruments, with stated exclusions) \u2212 unrestricted cash and Cash Equivalents (not Restricted)",
+      "dependencies": [
+        "Cash Equivalents",
+        "Restricted (cash)",
+        "Indebtedness concepts (borrowed money)"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "SUBTRACT",
+          "note": "unrestricted cash/Cash Equivalents netted inside the debt definition itself"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Cash netting is embedded in Consolidated Total Debt (not a separate Net Debt defined term). First Lien / Senior Secured Debt definitions inherit that netting by reference.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_First_Lien_Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated First Lien Debt",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 99357,
+      "charEnd": 100257,
+      "excerpt": "\u201c Consolidated First Lien Debt \u201d means the sum,\nwithout duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all\nor a material portion of the Collateral on an equal or senior priority basis (but without regard to the control of remedies) with Liens securing the Secured Obligations (including for avoidance of doubt, the ABL Obligations). For the avoidance of\ndoubt, Consolidated First Lien Debt shall be reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination.\n\n\u201c Consolidated Interest Expense \u201d means, with respect to any Person for any period, the sum, without duplication, of:\n\n(1) cash interest expense (including that attributab",
+      "excerptSha256": "a9e20f75aa77a774a059cc5adec9613beaa2650811adf63daaf75c968fb2eb6e",
+      "units": "MONEY",
+      "measurementPeriod": "as of relevant date of determination",
+      "entityScope": "Restricted Parties / Loan Document Obligations collateral perimeter",
+      "formulaSketch": "Loans + non-subordinated debt secured equal/senior on material Collateral incl. ABL; inherits CTD cash netting",
+      "dependencies": [
+        "Consolidated Total Debt"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "INHERITED_FROM_CTD"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Similar labels to 'secured debt' elsewhere must not be treated as equivalent: first-lien vs senior-secured priority filters differ inside this same instrument.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Consolidated_Senior_Secured_Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Senior Secured Debt",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 114128,
+      "charEnd": 115028,
+      "excerpt": "\u201c Consolidated Senior Secured Debt \u201d means the sum, without duplication, of the amount of\nConsolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the\nCollateral (including, for avoidance of doubt, the ABL Obligations). For the avoidance of doubt, Consolidated Senior Secured Debt shall be reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as\nof the relevant date of determination.\n\u201c Consolidated Total Debt \u201d means, as of any date of determination (i) the outstanding\nprincipal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness), unreimbursed drawings under letters of credit that are outstanding more than five (5) Business D",
+      "excerptSha256": "c50d933c998ec066924857c5544e58fd5ffe2ad32cf289abd830a79b0f457bcc",
+      "units": "MONEY",
+      "measurementPeriod": "as of relevant date of determination",
+      "entityScope": "Restricted Parties / Loan Document Obligations collateral perimeter",
+      "formulaSketch": "Loans + non-subordinated debt secured on material Collateral (broader than first-lien priority filter); inherits CTD cash netting",
+      "dependencies": [
+        "Consolidated Total Debt"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "INHERITED_FROM_CTD"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Similar labels to 'secured debt' elsewhere must not be treated as equivalent: first-lien vs senior-secured priority filters differ inside this same instrument.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "First Lien Leverage Ratio",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 183487,
+      "charEnd": 183937,
+      "excerpt": "\u201c First Lien Leverage Ratio \u201d means, on any date, the ratio of (a) Consolidated First Lien Debt as of such date (excluding any\nExcluded Revolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date.\n\u201c Fixed Amounts \u201d has the\nmeaning assigned to such term in Section 1.08(f).\n\u201c Fixed Charges \u201d means, with respect to any Person for any period, without\nduplication, the sum of:\n(1) Consolidated Interest Expense of suc",
+      "excerptSha256": "5a6454015499cc9fbb9292a2d9f9a05487bf2f951924cd13d75e7664fb8ec4c5",
+      "units": "RATIO",
+      "measurementPeriod": "date of determination over Test Period EBITDA",
+      "entityScope": "Borrowers / Restricted Parties as referenced by component defs",
+      "formulaSketch": "Consolidated First Lien Debt (excl. Excluded Revolving Loans) / Consolidated EBITDA for Test Period",
+      "dependencies": [
+        "Consolidated First Lien Debt",
+        "Consolidated EBITDA",
+        "Test Period",
+        "Excluded Revolving Loans"
+      ],
+      "adjustments": [
+        {
+          "family": "EXCLUDED_REVOLVING_LOANS",
+          "direction": "EXCLUDE_FROM_NUMERATOR"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Definitional ratio objects. Incurrence/maintenance application sites are separate operative rules (see negative examples / basket library).",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Senior Secured Leverage Ratio",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 328965,
+      "charEnd": 329415,
+      "excerpt": "\u201c Senior Secured Leverage Ratio \u201d means, on any date, the ratio of (a) Consolidated Senior Secured Debt (excluding any Excluded\nRevolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date.\n\u201c Significant Subsidiary \u201d means\nany Restricted Subsidiary that would be a \u201csignificant subsidiary\u201d as defined in Article 1, Rule 1-02(w)(2) of Regulation S-X, promulgated pursuant to\nthe Securities Act, as such regulation is",
+      "excerptSha256": "f3821eaabfc105a3fec83a78c851cae4e14dd1dc8010741e79559ac91ff83277",
+      "units": "RATIO",
+      "measurementPeriod": "date of determination over Test Period EBITDA",
+      "entityScope": "Borrowers / Restricted Parties as referenced by component defs",
+      "formulaSketch": "Consolidated Senior Secured Debt (excl. Excluded Revolving Loans) / Consolidated EBITDA for Test Period",
+      "dependencies": [
+        "Consolidated Senior Secured Debt",
+        "Consolidated EBITDA",
+        "Test Period",
+        "Excluded Revolving Loans"
+      ],
+      "adjustments": [
+        {
+          "family": "EXCLUDED_REVOLVING_LOANS",
+          "direction": "EXCLUDE_FROM_NUMERATOR"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Definitional ratio objects. Incurrence/maintenance application sites are separate operative rules (see negative examples / basket library).",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Total Leverage Ratio",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 350203,
+      "charEnd": 350653,
+      "excerpt": "\u201c Total Leverage Ratio \u201d means, on any date, the\nratio of (a) Consolidated Total Debt (excluding any Excluded Revolving Loans) as of such date and to (b) Consolidated EBITDA for the Test Period as of such date.\n\n\u201c Total Revolving Commitments \u201d means, with respect to any Revolving Facility, the aggregate outstanding amount of Revolving Commitments for\nsuch Revolving Facility of all Revolving Lenders under such Revolving Facility.\n\u201c Transaction Exp",
+      "excerptSha256": "4548e655dafd511c648b4f77ccab257631d655c63a8318df22027c69d12c63ff",
+      "units": "RATIO",
+      "measurementPeriod": "date of determination over Test Period EBITDA",
+      "entityScope": "Borrowers / Restricted Parties as referenced by component defs",
+      "formulaSketch": "Consolidated Total Debt (excl. Excluded Revolving Loans) / Consolidated EBITDA for Test Period",
+      "dependencies": [
+        "Consolidated Total Debt",
+        "Consolidated EBITDA",
+        "Test Period",
+        "Excluded Revolving Loans"
+      ],
+      "adjustments": [
+        {
+          "family": "EXCLUDED_REVOLVING_LOANS",
+          "direction": "EXCLUDE_FROM_NUMERATOR"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Definitional ratio objects. Incurrence/maintenance application sites are separate operative rules (see negative examples / basket library).",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Fixed_Charges",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Fixed Charges",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 183796,
+      "charEnd": 184496,
+      "excerpt": "\u201c Fixed Charges \u201d means, with respect to any Person for any period, without\nduplication, the sum of:\n(1) Consolidated Interest Expense of such Person and its Restricted Subsidiaries for such period;\n\n(2) all cash dividends or other distributions paid (excluding items eliminated in consolidation) on any series of Preferred Stock of such\nPerson or any of its Restricted Subsidiaries during such period; and\n(3) all cash dividends or other distributions paid (excluding items\neliminated in consolidation) on any series of Disqualified Stock of such Person or any of its Restricted Subsidiaries during such period.\n\u201c Fixed\nIncremental Amount \u201d means, at any date, the sum of (a) the greater of (i) $720",
+      "excerptSha256": "9e3e9cfb7c8a7ff885232d579b4bc735551fcd689e3fb876739a294e3a960aa0",
+      "units": "MONEY",
+      "measurementPeriod": "any period",
+      "entityScope": "Person and Restricted Subsidiaries",
+      "formulaSketch": "Consolidated Interest Expense + cash dividends on Preferred Stock + cash dividends on Disqualified Stock",
+      "dependencies": [
+        "Consolidated Interest Expense"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "No Fixed Charge Coverage Ratio definition found in this instrument excerpt search. Do not equate Fixed Charges here with FWRG/LSB FCCR numerators/denominators.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Excess_Cash_Flow",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Excess Cash Flow",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 153704,
+      "charEnd": 156904,
+      "excerpt": "\u201c Excess Cash Flow \u201d means, for any Calculation Period, an amount equal to the excess of:\n\n(a)\nthe sum, without duplication, of:\n\n(i)\nConsolidated Net Income for the applicable fiscal year;\n\n(ii)\nan amount equal to the amount of all non-cash charges to the extent\ndeducted in arriving at such Consolidated Net Income ( provided , in each case, that if any non-cash charge represents an accrual or reserve for cash items in any future period, the cash payment in\nrespect thereof in such future period shall be subtracted from Excess Cash Flow in such future period);\n\n(iii)\ndecreases in Consolidated Working Capital, long-term receivables and long-term prepaid assets and increases in\nlong-term deferred revenue for the applicable fiscal year;\n\n(iv)\nan amount equal to the aggregate net non-cash loss on dispositions by\nthe Restricted Parties during the applicable fiscal year (other than dispositions in the ordinary course of business) to the extent deducted in arriving at such Consolidated Net Income; and\n\n(v)\ncash receipts in respect of Swap Agreements to the extent not otherwise included in calculating Consolidated\nNet Income;\n\nover:\n\n(b)\nthe sum, without duplication, of:\n\n(i)\nan amount equal to the amount of all non-cash credits included in\narriving at such Consolidated Net Income (including any amounts included in Consolidated Net Income pursuant to the last sentence of the definition of \u201cConsolidated Net Income\u201d to the extent such amounts are due but not received during\nsuch period) and cash charges included in clauses (a) through (p) of the definition of \u201cConsolidated Net Income\u201d (other than cash charges in respect of Transaction Expenses paid on or about the Effective Date to the extent financed\nwith the proceeds of Indebtedness incurred on the Effective Date or an equity investment on the Effective Date);\n\n(ii)\nwithout duplication of amounts deducted pursuant to clause (x) below in prior fiscal years, the amount of\nCapital Expenditures made in cash or accrued during such Calculation Period, to the extent that such Capital Expenditures were not financed with Funded Debt (other than revolving debt) of the Restricted Parties;\n\n(iii)\n(x) the aggregate amount of all principal payments of Indebtedness except to the extent financed with the\nproceeds of Funded Debt (other than revolving debt) of a Restricted Party, including (A) the principal component of payments in respect of Capitalized Leases, (B) the amount of any prepayment of Loans and of other Indebtedness to the\nextent secured on a pari passu or junior basis to the Loan Document Obligations, (C) the amount of any Restricted Debt Payments, (D) the amount of any prepayment of Indebtedness to the extent secured by assets not constituting\nCollateral and (E) the amount of any prepayment of unsecured Indebtedness of a Non-Loan Party Subsidiary (and, in the case of any prepayments of revolving loans and swingline loans made during such\nperiod, only to the extent there is an equivalent permanent reduction in commitments thereunder and such permanent reduction does not reduce the amount of the repayment of Loans described in Section 2.09(c)), and (y) the aggregate amount\nof any premium, make-whole or pen",
+      "excerptSha256": "be64830cf81ac9c74110604f791cfbc994bc3ae22aedfb7a55d4f6478fcbb140",
+      "units": "MONEY",
+      "measurementPeriod": "Calculation Period / fiscal year as drafted",
+      "entityScope": "Restricted Parties",
+      "formulaSketch": "(CNI + non-cash charges + WC decreases + non-cash disposition losses + swap cash receipts) \u2212 (non-cash credits + capex + principal payments + WC increases + investments + dividends + planned/contract consideration + other drafted deductions)",
+      "dependencies": [
+        "Consolidated Net Income",
+        "Consolidated Working Capital",
+        "Calculation Period"
+      ],
+      "adjustments": [
+        {
+          "family": "WORKING_CAPITAL",
+          "direction": "BOTH"
+        },
+        {
+          "family": "NON_CASH",
+          "direction": "BOTH"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "ECF is a cash-flow construct feeding Retained Excess Cash Flow and mandatory prepayments; not itself a leverage ratio.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Retained Excess Cash Flow",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 319584,
+      "charEnd": 320484,
+      "excerpt": "\u201c Retained Excess Cash Flow \u201d means, at any date of determination, an amount equal to the sum of (a) the portion of the Excess Cash Flow\nof the Borrowers for each Excess Cash Flow Period ending after the Closing Date and prior to such date that is not required to be applied as a mandatory prepayment under Section 2.09(c) plus (b) for each Excess Cash Flow Interim\nPeriod ended prior to such date but as to which the corresponding Excess Cash Flow Period has not ended (or no Excess Cash Flow Period has then ended), an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers,\nfor such Excess Cash Flow Interim Period.\n\u201c Revolving Borrowing \u201d means a Borrowing of Revolving Loans.\n\n\u201c Revolving Commitment \u201d means, with respect to each Revolving Lender, the commitment of such Revolving Lender to make Revolving Loans\nhereunder (including pursuant to any applica",
+      "excerptSha256": "f14e8155a4b4ae77831043b66ae29ed9e73ac223383e3369f4c7b62769c207e9",
+      "units": "MONEY",
+      "measurementPeriod": "cumulative across Excess Cash Flow Periods / Interim Periods",
+      "entityScope": "Borrowers",
+      "formulaSketch": "ECF not required to be prepaid under \u00a72.09(c) + Retained ECF Percentage \u00d7 interim ECF",
+      "dependencies": [
+        "Excess Cash Flow",
+        "Retained Excess Cash Flow Percentage",
+        "Section 2.09(c)"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Builder component for Available Amount clause (a)(y).",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::builder::Available_Amount",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Section 6.08(a)(3)",
+      "charStart": 662341,
+      "charEnd": 665141,
+      "excerpt": ", but excluding all other Restricted\nPayments permitted by Section 6.08(b) hereof), is less than the sum of (without duplication) (the sum or the amounts attributable to clauses (a) through (f) below are referred to herein as the \u201c Available Amount \u201d):\n\n(a) the greater of (x) 50% of the Consolidated Net Income of the Restricted Parties (including any predecessor of the\nBorrowers) for the period (taken as one (1) accounting period) beginning on the first (1 st ) day of the fiscal quarter during which the Effective Date occurs to the end of the Initial\nBorrower\u2019s most recently ended fiscal quarter for which internal financial statements are available at the time of such determination (which amount shall be deemed to be zero for any fiscal quarter in which the Consolidated Net Income for such\nfiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero) and (z) (A) cumulative\nConsolidated EBITDA of any Restricted Party for each fiscal quarter following the Effective Date for which financial statements are internally available, commencing with the fiscal quarter in which the Effective Date occurs, minus (B) 140% of\nthe cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero ) (which amounts under clauses (x), (y)\nand (z) shall, in each case, be calculated on a Pro Forma Basis); provided that no Restricted Payment constituting a volitional dividend or distribution shall be made in reliance on this clause (a) if there is a continuing Specified\nEvent of Default; plus\n(b) 100% of the aggregate net cash proceeds and the Fair Market Value of marketable\nsecurities or other property received by any Restricted Party since immediately after the Effective Date (other than net cash proceeds from an ABL Cure Amount or to the extent such net cash proceeds have been used to incur Indebtedness or issue\nDisqualified Stock or Preferred Stock pursuant to Section 6.08(b)(12)(a) hereof) from the issue or sale of:\n\n(i)(A) Equity Interests of the Borrowers, including Treasury Capital Stock (as defined below), but excluding cash proceeds and\nthe Fair Market Value of marketable securities or other property received from the sale of:\n(x) Equity Interests to any\nfuture, present or former employees, directors, managers or consultants of the Borrowers, any Parent Entity and the Borrowers\u2019 Subsidiaries, after the Effective Date to the extent such amounts have been applied to Restricted Payments made in\naccordance with Section 6.08(b)(4) hereof; or\n(y) Designated Preferred Stock; and\n\n(B) to t",
+      "excerptSha256": "e461ed21d21f0b1f601e9d1bc39aee3ba74ab799ea9b967633f9aa007faab7b0",
+      "units": "MONEY",
+      "measurementPeriod": "cumulative builder from Effective Date; CNI/EBITDA components on Pro Forma Basis",
+      "entityScope": "Restricted Parties / Borrowers",
+      "formulaSketch": "sum(a..f) where (a)=greater of (x) 50% cumulative CNI (floored at 0 per quarter), (y) 100% Retained ECF (floored), (z) cumulative Consolidated EBITDA \u2212 140% cumulative Consolidated Interest Expense (floored); plus equity proceeds; plus other builder prongs \u2014 capacity use is Basket Formula Library territory",
+      "dependencies": [
+        "Consolidated Net Income",
+        "Retained Excess Cash Flow",
+        "Consolidated EBITDA",
+        "Consolidated Interest Expense",
+        "Not Otherwise Applied"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "APPLY_TO_BUILDER_COMPONENTS"
+        }
+      ],
+      "caps": [
+        {
+          "type": "USAGE_GATE",
+          "note": "volitional dividend/distribution under (a) blocked if continuing Specified Event of Default"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Article I only cross-references \u00a76.08(a)(3). Coordinate with Basket Formula Library for permission/utilization semantics; WS-FDP records calculation inputs and builder arithmetic only.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::adj::Pro_Forma_Basis",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Pro Forma Basis / Pro Forma Compliance / Pro Forma Effect",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 294836,
+      "charEnd": 297036,
+      "excerpt": "\u201c Pro Forma Basis ,\u201d \u201c Pro Forma Compliance \u201d and \u201c Pro Forma Effect \u201d means, with respect to compliance\nwith any test, financial ratio or covenant hereunder required by the terms of this Agreement to be made on a Pro Forma Basis, that (a) to the extent applicable, the Pro Forma Adjustment shall have been made and (b) all Specified\nTransactions and the following transactions in connection therewith that have been made during the applicable period of measurement or subsequent to such period and prior to or simultaneously with the event for which the calculation is made shall be\ndeemed to have occurred as of the first (1st) day of the applicable period of measurement in such test, financial ratio or covenant and as if such amounts were realized during the entirety of such period: (i) income statement items (whether\npositive or negative) attributable to the property or Person subject to such Specified Transaction, (A) in the case of a disposition of all or substantially all Equity Interests in any subsidiary of the Borrowers or any division, product line,\nor facility used for operations of any of the Borrowers or any of the Restricted Parties, shall be excluded, and (B) in the case of a Permitted Acquisition or Investment described in the definition of \u201cSpecified Transaction,\u201d shall\nbe included, (ii) any retirement of Indebtedness, (iii) any Indebtedness incurred or assumed by the Borrowers or any of the Restricted Parties in connection therewith (but without giving effect to any simultaneous incurrence of any\nIndebtedness pursuant to any fixed dollar basket (including, for the avoidance of doubt, any Consolidated EBITDA grower corresponding to any fixed dollar basket) or under any revolving credit facility) and if such Indebtedness has a floating or\nformula rate or is converted from cash-pay to payment-in-kind, shall have an implied rate of interest (or PIK component) for the\napplicable period for purposes of this definition determined by utilizing the rate that is or would be in effect with respect to such Indebtedness as at the relevant date of determination and (iv) the amount of cash and Cash Equivalents shall\nbe calculated on the date of the consummation of t",
+      "excerptSha256": "9bca26e3c06c525b37dddce8411e70e04f426e47ee8b26136126393e697104a7",
+      "units": "CALCULATION_MODE",
+      "measurementPeriod": "applicable measurement period with Specified Transactions deemed from day 1",
+      "entityScope": "Borrowers and Restricted Parties",
+      "formulaSketch": "Apply Pro Forma Adjustment + give effect to Specified Transactions (include acquired IS items / exclude disposed; debt incurred/retired; cash after consummation) as of first day of period; carve-outs for fixed-dollar basket debt and certain interest expense",
+      "dependencies": [
+        "Pro Forma Adjustment",
+        "Specified Transaction",
+        "Consolidated EBITDA"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Pro forma mode is a calculation instruction, not capacity.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Anti-duplication of pro forma add-backs (Section 1.08(d)(ii))",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Section 1.08(d)(ii)",
+      "charStart": 385506,
+      "charEnd": 385856,
+      "excerpt": "ent\noccurs and (ii) no amounts shall be added pursuant to this clause (d) to the extent duplicative of any amounts that are otherwise added back in calculating Consolidated EBITDA, whether through a pro forma adjustment or otherwise,\nwith respect to any Test Period.\n(e) Without limiting the general application of Section 1.04(b), in the event that ",
+      "excerptSha256": "df93d335aa0c77860264c55a21da5abb4b107accae89e47bbe923d0b9709b276",
+      "units": "CONSTRAINT",
+      "measurementPeriod": "any Test Period",
+      "entityScope": "as in Consolidated EBITDA calculation",
+      "formulaSketch": "No add pursuant to clause (d) if duplicative of amounts otherwise added back in Consolidated EBITDA (pro forma or otherwise)",
+      "dependencies": [
+        "Consolidated EBITDA",
+        "Section 1.08(d)"
+      ],
+      "adjustments": [
+        {
+          "family": "ANTI_DOUBLE_COUNT",
+          "direction": "FORBID"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Pinned offline in stratified-cert pin 1.08(d)(ii).",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF",
+      "kind": "CURE_RIGHT",
+      "termLabel": "Cure Amount (ABL Credit Agreement cross-reference)",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I / ABL-related definitions",
+      "charStart": 10201,
+      "charEnd": 10321,
+      "excerpt": "\u201cCure Amount\u201d in the ABL Credit Agreement.\n\n\u201c ABL Facility \u201d means the senior secured revolving loan facility under the ",
+      "excerptSha256": "2a9bd35e03ca9be23e353da9f9ed6a431191d2bc75fc991541f704d6b8dd9fed",
+      "units": "MONEY",
+      "measurementPeriod": "MISSING_INPUT:abl_cure_mechanics",
+      "entityScope": "as defined in ABL Credit Agreement",
+      "formulaSketch": "CROSS_REF_ONLY \u2014 meaning assigned in ABL Credit Agreement; term loan CA excludes ABL Cure Amount from certain Available Amount equity prongs",
+      "dependencies": [
+        "ABL Credit Agreement"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "CROSS_REF_ONLY",
+      "notes": "Unresolved without ABL Credit Agreement text in this fixture package. Represent as MISSING_INPUT for cure calculation.",
+      "amendments": []
+    },
+    {
+      "id": "CHWY-2026-CA::def::Test_Period",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Test Period",
+      "sourceId": "CHWY-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 349461,
+      "charEnd": 350011,
+      "excerpt": "\u201c Test Period \u201d\nmeans, at any date of determination, (a) the period of four (4) consecutive fiscal quarters of the Initial Borrower or (b) twelve (12)-month period, in the case of clauses (a) and (b), then most recently ended on or prior to such\ntime (taken as one (1) accounting period), in respect of which financial statements are, at the election of the Initial Borrower, (x) internally available (and to the extent requested by the Administrative Agent, delivered to the\nAdministrative Agent) or (y) have been delivered pursuant to Section 5.01(",
+      "excerptSha256": "034ef41b82227f923bf0ddac17f9f7402020b9db16fb1ad23d5143ce40355ce0",
+      "units": "PERIOD",
+      "measurementPeriod": "self",
+      "entityScope": "Initial Borrower",
+      "formulaSketch": "four consecutive fiscal quarters OR twelve-month period, most recently ended, financials internally available or delivered under \u00a75.01(a)/(b) at Borrower election",
+      "dependencies": [
+        "Section 5.01(a)",
+        "Section 5.01(b)"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Measurement period election is a first-class dependency for every ratio using Test Period.",
+      "amendments": []
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated EBITDA",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "sectionHint": "Section 1.1 Defined Terms",
+      "charStart": 44742,
+      "charEnd": 46942,
+      "excerpt": "\u201c Consolidated EBITDA \u201d: for any period, Consolidated Net Income for such period plus , without duplication and to the extent reflected as a charge in the statement of such Consolidated Net Income for such period, the sum of (a) income tax expense, (b) Consolidated Interest Expense, amortization or write-off of debt discount and debt issuance costs and commissions (including any early extinguishment of debt costs and debt conversion costs), discounts and other fees and charges associated with Indebtedness (including the Loans), (c) depreciation and amortization expense, (d) amortization of intangibles (including goodwill) and organization costs, (e) any extraordinary, unusual or non-recurring expenses or losses (including, whether or not otherwise includable as a separate item in the statement of such Consolidated Net Income for such period, losses on sales of assets outside of the ordinary course of business), (f) any other non-cash charges (including expenses relating to equity compensation), (g) costs and expenses related to the Transactions or any Material Acquisition in an aggregate amount not to exceed $30,000,000, (h) proceeds from business interruption insurance (to the extent actually received and to the extent not reflected as revenue or income of the Parent Borrower or its Subsidiaries) and (i) Pro Forma Adjustments in connection with any Material Acquisition consummated during such period ( provided that (x) such Pro Forma Adjustments shall be calculated net of the amount of actual benefits realized and (y) the aggregate amount of all amounts under this clause (i) that increase Consolidated EBITDA in any period of four consecutive fiscal quarters shall not exceed, and shall be limited to, 15% of Consolidated EBITDA in respect of such period of four consecutive fiscal quarters (calculated after giving effect to such adjustments to Consolidated EBITDA under this clause (i))), and minus , to the extent included in the statement of such Consolidated Net Income for such period, the sum of (a) interest income, (b) any extraordinary, unusual or non-recurring income or gains (including, whether or not otherwise includable as a separate item in the statement ",
+      "excerptSha256": "f6bab4bcbfd93b497bc1b7ad6d2f1a3fb654de1dd922c7f5480c6b11c8ad9cc0",
+      "units": "MONEY",
+      "measurementPeriod": "any period; leverage/coverage uses four consecutive fiscal quarters",
+      "entityScope": "Parent Borrower and its Subsidiaries",
+      "formulaSketch": "CNI + (tax, interest/debt costs, D&A, intangibles amortization, extraordinary/unusual/non-recurring losses, other non-cash, Transactions/Material Acquisition costs \u2264 $30M, BI insurance proceeds, Pro Forma Adjustments) \u2212 (interest income, extraordinary/unusual gains, other non-cash income); plus acquisition/disposition pro forma for ratio tests",
+      "dependencies": [
+        "Consolidated Net Income",
+        "Consolidated Interest Expense",
+        "Pro Forma Adjustments",
+        "Material Acquisition",
+        "Material Disposition"
+      ],
+      "adjustments": [
+        {
+          "family": "INTEREST_TAX_DA",
+          "direction": "ADD"
+        },
+        {
+          "family": "EXTRAORDINARY_UNUSUAL",
+          "direction": "ADD_LOSSES_SUBTRACT_GAINS"
+        },
+        {
+          "family": "ACQUISITION_COSTS",
+          "direction": "ADD",
+          "cap": "$30,000,000 aggregate"
+        },
+        {
+          "family": "PRO_FORMA_SYNERGY",
+          "direction": "ADD",
+          "cap": "15% of Consolidated EBITDA for four-quarter period after giving effect"
+        },
+        {
+          "family": "BUSINESS_INTERRUPTION_INSURANCE",
+          "direction": "ADD"
+        }
+      ],
+      "caps": [
+        {
+          "type": "HARD_DOLLAR",
+          "amount": 30000000,
+          "appliesTo": "Transactions or Material Acquisition costs clause (g)"
+        },
+        {
+          "type": "PERCENT_OF_EBITDA",
+          "percent": 15,
+          "appliesTo": "Pro Forma Adjustments clause (i)",
+          "netOf": "actual benefits realized"
+        }
+      ],
+      "lookbackOrLookforward": "Pro forma assumes Material Acquisition and related debt as of first day of period",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Mechanically different from CHWY Consolidated EBITDA: hard dollar acquisition-cost cap and 15% Pro Forma Adjustment cap; no Expected Run Rate Benefit construct in this definition text.",
+      "amendments": []
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Net_Income",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Net Income",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "sectionHint": "Section 1.1 Defined Terms",
+      "charStart": 51556,
+      "charEnd": 52456,
+      "excerpt": "\u201c Consolidated Net Income \u201d: for any period, the consolidated net income (or loss) of the Parent Borrower and its Subsidiaries, determined on a consolidated basis in accordance with GAAP; provided that there shall be excluded (a) the income (or deficit) of any Person accrued prior to the date it becomes a Subsidiary or is merged into or consolidated with the Parent Borrower or any of its Subsidiaries, (b) the income (or deficit) of any Person (other than a Subsidiary) in which the Parent Borrower or any of its Subsidiaries has an ownership interest, except to the extent that any such income is actually received by the Parent Borrower or such Subsidiary in the form of dividends or similar distributions and (c) the undistributed earnings of any Subsidiary to the extent that the declaration or payment of dividends or similar distributions by such Subsidiary is prohibited by the terms of any",
+      "excerptSha256": "1e2a8fea9570ae1d7ea6a1ecb3f2a5ffd0ef1d8e96b844bc1cf6949316295060",
+      "units": "MONEY",
+      "measurementPeriod": "any period",
+      "entityScope": "Parent Borrower and its Subsidiaries",
+      "formulaSketch": "consolidated GAAP net income with drafted exclusions (pre-acquisition income; non-subsidiary income except dividends received; etc.)",
+      "dependencies": [
+        "GAAP"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Cash netting uses a hard dollar cap (amended historically). Distinct from CHWY unlimited unrestricted-cash netting inside Consolidated Total Debt."
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Funded_Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Funded Debt",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "sectionHint": "Section 1.1 Defined Terms",
+      "charStart": 48954,
+      "charEnd": 49304,
+      "excerpt": "\u201c Consolidated Funded Debt \u201d: as of any date of determination thereof, the aggregate principal amount of all Funded Debt of the Parent Borrower and its Subsidiaries at such date, determined on a consolidated basis in accordance with GAAP. 12 \u201c Consolidated Interest Expense \u201d: for any period, total interest expense (including that attributable to Fi",
+      "excerptSha256": "8f284a57b182873daf1b3a37de2df8cfb003e1cefadbeccd3fe8d41aee06c4cc",
+      "units": "MONEY",
+      "measurementPeriod": "as of date",
+      "entityScope": "Parent Borrower and its Subsidiaries",
+      "formulaSketch": "aggregate principal amount of all Funded Debt of Parent Borrower and Subsidiaries consolidated per GAAP",
+      "dependencies": [
+        "Funded Debt",
+        "Indebtedness clauses (a)-(e)"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Cash netting uses a hard dollar cap (amended historically). Distinct from CHWY unlimited unrestricted-cash netting inside Consolidated Total Debt."
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Senior Secured Leverage Ratio",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "sectionHint": "Section 1.1 Defined Terms",
+      "charStart": 52954,
+      "charEnd": 53854,
+      "excerpt": "\u201c Consolidated Senior Secured Leverage Ratio \u201d: as at the last day of any period of four consecutive fiscal quarters, the ratio of (a) (i) Consolidated Senior Secured Funded Debt on such day plus (ii) to the extent not otherwise included therein, the aggregate outstanding attributed principal amount under any Receivables Transfer Program incurred in accordance with Section 7.2(m) (without regard to whether or not such amount is incurred by or attributed to a Loan Party or whether or not it is reflected in the consolidated balance sheet of the Parent Borrower and its Subsidiaries) on such day minus (iii) an amount equal to the lesser of (x) $100,000,000 and (y) 13 the amount of unrestricted cash and Cash Equivalents of the Parent Borrower and its Subsidiaries on the consolidated balance sheet of the Parent Borrower and its Subsidiaries on such day to (b) Consolidated EBITDA for such perio",
+      "excerptSha256": "84bef9ba9f1fdf25dc657da780a958d6319428d219c344561eff6353c6af8118",
+      "units": "RATIO",
+      "measurementPeriod": "last day of four consecutive fiscal quarters",
+      "entityScope": "Parent Borrower and its Subsidiaries",
+      "formulaSketch": "(Consolidated Senior Secured Funded Debt + RTP attributed principal \u2212 min($100M, unrestricted cash/Cash Equivalents)) / Consolidated EBITDA",
+      "dependencies": [
+        "Consolidated Senior Secured Funded Debt",
+        "Receivables Transfer Program",
+        "Consolidated EBITDA"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "SUBTRACT",
+          "note": "lesser of $100,000,000 and unrestricted cash/Cash Equivalents"
+        }
+      ],
+      "caps": [
+        {
+          "type": "CASH_NETTING_CAP",
+          "amount": 100000000
+        }
+      ],
+      "amendments": [
+        {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+          "change": "Second Amendment (2022) raised cash-netting cap reference from $75,000,000 to $100,000,000 in Consolidated Senior Secured / Total Leverage Ratio definitions (as then drafted).",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Cash netting uses a hard dollar cap (amended historically). Distinct from CHWY unlimited unrestricted-cash netting inside Consolidated Total Debt."
+    },
+    {
+      "id": "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Total Leverage Ratio",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "sectionHint": "Section 1.1 Defined Terms",
+      "charStart": 54671,
+      "charEnd": 55571,
+      "excerpt": "\u201c Consolidated Total Leverage Ratio \u201d: as at the last day of any period of four consecutive fiscal quarters, the ratio of (a) (i) Consolidated Funded Debt on such day plus (ii) to the extent not otherwise included therein, the aggregate outstanding attributed principal amount under any Receivables Transfer Program incurred in accordance with Section 7.2(m) (without regard to whether or not such amount is incurred by or attributed to a Loan Party or whether or not it is reflected in the consolidated balance sheet of the Parent Borrower and its Subsidiaries) on such day minus (iii) an amount equal to the lesser of (x) $100,000,000 and (y) the amount of unrestricted cash and Cash Equivalents of the Parent Borrower and its Subsidiaries on the consolidated balance sheet of the Parent Borrower and its Subsidiaries on such day to (b) Consolidated EBITDA for such period. \u201c Continuing Directors \u201d",
+      "excerptSha256": "4ac0f14c61586b9eb85ffc3773a36a0e1fa8088e7996bcc8639a0578eb35145f",
+      "units": "RATIO",
+      "measurementPeriod": "last day of four consecutive fiscal quarters",
+      "entityScope": "Parent Borrower and its Subsidiaries",
+      "formulaSketch": "(Consolidated Funded Debt + RTP attributed principal \u2212 min($100M, unrestricted cash/Cash Equivalents)) / Consolidated EBITDA",
+      "dependencies": [
+        "Consolidated Funded Debt",
+        "Receivables Transfer Program",
+        "Consolidated EBITDA"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "SUBTRACT",
+          "note": "lesser of $100,000,000 and unrestricted cash/Cash Equivalents"
+        }
+      ],
+      "caps": [
+        {
+          "type": "CASH_NETTING_CAP",
+          "amount": 100000000
+        }
+      ],
+      "amendments": [
+        {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+          "change": "Second Amendment (2022) raised cash-netting cap reference from $75,000,000 to $100,000,000 in Consolidated Senior Secured / Total Leverage Ratio definitions (as then drafted).",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Cash netting uses a hard dollar cap (amended historically). Distinct from CHWY unlimited unrestricted-cash netting inside Consolidated Total Debt."
+    },
+    {
+      "id": "CONMED-2025-CA::def::Interest_Coverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Interest Coverage Ratio",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "sectionHint": "Section 1.1 Defined Terms",
+      "charStart": 86625,
+      "charEnd": 86975,
+      "excerpt": "\u201c Interest Coverage Ratio \u201d: for any period, the ratio of (a) Consolidated EBITDA for such period to (b) Consolidated Interest Expense paid or payable in cash for such period. \u201c Interest Payment Date \u201d: (a) as to any ABR Loan (other than any Swingline Loan), (i) the last Business Day of each March, June, September and December, (ii) the Term Loan M",
+      "excerptSha256": "d56aafcc94651e4980643ef7885eccea0203e67a5a57310fe8a5481b798b936b",
+      "units": "RATIO",
+      "measurementPeriod": "any period (tested on four quarters in \u00a77.1)",
+      "entityScope": "Parent Borrower and its Subsidiaries",
+      "formulaSketch": "Consolidated EBITDA / Consolidated Interest Expense paid or payable in cash",
+      "dependencies": [
+        "Consolidated EBITDA",
+        "Consolidated Interest Expense"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Cash netting uses a hard dollar cap (amended historically). Distinct from CHWY unlimited unrestricted-cash netting inside Consolidated Total Debt."
+    },
+    {
+      "id": "CONMED-2025-CA::def::Funded_Debt",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Funded Debt",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+      "sectionHint": "Section 1.1 Defined Terms",
+      "charStart": 77535,
+      "charEnd": 77785,
+      "excerpt": "\u201c Funded Debt \u201d: as to any Person, all Indebtedness of such Person of the types described in clauses (a)-(e) of the definition of Indebtedness. \u201c Funding Office \u201d: the office of the Administrative Agent set forth in Section 10.2. 20 \u201c GAAP \u201d: general",
+      "excerptSha256": "73a2d854bcf75bc50f7c06a97d2157bb0a1a3e4beb398df318de913e74af7101",
+      "units": "MONEY",
+      "measurementPeriod": "as applicable",
+      "entityScope": "Parent Borrower and its Subsidiaries",
+      "formulaSketch": "Indebtedness of types in Indebtedness clauses (a)-(e)",
+      "dependencies": [
+        "Indebtedness"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Cash netting uses a hard dollar cap (amended historically). Distinct from CHWY unlimited unrestricted-cash netting inside Consolidated Total Debt."
+    },
+    {
+      "id": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "kind": "STEP_CHANGE_TEST",
+      "termLabel": "Section 7.1 Financial Condition Covenants (maintenance + Material Acquisition step-up)",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sectionHint": "Section 7.1",
+      "charStart": 307,
+      "charEnd": 1907,
+      "excerpt": "ies to, directly or indirectly:\nSECTION 7.1 Financial Condition\nCovenants .\n(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant Material Acquisition and (ii) the\ndate by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a) or (b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition\nis consummated; provided that (x) such step-up shall be permitted only twice during the term of this Agreement and (y) there shall\nbe at least two fiscal quarters in between any such step-ups.\n(b)\nConsolidated Total Leverage Ratio . Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed 5.50 to 1.00. Notwithstanding\nthe foregoing, if the Parent Borrower or any",
+      "excerptSha256": "1f699b71cf3086058bf505d2e6cf1dab295fd0ab5cdac6a1bf0a68c4d2d9f9c0",
+      "units": "RATIO_AND_MONEY",
+      "measurementPeriod": "last day of four consecutive fiscal quarters (Liquidity: continuous while springing)",
+      "entityScope": "Parent Borrower and Subsidiaries",
+      "formulaSketch": "SSLR \u2264 3.75x (step-up +0.50x for 4 quarters after Material Acquisition, max twice, \u22652 quarter gap); TLR \u2264 5.50x (step-up +0.50x capped so required ratio \u2264 6.00x, max twice, \u22652 quarter gap); ICR \u2265 2.75x; springing Liquidity \u2265 $75M + Early Maturing Debt when within 91 days of Convertible Notes maturity and Early Maturing Debt > $200M",
+      "dependencies": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Consolidated Total Leverage Ratio",
+        "Interest Coverage Ratio",
+        "Liquidity",
+        "Material Acquisition",
+        "Early Maturing Debt",
+        "Convertible Notes"
+      ],
+      "adjustments": [
+        {
+          "family": "STEP_UP",
+          "direction": "RELAX_MAX_RATIO",
+          "note": "borrower election with notice timing constraints"
+        }
+      ],
+      "caps": [
+        {
+          "type": "STEP_UP_FREQUENCY",
+          "value": "twice during agreement"
+        },
+        {
+          "type": "STEP_UP_GAP",
+          "value": "at least two fiscal quarters between step-ups"
+        },
+        {
+          "type": "TLR_STEP_UP_CEILING",
+          "value": "required ratio no more than 6.00 to 1.00"
+        }
+      ],
+      "amendments": [
+        {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+          "change": "Second Amendment restated TLR schedule with temporary elevated levels and step-up mechanics (historical to 7th ARC; illustrates step-up/step-down drafting pattern).",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "These numerical thresholds are MAINTENANCE CONDITIONS, not capacity baskets. See negative examples."
+    },
+    {
+      "id": "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Amendment changing leverage cash-netting cap $75M \u2192 $100M",
+      "sourceId": "CONMED-2025-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+      "sectionHint": "Second Amendment \u00a72(a)(i)-(ii)",
+      "charStart": 1426,
+      "charEnd": 2326,
+      "excerpt": "1.1 ( Defined Terms ) of the Credit Agreement is hereby amended as follows:\n(i) The definition of \" Consolidated Senior Secured Leverage Ratio \" is hereby amended by deleting the\nreference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\".\n(ii) The definition of \" Consolidated Total Leverage Ratio \" is hereby amended by deleting the\nreference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\".\n(iii) The definition of \" Indebtedness \" is hereby amended by inserting the following proviso at the\nend thereof: \"; provided, further, that no earn-out obligation arising in\nconnection with any other acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness unless and until such obligation is finally determined to be due and payable under the relevant acquisition agreement and solely ",
+      "excerptSha256": "6812722e72848cbccd1540aebf04c545bd12027e1510e01be8aa9f8b52b77d28",
+      "units": "MONEY",
+      "measurementPeriod": "definitional (as of determination dates under amended CA)",
+      "entityScope": "Parent Borrower and Subsidiaries",
+      "formulaSketch": "Replace $75,000,000 cash-netting cap with $100,000,000 in SSLR and TLR definitions",
+      "dependencies": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Consolidated Total Leverage Ratio"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "CAP_CHANGE"
+        }
+      ],
+      "caps": [
+        {
+          "type": "CASH_NETTING_CAP",
+          "amount": 100000000,
+          "priorAmount": 75000000
+        }
+      ],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Canonical example that identical term labels across amendment history are not calculation-equivalent without version binding."
+    },
+    {
+      "id": "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Adjusted EBITDA",
+      "sourceId": "FWRG-2021-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sectionHint": "Article I (curated excerpt)",
+      "charStart": 5052,
+      "charEnd": 6652,
+      "excerpt": "Consolidated Adjusted EBITDA &#148; means, with respect to any Person on a consolidated basis for any period, the sum of: (a) Consolidated Net Income for such period; plus (b) to the extent not otherwise included in the determination of Consolidated Net Income for such period, the amount of any proceeds of any business interruption insurance policy (whether or not then received so long as such Person in good faith expects to receive such proceeds); plus 14 (c) without duplication, those amounts which, in the determination of Consolidated Net Income for such period, have been deducted for: (i) Consolidated Interest Expense; plus (ii) [reserved]; plus (iii) Taxes paid in respect of, and any provision for, federal, state, local and foreign income Taxes; plus (iv) (A) all depreciation and amortization (including amortization of goodwill, software and other intangible assets), (B) all impairment Charges, including any bad debt expense, and (C) all asset write-offs and/or write-downs, including any amortization or write-off of (1) intangible assets and non-cash organization costs, (2) deferred financing and debt issuance fees, costs and expenses, (3) capitalized expenditures (including capitalized software expenditures), customer acquisition costs and incentive payments, (4) media development costs, conversion costs and contract acquisition costs, (5) the amortization of original issue discount resulting from the issuance or incurrence of Indebtedness at less than par and/or (6) the amortization of favorable or unfavorable lease assets or liabilities; plus (v) any earn-out and/or",
+      "excerptSha256": "c0d0d5179c09e82eec895caca9ce9f8c21fd5c62a09264a8b5d51333ff4074ff",
+      "units": "MONEY",
+      "measurementPeriod": "any period / Test Period when used in ratios",
+      "entityScope": "Person on a consolidated basis (Borrower and Restricted Subsidiaries in use)",
+      "formulaSketch": "Consolidated Net Income + BI insurance proceeds + add-backs for interest, taxes, D&A/impairment/write-offs, earn-outs, and further curated add-backs (excerpt truncated)",
+      "dependencies": [
+        "Consolidated Net Income",
+        "Consolidated Interest Expense"
+      ],
+      "adjustments": [
+        {
+          "family": "INTEREST_TAX_DA",
+          "direction": "ADD"
+        },
+        {
+          "family": "BUSINESS_INTERRUPTION_INSURANCE",
+          "direction": "ADD"
+        },
+        {
+          "family": "EARN_OUT",
+          "direction": "ADD"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_PARTIAL",
+      "notes": "Fixture is a curated excerpt with HTML entities; label is Consolidated Adjusted EBITDA (not Consolidated EBITDA). Do not equate to CHWY/CONMED Consolidated EBITDA.",
+      "amendments": []
+    },
+    {
+      "id": "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Fixed Charge Coverage Ratio",
+      "sourceId": "FWRG-2021-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sectionHint": "Article I (curated excerpt)",
+      "charStart": 13218,
+      "charEnd": 14318,
+      "excerpt": "Fixed Charge Coverage Ratio &#148; means, as of any date of determination, the ratio of (a)(i) Consolidated Adjusted EBITDAR for the relevant Test Period minus (ii) Maintenance Capital Expenditures for such Test Period minus (iii) to the extent added back in the calculation of &#147;Consolidated Adjusted EBITDA&#148; for such Test Period, the aggregate amount of federal, state, local and foreign income taxes paid or payable in cash minus (iv) the aggregate amount of Restricted Payments made in Cash in the relevant Test Period (other than Restricted Payments made pursuant to Section 6.04(a)(i)(F) , 6.04(a)(ii) , 6.04(a)(iii)(A) (except to the extent made in reliance on clause (a)(ii) of the definition of &#147;Available Amount&#148;), 6.04(a)(iii)(B) , 6.04(a)(v) , 6.04(a)(vi) , 6.04(a)(ix) , 6.04(a)(xii) , 6.04(a)(xiii) and/or 6.04(a)(xiv) ) to (b) Consolidated Fixed Charges for such Test Period. &#147; Fixed Incremental Amount &#148; means the greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period. &#147; Foreign Lend",
+      "excerptSha256": "a7b4a47ba28d2de36cfdec68a7cf37280dc73f9d172071ce1cd44ae9f3b9dba7",
+      "units": "RATIO",
+      "measurementPeriod": "relevant Test Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (via component metrics)",
+      "formulaSketch": "(Consolidated Adjusted EBITDAR \u2212 Maintenance Capex \u2212 cash income taxes added back in CA EBITDA \u2212 certain Cash Restricted Payments) / Consolidated Fixed Charges",
+      "dependencies": [
+        "Consolidated Adjusted EBITDAR",
+        "Maintenance Capital Expenditures",
+        "Consolidated Adjusted EBITDA",
+        "Consolidated Fixed Charges",
+        "Test Period"
+      ],
+      "adjustments": [
+        {
+          "family": "TAX_ADD BACK_REVERSAL",
+          "direction": "SUBTRACT"
+        },
+        {
+          "family": "RESTRICTED_PAYMENT_ADD BACK",
+          "direction": "SUBTRACT_SELECTED"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "FCCR mechanics differ from LSB FCCR (EBITDA \u2212 Capex over scheduled principal + interest + capital leases). Same label, different formula.",
+      "amendments": []
+    },
+    {
+      "id": "FWRG-2021-CA::builder::Available_Amount",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount",
+      "sourceId": "FWRG-2021-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sectionHint": "Article I (curated excerpt)",
+      "charStart": 0,
+      "charEnd": 1600,
+      "excerpt": "Available Amount &#148; means, at any time, an amount equal to, without duplication: (a) the sum of: (i) [reserved]; plus (ii) an amount, not less than zero for any period, equal to the CNI Growth Amount ( provided that no amount shall be available pursuant to this clause (ii) (x) unless the Total Rent Adjusted Net Leverage Ratio does not exceed 4.50:1.00 on a Pro Forma Basis and (y) for any Restricted Payment made in reliance on Section 6.04(a)(iii)(A) if an Event of Default under Section 7.01(a) , (f) or (g) exists); plus (iii) (A) the amount of any capital contribution in respect of Qualified Capital Stock or the proceeds of any issuance of Qualified Capital Stock after the Closing Date that are Not Otherwise Applied (other than any amount (1) constituting a Cure Amount or an Available Excluded Contribution Amount, (2) received from the Borrower or any Restricted Subsidiary or (3) consisting of the proceeds of any loan or advance made 5 pursuant to Section 6.06(h)(ii) ) received or deemed to be received as Cash equity by the Borrower or any of its Restricted Subsidiaries), plus (B) the fair market value, as determined by the Borrower in good faith, of Cash Equivalents, marketable securities or other property received or deemed to be received by the Borrower as a capital contribution in respect of Qualified Capital Stock or in return for any issuance of Qualified Capital Stock that are Not Otherwise Applied (other than any amount (1) constituting a Cure Amount or an Available Excluded Contribution Amount or (2) received from the Borrower or any Restricted Subsidiary), in ",
+      "excerptSha256": "9f2619ff70e7dc4c1cdca0e9458a358a1316f2bb005eca60c6f07ddae7d19ab6",
+      "units": "MONEY",
+      "measurementPeriod": "cumulative from day after Closing Date through determination time",
+      "entityScope": "Borrower / Restricted Subsidiaries",
+      "formulaSketch": "CNI Growth Amount (ratio-gated) + Qualified Capital Stock contributions/issuances Not Otherwise Applied (excluding Cure Amount / AECA) + converted debt-to-equity + other builder prongs in excerpt",
+      "dependencies": [
+        "CNI Growth Amount",
+        "Total Rent Adjusted Net Leverage Ratio",
+        "Cure Amount",
+        "Available Excluded Contribution Amount",
+        "Not Otherwise Applied"
+      ],
+      "adjustments": [],
+      "caps": [
+        {
+          "type": "RATIO_GATE",
+          "note": "CNI Growth Amount unavailable unless Total Rent Adjusted Net Leverage Ratio \u2264 4.50:1.00 on Pro Forma Basis"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_PARTIAL",
+      "notes": "Builder shape differs from CHWY \u00a76.08(a)(3) greater-of CNI/Retained ECF/EBITDA\u2212interest construct. Hand capacity utilization to Basket Formula Library.",
+      "amendments": []
+    },
+    {
+      "id": "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+      "kind": "CURE_RIGHT",
+      "termLabel": "Cure Amount (excluded from Available Amount equity prongs)",
+      "sourceId": "FWRG-2021-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sectionHint": "Available Amount definition (excerpt)",
+      "charStart": 732,
+      "charEnd": 1132,
+      "excerpt": "ther than any amount (1) constituting a Cure Amount or an Available Excluded Contribution Amount, (2) received from the Borrower or any Restricted Subsidiary or (3) consisting of the proceeds of any loan or advance made 5 pursuant to Section 6.06(h)(ii) ) received or deemed to be received as Cash equity by the Borrower or any of its Restricted Subsidiaries), plus (B) the fair market value, as dete",
+      "excerptSha256": "747818fe53b2a7d6e9ff321257854c8934820940829696617e1d1ba7043f66f6",
+      "units": "MONEY",
+      "measurementPeriod": "MISSING_INPUT:section_6_10_cure_mechanics_full_text",
+      "entityScope": "Borrower",
+      "formulaSketch": "Cure Amount is excluded from Qualified Capital Stock proceeds that build Available Amount; full cure right frequency/amount rules are in financial-covenant cure section (not fully present in definitions excerpt)",
+      "dependencies": [
+        "Available Amount",
+        "Section 6.10 (cure) \u2014 MISSING in this excerpt"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "CROSS_REF_ONLY",
+      "notes": "Compiler-run notes describe equity cure increasing EBITDA via Cure Amount with frequency caps; those operative mechanics are UNRESOLVED in this curated excerpt alone.",
+      "amendments": []
+    },
+    {
+      "id": "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Fixed Charge Coverage Ratio",
+      "sourceId": "LSB-2023-ABL",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sectionHint": "definitions excerpt",
+      "charStart": 1837,
+      "charEnd": 2737,
+      "excerpt": "Fixed Charge Coverage Ratio \u201d means, for any period, the ratio of (i) EBITDA for such period minus Capital\nExpenditures made (to the extent not already incurred in a prior period) or incurred during such period, to (ii) the sum of (A) all principal of Indebtedness of Parent and its Subsidiaries scheduled to be paid during such period (not\nincluding (w) the final scheduled payment of the Obligations at the Maturity Date, (x) the Secured Notes at the final maturity date applicable thereto, (y) [ reserved ], or (z) Indebtedness consisting of the financing of\ninsurance premiums in the ordinary course of business not in excess of the amount of such premiums to the extent that such amounts are expensed and therefor reduce EBITDA), plus (B) Consolidated Net Interest Expense of Parent and its\nSubsidiaries for such period, plus (C) all amounts required to be paid by Parent and its Subsidiaries on",
+      "excerptSha256": "d7aefd600a7ed22aff3b8eebe7b05dc9083ed9c7639d0d96fa83135b94546fdc",
+      "units": "RATIO",
+      "measurementPeriod": "any period (Payment Conditions uses TTM four quarters in operative tests)",
+      "entityScope": "Parent and its Subsidiaries",
+      "formulaSketch": "(EBITDA \u2212 Capital Expenditures) / (scheduled principal + Consolidated Net Interest Expense + Capitalized Lease payments due in period)",
+      "dependencies": [
+        "EBITDA",
+        "Capital Expenditures",
+        "Consolidated Net Interest Expense",
+        "Capitalized Lease Obligations"
+      ],
+      "adjustments": [
+        {
+          "family": "CAPEX",
+          "direction": "SUBTRACT_FROM_NUMERATOR"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Uses bare 'EBITDA' not 'Consolidated EBITDA'/'Consolidated Adjusted EBITDA'. Formula \u2260 FWRG FCCR. Negative example: 2.0x Payment Conditions threshold is a condition, not a basket.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::Consolidated_EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated EBITDA",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 11842,
+      "charEnd": 12242,
+      "excerpt": "\u201cConsolidated EBITDA\u201d.\n\n1\n\n\u201c Acquired \u00a0 Indebtedness \u201d means, with respect to any Person, (x) Indebtedness of any other Person or any of its Subsidiaries existing at the time such other Person becomes a Restricted\nSubsidiary or merges or amalgamates with or into or consolidates or otherwise combines with the Borrower or any Restricted Subsidiary and (y) Indebtedness secured by a Lien encumbering a",
+      "excerptSha256": "3f46b685f6057eb6497a012e7512aeff1f69622451800775af72bafa7f98b364",
+      "units": "MONEY",
+      "measurementPeriod": "Test Period / LTM as used",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "CNI-based build with add-backs; synergies/cost savings subject to Section 1.10(b) aggregate caps (see nearby pro forma calc)",
+      "dependencies": [
+        "Consolidated Net Income"
+      ],
+      "adjustments": [
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::Consolidated_Net_Income",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Net Income",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 81386,
+      "charEnd": 81786,
+      "excerpt": "\u201cConsolidated Net Income\u201d in each case, to the extent deducted (and not added back) in computing Consolidated Net Income;\nplus\n\n(c)\u00a0\u00a0\u00a0\u00a0 Consolidated Depreciation and Amortization\nExpense of such Person for such period to the extent deducted (and not added back) in computing Consolidated Net Income; plus\n\n(d)\u00a0\u00a0\u00a0\u00a0 any fees, costs, expenses or charges (other\nthan Consolidated Depreciation and Amortiz",
+      "excerptSha256": "ba27cf2f8834789462e95fd2a0737ffa40af16eec3508003a94bdac980d91d28",
+      "units": "MONEY",
+      "measurementPeriod": "any period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for Consolidated Net Income",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Interest_Coverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Interest Coverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 104337,
+      "charEnd": 105037,
+      "excerpt": "\u201c Consolidated Interest Coverage Ratio \u201d means, as of any date of\ndetermination, the ratio of (a) LTM EBITDA to (b) Consolidated Cash Interest Expense of the Restricted Group on a consolidated basis for the Test Period ended on such date, in each case, calculated on a pro forma basis in a manner consistent with Section 1.10 .\n\n\u201c Consolidated \u00a0 Interest \u00a0 Expense \u201d\nmeans, with respect to any Person for any period, without duplication, the sum of:\n\n(1) \u00a0\u00a0\u00a0\u00a0\u00a0 consolidated interest expense of such Person and its Restricted Subsidiaries for such period, to the extent such expense was deducted (and not added back) in computing Consolidated Net Income, which shall\ninclude:\n\n(a)\u00a0\u00a0\u00a0\u00a0 amortization of ",
+      "excerptSha256": "d9fba7698d62b393048121eaa3fc55ce6840bdbc2df67df753d445f4cb5c024e",
+      "units": "RATIO",
+      "measurementPeriod": "Test Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Consolidated EBITDA / Consolidated Interest Expense (see excerpt)",
+      "dependencies": [
+        "Consolidated EBITDA"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::Excess_Cash_Flow",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Excess Cash Flow",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 154816,
+      "charEnd": 156816,
+      "excerpt": "\u201c Excess Cash Flow \u201d means, with respect to any\nExcess Cash Flow Period, an amount, not less than zero, equal to:\n\n(a) \u00a0\u00a0\u00a0\u00a0 Consolidated\nNet Income of the Restricted Group for such Excess Cash Flow Period,\n\n(b) \u00a0\u00a0\u00a0\u00a0 without\nduplication (in each case, for the Restricted Group on a consolidated basis):\n\n(i) \u00a0\u00a0\u00a0\u00a0 minus , repayments, prepayments, repurchases, redemptions and other cash payments made with respect to the principal of any Indebtedness (including principal\nrepresenting capitalized interest) or the principal component of any Finance Lease Obligations of such Person or any of its Restricted Subsidiaries during such period (excluding (A) repayments and prepayments of Indebtedness deducted from the\namount of Term Loans required to be prepaid pursuant to clause (1) or (4) of Section 2.05(b)(i)(B) and (B) voluntary and mandatory prepayments of Term Loans), but including all premium, make-whole or penalty payments paid in cash (to the extent such payments are not expensed during such period\nor are not deducted in calculating Consolidated Net Income and such payments are not otherwise prohibited under this Agreement) and all repayments with respect to revolving Indebtedness to the extent accompanied by a corresponding permanent\nreduction in commitments (excluding repayments of Indebtedness deducted from the amount of Term Loans required to be prepaid pursuant to clause (1) or (4) of Section 2.05(b)(i)(B) ) ; minus\n\n(ii)\u00a0\u00a0\u00a0\u00a0 (A) payments\nmade in cash or accrued by such Person or any of its Restricted Subsidiaries during such period in respect of Restricted Payments (excluding Restricted Payments made pursuant to clause\n(17)(ii) of Section\u00a07.05(b) ) and (B) payments made in cash or accrued in respect of Restricted Payments reducing mandatory prepayments of the Term Loans pursuant to clause\u00a0(8) of Section 2.05(b)(i)(B) , in each case other than to the extent that any such Restricted Payments are funded with\nlong-term Indebtedness or Capital Stock; minus\n\n(iii)\n(A) cas",
+      "excerptSha256": "59ea2342de05a11e6f6c6d345e53b4acc8f5eabd2550848a1db3b607865e633b",
+      "units": "MONEY",
+      "measurementPeriod": "Excess Cash Flow Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for Excess Cash Flow",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::builder::Retained_Excess_Cash_Flow_Amount",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Retained Excess Cash Flow Amount",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 466885,
+      "charEnd": 467285,
+      "excerpt": "\u201c Retained Excess Cash Flow Amount \u201d which Retained Excess Cash Flow Amount may be used for any purpose not prohibited hereunder);\n\nprovided , further , that no prepayment shall be required with respect to any Excess Cash Flow Period unless the ECF Prepayment Amount exceeds the greater of $51,600,000 and 15.0% of LTM EBITDA, and in such case, the ECF\nPrepayment Amount shall be the amount in excess",
+      "excerptSha256": "a87bef7858f3973ebe075052d164ed0f56251b5deeef0c01eaa1193f43d009fc",
+      "units": "MONEY",
+      "measurementPeriod": "ECF Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Excess Cash Flow for period minus ECF Prepayment Amount",
+      "dependencies": [
+        "Excess Cash Flow",
+        "ECF Prepayment Amount"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount Builder Basket",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 37216,
+      "charEnd": 37716,
+      "excerpt": "\u201c Available Amount Builder Basket \u201d has the meaning specified in Section 7.05(a)(y) .\n\n\u201c Available Tenor \u201d means, as of any date of determination and with respect to\nthe then-current Benchmark, as applicable, any tenor for such Benchmark (or component thereof) or payment period for interest calculated with reference to such Benchmark (or component thereof), as applicable, that is or may be used for determining\nthe length of an Interest Period for any term rate or otherwise, for determining any f",
+      "excerptSha256": "ecb313a5a36da1da5474277e8ecc462cb762169d3dcdc7efb5fdf00669d192ec",
+      "units": "MONEY",
+      "measurementPeriod": "as specified in Section 7.05(a)(y)",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Cross-ref or inline builder basket tied to Section 7.05(a)(y); includes 40% LTM EBITDA prong in nearby drafting",
+      "dependencies": [
+        "LTM EBITDA",
+        "Section 7.05(a)(y)"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::LTM_EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "LTM EBITDA",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 231335,
+      "charEnd": 231935,
+      "excerpt": "\u201c LTM EBITDA \u201d means, as of any date of determination, Consolidated EBITDA of\nthe Borrower measured for the period of the most recent four consecutive fiscal quarters ending prior to the date of such determination for which consolidated financial statements are available (which may, at the election of the Borrower, be\ninternal financial statements), in each case with such pro forma adjustments as are consistent with the pro forma adjustments set forth in Section\u00a01.10 .\n\n\u201c Majority \u00a0 Lenders \u201d of any Tranche or class of Loans, as applicable, means those Non-Defaulting Lenders of such Tranche or",
+      "excerptSha256": "8088feb9e55a66de199684402cd6c0a8ec688174156cdf32788f6cfede82c2a8",
+      "units": "MONEY",
+      "measurementPeriod": "last twelve months",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for LTM EBITDA",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::adj::Synergy_ProForma_Cap_1_10",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Pro forma synergies/cost savings add-back cap (Section 1.10)",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Section 1.10 Pro Forma Calculations",
+      "charStart": 396039,
+      "charEnd": 396939,
+      "excerpt": "from such transactions which is being given pro forma effect; provided that the aggregate amount of cost savings, operating expense reductions and synergies added to Consolidated EBITDA pursuant to this Section 1.10(b) (combined with the\naggregate amount of adjustments made pursuant to clause s (1)(e)(i),\n(g) , (u) , (v)\nand (w) of the definition of Consolidated EBITDA) shall not exceed 30.0% of Consolidated EBITDA for any four fiscal quarter period (determined after giving effect thereto and all other adjustments and addbacks ); provided , further , that such 30.0% cap shall not apply to any such adjustments that are of the type that would be permitted to be included in pro forma financial\nstatements prepared in accordance with Regulation S-X under the Securities Act) .\u00a0 If any Indebtedness bears a floating rate of interest and is being given pro forma effect, the interest on such Indeb",
+      "excerptSha256": "715523cfb026d11b66d7dd3a8e4def5e20b749de5b4e1ea143059e417f2608b1",
+      "units": "CONSTRAINT",
+      "measurementPeriod": "pro forma period being tested",
+      "entityScope": "Borrower / Restricted Subsidiaries",
+      "formulaSketch": "Cost savings, opex reductions, synergies given pro forma effect subject to aggregate cap combined with other named clauses (see excerpt)",
+      "dependencies": [
+        "Consolidated EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD"
+        },
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        }
+      ],
+      "caps": [
+        {
+          "type": "AGGREGATE_WITH_SISTER_CLAUSES",
+          "note": "combined with other 1.10 clauses \u2014 read full section for numeric %"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Documents capped synergy add-backs distinct from CONMED 15% Pro Forma Adjustments and CHWY Expected Run Rate Benefit 36-month lookforward.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::test::ECF_Prepay_Step_Down",
+      "kind": "STEP_CHANGE_TEST",
+      "termLabel": "Excess Cash Flow prepayment percentage step-down by First Lien Net Leverage",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "ECF mandatory prepayment",
+      "charStart": 466271,
+      "charEnd": 466721,
+      "excerpt": "-term\nIndebtedness or Capital Stock);\n\nprovided that such percentage in respect of any\nExcess Cash Flow Period shall be reduced to 25.0% and to 0.0% if the Consolidated First Lien Net Leverage Ratio as of the last day of the fiscal year to which such Excess Cash Flow\nPeriod relates was equal to or less than 3.35 to 1.00 or 2.85 to 1.00, respectively (the amount described in this clause (i) , the \u201c ECF Prepayment Amount \u201d and with respect to any E",
+      "excerptSha256": "e233dc8ad87d250a7a5f3627568aa6f19362ed2b9f95215db0a156bf45f56374",
+      "units": "PERCENT",
+      "measurementPeriod": "Excess Cash Flow Period / fiscal year-end FLNLR",
+      "entityScope": "Borrower",
+      "formulaSketch": "ECF prepay % steps down to 25% / 0% when Consolidated First Lien Net Leverage Ratio \u2264 3.35x / 2.85x (per excerpt thresholds)",
+      "dependencies": [
+        "Excess Cash Flow",
+        "Consolidated First Lien Net Leverage Ratio"
+      ],
+      "adjustments": [
+        {
+          "family": "STEP_UP",
+          "direction": "STEP_DOWN_PREPAY_PERCENT"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Step-DOWN of prepayment percentage (not leverage maintenance step-up). Distinct from CONMED Material Acquisition leverage step-up.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::builder::Available_Amount",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "Article I definitions in Third Amendment restated text",
+      "charStart": 57195,
+      "charEnd": 58795,
+      "excerpt": "\u201c Available Amount \u201d means, at any time (the \u201c Reference\nDate \u201d), the sum (without duplication) of:\n\n(i)\n25% of Applicable EBITDA (calculated on a pro forma basis) as of the last day of the most recently ended four\nfiscal-quarter period on or prior to the date of determination; plus\n\n(ii)\nwithout duplication, the net cash proceeds of any issuance of Qualified Stock received by the Company during\nthe period from and including the Business Day immediately following the Effective Date through and including the Reference Date, in each case, to the extent not included in the definition of \u201cSpecified Equity Contribution\u201d and Not\nOtherwise Applied; plus\n\n(iii)\nthe principal amount of any Indebtedness issued by the Company after the Effective Date that has been exchanged\nfor or converted into Qualified Stock of the Company during the period from and including the Business Day immediately following the Effective Date through and including the Reference Date and Not Otherwise Applied; plus\n\n(iv)\nto the extent not already reflected as a return of capital with respect to such investment for purposes of\ndetermining the amount of such investment, the aggregate amount of all Returns (including all cash repayment of principal) received in cash or Permitted Investments by the Company or any Restricted Subsidiary from any investment or Unrestricted\nSubsidiary during the period from and including the Business Day immediately following the Effective Date through and including the Reference Date, in each case, to the extent any such investment was made using the Available Amount pursuant to\nSec",
+      "excerptSha256": "234d6f5b95961f9fd8d41441101296c976358db42541f64a5c4ba4d474536dea",
+      "units": "MONEY",
+      "measurementPeriod": "Reference Date cumulative builder",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "Cumulative builder from day after Effective Date through Reference Date (see excerpt components: CNI/retained amounts, equity, returns on AA investments, redesignations, minus usage)",
+      "dependencies": [
+        "Net Income / builder components per excerpt"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "DSGR Available Amount shape differs from CHWY greater-of and FWRG CNI Growth Amount.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::ratio::Interest_Coverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Interest Coverage Ratio",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "Article I definitions in Third Amendment restated text",
+      "charStart": 155423,
+      "charEnd": 155923,
+      "excerpt": "\u201c Interest Coverage Ratio \u201d means,\nfor any period of four consecutive fiscal quarters of the Company, the ratio of (a) EBITDA for such period to (b) Consolidated Interest Expense for such period. Notwithstanding the foregoing, solely for purposes of determining the Interest\nCoverage Ratio for any period of four consecutive fiscal quarters ending as of March 31, 2022, June 30, 2022, September 30, 2022 or December 31, 2022 (each such fiscal quarter being referred to as an \u201c Annualized\nQuarter \u201d), ",
+      "excerptSha256": "65bbc29861c2f67d7f03394aa7897d718bc5e6bde351fbe42b8067ae73cef04d",
+      "units": "RATIO",
+      "measurementPeriod": "as defined / tested under \u00a76.12",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "EBITDA / Interest Expense style coverage (see excerpt)",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Label Interest Coverage Ratio \u2014 confirm numerator is EBITDA not Consolidated EBITDA naming.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::ratio::Total_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Total Net Leverage Ratio",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "Article I definitions in Third Amendment restated text",
+      "charStart": 222458,
+      "charEnd": 223158,
+      "excerpt": "\u201c Total Net Leverage Ratio \u201d means, on any date, the ratio of (a) Total Indebtedness on such date minus\nUnrestricted Cash as of such date in an amount not to exceed $50,000,000 to (b) EBITDA for the period of four consecutive fiscal quarters of the Company most recently ended on or prior to such date. Operating leases that are reflected on the\nconsolidated balance sheet of the Company shall be excluded for purposes of calculating the Total Net Leverage Ratio.\n\n51\n\n\u201c Total Net Leverage Ratio Adjustment \u201d has the meaning assigned to such term\nin Section 6.12(b).\n\n\u201c Transactions \u201d means (a) the consummation of each Closing Date Acquisition, (b) the\nrepayment on the Effective Date of the Closing",
+      "excerptSha256": "1bf200505225d63b32fce470576dd24d712fb77e1483097a681edcbeb6002299",
+      "units": "RATIO",
+      "measurementPeriod": "most recent determination date",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "Net debt / EBITDA with Total Net Leverage Ratio Adjustment mechanics referenced",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "SUBTRACT"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Pricing grid and covenant uses Total Net Leverage Ratio; not equivalent to CHWY Total Leverage Ratio.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::adj::Combined_Cap_20pct",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Combined Cap (20% of EBITDA before add-backs)",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "EBITDA definition",
+      "charStart": 129501,
+      "charEnd": 130001,
+      "excerpt": "ded that, notwithstanding any of the\nforegoing, the aggregate amount all items added back to Net Income during any period in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs (the \u201c Combined Cap \u201d).\n\nNotwithstanding anything to the contrary set forth in this Agreement, EBITDA shall, in each case, be deemed to be the amount set forth below opposite\nsuch period, and any adjustments taken into account in calculating the amounts",
+      "excerptSha256": "d257c6f6d3ea654dda9eaf72717695caee6fdf60a0772c61723939281667c373",
+      "units": "PERCENT_OF_EBITDA",
+      "measurementPeriod": "any four fiscal quarter measurement period",
+      "entityScope": "Company consolidated",
+      "formulaSketch": "Aggregate add-backs under named clauses (a)(vii), (a)(viii), (a)(xviii)(b) \u2264 20% of EBITDA before those add-backs",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "adjustments": [
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD"
+        },
+        {
+          "family": "RESTRUCTURING_OPTIMIZATION",
+          "direction": "ADD"
+        }
+      ],
+      "caps": [
+        {
+          "type": "PERCENT_OF_EBITDA_BEFORE_ADDBACKS",
+          "percent": 20,
+          "appliesTo": "combined named add-back clauses"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Third add-back cap pattern: DSGR 20% Combined Cap vs CONMED 15% Pro Forma Adjustments vs GIB \u00a71.10 combined synergy caps.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_First_Lien_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated First Lien Net Leverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I Definitions (NBSP-separated headword)",
+      "charStart": 101260,
+      "charEnd": 101810,
+      "excerpt": "\u201c Consolidated \u00a0 First \u00a0 Lien \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d\nmeans, as of any date of determination, the ratio of (a) Consolidated Funded First Lien Indebtedness of the Restricted Group as of such date to (b) LTM EBITDA, in each case, calculated on a pro forma basis in a manner consistent with Section 1.10 .\n\n\u201c Consolidated \u00a0 Funded \u00a0 First \u00a0 Lien \u00a0 Indebtedness \u201d means Consolidated Funded Indebtedness of the Restricted Group that is secured by a Lien on the Collateral on an equivalent priority basis (but, in each case, without regard to control\nof",
+      "excerptSha256": "01cee25c07ca3b2ab33b7a69aa20f9152c99d5bfed988f84ac59741fcee8bbd0",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded First Lien Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded First Lien Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        },
+        {
+          "family": "CASH_NETTING",
+          "direction": "IN_FUNDED_INDEBTEDNESS_DEFS"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Headword uses non-breaking spaces between words in source PDF extract. Numerator is Funded * Indebtedness (netting lives in those debt defs / cash netting rules), denominator is LTM EBITDA \u2014 not CHWY Consolidated EBITDA/Test Period stack."
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Secured_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Secured Net Leverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I Definitions (NBSP-separated headword)",
+      "charStart": 128077,
+      "charEnd": 128627,
+      "excerpt": "\u201c Consolidated Secured \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d means, as of any date of determination, the ratio of (a)\nConsolidated Funded Senior Secured Indebtedness of the Restricted Group as of such date to (b) LTM EBITDA, in each case, calculated on a pro forma basis in a manner\nconsistent with Section 1.10 .\n\n\u201c Consolidated \u00a0 Total \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d means, as of any date of determination, the ratio of (a) Consolidated Funded Indebtedness of the Restricted Group as of such date to (b)\u00a0LTM EBITDA, in each case,\ncalculated on a pro forma basis i",
+      "excerptSha256": "2c4a26c0be01ff7a8d705b06863a361e0d6b6b356b95cc6fa85c24d8d9db3d87",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded Senior Secured Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded Senior Secured Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        },
+        {
+          "family": "CASH_NETTING",
+          "direction": "IN_FUNDED_INDEBTEDNESS_DEFS"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Headword uses non-breaking spaces between words in source PDF extract. Numerator is Funded * Indebtedness (netting lives in those debt defs / cash netting rules), denominator is LTM EBITDA \u2014 not CHWY Consolidated EBITDA/Test Period stack."
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Total_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Total Net Leverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I Definitions (NBSP-separated headword)",
+      "charStart": 128381,
+      "charEnd": 128931,
+      "excerpt": "\u201c Consolidated \u00a0 Total \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d means, as of any date of determination, the ratio of (a) Consolidated Funded Indebtedness of the Restricted Group as of such date to (b)\u00a0LTM EBITDA, in each case,\ncalculated on a pro forma basis in a manner consistent with Section\u00a01.10 .\n\n\u201c Contingent \u00a0 Obligations \u201d means, with respect to any Person, any obligation of such Person guaranteeing in any manner, whether directly or indirectly, any Non-Financing Lease Obligation,\ndividend or other obligation that does not constitute Indebtedness (\u201c p",
+      "excerptSha256": "63af79f5d72e734550bacd9f70345aa7da37a8cf83246197067755a2d2e21e00",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        },
+        {
+          "family": "CASH_NETTING",
+          "direction": "IN_FUNDED_INDEBTEDNESS_DEFS"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Headword uses non-breaking spaces between words in source PDF extract. Numerator is Funded * Indebtedness (netting lives in those debt defs / cash netting rules), denominator is LTM EBITDA \u2014 not CHWY Consolidated EBITDA/Test Period stack."
+    },
+    {
+      "id": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Actual LTV Ratio",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sectionHint": "Article I Definitions",
+      "charStart": 4327,
+      "charEnd": 4647,
+      "excerpt": "\u201cActual LTV Ratio\u201d means, at any time, the ratio (expressed as a percentage) of (a)\u00a0the principal amount of the Loan outstanding at such time to (b)\u00a0the Prevailing Market Value of the Collateral at such time.\n\n\u201cAdditional Collateral\u201d has the meaning given to it in Section 2.06(a)(i).\n\n\u201cAdministrative Agent\u201d means Coinb",
+      "excerptSha256": "fcb77542a7d55d3dd2b03734676f1c83cd85706bf1999d2caab3498d0b68e0bb",
+      "units": "RATIO_PERCENT",
+      "measurementPeriod": "at any time",
+      "entityScope": "Borrower loan vs Collateral",
+      "formulaSketch": "outstanding Loan principal / Prevailing Market Value of Collateral (expressed as %)",
+      "dependencies": [
+        "Prevailing Market Value",
+        "Collateral",
+        "Loan"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "LTV on BTC collateral \u2014 not Consolidated Total/First Lien Net Leverage. Do not join to EBITDA leverage formulas by label similarity."
+    },
+    {
+      "id": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+      "kind": "CURE_RIGHT",
+      "termLabel": "Cure Amount (BTC) \u2014 margin funding notice",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sectionHint": "Schedule 1 to Margin Funding Notice",
+      "charStart": 185976,
+      "charEnd": 186256,
+      "excerpt": "\n\u200b\n\n\u200b\n\nSchedule 1 to Margin Funding Notice\n\nMargin Call Issue Time: [date][time]\n\nLoan Amount (U.S.$): [\u25cf]\n\nCurrent Collateral (BTC): [\u25cf]\n\nBTC Price: [\u25cf]\n\n[Actual LTV Ratio]: [\u25cf]\n\nCure Amount (BTC): [\u25cf]\n\nMargin Funding Deadline: [\u25cf]\n\nMargin Call Reference: [\u25cf]\n\nPlease reach out t",
+      "excerptSha256": "7877271ac1a6e776ec358ec03e487165ac7aa8a19a5662b5241982f76f5ee02e",
+      "units": "BTC_QUANTITY",
+      "measurementPeriod": "Margin Call Issue Time / Margin Funding Deadline",
+      "entityScope": "Borrower / Coinbase Credit as agents",
+      "formulaSketch": "MISSING_INPUT:margin_call_ltv_inputs \u2014 schedule placeholder [\u25cf] for BTC cure quantity; mechanics are LTV/margin-call, not EBITDA equity cure",
+      "dependencies": [
+        "Actual LTV Ratio",
+        "Current Collateral (BTC)",
+        "BTC Price",
+        "Margin Funding Deadline"
+      ],
+      "adjustments": [
+        {
+          "family": "CURE",
+          "direction": "SPECIAL",
+          "note": "margin collateral cure, not EBITDA deeming"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Same English words \u201cCure Amount\u201d as FWRG/CHWY ABL equity-cure family, completely different legal/economic object."
+    },
+    {
+      "id": "DSGR-2025-AR2::def::EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "EBITDA",
+      "sourceId": "DSGR-2025-AR2",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "sourceFileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "sectionHint": "Article I Definitions (Second A&R)",
+      "charStart": 87926,
+      "charEnd": 91126,
+      "excerpt": "\u201c EBITDA \u201d means, for any period, Net Income for such period\nplus\n\n(a) without duplication and to the extent deducted (and not added back or excluded) in determining Net\nIncome for such period, the sum of:\n\n(i)\nInterest Expense for such period,\n\n(ii)\nincome tax expense for such period net of tax refunds,\n\n(iii)\nall amounts attributable to depreciation and amortization expense for such period,\n\n(iv)\nnet losses realized from asset Dispositions outside the ordinary course of business permitted under\nSection 6.05 ,\n\n21\n\n(v)\nnon-cash losses or expenses, including, without limitation, noncash\ncosts of incentive compensation, for which no cash outlay (or cash receipt) has been made or is foreseeable prior to the Maturity Date, in each case, other than any such noncash loss relating to the write-offs, write-downs or reserves with respect\nto accounts receivable in the normal course or Inventory; provided that, if any such non-cash item represents an accrual or reserve for potential cash items in any future period, to the extent the Company\nelects to add back any such non-cash item, the cash payment in respect thereof in such future period shall be subtracted from EBITDA in such future period to such extent paid,\n\n(vi)\nany Closing Date Transaction Expenses that are paid, expensed or otherwise accounted for prior to or within 180\ndays following the consummation of the Transactions,\n\n(vii)\nnon-recurring or unusual expenses, including business optimization\nexpenses, IT implementation/enhancement/update costs, severance costs, consulting fees, lease termination/activation costs, relocation costs, restructuring charges, retention or completion bonuses, executive leadership signing costs, upfront costs\nin connection with a new strategic initiative, upfront costs in connection with a new strategic commercial initiative including, but not limited to, green fielding a new market or pilot costs in existing or new markets and other nonrecurring\nexpenses not otherwise added back to EBITDA, in each case, actually incurred, in an aggregate amount not to exceed, for any four (4) fiscal quarter measurement period, together with the add-backs in\nclauses (a)(viii) and (a)(xviii)(b) below, the Combined Cap (as defined below);\n\n(viii)\nthe amount of \u201crun-rate\u201d cost savings (the \u201c Cost\nSavings \u201d) projected by the Company in good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities,\nwhich Cost Savings shall be calculated on a pro forma basis as though such Cost Savings had been realized on the first day of such period, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any\nfour (4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) above and (a)(xviii)(b) below, the Combined Cap; provided that, a Responsible Officer shall have provided\na reasonably detailed statement or schedule of such Cost Savings and shall have certified to the Administrative Agent that (x) such Cost Savings are reasonably identifiable and factually supportable, reasonably attributabl",
+      "excerptSha256": "ed48307900df8a1b2467514ef5b92d12308de32f6089dfea637967830d85af6c",
+      "units": "MONEY",
+      "measurementPeriod": "any period / four fiscal quarter measurement period for Combined Cap",
+      "entityScope": "Company and Restricted Subsidiaries (via Net Income)",
+      "formulaSketch": "EBITDA = Net Income + Interest + Taxes + D&A + other (a) add-backs \u2212 (b) deductions; capped add-backs subject to Combined Cap (see TC-DSGR-EBITDA-v1). SEMANTIC_HYPOTHESIS \u2014 not certified.",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Doc-d uses bare EBITDA (not Consolidated EBITDA). Supersedes reliance on Third Amendment excerpt alone for this instrument version.",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2025-AR2::adj::Cost_Savings",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Cost Savings",
+      "sourceId": "DSGR-2025-AR2",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "sourceFileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "sectionHint": "EBITDA definition clause (a)(viii)",
+      "charStart": 90175,
+      "charEnd": 91275,
+      "excerpt": "amount of \u201crun-rate\u201d cost savings (the \u201c Cost\nSavings \u201d) projected by the Company in good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headcount reductions, or closure of facilities,\nwhich Cost Savings shall be calculated on a pro forma basis as though such Cost Savings had been realized on the first day of such period, net of the amount of actual benefits realized from such actions in an aggregate amount not to exceed, for any\nfour (4) fiscal quarter measurement period, together with the add-backs in clauses (a)(vii) above and (a)(xviii)(b) below, the Combined Cap; provided that, a Responsible Officer shall have provided\na reasonably detailed statement or schedule of such Cost Savings and shall have certified to the Administrative Agent that (x) such Cost Savings are reasonably identifiable and factually supportable, reasonably attributable to the actions\nspecified and anticipated to result from such actions and (y) such actions have been taken and are ongoing, and the benefits resulti",
+      "excerptSha256": "85c66fb14152516ef944a86ee912822df918a100aa3530c96d9ec26cc80e2e56",
+      "units": "MONEY",
+      "measurementPeriod": "four fiscal quarter measurement period; 24-month realization lookforward from period end",
+      "entityScope": "Company",
+      "formulaSketch": "Cost Savings add-back = projected run-rate savings net of benefits already realized; 24-month lookforward; shares Combined Cap with (a)(vii)/(a)(xviii)(b) (TC-DSGR-EBITDA-v1). SEMANTIC_HYPOTHESIS.",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Inline defined term inside EBITDA. Subject to Combined Cap with (a)(vii) and (a)(xviii)(b).",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2025-AR2::adj::Combined_Cap_20pct",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Combined Cap",
+      "sourceId": "DSGR-2025-AR2",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "sourceFileSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "sectionHint": "EBITDA definition",
+      "charStart": 98355,
+      "charEnd": 98575,
+      "excerpt": "d in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs (the \u201c Combined Cap \u201d).\n\n\u201c ECP \u201d means an \u201celigible\ncontract participant\u201d as defined in Secti",
+      "excerptSha256": "7a6857acae7ebcac624027bafea8f9010012974b4f0a2d0169ae0b480cde2394",
+      "units": "PERCENT_OF_EBITDA_BEFORE_ADDBACKS",
+      "measurementPeriod": "any four fiscal quarter measurement period",
+      "entityScope": "Company",
+      "formulaSketch": "Combined Cap = 20% \u00d7 EBITDA computed before giving effect to the capped add-back clauses. SEMANTIC_HYPOTHESIS.",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "20% of EBITDA calculated before the capped add-back clauses.",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount Builder Basket (Article I cross-reference)",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceFileSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "sectionHint": "Article I Definitions",
+      "charStart": 37216,
+      "charEnd": 37356,
+      "excerpt": "\u201c Available Amount Builder Basket \u201d has the meaning specified in Section 7.05(a)(y) .\n\n\u201c Available Tenor \u201d means, as of any date of determin",
+      "excerptSha256": "7bdf98c8bfd8bf525d28bebd1dec3fe9d9c4810c396df3720ecb1976bb384cb6",
+      "units": "MONEY",
+      "measurementPeriod": "as of Restricted Payment determination under \u00a77.05(a)",
+      "entityScope": "Borrower / Restricted Subsidiaries",
+      "formulaSketch": "CROSS_REF_ONLY: Article I \u2192 meaning specified in Section 7.05(a)(y). Citation/scope conflict with operative naming parenthetical \u2014 see UQ-GIB-705AY-CITATION. Do NOT certify builder formula.",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "verificationStatus": "CROSS_REF_ONLY",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "notes": "Definition assigns meaning to Section 7.05(a)(y). See operative capture and citation-conflict record; do not certify a unique builder target.",
+      "unresolvedIds": [
+        "UQ-007",
+        "UQ-GIB-705AY-CITATION"
+      ],
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount Builder Basket \u2014 \u00a77.05(a)(y) operative text",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceFileSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "sectionHint": "Section 7.05(a)(y)",
+      "charStart": 776996,
+      "charEnd": 782942,
+      "excerpt": "(y)\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0the aggregate amount of such Restricted Payment and all other Restricted Payments made subsequent to the Closing Date (and not returned or rescinded)\n(including Permitted Payments made pursuant to clause (1) (without duplication) and clause (7) of Section 7.05(b) , but excluding all other Restricted Payments permitted by Section 7.05(b) ) would exceed the sum of\n(without duplication):\n\n(i)\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 50% of Consolidated Net Income for the period (treated as one accounting period) from the first day of the fiscal quarter in which the Closing Date occurs to the end of the most\nrecent fiscal quarter ending prior to the date of such Restricted Payment for which consolidated financial statements are available (which may, at the Borrower\u2019s election, be internal financial statements) (or, in the case such Consolidated Net\nIncome is a deficit, zero);\n\n236\n\n(ii) \u00a0 \u00a0 \u00a0 \u00a0\u00a0 100% of the aggregate amount of cash, and the fair market value of property or assets or marketable securities, received by the Borrower from the issue or sale of its Capital Stock\nor as the result of a merger or consolidation with another Person subsequent to the Closing Date or otherwise contributed to the equity (in each case other than through the issuance of Disqualified Stock or Designated Preferred Stock) of the\nBorrower or a Restricted Subsidiary (including the aggregate principal amount of any Indebtedness of the Borrower or a Restricted Subsidiary contributed to the Borrower or a Restricted Subsidiary for cancellation) or that becomes part of the\ncapital of the Borrower or a Restricted Subsidiary through consolidation or merger subsequent to the Closing Date (other than (A) Net Cash Proceeds or property or assets or marketable securities received from an issuance or sale of such Capital\nStock to a Restricted Subsidiary or an employee stock ownership plan or trust established by the Borrower or any of its Subsidiaries for the benefit of their employees to the extent funded by the Borrower or any Restricted Subsidiary, (B) cash\nor property or assets or marketable securities to the extent that any Restricted Payment has been made from such proceeds in reliance on clause (6) of Section 7.05(b) and (C) Excluded Contributions);\n\n(iii) \u00a0 \u00a0 \u00a0 \u00a0 100% of the aggregate amount of cash, and the fair market value of property or assets or marketable securities, received by the Borrower or any Restricted Subsidiary from the\nissuance or sale (other than to the Borrower or a Restricted Subsidiary or an employee stock ownership plan or trust established by the Borrower or any of its Subsidiaries for the benefit of their employees to the extent funded by the Borrower\nor any Restricted Subsidiary) by the Borrower or any Restricted Subsidiary subsequent to the Closing Date of any Indebtedness, Disqualified Stock or Designated Preferred Stock that has been converted into or exchanged for Capital Stock of the\nBorrower (other than Disqualified Stock or Designated Preferred Stock), plus , without duplication, the amount of any cash, and the fair market value of property or assets or marketable securities,\nreceived by the Borrower or any Restricted Subsidiary upon such conversion or exchange;\n\n(iv)\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 100% of the aggregate amount received in cash and the fair market value, as determined in good faith by the Borrower, of marketable securities or other property received by means\nof:\u00a0 (i) the sale or other disposition (other than to the Borrower or a Restricted Subsidiary) of, or other returns on Investment from, Restricted Investments made by the Borrower or its Restricted Subsidiaries and repurchases and redemptions\nof, or cash distributions or cash interest received in respect of, such Investments from the Borrower or its Restricted Subsidiaries and repayments of loans or advances, and releases of guarantees, which constitute Restricted Investments by the\nBorrower or its Restricted Subsidiaries, in each case after the Closing Date; or (ii) the sale or other disposition (other than to the Borrower or a Restricted Subsidiary) of the Capital Stock of an Unrestricted Subsidiary or a dividend,\npayment or distribution from an Unrestricted Subsidiary (other than to the extent of the amount of the Investment that constituted a Permitted Investment or was made under clause (17) of Section 7.05(b) and will increase the\namount available under the applicable clause of the definition of \u201cPermitted Investment\u201d or clause (17) of Section 7.05(b) , as applicable) or a dividend from a Person that is not a Restricted Subsidiary after the Closing Date;\n\n237\n\n(v) \u00a0 \u00a0 \u00a0 \u00a0\u00a0 in the case of the redesignation of an Unrestricted Subsidiary as a Restricted Subsidiary or the merger, amalgamation or consolidation of an Unrestricted Subsidiary into the\nBorrower or a Restricted Subsidiary or the transfer of all or substantially all of the assets of an Unrestricted Subsidiary to the Borrower or a Restricted Subsidiary after the Closing Date, the fair market value of the Investment in such\nUnrestricted Subsidiary (or the assets transferred), as determined in good faith by the Borrower at the time of the redesignation of such Unrestricted Subsidiary as a Restricted Subsidiary or at the time of such merger, amalgamation or\nconsolidation or transfer of assets (after taking into consideration any Indebtedness associated with the Unrestricted Subsidiary so designated or merged, amalgamated or consolidated or Indebtedness associated with the assets so transferred),\nother than to the extent of the amount of the Investment that constituted a Permitted Investment or was made under clause (17) of Section 7.05(b) and will increase the amount available under the applicable clause of the\ndefinition of \u201cPermitted Investment\u201d or clause (17) of Section 7.05(b) , as applicable; and\n\n(vi)\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 the greater of (A) $137,600,000 and (B) 40.0% of LTM EBITDA (the foregoing clause (y) , the \u201c Available Amount Builder Basket \u201d).\n\n",
+      "excerptSha256": "d0d315a007599e2e6e5e0e4d9a1c34fbbe4662b46e0c82b144af609c189afc54",
+      "units": "MONEY",
+      "measurementPeriod": "cumulative since Closing Date (for RP capacity test)",
+      "entityScope": "Borrower / Restricted Subsidiaries",
+      "formulaSketch": "Operative \u00a77.05(a)(y) RP builder = sum of (i)\u2013(vi); naming parenthetical after (vi) refers to clause (y). Arithmetic blocked pending citation-scope review (TC-GIB-AA-BUILDER-v1). REVIEW_REQUIRED.",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "notes": "Parenthetical naming the Builder Basket sits immediately after clause (vi) but says \u201cthe foregoing clause (y)\u201d. Scope of the defined term (whole (y) vs only (vi) grower) is NOT certified. Loose cites to \u201c7.05(y)\u201d without \u201c(a)\u201d also appear elsewhere in the instrument.",
+      "unresolvedIds": [
+        "UQ-007",
+        "UQ-GIB-705AY-CITATION"
+      ],
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    },
+    {
+      "id": "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+      "kind": "CURE_RIGHT",
+      "termLabel": "Section 2.06 Collateral Adjustments \u2014 Margin Demands",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sourceFileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "sectionHint": "Section 2.06(a)",
+      "charStart": 64899,
+      "charEnd": 67099,
+      "excerpt": "Section 2.06.Collateral Adjustments.\n\n(a)Margin Demands.\n\n(i)If the Actual LTV Ratio is on any Business Day equal to or in excess of the Top Up LTV (a \u201cMargin Call Event\u201d), the Administrative Agent may, within (2) Business Days following the Margin Call Event, deliver a Margin Funding Notice to the Borrower (which may be by e-mail), and the Borrower shall, by the Margin Funding Deadline (which shall be set forth in such Margin Funding Notice and which shall in any event be one (1) Business Day after the date of delivery of such Margin Funding Notice), satisfy such Margin Funding Notice by depositing additional Collateral (\u201cAdditional Collateral\u201d) to the Collateral Account. \u00a0The amount of Additional Collateral set forth in the Margin Funding Notice shall be determined by the Administrative Agent such that, after taking into account the required Additional Collateral, the Actual LTV Ratio as of the date of the Margin Call Event is equal to the Initial LTV.\n\n(ii)No more than one Margin Funding Notice shall be permitted on any calendar day for which a margin demand may be made pursuant to Section 2.06(a)(i) above, provided that if a subsequent Margin Funding Notice is issued on a calendar day in respect of Section 2.06(a)(i) (a \u201cSubsequent Margin Funding Notice\u201d), such Subsequent Margin Funding Notice shall supersede the previous Margin Funding Notice and the Borrower shall accordingly satisfy the Subsequent Margin Funding Notice by the Margin Funding Deadline set forth in such Subsequent Margin Funding Notice.\n\n(b)Margin Release.\n\n(i)If (A)\u00a0at any time the Actual LTV Ratio is less than or equal to the Release LTV for at least two (2) consecutive days and (B)\u00a0so long as immediately before and after giving effect thereto no Blocking Event shall have occurred and then be continuing, the Borrower may, by written notice to Collateral Agent (with a copy to each other party hereto) (such notice, a \u201cRelease Request Notice\u201d) (which notice shall be deemed to be a certification from the Borrower that the foregoing requirements are satisfied), request that the Collateral Agent direct the Custodian to release a portion of the Additional Collateral. Any Release Request Notice re",
+      "excerptSha256": "300647ac3893cfe1d9bafea6cb1713df09e44af36ce5fca8fd48ad96fd77c466",
+      "units": "BTC_COLLATERAL_AND_LTV",
+      "measurementPeriod": "Margin Call Event + Margin Funding Deadline (1 Business Day after notice)",
+      "entityScope": "Borrower / Coinbase Credit agents",
+      "formulaSketch": "On Margin Call Event, deliver Additional Collateral so Actual LTV \u2264 Initial LTV within 1 Business Day (TC-RIOT-LTV-MARGIN-v1). Not an EBITDA equity cure. SEMANTIC_HYPOTHESIS.",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Operative margin cure: post Additional Collateral so Actual LTV equals Initial LTV. Schedule \u201cCure Amount (BTC)\u201d is the notice quantity \u2014 not EBITDA equity cure.",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    },
+    {
+      "id": "RIOT-2026-CA::def::Initial_LTV",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Initial LTV",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sourceFileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "sectionHint": "Article I Definitions",
+      "charStart": 28791,
+      "charEnd": 29141,
+      "excerpt": "\u201cInitial LTV\u201d means, during any period specified in the LTV Table, the applicable percentage set forth opposite \u201cInitial LTV\u201d in such table for such period.\n\n\u201cInitial Prevailing Market Value\u201d means the Prevailing Market Value of the Collateral as of 9:00 a.m. (New York City Time) on the Original Effective Date.\n\n\u201cInsolvency Event\u201d means, with respe",
+      "excerptSha256": "5ef4d8d27d081099882de97396532e4c5e59438ac5ac6b90503544d0b879cedd",
+      "units": "RATIO_PERCENT",
+      "measurementPeriod": "threshold constant / as defined",
+      "entityScope": "Loan facility",
+      "formulaSketch": "Initial LTV = schedule/defined threshold used as restore target for Margin Call Additional Collateral. SEMANTIC_HYPOTHESIS \u2014 numeric schedule value not asserted here.",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "LTV threshold component for margin mechanics.",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    },
+    {
+      "id": "RIOT-2026-CA::def::Release_LTV",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Release LTV",
+      "sourceId": "RIOT-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sourceFileSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "sectionHint": "Article I Definitions",
+      "charStart": 43051,
+      "charEnd": 43401,
+      "excerpt": "\u201cRelease LTV\u201d means, during any period specified in the LTV Table, the applicable percentage set forth opposite \u201cRelease LTV\u201d in such table for such period.\n\n\u201cRelease Request Notice\u201d has the meaning given to it in Section 2.06(b)(ii).\n\n\u201cRelevant Jurisdiction\u201d means, in respect of any person:\n\n(a)its jurisdiction of incorporation or, if not incorpor",
+      "excerptSha256": "1a1980f1d3d49b6ae626799fa618552d284a651728ae975bea824975bfd3c0ef",
+      "units": "RATIO_PERCENT",
+      "measurementPeriod": "threshold constant / as defined",
+      "entityScope": "Loan facility",
+      "formulaSketch": "Release LTV = schedule/defined threshold for collateral release eligibility. Distinct from Initial LTV / Cure Amount (BTC). SEMANTIC_HYPOTHESIS.",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "LTV threshold component for margin mechanics.",
+      "legalReviewState": "SOURCE_SPAN_VERIFIED",
+      "interpretationLayer": "EXTRACTION_ONLY",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "amendments": []
+    }
+  ],
+  "disclaimer": "Source-backed draft atlas. Excerpts may be truncated; re-open sourcePath for full clauses. No legal equivalence claimed across instruments. No financial results invented.",
+  "batch": "batch-3-peer-coord-refresh-riot-cure-divergence",
+  "phase": "phase-3-calculation-semantics",
+  "reconciledStartingSha": "23e42a56973cd399e9150399e269092a5c6cf715"
+}
