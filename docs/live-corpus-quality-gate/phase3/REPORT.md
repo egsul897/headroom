@@ -5,7 +5,7 @@
 **Starting PR:** #153
 **Starting SHA:** `18e2ed4bd66eaa9caff25eac49ef490c2fbb1816`
 **Frozen evaluation content SHA:** `cebec8ab3aaecd894b1903ac0b758828655a88df`
-**Generation HEAD:** `18e2ed4bd66eaa9caff25eac49ef490c2fbb1816`
+**Generation HEAD:** `893a52f86b8d8067389f03e965cb620a374cc65b`
 **Paid calls:** `0`
 **Certification impact:** `NONE`
 **Production fixes in this branch:** `false`
@@ -56,6 +56,6 @@ See `26-legal-safety-metrics.json`. Unavailable GT never converted to PASS.
 
 ## 9. SHA / tests / CI / PR
 
-- HEAD: `18e2ed4bd66eaa9caff25eac49ef490c2fbb1816`
+- HEAD: `893a52f86b8d8067389f03e965cb620a374cc65b`
 - Tests: `npm run live-corpus-quality-gate:phase3` · `npx vitest run tests/live-corpus-quality-gate/`
 - PR: #153 draft — do not merge
